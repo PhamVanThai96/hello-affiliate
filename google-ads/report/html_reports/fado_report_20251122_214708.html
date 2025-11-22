@@ -1,0 +1,555 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Report - fado</title>
+    <style>
+        @charset "UTF-8";
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Trebuchet MS', 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 30px;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: inline-block;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .info-box {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 6px;
+        }
+        
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+        
+        .info-item {
+            margin: 8px 0;
+            font-size: 0.95em;
+            word-break: break-word;
+        }
+        
+        .info-label {
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .info-value {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border: none;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            word-break: break-word;
+        }
+        
+        tr:hover {
+            background: #f8f9ff;
+        }
+        
+        .keyword-col {
+            font-weight: 600;
+            color: #667eea;
+            max-width: 300px;
+        }
+        
+        .cpc-col {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        .cvr-col {
+            color: #27ae60;
+            font-weight: 600;
+        }
+        
+        .competition-low {
+            background: #d4edda;
+            color: #155724;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .competition-medium {
+            background: #fff3cd;
+            color: #856404;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .competition-high {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .recommendation {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        
+        .recommendation.success {
+            background: #d4edda;
+            border-left-color: #27ae60;
+        }
+        
+        .recommendation.warning {
+            background: #fff3cd;
+            border-left-color: #f39c12;
+        }
+        
+        .recommendation.info {
+            background: #d1ecf1;
+            border-left-color: #3498db;
+        }
+        
+        .emoji {
+            margin-right: 8px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 0.9em;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            table {
+                font-size: 0.9em;
+            }
+            
+            th, td {
+                padding: 10px;
+            }
+            
+            .keyword-col {
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="header">
+            <h1>📊 Campaign Report</h1>
+            <p><strong>fado</strong> - 2025-11-22 21:26:21</p>
+        </div>
+
+        <div class="section"><h2 class="section-title">🌐 Landing Page Information</h2><div class="info-grid">
+        <div class="info-box">
+            <h3>📝 Page Details</h3>
+            <div class="info-item">
+                <span class="info-label">URL:</span>
+                <span class="info-value"><a href="https://fado.vn" target="_blank">https://fado.vn</a></span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Title:</span>
+                <span class="info-value">Fado - Mua Hàng Quốc Tế Cao Cấp Từ Mỹ, Nhật, Đức, Anh</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Target Age:</span>
+                <span class="info-value">45-60</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Products Count:</span>
+                <span class="info-value">12</span>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>💰 Pricing</h3>
+            <div class="info-item">
+                <span class="info-label">Avg Product Price:</span>
+                <span class="info-value">0 VNĐ</span>
+            </div>
+        </div>
+        </div><h3 style="margin-top: 20px; color: #667eea;">Sample Products:</h3><ul style="margin-left: 20px; margin-top: 10px;"><li style="margin: 5px 0;">Gia dụng Nhật Bản</li><li style="margin: 5px 0;">Vợt Joola</li><li style="margin: 5px 0;">Thời Trang Adidas</li><li style="margin: 5px 0;">Đồ Thể Thao Nike</li><li style="margin: 5px 0;">Mắt kính Gucci</li><li style="margin: 5px 0;">Mắt kính Prada</li><li style="margin: 5px 0;">Đồng hồ Michael Kors</li><li style="margin: 5px 0;">Thời trang Burberry</li><li style="margin: 5px 0;">Đồng hồ Citizen</li><li style="margin: 5px 0;">Đồng hồ Casio</li></ul></div>
+        <div class="section"><h2 class="section-title">💵 Commission Settings</h2><div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Commission Rate</div>
+            <div class="stat-value">6.4%</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Avg Product Price</div>
+            <div class="stat-value">0 VNĐ</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Commission per Sale</div>
+            <div class="stat-value">0 VNĐ</div>
+        </div>
+        </div></div>
+        <div class="section"><h2 class="section-title">📈 Campaign Projections</h2><p style="font-size: 1.1em; margin-bottom: 20px;"><strong>Monthly Budget: 1.000.000 VNĐ</strong></p><div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Average CPC</div>
+            <div class="stat-value">10.000 VNĐ</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Average CVR</div>
+            <div class="stat-value">3.26%</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Clicks/Month</div>
+            <div class="stat-value">100</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Conversions/Month</div>
+            <div class="stat-value">3</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">CPA</div>
+            <div class="stat-value">333.333 VNĐ</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Impressions</div>
+            <div class="stat-value">2.000</div>
+        </div>
+        </div><h3 style="margin-top: 20px; margin-bottom: 15px; color: #667eea;">Keyword Distribution</h3>
+        <div class="info-grid">
+            <div class="info-box">
+                <h3>📊 By Competition</h3>
+        <div class="info-item"><span class="info-label">LOW:</span> <span class="info-value">16</span></div><div class="info-item"><span class="info-label">MEDIUM:</span> <span class="info-value">21</span></div><div class="info-item"><span class="info-label">HIGH:</span> <span class="info-value">1</span></div></div><div class="info-box"><h3>📌 By Source</h3><div class="info-item"><span class="info-label">product_name:</span> <span class="info-value">12</span></div><div class="info-item"><span class="info-label">content_analysis:</span> <span class="info-value">20</span></div><div class="info-item"><span class="info-label">brand_modifier:</span> <span class="info-value">6</span></div></div></div></div>
+        <div class="section"><h2 class="section-title">🔑 Keyword Suggestions</h2><p style="margin-bottom: 15px;"><strong>Total Keywords: 30</strong></p><h3 style="margin-top: 20px; margin-bottom: 15px; color: #667eea;">Top 10 Keywords by CPC</h3><table><thead><tr><th>Keyword</th><th>CPC Range</th><th>Avg CPC</th><th>CVR</th><th>Competition</th><th>Source</th></tr></thead><tbody>
+            <tr>
+                <td class="keyword-col">gia dụng nhật bản</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">vợt joola</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">2.5%</td>
+                <td><span class="competition-medium">MEDIUM</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">thời trang adidas</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">đồ thể thao nike</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">mắt kính gucci</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">mắt kính prada</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">đồng hồ michael kors</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">thời trang burberry</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">đồng hồ citizen</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">đồng hồ casio</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            </tbody></table><h3 style="margin-top: 20px; margin-bottom: 15px; color: #667eea;">Top 10 Keywords by CVR</h3><table><thead><tr><th>Keyword</th><th>CPC Range</th><th>Avg CPC</th><th>CVR</th><th>Competition</th><th>Source</th></tr></thead><tbody>
+            <tr>
+                <td class="keyword-col">gia dụng nhật bản</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">thời trang adidas</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">đồ thể thao nike</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">mắt kính gucci</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">mắt kính prada</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">đồng hồ michael kors</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">thời trang burberry</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">đồng hồ citizen</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">đồng hồ casio</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            
+            <tr>
+                <td class="keyword-col">thời trang mlb</td>
+                <td>0 - 0</td>
+                <td class="cpc-col">0 VNĐ</td>
+                <td class="cvr-col">3.25%</td>
+                <td><span class="competition-low">LOW</span></td>
+                <td>product_name</td>
+            </tr>
+            </tbody></table></div>
+        <div class="section"><h2 class="section-title">💡 Recommendations</h2>
+            <div class="recommendation warning">
+                <span class="emoji">⚠️</span>
+                <strong>[CPA]</strong> CPA cao (>200k VNĐ). Nên tối ưu landing page và targeting.
+            </div>
+            
+            <div class="recommendation success">
+                <span class="emoji">✅</span>
+                <strong>[CVR]</strong> CVR cao (>3%). Landing page tối ưu tốt.
+            </div>
+            </div>
+        
+        <div class="footer">
+            <p>Report generated on 2025-11-22 21:26:21</p>
+            <p>© 2024 Campaign Planning System</p>
+        </div>
+
+    </div>
+</body>
+</html>
