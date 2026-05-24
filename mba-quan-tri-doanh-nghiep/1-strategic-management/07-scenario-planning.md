@@ -271,6 +271,111 @@ BẤT ĐỊNH (Uncertainty)
 
 ---
 
+### Case Study 3: Starbucks – Scenario Planning cho thị trường Trung Quốc (2010s)
+**Bối cảnh**: Starbucks muốn mở rộng mạnh mẽ vào Trung Quốc, nhưng thị trường này rất khác biệt (văn hóa trà, cạnh tranh địa phương, rủi ro chính trị).
+
+**2 yếu tố bất định**:
+- **Trục 1**: Tăng trưởng kinh tế Trung Quốc (Nhanh ↔ Chậm)
+- **Trục 2**: Rủi ro chính trị (Ổn định ↔ Biến động)
+
+| | **Tăng trưởng NHANH** | **Tăng trưởng CHẬM** |
+|---|---|---|
+| **Ổn định chính trị** | 🌞 "Golden Age" – Thị trường | 🌤️ "Steady Growth" – Phát triển chậm nhưng ổn định |
+| **Biến động chính trị** | ⛈️ "Turbulent Waters" – Rủi ro cao, cạnh tranh khốc liệt | 🌧️ "Uncertain Future – Rủi ro cao + thị trường khó |
+
+**Chiến lược robust của Starbucks**: Tập trung vào **"premium experience"** (cửa hàng đẹp, menu đa dạng, dịch vụ tốt) thay vì chỉ bán cà phê giá rẻ.
+**Logic**: Dù tăng trưởng nhanh hay chậm, dù chính trị ổn định hay biến động, khách hàng vẫn sẵn sàng trả tiền cho trải nghiệm cao cấp.
+**Kết quả**: Starbucks trở thành thương hiệu cà phê cao cấp hàng đầu tại Trung Quốc, vượt qua các đối thủ địa phương và quốc tế.
+**Bài học thực tế**:
+- Scenario Planning giúp Starbucks định vị thương hiệu phù hợp với nhiều kịch bản tăng trưởng và rủi ro chính trị
+- Chiến lược "premium experience" là robust, giúp công ty thành công dù thị trường có biến động thế nào
+- **Hạn chế**: Starbucks không dự đoán được sự bùng nổ của các ứng dụng giao đồ ăn (food delivery) → phải nhanh chóng thích nghi bằng cách hợp tác với các nền tảng như Meituan.
+
+
+
+### Case Study 4: Doanh nghiệp xuất nhập khẩu (XNK) – Scenario Planning cho chuỗi cung ứng toàn cầu (2025-2030)
+
+---
+
+### Bước 1: XÁC ĐỊNH VẤN ĐỀ CHIẾN LƯỢC
+
+* **Câu hỏi:** Quyết định chiến lược nào cần kịch bản?
+* **Phân tích:** Doanh nghiệp của bạn đang đứng trước quyết định: **"Có nên đa dạng hóa nguồn cung và thị trường tiêu thụ sang các khu vực mới, hay tập trung sâu vào thị trường truyền thống để tối ưu chi phí?"** Đây là quyết định sinh tử vì liên quan đến dòng vốn và năng lực logistic.
+
+### Bước 2: XÁC ĐỊNH DRIVING FORCES (PESTEL)
+
+* **Câu hỏi:** Yếu tố nào định hình tương lai?
+* **Phân tích:**
+* **P (Chính trị):** Căng thẳng Mỹ-Trung, các lệnh trừng phạt thương mại.
+* **E (Kinh tế):** Lạm phát toàn cầu, biến động tỷ giá hối đoái.
+* **S (Xã hội):** Xu hướng tiêu dùng bền vững, yêu cầu minh bạch chuỗi cung ứng.
+* **T (Công nghệ):** Số hóa logistic, Blockchain trong truy xuất nguồn gốc.
+* **E (Môi trường):** Thuế carbon, phí phát thải.
+* **L (Pháp lý):** Hiệp định thương mại mới (CPTPP, EVFTA), thay đổi quy định nhập khẩu.
+
+
+
+### Bước 3: XẾP HẠNG THEO TÁC ĐỘNG & BẤT ĐỊNH
+
+* **Câu hỏi:** Yếu tố nào quan trọng nhất VÀ bất định nhất?
+* **Phân tích:**
+* **Rất bất định:** Tỷ giá hối đoái (do chính sách tiền tệ của Fed) và Sự đứt gãy chuỗi cung ứng (do biến cố địa chính trị).
+* **Tác động cao:** Chính sách bảo hộ thương mại và biến động chi phí vận tải.
+
+
+
+### Bước 4: CHỌN 2 YẾU TỐ BẤT ĐỊNH QUAN TRỌNG NHẤT
+
+* **Ma trận 2x2:**
+* **Trục X:** Chính sách thương mại (Tự do hóa vs. Bảo hộ cực đoan).
+* **Trục Y:** Chi phí Logistic (Bình ổn thấp vs. Tăng vọt do xung đột).
+
+
+
+|  | Chính sách tự do hóa | Chính sách bảo hộ |
+| --- | --- | --- |
+| **Logistic Bình ổn** | **Kịch bản 1: Thịnh vượng xanh** | **Kịch bản 2: Pháo đài nội địa** |
+| **Logistic Tăng vọt** | **Kịch bản 3: Sống sót trong bão** | **Kịch bản 4: Sụp đổ chuỗi** |
+
+### Bước 5: XÂY DỰNG KỊCH BẢN (Câu chuyện)
+
+1. **Thịnh vượng xanh:** Thế giới ổn định, chi phí thấp, biên lợi nhuận cao.
+2. **Pháo đài nội địa:** Các nước dựng hàng rào thuế quan. Doanh nghiệp phải chuyển hướng sang sản xuất tại chỗ hoặc tìm thị trường ngách ít bị kiểm soát.
+3. **Sống sót trong bão:** Chi phí logistic cao làm ăn mòn lợi nhuận. Cần tối ưu kho bãi và công nghệ dự báo nhu cầu.
+4. **Sụp đổ chuỗi:** Biến cố lớn (chiến tranh, phong tỏa). Doanh nghiệp cần dự phòng tài chính và nguồn hàng thay thế ngay lập tức.
+
+### Bước 6: PHÂN TÍCH TÁC ĐỘNG
+
+* **Câu hỏi:** Mỗi kịch bản ảnh hưởng DN thế nào?
+* **Phân tích:**
+* Trong *Kịch bản 4 (Sụp đổ)*: Doanh nghiệp sẽ mất khả năng thanh toán nếu không có hạn mức tín dụng dự phòng.
+* Trong *Kịch bản 2 (Bảo hộ)*: Doanh nghiệp có thể mất 70% doanh thu thị trường chính nếu không có sự chuẩn bị về chứng chỉ xuất xứ mới.
+
+
+
+### Bước 7: XÂY DỰNG CHIẾN LƯỢC
+
+* **Câu hỏi:** Chiến lược nào "robust" (vững chắc) qua nhiều kịch bản?
+* **Chiến lược Robust (Đúng trong mọi kịch bản):**
+* **Đa dạng hóa danh mục nhà cung cấp:** Không phụ thuộc vào một quốc gia.
+* **Chuyển đổi số quản trị kho vận:** Dùng phần mềm để nhìn thấy hàng hóa theo thời gian thực.
+* **Quản trị rủi ro tài chính:** Luôn duy trì quỹ dự phòng tiền mặt cho 6 tháng vận hành.
+
+
+
+### Bước 8: GIÁM SÁT EARLY WARNING SIGNALS
+
+* **Câu hỏi:** Dấu hiệu nào cho thấy kịch bản nào đang xảy ra?
+* **Phân tích:**
+* **Tăng giá cước tàu biển:** Dấu hiệu kịch bản 3 hoặc 4 đang đến.
+* **Thay đổi luật thuế quan từ đối tác:** Dấu hiệu chuyển sang kịch bản 2.
+* **Biến động tỷ giá >5% trong thời gian ngắn:** Dấu hiệu bất ổn kinh tế vĩ mô.
+
+---
+
+**Lời khuyên cho bạn:** Với tư cách chủ doanh nghiệp XNK, đừng coi quy trình này là làm một lần. Hãy lập một **"Ban chỉ đạo kịch bản"** họp hàng tháng. Khi các **Early Warning Signals** bắt đầu xuất hiện, hãy kích hoạt ngay **"Chiến lược robust"** mà bạn đã chuẩn bị sẵn.
+
+
 ## VI. CÁC BIẾN THỂ VÀ MỞ RỘNG
 
 ### 1. Scenario Planning vs Các phương pháp khác
