@@ -389,6 +389,7 @@ $$\text{BEP} = \frac{90,000,000}{32,500} = 2,769 \text{ khách/tháng} \approx 9
 
 → **Cần 92 khách/ngày để hòa vốn** – con số rất sát ngưỡng thực tế, không có buffer
 
+* BEP nghĩa là điểm hòa vốn, khi doanh thu đủ để trang trải chi phí
 
 
 ### 4. Tốc độ mở rộng vs Khả năng kiểm soát
