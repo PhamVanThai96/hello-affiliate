@@ -438,6 +438,8 @@ $$\text{Royalty Fee} = \text{Gross Revenue (franchisee)} \times 35\text{-}45\%$$
 | **Franchisee Net** | ~5-12% | – |
 | **7-Eleven Revenue** | – | **17.5-22.5% of revenue** |
 
+*/ COG nghĩa là Cost of Goods Sold (giá vốn hàng bán)*
+
 $$\text{7-Eleven income per store/year} \approx \$120,000 - \$180,000 \text{ USD}$$
 
 $$\text{Với 85,000 stores} \approx \$10 - 15 \text{ tỷ revenue thuần từ royalties}$$
