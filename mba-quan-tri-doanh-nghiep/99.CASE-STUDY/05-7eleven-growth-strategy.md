@@ -626,6 +626,7 @@ $$\text{Với 85,000 stores} \approx \$10 - 15 \text{ tỷ revenue thuần từ 
 | ATV | 50,000 | **80,000-150,000** |
 | Transactions/day | 80-100 | **400-800** |
 
+*/ ATV nghĩa là Average Transaction Value (giá trị trung bình mỗi giao dịch)*
 ### Tại sao 7-Eleven có unit economics tốt hơn nhiều?
 
 **Revenue Driver**: Volume, not margin
