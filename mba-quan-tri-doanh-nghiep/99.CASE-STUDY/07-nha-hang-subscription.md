@@ -823,6 +823,8 @@ $$\text{BEP (subscribers)} \approx \frac{234}{1.1 \text{ bữa/ngày bình quân
 - On-time delivery rate > 90%
 - NPS > 30 (đủ để khách giới thiệu thêm)
 
+*/ NPS là Net Promoter Score, thước đo sự hài lòng và khả năng giới thiệu của khách hàng. NPS > 30 được coi là tốt trong ngành dịch vụ ăn uống. /*
+
 ---
 
 ### 12.2. Giai đoạn 2: Scale & Optimize (Tháng 4-9)
@@ -996,6 +998,8 @@ MRR phản ánh tất cả các yếu tố quan trọng: số lượng subscribe
   │ • Ingredient cost %   Target: <30% of revenue               │
   └─────────────────────────────────────────────────────────────┘
 ```
+
+*/ Gross Margin: nghĩa là lợi nhuận gộp sau khi trừ chi phí nguyên liệu và đóng gói, nhưng chưa trừ chi phí giao hàng và vận hành. EBITDA Margin: lợi nhuận trước lãi vay, thuế, khấu hao và amortization, phản ánh hiệu quả hoạt động cốt lõi của doanh nghiệp. /*
 
 ### 14.3. Weekly Review Framework
 
