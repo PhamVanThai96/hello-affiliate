@@ -133,8 +133,6 @@ Nếu bạn muốn, tôi có thể:
 
 ## Mô hình 5A tối ưu - mô hình thắt nơ (bow-tie)
 
-Cấu trúc hình thắt nơ (Bow-tie Pattern) được Philip Kotler định nghĩa là mô hình hành trình khách hàng lý tưởng nhất trong kỷ nguyên số. Trong khi các mô hình truyền thống có lượng khách hàng rụng rơi dần qua từng giai đoạn, cấu trúc hình thắt nơ đại diện cho một thương hiệu có sức hút tuyệt đối và sở hữu cộng đồng người hâm mộ trung thành tối đa.
-------------------------------
 ## 1. Bản chất của cấu trúc hình thắt nơ
 Trong mô hình 5A tiêu chuẩn, số lượng người ở mỗi giai đoạn thường có xu hướng giảm dần (Aware > Appeal > Ask > Act). Tuy nhiên, ở cấu trúc hình thắt nơ, tỷ lệ chuyển đổi đạt mức hoàn hảo tại hai đầu:
 
@@ -178,9 +176,6 @@ Rất hiếm doanh nghiệp đạt được cấu trúc thắt nơ hoàn hảo c
 
 ## Mô hình 5A sản phẩm phức tạp - mô hình cá vàng (golden fish)
 
-Cấu trúc hình cá vàng (Goldfish Pattern) là một dạng biến thể khác của hành trình khách hàng 5A trong cuốn Marketing 4.0 của Philip Kotler. Trái ngược hoàn toàn với cấu trúc hình thắt nơ lý tưởng, cấu trúc hình cá vàng đại diện cho những ngành hàng mà quy trình mua sắm cực kỳ phức tạp, rủi ro cao và khách hàng vô cùng thận trọng.
-Lý do gọi là "hình cá vàng" vì khi vẽ biểu đồ số lượng khách hàng qua 5 giai đoạn, hình dáng của nó phình to ở giữa và thu hẹp ở hai đầu, trông giống như một chú cá vàng với chiếc bụng lớn (giai đoạn Tìm hiểu - Ask).
-------------------------------
 ## 1. Bản chất của cấu trúc hình cá vàng
 Trong cấu trúc này, mối quan hệ giữa các giai đoạn biến đổi rất đặc thù:
 
