@@ -33,8 +33,11 @@ Công thức cổ điển nhất, phù hợp với quảng cáo, landing page, e
 
 **Ví dụ áp dụng (quảng cáo khóa học online):**
 > **A**: "Bạn đã bao giờ viết content cả buổi mà vẫn không ai tương tác?"
+
 > **I**: "90% người mới làm content mắc phải 3 sai lầm này mà không biết..."
+
 > **D**: "Khóa học giúp bạn xây dựng chiến lược content chuyên nghiệp trong 30 ngày, được 500+ học viên áp dụng thành công"
+
 > **A**: "Đăng ký ngay hôm nay để nhận ưu đãi 30%"
 
 #### b) PAS (Problem – Agitate – Solution)
