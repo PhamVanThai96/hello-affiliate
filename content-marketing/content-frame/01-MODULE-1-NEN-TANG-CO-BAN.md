@@ -627,6 +627,8 @@ Dưới đây là bảng phân tích chiến lược của Mixue dựa trên mô
 | HOW (Như thế nào - Phương pháp, Năng lực) | • Tự chủ chuỗi cung ứng: Xây dựng nhà máy nguyên liệu riêng, tự vận hành hệ thống kho vận (logistics) khép kín. • Nhượng quyền tối ưu: Cắt giảm chi phí trung gian, tinh gọn bộ máy vận hành để tối đa hóa biên lợi nhuận cho đại lý dù giá bán thấp. | • Sở hữu Công ty Kho vận Đại Gia Thế giới cung ứng nguyên liệu trực tiếp. • Mô hình cửa hàng diện tích nhỏ, tập trung vào bán mang đi (take-away) để giảm chi phí mặt bằng. | Lợi thế cạnh tranh: Dùng sức mạnh công nghiệp và quy mô để triệt tiêu chi phí, tạo ra rào cản giá mà đối thủ không thể bắt chước. |
 | WHAT (Cái gì - Sản phẩm, Dịch vụ) | • Kem tươi ốc quế vị sữa đậm đà. • Trà trái cây tươi (trà chanh, trà đào) và trà sữa trân châu. • Trải nghiệm giải trí thông qua linh vật Tuyết Vương (Snow King) và giai điệu bắt tai. | • Kem ốc quế giá từ 10.000 VNĐ. • Trà chanh, trà sữa giá từ 20.000 - 25.000 VNĐ. • Các chiến dịch âm nhạc và bộ nhận diện thương hiệu phủ sóng mạng xã hội (TikTok, Facebook). | Kết quả đầu ra: Sản phẩm ngon, rẻ, phục vụ siêu nhanh kết hợp với truyền thông mang tính giải trí cao. |
 
+---
+
 **Case 2: phân tích chiến lược Apple**
 
 ### a. So sánh hai cách xây dựng thông điệp
@@ -653,13 +655,14 @@ Dưới đây là bảng phân tích chiến lược của Mixue dựa trên mô
 
 ### c. Kết quả kinh doanh phản ánh sức mạnh của "bắt đầu từ Why"
 
+**Chỉ số**
 | Chỉ số | Ý nghĩa |
 |--------|----------|
 | Khách hàng xếp hàng qua đêm trước ngày mở bán iPhone mới | Quyết định mua được thúc đẩy bởi cảm xúc/niềm tin vào thương hiệu, không chờ đọc đánh giá thông số kỹ thuật |
 | Mức độ trung thành thương hiệu cao nhất ngành công nghệ (theo nhiều khảo sát thị trường) | Khách hàng tiếp tục mua sản phẩm mới của Apple dù giá cao hơn đối thủ có thông số tương đương |
 | Mở rộng thành công sang các ngành hàng khác (điện thoại, đồng hồ, tai nghe) | Khách hàng tin vào "Why" của Apple, không chỉ mua "What" (máy tính) — nên dễ dàng đón nhận sản phẩm mới ở ngành hàng khác |
 
-**Tóm lại**
+**Tổng kế ví dụ**
 | Nguyên tắc | Giải thích | Minh chứng từ Apple |
 |------------|-------------|------------------------|
 | **Bắt đầu bằng Why** | Xác định rõ niềm tin/mục đích trước khi nói về sản phẩm — Why phải chân thực, không phải khẩu hiệu marketing suông | "Thách thức hiện trạng, suy nghĩ khác biệt" được duy trì nhất quán qua nhiều thập kỷ, không chỉ là một chiến dịch quảng cáo |
@@ -667,14 +670,7 @@ Dưới đây là bảng phân tích chiến lược của Mixue dựa trên mô
 | **What là kết quả, không phải điểm khởi đầu** | Sản phẩm cụ thể chỉ nên xuất hiện sau khi đã xây dựng được sự đồng cảm với Why và độ tin cậy với How | Apple giới thiệu sản phẩm mới (iPhone, Apple Watch) bằng cách kể lại câu chuyện "tại sao", không mở đầu bằng bảng thông số |
 | **Nhất quán trên mọi điểm chạm** | Why cần được thể hiện xuyên suốt từ quảng cáo, thiết kế sản phẩm, cửa hàng, đến trải nghiệm hậu mãi | Apple Store, hộp sản phẩm, giao diện phần mềm đều theo cùng triết lý thiết kế tối giản, nhất quán với "Why" |
 
-**Case 3: so sánh 2 thương hiệu cùng ngành để thấy rõ sức mạnh của Why**
-
-| Tiêu chí | Thương hiệu A (chỉ giao tiếp What) | Thương hiệu B (giao tiếp từ Why) |
-|---|---|---|
-| Thông điệp chủ đạo | "Cà phê rang xay nguyên chất, giá tốt nhất thị trường" | "Chúng tôi tin nông dân Việt xứng đáng được trả công bằng cho từng hạt cà phê chất lượng" |
-| Phản ứng khách hàng | So sánh giá với quán khác trước khi mua | Sẵn sàng trả giá cao hơn vì cảm thấy đang ủng hộ một điều đúng đắn |
-| Nội dung mạng xã hội | Hình ảnh sản phẩm + giá + khuyến mãi | Câu chuyện về nông dân, hành trình hạt cà phê, hoạt động cộng đồng |
-| Khả năng giữ chân khách hàng khi có đối thủ giá rẻ hơn | Thấp — khách hàng dễ dàng chuyển sang nơi rẻ hơn | Cao — khách hàng trung thành vì đồng điệu giá trị, không chỉ vì giá |
+---
 
 ### 2.8.5. Bài học ứng dụng cho Content
 
@@ -713,12 +709,115 @@ Golden Circle không chỉ dùng để viết 1 bài định vị rồi thôi �
 
 ### 2.9. Nền kinh tế chú ý (Attention Economy) — Vì sao Content phải cạnh tranh khốc liệt
 
-Một người dùng trung bình tiếp xúc với hàng nghìn thông điệp quảng cáo/nội dung mỗi ngày, nhưng khả năng chú ý (attention) của con người là hữu hạn. Điều này tạo ra khái niệm "Attention Economy" — nơi sự chú ý của người dùng trở thành tài nguyên khan hiếm và có giá trị nhất mà mọi thương hiệu phải cạnh tranh để giành lấy.
+### 2.9.1. Attention Economy là gì?
 
-**Hệ quả đối với Content Marketer:**
-1. Nội dung phải tạo giá trị **ngay lập tức** (trong vài giây đầu) hoặc sẽ bị lướt qua.
-2. Số lượng nội dung không quan trọng bằng chất lượng và mức độ liên quan (relevance) đến đúng đối tượng.
-3. Cần liên tục đổi mới định dạng/cách kể chuyện để tránh "mù quảng cáo" (banner blindness) — hiện tượng người dùng vô thức bỏ qua nội dung có dạng thức quảng cáo quen thuộc.
+**Attention Economy** (Nền kinh tế chú ý) là khái niệm mô tả sự chú ý của con người như một **tài nguyên khan hiếm và có giá trị kinh tế**, tương tự tiền bạc hay thời gian. Thuật ngữ được nhà kinh tế học/tâm lý học **Herbert A. Simon** đặt nền tảng từ năm 1971 với nhận định: *"Trong một thế giới giàu thông tin, sự dư thừa thông tin tạo ra sự khan hiếm của thứ mà thông tin tiêu thụ — đó chính là sự chú ý của người tiếp nhận."*
+
+Trong thời đại số, khái niệm này trở nên cấp thiết vì:
+
+| Đặc điểm | Số liệu / Biểu hiện thực tế |
+|----------|------------------------------|
+| Lượng thông tin tăng theo cấp số nhân | Người dùng trung bình tiếp xúc hàng nghìn thông điệp quảng cáo/nội dung mỗi ngày trên đa kênh (social, search, email, OOH) |
+| Khả năng chú ý con người không đổi (hữu hạn) | Trí nhớ ngắn hạn và thời gian trong ngày là cố định, không thể mở rộng theo lượng nội dung |
+| Nền tảng số cạnh tranh trực tiếp cho từng giây chú ý | Thuật toán các platform (Facebook, TikTok, YouTube) được thiết kế để tối ưu "thời gian xem", biến sự chú ý thành hàng hoá có thể mua bán qua quảng cáo |
+| Chi phí thu hút chú ý ngày càng tăng (CPM/CPC leo thang) | Doanh nghiệp phải trả nhiều tiền hơn mỗi năm để có cùng lượng tiếp cận, do cung (nội dung) tăng nhanh hơn cầu (chú ý) |
+
+**Hệ quả:** Trong nền kinh tế chú ý, thương hiệu không còn cạnh tranh chỉ với đối thủ cùng ngành, mà cạnh tranh với **mọi nội dung khác** đang giành lấy vài giây chú ý của người dùng — từ video giải trí, tin tức, đến tin nhắn của người thân.
+
+### 2.9.2. Vì sao Golden Circle là lợi thế trong Attention Economy?
+
+Trong môi trường bị bão hòa thông tin, người dùng phát triển cơ chế tự vệ tâm lý gọi là **banner blindness** (mù quảng cáo) — vô thức bỏ qua bất kỳ nội dung nào có "dạng thức" giống quảng cáo bán hàng thông thường (What-first). Đây chính là điểm giao thoa quan trọng giữa Golden Circle và Attention Economy:
+
+| Vấn đề của Attention Economy | Cách Golden Circle giải quyết |
+|-------------------------------|----------------------------------|
+| Người dùng lướt qua nội dung trong 1-3 giây, không đủ thời gian xử lý lý trí (neocortex) | Thông điệp **Why-first** chạm trực tiếp vào hệ limbic (cảm xúc) — não bộ phản ứng cảm xúc *nhanh hơn* xử lý lý trí, nên "kịp" tạo ấn tượng trước khi bị lướt qua |
+| Nội dung dạng "bán hàng" (What-first) bị lọc bỏ vô thức (banner blindness) | Nội dung bắt đầu bằng câu chuyện/niềm tin (Why) không có "hình dạng" quảng cáo quen thuộc → vượt qua được cơ chế tự vệ tâm lý này |
+| Quá nhiều thương hiệu nói cùng một điều về What/How (tính năng, giá) | Why là yếu tố **khó sao chép nhất** — không đối thủ nào có cùng niềm tin/câu chuyện, tạo sự khác biệt thực sự giữa biển nội dung giống nhau |
+| Chi phí quảng cáo trả tiền (paid attention) ngày càng cao | Nội dung dựa trên Why tạo ra "chú ý tự nguyện" — người dùng chủ động tìm xem, chia sẻ (earned attention), giảm phụ thuộc vào ngân sách trả tiền |
+
+### 2.9.3. Ứng dụng thực tế: Ưu tiên nội dung theo Golden Circle để tối ưu chú ý
+
+| Nguyên tắc | Áp dụng cho Content trong Attention Economy |
+|------------|-----------------------------------------------|
+| **3 giây đầu quyết định** | Câu mở đầu/hình ảnh đầu tiên phải gợi Why (câu hỏi, niềm tin, mâu thuẫn cảm xúc) — không mở đầu bằng tên sản phẩm hay giá bán |
+| **Chất lượng & liên quan quan trọng hơn số lượng** | Một nội dung Why rõ ràng, đúng insight của đúng đối tượng, hiệu quả hơn nhiều bài đăng chung chung về What |
+| **Đa dạng hoá định dạng để tránh bị "lọc"** | Luân phiên giữa Hero Content (Why), Hub Content (How), Hygiene Content (What) — tránh lặp lại một khuôn mẫu khiến người dùng quen và bỏ qua |
+| **Xây "chú ý tự nguyện" thay vì chỉ mua chú ý** | Đầu tư dài hạn vào Why nhất quán giúp thương hiệu được chủ động tìm đến (organic), giảm áp lực chi phí quảng cáo trong dài hạn |
+
+> **Tóm lại:** Golden Circle không chỉ là mô hình truyền cảm hứng — trong bối cảnh Attention Economy, đây còn là **chiến lược sinh tồn**, giúp nội dung vượt qua cơ chế tự vệ tâm lý và sự bão hòa thông tin để thực sự giành được, và giữ được, sự chú ý của người dùng.
+
+---
+
+### 2.9.4. Chuyên sâu: Khoa học thần kinh về Attention trong quảng cáo thực tiễn
+
+*Tổng hợp và tham khảo từ bài viết ["Attention Economy: Áp dụng khoa học thần kinh vào Marketing thực tiễn"](https://www.brandsvietnam.com/congdong/topic/attention-economy-ap-dung-khoa-hoc-than-kinh-hoc-vao-marketing-thuc-tien) — Brands Vietnam, nguồn dữ liệu: Neurons, MGID, Lumen Research.*
+
+### 2.9.4.1. Attention là "chiếc vé vàng" quyết định hành vi mua hàng
+
+Theo nghiên cứu từ **Lumen Research**, chỉ **35%** quảng cáo kỹ thuật số thực sự được nhìn thấy (viewable), và trong số đó **91%** chỉ nhận được chú ý dưới 1 giây. Theo **Nielsen**, yếu tố sáng tạo (creative) của quảng cáo chiếm đến **90% hiệu quả chi tiêu** — nghĩa là targeting chính xác đến đâu cũng không cứu được một nội dung nhạt nhẽo.
+
+![Attention Economy - não bộ hình thành ký ức trong chưa đầy 1 giây](https://www.brandsvietnam.com/congdong/topic/attention-economy-ap-dung-khoa-hoc-than-kinh-hoc-vao-marketing-thuc-tien)
+*Bộ não chỉ cần chưa đến 1 giây để hình thành ký ức có thể đo lường được về nội dung trên di động — Nguồn: Neurons, qua Brands Vietnam*
+
+Ba chủ đề cốt lõi rút ra được:
+
+| Nhận định | Ý nghĩa |
+|-----------|----------|
+| Sự chú ý quyết định mua hàng | Attention là bước đầu tiên trong hành trình nhận biết → cân nhắc → hành động |
+| "Earned attention" tạo tác động thương hiệu lớn nhất | Chú ý tự nguyện (không ép buộc) hiệu quả hơn chú ý bị mua/ép bằng quảng cáo |
+| Creative chi phối ROI | Nội dung sáng tạo quan trọng hơn độ chính xác của targeting |
+
+### 2.9.4.2. 3 yếu tố thần kinh học điều khiển Attention (Salience — Relevance — Control)
+
+Não bộ dùng 3 bộ lọc để quyết định "chú ý cái gì, bỏ qua cái gì":
+
+| Yếu tố | Định nghĩa | Cơ chế thần kinh | Ứng dụng trong quảng cáo |
+|--------|-------------|---------------------|------------------------------|
+| **Salience** (độ nổi bật) | Cái gì đập vào mắt trước — màu sắc, độ tương phản, chuyển động | Hệ thị giác có đơn vị xử lý riêng cho màu sắc/tương phản/chuyển động, tự động "bắt" sự chú ý mà không cần nỗ lực có ý thức | Thiết kế ít thành phần, tập trung mạnh vào 1 đối tượng chính để dẫn ánh mắt |
+| **Relevance** (mức độ liên quan) | Nội dung có khớp với nhu cầu/cảm xúc hiện tại của người xem không | Kích thích liên quan kích hoạt phản ứng cảm xúc/nhận thức *trước khi* người xem nhận thức đầy đủ — giống phản xạ với tiếng động lớn | Quảng cáo đồ ăn hiệu quả hơn khi người xem đang đói; đúng thời điểm quan trọng hơn đúng thông điệp |
+| **Control** (mức độ chủ động) | Người xem chủ động tìm kiếm (top-down) hay bị tiếp cận thụ động | Chú ý chủ động vẫn dễ mất nếu nội dung phức tạp/lộn xộn | Dù chủ động hay thụ động, thông điệp vẫn phải rõ ràng, dễ hiểu, đúng lúc |
+
+![3 yếu tố Salience Relevance Control qua bản đồ nhiệt eye-tracking](https://www.brandsvietnam.com/congdong/topic/attention-economy-ap-dung-khoa-hoc-than-kinh-hoc-vao-marketing-thuc-tien)
+*Bản đồ nhiệt (heatmap) theo dõi chuyển động mắt cho thấy tác động kết hợp của Salience, Relevance và Control lên sự chú ý — Nguồn: Neurons, qua Brands Vietnam*
+
+**Vì sao Attention quan trọng:**
+
+| Vai trò của Attention | Diễn giải |
+|--------------------------|------------|
+| Tạo ra thay đổi hành vi | Chú ý → nhận biết → cân nhắc → hành động (click, mua hàng) |
+| Là đơn vị đo giá trị quảng cáo | Không ai chú ý = quảng cáo vô nghĩa; được nhớ = thành công |
+| Gắn liền với cảm xúc & ghi nhớ dài hạn | Creative tốt tạo cảm xúc → cảm xúc mã hoá thương hiệu vào trí nhớ dài hạn |
+
+### 2.9.4.3. 5 phát hiện khoa học then chốt về Attention trong quảng cáo
+
+| # | Phát hiện | Dữ liệu / Cơ chế | Hàm ý cho Content/Creative |
+|---|------------|----------------------|-------------------------------|
+| 1 | **Attention có tính toàn cầu** | Qua eye-tracking đa thị trường, 97% heatmap giữa nam và nữ trùng khớp; sản phẩm/logo/tiêu đề được xử lý theo cùng cơ chế bất kể văn hoá | Có thể áp dụng một chiến lược sáng tạo nhất quán trên nhiều quốc gia/thị trường |
+| 2 | **Khuôn mặt thu hút Attention mạnh mẽ** | Con người có xu hướng bẩm sinh chú ý đến gương mặt; gương mặt thân thiện tăng cảm giác tin cậy | Dùng gương mặt để tạo kết nối, nhưng tránh để người nổi tiếng lấn át sản phẩm — attention phải thuộc về sản phẩm |
+| 3 | **Tránh "Góc chết" (Corner of Death)** | Yếu tố đặt ở góc dưới-phải chỉ được 0-4% người xem nhìn thấy, dù có nhiều thời gian quan sát | Không đặt logo/CTA ở góc dưới-phải; ưu tiên vùng trên-trái, trung tâm, hoặc gần tiêu đề |
+| 4 | **Chiến lược 1 giây cho social media** | 200ms: 25% quảng cáo mobile đã được xem; 400ms: 67% đã tạo phản ứng cảm xúc/nhận thức; 1s: hơn 50% đã tạo ký ức đo lường được; trung bình 1 quảng cáo chỉ giữ chú ý 3,4 giây | Đưa yếu tố ấn tượng nhất lên ngay đầu — không "để dành" nội dung hay nhất đến cuối video/bài đăng |
+| 5 | **Băng thông chú ý hữu hạn** | Nội dung yêu cầu xử lý nhận thức cao (quá phức tạp/lộn xộn) khiến người dùng bỏ qua ngay | Tối giản hình ảnh, tập trung 1 thông điệp/CTA rõ ràng, dùng độ tương phản cao và hệ thống phân cấp thị giác rõ |
+
+![Corner of Death - vùng góc dưới phải ít được chú ý nhất](https://www.brandsvietnam.com/congdong/topic/attention-economy-ap-dung-khoa-hoc-than-kinh-hoc-vao-marketing-thuc-tien)
+*Các yếu tố nhận diện thương hiệu đặt ở "góc chết" (dưới-phải) hầu như không được chú ý — Nguồn: Neurons, qua Brands Vietnam*
+
+![Chiến lược 1 giây - bản đồ nhiệt chú ý theo thời gian](https://www.brandsvietnam.com/congdong/topic/attention-economy-ap-dung-khoa-hoc-than-kinh-hoc-vao-marketing-thuc-tien)
+*Bản đồ nhiệt cho thấy tiêu đề được chú ý mạnh trong 2 giây đầu, sau đó chú ý chuyển sang logo/hình ảnh minh hoạ — Nguồn: Neurons, qua Brands Vietnam*
+
+> **Lưu ý về hình ảnh:** Do trang Brands Vietnam áp dụng cơ chế chống truy cập tự động (HTTP 403 khi crawl), các ảnh trên được dẫn trực tiếp về bài viết gốc thay vì nhúng file ảnh độc lập. Để xem hình ảnh gốc (heatmap, minh hoạ Corner of Death, biểu đồ 1-giây...), vui lòng truy cập link bài viết ở đầu mục 7.
+
+### 2.9.4.4. Liên kết với Golden Circle: Attention khoa học + Why-first
+
+Kết hợp phát hiện khoa học thần kinh (mục 7) với mô hình Golden Circle (mục 1-6) cho ra nguyên tắc thực thi cụ thể:
+
+| Nguyên tắc Golden Circle | Nguyên tắc khoa học Attention | Cách kết hợp trong 1 nội dung |
+|-----------------------------|-----------------------------------|-----------------------------------|
+| Mở đầu bằng Why (niềm tin, câu chuyện) | Salience — phải đập vào mắt trong 200-400ms đầu | Hình ảnh/câu mở đầu thể hiện Why cần có độ tương phản cao, ít chi tiết gây nhiễu |
+| Why phải đúng insight khách hàng | Relevance — nội dung phải khớp đúng thời điểm/cảm xúc người xem | Chọn đúng bối cảnh phát hành nội dung Why (thời điểm, nền tảng, tâm trạng đối tượng) |
+| How là minh chứng, cần rõ ràng dễ hiểu | Băng thông chú ý hữu hạn — tránh nội dung phức tạp | Trình bày How bằng hình ảnh/video đơn giản, một thông điệp trọng tâm, không dồn nhiều ý |
+| What là điểm chốt, thường ở cuối phễu | Chiến lược 1 giây — đừng để điều tốt nhất ở cuối | What/CTA vẫn cần xuất hiện đủ sớm và đủ rõ để không bị bỏ lỡ trong 3,4 giây chú ý trung bình |
+| Nhất quán trên mọi điểm chạm | Attention có tính toàn cầu (Salience xử lý giống nhau) | Áp dụng cùng nguyên tắc bố cục/màu sắc thể hiện Why trên mọi thị trường, mọi kênh |
+
 
 ### 2.10. Lỗi thường gặp của người mới bắt đầu làm Content Marketing
 
