@@ -170,6 +170,9 @@ Doanh thu ($)
 | **Maturity** | 2015-2024 | iPhone 6S → 15 Pro: smartphone bão hòa, cải tiến incremental | Line extension (SE, Pro, Pro Max), trade-in programs, services (Apple One), ecosystem lock-in |
 | **Decline?** | Chưa | Doanh số ổn định/giảm nhẹ, nhưng REVENUE tăng nhờ ASP cao | Premium positioning, iPhone as platform (không chỉ device) |
 
+* Skimming price (định giá hớt váng) là chiến lược doanh nghiệp đặt giá bán ban đầu rất cao cho sản phẩm mới, sau đó giảm giá dần theo thời gian khi thị trường bão hòa hoặc có đối thủ cạnh tranh xuất hiện.
+* ASP là viết tắt của Average Selling Price (Giá bán trung bình).Đây là mức giá bình quân của một loại sản phẩm hoặc dịch vụ mà doanh nghiệp bán ra trong một khoảng thời gian nhất định. Công thức tính đơn giản là: ASP = Tổng doanh thu từ sản phẩm đó / Tổng số lượng sản phẩm bán ra.
+
 ### Chiến lược kéo dài Maturity
 
 Apple đang ở **Late Maturity** nhưng dùng 3 chiến lược để TRÁNH Decline:
