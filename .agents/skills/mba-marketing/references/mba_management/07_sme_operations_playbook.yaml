@@ -1,0 +1,48 @@
+schema: "ai_distilled_knowledge_module_v1"
+module_id: "MBA_MOD_07_SME_PLAYBOOK"
+domain: "DOM_MBA"
+title: "SME Zero-to-One Operational Architecture, Unit Economics, and Software Stacks"
+source_documents:
+  - "mba-quan-tri-doanh-nghiep/cong-cu-quan-tri-doanh-nghiep-sme.md"
+  - "mba-quan-tri-doanh-nghiep/quan-tri-doanh-nghiep-vua-va-nho.md"
+
+sme_survival_axioms_and_runway:
+  runway_equation: "Cash_Runway_Months = Current_Liquid_Cash_Reserves / Monthly_Net_Burn_Rate"
+  survival_thresholds:
+    fatal_zone: "< 3 months runway -> Immediate hiring freeze, renegotiate supplier credit terms, discount inventory."
+    caution_zone: "3 to 6 months runway -> Strict operational expense controls; postpone capital investments."
+    safe_zone: ">= 6 months runway -> Stable baseline for measured growth experiments."
+  cost_structure_flexibility_rule: "Convert fixed overhead into variable costs wherever feasible (e.g. revenue-share commercial leases, outsourced fulfillment, contractor-based specialized creative labor)."
+
+vertical_unit_economics_benchmarks:
+  coffee_shop_and_cafe:
+    prime_cost_threshold: "COGS + Direct Labor MUST remain < 55% of Gross Revenue."
+    cogs_ratio: "20% - 28% of revenue (Coffee beans, milk, syrups, cups/straws)."
+    labor_cost_ratio: "18% - 25% of revenue (Baristas, service staff, shift supervisors)."
+    occupancy_rent_ratio: "10% - 15% of revenue (Maximum sustainable rent ceiling)."
+    key_operational_metric: "Table Turnover Rate & Peak Hour Order Throughput (Cups per hour)."
+  full_service_restaurant:
+    food_cost_cogs: "28% - 35% of revenue (Requires daily inventory spoilage logs)."
+    kitchen_ticket_sla: "Appetizers <= 8 minutes; Main entrees <= 15 minutes."
+    delivery_platform_economics: "Aggregator commissions (GrabFood/ShopeeFood: 20-25%) require custom markup menu pricing to prevent negative gross margin per delivery order."
+  ecommerce_and_online_retail:
+    marketing_ad_spend_ratio: "< 20% - 25% of Net GMV (Blended CAC across organic and paid)."
+    return_and_cancel_rate: "COD failure threshold must be kept < 8% (requires automated telephone/SMS address verification)."
+    inventory_turnover_velocity: "Inventory holding days target <= 45 days to avoid working capital stagnation."
+
+vietnamese_sme_software_stack_matrix:
+  accounting_and_tax_compliance:
+    misa_amis: "Standard for Vietnam VAS accounting, direct tax e-invoice integration, automated bank reconciliation (2-5M VND/yr)."
+    fast_accounting: "Best for light manufacturing, multi-warehouse inventory, and construction job-costing."
+    quickbooks_online: "Best for cross-border e-commerce, multi-currency PayPal/Stripe reconciliation."
+  pos_and_omnichannel_retail:
+    ipos_vn: "Dominant standard for F&B, table map routing, kitchen display systems (KDS), ingredient BOM auto-deduction."
+    kiotviet: "Fastest deployment for general retail, apparel, cosmetics, wholesale (simple, reliable, offline-ready)."
+    sapo_haravan: "Comprehensive omnichannel sync across Shopee, TikTok Shop, Lazada, and physical stores."
+  human_resource_and_payroll:
+    base_hrm: "Modular enterprise-grade HRM, automated shift scheduling, dynamic KPI and OKR tracking (50-100k/employee/mo)."
+    1office: "Unified all-in-one suite combining HRM, project management, and internal approval workflows."
+  internal_communication_and_wiki:
+    lark_suite: "Zero-cost high-efficiency alternative: unlimited chat, docs, base databases, video meetings, and approval flows."
+    notion: "Standard for SOP wikis, onboarding playbooks, and brand knowledge repos."
+    zalo_oa_and_groups: "Universal frontline operational communication with non-desk shift workers in Vietnam."

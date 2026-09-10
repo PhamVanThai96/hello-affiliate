@@ -1,0 +1,81 @@
+schema: "ai_distilled_knowledge_module_v1"
+module_id: "CM_MOD_04_SEO_GEO_DISTRIBUTION"
+domain: "DOM_CM"
+title: "SEO, GEO (Generative Engine Optimization), and Content Repurposing Engine"
+source_documents:
+  - "content-frame/04-MODULE-4-SEO-PHAN-PHOI-NOI-DUNG.md"
+  - "course-docs/03-PHAN-3-KENH-PHAN-PHOI-DO-LUONG.md"
+
+search_intent_taxonomy:
+  informational:
+    query_syntax: ["how to", "what is", "guide", "tutorial", "cách làm"]
+    funnel_stage: "TOFU"
+    asset_response: "In-depth guides, step-by-step tutorials, glossary definitions."
+  commercial_investigation:
+    query_syntax: ["best", "vs", "comparison", "review", "đánh giá", "so sánh"]
+    funnel_stage: "MOFU"
+    asset_response: "Comparison matrices, pros/cons breakdown, benchmark reports."
+  transactional:
+    query_syntax: ["buy", "price", "discount", "order", "báo giá", "mua ở đâu"]
+    funnel_stage: "BOFU"
+    asset_response: "Landing pages, transparent pricing tables, checkout offers."
+  navigational:
+    query_syntax: ["brand login", "brand app", "chính thức"]
+    asset_response: "Homepage, portal login, verified official profiles."
+
+on_page_seo_and_eeat_standards:
+  on_page_specs:
+    title_tag: "Max 60 characters; keyword placed in first 3 words; includes emotional or numeric trigger."
+    meta_description: "Max 155 characters; encapsulates value proposition; ends with explicit CTA."
+    url_slug: "Short, lowercase, hyphen-separated, contains target keyword, zero stop words."
+    heading_hierarchy: "Single H1; logical H2 sections; H3 sub-points; no skipped heading levels."
+    internal_linking: "Minimum 3 links pointing to related cluster pages; exact/partial match anchor text."
+    keyword_density: "Natural semantic placement (1.0% - 1.8%); zero keyword stuffing."
+  eeat_verification_checklist:
+    experience: "Original photos, real-world case studies, first-person validation logs."
+    expertise: "Author bio detailing educational and industry credentials."
+    authoritativeness: "Backlinks from recognized trade publications; citations in industry papers."
+    trustworthiness: "HTTPS, transparent editorial policy, clear contact details, fact-checked citations."
+
+generative_engine_optimization_geo:
+  definition: "Technical and semantic structuring of content to maximize probability of citation and inclusion in LLM-synthesized responses (ChatGPT, Perplexity, Gemini, Google AI Overviews)."
+  algorithmic_optimization_levers:
+    concise_answer_capsule: "Provide direct, unambiguous 35-50 word answer immediately beneath target H2 query."
+    structured_markdown_tables: "Format comparison specs and quantitative metrics in clean markdown tables (LLM scrapers extract tables with high priority)."
+    entity_co_occurrence: "Embed authoritative co-occurring entities, academic theories, and standardized terminology."
+    statistical_quotability: "Include precise percentage metrics, dates, and named studies rather than vague generalizations."
+    schema_markup: "Implement JSON-LD Article, FAQPage, HowTo, and Person schema."
+
+content_repurposing_1_to_10_matrix:
+  root_asset: "1 Deep-Dive Pillar Research Report or 45-minute Webinar"
+  atomic_derivatives:
+    - asset: "3 Short-Form Videos (Reels/TikTok)"
+      adaptation: "Extract 3 punchiest micro-insights with visual hooks."
+    - asset: "1 Comprehensive Blog Post"
+      adaptation: "Full transcription structured into SEO-optimized H2/H3 layout."
+    - asset: "1 Visual Infographic / Workflow"
+      adaptation: "Compress core framework into a 1-page high-resolution PNG diagram."
+    - asset: "1 LinkedIn / FB PDF Carousel"
+      adaptation: "Extract 7-10 slide visual breakdown with swipe progression."
+    - asset: "1 Dedicated Email Newsletter"
+      adaptation: "Curate key takeaway with personal commentary and link to full report."
+    - asset: "5 Micro-Post Quote Cards / Threads"
+      adaptation: "Isolated contrarian axioms for Twitter/Threads/Social feeds."
+
+influencer_and_kol_koc_tiering_framework:
+  nano_influencers:
+    follower_range: "1,000 - 10,000"
+    engagement_rate: "5% - 10%"
+    strategic_fit: "Hyper-local community trust, niche seeding, highly cost-efficient."
+  micro_influencers:
+    follower_range: "10,000 - 100,000"
+    engagement_rate: "3% - 5%"
+    strategic_fit: "Optimal balance of reach and conversion; domain expert authority."
+  macro_influencers:
+    follower_range: "100,000 - 1,000,000"
+    engagement_rate: "1.5% - 3%"
+    strategic_fit: "Broad demographic reach, brand prestige, top-of-funnel consideration."
+  mega_influencers_celebrities:
+    follower_range: "> 1,000,000"
+    engagement_rate: "< 1.5%"
+    strategic_fit: "Mass cultural awareness, television-scale amplification, high cost per conversion."

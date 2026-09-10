@@ -1,0 +1,186 @@
+{
+  "system": "AI_QUANTITATIVE_FORMULARY",
+  "version": "1.0.0",
+  "description": "Exhaustive repository of mathematical equations, input variables, benchmarks, and interpretation logic for marketing analytics and financial/operational management.",
+  "formulas": {
+    "marketing_and_unit_economics": [
+      {
+        "id": "FORMULA_CLV_COHORT",
+        "name": "Customer Lifetime Value (Steady Retention)",
+        "domain": "Marketing / Unit Economics",
+        "equation": "CLV = (ARPU * Gross_Margin_Pct) / Churn_Rate",
+        "variables": {
+          "ARPU": {"unit": "VND or USD / month", "description": "Average Revenue Per User"},
+          "Gross_Margin_Pct": {"unit": "decimal (0.0 to 1.0)", "description": "(Revenue - COGS) / Revenue"},
+          "Churn_Rate": {"unit": "decimal (0.0 to 1.0)", "description": "Lost customers in period / Total customers at start"}
+        },
+        "benchmark": "CLV / CAC >= 3.0 (Viable SaaS/E-commerce); CLV / CAC < 1.0 (Value Destruction)",
+        "interpretation": "Quantifies upper limit of allowable marketing acquisition spend per customer."
+      },
+      {
+        "id": "FORMULA_CAC",
+        "name": "Customer Acquisition Cost",
+        "domain": "Marketing / Finance",
+        "equation": "CAC = (Total_Sales_Expenses + Total_Marketing_Expenses) / New_Customers_Acquired",
+        "variables": {
+          "Total_Sales_Expenses": {"unit": "Currency", "description": "Sales commissions, salaries, CRM tools"},
+          "Total_Marketing_Expenses": {"unit": "Currency", "description": "Ad spend, agency fees, content production costs"},
+          "New_Customers_Acquired": {"unit": "Integer", "description": "Distinct first-time paying buyers"}
+        },
+        "benchmark": "Payback Period = CAC / (ARPU * Margin) <= 12 months (Optimal)"
+      },
+      {
+        "id": "FORMULA_CONTENT_ROI",
+        "name": "Content Marketing Return on Investment",
+        "domain": "Marketing Analytics",
+        "equation": "ROI_Content = ((Attributed_Gross_Profit - Content_Production_Costs) / Content_Production_Costs) * 100",
+        "variables": {
+          "Attributed_Gross_Profit": {"unit": "Currency", "description": "Revenue attributed to content * Gross Margin %"},
+          "Content_Production_Costs": {"unit": "Currency", "description": "Writer fees, video production, graphic design, distribution tech"}
+        },
+        "benchmark": "Organic SEO content typically achieves 250% - 600% ROI over 18-month lifecycle."
+      },
+      {
+        "id": "FORMULA_VIDEO_COMPOSITE_SCORE",
+        "name": "Short-Form Video Quality Composite Score (Module 3)",
+        "domain": "Social Video Analytics",
+        "equation": "Composite_Score = (0.35 * S_Engage) + (0.10 * S_Growth) + (0.55 * S_Retention_Quality)",
+        "variables": {
+          "S_Engage": {"unit": "Scale 0-100", "description": "Weighted Likes, Comments, Shares, Saves against Views"},
+          "S_Growth": {"unit": "Scale 0-100", "description": "Profile visits and Follow conversion rate per 10k views"},
+          "S_Retention_Quality": {"unit": "Scale 0-100", "description": "3-second view rate, Completion Rate, Average Watch Duration"}
+        },
+        "benchmark": "Score >= 80 (Viral/Outperforming); Score 60-79 (Standard); Score < 50 (Revise Hook & Pacing)"
+      }
+    ],
+    "corporate_finance": [
+      {
+        "id": "FORMULA_WACC",
+        "name": "Weighted Average Cost of Capital",
+        "domain": "Corporate Finance",
+        "equation": "WACC = (E / V) * Ke + (D / V) * Kd * (1 - Tc)",
+        "variables": {
+          "E": {"unit": "Currency", "description": "Market Value of Equity"},
+          "D": {"unit": "Currency", "description": "Market Value of Debt"},
+          "V": {"unit": "Currency", "description": "Total Enterprise Capital (E + D)"},
+          "Ke": {"unit": "Percentage decimal", "description": "Cost of Equity (via CAPM)"},
+          "Kd": {"unit": "Percentage decimal", "description": "Pre-tax Cost of Debt"},
+          "Tc": {"unit": "Percentage decimal", "description": "Corporate Income Tax Rate (e.g., 0.20 in Vietnam)"}
+        },
+        "benchmark": "Serves as discount hurdle rate for capital budgeting (NPV/IRR)."
+      },
+      {
+        "id": "FORMULA_CAPM",
+        "name": "Capital Asset Pricing Model",
+        "domain": "Corporate Finance",
+        "equation": "Ke = Rf + Beta * (Rm - Rf)",
+        "variables": {
+          "Rf": {"unit": "Percentage decimal", "description": "Risk-Free Rate (e.g., 10-year Government Bond yield)"},
+          "Beta": {"unit": "Coefficient", "description": "Systematic market volatility risk of the asset"},
+          "Rm": {"unit": "Percentage decimal", "description": "Expected Market Return"},
+          "Rm - Rf": {"unit": "Percentage decimal", "description": "Market Equity Risk Premium (ERP)"}
+        }
+      },
+      {
+        "id": "FORMULA_NPV",
+        "name": "Net Present Value",
+        "domain": "Capital Budgeting",
+        "equation": "NPV = Sum(CF_t / (1 + r)^t) - CF_0",
+        "variables": {
+          "CF_t": {"unit": "Currency", "description": "Net Cash Flow at year t"},
+          "r": {"unit": "Percentage decimal", "description": "Discount rate / WACC"},
+          "CF_0": {"unit": "Currency", "description": "Initial Capital Expenditure (Capex)"},
+          "t": {"unit": "Integer", "description": "Time period (1 to n)"}
+        },
+        "benchmark": "NPV > 0 -> Accept project; NPV < 0 -> Reject project"
+      },
+      {
+        "id": "FORMULA_CCC",
+        "name": "Cash Conversion Cycle",
+        "domain": "Working Capital Management",
+        "equation": "CCC = DIO + DSO - DPO",
+        "variables": {
+          "DIO": {"unit": "Days", "description": "Days Inventory Outstanding = (Average Inventory / COGS) * 365"},
+          "DSO": {"unit": "Days", "description": "Days Sales Outstanding = (Accounts Receivable / Total Credit Sales) * 365"},
+          "DPO": {"unit": "Days", "description": "Days Payable Outstanding = (Accounts Payable / Cost of Goods Sold) * 365"}
+        },
+        "benchmark": "Negative CCC means operations funded entirely by vendor float (e.g., Mixue, Walmart, Apple)."
+      },
+      {
+        "id": "FORMULA_DCF_VALUATION",
+        "name": "Discounted Cash Flow Multi-Stage Enterprise Valuation",
+        "domain": "Valuation",
+        "equation": "EV = Sum_{t=1}^n [ FCFF_t / (1 + WACC)^t ] + [ (FCFF_{n+1} / (WACC - g)) / (1 + WACC)^n ]",
+        "variables": {
+          "FCFF_t": {"unit": "Currency", "description": "Free Cash Flow to Firm = EBIT*(1-T) + D&A - Capex - Delta_NWC"},
+          "g": {"unit": "Percentage decimal", "description": "Perpetual terminal growth rate (typically <= GDP growth rate)"},
+          "n": {"unit": "Years", "description": "Discrete forecast projection period (typically 5-10 years)"}
+        }
+      }
+    ],
+    "managerial_accounting_and_control": [
+      {
+        "id": "FORMULA_BEP_UNITS",
+        "name": "Break-Even Point in Units",
+        "domain": "Managerial Accounting (CVP)",
+        "equation": "BEP_Q = Fixed_Costs / (Unit_Selling_Price - Unit_Variable_Cost)",
+        "variables": {
+          "Fixed_Costs": {"unit": "Currency", "description": "Rent, permanent salaries, depreciation, baseline overhead"},
+          "Unit_Selling_Price": {"unit": "Currency", "description": "Selling price per unit (P)"},
+          "Unit_Variable_Cost": {"unit": "Currency", "description": "Direct materials, direct packaging, sales commission per unit (VC)"}
+        },
+        "benchmark": "Safety Margin = (Current Sales - BEP Sales) / Current Sales >= 20% (Low Risk)"
+      },
+      {
+        "id": "FORMULA_DUPONT_3_WAY",
+        "name": "DuPont Return on Equity 3-Way Decomposition",
+        "domain": "Financial Analysis",
+        "equation": "ROE = Net_Profit_Margin * Asset_Turnover * Financial_Leverage",
+        "variables": {
+          "Net_Profit_Margin": {"unit": "Ratio", "description": "Net Income / Revenue (Operating Profitability)"},
+          "Asset_Turnover": {"unit": "Ratio", "description": "Revenue / Total Assets (Asset Efficiency)"},
+          "Financial_Leverage": {"unit": "Ratio", "description": "Total Assets / Total Equity (Capital Structure multiplier)"}
+        },
+        "diagnostic_utility": "Pinpoints whether ROE improvement is driven by operational efficiency, sales velocity, or high debt risk."
+      }
+    ],
+    "operations_research_and_supply_chain": [
+      {
+        "id": "FORMULA_LITTLES_LAW",
+        "name": "Little's Law of Process Physics",
+        "domain": "Operations Management",
+        "equation": "WIP = Throughput * Flow_Time",
+        "variables": {
+          "WIP": {"unit": "Units / Items", "description": "Work In Progress in the system"},
+          "Throughput": {"unit": "Units / Time unit", "description": "Average departure rate / production rate"},
+          "Flow_Time": {"unit": "Time units", "description": "Total lead time from entry to exit"}
+        },
+        "implication": "To reduce delivery time without lowering output, the system MUST aggressively cap WIP."
+      },
+      {
+        "id": "FORMULA_EOQ",
+        "name": "Economic Order Quantity (Wilson Formula)",
+        "domain": "Inventory Management",
+        "equation": "EOQ = sqrt((2 * Demand_Annual * Setup_Cost_Per_Order) / Holding_Cost_Per_Unit_Year)",
+        "variables": {
+          "Demand_Annual": {"unit": "Units / year", "description": "Total annual product demand (D)"},
+          "Setup_Cost_Per_Order": {"unit": "Currency / order", "description": "Fixed administrative and freight ordering cost (S)"},
+          "Holding_Cost_Per_Unit_Year": {"unit": "Currency / unit / year", "description": "Warehousing, spoilage, capital cost (H)"}
+        },
+        "benchmark": "Minimizes Total Annual Inventory Cost (Ordering Cost + Holding Cost)."
+      },
+      {
+        "id": "FORMULA_PERT_EXPECTED_TIME",
+        "name": "PERT Three-Point Project Duration Estimation",
+        "domain": "Project Management",
+        "equation": "T_e = (O + 4*M + P) / 6; Var = ((P - O) / 6)^2",
+        "variables": {
+          "O": {"unit": "Time units", "description": "Optimistic duration"},
+          "M": {"unit": "Time units", "description": "Most likely duration"},
+          "P": {"unit": "Time units", "description": "Pessimistic duration"}
+        },
+        "application": "Enables probabilistic critical path analysis (Z-score for project deadline compliance)."
+      }
+    ]
+  }
+}

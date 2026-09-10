@@ -1,0 +1,65 @@
+schema: "ai_distilled_knowledge_module_v1"
+module_id: "MBA_MOD_03_FINANCE"
+domain: "DOM_MBA"
+title: "Corporate Financial Management, Valuation Engineering, and Capital Allocation"
+source_documents:
+  - "mba-quan-tri-doanh-nghiep/3-financial-management/01-time-value-of-money.md"
+  - "mba-quan-tri-doanh-nghiep/3-financial-management/02-capital-budgeting.md"
+  - "mba-quan-tri-doanh-nghiep/3-financial-management/03-cost-of-capital.md"
+  - "mba-quan-tri-doanh-nghiep/3-financial-management/04-capital-structure.md"
+  - "mba-quan-tri-doanh-nghiep/3-financial-management/06-working-capital-management.md"
+  - "mba-quan-tri-doanh-nghiep/3-financial-management/10-corporate-valuation.md"
+  - "mba-quan-tri-doanh-nghiep/3-financial-management/11-integrated-corporate-finance-guide.md"
+
+capital_budgeting_decision_framework:
+  net_present_value_npv:
+    nature: "Sum of discounted incremental cash flows minus initial investment outlay."
+    decision_rule: "Accept if NPV > 0; Choose highest NPV among mutually exclusive projects."
+    superiority_rationale: "Assumes cash flows are reinvested at cost of capital (realistic), directly measures shareholder wealth creation."
+  internal_rate_of_return_irr:
+    nature: "Discount rate where project NPV equals exactly zero."
+    decision_rule: "Accept if IRR > Hurdle Rate (WACC)."
+    flaws_and_pitfalls:
+      - "Reinvestment rate assumption flaw (assumes reinvestment at IRR, which artificially inflates returns)."
+      - "Multiple IRRs or no real IRR when cash flow signs flip more than once (Unconventional cash flows)."
+      - "Scale insensitivity (A 100% IRR on $10 project is inferior to a 25% IRR on a $1,000,000 project)."
+  profitability_index_pi:
+    formula: "PI = PV of Future Cash Flows / Initial Capex"
+    application: "Primary tool under strict Capital Rationing constraints (rank projects by PI)."
+
+cost_of_capital_mechanics:
+  wacc_equation: "WACC = (E/V)*Ke + (D/V)*Kd*(1 - Tc)"
+  components:
+    cost_of_equity_capm: "Ke = Rf + Beta * (Rm - Rf)"
+    cost_of_debt_after_tax: "Kd_net = Pre_tax_Kd * (1 - Corporate_Tax_Rate)"
+  beta_risk_adjustments:
+    asset_unlevered_beta: "Beta_Unlevered = Beta_Levered / [1 + (1 - Tc) * (Debt / Equity)]"
+    project_specific_wacc: "High-risk experimental divisions must use risk-adjusted hurdle rates higher than corporate average WACC."
+
+capital_structure_theories:
+  modigliani_miller_propositions:
+    without_taxes: "Firm value is completely independent of capital structure (V_L = V_U)."
+    with_corporate_taxes: "Value of Levered Firm = Value of Unlevered Firm + (Tax_Rate * Debt). Debt tax shield maximizes value at 100% debt."
+  trade_off_theory:
+    equilibrium: "Optimal capital structure balances debt tax shield benefits against the present value of bankruptcy and financial distress costs."
+  pecking_order_theory:
+    hierarchy_due_to_asymmetric_info:
+      1_internal_funds: "Retained earnings (Zero transaction costs, no negative signaling)."
+      2_debt: "Bank borrowing, corporate bonds (Modest signaling, contractual obligations)."
+      3_equity_issuance: "New share issuance (Last resort; market perceives equity issue as signal that stock is overvalued)."
+
+working_capital_and_cash_conversion_cycle:
+  ccc_equation: "CCC = Days_Inventory_Outstanding (DIO) + Days_Sales_Outstanding (DSO) - Days_Payable_Outstanding (DPO)"
+  working_capital_strategies:
+    aggressive_strategy: "Finances seasonal and portion of permanent current assets with short-term debt; minimizes cash buffer; maximizes ROE but exposes firm to refinancing and liquidity shocks."
+    conservative_strategy: "Finances all fixed and permanent current assets + seasonal needs with long-term capital; high cash buffers; low risk but depressed ROE."
+    negative_ccc_model: "DPO exceeds (DIO + DSO). Suppliers finance business growth (e.g. Amazon, Mixue, 7-Eleven). Generates interest-free operational working capital."
+
+corporate_valuation_methodologies:
+  discounted_cash_flow_dcf:
+    formula: "Enterprise Value = PV(Forecasted FCFF for 5-10 yrs) + PV(Terminal Value)"
+    free_cash_flow_to_firm: "FCFF = EBIT*(1 - Tc) + D&A - Capex - Change_in_NWC"
+    terminal_value_gordon_growth: "TV_n = [ FCFF_{n+1} ] / (WACC - g)"
+  multiples_comparable_valuation:
+    enterprise_multiples: "EV / EBITDA (capital structure neutral), EV / Sales (useful for pre-profit high growth)."
+    equity_multiples: "Price / Earnings (P/E), Price / Book (P/B)."

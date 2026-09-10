@@ -1,0 +1,83 @@
+schema: "ai_distilled_knowledge_module_v1"
+module_id: "MBA_MOD_01_STRATEGY"
+domain: "DOM_MBA"
+title: "Corporate Strategic Management, Competitive Dynamics, and Business Modeling"
+source_documents:
+  - "mba-quan-tri-doanh-nghiep/1-strategic-management/01-phan-tich-moi-truong-ben-ngoai.md"
+  - "mba-quan-tri-doanh-nghiep/1-strategic-management/02-phan-tich-noi-bo.md"
+  - "mba-quan-tri-doanh-nghiep/1-strategic-management/03-chien-luoc-canh-tranh.md"
+  - "mba-quan-tri-doanh-nghiep/1-strategic-management/04-chien-luoc-tang-truong.md"
+  - "mba-quan-tri-doanh-nghiep/1-strategic-management/05-blue-ocean.md"
+  - "mba-quan-tri-doanh-nghiep/1-strategic-management/06-balanced-score-card.md"
+  - "mba-quan-tri-doanh-nghiep/1-strategic-management/07-scenario-planning.md"
+
+macro_environmental_analysis_pestel:
+  dimensions:
+    political: "Government policies, tax incentives, geopolitical risks, trade barriers."
+    economic: "GDP growth, inflation rate, interest rates, currency exchange fluctuations."
+    social: "Demographic shifts, consumer lifestyles, urbanization, cultural attitudes."
+    technological: "AI automation, digital infrastructure, R&D intensity, tech disruption."
+    environmental: "Climate policies, ESG compliance, sustainability mandates, carbon taxes."
+    legal: "Labor laws, consumer protection regulations, IP laws, antimonopoly statutes."
+  operational_heuristic: "Identify macro 'Driving Forces' that create structural industry headwinds or tailwinds."
+
+industry_structure_porter_5_forces:
+  threat_of_new_entrants:
+    barriers: ["Economies of Scale", "Capital Requirements", "Customer Switching Costs", "Access to Distribution Channels", "Proprietary Tech"]
+  bargaining_power_of_suppliers:
+    high_power_conditions: ["Supplier concentration > Industry concentration", "High switching costs to alternative inputs", "Absence of viable substitutes"]
+  bargaining_power_of_buyers:
+    high_power_conditions: ["Purchases large volume relative to seller sales", "Products are standardized/commoditized", "Low buyer switching costs"]
+  threat_of_substitute_products:
+    evaluation: "Relative price-to-performance ratio of substitutes and customer propensity to substitute."
+  intensity_of_competitive_rivalry:
+    drivers: ["Numerous or equally balanced competitors", "Slow industry growth", "High fixed costs", "High exit barriers"]
+
+internal_capability_vrio_framework:
+  evaluation_matrix:
+    valuable_no: "Competitive Disadvantage (Below normal returns)"
+    valuable_yes_rare_no: "Competitive Parity (Average industry returns)"
+    valuable_yes_rare_yes_inimitable_no: "Temporary Competitive Advantage (Decays in 6-18 months)"
+    valuable_yes_rare_yes_inimitable_yes_organized_yes: "Sustained Competitive Advantage (Above industry normal returns)"
+  sources_of_inimitability: ["Historical Unique Conditions", "Causal Ambiguity", "Social Complexity", "Patents / Legal IP"]
+
+porter_generic_strategies:
+  cost_leadership:
+    strategic_thrust: "Lowest operational cost in industry via scale, lean processes, and supply chain leverage."
+    risk: "Technological change nullifies past investments; price war erodes margins."
+  differentiation:
+    strategic_thrust: "Unique perceived value across quality, brand, customer service, or features allowing price premium."
+    risk: "Cost differential between low-cost competitors and differentiated firm becomes too large."
+  focus_strategies:
+    cost_focus: "Cost advantage in a narrow market niche."
+    differentiation_focus: "Highly tailored unique value for a specialized customer segment."
+  stuck_in_the_middle:
+    warning: "Failing to achieve either low cost or meaningful differentiation yields below-average profitability."
+
+growth_and_portfolio_engines:
+  ansoff_matrix:
+    market_penetration: "Existing Products in Existing Markets (Lowest risk; share capture)."
+    market_development: "Existing Products in New Markets (Geographic expansion, new demographics)."
+    product_development: "New Products in Existing Markets (Leveraging customer relationship & brand equity)."
+    diversification: "New Products in New Markets (Highest operational and financial risk)."
+  bcg_growth_share_matrix:
+    cash_cows: "High Market Share, Low Market Growth -> Milk cash to fund Stars and select Question Marks."
+    stars: "High Market Share, High Market Growth -> Invest aggressively to defend market dominance."
+    question_marks: "Low Market Share, High Market Growth -> Heavy cash drain; decide whether to invest to Star or divest."
+    dogs: "Low Market Share, Low Market Growth -> Liquidate, harvest, or divest."
+
+blue_ocean_strategy_and_errc_grid:
+  core_axiom: "Value Innovation = Simultaneously driving down costs while driving up buyer value."
+  errc_actions:
+    eliminate: "Which factors taken for granted by industry should be eliminated completely?"
+    reduce: "Which factors should be reduced well below industry standards?"
+    raise: "Which factors should be raised well above industry standards?"
+    create: "Which entirely new factors never offered by the industry should be created?"
+  output: "Strategy Canvas Value Curve that diverges sharply from the industry average."
+
+balanced_scorecard_bsc_execution:
+  four_perspectives_causality:
+    1_learning_and_growth: "Human capital, leadership, culture, tech infrastructure (Foundation)."
+    2_internal_business_processes: "Operational excellence, innovation, customer management (Drives quality & speed)."
+    3_customer_perspective: "Customer satisfaction, retention, market share, Net Promoter Score (Value perceived)."
+    4_financial_perspective: "Revenue growth, ROE, ROIC, operating margin, cash flow (Ultimate outcome)."

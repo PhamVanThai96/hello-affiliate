@@ -1,0 +1,80 @@
+schema: "ai_distilled_knowledge_module_v1"
+module_id: "MBA_MOD_02_MARKETING"
+domain: "DOM_MBA"
+title: "Marketing Management, STP Engine, Pricing Models, and Consumer Decision Science"
+source_documents:
+  - "mba-quan-tri-doanh-nghiep/2-marketing-management/01-stp-segmentation-targeting-positioning.md"
+  - "mba-quan-tri-doanh-nghiep/2-marketing-management/02-marketing-mix-4p-7p.md"
+  - "mba-quan-tri-doanh-nghiep/2-marketing-management/03-customer-life-time-value.md"
+  - "mba-quan-tri-doanh-nghiep/2-marketing-management/04-brand-management.md"
+  - "mba-quan-tri-doanh-nghiep/2-marketing-management/05-digital-marketing-growth-hacking.md"
+  - "mba-quan-tri-doanh-nghiep/2-marketing-management/06-consumer-behavior.md"
+  - "mba-quan-tri-doanh-nghiep/2-marketing-management/10-pricing-strategies.md"
+
+stp_strategic_engine:
+  segmentation:
+    bases: ["Geographic", "Demographic", "Psychographic (Values/Lifestyles)", "Behavioral (Usage rate, Loyalty status, Benefits sought)"]
+    segment_viability_criteria:
+      measurable: "Size, purchasing power, and profile characteristics can be quantified."
+      accessible: "Segment can be effectively reached and served via existing marketing channels."
+      substantial: "Segment is large and profitable enough to justify custom marketing investments."
+      differentiable: "Conceptually distinguishable and responds differently to marketing mix elements."
+      actionable: "Effective programs can be designed for attracting and serving the segments."
+  targeting_strategies:
+    undifferentiated: "Mass market approach ignoring segment differences (Standard commodities)."
+    differentiated: "Targeting multiple distinct segments with customized offerings (e.g., Toyota/Lexus)."
+    concentrated_niche: "Focusing dominant resources on one specific underserved submarket."
+    micromarketing: "Hyper-customization at individual or local postal code level."
+  positioning_formula:
+    canonical_syntax: "For [Target Customer Segment], who [Specific Need/Problem], our [Brand/Product] is a [Product Category] that [Core Benefit / Differentiator], unlike [Primary Competitor], because [Reason to Believe / Proof Points]."
+
+marketing_mix_paradigms:
+  goods_4p: ["Product (Design, Quality, Features)", "Price (List, Discounts, Credit)", "Place (Channels, Coverage, Logistics)", "Promotion (Ads, PR, Content, Sales Promo)"]
+  services_extended_7p:
+    people: "Selection, training, and customer-facing service culture of staff."
+    process: "Service blueprinting, customer journey flow, queue management."
+    physical_evidence: "Store design, ambient smells/lighting, digital UI/UX, packaging."
+  digital_4c_translation:
+    customer_solution: "Replacing generic Product with solved problems and tailored value."
+    cost_to_customer: "Total cost of ownership including switching frictions and search time."
+    convenience: "Frictionless digital/physical omnichannel buying anytime, anywhere."
+    communication: "Two-way social dialogue and community co-creation replacing 1-way promo."
+
+pricing_strategies_taxonomy:
+  1_value_based: "Price set according to perceived value extracted by customer, independent of cost."
+  2_cost_plus: "Unit cost + fixed markup percentage (Ensures baseline margin, ignores demand elasticity)."
+  3_price_skimming: "High initial entry price targeting early adopters, subsequently lowered to capture mass."
+  4_penetration_pricing: "Deliberately low entry price to capture market share rapidly and achieve scale."
+  5_freemium: "Core feature set free forever; premium features/capacity monetized."
+  6_dynamic_pricing: "Algorithmic real-time adjustment based on supply-demand fluctuations (e.g. Grab, Airlines)."
+  7_psychological_pricing: "Charm pricing ($99 ending), prestige pricing, artificial price anchors."
+  8_bundle_pricing: "Packaging complementary products at lower combined cost (Increases AOV)."
+  9_loss_leader: "Selling item below cost to drive retail foot traffic for profitable cross-sells."
+  10_economy_pricing: "Minimalist production and marketing to sustain rock-bottom prices."
+
+brand_equity_cbbe_pyramid_keller:
+  level_1_salience: "Brand Awareness -> Deep and broad brand recognition and recall at purchase moments."
+  level_2_meaning:
+    brand_performance: "How well product satisfies functional needs, reliability, and serviceability."
+    brand_imagery: "Social and psychological associations (Heritage, personality, aesthetic)."
+  level_3_response:
+    brand_judgments: "Quality assessment, brand credibility, consideration set inclusion."
+    brand_feelings: "Warmth, fun, excitement, security, social approval, self-respect."
+  level_4_resonance: "Intense, active brand loyalty; psychological attachment; community advocacy."
+
+consumer_behavior_and_behavioral_nudges:
+  kahneman_dual_system:
+    system_1: "Fast, automatic, effortless, associative, emotional (Governs 90%+ daily buying choices)."
+    system_2: "Slow, deliberate, effortful, analytical, calculating (Activated by high risk/price)."
+  heuristic_biases:
+    anchoring: "Initial number seen dictates subsequent willingness-to-pay judgements."
+    loss_aversion: "Pain of losing $100 is psychologically 2x stronger than pleasure of gaining $100."
+    social_proof: "Under uncertainty, humans emulate actions of similar peers."
+    decoy_effect: "Introducing an asymmetrically dominated third option shifts choice toward target option."
+
+growth_hacking_aarrr_framework:
+  acquisition: "Attracting relevant qualified traffic to the ecosystem."
+  activation: "The 'Aha!' moment when user first experiences core product value."
+  retention: "Keeping users active over weekly/monthly cohorts (Foundation of growth)."
+  referral: "Organic and incentivized viral loops (K-factor > 1.0 indicates viral growth)."
+  revenue: "Monetization efficiency, average order value, conversion to paid."
