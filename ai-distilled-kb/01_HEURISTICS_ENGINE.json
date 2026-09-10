@@ -1,0 +1,138 @@
+{
+  "engine_name": "AI_AGENT_HEURISTICS_ENGINE",
+  "version": "1.0.0",
+  "description": "Deterministic IF-THEN rules and decision trees for automated strategy execution across Content Marketing and MBA Operations.",
+  "rulesets": {
+    "content_copywriting_selection": [
+      {
+        "id": "RULE_COPY_01",
+        "condition": "product_type == 'Problem_Solver' AND customer_awareness in ['Unaware', 'Problem_Aware']",
+        "action": "SELECT_FRAMEWORK('PAS')",
+        "execution_logic": "Hook with sharp Pain Point -> Agitate consequence and emotional frustration -> Introduce Product as the Relief.",
+        "rationale": "PAS converts fastest when audience feels acute discomfort."
+      },
+      {
+        "id": "RULE_COPY_02",
+        "condition": "product_type == 'Tech_Specs' OR audience_profile == 'Rational_Analytical'",
+        "action": "SELECT_FRAMEWORK('FAB')",
+        "execution_logic": "Feature (what it is) -> Advantage (what it does better) -> Benefit (what user specifically gains).",
+        "rationale": "Rational buyers reject emotional hyperbole; require feature-to-value translation."
+      },
+      {
+        "id": "RULE_COPY_03",
+        "condition": "ticket_size == 'High_Ticket' OR lifecycle_impact == 'Transformational'",
+        "action": "SELECT_FRAMEWORK('StoryBrand_SB7')",
+        "execution_logic": "Position Customer as Hero -> Define Villain/Problem -> Brand enters as Empathic Guide -> Provide 3-Step Plan -> Direct CTA -> Clear Stakes (Avoid Failure vs Achieve Success).",
+        "rationale": "High friction purchases require psychological reframing and risk de-escalation."
+      },
+      {
+        "id": "RULE_COPY_04",
+        "condition": "funnel_stage == 'BOFU' AND customer_state == 'Cart_Abandonment_or_Hesitation'",
+        "action": "SELECT_FRAMEWORK('AIDA_CLOSING')",
+        "execution_logic": "Attention: Deadline/Scarcity -> Interest: Re-affirm primary benefit -> Desire: Social proof/Guarantee -> Action: Frictionless CTA button.",
+        "rationale": "Eliminates last-mile friction with concrete risk-reversal."
+      }
+    ],
+    "content_distribution_and_seo": [
+      {
+        "id": "RULE_DIST_01",
+        "condition": "search_intent == 'Informational' AND competition_level == 'High'",
+        "action": "EXECUTE_TOPIC_CLUSTER_STRATEGY",
+        "execution_logic": "Build 1 comprehensive Pillar Page (3000+ words) covering Core Term -> Link 6-8 Subtopic Cluster Articles (1200 words) pointing back via exact/partial anchor text.",
+        "rationale": "Google and LLMs assign topical authority to semantic graphs rather than isolated keywords."
+      },
+      {
+        "id": "RULE_DIST_02",
+        "condition": "target_engine in ['Perplexity', 'ChatGPT_Search', 'Google_SGE']",
+        "action": "APPLY_GEO_OPTIMIZATION",
+        "execution_logic": "Include direct answer in first 40 words of section; format numerical benchmarks in markdown tables; provide explicit author credentials (E-E-A-T) and verified primary source quotes.",
+        "rationale": "LLM extractors prioritize high-entropy concise definitions and structured numeric tables."
+      },
+      {
+        "id": "RULE_DIST_03",
+        "condition": "content_asset_tier == 'Hero_Asset_High_Quality'",
+        "action": "EXECUTE_1_TO_10_REPURPOSING",
+        "execution_logic": "1 Long-form Video / Master Report -> 3 TikTok/Reels Cutdowns -> 1 LinkedIn/FB Carousel -> 1 Infographic -> 1 Pillar Blog Post -> 1 Email Newsletter -> 5 Twitter/Thread Hooks.",
+        "rationale": "Maximizes asset ROI; amortizes production fixed costs across 10 distribution endpoints."
+      }
+    ],
+    "short_video_optimization": [
+      {
+        "id": "RULE_VID_01",
+        "condition": "first_3s_dropoff_rate > 0.65",
+        "action": "REFAC_HOOK_AND_VISUAL_PACING",
+        "execution_logic": "Cut introductory logos/greetings; replace with Pattern Interrupt (visual motion, contrarian statement, urgent question); insert on-screen hook text within 0.5s.",
+        "rationale": "Algorithm halts video propagation if 3-second retention falls below benchmark threshold."
+      },
+      {
+        "id": "RULE_VID_02",
+        "condition": "completion_rate < 0.25 AND video_duration > 45s",
+        "action": "COMPRESS_BODY_PACING",
+        "execution_logic": "Eliminate dead air via jump-cuts; add B-roll changes every 2.5-3.0s; insert midpoint re-hook at second 20-25; front-load value delivery.",
+        "rationale": "Video algorithms (TikTok/Reels) heavily weight watch-time completion ratio in distribution score."
+      }
+    ],
+    "mba_strategy_and_competition": [
+      {
+        "id": "RULE_STRAT_01",
+        "condition": "industry_rivalry == 'Intense_Price_War' AND product_differentiation == 'Low'",
+        "action": "EXECUTE_BLUE_OCEAN_ERRC",
+        "execution_logic": "Eliminate costly industry standard features that customers undervalue -> Reduce complex operations -> Raise baseline convenience/speed -> Create entirely new value factor.",
+        "rationale": "Competing in red ocean leads to margin collapse; ERRC shifts focus from beating competitors to making them irrelevant."
+      },
+      {
+        "id": "RULE_STRAT_02",
+        "condition": "market_growth_rate > 0.10 AND relative_market_share < 0.20",
+        "action": "BCG_QUESTION_MARK_DIAGNOSTIC",
+        "execution_logic": "Assess whether sustained capital injection can achieve leadership position. IF Yes -> Invest aggressively to transition to Star; ELSE -> Divest/Harvest to protect liquidity.",
+        "rationale": "Question marks are cash drains; indecision depletes corporate reserves."
+      },
+      {
+        "id": "RULE_STRAT_03",
+        "condition": "internal_resource_vrio_status == 'Value_Rare_NOT_Inimitable'",
+        "action": "EXPLOIT_TEMPORARY_ADVANTAGE_RAPIDLY",
+        "execution_logic": "Monetize quickly via aggressive customer acquisition and lock-in switching costs before competitors copy within 6-18 months.",
+        "rationale": "Without inimitability (patents, network effects, culture), competitive advantage decays rapidly."
+      }
+    ],
+    "mba_finance_and_capital_budgeting": [
+      {
+        "id": "RULE_FIN_01",
+        "condition": "investment_NPV > 0 AND investment_IRR > WACC",
+        "action": "APPROVE_CAPITAL_EXPENDITURE",
+        "execution_logic": "Greenlight project; confirm sensitivity analysis under -20% revenue stress test maintains positive NPV.",
+        "rationale": "Positive NPV directly increases firm shareholder value by exact NPV quantum."
+      },
+      {
+        "id": "RULE_FIN_02",
+        "condition": "operating_cash_flow < 0 AND cash_runway_months < 6",
+        "action": "TRIGGER_EMERGENCY_CASH_CONSERVATION",
+        "execution_logic": "Freeze discretionary marketing Capex; extend DPO via supplier negotiation; discount slow inventory to compress DIO; enforce strict credit limits to reduce DSO.",
+        "rationale": "Insolvency risk outweighs growth objectives; Cash Conversion Cycle must be collapsed immediately."
+      },
+      {
+        "id": "RULE_FIN_03",
+        "condition": "debt_to_equity_ratio > industry_benchmark * 1.5 AND interest_coverage_ratio < 2.5",
+        "action": "DELEVERAGE_CAPITAL_STRUCTURE",
+        "execution_logic": "Halt debt-funded expansion; retain 100% earnings (omit dividends); consider equity rights issue to lower financial distress probability.",
+        "rationale": "Modigliani-Miller trade-off shows bankruptcy costs exceed debt tax shield at high leverage."
+      }
+    ],
+    "mba_operations_and_bottlenecks": [
+      {
+        "id": "RULE_OPS_01",
+        "condition": "work_in_progress_wip > standard_threshold AND lead_time > sla_limit",
+        "action": "APPLY_LITTLES_LAW_THROUGHPUT_CONTROL",
+        "execution_logic": "Cap maximum WIP allowed in system; enforce strict Kanban pull mechanism; stop feeding raw inputs until downstream stages clear backlog.",
+        "rationale": "By Little's Law (WIP = Throughput * Flow Time), reducing WIP directly reduces lead time without increasing operating cost."
+      },
+      {
+        "id": "RULE_OPS_02",
+        "condition": "process_step_utilization == 1.00 AND upstream_downstream_utilization < 0.70",
+        "action": "EXECUTE_THEORY_OF_CONSTRAINTS_5_STEPS",
+        "execution_logic": "1. Identify bottleneck -> 2. Exploit bottleneck (zero idle time, quality pre-filtered) -> 3. Subordinate entire line to bottleneck cadence (Drum-Buffer-Rope) -> 4. Elevate capacity -> 5. Prevent inertia.",
+        "rationale": "Any hour lost at the bottleneck is an hour lost for the entire business system."
+      }
+    ]
+  }
+}

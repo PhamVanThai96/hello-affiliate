@@ -1,0 +1,75 @@
+schema: "ai_distilled_knowledge_module_v1"
+module_id: "MBA_MOD_04_ACCOUNTING"
+domain: "DOM_MBA"
+title: "Financial Accounting, Managerial Control, Cost Systems, and Ratio Diagnostics"
+source_documents:
+  - "mba-quan-tri-doanh-nghiep/4-accounting/01-financial-accounting.md"
+  - "mba-quan-tri-doanh-nghiep/4-accounting/02-managerial-accounting.md"
+  - "mba-quan-tri-doanh-nghiep/4-accounting/03-cost-accounting.md"
+  - "mba-quan-tri-doanh-nghiep/4-accounting/05-variance-analysis.md"
+  - "mba-quan-tri-doanh-nghiep/4-accounting/06-financial-ratios.md"
+  - "mba-quan-tri-doanh-nghiep/4-accounting/08-comprehensive-accounting-case-studies-manual.md"
+
+financial_statements_interlocking_mechanics:
+  fundamental_accounting_identity: "Total Assets = Total Liabilities + Owner Equity"
+  tripartite_statement_integration:
+    income_statement: "Revenues - Expenses = Net Income."
+    retained_earnings_link: "Ending Retained Earnings = Beginning Retained Earnings + Net Income - Dividends Paid (Transfers directly to Balance Sheet Equity)."
+    cash_flow_statement:
+      operating_cash_flow_indirect_method: "Net Income + Non-Cash Expenses (D&A) - Gains on Sale + Changes in Working Capital (Decrease in Assets + Increase in Liabilities)."
+      investing_cash_flow: "Capex purchases of PP&E, M&A acquisitions, marketable securities."
+      financing_cash_flow: "Net debt borrowing/repayment, equity issuance, dividend distributions."
+      closing_link: "Net Change in Cash + Beginning Cash = Ending Cash (Matches Balance Sheet Cash exactly)."
+
+managerial_cost_volume_profit_cvp_engine:
+  cost_behavior_classification:
+    fixed_costs: "Invariable with production volume within relevant range (Rent, depreciation, executive salaries)."
+    variable_costs: "Vary in direct proportion to volume (Raw materials, direct labor piece-rate, shipping)."
+    mixed_costs: "Contain fixed base plus variable component (Utilities, vehicle fleet leases)."
+  equations:
+    unit_contribution_margin: "UCM = Selling_Price (P) - Variable_Cost_Per_Unit (VC)"
+    contribution_margin_ratio: "CMR = UCM / P"
+    break_even_units: "BEP_Q = Total_Fixed_Costs / UCM"
+    break_even_revenue: "BEP_Rev = Total_Fixed_Costs / CMR"
+    margin_of_safety: "MoS = (Expected_Sales - Break_Even_Sales) / Expected_Sales"
+    degree_of_operating_leverage: "DOL = Total_Contribution_Margin / Operating_Income (EBIT)"
+  dol_rule: "Higher DOL magnifies profit expansion during revenue booms, but accelerates bankruptcy during revenue declines."
+
+cost_accounting_and_activity_based_costing_abc:
+  traditional_costing_flaw: "Applies overhead based solely on single volume-driven metric (e.g., direct labor hours), causing low-volume complex products to be under-costed and high-volume simple products to be over-costed."
+  abc_mechanism:
+    1_identify_activities: "Setup machinery, quality inspections, purchase ordering, customer service."
+    2_assign_costs_to_activity_cost_pools: "Aggregate all overhead driven by each specific activity."
+    3_calculate_activity_cost_driver_rates: "Cost Pool Total / Total Driver Volume (e.g. $500 per machine setup)."
+    4_allocate_overhead_to_products: "Driver Rate * Actual Activity Consumption."
+
+standard_costing_and_variance_analysis:
+  direct_material_variances:
+    price_variance: "MPV = Actual_Quantity * (Actual_Price - Standard_Price)"
+    quantity_efficiency_variance: "MQV = Standard_Price * (Actual_Quantity_Used - Standard_Quantity_Allowed)"
+  direct_labor_variances:
+    rate_variance: "LRV = Actual_Hours * (Actual_Wage_Rate - Standard_Wage_Rate)"
+    efficiency_variance: "LEV = Standard_Wage_Rate * (Actual_Hours_Worked - Standard_Hours_Allowed)"
+  overhead_variances:
+    spending_variance: "Actual Overhead - Budgeted Overhead based on actual inputs."
+    volume_variance: "Budgeted Overhead - Applied Overhead based on standard inputs allowed."
+
+financial_ratios_diagnostic_taxonomy:
+  liquidity_ratios:
+    current_ratio: "Current Assets / Current Liabilities (Benchmark >= 1.5 - 2.0)"
+    quick_ratio_acid_test: "(Cash + Marketable Securities + Accounts Receivable) / Current Liabilities (Benchmark >= 1.0)"
+    cash_ratio: "(Cash + Cash Equivalents) / Current Liabilities (Purest emergency liquidity)"
+  leverage_and_solvency_ratios:
+    debt_to_equity: "Total Debt / Total Equity (Indicates financial risk exposure)"
+    interest_coverage_ratio: "EBIT / Interest Expense (Benchmark >= 3.0; < 1.5 indicates danger of default)"
+  asset_efficiency_ratios:
+    inventory_turnover: "COGS / Average Inventory (Velocity of stock turnover)"
+    receivables_turnover: "Credit Sales / Average Accounts Receivable"
+    total_asset_turnover: "Revenue / Total Assets"
+  profitability_and_return_ratios:
+    gross_profit_margin: "(Revenue - COGS) / Revenue"
+    operating_profit_margin: "EBIT / Revenue"
+    net_profit_margin: "Net Income / Revenue"
+    return_on_assets_roa: "Net Income / Total Assets"
+    return_on_equity_roe: "Net Income / Shareholders' Equity"
+    return_on_invested_capital_roic: "EBIT*(1 - Tc) / (Total Debt + Equity - Cash) (Must exceed WACC to create economic value)"

@@ -1,0 +1,80 @@
+schema: "ai_distilled_knowledge_module_v1"
+module_id: "MBA_MOD_05_ORGANIZATIONAL_BEHAVIOR"
+domain: "DOM_MBA"
+title: "Organizational Behavior, Motivation Physics, Leadership, and Change Architecture"
+source_documents:
+  - "mba-quan-tri-doanh-nghiep/5-organizational-behavior/01-motivation-theories.md"
+  - "mba-quan-tri-doanh-nghiep/5-organizational-behavior/02-leadership-styles.md"
+  - "mba-quan-tri-doanh-nghiep/5-organizational-behavior/03-team-dynamics.md"
+  - "mba-quan-tri-doanh-nghiep/5-organizational-behavior/04-organizational-culture.md"
+  - "mba-quan-tri-doanh-nghiep/5-organizational-behavior/06-conflict-management.md"
+  - "mba-quan-tri-doanh-nghiep/5-organizational-behavior/07-change-management.md"
+  - "mba-quan-tri-doanh-nghiep/5-organizational-behavior/10-people-insight.md"
+
+motivation_theories_engine:
+  herzberg_dual_factor_hygiene_motivation:
+    hygiene_factors:
+      elements: ["Base Salary", "Company Policies", "Job Security", "Physical Work Conditions", "Supervisory Quality"]
+      mechanics: "Adequacy merely eliminates dissatisfaction; improvements DO NOT create positive motivation or high performance."
+    motivator_factors:
+      elements: ["Achievement", "Recognition", "Intrinsic Nature of Work", "Responsibility", "Career Advancement"]
+      mechanics: "Directly drive job satisfaction and discretionary effort."
+  vroom_expectancy_theory:
+    formula: "Motivation_Force = Expectancy * Instrumentality * Valence"
+    multiplicative_rule: "If any single component is zero, total motivational force drops to zero."
+    components:
+      expectancy: "Belief that effort will lead to successful performance (E -> P)."
+      instrumentality: "Belief that successful performance will be rewarded (P -> R)."
+      valence: "Subjective value the individual places on the promised reward."
+  self_determination_theory_sdt:
+    triad_of_intrinsic_needs:
+      autonomy: "Perception of volition, agency, and ownership over one's work."
+      competence: "Feeling effective and capable of mastering challenging tasks."
+      relatedness: "Sense of belonging, mutual connection, and care within a team."
+
+leadership_and_team_dynamics:
+  situational_leadership_hersey_blanchard:
+    readiness_matching_matrix:
+      R1_unable_and_unwilling: "Use S1 Directing / Telling (High Task, Low Relationship)."
+      R2_unable_but_willing: "Use S2 Coaching / Selling (High Task, High Relationship)."
+      R3_able_but_unwilling: "Use S3 Supporting / Participating (Low Task, High Relationship)."
+      R4_able_and_willing: "Use S4 Delegating (Low Task, Low Relationship)."
+  tuckman_stages_of_team_evolution:
+    forming: "Polite orientation, ambiguity around roles, high dependency on leader."
+    storming: "Conflict over leadership, goals, and working styles; critical bottleneck stage."
+    norming: "Consensus on norms, role clarity, group cohesion, shared identity established."
+    performing: "Autonomous execution, high synergy, task orientation, mutual support."
+    adjourning: "Wrap-up, assessment, celebration, transition."
+  lencioni_five_dysfunctions_pyramid:
+    1_absence_of_trust: "Fear of vulnerability; team members conceal weaknesses and mistakes."
+    2_fear_of_conflict: "Artificial harmony; absence of unfiltered constructive ideological debate."
+    3_lack_of_commitment: "Feigned buy-in resulting in ambiguity and delayed execution."
+    4_avoidance_of_accountability: "Reluctance to call out peers on subpar performance."
+    5_inattention_to_results: "Prioritizing individual ego, department silos, or career over team goals."
+
+organizational_culture_schein_framework:
+  three_levels_of_culture:
+    level_1_artifacts: "Visible structures, office architecture, dress codes, rituals, slogans (Easily observed, hard to decipher)."
+    level_2_espoused_values: "Stated strategies, corporate missions, ethical charters (What people claim guides their behavior)."
+    level_3_basic_underlying_assumptions: "Unconscious, taken-for-granted beliefs about human nature, truth, time, and environment (The true operational driver of organizational reality)."
+
+conflict_management_thomas_kilmann_tki:
+  modes_by_assertiveness_and_cooperativeness:
+    competing: "High Assertive, Low Cooperative -> Decisive action in emergencies, unpopular vital decisions."
+    collaborating: "High Assertive, High Cooperative -> Win-win integrative solution when both concerns too important to compromise."
+    compromising: "Moderate Assertive, Moderate Cooperative -> Expedient intermediate settlement under time pressure."
+    avoiding: "Low Assertive, Low Cooperative -> Trivial issues, cooling off emotional outbursts."
+    accommodating: "Low Assertive, High Cooperative -> Preserving harmony, yielding when issue is far more vital to the other party."
+
+change_management_kotter_8_steps:
+  phase_1_creating_climate_for_change:
+    1_create_urgency: "Demonstrate existential commercial risk or massive upside to counter complacency."
+    2_build_guiding_coalition: "Assemble influential cross-functional team with formal authority and credibility."
+    3_form_strategic_vision: "Clear picture of future state and achievable roadmap."
+  phase_2_engaging_and_enabling_organization:
+    4_enlist_volunteer_army: "Communicate vision across all channels by factor of 10x."
+    5_enable_action_by_removing_barriers: "Eliminate bureaucratic obstacles, misaligned incentives, and toxic detractors."
+    6_generate_short_term_wins: "Deliver visible, unambiguous quick wins within 30-90 days."
+  phase_3_implementing_and_sustaining:
+    7_sustain_acceleration: "Consolidate gains and drive deeper structural transformation."
+    8_institute_change: "Anchor new behaviors into promotion criteria, succession planning, and culture."

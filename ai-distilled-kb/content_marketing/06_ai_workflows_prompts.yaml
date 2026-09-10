@@ -1,0 +1,58 @@
+schema: "ai_distilled_knowledge_module_v1"
+module_id: "CM_MOD_06_AI_WORKFLOWS"
+domain: "DOM_CM"
+title: "AI Workflows, Prompt Engineering Architectures, and Automated Editorial Pipelines"
+source_documents:
+  - "content-frame/06-MODULE-6-NANG-CAO-AI-MARKETING-4.0.md"
+  - "code/generate_generic_prompt_content.py"
+  - "code/generate-content-calender.py"
+  - "code/Khung_Prompt_AI_Da_Nganh_Tong_Quat.xlsx"
+
+prompt_engineering_frameworks:
+  rtf_framework:
+    components:
+      role: "Specific professional persona, seniority level, and domain expertise."
+      task: "Explicit, unambiguous operational action to execute."
+      format: "Precise output structure (Markdown table, JSON schema, bullet list, YAML)."
+    example_schema: "Act as a Senior Conversion Copywriter (R) -> Write 3 PAS ad variations for B2B accounting software (T) -> Output as a 3-column markdown table with Hook, Body, and CTA (F)."
+  create_framework:
+    components:
+      character: "Persona and tone of voice."
+      request: "Core instruction and constraints."
+      examples: "Few-shot reference examples demonstrating expected quality."
+      additions: "Guardrails, forbidden phrases, tone modifiers."
+      type_of_output: "Delimited schema (e.g. JSON object with specific keys)."
+      extras: "Critique and self-evaluation requirements."
+
+agentic_content_pipeline_architecture:
+  orchestration_flow:
+    step_1_research_agent:
+      role: "Competitor content auditing, search intent extraction, statistical fact retrieval."
+      input: "Target seed keyword and market vertical."
+      output: "Research dossier containing verified facts, competitor gaps, and user questions."
+    step_2_strategy_agent:
+      role: "Pillar alignment, 3H classification, buyer journey stage assignment."
+      input: "Research dossier + Brand positioning guidelines."
+      output: "Approved Content Brief and outline structure (H1, H2s, target keywords)."
+    step_3_creative_agent:
+      role: "Execution of draft using designated copywriting framework (PAS/AIDA/SB7)."
+      input: "Approved brief + audience voice specifications."
+      output: "Full raw draft asset."
+    step_4_auditor_agent:
+      role: "E-E-A-T compliance check, hallucination verification, tone-of-voice alignment."
+      input: "Raw draft + brand guardrails."
+      output: "Audited and polished production-ready copy."
+    step_5_repurposing_agent:
+      role: "Atomic decomposition into social formats (TikTok scripts, LinkedIn carousels, email newsletter)."
+      input: "Polished core asset."
+      output: "Omnichannel distribution package."
+
+programmatic_calendar_generation_rules:
+  rule_1_source_of_truth: "Editorial data resides exclusively in structured Pillar schema; calendar grid is calculated dynamically via date array matching."
+  rule_2_buffer_allocation: "When number of calendar weeks exceeds number of Content Pillars, extra week is designated as 'Buffer / Multi-Pillar Review' rather than wrapping Pillar 1 prematurely."
+  rule_3_newsjacking_threshold: "Maintain exactly 10-15% unassigned publishing slots per week to absorb trending cultural topics without disrupting long-term SEO pipeline."
+
+quality_control_and_ai_safety_guardrails:
+  hallucination_prevention: "Never accept unreferenced statistical claims; all metrics must include primary source year and methodology."
+  brand_voice_fidelity: "Maintain negative prompt blacklist (e.g., forbid clichés like 'In today's fast-paced world', 'Delve into', 'Game changer')."
+  human_in_the_loop: "AI generates candidates; human domain expert retains final editorial sign-off for publication."

@@ -1,0 +1,77 @@
+schema: "ai_distilled_knowledge_module_v1"
+module_id: "MBA_MOD_06_OPERATIONS"
+domain: "DOM_MBA"
+title: "Operations Physics, Lean Six Sigma, Inventory Control, and Supply Chain Dynamics"
+source_documents:
+  - "mba-quan-tri-doanh-nghiep/6-operations-management/01-process-design-analysis.md"
+  - "mba-quan-tri-doanh-nghiep/6-operations-management/02-quality-management.md"
+  - "mba-quan-tri-doanh-nghiep/6-operations-management/03-supply-chain-management.md"
+  - "mba-quan-tri-doanh-nghiep/6-operations-management/04-inventory-management.md"
+  - "mba-quan-tri-doanh-nghiep/6-operations-management/06-project-management.md"
+  - "mba-quan-tri-doanh-nghiep/6-operations-management/09-theory-of-constraints.md"
+
+process_physics_and_flow_equations:
+  littles_law:
+    equation: "WIP = Throughput_Rate (TH) * Flow_Time (FT)"
+    operational_implication: "Lead time cannot be compressed without either reducing work-in-progress or increasing throughput rate."
+  takt_time_equation:
+    equation: "Takt_Time = Net_Available_Working_Time / Customer_Demand_Rate"
+    purpose: "The rhythm at which products must be finished to satisfy customer demand."
+  bottleneck_axioms:
+    - "The capacity of any system is strictly bounded by the capacity of its slowest station (Bottleneck)."
+    - "An hour lost at the bottleneck is an hour lost for the entire system forever."
+    - "An hour saved at a non-bottleneck station is a mirage."
+
+theory_of_constraints_toc_goldratt:
+  five_focusing_steps:
+    1_identify: "Locate the exact constraint limiting total system throughput."
+    2_exploit: "Ensure the constraint station works at 100% capacity with zero idle time and zero defective inputs."
+    3_subordinate: "Align all other non-constraint stations to produce only at the pace the constraint can process."
+    4_elevate: "Invest capital to expand the constraint capacity (hire more staff, buy automated machines)."
+    5_repeat: "Return to Step 1; prevent managerial inertia from becoming the new constraint."
+  drum_buffer_rope_dbr:
+    drum: "The bottleneck's pace sets the production rhythm for the entire facility."
+    buffer: "Time/inventory buffer placed directly upstream of the bottleneck to protect it from upstream disruptions."
+    rope: "Information feedback loop preventing work release into the line until the drum processes an item."
+
+lean_and_six_sigma_dmaic_systems:
+  lean_eight_deadly_wastes_timwoods:
+    T_transport: "Unnecessary movement of materials between stations."
+    I_inventory: "Excess raw, WIP, or finished goods tying up capital."
+    M_motion: "Unnecessary ergonomic movements by operators."
+    W_waiting: "Idle time caused by bottlenecks or equipment breakdowns."
+    O_overproduction: "Producing items ahead of demand (The worst waste, hides all others)."
+    O_overprocessing: "Performing more work or precision than required by customer."
+    D_defects: "Scrap, rework, and customer returns."
+    S_skills_underutilized: "Failure to leverage employee cognitive problem-solving potential."
+  six_sigma_dmaic_framework:
+    define: "Project charter, problem statement, Voice of Customer (VOC), SIPOC map."
+    measure: "Baseline process performance, data collection, gage R&R measurement verification."
+    analyze: "Root cause identification using Ishikawa Fishbone diagrams and Pareto 80/20 analysis."
+    improve: "Design solutions, eliminate root causes, run design of experiments (DOE)."
+    control: "Standardize procedures (SOP), implement Statistical Process Control (SPC) charts."
+    statistical_standard: "Six Sigma quality represents <= 3.4 Defects Per Million Opportunities (DPMO); Cpk >= 1.33."
+
+inventory_and_lot_sizing_mechanics:
+  economic_order_quantity_eoq:
+    formula: "EOQ = sqrt( (2 * Annual_Demand * Setup_Cost) / Holding_Cost_Per_Unit )"
+  reorder_point_rop:
+    formula: "ROP = (Daily_Demand * Lead_Time_Days) + Safety_Stock"
+    safety_stock_formula: "SS = Z * std_dev_demand * sqrt(Lead_Time_Days)"
+  abc_inventory_classification:
+    class_A: "Top 20% of SKUs generating 70-80% of total annual consumption value -> Strict continuous review."
+    class_B: "Next 30% of SKUs generating 15-25% of annual value -> Moderate periodic review."
+    class_C: "Remaining 50% of SKUs generating only 5% of annual value -> Simple bulk reorder rules."
+
+supply_chain_dynamics_and_bullwhip_effect:
+  bullwhip_phenomenon: "Extreme variance amplification in order quantities traveling upstream from retailer to distributor to manufacturer."
+  root_causes: ["Demand Forecast Updating (distortion)", "Order Batching", "Price Speculation / Promotional Discounts", "Shortage Gaming"]
+  countermeasures: ["Point-of-Sale (POS) real-time data transparency", "Vendor-Managed Inventory (VMI)", "Everyday Low Pricing (EDLP)", "Lead time reduction"]
+
+project_scheduling_cpm_and_pert:
+  critical_path_method:
+    slack_time_formula: "Total_Float = Late_Start (LS) - Early_Start (ES) = Late_Finish (LF) - Early_Finish (EF)"
+    critical_path_rule: "The sequence of activities with Total Float = 0 determines the shortest possible project duration."
+  pert_probabilistic_duration:
+    expected_time: "Te = (Optimistic + 4*Most_Likely + Pessimistic) / 6"
+    variance: "Var = ((Pessimistic - Optimistic) / 6)^2"

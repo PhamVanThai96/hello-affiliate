@@ -1,0 +1,54 @@
+schema: "ai_distilled_knowledge_module_v1"
+module_id: "CM_MOD_05_ANALYTICS"
+domain: "DOM_CM"
+title: "Content Marketing Analytics, Attribution Models, and Decay Optimization"
+source_documents:
+  - "content-frame/05-MODULE-5-DO-LUONG-TOI-UU.md"
+  - "course-docs/03-PHAN-3-KENH-PHAN-PHOI-DO-LUONG.md"
+
+kpi_funnel_taxonomy:
+  tofu_brand_discovery:
+    metrics: ["Unique Pageviews", "Organic Impressions", "Reach", "Social Shares", "Branded Search Volume Index"]
+    measurement_tools: ["Google Search Console", "Meta Insights", "TikTok Analytics"]
+  mofu_engagement_and_intent:
+    metrics: ["Average Engagement Time (>90s)", "Scroll Depth (75%+)", "Newsletter Opt-in Rate", "Lead Magnet Download Rate", "Returning Visitor Ratio"]
+    measurement_tools: ["GA4 Events", "Hotjar Heatmaps", "Email CRM"]
+  bofu_pipeline_conversion:
+    metrics: ["Assisted Conversions", "Goal Conversion Rate (CVR)", "Qualified Leads Generated (MQL/SQL)", "Pipeline Velocity", "Direct Revenue Attributed"]
+    measurement_tools: ["GA4 Attribution", "HubSpot / Salesforce CRM"]
+  retention_and_advocacy:
+    metrics: ["Customer Retention Rate (CRR)", "Net Promoter Score (NPS)", "Organic Review Velocity", "Referral Share Rate"]
+    measurement_tools: ["Customer Feedback Surveys", "Stripe Churn Logs"]
+
+attribution_modeling_mechanics:
+  first_click:
+    bias: "Heavily over-credits top-of-funnel discovery channels; ignores nurturing quality."
+  last_click:
+    bias: "Severely undervalues educational content; erroneously credits brand search and retargeting ads."
+  data_driven_attribution_ga4:
+    algorithm: "Uses machine learning to evaluate touchpoint sequence probabilities comparing converting vs non-converting paths."
+    best_practice: "Use DDA as primary reporting baseline for content ROI calculation."
+
+content_decay_and_audit_algorithm:
+  trigger: "Run quarterly across all published URLs (>6 months old)."
+  decision_quadrants:
+    keep_and_scale:
+      condition: "Traffic > 75th percentile AND CVR > Benchmark"
+      action: "Maintain; expand into visual carousels and video adaptations."
+    update_and_refresh:
+      condition: "Historical traffic dropping > 25% over 90 days BUT still carries high backlink equity"
+      action: "Update statistics, rewrite outdated sections, enhance with GEO answer capsule, refresh publication date."
+    consolidate_and_redirect:
+      condition: "Multiple URLs targeting similar search terms with low individual traffic (<50 views/month)"
+      action: "Merge into 1 comprehensive Pillar article; implement 301 permanent redirects from old URLs."
+    prune_and_delete:
+      condition: "Zero search impressions, zero backlinks, zero conversions for > 12 months"
+      action: "Remove content and return HTTP 410 (Gone) to preserve crawl budget."
+
+ab_testing_scientific_protocol:
+  hypothesis_template: "If we change [Variable X] to [Variant B], then [Metric Y] will increase by [Z%] because of [Psychological Rationale]."
+  single_variable_constraint: "Test only 1 element per experiment (e.g., Headline ONLY, or CTA button color ONLY)."
+  statistical_rigor:
+    confidence_level: ">= 95% (p < 0.05)"
+    minimum_sample_size: "Minimum 100 conversions per branch before declaring statistical validity"
+    testing_duration: "Minimum 14 full calendar days to normalize day-of-week seasonality."

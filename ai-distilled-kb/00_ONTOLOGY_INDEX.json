@@ -1,0 +1,278 @@
+{
+  "schema_version": "1.0.0",
+  "system_purpose": "Machine-readable ontological graph for AI reasoning, RAG context retrieval, and decision orchestration across Content Marketing & MBA Management.",
+  "domains": [
+    {
+      "id": "DOM_CM",
+      "name": "Content Marketing",
+      "scope": "Digital narrative architecture, buyer journey orchestration, multi-channel distribution, SEO/GEO algorithms, conversion optimization, AI-native content generation.",
+      "subdomains": [
+        "CM_FOUNDATIONS",
+        "CM_STRATEGY",
+        "CM_CREATION",
+        "CM_DISTRIBUTION",
+        "CM_ANALYTICS",
+        "CM_AI_WORKFLOWS"
+      ]
+    },
+    {
+      "id": "DOM_MBA",
+      "name": "MBA Business Administration",
+      "scope": "Corporate strategy, quantitative corporate finance, managerial accounting, organizational behavior, operations research, supply chain physics, SME 0-to-1 operations, failure/success autopsy.",
+      "subdomains": [
+        "MBA_STRATEGY",
+        "MBA_MARKETING",
+        "MBA_FINANCE",
+        "MBA_ACCOUNTING",
+        "MBA_ORGANIZATIONAL_BEHAVIOR",
+        "MBA_OPERATIONS",
+        "MBA_SME_OPERATIONS",
+        "MBA_CASE_AUTOPSY"
+      ]
+    }
+  ],
+  "entities": {
+    "ENT_3_VALUE_LAYERS": {
+      "name_en": "Three Value Layers Model",
+      "name_vi": "Mô hình 3 Tầng Giá Trị Sản Phẩm",
+      "domain": "DOM_CM",
+      "subdomain": "CM_FOUNDATIONS",
+      "components": ["Functional Value", "Emotional Value", "Symbolic Value"],
+      "operational_use": "Content angle selection based on target audience awareness & brand maturity.",
+      "linked_concepts": ["ENT_BUYER_PERSONA", "ENT_BRAND_EQUITY", "ENT_STP"]
+    },
+    "ENT_3H_MODEL": {
+      "name_en": "Hero-Hub-Help (3H) Framework",
+      "name_vi": "Mô hình Phân bổ Nội dung 3H (Google)",
+      "domain": "DOM_CM",
+      "subdomain": "CM_STRATEGY",
+      "components": {
+        "Hero": {"allocation": "10-15%", "objective": "Mass awareness, viral reach, major launches"},
+        "Hub": {"allocation": "50-60%", "objective": "Brand affinity, community retention, thought leadership"},
+        "Help_Hygiene": {"allocation": "25-30%", "objective": "Evergreen search intent, problem-solving, FAQ, retention"},
+        "Buffer": {"allocation": "10-15%", "objective": "Newsjacking, real-time response, trend-jacking"}
+      },
+      "linked_concepts": ["ENT_CONTENT_PILLAR", "ENT_CUSTOMER_JOURNEY_5A", "ENT_SEO"]
+    },
+    "ENT_TOPIC_CLUSTER": {
+      "name_en": "Topic Cluster & Pillar Page Model",
+      "name_vi": "Mô hình Cụm Chủ Đề và Trang Trụ Cột",
+      "domain": "DOM_CM",
+      "subdomain": "CM_STRATEGY",
+      "architecture": "Pillar Page (Broad Core Topic) <-> Hyperlinked Cluster Subtopics (Depth)",
+      "linked_concepts": ["ENT_SEO_EEAT", "ENT_GEO", "ENT_SEARCH_INTENT"]
+    },
+    "ENT_CUSTOMER_JOURNEY_5A": {
+      "name_en": "Kotler 5A Customer Journey Model",
+      "name_vi": "Hành Trình Khách Hàng 5A (Philip Kotler)",
+      "domain": "DOM_CM",
+      "subdomain": "CM_STRATEGY",
+      "stages": ["Aware", "Appeal", "Ask", "Act", "Advocate"],
+      "funnel_mapping": {
+        "Aware": "TOFU",
+        "Appeal": "TOFU_MOFU",
+        "Ask": "MOFU",
+        "Act": "BOFU",
+        "Advocate": "RETENTION_VIRAL"
+      },
+      "linked_concepts": ["ENT_AARRR_FUNNEL", "ENT_CLV", "ENT_CONTENT_KPI"]
+    },
+    "ENT_COPYWRITING_ENGINES": {
+      "name_en": "Persuasion Copywriting Frameworks",
+      "name_vi": "Các Khung Soạn Thảo Thuyết Phục",
+      "domain": "DOM_CM",
+      "subdomain": "CM_CREATION",
+      "frameworks": ["AIDA", "PAS", "FAB", "BAB", "4P", "StoryBrand_SB7"],
+      "selection_heuristic": "Use PAS for pain-relief products, FAB for specs-driven products, SB7 for brand transformation narrative."
+    },
+    "ENT_SHORT_VIDEO_SCORING": {
+      "name_en": "Short-Form Video Composite Evaluation",
+      "name_vi": "Khung Đánh Giá Điểm Tổng Hợp Video Ngắn",
+      "domain": "DOM_CM",
+      "subdomain": "CM_CREATION",
+      "architecture": "Hook (0-3s) -> Retention (3-15s) -> Value/Body (15-45s) -> CTA (45-60s)",
+      "composite_score_groups": ["Metadata", "Engagement_35%", "Growth_10%", "Quality_Content"]
+    },
+    "ENT_GEO_OPTIMIZATION": {
+      "name_en": "Generative Engine Optimization (GEO)",
+      "name_vi": "Tối Ưu Hóa Công Cụ Tạo Sinh AI (GEO)",
+      "domain": "DOM_CM",
+      "subdomain": "CM_DISTRIBUTION",
+      "objective": "Maximize citation frequency and context inclusion in LLM-generated answers (ChatGPT, Perplexity, Gemini, Google SGE).",
+      "levers": ["Entity Co-occurrence", "Statistical Quotability", "Direct Q&A Chunks", "Schema.org", "Author E-E-A-T"]
+    },
+    "ENT_PESTEL": {
+      "name_en": "PESTEL External Macro-Environment Analysis",
+      "name_vi": "Phân Tích Môi Trường Vĩ Mô PESTEL",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_STRATEGY",
+      "dimensions": ["Political", "Economic", "Social", "Technological", "Environmental", "Legal"]
+    },
+    "ENT_PORTER_5_FORCES": {
+      "name_en": "Porter's Five Forces Industry Structure",
+      "name_vi": "Mô Hình 5 Lực Lượng Cạnh Tranh Michael Porter",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_STRATEGY",
+      "forces": [
+        "Threat of New Entrants",
+        "Bargaining Power of Buyers",
+        "Bargaining Power of Suppliers",
+        "Threat of Substitute Products",
+        "Competitive Rivalry"
+      ]
+    },
+    "ENT_VRIO": {
+      "name_en": "VRIO Internal Resource-Based View",
+      "name_vi": "Khung Đánh Giá Nguồn Lực Nội Bộ VRIO (Barney)",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_STRATEGY",
+      "criteria": ["Value", "Rarity", "Inimitability", "Organization"],
+      "outcomes": ["Competitive Disadvantage", "Competitive Parity", "Temporary Advantage", "Sustained Advantage"]
+    },
+    "ENT_BLUE_OCEAN": {
+      "name_en": "Blue Ocean Strategy & ERRC Grid",
+      "name_vi": "Chiến Lược Đại Dương Xanh & Khung ERRC",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_STRATEGY",
+      "actions": ["Eliminate", "Reduce", "Raise", "Create"],
+      "output": "Divergent Value Curve, Value Innovation"
+    },
+    "ENT_BALANCED_SCORECARD": {
+      "name_en": "Balanced Scorecard (BSC)",
+      "name_vi": "Thẻ Điểm Cân Bằng (Kaplan & Norton)",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_STRATEGY",
+      "perspectives": ["Financial", "Customer", "Internal Business Processes", "Learning & Growth"]
+    },
+    "ENT_STP_MARKETING": {
+      "name_en": "STP Marketing Strategy",
+      "name_vi": "Phân Khúc - Chọn Mục Tiêu - Định Vị (STP)",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_MARKETING",
+      "phases": ["Segmentation (Geo, Demo, Psycho, Behavioral)", "Targeting", "Positioning (Perceptual Map)"]
+    },
+    "ENT_MARKETING_MIX_4P_7P_4C": {
+      "name_en": "Marketing Mix Frameworks (4P/7P/4C)",
+      "name_vi": "Hệ Thống Phối Thức Tiếp Thị (4P/7P/4C)",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_MARKETING",
+      "mapping": {
+        "Product": ["Service: People, Process, Physical Evidence", "Customer Solution (4C)"],
+        "Price": ["Cost to Customer (4C)"],
+        "Place": ["Convenience (4C)"],
+        "Promotion": ["Communication (4C)"]
+      }
+    },
+    "ENT_PRICING_TAXONOMY": {
+      "name_en": "10 Strategic Pricing Models",
+      "name_vi": "10 Mô Hình Định Giá Chiến Lược",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_MARKETING",
+      "models": [
+        "Cost-Plus", "Value-Based", "Price Skimming", "Penetration Pricing", 
+        "Freemium", "Dynamic Pricing", "Psychological Pricing", "Bundle Pricing", 
+        "Economy Pricing", "Loss Leader"
+      ]
+    },
+    "ENT_CAPITAL_BUDGETING": {
+      "name_en": "Capital Budgeting Evaluation",
+      "name_vi": "Hoạch Định Ngân Sách Đầu Tư Vốn",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_FINANCE",
+      "metrics": ["Net Present Value (NPV)", "Internal Rate of Return (IRR)", "Payback Period", "Profitability Index (PI)", "Modified IRR (MIRR)"]
+    },
+    "ENT_WACC_CAPM": {
+      "name_en": "Cost of Capital & CAPM",
+      "name_vi": "Chi Phí Sử Dụng Vốn Bình Quân & Mô Hình Định Giá Tài Sản Vốn",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_FINANCE",
+      "core_equations": ["WACC = (E/V)*Ke + (D/V)*Kd*(1 - Tc)", "Ke = Rf + Beta*(Rm - Rf)"]
+    },
+    "ENT_WORKING_CAPITAL_CCC": {
+      "name_en": "Working Capital & Cash Conversion Cycle",
+      "name_vi": "Quản Trị Vốn Lưu Động & Chu Kỳ Chuyển Hóa Tiền Mặt",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_FINANCE",
+      "equation": "CCC = DIO + DSO - DPO",
+      "implication": "Negative CCC allows company to finance operations via suppliers (e.g., Mixue, Apple, 7-Eleven)."
+    },
+    "ENT_DUPONT_ANALYSIS": {
+      "name_en": "DuPont Return on Equity Decomposition",
+      "name_vi": "Phân Tích DuPont ROE (3 & 5 Nhân Tố)",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_ACCOUNTING",
+      "formula_3_way": "ROE = Net Profit Margin * Asset Turnover * Financial Leverage",
+      "formula_5_way": "ROE = Tax Burden * Interest Burden * Operating Margin * Asset Turnover * Leverage"
+    },
+    "ENT_CVP_BEP": {
+      "name_en": "Cost-Volume-Profit & Break-Even Analysis",
+      "name_vi": "Phân Tích Chi Phí - Khối Lượng - Lợi Nhuận & Điểm Hòa Vốn",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_ACCOUNTING",
+      "equations": {
+        "Contribution_Margin": "CM = Price - Variable_Cost",
+        "BEP_Units": "BEP_Q = Fixed_Costs / CM",
+        "BEP_Revenue": "BEP_Rev = Fixed_Costs / CM_Ratio"
+      }
+    },
+    "ENT_ORGANIZATIONAL_DYNAMICS": {
+      "name_en": "Team & Cultural Evolution Models",
+      "name_vi": "Mô Hình Động Lực Nhóm & Văn Hóa Tổ Chức",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_ORGANIZATIONAL_BEHAVIOR",
+      "models": [
+        "Tuckman_Stages (Forming, Storming, Norming, Performing, Adjourning)",
+        "Lencioni_5_Dysfunctions (Trust, Conflict, Commitment, Accountability, Results)",
+        "Schein_Culture_Layers (Artifacts, Espoused Values, Basic Assumptions)",
+        "Kotter_8_Step_Change",
+        "Thomas_Kilmann_Conflict_Modes"
+      ]
+    },
+    "ENT_OPERATIONS_RESEARCH": {
+      "name_en": "Operations Physics & Flow Control",
+      "name_vi": "Khoa Học Vận Hành & Tối Ưu Dòng Chảy",
+      "domain": "DOM_MBA",
+      "subdomain": "MBA_OPERATIONS",
+      "laws": [
+        "Little_Law (WIP = Throughput * Flow_Time)",
+        "TOC_Goldratt (Identify, Exploit, Subordinate, Elevate, Repeat - Drum-Buffer-Rope)",
+        "Six_Sigma_DMAIC (Define, Measure, Analyze, Improve, Control)",
+        "Lean_TIMWOODS (8 Wastes)",
+        "EOQ_Lot_Sizing",
+        "CPM_PERT_Project_Scheduling"
+      ]
+    }
+  },
+  "cross_domain_edges": [
+    {
+      "source": "ENT_STP_MARKETING",
+      "target": "ENT_BUYER_PERSONA",
+      "relation": "grounds",
+      "semantics": "MBA STP provides macro market segment boundaries; CM Persona constructs granular micro behavioral profiles."
+    },
+    {
+      "source": "ENT_WORKING_CAPITAL_CCC",
+      "target": "ENT_CONTENT_CALENDAR_3H",
+      "relation": "finances",
+      "semantics": "Negative CCC generates operational cash float that directly funds marketing & content production budgets before revenue collection."
+    },
+    {
+      "source": "ENT_OPERATIONS_RESEARCH",
+      "target": "ENT_CONTENT_REPURPOSING",
+      "relation": "optimizes_throughput",
+      "semantics": "Little's Law and TOC applied to Content Production: minimizing WIP articles reduces editorial lead time; Repurposing acts as asset multiplier at zero marginal cost."
+    },
+    {
+      "source": "ENT_CVP_BEP",
+      "target": "ENT_CONTENT_ROI",
+      "relation": "bounds_budget",
+      "semantics": "Contribution Margin per unit determines maximum allowable CAC and ceiling budget for BOFU conversion content."
+    },
+    {
+      "source": "ENT_BLUE_OCEAN",
+      "target": "ENT_CONTENT_PILLAR",
+      "relation": "differentiates",
+      "semantics": "ERRC factors become core distinct Content Pillars to eliminate competing on congested commoditized topics."
+    }
+  ]
+}

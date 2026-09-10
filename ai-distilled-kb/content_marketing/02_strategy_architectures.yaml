@@ -1,0 +1,97 @@
+schema: "ai_distilled_knowledge_module_v1"
+module_id: "CM_MOD_02_STRATEGY"
+domain: "DOM_CM"
+title: "Content Strategy, Topic Clusters, and Editorial Architectures"
+source_documents:
+  - "content-frame/02-MODULE-2-CHIEN-LUOC-NOI-DUNG.md"
+  - "course-docs/04-PHAN-4-CHIEN-LUOC-QUAN-TRI.md"
+  - "code/generate-content-calender.py"
+
+content_pillar_system:
+  definition: "Foundational thematic anchors (3 to 5 pillars) aligned with brand positioning and customer jobs-to-be-done."
+  pillar_cluster_relationship:
+    architecture: "1 Core Pillar -> 4 to 8 Cluster Sub-topics -> 16 to 32 Atomic Content Assets"
+    linking_logic: "All cluster sub-topics link bidirectionally to the central pillar asset using exact and contextual anchors."
+  selection_heuristics:
+    max_pillars: 5
+    min_pillars: 3
+    distribution_rule: "Never allocate >40% volume to direct promotional content; minimum 60% educational and authoritative."
+
+content_mix_3h_framework:
+  hero:
+    volume_allocation: "10-15%"
+    frequency: "1-2 times per quarter"
+    objective: "Macro awareness, viral brand spikes, product launches"
+    formats: ["High-budget brand film", "Industry benchmark research report", "Mega influencer collaboration", "Seasonal campaign"]
+    primary_kpis: ["Reach", "Impressions", "Brand Search Volume Lift", "Earned Media"]
+  hub:
+    volume_allocation: "50-60%"
+    frequency: "2-4 times per week"
+    objective: "Community loyalty, brand sentiment, consistent engagement, thought leadership"
+    formats: ["Weekly video series", "Podcast episodes", "Expert interviews", "Case study breakdowns", "Behind-the-scenes"]
+    primary_kpis: ["Engagement Rate", "Video Retention Rate", "Returning Visitors", "Comment Sentiment"]
+  help_hygiene:
+    volume_allocation: "25-30%"
+    frequency: "Continuous evergreen production"
+    objective: "Capture high-intent organic search queries, solve immediate user friction"
+    formats: ["How-to tutorials", "FAQ articles", "Glossary definitions", "Troubleshooting guides", "Product comparisons"]
+    primary_kpis: ["Organic Search Impressions", "Keyword Rankings", "Organic CVR", "Help Center Bounce Rate"]
+  newsjacking_buffer:
+    volume_allocation: "10-15%"
+    rule: "Always reserve 1-2 open slots per week in editorial calendar for real-time trend capitalization."
+
+buyer_persona_data_schema:
+  attributes:
+    demographics: ["Age", "Gender", "Location", "Income_Bracket", "Education", "Job_Title"]
+    psychographics: ["Core_Values", "Life_Aspirations", "Fears", "Lifestyle_Affiliations"]
+    jobs_to_be_done:
+      functional_job: "What concrete task must be executed?"
+      emotional_job: "How do they want to feel during execution?"
+      social_job: "How do they want to be perceived by peers?"
+    pain_points:
+      acute_pains: "Immediate frustrations costing time/money/health."
+      latent_pains: "Unrealized inefficiencies or hidden risks."
+    buying_objections: ["Price_Friction", "Trust_Deficit", "Switching_Effort", "Complexity_Fear"]
+    media_consumption: ["Preferred_Social_Platforms", "Search_Engines", "Influencer_Archetypes", "Peak_Active_Hours"]
+  failure_mode_alert: "Decorative Persona: Fictional demographics with zero actionable customer purchase triggers. Persona must be validated by real CRM data, sales call logs, or survey responses."
+
+customer_journey_mapping_matrix:
+  stages_5a:
+    1_aware:
+      customer_mindset: "I recognize a symptom or see an intriguing hook."
+      funnel_tier: "TOFU"
+      content_assets: ["Short viral video", "Infographic hook", "Educational social carousel"]
+      cta_type: "Learn more / Follow page"
+    2_appeal:
+      customer_mindset: "This brand looks credible and resonates with my taste."
+      funnel_tier: "TOFU_MOFU"
+      content_assets: ["Brand narrative film", "Value proposition breakdown", "Pillar blog post"]
+      cta_type: "Subscribe to newsletter / Bookmark"
+    3_ask:
+      customer_mindset: "I need to verify specs, read customer reviews, and compare options."
+      funnel_tier: "MOFU"
+      content_assets: ["Comparison matrices", "In-depth case studies", "Demo videos", "FAQ"]
+      cta_type: "Download whitepaper / Join webinar / Message consultant"
+    4_act:
+      customer_mindset: "I am ready to purchase if risk is neutralized."
+      funnel_tier: "BOFU"
+      content_assets: ["Landing page", "Limited-time offer", "Unboxing video", "Money-back guarantee"]
+      cta_type: "Buy now / Start free trial / Register checkout"
+    5_advocate:
+      customer_mindset: "I love this product and proudly recommend it to peers."
+      funnel_tier: "RETENTION_VIRAL"
+      content_assets: ["VIP community access", "Referral incentives", "User-generated content spotlight"]
+      cta_type: "Share referral code / Leave verified review"
+
+editorial_calendar_operational_engine:
+  single_source_of_truth: "Pillar Sheet -> Dynamic Date Formula -> Calendar Grid View."
+  workflow_states:
+    - "IDEA_BACKLOG"
+    - "BRIEF_APPROVED"
+    - "DRAFTING"
+    - "EDITORIAL_REVIEW"
+    - "DESIGN_PRODUCTION"
+    - "SCHEDULED"
+    - "PUBLISHED"
+    - "PERFORMANCE_AUDITED"
+  lead_time_buffer: "Minimum 7 days between final asset sign-off and publication date."
