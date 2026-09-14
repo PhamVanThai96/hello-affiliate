@@ -9,6 +9,9 @@ source_documents:
   - "mba-quan-tri-doanh-nghiep/6-operations-management/04-inventory-management.md"
   - "mba-quan-tri-doanh-nghiep/6-operations-management/06-project-management.md"
   - "mba-quan-tri-doanh-nghiep/6-operations-management/09-theory-of-constraints.md"
+  - "mba-quan-tri-doanh-nghiep/6-operations-management/05-capacity-planning.md"
+  - "mba-quan-tri-doanh-nghiep/6-operations-management/07-forecasting.md"
+  - "mba-quan-tri-doanh-nghiep/6-operations-management/08-layout-strategy.md"
 
 process_physics_and_flow_equations:
   littles_law:
@@ -75,3 +78,125 @@ project_scheduling_cpm_and_pert:
   pert_probabilistic_duration:
     expected_time: "Te = (Optimistic + 4*Most_Likely + Pessimistic) / 6"
     variance: "Var = ((Pessimistic - Optimistic) / 6)^2"
+
+capacity_planning_models:
+  capacity_measurement:
+    design_capacity: "Maximum theoretical output under ideal conditions."
+    effective_capacity: "Maximum practical output after maintenance, changeovers, and normal interruptions."
+    actual_output: "Real output achieved in operations."
+    efficiency_formula: "Efficiency = Actual_Output / Effective_Capacity"
+    utilization_formula: "Utilization = Actual_Output / Design_Capacity"
+  break_even_capacity:
+    formula: "Break_Even_Output = Fixed_Cost / (Price - Variable_Cost_per_Unit)"
+    purpose: "Test whether added capacity can be financially supported by forecast demand."
+  capacity_timing_strategies:
+    lead_strategy: "Add capacity before demand arrives; lowers stockout/lost-sales risk but raises idle-capacity and capital risk."
+    lag_strategy: "Add capacity after demand exceeds current capacity; protects capital but risks lost customers and missed share."
+    match_strategy: "Add capacity incrementally around forecast demand; balances overcapacity risk and shortage risk."
+  aggregate_planning:
+    chase_strategy: "Adjust labor/output closely to demand; low inventory, high hiring/firing and coordination cost."
+    level_strategy: "Keep workforce/output stable and absorb demand swings through inventory; easier control but higher holding risk."
+    mixed_strategy: "Combine stable base capacity, selective overtime/temporary labor, and moderate inventory buffers."
+  bottleneck_queueing_and_flow:
+    bottleneck_rule: "System capacity is constrained by the lowest-capacity step."
+    mm1_utilization_formula: "rho = arrival_rate / service_rate"
+    mm1_waiting_time_formula: "Wq = arrival_rate / (service_rate * (service_rate - arrival_rate))"
+    queueing_implication: "As utilization approaches 100%, waiting time rises nonlinearly; service systems need buffer capacity."
+  learning_curve_and_line_balancing:
+    learning_curve_formula: "T_n = T_1 * n^(log2(learning_rate))"
+    cycle_time_formula: "Cycle_Time = Available_Production_Time / Required_Daily_Output"
+    theoretical_min_workstations: "N_min = sum(task_times) / Cycle_Time"
+    line_balance_efficiency_formula: "Balance_Efficiency = sum(task_times) / (Actual_Workstations * Cycle_Time)"
+  capacity_requirements_planning:
+    definition: "CRP translates the master production schedule into detailed capacity needs by work center using routing standards."
+  flexible_capacity_options:
+    gig_economy_labor: "Use on-demand external labor instead of permanent fixed staffing."
+    cloud_kitchen: "Rent shared kitchen capacity instead of owning a full restaurant footprint."
+    warehouse_as_a_service: "Rent storage/fulfillment capacity by demand period."
+    cloud_computing_iaas: "Scale computing capacity up or down without owning server infrastructure."
+  strategic_capacity_cushion:
+    formula: "Capacity_Cushion = 100% - Utilization_Rate"
+    purpose: "Reserve slack capacity for volatile demand, emergencies, or strategic opportunities."
+
+forecasting_methods:
+  forecast_horizons:
+    short_term: "< 3 months; scheduling, replenishment, daily/weekly staffing."
+    medium_term: "3 months to 2 years; aggregate planning and budgeting."
+    long_term: "> 2 years; capacity, facility, and product-strategy decisions."
+  method_families:
+    qualitative: "Use expert judgment when history is weak or structural change dominates."
+    quantitative: "Use historical data when patterns are stable enough to model."
+  time_series_components:
+    trend: "Long-run upward or downward movement."
+    seasonality: "Pattern repeating at fixed intervals."
+    cyclical: "Longer economic-cycle movement without fixed periodicity."
+    random_irregular: "Residual noise from unpredictable events."
+    additive_model: "Y = T + S + C + R"
+    multiplicative_model: "Y = T * S * C * R"
+  moving_average:
+    formula: "MA_n = sum(recent_n_actual_values) / n"
+    tradeoff: "Larger n smooths noise more but reacts slower to real trend shifts."
+  weighted_moving_average:
+    formula: "WMA = sum(weight_i * actual_value_i), where sum(weight_i) = 1"
+    use_case: "Assign higher weight to recent observations when recency matters."
+  exponential_smoothing:
+    simple_formula: "F_t+1 = alpha * Y_t + (1 - alpha) * F_t"
+    alpha_tradeoff: "Higher alpha reacts faster but is noisier; lower alpha is smoother but slower."
+    holt_method: "Adds a trend component for data with clear upward or downward movement."
+    holt_winters_method: "Adds both trend and seasonality for recurring seasonal demand."
+  regression_analysis:
+    simple_linear_formula: "Y = a + bX"
+    slope_formula: "b = (n*sum(XY) - sum(X)*sum(Y)) / (n*sum(X^2) - (sum(X))^2)"
+    intercept_formula: "a = mean(Y) - b * mean(X)"
+    multiple_regression_formula: "Y = a + b1X1 + b2X2 + ... + bkXk"
+    r_squared: "Share of Y-variation explained by the regression model."
+  forecast_error_metrics:
+    mad: "MAD = sum(abs(Y_t - F_t)) / n"
+    mse: "MSE = sum((Y_t - F_t)^2) / n"
+    mape: "MAPE = (1/n) * sum(abs((Y_t - F_t) / Y_t)) * 100%"
+    bias: "Bias = sum(Y_t - F_t) / n"
+  tracking_signal:
+    formula: "TS = sum(Y_t - F_t) / MAD"
+    control_guideline: "A common warning threshold is outside +/- 4."
+  qualitative_and_collaborative_methods:
+    delphi_method: "Anonymous multi-round expert estimation until relative consensus emerges."
+    cpfr: "Collaborative Planning, Forecasting, and Replenishment shares forecast inputs across supply-chain partners."
+  advanced_forecasting_models:
+    arima: "ARIMA(p,d,q) handles autoregression, differencing, and moving-average error structure."
+    prophet: "Business-friendly model for multiple seasonalities, holidays, and missing/outlier-heavy data."
+    machine_learning: "Random Forest, XGBoost, and LSTM help when demand depends on many complex drivers."
+    alternative_data_inputs:
+      - "Google Trends"
+      - "Social media mentions and sentiment"
+      - "Weather data"
+      - "Satellite parking-lot traffic"
+      - "Aggregated credit-card transaction data"
+
+layout_strategy_types:
+  process_layout:
+    definition: "Group similar functions or machines together."
+    best_fit: "High variety, lower volume, make-to-order or functional service settings."
+    example: "Hospital departments such as X-ray, internal medicine, and surgery."
+    tradeoff: "High flexibility but higher internal movement cost and more complex flow control."
+  product_layout:
+    definition: "Arrange resources in the exact processing sequence of the product."
+    best_fit: "High-volume, standardized, repetitive production."
+    example: "Automobile assembly line."
+    tradeoff: "High throughput and low unit cost but low flexibility; one disrupted station affects the full line."
+  fixed_position_layout:
+    definition: "The product stays still while people, equipment, and materials move to it."
+    best_fit: "Large, heavy, or immovable outputs."
+    example: "Shipbuilding, construction projects, aircraft production."
+    tradeoff: "Necessary for large projects but costly to coordinate moving resources around the site."
+  cellular_layout:
+    definition: "Group machines into cells serving families of similar products."
+    best_fit: "Moderate variety with repeatable product families and group-technology logic."
+    example: "Component manufacturing with related part families."
+    tradeoff: "Balances flow efficiency and flexibility but requires more upfront analysis and redesign effort."
+  retail_service_layout_models:
+    grid_layout: "Maximizes display/storage density and supports easy product finding; typical in supermarkets."
+    free_flow_layout: "Encourages browsing and discovery at the cost of lower space efficiency; common in fashion retail."
+    loop_layout: "Guides customers through the full display path; classic IKEA-style circulation."
+    hot_zone_vs_cold_zone: "High-visibility zones should carry high-margin or launch items; destination essentials can pull traffic deeper into the store."
+    eye_level_selling: "Shelf positions around customer eye level receive higher product pick-up rates."
+

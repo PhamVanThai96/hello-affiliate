@@ -1,0 +1,72 @@
+schema: "content_governance_rules_v1"
+module_id: "SYS_MOD_04_GOVERNANCE"
+title: "Content Moderation, Compliance & AI Safety Guardrails — toàn hệ thống"
+description: >-
+  Mở rộng guardrail hiện có trong content_marketing/06_ai_workflows_prompts.yaml
+  (vốn chỉ áp dụng cho content pipeline) thành bộ quy tắc kiểm duyệt & compliance
+  áp dụng cho MỌI domain: MBA, Content Marketing, Google Ads, Real Estate.
+
+# ============================================================
+# 1. NGUYÊN TẮC CHỐNG HALLUCINATION (áp dụng toàn cục)
+# ============================================================
+factual_integrity:
+  rule_1: "Mọi số liệu thống kê, benchmark (CAC, CLV, WACC, giá BĐS/m2, CPC...) phải gắn nguồn + năm. Không chấp nhận claim trôi nổi."
+  rule_2: "Nếu không tìm thấy số liệu trong KB/raw-source và không có Web Search xác nhận -> nói rõ 'chưa có dữ liệu xác thực', không tự suy diễn con số."
+  rule_3: "Công thức tài chính/marketing phải khớp với 02_QUANTITATIVE_FORMULAS.json — không tự chế biến thể công thức."
+
+# ============================================================
+# 2. COMPLIANCE THEO NGÀNH (Domain-specific disclaimers)
+# ============================================================
+financial_investment_disclaimer:
+  applies_to: ["DOM_MBA (corporate valuation, M&A)", "DOM_RE (định giá BĐS, dự báo giá)"]
+  required_text_vi: "Số liệu/định giá mang tính tham khảo tại thời điểm phân tích, không phải khuyến nghị đầu tư. Người dùng cần tự thẩm định hoặc tham vấn chuyên gia tài chính/pháp lý trước khi ra quyết định."
+  trigger_condition: "Khi output chứa: định giá cụ thể, dự báo ROI, khuyến nghị mua/bán tài sản."
+
+advertising_compliance:
+  applies_to: ["DOM_ADS", "DOM_CM"]
+  rules:
+    - "Không tạo copy quảng cáo chứa cam kết tuyệt đối ('100% hiệu quả', 'đảm bảo lợi nhuận') vi phạm chính sách Google Ads."
+    - "Affiliate content phải disclose rõ 'bài viết có chứa link affiliate' theo thông lệ minh bạch quảng cáo."
+    - "Landing page analysis không được thu thập/hiển thị PII (email, SĐT khách hàng thật) trong output huấn luyện công khai."
+
+legal_medical_boundary:
+  applies_to: "all_domains"
+  rule: "Agent không đưa ra tư vấn pháp lý/y tế mang tính xác định (definitive). Chỉ tổng hợp thông tin tham khảo + khuyến nghị gặp chuyên gia có chứng chỉ hành nghề."
+
+# ============================================================
+# 3. BRAND SAFETY & TONE CONTROL
+# ============================================================
+brand_safety:
+  forbidden_claims:
+    - "Cam kết doanh số/kết quả tuyệt đối không kiểm chứng được"
+    - "So sánh hạ thấp đối thủ bằng thông tin chưa xác thực"
+  negative_prompt_blacklist_inherit_from: "content_marketing/06_ai_workflows_prompts.yaml#quality_control_and_ai_safety_guardrails.brand_voice_fidelity"
+  tone_by_domain:
+    DOM_MBA: "Học thuật, cấu trúc framework rõ ràng (I-II-III-IV), trích dẫn lý thuyết gốc."
+    DOM_CM: "Thực chiến, ngắn gọn, action-oriented, ví dụ áp dụng ngay."
+    DOM_ADS: "Số liệu-driven, tập trung KPI (CPC/CPA/ROAS), không marketing-speak sáo rỗng."
+    DOM_RE: "Cẩn trọng, nhiều số liệu, luôn kèm disclaimer tài chính."
+
+# ============================================================
+# 4. PII & DATA PRIVACY
+# ============================================================
+pii_handling:
+  rule_1: "Dữ liệu crawl từ google-ads/report/ (landing page thật, khách hàng thật) không được đưa vào training set/output public mà không ẩn danh hóa domain/tên thương hiệu nếu người dùng không cho phép."
+  rule_2: "Credential file (client_secret*.json, token*.json) tuyệt đối không được đọc nội dung ra output, kể cả khi user yêu cầu debug — chỉ hướng dẫn cách kiểm tra qua terminal cục bộ."
+  rule_3: "Khi tổng hợp case study nội bộ (VD case BĐS cụ thể) để đưa vào KB dùng chung, cần ẩn danh tên khách hàng/địa chỉ chính xác nếu không phải case public (case-study đã publish)."
+
+# ============================================================
+# 5. HUMAN-IN-THE-LOOP CHECKPOINT
+# ============================================================
+human_review_required_before_publish:
+  - "Ad copy / campaign budget thực chi > ngưỡng do người dùng định nghĩa"
+  - "Bài content/blog public (SEO) trước khi đăng"
+  - "Bất kỳ con số định giá BĐS đưa ra cho khách hàng thật"
+  - "Case study/case autopsy mới thêm vào ai-distilled-kb (đảm bảo tính chính xác trước khi trở thành nguồn tri thức lâu dài)"
+
+# ============================================================
+# 6. AUDIT TRAIL
+# ============================================================
+audit_and_versioning:
+  rule: "Mỗi lần cập nhật rule trong file này phải ghi log tại NOTE-CHANGE tương ứng (ngày, người duyệt, lý do thay đổi)."
+  review_cycle: "Rà soát governance rules tối thiểu mỗi quý hoặc khi có case vi phạm phát sinh."

@@ -1,0 +1,96 @@
+{
+  "schema": "task_orchestration_v1",
+  "module_id": "SYS_MOD_03_ORCHESTRATION",
+  "description": "Deterministic router điều phối câu hỏi người dùng tới đúng domain KB / raw-source folder, xử lý câu hỏi liên ngành (cross-domain), và fallback khi domain chưa được distilled.",
+  "domain_registry": [
+    {
+      "domain_id": "DOM_CM",
+      "name": "Content Marketing",
+      "kb_path": "ai-distilled-kb/content_marketing/",
+      "raw_source_path": "content-marketing/",
+      "status": "distilled",
+      "trigger_keywords": [
+        "content",
+        "seo",
+        "copywriting",
+        "aida",
+        "pas",
+        "content pillar",
+        "video script",
+        "content calendar",
+        "kpi content"
+      ]
+    },
+    {
+      "domain_id": "DOM_MBA",
+      "name": "MBA Business Administration",
+      "kb_path": "ai-distilled-kb/mba_management/",
+      "raw_source_path": "mba-quan-tri-doanh-nghiep/",
+      "status": "distilled",
+      "trigger_keywords": [
+        "pestel",
+        "porter",
+        "swot",
+        "chiến lược",
+        "wacc",
+        "npv",
+        "vrio",
+        "balanced scorecard",
+        "case study",
+        "sme",
+        "kế toán",
+        "tài chính doanh nghiệp"
+      ]
+    },
+    {
+      "domain_id": "DOM_ADS",
+      "name": "Google Ads & Affiliate Campaign",
+      "kb_path": "ai-distilled-kb/affiliate_ads/",
+      "raw_source_path": "google-ads/",
+      "status": "distilled",
+      "trigger_keywords": [
+        "google ads",
+        "affiliate",
+        "campaign",
+        "keyword planner",
+        "landing page",
+        "cpc",
+        "quality score",
+        "cpa"
+      ]
+    },
+    {
+      "domain_id": "DOM_RE",
+      "name": "Real Estate",
+      "kb_path": "ai-distilled-kb/real_estate/",
+      "raw_source_path": "real-estate/",
+      "status": "distilled",
+      "trigger_keywords": [
+        "bất động sản",
+        "định giá bđs",
+        "vinhomes",
+        "dự án",
+        "bds",
+        "real estate"
+      ]
+    }
+  ],
+  "routing_logic": {
+    "step_1": "Match trigger_keywords của câu hỏi với domain_registry (có thể match nhiều domain).",
+    "step_2": "Nếu match 1 domain và status = distilled -> truy vấn kb_path trực tiếp (00_ONTOLOGY_INDEX -> 01_HEURISTICS_ENGINE -> domain YAML).",
+    "step_3": "Nếu match 1 domain và status = raw_only_not_distilled -> thực hiện fallback_action, thông báo rõ cho người dùng về mức độ tin cậy thấp hơn.",
+    "step_4_cross_domain": "Nếu match >= 2 domain (VD: định giá BĐS + tài chính doanh nghiệp, hoặc content Ads + Google Ads) -> tra cross_domain_edges trong 00_ONTOLOGY_INDEX.json để tìm liên kết, tổng hợp câu trả lời theo thứ tự: Strategic framing (DOM_MBA) -> Execution tactic (DOM_CM/DOM_ADS) -> Domain-specific data (DOM_RE).",
+    "step_5_no_match": "Nếu không match domain nào -> trả lời rõ ràng đây là ngoài phạm vi KB hiện có, đề xuất dùng Web Search bổ sung nếu người dùng đồng ý."
+  },
+  "escalation_rules": [
+    {
+      "condition": "Câu hỏi liên quan tới số tiền đầu tư > mức rủi ro cao (VD mua BĐS, rót vốn campaign lớn)",
+      "action": "Bắt buộc áp dụng disclaimer tài chính (04_CONTENT_GOVERNANCE_RULES.yaml) trước khi đưa khuyến nghị."
+    },
+    {
+      "condition": "Câu hỏi yêu cầu thao tác trực tiếp với credential/API key (google-ads/keys/)",
+      "action": "Từ chối in ra nội dung secret, chỉ hướng dẫn quy trình (revoke/rotate) theo AGENTS.md mục 4."
+    }
+  ],
+  "maintenance_note": "DOM_ADS và DOM_RE đã được distilled (2026-09-14) vào ai-distilled-kb/affiliate_ads/ và ai-distilled-kb/real_estate/. Chạy check_kb_drift.py định kỳ để phát hiện tài liệu mới."
+}

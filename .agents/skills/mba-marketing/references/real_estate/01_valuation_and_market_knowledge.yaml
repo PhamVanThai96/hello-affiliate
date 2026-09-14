@@ -1,0 +1,380 @@
+schema: "ai_distilled_knowledge_module_v1"
+module_id: "RE_MOD_01_VALUATION_MARKET"
+domain: "DOM_RE"
+title: "Real Estate Valuation Models, Market Structure, and Transaction Economics"
+source_documents:
+  - "real-estate/kien-thuc-bat-dong-san-tong-quat.md"
+  - "real-estate/mo-hinh-dinh-gia-bat-dong-san.md"
+
+legal_market_and_asset_foundations:
+  governing_laws:
+    land_law_2024: "Effective 2025-01-01; foundational law for land-use rights."
+    housing_law_2023: "Governs ownership, purchase, and sale of housing assets."
+    real_estate_business_law_2023: "Governs brokerage and real-estate business activity."
+    civil_code_2015: "Contract and civil-transaction legal base."
+    notarization_law: "Mandatory notarization process for transfer transactions."
+  legal_document_stack:
+    certificate_of_land_use_rights: "Sổ đỏ."
+    certificate_of_house_ownership_and_land_use_rights: "Sổ hồng."
+    construction_permit: "Giấy phép xây dựng."
+    land_allocation_or_lease_decision: "Administrative land-use decision from state authority."
+  land_use_categories:
+    residential_land_odt: "High liquidity; suitable for housing construction."
+    agricultural_land_lua_cln_bhk: "Restricted construction; requires land-use conversion."
+    commercial_service_land_tmd: "Business use; common duration 50 years."
+    industrial_land: "Factory and warehouse use."
+  mandatory_pre_purchase_checks:
+    - "Dispute status."
+    - "Mortgage or bank charge status."
+    - "Zoning, clearance, road-expansion, or planning encumbrance."
+    - "Lộ giới and chỉ giới xây dựng impact."
+    - "Actual owner identity versus documents."
+    - "Independent verification at Văn phòng đăng ký đất đai."
+  property_type_matrix:
+    townhouse:
+      liquidity: "High"
+      strengths: ["Urban utility access", "Common end-user demand"]
+      weaknesses: ["High ticket size", "Limited land area"]
+    villa:
+      liquidity: "Lower"
+      strengths: ["Large land parcel", "Premium positioning"]
+      weaknesses: ["Large capital requirement", "High maintenance cost"]
+    project_land_plot:
+      liquidity: "Medium"
+      strengths: ["Structured planning", "Infrastructure readiness"]
+      weaknesses: ["Higher entry price than freehold scattered land"]
+    freehold_residential_land:
+      liquidity: "Medium"
+      strengths: ["Lower acquisition price than many projects"]
+      weaknesses: ["Requires deeper legal due diligence"]
+    agricultural_land:
+      liquidity: "Speculative"
+      strengths: ["Low nominal price"]
+      weaknesses: ["High legal and use-conversion risk", "Cannot be built on immediately"]
+    warehouse_or_factory:
+      liquidity: "Niche"
+      strengths: ["Higher yield potential"]
+      weaknesses: ["Narrow buyer/tenant pool"]
+
+market_structure_and_cycle_analysis:
+  real_estate_market_cycle_framework:
+    name_en: "Real Estate Market Cycle"
+    components: ["Bottom", "Recovery", "Expansion", "Peak", "Correction"]
+    phase_mapping_4_stage: ["Accumulation", "Growth", "Distribution", "Recession"]
+    vietnam_cycle_length: "7-10 years"
+    peak_signals:
+      - "Giao dịch ảo and land fever headlines proliferate."
+      - "Speculative participation dominates owner-occupier demand."
+      - "Prices detach from rental economics."
+    bottom_signals:
+      - "Liquidity dries up."
+      - "Investors withdraw."
+      - "Forced sellers emerge."
+  macro_driver_stack:
+    name_en: "Macro Driver Stack"
+    components: ["Bank Interest Rates", "Real Estate Credit", "Inflation", "GDP and Household Income", "Urbanization", "Legal Policy", "Public Infrastructure"]
+    directional_rules:
+      lower_interest_rates: "Lower rates usually support property demand and prices."
+      tighter_credit: "Credit tightening suppresses leverage capacity and transactions."
+      inflation: "Real estate can act as an inflation hedge."
+      infrastructure: "Highways, metro, airports, bridges, and new industrial parks can re-rate local prices."
+  market_segmentation:
+    affordable: "< 2B VND; highest liquidity; strongest owner-occupier demand."
+    mid_market: "2B-5B VND; balanced own-use and investment demand."
+    upper_segment: "5B-15B VND; investment and rental focus."
+    luxury: "> 15B VND; narrow buyer universe."
+  supply_demand_lens:
+    supply_side: ["New projects launched", "Available land bank", "Inventory overhang"]
+    demand_side: ["Population growth", "Urban migration", "Real housing demand", "Speculative demand"]
+  geographic_market_notes:
+    ho_chi_minh_city: "Economic center; land scarcity; high price baseline."
+    hanoi: "Administrative center; relatively stable demand base."
+    peri_urban_provinces: "Bình Dương, Đồng Nai, Long An, Bắc Ninh require infrastructure-led analysis."
+    resort_markets: "Đà Nẵng, Nha Trang, Phú Quốc, Hội An require tourism-cycle sensitivity."
+
+planning_location_and_buildability_analysis:
+  zoning_map_interpretation:
+    color_codes:
+      yellow_or_orange: "Urban or rural residential land."
+      green: "Agriculture, parks, trees."
+      blue: "Water bodies or public works."
+      purple_or_pink: "Commercial and service land."
+      gray: "Industrial and warehouse land."
+    plan_granularity:
+      plan_1_500: "Highest detail; identifies lot-specific road boundaries and setbacks."
+      plan_1_2000: "Subdivision zoning plan."
+  infrastructure_impact_rules:
+    metro_brt: "Pricing benefit often strongest within 500m-2km from stations."
+    airport: "Peripheral land can appreciate strongly, but timing risk remains high."
+    bridge_or_highway: "Improves regional access and can remove location bottlenecks."
+    industrial_park: "Supports housing demand from workers and specialists."
+  construction_control_metrics:
+    building_density: "Building_Density = Built_Area / Land_Area"
+    floor_area_ratio_far: "FAR = Total_Floor_Area / Land_Area"
+    maximum_height: "Maximum_Height = Permitted number of floors or vertical height under local rules."
+    road_setback: "Lộ_Giới = Required setback measured from road centerline."
+    construction_line: "Chỉ_Giới_Xây_Dựng = Buildable line measured from land boundary."
+  location_analysis_lens:
+    name_en: "Location Analysis"
+    components: ["Distance to CBD", "Schools", "Hospitals", "Markets", "Transit Connectivity", "Internal and External Amenities", "House or Plot Orientation"]
+  micro_market_checks:
+    components: ["Actual transacted prices", "Speed of sale", "Vacancy rate", "3-5 year local price trend"]
+  swot_asset_screen:
+    strengths_examples: ["Prime location", "Clean legal status", "Good orientation", "Reasonable entry price"]
+    weaknesses_examples: ["Small area", "Deep alley", "Partial planning cut"]
+    opportunities_examples: ["New infrastructure project", "Fast-growing area"]
+    threats_examples: ["Hidden disputes", "Rate increases", "Planning freeze"]
+
+transaction_taxes_fees_and_process:
+  standard_transaction_workflow:
+    - "Search and inspect asset."
+    - "Negotiate price and intent deposit."
+    - "Complete legal due diligence."
+    - "Sign deposit contract."
+    - "Notarize transfer contract."
+    - "Complete payment and handover."
+    - "Register title transfer."
+    - "Receive updated certificate."
+  deposit_contract_rules:
+    deposit_norm: "Common deposit = 5%-10% of asset value."
+    buyer_default: "Buyer forfeits deposit."
+    seller_default: "Seller returns deposit x 2."
+    mandatory_terms: ["Parties and asset description", "Purchase price", "Payment schedule", "Notarization deadline", "Cancellation conditions", "Tax and fee allocation", "Attached assets and fixtures"]
+  notarization_requirements:
+    documents: ["Citizen ID", "Land-use-right certificate", "Marriage certificate if applicable", "Spousal consent if required"]
+    notarization_fee: "0.1%-0.15% of contract value."
+    transfer_processing_time: "10-30 working days depending on locality."
+  buyer_side_costs:
+    registration_fee: "Lệ_phí_trước_bạ = 0.5% x State_Land_Price"
+    dossier_appraisal_fee: "Depends on locality."
+    surveying_fee: "Depends on locality if measurement is needed."
+  seller_side_costs:
+    personal_income_tax: "PIT = 2% x Transfer_Price"
+  rental_tax_rules:
+    business_registration_trigger: "Annual rental revenue > 100M VND."
+    rental_personal_income_tax: "Rental_PIT = 5% x Rental_Revenue"
+    rental_vat: "Rental_VAT = 5% x Rental_Revenue"
+    combined_rental_tax_rate: "Combined_Rental_Tax = 10% x Rental_Revenue"
+  compliance_flags:
+    underreported_contract_price: "Tax evasion risk; tax authority can re-assess transaction price under market reference."
+    state_land_price_gap: "State land price is typically below market price, but Land Law 2024 pushes closer alignment from 2025."
+
+investment_return_and_leverage_metrics:
+  core_return_metrics:
+    roi: "ROI = Profit / Invested_Capital x 100%"
+    rental_yield: "Rental_Yield = Annual_Rent / Purchase_Price x 100%"
+    roe: "ROE = Return_on_Equity when leverage is used."
+    payback_period: "Payback_Period = Invested_Capital / Annual_Cash_Flow"
+  leverage_rules:
+    prudent_ltv: "Borrow no more than 50%-60% of asset value."
+    one_percent_rule: "Monthly_Rent >= 1% x Purchase_Price indicates viable rental economics."
+    monthly_cash_flow_check: "Net_Cash_Flow = Rental_Income - Interest - Principal - Management - Maintenance - Tax"
+    buffer_rule: "Maintain at least 6 months of bank-interest payment buffer."
+  strategy_menu:
+    buy_and_hold: "Low risk; suitable for large capital and lower experience."
+    flipping: "Medium risk; requires pricing and renovation execution skill."
+    land_speculation: "High risk; tied to planning and timing."
+    rental_income: "Lower risk; suited to broad investor base."
+    land_development: "Very high risk; suited to professional operators."
+
+valuation_method_stack:
+  sales_comparison_framework:
+    name_en: "Sales Comparison Approach"
+    components: ["Reference Transaction Selection", "Attribute Gap Identification", "Adjustment Factor Application", "Adjusted Value Synthesis"]
+    principle: "Subject value equals comparable transaction prices adjusted for asset differences."
+    base_equation: "Value_subject = Value_reference ± Adjustment_for_Differences"
+    multiplicative_equation: "V = V_ref x (1 + δ1) x (1 + δ2) x ... x (1 + δn)"
+    variables:
+      V: "Subject property value."
+      V_ref: "Observed transacted value of comparable property."
+      delta_i: "Positive or negative adjustment factor for attribute i."
+    reference_adjustment_ranges:
+      major_road_vs_alley: "+30% to +80%"
+      alley_4m_vs_2m: "+10% to +20%"
+      corner_lot: "+15% to +25%"
+      south_or_southeast_orientation_vs_west: "+5% to +10%"
+      regular_shape_vs_irregular: "+5% to +15%"
+      rear_widening_vs_tapering: "+5% to +10%"
+      near_market_school_hospital_under_500m: "+5% to +15%"
+      cemetery_or_polluted_canal: "-10% to -30%"
+      minor_flooding: "-10% to -20%"
+      mortgaged_asset: "-3% to -5%"
+      common_title_vs_individual_title: "-10% to -20%"
+      planning_cut: "-20% to -50% depending on area affected"
+    usage_condition: "Best for houses or land plots in active markets with sufficient actual transactions."
+  income_approach_framework:
+    name_en: "Income Approach"
+    components: ["Gross Rental Income Estimation", "Vacancy Adjustment", "Operating Expense Deduction", "Capitalization or DCF Discounting", "Exit Value Inclusion"]
+    direct_capitalization_equation: "V = NOI / Cap_Rate"
+    noi_equation: "NOI = GRI x (1 - vacancy_rate) - OPEX"
+    dcf_equation: "V = CF1/(1+r)^1 + CF2/(1+r)^2 + ... + CFn/(1+r)^n + P_exit/(1+r)^n"
+    discount_rate_build_up: "r = Risk_Free_Rate + Real_Estate_Risk_Premium"
+    rental_benchmarks:
+      vacancy_rate: "5%-10%"
+      cap_rate_hcm_hn: "4%-6%"
+      discount_rate_common_range: "8%-12% per year"
+    quick_screen_grm: "GRM = Purchase_Price / Annual_Rent"
+    grm_interpretation:
+      under_15: "Attractive; payback under 15 years."
+      between_15_and_20: "Acceptable."
+      above_20: "Expensive relative to rent."
+    usage_condition: "Best for rental property, offices, and apartment investments."
+  cost_approach_framework:
+    name_en: "Cost Approach"
+    components: ["Land Value Estimation", "Replacement Cost Estimation", "Depreciation Assessment", "Residual Structure Value"]
+    base_equation: "V = V_land + (RC - D)"
+    replacement_cost_equation: "RC = Gross_Floor_Area x Construction_Cost_per_m2"
+    depreciation_equation: "D = D_physical + D_functional + D_economic"
+    straight_line_physical_depreciation: "D_physical = RC x Building_Age / Economic_Life"
+    construction_cost_benchmarks_2025_2026_hcm:
+      level_4_house: "3.5-5.0M VND/m2"
+      townhouse_2_to_3_storey: "6.0-8.5M VND/m2"
+      townhouse_4_to_5_storey: "8.5-12.0M VND/m2"
+      villa_high_finish: "10.0-18.0M VND/m2"
+      steel_frame_factory: "2.5-4.0M VND/m2"
+    economic_life_reference:
+      reinforced_concrete_house: "50-70 years"
+      level_4_house: "20-30 years"
+    usage_condition: "Best for new buildings or special assets with limited comparable data."
+  residual_method_framework:
+    name_en: "Residual Method"
+    components: ["Gross Development Value", "Total Development Cost", "Developer Profit Margin", "Residual Land Value"]
+    base_equation: "V_land = GDV - TDC - P_developer"
+    simplified_equation: "V_land = GDV - TDC - (GDV x profit_margin)"
+    development_cost_stack: ["Construction", "Design", "Legal", "Interest Expense", "Marketing", "Contingency"]
+    developer_profit_reference: "15%-25% of GDV"
+    usage_condition: "Best for development land and subdivision projects."
+  extraction_method_framework:
+    name_en: "Extraction Method"
+    components: ["Total Property Transaction Value", "Replacement Cost", "Depreciation", "Implied Land Value per m2"]
+    base_equation: "V_land = V_total - V_building"
+    unit_land_value_equation: "V_land_per_m2 = [V_total - (RC - D)] / S_land"
+    usage_condition: "Useful when only house-plus-land transactions are observable."
+
+integrated_quantitative_screening_system:
+  pre_acquisition_metrics:
+    cap_rate: "Cap_Rate = NOI / V x 100%"
+    gross_rental_yield: "Gross_Yield = Annual_Rent / Purchase_Price x 100%"
+    net_rental_yield: "Net_Yield = NOI / Purchase_Price x 100%"
+    price_to_rent_ratio: "P_R = Purchase_Price / Annual_Rent"
+    capital_gain_roi: "ROI = (Sale_Price - Purchase_Price - Costs) / (Purchase_Price + Costs) x 100%"
+    irr: "Solve IRR where 0 = -C0 + Σ[CF_t/(1+IRR)^t] + P_exit/(1+IRR)^n"
+    dscr: "DSCR = NOI / Annual_Debt_Service"
+    ltv: "LTV = Loan_Amount / Property_Value x 100%"
+  metric_thresholds:
+    cap_rate_interpretation_low: "< 3% -> overpriced versus income stream."
+    cap_rate_interpretation_high: "> 7% -> cheap or high risk."
+    price_to_rent_under_15: "Cheap relative to renting."
+    price_to_rent_between_15_and_20: "Balanced zone."
+    price_to_rent_above_20: "Price inflation warning."
+    dscr_safe: "> 1.25"
+    dscr_break_even: "= 1.00"
+    dscr_risk: "< 1.00"
+    ltv_safe: "<= 60%"
+    ltv_caution: "60%-70%"
+    ltv_high_risk: "> 80%"
+    irr_high_efficiency: "> 12% per year"
+  position_factor_model:
+    name_en: "Position Factor Model"
+    components: ["Road_Type", "Alley_Width", "Lot_Position", "Lot_Shape", "Orientation", "Legal_Status", "Planning_Impact"]
+    equation: "P_target = P_base x K1 x K2 x K3 x ... x Kn"
+    coefficient_reference:
+      K1_road_type: "Main_Road = 1.50; Through_Alley = 1.00; Dead_End_Alley = 0.85"
+      K2_alley_width: ">= 6m = 1.10; 4m = 1.00; 3m = 0.90; < 3m = 0.80"
+      K3_lot_position: "Frontage = 1.50; Corner = 1.20; In_Alley = 1.00"
+      K4_lot_shape: "Rear_Widening = 1.10; Square = 1.05; Rear_Tapering = 0.90; Irregular = 0.85"
+      K5_orientation: "South_or_Southeast = 1.05; East = 1.00; North_or_Northwest = 0.95; West = 0.93"
+      K6_legal_status: "Individual_Title = 1.00; Common_Title = 0.88; Handwritten_Paper = 0.65"
+      K7_planning: "No_Cut = 1.00; Cut_<20% = 0.80; Cut_>50% = 0.40"
+  weighted_synthesis_framework:
+    name_en: "Weighted Valuation Synthesis"
+    components: ["Sales Comparison Value", "Income Value", "Cost Value", "Asset-Type Weighting"]
+    equation: "V_final = (w1 x V_sales_comparison) + (w2 x V_income) + (w3 x V_cost)"
+    weight_constraint: "w1 + w2 + w3 = 100%"
+    recommended_weights:
+      owner_occupied_house: "w1=60%, w2=20%, w3=20%"
+      rental_house: "w1=40%, w2=50%, w3=10%"
+      land_plot: "w1=70%, w2=10%, w3=20%"
+      commercial_apartment: "w1=30%, w2=60%, w3=10%"
+
+market_overheating_and_intrinsic_value_tests:
+  bubble_vs_real_growth_framework:
+    name_en: "Speculation Filter"
+    components: ["Price Velocity", "Actual Transactions", "Artificial Scarcity", "Planning Confirmation", "Buyer Composition", "Rental Support", "P/R or GRM Stability"]
+    speculative_signals:
+      - "Price rises > 30% within < 3 months."
+      - "Listing prices rise without notarized transactions."
+      - "Broker-created artificial scarcity."
+      - "Unconfirmed planning rumors."
+      - "Speculators dominate buyers."
+      - "Rent cannot justify sale price."
+    fundamental_growth_signals:
+      - "Price increase tracks real infrastructure progress."
+      - "Actual notarized transactions exist."
+      - "Supply is genuinely scarce."
+      - "Planning decision is officially signed."
+      - "Owner-occupier demand exists."
+      - "Rent grows in the same direction as sale prices."
+  intrinsic_value_tests:
+    pr_relative_history: "Valuation_Multiple = Current_P_R / Average_5Y_P_R"
+    pr_relative_interpretation_high: "> 1.30 -> 30% above normal valuation."
+    pr_relative_interpretation_low: "< 0.80 -> cheap versus history."
+    price_to_income_ratio: "PIR = Property_Price / Annual_Household_Income"
+    pir_interpretation:
+      under_5: "Affordable relative to income."
+      between_5_and_10: "Difficult for middle-income households."
+      above_10: "Bubble signal."
+    max_price_by_min_yield: "Max_Price = Annual_Rent / Minimum_Required_Yield"
+    inflation_adjusted_price: "Real_Price = Nominal_Price / (Current_CPI / Base_CPI)"
+  qualitative_value_drivers:
+    fundamental_driver_group: ["Actual residential population", "Employment and income base", "Existing infrastructure", "Essential amenities within 1km", "5-10 year historical appreciation quality"]
+    expectation_driver_group: ["Road or bridge planning", "New industrial zone approval", "Airport-adjacent speculative narratives"]
+    market_psychology_group: ["Owner-occupier versus speculation ratio", "Days on Market", "Frequent title flipping"]
+    expectation_pricing_rule: "Pay expectation premium only after infrastructure has physically broken ground."
+  buy_no_buy_matrix:
+    cheap_price_high_value: "Buy immediately candidate."
+    cheap_price_low_value: "Review for value trap."
+    expensive_price_high_value: "Possible purchase only with clear exit strategy."
+    expensive_price_low_value: "Reject."
+
+due_diligence_and_risk_control:
+  independent_valuation_process:
+    name_en: "7-Step Independent Valuation"
+    components:
+      - "Collect actual transactions, not listing prices."
+      - "Apply sales comparison on at least 3 similar properties."
+      - "Estimate income value when investment use-case exists."
+      - "Cross-check with cost approach."
+      - "Check P/R ratio and GRM against local history."
+      - "Review qualitative factors: real demand, infrastructure, legal status, sentiment."
+      - "Synthesize weighted value range and set maximum bid."
+  fast_checklist_targets:
+    comparable_transaction_count: ">= 3 transactions within 500m and within 6 months"
+    gross_yield_target: "> 4%"
+    price_to_rent_target: "< 20"
+    grm_target: "< 18"
+    dscr_target: "> 1.2"
+  risk_register:
+    legal_risks:
+      planning_land: "Cannot build or may be recovered by the state."
+      mortgaged_land: "Title transfer can fail if encumbrance unresolved."
+      disputed_land: "High litigation and capital-loss risk."
+      fake_contract_or_fake_title: "Total capital loss risk."
+    financial_risks:
+      excessive_leverage: "Rate increase can force distressed sale."
+      poor_liquidity: "Premium or remote assets may be hard to exit."
+      hidden_costs: "Repairs, management fees, or prolonged vacancy reduce actual return."
+      peak_purchase: "Buying at cycle peak creates capital-loss risk."
+    market_risks:
+      fake_boom: "Price manipulation without end-user demand."
+      phantom_project: "Fraudulent project risk."
+      suspended_planning: "Announced infrastructure may never execute."
+  safety_principles:
+    - "Do not buy assets you do not understand."
+    - "Always perform independent legal verification; do not rely solely on brokers."
+    - "Maintain 6 months of interest-payment reserves."
+    - "Do not concentrate all capital into one asset."
+    - "Buy based on intrinsic value, not hope."
+    - "Define exit strategy before acquisition."
+
+compliance_note: "Số liệu/mô hình định giá mang tính tham khảo, không phải khuyến nghị đầu tư. Xem ai-distilled-kb/04_CONTENT_GOVERNANCE_RULES.yaml#financial_investment_disclaimer."

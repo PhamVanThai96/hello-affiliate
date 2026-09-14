@@ -36,7 +36,10 @@ All specialized reference documents are stored under `./references/` and should 
 | **Organizational Behavior**      | [05_organizational_behavior.yaml](./references/mba_management/05_organizational_behavior.yaml)| For Motivation (Herzberg/SDT), Situational Leadership, Tuckman stages, and Kotter 8-step change |
 | **Operations Research & SCM**   | [06_operations_supply_chain.yaml](./references/mba_management/06_operations_supply_chain.yaml)| For Little's Law, Theory of Constraints (TOC), Lean TIMWOODS, DMAIC, and EOQ inventory |
 | **SME 0-to-1 Operations**        | [07_sme_operations_playbook.yaml](./references/mba_management/07_sme_operations_playbook.yaml)| For SME cash runway survival, F&B/Retail unit benchmarks, and software stack selection |
-| **Case Autopsies**               | [08_case_autopsies.yaml](./references/mba_management/08_case_autopsies.yaml) | For strategic/financial post-mortems of Soya Garden, Mixue, Bách Hóa Xanh, VinFast, 7-Eleven |
+| **Case Autopsies**               | [08_case_autopsies.yaml](./references/mba_management/08_case_autopsies.yaml) | For strategic/financial post-mortems of Soya Garden, Mixue, Bách Hóa Xanh, VinFast, 7-Eleven, Coffee House, and 20+ strategic framework cases |
+| **Real Estate Valuation**         | [01_valuation_and_market_knowledge.yaml](./references/real_estate/01_valuation_and_market_knowledge.yaml) | For property valuation methods, market cycle analysis, legal/planning checks, investment return metrics (VN market) |
+| **Real Estate Action Playbook**   | [02_action_playbook.yaml](./references/real_estate/02_action_playbook.yaml) | For phase-gated investment roadmap, due diligence protocol, transaction execution checklist |
+| **Affiliate Ads Campaign Logic**  | [01_campaign_and_landing_page_playbook.yaml](./references/affiliate_ads/01_campaign_and_landing_page_playbook.yaml) | For Google Ads campaign planning rules, keyword analysis logic, landing page scoring criteria |
 
 ---
 

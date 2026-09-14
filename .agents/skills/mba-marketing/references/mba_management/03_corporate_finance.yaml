@@ -10,6 +10,10 @@ source_documents:
   - "mba-quan-tri-doanh-nghiep/3-financial-management/06-working-capital-management.md"
   - "mba-quan-tri-doanh-nghiep/3-financial-management/10-corporate-valuation.md"
   - "mba-quan-tri-doanh-nghiep/3-financial-management/11-integrated-corporate-finance-guide.md"
+  - "mba-quan-tri-doanh-nghiep/3-financial-management/05-financial-statement-analysis.md"
+  - "mba-quan-tri-doanh-nghiep/3-financial-management/07-dividend-policy.md"
+  - "mba-quan-tri-doanh-nghiep/3-financial-management/08-risk-and-return.md"
+  - "mba-quan-tri-doanh-nghiep/3-financial-management/09-mergers-and-acquisitions.md"
 
 capital_budgeting_decision_framework:
   net_present_value_npv:
@@ -63,3 +67,228 @@ corporate_valuation_methodologies:
   multiples_comparable_valuation:
     enterprise_multiples: "EV / EBITDA (capital structure neutral), EV / Sales (useful for pre-profit high growth)."
     equity_multiples: "Price / Earnings (P/E), Price / Book (P/B)."
+
+financial_statement_analysis:
+  core_statement_map:
+    balance_sheet: "Assets = Liabilities + Equity"
+    income_statement: "Revenue - Expenses = Net Income"
+    cash_flow_statement: "Operating_Cash_Flow + Investing_Cash_Flow + Financing_Cash_Flow = Change_in_Cash"
+    retained_earnings_link: "Ending_Retained_Earnings = Beginning_Retained_Earnings + Net_Income - Dividends"
+  ratio_framework:
+    profitability:
+      gross_margin: "Gross_Margin = Gross_Profit / Revenue"
+      operating_margin: "Operating_Margin = EBIT / Revenue"
+      net_margin: "Net_Margin = Net_Income / Revenue"
+      return_on_equity: "ROE = Net_Income / Equity"
+      return_on_assets: "ROA = Net_Income / Total_Assets"
+      return_on_invested_capital: "ROIC = NOPAT / Invested_Capital"
+    liquidity:
+      current_ratio: "Current_Ratio = Current_Assets / Current_Liabilities"
+      quick_ratio: "Quick_Ratio = (Current_Assets - Inventory) / Current_Liabilities"
+      cash_ratio: "Cash_Ratio = Cash / Current_Liabilities"
+      operating_cash_flow_ratio: "Operating_CF_Ratio = Operating_Cash_Flow / Current_Liabilities"
+    leverage:
+      debt_to_equity: "Debt_to_Equity = Total_Debt / Equity"
+      debt_to_assets: "Debt_to_Assets = Total_Debt / Total_Assets"
+      interest_coverage: "Interest_Coverage = EBIT / Interest_Expense"
+      debt_to_ebitda: "Debt_to_EBITDA = Total_Debt / EBITDA"
+    efficiency:
+      inventory_turnover: "Inventory_Turnover = COGS / Average_Inventory"
+      days_inventory_outstanding: "DIO = 365 / Inventory_Turnover"
+      receivables_turnover: "AR_Turnover = Revenue / Average_AR"
+      days_sales_outstanding: "DSO = 365 / AR_Turnover"
+      payables_turnover: "AP_Turnover = COGS / Average_AP"
+      days_payable_outstanding: "DPO = 365 / AP_Turnover"
+      cash_conversion_cycle: "CCC = DSO + DIO - DPO"
+      asset_turnover: "Asset_Turnover = Revenue / Total_Assets"
+  dupont_decomposition:
+    three_factor: "ROE = (Net_Income/Revenue) * (Revenue/Assets) * (Assets/Equity)"
+    five_factor: "ROE = (EBT/EBIT) * (EBIT/Revenue) * (Revenue/Assets) * (Assets/Equity) * (1 - T)"
+    diagnostic_rule: "Separate ROE into margin, turnover, and leverage before concluding operating superiority."
+  analytical_methods:
+    trend_analysis: "Compare 3-5 years for revenue, margins, working capital, leverage, and cash flow direction."
+    common_size_income_statement: "Income_Statement_Common_Size = Line_Item / Revenue"
+    common_size_balance_sheet: "Balance_Sheet_Common_Size = Line_Item / Total_Assets"
+    cross_sectional_analysis: "Benchmark against peers and industry averages rather than absolute thresholds alone."
+  red_flag_patterns:
+    - "Revenue growth with declining Operating_Cash_Flow -> aggressive revenue recognition risk."
+    - "Accounts_Receivable growth > Revenue growth -> collection quality deterioration or channel stuffing risk."
+    - "Inventory growth outpacing sales -> obsolescence and write-down risk."
+    - "Recurring 'one-time' charges -> underlying earnings overstatement risk."
+    - "Operating_Cash_Flow < Net_Income across multiple periods -> accrual quality concern."
+    - "Rapidly rising Debt_to_Equity -> refinancing and distress risk."
+    - "Accounting policy changes without economic explanation -> comparability risk."
+  case_signals:
+    apple_fy2023:
+      revenue: "$383B"
+      gross_margin: "44.1%"
+      operating_margin: "29.8%"
+      net_margin: "25.3%"
+      roe: "171%"
+      roic: "55-60%"
+      interpretation: "ROE amplified by buyback-driven equity reduction; ROIC better isolates operating quality."
+    enron_failure:
+      reported_revenue_2000: "$101B"
+      debt_reported_vs_effective: "$13B on balance sheet vs $38B+ including SPE exposure"
+      net_income_signal: "$979M reported profit with weak economic reality"
+      control_lesson: "Cash flow, note disclosures, off-balance-sheet entities, and related-party structures override headline EPS."
+
+
+dividend_policy_models:
+  payout_identities:
+    net_income_split: "Net_Income = Dividends_Paid + Retained_Earnings"
+    payout_ratio: "Payout_Ratio = Dividends / Net_Income"
+    retention_ratio: "Retention_Ratio = 1 - Payout_Ratio = Retained_Earnings / Net_Income"
+    dividend_yield: "Dividend_Yield = Annual_Dividend_per_Share / Current_Share_Price"
+    sustainable_growth_rate: "g = ROE * Retention_Ratio"
+    gordon_growth_cost_of_equity: "Ke = D1 / P0 + g"
+    gordon_growth_valuation: "P0 = D1 / (Ke - g)"
+  theory_map:
+    miller_modigliani_irrelevance: "Under no taxes, no transaction costs, symmetric information, and rational investors, firm value is independent of payout policy."
+    bird_in_hand: "Investors prefer current dividends to uncertain future capital gains; higher payout can reduce perceived equity risk."
+    tax_preference: "When dividend taxation exceeds capital gains taxation, investors prefer low payout and buybacks."
+    signaling: "Dividend initiation or increase conveys confidence in future earnings; dividend cut signals severe deterioration."
+    agency_free_cash_flow: "Distributions reduce discretionary free cash flow and constrain managerial overinvestment."
+    clientele_effect: "Investor groups sort into payout policies matching income, growth, and tax preferences."
+  policy_mechanics:
+    lintner_partial_adjustment: "Delta_Dt = c * (Target_Dt - D_{t-1}) + epsilon"
+    smoothing_rule: "Managers adjust slowly toward target payout and avoid cuts because negative signal cost is high."
+    life_cycle_payout_ranges:
+      startup: "0% payout"
+      growth: "0-20% payout"
+      mature: "30-60% payout"
+      decline: "60-100%+ payout"
+  distribution_choice:
+    cash_dividend: "Recurring payout; immediate tax event; strongest commitment signal."
+    stock_dividend: "Additional shares issued instead of cash; ownership percentage unchanged absent sale."
+    share_buyback: "Flexible capital return; tax deferred until sale; raises EPS through share count reduction."
+    special_dividend: "One-time distribution for non-recurring excess cash."
+  buyback_vs_dividend_tradeoffs:
+    tax: "Dividends taxed on receipt; buybacks generally convert return to capital gains taxation timing."
+    flexibility: "Dividend is sticky; buyback can be paused without equivalent signaling damage."
+    pricing_signal: "Cash deal can signal earnings confidence; buyback can signal perceived undervaluation."
+    earnings_per_share_effect: "Share_Buyback -> Lower_Shares_Outstanding -> Higher_EPS, all else equal."
+  scenario_grid:
+    high_payout_conditions: "Mature business, excess free cash flow, limited positive-NPV projects, income-oriented shareholders."
+    low_payout_conditions: "High-growth business, strong reinvestment pipeline, tax-sensitive holders, need for strategic flexibility."
+  case_snapshots:
+    berkshire_hathaway:
+      dividend_policy: "No cash dividend since 1967"
+      compounded_return: "19.8% per year over 58 years"
+      capital_return_shift: "Buybacks introduced at roughly $9B per year as cash balance exceeded reinvestment capacity"
+      takeaway: "Retention dominates payout only when internal capital allocation quality remains superior."
+    general_electric:
+      2009_cut: "$1.24 -> $0.40 per share (-68%)"
+      2018_cut: "$0.48 -> $0.04 per share (-92%)"
+      outcome: "Dividend cuts destroyed signaling credibility, shocked income clientele, and accelerated investor exit."
+
+
+risk_return_portfolio_theory:
+  return_measurement:
+    single_period_return: "R = (P1 - P0 + D) / P0"
+    expected_portfolio_return: "E(Rp) = Sum[w_i * E(R_i)]"
+    arithmetic_mean: "Arithmetic_Mean = (R1 + R2 + ... + Rn) / n"
+    geometric_mean: "Geometric_Mean = [(1 + R1)(1 + R2)...(1 + Rn)]^(1/n) - 1"
+  risk_measurement:
+    variance: "sigma^2 = Sum[p_i * (R_i - E(R))^2]"
+    standard_deviation: "sigma = sqrt(sigma^2)"
+    coefficient_of_variation: "CV = sigma / E(R)"
+  risk_taxonomy:
+    systematic_risk: "Market-wide risk driven by rates, inflation, recessions, and policy; cannot be diversified away."
+    unsystematic_risk: "Firm-specific risk driven by operations, governance, lawsuits, and product events; diversified away with broad holdings."
+    diversification_rule: "Approx. 20-30 stocks remove most unsystematic risk; market risk remains."
+  portfolio_construction:
+    two_asset_variance: "sigma_p^2 = wA^2*sigmaA^2 + wB^2*sigmaB^2 + 2*wA*wB*sigmaA*sigmaB*rhoAB"
+    correlation_interpretation: "rho = +1 -> no diversification benefit; rho = 0 -> partial diversification; rho = -1 -> theoretical full hedge."
+    efficient_frontier: "Efficient portfolios maximize expected return for each total-risk level."
+  capm_framework:
+    capm: "E(R_i) = Rf + Beta_i * [E(Rm) - Rf]"
+    beta: "Beta_i = Cov(R_i, R_m) / Var(R_m) = (rho_i,m * sigma_i) / sigma_m"
+    market_risk_premium: "MRP = E(Rm) - Rf"
+    security_market_line: "Required return is linear in beta, not total sigma."
+    beta_interpretation: "Beta > 1 amplifies market movement; Beta < 1 dampens it; Beta < 0 moves opposite the market."
+  capital_market_line_vs_security_market_line:
+    capital_market_line: "E(Rp) = Rf + [(E(Rm) - Rf) / sigma_m] * sigma_p"
+    distinction: "CML uses total risk and applies to efficient portfolios; SML uses beta and applies to all assets and portfolios."
+  performance_measures:
+    sharpe_ratio: "Sharpe = (Rp - Rf) / sigma_p"
+    treynor_ratio: "Treynor = (Rp - Rf) / Beta_p"
+    jensens_alpha: "alpha = Rp - [Rf + Beta_p * (Rm - Rf)]"
+    information_ratio: "Information_Ratio = Active_Return / Tracking_Error"
+  model_limitations:
+    - "Single-factor CAPM omits size, value, momentum, profitability, and investment effects."
+    - "Beta, correlation, and market risk premium estimates are unstable across windows and regimes."
+    - "Historical normal-distribution assumptions understate tail risk and crisis correlation spikes."
+    - "True market portfolio is unobservable; real investors face taxes, frictions, and leverage constraints."
+  case_snapshots:
+    yale_endowment:
+      annualized_return_1985_2021: "13.7%"
+      sp500_comparison: "9.9%"
+      allocation_examples: "Private Equity 41.0%; Absolute Return 23.5%; US Equity 2.3%"
+      lesson: "Low-correlation alternatives improved risk-adjusted performance over long horizons."
+    ltcm_failure:
+      leverage: "25:1, later 100:1+"
+      equity_loss_1998: "$4.6B in five months"
+      failure_mechanisms: "Correlation convergence to 1.0, fat tails, liquidity spiral, and leverage-driven margin calls."
+
+
+mergers_and_acquisitions:
+  deal_taxonomy:
+    strategic_types:
+      horizontal: "Combination within same industry or value-chain stage."
+      vertical: "Combination across supplier-distributor chain stages."
+      conglomerate: "Combination across unrelated industries."
+    posture_types:
+      friendly: "Target board negotiates and approves transaction."
+      hostile: "Bidder bypasses target board and appeals directly to shareholders."
+    consideration_types:
+      cash: "Immediate taxable consideration; acquirer bears full economic risk."
+      stock: "Risk shared through equity exchange; often interpreted as acquirer using relatively expensive currency."
+      mixed: "Combination of cash and stock."
+      leveraged_buyout: "Acquisition financed substantially with target-supported debt."
+  valuation_stack:
+    discounted_cash_flow: "Intrinsic value from PV of future free cash flow."
+    comparable_companies: "Relative value from peer trading multiples."
+    precedent_transactions: "Control value from prior acquisition multiples including premium."
+    football_field_logic: "Offer range sits within overlapping valuation bands from multiple methods."
+  synergy_and_premium_math:
+    synergy_value: "Value_of_Synergies = V_Combined - V_A - V_B"
+    acquisition_premium: "Acquisition_Premium = (Offer_Price - Market_Price) / Market_Price"
+    acquirer_value_creation: "Acquirer_Value_Created = Synergies - Premium_Paid"
+    implementation_rule: "Cost synergies carry higher realization confidence than revenue synergies."
+  financing_and_returns:
+    lbo_return_drivers: "IRR_LBO = f(Entry_Multiple, Exit_Multiple, Leverage, EBITDA_Growth, FCF_Paydown)"
+    private_equity_target: "Typical PE target IRR = 20-25%+"
+    debt_paydown_logic: "LBO equity return is amplified when target cash flow deleverages the capital structure over holding period."
+  earnings_impact_screen:
+    accretive_test: "EPS_pro_forma > EPS_standalone"
+    quick_screen: "Deal tends to be accretive when Target_Earnings_Yield > Cost_of_Financing."
+  process_map:
+    phases:
+      - "Preparation: advisor selection, buyer list, information memo, data room."
+      - "Marketing: teaser, NDA, IOI, management presentation, shortlist."
+      - "Due diligence: financial, legal, commercial, operational, tax, HR, IT review."
+      - "Negotiation and signing: SPA, board approval, fairness opinion."
+      - "Closing: regulatory clearance, shareholder approval, conditions precedent."
+      - "Integration: post-merger integration, synergy capture, system and culture alignment."
+    post_merger_rule: "Most value creation or destruction is determined during integration, not at signing."
+  defensive_tactics:
+    poison_pill: "Rights plan triggered by hostile ownership threshold."
+    staggered_board: "Only a fraction of directors stands for election each cycle."
+    white_knight: "Friendly alternative bidder invited to defeat hostile acquirer."
+    crown_jewel_defense: "Dispose of prized assets to reduce takeover attractiveness."
+    pac_man_defense: "Target counterbids for the hostile acquirer."
+    golden_parachute: "Large executive severance raises takeover cost."
+  case_snapshots:
+    disney_pixar_2006:
+      price: "$7.4B all stock"
+      premium: "Approx. -5% versus trading price"
+      value_created: ">>$50B cumulative strategic value estimate"
+      success_driver: "Creative autonomy preserved while Disney scaled distribution, parks, sequels, and merchandising."
+    aol_time_warner_2000:
+      price: "$182B all stock"
+      premium: "71% to Time Warner shareholders"
+      goodwill_write_down: "$99B"
+      value_destroyed: "$208B over roughly three years"
+      failure_driver: "Peak-bubble valuation, weak synergy logic, cultural conflict, and technology obsolescence of dial-up economics."
+

@@ -9,6 +9,8 @@ source_documents:
   - "mba-quan-tri-doanh-nghiep/4-accounting/05-variance-analysis.md"
   - "mba-quan-tri-doanh-nghiep/4-accounting/06-financial-ratios.md"
   - "mba-quan-tri-doanh-nghiep/4-accounting/08-comprehensive-accounting-case-studies-manual.md"
+  - "mba-quan-tri-doanh-nghiep/4-accounting/04-budgeting-and-forecasting.md"
+  - "mba-quan-tri-doanh-nghiep/4-accounting/07-integrated-case-studies.md"
 
 financial_statements_interlocking_mechanics:
   fundamental_accounting_identity: "Total Assets = Total Liabilities + Owner Equity"
@@ -73,3 +75,114 @@ financial_ratios_diagnostic_taxonomy:
     return_on_assets_roa: "Net Income / Total Assets"
     return_on_equity_roe: "Net Income / Shareholders' Equity"
     return_on_invested_capital_roic: "EBIT*(1 - Tc) / (Total Debt + Equity - Cash) (Must exceed WACC to create economic value)"
+
+budgeting_and_forecasting:
+  budget_vs_forecast:
+    budget: "Approved financial plan, usually annual, detailed, and used for accountability and control."
+    forecast: "Continuously updated estimate based on actuals, trends, and assumptions; used for adjustment rather than performance appraisal."
+    control_difference: "Budget is fixed baseline; forecast is adaptive forward view."
+  master_budget_architecture:
+    sales_budget: "Primary demand assumption driving downstream production, cost, and cash budgets."
+    production_budget: "Production = Sales + Ending_Inventory - Beginning_Inventory"
+    direct_materials_budget: "DM_Purchases = DM_Needed + Ending_DM_Inventory - Beginning_DM_Inventory"
+    direct_labor_budget: "Translate production volume into labor hours and labor cash needs."
+    manufacturing_overhead_budget: "Separate variable overhead from fixed overhead for production support."
+    selling_and_administrative_budget: "Budget commercial and administrative spending outside manufacturing."
+    cash_budget: "Map actual cash collections, disbursements, financing needs, and minimum cash balance."
+    pro_forma_statements: "Projected Income Statement and Balance Sheet close the planning cycle."
+  budgeting_methods:
+    incremental_budgeting: "Prior-year budget adjusted by percentage change; fast but preserves embedded inefficiency."
+    zero_based_budgeting: "Every cost package justified from zero before approval."
+    activity_based_budgeting: "Resource plan derived from activity volumes and cost drivers."
+    flexible_budgeting: "Flexible_Budget = Variable_Rate * Actual_Volume + Fixed_Costs"
+    rolling_budget: "Maintain constant future planning horizon by adding new periods as actuals replace forecasts."
+    beyond_budgeting: "Use decentralized KPIs and adaptive management instead of fixed annual budget contracts."
+  zero_based_budgeting_workflow:
+    decision_units: "Define responsibility centers, projects, or activities requiring resource approval."
+    decision_packages: "Build base, current, and enhanced funding cases per unit."
+    ranking: "Order packages by ROI, urgency, and strategic importance."
+    allocation: "Fund highest-ranked packages until budget capacity is exhausted."
+  forecasting_methods:
+    moving_average: "Forecast_{t+1} = Sum[Actual_{t-n+1} ... Actual_t] / n"
+    exponential_smoothing: "F_{t+1} = alpha * A_t + (1 - alpha) * F_t"
+    regression: "Y = a + bX"
+    qualitative_inputs: "Expert judgment, Delphi, market surveys, and sales-force estimates supplement time-series models."
+    method_selection_rule: "Higher volatility environments require shorter update cycles and stronger scenario analysis."
+  forecast_accuracy_metrics:
+    mad: "MAD = Sum[|A - F|] / n"
+    mape: "MAPE = (1/n) * Sum[|(A - F) / A|] * 100%"
+    mse: "MSE = Sum[(A - F)^2] / n"
+    tracking_signal: "Tracking_Signal = Running_Sum_of_Errors / MAD"
+  operating_applications:
+    static_vs_flexible_budget_rule: "Volume variance must be separated from spending variance before judging performance."
+    rolling_forecast_rule: "Maintain 12-month forward visibility; update monthly or quarterly as actuals arrive."
+    thirteen_week_cash_flow: "Short-horizon liquidity control tool for startups and stressed businesses; alert threshold should be explicit."
+  decision_matrix:
+    startup: "13-week cash budget + monthly rolling forecast"
+    early_stage: "Simple annual budget + quarterly rolling forecast"
+    growth_stage: "Master budget + flexible budget + monthly rolling forecast + scenarios"
+    mature_stage: "Full master budget + periodic ZBB review + driver-based forecast"
+  case_snapshots:
+    unilever_zbb:
+      pilot_savings: "EUR200M"
+      operating_margin_change: "16.4% (2015) -> 19.1% (2019)"
+      total_savings: ">EUR2B"
+      lesson: "ZBB reallocated spend toward higher-value uses rather than acting as uniform cost cutting."
+    sears_failure:
+      revenue_decline: "$53B (2006) -> $16B (2017)"
+      bankruptcy: "2018"
+      failure_driver: "Incremental static budgeting and absent rolling forecast delayed digital reallocation and restructuring."
+
+
+integrated_accounting_case_studies:
+  - company: "Phở Việt Chain"
+    scenario: "Single-store CVP validation, menu-profitability redesign via ABC, multi-branch expansion budgeting, branch variance control, and ratio-based scale decision."
+    key_numbers:
+      - "Selling price per bowl = 80,000 VND"
+      - "Variable cost per bowl = 32,000 VND"
+      - "Fixed cost per month = 120,000,000 VND"
+      - "Contribution margin per bowl = 48,000 VND"
+      - "Break-even volume = 2,500 bowls/month ≈ 83 bowls/day"
+      - "New branch investment = 1,600,000,000 VND"
+      - "Probability-weighted NPV for new branch = +425,000,000 VND"
+      - "Chain ratios: Gross Margin 62%, Operating Margin 12%, Net Margin 8%, Current Ratio 1.4, D/E 1.2, ROE 28%, CCC -5 days"
+    decision_framework_applied:
+      - "CVP and break-even screening"
+      - "ABC and menu engineering"
+      - "Master budget, rolling forecast, and scenario analysis"
+      - "Monthly variance analysis by branch"
+      - "Financial ratio review plus DuPont: ROE = 8% * 1.75 * 2.0 = 28%"
+    outcome: "Expansion approved with constraint: fix underperforming branches first and limit Year-1 rollout to three new locations."
+  - company: "GreenPack"
+    scenario: "IFRS-readiness cleanup, hybrid job-plus-ABC costing, factory-expansion budgeting, and investor-grade performance reporting for Series A fundraising."
+    key_numbers:
+      - "Revenue = 15,000,000,000 VND/year before Series A"
+      - "IFRS adjustments reduced Net Income by 15%"
+      - "ABC margin shift: Hộp A 14.3% -> 32.5%; Hộp B 34.6% -> 7.7%; Túi C 17.6% -> 11.3%"
+      - "5-year revenue plan = 18 -> 25 -> 35 -> 45 -> 55 billion VND"
+      - "Factory-2 CapEx = 8.0 billion VND in Year 1 and 2.0 billion VND in Year 2"
+      - "Series A raised = $3M at $15M valuation"
+    decision_framework_applied:
+      - "Financial accounting normalization for investor diligence"
+      - "Job costing plus ABC overhead allocation"
+      - "5-year pro-forma budget and ZBB package ranking"
+      - "Monthly budget-vs-actual scorecard with variance drill-down"
+      - "Ratio and DuPont communication in fundraising narrative"
+    outcome: "Capital raise completed after tighter revenue recognition, impairment recognition, and clearer product-level economics."
+  - company: "TechMart"
+    scenario: "Retail decline amplified by distorted financial reporting, absent store/category costing, optimistic static budgeting, ignored variances, and deteriorating ratios."
+    key_numbers:
+      - "Peak revenue = 500 billion VND (2019)"
+      - "2020 budget vs actual = 520 vs 380 billion VND (-27%)"
+      - "2021 budget vs actual = 450 vs 350 billion VND (-22%)"
+      - "2022 budget vs actual = 420 vs 280 billion VND (-33%)"
+      - "2023 budget vs actual = 350 vs 180 billion VND (-49%)"
+      - "Inventory Turnover = 8x (2019) -> 2x (2022)"
+      - "Current Ratio = 1.5 (2019) -> 0.6 (2022)"
+      - "Interest Coverage = 5x (2019) -> 0.5x (2022)"
+      - "ROE = 15% (2019) -> -48% implied by DuPont collapse in 2022"
+    decision_framework_applied:
+      - "Failure review across financial accounting, cost accounting, budgeting, variance analysis, and ratio diagnostics"
+      - "DuPont decomposition to isolate margin, turnover, and leverage deterioration"
+    outcome: "Ten of fifteen stores closed by 2023; case demonstrates that measurement without corrective action does not prevent collapse."
+

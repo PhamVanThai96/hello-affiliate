@@ -11,23 +11,30 @@
 | `00_ONTOLOGY_INDEX.json` | JSON | Cross-Domain | Master Knowledge Graph, Entity Dictionary, Prerequisite Trees, Semantic Graph Edges |
 | `01_HEURISTICS_ENGINE.json` | JSON | Decision Logic | Deterministic `IF [Condition] -> THEN [Action]` rulesets for marketing & business agents |
 | `02_QUANTITATIVE_FORMULAS.json` | JSON | Mathematics | Mathematical equations, variables, units, benchmarks across Finance, Ops, and Marketing |
+| `03_TASK_ORCHESTRATION.json` | JSON | Routing Logic | Domain registry, keyword-based router, cross-domain escalation rules covering CM/MBA/Ads/Real-Estate |
+| `04_CONTENT_GOVERNANCE_RULES.yaml` | YAML | Compliance | System-wide content moderation, financial/legal disclaimers, PII handling, human-in-the-loop checkpoints |
 | `cross_domain_synthesis.md` | Markdown | Synthesis | Cross-domain integration: MBA Strategy/Finance/Operations mapped to Content Marketing Physics |
 | **`content_marketing/`** | | | **Content Marketing Knowledge Domain** |
 | ├── `01_core_foundations.yaml` | YAML | Foundations | Definitions, Differentiation Matrix, Three Value Layers (Functional/Emotional/Symbolic) |
-| ├── `02_strategy_architectures.yaml` | YAML | Strategy | Content Pillars, Topic Clusters, 3H Model, Persona Schema, 5A Journey Map, Calendar Engine |
+| ├── `02_strategy_architectures.yaml` | YAML | Strategy | Content Pillars, Topic Clusters, 3H Model, Persona Schema, 5A Journey Map, Calendar Engine, Supplementary Tools/Templates |
 | ├── `03_copywriting_creation.yaml` | YAML | Production | Copywriting Formulas (AIDA, PAS, FAB, SB7), Short-Video Pacing (0-3s, 3-15s, 15-45s, 45-60s) |
 | ├── `04_seo_geo_distribution.yaml` | YAML | Distribution | Search Intent Taxonomy, On-Page SEO, E-E-A-T, GEO (Generative Engine Optimization), Repurposing |
 | ├── `05_analytics_optimization.yaml` | YAML | Analytics | Funnel KPI Taxonomy, Attribution Models (GA4 DDA), Content Decay & Audit Algorithm, A/B Testing |
-| └── `06_ai_workflows_prompts.yaml` | YAML | AI Ops | Prompt Architectures (RTF, CREATE), 5-Agent Content Pipeline, Programmatic Calendar Rules |
+| └── `06_ai_workflows_prompts.yaml` | YAML | AI Ops | Prompt Architectures (RTF, CREATE), 5-Agent Content Pipeline, Programmatic Calendar Rules, Training Curriculum Meta |
 | **`mba_management/`** | | | **MBA Business Administration Knowledge Domain** |
 | ├── `01_strategic_management.yaml` | YAML | Strategy | PESTEL, Porter's 5 Forces, VRIO Framework, Porter Generic, Ansoff, BCG, Blue Ocean ERRC, BSC |
-| ├── `02_marketing_management.yaml` | YAML | Marketing | STP Engine, 4P/7P/4C Systems, 10 Pricing Models, Brand Equity (CBBE), Kahneman System 1 & 2 |
-| ├── `03_corporate_finance.yaml` | YAML | Finance | TVM, Capital Budgeting (NPV/IRR/PI), WACC, CAPM, MM Capital Structure, CCC, DCF Valuation |
-| ├── `04_accounting_control.yaml` | YAML | Accounting | Financial Statements Linkage, CVP & Break-Even Analysis, ABC Costing, Variance, 25+ Ratios |
-| ├── `05_organizational_behavior.yaml`| YAML | Org Behavior | Motivation (Herzberg, SDT, Vroom), Situational Leadership, Tuckman Stages, Lencioni, Kotter Change |
-| ├── `06_operations_supply_chain.yaml` | YAML | Operations | Little's Law, Theory of Constraints (TOC DBR), Lean TIMWOODS, Six Sigma DMAIC, EOQ, CPM/PERT |
+| ├── `02_marketing_management.yaml` | YAML | Marketing | STP, 4P/7P/4C, Pricing, Brand Equity, Marketing Research, IMC, Product Life Cycle, UGC |
+| ├── `03_corporate_finance.yaml` | YAML | Finance | TVM, Capital Budgeting, WACC/CAPM, CCC, DCF, Financial Statement Analysis, Dividend Policy, Risk & Return, M&A |
+| ├── `04_accounting_control.yaml` | YAML | Accounting | Financial Statements Linkage, CVP/BEP, ABC Costing, 25+ Ratios, Budgeting & Forecasting, Integrated Case Studies |
+| ├── `05_organizational_behavior.yaml`| YAML | Org Behavior | Motivation, Leadership, Tuckman, Lencioni, Kotter Change, Power & Politics, Emotional Intelligence, Decision Making |
+| ├── `06_operations_supply_chain.yaml` | YAML | Operations | Little's Law, TOC (DBR), Lean TIMWOODS, Six Sigma DMAIC, EOQ, CPM/PERT, Capacity Planning, Forecasting, Layout Strategy |
 | ├── `07_sme_operations_playbook.yaml` | YAML | SME 0-to-1 | Cash Runway thresholds, F&B/Retail/E-commerce Unit Economics, Vietnamese SME Software Stack |
-| └── `08_case_autopsies.yaml` | YAML | Empirical Cases | Case autopsy cards: Soya Garden, Mixue, Bách Hóa Xanh, VinFast, 7-Eleven |
+| └── `08_case_autopsies.yaml` | YAML | Empirical Cases | 26+ case autopsy cards: Soya Garden, Mixue, Bách Hóa Xanh, VinFast, 7-Eleven, Coffee House, VinFast US entry, Grab, Zara, Vinamilk, VietJet, Apple, Netflix, Cirque du Soleil, Nintendo, Spotify, FPT, Starbucks, Maersk, and more |
+| **`real_estate/`** | | | **Real Estate Knowledge Domain** |
+| ├── `01_valuation_and_market_knowledge.yaml` | YAML | Valuation & Market | Legal/market foundations, valuation methods, pricing equations, yield/leverage metrics, bubble filters |
+| └── `02_action_playbook.yaml` | YAML | Execution | 12-month action roadmap, network/capital buildout, field routines, acquisition/disposition playbook |
+| **`affiliate_ads/`** | | | **Google Ads & Affiliate Campaign Knowledge Domain** |
+| └── `01_campaign_and_landing_page_playbook.yaml` | YAML | Ads / Affiliate | Campaign planning flow, keyword analysis logic, landing-page scoring heuristics, JSON output schema reference |
 
 ---
 
@@ -37,3 +44,12 @@
 - **Direct Variable Lookup:** Every metric and formula contains explicit mathematical relationships and variable constraints in `02_QUANTITATIVE_FORMULAS.json`.
 - **Deterministic Action Routing:** When prompted with a strategic dilemma, query `01_HEURISTICS_ENGINE.json` first using condition matching.
 - **Topological Traversal:** To understand concept relationships, traverse `00_ONTOLOGY_INDEX.json` via `cross_domain_edges`.
+- **Task Routing:** Before answering, resolve target domain(s) via `03_TASK_ORCHESTRATION.json` — all 4 domains (`DOM_CM`, `DOM_MBA`, `DOM_RE`, `DOM_ADS`) are now `status: distilled` with dedicated KB paths.
+- **Compliance Gate:** Apply `04_CONTENT_GOVERNANCE_RULES.yaml` guardrails (financial disclaimers, PII handling, human-in-the-loop) before finalizing any output. System-level behavior contract lives in `/AGENTS.md` at repo root.
+- **Drift Detection:** Run `.agents/skills/mba-marketing/scripts/check_kb_drift.py` to detect raw-source changes/new files not yet reflected in this KB (see `AGENTS.md` §7).
+
+## 3. KNOWN GAPS & EXCLUSIONS (as of last full distillation — 2026-09-14)
+
+- `real-estate/chien-thang-con-quy-napoleon-hill.md`, `real-estate/review-never-eat-alone.md`, `real-estate/the-art-of-seduction-robert-greene.md` — deliberately **excluded** from `real_estate/` domain (personal-development books, not real-estate professional knowledge). Not tracked as drift.
+- `mba-quan-tri-doanh-nghiep/{6..14}/READ.md` (Operations, HR, Economics, Business Law, Data Analytics, Entrepreneurship, Negotiation, Tech Transformation, Supply Chain) — empty placeholder stubs (0 bytes), no content to distill yet. Will surface automatically in drift report once populated.
+- This `ai-distilled-kb/` directory is mirrored 1:1 at `.agents/skills/mba-marketing/references/` (except `_kb_manifest.json`, which is operational state and lives only in `ai-distilled-kb/`). Edit one, sync the other — no automated sync script exists yet, sync manually or via agent.

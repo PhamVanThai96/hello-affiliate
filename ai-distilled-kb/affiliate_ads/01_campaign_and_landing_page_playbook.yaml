@@ -1,0 +1,502 @@
+schema: "ai_distilled_knowledge_module_v1"
+module_id: "ADS_MOD_01_CAMPAIGN_PLAYBOOK"
+domain: "DOM_ADS"
+title: "Google Ads Affiliate Campaign Planning & Landing Page Analysis Logic"
+source_documents:
+  - "README.md"
+  - "google-ads/planner/affiliate_campaign_planner.py"
+  - "google-ads/planner/landing_page_analyzer.py"
+  - "google-ads/keyword_analyzer.py"
+  - "google-ads/google_ads_analyzer.py"
+
+system_architecture:
+  orchestrator:
+    component: "AffiliateCampaignPlanner"
+    role: "Interactive planner collecting campaign inputs, enriching from landing page signals, organizing keyword research, and exporting campaign-plan artifacts."
+    execution_sequence:
+      - "collect_basic_info"
+      - "analyze_landing_page_content"
+      - "collect_campaign_goals"
+      - "collect_budget_info"
+      - "analyze_keywords"
+      - "create_ad_copy"
+      - "setup_tracking"
+      - "create_campaign_structure"
+      - "generate_action_plan"
+      - "generate_checklist"
+      - "save_campaign_plan"
+  analyzer_dependencies:
+    landing_page_analyzer:
+      invocation: "analyze_landing_page(landing_url, monthly_budget, commission_rate, avg_product_price)"
+      inputs:
+        - "landing_page URL"
+        - "monthly budget"
+        - "affiliate commission rate"
+        - "average product price (manual or auto-detected)"
+      outputs:
+        - "landing_page metadata"
+        - "industry_detected"
+        - "target_age_range"
+        - "keyword_suggestions"
+        - "campaign_projections"
+        - "top_keywords_by_cpc"
+        - "top_keywords_by_cvr"
+    keyword_analyzer:
+      optional: true
+      role: "Google Trends enrichment for up to 3 main products."
+      outputs:
+        - "interest_over_time"
+        - "related_queries"
+        - "related_topics"
+        - "top_regions"
+        - "autocomplete suggestions"
+      hard_limitations:
+        - "No CPC from Google Trends"
+        - "No exact search volume from Google Trends"
+        - "No competition level from Google Trends"
+    google_ads_keyword_analyzer:
+      role: "Standalone Google Ads API analyzer for exact keyword planner metrics when API credentials exist."
+      outputs:
+        - "avg_monthly_searches"
+        - "competition"
+        - "competition_index"
+        - "top_of_page bid range"
+        - "avg_cpc_usd"
+        - "avg_cpc_vnd"
+        - "opportunity_score"
+  data_flow:
+    planner_enrichment_path: "manual brand/product inputs -> landing page analysis -> optional auto-fill avg_product_price + age_range -> keyword research -> campaign structure + tracking + outputs"
+    landing_page_analysis_path: "HTTP fetch -> HTML parse -> extract title/meta/headings/products/prices/text/links -> detect industry -> detect target age -> extract keywords -> estimate CPC/CVR -> project campaign metrics"
+    keyword_research_path: "product seeds -> Google Trends related/rising queries -> manual keyword additions -> deduplicate -> bucket into brand/generic/long_tail"
+  file_outputs:
+    planner_outputs:
+      campaign_plan_json: "google-ads/report/campaign_plans/{brand}_campaign_plan_{timestamp}.json"
+      campaign_plan_markdown: "google-ads/report/campaign_plans/{brand}_campaign_plan_{timestamp}.md"
+      landing_page_analysis_json: "google-ads/report/campaign_plans/{brand}_landing_page_analysis_{timestamp}.json"
+    analyzer_outputs:
+      trends_report_json: "google-ads/report/keyword_analysis_{keyword}_{timestamp}.json"
+      google_ads_api_report_json: "google-ads/report/google_ads_analysis_{keyword}_{timestamp}.json"
+
+keyword_analysis_logic:
+  google_trends_metrics:
+    popularity_score: "average of interest_over_time values for selected timeframe"
+    trend_direction_rules:
+      increase_strong: "current_score > first_score x 1.2"
+      increase_mild: "current_score > first_score and current_score <= first_score x 1.2"
+      decrease_strong: "current_score < first_score x 0.8"
+      decrease_mild: "current_score < first_score and current_score >= first_score x 0.8"
+      stable: "all other cases"
+    estimated_search_volume_heuristic:
+      formula_base: "score x geo_multiplier with band-specific adjustment"
+      geo_multipliers:
+        VN: 100000
+        US: 500000
+        JP: 300000
+        TH: 80000
+        SG: 20000
+        GLOBAL: 1000000
+        fallback_other: 50000
+      score_bands:
+        score_ge_80: "volume = score x multiplier x 1.5; output range = volume to 2 x volume"
+        score_50_to_79: "volume = score x multiplier; output range = volume/2 to 2 x volume"
+        score_20_to_49: "volume = score x multiplier x 0.5; output range = volume/2 to 2 x volume"
+        score_lt_20: "volume = score x multiplier x 0.2; output range = volume/2 to 2 x volume"
+  query_and_topic_harvesting:
+    related_queries:
+      top_limit: 20
+      rising_limit: 20
+      breakout_handling: "value 'Breakout' is preserved and normalized to growth '+5000%'"
+    related_topics:
+      top_limit: 10
+      rising_limit: 10
+    top_regions:
+      rule: "sort regional interest descending and keep top 10 rows with score > 0"
+    suggestions:
+      limit: 15
+      source: "Google Trends autocomplete suggestions"
+  planner_seed_and_bucketing_rules:
+    seed_product_limit: 3
+    trends_timeframe_for_planner: "today 3-m"
+    imported_from_top_queries: "up to 10 queries per analyzed product"
+    imported_from_rising_queries: "up to 5 queries per analyzed product"
+    manual_keywords_allowed: true
+    deduplication: "set(all_keywords)"
+    keyword_buckets:
+      brand_keywords: "keyword contains lowercase brand_name"
+      long_tail_keywords: "keyword word_count >= 4 and does not contain brand_name"
+      generic_keywords: "keyword word_count < 4 and does not contain brand_name"
+      competitor_keywords: "bucket exists in output schema but no automatic population logic is implemented"
+    affiliate_policy_capture:
+      allow_brand_keywords_default: false
+      implemented_effect: "planner stores policy flag and categorizes brand terms separately"
+  google_ads_api_opportunity_scoring:
+    formula: "opportunity_score = volume_score + ((100 - competition_index) x 0.3) + cpc_score"
+    volume_score_bands:
+      avg_monthly_searches_ge_10000: 40
+      avg_monthly_searches_ge_5000: 35
+      avg_monthly_searches_ge_1000: 25
+      avg_monthly_searches_ge_100: 15
+      avg_monthly_searches_lt_100: 5
+    cpc_score_bands_usd:
+      between_0_1_and_2_0: 30
+      above_2_0_to_5_0: 20
+      below_0_1: 10
+      above_5_0: 5
+    interpretation_thresholds:
+      excellent: ">= 70"
+      good: ">= 50 and < 70"
+      medium: ">= 30 and < 50"
+      weak: "< 30"
+
+landing_page_scoring_criteria:
+  implemented_extraction_signals:
+    title: "HTML <title> text"
+    meta_description: "meta[name='description'] content"
+    headings:
+      h1_tags: "all H1 values"
+      h2_tags: "all H2 values"
+    product_name_candidates:
+      css_selectors:
+        - ".product-name"
+        - ".product-title"
+        - ".item-name"
+        - "[class*='product']"
+        - "[class*='item-title']"
+      limits:
+        max_elements_scanned_per_selector: 20
+        accepted_text_length: "between 5 and 100 chars after cleanup"
+      cleanup_rules:
+        - "collapse repeated whitespace"
+        - "remove embedded price strings"
+    price_detection:
+      regex_patterns:
+        - '(\d{1,3}(?:[.,]\d{3})*)\s*(?:đ|vnd|₫)'
+        - '(\d{1,3}(?:[.,]\d{3})*)\s*đồng'
+      max_matches_captured: 30
+      valid_price_range_vnd: "10,000 to 50,000,000"
+      avg_price_formula: "mean(filtered numeric prices)"
+    all_text: "full page text with spaces normalized by BeautifulSoup"
+    internal_links:
+      limit: 50
+      rule: "collect only relative or internal-style href values not starting with http://, https://, #, javascript:"
+  derived_classification_rules:
+    industry_detection:
+      source_text: "title + meta_description + joined h1_tags"
+      label_keyword_sets:
+        fashion: ["giày", "dép", "túi", "thời trang", "quần", "áo", "váy", "đầm", "phụ kiện"]
+        electronics: ["điện thoại", "laptop", "máy tính", "tai nghe", "camera", "tivi"]
+        e_commerce: ["mua", "bán", "shop", "store", "cửa hàng"]
+        services: ["dịch vụ", "tư vấn", "hỗ trợ", "chăm sóc"]
+      decision_rule: "count keyword hits per label; choose highest-scoring label; if winning score < 2 then default to e-commerce"
+    target_age_detection:
+      source_text: "title + meta_description + first 2000 chars of all_text"
+      age_keyword_sets:
+        age_18_24: ["teen", "sinh viên", "học sinh", "trẻ trung", "năng động", "gen z"]
+        age_25_34: ["văn phòng", "công sở", "trẻ", "hiện đại", "millennial", "startup"]
+        age_35_44: ["gia đình", "bố mẹ", "trung niên", "lịch lãm", "sang trọng", "chín chắn"]
+        age_45_60: ["trưởng thành", "cao cấp", "đẳng cấp", "lịch thiệp", "phong cách"]
+      default_by_industry:
+        fashion: "25-40"
+        electronics: "20-45"
+        e_commerce: "25-45"
+        services: "30-50"
+      decision_rule: "if any age bucket has positive keyword hits then choose highest-scoring bucket; otherwise use industry default"
+  content_keyword_extraction:
+    source_fields:
+      - "title"
+      - "meta_description"
+      - "h1_tags"
+      - "h2_tags"
+      - "product_names"
+    token_rules:
+      normalization: "lowercase and strip non-word punctuation"
+      min_token_length: 3
+      stopword_filter: "remove Vietnamese and English stopwords hardcoded in analyzer"
+      single_keyword_threshold: "keep tokens with frequency >= 2"
+      phrase_generation:
+        two_word_phrase: "generate sliding 2-word windows with length > 5 chars"
+        three_word_phrase: "generate sliding 3-word windows with length > 8 chars"
+      phrase_threshold: "keep phrases with frequency >= 2"
+      output_caps:
+        single_keywords: 30
+        phrases: 20
+  economics_based_keyword_scoring:
+    benchmark_lookup:
+      e_commerce:
+        avg_cvr_percent: 2.5
+        avg_cpc_range_vnd: "5,000 to 15,000"
+      fashion:
+        avg_cvr_percent: 2.0
+        avg_cpc_range_vnd: "8,000 to 25,000"
+      electronics:
+        avg_cvr_percent: 1.8
+        avg_cpc_range_vnd: "10,000 to 30,000"
+      services:
+        avg_cvr_percent: 3.5
+        avg_cpc_range_vnd: "15,000 to 50,000"
+    commission_guardrail:
+      commission_per_sale_formula: "avg_product_price x (commission_rate / 100)"
+      baseline_affordable_cpc_formula: "(commission_per_sale x 0.5) x (industry_avg_cvr / 100)"
+      budgeting_principle: "allocate at most 50% of affiliate commission to media cost"
+    keyword_type_rules:
+      product_keyword_one_word:
+        clicks_per_conversion: 100
+        competition: "HIGH"
+        estimated_cvr_formula: "industry_avg_cvr x 0.8"
+        match_types: ["Exact", "Phrase", "Broad"]
+      product_keyword_two_words:
+        clicks_per_conversion: 50
+        competition: "MEDIUM"
+        estimated_cvr_formula: "industry_avg_cvr"
+        match_types: ["Exact", "Phrase", "Broad"]
+      product_keyword_three_or_more_words:
+        clicks_per_conversion: 30
+        competition: "LOW"
+        estimated_cvr_formula: "industry_avg_cvr x 1.3"
+        match_types: ["Exact", "Phrase"]
+      extracted_phrase_keywords:
+        three_or_more_words:
+          clicks_per_conversion: 30
+          competition: "LOW"
+          estimated_cvr_formula: "industry_avg_cvr x 1.2"
+        shorter_phrase_variant:
+          clicks_per_conversion: 40
+          competition: "MEDIUM"
+          estimated_cvr_formula: "industry_avg_cvr x 1.2"
+        match_types: ["Exact", "Phrase"]
+      brand_modifier_keywords:
+        brand_source: "root domain token before first dot"
+        modifiers: ["mua", "giá", "khuyến mãi", "sale", "ưu đãi", "chính hãng"]
+        clicks_per_conversion: 20
+        competition: "MEDIUM"
+        estimated_cvr_formula: "industry_avg_cvr x 1.8"
+        match_types: ["Exact", "Phrase"]
+    cpc_and_budget_formulas:
+      keyword_max_cpc: "(commission_per_sale x 0.5) / clicks_per_conversion"
+      keyword_min_cpc: "keyword_max_cpc x 0.6"
+      brand_keyword_min_cpc: "keyword_max_cpc x 0.7"
+      estimated_avg_cpc: "mean(min_cpc, max_cpc)"
+      monthly_budget_recommendation_non_brand: "estimated_avg_cpc x 100 clicks minimum; estimated_avg_cpc x 500 clicks maximum"
+      monthly_budget_recommendation_brand: "estimated_avg_cpc x 150 clicks minimum; estimated_avg_cpc x 600 clicks maximum"
+  campaign_projection_thresholds:
+    avg_cpc_rule: "mean of non-zero estimated_avg_cpc values; fallback 10,000 VND when no valid CPC exists"
+    avg_cvr_rule: "mean of estimated_cvr across generated keyword suggestions"
+    estimated_clicks_per_month: "monthly_budget / avg_cpc"
+    estimated_conversions_per_month: "estimated_clicks_per_month x (avg_cvr / 100)"
+    estimated_cpa: "monthly_budget / estimated_conversions_per_month when conversions > 0 else 0"
+    estimated_impressions: "estimated_clicks_per_month x 20, assuming CTR ~ 5%"
+    recommendation_rules:
+      high_cpa_warning: "> 200,000 VND -> optimize landing page and targeting"
+      low_cpa_scale_signal: "< 50,000 VND -> budget can be scaled"
+      low_cvr_warning: "< 1.5% -> improve landing page and offer"
+      high_cvr_signal: "> 3.0% -> landing page considered well-optimized"
+      high_competition_mix_warning: "HIGH competition keyword share > 50% -> add more long-tail keywords"
+  checklist_level_expectations_from_planner:
+    page_load_speed: "< 3 seconds"
+    mobile_friendly: true
+    clear_cta: true
+    trust_signals: ["reviews", "testimonials"]
+  non_implemented_items:
+    composite_landing_page_score: false
+    direct_measurement_absent:
+      - "page-speed testing"
+      - "mobile rendering audit"
+      - "CTA/button recognition"
+      - "SEO technical audit"
+
+campaign_planning_rules:
+  intake_and_defaults:
+    landing_page_default: "if blank, use https://{domain}"
+    business_type_options:
+      - "E-commerce"
+      - "Services"
+      - "B2B"
+      - "Lead Generation"
+      - "Content/Blog"
+      - "App Download"
+      - "Other"
+    affiliate_commission_default_percent: 8.0
+    avg_product_price_capture: "manual entry or deferred to landing-page auto-detection"
+    auto_calculated_commission_per_order: "avg_product_price x affiliate_commission / 100"
+    target_audience_fields:
+      - "age_range"
+      - "gender"
+      - "location"
+      - "interests"
+    age_range_default: "auto-detect from landing page when omitted"
+  budget_and_schedule_capture:
+    budget_fields:
+      - "monthly_budget"
+      - "daily_budget"
+      - "max_cpc"
+    landing_page_projection_budget_default_vnd: 10000000
+    schedule_defaults:
+      start_date: "today if blank"
+      end_date: "blank allowed"
+      day_parting: "24/7 if blank"
+      days_of_week: "Tất cả if blank"
+  campaign_goal_capture:
+    primary_goal_options:
+      - "Increase website traffic"
+      - "Increase conversions"
+      - "Brand awareness"
+      - "Lead generation"
+      - "App installs"
+      - "Phone calls"
+      - "Store visits"
+    kpi_fields:
+      - "target_clicks"
+      - "target_conversions"
+      - "target_cpa"
+      - "target_roas"
+  ad_copy_and_tracking_templates:
+    usp_capture: "collect up to 5 unique selling points"
+    cta_catalog:
+      - "Mua ngay"
+      - "Đăng ký ngay"
+      - "Tìm hiểu thêm"
+      - "Nhận ưu đãi"
+      - "Liên hệ ngay"
+      - "Dùng thử miễn phí"
+      - "Đặt hàng ngay"
+    auto_generated_assets:
+      headlines: 5
+      descriptions: 3
+    conversion_action_catalog:
+      - "Mua hàng"
+      - "Đăng ký"
+      - "Gửi form liên hệ"
+      - "Gọi điện thoại"
+      - "Thêm vào giỏ hàng"
+      - "Download app"
+    utm_defaults:
+      utm_source: "google"
+      utm_medium: "cpc"
+      utm_term: "{keyword}"
+  campaign_structure_templates:
+    campaign_type_options:
+      - "Search Campaign"
+      - "Display Campaign"
+      - "Shopping Campaign"
+      - "Video Campaign"
+      - "Performance Max"
+    ad_group_generation_rule: "create 1 ad group per main product using AG_{product_name_with_underscores}"
+    default_match_types: ["Exact", "Phrase", "Broad"]
+    bidding_strategy_options:
+      - "Manual CPC"
+      - "Enhanced CPC"
+      - "Maximize Clicks"
+      - "Target CPA"
+      - "Target ROAS"
+      - "Maximize Conversions"
+  phased_execution_playbook:
+    phase_1_setup:
+      - "Create/verify Google Ads account"
+      - "Install conversion tracking tag"
+      - "Link Google Analytics"
+      - "Setup billing"
+      - "Create initial campaign shell"
+    phase_2_launch:
+      - "Upload keywords into ad groups"
+      - "Create ads from headline/description set"
+      - "Add ad extensions"
+      - "Configure audience targeting"
+      - "Set negative keywords"
+      - "Review and launch"
+    phase_3_optimization:
+      - "Daily monitoring during first week"
+      - "Review search terms report"
+      - "Add negative keywords"
+      - "Adjust bids based on performance"
+      - "A/B test ad copy"
+      - "Optimize landing pages"
+      - "Scale budget on positive-ROI ads"
+    phase_4_scaling:
+      - "Expand keyword list"
+      - "Test new campaign types"
+      - "Run remarketing"
+      - "Test lookalike audiences"
+      - "Increase budget gradually"
+
+output_schema_reference:
+  sample_file_reviewed: "google-ads/report/campaign_plans/vexere_landing_page_analysis.json"
+  sample_scope: "landing page analysis export"
+  top_level_fields:
+    analysis_date: "string timestamp"
+    landing_page:
+      url: "string"
+      title: "string"
+      meta_description: "string"
+      h1_tags: "list[string]"
+      product_count: "int"
+      sample_products: "list[string]"
+      avg_product_price: "int"
+      target_age_range: "string"
+    commission_settings:
+      commission_rate: "float"
+      avg_product_price: "int"
+      commission_per_sale: "int"
+    industry_detected: "string enum inferred by keyword hits"
+    industry_benchmark:
+      avg_cvr: "float percent"
+      avg_cpc_range: "list[min_vnd, max_vnd]"
+      keywords: "list[string]"
+    keyword_suggestions:
+      type: "list[object]"
+      item_fields:
+        keyword: "string"
+        source: "product_name | content_analysis | brand_modifier"
+        estimated_cpc_range:
+          min: "int"
+          max: "int"
+          currency: "VND"
+        estimated_avg_cpc: "int"
+        estimated_cvr: "float percent"
+        competition: "LOW | MEDIUM | HIGH"
+        monthly_budget_recommendation:
+          min: "int"
+          max: "int"
+        match_types: "list[string]"
+        commission_based: "bool"
+        estimated_clicks_per_conversion: "int"
+    campaign_projections:
+      monthly_budget: "int"
+      estimated_metrics:
+        avg_cpc: "int"
+        avg_cvr: "float percent"
+        estimated_clicks_per_month: "int"
+        estimated_conversions_per_month: "int"
+        estimated_cpa: "int"
+        estimated_impressions: "int"
+      keyword_distribution:
+        total_keywords: "int"
+        by_competition: "object[counts]"
+        by_source: "object[counts]"
+      recommendations: "list[{type, category, message}]"
+    top_keywords_by_cpc: "top 10 keyword objects sorted descending by estimated_avg_cpc"
+    top_keywords_by_cvr: "top 10 keyword objects sorted descending by estimated_cvr"
+  planner_export_fields_from_code:
+    campaign_plan_json_contains:
+      - "brand_name"
+      - "domain"
+      - "landing_page"
+      - "business_type"
+      - "main_products"
+      - "affiliate_commission"
+      - "avg_product_price"
+      - "target_audience"
+      - "allow_brand_keywords"
+      - "landing_page_analysis"
+      - "primary_goal"
+      - "kpis"
+      - "budget"
+      - "schedule"
+      - "keywords"
+      - "keyword_analysis"
+      - "ad_copy"
+      - "tracking"
+      - "campaign_structure"
+      - "action_plan"
+      - "checklist"
+
+compliance_note: "Dữ liệu chiến dịch thật (report/campaign_plans/, report/html_reports/) chứa thông tin khách hàng — không đưa nguyên văn vào KB dùng chung. Xem ai-distilled-kb/04_CONTENT_GOVERNANCE_RULES.yaml#pii_handling."

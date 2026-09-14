@@ -4,6 +4,7 @@ domain: "DOM_CM"
 title: "Content Strategy, Topic Clusters, and Editorial Architectures"
 source_documents:
   - "content-frame/02-MODULE-2-CHIEN-LUOC-NOI-DUNG.md"
+  - "content-frame/09-TAI-LIEU-BO-SUNG-CONG-CU-TEMPLATE.md"
   - "course-docs/04-PHAN-4-CHIEN-LUOC-QUAN-TRI.md"
   - "code/generate-content-calender.py"
 
@@ -95,3 +96,36 @@ editorial_calendar_operational_engine:
     - "PUBLISHED"
     - "PERFORMANCE_AUDITED"
   lead_time_buffer: "Minimum 7 days between final asset sign-off and publication date."
+
+supplementary_tools_and_templates:
+  toolstack_by_workflow_stage:
+    research_strategy:
+      free_core: ["Google Trends", "Google Keyword Planner", "AnswerThePublic", "Meta Audience Insights", "TikTok Creative Center"]
+      advanced_paid: ["SEMrush", "Ahrefs"]
+    content_creation:
+      drafting_llms: ["ChatGPT", "Gemini", "Claude"]
+      design_video: ["Canva", "CapCut"]
+      ai_imagery: ["Midjourney", "Adobe Firefly"]
+      language_qc: ["Grammarly", "VietSpelling"]
+    management_distribution: ["Google Sheet", "Notion", "Meta Business Suite", "Buffer", "Hootsuite", "Zalo OA Manager", "Mailchimp", "GetResponse"]
+    measurement_optimization: ["Google Analytics 4", "Google Search Console", "Google Looker Studio", "Meta Pixel", "TikTok Pixel", "UTM.io", "Google Campaign URL Builder"]
+  reusable_template_schemas:
+    persona_canvas: ["demographics", "goals", "pain_points", "consumption_behavior", "preferred_channels", "objections", "representative_quote"]
+    customer_journey_map: ["stage", "thoughts_emotions", "touchpoints", "content_action", "kpi"]
+    pillar_cluster_map: "Pillar -> cluster topic breakdown."
+    content_calendar: ["publish_date", "channel", "pillar", "3h_type", "title_idea", "funnel_stage", "cta", "owner", "status", "target_kpi"]
+    content_brief: ["objective", "target_persona", "primary_keyword", "tone", "target_length", "outline", "cta", "references", "deadline"]
+    short_video_script: ["sequence", "timestamp", "visual_action", "voiceover", "on_screen_text", "music_sfx"]
+    competitor_content_audit: ["posting_frequency", "strongest_channel", "primary_pillars", "average_engagement_rate", "strengths", "gaps"]
+    performance_report: ["executive_summary", "campaign_objectives", "kpi_overview", "channel_analysis", "top_content", "underperforming_content", "benchmark_vs_prior_period", "lessons", "optimization_actions"]
+    prompt_framework_template:
+      structure: ["role", "task", "format", "context"]
+  publishing_readiness_checklist:
+    strategic_fit: ["persona_alignment", "pillar_alignment", "funnel_goal", "calendar_alignment"]
+    creative_qc: ["hook_strength", "clear_cta", "spelling_grammar", "brand_kit_consistency"]
+    technical_qc: ["seo_on_page_if_applicable", "utm_tracking_if_linked", "channel_timing_fit"]
+    compliance_qc: ["ai_output_fact_check", "advertising_law_and_personal_data_compliance"]
+  maintenance_rules:
+    ai_toolstack_review: "Re-audit tool list at least every 6 months."
+    case_study_refresh: "Replace stale Vietnam examples each new cohort."
+    platform_change_monitoring: "Track major Google/Meta/TikTok algorithm and policy changes."
