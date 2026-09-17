@@ -1,0 +1,38 @@
+module: chart_interpretation_heuristics
+version: "1.0"
+domain: empirical_chart_analysis_archive
+source_archive: "yh-fin-monitor/documents/Chart/ (407 real VN stock charts 2019-2020)"
+description: "Hệ thống quy tắc kinh nghiệm (Heuristics) đúc kết từ 407 biểu đồ phân tích thực chiến thị trường chứng khoán Việt Nam."
+
+core_visual_structures:
+  consolidation_box (Hộp tích lũy màu cam):
+    visual_appearance: "Hộp chữ nhật màu cam bao bọc biên độ dao động nến trong từ vài tuần đến vài tháng."
+    empirical_behavior:
+      - "Thị trường tạm ngừng xu hướng chính để tái tích lũy (Re-accumulation) hoặc phân phối (Distribution)."
+      - "Khối lượng giao dịch (Volume) thường cạn kiệt dần về phía cuối hộp, phản ánh áp lực bán suy yếu."
+    trading_rules:
+      swing_rule: "Mua ở cạnh dưới hộp khi có nến từ chối giá (Hammer / Bullish Engulfing), bán chốt lời tại cạnh trên của hộp."
+      breakout_rule: "Nếu giá bứt phá vượt cạnh trên hộp kèm Volume bùng nổ (> 2 lần trung bình 20 phiên) -> Kích hoạt sóng tăng mới (Breakout continuation)."
+
+  forecast_arrows (Mũi tên xanh lá cây dự báo):
+    visual_appearance: "Mũi tên màu xanh lá cây hướng từ vùng hỗ trợ lên vùng kháng cự kỳ vọng."
+    confluence_triggers:
+      - "Giá chạm cạnh dưới của hộp tích lũy hoặc chạm đường trendline hỗ trợ chéo."
+      - "Chỉ báo dòng tiền MFI(14) bật tăng từ vùng quá bán (<30) hướng lên mốc 50."
+      - "Bollinger Bands co thắt hẹp (Band Squeeze), báo hiệu chuẩn bị có biến động bùng nổ theo hướng mũi tên."
+
+  horizontal_order_blocks (Đường hỗ trợ / kháng cự ngang):
+    visual_appearance: "Đường kẻ ngang màu xanh dương (Hỗ trợ) và màu đỏ (Kháng cự)."
+    heuristics:
+      touch_count_rule: "Mức giá được kiểm định (test) từ 3 lần trở lên mà không thủng sẽ trở thành Hỗ trợ Cứng (Strong Support)."
+      role_reversal_rule: "Kháng cự khi bị xuyên phá thành công sẽ chuyển hóa thành Hỗ trợ mới trong các nhịp pullback retest."
+      gap_zone: "Các khoảng trống giá (Gap) trong quá khứ luôn có xu hướng hoạt động như các nam châm hút giá về lấp gap và tạo hỗ trợ/kháng cự tâm lý."
+
+  macro_trendline_break (Đường xu hướng giảm dài hạn):
+    visual_appearance: "Đường thẳng dốc xuống nối các đỉnh thấp dần trong nhiều tháng (Đường kẻ màu nâu đỏ)."
+    heuristics:
+      - "Khi giá bứt phá dứt khoát ra khỏi đường trendline giảm dài hạn, cổ phiếu chính thức kết thúc chu kỳ downtrend tích lũy sang chu kỳ uptrend mới."
+      - "Điểm mua an toàn nhất không phải phiên break đầu tiên, mà là phiên retest lại chính đường trendline đó."
+
+multi_timeframe_confirmation:
+  rule: "Các chart có đuôi `_week.png` và `_day.png` (như HPG, LDG, AAA) cho thấy tầm quan trọng của việc soi xu hướng tuần (Weekly) để xác định bức tranh lớn trước khi tìm điểm vào lệnh chi tiết trên biểu đồ ngày (Daily)."

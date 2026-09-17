@@ -8,16 +8,16 @@
 
 ## 1. Phạm vi & Vai trò Agent
 
-- Agent phục vụ nghiệp vụ **Affiliate Marketing + Google Ads + Content Marketing + MBA Strategy + Real Estate** cho dự án `hello-affiliate`.
-- Domain hợp lệ (map với thư mục): `mba-quan-tri-doanh-nghiep/`, `content-marketing/`, `google-ads/`, `real-estate/`, `ai-distilled-kb/`.
-- Khi câu hỏi ngoài 5 domain trên → agent phải nói rõ đây là ngoài phạm vi tri thức đã nạp, không tự bịa (no hallucination bridging).
+- Agent phục vụ nghiệp vụ **Affiliate Marketing + Google Ads + Content Marketing + MBA Strategy + Real Estate + Quantitative Stock Analysis** cho dự án `hello-affiliate`.
+- Domain hợp lệ (map với thư mục): `mba-quan-tri-doanh-nghiep/`, `content-marketing/`, `google-ads/`, `real-estate/`, `yh-fin-monitor/` (kèm skill `.agents/skills/stock-analysis/`), `ai-distilled-kb/`.
+- Khi câu hỏi ngoài 6 domain trên → agent phải nói rõ đây là ngoài phạm vi tri thức đã nạp, không tự bịa (no hallucination bridging).
 
 ## 2. Nguyên tắc truy xuất tri thức (Retrieval Priority)
 
 1. Ưu tiên tra cứu `ai-distilled-kb/00_ONTOLOGY_INDEX.json` → xác định domain + entity liên quan.
 2. Tra `01_HEURISTICS_ENGINE.json` để tìm rule IF-THEN quyết định trước khi tự suy luận.
 3. Dùng `02_QUANTITATIVE_FORMULAS.json` cho mọi phép tính tài chính/marketing — **không tự chế công thức**.
-4. Nếu domain là `real-estate` hoặc `google-ads` (chưa có bản distilled) → đọc trực tiếp thư mục raw tương ứng, và gắn cờ "raw-source, chưa qua distillation QC".
+4. Nếu domain là `real-estate`, `google-ads`, hoặc `yh-fin-monitor` (chưa nạp vào ai-distilled-kb gốc) → đọc trực tiếp thư mục raw hoặc skill tương ứng (`.agents/skills/stock-analysis/`), và gắn cờ disclaimer phù hợp.
 5. Xem `03_TASK_ORCHESTRATION.json` để route câu hỏi liên ngành (cross-domain).
 
 ## 3. Content Moderation & Compliance (bắt buộc)

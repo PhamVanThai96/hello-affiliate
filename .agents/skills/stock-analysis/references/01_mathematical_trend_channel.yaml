@@ -1,0 +1,58 @@
+module: mathematical_trend_channel
+version: "1.0"
+domain: quantitative_stock_analysis
+description: "Mô hình toán học nhận diện Kênh xu hướng (Trend Channel) bằng cực trị địa phương và hồi quy tuyến tính."
+
+algorithms:
+  fractal_extrema_detection:
+    method: "scipy.signal.argrelextrema"
+    order_parameter: 5
+    description: "Xác định các đỉnh (peaks) và đáy (troughs) cục bộ làm điểm tựa cho đường biên kênh."
+    parameters:
+      order: 5  # So sánh 5 nến trước và 5 nến sau để xác nhận đỉnh/đáy vững chắc
+      comparator_peak: "np.greater_equal"
+      comparator_trough: "np.less_equal"
+    deduplication: "Sử dụng np.unique để loại bỏ các điểm phẳng/trùng lặp liên tiếp."
+
+  linear_regression_fitting:
+    method: "numpy.polyfit"
+    degree: 1
+    equations:
+      upper_channel_line: "y = upper_slope * x + upper_intercept"
+      lower_channel_line: "y = lower_slope * x + lower_intercept"
+    input_features:
+      x: "Chỉ số index của thanh nến trong mảng thời gian (0 .. N-1)"
+      y_upper: "Giá High tại các điểm peak_idx"
+      y_lower: "Giá Low tại các điểm trough_idx"
+
+  parallelism_validation:
+    threshold_ratio: 0.15  # Sai số độ dốc tối đa 15%
+    formula: "abs(upper_slope - lower_slope) / max(abs(upper_slope), abs(lower_slope), 1e-9) < 0.15"
+    interpretation:
+      valid: "Hai đường biên có độ nghiêng tương đồng, tạo thành Kênh giá song song hợp lệ."
+      invalid: "Kênh giá phân kỳ hoặc hội tụ dạng cái nêm (Wedge) -> Không xác định kênh chuẩn."
+
+  channel_classification:
+    metric: "slope_pct_per_bar = ((upper_slope + lower_slope) / 2 / avg_price) * 100"
+    categories:
+      horizontal:
+        condition: "abs(slope_pct_per_bar) < 0.03%"
+        label: "Horizontal (Đi ngang / Tích lũy)"
+        trading_strategy: "Giao dịch Swing trong hộp hoặc chờ đợi Breakout có khối lượng xác nhận."
+      ascending:
+        condition: "slope_pct_per_bar >= 0.03% (avg_slope > 0)"
+        label: "Ascending (Kênh tăng)"
+        trading_strategy: "Ưu tiên vị thế MUA khi giá điều chỉnh về cạnh dưới kênh hoặc MA200."
+      descending:
+        condition: "slope_pct_per_bar <= -0.03% (avg_slope < 0)"
+        label: "Descending (Kênh giảm)"
+        trading_strategy: "Ưu tiên BÁN hoặc đứng ngoài quan sát, không bắt đáy dao rơi."
+
+false_breakout_detection:
+  logic:
+    bullish_false_breakout:
+      condition: "Nến t-1 đóng cửa > upper_line[t-1] nhưng nến t đóng cửa < upper_line[t]"
+      signal: "Bẫy tăng giá (Bull Trap) -> Nguy cơ đảo chiều giảm mạnh."
+    bearish_false_breakout:
+      condition: "Nến t-1 đóng cửa < lower_line[t-1] nhưng nến t đóng cửa > lower_line[t]"
+      signal: "Bẫy giảm giá (Bear Trap) -> Rũ bỏ cung trước khi tăng."

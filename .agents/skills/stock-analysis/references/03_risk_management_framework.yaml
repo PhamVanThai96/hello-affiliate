@@ -1,0 +1,43 @@
+module: risk_management_framework
+version: "1.0"
+domain: disciplined_quantitative_risk_control
+description: "Bộ quy tắc quản trị rủi ro định lượng, kiểm soát điểm vào lệnh, chốt lời, cắt lỗ và kỷ luật tỷ lệ R:R."
+
+action_matrix:
+  BUY (MUA):
+    prerequisites:
+      trend_filter: "Giá đóng cửa > MA200 (Xác nhận xu hướng dài hạn Tăng - Bull Market)"
+      location_filter: "Giá đang điều chỉnh (pullback) về vùng Hỗ trợ mạnh hoặc tiệm cận cạnh dưới Kênh tăng (độ lệch <= 3.0%)"
+      momentum_filter: "RSI(14) < 65 (Chưa rơi vào vùng quá mua, còn dư địa tăng trưởng)"
+      breakout_integrity: "Không có tín hiệu Phá vỡ giả (False Breakout)"
+      risk_reward_filter: "Tỷ lệ R:R (Reward/Risk) tính toán đạt tối thiểu >= 2.0"
+    execution:
+      entry_zone: "[Close * 0.99, Close * 1.01]"
+      stop_loss: "Đặt dưới cạnh dưới kênh 2% hoặc dưới hỗ trợ gần nhất. BẮT BUỘC khống chế mức lỗ tối đa <= 7% từ điểm mua."
+      take_profit: "Đặt tại cạnh trên của Kênh xu hướng tăng hoặc Kháng cự tĩnh mạnh nhất."
+
+  SELL (BÁN):
+    triggers:
+      structural_breakdown: "Giá đóng cửa cắt xuống dưới MA200 (Bắt đầu chu kỳ giảm dài hạn - Bear Market)"
+      channel_breakdown: "Giá gãy biên dưới của Kênh tăng với nến giảm dứt khoát"
+      trailing_stop: "Giá vi phạm mốc Cắt lỗ (Stop Loss) hoặc chạm ngưỡng Chốt lời kỳ vọng"
+
+  WATCH (THEO DÕI):
+    scenarios:
+      insufficient_rr: "Thỏa mãn các yếu tố kỹ thuật nhưng khoảng cách tới kháng cự quá gần khiến tỷ lệ R:R < 1:2"
+      overbought: "RSI(14) >= 65, rủi ro điều chỉnh cao nếu mua đuổi"
+      mid_channel: "Giá đang lơ lửng ở giữa kênh giá, không có điểm tựa hỗ trợ an toàn"
+      false_breakout: "Phát hiện hiện tượng phá vỡ giả khỏi biên kênh, thị trường đang tìm điểm cân bằng mới"
+
+mathematical_risk_equations:
+  risk_calculation: "Risk = Entry_Price - Stop_Loss"
+  reward_calculation: "Reward = Take_Profit - Entry_Price"
+  risk_reward_ratio: "R:R = Reward / Risk"
+  stop_loss_cap:
+    formula: "SL_pct = ((Close - SL) / Close) * 100"
+    enforcement: "Nếu SL_pct > 7%, tự động điều chỉnh Stop_Loss = Close * 0.93 để đảm bảo quy tắc bảo toàn vốn."
+
+capital_preservation_heuristics:
+  rule_1: "Bảo vệ vốn luôn là ưu tiên số 1, tìm kiếm lợi nhuận là ưu tiên số 2."
+  rule_2: "Tuyệt đối không trung bình giá xuống (Averaging Down) khi giá nằm dưới MA200."
+  rule_3: "Nếu một lệnh lỗ chạm 7%, dứt khoát cắt bỏ theo kỷ luật hệ thống, không giữ hy vọng cảm tính."

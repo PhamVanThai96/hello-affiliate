@@ -1,0 +1,83 @@
+module: candlestick_patterns_steve_nison
+version: "1.0"
+domain: japanese_candlestick_intelligence
+source_reference: "Steve Nison - Japanese Candlestick Charting Techniques"
+description: "Thuật toán nhận diện các mô hình nến Nhật đảo chiều cốt lõi kết hợp giải mã tâm lý thị trường."
+
+geometric_formulas:
+  range: "High - Low"
+  body: "abs(Close - Open)"
+  upper_shadow: "High - max(Close, Open)"
+  lower_shadow: "min(Close, Open) - Low"
+  body_ratio: "body / range"
+
+patterns:
+  doji:
+    name: "Doji"
+    vietnamese_name: "Nến Doji"
+    math_condition: "body_ratio < 0.10"
+    market_psychology: "Thị trường hoàn toàn lưỡng lự. Lực mua và lực bán cân bằng tuyệt đối sau một phiên biến động. Báo hiệu đà xu hướng trước đó bị chững lại."
+    actionable_insight: "Chưa hành động ngay. Cần chờ nến kế tiếp xác nhận chiều bứt phá."
+
+  hammer:
+    name: "Hammer"
+    vietnamese_name: "Nến Búa"
+    math_condition:
+      lower_shadow: ">= 2 * body"
+      upper_shadow: "<= 0.5 * body"
+      body_ratio: "< 0.40"
+    market_psychology: "Phe bán đã cố gắng đẩy giá xuống rất sâu trong phiên, nhưng lực cầu mạnh mẽ tại vùng hỗ trợ đã hấp thụ toàn bộ lực cung và kéo giá đóng cửa sát mức cao nhất. Phản ánh sự từ chối giá thấp (rejection of lower prices)."
+    trend_context: "Xuất hiện ở đáy nhịp điều chỉnh hoặc chạm hỗ trợ -> Tín hiệu đảo chiều tăng giá mạnh."
+
+  shooting_star:
+    name: "Shooting Star"
+    vietnamese_name: "Nến Sao Băng"
+    math_condition:
+      upper_shadow: ">= 2 * body"
+      lower_shadow: "<= 0.5 * body"
+      body_ratio: "< 0.40"
+    market_psychology: "Phe mua cố gắng đẩy giá lên cao đầu phiên nhưng gặp áp lực bán dội xuống cực lớn từ phe gấu tại vùng kháng cự. Đóng cửa gần đáy phiên, phản ánh sự từ chối giá cao (rejection of higher prices)."
+    trend_context: "Xuất hiện ở đỉnh nhịp hồi hoặc tiệm cận kháng cự trên -> Tín hiệu đảo chiều giảm."
+
+  bullish_engulfing:
+    name: "Bullish Engulfing"
+    vietnamese_name: "Nhấn chìm Tăng trưởng"
+    math_condition:
+      previous_candle: "Close[t-1] < Open[t-1] (Nến giảm)"
+      current_candle: "Close[t] > Open[t] (Nến tăng)"
+      engulfing_criteria: "Close[t] >= Open[t-1] và Open[t] <= Close[t-1]"
+    market_psychology: "Phe mua mở cửa ở mức thấp hoặc ngang đáy nến trước nhưng sau đó dồn dập mua vào, nuốt trọn toàn bộ thân nến giảm trước đó. Thể hiện sự đảo chiều tâm lý từ bi quan sang hoàn toàn kiểm soát của phe bò."
+    trend_context: "Cực kỳ uy tín khi xuất hiện tại cạnh dưới kênh tăng hoặc vùng hỗ trợ tĩnh."
+
+  bearish_engulfing:
+    name: "Bearish Engulfing"
+    vietnamese_name: "Nhấn chìm Suy giảm"
+    math_condition:
+      previous_candle: "Close[t-1] > Open[t-1] (Nến tăng)"
+      current_candle: "Close[t] < Open[t] (Nến giảm)"
+      engulfing_criteria: "Open[t] >= Close[t-1] và Close[t] <= Open[t-1]"
+    market_psychology: "Phe gấu hoàn toàn áp đảo phe bò. Nỗ lực đẩy giá của phe mua ở phiên trước bị xóa sạch chỉ trong một phiên bán tháo."
+    trend_context: "Tín hiệu cảnh báo bán khẩn cấp khi chạm kháng cự đỉnh hộp hoặc cạnh trên kênh."
+
+  morning_star:
+    name: "Morning Star"
+    vietnamese_name: "Sao Mai (Cụm 3 nến)"
+    math_condition:
+      candle_1: "Nến giảm mạnh (Close[t-2] < Open[t-2])"
+      candle_2: "Nến thân nhỏ (body[t-1] < body[t-2] * 0.4)"
+      candle_3: "Nến tăng mạnh (Close[t] > Open[t]), đóng cửa vượt qua điểm giữa thân nến 1: Close[t] > (Open[t-2] + Close[t-2]) / 2"
+    market_psychology: "Phiên 1 phe bán thống trị; Phiên 2 giằng co lưỡng lự (suy kiệt đà giảm); Phiên 3 phe mua bùng nổ xác nhận xu hướng mới. Mẫu hình đảo chiều tăng có xác suất cao bậc nhất."
+
+  evening_star:
+    name: "Evening Star"
+    vietnamese_name: "Sao Hôm (Cụm 3 nến)"
+    math_condition:
+      candle_1: "Nến tăng mạnh (Close[t-2] > Open[t-2])"
+      candle_2: "Nến thân nhỏ (body[t-1] < body[t-2] * 0.4)"
+      candle_3: "Nến giảm mạnh (Close[t] < Open[t]), đóng cửa chìm dưới điểm giữa thân nến 1: Close[t] < (Open[t-2] + Close[t-2]) / 2"
+    market_psychology: "Phiên 1 hưng phấn; Phiên 2 cạn kiệt lực cầu; Phiên 3 bán tháo áp đảo. Báo hiệu chu kỳ giảm điểm bắt đầu."
+
+confluence_rules:
+  rule_1: "Không bao giờ giao dịch nến đơn lẻ trong khoảng trống (không có hỗ trợ/kháng cự)."
+  rule_2: "Một mẫu hình nến đảo chiều tăng (Hammer/Bullish Engulfing/Morning Star) xuất hiện ĐỒNG THỜI tại cạnh dưới kênh tăng hoặc biên dưới hộp tích lũy gia tăng xác suất thắng từ 50% lên 75-80%."
+  rule_3: "Nến có khối lượng lớn (Volume > 1.5 x SMA20 Volume) có giá trị xác nhận độ tin cậy vượt trội so với nến vol thấp."
