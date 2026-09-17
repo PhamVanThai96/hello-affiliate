@@ -95,17 +95,27 @@ flowchart TD
 
 ## 3. Lệnh Thực thi Nhanh (CLI Commands)
 
+> [!IMPORTANT]
+> **Bắt buộc kích hoạt Virtual Environment** trước khi chạy bất kỳ script Python nào để đảm bảo nạp đủ các thư viện (`numpy`, `scipy`, `pandas`, `mplfinance`, `yfinance`):
+> ```bash
+> source yh-fin-monitor/venv/bin/activate
+> # hoặc: source google-ads/venv/bin/activate
+> ```
+
 Agent có thể chạy trực tiếp bộ công cụ độc lập từ thư mục gốc repo hoặc thư mục `yh-fin-monitor/`:
 
 ```bash
-# 1. Phân tích nhanh 1 mã cụ thể (khung Ngày mặc định):
-python3 yh-fin-monitor/dev/chart_analysis_skill.py STB.VN
+# 1. Phân tích Kỹ thuật Toàn diện v2.0 (Khuyến nghị: MFI, MA Cross 9/26, Hộp tích lũy, Đồ thị 3 bảng):
+source yh-fin-monitor/venv/bin/activate && python3 yh-fin-monitor/dev/analysis_script.py STB.VN
 
-# 2. Phân tích hàng loạt theo danh sách trong config_analysis.json:
-python3 yh-fin-monitor/dev/chart_analysis_skill.py
+# 2. Phân tích hàng loạt đa mã v2.0 theo config_analysis.json:
+source yh-fin-monitor/venv/bin/activate && python3 yh-fin-monitor/dev/analysis_script.py
 
-# 3. Chạy kiểm tra đồng bộ tài liệu RAG:
-python3 -c "import sys; sys.path.insert(0, 'yh-fin-monitor/dev'); from chart_analysis_skill import rag_sync_check; print(rag_sync_check())"
+# 3. Phân tích phiên bản tiêu chuẩn v1.0:
+source yh-fin-monitor/venv/bin/activate && python3 yh-fin-monitor/dev/chart_analysis_skill.py STB.VN
+
+# 4. Chạy kiểm tra đồng bộ tài liệu RAG:
+source yh-fin-monitor/venv/bin/activate && python3 -c "import sys; sys.path.insert(0, 'yh-fin-monitor/dev'); from chart_analysis_skill import rag_sync_check; print(rag_sync_check())"
 ```
 
 ---

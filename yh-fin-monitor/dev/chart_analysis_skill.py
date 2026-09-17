@@ -483,7 +483,48 @@ def plot_chart(df_ind: pd.DataFrame, channel: dict, sr: dict, patterns: list,
             bbox=dict(boxstyle="round,pad=0.4", facecolor=box_color, edgecolor="black", alpha=0.9),
         )
 
-    out_path = os.path.join(output_dir, f"{ticker.replace('.', '_')}_analysis.png")
+    # Mở rộng trục x để có khoảng trống cho mũi tên dự báo xu hướng
+    ax.set_xlim(-1, n + 8)
+    curr_x = n - 1
+    curr_y = float(df_ind.iloc[-1]["Close"])
+    act = rec.get("action", "THEO DÕI") if rec else "THEO DÕI"
+
+    if act == "MUA":
+        tgt_y = rec.get("take_profit") or curr_y * 1.12
+        ax.annotate("", xy=(curr_x + 6, tgt_y), xytext=(curr_x, curr_y),
+                    arrowprops=dict(facecolor="#00e676", edgecolor="#004d40", arrowstyle="-|>", mutation_scale=20, lw=2.2), zorder=8)
+        ax.text(curr_x + 6, tgt_y * 1.01, f"Dự báo TĂNG\nTarget: {tgt_y:,.0f}",
+                fontsize=8, fontweight="bold", color="#00796b", ha="center", va="bottom", zorder=9)
+    elif act == "BÁN":
+        tgt_y = curr_y * 0.90
+        ax.annotate("", xy=(curr_x + 6, tgt_y), xytext=(curr_x, curr_y),
+                    arrowprops=dict(facecolor="#ff1744", edgecolor="#b71c1c", arrowstyle="-|>", mutation_scale=20, lw=2.2), zorder=8)
+        ax.text(curr_x + 6, tgt_y * 0.99, f"Dự báo GIẢM\nHỗ trợ: {tgt_y:,.0f}",
+                fontsize=8, fontweight="bold", color="#c62828", ha="center", va="top", zorder=9)
+    else:
+        tgt_y = curr_y * 1.05
+        ax.annotate("", xy=(curr_x + 6, tgt_y), xytext=(curr_x, curr_y),
+                    arrowprops=dict(facecolor="#ff9100", edgecolor="#e65100", arrowstyle="-|>", mutation_scale=18, lw=2.0), zorder=8)
+        ax.text(curr_x + 6, tgt_y * 1.01, f"Dự báo Hồi\nCản: {tgt_y:,.0f}",
+                fontsize=8, fontweight="bold", color="#e65100", ha="center", va="bottom", zorder=9)
+
+    clean_tk = ticker.split(".")[0]
+    if "Date" in df_ind.columns and len(df_ind) > 0:
+        date_str = pd.to_datetime(df_ind.iloc[-1]["Date"]).strftime("%d-%m-%Y")
+    else:
+        date_str = datetime.now().strftime("%d-%m-%Y")
+
+    act_raw = rec.get("action", "THEO DÕI") if rec else "THEO DÕI"
+    if "MUA" in act_raw.upper():
+        slug = "MUA"
+    elif "BÁN" in act_raw.upper() or "BAN" in act_raw.upper():
+        slug = "BAN"
+    else:
+        slug = "THEO-DOI"
+
+    # Định dạng tên file output có thông tin khuyến nghị: [MÃ]-[NGÀY]-[KHUYẾN NGHỊ]-v1.png
+    filename = f"{clean_tk}-{date_str}-{slug}-v1.png"
+    out_path = os.path.join(output_dir, filename)
     fig.savefig(out_path, dpi=150, bbox_inches="tight")
     import matplotlib.pyplot as plt
     plt.close(fig)
