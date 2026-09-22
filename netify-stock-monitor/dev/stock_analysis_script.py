@@ -42,6 +42,7 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 from scipy.signal import argrelextrema
+import telegram_script  # Module phụ trợ gửi ảnh qua Telegram
 
 # Thiết lập thư mục gốc
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -1307,3 +1308,7 @@ if __name__ == "__main__":
             print(f"[{tk}] Khuyến nghị: {res['recommendation']['action']} | Biểu đồ: {res['chart_path']}")
         if batch.get("_errors"):
             print("Các mã lỗi:", batch["_errors"])
+
+    # Send notification to Telegram
+    telegram_script.send_stock_charts()
+    

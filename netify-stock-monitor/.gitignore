@@ -1,0 +1,20 @@
+# Secrets & credentials
+google-ads/keys/
+*.json.key
+client_secret*.json
+*token*.json
+.env
+.env.*
+
+# OS / editor / Python env
+.DS_Store
+__pycache__/
+*.pyc
+*venv/
+.venv/
+
+# Reports/logs that may contain scraped PII or client data
+google-ads/report/html_reports/
+
+# Session snapshots (bối cảnh nội bộ, không public)
+SESSION_SNAPSHOT.md
