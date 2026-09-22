@@ -2,8 +2,8 @@ This project is designed to monitor financial data using the Yahoo Finance API. 
 
 ## Activate a virtual environment (optional but recommended):
 
-    python3 -m venv path/to/venv
-    source path/to/venv/bin/activate
+    python3 -m venv venv
+    source venv/bin/activate
 
 ## To install the required packages, run the following command in your terminal:
     
