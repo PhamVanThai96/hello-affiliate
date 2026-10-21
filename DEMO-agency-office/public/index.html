@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Office</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="office">
+  <div id="legend"></div>
+  <div id="stage">
+    <div id="world">
+      <div id="floor"></div>
+      <svg id="links" width="1100" height="670">
+        <defs><filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="4"/></filter></defs>
+      </svg>
+      <div id="bubbles"></div>
+      <div id="pop" hidden></div>
+    </div>
+  </div>
+</main>
+<aside id="side">
+  <div id="mode"></div>
+  <button id="addAgent" type="button"> + Thêm agent </button>
+  <div id="perm"></div>
+  <div id="allowed"></div>
+  <section id="final" hidden><h4>Báo cáo gửi CEO</h4><div id="finalText"></div></section>
+  <section id="board"><h4>Bảng task</h4><div id="tasks"></div></section>
+  <section id="feedWrap"><h4>Giao tiếp giữa các agent</h4><div id="log"></div></section>
+  <form id="f"><input id="task" placeholder="Ra lệnh cho Quản Lí… (hoặc /id việc)" autocomplete="off"><button id="go">Giao</button></form>
+</aside>
+<dialog id="ed">
+  <form id="edForm" method="dialog">
+    <h3 id="edTitle"></h3>
+    <label>ID <input id="edId" maxlength="20" placeholder="vd: legal" required pattern="[a-z][a-z0-9_]*"></label>
+    <label>Tên hiển thị <input id="edName" required></label>
+    <label>Mô tả công việc <input id="edRole"></label>
+    <div class="row2">
+      <label>Phòng <select id="edRoom"></select></label>
+      <label>Màu <input id="edColor" type="color"></label>
+    </div>
+    <label>Skill (cách nhau bằng dấu phẩy) <input id="edSkills" placeholder="Viết code, Sửa lỗi"></label>
+    <label>Prompt (chỉ dẫn cho AI) <textarea id="edPrompt" rows="4" required></textarea></label>
+    <div class="row2">
+      <label>AI <select id="edProvider"></select></label>
+      <label>Model <input id="edModel" placeholder="để trống = mặc định"></label>
+    </div>
+    <div id="edErr"></div>
+    <div class="edBtns">
+      <button id="edDel" type="button" class="off">Xoá agent</button>
+      <span></span>
+      <button id="edCancel" type="button" class="ghost">Huỷ</button>
+      <button id="edSave" type="submit">Lưu</button>
+    </div>
+  </form>
+</dialog>
+<script src="app.js"></script>
+</body>
+</html>
