@@ -37,6 +37,7 @@ const AV = {
   rag: { skin: '#f2c9a0', hair: '#d9a441', style: 'bun', shirt: '#5fa8b8' },
   analyst: { skin: '#8d5a3b', hair: '#141414', style: 'curly', shirt: '#8f86c9' },
   designer: { skin: '#e0a878', hair: '#c0508a', style: 'long', shirt: '#d48b7e' },
+  content: { skin: '#f2c9a0', hair: '#e8a33d', style: 'bun', glasses: true, shirt: '#e8a33d' },
   writer: { skin: '#f5d6b8', hair: '#8a5a2b', style: 'short', glasses: true, shirt: '#8fb07a' },
   dev: { skin: '#c68a5e', hair: '#2b2b2b', style: 'cap', shirt: '#6b93d6' },
   tester: { skin: '#f2c9a0', hair: '#4a2c1a', style: 'curly', shirt: '#5fb3a1' },
@@ -89,7 +90,7 @@ const STATUS = { idle: '○ rảnh', working: '● đang làm', waiting: '⏳ ch
 const els = {}, meta = { user: { name: 'CEO', color: '#c0392b' } }, info = {};
 let replaying = true, selected = null, agentsVer = 0;
 const agentData = {};
-let cfg = { rooms: [], keys: {} };
+let cfg = { rooms: [], keys: {}, settings: null };
 
 $('legend').innerHTML = Object.values(KIND).map((k) => `<span><i style="border-color:${k.c}"></i>${k.l}</span>`).join('');
 
@@ -128,7 +129,7 @@ function unit(id, name, color, boss) {
   u.style.setProperty('--c', color);
   u.innerHTML = `<div class="monitor"></div><div class="desk"></div><div class="chair"></div>` +
     `<div class="avatar">${faceSvg(id, color)}</div><div class="tag"></div>` +
-    (boss ? '' : '<div class="meta"><code></code><span class="badge"></span></div>') + '<div class="talk"></div>';
+    (boss ? '' : '<div class="meta"><code></code><span class="badge"></span></div>') + '<div class="talk"></div><div class="think" hidden></div>';
   u.querySelector('.tag').textContent = name;
   if (!boss) u.querySelector('code').textContent = '#' + id;
   world.insertBefore(u, svg);
@@ -145,6 +146,7 @@ function build(agents, state) {
   meta.user = { name: 'CEO', color: '#c0392b' };
   const bu = unit('user', 'CEO', '#c0392b', true);
   els.user = { root: bu, talk: bu.querySelector('.talk') };
+  bu.onclick = (e) => { e.stopPropagation(); showUserPop(); };
   const used = {};
   for (const a of agents) {
     const slot = SLOTS[a.room] || SLOTS['Ban điều hành'];
@@ -154,7 +156,8 @@ function build(agents, state) {
     meta[a.id] = { name: a.name, color: a.color, role: a.role, skills: a.skills || [], ai: a.ai };
     agentData[a.id] = a;
     const u = unit(a.id, a.name, a.color, false);
-    els[a.id] = { root: u, talk: u.querySelector('.talk'), badge: u.querySelector('.badge') };
+    els[a.id] = { root: u, talk: u.querySelector('.talk'), badge: u.querySelector('.badge'), think: u.querySelector('.think') };
+    u.querySelector('.think').onclick = (e) => e.stopPropagation();
     u.onclick = (e) => { e.stopPropagation(); showPop(a.id); };
     setAgent(a.id, state[a.id].status, state[a.id].report);
   }
@@ -164,7 +167,10 @@ function build(agents, state) {
 function setAgent(id, status, report) {
   const el = els[id];
   if (!el) return;
+  const prev = info[id]?.status;
   info[id] = { status, report: report || info[id]?.report || '' };
+  if (status === 'working' && prev !== 'working' && el.think) { el.think.replaceChildren(); thinkHide(id, false); }
+  if (status !== 'working' && status !== 'waiting' && el.think && prev) thinkHide(id, true);
   for (const s of Object.keys(STATUS)) el.root.classList.toggle(s, s === status);
   el.badge.className = 'badge st-' + status;
   el.badge.textContent = STATUS[status] || status;
@@ -188,7 +194,7 @@ function showPop(id) {
   const tog = document.createElement('button');
   const off = st.status === 'offline';
   tog.textContent = off ? 'Bật online' : 'Tắt (offline)';
-  tog.className = off ? '' : 'off';
+  tog.className = 'pbtn ' + (off ? '' : 'off');
   tog.disabled = st.status === 'working' || st.status === 'waiting';
   tog.onclick = async () => {
     const res = await fetch('online', { method: 'POST', body: JSON.stringify({ id, online: off }) });
@@ -196,14 +202,73 @@ function showPop(id) {
   };
   const x = document.createElement('button'); x.className = 'x'; x.textContent = '×';
   x.onclick = closePop;
-  const ed = document.createElement('button'); ed.textContent = 'Sửa'; ed.className = 'edit';
+  const ed = document.createElement('button'); ed.textContent = '✎ Sửa'; ed.className = 'pbtn sec';
   ed.onclick = () => { closePop(); openEditor(id); };
-  pop.append(x, h, r, sk, b, rep, ed, tog);
+  const box = document.createElement('div'); box.className = 'pbtns'; box.append(ed, tog);
+  pop.append(x, h, r, sk, b, rep, box);
   const [ux, uy] = POS[id];
-  pop.style.left = (ux + 140 + 230 > WORLD_W ? ux - 240 : ux + 140) + 'px';
-  pop.style.top = Math.min(uy, WORLD_H - 2) + 'px';
+  pop.style.left = (ux + 140 + 250 > WORLD_W ? ux - 260 : ux + 140) + 'px';
+  pop.style.top = uy + 'px';
   pop.hidden = false;
+  fitPop(uy);
 }
+// ---- Dòng suy nghĩ / log hoạt động trên đầu agent ----
+const thinkTimers = {};
+function thinkHide(id, delay) {
+  clearTimeout(thinkTimers[id]);
+  const el = els[id]?.think;
+  if (!el) return;
+  if (delay) thinkTimers[id] = setTimeout(() => { el.hidden = true; }, 4000);
+  else el.hidden = !el.childElementCount;
+}
+function addThink(id, text) {
+  const el = els[id]?.think;
+  if (!el) return;
+  clearTimeout(thinkTimers[id]);
+  const atEnd = el.scrollHeight - el.scrollTop - el.clientHeight < 12;
+  const line = document.createElement('div');
+  const t = new Date();
+  line.className = 'tl';
+  const ts = document.createElement('time'); ts.textContent = t.toTimeString().slice(0, 8);
+  line.append(ts, document.createTextNode(text));
+  el.append(line);
+  while (el.childElementCount > 40) el.firstChild.remove();
+  el.hidden = false;
+  if (atEnd) el.scrollTop = el.scrollHeight;
+  el.querySelectorAll('.tl.last').forEach((n) => n.classList.remove('last'));
+  line.classList.add('last');
+}
+
+function showUserPop() {
+  selected = 'user';
+  document.querySelectorAll('.unit.sel').forEach((u) => u.classList.remove('sel'));
+  els.user.root.classList.add('sel');
+  const pop = $('pop');
+  pop.replaceChildren();
+  const x = document.createElement('button'); x.className = 'x'; x.textContent = '×'; x.onclick = closePop;
+  const h = document.createElement('h5'); h.textContent = 'CEO';
+  const r = document.createElement('div'); r.className = 'r'; r.textContent = 'Người ra lệnh · nhận báo cáo';
+  const rep = document.createElement('a'); rep.className = 'pbtn'; rep.href = 'reports/'; rep.target = '_blank'; rep.textContent = 'Xem báo cáo';
+  const cb = document.createElement('button'); cb.textContent = 'Cấu hình AI'; cb.className = 'pbtn sec';
+  cb.onclick = () => { closePop(); openConfig(); };
+  const box = document.createElement('div'); box.className = 'pbtns col'; box.append(rep, cb);
+  pop.append(x, h, r, box);
+  const [ux, uy] = POS.user;
+  pop.style.left = (ux - 260) + 'px';
+  pop.style.top = uy + 'px';
+  pop.hidden = false;
+  fitPop(uy);
+}
+// Giữ popover trong khung bản đồ: đẩy lên nếu tràn đáy, và cho cuộn khi vẫn quá cao.
+function fitPop(top) {
+  const pop = $('pop');
+  const max = WORLD_H - 16;
+  pop.style.maxHeight = max + 'px';
+  pop.style.overflowY = 'auto';
+  const h = Math.min(pop.offsetHeight, max);
+  pop.style.top = Math.max(8, Math.min(top, WORLD_H - h - 8)) + 'px';
+}
+
 function closePop() {
   selected = null;
   $('pop').hidden = true;
@@ -317,6 +382,7 @@ function renderPlan(tasks) {
 function handle(m) {
   switch (m.type) {
     case 'status': setAgent(m.id, m.status, m.report); break;
+    case 'think': if (!replaying) addThink(m.id, m.text); break;
     case 'log': addSys(`${m.from}: ${m.text}`); break;
     case 'msg':
       if (m.kind === 'command') { $('final').hidden = true; $('tasks').replaceChildren(); }
@@ -325,7 +391,11 @@ function handle(m) {
       break;
     case 'plan': renderPlan(m.tasks); break;
     case 'task': if (taskRows[m.id]) taskRows[m.id].className = 'dot ' + m.status; break;
-    case 'final': $('final').hidden = false; $('finalText').textContent = m.text; break;
+    case 'final':
+      $('final').hidden = false; $('final').classList.remove('min'); $('finalText').textContent = m.text;
+      $('finalLink').hidden = !m.file;
+      if (m.file) $('finalLink').href = 'reports/' + encodeURIComponent(m.file);
+      break;
     case 'done': go.disabled = false; break;
   }
 }
@@ -342,7 +412,7 @@ function renderPerm(pending, allowed) {
   for (const p of pending) {
     const d = document.createElement('div'); d.className = 'req';
     const t = document.createElement('div');
-    t.append(document.createTextNode(`🔒 ${p.agent} xin quyền ${p.action}: `));
+    t.append(document.createTextNode(`${p.mode === 'write' ? '✎' : '🔒'} ${p.agent} xin quyền ${p.action}: `));
     const c = document.createElement('code'); c.textContent = p.path; t.append(c);
     const btns = document.createElement('div'); btns.className = 'btns';
     const yes = document.createElement('button'); yes.textContent = 'Cho phép & ghi nhớ';
@@ -355,9 +425,9 @@ function renderPerm(pending, allowed) {
   al.replaceChildren();
   if (allowed.length) al.append(document.createTextNode('Đã cho phép: '));
   for (const a of allowed) {
-    const s = document.createElement('div'); s.textContent = a;
+    const s = document.createElement('div'); s.textContent = (a.mode === 'write' ? '[ghi] ' : '[đọc] ') + a.path;
     const x = document.createElement('button'); x.textContent = 'thu hồi';
-    x.onclick = () => post('revoke', { path: a });
+    x.onclick = () => post('revoke', { path: a.path, mode: a.mode });
     s.append(x); al.append(s);
   }
 }
@@ -368,7 +438,7 @@ async function poll() {
     const d = await (await fetch(`poll?since=${since}&ver=${agentsVer}`)).json();
     if (d.agents) {
       for (const k of Object.keys(agentData)) delete agentData[k];
-      cfg = { rooms: d.rooms, keys: d.keys };
+      cfg = { rooms: d.rooms, keys: d.keys, settings: d.settings };
       agentsVer = d.agentsVer;
       build(d.agents, d.state);
       $('mode').textContent = `MODE: ${d.mode}` + (d.mode === 'MOCK' ? ' (phản hồi giả lập)' : '') + ` · Kết nối: ${d.connection} · AI: ${d.provider}/${d.model || 'mặc định'} · Thư mục: ${d.sourceDir}` + (d.modeNote ? ` — ${d.modeNote}` : '');
@@ -408,6 +478,8 @@ function openEditor(id) {
   $('edColor').value = a.color;
   $('edSkills').value = (a.skills || []).join(', ');
   $('edPrompt').value = a.prompt || '';
+  $('edSkillFile').value = a.fileSkill || '';
+  $('edAsk').value = a.canAsk ? (a.canAsk.length ? a.canAsk.join(', ') : '-') : '';
   $('edProvider').replaceChildren(new Option('Mặc định (config.json)', ''),
     ...Object.entries(PROVIDER_LABEL).map(([k, v]) => new Option(v + (cfg.keys[k] ? '' : ' (chưa dùng được)'), k)));
   $('edProvider').value = a.provider || '';
@@ -434,7 +506,77 @@ $('edForm').onsubmit = (e) => {
     id: editingId || $('edId').value.trim(), name: $('edName').value, role: $('edRole').value,
     room: $('edRoom').value, color: $('edColor').value, prompt: $('edPrompt').value,
     skills: $('edSkills').value.split(',').map((x) => x.trim()).filter(Boolean),
+    canAsk: $('edAsk').value.trim() === '' ? null : $('edAsk').value.split(',').map((x) => x.trim()).filter((x) => x && x !== '-'),
+    'file-skill': $('edSkillFile').value.trim(),
     provider: $('edProvider').value || undefined, model: $('edModel').value.trim() || undefined,
   };
   sendAgent('agent/save', { agent, isNew: !editingId });
+};
+
+// ---- Đổi kích thước panel (lưu lại trong trình duyệt) ----
+const LS = {
+  get: (k) => { try { return localStorage.getItem('ao.' + k); } catch { return null; } },
+  set: (k, v) => { try { localStorage.setItem('ao.' + k, v); } catch { /* bỏ qua */ } },
+};
+{
+  const side = $('side'), split = $('split');
+  const w = Number(LS.get('sideW'));
+  if (w) side.style.setProperty('--sw', w + 'px');
+  split.onpointerdown = (e) => {
+    split.setPointerCapture(e.pointerId);
+    split.classList.add('drag'); document.body.classList.add('dragging');
+    split.onpointermove = (ev) => {
+      const nw = Math.max(260, Math.min(innerWidth - 320, innerWidth - ev.clientX));
+      side.style.setProperty('--sw', nw + 'px');
+      fit();
+    };
+    split.onpointerup = () => {
+      split.onpointermove = split.onpointerup = null;
+      split.classList.remove('drag'); document.body.classList.remove('dragging');
+      LS.set('sideW', parseInt(side.style.getPropertyValue('--sw')));
+    };
+  };
+  for (const id of ['finalText', 'tasks']) {
+    const el = $(id), h = Number(LS.get(id + 'H'));
+    if (h) el.style.height = h + 'px';
+    new ResizeObserver(() => { if (el.offsetHeight > 0) LS.set(id + 'H', el.offsetHeight); }).observe(el);
+  }
+  $('finalToggle').onclick = () => {
+    const m = $('final').classList.toggle('min');
+    $('finalToggle').textContent = m ? '▸' : '▾';
+  };
+}
+
+// ---- Cấu hình AI (CEO) ----
+const cd = $('cfgDlg');
+function fillProvider() {
+  const S = cfg.settings, p = S.providers[$('cfProvider').value], cli = $('cfConn').value === 'CLI';
+  $('cfModel').value = cli ? p.cliModel : p.model;
+  $('cfKeyRow').hidden = $('cfClearRow').hidden = cli;
+  $('cfKey').value = ''; $('cfClear').checked = false;
+  $('cfKey').placeholder = p.hasKey ? `Đã lưu (${p.keyHint}) — để trống = giữ nguyên` : `Dán ${p.keyName}`;
+  $('cfClearRow').hidden = cli || !p.hasKey;
+  $('cfNote').textContent = cli
+    ? `CLI "${p.cliCmd}": ${p.cliOk ? 'đã phát hiện' : 'chưa phát hiện (cài và đăng nhập, rồi chọn Lưu để kiểm tra lại)'}.`
+    : 'Key lưu trong config.json (quyền 600) và không bao giờ gửi lại về trình duyệt.';
+}
+function openConfig() {
+  const S = cfg.settings;
+  $('cfProvider').value = S.provider; $('cfConn').value = S.connection; $('cfMode').value = S.mode;
+  $('cfErr').textContent = S.note || '';
+  $('cfDetail').value = S.detail; $('cfWorkMax').value = S.workMax; $('cfSumMax').value = S.sumMax;
+  fillProvider();
+  cd.showModal();
+}
+$('cfProvider').onchange = fillProvider;
+$('cfDetail').onchange = () => { const b = $('cfDetail').value === 'brief'; $('cfWorkMax').value = b ? 1500 : 4000; $('cfSumMax').value = b ? 500 : 2500; };
+$('cfConn').onchange = fillProvider;
+$('cfCancel').onclick = () => cd.close();
+$('cfgForm').onsubmit = async (e) => {
+  e.preventDefault();
+  const r = await post('config/save', {
+    provider: $('cfProvider').value, connection: $('cfConn').value, mode: $('cfMode').value,
+    model: $('cfModel').value, detail: $('cfDetail').value, workMax: $('cfWorkMax').value, sumMax: $('cfSumMax').value, apiKey: $('cfKey').value, clearKey: $('cfClear').checked,
+  });
+  if (r.ok) { $('cfKey').value = ''; cd.close(); } else $('cfErr').textContent = await r.text();
 };

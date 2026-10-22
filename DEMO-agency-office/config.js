@@ -7,17 +7,17 @@ import { detect } from './cli.js';
 const APP_DIR = path.dirname(fileURLToPath(import.meta.url));
 const FILE = path.join(APP_DIR, 'config.json');
 
-let raw = {};
-try {
-  raw = JSON.parse(fs.readFileSync(FILE, 'utf8'));
-} catch (e) {
-  if (e.code !== 'ENOENT') console.warn(`[config] Không đọc được config.json (${e.message}), dùng mặc định.`);
+function readRaw() {
+  try {
+    return JSON.parse(fs.readFileSync(FILE, 'utf8'));
+  } catch (e) {
+    if (e.code !== 'ENOENT') console.warn(`[config] Không đọc được config.json (${e.message}), dùng mặc định.`);
+    return {};
+  }
 }
 
 // Giá trị trong config.json được ưu tiên; để trống thì lấy từ biến môi trường.
 const str = (v, env) => (typeof v === 'string' && v.trim() ? v.trim() : env || '');
-const notes = [];
-
 const PROVIDERS = {
   claude: { keyName: 'ANTHROPIC_API_KEY', envKeys: ['ANTHROPIC_API_KEY'], model: 'claude-sonnet-4-5' },
   gpt: { keyName: 'OPENAI_API_KEY', envKeys: ['OPENAI_API_KEY'], model: 'gpt-4o' },
@@ -25,6 +25,8 @@ const PROVIDERS = {
 };
 const ALIAS = { anthropic: 'claude', openai: 'gpt', google: 'gemini' };
 
+function build(raw) {
+const notes = [];
 let provider = (str(raw.AI_PROVIDER, process.env.AI_PROVIDER) || 'claude').toLowerCase();
 provider = ALIAS[provider] || provider;
 if (!PROVIDERS[provider]) {
@@ -84,9 +86,75 @@ for (const [name, p] of Object.entries(PROVIDERS)) {
   models[name] = str(raw.MODELS?.[name], '') || p.model;
 }
 
-export const CONFIG = {
+const detail = String(raw.REPORT_DETAIL || process.env.REPORT_DETAIL || 'detailed').toLowerCase() === 'brief' ? 'brief' : 'detailed';
+const tok = (...v) => { const n = Math.round(Number(v.find((x) => x !== undefined && x !== '' && x !== null))); return n >= 200 && n <= 16000 ? n : 0; };
+return {
   connection, cliCmd, cliModels, cliOk, keys, models, providers: Object.keys(PROVIDERS), aliases: ALIAS,
   mode, note, provider, apiKey, model, sourceDir, appDir: APP_DIR,
   port: Number(raw.PORT || process.env.PORT) || 3000,
+  detail,
+  workMax: tok(raw.MAX_WORK_TOKENS, process.env.MAX_WORK_TOKENS) || (detail === 'brief' ? 1500 : 4000),
+  sumMax: tok(raw.MAX_SUMMARY_TOKENS, process.env.MAX_SUMMARY_TOKENS) || (detail === 'brief' ? 500 : 2500),
 };
-export const LIVE = mode === 'REAL';
+}
+
+export const CONFIG = {};
+export let LIVE = false;
+
+// Đọc lại config.json và cập nhật CONFIG tại chỗ để các module khác dùng ngay.
+export function reload() {
+  Object.assign(CONFIG, build(readRaw()));
+  LIVE = CONFIG.mode === 'REAL';
+}
+reload();
+
+// Cài đặt AI mà CEO chỉnh trên giao diện; khoá API không bao giờ gửi ngược ra trình duyệt.
+export function settings() {
+  const hint = (k) => (k ? `…${k.slice(-4)}` : '');
+  return {
+    detail: CONFIG.detail, workMax: CONFIG.workMax, sumMax: CONFIG.sumMax,
+    mode: CONFIG.mode, connection: CONFIG.connection, provider: CONFIG.provider, note: CONFIG.note,
+    providers: Object.fromEntries(Object.entries(PROVIDERS).map(([name, p]) => [name, {
+      hasKey: Boolean(CONFIG.keys[name]), keyHint: hint(CONFIG.keys[name]), keyName: p.keyName,
+      model: CONFIG.models[name], cliModel: CONFIG.cliModels[name], cliOk: CONFIG.cliOk[name], cliCmd: CONFIG.cliCmd[name],
+    }])),
+  };
+}
+
+export function saveSettings(b) {
+  const raw = readRaw();
+  const want = (v) => (typeof v === 'string' ? v.trim() : '');
+  const provider = ALIAS[want(b.provider).toLowerCase()] || want(b.provider).toLowerCase();
+  if (!PROVIDERS[provider]) throw new Error('AI_PROVIDER phải là claude, gpt hoặc gemini.');
+  const mode = want(b.mode).toUpperCase() || 'MOCK';
+  const connection = want(b.connection).toUpperCase() || 'API';
+  if (!['MOCK', 'REAL'].includes(mode)) throw new Error('MODE phải là MOCK hoặc REAL.');
+  if (!['API', 'CLI'].includes(connection)) throw new Error('CONNECTION phải là API hoặc CLI.');
+  const model = want(b.model);
+  if (model && !/^[\w][\w.:\/-]{0,63}$/.test(model)) throw new Error('Tên model không hợp lệ.');
+  const key = want(b.apiKey);
+  if (/\s/.test(key) || key.length > 300) throw new Error('API key không hợp lệ.');
+
+  const detail = want(b.detail).toLowerCase() || 'detailed';
+  if (!['brief', 'detailed'].includes(detail)) throw new Error('Mức chi tiết phải là brief hoặc detailed.');
+  const limit = (v, name) => {
+    if (v === '' || v == null) return '';
+    const n = Math.round(Number(v));
+    if (!(n >= 200 && n <= 16000)) throw new Error(`${name} phải từ 200 đến 16000 token (để trống = mặc định).`);
+    return n;
+  };
+  raw.REPORT_DETAIL = detail;
+  raw.MAX_WORK_TOKENS = limit(b.workMax, 'Độ dài tối đa mỗi agent');
+  raw.MAX_SUMMARY_TOKENS = limit(b.sumMax, 'Độ dài tối đa báo cáo cuối');
+  raw.MODE = mode; raw.CONNECTION = connection; raw.AI_PROVIDER = provider;
+  const keyName = PROVIDERS[provider].keyName;
+  if (b.clearKey === true) raw[keyName] = '';
+  else if (key) raw[keyName] = key;
+  const bucket = connection === 'CLI' ? 'CLI_MODELS' : 'MODELS';
+  raw[bucket] = { ...(raw[bucket] || {}), [provider]: model };
+
+  const tmp = FILE + '.tmp';
+  fs.writeFileSync(tmp, JSON.stringify(raw, null, 2) + '\n', { mode: 0o600 });
+  fs.renameSync(tmp, FILE);
+  reload();
+}

@@ -1,3 +1,4 @@
+import { remember, recall } from './memory.js';
 import { AGENTS, work, makePlan, summarize, answer } from './agents.js';
 import { toolsFor } from './access.js';
 
@@ -15,14 +16,22 @@ export function createOrchestrator({ emit, state }) {
     return p;
   };
   const msg = (from, to, kind, text) => emit({ type: 'msg', from, to, kind, text });
+  const think = (id, text) => emit({ type: 'think', id, text });
   const setStatus = (id, status, report) => emit({ type: 'status', id, status, report });
 
   async function consult(from, toId, question, command) {
     if (!byId[toId] || toId === from.id) return 'Không có đồng nghiệp này.';
+    if (from.canAsk && !from.canAsk.includes(toId)) {
+      think(from.id, `Không được hỏi #${toId}`);
+      return from.canAsk.length ? `Không được hỏi #${toId}. Chỉ được hỏi: ${from.canAsk.map((x) => '#' + x).join(', ')}.` : 'Bạn không được hỏi đồng nghiệp, hãy tự hoàn thành phần việc của mình.';
+    }
     if (state[toId].status === 'offline') return `${byId[toId].name} đang offline.`;
     msg(from.id, toId, 'question', question);
+    think(from.id, `Hỏi ${byId[toId].name}: ${short(question, 80)}`);
+    think(toId, `${from.name} hỏi: ${short(question, 80)}`);
     const a = await answer(byId[toId], question, command);
     msg(toId, from.id, 'answer', a);
+    think(from.id, `Nhận trả lời từ ${byId[toId].name}`);
     return a;
   }
 
@@ -41,15 +50,23 @@ export function createOrchestrator({ emit, state }) {
 
     msg('user', CEO, 'command', command);
     setStatus(CEO, 'working', 'Đang lập kế hoạch…');
+    think(CEO, `Nhận lệnh: ${short(command, 80)}`);
+    think(CEO, 'Phân tích và chia task…');
     const tasks = direct
       ? [{ id: 't1', title: command, assignee: direct, dependsOn: [] }]
       : await makePlan(command);
+    if (tasks.route) think(CEO, `Quy trình: ${tasks.route} (${tasks.map((t) => '#' + t.assignee).join(' → ')})`);
     emit({ type: 'plan', tasks: tasks.map((t) => ({ ...t, status: 'pending' })) });
     for (const t of tasks) msg(CEO, t.assignee, 'assign', t.title);
+    think(CEO, `Đã giao ${tasks.length} task cho ${new Set(tasks.map((t) => t.assignee)).size} agent`);
     setStatus(CEO, 'working', `Đã tạo ${tasks.length} task, đang theo dõi tiến độ.`);
 
+    const memory = recall(command);
+    if (memory) think(CEO, 'Dùng lại bộ nhớ từ các lần làm việc trước');
     const results = {};
     const started = {};
+    const artifacts = []; // file ảnh/csv agent tạo ra, tự chèn vào báo cáo
+    const keep = (r, p) => { if (r && !r.error && r.path && /\.(png|jpe?g|webp|gif|svg|csv)$/i.test(p)) artifacts.push(r.path); return r; };
     const byTask = Object.fromEntries(tasks.map((t) => [t.id, t]));
 
     const exec = async (t) => {
@@ -70,18 +87,31 @@ export function createOrchestrator({ emit, state }) {
       return withAgent(a.id, async () => {
         emit({ type: 'task', id: t.id, status: 'running' });
         setStatus(a.id, 'working');
+        think(a.id, `Nhận task: ${short(t.title, 80)}`);
+        inputs.forEach((i) => think(a.id, `Đọc kết quả của ${i.from}`));
+        think(a.id, 'Đang phân tích…');
+        const raw = toolsFor(a, emit);
+        const tools = {
+          readFile: async (p) => { think(a.id, `Đọc file ${p}`); const r = await raw.readFile(p); think(a.id, r.error ? `Không đọc được: ${r.error}` : `Đã đọc ${p}`); return r; },
+          writeFile: async (p, c) => { think(a.id, `Ghi file ${p}`); const r = await raw.writeFile(p, c); think(a.id, r.error ? `Không ghi được: ${r.error}` : `Đã ${r.created ? 'tạo' : 'ghi đè'} ${r.path}`); return keep(r, String(p)); },
+          makeImage: async (i) => { think(a.id, `Tạo ảnh ${i?.output}`); const r = await raw.makeImage(i); think(a.id, r.error ? `Không tạo được ảnh: ${r.error}` : `Đã ${r.created ? 'tạo' : 'ghi đè'} ảnh ${r.path} (${r.width}x${r.height})`); return keep(r, r.path || ''); },
+          makeDocx: async (i) => { think(a.id, `Tạo file Word ${i?.output}`); const r = await raw.makeDocx(i); think(a.id, r.error ? `Không tạo được .docx: ${r.error}` : `Đã ${r.created ? 'tạo' : 'ghi đè'} ${r.path}`); return r; },
+          listDir: async (p) => { think(a.id, `Xem thư mục ${p}`); const r = await raw.listDir(p); think(a.id, r.error ? `Không xem được: ${r.error}` : `Thấy ${r.entries.length} mục`); return r; },
+        };
         try {
           const text = await work(a, {
-            command, task: t, inputs,
-            tools: toolsFor(a, emit),
+            command, task: t, inputs, memory, think: (x) => think(a.id, x), isLast: !tasks.some((o) => o.dependsOn?.includes(t.id)),
+            tools,
             ask: (to, q) => consult(a, to, q, command),
           });
+          think(a.id, 'Hoàn thành, gửi báo cáo cho Quản Lí ✓');
           setStatus(a.id, 'idle', text);
           msg(a.id, CEO, 'report', short(text, 140));
           emit({ type: 'task', id: t.id, status: 'done' });
           return { status: 'done', text };
         } catch (e) {
           const text = `Lỗi: ${e.message}`;
+          think(a.id, text);
           setStatus(a.id, 'error', text);
           msg(a.id, CEO, 'report', short(text, 140));
           emit({ type: 'task', id: t.id, status: 'failed' });
@@ -94,6 +124,7 @@ export function createOrchestrator({ emit, state }) {
     await Promise.all(tasks.map(start));
 
     setStatus(CEO, 'working', 'Đang tổng hợp báo cáo…');
+    think(CEO, 'Tổng hợp báo cáo từ các agent…');
     const items = tasks.map((t) => ({ agent: byId[t.assignee].name, title: t.title, ...results[t.id] }));
     let text;
     try {
@@ -102,7 +133,9 @@ export function createOrchestrator({ emit, state }) {
       text = `Không tổng hợp được báo cáo: ${e.message}`;
     }
     msg(CEO, 'user', 'final', short(text, 140));
-    emit({ type: 'final', text, tasks: items.map((i) => ({ agent: i.agent, title: i.title, status: i.status })) });
+    await emit({ type: 'final', text, artifacts, details: items, tasks: items.map((i) => ({ agent: i.agent, title: i.title, status: i.status })) });
+    try { remember({ command, summary: text, items, artifacts }); } catch { /* không lưu được thì bỏ qua */ }
+    think(CEO, 'Đã gửi báo cáo cho CEO ✓');
     setStatus(CEO, 'idle', text);
   }
 
