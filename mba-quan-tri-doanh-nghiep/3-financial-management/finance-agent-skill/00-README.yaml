@@ -1,0 +1,69 @@
+# 00-README.yaml — ĐIỂM VÀO. Agent mới: đọc file này TRƯỚC, rồi làm theo load_order.
+skill:
+  id: finance-agent-skill
+  version: 1.0
+  language: vi (thuật ngữ Anh trong ngoặc)
+  created: 2026-10-29
+  purpose: >
+    Bộ tri thức đã chắt lọc từ giáo trình "Quản trị tài chính doanh nghiệp" (MBA ứng dụng SME Việt Nam)
+    để một agent tài chính tư vấn, giải đáp, tính toán, lập bảng biểu/báo cáo và đề xuất phương án
+    cho mọi vấn đề tài chính doanh nghiệp.
+  source_material: >
+    11 file markdown trong thư mục cha (01-time-value-of-money.md ... 11-integrated-corporate-finance-guide.md).
+    Skill này tự đủ (self-contained): agent không cần đọc file markdown gốc để làm việc;
+    markdown gốc chỉ để tham chiếu sâu thêm nếu có.
+  portability: >
+    Chỉ gồm YAML (+ 1 script Python tùy chọn). Copy nguyên thư mục finance-agent-skill/ sang máy khác là dùng được.
+    Không có đường dẫn tuyệt đối, không phụ thuộc phần mềm ngoài. Script kiểm tra cần python3 + pyyaml.
+
+how_to_bootstrap:    # dành cho agent mới hoàn toàn
+  step_1: Đọc toàn bộ file này.
+  step_2: Đọc 01-agent-profile.yaml (vai trò, nguyên tắc, quy trình trả lời, nhãn độ tin cậy) — BẮT BUỘC tuân thủ.
+  step_3: Đọc SCHEMA.yaml để hiểu cấu trúc các module.
+  step_4: Với mỗi yêu cầu của người dùng, dùng 02-decision-router.yaml để chọn module + playbook.
+  step_5: Nạp module cần dùng trong modules/ (đọc đầy đủ), tra công thức ở 06-formulas-index.yaml, chạy playbook ở 03-playbooks.yaml.
+  step_6: Trình bày kết quả theo 04-report-templates.yaml; tra thuật ngữ ở 05-glossary.yaml.
+  note_on_context: >
+    Nếu giới hạn ngữ cảnh chặt: luôn nạp 00, 01, 02; chỉ nạp thêm module liên quan (router chỉ ra tối đa 3-4 module cho mỗi tình huống).
+
+load_order:
+  always: [00-README.yaml, 01-agent-profile.yaml, 02-decision-router.yaml]
+  on_demand: [03-playbooks.yaml, 04-report-templates.yaml, 05-glossary.yaml, 06-formulas-index.yaml, "modules/*.yaml"]
+  reference_only: [SCHEMA.yaml]
+
+file_index:
+  - {file: 00-README.yaml, role: Điểm vào, hướng dẫn nạp skill}
+  - {file: SCHEMA.yaml, role: Định nghĩa cấu trúc dữ liệu}
+  - {file: 01-agent-profile.yaml, role: Vai trò, phạm vi, nguyên tắc, workflow, disclaimer}
+  - {file: 02-decision-router.yaml, role: Định tuyến câu hỏi -> module/playbook, chuỗi module cho bài toán đa chiều}
+  - {file: 03-playbooks.yaml, role: 11 kịch bản giải quyết vấn đề end-to-end}
+  - {file: 04-report-templates.yaml, role: Mẫu báo cáo/bảng biểu đầu ra}
+  - {file: 05-glossary.yaml, role: Thuật ngữ Việt-Anh và ký hiệu}
+  - {file: 06-formulas-index.yaml, role: Registry mọi công thức (sinh tự động, có biểu thức Python chạy được)}
+  - {file: modules/m01-time-value-of-money.yaml, role: "TVM: FV, PV, annuity, EAR, khoản vay, Fisher"}
+  - {file: modules/m02-capital-budgeting.yaml, role: "Thẩm định dự án: NPV, IRR, MIRR, payback, PI, EAA, rủi ro"}
+  - {file: modules/m03-cost-of-capital.yaml, role: "WACC, CAPM, Ke, Kd, Hamada, EVA"}
+  - {file: modules/m04-capital-structure.yaml, role: "Cơ cấu vốn: M&M, trade-off, pecking order, EBIT-EPS"}
+  - {file: modules/m05-financial-statement-analysis.yaml, role: "Phân tích BCTC: tỷ số, DuPont, dòng tiền"}
+  - {file: modules/m06-working-capital-management.yaml, role: "Vốn lưu động: CCC, EOQ, chiết khấu thanh toán, Baumol"}
+  - {file: modules/m07-dividend-policy.yaml, role: "Cổ tức, buyback, Lintner, residual"}
+  - {file: modules/m08-risk-and-return.yaml, role: "Rủi ro-lợi nhuận, Markowitz, CAPM, Sharpe/Treynor/Jensen"}
+  - {file: modules/m09-mergers-and-acquisitions.yaml, role: "M&A: synergy, premium, accretion/dilution, LBO, goodwill"}
+  - {file: modules/m10-corporate-valuation.yaml, role: "Định giá: DCF, Comps, Precedent, equity bridge"}
+  - {file: modules/m11-integrated-guide.yaml, role: "Case tích hợp 13 bài, VaR, Monte Carlo, DSCR, IFRS"}
+
+maintenance:
+  validate: "python3 tools/build_and_validate.py   # kiểm tra YAML, trùng id, sinh lại 06-formulas-index.yaml"
+  update_rule: "Sửa module trong modules/, rồi chạy lại script để cập nhật 06-formulas-index.yaml."
+  data_quality_notes: >
+    Mỗi case_lessons có data_reliability (verified/illustrative/unverified). Số liệu công ty quốc tế và thuế/pháp lý VN
+    cần đối chiếu nguồn gốc trước khi dùng cho quyết định thật. Xem known_data_caveats trong 01-agent-profile.yaml.
+
+conventions_for_calculation:
+  expression_python: >
+    Biểu thức hoặc đoạn code Python minh họa cách tính; tên biến khớp mục variables và example.inputs.
+    Một số công thức cần thư viện math/numpy/scipy (vd brentq cho IRR) hoặc có nhiều dòng: coi là mã tham chiếu, không nhất thiết eval một dòng.
+    Ví dụ m08_hamada: unlever beta trước rồi mới relever.
+  source_errors_found: >
+    Khi distill, agent phát hiện một số lỗi trong markdown gốc (đáp số bài tập 01 bài 4 và 6c; 02 bài 4-5; WACC Microsoft ở 04; DuPont 5 thành phần và Apple ở 05; 07 bài 6e).
+    YAML đã dùng giá trị tính lại đúng; ưu tiên YAML hơn markdown khi hai bên mâu thuẫn.

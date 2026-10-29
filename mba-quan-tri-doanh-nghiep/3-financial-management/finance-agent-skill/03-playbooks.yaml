@@ -1,0 +1,145 @@
+# 03-playbooks.yaml — Kịch bản giải quyết vấn đề end-to-end
+# Mỗi playbook: intake (dữ liệu cần) -> steps (tính toán, tham chiếu module) -> sanity checks -> output -> khuyến nghị.
+playbooks:
+  pb_loan_and_tvm:
+    goal: Tính FV/PV, khoản vay trả góp, lãi thực EAR, so sánh các phương án thanh toán
+    modules: [m01]
+    intake: [số tiền, lãi suất danh nghĩa, tần suất ghép lãi, kỳ hạn, cách trả (cuối/đầu kỳ, gốc đều, niên kim), lạm phát nếu cần]
+    steps:
+      - Quy mọi dòng tiền về cùng thời điểm và cùng tần suất lãi
+      - Dùng FV/PV, annuity hoặc perpetuity phù hợp; với khoản vay lập bảng khấu hao nợ (gốc, lãi, dư nợ)
+      - Đổi lãi danh nghĩa sang EAR để so sánh các phương án; phát hiện lãi flat ẩn
+      - So sánh phương án bằng PV hoặc chi phí thực
+    sanity: [tổng gốc trả = số vay, dư nợ cuối kỳ = 0, EAR >= lãi danh nghĩa]
+    output: Bảng khấu hao nợ + so sánh PV/EAR + khuyến nghị
+
+  pb_project_appraisal:
+    goal: Thẩm định dự án đầu tư (mở chi nhánh, mua máy, mở rộng) và chọn giữa các dự án
+    modules: [m02, m03, m01]
+    intake: [vốn đầu tư ban đầu, vốn lưu động, doanh thu/chi phí dự kiến, thuế suất, khấu hao, giá trị thanh lý, vòng đời, tỷ lệ chiết khấu hoặc dữ liệu để tính WACC]
+    steps:
+      - Xác định dòng tiền tăng thêm sau thuế (loại chi phí chìm, tính chi phí cơ hội, vốn lưu động, lá chắn thuế khấu hao; không tính lãi vay)
+      - Tính tỷ lệ chiết khấu phù hợp rủi ro dự án (xem pb_wacc)
+      - Tính NPV, IRR, MIRR, Payback và DPP, PI
+      - "Dự án loại trừ có vòng đời khác nhau: dùng EAA. NPV và IRR mâu thuẫn: dùng IRR gia tăng + NPV profile"
+      - Thiếu vốn: xếp hạng theo PI để tối đa NPV tổng
+      - Độ nhạy và kịch bản (doanh thu, chi phí, WACC), điểm hòa vốn, xác suất NPV âm nếu có Monte Carlo
+    sanity: [NPV>0 tương ứng IRR>discount rate với dòng tiền thông thường, tổng dòng tiền khớp bảng, đơn vị nhất quán]
+    decision: "Chấp nhận nếu NPV>0 và rủi ro chấp nhận được; nếu loại trừ chọn NPV cao nhất; luôn kiểm tra payback với ràng buộc thanh khoản SME"
+    output: Bảng dòng tiền + chỉ số + độ nhạy + khuyến nghị có điều kiện
+
+  pb_wacc:
+    goal: Xác định tỷ lệ chiết khấu / hurdle rate
+    modules: [m03, m08, m04]
+    intake: [giá trị thị trường (hoặc mục tiêu) của nợ và vốn chủ, lãi vay, thuế suất, Rf, MRP, beta (hoặc beta ngành), quy mô DN]
+    steps:
+      - Chốt cơ cấu vốn mục tiêu theo giá trị thị trường
+      - Ke bằng CAPM (+ size premium, country risk nếu phù hợp); DN không niêm yết thì unlever beta ngành rồi relever theo D/E mục tiêu (Hamada)
+      - Kd = lãi vay biên/YTM; Kd sau thuế = Kd x (1 - t)
+      - WACC = E/V x Ke + D/V x Kd(1-t)
+      - Điều chỉnh theo rủi ro dự án (cộng premium) khi dự án rủi ro hơn hoạt động hiện tại
+    sanity: [Kd sau thuế < WACC < Ke, beta relever tăng khi D/E tăng, không dùng lãi vay làm hurdle rate]
+    output: Bảng WACC từng thành phần + độ nhạy WACC theo beta/D/E
+
+  pb_capital_structure:
+    goal: Chọn giữa vay nợ, phát hành cổ phần hoặc hỗn hợp để tài trợ
+    modules: [m04, m03, m05]
+    intake: [nhu cầu vốn, EBIT dự kiến và biến động, lãi vay và điều kiện vay, số cổ phần hiện hữu, giá phát hành, thuế suất, khả năng thế chấp, covenant]
+    steps:
+      - Lập bảng phương án (100% nợ, 100% vốn chủ, hỗn hợp)
+      - Tính EPS và ROE từng phương án tại EBIT dự kiến; tìm EBIT hòa vốn (indifference point)
+      - Tính WACC và ICR/DSCR/Nợ/EBITDA từng phương án
+      - Stress test EBIT giảm 20-40% (khả năng trả lãi, vi phạm covenant)
+      - Đối chiếu Trade-off / Pecking Order, kiểm tra kỳ hạn nợ khớp kỳ hạn tài sản
+    sanity: [EPS hòa vốn tính đúng, ICR >= ngưỡng ngân hàng, nợ ngắn hạn không tài trợ tài sản dài hạn]
+    decision: "Đòn bẩy có lợi khi ROIC > Kd sau thuế và EBIT ổn định; SME biến động cao nên giữ đệm an toàn"
+    output: Bảng so sánh EPS/WACC/rủi ro + khuyến nghị phương án
+
+  pb_financial_health_check:
+    goal: Chẩn đoán sức khỏe tài chính từ BCTC (vd doanh thu giảm, đang lỗ)
+    modules: [m05, m06]
+    intake: [P&L, Balance Sheet, Cash Flow 2-3 kỳ, thông tin ngành]
+    steps:
+      - Kiểm tra tính nhất quán BCTC (A=L+E, CFS khớp thay đổi tiền)
+      - Phân tích ngang (YoY) và dọc (common-size)
+      - Tính nhóm tỷ số: thanh khoản, hiệu quả hoạt động, đòn bẩy, khả năng sinh lời, DuPont 3 bước
+      - Đọc dòng tiền: CFO so với lợi nhuận, FCF
+      - So benchmark ngành (ghi độ tin cậy), xác định nguyên nhân gốc (biên, vòng quay, đòn bẩy)
+      - Lập danh sách vấn đề ưu tiên + hành động 30-60-90 ngày
+    sanity: [tỷ số tính từ đúng kỳ và đúng mẫu số (trung bình hay cuối kỳ), cảnh báo lợi nhuận kế toán khác dòng tiền]
+    output: Bảng tỷ số + chẩn đoán + kế hoạch hành động
+
+  pb_working_capital:
+    goal: Giải quyết thiếu tiền/tối ưu vốn lưu động
+    modules: [m06, m05, m01]
+    intake: [doanh thu, giá vốn, phải thu, tồn kho, phải trả (đầu/cuối kỳ), chính sách tín dụng, chi phí vay]
+    steps:
+      - Tính DSO, DIO, DPO, CCC và OWC; so với mục tiêu/benchmark
+      - Định lượng tiền bị giam giữ (ΔOWC = ΔCCC x giá vốn/ngày hoặc theo từng thành phần)
+      - Đòn bẩy cải thiện: thu tiền nhanh, giảm tồn kho (EOQ/ROP/ABC), đàm phán kỳ hạn NCC
+      - Đánh giá chiết khấu thanh toán (chi phí thực EAR của 2/10 net 30) so với lãi vay
+      - Dự báo nhu cầu vốn khi tăng trưởng (overtrading/growth trap) và nguồn bù đắp
+    sanity: [CCC = DIO + DSO - DPO, đơn vị ngày nhất quán, funding gap khớp]
+    output: Bảng CCC hiện tại vs mục tiêu + tiền giải phóng + lộ trình 90 ngày
+
+  pb_dividend_decision:
+    goal: Quyết định chia cổ tức/giữ lại/mua lại cổ phiếu
+    modules: [m07, m02, m04]
+    intake: [lợi nhuận, FCF, cơ hội đầu tư NPV>0, nhu cầu thanh khoản, cơ cấu cổ đông và nhu cầu thu nhập, thuế, covenant vay]
+    steps:
+      - Ưu tiên dự án NPV>0 (residual approach); phần dư mới chia
+      - Tính payout hợp lý, tăng trưởng bền vững g = ROE x b
+      - Stress test khi lợi nhuận giảm; đề xuất chính sách cổ tức nền + thưởng thêm
+      - So sánh cổ tức tiền mặt, cổ tức cổ phiếu, buyback (thuế, tín hiệu, linh hoạt)
+    sanity: [cổ tức không vượt FCF bền vững, không vay để chia cổ tức dài hạn, không vi phạm điều kiện pháp lý]
+    output: Bảng payout theo kịch bản + chính sách đề xuất
+
+  pb_portfolio:
+    goal: Phân bổ vốn nhàn rỗi/đánh giá danh mục
+    modules: [m08, m03]
+    intake: [các kênh đầu tư, lợi nhuận kỳ vọng và kịch bản, độ biến động, tương quan, Rf, thời hạn và nhu cầu thanh khoản]
+    steps:
+      - Tính E(R), σ từng tài sản, hiệp phương sai/tương quan
+      - Tính E(Rp), σp theo tỷ trọng; tìm danh mục phương sai nhỏ nhất và Sharpe cao nhất
+      - Tính beta, CAPM, Treynor, Jensen alpha khi có benchmark
+      - Stress test; tách quỹ dự phòng thanh khoản
+    sanity: [tổng tỷ trọng = 100%, σp <= trung bình có trọng số của σ khi tương quan <1]
+    output: Bảng phân bổ đề xuất + chỉ số + cảnh báo giả định
+
+  pb_mna:
+    goal: Đánh giá thương vụ M&A (bên mua/bên bán)
+    modules: [m09, m10, m03]
+    intake: [BCTC mục tiêu, kế hoạch tích hợp, synergy dự kiến, giá chào, hình thức thanh toán, nguồn vốn]
+    steps:
+      - Định giá độc lập mục tiêu (DCF, Comps, Precedent)
+      - Định lượng synergy (cost/revenue, chiết khấu độ chắc chắn, trừ chi phí tích hợp)
+      - Giá tối đa (walk-away) = giá trị độc lập + NPV synergy ròng; so sánh với giá chào và premium
+      - Accretion/dilution EPS theo hình thức thanh toán; kiểm tra Nợ/EBITDA và ICR sau thương vụ
+      - Stress test synergy; goodwill; cấu trúc earn-out
+    sanity: [giá trả < walk-away, giá trị tạo ra = synergy - premium, pro-forma khớp]
+    output: Bảng định giá + synergy + accretion/dilution + khuyến nghị giá/cấu trúc
+
+  pb_valuation:
+    goal: Định giá doanh nghiệp (bán, gọi vốn, góp vốn)
+    modules: [m10, m03, m01]
+    intake: [BCTC lịch sử, dự phóng, WACC inputs, peer data, giao dịch tương tự, nợ/tiền]
+    steps:
+      - Chuẩn hóa EBITDA/lợi nhuận (loại khoản bất thường, lương chủ)
+      - DCF: FCFF dự phóng, WACC, TV (Gordon/exit multiple, kiểm tra g = RR x ROIC), EV -> equity
+      - Comps và Precedent (trung vị, discount SME/thanh khoản nếu cần)
+      - Football field, trọng số, khoảng giá thương lượng
+      - Độ nhạy WACC x g; pre/post-money khi gọi vốn
+    sanity: [TV/EV hợp lý (<~75%), EV ngụ ý multiple hợp lý, equity = EV - nợ ròng]
+    output: Bảng DCF + độ nhạy + football field + khoảng giá khuyến nghị
+
+  pb_integrated_plan:
+    goal: Kế hoạch tài chính toàn diện cho một công ty
+    modules: [m11, m01, m02, m03, m04, m05, m06, m07, m10]
+    steps:
+      - Chẩn đoán hiện trạng (pb_financial_health_check)
+      - Xác định cơ hội đầu tư và thẩm định (pb_project_appraisal)
+      - Thiết kế nguồn vốn (pb_capital_structure) và vốn lưu động (pb_working_capital)
+      - Chính sách cổ tức (pb_dividend_decision)
+      - Rủi ro: stress test, VaR/Monte Carlo nếu cần
+      - Giá trị doanh nghiệp tác động (pb_valuation)
+    output: Báo cáo tích hợp theo mẫu rpt_integrated

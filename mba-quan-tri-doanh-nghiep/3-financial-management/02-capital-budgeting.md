@@ -863,10 +863,12 @@ Giải thích bằng lời của bạn: (a) Vì sao khi tính dòng tiền dự 
 Máy giá 1,2 tỷ, khấu hao đường thẳng 6 năm về 0; EBITDA tăng thêm 400 triệu/năm; thuế 20%; NWC tăng 80 triệu (thu hồi cuối kỳ); bán lại máy 100 triệu cuối năm 6. (a) Lập bảng dòng tiền 0-6; (b) tính lá chắn thuế mỗi năm; (c) NPV tại r = 11%.
 
 ### Bài 4 (Trung bình – Xung đột NPV vs IRR)
-Dự án P: dòng tiền –100, +60, +60. Dự án Q: –500, +260, +260 (r = 10%). Tính NPV, IRR từng dự án; tính IRR gia tăng; kết luận chọn dự án nào nếu loại trừ lẫn nhau.
+Dự án P: dòng tiền –100, +60, +60. Dự án Q: –500, 0, +630 (r = 10%). Tính NPV, IRR từng dự án; tính IRR gia tăng; kết luận chọn dự án nào nếu loại trừ lẫn nhau.
+*Gợi ý đáp số*: NPV(P) ≈ +4,13, IRR(P) ≈ 13,07%; NPV(Q) ≈ +20,66, IRR(Q) ≈ 12,25% → NPV và IRR xếp hạng ngược nhau. Dòng chênh lệch Q – P = –400, –60, +570: NPV gia tăng ≈ +16,53, IRR gia tăng ≈ 12,11% > 10% → chọn Q.
 
 ### Bài 5 (Trung bình – Capital rationing)
 Ngân sách 2.000 triệu; 4 dự án (vốn / NPV): A (800 / 160), B (700 / 154), C (600 / 90), D (900 / 171). Tính PI từng dự án, chọn tổ hợp tối đa hóa tổng NPV.
+*Gợi ý đáp số*: PI = 1,20 (A), 1,22 (B), 1,15 (C), 1,19 (D). Xếp theo PI chọn B rồi A (1.500 triệu, NPV 314), nhưng tổ hợp tối ưu là A + D (1.700 triệu, NPV 331) → khi ngân sách không chia hết, PI chỉ là heuristic, cần thử mọi tổ hợp (Solver).
 
 ### Bài 6 (Nâng cao – Mini Case: Xưởng may "Hòa Bình")
 Xưởng may cân nhắc (i) mua 10 máy may công nghiệp mới thay máy cũ, hoặc (ii) giữ nguyên. Tự lập dòng tiền gia tăng gồm: bán máy cũ (có lãi/lỗ sổ sách → thuế), tiết kiệm nhân công, giảm phế phẩm, chi phí đào tạo, vốn lưu động. Tính NPV, IRR, DPP; chạy độ nhạy cho tiết kiệm nhân công ±20% và giá máy +15%; lập khuyến nghị.

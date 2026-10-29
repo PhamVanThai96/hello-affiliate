@@ -1,0 +1,86 @@
+# SCHEMA.yaml — Quy ước cấu trúc của bộ skill "finance-agent-skill"
+# Mọi file trong bộ skill phải tuân theo schema này. Ngôn ngữ nội dung: tiếng Việt, thuật ngữ Anh trong ngoặc.
+# Khóa (key) và id: tiếng Anh, snake_case, không dấu. Tất cả file là YAML thuần (UTF-8), không phụ thuộc đường dẫn tuyệt đối.
+
+version: 1.0
+skill_id: finance-agent-skill
+module_ids:            # id cố định, dùng để tham chiếu chéo
+  m01: time_value_of_money
+  m02: capital_budgeting
+  m03: cost_of_capital
+  m04: capital_structure
+  m05: financial_statement_analysis
+  m06: working_capital_management
+  m07: dividend_policy
+  m08: risk_and_return
+  m09: mergers_and_acquisitions
+  m10: corporate_valuation
+  m11: integrated_guide
+
+# ---------- Schema file modules/mNN-<name>.yaml ----------
+module_schema:
+  id: "m01"                      # khớp module_ids
+  name_vi: ""
+  name_en: ""
+  purpose: ""                    # 1-3 câu: module giải quyết bài toán kinh doanh nào
+  when_to_use: []                # danh sách tình huống/câu hỏi điển hình kích hoạt module
+  prerequisites: []              # id module nên nắm trước
+  related_modules: []            # id module liên quan + lý do ngắn
+  concepts:                      # khái niệm cốt lõi
+    - term_vi: ""
+      term_en: ""
+      definition: ""
+      why_it_matters: ""         # TẠI SAO: vấn đề giải quyết, logic, nguồn gốc lịch sử (ai, năm nào) nếu có
+  formulas:                      # TOÀN BỘ công thức/chỉ số của topic, không bỏ sót
+    - id: "m01_npv"              # <module id>_<ten_ngan>, duy nhất toàn skill
+      name_vi: ""
+      name_en: ""
+      expression_latex: ""
+      expression_python: ""      # biểu thức/hàm Python chạy được, dùng đúng tên biến trong variables
+      excel: ""                  # hàm Excel tương ứng nếu có
+      variables:
+        - {symbol: "", meaning: "", unit: ""}
+      when_to_use: ""
+      why_it_works: ""           # logic đằng sau công thức, cho người mới
+      assumptions: []
+      pitfalls: []
+      interpretation: ""         # cách đọc kết quả, ngưỡng tham chiếu
+      example:                   # ví dụ số đã verify bằng Python
+        inputs: {}
+        steps: []
+        result: ""
+  procedures:                    # quy trình từng bước (how-to) để giải bài toán
+    - id: ""
+      name: ""
+      steps: []
+      outputs: ""
+  decision_rules: []             # quy tắc ra quyết định dạng "Nếu ... thì ..."
+  benchmarks:                    # ngưỡng/khoảng tham chiếu (ghi rõ nguồn/độ tin cậy)
+    - {metric: "", value: "", context: "", confidence: "high|medium|low"}
+  pitfalls: []                   # sai lầm thường gặp
+  sme_vn_guidance: []            # áp dụng cho SME Việt Nam (tool, giá, pháp lý/thuế -> đánh dấu cần xác nhận)
+  case_lessons:                  # chắt lọc từ case study; KHÔNG chép cả case
+    - name: ""
+      type: "success|failure|sme"
+      setup: ""
+      key_calculations: []       # các phép tính then chốt kèm số
+      lesson: ""
+      data_reliability: "verified|illustrative|unverified"
+  worked_examples: []            # ví dụ tính toán mẫu đầy đủ (inputs, steps, result) để agent bắt chước
+  practice_questions:            # câu hỏi + đáp số/gợi ý
+    - {q: "", a: ""}
+  checklist: []                  # checklist rà soát trước khi áp dụng/báo cáo
+  excel_google_sheets_templates: []
+  source_file: ""                # tên file markdown gốc (tham khảo nguồn, vd 01-time-value-of-money.md)
+
+# ---------- Các file cấp skill ----------
+files:
+  00-README.yaml:            "Điểm vào cho agent mới: mục đích, cách nạp, thứ tự đọc, mục lục file"
+  SCHEMA.yaml:               "File này"
+  01-agent-profile.yaml:     "Vai trò, phạm vi, nguyên tắc hành xử, quy trình trả lời, kỷ luật tính toán, giới hạn/disclaimer"
+  02-decision-router.yaml:   "Bảng định tuyến: loại câu hỏi/tình huống -> module, công thức, playbook cần dùng"
+  03-playbooks.yaml:         "Kịch bản giải quyết vấn đề end-to-end (intake -> tính -> diễn giải -> khuyến nghị)"
+  04-report-templates.yaml:  "Mẫu báo cáo/bảng biểu đầu ra chuẩn"
+  05-glossary.yaml:          "Từ điển thuật ngữ Việt-Anh + ký hiệu"
+  06-formulas-index.yaml:    "Registry mọi công thức (sinh tự động từ modules/)"
+  modules/:                  "11 file tri thức theo chủ đề"

@@ -1,0 +1,1236 @@
+id: m04
+name_vi: Cơ cấu vốn (Modigliani-Miller, Trade-Off, Pecking Order)
+name_en: Capital Structure
+purpose: Giúp quyết định vay bao nhiêu và góp vốn bao nhiêu để tối thiểu WACC, tối đa giá trị DN mà vẫn
+  đủ an toàn; so sánh phương án tài trợ (vay/cổ phần/kết hợp) bằng WACC, EPS, ROE và stress test.
+when_to_use:
+- Hỏi D/E tối ưu, nên vay hay gọi vốn cổ phần
+- Tính WACC, Ke (CAPM), beta Hamada
+- Tính tax shield, EBIT-EPS indifference point
+- So sánh phương án tài trợ mở rộng
+- Giải thích M&M, Trade-Off, Pecking Order, Agency
+- Đàm phán vay ngân hàng, covenant, ICR/DSCR
+- Đánh giá rủi ro đòn bẩy (Evergrande)
+prerequisites:
+- m01
+- m03
+related_modules:
+- m02 (WACC làm suất chiết khấu)
+- m03 (Kd, Ke, WACC chi tiết)
+- m05 (ICR, D/E, ROE từ BCTC)
+- m07 (cổ tức/mua lại và Jensen FCF)
+- m08 (CAPM, beta)
+- m09 (LBO, tài trợ M&A)
+- m10 (WACC trong DCF)
+concepts:
+- term_vi: Cơ cấu vốn
+  term_en: Capital Structure
+  definition: 'Tỷ lệ phối hợp giữa nợ (Debt) và vốn chủ sở hữu (Equity) dùng tài trợ hoạt động và đầu
+    tư. Câu hỏi cốt lõi: có D/E tối ưu làm WACC thấp nhất và giá trị DN cao nhất không.'
+  why_it_matters: Trước 1958 giới thực hành tin nợ rẻ nên càng vay càng giảm chi phí vốn; M&M chứng minh
+    điều đó không đúng trong thế giới lý tưởng và chỉ ra những ma sát thực tế nào làm cơ cấu vốn quan
+    trọng.
+- term_vi: Nợ vs vốn chủ
+  term_en: Debt vs Equity
+  definition: 'Nợ: bắt buộc trả gốc lãi, lãi khấu trừ thuế, không pha loãng, rủi ro phá sản cao, Kd<Ke,
+    được trả trước khi thanh lý. Vốn chủ: không bắt buộc trả, cổ tức không khấu trừ thuế, pha loãng quyền
+    kiểm soát, nhận phần dư sau cùng (residual claim), Ke>Kd.'
+  why_it_matters: 'Là cơ sở của mọi đánh đổi: nợ rẻ và có lá chắn thuế nhưng tạo nghĩa vụ cứng; vốn chủ
+    đắt nhưng linh hoạt.'
+- term_vi: Định lý Modigliani-Miller
+  term_en: Modigliani-Miller theorem
+  definition: 'Trong thị trường hoàn hảo (không thuế, không chi phí phá sản, thông tin đối xứng, không
+    chi phí đại diện) giá trị DN không phụ thuộc cơ cấu vốn (1958). Có thuế (1963): V_L=V_U+T×D.'
+  why_it_matters: MM không nói 'cơ cấu vốn không quan trọng' mà chỉ ra CHÍNH XÁC yếu tố nào làm nó quan
+    trọng (thuế, distress, bất cân xứng thông tin, agency). Dùng lập luận arbitrage, nền móng định giá
+    no-arbitrage. Miller Nobel 1990, Modigliani Nobel 1985.
+- term_vi: Homemade leverage
+  term_en: Homemade leverage
+  definition: Nhà đầu tư tự vay cá nhân để tái tạo đòn bẩy của DN.
+  why_it_matters: 'Là cơ chế arbitrage chứng minh M&M I: DN không thể tạo giá trị bằng việc làm điều nhà
+    đầu tư tự làm được.'
+- term_vi: Rủi ro tài chính
+  term_en: Financial risk
+  definition: Rủi ro bổ sung cho cổ đông do nghĩa vụ nợ cố định, cộng vào rủi ro kinh doanh (business
+    risk).
+  why_it_matters: Giải thích Ke tăng tuyến tính theo D/E (M&M II) và beta tăng (Hamada).
+- term_vi: Lá chắn thuế
+  term_en: Interest tax shield
+  definition: 'Khoản thuế tiết kiệm nhờ lãi vay được trừ trước thuế: hàng năm T×Kd×D; PV (nợ vĩnh viễn)
+    = T×D.'
+  why_it_matters: Lý do nợ tạo giá trị; trong WACC thể hiện qua (1-T).
+- term_vi: Chi phí kiệt quệ tài chính
+  term_en: Financial distress costs
+  definition: Trực tiếp (pháp lý, tòa án, kế toán ~3-5% giá trị), gián tiếp (mất khách, nhà cung cấp siết,
+    mất nhân tài ~10-20%), đại diện (risk shifting, underinvestment, asset stripping ~5-10%). Các tỷ lệ
+    là ước lượng tham khảo độ tin cậy thấp.
+  why_it_matters: Là lực đối trọng với tax shield, tạo ra D/E tối ưu; tăng nhanh hơn tuyến tính khi nợ
+    vượt ngưỡng.
+- term_vi: Lý thuyết đánh đổi
+  term_en: Trade-Off Theory
+  definition: V_L=V_U+PV(TS)-PV(FDC). D/E* nơi tax shield biên = distress biên (đỉnh V, đáy WACC).
+  why_it_matters: Giải thích vì sao DN trưởng thành, lãi ổn định, tài sản hữu hình vay nhiều; dữ liệu
+    chéo ủng hộ.
+- term_vi: Lý thuyết trật tự phân hạng
+  term_en: Pecking Order Theory (Myers & Majluf, 1984)
+  definition: 'Do bất cân xứng thông tin, DN ưu tiên: nội lực (lợi nhuận giữ lại) > nợ > vốn cổ phần.
+    Phát hành cổ phần bị hiểu là tín hiệu cổ phiếu overvalued (adverse selection), giá giảm khoảng 2-3%
+    (bằng chứng thực nghiệm).'
+  why_it_matters: Dự đoán DN lãi cao ít nợ hơn (ngược Trade-Off) - đúng với DN tăng trưởng, công nghệ,
+    startup, SME VN do kênh vốn cổ phần gần đóng.
+- term_vi: Lý thuyết dòng tiền tự do / đại diện
+  term_en: Agency theory & Free Cash Flow (Jensen, 1986)
+  definition: 'Nợ là công cụ kỷ luật: buộc trả lãi định kỳ nên hết tiền nhàn rỗi cho empire building.
+    DN FCF cao, ít cơ hội tăng trưởng nên dùng nhiều nợ. LBO là dạng cực đoan.'
+  why_it_matters: 'Quản lý muốn mở rộng dù NPV thấp (quyền lực, danh tiếng); nợ là cam kết đáng tin cậy.
+    Chi phí đại diện của nợ: risk shifting, underinvestment; giải pháp covenant.'
+- term_vi: Thời điểm thị trường
+  term_en: Market Timing Theory (Baker & Wurgler, 2002)
+  definition: Phát hành vốn chủ khi cổ phiếu đắt, nợ khi cổ phiếu rẻ; cơ cấu vốn là tích lũy các quyết
+    định timing.
+  why_it_matters: Bằng chứng thực nghiệm ở mức vừa (một số bằng chứng); liên quan quyết định IPO.
+- term_vi: Đòn bẩy tài chính dương/âm
+  term_en: Positive/negative financial leverage
+  definition: 'ROIC>Kd: ROE được khuếch đại; ROIC<Kd: ROE bị kéo xuống, có thể âm.'
+  why_it_matters: Đòn bẩy là con dao hai lưỡi - nền tảng stress test.
+- term_vi: Phân tích EBIT-EPS
+  term_en: EBIT-EPS analysis
+  definition: Tìm EBIT hòa vốn giữa phương án vay và phát hành cổ phần theo EPS/ROE.
+  why_it_matters: 'Trả lời câu hỏi thực tế của chủ DN: huy động thêm vốn bằng vay hay cổ phần thì EPS
+    cao hơn.'
+- term_vi: Khả năng vay nợ
+  term_en: Debt capacity
+  definition: Mức nợ tối đa trước khi distress; SME thấp hơn do dòng tiền tập trung, thiếu xếp hạng tín
+    nhiệm, ít vốn cổ phần dự phòng.
+  why_it_matters: Điểm D/E* của SME nằm bên trái (ít nợ hơn) so với tập đoàn lớn.
+- term_vi: Lệch kỳ hạn
+  term_en: Maturity mismatch
+  definition: Tài trợ tài sản dài hạn bằng nợ ngắn hạn, buộc đảo nợ (rollover).
+  why_it_matters: Nguyên nhân sụp đổ Evergrande; khớp kỳ hạn vay với vòng đời tài sản.
+- term_vi: Covenant
+  term_en: Debt covenants
+  definition: Điều khoản ràng buộc trong hợp đồng vay (D/E<2x, DSCR>1,5x, ICR tối thiểu).
+  why_it_matters: Vi phạm có thể gây ngân hàng siết tín dụng; là giải pháp cho agency cost của nợ.
+- term_vi: Ba vạch đỏ
+  term_en: Three Red Lines policy (China 2020)
+  definition: Nợ phải trả/tổng tài sản (không tính tiền trả trước) <70%; nợ ròng/vốn chủ <100%; tiền mặt
+    >= nợ ngắn hạn.
+  why_it_matters: 'Ví dụ rủi ro chính sách làm sụp đổ năng lực vay: debt capacity phụ thuộc môi trường
+    pháp lý.'
+formulas:
+- id: m04_mm1_no_tax
+  name_vi: M&M Mệnh đề I không thuế (1958)
+  name_en: MM Proposition I (no taxes)
+  expression_latex: V_L = V_U = \frac{EBIT}{K_0}
+  expression_python: EBIT/K0
+  excel: =EBIT/K0
+  variables:
+  - symbol: V_L
+    meaning: Giá trị DN có nợ
+    unit: tiền
+  - symbol: V_U
+    meaning: Giá trị DN không nợ
+    unit: tiền
+  - symbol: EBIT
+    meaning: Lợi nhuận hoạt động bình quân vĩnh viễn
+    unit: tiền/năm
+  - symbol: K0
+    meaning: Chi phí vốn của DN toàn vốn chủ (unlevered)
+    unit: '%/năm'
+  when_to_use: 'Benchmark lý thuyết: chứng minh cơ cấu vốn chỉ chia dòng tiền, không tạo/phá giá trị khi
+    thị trường hoàn hảo.'
+  why_it_works: Giá trị do tài sản hoạt động (dòng tiền EBIT) quyết định, giống cái bánh pizza cố định;
+    vay nhiều hay ít chỉ là cách chia bánh giữa chủ nợ và cổ đông. Nếu V_L khác V_U, nhà đầu tư dùng homemade
+    leverage (tự vay/cho vay cá nhân) để arbitrage cho tới khi hai giá trị bằng nhau.
+  assumptions:
+  - Không thuế
+  - Không chi phí phá sản
+  - Không chi phí giao dịch
+  - Thông tin đối xứng
+  - Cá nhân vay cùng lãi suất với DN
+  - Không chi phí đại diện
+  pitfalls:
+  - 'Dùng như lời khuyên thực hành: sai, chỉ là baseline'
+  - Quên rằng kết luận sụp đổ khi có thuế (xem m04_mm1_tax)
+  interpretation: Nếu tính ra V_L khác V_U trong thực tế, phần chênh lệch đến từ ma sát thị trường (thuế,
+    distress, agency, thông tin), không phải từ 'cơ cấu vốn' tự thân.
+  example:
+    inputs:
+      EBIT: 80
+      K0: 0.12
+    steps:
+    - V_U = 80/0.12 = 666.67
+    - V_L = V_U (mọi D/E) = 666.67
+    result: V_L = V_U = 666.67 (đơn vị tiền) với mọi D/E
+- id: m04_mm2_no_tax
+  name_vi: M&M Mệnh đề II không thuế
+  name_en: MM Proposition II (no taxes)
+  expression_latex: K_e = K_0 + (K_0 - K_d)\times\frac{D}{E}
+  expression_python: K0+(K0-Kd)*D/E
+  excel: =K0+(K0-Kd)*D/E
+  variables:
+  - symbol: Ke
+    meaning: Chi phí vốn chủ khi có đòn bẩy
+    unit: '%/năm'
+  - symbol: K0
+    meaning: Chi phí vốn tài sản (unlevered)
+    unit: '%/năm'
+  - symbol: Kd
+    meaning: Chi phí nợ
+    unit: '%/năm'
+  - symbol: D/E
+    meaning: Tỷ lệ nợ trên vốn chủ (giá trị thị trường)
+    unit: lần
+  - symbol: D
+    meaning: Giá trị thị trường nợ
+    unit: ''
+  - symbol: E
+    meaning: Giá trị thị trường vốn chủ
+    unit: ''
+  when_to_use: Giải thích vì sao Ke tăng khi vay thêm và vì sao WACC phẳng trong thế giới không thuế.
+  why_it_works: 'Vay thêm tạo rủi ro tài chính (financial risk) cộng vào rủi ro kinh doanh: chủ nợ được
+    trả trước nên dòng tiền cổ đông biến động mạnh hơn. Cổ đông đòi bù đúng phần chênh (K0-Kd) trên mỗi
+    đơn vị D/E, nên Ke tăng tuyến tính và triệt tiêu lợi ích ''nợ rẻ'', WACC=K0 không đổi.'
+  assumptions:
+  - Các giả định M&M I
+  - Kd không đổi theo D/E (nợ phi rủi ro hoặc rủi ro thấp)
+  pitfalls:
+  - Nhầm D/E với D/V
+  - Nghĩ Ke không đổi khi vay thêm
+  interpretation: Ke tăng tuyến tính theo D/E, độ dốc = K0-Kd. WACC = K0 phẳng.
+  example:
+    inputs:
+      K0: 0.12
+      Kd: 0.06
+      D: 50
+      E: 100
+    steps:
+    - D/E = 0.5
+    - Ke = 0.12 + (0.12-0.06)*0.5 = 0.15
+    - WACC = 100/150*0.15 + 50/150*0.06 = 12% = K0
+    result: Ke = 0.1500 (15%)
+- id: m04_mm1_tax
+  name_vi: M&M Mệnh đề I có thuế (1963)
+  name_en: MM Proposition I (with corporate taxes)
+  expression_latex: V_L = V_U + T\times D
+  expression_python: VU+T*D
+  excel: =VU+T*D
+  variables:
+  - symbol: VL
+    meaning: Giá trị DN có nợ
+    unit: ''
+  - symbol: VU
+    meaning: Giá trị DN không nợ
+    unit: ''
+  - symbol: T
+    meaning: Thuế suất TNDN
+    unit: '%'
+  - symbol: D
+    meaning: Nợ vĩnh viễn
+    unit: ''
+  when_to_use: Định giá giá trị tạo ra từ nợ nhờ lá chắn thuế; minh họa vì sao nợ có giá trị.
+  why_it_works: 'Lãi vay trừ trước thuế, cổ tức thì không: Nhà nước ''trợ cấp'' T×Kd×D mỗi năm. Chiết
+    khấu dòng vĩnh viễn ở Kd thì Kd triệt tiêu, còn T×D. MM tự sửa kết luận 1958 năm 1963.'
+  assumptions:
+  - Nợ vĩnh viễn, D không đổi
+  - Chiết khấu tax shield ở Kd (rủi ro như nợ)
+  - Doanh nghiệp luôn có lãi đủ để dùng hết khoản khấu trừ
+  - Chưa có chi phí phá sản
+  pitfalls:
+  - Kết luận '100% nợ là tối ưu' là hệ quả của việc bỏ qua distress cost, không phải lời khuyên
+  - Bỏ qua thuế cá nhân (Miller 1977) và việc không đủ lãi để dùng tax shield
+  interpretation: Mỗi đồng nợ vĩnh viễn thêm T đồng giá trị. Là cận trên giá trị lợi ích; thực tế bị trừ
+    distress cost.
+  example:
+    inputs:
+      VU: 666.67
+      T: 0.2
+      D: 500
+    steps:
+    - Tax shield = 0.2*500 = 100
+    - V_L = 666.67+100 = 766.67
+    result: V_L = 766.67
+- id: m04_pv_tax_shield
+  name_vi: Giá trị hiện tại lá chắn thuế (nợ vĩnh viễn)
+  name_en: PV of interest tax shield (perpetual debt)
+  expression_latex: PV(TS)=\frac{T\times K_d\times D}{K_d}=T\times D
+  expression_python: T*Kd*D/Kd
+  excel: =T*D
+  variables:
+  - symbol: T
+    meaning: Thuế suất TNDN
+    unit: '%'
+  - symbol: Kd
+    meaning: Lãi suất vay
+    unit: '%/năm'
+  - symbol: D
+    meaning: Nợ vĩnh viễn
+    unit: tiền
+  when_to_use: Tính nhanh giá trị tiết kiệm thuế của một khoản nợ dài hạn (xấp xỉ).
+  why_it_works: Tiết kiệm hàng năm T×Kd×D là perpetuity chiết khấu ở Kd => Kd triệt tiêu, nên kết quả
+    không phụ thuộc lãi suất (lãi cao tiết kiệm nhiều hơn/năm nhưng chiết khấu cũng mạnh hơn).
+  assumptions:
+  - Nợ vĩnh viễn
+  - Chiết khấu ở Kd
+  - Đủ EBIT để khấu trừ hết lãi
+  pitfalls:
+  - Với nợ có kỳ hạn hữu hạn, PV nhỏ hơn T×D (dùng annuity)
+  - 'Lãi vay VN bị khống chế khấu trừ (Nghị định 132/2020: tối đa 30% EBITDA với giao dịch liên kết) -
+    cần xác nhận'
+  interpretation: Tax shield hàng năm = T×Kd×D; tổng giá trị hiện tại = T×D.
+  example:
+    inputs:
+      T: 0.2
+      Kd: 0.08
+      D: 500
+    steps:
+    - Tiết kiệm/năm = 0.2*0.08*500 = 8
+    - PV = 8/0.08 = 100 = 0.2*500
+    result: PV(Tax Shield) = 100.0 tỷ
+- id: m04_mm2_tax
+  name_vi: M&M Mệnh đề II có thuế
+  name_en: MM Proposition II (with taxes)
+  expression_latex: K_e = K_0 + (K_0-K_d)(1-T)\frac{D}{E}
+  expression_python: K0+(K0-Kd)*(1-T)*D/E
+  excel: =K0+(K0-Kd)*(1-T)*D/E
+  variables:
+  - symbol: K0
+    meaning: Chi phí vốn unlevered
+    unit: '%'
+  - symbol: Kd
+    meaning: Chi phí nợ trước thuế
+    unit: '%'
+  - symbol: T
+    meaning: Thuế suất
+    unit: '%'
+  - symbol: D/E
+    meaning: Nợ/vốn chủ thị trường
+    unit: lần
+  when_to_use: Tính Ke khi có đòn bẩy và có thuế; kết hợp để thấy WACC giảm khi D/V tăng.
+  why_it_works: 'Giống M&M II nhưng nợ rẻ sau thuế nên phần bù rủi ro tài chính được nhân (1-T): Ke tăng
+    chậm hơn so với lợi ích nợ => WACC giảm dần theo D.'
+  assumptions:
+  - Các giả định M&M có thuế
+  - Beta nợ ~0 (Kd không đổi)
+  pitfalls:
+  - Quên (1-T)
+  - Dùng D/E sổ sách thay vì thị trường
+  interpretation: Ke tăng theo D/E nhưng chậm hơn trường hợp không thuế.
+  example:
+    inputs:
+      K0: 0.12
+      Kd: 0.08
+      T: 0.2
+      D: 500
+      E: 266.67
+    steps:
+    - D/E=500/266.67=1.875
+    - Ke = 0.12+0.04*0.8*1.875 = 0.18
+    result: Ke = 0.1800
+- id: m04_wacc_mm_tax
+  name_vi: WACC theo M&M có thuế
+  name_en: WACC under MM with taxes
+  expression_latex: WACC = K_0\left(1 - T\frac{D}{V}\right)
+  expression_python: K0*(1-T*D/V)
+  excel: =K0*(1-T*D/V)
+  variables:
+  - symbol: K0
+    meaning: Chi phí vốn unlevered
+    unit: '%'
+  - symbol: T
+    meaning: Thuế suất
+    unit: '%'
+  - symbol: D/V
+    meaning: Tỷ trọng nợ trên tổng giá trị
+    unit: ''
+  when_to_use: Chứng minh WACC giảm đơn điệu theo đòn bẩy khi có thuế và chưa có distress cost.
+  why_it_works: 'Thay Ke (m04_mm2_tax) vào WACC: lợi ích duy nhất còn lại là tax shield, giảm WACC tuyến
+    tính theo D/V.'
+  assumptions:
+  - M&M có thuế, nợ vĩnh viễn
+  pitfalls:
+  - Thực tế distress cost đẩy WACC tăng ở D/V cao
+  interpretation: D/V càng cao WACC càng thấp (lý thuyết); điểm đáy thực tế do distress cost tạo ra.
+  example:
+    inputs:
+      K0: 0.12
+      T: 0.2
+      D: 500
+      V: 766.67
+    steps:
+    - D/V=500/766.67=0.652
+    - WACC = 0.12*(1-0.2*0.652)=0.1043
+    result: WACC = 0.1043
+- id: m04_trade_off
+  name_vi: Giá trị theo Trade-Off Theory
+  name_en: Trade-off value of levered firm
+  expression_latex: V_L = V_U + PV(TS) - PV(FDC)
+  expression_python: VU+PV_TS-PV_FDC
+  excel: =VU+PV_TS-PV_FDC
+  variables:
+  - symbol: VU
+    meaning: Giá trị không nợ
+    unit: ''
+  - symbol: PV_TS
+    meaning: PV lá chắn thuế
+    unit: ''
+  - symbol: PV_FDC
+    meaning: PV chi phí kiệt quệ tài chính (trực tiếp+gián tiếp+đại diện)
+    unit: ''
+  when_to_use: 'Tìm D/E tối ưu: nơi lợi ích biên tax shield = chi phí biên distress.'
+  why_it_works: 'Gỡ giả định cuối của MM: nợ càng cao xác suất default càng lớn, chi phí distress (pháp
+    lý, mất khách, nhà cung cấp siết, mất nhân tài, risk shifting) tăng nhanh hơn tuyến tính vượt một
+    ngưỡng. Tối ưu = đỉnh của V_L = đáy của WACC.'
+  assumptions:
+  - Có thể ước lượng PV(FDC) = xác suất × chi phí
+  - Mục tiêu D/E ổn định
+  pitfalls:
+  - PV(FDC) rất khó đo, chỉ ước lượng thô
+  - 'Ước lượng nguồn: direct 3-5%, indirect 10-20%, agency 5-10% giá trị DN (độ tin cậy thấp)'
+  interpretation: Nếu D/E hiện tại < D/E*, vay thêm tăng giá trị; nếu > D/E*, giảm nợ.
+  example:
+    inputs:
+      VU: 1000
+      PV_TS: 150
+      PV_FDC: 60
+    steps:
+    - V_L = 1000+150-60
+    result: V_L = 1090
+- id: m04_wacc
+  name_vi: Chi phí sử dụng vốn bình quân gia quyền (WACC)
+  name_en: Weighted Average Cost of Capital
+  expression_latex: WACC=\frac{D}{V}K_d(1-T)+\frac{E}{V}K_e
+  expression_python: D/V*Kd*(1-T)+E/V*Ke
+  excel: =D/V*Kd*(1-T)+E/V*Ke
+  variables:
+  - symbol: D
+    meaning: Nợ (giá trị thị trường)
+    unit: tiền
+  - symbol: E
+    meaning: Vốn chủ (giá trị thị trường)
+    unit: tiền
+  - symbol: V
+    meaning: D+E
+    unit: tiền
+  - symbol: Kd
+    meaning: Chi phí vay trước thuế
+    unit: '%'
+  - symbol: Ke
+    meaning: Chi phí vốn chủ
+    unit: '%'
+  - symbol: T
+    meaning: Thuế suất TNDN
+    unit: '%'
+  when_to_use: Suất chiết khấu dự án/định giá DN; so sánh phương án cơ cấu vốn; ngưỡng ROIC tối thiểu.
+  why_it_works: Mỗi nhà cung cấp vốn đòi lợi suất khác nhau; WACC là bình quân gia quyền theo tỷ trọng
+    giá trị thị trường. (1-T) phản ánh lãi vay được khấu trừ. ROIC > WACC mới tạo giá trị kinh tế.
+  assumptions:
+  - Tỷ trọng theo giá trị thị trường (hoặc mục tiêu)
+  - Ke và Kd phản ánh đúng rủi ro hiện tại
+  - Kd < lợi suất kỳ vọng nợ
+  pitfalls:
+  - Dùng giá trị sổ sách làm tỷ trọng
+  - 'Giữ Ke cố định khi D/E thay đổi (sai về lý thuyết: Ke tăng theo D/E); chỉ chấp nhận khi chủ ý như
+    case Thành Phát, ghi rõ giả định'
+  - Quên (1-T) hoặc dùng thuế suất biên sai
+  - 'SME chưa niêm yết: E thị trường không quan sát, phải ước lượng'
+  interpretation: WACC là tỷ suất sinh lời tối thiểu trên tổng vốn; WACC 12,2% nghĩa là ROIC phải > 12,2%.
+  example:
+    inputs:
+      D: 400
+      E: 600
+      Kd: 0.1
+      Ke: 0.15
+      T: 0.2
+      V: 1000
+    steps:
+    - D/V=0.4, E/V=0.6
+    - Kd sau thuế=10%*0.8=8%
+    - WACC=0.4*8%+0.6*15%=3.2%+9%
+    result: WACC = 0.1220 (12,2%)
+- id: m04_kd_after_tax
+  name_vi: Chi phí vay sau thuế
+  name_en: After-tax cost of debt
+  expression_latex: K_d^{AT}=K_d(1-T)
+  expression_python: Kd*(1-T)
+  excel: =Kd*(1-T)
+  variables:
+  - symbol: Kd
+    meaning: Lãi suất vay
+    unit: '%'
+  - symbol: T
+    meaning: Thuế suất
+    unit: '%'
+  when_to_use: Bước con của WACC, so sánh với ROIC.
+  why_it_works: Mỗi đồng lãi giảm thuế T nên chi phí thực còn (1-T).
+  assumptions:
+  - DN có lãi chịu thuế
+  pitfalls:
+  - DN lỗ thì không có tax shield => dùng Kd chưa trừ thuế
+  interpretation: Chi phí vay thực thấp hơn lãi niêm yết.
+  example:
+    inputs:
+      Kd: 0.1
+      T: 0.2
+    steps:
+    - 10%*(1-0.2)
+    result: Kd sau thuế = 0.080
+- id: m04_capm
+  name_vi: Chi phí vốn chủ theo CAPM
+  name_en: CAPM cost of equity
+  expression_latex: K_e = r_f + \beta (r_m - r_f)
+  expression_python: rf+beta*(rm-rf)
+  excel: =rf+beta*(rm-rf)
+  variables:
+  - symbol: rf
+    meaning: Lãi suất phi rủi ro (TPCP 10 năm)
+    unit: '%'
+  - symbol: beta
+    meaning: Beta rủi ro hệ thống
+    unit: '-'
+  - symbol: rm
+    meaning: Lợi suất kỳ vọng thị trường
+    unit: '%'
+  - symbol: rm-rf
+    meaning: Phần bù rủi ro thị trường
+    unit: '%'
+  when_to_use: Ước lượng Ke khi không có lãi suất cam kết với cổ đông.
+  why_it_works: 'Sharpe (1964, Nobel 1990): lợi suất kỳ vọng = thưởng chờ đợi (rf) + thưởng rủi ro hệ
+    thống (beta × MRP). Chỉ rủi ro hệ thống được thưởng vì rủi ro riêng đa dạng hóa được.'
+  assumptions:
+  - Thị trường hiệu quả
+  - Nhà đầu tư đa dạng hóa
+  - Beta ổn định
+  pitfalls:
+  - 'SME chưa niêm yết: cần beta ngành rồi re-lever (Hamada) và cộng illiquidity/size premium'
+  - Dùng rm ngắn hạn biến động
+  - Nhầm rm với MRP
+  interpretation: Beta 1 = như thị trường; >1 rủi ro hơn (BĐS, công nghệ); <1 phòng thủ (điện, nước, y
+    tế). Dự án có lợi suất < Ke bị cổ đông từ chối.
+  example:
+    inputs:
+      rf: 0.04
+      beta: 1.2
+      rm: 0.12
+    steps:
+    - MRP = 12%-4% = 8%
+    - Ke = 4%+1.2*8% = 13,6%
+    result: Ke = 0.1360
+- id: m04_hamada
+  name_vi: Phương trình Hamada (re-lever beta)
+  name_en: Hamada equation
+  expression_latex: \beta_L=\beta_U\left[1+(1-T)\frac{D}{E}\right]
+  expression_python: beta_u*(1+(1-T)*D/E)
+  excel: =beta_u*(1+(1-T)*D/E)
+  variables:
+  - symbol: beta_u
+    meaning: Beta không nợ (asset beta)
+    unit: '-'
+  - symbol: beta_L
+    meaning: Beta có nợ
+    unit: '-'
+  - symbol: T
+    meaning: Thuế suất
+    unit: '%'
+  - symbol: D/E
+    meaning: Nợ/vốn chủ
+    unit: lần
+  when_to_use: Chuyển beta ngành sang cơ cấu vốn của DN mình; tính Ke theo D/E mới.
+  why_it_works: Beta phản ánh rủi ro kinh doanh + rủi ro tài chính. Nợ khuếch đại biến động lợi nhuận
+    cổ đông nên beta vốn chủ tăng theo D/E (cùng cơ chế M&M II); loại D/E ngành để lấy beta_u, rồi gắn
+    D/E của mình.
+  assumptions:
+  - Beta nợ = 0
+  - Nợ ổn định, tỷ lệ D/E không đổi
+  - Thuế suất không đổi
+  pitfalls:
+  - Dùng beta ngành có D/E khác mà không unlever
+  - Beta nợ ≠ 0 ở D/E rất cao làm Hamada phóng đại
+  interpretation: D/E 0,5, T=20% => beta tăng 40%.
+  example:
+    inputs:
+      beta_u: 1.0
+      T: 0.2
+      D: 0.5
+      E: 1.0
+    steps:
+    - 1+(0.8)(0.5)=1.4
+    - Ke = 4%+1.4*8% = 15,2%
+    result: beta_L = 1.40
+- id: m04_unlever_beta
+  name_vi: Beta không đòn bẩy (un-lever)
+  name_en: Unlevered beta
+  expression_latex: \beta_U=\frac{\beta_L}{1+(1-T)\frac{D}{E}}
+  expression_python: beta_L/(1+(1-T)*D/E)
+  excel: =beta_L/(1+(1-T)*D/E)
+  variables:
+  - symbol: beta_L
+    meaning: Beta quan sát được
+    unit: '-'
+  - symbol: T
+    meaning: Thuế suất
+    unit: ''
+  - symbol: D/E
+    meaning: Nợ/vốn chủ của công ty so sánh
+    unit: lần
+  when_to_use: Bước 1 khi mượn beta ngành.
+  why_it_works: Đảo công thức Hamada để tách rủi ro kinh doanh thuần.
+  assumptions:
+  - Như Hamada
+  pitfalls:
+  - Quên trung bình beta_u các công ty rồi mới re-lever
+  interpretation: Dùng beta_u trung bình ngành để re-lever.
+  example:
+    inputs:
+      beta_L: 1.4
+      T: 0.2
+      D: 0.5
+      E: 1.0
+    steps:
+    - 1.4/(1+0.8*0.5)=1.0
+    result: beta_U = 1.00
+- id: m04_eps
+  name_vi: EPS theo phương án vay / phát hành cổ phần
+  name_en: EPS under debt vs equity financing
+  expression_latex: EPS=\frac{(EBIT-I)(1-T)}{N},\quad I=K_d D,\ N=N_0+\frac{F_{eq}}{P}
+  expression_python: (EBIT-I)*(1-T)/N
+  excel: =(EBIT-I)*(1-T)/N
+  variables:
+  - symbol: EBIT
+    meaning: Lợi nhuận trước lãi và thuế
+    unit: triệu
+  - symbol: I
+    meaning: Lãi vay = Kd×D
+    unit: triệu
+  - symbol: T
+    meaning: Thuế suất
+    unit: ''
+  - symbol: N
+    meaning: Số cổ phần sau phát hành
+    unit: cổ phần
+  when_to_use: So sánh phương án tài trợ theo EPS tại một mức EBIT.
+  why_it_works: Vay làm giảm EBT nhưng không tăng số cổ phần; phát hành làm không có lãi nhưng pha loãng.
+    EPS cho biết ai có lợi ở mức EBIT cụ thể.
+  assumptions:
+  - EBIT độc lập với phương án
+  - Giá phát hành công bằng
+  pitfalls:
+  - Chỉ nhìn EPS kịch bản cơ sở, bỏ qua rủi ro (phải stress test)
+  - Quên pha loãng khi tính N
+  - 'Đơn vị: triệu đồng × 1e6 / cổ phần'
+  interpretation: EPS cao hơn chưa chắc tốt hơn nếu coverage rớt dưới ngưỡng.
+  example:
+    inputs:
+      EBIT: 1200
+      I: 330
+      T: 0.2
+      N: 400000
+    steps:
+    - NI=(1200-330)*0.8=696 triệu
+    - EPS=696e6/400000
+    result: EPS (triệu/cổ phần x1) = 0.001740; nhân 1e6 = 1740 đ
+- id: m04_ebit_indiff
+  name_vi: EBIT điểm hòa vốn (indifference point)
+  name_en: EBIT-EPS indifference point
+  expression_latex: EBIT^{*}=\frac{I\times N_{eq}}{N_{eq}-N_{debt}}
+  expression_python: I*N_eq/(N_eq-N_debt)
+  excel: =I*N_eq/(N_eq-N_debt)
+  variables:
+  - symbol: I
+    meaning: Lãi vay của phương án vay
+    unit: triệu
+  - symbol: N_eq
+    meaning: Số cổ phần sau phát hành (phương án vốn chủ)
+    unit: ''
+  - symbol: N_debt
+    meaning: Số cổ phần hiện hữu (phương án vay)
+    unit: ''
+  when_to_use: Xác định EBIT mà trên đó vay có EPS cao hơn.
+  why_it_works: 'Đặt (EBIT-I)(1-T)/N_debt = EBIT(1-T)/N_eq: (1-T) triệt tiêu nên EBIT* không phụ thuộc
+    thuế.'
+  assumptions:
+  - Hai phương án so sánh chỉ khác nhau ở nợ/phát hành
+  pitfalls:
+  - EBIT* chỉ là điểm cân bằng EPS, không phải ngưỡng an toàn
+  - 'Trường hợp phương án kết hợp: dùng công thức đối xứng với (I, N) của từng cặp'
+  interpretation: EBIT thực tế > EBIT* => vay tốt hơn về EPS; < EBIT* => phát hành an toàn hơn. Đo biên
+    an toàn (EBIT-EBIT*)/EBIT.
+  example:
+    inputs:
+      I: 330
+      N_eq: 600000
+      N_debt: 400000
+    steps:
+    - EBIT*=330*600000/200000=990
+    - Kiểm tra EPS hai phía = 1320 đ
+    result: EBIT* = 990 triệu
+- id: m04_roe_leverage
+  name_vi: ROE khuếch đại bởi đòn bẩy
+  name_en: Financial leverage effect on ROE
+  expression_latex: ROE=\left[ROIC+(ROIC-K_d)\frac{D}{E}\right](1-T)
+  expression_python: (roic+(roic-kd)*de)*(1-T)
+  excel: =(ROIC+(ROIC-Kd)*DE)*(1-T)
+  variables:
+  - symbol: roic
+    meaning: Tỷ suất sinh lời trên vốn đầu tư trước thuế (EBIT/Invested Capital)
+    unit: '%'
+  - symbol: kd
+    meaning: Lãi vay
+    unit: '%'
+  - symbol: de
+    meaning: D/E
+    unit: lần
+  - symbol: T
+    meaning: Thuế
+    unit: ''
+  when_to_use: Hiểu đòn bẩy dương/âm; tìm ngưỡng ROIC mà vay có lợi.
+  why_it_works: Chủ nợ chỉ nhận Kd; phần dôi (ROIC-Kd) trên số nợ thuộc cổ đông; nếu ROIC<Kd cổ đông phải
+    bù lỗ. Đòn bẩy là con dao hai lưỡi.
+  assumptions:
+  - ROIC cố định không đổi theo D
+  - Kd không đổi theo D/E
+  pitfalls:
+  - Bảng nguồn (24%,31%...) là ROE trước thuế (bỏ (1-T)); ô D/E=2,Kd=7%,ROIC=6% ghi 5% nhưng đúng là 4%
+  - Kd tăng theo D/E ở thực tế
+  interpretation: 'ROIC>Kd: ROE>ROIC(1-T); ROIC<Kd: ROE bị kéo xuống, có thể âm.'
+  example:
+    inputs:
+      roic: 0.1
+      kd: 0.06
+      de: 1
+      T: 0.2
+    steps:
+    - 'Không nợ: ROE=10%*0.8=8%'
+    - 'D/E=1: EBIT=100, lãi=30, NI=56, vốn chủ=500 => 11,2%'
+    result: ROE = 0.1120
+- id: m04_dfl
+  name_vi: Độ lớn đòn bẩy tài chính (DFL)
+  name_en: Degree of Financial Leverage
+  expression_latex: DFL=\frac{\%\Delta EPS}{\%\Delta EBIT}=\frac{EBIT}{EBIT-I}
+  expression_python: EBIT/(EBIT-I)
+  excel: =EBIT/(EBIT-I)
+  variables:
+  - symbol: EBIT
+    meaning: ''
+    unit: ''
+  - symbol: I
+    meaning: Lãi vay
+    unit: ''
+  when_to_use: Đo độ nhạy EPS với biến động EBIT.
+  why_it_works: Lãi vay là chi phí cố định nên 1% đổi của EBIT làm EPS đổi DFL%.
+  assumptions:
+  - Lãi vay cố định
+  pitfalls:
+  - 'Cận EBIT≈I: DFL tiến vô cùng'
+  interpretation: DFL=1,38 nghĩa EBIT -10% thì EPS -13,8%.
+  example:
+    inputs:
+      EBIT: 1200
+      I: 330
+    steps:
+    - 1200/870
+    result: DFL = 1.379
+- id: m04_icr
+  name_vi: Hệ số bao phủ lãi vay
+  name_en: Interest Coverage Ratio
+  expression_latex: ICR=\frac{EBIT}{I}
+  expression_python: EBIT/I
+  excel: =EBIT/I
+  variables:
+  - symbol: EBIT
+    meaning: ''
+    unit: ''
+  - symbol: I
+    meaning: Lãi vay
+    unit: ''
+  when_to_use: Stress test, kiểm covenant.
+  why_it_works: Số lần lợi nhuận hoạt động bao phủ lãi.
+  assumptions:
+  - EBIT ổn định
+  pitfalls:
+  - Chỉ nhìn kịch bản cơ sở
+  interpretation: Ngân hàng VN thường yêu cầu >3 lần (hoặc 2-3 lần); <1,5 nguy hiểm.
+  example:
+    inputs:
+      EBIT: 840
+      I: 330
+    steps:
+    - 840/330
+    result: ICR = 2.55
+- id: m04_dscr
+  name_vi: Hệ số khả năng trả nợ (DSCR)
+  name_en: Debt Service Coverage Ratio
+  expression_latex: DSCR=\frac{CFO}{Principal+Interest}
+  expression_python: cfo/(principal+interest)
+  excel: =CFO/(Gốc+Lãi)
+  variables:
+  - symbol: cfo
+    meaning: Dòng tiền hoạt động có sẵn trả nợ
+    unit: ''
+  - symbol: principal
+    meaning: Gốc phải trả kỳ
+    unit: ''
+  - symbol: interest
+    meaning: Lãi phải trả kỳ
+    unit: ''
+  when_to_use: Thẩm định khả năng trả nợ gốc+lãi.
+  why_it_works: Lãi mới chỉ là một phần nghĩa vụ; gốc cũng phải trả bằng tiền.
+  assumptions:
+  - Dòng tiền ổn định
+  pitfalls:
+  - Dùng lợi nhuận thay vì dòng tiền
+  interpretation: Ngân hàng VN thường yêu cầu 1,2-1,5 lần (nguồn bài, cần xác nhận).
+  example:
+    inputs:
+      cfo: 900
+      principal: 300
+      interest: 120
+    steps:
+    - 900/420
+    result: DSCR = 2.14
+- id: m04_debt_ebitda
+  name_vi: Nợ trên EBITDA
+  name_en: Debt/EBITDA
+  expression_latex: \frac{Debt}{EBITDA}
+  expression_python: debt/ebitda
+  excel: =Nợ/EBITDA
+  variables:
+  - symbol: debt
+    meaning: ''
+    unit: ''
+  - symbol: ebitda
+    meaning: ''
+    unit: ''
+  when_to_use: Đo số năm EBITDA để trả hết nợ.
+  why_it_works: Thước đo đòn bẩy theo dòng tiền.
+  assumptions:
+  - EBITDA ổn định
+  pitfalls:
+  - Nợ ròng vs nợ gộp
+  interpretation: 'Checklist nguồn: < 3-4 lần.'
+  example:
+    inputs:
+      debt: 3000
+      ebitda: 1000
+    steps:
+    - 3000/1000
+    result: Debt/EBITDA = 3.0x
+- id: m04_new_shares
+  name_vi: Số cổ phần phát hành mới
+  name_en: New shares issued
+  expression_latex: N_{new}=\frac{F_{eq}}{P}
+  expression_python: F_eq/P
+  excel: =F_eq/P
+  variables:
+  - symbol: F_eq
+    meaning: Vốn cần huy động bằng cổ phần
+    unit: đồng
+  - symbol: P
+    meaning: Giá phát hành
+    unit: đồng/cổ phần
+  when_to_use: Tính pha loãng khi so sánh phương án.
+  why_it_works: Số tiền chia giá.
+  assumptions:
+  - Giá phát hành = giá thị trường
+  pitfalls:
+  - Giá phát hành thấp hơn giá trị thực gây pha loãng giá trị
+  interpretation: Tỷ lệ pha loãng = N_new/(N0+N_new).
+  example:
+    inputs:
+      F_eq: 3000000000.0
+      P: 15000
+    steps:
+    - 3e9/15000
+    result: N_new = 200000
+- id: m04_stress_ebit
+  name_vi: EBIT kịch bản xấu
+  name_en: Stress-test EBIT
+  expression_latex: EBIT_{stress}=EBIT\times(1-s)
+  expression_python: EBIT*(1-s)
+  excel: =EBIT*(1-s)
+  variables:
+  - symbol: EBIT
+    meaning: ''
+    unit: ''
+  - symbol: s
+    meaning: Mức giảm giả định (20-30%)
+    unit: ''
+  when_to_use: Bước bắt buộc trước khi chọn D/E.
+  why_it_works: Quyết định cơ cấu vốn phải bền với kịch bản xấu, không chỉ base case.
+  assumptions:
+  - '-'
+  pitfalls:
+  - Chỉ stress EBIT, bỏ qua dòng tiền
+  interpretation: Chọn phương án có ICR stress >= 3.
+  example:
+    inputs:
+      EBIT: 1200
+      s: 0.3
+    steps:
+    - 1200*0.7
+    result: EBIT stress = 840
+- id: m04_net_cf_investors
+  name_vi: Tổng dòng tiền cho nhà đầu tư (kiểm chứng tax shield)
+  name_en: Total cash flow to investors
+  expression_latex: CF = (EBIT-I)(1-T) + I
+  expression_python: (EBIT-I)*(1-T)+I
+  excel: =(EBIT-I)*(1-T)+I
+  variables:
+  - symbol: EBIT
+    meaning: ''
+    unit: ''
+  - symbol: I
+    meaning: ''
+    unit: ''
+  - symbol: T
+    meaning: ''
+    unit: ''
+  when_to_use: Chứng minh nợ làm tăng tổng dòng tiền chia cho nhà đầu tư.
+  why_it_works: CF = EBIT(1-T) + T×I nên chênh = tax shield.
+  assumptions:
+  - '-'
+  pitfalls:
+  - '-'
+  interpretation: Chênh so với toàn vốn chủ = T×I.
+  example:
+    inputs:
+      EBIT: 100
+      I: 40
+      T: 0.2
+    steps:
+    - (60)*0.8+40=88
+    - so với 80 => +8 = 0.2*40
+    result: CF = 88
+procedures:
+- id: p_wacc
+  name: Tính WACC từ đầu
+  steps:
+  - 'Xác định D, E theo giá trị thị trường (SME: ước lượng E từ định giá gần nhất/multiple); V=D+E'
+  - Tính D/V, E/V
+  - Kd = lãi vay thực tế (bình quân có trọng số nếu nhiều khoản); Kd sau thuế = Kd×(1-T)
+  - 'Ke: CAPM = rf+beta×(rm-rf); SME chưa niêm yết: lấy beta ngành, unlever rồi re-lever theo D/E của
+    mình (Hamada), cộng illiquidity/size premium'
+  - WACC = D/V×Kd×(1-T)+E/V×Ke
+  - So sánh ROIC dự án với WACC
+  outputs: WACC (%), bảng tỷ trọng và chi phí từng nguồn
+- id: p_compare_financing
+  name: So sánh phương án tài trợ (vay/cổ phần/kết hợp)
+  steps:
+  - Liệt kê vốn cần huy động, EBIT dự kiến (base) và kịch bản xấu (-20-30%), T, Kd, giá phát hành, số
+    cổ phần hiện có
+  - 'Với mỗi phương án: lãi vay = Kd×nợ mới; cổ phần mới = vốn cổ phần/giá; N=N0+mới'
+  - 'Lập P&L: EBIT-lãi=EBT; thuế; NI; EPS=NI/N; ROE=NI/vốn chủ sổ sách (vốn chủ cũ + vốn góp mới)'
+  - Tính WACC mỗi phương án (E = vốn chủ thị trường + vốn góp mới; V=D+E; nêu rõ giả định Ke cố định hay
+    đổi)
+  - Tính EBIT* hòa vốn giữa các cặp phương án và biên an toàn so với EBIT dự kiến
+  - 'Stress test: EBIT kịch bản xấu -> ICR, DSCR, EPS'
+  - Loại phương án có ICR_stress<3 (hoặc <ngưỡng covenant); trong phần còn lại chọn WACC thấp/EPS cao
+    với mức pha loãng chấp nhận được
+  - 'Kiểm tra phi định lượng: kiểm soát, kỳ hạn, tài sản thế chấp, dư địa vay'
+  outputs: Bảng so sánh EPS/ROE/WACC/ICR + khuyến nghị có giải thích Trade-Off
+- id: p_ebit_indiff
+  name: Tìm EBIT hòa vốn
+  steps:
+  - Tính I (phương án vay) và N_eq=N0+F_eq/P, N_debt=N0
+  - EBIT*=I×N_eq/(N_eq-N_debt)
+  - 'Kiểm chứng: EPS hai phía bằng nhau tại EBIT*'
+  - 'So EBIT dự kiến với EBIT*: lớn hơn thì vay cho EPS cao hơn'
+  - Tính biên an toàn=(EBIT-EBIT*)/EBIT và ICR tại EBIT thấp
+  outputs: EBIT*, kết luận EPS, biên an toàn
+- id: p_pick_theory
+  name: Chọn lý thuyết tư vấn theo bối cảnh
+  steps:
+  - DN trưởng thành, lãi ổn định, tài sản hữu hình -> Trade-Off (tìm D/E*)
+  - DN tăng trưởng/công nghệ/startup/SME -> Pecking Order (nội lực -> nợ -> vốn cổ phần)
+  - DN FCF cao, tăng trưởng thấp -> Agency/Jensen (dùng nợ hoặc trả cổ tức/mua lại)
+  - Cân nhắc IPO/phát hành -> Market timing
+  - M&M chỉ làm benchmark giải thích
+  outputs: Khung lập luận tư vấn
+- id: p_bank_loan
+  name: Chuẩn bị đàm phán vay ngân hàng (SME VN)
+  steps:
+  - Chuẩn bị BCTC 2-3 năm (ưu tiên kiểm toán/soát xét)
+  - Tính trước ICR (>2-3x) và DSCR (>=1,2-1,5x), dự phóng 3-5 năm có stress
+  - Chuẩn bị tài sản thế chấp, định giá độc lập
+  - 'So sánh >=3 ngân hàng: lãi suất cố định/thả nổi, phí trả nợ trước hạn, phí quản lý'
+  - Khớp kỳ hạn vay với vòng đời tài sản (máy 7-10 năm)
+  - Hỏi rõ covenant; giữ dư địa vay cho vốn lưu động
+  outputs: Hồ sơ vay và điều khoản đã thương lượng
+- id: p_leverage_sensitivity
+  name: Lập bảng độ nhạy ROE theo ROIC và D/E
+  steps:
+  - Chọn lưới ROIC (3-15%), D/E (0,1,2), Kd tương ứng
+  - ROE=(ROIC+(ROIC-Kd)×D/E)×(1-T)
+  - Đánh dấu ô ROE<ROE không nợ (đòn bẩy âm)
+  - Tìm ROIC hòa vốn = Kd
+  outputs: Bảng độ nhạy và ngưỡng ROIC an toàn
+decision_rules:
+- Nếu giả định thị trường hoàn hảo (không thuế, không distress) thì cơ cấu vốn không ảnh hưởng giá trị
+  (M&M I); dùng chỉ làm benchmark, không tư vấn thực hành.
+- Nếu có thuế nhưng chưa tính distress cost thì nợ luôn tăng giá trị (V_L=V_U+T×D); kết luận '100% nợ'
+  là sai vì bỏ qua distress - phải dùng Trade-Off.
+- Nếu D/E hiện tại < D/E* thì vay thêm làm tăng giá trị; nếu > D/E* thì giảm nợ/tăng vốn chủ.
+- Nếu ROIC (dự án) > Kd (sau thuế) thì vay khuếch đại ROE/EPS; nếu ROIC < Kd thì đòn bẩy phá hủy giá trị
+  cổ đông.
+- Nếu EBIT dự kiến > EBIT* thì vay cho EPS cao hơn; nếu EBIT < EBIT* thì phát hành cổ phần an toàn hơn
+  về EPS.
+- Nếu ICR trong kịch bản xấu (EBIT -30%) < 3x thì loại phương án đó cho SME dù EPS base case cao nhất.
+- Nếu DN có lãi cao, ổn định, tài sản hữu hình, thuế suất cao thì có thể vay nhiều (Trade-Off, tax shield
+  đáng kể); nếu doanh thu biến động, tài sản vô hình, tăng trưởng cao thì giữ nợ thấp.
+- 'Nếu cần vốn thì thứ tự: lợi nhuận giữ lại -> vay (người quen, ngân hàng) -> phát hành cổ phần (Pecking
+  Order).'
+- Nếu FCF cao nhưng ít cơ hội đầu tư NPV>0 thì dùng nợ/cổ tức/mua lại cổ phiếu để kỷ luật quản lý (Jensen).
+- 'Nếu vốn dài hạn cho tài sản dài hạn: tài trợ tài sản dài hạn bằng nợ trung-dài hạn/vốn chủ; không dùng
+  nợ ngắn hạn đảo nợ (maturity mismatch).'
+- Nếu D/E > 3 lần (DN phi tài chính) và nợ ngắn hạn lớn thì xếp vùng nguy hiểm.
+- Nếu DN chưa niêm yết thì Ke qua CAPM cần beta ngành + re-lever + illiquidity premium; kiểm tra Ke >=
+  Kd sau thuế + phần bù hợp lý.
+- Nếu so sánh WACC giữa các phương án mà giữ Ke cố định thì nêu rõ đây là giả định đơn giản hóa (thực
+  tế Ke tăng theo D/E); khi D/E chênh lớn, tính lại Ke bằng Hamada/M&M II.
+- Nếu thay đổi chính sách pháp lý ảnh hưởng ngành (như Ba vạch đỏ) thì debt capacity giảm - đưa rủi ro
+  chính sách vào stress test.
+benchmarks:
+- metric: D/E tối ưu tham khảo theo ngành (tỷ lệ nợ)
+  value: Utilities 60-70%; BĐS 50-60%; Sản xuất 30-50%; Công nghệ 0-20%; Biotech/startup 0-5%
+  context: Bảng Trade-Off trong nguồn (hiểu là % nợ trong vốn)
+  confidence: low
+- metric: D/E khuyến nghị SME VN
+  value: Thương mại 0,3-0,8; Sản xuất 0,5-1,2; Dịch vụ 0,1-0,5; Xây dựng 0,8-1,5 (lần)
+  context: Benchmark tham khảo ban đầu, cần stress test
+  confidence: low
+- metric: Interest coverage tối thiểu
+  value: '>3 lần (ngân hàng VN thường 2-3 lần)'
+  context: Covenant, stress test
+  confidence: medium
+- metric: DSCR tối thiểu
+  value: 1,2-1,5 lần
+  context: Ngân hàng VN
+  confidence: medium
+- metric: Debt/EBITDA
+  value: <3-4 lần
+  context: Checklist nguồn
+  confidence: medium
+- metric: Lãi vay SME VN (tham khảo, biến động)
+  value: Thế chấp BĐS trung-dài hạn 8-11%; tín chấp/lưu động 7-10% (DN tốt) đến 12-15%; gói ưu đãi giảm
+    1-3%; tổng quát 9-14%
+  context: Cần xác nhận theo thời điểm và chính sách NHNN
+  confidence: low
+- metric: Giá cổ phiếu giảm khi thông báo phát hành
+  value: 2-3%
+  context: Bằng chứng Pecking Order
+  confidence: medium
+- metric: Distress cost
+  value: Trực tiếp 3-5%, gián tiếp 10-20%, đại diện 5-10% giá trị DN
+  context: Ước lượng minh họa
+  confidence: low
+- metric: D/E nguy hiểm DN phi tài chính
+  value: '>3 lần'
+  context: Bài học Evergrande
+  confidence: medium
+- metric: Ba vạch đỏ
+  value: Nợ/tổng tài sản (loại trừ trả trước) <70%; nợ ròng/vốn chủ <100%; tiền >= nợ ngắn hạn
+  context: Chính sách Trung Quốc 2020
+  confidence: medium
+pitfalls:
+- 'Nhầm ''nợ rẻ hơn nên WACC luôn giảm'': bỏ qua Ke tăng theo D/E (M&M II) và distress cost.'
+- Dùng giá trị sổ sách thay vì thị trường cho tỷ trọng WACC.
+- Giữ Ke cố định giữa các phương án D/E khác nhau mà không nêu giả định.
+- Chỉ chọn theo EPS/ROE base case, bỏ qua stress test và ICR.
+- Quên pha loãng khi phát hành cổ phần; quên đơn vị (triệu đồng vs đồng).
+- Quên (1-T) trong chi phí vay hoặc dùng thuế cho DN đang lỗ (không có tax shield).
+- Áp D/E tối ưu của công ty niêm yết lớn cho SME.
+- Tài trợ tài sản dài hạn bằng nợ ngắn hạn.
+- Nhầm D/E với D/V; bảng nguồn 'Optimal D/E' thực chất là % nợ.
+- Bảng nguồn Financial Leverage Effect là ROE trước thuế; ô (ROIC 6%, D/E=2, Kd 7%) ghi 5% nhưng đúng
+  4%.
+- Số WACC Microsoft trong nguồn (8,0% và 7,3%) không khớp công thức (tính lại 8,25% và 7,69%).
+- Bỏ qua rủi ro chính sách và rủi ro tái cấp vốn (rollover).
+sme_vn_guidance:
+- 'Pecking Order đặc biệt đúng với SME VN: kênh vốn cổ phần gần đóng, đi theo lợi nhuận giữ lại -> vay
+  người quen -> vay ngân hàng có thế chấp -> hiếm khi gọi vốn.'
+- Lãi vay SME VN 9-14%/năm, thấp hơn khi có gói ưu đãi (xuất khẩu, công nghệ, nông nghiệp) 1-3% - cần
+  xác nhận lãi suất theo thời điểm và chính sách NHNN.
+- Ngân hàng VN thường yêu cầu ICR >2-3x và DSCR 1,2-1,5x; chuẩn bị BCTC 2-3 năm, tài sản thế chấp (sổ
+  đỏ, máy móc), dự phóng 3-5 năm có stress.
+- Thuế TNDN phổ thông 20% (cần xác nhận hiện hành; có ưu đãi cho DNNVV, quy định giới hạn chi phí lãi
+  vay Nghị định 132/2020 - cần xác nhận).
+- 'Tra cứu: lãi suất TPCP 10 năm (HNX/Bộ Tài chính) làm rf; beta ngành Damodaran (Emerging Markets); VN-Index
+  10-20 năm cho rm; Excel/Google Sheets 4 tab.'
+- 'Với SME chưa niêm yết: re-lever beta ngành (Hamada) theo D/E của mình và cộng illiquidity premium;
+  Ke có thể quy định bằng mức kỳ vọng nhà đầu tư (Thành Phát 15%).'
+- Khớp kỳ hạn vay với vòng đời tài sản; hỏi covenant; giữ debt capacity reserve cho vốn lưu động.
+- Startup công nghệ khó vay do tài sản vô hình; có thể thế chấp BĐS cá nhân của founder hoặc vay tín chấp
+  gói SME.
+case_lessons:
+- name: Microsoft thêm nợ chiến lược
+  type: success
+  setup: Gần như không nợ trước 2009, phát hành trái phiếu từ 2009; 2024 nợ khoảng 80 tỷ USD, D/E khoảng
+    0,35, giữ AAA.
+  key_calculations:
+  - Tax shield ≈ 80B×3%×21% = 0,504 tỷ USD/năm (tính lại đúng)
+  - 'WACC nguồn: 10% (D/E 0) -> 8,0% (20%) -> 7,3% (35%); tính lại theo công thức: 8,25% và 7,69% (nguồn
+    lệch)'
+  - Nguồn ước tính giá trị DN tăng 30-40% do WACC giảm (không kiểm chứng)
+  lesson: Không nợ chưa chắc tối ưu; DN tín nhiệm cao vay rẻ, tăng đòn bẩy có kiểm soát, vẫn xa vùng distress.
+  data_reliability: unverified
+- name: Evergrande sụp đổ do đòn bẩy
+  type: failure
+  setup: Vay ồ ạt mua đất, đa ngành; nợ khoảng 30B(2010)->300B+ USD; D/E 2x->6-8x; nợ ngắn hạn tài trợ
+    dự án dài hạn; vi phạm cả ba vạch đỏ 2020; 2021 vỡ nợ, 2024 thanh lý.
+  key_calculations:
+  - D/E vượt 3x (vùng nguy hiểm), nợ/tài sản có lúc 80-90%
+  - 'Ba vạch đỏ: nợ/TS<70%, nợ ròng/vốn chủ<100%, tiền>=nợ ngắn hạn - vi phạm cả 3'
+  - 'Maturity mismatch: dự án 5-10 năm nhưng vay vài tháng-1 năm'
+  lesson: Tồn tại mức đòn bẩy tối ưu; đòn bẩy là dao hai lưỡi; dòng tiền quan trọng hơn giá trị tài sản;
+    rủi ro chính sách; theo Pecking Order phải tích lũy nội lực trước.
+  data_reliability: unverified
+- name: Cơ khí Thành Phát mở rộng nhà xưởng
+  type: sme
+  setup: SME Bình Dương, cần 3.000 triệu; vốn chủ sổ sách 4.000, 400.000 cp, giá trị thị trường 15.000đ/cp
+    (6.000 triệu), không nợ, EBIT dự kiến 1.200, T=20%, Kd=11%, Ke=15%. Ba phương án A vay 100%, B cổ
+    phần 100%, C 50/50.
+  key_calculations:
+  - EPS A/B/C=1.740/1.600/1.656đ; ROE 17,40%/13,71%/15,05%
+  - WACC 12,93%/15,00%/13,97%
+  - EBIT* A vs B=990 triệu
+  - 'Stress EBIT 840: ICR A=2,55 (<3), C=5,09; EPS 1.020/1.120/1.080'
+  lesson: Base case nghiêng về vay 100% nhưng stress test làm lộ rủi ro; chọn kết hợp C - cân bằng tax
+    shield và debt capacity thấp của SME.
+  data_reliability: illustrative
+- name: Startup SaaS VN huy động 500 triệu
+  type: sme
+  setup: 'Thứ tự tài trợ thực tế theo Pecking Order: tiền founder/lợi nhuận giữ lại -> friends & family
+    loan -> vay NH (khó vì tài sản vô hình) -> angel/VC.'
+  key_calculations:
+  - Không có phép tính định lượng; thứ tự ưu tiên 1-4
+  lesson: Bootstrapping càng lâu càng tốt trước khi pha loãng; nhà đầu tư thận trọng do adverse selection.
+  data_reliability: illustrative
+worked_examples:
+- name: WACC và CAPM quán cà phê
+  inputs:
+    D: 400
+    E: 600
+    Kd: 0.1
+    Ke_given: 0.15
+    T: 0.2
+    rf: 0.04
+    rm: 0.12
+    beta: 1.2
+  steps:
+  - D/V=40%, E/V=60%
+  - Kd sau thuế=8%
+  - WACC=0,4×8%+0,6×15%=12,2%
+  - 'CAPM tham chiếu: Ke=4%+1,2×8%=13,6% (<15% yêu cầu của chủ quán); nếu dùng 13,6%: WACC=0,4×8%+0,6×13,6%=11,36%'
+  result: WACC 12,2% (Ke 15%) hoặc 11,36% (Ke CAPM 13,6%); ROIC dự án phải > WACC
+- name: 'Thành Phát: 3 phương án tài trợ 3.000 triệu'
+  inputs:
+    EBIT: 1200
+    T: 0.2
+    Kd: 0.11
+    Ke: 0.15
+    N0: 400000
+    P: 15000
+    E_mkt: 6000
+    E_book: 4000
+  steps:
+  - 'A: lãi=330, N=400.000; NI=(1200-330)×0,8=696; EPS=1.740đ; ROE=696/4000=17,4%; WACC=3000/9000×8,8%+6000/9000×15%=12,93%'
+  - 'B: cổ phần mới=3e9/15000=200.000, N=600.000; NI=960; EPS=1.600đ; ROE=960/7000=13,71%; WACC=15%'
+  - 'C: nợ 1.500, lãi=165, cổ phần mới 100.000, N=500.000; NI=828; EPS=1.656đ; ROE=828/5500=15,05%; WACC=0,1667×8,8%+0,8333×15%=13,97%'
+  - EBIT* (A vs B)=330×600000/200000=990 triệu; biên an toàn (1200-990)/1200=17,5%
+  - 'Stress EBIT=840: ICR A=840/330=2,55; C=840/165=5,09; EPS A=1.020, B=1.120, C=1.080'
+  - 'Quyết định: ICR_A<3 => loại A; chọn C'
+  result: Chọn phương án C (WACC 13,97%, ICR stress 5,09x) dù A có EPS/ROE cao nhất base case
+- name: Xưởng may Việt Tiến Nhỏ (Bài 5) có stress
+  inputs:
+    N0: 250000
+    P: 12000
+    F: 2000
+    Kd: 0.12
+    T: 0.2
+    EBIT: 800
+  steps:
+  - Lãi vay=2000×12%=240; cổ phần mới=2e9/12000=166.667; N_eq=416.667
+  - EPS vay=(800-240)×0,8/250.000=1.792đ; EPS cổ phần=800×0,8/416.667=1.536đ
+  - EBIT*=240×416.667/166.667=600 triệu
+  - ICR tại EBIT 800=3,33; tại 500=2,08
+  - 'Tại EBIT 500: EPS vay=832đ < EPS cổ phần=960đ, ICR 2,08<3'
+  - 'Kết luận: base case vay hơn, nhưng nếu EBIT có thể về 500 (< EBIT*) thì phát hành an toàn hơn; cân
+    nhắc kết hợp'
+  result: EBIT*=600 triệu; vay chỉ tốt khi EBIT > 600 và ICR >= 3
+- name: Đòn bẩy ROE sau thuế (T=20%)
+  inputs:
+    T: 0.2
+  steps:
+  - 'ROIC 15%: toàn vốn chủ 12.0%; D/E=1,Kd=6% 19.2%; D/E=2,Kd=7% 24.8%'
+  - 'ROIC 10%: toàn vốn chủ 8.0%; D/E=1,Kd=6% 11.2%; D/E=2,Kd=7% 12.8%'
+  - 'ROIC 6%: toàn vốn chủ 4.8%; D/E=1,Kd=6% 4.8%; D/E=2,Kd=7% 3.2%'
+  - 'ROIC 3%: toàn vốn chủ 2.4%; D/E=1,Kd=6% 0.0%; D/E=2,Kd=7% -4.0%'
+  result: 'Đòn bẩy có lợi khi ROIC>Kd; ROE âm khi ROIC rất thấp (3%, D/E=2: âm)'
+- name: Tax shield M&M
+  inputs:
+    EBIT: 100
+    T: 0.2
+    D: 500
+    Kd: 0.08
+  steps:
+  - 'Toàn vốn chủ: NI=80'
+  - 'Có nợ: lãi=40, EBT=60, thuế=12, NI=48; tổng cho nhà đầu tư=88'
+  - Chênh 8 = 0,2×40; PV=8/0,08=100=T×D
+  result: PV tax shield=100 tỷ
+- name: Re-lever beta ngành
+  inputs:
+    beta_L_peer: 1.4
+    DE_peer: 0.5
+    DE_target: 1.0
+    T: 0.2
+    rf: 0.04
+    MRP: 0.08
+  steps:
+  - beta_U=1,4/(1+0,8×0,5)=1,0
+  - beta mục tiêu=1,0×(1+0,8×1)=1,8
+  - Ke=4%+1,8×8%=18,4%
+  result: Ke 18,4% tại D/E=1
+practice_questions:
+- q: Nợ thị trường 5.000, vốn chủ 7.000 (triệu), Kd 9,5%, Ke 16%, T 20%. WACC?
+  a: D/V 41,67%, E/V 58,33%; WACC=0,4167×7,6%+0,5833×16%=12,50% (verified)
+- q: rf 4,5%, rm 13%, beta 1,3. Ke? Vì sao beta>1 thì Ke cao hơn thị trường?
+  a: Ke=4,5%+1,3×8,5%=15,55%; beta>1 rủi ro hệ thống cao hơn nên đòi phần bù lớn hơn.
+- q: Vay vĩnh viễn 10.000 triệu, T 20%. PV tax shield? Vì sao không phụ thuộc Kd?
+  a: 2.000 triệu; Kd triệt tiêu giữa tử và mẫu của perpetuity.
+- q: 300.000 cp; vay 2.000 triệu lãi 10% hoặc phát hành cp giá 20.000đ. EBIT*?
+  a: Lãi 200; cp mới 100.000, N_eq 400.000; EBIT*=200×400000/100000=800 triệu; EPS tại đó=1.600đ.
+- q: 'Xưởng may: vốn chủ 3.000, 250.000 cp giá 12.000đ, cần 2.000, Kd 12%, T 20%, EBIT 800. EPS hai phương
+    án, EBIT*, nếu EBIT 500?'
+  a: 'EPS vay 1.792 vs 1.536; EBIT*=600; EBIT 500 < EBIT*: phát hành (EPS 960 vs 832) và ICR vay 2,08
+    <3.'
+- q: 'Thành Phát phương án C: tính ICR stress.'
+  a: 840/165=5,09.
+- q: Beta ngành 1,4 ở D/E 0,5, T 20%. DN mục tiêu D/E=1. Beta?
+  a: beta_U=1,0; beta_L=1,8.
+- q: 'ROIC 3%, Kd 6%, D/E=1, T 20%: ROE?'
+  a: NI=(30-30)×0,8=0 => ROE 0%, trong khi không nợ ROE 2,4%.
+- q: 'Bài 6: áp 6 bước Thành Phát cho DN của bạn.'
+  a: Tự thực hiện theo procedure p_compare_financing, bắt buộc stress -20-30%.
+checklist:
+- D/E, D/V dùng giá trị thị trường (hoặc nêu rõ giả định)
+- Tỷ trọng WACC cộng =100%
+- Đã trừ (1-T) cho Kd; Ke > Kd sau thuế
+- Beta đã unlever/relever nếu mượn ngành
+- 'Ke giữa các phương án: nêu giả định cố định hay đổi'
+- EPS đã tính pha loãng, đơn vị nhất quán
+- Tính EBIT* và biên an toàn
+- 'Stress test EBIT -30%: ICR>=3, DSCR>=1,2-1,5'
+- Debt/EBITDA <3-4x; lịch đáo hạn không có cliff
+- Kỳ hạn vay khớp vòng đời tài sản
+- Covenant được kiểm tra; còn dư địa vay
+- 'Pecking Order: đã dùng nội lực trước?'
+- Debt capacity và rủi ro chính sách đã xét
+- Số liệu được verify bằng Python
+excel_google_sheets_templates:
+- 'Tab INPUTS: EBIT base và stress, T, Kd, vốn chủ/cổ phần/giá, Ke, vốn cần huy động'
+- 'Tab CAPM: rf, beta, rm, Ke=rf+beta*(rm-rf), Hamada re-lever'
+- 'Tab KỊCH BẢN 3-5 cột: %vay/%vốn, lãi, EBT, thuế, NI, EPS, ROE, WACC, ICR; conditional formatting đỏ
+  nếu ICR<3'
+- 'Tab DASHBOARD: biểu đồ WACC, EPS/ROE base vs stress; IF cảnh báo ICR_stress<3'
+- 'Excel: =D/V*Kd*(1-T)+E/V*Ke ; EBIT*=I*Neq/(Neq-Ndebt)'
+source_file: 04-capital-structure.md

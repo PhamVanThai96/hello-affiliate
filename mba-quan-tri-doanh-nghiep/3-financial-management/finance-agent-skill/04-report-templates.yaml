@@ -1,0 +1,87 @@
+# 04-report-templates.yaml — Mẫu báo cáo/bảng biểu đầu ra chuẩn
+common_structure:
+  - 1. Tóm tắt điều hành (kết luận + con số chính + khuyến nghị trong 3-5 dòng)
+  - 2. Bối cảnh và dữ liệu đầu vào (kèm nhãn VERIFIED/GIẢ ĐỊNH/CHƯA KIỂM CHỨNG)
+  - 3. Phương pháp và công thức sử dụng (và vì sao chọn)
+  - 4. Tính toán từng bước (bảng)
+  - 5. Phân tích độ nhạy / kịch bản
+  - 6. Diễn giải ý nghĩa kinh doanh và so sánh benchmark
+  - 7. Phương án và khuyến nghị (ưu/nhược, điều kiện thay đổi khuyến nghị)
+  - 8. Rủi ro, giả định, giới hạn và disclaimer
+  - 9. Bước hành động tiếp theo
+
+templates:
+  rpt_project_appraisal:
+    title: Báo cáo thẩm định dự án
+    tables:
+      - name: Dòng tiền dự án
+        columns: [Năm, Doanh thu, Chi phí, EBITDA, Khấu hao, EBIT, Thuế, NOPAT, +Khấu hao, ΔVLĐ, Capex, FCF, Hệ số chiết khấu, PV]
+      - name: Chỉ số quyết định
+        columns: [NPV, IRR, MIRR, Payback, DPP, PI, EAA]
+      - name: Độ nhạy
+        columns: [Biến số, -20%, -10%, Base, +10%, +20%, NPV tương ứng]
+      - name: Kịch bản
+        columns: [Kịch bản, Xác suất, NPV]
+  rpt_wacc:
+    title: Báo cáo chi phí vốn
+    tables:
+      - name: Thành phần WACC
+        columns: [Nguồn vốn, Giá trị, Tỷ trọng, Chi phí trước thuế, Chi phí sau thuế, Đóng góp WACC]
+      - name: CAPM
+        columns: [Rf, Beta unlevered, D/E, Beta relevered, MRP, Premium khác, Ke]
+  rpt_capital_structure:
+    title: So sánh phương án tài trợ
+    tables:
+      - name: Phương án
+        columns: [Phương án, Nợ, Vốn chủ, Lãi vay, Số cổ phần mới, EPS, ROE, WACC, ICR, DSCR]
+      - name: Stress test
+        columns: [EBIT giảm, EBIT, Lãi vay, ICR, EPS, Đánh giá]
+  rpt_financial_health:
+    title: Báo cáo chẩn đoán sức khỏe tài chính
+    tables:
+      - name: Tỷ số
+        columns: [Nhóm, Chỉ số, Kỳ trước, Kỳ này, Benchmark, Đánh giá]
+      - name: DuPont
+        columns: [Biên LN ròng, Vòng quay tài sản, Đòn bẩy, ROE]
+      - name: Hành động 30-60-90 ngày
+        columns: [Ưu tiên, Vấn đề, Hành động, Tác động ước tính, Phụ trách]
+  rpt_working_capital:
+    title: Báo cáo vốn lưu động
+    tables:
+      - name: CCC
+        columns: [Chỉ số, Hiện tại, Mục tiêu, Chênh lệch, Tiền giải phóng (triệu)]
+  rpt_valuation:
+    title: Báo cáo định giá
+    tables:
+      - name: DCF
+        columns: [Năm, FCFF, Hệ số chiết khấu, PV]
+      - name: Cầu nối EV sang Equity
+        columns: [EV, Nợ, Tiền, Lợi ích CĐ thiểu số, Equity]
+      - name: Độ nhạy WACC x g
+        columns: [WACC \ g, g1, g2, g3]
+      - name: Football field
+        columns: [Phương pháp, Thấp, Cao, Trọng số]
+  rpt_mna:
+    title: Báo cáo thương vụ M&A
+    tables:
+      - name: Giá trị và synergy
+        columns: [Giá trị độc lập, NPV cost synergy, NPV revenue synergy, Chi phí tích hợp, Walk-away price]
+      - name: Accretion/Dilution
+        columns: [Hình thức thanh toán, EPS trước, EPS sau, Δ%, Nợ/EBITDA, ICR]
+  rpt_portfolio:
+    title: Báo cáo phân bổ danh mục
+    tables:
+      - name: Tài sản
+        columns: [Tài sản, E(R), σ, Tỷ trọng, Đóng góp rủi ro]
+      - name: Ma trận tương quan
+        columns: [Tài sản, A, B, C]
+      - name: Chỉ số
+        columns: [E(Rp), σp, Sharpe, Treynor, Jensen alpha]
+  rpt_dividend:
+    title: Đề xuất chính sách cổ tức
+    tables:
+      - name: Payout theo kịch bản
+        columns: [Kịch bản, Lợi nhuận, Cổ tức, Payout, Tiền giữ lại, Tăng trưởng g]
+  rpt_integrated:
+    title: Báo cáo tài chính tích hợp
+    sections: [Chẩn đoán, Đầu tư, Nguồn vốn, Vốn lưu động, Cổ tức, Rủi ro, Định giá, Lộ trình hành động]

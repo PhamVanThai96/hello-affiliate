@@ -1,0 +1,834 @@
+id: "m03"
+name_vi: "Chi phí sử dụng vốn (WACC)"
+name_en: "Cost of Capital"
+source_file: "03-cost-of-capital.md"
+purpose: >
+  Xác định "giá của tiền" doanh nghiệp phải trả cho chủ nợ và cổ đông (Kd, Ke, WACC) để dùng làm
+  tỷ lệ chiết khấu (discount rate) / ngưỡng chấp nhận (hurdle rate) cho NPV, DCF, EVA và quyết định
+  cơ cấu vốn. Đặc biệt hướng dẫn ước lượng cho SME Việt Nam không niêm yết, không có beta/giá thị trường.
+when_to_use:
+  - "Cần tính WACC, Ke (CAPM/Gordon/build-up), Kd sau thuế của một doanh nghiệp"
+  - "Chọn tỷ lệ chiết khấu cho NPV/IRR của dự án (mở chi nhánh, mua máy, xuất khẩu)"
+  - "Chủ SME hỏi: vay ngân hàng 10% thì dự án lời trên 10% là đủ chưa?"
+  - "Định giá DN bằng DCF và cần WACC, kèm sensitivity"
+  - "Đánh giá DN có tạo giá trị không (ROIC vs WACC, EVA)"
+  - "Ước lượng beta cho DN chưa niêm yết (Hamada unlever/relever)"
+  - "Cần chi phí vốn biên (MCC) khi huy động thêm vốn nhiều bậc"
+  - "Quy đổi chi phí vốn USD sang VNĐ, danh nghĩa sang thực"
+prerequisites: ["m01"]
+related_modules:
+  - "m01: NPV, IRR, giá trị thời gian của tiền - WACC là r trong NPV"
+  - "m02: Capital budgeting - WACC/project rate là hurdle rate"
+  - "m04: Capital structure - tax shield, M&M, cơ cấu vốn tối ưu tối thiểu hóa WACC, APV"
+  - "m08: Risk and return - CAPM, beta, MRP"
+  - "m10: Corporate valuation - DCF dùng WACC (FCFF) và Ke (FCFE), độ nhạy giá trị"
+  - "m07: Dividend policy - Gordon growth, lợi nhuận giữ lại không miễn phí"
+
+concepts:
+  - term_vi: "Chi phí sử dụng vốn"
+    term_en: "Cost of Capital"
+    definition: "Tỷ suất lợi nhuận tối thiểu DN phải đạt trên vốn đầu tư để thỏa mãn cả chủ nợ lẫn cổ đông và giữ nguyên giá trị DN; là 'giá thuê tiền'."
+    why_it_matters: >
+      Kế toán chỉ trừ lãi vay, coi vốn chủ là miễn phí. Quán lãi kế toán 50 triệu/năm trên 1 tỷ vốn chủ
+      có thể lỗ kinh tế vì chủ gửi ngân hàng được 60-70 triệu gần như không rủi ro. Cost of capital đưa chi phí cơ hội
+      (opportunity cost) của MỌI nguồn vốn vào bài toán: đồng vốn có kiếm được hơn mức nó kiếm được ở nơi khác cùng rủi ro không.
+  - term_vi: "Chi phí vốn bình quân gia quyền"
+    term_en: "WACC (Weighted Average Cost of Capital)"
+    definition: "Trung bình có trọng số (theo giá trị thị trường) chi phí vốn chủ và chi phí nợ sau thuế."
+    why_it_matters: >
+      Dự án không 'biết' tiền đến từ nguồn nào, nó phải tạo đủ lợi nhuận để trả cho tất cả bên cung cấp vốn cùng lúc,
+      nên tỷ lệ chiết khấu hợp lý là giá bình quân của giỏ vốn. Đây là discount rate cho FCFF, hurdle rate, benchmark cho ROIC.
+  - term_vi: "Chi phí vốn chủ sở hữu"
+    term_en: "Cost of Equity (Ke)"
+    definition: "Lợi suất cổ đông đòi hỏi; không ghi trong hợp đồng nên không quan sát được, phải ước lượng qua mô hình (CAPM, Gordon, build-up)."
+    why_it_matters: "Là thành phần lớn và khó nhất của WACC (cổ đông là residual claimant, rủi ro cao nhất nên đòi cao nhất)."
+  - term_vi: "Chi phí nợ vay"
+    term_en: "Cost of Debt (Kd)"
+    definition: "Lãi suất thị trường hiện hành cho khoản vay MỚI cùng kỳ hạn/rủi ro (trước thuế); sau thuế = Kd(1-T)."
+    why_it_matters: "Kd thấp hơn Ke vì chủ nợ được trả trước, lãi cố định, và lãi vay được khấu trừ thuế; nhưng không có nghĩa là nên vay thật nhiều."
+  - term_vi: "CAPM"
+    term_en: "Capital Asset Pricing Model"
+    definition: "Ke = Rf + beta x (Rm - Rf): phần thưởng cho thời gian cộng phần thưởng cho rủi ro hệ thống."
+    why_it_matters: >
+      Sharpe (1964), Lintner/Mossin (1965-66), dựa trên Markowitz (1952): thị trường chỉ trả công cho rủi ro hệ thống
+      (lãi suất, lạm phát, suy thoái) vì rủi ro riêng của công ty bị triệt tiêu bằng đa dạng hóa. Biến câu 'rủi ro cao thì thưởng cao' thành con số.
+  - term_vi: "Beta, phương trình Hamada"
+    term_en: "Beta and Hamada equation"
+    definition: "Beta đo độ nhạy với rủi ro hệ thống. Beta quan sát gồm rủi ro kinh doanh + rủi ro tài chính (đòn bẩy); Hamada (1972) tách/ghép lại theo D/E và thuế."
+    why_it_matters: "Công ty so sánh vay nhiều hơn bạn sẽ có beta cao hơn dù cùng ngành. Phải unlever để thấy rủi ro kinh doanh thuần, rồi relever theo D/E mục tiêu của bạn."
+  - term_vi: "Phần bù rủi ro thị trường"
+    term_en: "Market Risk Premium (MRP / ERP)"
+    definition: "Rm - Rf: phần cổ đông đòi thêm khi đầu tư cổ phiếu thay trái phiếu. Tham chiếu: 5-7% thị trường phát triển, 7-10% mới nổi như VN (nguồn: bài gốc, cần cập nhật)."
+    why_it_matters: "Là giả định gây tranh cãi và nhạy nhất của CAPM; luôn chạy sensitivity."
+  - term_vi: "Phần bù rủi ro quốc gia"
+    term_en: "Country Risk Premium (CRP)"
+    definition: "Phần bù thêm cho rủi ro tỷ giá, chính sách, thanh khoản của thị trường mới nổi; VN khoảng 2-4% (Damodaran, cần cập nhật hàng năm)."
+    why_it_matters: "CAPM gốc cho thị trường Mỹ thanh khoản cao; beta không phản ánh hết rủi ro quốc gia. Khi lấy Rf, MRP của Mỹ thì phải cộng CRP; nếu MRP VN đã gồm phần bù quốc gia thì không cộng lần nữa."
+  - term_vi: "Phần bù quy mô / rủi ro riêng"
+    term_en: "Size Premium / Company-specific Premium"
+    definition: "Cộng thêm 2-5% vào Ke cho DN nhỏ (khó huy động vốn, phụ thuộc ít khách hàng, phụ thuộc chủ DN)."
+    why_it_matters: "Banz (1981), Ibbotson, Fama-French (SMB) cho thấy công ty nhỏ có lợi suất kỳ vọng cao hơn CAPM dự đoán."
+  - term_vi: "Mô hình Fama-French 3 nhân tố"
+    term_en: "Fama-French 3-Factor Model"
+    definition: "Ke = Rf + b1(Market) + b2(SMB) + b3(HML); SMB = Small minus Big, HML = High minus Low (giá trị sổ sách/thị giá cao)."
+    why_it_matters: "Fama & French (1993): CAPM một nhân tố không giải thích hết lợi suất; công ty nhỏ và công ty giá trị có lợi suất cao hơn. Là cơ sở lý thuyết của size premium."
+  - term_vi: "Cơ cấu vốn mục tiêu"
+    term_en: "Target capital structure"
+    definition: "Tỷ lệ D/V (hoặc D/E) bình quân ngành hoặc DN dự định duy trì dài hạn, dùng làm trọng số WACC thay vì tỷ lệ hiện tại/sổ sách."
+    why_it_matters: "Giải quyết vòng tròn (cần E để tính WACC, mà E đến từ định giá cần WACC) và tránh WACC 'nhảy múa' theo biến động ngắn hạn; SME không có thị giá vốn chủ."
+  - term_vi: "Giá trị thị trường vs giá trị sổ sách"
+    term_en: "Market vs Book weights"
+    definition: "Trọng số WACC phải dùng giá trị thị trường (hoặc cơ cấu mục tiêu), không dùng sổ sách."
+    why_it_matters: "Nhà đầu tư đòi lợi suất trên giá trị họ đang nắm hôm nay. Vốn chủ sổ sách 100 tỷ nhưng thị giá 600 tỷ: cổ đông đòi lợi suất trên 600 tỷ."
+  - term_vi: "Lá chắn thuế"
+    term_en: "Tax shield"
+    definition: "Lãi vay được khấu trừ trước thuế nên mỗi đồng lãi tiết kiệm T đồng thuế; chi phí thực = Kd(1-T)."
+    why_it_matters: "Chỉ có giá trị khi DN có lợi nhuận chịu thuế. Ở VN, lãi vay khấu trừ giới hạn 30% EBITDA theo Nghị định 132/2020/NĐ-CP (cần xác nhận văn bản mới nhất)."
+  - term_vi: "Tỷ lệ chiết khấu theo dự án"
+    term_en: "Project-specific discount rate"
+    definition: "Chi phí vốn phản ánh rủi ro của dự án, không phải của người bỏ tiền."
+    why_it_matters: "Dùng WACC công ty cho dự án rủi ro hơn thì chấp nhận dự án xấu; cho dự án an toàn hơn thì bỏ lỡ dự án tốt; dần dịch chuyển DN sang hoạt động rủi ro nhất mà không hay biết."
+  - term_vi: "Chi phí vốn biên"
+    term_en: "Marginal Cost of Capital (MCC)"
+    definition: "Chi phí của đồng vốn huy động thêm; tăng bậc thang khi hết lợi nhuận giữ lại (phải phát hành mới có phí) hoặc vượt hạn mức vay rẻ."
+    why_it_matters: "Dự án cuối cùng phải so IRR với chi phí vốn biên, không phải WACC trung bình."
+  - term_vi: "Lợi nhuận giữ lại không miễn phí"
+    term_en: "Cost of retained earnings"
+    definition: "Vốn từ lợi nhuận giữ lại có chi phí = Ke (không phí phát hành); phát hành mới có Ke_new cao hơn."
+    why_it_matters: "Đó là tiền của cổ đông, họ vẫn đòi lợi suất; coi là miễn phí là sai lầm phổ biến của chủ SME."
+  - term_vi: "ROIC, EVA"
+    term_en: "ROIC and Economic Value Added"
+    definition: "ROIC = NOPAT/Invested Capital; EVA = NOPAT - IC x WACC = IC x (ROIC - WACC)."
+    why_it_matters: "Stern Stewart (thập niên 1980-90) phổ biến EVA để khắc phục việc lợi nhuận kế toán không trừ chi phí vốn chủ. ROIC < WACC là phá hủy giá trị dù lãi kế toán dương."
+  - term_vi: "APV"
+    term_en: "Adjusted Present Value"
+    definition: "APV = NPV_all-equity + PV(Tax shield) - PV(Distress costs), mỗi phần chiết khấu bằng tỷ lệ phù hợp."
+    why_it_matters: "Dùng khi cơ cấu vốn thay đổi mạnh (LBO) vì WACC không còn là hằng số."
+  - term_vi: "Nhất quán dòng tiền - tỷ lệ chiết khấu"
+    term_en: "Consistency principle"
+    definition: "FCFF <-> WACC; FCFE <-> Ke; dòng tiền danh nghĩa VNĐ <-> tỷ lệ danh nghĩa VNĐ; dòng tiền thực <-> tỷ lệ thực; USD <-> tỷ lệ USD."
+    why_it_matters: "Trộn lẫn là nguồn gốc của hầu hết sai lầm định giá."
+  - term_vi: "Ba nguyên tắc nền tảng"
+    term_en: "Foundational principles"
+    definition: "(1) Chi phí cơ hội chứ không phải chi phí kế toán; (2) hướng tới tương lai, theo giá thị trường hiện hành (lãi vay mới, không phải khoản vay cũ); (3) nhất quán dòng tiền - tỷ lệ chiết khấu."
+    why_it_matters: "Là khung kiểm tra mọi ước lượng chi phí vốn."
+
+formulas:
+  - id: "m03_wacc"
+    name_vi: "Chi phí vốn bình quân gia quyền"
+    name_en: "WACC"
+    expression_latex: 'WACC = \frac{E}{V}K_e + \frac{D}{V}K_d(1-T)'
+    expression_python: "E/(E+D)*Ke + D/(E+D)*Kd*(1-T)"
+    excel: "=E/(E+D)*Ke + D/(E+D)*Kd*(1-T)"
+    variables:
+      - {symbol: "E", meaning: "Giá trị thị trường vốn chủ (hoặc theo cơ cấu mục tiêu)", unit: "VNĐ"}
+      - {symbol: "D", meaning: "Giá trị thị trường nợ vay", unit: "VNĐ"}
+      - {symbol: "Ke", meaning: "Chi phí vốn chủ", unit: "tỷ lệ thập phân"}
+      - {symbol: "Kd", meaning: "Chi phí nợ trước thuế (lãi vay mới)", unit: "tỷ lệ thập phân"}
+      - {symbol: "T", meaning: "Thuế suất TNDN", unit: "tỷ lệ thập phân"}
+    when_to_use: "Discount rate cho FCFF/DCF toàn DN, hurdle rate cho dự án rủi ro bằng DN, benchmark ROIC."
+    why_it_works: "Tỷ lệ chiết khấu là giá trung bình của giỏ vốn, nguồn nào tỷ trọng lớn ảnh hưởng nhiều hơn. Chỉ Kd nhân (1-T) vì lãi vay trừ trước thuế còn cổ tức chi từ lợi nhuận sau thuế; khớp với FCFF đã tính thuế trên EBIT."
+    assumptions:
+      - "Rủi ro dự án ~ rủi ro trung bình của DN"
+      - "Cơ cấu vốn ổn định quanh mục tiêu"
+      - "Ke, Kd không đổi theo quy mô huy động (nếu không, dùng MCC)"
+    pitfalls:
+      - "Dùng book value làm trọng số (ví dụ Tâm An: sổ sách cho WACC 11,82% thay vì 13,10%)"
+      - "Dùng lãi khoản vay dự án thay WACC"
+      - "Dùng cho LBO hoặc cơ cấu vốn biến động (dùng APV)"
+      - "Dùng cho dự án rủi ro khác DN"
+    interpretation: "Mỗi 100 đồng vốn phải tạo tối thiểu WACC đồng lợi nhuận hoạt động sau thuế. Sanity: DN lớn 8-15%, SME 11-18%; ngoài 10-22% với SME phải kiểm tra lại. Luôn Kd_sau_thuế < WACC < Ke khi có nợ."
+    example:
+      inputs: {E: 600, D: 400, Ke: 0.14, Kd: 0.09, T: 0.2}
+      steps:
+        - "V = 1000; E/V = 60%; D/V = 40%"
+        - "0,6 x 14% = 8,4%; 0,4 x 9% x 0,8 = 2,88%"
+      result: "WACC = 11,28%"
+  - id: "m03_weights_from_de"
+    name_vi: "Trọng số từ D/E mục tiêu"
+    name_en: "Capital weights from target D/E"
+    expression_latex: 'W_d = \frac{D/E}{1+D/E},\; W_e = 1-W_d'
+    expression_python: "DE/(1+DE)"
+    excel: "=DE/(1+DE)"
+    variables:
+      - {symbol: "DE", meaning: "Tỷ lệ nợ/vốn chủ mục tiêu", unit: "lần"}
+    when_to_use: "Đổi D/E ngành hoặc mục tiêu sang trọng số WACC cho SME không có thị giá."
+    why_it_works: "D/V = D/(D+E) = (D/E)/(1+D/E)."
+    assumptions: ["D/E theo giá trị thị trường/ước tính, không phải sổ sách"]
+    pitfalls: ["Nhầm D/E với D/V"]
+    interpretation: "D/E = 0,6 -> D/V = 37,5%, E/V = 62,5%."
+    example:
+      inputs: {DE: 0.6}
+      steps: ["0,6/1,6 = 0,375"]
+      result: "Wd = 37,5%, We = 62,5%"
+  - id: "m03_ke_capm"
+    name_vi: "Chi phí vốn chủ theo CAPM"
+    name_en: "CAPM Cost of Equity"
+    expression_latex: 'K_e = R_f + \beta (R_m - R_f)'
+    expression_python: "Rf + beta*MRP"
+    excel: "=Rf + beta*MRP"
+    variables:
+      - {symbol: "Rf", meaning: "Lãi suất phi rủi ro (TPCP 10 năm)", unit: "tỷ lệ"}
+      - {symbol: "beta", meaning: "Beta vốn chủ (levered)", unit: "lần"}
+      - {symbol: "MRP", meaning: "Rm - Rf, phần bù rủi ro thị trường", unit: "tỷ lệ"}
+    when_to_use: "Ước tính Ke khi có beta (niêm yết hoặc beta ngành đã relever)."
+    why_it_works: "Phần thưởng cho thời gian (Rf) cộng phần thưởng cho rủi ro hệ thống (beta x MRP); rủi ro riêng không được trả công vì đa dạng hóa được."
+    assumptions: ["Thị trường hoàn hảo, nhà đầu tư lý trí, kỳ vọng đồng nhất (thực tế không đúng hoàn toàn)", "Beta ổn định", "Rf cùng kỳ hạn dòng tiền (10 năm)"]
+    pitfalls: ["Dùng Rf ngắn hạn", "Beta lịch sử không điều chỉnh", "Bỏ CRP/size premium ở thị trường mới nổi/DN nhỏ", "MRP lấy tùy tiện"]
+    interpretation: "Beta 1 = như thị trường; >1 hung hãn; <1 phòng thủ. Cùng thị trường VNM beta 0,75 cho Ke 9,5%, FPT beta 1,3 cho 13,9%."
+    example:
+      inputs: {Rf: 0.035, beta: 0.75, MRP: 0.08}
+      steps: ["0,75 x 8% = 6%", "3,5% + 6% = 9,5% (Vinamilk)"]
+      result: "Ke = 9,5%"
+  - id: "m03_ke_extended"
+    name_vi: "CAPM mở rộng (CRP + size premium)"
+    name_en: "Extended CAPM for emerging markets / small firms"
+    expression_latex: 'K_e = R_f + \beta \cdot MRP + CRP + Size'
+    expression_python: "Rf + beta*MRP + CRP + Size"
+    excel: "=Rf + beta*MRP + CRP + Size"
+    variables:
+      - {symbol: "Rf", meaning: "Phi rủi ro", unit: "tỷ lệ"}
+      - {symbol: "beta", meaning: "Beta", unit: "lần"}
+      - {symbol: "MRP", meaning: "Phần bù thị trường", unit: "tỷ lệ"}
+      - {symbol: "CRP", meaning: "Country risk premium (0 nếu MRP đã gồm)", unit: "tỷ lệ"}
+      - {symbol: "Size", meaning: "Size/company-specific premium 2-5%", unit: "tỷ lệ"}
+    when_to_use: "SME VN, thị trường mới nổi; khi lấy Rf/MRP của Mỹ phải cộng CRP VN (2-4%)."
+    why_it_works: "Beta không phản ánh hết rủi ro quốc gia, thanh khoản, quy mô; premium bù phần thiếu này."
+    assumptions: ["Không cộng CRP hai lần nếu MRP đã chứa phần bù quốc gia", "Premium là phán đoán, cần sensitivity"]
+    pitfalls: ["Size premium là giả định gây biến động NPV lớn nhất (Tâm An: 0% -> +614, 5% -> +127)"]
+    interpretation: "Tâm An: Ke 15,93%, cao hơn lãi vay 5,4 điểm %."
+    example:
+      inputs: {Rf: 0.032, beta: 1.2157142857, MRP: 0.08, CRP: 0.0, Size: 0.03}
+      steps: ["1,2157 x 8% = 9,726%", "3,2% + 9,726% + 3% = 15,93%"]
+      result: "Ke = 15,93%"
+  - id: "m03_hamada_unlever"
+    name_vi: "Unlever beta (Hamada)"
+    name_en: "Unlevered (asset) beta"
+    expression_latex: '\beta_U = \frac{\beta_L}{1+(1-T)\,D/E}'
+    expression_python: "beta_L/(1+(1-T)*DE)"
+    excel: "=betaL/(1+(1-T)*DE)"
+    variables:
+      - {symbol: "beta_L", meaning: "Beta levered của công ty so sánh", unit: "lần"}
+      - {symbol: "T", meaning: "Thuế suất", unit: "tỷ lệ"}
+      - {symbol: "DE", meaning: "D/E của công ty so sánh (thị giá)", unit: "lần"}
+    when_to_use: "Bước 2 quy trình beta cho DN chưa niêm yết: lột đòn bẩy của từng comparable rồi lấy trung bình/trung vị."
+    why_it_works: "D/E cao thì vốn chủ gánh biến động nhiều hơn (chủ nợ trả trước) nên beta cổ phần tăng; (1-T) vì tax shield giảm bớt rủi ro tài chính. Hamada (1972) trên khung M&M có thuế."
+    assumptions: ["Beta của nợ ~ 0", "Tax shield có rủi ro như nợ", "Đủ tốt cho DN ít vay, hơi quá khi nợ cao"]
+    pitfalls: ["Quên unlever/relever", "Dùng D/E sổ sách"]
+    interpretation: "Beta tài sản = rủi ro kinh doanh thuần của ngành."
+    example:
+      inputs: {beta_L: 1.15, T: 0.2, DE: 0.5}
+      steps: ["1 + 0,8 x 0,5 = 1,4", "1,15/1,4 = 0,8214"]
+      result: "beta_U = 0,8214"
+  - id: "m03_hamada_relever"
+    name_vi: "Relever beta (Hamada)"
+    name_en: "Relevered equity beta"
+    expression_latex: '\beta_L = \beta_U\,[1+(1-T)\,D/E]'
+    expression_python: "beta_U*(1+(1-T)*DE)"
+    excel: "=betaU*(1+(1-T)*DE_target)"
+    variables:
+      - {symbol: "beta_U", meaning: "Beta tài sản ngành", unit: "lần"}
+      - {symbol: "T", meaning: "Thuế suất", unit: "tỷ lệ"}
+      - {symbol: "DE", meaning: "D/E mục tiêu của DN bạn", unit: "lần"}
+    when_to_use: "Bước 3: đắp lại đòn bẩy theo cơ cấu vốn mục tiêu rồi đưa vào CAPM."
+    why_it_works: "Ngược của unlever: thêm rủi ro tài chính tương ứng D/E của chính bạn."
+    assumptions: ["Như unlever"]
+    pitfalls: ["Dùng D/E hiện tại thay vì mục tiêu"]
+    interpretation: "Tâm An vay nhiều hơn ngành (0,6 so 0,5) nên beta 1,2157 cao hơn ngành 1,15."
+    example:
+      inputs: {beta_U: 0.8214285714, T: 0.2, DE: 0.6}
+      steps: ["1 + 0,8 x 0,6 = 1,48", "0,8214 x 1,48 = 1,2157"]
+      result: "beta_L = 1,2157"
+  - id: "m03_beta_regression"
+    name_vi: "Beta từ hồi quy lợi suất"
+    name_en: "Regression beta (SLOPE)"
+    expression_latex: '\beta = \frac{Cov(R_i,R_m)}{Var(R_m)}'
+    expression_python: "cov/var_m"
+    excel: "=SLOPE(ret_stock, ret_market)"
+    variables:
+      - {symbol: "cov", meaning: "Hiệp phương sai lợi suất cổ phiếu và VN-Index", unit: "-"}
+      - {symbol: "var_m", meaning: "Phương sai lợi suất thị trường", unit: "-"}
+    when_to_use: "DN niêm yết có đủ lịch sử giá; kiểm tra beta so sánh."
+    why_it_works: "Beta là độ dốc hồi quy: cổ phiếu biến động bao nhiêu khi thị trường biến động 1 đơn vị."
+    assumptions: ["Kỳ ước lượng đại diện", "Thanh khoản đủ"]
+    pitfalls: ["Beta không ổn định theo thời gian và kỳ ước lượng", "Dùng historical beta thay forward beta"]
+    interpretation: "Dùng làm đầu vào comparable rồi unlever."
+    example:
+      inputs: {cov: 0.0012, var_m: 0.001}
+      steps: ["0,0012/0,001 = 1,2"]
+      result: "beta = 1,2 (số minh họa)"
+  - id: "m03_ke_gordon"
+    name_vi: "Ke theo mô hình tăng trưởng cổ tức Gordon"
+    name_en: "Dividend Growth (Gordon) Cost of Equity"
+    expression_latex: 'K_e = \frac{D_1}{P_0} + g,\; D_1 = D_0(1+g)'
+    expression_python: "D0*(1+g)/P0 + g"
+    excel: "=D0*(1+g)/P0+g"
+    variables:
+      - {symbol: "D0", meaning: "Cổ tức năm vừa rồi", unit: "đ/cp"}
+      - {symbol: "g", meaning: "Tăng trưởng cổ tức đều", unit: "tỷ lệ"}
+      - {symbol: "P0", meaning: "Giá cổ phiếu hiện tại", unit: "đ/cp"}
+    when_to_use: "DN trả cổ tức ổn định, tăng trưởng đều."
+    why_it_works: "P0 = D1/(Ke - g); đảo ra được lợi suất thị trường đang ngầm định."
+    assumptions: ["g không đổi vĩnh viễn và g < Ke", "Có trả cổ tức"]
+    pitfalls: ["Không dùng được cho DN không trả cổ tức", "Ước lượng g sai làm Ke lệch mạnh"]
+    interpretation: "Cross-check cho CAPM."
+    example:
+      inputs: {D0: 2400, g: 0.05, P0: 36000}
+      steps: ["D1 = 2.520", "2.520/36.000 = 7%", "7% + 5% = 12%"]
+      result: "Ke = 12%"
+  - id: "m03_ke_new_equity"
+    name_vi: "Ke phát hành cổ phiếu mới (có phí)"
+    name_en: "Cost of new equity with flotation cost"
+    expression_latex: 'K_{e,new} = \frac{D_1}{P_0(1-F)} + g'
+    expression_python: "D0*(1+g)/(P0*(1-F)) + g"
+    excel: "=D0*(1+g)/(P0*(1-F))+g"
+    variables:
+      - {symbol: "D0", meaning: "Cổ tức hiện tại", unit: "đ/cp"}
+      - {symbol: "g", meaning: "Tăng trưởng", unit: "tỷ lệ"}
+      - {symbol: "P0", meaning: "Giá hiện tại", unit: "đ/cp"}
+      - {symbol: "F", meaning: "Tỷ lệ phí phát hành", unit: "tỷ lệ"}
+    when_to_use: "Khi hết lợi nhuận giữ lại và phải phát hành vốn chủ mới (MCC)."
+    why_it_works: "Số tiền thực nhận chỉ còn P0(1-F) nhưng cổ đông vẫn đòi cổ tức như cũ."
+    assumptions: ["Như Gordon"]
+    pitfalls: ["Coi lợi nhuận giữ lại là miễn phí"]
+    interpretation: "Retained earnings 12% < phát hành mới 12,37%."
+    example:
+      inputs: {D0: 2400, g: 0.05, P0: 36000, F: 0.05}
+      steps: ["2.520/(36.000 x 0,95) = 7,37%", "+5% = 12,37%"]
+      result: "Ke_new = 12,37%"
+  - id: "m03_ke_buildup"
+    name_vi: "Ke theo phương pháp build-up"
+    name_en: "Build-up Method"
+    expression_latex: 'K_e = R_f + ERP + Size + Company'
+    expression_python: "Rf + ERP + Size + Company"
+    excel: "=Rf+ERP+Size+Company"
+    variables:
+      - {symbol: "Rf", meaning: "Phi rủi ro", unit: "tỷ lệ"}
+      - {symbol: "ERP", meaning: "Equity risk premium (đã nhân beta ~1)", unit: "tỷ lệ"}
+      - {symbol: "Size", meaning: "Size premium", unit: "tỷ lệ"}
+      - {symbol: "Company", meaning: "Phần bù rủi ro riêng", unit: "tỷ lệ"}
+    when_to_use: "DN tư nhân không có beta."
+    why_it_works: "Cộng dồn các nguồn rủi ro thay vì đo beta."
+    assumptions: ["Các premium độc lập, mang tính phán đoán"]
+    pitfalls: ["Subjective, cần sensitivity"]
+    interpretation: "Dùng để cross-check CAPM."
+    example:
+      inputs: {Rf: 0.032, ERP: 0.08, Size: 0.03, Company: 0.02}
+      steps: ["3,2% + 8% + 3% + 2% = 16,2%"]
+      result: "Ke = 16,2% (số minh họa)"
+  - id: "m03_ke_bond_premium"
+    name_vi: "Ke theo lợi suất trái phiếu + phần bù"
+    name_en: "Bond Yield plus Risk Premium"
+    expression_latex: 'K_e = Y_{bond} + \text{premium (3-5\%)}'
+    expression_python: "Y_bond + premium"
+    excel: "=Ybond+premium"
+    variables:
+      - {symbol: "Y_bond", meaning: "Lợi suất trái phiếu của DN", unit: "tỷ lệ"}
+      - {symbol: "premium", meaning: "Phần bù 3-5%", unit: "tỷ lệ"}
+    when_to_use: "Không có dữ liệu cổ phiếu nhưng có Kd."
+    why_it_works: "Cổ đông luôn rủi ro hơn chủ nợ."
+    assumptions: ["Premium cố định phán đoán"]
+    pitfalls: ["Thô, chỉ cross-check"]
+    interpretation: "Ke > Kd."
+    example:
+      inputs: {Y_bond: 0.1137, premium: 0.04}
+      steps: ["11,37% + 4% = 15,37%"]
+      result: "Ke = 15,37% (minh họa)"
+  - id: "m03_fama_french"
+    name_vi: "Fama-French 3 nhân tố"
+    name_en: "Fama-French 3-Factor"
+    expression_latex: 'K_e = R_f + \beta_1 MKT + \beta_2 SMB + \beta_3 HML'
+    expression_python: "Rf + b1*MKT + b2*SMB + b3*HML"
+    excel: "=Rf+b1*MKT+b2*SMB+b3*HML"
+    variables:
+      - {symbol: "Rf", meaning: "Phi rủi ro", unit: "tỷ lệ"}
+      - {symbol: "b1", meaning: "Hệ số nhân tố thị trường", unit: "lần"}
+      - {symbol: "MKT", meaning: "Phần bù thị trường", unit: "tỷ lệ"}
+      - {symbol: "b2", meaning: "Hệ số SMB", unit: "lần"}
+      - {symbol: "SMB", meaning: "Phần bù quy mô", unit: "tỷ lệ"}
+      - {symbol: "b3", meaning: "Hệ số HML", unit: "lần"}
+      - {symbol: "HML", meaning: "Phần bù giá trị", unit: "tỷ lệ"}
+    when_to_use: "Học thuật/cần chính xác, có dữ liệu thị trường sâu; ít dùng cho SME VN."
+    why_it_works: "Bổ sung hai nhân tố đã quan sát thấy ngoài thị trường (Fama & French 1993)."
+    assumptions: ["Có chuỗi nhân tố ổn định"]
+    pitfalls: ["Thiếu dữ liệu cho VN"]
+    interpretation: "Cơ sở lý thuyết của size premium."
+    example:
+      inputs: {Rf: 0.035, b1: 1.0, MKT: 0.08, b2: 0.3, SMB: 0.02, b3: 0.2, HML: 0.03}
+      steps: ["3,5% + 8% + 0,6% + 0,6% = 12,7%"]
+      result: "Ke = 12,7% (số minh họa)"
+  - id: "m03_kd_after_tax"
+    name_vi: "Chi phí nợ sau thuế"
+    name_en: "After-tax Cost of Debt"
+    expression_latex: 'K_d^{after} = K_d(1-T)'
+    expression_python: "Kd*(1-T)"
+    excel: "=Kd*(1-T)"
+    variables:
+      - {symbol: "Kd", meaning: "Lãi vay mới trước thuế", unit: "tỷ lệ"}
+      - {symbol: "T", meaning: "Thuế suất", unit: "tỷ lệ"}
+    when_to_use: "Mọi lần tính WACC."
+    why_it_works: "Lãi vay 90 trên 1.000 vay 9%: tiết kiệm T x 90 thuế, chi phí thực 90(1-T)."
+    assumptions: ["DN có lợi nhuận chịu thuế đủ để khấu trừ", "Lãi vay trong giới hạn khấu trừ (VN: 30% EBITDA, Nghị định 132/2020, cần xác nhận)"]
+    pitfalls: ["DN đang lỗ: dùng Kd trước thuế hoặc ước theo lợi nhuận tương lai", "Dùng lãi suất khoản vay cũ"]
+    interpretation: "Vay 9%, T 20% -> 7,2%; Nhà nước trợ cấp 1,8%."
+    example:
+      inputs: {Kd: 0.09, T: 0.2}
+      steps: ["9% x 0,8 = 7,2%"]
+      result: "Kd sau thuế = 7,2%"
+  - id: "m03_kd_ytm"
+    name_vi: "Chi phí nợ theo YTM trái phiếu"
+    name_en: "Yield to Maturity as Kd"
+    expression_latex: 'P = \sum_{t=1}^{n}\frac{C}{(1+r)^t}+\frac{FV}{(1+r)^n}'
+    expression_python: "__import__('scipy.optimize',fromlist=['brentq']).brentq(lambda r: sum(C/(1+r)**t for t in range(1,n+1)) + FV/(1+r)**n - P, 0.0001, 1.0)"
+    excel: "=RATE(n, C, -P, FV)"
+    variables:
+      - {symbol: "P", meaning: "Giá trái phiếu thị trường", unit: "nghìn đ"}
+      - {symbol: "C", meaning: "Coupon hàng năm", unit: "nghìn đ"}
+      - {symbol: "FV", meaning: "Mệnh giá", unit: "nghìn đ"}
+      - {symbol: "n", meaning: "Số năm còn lại", unit: "năm"}
+    when_to_use: "DN có trái phiếu đang giao dịch."
+    why_it_works: "Kd phải là lãi suất thị trường hiện hành (forward-looking), không phải coupon lịch sử."
+    assumptions: ["Giữ đến đáo hạn, không vỡ nợ"]
+    pitfalls: ["Lấy coupon 10% thay YTM 11,37%", "YTM gồm cả xác suất vỡ nợ (kỳ vọng thực thấp hơn nhẹ)"]
+    interpretation: "Giá dưới mệnh giá -> YTM > coupon."
+    example:
+      inputs: {P: 950, C: 100, FV: 1000, n: 5}
+      steps: ["Giải 950 = sum 100/(1+r)^t + 1000/(1+r)^5"]
+      result: "YTM = 11,37%"
+  - id: "m03_kd_methods"
+    name_vi: "Kd từ credit spread / chi phí lãi bình quân"
+    name_en: "Kd via credit spread and interest/debt"
+    expression_latex: 'K_d = R_f + \text{spread};\; K_d \approx \frac{\text{Interest}}{\text{Total debt}}'
+    expression_python: "Rf + spread"
+    excel: "=Rf+spread"
+    variables:
+      - {symbol: "Rf", meaning: "Phi rủi ro", unit: "tỷ lệ"}
+      - {symbol: "spread", meaning: "Credit spread theo xếp hạng", unit: "tỷ lệ"}
+    when_to_use: "DN lớn có xếp hạng (Rf + spread). Interest/Total debt chỉ ước nhanh vì là book value, nhìn quá khứ. SME: lãi vay mới thực tế từ >=3 ngân hàng, gồm phí và chi phí tài sản bảo đảm."
+    why_it_works: "Giá của rủi ro tín dụng cộng trên phi rủi ro."
+    assumptions: ["Spread hiện hành"]
+    pitfalls: ["Dùng chi phí lãi lịch sử"]
+    interpretation: "Phương pháp thực tế nhất cho SME là báo giá vay mới."
+    example:
+      inputs: {Rf: 0.032, spread: 0.04}
+      steps: ["3,2% + 4% = 7,2%"]
+      result: "Kd = 7,2% (minh họa)"
+  - id: "m03_project_rate"
+    name_vi: "Tỷ lệ chiết khấu theo dự án"
+    name_en: "Project-specific discount rate"
+    expression_latex: 'r_{project} = R_f + \beta_{project}\, MRP\;(+\text{premium});\quad r = WACC + \text{premium}'
+    expression_python: "Rf + beta_project*MRP"
+    excel: "=Rf+beta_project*MRP"
+    variables:
+      - {symbol: "Rf", meaning: "Phi rủi ro", unit: "tỷ lệ"}
+      - {symbol: "beta_project", meaning: "Beta của dự án", unit: "lần"}
+      - {symbol: "MRP", meaning: "Phần bù thị trường", unit: "tỷ lệ"}
+    when_to_use: "Dự án rủi ro khác DN. Thực hành SME: WACC + premium bậc thang (cùng lĩnh vực +0%, sản phẩm/thị trường mới +2-3%, công nghệ chưa thử +4-6%)."
+    why_it_works: "Chi phí vốn là chi phí của rủi ro dự án, không phải của người bỏ tiền; tránh DN trượt dần sang hoạt động rủi ro nhất."
+    assumptions: ["Beta dự án ước lượng từ comparable thuần lĩnh vực đó"]
+    pitfalls: ["Một WACC cho mọi dự án"]
+    interpretation: "R&D beta 2,0: 3,5% + 2 x 8% = 19,5% so WACC DN 11%."
+    example:
+      inputs: {Rf: 0.035, beta_project: 2.0, MRP: 0.08}
+      steps: ["2,0 x 8% = 16%", "3,5% + 16% = 19,5%"]
+      result: "r = 19,5%"
+  - id: "m03_mcc"
+    name_vi: "Chi phí vốn biên theo bậc"
+    name_en: "Marginal Cost of Capital"
+    expression_latex: 'MCC_k = W_e K_{e,k} + W_d K_{d,k}(1-T)'
+    expression_python: "We*Ke + Wd*Kd*(1-T)"
+    excel: "=We*Ke+Wd*Kd*(1-T)"
+    variables:
+      - {symbol: "We", meaning: "Tỷ trọng vốn chủ mục tiêu", unit: "tỷ lệ"}
+      - {symbol: "Wd", meaning: "Tỷ trọng nợ mục tiêu", unit: "tỷ lệ"}
+      - {symbol: "Ke", meaning: "Ke của nguồn đang dùng ở bậc đó", unit: "tỷ lệ"}
+      - {symbol: "Kd", meaning: "Lãi vay của bậc đó", unit: "tỷ lệ"}
+      - {symbol: "T", meaning: "Thuế suất", unit: "tỷ lệ"}
+    when_to_use: "Huy động vốn nhiều, nguồn rẻ cạn dần; so IRR dự án cuối với MCC."
+    why_it_works: "Chi phí đồng vốn tăng thêm mới là cái cần vượt; đường MCC là bậc thang đi lên."
+    assumptions: ["Giữ nguyên cơ cấu vốn mục tiêu"]
+    pitfalls: ["Dùng WACC phẳng cho mọi quy mô"]
+    interpretation: "Mỗi lần qua điểm gãy MCC tăng. Điểm gãy tổng vốn = (lượng nguồn rẻ)/(tỷ trọng nguồn đó)."
+    example:
+      inputs: {We: 0.6, Wd: 0.4, Ke: 0.15, Kd: 0.10, T: 0.2}
+      steps: ["Bậc 1 (0-3.333): 0,6x15% + 0,4x10%x0,8 = 12,2%", "Bậc 2 (3.333-7.500): Ke 16% -> 12,8%", "Bậc 3 (>7.500): Kd 12% -> 13,44%"]
+      result: "MCC = 12,2% / 12,8% / 13,44%"
+  - id: "m03_mcc_breakpoint"
+    name_vi: "Điểm gãy chi phí vốn biên"
+    name_en: "MCC Break Point"
+    expression_latex: 'BP = \frac{\text{Nguồn vốn rẻ sẵn có}}{\text{Tỷ trọng nguồn đó}}'
+    expression_python: "nguon_re/ty_trong"
+    excel: "=nguon_re/ty_trong"
+    variables:
+      - {symbol: "nguon_re", meaning: "Lượng vốn rẻ (lợi nhuận giữ lại hoặc hạn mức vay rẻ)", unit: "triệu"}
+      - {symbol: "ty_trong", meaning: "Tỷ trọng nguồn đó trong cơ cấu mục tiêu", unit: "tỷ lệ"}
+    when_to_use: "Xác định tổng vốn mà tại đó MCC nhảy bậc."
+    why_it_works: "Nguồn rẻ chỉ chiếm ty_trong tổng vốn, nên hết nguồn khi tổng vốn = nguon_re/ty_trong."
+    assumptions: ["Cơ cấu vốn cố định"]
+    pitfalls: ["Quên chia cho tỷ trọng"]
+    interpretation: "Lợi nhuận giữ lại 2.000 / 60% = 3.333; hạn mức vay 3.000 / 40% = 7.500."
+    example:
+      inputs: {nguon_re: 2000, ty_trong: 0.6}
+      steps: ["2.000/0,6 = 3.333"]
+      result: "Break point = 3.333 triệu"
+  - id: "m03_ev_gordon"
+    name_vi: "Giá trị DN theo Gordon (độ nhạy WACC)"
+    name_en: "Enterprise Value (Gordon growth)"
+    expression_latex: 'EV = \frac{FCF_1}{WACC-g}'
+    expression_python: "FCF1/(WACC-g)"
+    excel: "=FCF1/(WACC-g)"
+    variables:
+      - {symbol: "FCF1", meaning: "FCFF năm sau", unit: "tỷ VNĐ"}
+      - {symbol: "WACC", meaning: "WACC", unit: "tỷ lệ"}
+      - {symbol: "g", meaning: "Tăng trưởng dài hạn", unit: "tỷ lệ"}
+    when_to_use: "Chạy sensitivity giá trị theo WACC; EV dạng đầy đủ = sum FCF/(1+WACC)^t + TV/(1+WACC)^n."
+    why_it_works: "Perpetuity tăng trưởng: mẫu số WACC-g nhỏ làm giá trị rất nhạy."
+    assumptions: ["g < WACC", "g bền vững"]
+    pitfalls: ["WACC gần g làm giá trị phình to", "Chỉ báo một con số thay vì khoảng"]
+    interpretation: "FCF1=700, g=4%: WACC 8%->17.500; 9%->14.000; 10%->11.667; 11%->10.000; 12%->8.750; 13%->7.778. 1% WACC đổi giá trị 14-20%."
+    example:
+      inputs: {FCF1: 700, WACC: 0.10, g: 0.04}
+      steps: ["700/(0,10-0,04) = 11.667"]
+      result: "EV = 11.667 tỷ; WACC 9% -> 14.000 (+20%), 11% -> 10.000 (-14%)"
+  - id: "m03_fisher"
+    name_vi: "Quan hệ Fisher danh nghĩa - thực"
+    name_en: "Fisher equation"
+    expression_latex: '1+r_{nom} = (1+r_{real})(1+\pi)'
+    expression_python: "(1+r_real)*(1+pi) - 1"
+    excel: "=(1+r_real)*(1+pi)-1"
+    variables:
+      - {symbol: "r_real", meaning: "Tỷ lệ thực", unit: "tỷ lệ"}
+      - {symbol: "pi", meaning: "Lạm phát", unit: "tỷ lệ"}
+    when_to_use: "Đổi tỷ lệ chiết khấu cho nhất quán với dòng tiền: dòng tiền VNĐ có lạm phát -> WACC danh nghĩa; dòng tiền giá cố định -> WACC thực."
+    why_it_works: "Lạm phát làm tăng cả tử số dòng tiền và đòi hỏi lợi suất."
+    assumptions: ["Lạm phát ước tính đúng"]
+    pitfalls: ["Trộn danh nghĩa với thực"]
+    interpretation: "Phép nhân chính xác hơn phép cộng."
+    example:
+      inputs: {r_real: 0.08, pi: 0.045}
+      steps: ["1,08 x 1,045 - 1 = 12,86%"]
+      result: "r danh nghĩa = 12,86%"
+  - id: "m03_fx_convert"
+    name_vi: "Quy đổi chi phí vốn USD sang VNĐ"
+    name_en: "Currency conversion of cost of capital"
+    expression_latex: 'K_{VND} = (1+K_{USD})\frac{1+\pi_{VN}}{1+\pi_{US}}-1'
+    expression_python: "(1+K_usd)*(1+pi_vn)/(1+pi_us) - 1"
+    excel: "=(1+Kusd)*(1+pi_vn)/(1+pi_us)-1"
+    variables:
+      - {symbol: "K_usd", meaning: "Chi phí vốn USD", unit: "tỷ lệ"}
+      - {symbol: "pi_vn", meaning: "Lạm phát VN", unit: "tỷ lệ"}
+      - {symbol: "pi_us", meaning: "Lạm phát Mỹ", unit: "tỷ lệ"}
+    when_to_use: "DN VN có dòng tiền VNĐ nhưng Rf/MRP/beta lấy bằng USD."
+    why_it_works: "Chênh lệch lạm phát phản ánh kỳ vọng mất giá VNĐ (ngang giá sức mua)."
+    assumptions: ["PPP dài hạn"]
+    pitfalls: ["Trộn VNĐ và USD"]
+    interpretation: "10% USD -> 12,70% VNĐ."
+    example:
+      inputs: {K_usd: 0.10, pi_vn: 0.045, pi_us: 0.02}
+      steps: ["1,10 x 1,045/1,02 - 1 = 12,70%"]
+      result: "K_VND = 12,70%"
+  - id: "m03_roic"
+    name_vi: "ROIC"
+    name_en: "Return on Invested Capital"
+    expression_latex: 'ROIC = \frac{NOPAT}{Invested\ Capital}'
+    expression_python: "NOPAT/IC"
+    excel: "=NOPAT/IC"
+    variables:
+      - {symbol: "NOPAT", meaning: "Lợi nhuận hoạt động sau thuế", unit: "VNĐ"}
+      - {symbol: "IC", meaning: "Vốn đầu tư hoạt động", unit: "VNĐ"}
+    when_to_use: "So với WACC để biết DN tạo hay phá hủy giá trị."
+    why_it_works: "Đo hiệu quả trên cùng 'giỏ vốn' mà WACC là chi phí."
+    assumptions: ["IC đo nhất quán (sổ sách vs thị trường)"]
+    pitfalls: ["ROIC phụ thuộc cách tính IC, coi là bậc độ lớn"]
+    interpretation: "ROIC > WACC: tạo giá trị; < WACC: phá hủy dù lãi kế toán dương."
+    example:
+      inputs: {NOPAT: 900, IC: 6000}
+      steps: ["900/6.000 = 15%"]
+      result: "ROIC = 15%"
+  - id: "m03_eva"
+    name_vi: "Giá trị kinh tế gia tăng"
+    name_en: "Economic Value Added (EVA)"
+    expression_latex: 'EVA = NOPAT - IC\times WACC = IC(ROIC - WACC)'
+    expression_python: "NOPAT - IC*WACC"
+    excel: "=NOPAT-IC*WACC"
+    variables:
+      - {symbol: "NOPAT", meaning: "Lợi nhuận hoạt động sau thuế", unit: "VNĐ"}
+      - {symbol: "IC", meaning: "Vốn đầu tư", unit: "VNĐ"}
+      - {symbol: "WACC", meaning: "WACC", unit: "tỷ lệ"}
+    when_to_use: "Đo hiệu quả theo giá trị tuyệt đối sau khi trừ chi phí vốn (Stern Stewart)."
+    why_it_works: "Trừ cả chi phí vốn chủ, thứ kế toán bỏ qua."
+    assumptions: ["WACC phù hợp"]
+    pitfalls: ["Dùng WACC sai làm EVA sai"]
+    interpretation: "EVA > 0: tạo giá trị."
+    example:
+      inputs: {NOPAT: 900, IC: 6000, WACC: 0.12}
+      steps: ["900 - 6.000 x 12% = 180"]
+      result: "EVA = +180"
+  - id: "m03_apv"
+    name_vi: "Giá trị hiện tại điều chỉnh"
+    name_en: "APV"
+    expression_latex: 'APV = NPV_{all\text{-}equity} + PV(TaxShield) - PV(Distress)'
+    expression_python: "NPV_ae + PV_ts - PV_dist"
+    excel: "=NPVae+PVts-PVdist"
+    variables:
+      - {symbol: "NPV_ae", meaning: "NPV dự án tài trợ 100% vốn chủ", unit: "VNĐ"}
+      - {symbol: "PV_ts", meaning: "PV lá chắn thuế", unit: "VNĐ"}
+      - {symbol: "PV_dist", meaning: "PV chi phí kiệt quệ", unit: "VNĐ"}
+    when_to_use: "LBO hoặc cơ cấu vốn thay đổi mạnh (xem m04, m10)."
+    why_it_works: "Tách giá trị hoạt động và giá trị tài trợ, mỗi phần chiết khấu bằng tỷ lệ riêng."
+    assumptions: ["Ước tính được tax shield và distress cost"]
+    pitfalls: ["Distress cost khó định lượng"]
+    interpretation: "APV > 0: chấp nhận."
+    example:
+      inputs: {NPV_ae: 100, PV_ts: 40, PV_dist: 15}
+      steps: ["100 + 40 - 15 = 125"]
+      result: "APV = 125 (minh họa)"
+  - id: "m03_project_npv"
+    name_vi: "NPV/IRR dự án tại tỷ lệ chiết khấu r"
+    name_en: "Project NPV and IRR at rate r"
+    expression_latex: 'NPV = \sum_{t=0}^{n}\frac{CF_t}{(1+r)^t}'
+    expression_python: "sum(c/(1+r)**t for t,c in enumerate(CF))"
+    excel: "=NPV(r, CF1:CFn)+CF0 ; =IRR(CF0:CFn)"
+    variables:
+      - {symbol: "CF", meaning: "Danh sách dòng tiền, CF[0] là vốn đầu tư âm", unit: "triệu"}
+      - {symbol: "r", meaning: "WACC hoặc tỷ lệ theo dự án", unit: "tỷ lệ"}
+    when_to_use: "Quyết định dự án dùng WACC làm hurdle; IRR so với WACC; IRR là WACC hòa vốn."
+    why_it_works: "Chiết khấu FCFF bằng WACC (nhất quán FCFF-WACC)."
+    assumptions: ["Dòng tiền là FCFF sau thuế danh nghĩa"]
+    pitfalls: ["Dùng lãi vay làm r thổi phồng NPV (Tâm An: 2,3-3,5 lần)"]
+    interpretation: "NPV>0 và IRR>r thì chấp nhận."
+    example:
+      inputs: {CF: [-6000, 1800, 1800, 1800, 1800, 1800], r: 0.131035714}
+      steps: ["PV dòng tiền vào = 6.315,0", "NPV = 315,0; IRR = 15,24%"]
+      result: "NPV = +315,0 triệu"
+
+procedures:
+  - id: "m03_proc_wacc_sme"
+    name: "Quy trình 6 bước tính WACC cho SME (chưa niêm yết)"
+    steps:
+      - "1. Rf = lãi suất TPCP VN 10 năm hiện hành (HNX/Bộ Tài chính)."
+      - "2. Beta: chọn 3-10 comparable niêm yết cùng ngành (Damodaran Emerging Markets, SSI/VNDirect/Vietstock); unlever từng beta bằng Hamada, lấy trung bình/trung vị, relever theo D/E mục tiêu của DN."
+      - "3. Ke = Rf + beta_L x MRP + size premium (MRP VN thường 7-9%, size 2-5%); nếu dùng Rf/MRP Mỹ thì cộng CRP VN 2-4% (không cộng hai lần)."
+      - "4. Kd = lãi vay MỚI thực tế (báo giá >=3 ngân hàng, gồm phí/tài sản bảo đảm); sau thuế Kd(1-T)."
+      - "5. Trọng số theo cơ cấu vốn mục tiêu: Wd = DE/(1+DE), We = 1-Wd; không dùng sổ sách."
+      - "6. WACC = We Ke + Wd Kd(1-T); sanity check 11-18% (nghi ngờ nếu <10% hoặc >22%); Ke > Kd, WACC < Ke; chạy sensitivity MRP, size premium, Kd (±1-2%)."
+    outputs: "WACC, bảng các thành phần, bảng sensitivity."
+  - id: "m03_proc_project"
+    name: "Thẩm định dự án với chi phí vốn đúng"
+    steps:
+      - "1. Phân loại rủi ro dự án so với DN (cùng lĩnh vực / sản phẩm mới / thị trường mới / công nghệ mới)."
+      - "2. r = WACC + premium (0 / 2-3% / 3-5% / 5-8%) hoặc r = Rf + beta_project x MRP."
+      - "3. Dòng tiền là FCFF sau thuế danh nghĩa; chiết khấu bằng r; tính NPV và IRR."
+      - "4. Tìm WACC hòa vốn = IRR, tính biên an toàn = IRR - r."
+      - "5. Sensitivity: WACC ±2-3%, MRP, size premium, Kd."
+      - "6. So sánh với kết quả sai (lãi vay, chỉ Ke) để giải thích cho chủ DN."
+    outputs: "Quyết định chấp nhận/từ chối kèm biên an toàn."
+  - id: "m03_proc_mcc"
+    name: "Dựng đường MCC"
+    steps:
+      - "1. Xác định cơ cấu mục tiêu We, Wd."
+      - "2. Liệt kê các bậc nguồn vốn: lợi nhuận giữ lại (Ke), vốn chủ mới (Ke_new), vay rẻ đến hạn mức, vay đắt."
+      - "3. Điểm gãy = lượng nguồn rẻ / tỷ trọng; sắp xếp theo thứ tự."
+      - "4. Tính MCC từng khoảng; chọn dự án có IRR > MCC tại quy mô tổng vốn."
+    outputs: "Bảng MCC theo bậc, quy mô đầu tư tối ưu."
+  - id: "m03_proc_beta"
+    name: "Ước lượng beta cho DN chưa niêm yết"
+    steps:
+      - "1. Lấy beta levered và D/E (thị giá) của 3-10 comparable."
+      - "2. Unlever từng cái: beta_U = beta_L/(1+(1-T)D/E)."
+      - "3. Lấy trung bình/trung vị beta_U."
+      - "4. Relever: beta_L = beta_U (1+(1-T) D/E_target)."
+      - "5. Đưa vào CAPM."
+    outputs: "Beta vốn chủ của DN."
+  - id: "m03_proc_valuation_sens"
+    name: "Sensitivity định giá theo WACC"
+    steps:
+      - "1. Tính EV tại WACC cơ sở và ±1%, ±2%, ±3%."
+      - "2. Báo cáo khoảng giá trị và % thay đổi so với base."
+      - "3. Cảnh báo khi WACC - g nhỏ."
+    outputs: "Bảng EV theo WACC."
+
+decision_rules:
+  - "Nếu IRR dự án > tỷ lệ chiết khấu phù hợp rủi ro (NPV > 0) thì chấp nhận; nếu IRR < WACC thì từ chối."
+  - "Nếu dự án cùng lĩnh vực/rủi ro với DN thì dùng WACC; nếu rủi ro khác thì dùng project rate (WACC + premium hoặc beta dự án)."
+  - "Nếu chủ SME đòi dùng lãi vay làm hurdle thì giải thích: bỏ qua chi phí vốn chủ, NPV bị thổi phồng; dùng WACC."
+  - "Nếu chỉ dùng Ke làm hurdle thì cảnh báo quá khắt khe (bỏ qua vốn vay rẻ), có thể từ chối dự án đáng làm."
+  - "Nếu DN chưa niêm yết thì dùng cơ cấu vốn mục tiêu và beta ngành unlever/relever, không dùng sổ sách."
+  - "Nếu thị trường mới nổi/DN nhỏ thì cộng CRP (nếu chưa gồm trong MRP) và size premium 2-5%."
+  - "Nếu cơ cấu vốn thay đổi mạnh (LBO) thì dùng APV, không dùng WACC hằng số."
+  - "Nếu định giá startup (không nợ, không beta) thì dùng VC method hoặc build-up, không dùng WACC."
+  - "Nếu DN đang lỗ thì tax shield chưa dùng được ngay: dùng Kd trước thuế hoặc ước theo lợi nhuận tương lai."
+  - "Nếu huy động vượt lợi nhuận giữ lại hoặc hạn mức vay rẻ thì dùng MCC, so IRR với MCC."
+  - "Nếu dòng tiền VNĐ danh nghĩa thì dùng WACC danh nghĩa VNĐ; dòng tiền thực thì WACC thực; dòng tiền USD thì WACC USD (hoặc quy đổi bằng chênh lạm phát)."
+  - "Nếu ROIC < WACC thì ưu tiên nâng ROIC (giá bán, biên, vòng quay vốn) trước khi mở rộng hoặc vay thêm."
+  - "Nếu WACC tính ra <10% hoặc >22% (SME) hoặc Ke <= Kd hoặc WACC >= Ke (khi có nợ) thì kiểm tra lại giả định."
+  - "Nếu giá trị sau định giá quá nhạy vì WACC gần g thì trình bày khoảng giá trị, không một con số."
+  - "Nếu bài toán vay nhiều để 'giảm WACC' thì cảnh báo: WACC hình chữ U, Ke và Kd cùng tăng, chi phí kiệt quệ nằm ngoài công thức (Toys R Us)."
+  - "Nếu có nhiều trái phiếu/giao dịch thì Kd = YTM, không lấy coupon."
+
+benchmarks:
+  - {metric: "WACC SME Việt Nam", value: "11-18%", context: "Sanity check; ngoài 10-22% cần rà soát", confidence: "medium"}
+  - {metric: "WACC DN lớn", value: "8-15%", context: "Checklist bài gốc", confidence: "medium"}
+  - {metric: "MRP thị trường phát triển", value: "5-7%", context: "Bài gốc", confidence: "medium"}
+  - {metric: "MRP Việt Nam", value: "7-10% (thường 8%)", context: "Ước tính, cần cập nhật theo Damodaran", confidence: "low"}
+  - {metric: "Country Risk Premium VN", value: "2-4%", context: "Damodaran, cập nhật hàng năm", confidence: "low"}
+  - {metric: "Size/company premium", value: "2-5%", context: "DN nhỏ", confidence: "medium"}
+  - {metric: "Rf VN (TPCP 10 năm)", value: "~3-4% (case dùng 3,2-3,5%)", context: "Cần tra HNX hiện hành", confidence: "low"}
+  - {metric: "Beta ngành VN (Điện / F&B / Ngân hàng / BĐS / Công nghệ / Startup)", value: "0,4-0,6 / 0,6-0,8 / 0,8-1,1 / 1,1-1,5 / 1,2-1,6 / 2,0-3,0", context: "Ke tương ứng (Rf 3,5%, MRP 8%): 6,7-8,3% / 8,3-9,9% / 9,9-12,3% / 12,3-15,5% / 13,1-16,3% / 19,5-27,5%; minh họa, cần cập nhật", confidence: "low"}
+  - {metric: "Phần bù rủi ro dự án cho SME", value: "Thay thế thiết bị WACC-1%; mở rộng cùng ngành WACC; sản phẩm mới +2-3%; thị trường mới +3-5%; công nghệ/mô hình mới +5-8%", context: "Quy tắc thực hành, không thay tính toán", confidence: "medium"}
+  - {metric: "Ke điển hình vs Kd sau thuế", value: "Ke 12-15% vs Kd sau thuế 5-8%", context: "Bài gốc", confidence: "medium"}
+  - {metric: "Độ nhạy EV theo WACC", value: "WACC đổi 1% -> EV đổi 14-20%", context: "FCF1=700, g=4%", confidence: "high"}
+
+pitfalls:
+  - "Dùng book value thay market value / target structure cho trọng số"
+  - "Dùng lãi vay (hoặc lãi dự án) làm discount rate, bỏ qua chi phí vốn chủ"
+  - "Coi vốn chủ và lợi nhuận giữ lại là miễn phí"
+  - "Chỉ so với lãi tiết kiệm 6-7%, bỏ phần bù rủi ro kinh doanh"
+  - "Dùng historical beta không điều chỉnh; quên unlever/relever"
+  - "Bỏ Country Risk Premium hoặc size premium; hoặc cộng CRP hai lần"
+  - "Dùng Rf ngắn hạn thay TPCP 10 năm"
+  - "Dùng WACC hằng số cho LBO / cơ cấu vốn thay đổi"
+  - "Dùng một WACC cho mọi dự án"
+  - "Trộn VNĐ-USD, danh nghĩa-thực, FCFF-Ke"
+  - "Dùng coupon lịch sử thay lãi suất thị trường hiện hành (YTM)"
+  - "Tưởng vay nhiều giảm WACC mãi; bỏ qua chi phí kiệt quệ"
+  - "Không cập nhật WACC khi lãi suất/cơ cấu vốn đổi"
+  - "Trình bày một con số định giá không sensitivity"
+  - "CAPM giả định thị trường hoàn hảo, beta không ổn định, MRP gây tranh cãi, vòng tròn E-WACC, khó ước lượng ở mới nổi"
+
+sme_vn_guidance:
+  - "Không có giá cổ phiếu/beta riêng: dùng beta ngành (Damodaran Emerging Markets hoặc 3-5 công ty niêm yết) qua Hamada."
+  - "Không có thị giá vốn chủ: dùng D/E mục tiêu hoặc ước từ P/E, EV/EBITDA ngành."
+  - "Vốn chủ là tiền chủ DN: quy đổi chi phí cơ hội, Ke tối thiểu >= lợi suất kinh doanh thay thế + premium."
+  - "Kd: lấy báo giá vay mới từ >=3 ngân hàng, tính cả phí và chi phí tài sản bảo đảm."
+  - "Dòng tiền mùa vụ/phụ thuộc khách: thêm size/company premium 2-5%."
+  - "Chuẩn hóa BCTC 2-3 năm + dự phóng dòng tiền để thuyết phục ngân hàng/nhà đầu tư."
+  - "Nguồn dữ liệu: HNX/Bộ Tài chính (Rf), Damodaran (beta, ERP/CRP, spread; miễn phí), HOSE/HNX/SSI/VNDirect/Vietstock/CafeF (beta, P/E, VN-Index), FiinPro/Bloomberg/Refinitiv (trả phí)."
+  - "Lãi vay khấu trừ giới hạn 30% EBITDA (Nghị định 132/2020/NĐ-CP) và thuế TNDN 20%: cần xác nhận với kế toán/tư vấn thuế theo văn bản mới nhất."
+  - "Hurdle rate nhanh: thay thế/bảo trì thiết bị WACC-1%; mở rộng cùng ngành WACC; sản phẩm mới +2-3%; thị trường mới +3-5%; mô hình mới +5-8% hoặc VC method."
+  - "Đừng ám ảnh giảm WACC bằng vay thêm khi ROIC còn thấp: nâng ROIC (giá, biên, vòng quay vốn) trước."
+  - "Cập nhật WACC mỗi năm và trước mỗi quyết định đầu tư lớn; thương lượng giảm lãi vay (Tâm An: mỗi 1 điểm % ~ +46 triệu NPV)."
+
+case_lessons:
+  - name: "Apple - WACC gần bằng Ke, ROIC vượt xa WACC"
+    type: "success"
+    setup: "Apple ít nợ so với vốn hóa, ROIC rất cao nhờ thương hiệu/hệ sinh thái. Số liệu xấp xỉ 2023 mang tính minh họa."
+    key_calculations:
+      - "E=3.000B, D=110B -> E/V=96,46%, D/V=3,54%"
+      - "Ke = 4,5% + 1,2 x 5% = 10,5%; Kd sau thuế = 3,5% x 0,79 = 2,765%"
+      - "WACC = 0,9646 x 10,5% + 0,0354 x 2,765% = 10,23% (nợ chỉ đóng góp 0,098 điểm %)"
+      - "Beta 1,0 -> WACC 9,26%; beta 1,4 -> 11,19% (0,2 beta ~ 0,95 điểm % WACC)"
+      - "ROIC 55% so WACC 10,23%; EVA trên 100B vốn ~ 44,8B/năm"
+    lesson: "Giá trị quyết định bởi spread ROIC - WACC, không phải giảm WACC 1 điểm; với SME nâng ROIC trước, đừng vay thêm để giảm WACC."
+    data_reliability: "illustrative"
+  - name: "Toys R Us - LBO không giảm WACC, tăng nguy cơ vỡ nợ"
+    type: "failure"
+    setup: "LBO 2005 bởi KKR, Bain, Vornado (~6,6 tỷ USD, phần lớn nợ); lãi vay ~400 triệu USD/năm; Chapter 11 năm 2017, thanh lý 2018. Bảng cơ cấu vốn là ước tính minh họa cơ chế."
+    key_calculations:
+      - "Trước LBO: 0,30 x 4% + 0,70 x 12% = 9,6%"
+      - "Sau LBO: 0,85 x 7,5% + 0,15 x 25% = 10,125%"
+      - "Kỳ vọng ngây thơ (Ke giữ 12%): 0,85 x 7,5% + 0,15 x 12% = 8,175%"
+      - "D/E tăng từ 0,43 lên 5,67"
+    lesson: "Ke và Kd cùng tăng khi đòn bẩy tăng (M&M II) nên lợi ích nợ rẻ bị xóa; WACC hình chữ U; chi phí kiệt quệ nằm ngoài WACC. Kết hợp stress test, Interest Coverage, DSCR."
+    data_reliability: "illustrative"
+  - name: "Tâm An (Bình Dương) - Nội thất, WACC khi không có dữ liệu thị trường"
+    type: "sme"
+    setup: "Dự án A: vốn 6.000, FCFF 1.800/năm x 5 năm, cùng lĩnh vực; bank cho vay 100% lãi 10,5%. Dự án B: vốn 4.000, FCFF 1.200/năm x 5, xuất khẩu EU rủi ro hơn. Rf 3,2%, MRP 8%, beta ngành 1,15 (D/E 0,5), T 20%, size 3%, D/E mục tiêu 0,6."
+    key_calculations:
+      - "D/V=37,5%, E/V=62,5% (E 10.000, D 6.000)"
+      - "beta_U = 1,15/1,4 = 0,8214; beta_L = 0,8214 x 1,48 = 1,2157"
+      - "Ke = 3,2% + 1,2157 x 8% + 3% = 15,93%; Kd sau thuế = 8,4%"
+      - "WACC = 0,625 x 15,93% + 0,375 x 8,4% = 13,10% (nếu dùng sổ sách vốn chủ 5.000 thì 11,82%)"
+      - "NPV_A @13,10% = +315,0; IRR_A = 15,24%; biên an toàn ~2,1 điểm %"
+      - "NPV_A @8,4% = +1.111,7; @10,5% = +737,1; @Ke 15,93% = -96,0"
+      - "B: NPV @13,10% = +210,0 nhưng @16,10% = -80,3; IRR_B = 15,24%"
+      - "Sensitivity NPV_A: MRP 7% +433,7; MRP 9% +199,9; size 0% +614,5; size 5% +127,4; Rf 4% +238,9; Kd 9,5% +361,5; Kd 12% +246,4"
+      - "WACC 15,10% -> NPV ~ +19,1; 16,10% -> -120,5"
+      - "ROIC = 2.400/11.000 = 21,82%; EVA = 2.400 - 11.000 x 13,10% = +958,6"
+      - "FCFF B = 1.250 -> IRR 17%, NPV @16,1% ~ +83"
+    lesson: "Dùng lãi vay làm hurdle thổi NPV 2,3-3,5 lần; chỉ dùng Ke thì từ chối dự án tốt; cùng IRR 15,24% nhưng A (rủi ro bằng DN) nhận, B (rủi ro cao hơn) từ chối. Size premium là giả định nhạy nhất."
+    data_reliability: "illustrative"
+  - name: "Doanh nghiệp ABC - ví dụ WACC cơ bản"
+    type: "sme"
+    setup: "E=600 tỷ, D=400 tỷ, Ke 14%, Kd 9%, T 20%."
+    key_calculations: ["WACC = 8,4% + 2,88% = 11,28%"]
+    lesson: "Mỗi 100 đồng vốn cần tạo tối thiểu 11,28 đồng; dự án IRR < 11,28% (cùng rủi ro) phá hủy giá trị."
+    data_reliability: "illustrative"
+  - name: "Vinamilk vs FPT - cùng thị trường, Ke khác nhau theo beta"
+    type: "success"
+    setup: "Rf 3,5%, MRP 8%; VNM beta 0,75, FPT beta 1,3."
+    key_calculations: ["VNM: 3,5% + 0,75 x 8% = 9,5%", "FPT: 3,5% + 1,3 x 8% = 13,9%", "Chênh 4,4 điểm %"]
+    lesson: "Dự án công nghệ phải vượt rào cao hơn dự án thực phẩm vì dòng tiền nhạy chu kỳ hơn; beta là số minh họa."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "WACC cơ bản (Bài 1)"
+    inputs: {E: 8000, D: 2000, Ke: 0.14, Kd: 0.10, T: 0.2}
+    steps: ["E/V = 80%, D/V = 20%", "Kd sau thuế = 8%", "WACC = 0,8 x 14% + 0,2 x 8% = 11,2% + 1,6%"]
+    result: "WACC = 12,8%"
+  - name: "Beta qua Hamada (Bài 3)"
+    inputs: {beta_L_comp: 1.0, DE_comp: 0.25, DE_target: 0.5, T: 0.2}
+    steps: ["beta_U = 1,0/(1+0,8x0,25) = 0,8333", "beta_L = 0,8333 x (1+0,8x0,5) = 1,1667"]
+    result: "beta_L = 1,1667"
+  - name: "Trà sữa Mây Xanh - cửa hàng thứ 6 (Bài 6)"
+    inputs: {Rf: 0.033, MRP: 0.08, Size: 0.03, beta_comp: 1.1, DE_comp: 0.4, DE_target: 0.5, Kd: 0.11, T: 0.2, CF: [-1200, 380, 380, 380, 380, 380]}
+    steps:
+      - "beta_U = 1,1/(1+0,8x0,4) = 0,8333; beta_L = 0,8333 x 1,4 = 1,1667"
+      - "Ke = 3,3% + 1,1667 x 8% + 3% = 15,63%"
+      - "Wd = 0,5/1,5 = 33,3%; Kd sau thuế = 8,8%"
+      - "WACC = 0,6667 x 15,63% + 0,3333 x 8,8% = 13,36%"
+      - "NPV @13,36% = +125,0; IRR = 17,57%"
+      - "NPV @Ke 15,63% = +54,9; NPV @11% = +204,4 (thổi phồng 1,6 lần)"
+    result: "Chấp nhận (IRR 17,57% > 13,36%); dùng lãi vay 11% làm NPV phình ~1,6 lần"
+  - name: "MCC theo bậc (Bài 5)"
+    inputs: {We: 0.5, Wd: 0.5, T: 0.2, retained: 1500, Ke_ret: 0.14, Ke_new: 0.15, cheap_debt: 1000, Kd_cheap: 0.09, Kd_high: 0.11}
+    steps:
+      - "Điểm gãy nợ rẻ = 1.000/0,5 = 2.000; điểm gãy lợi nhuận giữ lại = 1.500/0,5 = 3.000"
+      - "0-2.000: 0,5x14% + 0,5x9%x0,8 = 10,6%"
+      - "2.000-3.000: 0,5x14% + 0,5x11%x0,8 = 11,4%"
+      - ">3.000: 0,5x15% + 0,5x11%x0,8 = 11,9%"
+    result: "MCC 10,6% / 11,4% / 11,9%"
+  - name: "Ke theo Gordon (Bài 4) và CAPM + size (Bài 2)"
+    inputs: {D0: 1800, g: 0.06, P0: 30000, Rf: 0.035, beta: 0.9, MRP: 0.08, Size: 0.02}
+    steps: ["D1 = 1.908; Ke = 6,36% + 6% = 12,36%", "CAPM = 3,5% + 0,9x8% = 10,7%; + size 2% = 12,7%"]
+    result: "Gordon 12,36%; CAPM 10,7% (12,7% có size)"
+  - name: "Quy đổi USD sang VNĐ và EV theo WACC"
+    inputs: {K_usd: 0.10, pi_vn: 0.045, pi_us: 0.02, FCF1: 700, g: 0.04}
+    steps: ["K_VND = 1,10 x 1,045/1,02 - 1 = 12,70%", "EV @10% = 700/0,06 = 11.667; @12% = 8.750 (-25%)"]
+    result: "K_VND = 12,70%; EV giảm 25% khi WACC +2 điểm"
+
+practice_questions:
+  - {q: "DN có vốn chủ thị trường 8.000 triệu, nợ 2.000 triệu, Ke 14%, Kd 10%, T 20%. Tính WACC.", a: "12,8%"}
+  - {q: "Rf 3,5%, MRP 8%, beta 0,9. Tính Ke; nếu cộng size premium 2% thì Ke? Vì sao cần premium?", a: "10,7%; 12,7%. DN nhỏ có lợi suất kỳ vọng cao hơn CAPM dự đoán (khó huy động vốn, phụ thuộc ít khách hàng/chủ)."}
+  - {q: "Comparable beta 1,0, D/E 0,25, T 20%. DN bạn D/E mục tiêu 0,5. Beta?", a: "beta_U = 0,8333; beta_L = 1,1667"}
+  - {q: "D0=1.800đ, g=6%, P0=30.000đ. Tính Ke; vì sao không dùng cho DN không trả cổ tức?", a: "Ke = 12,36%. Mô hình dựa trên dòng cổ tức; D=0 không suy ra được Ke."}
+  - {q: "Cơ cấu mục tiêu 50/50, T 20%. Lợi nhuận giữ lại 1.500 (Ke 14%), vốn mới Ke 15%; nợ 1.000 đầu tiên 9%, vượt 11%. Điểm gãy và MCC?", a: "Điểm gãy 2.000 và 3.000; MCC 10,6%, 11,4%, 11,9%."}
+  - {q: "Mây Xanh: vốn 1.200, FCFF 380 x 5 năm, Rf 3,3%, MRP 8%, size 3%, beta comp 1,1 (D/E 0,4), D/E mục tiêu 0,5, Kd 11%, T 20%. Tính WACC, NPV, IRR; so với dùng lãi vay.", a: "WACC 13,36%; NPV +125,0; IRR 17,57%; NPV @11% = +204,4 (thổi phồng ~1,6 lần), @Ke 15,63% = +54,9."}
+  - {q: "Vì sao chỉ Kd nhân (1-T) mà Ke thì không?", a: "Lãi vay trừ trước thuế nên tiết kiệm T đồng thuế/đồng lãi; cổ tức chi từ lợi nhuận sau thuế, không được hoàn thuế."}
+  - {q: "Trái phiếu mệnh giá 1.000, coupon 10%, còn 5 năm, giá 950. Kd?", a: "YTM = 11,37%, không phải 10%."}
+  - {q: "K_USD 10%, lạm phát VN 4,5%, Mỹ 2%. K_VND?", a: "12,70%"}
+  - {q: "NOPAT 900, IC 6.000, WACC 12%. ROIC và EVA?", a: "ROIC 15%; EVA +180."}
+  - {q: "Vì sao LBO với 85% nợ không làm WACC giảm như kỳ vọng?", a: "Ke tăng 12% -> 25%, Kd tăng; WACC 9,6% -> 10,125% thay vì 8,175%; thêm chi phí kiệt quệ ngoài công thức."}
+  - {q: "Tâm An dự án A tại các r: 8,4%, 10,5%, 13,10%, 15,93%. Kết luận?", a: "NPV +1.111,7; +737,1; +315,0; -96,0. Đúng là 13,10% (chấp nhận); lãi vay thổi phồng, chỉ Ke quá khắt khe."}
+
+checklist:
+  - "Đã dùng market value hoặc cơ cấu vốn mục tiêu (không sổ sách) cho E, D?"
+  - "Đã tính We, Wd?"
+  - "Ke qua CAPM: Rf = TPCP 10 năm; beta unlever/relever đúng; nguồn MRP rõ; CRP và size premium đã cân nhắc (không cộng đôi)?"
+  - "Kd = lãi vay mới hoặc YTM; sau thuế Kd(1-T); DN đủ lợi nhuận chịu thuế và trong giới hạn khấu trừ lãi vay?"
+  - "Ke > Kd, WACC < Ke, WACC trong khoảng hợp lý (SME 11-18%, DN lớn 8-15%)?"
+  - "Đã so với WACC comparable?"
+  - "Đã chạy sensitivity ±1-2% (MRP, size, Kd, Rf)?"
+  - "Dòng tiền và tỷ lệ nhất quán: danh nghĩa/thực, VNĐ/USD, FCFF-WACC, FCFE-Ke?"
+  - "Dự án rủi ro khác DN đã dùng project rate? Không dùng lãi vay làm hurdle?"
+  - "Cơ cấu vốn đổi lớn: đã dùng APV? Huy động nhiều: đã dùng MCC?"
+  - "ROIC > WACC? Đã báo biên an toàn (IRR - r)?"
+  - "Đã đặt lịch cập nhật WACC hàng năm hoặc khi lãi suất/cơ cấu vốn đổi?"
+
+excel_google_sheets_templates:
+  - "TAB1 INPUTS (ô xanh nhập tay): Rf, MRP, beta_L comps, D/E comps, T, size premium, Kd, D/E mục tiêu"
+  - "TAB2 BETA: BetaU = BetaL_comps/(1+(1-T)*DE_comps); BetaL = BetaU*(1+(1-T)*DE_target)"
+  - "TAB3 WACC: Ke = Rf+BetaL*MRP+Size; Kd_at = Kd*(1-T); Wd = DE_target/(1+DE_target); We = 1-Wd; WACC = We*Ke+Wd*Kd_at"
+  - "TAB4 PROJECT: FCFF, r = WACC + premium; =NPV(r,CF1:CF5)+CF0; =IRR(CF0:CF5)"
+  - "TAB5 SENSITIVITY: Data Table 2 chiều WACC (±3%) x size premium/MRP -> NPV"
+  - "Hàm hữu ích: =RATE(5,100,-950,1000) cho YTM; =SLOPE(ret_stock, ret_market) cho beta"

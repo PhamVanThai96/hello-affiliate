@@ -1,0 +1,70 @@
+# 02-decision-router.yaml — Định tuyến: câu hỏi/tình huống -> module + playbook
+# Cách dùng: khớp từ khóa/ý định của người dùng với `triggers`, nạp các `modules` liệt kê, chạy `playbook` (nếu có) trong 03-playbooks.yaml.
+routes:
+  - id: r_tvm
+    triggers: [giá trị tương lai, giá trị hiện tại, lãi kép, annuity, niên kim, perpetuity, trả góp, vay, lãi suất thực EAR, chiết khấu, NPV đơn giản, rule of 72, lạm phát lãi thực]
+    modules: [m01]
+    playbook: pb_loan_and_tvm
+  - id: r_invest_project
+    triggers: [mở chi nhánh, mua máy, đầu tư dự án, NPV, IRR, MIRR, payback, hoàn vốn, profitability index, dự án loại trừ, phân bổ vốn, real options, độ nhạy dự án, hòa vốn dự án]
+    modules: [m02, m01, m03]
+    playbook: pb_project_appraisal
+  - id: r_cost_of_capital
+    triggers: [WACC, CAPM, beta, chi phí vốn chủ, chi phí nợ, Ke, Kd, hurdle rate, tỷ lệ chiết khấu, size premium, country risk, EVA, ROIC]
+    modules: [m03, m08, m04]
+    playbook: pb_wacc
+  - id: r_capital_structure
+    triggers: [vay hay phát hành cổ phần, đòn bẩy, D/E, cơ cấu vốn tối ưu, M&M, tax shield, trade-off, pecking order, EBIT-EPS, financial distress, vay ngân hàng, tài trợ mở rộng]
+    modules: [m04, m03, m05]
+    playbook: pb_capital_structure
+  - id: r_fs_analysis
+    triggers: [phân tích báo cáo tài chính, tỷ số, ratio, thanh khoản, current ratio, quick ratio, ROE, ROA, DuPont, biên lợi nhuận, lỗ, doanh thu giảm, sức khỏe tài chính, common-size, horizontal, vertical, Z-score]
+    modules: [m05, m06]
+    playbook: pb_financial_health_check
+  - id: r_working_capital
+    triggers: [vốn lưu động, CCC, DSO, DIO, DPO, tồn kho, công nợ, phải thu, phải trả, thiếu tiền mặt, dòng tiền âm, EOQ, chiết khấu thanh toán, tín dụng thương mại, cash conversion cycle, overtrading]
+    modules: [m06, m05, m01]
+    playbook: pb_working_capital
+  - id: r_dividend
+    triggers: [cổ tức, chia cổ tức, payout, mua lại cổ phiếu, buyback, cổ tức cổ phiếu, Lintner, giữ lại lợi nhuận, tái đầu tư, thưởng cổ phiếu]
+    modules: [m07, m04, m02]
+    playbook: pb_dividend_decision
+  - id: r_risk_portfolio
+    triggers: [rủi ro lợi nhuận, danh mục đầu tư, đa dạng hóa, Markowitz, Sharpe, Treynor, Jensen, alpha, beta, hiệp phương sai, tương quan, SML, CML, VaR, phân bổ vốn nhàn rỗi]
+    modules: [m08, m03]
+    playbook: pb_portfolio
+  - id: r_mna
+    triggers: [mua lại doanh nghiệp, sáp nhập, M&A, synergy, premium, accretion, dilution, goodwill, LBO, due diligence, earn-out, phòng thủ thâu tóm, bán doanh nghiệp]
+    modules: [m09, m10, m03]
+    playbook: pb_mna
+  - id: r_valuation
+    triggers: [định giá, DCF, FCFF, FCFE, terminal value, multiples, P/E, EV/EBITDA, comps, precedent, football field, giá trị doanh nghiệp, equity bridge, gọi vốn, pre-money, post-money]
+    modules: [m10, m03, m01]
+    playbook: pb_valuation
+  - id: r_integrated
+    triggers: [bài toán tổng hợp, nhiều khía cạnh, case tích hợp, VaR, Monte Carlo, DSCR, IFRS, kế hoạch tài chính toàn diện, tư vấn tài chính cho công ty]
+    modules: [m11, m01, m02, m03, m04, m05, m06, m10]
+    playbook: pb_integrated_plan
+  - id: r_concept_qa
+    triggers: [là gì, giải thích, tại sao, khác nhau, lịch sử, ai tạo ra]
+    modules: []   # chọn theo chủ đề; xem trường why_it_matters của concepts trong module liên quan
+    playbook: null
+
+chaining_rules:   # bài toán đa chiều: thứ tự gọi module
+  - when: "Thẩm định dự án có vay vốn"
+    chain: [m03 tính WACC theo cơ cấu vốn, m02 tính NPV/IRR/MIRR, m04 kiểm tra EPS/ICR/DSCR, m06 kiểm tra vốn lưu động dự án, m05 kiểm tra tác động lên tỷ số BCTC]
+  - when: "Định giá doanh nghiệp để bán/mua"
+    chain: [m05 chuẩn hóa EBITDA và làm sạch BCTC, m03 WACC, m10 DCF + Comps + Precedent, m09 synergy và giá tối đa nếu là bên mua]
+  - when: "Doanh nghiệp thiếu tiền mặt dù có lãi"
+    chain: [m05 đọc 3 báo cáo, m06 CCC và ΔOWC, m01 chi phí cơ hội/chiết khấu, m04 nguồn bù (vay ngắn hạn vs dài hạn)]
+  - when: "Quyết định chia cổ tức"
+    chain: [m02 NPV các dự án có thể tái đầu tư, m07 chính sách + stress test, m04 ảnh hưởng đòn bẩy, m06 dự phòng thanh khoản]
+  - when: "Phân bổ vốn nhàn rỗi"
+    chain: [m08 kỳ vọng/σ/tương quan/Sharpe, m03 hurdle rate, m06 buffer thanh khoản]
+
+clarifying_questions_default:   # hỏi khi thiếu
+  - Mục tiêu của quyết định là gì và thời hạn?
+  - Đơn vị tiền tệ, quy mô vốn, thời gian dự án?
+  - Có số liệu BCTC (P&L, Balance Sheet, Cash Flow) của 2-3 năm gần nhất không?
+  - Cơ cấu vốn hiện tại (nợ/vốn chủ, lãi vay, thuế suất)?
+  - Mức chịu rủi ro và ràng buộc (vốn tối đa, thời gian hoàn vốn mong muốn)?

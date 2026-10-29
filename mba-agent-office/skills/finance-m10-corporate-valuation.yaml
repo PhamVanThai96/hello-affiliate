@@ -1,0 +1,2895 @@
+id: finance-m10
+title: "Tài chính m10: Định giá doanh nghiệp (Corporate Valuation)"
+summary: "Xác định giá trị nội tại (intrinsic value) và khoảng giá trị hợp lý của doanh nghiệp/vốn chủ bằng 3 phương pháp (DCF, Trading Comps, Precedent Transactions), tổng hợp bằng Football Field, chuyển từ Enterprise Value sang Equity Value, để phục vụ M&A, gọi vốn, đầu tư, thuế/pháp lý…"
+agents: ["financial_expert"]
+order: 30
+when: ["dinh gia", "dcf", "fcff", "fcfe", "terminal value", "multiples", "p/e", "ev/ebitda", "comps", "precedent", "football field", "gia tri doanh nghiep", "equity bridge", "goi von", "pre-money", "post-money", "dinh gia doanh nghiep (corporate valuation)", "corporate valuation"]
+body_max: 3600
+sections:
+  - id: "m10-tong-quan"
+    title: "Tổng quan m10"
+    tags: ["m10", "định", "giá", "doanh", "nghiệp", "corporate", "valuation"]
+    text: |-
+      Định giá doanh nghiệp (Corporate Valuation) (Corporate Valuation) — module m10
+
+      Mục đích: Xác định giá trị nội tại (intrinsic value) và khoảng giá trị hợp lý của doanh nghiệp/vốn chủ bằng 3 phương pháp (DCF, Trading Comps, Precedent Transactions), tổng hợp bằng Football Field, chuyển từ Enterprise Value sang Equity Value, để phục vụ M&A, gọi vốn, đầu tư, thuế/pháp lý, kế thừa, đàm phán mua bán. Kết quả luôn là một KHOẢNG kèm giả định rõ ràng, không phải một con số duy nhất.
+
+      Dùng khi:
+      - Chủ SME muốn bán 100% hoặc một phần công ty: giá chào bao nhiêu là công bằng, giá mục tiêu và giá rút lui (walk away)?
+      - Startup/SME gọi vốn: pre-money, post-money, nhường bao nhiêu % cổ phần?
+      - Bên mua M&A: nên trả tối đa bao nhiêu; phụ trội (premium) có được synergy bù đắp không?
+      - Nhà đầu tư: cổ phiếu overvalued hay undervalued, tính giá trị nội tại/cổ phiếu
+      - Cần DCF: dự phóng FCFF, WACC, Terminal Value, EV -> Equity, bảng độ nhạy WACC x g
+      - Cần Comps/Precedent: chọn peer, tính median multiple, áp chiết khấu quy mô/thanh khoản, ra khoảng giá
+      - Chia tách cổ phần gia đình, ly hôn, thừa kế, thuế chuyển nhượng vốn, fairness opinion
+      - Rà soát bản định giá của người khác: TV chiếm bao nhiêu %, g có hợp lý, có ghép sai EV với Net Income không
+
+      Nên nắm trước: - m01; - m03; - m05
+
+      Module liên quan: - 'm01: Time Value of Money - chiết khấu dòng tiền, perpetuity, nền tảng của DCF và Gordon Growth' - 'm02: Capital Budgeting - FCFF/NPV logic của dự án; dòng tiền tự do và quy tắc không đếm trùng' - 'm03: Cost of Capital - tính WACC, Ke (CAPM), Kd; đầu vào tỷ lệ chiết khấu của DCF' - 'm04: Capital Structure - tỷ trọng nợ/vốn chủ mục tiêu, relever beta, lá chắn thuế (APV)' - 'm05: Financial Statem…
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m10_net_debt: Nợ ròng
+      - m10_ev_from_equity: EV từ giá trị vốn chủ
+      - m10_equity_bridge: Cầu nối từ EV sang Equity
+      - m10_value_per_share: Giá trị mỗi cổ phiếu
+      - m10_diluted_shares_tsm: Cổ phiếu pha loãng (Treasury Stock Method)
+      - m10_nopat: Lợi nhuận hoạt động sau thuế
+      - m10_fcff: Dòng tiền tự do cho doanh nghiệp
+      - m10_fcff_from_ebitda: FCFF từ EBITDA (cách viết tương đương)
+      - m10_delta_nwc: Thay đổi vốn lưu động ròng theo doanh thu
+      - m10_fcfe: Dòng tiền tự do cho cổ đông
+      - m10_reinvestment_rate: Tỷ lệ tái đầu tư
+      - m10_sustainable_growth: Tăng trưởng bền vững từ tái đầu tư
+      - m10_implied_roic: ROIC ngụ ý của giả định tăng trưởng
+      - m10_discount_factor: Hệ số chiết khấu
+      - m10_dcf_ev: Giá trị doanh nghiệp theo DCF
+      - m10_tv_gordon: Giá trị cuối kỳ theo Gordon Growth
+      - m10_tv_exit_multiple: Giá trị cuối kỳ theo Exit Multiple
+      - m10_implied_multiple_from_tv: Multiple ngụ ý từ TV Gordon
+      - m10_implied_g_from_exit: Tăng trưởng ngụ ý từ Exit Multiple
+      - m10_tv_share: Tỷ trọng TV trong EV
+      - m10_mid_year: Quy ước giữa năm
+      - m10_tv_sensitivity: Độ nhạy của TV với WACC-g
+      - m10_beta_relever: Beta đòn bẩy (relever)
+      - m10_beta_unlever: Beta không đòn bẩy
+      - m10_ke_buildup: Chi phí vốn chủ (CAPM + build-up)
+      - m10_wacc: Chi phí vốn bình quân gia quyền
+      - m10_apv: Giá trị hiện tại điều chỉnh
+      - m10_ddm_gordon: Mô hình chiết khấu cổ tức Gordon
+      - m10_multiple: Tính multiple
+      - m10_median_multiple: Trung vị multiple
+      - m10_implied_ev_multiple: EV ngụ ý từ multiple
+      - m10_multiple_discount: Chiết khấu multiple (quy mô/thanh khoản)
+      - m10_justified_ev_ebitda: EV/EBITDA ngụ ý từ nền tảng
+      - m10_pe_implied: P/E ngụ ý
+      - m10_dlom_dloc: Chiết khấu thanh khoản/kiểm soát
+      - m10_control_premium: Phụ trội kiểm soát
+      - m10_synergy_pv: Hiện giá synergy
+      - m10_deal_value_creation: Giá trị tạo ra cho bên mua
+      - m10_normalized_ebitda: EBITDA chuẩn hóa
+      - m10_sde: Thu nhập tùy ý của chủ
+      - m10_football_weighted: Giá trị khuyến nghị theo trọng số
+      - m10_offer_gap: Chênh lệch giá chào so với giá trị khuyến nghị
+      - m10_post_money: Post-money và tỷ lệ nhà đầu tư
+      - m10_vc_method: Phương pháp VC
+      - m10_implied_return: Tỷ suất sinh lời ngụ ý của thương vụ
+      - m10_required_exit_value: Giá trị thoát tối thiểu để đạt lợi suất yêu cầu
+      - m10_scenario_weighted: Giá trị kỳ vọng theo kịch bản
+
+      Kho tra cứu của module: Khái niệm 22, Công thức 47, Quy trình 7, Quy tắc quyết định 21, Chuẩn so sánh 19, Lỗi thường gặp 18, Lưu ý SME Việt Nam 13, Bài học case 5, Ví dụ có lời giải 7, Câu hỏi luyện tập 12, Checklist 11, Mẫu Excel/Sheets 2. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ NPV", "lỗi thường gặp WACC").
+  - id: "m10-concepts-1"
+    title: "Khái niệm: Định giá doanh nghiệp"
+    tags: ["khái", "niệm", "định", "giá", "doanh", "nghiệp"]
+    text: |-
+      term_vi: Định giá doanh nghiệp
+      term_en: Corporate Valuation
+      definition: Quá trình xác định giá trị kinh tế nội tại của doanh nghiệp dựa trên phân tích tài chính, dòng tiền tương lai và so sánh thị trường.
+      why_it_matters: |
+        Price (giá phải trả, quyết định bởi thương lượng) khác Value (giá trị nhận được). Định giá tìm Value dưới dạng KHOẢNG hợp lý với giả định minh bạch; hai chuyên gia khác kết quả vẫn có thể cùng đúng nếu giả định rõ ràng và có căn cứ.
+  - id: "m10-concepts-2"
+    title: "Khái niệm: Giá trị nội tại vs định giá tương đối"
+    tags: ["khái", "niệm", "giá", "trị", "nội", "tại", "vs", "định", "tương", "đối"]
+    text: |-
+      term_vi: Giá trị nội tại vs định giá tương đối
+      term_en: Intrinsic vs Relative valuation
+      definition: 'Nội tại (DCF): doanh nghiệp SINH RA bao nhiêu tiền. Tương đối (Comps, Precedent): thị trường ĐANG/ĐÃ TRẢ bao nhiêu cho doanh nghiệp giống nó.'
+      why_it_matters: |
+        Cần cả hai: DCF giải thích vì sao giá trị như vậy (forward-looking, nhiều giả định); Comps/Precedent kiểm tra giá trị có thực tế trên thị trường không. Nền tảng lịch sử: Irving Fisher 1930 (giá trị = hiện giá tiền tương lai), J.B. Williams 1938 (DDM, chiết khấu cổ tức), Myron Gordon 1959 (công thức tăng trưởng đều), Graham và Dodd 1934 (định giá tương đối P/E), Modigliani-Miller 1958 và Sharpe CAPM 1964 (cho phép tính WACC), Damodaran (dữ liệu beta, ERP, multiples).
+  - id: "m10-concepts-3"
+    title: "Khái niệm: Giá trị doanh nghiệp (EV) và giá trị vốn chủ (Equity Value)"
+    tags: ["khái", "niệm", "giá", "trị", "doanh", "nghiệp", "ev", "và", "vốn", "chủ", "equity", "value"]
+    text: |-
+      term_vi: Giá trị doanh nghiệp (EV) và giá trị vốn chủ (Equity Value)
+      term_en: Enterprise Value / Equity Value
+      definition: EV là giá trị toàn bộ hoạt động kinh doanh cho cả chủ nợ và cổ đông; Equity Value là phần còn lại của cổ đông sau khi trừ nợ ròng và các quyền đòi trước.
+      why_it_matters: |
+        Công ty vay nhiều trông rẻ giả tạo nếu chỉ nhìn Market Cap. EV trung lập với cơ cấu vốn nên so sánh được các công ty khác đòn bẩy. EV = Equity + Net Debt; Equity = EV - Net Debt. Khi thương lượng, bên mua hay nói EV, người bán nhận Equity - luôn phân biệt rõ.
+  - id: "m10-concepts-4"
+    title: "Khái niệm: Nguyên tắc khớp tử số - mẫu số"
+    tags: ["khái", "niệm", "nguyên", "tắc", "khớp", "tử", "số", "mẫu"]
+    text: |-
+      term_vi: Nguyên tắc khớp tử số - mẫu số
+      term_en: Numerator-denominator matching
+      definition: EV chia cho chỉ tiêu TRƯỚC lãi vay (Revenue, EBITDA, EBIT); Equity Value/Price chia cho chỉ tiêu SAU lãi vay (Net Income, EPS, Book Value).
+      why_it_matters: |
+        Chỉ tiêu trước lãi vay thuộc về cả chủ nợ và cổ đông nên khớp EV; chỉ tiêu sau lãi vay chỉ thuộc cổ đông nên khớp Equity. Ghép EV với Net Income (hoặc Equity với EBITDA) là lỗi phổ biến của người mới.
+  - id: "m10-concepts-5"
+    title: "Khái niệm: Dòng tiền tự do cho doanh nghiệp"
+    tags: ["khái", "niệm", "dòng", "tiền", "tự", "do", "cho", "doanh", "nghiệp"]
+    text: |-
+      term_vi: Dòng tiền tự do cho doanh nghiệp
+      term_en: Free Cash Flow to Firm (FCFF)
+      definition: Tiền còn lại cho mọi nhà cung cấp vốn sau khi trả thuế (như không vay), cộng khấu hao, trừ CAPEX và tăng vốn lưu động.
+      why_it_matters: |
+        DCF dùng tiền chứ không dùng lợi nhuận kế toán vì lợi nhuận bị quy ước kế toán (khấu hao, dồn tích) chi phối còn tiền thì không giả được; công ty có lãi nhưng tăng phải thu, tồn kho, capex liên tục vẫn có thể không còn tiền trả chủ nợ/cổ đông. Thuế tính trên EBIT (NOPAT) vì lợi ích thuế của lãi vay đã nằm trong WACC (Kd(1-T)); tính cả hai chỗ là đếm trùng.
+  - id: "m10-concepts-6"
+    title: "Khái niệm: Nguyên tắc dòng tiền nào - tỷ lệ chiết khấu đó"
+    tags: ["khái", "niệm", "nguyên", "tắc", "dòng", "tiền", "nào", "tỷ", "lệ", "chiết", "khấu", "đó"]
+    text: |-
+      term_vi: Nguyên tắc dòng tiền nào - tỷ lệ chiết khấu đó
+      term_en: Cash flow - discount rate consistency
+      definition: FCFF chiết khấu bằng WACC ra EV; FCFE và cổ tức chiết khấu bằng Ke ra Equity Value; không bao giờ trộn.
+      why_it_matters: Tỷ lệ chiết khấu phải phản ánh lợi suất đòi hỏi của chính nhóm nhận dòng tiền đó. FCFF thuộc cả chủ nợ lẫn cổ đông nên dùng WACC.
+  - id: "m10-concepts-7"
+    title: "Khái niệm: Giá trị cuối kỳ"
+    tags: ["khái", "niệm", "giá", "trị", "cuối", "kỳ"]
+    text: |-
+      term_vi: Giá trị cuối kỳ
+      term_en: Terminal Value (TV)
+      definition: 'Giá trị gộp của mọi dòng tiền sau năm dự phóng cuối. Hai cách: Gordon Growth (perpetuity) và Exit Multiple.'
+      why_it_matters: |
+        Doanh nghiệp không chết sau năm 5; bỏ TV là bỏ phần giá trị thường chiếm 60-80% DCF. Vì vậy DCF cực nhạy với g và WACC (mẫu số WACC-g nhỏ làm TV bùng nổ). Gordon: tổng cấp số nhân lùi vô hạn, cần WACC > g, g không vượt tăng trưởng GDP danh nghĩa (2-4%). Exit Multiple mang tính thị trường nhưng vòng tròn (dùng định giá tương đối trong phương pháp nội tại). Luôn kiểm tra chéo: từ Gordon tính multiple ngụ ý, từ Exit Multiple tính g ngụ ý.
+  - id: "m10-concepts-8"
+    title: "Khái niệm: FCFF trạng thái bền vững (chuẩn hóa) cho TV"
+    tags: ["khái", "niệm", "fcff", "trạng", "thái", "bền", "vững", "chuẩn", "hóa", "cho", "tv"]
+    text: |-
+      term_vi: FCFF trạng thái bền vững (chuẩn hóa) cho TV
+      term_en: Normalized terminal-year FCFF
+      definition: Dòng tiền năm n+1 dùng cho TV phải có capex đủ để tạo tăng trưởng g (capex lớn hơn D&A), NWC thay đổi theo g, biên ổn định; không copy năm cuối tăng nhanh.
+      why_it_matters: Nếu giữ capex/ΔNWC của giai đoạn tăng trưởng hoặc, ngược lại, để capex bằng 0 trong khi g > 0 thì TV sai; kiểm tra bằng g = RR x ROIC.
+  - id: "m10-concepts-9"
+    title: "Khái niệm: Tỷ lệ tái đầu tư và tăng trưởng bền vững"
+    tags: ["khái", "niệm", "tỷ", "lệ", "tái", "đầu", "tư", "và", "tăng", "trưởng", "bền", "vững"]
+    text: |-
+      term_vi: Tỷ lệ tái đầu tư và tăng trưởng bền vững
+      term_en: Reinvestment rate and sustainable growth (g = RR x ROIC)
+      definition: RR = (CAPEX - D&A + ΔNWC)/NOPAT; g = RR x ROIC.
+      why_it_matters: 'Tăng trưởng không tốn vốn là ảo tưởng: doanh nghiệp chỉ tăng trưởng bền vững nếu tái đầu tư và khoản tái đầu tư đó sinh lời (ROIC). Dùng để sanity-check g và ROIC ngụ ý.'
+  - id: "m10-concepts-10"
+    title: "Khái niệm: Bảng độ nhạy"
+    tags: ["khái", "niệm", "bảng", "độ", "nhạy"]
+    text: |-
+      term_vi: Bảng độ nhạy
+      term_en: Sensitivity table
+      definition: Bảng giá trị khi thay đổi cặp biến chính (WACC x g), tính lại toàn bộ mô hình cho từng ô.
+      why_it_matters: DCF dựa trên giả định không ai biết chắc; bảng độ nhạy cho thấy khoảng bất định (ví dụ giá chênh 2.3 lần khi WACC +-2% và g +-1%) và là công cụ đàm phán.
+  - id: "m10-concepts-11"
+    title: "Khái niệm: Phân tích công ty so sánh"
+    tags: ["khái", "niệm", "phân", "tích", "công", "ty", "so", "sánh"]
+    text: |-
+      term_vi: Phân tích công ty so sánh
+      term_en: Comparable Companies Analysis (Trading Comps)
+      definition: Tính multiple của các công ty niêm yết tương tự, lấy trung vị, nhân với chỉ tiêu công ty mục tiêu.
+      why_it_matters: |
+        Logic định luật một giá (như định giá nhà theo giá/m2 khu phố). Dùng median thay mean vì bền vững với outlier. Phản ánh quyền sở hữu thiểu số (không kiểm soát). Nhược: cả nhóm peer có thể cùng bị định giá sai, dễ cherry-pick peer, khác biệt tăng trưởng/rủi ro làm multiple khác nhau.
+  - id: "m10-concepts-12"
+    title: "Khái niệm: Các multiple chính"
+    tags: ["khái", "niệm", "các", "multiple", "chính"]
+    text: |-
+      term_vi: Các multiple chính
+      term_en: EV/Revenue, EV/EBITDA, EV/EBIT, P/E, P/B, P/FCF, EV/Subscribers
+      definition: EV/Revenue cho công ty chưa lãi; EV/EBITDA phổ biến nhất; EV/EBIT khi D&A lớn và khác biệt; P/E cho DN trưởng thành; P/B cho ngân hàng/ngành nặng tài sản; P/FCF tập trung dòng tiền; EV/Subscribers cho viễn thông, streaming, SaaS.
+      why_it_matters: |
+        EV/EBITDA được ưa chuộng vì loại ba khác biệt: lãi vay (cơ cấu vốn), thuế (quy định), khấu hao (kế toán); hạn chế là bỏ qua CAPEX nên ngành vốn nặng bị thổi phồng. Multiple thực chất là DCF nén: cao hơn khi tăng trưởng cao, rủi ro (WACC) thấp, tái đầu tư ít; khác biệt multiple thường do fundamentals, không chỉ do thị trường định giá sai.
+  - id: "m10-concepts-13"
+    title: "Khái niệm: Giao dịch tương đương"
+    tags: ["khái", "niệm", "giao", "dịch", "tương", "đương"]
+    text: |-
+      term_vi: Giao dịch tương đương
+      term_en: Precedent Transactions
+      definition: Multiple từ các thương vụ M&A đã hoàn tất cùng ngành; đã bao gồm phí kiểm soát và (một phần) synergy.
+      why_it_matters: |
+        Comps phản ánh giá cổ phiếu lẻ thiểu số; người mua toàn bộ/chi phối trả thêm phí kiểm soát (quyền quyết định chiến lược, bổ nhiệm lãnh đạo, hưởng synergy, toàn bộ dòng tiền). Precedent đo mức giá thực sự đã trả. Hạn chế: ít thương vụ, dữ liệu cũ, nhiều thương vụ SME không công bố giá, giá có thể chứa synergy riêng của người mua. Người bán 100% nên tham chiếu Precedent; cổ đông thiểu số tham chiếu Comps.
+  - id: "m10-concepts-14"
+    title: "Khái niệm: Phụ trội kiểm soát"
+    tags: ["khái", "niệm", "phụ", "trội", "kiểm", "soát"]
+    text: |-
+      term_vi: Phụ trội kiểm soát
+      term_en: Control Premium
+      definition: Phần trả thêm so với giá thị trường chưa bị ảnh hưởng để nắm quyền kiểm soát, thường 20-50%.
+      why_it_matters: Bên mua chỉ đáng trả phụ trội nếu PV synergy lớn hơn hoặc bằng số tiền phụ trội (quy tắc PV synergy >= premium). Không tính được synergy cụ thể thì không nên trả phụ trội.
+  - id: "m10-concepts-15"
+    title: "Khái niệm: Football Field"
+    tags: ["khái", "niệm", "football", "field"]
+    text: |-
+      term_vi: Football Field
+      term_en: Football Field
+      definition: Biểu đồ thanh ngang đặt khoảng giá của từng phương pháp (52-week range, DCF, Comps, Precedent, LBO) cạnh nhau.
+      why_it_matters: Nhìn ra vùng chồng lấn (các phương pháp đồng thuận) và mức bất định, tránh tin một con số duy nhất. LBO = mức giá tối đa quỹ PE có thể trả để đạt IRR mục tiêu.
+  - id: "m10-concepts-16"
+    title: "Khái niệm: Equity Bridge"
+    tags: ["khái", "niệm", "equity", "bridge"]
+    text: |-
+      term_vi: Equity Bridge
+      term_en: EV-to-Equity bridge
+      definition: Equity = EV - nợ vay - cổ phiếu ưu đãi - lợi ích cổ đông thiểu số - nợ thuê tài chính + tiền - tương đương tiền + tài sản phi hoạt động.
+      why_it_matters: DCF/multiple chỉ định giá hoạt động cốt lõi; tiền thừa và tài sản phi hoạt động chưa nằm trong FCFF nên phải cộng; mọi quyền đòi trước cổ đông phải trừ. Quên trừ nợ là sai lầm hay gặp của chủ SME.
+  - id: "m10-concepts-17"
+    title: "Khái niệm: Chiết khấu thiếu thanh khoản / thiếu kiểm soát / quy mô"
+    tags: ["khái", "niệm", "chiết", "khấu", "thiếu", "thanh", "khoản", "kiểm", "soát", "quy", "mô"]
+    text: |-
+      term_vi: Chiết khấu thiếu thanh khoản / thiếu kiểm soát / quy mô
+      term_en: DLOM / DLOC / Size premium / Key-person discount
+      definition: DLOM 15-30% (công ty không niêm yết); DLOC 15-35% (mua/bán thiểu số); size premium hoặc key-person cộng 2-5% vào Ke hoặc chiết khấu giá trị.
+      why_it_matters: 'Peer niêm yết lớn, thanh khoản cao nên multiple của họ phải điều chỉnh khi áp cho công ty tư nhân nhỏ. Không đếm trùng: đã cộng size premium vào Ke thì đừng chiết khấu DLOM nặng cho cùng yếu tố rủi ro.'
+  - id: "m10-concepts-18"
+    title: "Khái niệm: Chuẩn hóa lợi nhuận"
+    tags: ["khái", "niệm", "chuẩn", "hóa", "lợi", "nhuận"]
+    text: |-
+      term_vi: Chuẩn hóa lợi nhuận
+      term_en: Normalization
+      definition: 'Điều chỉnh lợi nhuận quá khứ về mức bền vững dưới quyền sở hữu mới: cộng chi phí cá nhân của chủ, trừ phần lương thị trường chủ lẽ ra nhận, loại khoản bất thường, điều chỉnh giao dịch bên liên quan về giá thị trường.'
+      why_it_matters: 'Là bước quan trọng nhất với SME: sổ sách trộn chi tiêu cá nhân và công ty; sai EBITDA 1 đồng thì multiple nhân sai nhiều lần. Mỗi điều chỉnh phải ghi rõ để bên mua chấp nhận.'
+  - id: "m10-concepts-19"
+    title: "Khái niệm: SDE (Seller's Discretionary Earnings)"
+    tags: ["khái", "niệm", "sde", "seller", "discretionary", "earnings"]
+    text: |-
+      term_vi: SDE (Seller's Discretionary Earnings)
+      term_en: SDE
+      definition: EBITDA + lương chủ + chi phí cá nhân; dùng cho doanh nghiệp rất nhỏ nơi chủ làm toàn thời gian.
+      why_it_matters: Với quán ăn/cà phê đơn lẻ, người mua mua một công việc kèm thu nhập; SDE đo tổng thu nhập sẵn có cho một chủ-điều hành.
+  - id: "m10-concepts-20"
+    title: "Khái niệm: Biến thể DCF"
+    tags: ["khái", "niệm", "biến", "thể", "dcf"]
+    text: |-
+      term_vi: Biến thể DCF
+      term_en: Mid-year convention, Stub period, DDM, FCFE, APV
+      definition: 'Mid-year: chiết khấu t-0.5. Stub: định giá giữa năm, chỉ lấy phần dòng tiền còn lại. DDM: chiết khấu cổ tức bằng Ke cho ngân hàng/bảo hiểm. FCFE: ra thẳng Equity. APV: giá trị không nợ + PV lá chắn thuế, dùng khi cơ cấu vốn đổi mạnh (LBO).'
+      why_it_matters: 'Chọn biến thể đúng bản chất doanh nghiệp: tổ chức tài chính khó xác định FCFF nên dùng DDM/Excess Return; LBO thay đổi D/E liên tục nên WACC cố định sai, dùng APV.'
+  - id: "m10-concepts-21"
+    title: "Khái niệm: Phương pháp theo tình huống đặc biệt"
+    tags: ["khái", "niệm", "phương", "pháp", "theo", "tình", "huống", "đặc", "biệt"]
+    text: |-
+      term_vi: Phương pháp theo tình huống đặc biệt
+      term_en: Special situations
+      definition: 'Startup chưa doanh thu: VC method, option pricing, revenue multiple chiết khấu mạnh. Ngân hàng: P/B, DDM, Excess Return. Tài nguyên: NAV trữ lượng, DCF theo giá hàng hóa. Bất động sản: Cap rate, NAV, DCF dòng tiền cho thuê. DN khó khăn: giá trị thanh lý, Sum-of-Parts, Adjusted PV. Tech tăng trưởng cao: EV/Revenue, DCF nhiều giai đoạn.'
+      why_it_matters: Không có phương pháp vạn năng; DCF thuần cho công ty chưa có dòng tiền cho kết quả vô nghĩa, going concern khác liquidation value.
+  - id: "m10-concepts-22"
+    title: "Khái niệm: Định giá gọi vốn"
+    tags: ["khái", "niệm", "định", "giá", "gọi", "vốn"]
+    text: |-
+      term_vi: Định giá gọi vốn
+      term_en: Pre-money / Post-money / VC method
+      definition: 'Post-money = Pre-money + vốn đầu tư; tỷ lệ nhà đầu tư = vốn / Post-money. VC method: lấy giá trị thoát năm thứ 5 chia tỷ suất sinh lời mục tiêu (10x-20x giai đoạn sớm) ra post-money.'
+      why_it_matters: Định giá cao hơn thì nhường ít cổ phần hơn; VC method chủ yếu để đàm phán, không tin tuyệt đối.
+  - id: "m10-formulas-1"
+    title: "Công thức: m10_net_debt — Nợ ròng"
+    tags: ["công", "thức", "m10_net_debt", "nợ", "ròng"]
+    text: |-
+      id: m10_net_debt
+      name_vi: Nợ ròng
+      name_en: Net Debt
+      expression_latex: Net\,Debt = Total\,Debt - Cash\,\&\,Equivalents
+      expression_python: debt - cash
+      excel: =Debt-Cash
+      variables:
+      - symbol: debt
+        meaning: Tổng nợ vay (gồm cả nợ thuê tài chính nếu có)
+        unit: tiền
+      - symbol: cash
+        meaning: Tiền và tương đương tiền
+        unit: tiền
+      when_to_use: Tính EV từ Equity hoặc Equity từ EV.
+      why_it_works: Tiền sẵn có có thể dùng trả nợ ngay nên gánh nợ thực tế là nợ trừ tiền.
+      assumptions:
+      - Tiền là tiền thừa, không phải vốn lưu động tối thiểu bắt buộc cho hoạt động
+      pitfalls:
+      - Quên nợ thuê tài chính, nợ ngoài bảng
+      - Trừ cả tiền cần cho hoạt động tối thiểu
+      interpretation: Âm nghĩa là công ty dư tiền ròng (Equity > EV).
+      example:
+        inputs:
+          debt: 800
+          cash: 200
+        steps:
+        - 800 - 200 = 600
+        result: Net Debt = 600
+  - id: "m10-formulas-2"
+    title: "Công thức: m10_ev_from_equity — EV từ giá trị vốn chủ"
+    tags: ["công", "thức", "m10_ev_from_equity", "ev", "từ", "giá", "trị", "vốn", "chủ"]
+    text: |-
+      id: m10_ev_from_equity
+      name_vi: EV từ giá trị vốn chủ
+      name_en: Enterprise Value from Equity (Market Cap)
+      expression_latex: EV = Equity + Debt - Cash + Minority + Preferred - NonOp
+      expression_python: equity_value + debt - cash + minority + preferred - nonop
+      excel: =MarketCap+Debt-Cash+Minority+Preferred-NonOpAssets
+      variables:
+      - symbol: equity_value
+        meaning: Vốn hóa = giá cổ phiếu x số cổ phiếu
+        unit: tiền
+      - symbol: debt
+        meaning: Nợ vay
+        unit: tiền
+      - symbol: cash
+        meaning: Tiền và tương đương
+        unit: tiền
+      - symbol: minority
+        meaning: Lợi ích cổ đông thiểu số
+        unit: tiền
+      - symbol: preferred
+        meaning: Cổ phiếu ưu đãi
+        unit: tiền
+      - symbol: nonop
+        meaning: Tài sản phi hoạt động
+        unit: tiền
+      when_to_use: Tính EV của peer để lập EV/EBITDA, EV/Revenue; tính multiple thực tế bên mua đã trả.
+      why_it_works: 'EV là giá trị của cả chiếc bánh cho mọi nhà cung cấp vốn: cộng quyền đòi của chủ nợ vào phần cổ đông, trừ tài sản không thuộc hoạt động cốt lõi.'
+      assumptions:
+      - Dùng giá trị thị trường của vốn chủ, không dùng sổ sách
+      pitfalls:
+      - Quên cổ đông thiểu số công ty con
+      - Dùng số cổ phiếu cơ bản thay vì pha loãng
+      interpretation: Dùng làm tử số của multiple trước lãi vay.
+      example:
+        inputs:
+          equity_value: 2000
+          debt: 800
+          cash: 200
+          minority: 0
+          preferred: 0
+          nonop: 0
+        steps:
+        - 2000 + 800 - 200 = 2600
+        result: EV = 2,600
+  - id: "m10-formulas-3"
+    title: "Công thức: m10_equity_bridge — Cầu nối từ EV sang Equity"
+    tags: ["công", "thức", "m10_equity_bridge", "cầu", "nối", "từ", "ev", "sang", "equity"]
+    text: |-
+      id: m10_equity_bridge
+      name_vi: Cầu nối từ EV sang Equity
+      name_en: EV to Equity Bridge
+      expression_latex: Equity = EV - Debt - Preferred - Minority - Leases + Cash + NonOp
+      expression_python: ev - debt - preferred - minority - leases + cash + nonop
+      excel: =EV-Debt-Preferred-Minority-Leases+Cash+NonOpAssets
+      variables:
+      - symbol: ev
+        meaning: Enterprise Value
+        unit: tiền
+      - symbol: debt
+        meaning: Nợ vay
+        unit: tiền
+      - symbol: preferred
+        meaning: Cổ phiếu ưu đãi
+        unit: tiền
+      - symbol: minority
+        meaning: Lợi ích cổ đông thiểu số
+        unit: tiền
+      - symbol: leases
+        meaning: Nợ thuê tài chính
+        unit: tiền
+      - symbol: cash
+        meaning: Tiền và tương đương tiền
+        unit: tiền
+      - symbol: nonop
+        meaning: Tài sản phi hoạt động (BĐS cho thuê ngoài lĩnh vực chính, tiền thừa)
+        unit: tiền
+      when_to_use: Bước 5 của DCF và sau mọi định giá bằng EV multiple.
+      why_it_works: EV chỉ phản ánh hoạt động cốt lõi; quyền đòi trước cổ đông phải trừ, tài sản ngoài FCFF phải cộng.
+      assumptions:
+      - Các khoản trừ ghi theo giá trị hợp lý, không nhất thiết bằng sổ sách
+      pitfalls:
+      - Quên nợ vay, nợ ngoài bảng (chủ SME hay quên)
+      - Đếm trùng tài sản phi hoạt động đã nằm trong FCFF
+      interpretation: Số bên bán thực nhận (trước chi phí giao dịch, thuế).
+      example:
+        inputs:
+          ev: 3000
+          debt: 800
+          preferred: 0
+          minority: 100
+          leases: 0
+          cash: 200
+          nonop: 0
+        steps:
+        - 3000 - 800 - 0 - 100 - 0 + 200 + 0 = 2300
+        result: Equity = 2,300 tỷ
+  - id: "m10-formulas-4"
+    title: "Công thức: m10_value_per_share — Giá trị mỗi cổ phiếu"
+    tags: ["công", "thức", "m10_value_per_share", "giá", "trị", "mỗi", "cổ", "phiếu"]
+    text: |-
+      id: m10_value_per_share
+      name_vi: Giá trị mỗi cổ phiếu
+      name_en: Intrinsic Value per Share
+      expression_latex: Value/Share = \frac{Equity\,Value}{Diluted\,Shares}
+      expression_python: equity_value / diluted_shares
+      excel: =Equity/DilutedShares
+      variables:
+      - symbol: equity_value
+        meaning: Giá trị vốn chủ
+        unit: tiền
+      - symbol: diluted_shares
+        meaning: Số cổ phiếu pha loãng
+        unit: cổ phiếu
+      when_to_use: Bước 6 của DCF; so với giá thị trường để kết luận under/overvalued.
+      why_it_works: Chia đều giá trị vốn chủ cho mọi cổ phần có quyền đòi, kể cả quyền chọn đã có giá trị.
+      assumptions:
+      - Số cổ phiếu pha loãng đã gồm ESOP, options, convertible
+      pitfalls:
+      - Dùng cổ phiếu cơ bản
+      - Nhầm đơn vị (tỷ VND chia triệu cổ phiếu)
+      interpretation: 'Giá nội tại > giá thị trường: undervalued (cần biên an toàn cho sai số).'
+      example:
+        inputs:
+          equity_value: 2300000000000
+          diluted_shares: 50000000
+        steps:
+        - 2,300 tỷ = 2.3e12 VND; 2.3e12 / 5e7 = 46,000
+        result: 46,000 VND/cổ phiếu
+  - id: "m10-formulas-5"
+    title: "Công thức: m10_diluted_shares_tsm — Cổ phiếu pha loãng (Treasury Stock Method)"
+    tags: ["công", "thức", "m10_diluted_shares_tsm", "cổ", "phiếu", "pha", "loãng", "treasury", "stock", "method"]
+    text: |-
+      id: m10_diluted_shares_tsm
+      name_vi: Cổ phiếu pha loãng (Treasury Stock Method)
+      name_en: Diluted shares - Treasury Stock Method
+      expression_latex: Diluted = Basic + N_{opt}\times\max\left(0,\,1-\frac{K}{P}\right)
+      expression_python: basic_shares + options * max(0, 1 - strike / price)
+      excel: =Basic+Options*MAX(0,1-Strike/Price)
+      variables:
+      - symbol: basic_shares
+        meaning: Số cổ phiếu đang lưu hành
+        unit: cổ phiếu
+      - symbol: options
+        meaning: Số quyền chọn (in-the-money)
+        unit: quyền
+      - symbol: strike
+        meaning: Giá thực hiện K
+        unit: VND
+      - symbol: price
+        meaning: Giá cổ phiếu hiện tại/giá trị nội tại P
+        unit: VND
+      when_to_use: Có ESOP, options, warrants, trái phiếu chuyển đổi.
+      why_it_works: Giả định tiền thu từ thực hiện quyền được dùng mua lại cổ phiếu tại giá P, nên chỉ phần chênh lệch thực sự pha loãng.
+      assumptions:
+      - Quyền chọn in-the-money (P > K)
+      - Giá P tính vòng lặp nếu P là giá nội tại
+      pitfalls:
+      - Quên pha loãng
+      - Tính cả options out-of-the-money
+      interpretation: Số này là mẫu số của giá trị/cổ phiếu.
+      example:
+        inputs:
+          basic_shares: 100000000
+          options: 2000000
+          strike: 20000
+          price: 50000
+        steps:
+        - 1 - 20000/50000 = 0.6
+        - 2,000,000 x 0.6 = 1,200,000
+        - 100,000,000 + 1,200,000 = 101,200,000
+        result: 101.2 triệu cổ phiếu pha loãng
+  - id: "m10-formulas-6"
+    title: "Công thức: m10_nopat — Lợi nhuận hoạt động sau thuế"
+    tags: ["công", "thức", "m10_nopat", "lợi", "nhuận", "hoạt", "động", "sau", "thuế"]
+    text: |-
+      id: m10_nopat
+      name_vi: Lợi nhuận hoạt động sau thuế
+      name_en: NOPAT
+      expression_latex: NOPAT = EBIT\times(1-T)
+      expression_python: ebit * (1 - tax_rate)
+      excel: =EBIT*(1-T)
+      variables:
+      - symbol: ebit
+        meaning: Lợi nhuận trước lãi vay và thuế
+        unit: tiền
+      - symbol: tax_rate
+        meaning: Thuế suất
+        unit: tỷ lệ
+      when_to_use: Điểm bắt đầu của FCFF; tính ROIC, RR.
+      why_it_works: 'Thuế như thể công ty không vay: lợi ích thuế lãi vay đã nằm trong WACC (Kd(1-T)), tính thêm sẽ đếm trùng.'
+      assumptions:
+      - Thuế suất hiệu dụng bền vững (VN TNDN phổ thông 20%, cần xác nhận quy định hiện hành)
+      pitfalls:
+      - Dùng EBT thay EBIT
+      - Lấy thuế thực nộp đã gồm lá chắn thuế lãi vay
+      interpretation: Lợi nhuận hoạt động cốt lõi thuộc cả chủ nợ và cổ đông.
+      example:
+        inputs:
+          ebit: 500
+          tax_rate: 0.2
+        steps:
+        - 500 x 0.8 = 400
+        result: NOPAT = 400 tỷ
+  - id: "m10-formulas-7"
+    title: "Công thức: m10_fcff — Dòng tiền tự do cho doanh nghiệp"
+    tags: ["công", "thức", "m10_fcff", "dòng", "tiền", "tự", "do", "cho", "doanh", "nghiệp"]
+    text: |-
+      id: m10_fcff
+      name_vi: Dòng tiền tự do cho doanh nghiệp
+      name_en: Free Cash Flow to Firm
+      expression_latex: FCFF = EBIT(1-T) + D\&A - CAPEX - \Delta NWC
+      expression_python: ebit * (1 - tax_rate) + da - capex - d_nwc
+      excel: =EBIT*(1-T)+DA-CAPEX-dNWC
+      variables:
+      - symbol: ebit
+        meaning: EBIT
+        unit: tiền
+      - symbol: tax_rate
+        meaning: Thuế suất
+        unit: tỷ lệ
+      - symbol: da
+        meaning: Khấu hao và phân bổ (chi phí không tiền)
+        unit: tiền
+      - symbol: capex
+        meaning: Chi đầu tư tài sản cố định (duy trì + tăng trưởng)
+        unit: tiền
+      - symbol: d_nwc
+        meaning: Tăng vốn lưu động ròng (tăng = dòng tiền ra)
+        unit: tiền
+      when_to_use: Dự phóng từng năm trong DCF.
+      why_it_works: 'Trả lời ''tiền thực còn lại bao nhiêu'': NOPAT, cộng lại khấu hao vì không chi tiền, trừ capex là tiền thật chi, trừ ΔNWC vì bán chịu/tồn kho làm tiền bị kẹt.'
+      assumptions:
+      - Thuế trên EBIT (không lá chắn lãi vay)
+      - EBIT đã chuẩn hóa
+      pitfalls:
+      - Cộng D&A mà không trừ capex tương ứng
+      - Quên ΔNWC
+      - Capex quá thấp so với tăng trưởng (tăng trưởng ảo)
+      interpretation: FCFF dương và tăng đều với ROIC hợp lý là tín hiệu tốt; FCFF âm giai đoạn đầu chấp nhận nếu đang đầu tư tăng trưởng.
+      example:
+        inputs:
+          ebit: 500
+          tax_rate: 0.2
+          da: 100
+          capex: 150
+          d_nwc: 30
+        steps:
+        - NOPAT = 500 x 0.8 = 400
+        - FCFF = 400 + 100 - 150 - 30 = 320
+        result: FCFF = 320 tỷ
+  - id: "m10-formulas-8"
+    title: "Công thức: m10_fcff_from_ebitda — FCFF từ EBITDA (cách viết tương đương)"
+    tags: ["công", "thức", "m10_fcff_from_ebitda", "fcff", "từ", "ebitda", "cách", "viết", "tương", "đương"]
+    text: |-
+      id: m10_fcff_from_ebitda
+      name_vi: FCFF từ EBITDA (cách viết tương đương)
+      name_en: FCFF from EBITDA
+      expression_latex: FCFF = EBITDA(1-T) + T\times D\&A - CAPEX - \Delta NWC
+      expression_python: ebitda * (1 - tax_rate) + tax_rate * da - capex - d_nwc
+      excel: =EBITDA*(1-T)+T*DA-CAPEX-dNWC
+      variables:
+      - symbol: ebitda
+        meaning: EBITDA
+        unit: tiền
+      - symbol: tax_rate
+        meaning: Thuế suất
+        unit: tỷ lệ
+      - symbol: da
+        meaning: D&A
+        unit: tiền
+      - symbol: capex
+        meaning: CAPEX
+        unit: tiền
+      - symbol: d_nwc
+        meaning: ΔNWC
+        unit: tiền
+      when_to_use: Khi dự phóng từ EBITDA; kiểm tra chéo FCFF; hiểu vì sao FCFF/EBITDA quyết định multiple.
+      why_it_works: 'Đại số: EBIT(1-T)+DA = (EBITDA-DA)(1-T)+DA = EBITDA(1-T)+T*DA; D&A chỉ có lá chắn thuế T*DA.'
+      assumptions:
+      - Như m10_fcff
+      pitfalls:
+      - Nhầm EBITDA với dòng tiền (bỏ qua capex, thuế, NWC)
+      interpretation: Phần D&A đóng góp vào dòng tiền chỉ qua lá chắn thuế.
+      example:
+        inputs:
+          ebitda: 474
+          tax_rate: 0.2
+          da: 79
+          capex: 110.6
+          d_nwc: 3.9
+        steps:
+        - 474 x 0.8 = 379.2
+        - 0.2 x 79 = 15.8
+        - 379.2 + 15.8 - 110.6 - 3.9 = 280.5
+        result: FCFF năm 5 = 280.5 tỷ (khớp case công nghệ)
+  - id: "m10-formulas-9"
+    title: "Công thức: m10_delta_nwc — Thay đổi vốn lưu động ròng theo doanh thu"
+    tags: ["công", "thức", "m10_delta_nwc", "thay", "đổi", "vốn", "lưu", "động", "ròng", "theo", "doanh", "thu"]
+    text: |-
+      id: m10_delta_nwc
+      name_vi: Thay đổi vốn lưu động ròng theo doanh thu
+      name_en: Change in NWC
+      expression_latex: \Delta NWC = nwc\%\times(Revenue_t - Revenue_{t-1})
+      expression_python: nwc_pct * (revenue_t - revenue_prev)
+      excel: =NWCpct*(Rev_t-Rev_t1)
+      variables:
+      - symbol: nwc_pct
+        meaning: NWC / Doanh thu (hoặc % của ΔDoanh thu)
+        unit: tỷ lệ
+      - symbol: revenue_t
+        meaning: Doanh thu năm t
+        unit: tiền
+      - symbol: revenue_prev
+        meaning: Doanh thu năm t-1
+        unit: tiền
+      when_to_use: Dự phóng NWC trong FCFF khi NWC ổn định theo % doanh thu.
+      why_it_works: Doanh thu tăng cần thêm phải thu, tồn kho (trừ phải trả), nên tiền bị giữ lại tỷ lệ với phần doanh thu tăng thêm.
+      assumptions:
+      - NWC/Revenue ổn định
+      pitfalls:
+      - Dùng toàn bộ doanh thu thay vì phần tăng thêm
+      - Bỏ qua ΔNWC năm 1
+      interpretation: Doanh nghiệp phân phối/thương mại có NWC lớn nên tăng trưởng ngốn tiền.
+      example:
+        inputs:
+          nwc_pct: 0.18
+          revenue_t: 89600
+          revenue_prev: 80000
+        steps:
+        - 0.18 x (89,600 - 80,000) = 1,728
+        result: ΔNWC Y1 = 1,728 triệu (case Bao Bì Xanh Việt)
+  - id: "m10-formulas-10"
+    title: "Công thức: m10_fcfe — Dòng tiền tự do cho cổ đông"
+    tags: ["công", "thức", "m10_fcfe", "dòng", "tiền", "tự", "do", "cho", "cổ", "đông"]
+    text: |-
+      id: m10_fcfe
+      name_vi: Dòng tiền tự do cho cổ đông
+      name_en: Free Cash Flow to Equity
+      expression_latex: FCFE = FCFF - Interest\times(1-T) + Net\,Borrowing
+      expression_python: fcff - interest * (1 - tax_rate) + net_borrowing
+      excel: =FCFF-Interest*(1-T)+NetBorrowing
+      variables:
+      - symbol: fcff
+        meaning: FCFF
+        unit: tiền
+      - symbol: interest
+        meaning: Lãi vay
+        unit: tiền
+      - symbol: tax_rate
+        meaning: Thuế suất
+        unit: tỷ lệ
+      - symbol: net_borrowing
+        meaning: Nợ vay ròng mới (vay mới trừ trả gốc)
+        unit: tiền
+      when_to_use: Định giá thẳng Equity, chiết khấu bằng Ke.
+      why_it_works: Cổ đông nhận phần FCFF còn lại sau khi trả lãi (sau thuế) và cộng/trừ dòng vay trả.
+      assumptions:
+      - Chiết khấu bằng Ke (không dùng WACC)
+      - Cơ cấu nợ ổn định
+      pitfalls:
+      - Chiết khấu FCFE bằng WACC
+      - FCFE nhạy với giả định vay mới
+      interpretation: Giá trị vốn chủ = PV(FCFE, Ke); khó ổn định bằng FCFF nên practice ưu tiên FCFF.
+      example:
+        inputs:
+          fcff: 320
+          interest: 40
+          tax_rate: 0.2
+          net_borrowing: 20
+        steps:
+        - 320 - 40 x 0.8 + 20 = 308
+        result: FCFE = 308 tỷ
+  - id: "m10-formulas-11"
+    title: "Công thức: m10_reinvestment_rate — Tỷ lệ tái đầu tư"
+    tags: ["công", "thức", "m10_reinvestment_rate", "tỷ", "lệ", "tái", "đầu", "tư"]
+    text: |-
+      id: m10_reinvestment_rate
+      name_vi: Tỷ lệ tái đầu tư
+      name_en: Reinvestment Rate (RR)
+      expression_latex: RR = \frac{CAPEX - D\&A + \Delta NWC}{NOPAT}
+      expression_python: (capex - da + d_nwc) / nopat
+      excel: =(CAPEX-DA+dNWC)/NOPAT
+      variables:
+      - symbol: capex
+        meaning: CAPEX
+        unit: tiền
+      - symbol: da
+        meaning: D&A
+        unit: tiền
+      - symbol: d_nwc
+        meaning: ΔNWC
+        unit: tiền
+      - symbol: nopat
+        meaning: NOPAT
+        unit: tiền
+      when_to_use: Kiểm tra thực tế giả định tăng trưởng của TV.
+      why_it_works: Tái đầu tư ròng = tiền giữ lại để mở rộng khả năng tạo lợi nhuận; tỷ lệ so với NOPAT cho biết bao nhiêu % lợi nhuận phải giữ lại.
+      assumptions:
+      - Các năm TV ở trạng thái bền vững
+      pitfalls:
+      - Dùng capex gộp thay vì capex ròng D&A
+      interpretation: RR cao nghĩa là tăng trưởng tốn nhiều vốn; RR thấp mà g cao thì ROIC ngụ ý phải rất cao.
+      example:
+        inputs:
+          capex: 4771
+          da: 3767
+          d_nwc: 869
+          nopat: 11049
+        steps:
+        - (4771 - 3767 + 869) / 11049 = 1873 / 11049 = 0.1695
+        result: RR ≈ 17.0% (case SME năm 6)
+  - id: "m10-formulas-12"
+    title: "Công thức: m10_sustainable_growth — Tăng trưởng bền vững từ tái đầu tư"
+    tags: ["công", "thức", "m10_sustainable_growth", "tăng", "trưởng", "bền", "vững", "từ", "tái", "đầu", "tư"]
+    text: |-
+      id: m10_sustainable_growth
+      name_vi: Tăng trưởng bền vững từ tái đầu tư
+      name_en: Sustainable growth g = RR x ROIC
+      expression_latex: g = RR\times ROIC
+      expression_python: rr * roic
+      excel: =RR*ROIC
+      variables:
+      - symbol: rr
+        meaning: Tỷ lệ tái đầu tư
+        unit: tỷ lệ
+      - symbol: roic
+        meaning: Lợi suất trên vốn đầu tư (return on invested capital)
+        unit: tỷ lệ
+      when_to_use: Sanity check g, hoặc suy ngược ROIC ngụ ý (ROIC = g/RR).
+      why_it_works: Mỗi đồng tái đầu tư sinh ROIC mỗi năm; phần lợi nhuận giữ lại RR nhân ROIC cho tốc độ tăng NOPAT.
+      assumptions:
+      - ROIC trên vốn mới ổn định
+      pitfalls:
+      - g dương với RR gần 0
+      - ROIC ngụ ý quá cao (>20-25%) không bền vững vĩnh viễn
+      interpretation: 'Ví dụ g=4%, RR=17% -> ROIC ngụ ý 23.6%: cao, cần thử kịch bản ROIC thấp. Về dài hạn ROIC nên hội tụ về WACC trong ngành cạnh tranh.'
+      example:
+        inputs:
+          rr: 0.4
+          roic: 0.15
+        steps:
+        - 0.4 x 0.15 = 0.06
+        result: g = 6%
+  - id: "m10-formulas-13"
+    title: "Công thức: m10_implied_roic — ROIC ngụ ý của giả định tăng trưởng"
+    tags: ["công", "thức", "m10_implied_roic", "roic", "ngụ", "của", "giả", "định", "tăng", "trưởng"]
+    text: |-
+      id: m10_implied_roic
+      name_vi: ROIC ngụ ý của giả định tăng trưởng
+      name_en: Implied ROIC
+      expression_latex: ROIC_{implied} = g / RR
+      expression_python: g / rr
+      excel: =g/RR
+      variables:
+      - symbol: g
+        meaning: Tăng trưởng dài hạn giả định
+        unit: tỷ lệ
+      - symbol: rr
+        meaning: Tỷ lệ tái đầu tư ở năm TV
+        unit: tỷ lệ
+      when_to_use: Đánh giá g và capex trong TV có nhất quán không.
+      why_it_works: Đảo công thức g = RR x ROIC.
+      assumptions:
+      - RR phản ánh trạng thái bền vững
+      pitfalls:
+      - Không so ROIC ngụ ý với ROIC lịch sử và WACC
+      interpretation: 'ROIC ngụ ý quá cao so với lịch sử/ngành: g hoặc capex TV phi thực tế.'
+      example:
+        inputs:
+          g: 0.04
+          rr: 0.1696
+        steps:
+        - 0.04 / 0.1696 = 0.2358
+        result: ROIC ngụ ý ≈ 23.6%
+  - id: "m10-formulas-14"
+    title: "Công thức: m10_discount_factor — Hệ số chiết khấu"
+    tags: ["công", "thức", "m10_discount_factor", "hệ", "số", "chiết", "khấu"]
+    text: |-
+      id: m10_discount_factor
+      name_vi: Hệ số chiết khấu
+      name_en: Discount factor
+      expression_latex: DF_t = \frac{1}{(1+WACC)^t}
+      expression_python: 1 / (1 + wacc) ** t
+      excel: =1/(1+WACC)^năm
+      variables:
+      - symbol: wacc
+        meaning: Tỷ lệ chiết khấu
+        unit: tỷ lệ
+      - symbol: t
+        meaning: 'Số năm (mid-year: t-0.5)'
+        unit: năm
+      when_to_use: Chiết khấu từng dòng tiền.
+      why_it_works: Một đồng tương lai có giá trị hiện tại thấp hơn do chi phí cơ hội vốn (m01).
+      assumptions:
+      - Dòng tiền cuối năm (trừ mid-year)
+      pitfalls:
+      - Dùng sai t cho TV (TV chiết khấu cùng hệ số năm n)
+      interpretation: 'WACC 11%, năm 3: 0.7312.'
+      example:
+        inputs:
+          wacc: 0.11
+          t: 3
+        steps:
+        - 1 / 1.11^3 = 0.7312
+        result: DF = 0.7312
+  - id: "m10-formulas-15"
+    title: "Công thức: m10_dcf_ev — Giá trị doanh nghiệp theo DCF"
+    tags: ["công", "thức", "m10_dcf_ev", "giá", "trị", "doanh", "nghiệp", "theo", "dcf"]
+    text: |-
+      id: m10_dcf_ev
+      name_vi: Giá trị doanh nghiệp theo DCF
+      name_en: DCF Enterprise Value
+      expression_latex: EV = \sum_{t=1}^{n}\frac{FCFF_t}{(1+WACC)^t} + \frac{TV}{(1+WACC)^n}
+      expression_python: sum(f / (1 + wacc) ** t for t, f in enumerate(fcff, 1)) + tv / (1 + wacc) ** len(fcff)
+      excel: =NPV(WACC,FCFF_Y1:FCFF_Yn)+TV/(1+WACC)^n
+      variables:
+      - symbol: fcff
+        meaning: Danh sách FCFF năm 1..n
+        unit: tiền
+      - symbol: wacc
+        meaning: WACC
+        unit: tỷ lệ
+      - symbol: tv
+        meaning: Terminal Value tại năm n
+        unit: tiền
+      when_to_use: Định giá nội tại hoạt động kinh doanh.
+      why_it_works: Giá trị tài sản bằng hiện giá dòng tiền nó mang lại (Fisher/Williams). Chiết khấu FCFF bằng WACC vì chủ nợ và cổ đông cùng nhận.
+      assumptions:
+      - WACC ổn định (cơ cấu vốn mục tiêu)
+      - Dòng tiền cuối năm
+      - Going concern
+      pitfalls:
+      - TV chiếm >85% -> cảnh giác
+      - Trộn FCFE với WACC
+      - Dùng WACC theo sổ sách
+      interpretation: TV/EV thường 60-80%. Đọc cùng bảng độ nhạy.
+      example:
+        inputs:
+          fcff:
+          - 140.0
+          - 165.7
+          - 198.3
+          - 233.3
+          - 280.5
+          wacc: 0.11
+          tv: 3611.4375
+        steps:
+        - PV(FCFF 1-5) = 725.8
+        - PV(TV) = 3611.44 / 1.11^5 = 2143.2
+        - EV = 725.8 + 2143.2 = 2868.96
+        result: EV ≈ 2,869 tỷ
+  - id: "m10-formulas-16"
+    title: "Công thức: m10_tv_gordon — Giá trị cuối kỳ theo Gordon Growth"
+    tags: ["công", "thức", "m10_tv_gordon", "giá", "trị", "cuối", "kỳ", "theo", "gordon", "growth"]
+    text: |-
+      id: m10_tv_gordon
+      name_vi: Giá trị cuối kỳ theo Gordon Growth
+      name_en: Terminal Value - Gordon Growth
+      expression_latex: TV = \frac{FCFF_{n+1}}{WACC-g} = \frac{FCFF_n(1+g)}{WACC-g}
+      expression_python: fcff_n * (1 + g) / (wacc - g)
+      excel: =FCFF_Y5*(1+g)/(WACC-g)
+      variables:
+      - symbol: fcff_n
+        meaning: FCFF năm cuối (hoặc đã chuẩn hóa bền vững)
+        unit: tiền
+      - symbol: g
+        meaning: Tăng trưởng dài hạn
+        unit: tỷ lệ
+      - symbol: wacc
+        meaning: WACC
+        unit: tỷ lệ
+      when_to_use: Mặc định cho TV khi doanh nghiệp đạt trạng thái ổn định.
+      why_it_works: 'Tổng cấp số nhân lùi vô hạn: dòng tiền tăng đều g, chiết khấu WACC, hội tụ khi WACC > g (Gordon 1959).'
+      assumptions:
+      - WACC > g
+      - g <= tăng trưởng GDP danh nghĩa (thường 2-4%)
+      - FCFF_{n+1} đã chuẩn hóa
+      pitfalls:
+      - WACC-g quá nhỏ làm TV bùng nổ
+      - Dùng FCFF năm cuối chưa chuẩn hóa capex
+      interpretation: Kết quả là giá trị tại năm n; phải chiết khấu về hiện tại bằng DF năm n.
+      example:
+        inputs:
+          fcff_n: 280.5
+          g: 0.03
+          wacc: 0.11
+        steps:
+        - 280.5 x 1.03 = 288.9
+        - 288.9 / 0.08 = 3611.4
+        result: TV = 3,611 tỷ; PV(TV) = 3611.4/1.11^5 = 2,143 tỷ
+  - id: "m10-formulas-17"
+    title: "Công thức: m10_tv_exit_multiple — Giá trị cuối kỳ theo Exit Multiple"
+    tags: ["công", "thức", "m10_tv_exit_multiple", "giá", "trị", "cuối", "kỳ", "theo", "exit", "multiple"]
+    text: |-
+      id: m10_tv_exit_multiple
+      name_vi: Giá trị cuối kỳ theo Exit Multiple
+      name_en: Terminal Value - Exit Multiple
+      expression_latex: TV = EBITDA_n\times Multiple_{exit}
+      expression_python: ebitda_n * exit_multiple
+      excel: =EBITDA_Yn*ExitMultiple
+      variables:
+      - symbol: ebitda_n
+        meaning: EBITDA năm cuối
+        unit: tiền
+      - symbol: exit_multiple
+        meaning: EV/EBITDA kỳ vọng khi thoát (từ Comps)
+        unit: x
+      when_to_use: Kiểm tra chéo Gordon hoặc khi gắn với giả định bán doanh nghiệp.
+      why_it_works: Giả định ở năm n doanh nghiệp được định giá như peer tương đương.
+      assumptions:
+      - Multiple hiện tại còn đúng ở tương lai
+      pitfalls:
+      - Vòng tròn (định giá tương đối trong nội tại)
+      - Dùng multiple đỉnh chu kỳ
+      interpretation: Phải hội tụ với Gordon; chênh lệch lớn nghĩa là một trong hai giả định có vấn đề.
+      example:
+        inputs:
+          ebitda_n: 474
+          exit_multiple: 8.0
+        steps:
+        - 474 x 8 = 3,792
+        result: TV = 3,792 tỷ
+  - id: "m10-formulas-18"
+    title: "Công thức: m10_implied_multiple_from_tv — Multiple ngụ ý từ TV Gordon"
+    tags: ["công", "thức", "m10_implied_multiple_from_tv", "multiple", "ngụ", "từ", "tv", "gordon"]
+    text: |-
+      id: m10_implied_multiple_from_tv
+      name_vi: Multiple ngụ ý từ TV Gordon
+      name_en: Implied exit multiple
+      expression_latex: Multiple_{implied} = TV / EBITDA_n
+      expression_python: tv / ebitda_n
+      excel: =TV/EBITDA_Yn
+      variables:
+      - symbol: tv
+        meaning: TV Gordon
+        unit: tiền
+      - symbol: ebitda_n
+        meaning: EBITDA năm cuối
+        unit: tiền
+      when_to_use: Cross-check TV.
+      why_it_works: Quy đổi giả định tăng trưởng thành ngôn ngữ thị trường.
+      assumptions:
+      - EBITDA năm n tiêu biểu
+      pitfalls:
+      - So với multiple ngành không cùng định nghĩa EBITDA
+      interpretation: 'Case công nghệ: 7.6x - hợp lý so với ngành.'
+      example:
+        inputs:
+          tv: 3611.4375
+          ebitda_n: 474
+        steps:
+        - 3611.44 / 474 = 7.62
+        result: 7.6x
+  - id: "m10-formulas-19"
+    title: "Công thức: m10_implied_g_from_exit — Tăng trưởng ngụ ý từ Exit Multiple"
+    tags: ["công", "thức", "m10_implied_g_from_exit", "tăng", "trưởng", "ngụ", "từ", "exit", "multiple"]
+    text: |-
+      id: m10_implied_g_from_exit
+      name_vi: Tăng trưởng ngụ ý từ Exit Multiple
+      name_en: Implied perpetual growth from exit multiple
+      expression_latex: g_{implied} = \frac{TV\times WACC - FCFF_n}{TV + FCFF_n}
+      expression_python: (tv * wacc - fcff_n) / (tv + fcff_n)
+      excel: =(TV*WACC-FCFF_n)/(TV+FCFF_n)
+      variables:
+      - symbol: tv
+        meaning: TV theo exit multiple
+        unit: tiền
+      - symbol: wacc
+        meaning: WACC
+        unit: tỷ lệ
+      - symbol: fcff_n
+        meaning: FCFF năm cuối
+        unit: tiền
+      when_to_use: Kiểm tra exit multiple có ngụ ý tăng trưởng vĩnh viễn phi thực tế không.
+      why_it_works: Giải TV = FCFF(1+g)/(WACC-g) theo g.
+      assumptions:
+      - FCFF_n đã chuẩn hóa
+      pitfalls:
+      - g ngụ ý >= GDP danh nghĩa nghĩa là multiple quá cao
+      interpretation: g ngụ ý nên nằm trong 2-4%.
+      example:
+        inputs:
+          tv: 3792
+          wacc: 0.11
+          fcff_n: 280.5
+        steps:
+        - (3792 x 0.11 - 280.5) / (3792 + 280.5) = 136.62 / 4072.5 = 0.03355
+        result: g ngụ ý ≈ 3.35%
+  - id: "m10-formulas-20"
+    title: "Công thức: m10_tv_share — Tỷ trọng TV trong EV"
+    tags: ["công", "thức", "m10_tv_share", "tỷ", "trọng", "tv", "trong", "ev"]
+    text: |-
+      id: m10_tv_share
+      name_vi: Tỷ trọng TV trong EV
+      name_en: PV(TV) share of EV
+      expression_latex: Share_{TV} = \frac{PV(TV)}{EV}
+      expression_python: pv_tv / ev
+      excel: =PV_TV/EV
+      variables:
+      - symbol: pv_tv
+        meaning: Hiện giá TV
+        unit: tiền
+      - symbol: ev
+        meaning: EV theo DCF
+        unit: tiền
+      when_to_use: Đánh giá mức phụ thuộc giả định dài hạn.
+      why_it_works: Tỷ trọng cao nghĩa là phần lớn giá trị đến từ giả định sau kỳ dự phóng.
+      assumptions: []
+      pitfalls:
+      - Chấp nhận >85% mà không xử lý
+      interpretation: 60-80% điển hình; 50% là mức thấp; >85% cần kéo dài dự phóng 7-10 năm, mô hình 3 giai đoạn, kiểm tra chéo exit multiple.
+      example:
+        inputs:
+          pv_tv: 2143.2
+          ev: 2869.0
+        steps:
+        - 2143.2 / 2869.0 = 0.747
+        result: 74.7%
+  - id: "m10-formulas-21"
+    title: "Công thức: m10_mid_year — Quy ước giữa năm"
+    tags: ["công", "thức", "m10_mid_year", "quy", "ước", "giữa", "năm"]
+    text: |-
+      id: m10_mid_year
+      name_vi: Quy ước giữa năm
+      name_en: Mid-year convention
+      expression_latex: EV_{mid} \approx EV_{end}\times(1+WACC)^{0.5}
+      expression_python: ev_end * (1 + wacc) ** 0.5
+      excel: =NPV-based; dùng mũ (t-0.5)
+      variables:
+      - symbol: ev_end
+        meaning: EV với dòng tiền cuối năm
+        unit: tiền
+      - symbol: wacc
+        meaning: WACC
+        unit: tỷ lệ
+      when_to_use: Dòng tiền phát sinh đều trong năm.
+      why_it_works: Tiền về trung bình giữa năm nên chiết khấu t-0.5, giá trị cao hơn ~ (1+WACC)^0.5 (xấp xỉ, chính xác cho phần dòng tiền Gordon).
+      assumptions:
+      - Dòng tiền đều
+      - Exit multiple TV thường không điều chỉnh mid-year
+      pitfalls:
+      - Áp mid-year lên TV exit multiple
+      interpretation: 'WACC 11%: cao hơn ~5.4%.'
+      example:
+        inputs:
+          ev_end: 2868.96
+          wacc: 0.11
+        steps:
+        - 1.11^0.5 = 1.0536
+        - 2868.96 x 1.0536 = 3022.6
+        result: ≈ 3,023 tỷ (+5.4%)
+  - id: "m10-formulas-22"
+    title: "Công thức: m10_tv_sensitivity — Độ nhạy của TV với WACC-g"
+    tags: ["công", "thức", "m10_tv_sensitivity", "độ", "nhạy", "của", "tv", "với", "wacc"]
+    text: |-
+      id: m10_tv_sensitivity
+      name_vi: Độ nhạy của TV với WACC-g
+      name_en: TV sensitivity to (WACC-g)
+      expression_latex: \frac{TV_{new}}{TV_{old}} = \frac{WACC_{old}-g_{old}}{WACC_{new}-g_{new}}
+      expression_python: (wacc_old - g_old) / (wacc_new - g_new)
+      excel: =(WACC0-g0)/(WACC1-g1)
+      variables:
+      - symbol: wacc_old
+        meaning: WACC cũ
+        unit: tỷ lệ
+      - symbol: g_old
+        meaning: g cũ
+        unit: tỷ lệ
+      - symbol: wacc_new
+        meaning: WACC mới
+        unit: tỷ lệ
+      - symbol: g_new
+        meaning: g mới
+        unit: tỷ lệ
+      when_to_use: Ước lượng nhanh độ nhạy mà không dựng lại bảng.
+      why_it_works: TV tỷ lệ nghịch với (WACC-g) khi FCFF_{n+1} không đổi.
+      assumptions:
+      - FCFF_{n+1} không đổi
+      pitfalls:
+      - Khi g đổi, FCFF_{n+1} và capex chuẩn hóa cũng đổi
+      interpretation: 'WACC 11%->10%, g=3%: mẫu số 8%->7%, TV tăng 14.3%.'
+      example:
+        inputs:
+          wacc_old: 0.11
+          g_old: 0.03
+          wacc_new: 0.1
+          g_new: 0.03
+        steps:
+        - 0.08 / 0.07 = 1.1429
+        result: TV tăng 14.3%
+  - id: "m10-formulas-23"
+    title: "Công thức: m10_beta_relever — Beta đòn bẩy (relever)"
+    tags: ["công", "thức", "m10_beta_relever", "beta", "đòn", "bẩy", "relever"]
+    text: |-
+      id: m10_beta_relever
+      name_vi: Beta đòn bẩy (relever)
+      name_en: Relevered beta (Hamada)
+      expression_latex: \beta_L = \beta_U\times[1+(1-T)\times D/E]
+      expression_python: beta_u * (1 + (1 - tax_rate) * d_over_e)
+      excel: =BetaU*(1+(1-T)*D/E)
+      variables:
+      - symbol: beta_u
+        meaning: Beta không đòn bẩy của ngành
+        unit: hệ số
+      - symbol: tax_rate
+        meaning: Thuế suất
+        unit: tỷ lệ
+      - symbol: d_over_e
+        meaning: Tỷ lệ Nợ/Vốn chủ mục tiêu
+        unit: tỷ lệ
+      when_to_use: Áp beta ngành vào cơ cấu vốn mục tiêu của công ty.
+      why_it_works: Rủi ro kinh doanh (beta unlevered) cộng rủi ro tài chính do nợ làm tăng biến động lợi nhuận cổ đông.
+      assumptions:
+      - Beta nợ = 0
+      - D/E mục tiêu
+      pitfalls:
+      - Dùng beta levered của peer trực tiếp mà không unlever-relever
+      interpretation: Beta > 1 nghĩa là rủi ro hệ thống cao hơn thị trường.
+      example:
+        inputs:
+          beta_u: 0.85
+          tax_rate: 0.2
+          d_over_e: 0.42857142857
+        steps:
+        - D/E = 30/70 = 0.4286
+        - 1 + 0.8 x 0.4286 = 1.3429
+        - 0.85 x 1.3429 = 1.1414
+        result: βL = 1.1414
+  - id: "m10-formulas-24"
+    title: "Công thức: m10_beta_unlever — Beta không đòn bẩy"
+    tags: ["công", "thức", "m10_beta_unlever", "beta", "không", "đòn", "bẩy"]
+    text: |-
+      id: m10_beta_unlever
+      name_vi: Beta không đòn bẩy
+      name_en: Unlevered beta
+      expression_latex: \beta_U = \frac{\beta_L}{1+(1-T)\times D/E}
+      expression_python: beta_l / (1 + (1 - tax_rate) * d_over_e)
+      excel: =BetaL/(1+(1-T)*D/E)
+      variables:
+      - symbol: beta_l
+        meaning: Beta có đòn bẩy quan sát
+        unit: hệ số
+      - symbol: tax_rate
+        meaning: Thuế suất
+        unit: tỷ lệ
+      - symbol: d_over_e
+        meaning: D/E của công ty/peer quan sát
+        unit: tỷ lệ
+      when_to_use: Chuẩn hóa beta peer về trạng thái không nợ trước khi lấy trung bình.
+      why_it_works: Đảo công thức Hamada để loại ảnh hưởng đòn bẩy riêng của từng peer.
+      assumptions:
+      - Như relever
+      pitfalls:
+      - Trộn D/E sổ sách với thị trường
+      interpretation: Dùng median beta unlevered của peer rồi relever theo D/E mục tiêu.
+      example:
+        inputs:
+          beta_l: 1.1414285714
+          tax_rate: 0.2
+          d_over_e: 0.42857142857
+        steps:
+        - 1.1414 / 1.3429 = 0.85
+        result: βU = 0.85
+  - id: "m10-formulas-25"
+    title: "Công thức: m10_ke_buildup — Chi phí vốn chủ (CAPM + build-up)"
+    tags: ["công", "thức", "m10_ke_buildup", "chi", "phí", "vốn", "chủ", "capm", "build", "up"]
+    text: |-
+      id: m10_ke_buildup
+      name_vi: Chi phí vốn chủ (CAPM + build-up)
+      name_en: Cost of Equity (CAPM + Size Premium)
+      expression_latex: K_e = r_f + \beta_L\times ERP + Size
+      expression_python: rf + beta_l * erp + size
+      excel: =rf+BetaL*ERP+Size
+      variables:
+      - symbol: rf
+        meaning: Lãi suất phi rủi ro (TPCP 10 năm)
+        unit: tỷ lệ
+      - symbol: beta_l
+        meaning: Beta relevered
+        unit: hệ số
+      - symbol: erp
+        meaning: Phần bù rủi ro thị trường
+        unit: tỷ lệ
+      - symbol: size
+        meaning: Phần bù quy mô/rủi ro đặc thù (SME 2-5%)
+        unit: tỷ lệ
+      when_to_use: Tính Ke cho DCF, đặc biệt cho SME.
+      why_it_works: CAPM gốc dựa trên công ty lớn niêm yết; SME nhỏ, thiếu thông tin, phụ thuộc chủ, khó thoái vốn nên nhà đầu tư đòi thêm lợi suất.
+      assumptions:
+      - rf, ERP cùng đồng tiền với dòng tiền
+      - Size premium là giả định tham khảo cần điều chỉnh
+      pitfalls:
+      - 'Đếm trùng rủi ro: cộng size vào Ke rồi lại chiết khấu DLOM nặng'
+      - Trừ rủi ro vào dòng tiền lần nữa
+      interpretation: 'Case SME: Ke 15.13%.'
+      example:
+        inputs:
+          rf: 0.03
+          beta_l: 1.1414285714
+          erp: 0.08
+          size: 0.03
+        steps:
+        - 0.03 + 1.1414 x 0.08 + 0.03 = 0.1513
+        result: Ke = 15.13%
+  - id: "m10-formulas-26"
+    title: "Công thức: m10_wacc — Chi phí vốn bình quân gia quyền"
+    tags: ["công", "thức", "m10_wacc", "chi", "phí", "vốn", "bình", "quân", "gia", "quyền"]
+    text: |-
+      id: m10_wacc
+      name_vi: Chi phí vốn bình quân gia quyền
+      name_en: WACC
+      expression_latex: WACC = w_d K_d(1-T) + w_e K_e
+      expression_python: wd * kd * (1 - tax_rate) + we * ke
+      excel: =wd*kd*(1-T)+we*ke
+      variables:
+      - symbol: wd
+        meaning: Tỷ trọng nợ mục tiêu (giá trị thị trường)
+        unit: tỷ lệ
+      - symbol: kd
+        meaning: Chi phí nợ trước thuế
+        unit: tỷ lệ
+      - symbol: tax_rate
+        meaning: Thuế suất
+        unit: tỷ lệ
+      - symbol: we
+        meaning: Tỷ trọng vốn chủ = 1-wd
+        unit: tỷ lệ
+      - symbol: ke
+        meaning: Chi phí vốn chủ
+        unit: tỷ lệ
+      when_to_use: Tỷ lệ chiết khấu cho FCFF.
+      why_it_works: Lợi suất đòi hỏi trung bình của chủ nợ và cổ đông, đã tính lá chắn thuế của nợ; do đó FCFF dùng thuế 'không vay'.
+      assumptions:
+      - Cơ cấu vốn mục tiêu ổn định
+      - Dùng giá trị thị trường
+      pitfalls:
+      - Dùng tỷ trọng sổ sách
+      - Dùng Kd lịch sử thay vì lãi vay biên hiện tại
+      interpretation: 'Case SME: 12.99%. Tăng 1% WACC giảm Equity ~13% (case SME).'
+      example:
+        inputs:
+          wd: 0.3
+          kd: 0.1
+          tax_rate: 0.2
+          we: 0.7
+          ke: 0.15131428571
+        steps:
+        - 0.3 x 0.10 x 0.8 = 0.024
+        - 0.7 x 0.1513 = 0.1059
+        - WACC = 0.1299
+        result: WACC = 12.99%
+  - id: "m10-formulas-27"
+    title: "Công thức: m10_apv — Giá trị hiện tại điều chỉnh"
+    tags: ["công", "thức", "m10_apv", "giá", "trị", "hiện", "tại", "điều", "chỉnh"]
+    text: |-
+      id: m10_apv
+      name_vi: Giá trị hiện tại điều chỉnh
+      name_en: Adjusted Present Value (APV)
+      expression_latex: APV = V_{unlevered} + PV(Tax\,Shield) \quad PV_{TS}=T\times D\ (\text{nợ vĩnh viễn})
+      expression_python: v_unlevered + tax_rate * debt
+      excel: =Vunlevered+T*D
+      variables:
+      - symbol: v_unlevered
+        meaning: Giá trị khi không có nợ (chiết khấu bằng Ku)
+        unit: tiền
+      - symbol: tax_rate
+        meaning: Thuế suất
+        unit: tỷ lệ
+      - symbol: debt
+        meaning: Nợ vĩnh viễn
+        unit: tiền
+      when_to_use: Cơ cấu vốn thay đổi mạnh theo thời gian (LBO).
+      why_it_works: Tách giá trị hoạt động khỏi hiệu ứng tài trợ; WACC cố định không mô tả được D/E thay đổi.
+      assumptions:
+      - Nợ vĩnh viễn (dạng đơn giản)
+      - Chiết khấu lá chắn thuế bằng Kd
+      pitfalls:
+      - Đếm trùng lá chắn thuế nếu dùng WACC song song
+      interpretation: 'Nợ 300, T=20%: lá chắn thuế 60.'
+      example:
+        inputs:
+          v_unlevered: 1000
+          tax_rate: 0.2
+          debt: 300
+        steps:
+        - PV tax shield = 0.2 x 300 = 60
+        - APV = 1000 + 60 = 1060
+        result: APV = 1,060
+  - id: "m10-formulas-28"
+    title: "Công thức: m10_ddm_gordon — Mô hình chiết khấu cổ tức Gordon"
+    tags: ["công", "thức", "m10_ddm_gordon", "mô", "hình", "chiết", "khấu", "cổ", "tức", "gordon"]
+    text: |-
+      id: m10_ddm_gordon
+      name_vi: Mô hình chiết khấu cổ tức Gordon
+      name_en: Dividend Discount Model (Gordon)
+      expression_latex: P_0 = \frac{D_0(1+g)}{K_e - g}
+      expression_python: d0 * (1 + g) / (ke - g)
+      excel: =D0*(1+g)/(Ke-g)
+      variables:
+      - symbol: d0
+        meaning: Cổ tức gần nhất
+        unit: tiền/cổ phiếu
+      - symbol: g
+        meaning: Tăng trưởng cổ tức bền vững
+        unit: tỷ lệ
+      - symbol: ke
+        meaning: Chi phí vốn chủ
+        unit: tỷ lệ
+      when_to_use: Ngân hàng, bảo hiểm (khó xác định FCFF).
+      why_it_works: Giá cổ phiếu là hiện giá cổ tức (Williams 1938) với tăng trưởng đều (Gordon 1959).
+      assumptions:
+      - Ke > g
+      - Chính sách cổ tức ổn định
+      pitfalls:
+      - Dùng cho công ty không chia cổ tức mà không điều chỉnh
+      interpretation: Cổ tức tăng 5%, Ke 12%.
+      example:
+        inputs:
+          d0: 2000
+          g: 0.05
+          ke: 0.12
+        steps:
+        - 2000 x 1.05 = 2100
+        - 2100 / 0.07 = 30,000
+        result: P0 = 30,000 VND
+  - id: "m10-formulas-29"
+    title: "Công thức: m10_multiple — Tính multiple"
+    tags: ["công", "thức", "m10_multiple", "tính", "multiple"]
+    text: |-
+      id: m10_multiple
+      name_vi: Tính multiple
+      name_en: Valuation multiple
+      expression_latex: Multiple = \frac{Value}{Metric}\quad(EV/EBITDA,\ EV/Revenue,\ P/E=Equity/NI)
+      expression_python: value / metric
+      excel: =EV/EBITDA
+      variables:
+      - symbol: value
+        meaning: EV (nếu chỉ tiêu trước lãi vay) hoặc Equity (nếu sau lãi vay)
+        unit: tiền
+      - symbol: metric
+        meaning: EBITDA, EBIT, Revenue hoặc Net Income, Book Value
+        unit: tiền
+      when_to_use: Lập bảng Comps/Precedent; tính multiple bên mua đã trả.
+      why_it_works: Giá trên một đơn vị chỉ tiêu, giống giá/m2.
+      assumptions:
+      - Khớp tử-mẫu
+      - Cùng định nghĩa EBITDA (có/không SBC)
+      pitfalls:
+      - Ghép EV với Net Income
+      - Dùng EBITDA âm (ghi NM, loại)
+      interpretation: 'Case Autonomy: EV/Revenue 11.1x. P/E case SME peer: 11.0x.'
+      example:
+        inputs:
+          value: 11.1
+          metric: 0.7
+        steps:
+        - 11.1 / 0.7 = 15.86
+        result: EV/Revenue ≈ 15.9x (Autonomy theo doanh thu HP cho là thực)
+  - id: "m10-formulas-30"
+    title: "Công thức: m10_median_multiple — Trung vị multiple"
+    tags: ["công", "thức", "m10_median_multiple", "trung", "vị", "multiple"]
+    text: |-
+      id: m10_median_multiple
+      name_vi: Trung vị multiple
+      name_en: Median multiple
+      expression_latex: M_{med} = \text{median}(M_1,\dots,M_k)
+      expression_python: median(multiples)
+      excel: =MEDIAN(range)
+      variables:
+      - symbol: multiples
+        meaning: Danh sách multiple hợp lệ (loại NM)
+        unit: x
+      when_to_use: Tổng hợp peer set.
+      why_it_works: Bền vững với outlier (ví dụ 25x do hype).
+      assumptions:
+      - Peer set hợp lý
+      pitfalls:
+      - Đếm NM vào median
+      - Cherry-picking peer
+      interpretation: Luôn báo cáo median và range.
+      example:
+        inputs:
+          multiples:
+          - 0.5
+          - 0.8
+          - 1.5
+          - 2.5
+        steps:
+        - '4 giá trị: (0.8 + 1.5)/2 = 1.15'
+        result: median = 1.15x
+  - id: "m10-formulas-31"
+    title: "Công thức: m10_implied_ev_multiple — EV ngụ ý từ multiple"
+    tags: ["công", "thức", "m10_implied_ev_multiple", "ev", "ngụ", "từ", "multiple"]
+    text: |-
+      id: m10_implied_ev_multiple
+      name_vi: EV ngụ ý từ multiple
+      name_en: Implied EV from multiple
+      expression_latex: EV = Metric_{target}\times Multiple
+      expression_python: metric * multiple
+      excel: =EBITDA*Multiple
+      variables:
+      - symbol: metric
+        meaning: Chỉ tiêu công ty mục tiêu (đã chuẩn hóa)
+        unit: tiền
+      - symbol: multiple
+        meaning: Median multiple (đã chiết khấu nếu cần)
+        unit: x
+      when_to_use: Bước áp dụng Comps/Precedent; rule of thumb SME.
+      why_it_works: 'Định luật một giá: tài sản giống nhau nên giá/đơn vị gần nhau.'
+      assumptions:
+      - Target tương đương peer về tăng trưởng, biên, rủi ro
+      pitfalls:
+      - Dùng EBITDA chưa chuẩn hóa
+      interpretation: 'Case: EV/Revenue 1.15x và EV/EBITDA 10.5x cho 5,750 và 4,200 (chênh 37% vì biên 8% thấp hơn peer).'
+      example:
+        inputs:
+          metric: 400
+          multiple: 10.5
+        steps:
+        - 400 x 10.5 = 4,200
+        result: EV = 4,200 tỷ
+  - id: "m10-formulas-32"
+    title: "Công thức: m10_multiple_discount — Chiết khấu multiple (quy mô/thanh khoản)"
+    tags: ["công", "thức", "m10_multiple_discount", "chiết", "khấu", "multiple", "quy", "mô", "thanh", "khoản"]
+    text: |-
+      id: m10_multiple_discount
+      name_vi: Chiết khấu multiple (quy mô/thanh khoản)
+      name_en: Multiple discount (size / DLOM)
+      expression_latex: M_{adj} = M_{peer}\times(1 - d)
+      expression_python: multiple * (1 - discount)
+      excel: =Multiple*(1-Discount)
+      variables:
+      - symbol: multiple
+        meaning: Median multiple peer
+        unit: x
+      - symbol: discount
+        meaning: Tỷ lệ chiết khấu (15-30% cho tư nhân/nhỏ)
+        unit: tỷ lệ
+      when_to_use: Áp multiple peer niêm yết lớn cho công ty tư nhân nhỏ.
+      why_it_works: Peer thanh khoản cao, quy mô lớn; người mua công ty nhỏ đòi bù thiếu thanh khoản và rủi ro.
+      assumptions:
+      - Không đếm trùng với size premium trong Ke
+      pitfalls:
+      - Nhân thẳng multiple niêm yết lớn
+      interpretation: 8x với 20% -> 6.4x.
+      example:
+        inputs:
+          multiple: 8.0
+          discount: 0.2
+        steps:
+        - 8 x 0.8 = 6.4
+        - EV = 250 x 6.4 = 1,600
+        - Equity = 1,600 - 400 + 100 = 1,300
+        result: 6.4x; Equity 1,300 tỷ
+  - id: "m10-formulas-33"
+    title: "Công thức: m10_justified_ev_ebitda — EV/EBITDA ngụ ý từ nền tảng"
+    tags: ["công", "thức", "m10_justified_ev_ebitda", "ev", "ebitda", "ngụ", "từ", "nền", "tảng"]
+    text: |-
+      id: m10_justified_ev_ebitda
+      name_vi: EV/EBITDA ngụ ý từ nền tảng
+      name_en: Justified EV/EBITDA
+      expression_latex: EV/EBITDA \approx \frac{(FCFF_1/EBITDA_1)}{WACC-g}
+      expression_python: fcff_ebitda * (1 + g) / (wacc - g)
+      excel: =FCFFtoEBITDA*(1+g)/(WACC-g)
+      variables:
+      - symbol: fcff_ebitda
+        meaning: Tỷ lệ chuyển hóa FCFF/EBITDA hiện tại
+        unit: tỷ lệ
+      - symbol: g
+        meaning: Tăng trưởng
+        unit: tỷ lệ
+      - symbol: wacc
+        meaning: WACC
+        unit: tỷ lệ
+      when_to_use: Giải thích vì sao multiple các công ty khác nhau.
+      why_it_works: 'Multiple là DCF nén: tăng trưởng cao, WACC thấp, tái đầu tư ít (FCFF/EBITDA cao) làm multiple cao.'
+      assumptions:
+      - Tăng trưởng đều
+      pitfalls:
+      - Kết luận thị trường định giá sai mà chưa kiểm tra fundamentals
+      interpretation: 'Case công nghệ: 280.5/474 x 1.03/0.08 = 7.62x.'
+      example:
+        inputs:
+          fcff_ebitda: 0.59177215
+          g: 0.03
+          wacc: 0.11
+        steps:
+        - 0.5918 x 1.03 / 0.08 = 7.62
+        result: 7.6x
+  - id: "m10-formulas-34"
+    title: "Công thức: m10_pe_implied — P/E ngụ ý"
+    tags: ["công", "thức", "m10_pe_implied", "ngụ"]
+    text: |-
+      id: m10_pe_implied
+      name_vi: P/E ngụ ý
+      name_en: Implied P/E and equity from P/E
+      expression_latex: P/E = \frac{Equity}{Net\,Income}\qquad Equity = P/E\times NI
+      expression_python: pe * net_income
+      excel: =PE*NetIncome
+      variables:
+      - symbol: pe
+        meaning: P/E trung vị peer (đã chiết khấu nếu cần)
+        unit: x
+      - symbol: net_income
+        meaning: Lợi nhuận sau thuế
+        unit: tiền
+      when_to_use: Đối chiếu EV/EBITDA, DN trưởng thành, lợi nhuận ổn định.
+      why_it_works: Equity multiple khớp chỉ tiêu sau lãi vay.
+      assumptions:
+      - Đòn bẩy tương tự peer
+      pitfalls:
+      - Peer khác đòn bẩy làm P/E không so sánh được
+      interpretation: 'Case SME: 11.0 x 4,560 = 50,160; sau chiết khấu 15% = 42,636.'
+      example:
+        inputs:
+          pe: 9.35
+          net_income: 4560
+        steps:
+        - 11.0 x 0.85 = 9.35
+        - 9.35 x 4,560 = 42,636
+        result: Equity = 42,636 triệu
+  - id: "m10-formulas-35"
+    title: "Công thức: m10_dlom_dloc — Chiết khấu thanh khoản/kiểm soát"
+    tags: ["công", "thức", "m10_dlom_dloc", "chiết", "khấu", "thanh", "khoản", "kiểm", "soát"]
+    text: |-
+      id: m10_dlom_dloc
+      name_vi: Chiết khấu thanh khoản/kiểm soát
+      name_en: DLOM and DLOC adjustment
+      expression_latex: V_{adj} = V\times(1-DLOM)\times(1-DLOC)
+      expression_python: value * (1 - dlom) * (1 - dloc)
+      excel: =Value*(1-DLOM)*(1-DLOC)
+      variables:
+      - symbol: value
+        meaning: Giá trị gốc
+        unit: tiền
+      - symbol: dlom
+        meaning: Chiết khấu thiếu thanh khoản 15-30%
+        unit: tỷ lệ
+      - symbol: dloc
+        meaning: Chiết khấu thiếu kiểm soát 15-35% (chỉ khi bán thiểu số)
+        unit: tỷ lệ
+      when_to_use: Định giá phần vốn của công ty không niêm yết hoặc cổ phần thiểu số.
+      why_it_works: Người mua cổ phần khó bán lại và không có quyền quyết định đòi giá thấp hơn giá trị 100% có kiểm soát.
+      assumptions:
+      - Dạng nhân (compound) là quy ước phổ biến; mức chiết khấu cần xác nhận theo chuẩn thẩm định giá
+      pitfalls:
+      - Cộng thẳng hai chiết khấu thành 40-50% mà không kiểm tra
+      - Đếm trùng với size premium
+      interpretation: 100 với DLOM 20% và DLOC 15% -> 68.
+      example:
+        inputs:
+          value: 100
+          dlom: 0.2
+          dloc: 0.15
+        steps:
+        - 100 x 0.8 x 0.85 = 68
+        result: '68'
+  - id: "m10-formulas-36"
+    title: "Công thức: m10_control_premium — Phụ trội kiểm soát"
+    tags: ["công", "thức", "m10_control_premium", "phụ", "trội", "kiểm", "soát"]
+    text: |-
+      id: m10_control_premium
+      name_vi: Phụ trội kiểm soát
+      name_en: Control Premium
+      expression_latex: CP = \frac{Offer - Market}{Market}
+      expression_python: (offer - market) / market
+      excel: =(Offer-Market)/Market
+      variables:
+      - symbol: offer
+        meaning: Giá chào mua
+        unit: tiền/cổ phiếu hoặc tổng
+      - symbol: market
+        meaning: Giá thị trường trước thông báo (chưa bị rò rỉ)
+        unit: cùng đơn vị
+      when_to_use: Đo phụ trội của thương vụ; ước tính giá kiểm soát từ Comps.
+      why_it_works: Phần chênh lệch là giá bên mua trả cho quyền kiểm soát và kỳ vọng synergy.
+      assumptions:
+      - Giá thị trường trước thông báo là giá sạch
+      pitfalls:
+      - Dùng giá sau khi tin đồn lan
+      interpretation: Thông thường 20-50% (Precedent median ví dụ 31.5%); 64% (Autonomy) cần synergy rất lớn.
+      example:
+        inputs:
+          offer: 130
+          market: 100
+        steps:
+        - (130 - 100)/100 = 0.30
+        result: 30%
+  - id: "m10-formulas-37"
+    title: "Công thức: m10_synergy_pv — Hiện giá synergy"
+    tags: ["công", "thức", "m10_synergy_pv", "hiện", "giá", "synergy"]
+    text: |-
+      id: m10_synergy_pv
+      name_vi: Hiện giá synergy
+      name_en: PV of synergy
+      expression_latex: PV_{syn} = \frac{Rev_{syn}\times m\times(1-T)}{WACC-g}
+      expression_python: rev_syn * margin * (1 - tax_rate) / (wacc - g)
+      excel: =RevSyn*Margin*(1-T)/(WACC-g)
+      variables:
+      - symbol: rev_syn
+        meaning: Doanh thu synergy hằng năm
+        unit: tiền
+      - symbol: margin
+        meaning: Biên lợi nhuận hoạt động của doanh thu synergy
+        unit: tỷ lệ
+      - symbol: tax_rate
+        meaning: Thuế suất
+        unit: tỷ lệ
+      - symbol: wacc
+        meaning: WACC
+        unit: tỷ lệ
+      - symbol: g
+        meaning: Tăng trưởng dài hạn của synergy
+        unit: tỷ lệ
+      when_to_use: Kiểm tra xem phụ trội có xứng đáng không.
+      why_it_works: Synergy là dòng tiền tăng thêm vĩnh viễn; hiện giá bằng perpetuity tăng trưởng.
+      assumptions:
+      - Synergy đạt kỳ vọng và không bị trừ chi phí tích hợp (nên trừ riêng)
+      pitfalls:
+      - Synergy lạc quan; bỏ chi phí tích hợp; trả hết synergy cho bên bán
+      interpretation: 'Case LinkedIn: 2.3 x 0.3 x 0.8 / 0.06 = 9.2 tỷ USD.'
+      example:
+        inputs:
+          rev_syn: 2.3
+          margin: 0.3
+          tax_rate: 0.2
+          wacc: 0.09
+          g: 0.03
+        steps:
+        - 2.3 x 0.3 x 0.8 = 0.552
+        - 0.552 / 0.06 = 9.2
+        result: PV synergy = 9.2 tỷ USD
+  - id: "m10-formulas-38"
+    title: "Công thức: m10_deal_value_creation — Giá trị tạo ra cho bên mua"
+    tags: ["công", "thức", "m10_deal_value_creation", "giá", "trị", "tạo", "ra", "cho", "bên", "mua"]
+    text: |-
+      id: m10_deal_value_creation
+      name_vi: Giá trị tạo ra cho bên mua
+      name_en: Acquirer value creation (PV synergy - premium)
+      expression_latex: NPV_{buyer} = PV_{syn} - (Price - Market_{unaffected})
+      expression_python: pv_syn - (price - market_unaffected)
+      excel: =PVsyn-(Price-Unaffected)
+      variables:
+      - symbol: pv_syn
+        meaning: Hiện giá synergy
+        unit: tiền
+      - symbol: price
+        meaning: Giá mua (equity)
+        unit: tiền
+      - symbol: market_unaffected
+        meaning: Vốn hóa trước thông báo
+        unit: tiền
+      when_to_use: Quyết định có trả phụ trội không.
+      why_it_works: Bên mua chỉ tạo giá trị khi synergy vượt phần trả thêm; nếu không, giá trị chuyển sang cổ đông bên bán.
+      assumptions:
+      - Giá thị trường sạch phản ánh giá trị độc lập
+      pitfalls:
+      - Chấp nhận biên an toàn mỏng mà không có kế hoạch thực thi
+      interpretation: Dương nhỏ = biên an toàn mỏng, phụ thuộc thực thi; âm = phá hủy giá trị (Autonomy).
+      example:
+        inputs:
+          pv_syn: 9.2
+          price: 26.2
+          market_unaffected: 17.58
+        steps:
+        - Phụ trội = 26.2 - 17.58 = 8.62
+        - 9.2 - 8.62 = 0.58
+        result: +0.58 tỷ USD
+  - id: "m10-formulas-39"
+    title: "Công thức: m10_normalized_ebitda — EBITDA chuẩn hóa"
+    tags: ["công", "thức", "m10_normalized_ebitda", "ebitda", "chuẩn", "hóa"]
+    text: |-
+      id: m10_normalized_ebitda
+      name_vi: EBITDA chuẩn hóa
+      name_en: Normalized EBITDA
+      expression_latex: EBITDA_{norm} = EBITDA_{rep} + Personal - (Salary_{market} - Salary_{owner}) \pm Non\text{-}recurring \pm RelatedParty
+      expression_python: ebitda_rep + personal - (salary_market - salary_owner) + nonrec_loss - nonrec_gain + related_adj
+      excel: =EBITDA+Personal-(MktSalary-OwnerSalary)+NonRecLoss-NonRecGain+RelatedAdj
+      variables:
+      - symbol: ebitda_rep
+        meaning: EBITDA báo cáo
+        unit: tiền
+      - symbol: personal
+        meaning: Chi phí cá nhân của chủ chạy qua công ty (cộng lại)
+        unit: tiền
+      - symbol: salary_market
+        meaning: Lương thị trường cho vị trí quản lý
+        unit: tiền
+      - symbol: salary_owner
+        meaning: Lương chủ đang nhận
+        unit: tiền
+      - symbol: nonrec_loss
+        meaning: Chi phí bất thường một lần (cộng lại)
+        unit: tiền
+      - symbol: nonrec_gain
+        meaning: Thu nhập bất thường một lần (trừ ra)
+        unit: tiền
+      - symbol: related_adj
+        meaning: Điều chỉnh giao dịch bên liên quan về giá thị trường (+/-)
+        unit: tiền
+      when_to_use: Mọi định giá SME trước khi nhân multiple hoặc dự phóng.
+      why_it_works: Giá trị gắn với khả năng sinh lời bền vững dưới chủ mới, không phải số kế toán của chủ cũ.
+      assumptions:
+      - Mỗi điều chỉnh có chứng từ
+      pitfalls:
+      - Điều chỉnh thiên lợi cho bên bán mà không chứng minh
+      - Quên trừ lương quản lý thị trường khi chủ không nhận lương
+      interpretation: 'Mây Xanh: 1,200 - 240 = 960.'
+      example:
+        inputs:
+          ebitda_rep: 1200
+          personal: 0
+          salary_market: 240
+          salary_owner: 0
+          nonrec_loss: 0
+          nonrec_gain: 0
+          related_adj: 0
+        steps:
+        - 1200 + 0 - (240 - 0) = 960
+        result: EBITDA chuẩn hóa = 960 triệu
+  - id: "m10-formulas-40"
+    title: "Công thức: m10_sde — Thu nhập tùy ý của chủ"
+    tags: ["công", "thức", "m10_sde", "thu", "nhập", "tùy", "của", "chủ"]
+    text: |-
+      id: m10_sde
+      name_vi: Thu nhập tùy ý của chủ
+      name_en: Seller's Discretionary Earnings
+      expression_latex: SDE = EBITDA + Salary_{owner} + Personal\,expenses
+      expression_python: ebitda + salary_owner + personal
+      excel: =EBITDA+OwnerSalary+Personal
+      variables:
+      - symbol: ebitda
+        meaning: EBITDA
+        unit: tiền
+      - symbol: salary_owner
+        meaning: Lương chủ nhận
+        unit: tiền
+      - symbol: personal
+        meaning: Chi phí cá nhân qua công ty
+        unit: tiền
+      when_to_use: Quán ăn/cà phê đơn lẻ, DN rất nhỏ chủ làm toàn thời gian (1.5-3x SDE tham khảo).
+      why_it_works: Người mua mua cả công việc điều hành lẫn lợi nhuận; SDE là tổng thu nhập cho một chủ-điều hành.
+      assumptions:
+      - Chủ làm toàn thời gian
+      pitfalls:
+      - Dùng SDE multiple cho EBITDA (và ngược lại)
+      interpretation: Multiple SDE nhỏ hơn multiple EBITDA vì SDE chưa trừ lương quản lý.
+      example:
+        inputs:
+          ebitda: 500
+          salary_owner: 240
+          personal: 60
+        steps:
+        - 500 + 240 + 60 = 800
+        result: SDE = 800 triệu
+  - id: "m10-formulas-41"
+    title: "Công thức: m10_football_weighted — Giá trị khuyến nghị theo trọng số"
+    tags: ["công", "thức", "m10_football_weighted", "giá", "trị", "khuyến", "nghị", "theo", "trọng", "số"]
+    text: |-
+      id: m10_football_weighted
+      name_vi: Giá trị khuyến nghị theo trọng số
+      name_en: Football Field weighted value
+      expression_latex: V_{rec} = \sum w_i\times Mid_i
+      expression_python: sum(w * m for w, m in zip(weights, mids))
+      excel: =SUMPRODUCT(Mid,Weights)
+      variables:
+      - symbol: weights
+        meaning: Trọng số từng phương pháp (tổng 100%; DCF 40-60%, Comps 20-30%, Precedent 20-30%)
+        unit: tỷ lệ
+      - symbol: mids
+        meaning: Điểm giữa Equity Value từng phương pháp
+        unit: tiền
+      when_to_use: Chốt điểm tham chiếu đàm phán sau khi có từng phương pháp.
+      why_it_works: Phương pháp tin cậy hơn (dự phóng dựa đơn hàng đã ký) có trọng số lớn hơn; giảm rủi ro dựa vào một phương pháp.
+      assumptions:
+      - Trọng số có lý do ghi rõ
+      pitfalls:
+      - Trọng số tùy ý để ra số mong muốn
+      - Trộn EV với Equity khi lấy trung bình
+      interpretation: Chỉ là điểm tham chiếu; kết luận luôn là khoảng.
+      example:
+        inputs:
+          weights:
+          - 0.5
+          - 0.25
+          - 0.25
+          mids:
+          - 61935
+          - 46200
+          - 56500
+        steps:
+        - 0.5 x 61,935 = 30,967.5
+        - 0.25 x 46,200 = 11,550
+        - 0.25 x 56,500 = 14,125
+        - Tổng = 56,642.5
+        result: 56,642.5 triệu (case Bao Bì Xanh Việt)
+  - id: "m10-formulas-42"
+    title: "Công thức: m10_offer_gap — Chênh lệch giá chào so với giá trị khuyến nghị"
+    tags: ["công", "thức", "m10_offer_gap", "chênh", "lệch", "giá", "chào", "so", "với", "trị", "khuyến", "nghị"]
+    text: |-
+      id: m10_offer_gap
+      name_vi: Chênh lệch giá chào so với giá trị khuyến nghị
+      name_en: Offer gap
+      expression_latex: Gap = \frac{Offer}{V_{rec}} - 1
+      expression_python: offer / v_rec - 1
+      excel: =Offer/Vrec-1
+      variables:
+      - symbol: offer
+        meaning: Giá bên mua chào
+        unit: tiền
+      - symbol: v_rec
+        meaning: Giá trị khuyến nghị
+        unit: tiền
+      when_to_use: Đánh giá mức chào và chiến lược đàm phán.
+      why_it_works: Định lượng khoảng cách thương lượng.
+      assumptions:
+      - Cùng cơ sở (đều là Equity)
+      pitfalls:
+      - So Equity với EV
+      interpretation: -15.3% nghĩa là chào thấp hơn 15.3%; nên chào cao, mục tiêu thực tế, walk away rõ ràng.
+      example:
+        inputs:
+          offer: 48000
+          v_rec: 56642.5
+        steps:
+        - 48,000 / 56,642.5 - 1 = -0.1526
+        result: -15.3%
+  - id: "m10-formulas-43"
+    title: "Công thức: m10_post_money — Post-money và tỷ lệ nhà đầu tư"
+    tags: ["công", "thức", "m10_post_money", "post", "money", "và", "tỷ", "lệ", "nhà", "đầu", "tư"]
+    text: |-
+      id: m10_post_money
+      name_vi: Post-money và tỷ lệ nhà đầu tư
+      name_en: Pre-money / Post-money and investor stake
+      expression_latex: Post = Pre + I \qquad Stake_{inv} = \frac{I}{Post}
+      expression_python: investment / (pre_money + investment)
+      excel: =Investment/(PreMoney+Investment)
+      variables:
+      - symbol: pre_money
+        meaning: Định giá trước khi nhận vốn
+        unit: tiền
+      - symbol: investment
+        meaning: Vốn đầu tư mới
+        unit: tiền
+      when_to_use: Gọi vốn startup/SME.
+      why_it_works: Vốn mới làm tăng giá trị công ty bằng đúng số tiền; nhà đầu tư sở hữu phần tương ứng trên tổng giá trị sau.
+      assumptions:
+      - Không có pha loãng ESOP pool ngoài vòng
+      pitfalls:
+      - Nhầm pre với post
+      - Quên pha loãng các vòng sau
+      interpretation: Pre 40 tỷ, vốn 10 tỷ -> post 50 tỷ, quỹ 20%, chủ 80% (80% x 50 = 40 = pre).
+      example:
+        inputs:
+          pre_money: 40
+          investment: 10
+        steps:
+        - Post = 50
+        - 10 / 50 = 0.20
+        - Kiểm tra 0.8 x 50 = 40
+        result: Quỹ nhận 20%, chủ còn 80%
+  - id: "m10-formulas-44"
+    title: "Công thức: m10_vc_method — Phương pháp VC"
+    tags: ["công", "thức", "m10_vc_method", "phương", "pháp", "vc"]
+    text: |-
+      id: m10_vc_method
+      name_vi: Phương pháp VC
+      name_en: VC Method
+      expression_latex: Post = \frac{Exit\,Value}{Target\,Multiple}\qquad Pre = Post - I
+      expression_python: exit_value / target_multiple - investment
+      excel: =ExitValue/TargetMultiple-Investment
+      variables:
+      - symbol: exit_value
+        meaning: Giá trị thoát ước tính năm thứ 5
+        unit: tiền
+      - symbol: target_multiple
+        meaning: Bội số sinh lời mục tiêu (10x-20x giai đoạn sớm)
+        unit: x
+      - symbol: investment
+        meaning: Vốn đầu tư
+        unit: tiền
+      when_to_use: Startup chưa lợi nhuận, để đàm phán.
+      why_it_works: 'Nhà đầu tư làm ngược từ giá thoát: phải nhân vốn lên target_multiple, nên giá trị hôm nay tối đa là exit/target.'
+      assumptions:
+      - Không pha loãng vòng sau (nếu có, nhân retention)
+      pitfalls:
+      - Tin tuyệt đối
+      - Exit value lạc quan
+      interpretation: Exit 400, target 10x -> post 40; vốn 10 -> pre 30, quỹ 25%.
+      example:
+        inputs:
+          exit_value: 400
+          target_multiple: 10
+          investment: 10
+        steps:
+        - Post = 400/10 = 40
+        - Pre = 40 - 10 = 30
+        - Stake = 10/40 = 25%
+        result: Pre 30, Post 40, quỹ 25%
+  - id: "m10-formulas-45"
+    title: "Công thức: m10_implied_return — Tỷ suất sinh lời ngụ ý của thương vụ"
+    tags: ["công", "thức", "m10_implied_return", "tỷ", "suất", "sinh", "lời", "ngụ", "của", "thương", "vụ"]
+    text: |-
+      id: m10_implied_return
+      name_vi: Tỷ suất sinh lời ngụ ý của thương vụ
+      name_en: Implied annual return (post-deal check)
+      expression_latex: r = \left(\frac{V_{exit}}{Price}\right)^{1/n}-1
+      expression_python: (v_exit / price) ** (1 / n) - 1
+      excel: =(Vexit/Price)^(1/n)-1
+      variables:
+      - symbol: v_exit
+        meaning: Giá trị ở năm n
+        unit: tiền
+      - symbol: price
+        meaning: Giá đã trả
+        unit: tiền
+      - symbol: n
+        meaning: Số năm
+        unit: năm
+      when_to_use: Hậu kiểm thương vụ; CAGR doanh thu.
+      why_it_works: Tìm lãi kép làm 'price' thành 'v_exit' sau n năm.
+      assumptions:
+      - Không dòng tiền trung gian
+      pitfalls:
+      - Ước tính giá trị hiện tại không kiểm chứng
+      interpretation: 'LinkedIn: EV/Rev 5x x 16 tỷ = 80 tỷ -> 15.0%/năm; cần 3.3x để đạt 9%.'
+      example:
+        inputs:
+          v_exit: 80
+          price: 26.2
+          n: 8
+        steps:
+        - (80/26.2)^(1/8) - 1 = 0.1497
+        result: ≈ 15.0%/năm
+  - id: "m10-formulas-46"
+    title: "Công thức: m10_required_exit_value — Giá trị thoát tối thiểu để đạt lợi suất yêu cầu"
+    tags: ["công", "thức", "m10_required_exit_value", "giá", "trị", "thoát", "tối", "thiểu", "để", "đạt", "lợi", "suất"]
+    text: |-
+      id: m10_required_exit_value
+      name_vi: Giá trị thoát tối thiểu để đạt lợi suất yêu cầu
+      name_en: Required exit value
+      expression_latex: V_{req} = Price\times(1+r)^n
+      expression_python: price * (1 + r) ** n
+      excel: =Price*(1+r)^n
+      variables:
+      - symbol: price
+        meaning: Giá đã trả
+        unit: tiền
+      - symbol: r
+        meaning: Lợi suất yêu cầu
+        unit: tỷ lệ
+      - symbol: n
+        meaning: Số năm
+        unit: năm
+      when_to_use: Đặt ngưỡng hoà vốn kinh tế của thương vụ.
+      why_it_works: Giá trị tương lai của số tiền bỏ ra với lãi yêu cầu.
+      assumptions:
+      - Như trên
+      pitfalls:
+      - Dùng cost of equity thay cho lợi suất đòi hỏi của dự án
+      interpretation: 26.2 tỷ USD với 9%/8 năm -> 52.2 tỷ USD, khoảng 3.3x doanh thu 16 tỷ.
+      example:
+        inputs:
+          price: 26.2
+          r: 0.09
+          n: 8
+        steps:
+        - 26.2 x 1.09^8 = 52.2
+        result: 52.2 tỷ USD
+  - id: "m10-formulas-47"
+    title: "Công thức: m10_scenario_weighted — Giá trị kỳ vọng theo kịch bản"
+    tags: ["công", "thức", "m10_scenario_weighted", "giá", "trị", "kỳ", "vọng", "theo", "kịch", "bản"]
+    text: |-
+      id: m10_scenario_weighted
+      name_vi: Giá trị kỳ vọng theo kịch bản
+      name_en: Probability-weighted scenario value
+      expression_latex: E[V] = \sum p_i V_i
+      expression_python: sum(p * v for p, v in zip(probs, values))
+      excel: =SUMPRODUCT(Probs,Values)
+      variables:
+      - symbol: probs
+        meaning: Xác suất kịch bản (thận trọng, cơ sở, lạc quan), tổng 1
+        unit: tỷ lệ
+      - symbol: values
+        meaning: Giá trị từng kịch bản
+        unit: tiền
+      when_to_use: Chuẩn bị đàm phán 3 kịch bản.
+      why_it_works: Gộp bất định thành kỳ vọng và cho thấy phân phối.
+      assumptions:
+      - Xác suất có căn cứ
+      pitfalls:
+      - Xác suất chủ quan để ép kết quả
+      interpretation: Luôn kèm range, không chỉ trung bình.
+      example:
+        inputs:
+          probs:
+          - 0.25
+          - 0.5
+          - 0.25
+          values:
+          - 40
+          - 55
+          - 70
+        steps:
+        - 10 + 27.5 + 17.5 = 55
+        result: E[V] = 55
+  - id: "m10-procedures-1"
+    title: "Quy trình: m10_proc_full_valuation — Định giá doanh nghiệp từ đầu đến cuối (quy trình 8 bước)"
+    tags: ["quy", "trình", "m10_proc_full_valuation", "định", "giá", "doanh", "nghiệp", "từ", "đầu", "đến", "cuối", "bước"]
+    text: |-
+      id: m10_proc_full_valuation
+      name: Định giá doanh nghiệp từ đầu đến cuối (quy trình 8 bước)
+      steps:
+      - '1. Xác định mục đích (M&A, gọi vốn, thuế...) và cơ sở: 100% kiểm soát hay thiểu số; going concern hay thanh lý. Mục đích quyết định có áp control premium/DLOM/DLOC không.'
+      - '2. Hiểu doanh nghiệp: mô hình kinh doanh, ngành, động lực tăng trưởng, khách hàng/nhà cung cấp tập trung, phụ thuộc chủ.'
+      - '3. Chuẩn hóa số liệu quá khứ 3 năm (m10_normalized_ebitda): cộng chi phí cá nhân, trừ lương thị trường, loại khoản bất thường, đưa giao dịch bên liên quan về giá thị trường; ghi chứng từ. Đối chiếu thuế, ngân hàng, kiểm toán.'
+      - 4. Chạy DCF (proc_dcf), Comps (proc_comps), Precedent (proc_precedent). Chạy DCF 'mù' trước khi nhìn thị trường để tránh anchoring.
+      - 5. Đặt cạnh nhau bằng Football Field, quan sát vùng chồng lấn.
+      - '6. Equity Bridge: trừ nợ vay, ưu đãi, thiểu số, thuê tài chính; cộng tiền thừa, tài sản phi hoạt động.'
+      - '7. Điều chỉnh: control premium nếu dùng Comps cho mục đích kiểm soát; DLOM/DLOC; pha loãng (TSM).'
+      - 8. Kết luận bằng KHOẢNG + điểm tham chiếu (m10_football_weighted) + giá chào/mục tiêu/walk away + giả định chính + rủi ro.
+      outputs: Football Field, Equity Value range, giá trị/cổ phần, tập giả định, kịch bản.
+  - id: "m10-procedures-2"
+    title: "Quy trình: m10_proc_dcf — DCF 6 bước (FCFF-WACC)"
+    tags: ["quy", "trình", "m10_proc_dcf", "dcf", "bước", "fcff", "wacc"]
+    text: |-
+      id: m10_proc_dcf
+      name: DCF 6 bước (FCFF-WACC)
+      steps:
+      - '1. Dự phóng 5-10 năm: Revenue (tăng trưởng giảm dần) -> EBIT (biên) -> NOPAT = EBIT x (1-T) -> + D&A - CAPEX - ΔNWC = FCFF. Chi tiết năm 1-3, đơn giản hóa năm 4-5; bám đơn hàng, hợp đồng, lịch sử.'
+      - '2. Tính WACC: unlever beta peer, relever theo D/E mục tiêu, Ke = rf + βL x ERP (+ size), Kd(1-T), tỷ trọng giá trị thị trường (m03).'
+      - '3. Tính TV: chuẩn hóa FCFF năm n+1 (capex > D&A đủ cho g, ΔNWC theo g), Gordon với g <= GDP danh nghĩa; kiểm tra chéo bằng exit multiple.'
+      - '4. Chiết khấu: PV(FCFF) + PV(TV) = EV (nhớ chiết khấu TV bằng hệ số năm n).'
+      - '5. Sanity checks: tỷ trọng TV (60-80%; >85% cảnh giác), multiple ngụ ý, g = RR x ROIC, FCFF/EBITDA hợp lý.'
+      - 6. Equity Bridge, chia cho số cổ phiếu pha loãng; lập bảng độ nhạy WACC +-1-2% x g +-1% (tính lại toàn bộ mô hình mỗi ô, kể cả FCFF chuẩn hóa).
+      outputs: EV, Equity, giá/cổ phiếu, TV share, bảng độ nhạy, khoảng DCF.
+  - id: "m10-procedures-3"
+    title: "Quy trình: m10_proc_comps — Trading Comps"
+    tags: ["quy", "trình", "m10_proc_comps", "trading", "comps"]
+    text: |-
+      id: m10_proc_comps
+      name: Trading Comps
+      steps:
+      - '1. Chọn peer: cùng ngành, quy mô, tăng trưởng, biên; liệt kê tất cả peer hợp lý, giải thích lý do loại (tránh cherry-picking).'
+      - 2. Tính EV từng peer (m10_ev_from_equity) và các multiple phù hợp ngành (EV/EBITDA mặc định; EV/Revenue nếu chưa lãi; P/B ngân hàng...). Loại giá trị âm (NM).
+      - 3. Lấy median và range; so forward vs trailing.
+      - 4. Chiết khấu quy mô/thanh khoản 15-30% nếu target là tư nhân nhỏ (không đếm trùng size premium).
+      - 5. Nhân với chỉ tiêu target đã chuẩn hóa (khớp tử-mẫu) -> EV; qua Equity Bridge -> Equity.
+      - 6. Dùng ít nhất 2 multiple và giải thích chênh lệch (khác biên, tăng trưởng).
+      outputs: Bảng peer, median, khoảng EV/Equity.
+  - id: "m10-procedures-4"
+    title: "Quy trình: m10_proc_precedent — Precedent Transactions"
+    tags: ["quy", "trình", "m10_proc_precedent", "precedent", "transactions"]
+    text: |-
+      id: m10_proc_precedent
+      name: Precedent Transactions
+      steps:
+      - 1. Tìm thương vụ M&A cùng ngành, gần đây; tách người mua chiến lược và tài chính.
+      - 2. Tính multiple giao dịch (đã gồm control premium), ghi bối cảnh thị trường và synergy.
+      - 3. Median/range; điều chỉnh thời điểm và synergy riêng của người mua.
+      - 4. Nhân với EBITDA target đã chuẩn hóa -> EV; Equity Bridge. Không cần chiết khấu control thêm; với SME tư nhân thường không cần DLOM thêm nếu deal cũng là công ty tư nhân.
+      outputs: Khoảng giá có phụ trội kiểm soát; tham chiếu cho bên bán 100%.
+  - id: "m10-procedures-5"
+    title: "Quy trình: m10_proc_sme_sale — Định giá và đàm phán bán SME"
+    tags: ["quy", "trình", "m10_proc_sme_sale", "định", "giá", "và", "đàm", "phán", "bán", "sme"]
+    text: |-
+      id: m10_proc_sme_sale
+      name: Định giá và đàm phán bán SME
+      steps:
+      - 1. Chuẩn hóa EBITDA; cân nhắc SDE cho DN rất nhỏ.
+      - 2. WACC có size premium 2-5% và key-person.
+      - 3. DCF + Comps (chiết khấu) + Precedent + rule-of-thumb cross-check.
+      - 4. Football Field, giá khuyến nghị theo trọng số (DCF 50%, Comps 25%, Precedent 25%).
+      - 5. Chuẩn bị 3 kịch bản, bảng độ nhạy, data room (BCTC 3 năm, hợp đồng lớn, khách hàng, sổ phụ ngân hàng).
+      - 6. Xác định giá chào (vùng cao), giá mục tiêu, walk away (gần đáy khoảng DCF trừ một phần thương lượng).
+      - 7. Làm rõ EV vs Equity, earn-out, đảm bảo, không cạnh tranh, giữ cổ phần của chủ, vai trò chuyển giao.
+      outputs: Hồ sơ giá, chiến lược đàm phán.
+  - id: "m10-procedures-6"
+    title: "Quy trình: m10_proc_acquirer_check — Kiểm tra bên mua có nên trả phụ trội"
+    tags: ["quy", "trình", "m10_proc_acquirer_check", "kiểm", "tra", "bên", "mua", "có", "nên", "trả", "phụ", "trội"]
+    text: |-
+      id: m10_proc_acquirer_check
+      name: Kiểm tra bên mua có nên trả phụ trội
+      steps:
+      - 1. Tính premium tuyệt đối = giá mua - vốn hóa trước thông báo.
+      - '2. Ước tính synergy cụ thể: doanh thu, chi phí tiết kiệm, biên, thuế; trừ chi phí tích hợp.'
+      - 3. PV synergy (m10_synergy_pv) so với premium.
+      - '4. Kiểm tra chất lượng doanh thu/biên (red flags: biên quá tốt, phần cứng bán lại, tập trung khách hàng, chuẩn kế toán khác).'
+      - 5. Chạy Comps độc lập với số liệu đã điều chỉnh; nếu giá > mọi phương pháp, walk away.
+      outputs: Quyết định trả/không trả; giá tối đa = vốn hóa độc lập + PV synergy chia sẻ hợp lý.
+  - id: "m10-procedures-7"
+    title: "Quy trình: m10_proc_fundraise — Định giá gọi vốn"
+    tags: ["quy", "trình", "m10_proc_fundraise", "định", "giá", "gọi", "vốn"]
+    text: |-
+      id: m10_proc_fundraise
+      name: Định giá gọi vốn
+      steps:
+      - '1. Chọn phương pháp: DCF/multiple nếu có lãi; VC method nếu chưa.'
+      - 2. Tính pre-money, post-money, tỷ lệ nhường; kiểm tra pha loãng vòng sau và ESOP.
+      - 3. Chuẩn bị kịch bản đàm phán.
+      outputs: Pre/post, % cổ phần.
+  - id: "m10-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu mục đích là bán 100% hoặc nắm quyền chi phối thì tham chiếu Precedent (có control premium); nếu…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "mục", "đích", "là", "bán", "100", "hoặc", "nắm"]
+    text: |-
+      Nếu mục đích là bán 100% hoặc nắm quyền chi phối thì tham chiếu Precedent (có control premium); nếu là cổ đông thiểu số thì tham chiếu Comps.
+  - id: "m10-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu dùng EV multiple thì chỉ tiêu phải trước lãi vay (EBITDA, EBIT, Revenue); nếu dùng Equity multi…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dùng", "ev", "multiple", "thì", "chỉ", "tiêu", "phải"]
+    text: |-
+      Nếu dùng EV multiple thì chỉ tiêu phải trước lãi vay (EBITDA, EBIT, Revenue); nếu dùng Equity multiple thì chỉ tiêu sau lãi vay (Net Income, EPS, Book).
+  - id: "m10-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu FCFF thì chiết khấu bằng WACC; nếu FCFE hoặc cổ tức thì chiết khấu bằng Ke. Không trộn."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "fcff", "thì", "chiết", "khấu", "bằng", "wacc", "fcfe"]
+    text: |-
+      Nếu FCFF thì chiết khấu bằng WACC; nếu FCFE hoặc cổ tức thì chiết khấu bằng Ke. Không trộn.
+  - id: "m10-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu công ty chưa có lãi (SaaS, biotech) thì dùng EV/Revenue; nếu ngân hàng/tài chính thì P/B và DDM…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "công", "ty", "chưa", "có", "lãi", "saas", "biotech"]
+    text: |-
+      Nếu công ty chưa có lãi (SaaS, biotech) thì dùng EV/Revenue; nếu ngân hàng/tài chính thì P/B và DDM; nếu ngành vốn nặng D&A lớn thì EV/EBIT; nếu DN trưởng thành lợi nhuận ổn định thì P/E, EV/EBITDA.
+  - id: "m10-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu WACC <= g thì mô hình vô nghĩa: hạ g hoặc xem lại WACC. Nếu g > tăng trưởng GDP danh nghĩa thì …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "wacc", "thì", "mô", "hình", "vô", "nghĩa", "hạ"]
+    text: |-
+      Nếu WACC <= g thì mô hình vô nghĩa: hạ g hoặc xem lại WACC. Nếu g > tăng trưởng GDP danh nghĩa thì giảm g (thường 2-4%).
+  - id: "m10-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu TV chiếm >85% EV thì kéo dài dự phóng 7-10 năm hoặc mô hình 3 giai đoạn, kiểm tra chéo exit mul…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "tv", "chiếm", "85", "ev", "thì", "kéo", "dài"]
+    text: |-
+      Nếu TV chiếm >85% EV thì kéo dài dự phóng 7-10 năm hoặc mô hình 3 giai đoạn, kiểm tra chéo exit multiple, bảng độ nhạy.
+  - id: "m10-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu multiple ngụ ý từ Gordon lệch xa multiple ngành thì xem lại g/WACC hoặc capex chuẩn hóa."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "multiple", "ngụ", "từ", "gordon", "lệch", "xa", "ngành"]
+    text: |-
+      Nếu multiple ngụ ý từ Gordon lệch xa multiple ngành thì xem lại g/WACC hoặc capex chuẩn hóa.
+  - id: "m10-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu ROIC ngụ ý (g/RR) quá cao so với lịch sử/ngành thì tăng capex TV hoặc giảm g."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "roic", "ngụ", "rr", "quá", "cao", "so", "với"]
+    text: |-
+      Nếu ROIC ngụ ý (g/RR) quá cao so với lịch sử/ngành thì tăng capex TV hoặc giảm g.
+  - id: "m10-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu target là tư nhân nhỏ mà dùng multiple peer niêm yết lớn thì chiết khấu 15-30% (DLOM/quy mô)."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "target", "là", "tư", "nhân", "nhỏ", "mà", "dùng"]
+    text: |-
+      Nếu target là tư nhân nhỏ mà dùng multiple peer niêm yết lớn thì chiết khấu 15-30% (DLOM/quy mô).
+  - id: "m10-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu đã cộng size premium vào Ke thì không chiết khấu DLOM cho cùng yếu tố rủi ro."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "đã", "cộng", "size", "premium", "vào", "ke", "thì"]
+    text: |-
+      Nếu đã cộng size premium vào Ke thì không chiết khấu DLOM cho cùng yếu tố rủi ro.
+  - id: "m10-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu EBITDA âm hoặc outlier cực đoan thì ghi NM, loại khỏi median."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "ebitda", "âm", "hoặc", "outlier", "cực", "đoan", "thì"]
+    text: |-
+      Nếu EBITDA âm hoặc outlier cực đoan thì ghi NM, loại khỏi median.
+  - id: "m10-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu chỉ có một phương pháp cho kết quả thì chưa kết luận; tối thiểu 2 phương pháp và Football Field."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chỉ", "có", "một", "phương", "pháp", "cho", "kết"]
+    text: |-
+      Nếu chỉ có một phương pháp cho kết quả thì chưa kết luận; tối thiểu 2 phương pháp và Football Field.
+  - id: "m10-decision_rules-13"
+    title: "Quy tắc quyết định: Nếu các phương pháp cho khoảng không chồng lấn thì tìm nguyên nhân (peer khác biệt, giả định DCF qu…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "các", "phương", "pháp", "cho", "khoảng", "không", "chồng"]
+    text: |-
+      Nếu các phương pháp cho khoảng không chồng lấn thì tìm nguyên nhân (peer khác biệt, giả định DCF quá lạc quan) trước khi lấy trung bình.
+  - id: "m10-decision_rules-14"
+    title: "Quy tắc quyết định: Nếu PV synergy < premium thì không trả phụ trội (hoặc trả ít hơn); nếu PV synergy >= premium nhưng …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "pv", "synergy", "premium", "thì", "không", "trả", "phụ"]
+    text: |-
+      Nếu PV synergy < premium thì không trả phụ trội (hoặc trả ít hơn); nếu PV synergy >= premium nhưng biên mỏng thì chỉ làm khi có kế hoạch thực thi và đảm bảo.
+  - id: "m10-decision_rules-15"
+    title: "Quy tắc quyết định: Nếu premium > 50% hoặc EBITDA margin cao bất thường so với ngành (vd 40% so với 20-30%) thì kích ho…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "premium", "50", "hoặc", "ebitda", "margin", "cao", "bất"]
+    text: |-
+      Nếu premium > 50% hoặc EBITDA margin cao bất thường so với ngành (vd 40% so với 20-30%) thì kích hoạt DD chuyên sâu về chất lượng doanh thu.
+  - id: "m10-decision_rules-16"
+    title: "Quy tắc quyết định: Nếu cơ cấu vốn thay đổi mạnh (LBO) thì dùng APV; nếu doanh nghiệp là ngân hàng thì DDM/Excess Retur…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cơ", "cấu", "vốn", "thay", "đổi", "mạnh", "lbo"]
+    text: |-
+      Nếu cơ cấu vốn thay đổi mạnh (LBO) thì dùng APV; nếu doanh nghiệp là ngân hàng thì DDM/Excess Return.
+  - id: "m10-decision_rules-17"
+    title: "Quy tắc quyết định: Nếu giá chào bên mua thấp hơn đáy bảng độ nhạy DCF thì dùng bảng độ nhạy làm công cụ đàm phán."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "chào", "bên", "mua", "thấp", "hơn", "đáy"]
+    text: |-
+      Nếu giá chào bên mua thấp hơn đáy bảng độ nhạy DCF thì dùng bảng độ nhạy làm công cụ đàm phán.
+  - id: "m10-decision_rules-18"
+    title: "Quy tắc quyết định: Nếu chủ là key person thì cân nhắc earn-out, ở lại tư vấn 1-2 năm, thanh toán chậm, đổi lấy giá cao…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chủ", "là", "key", "person", "thì", "cân", "nhắc"]
+    text: |-
+      Nếu chủ là key person thì cân nhắc earn-out, ở lại tư vấn 1-2 năm, thanh toán chậm, đổi lấy giá cao hơn.
+  - id: "m10-decision_rules-19"
+    title: "Quy tắc quyết định: Nếu dự phóng 'hockey stick' không bám đơn hàng/lịch sử thì cắt giảm hoặc dùng kịch bản thận trọng l…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dự", "phóng", "hockey", "stick", "không", "bám", "đơn"]
+    text: |-
+      Nếu dự phóng 'hockey stick' không bám đơn hàng/lịch sử thì cắt giảm hoặc dùng kịch bản thận trọng làm base.
+  - id: "m10-decision_rules-20"
+    title: "Quy tắc quyết định: Nếu quy tắc ngón tay cái (multiple SME) cho kết quả lệch DCF thì dùng làm cross-check, không thay t…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "ngón", "tay", "cái", "multiple", "sme", "cho", "kết"]
+    text: |-
+      Nếu quy tắc ngón tay cái (multiple SME) cho kết quả lệch DCF thì dùng làm cross-check, không thay thế DCF.
+  - id: "m10-decision_rules-21"
+    title: "Quy tắc quyết định: Nếu định giá giữa năm tài chính thì dùng stub period; nếu dòng tiền đều trong năm thì cân nhắc mid-…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "giữa", "năm", "tài", "chính", "thì", "dùng"]
+    text: |-
+      Nếu định giá giữa năm tài chính thì dùng stub period; nếu dòng tiền đều trong năm thì cân nhắc mid-year.
+  - id: "m10-benchmarks-1"
+    title: "Chuẩn so sánh: Terminal growth g"
+    tags: ["chuẩn", "so", "sánh", "terminal", "growth"]
+    text: |-
+      metric: Terminal growth g
+      value: 2-4%, không vượt GDP danh nghĩa
+      context: Gordon Growth; case SME dùng 4%
+      confidence: medium
+  - id: "m10-benchmarks-2"
+    title: "Chuẩn so sánh: Tỷ trọng PV(TV)/EV"
+    tags: ["chuẩn", "so", "sánh", "tỷ", "trọng", "pv", "tv", "ev"]
+    text: |-
+      metric: Tỷ trọng PV(TV)/EV
+      value: 60-80% điển hình; cảnh giác >85%; >50% thường
+      context: DCF 5 năm
+      confidence: medium
+  - id: "m10-benchmarks-3"
+    title: "Chuẩn so sánh: Số năm dự phóng"
+    tags: ["chuẩn", "so", "sánh", "số", "năm", "dự", "phóng"]
+    text: |-
+      metric: Số năm dự phóng
+      value: 5-10 năm
+      context: DCF
+      confidence: medium
+  - id: "m10-benchmarks-4"
+    title: "Chuẩn so sánh: Control premium"
+    tags: ["chuẩn", "so", "sánh", "control", "premium"]
+    text: |-
+      metric: Control premium
+      value: 20-50%
+      context: M&A tham khảo (ví dụ Precedent median 31.5%; LinkedIn ~50%; Autonomy ~64%)
+      confidence: medium
+  - id: "m10-benchmarks-5"
+    title: "Chuẩn so sánh: DLOM"
+    tags: ["chuẩn", "so", "sánh", "dlom"]
+    text: |-
+      metric: DLOM
+      value: 15-30%
+      context: Công ty không niêm yết
+      confidence: low
+  - id: "m10-benchmarks-6"
+    title: "Chuẩn so sánh: DLOC"
+    tags: ["chuẩn", "so", "sánh", "dloc"]
+    text: |-
+      metric: DLOC
+      value: 15-35%
+      context: Cổ phần thiểu số
+      confidence: low
+  - id: "m10-benchmarks-7"
+    title: "Chuẩn so sánh: Size premium / key-person trong Ke"
+    tags: ["chuẩn", "so", "sánh", "size", "premium", "key", "person", "trong", "ke"]
+    text: |-
+      metric: Size premium / key-person trong Ke
+      value: 2-5%
+      context: SME, giả định tham khảo, cần xác nhận
+      confidence: low
+  - id: "m10-benchmarks-8"
+    title: "Chuẩn so sánh: rf VN (TPCP 10 năm)"
+    tags: ["chuẩn", "so", "sánh", "rf", "vn", "tpcp", "10", "năm"]
+    text: |-
+      metric: rf VN (TPCP 10 năm)
+      value: ~3.0% (làm tròn trong case)
+      context: Giả định case SME; cần cập nhật số liệu hiện hành
+      confidence: low
+  - id: "m10-benchmarks-9"
+    title: "Chuẩn so sánh: ERP thị trường mới nổi VN"
+    tags: ["chuẩn", "so", "sánh", "erp", "thị", "trường", "mới", "nổi", "vn"]
+    text: |-
+      metric: ERP thị trường mới nổi VN
+      value: ~8.0%
+      context: Giả định case SME; Damodaran có dữ liệu cập nhật
+      confidence: low
+  - id: "m10-benchmarks-10"
+    title: "Chuẩn so sánh: Thuế TNDN"
+    tags: ["chuẩn", "so", "sánh", "thuế", "tndn"]
+    text: |-
+      metric: Thuế TNDN
+      value: 20%
+      context: Dùng trong case; cần xác nhận quy định hiện hành
+      confidence: medium
+  - id: "m10-benchmarks-11"
+    title: "Chuẩn so sánh: Multiple SME - quán ăn/cà phê đơn lẻ"
+    tags: ["chuẩn", "so", "sánh", "multiple", "sme", "quán", "ăn", "cà", "phê", "đơn", "lẻ"]
+    text: |-
+      metric: Multiple SME - quán ăn/cà phê đơn lẻ
+      value: 1.5-3x SDE
+      context: Rule of thumb không có nguồn chính thức
+      confidence: low
+  - id: "m10-benchmarks-12"
+    title: "Chuẩn so sánh: Multiple SME - chuỗi F&B nhỏ 3-10 điểm"
+    tags: ["chuẩn", "so", "sánh", "multiple", "sme", "chuỗi", "nhỏ", "10", "điểm"]
+    text: |-
+      metric: Multiple SME - chuỗi F&B nhỏ 3-10 điểm
+      value: 3-5x EBITDA
+      context: Rule of thumb
+      confidence: low
+  - id: "m10-benchmarks-13"
+    title: "Chuẩn so sánh: Multiple SME - sản xuất nhỏ ổn định"
+    tags: ["chuẩn", "so", "sánh", "multiple", "sme", "sản", "xuất", "nhỏ", "ổn", "định"]
+    text: |-
+      metric: Multiple SME - sản xuất nhỏ ổn định
+      value: 4-7x EBITDA
+      context: Rule of thumb
+      confidence: low
+  - id: "m10-benchmarks-14"
+    title: "Chuẩn so sánh: Multiple SME - phân phối/thương mại"
+    tags: ["chuẩn", "so", "sánh", "multiple", "sme", "phân", "phối", "thương", "mại"]
+    text: |-
+      metric: Multiple SME - phân phối/thương mại
+      value: 3-5x EBITDA
+      context: Rule of thumb
+      confidence: low
+  - id: "m10-benchmarks-15"
+    title: "Chuẩn so sánh: Multiple SME - SaaS nhỏ"
+    tags: ["chuẩn", "so", "sánh", "multiple", "sme", "saas", "nhỏ"]
+    text: |-
+      metric: Multiple SME - SaaS nhỏ
+      value: 2-5x doanh thu (ARR)
+      context: Tùy tăng trưởng và churn
+      confidence: low
+  - id: "m10-benchmarks-16"
+    title: "Chuẩn so sánh: Biên EBITDA phần mềm doanh nghiệp điển hình"
+    tags: ["chuẩn", "so", "sánh", "biên", "ebitda", "phần", "mềm", "doanh", "nghiệp", "điển", "hình"]
+    text: |-
+      metric: Biên EBITDA phần mềm doanh nghiệp điển hình
+      value: 20-30%
+      context: Cảnh báo khi báo cáo >=40% (Autonomy)
+      confidence: low
+  - id: "m10-benchmarks-17"
+    title: "Chuẩn so sánh: Chiết khấu multiple peer cho SME tư nhân"
+    tags: ["chuẩn", "so", "sánh", "chiết", "khấu", "multiple", "peer", "cho", "sme", "tư", "nhân"]
+    text: |-
+      metric: Chiết khấu multiple peer cho SME tư nhân
+      value: 15% (case), khoảng 15-30%
+      context: Áp dụng cho multiple niêm yết lớn
+      confidence: low
+  - id: "m10-benchmarks-18"
+    title: "Chuẩn so sánh: Trọng số Football Field"
+    tags: ["chuẩn", "so", "sánh", "trọng", "số", "football", "field"]
+    text: |-
+      metric: Trọng số Football Field
+      value: DCF 40-60%, Comps 20-30%, Precedent 20-30%
+      context: Template; case dùng 50/25/25
+      confidence: medium
+  - id: "m10-benchmarks-19"
+    title: "Chuẩn so sánh: Độ nhạy giá cổ phiếu khi WACC +-2%, g +-1% (case công nghệ)"
+    tags: ["chuẩn", "so", "sánh", "độ", "nhạy", "giá", "cổ", "phiếu", "khi", "wacc", "case", "công"]
+    text: |-
+      metric: Độ nhạy giá cổ phiếu khi WACC +-2%, g +-1% (case công nghệ)
+      value: ~18,000 - 42,600 VND, chênh 2.3x
+      context: Case minh họa
+      confidence: low
+  - id: "m10-pitfalls-1"
+    title: "Lỗi thường gặp: Ghép sai EV với Net Income hoặc Equity với EBITDA; EV phải khớp chỉ tiêu trước lãi vay."
+    tags: ["lỗi", "thường", "gặp", "ghép", "sai", "ev", "với", "net", "income", "hoặc", "equity", "ebitda"]
+    text: |-
+      Ghép sai EV với Net Income hoặc Equity với EBITDA; EV phải khớp chỉ tiêu trước lãi vay.
+  - id: "m10-pitfalls-2"
+    title: "Lỗi thường gặp: Anchoring vào ước tính ban đầu: chạy DCF 'mù' trước rồi mới đối chiếu thị trường."
+    tags: ["lỗi", "thường", "gặp", "anchoring", "vào", "ước", "tính", "ban", "đầu", "chạy", "dcf", "mù"]
+    text: |-
+      Anchoring vào ước tính ban đầu: chạy DCF 'mù' trước rồi mới đối chiếu thị trường.
+  - id: "m10-pitfalls-3"
+    title: "Lỗi thường gặp: TV quá cao (>85% EV) hoặc g vượt GDP; WACC-g quá nhỏ."
+    tags: ["lỗi", "thường", "gặp", "tv", "quá", "cao", "85", "ev", "hoặc", "vượt", "gdp", "wacc"]
+    text: |-
+      TV quá cao (>85% EV) hoặc g vượt GDP; WACC-g quá nhỏ.
+  - id: "m10-pitfalls-4"
+    title: "Lỗi thường gặp: Cherry-picking comps; chọn peer có lợi để ra đáp số mong muốn."
+    tags: ["lỗi", "thường", "gặp", "cherry", "picking", "comps", "chọn", "peer", "có", "lợi", "để", "ra"]
+    text: |-
+      Cherry-picking comps; chọn peer có lợi để ra đáp số mong muốn.
+  - id: "m10-pitfalls-5"
+    title: "Lỗi thường gặp: Bỏ qua chất lượng lợi nhuận, không chuẩn hóa khoản bất thường và chi phí cá nhân chủ."
+    tags: ["lỗi", "thường", "gặp", "bỏ", "qua", "chất", "lượng", "lợi", "nhuận", "không", "chuẩn", "hóa"]
+    text: |-
+      Bỏ qua chất lượng lợi nhuận, không chuẩn hóa khoản bất thường và chi phí cá nhân chủ.
+  - id: "m10-pitfalls-6"
+    title: "Lỗi thường gặp: Quên pha loãng (ESOP, options, convertible); dùng cổ phiếu cơ bản."
+    tags: ["lỗi", "thường", "gặp", "quên", "pha", "loãng", "esop", "options", "convertible", "dùng", "cổ", "phiếu"]
+    text: |-
+      Quên pha loãng (ESOP, options, convertible); dùng cổ phiếu cơ bản.
+  - id: "m10-pitfalls-7"
+    title: "Lỗi thường gặp: Snapshot fallacy: một multiple không phải đáp số; khoảng giá trị mới là đáp số."
+    tags: ["lỗi", "thường", "gặp", "snapshot", "fallacy", "một", "multiple", "không", "phải", "đáp", "số", "khoảng"]
+    text: |-
+      Snapshot fallacy: một multiple không phải đáp số; khoảng giá trị mới là đáp số.
+  - id: "m10-pitfalls-8"
+    title: "Lỗi thường gặp: Đếm trùng rủi ro: đã cộng vào WACC/Ke thì đừng trừ vào dòng tiền hoặc chiết khấu thêm; đếm trùng lá…"
+    tags: ["lỗi", "thường", "gặp", "đếm", "trùng", "rủi", "ro", "đã", "cộng", "vào", "wacc", "ke"]
+    text: |-
+      Đếm trùng rủi ro: đã cộng vào WACC/Ke thì đừng trừ vào dòng tiền hoặc chiết khấu thêm; đếm trùng lá chắn thuế (tính thuế không vay trong FCFF).
+  - id: "m10-pitfalls-9"
+    title: "Lỗi thường gặp: Tăng trưởng không tốn vốn: kiểm tra g = RR x ROIC."
+    tags: ["lỗi", "thường", "gặp", "tăng", "trưởng", "không", "tốn", "vốn", "kiểm", "tra", "rr", "roic"]
+    text: |-
+      Tăng trưởng không tốn vốn: kiểm tra g = RR x ROIC.
+  - id: "m10-pitfalls-10"
+    title: "Lỗi thường gặp: Dùng tỷ trọng sổ sách thay vì giá thị trường trong WACC."
+    tags: ["lỗi", "thường", "gặp", "dùng", "tỷ", "trọng", "sổ", "sách", "thay", "vì", "giá", "thị"]
+    text: |-
+      Dùng tỷ trọng sổ sách thay vì giá thị trường trong WACC.
+  - id: "m10-pitfalls-11"
+    title: "Lỗi thường gặp: Lấy multiple công ty niêm yết lớn nhân thẳng cho SME mà không chiết khấu."
+    tags: ["lỗi", "thường", "gặp", "lấy", "multiple", "công", "ty", "niêm", "yết", "lớn", "nhân", "thẳng"]
+    text: |-
+      Lấy multiple công ty niêm yết lớn nhân thẳng cho SME mà không chiết khấu.
+  - id: "m10-pitfalls-12"
+    title: "Lỗi thường gặp: Quên trừ nợ vay và nghĩa vụ ngoài bảng khi báo giá vốn chủ."
+    tags: ["lỗi", "thường", "gặp", "quên", "trừ", "nợ", "vay", "và", "nghĩa", "vụ", "ngoài", "bảng"]
+    text: |-
+      Quên trừ nợ vay và nghĩa vụ ngoài bảng khi báo giá vốn chủ.
+  - id: "m10-pitfalls-13"
+    title: "Lỗi thường gặp: Định giá theo giá trị sổ sách hoặc 'tôi đã bỏ vốn bao nhiêu' (giá trị là tương lai, không phải quá …"
+    tags: ["lỗi", "thường", "gặp", "định", "giá", "theo", "trị", "sổ", "sách", "hoặc", "tôi", "đã"]
+    text: |-
+      Định giá theo giá trị sổ sách hoặc 'tôi đã bỏ vốn bao nhiêu' (giá trị là tương lai, không phải quá khứ).
+  - id: "m10-pitfalls-14"
+    title: "Lỗi thường gặp: Không chuẩn hóa chênh lệch định nghĩa EBITDA (có/không SBC): Microsoft/LinkedIn 58x vs 34x."
+    tags: ["lỗi", "thường", "gặp", "không", "chuẩn", "hóa", "chênh", "lệch", "định", "nghĩa", "ebitda", "có"]
+    text: |-
+      Không chuẩn hóa chênh lệch định nghĩa EBITDA (có/không SBC): Microsoft/LinkedIn 58x vs 34x.
+  - id: "m10-pitfalls-15"
+    title: "Lỗi thường gặp: Dựa hoàn toàn vào số liệu bên bán, bỏ qua DD độc lập (Autonomy)."
+    tags: ["lỗi", "thường", "gặp", "dựa", "hoàn", "toàn", "vào", "số", "liệu", "bên", "bán", "bỏ"]
+    text: |-
+      Dựa hoàn toàn vào số liệu bên bán, bỏ qua DD độc lập (Autonomy).
+  - id: "m10-pitfalls-16"
+    title: "Lỗi thường gặp: Nhầm Comps (thiểu số) với giá kiểm soát khi bán 100%."
+    tags: ["lỗi", "thường", "gặp", "nhầm", "comps", "thiểu", "số", "với", "giá", "kiểm", "soát", "khi"]
+    text: |-
+      Nhầm Comps (thiểu số) với giá kiểm soát khi bán 100%.
+  - id: "m10-pitfalls-17"
+    title: "Lỗi thường gặp: Dự phóng hockey stick làm mất uy tín đàm phán."
+    tags: ["lỗi", "thường", "gặp", "dự", "phóng", "hockey", "stick", "làm", "mất", "uy", "tín", "đàm"]
+    text: |-
+      Dự phóng hockey stick làm mất uy tín đàm phán.
+  - id: "m10-pitfalls-18"
+    title: "Lỗi thường gặp: Bảng độ nhạy chỉ đổi WACC/g mà quên FCFF chuẩn hóa đổi theo g."
+    tags: ["lỗi", "thường", "gặp", "bảng", "độ", "nhạy", "chỉ", "đổi", "wacc", "mà", "quên", "fcff"]
+    text: |-
+      Bảng độ nhạy chỉ đổi WACC/g mà quên FCFF chuẩn hóa đổi theo g.
+  - id: "m10-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Dữ liệu SME: sổ sách chưa chuẩn, trộn chi tiêu cá nhân; luôn chuẩn hóa EBITDA (hoặc dùng SDE cho DN…"
+    tags: ["lưu", "sme", "việt", "nam", "dữ", "liệu", "sổ", "sách", "chưa", "chuẩn", "trộn", "chi"]
+    text: |-
+      Dữ liệu SME: sổ sách chưa chuẩn, trộn chi tiêu cá nhân; luôn chuẩn hóa EBITDA (hoặc dùng SDE cho DN rất nhỏ) và ghi chứng từ; đối chiếu BCTC thuế, sổ phụ ngân hàng, hợp đồng.
+  - id: "m10-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: Không có giá thị trường: chỉ dùng DCF, Comps gián tiếp (peer niêm yết như MWG, FPT Retail trong ví …"
+    tags: ["lưu", "sme", "việt", "nam", "không", "có", "giá", "thị", "trường", "chỉ", "dùng", "dcf"]
+    text: |-
+      Không có giá thị trường: chỉ dùng DCF, Comps gián tiếp (peer niêm yết như MWG, FPT Retail trong ví dụ; số liệu minh họa), Precedent hạn chế vì ít thương vụ công bố giá.
+  - id: "m10-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Rủi ro đặc thù SME: phụ thuộc chủ (key-person), tập trung 1-3 khách hàng/nhà cung cấp -> cộng size/…"
+    tags: ["lưu", "sme", "việt", "nam", "rủi", "ro", "đặc", "thù", "phụ", "thuộc", "chủ", "key"]
+    text: |-
+      Rủi ro đặc thù SME: phụ thuộc chủ (key-person), tập trung 1-3 khách hàng/nhà cung cấp -> cộng size/rủi ro đặc thù 2-5% vào Ke hoặc chiết khấu; DLOM 15-30% (mức tham khảo, cần xác nhận).
+  - id: "m10-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Dự phóng bám đơn hàng đã ký, hợp đồng, lịch sử; tránh hockey stick."
+    tags: ["lưu", "sme", "việt", "nam", "dự", "phóng", "bám", "đơn", "hàng", "đã", "ký", "hợp"]
+    text: |-
+      Dự phóng bám đơn hàng đã ký, hợp đồng, lịch sử; tránh hockey stick.
+  - id: "m10-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: Thuế TNDN 20% dùng trong ví dụ; thuế chuyển nhượng vốn và quy định thẩm định giá cần xác nhận theo …"
+    tags: ["lưu", "sme", "việt", "nam", "thuế", "tndn", "20", "dùng", "trong", "ví", "dụ", "chuyển"]
+    text: |-
+      Thuế TNDN 20% dùng trong ví dụ; thuế chuyển nhượng vốn và quy định thẩm định giá cần xác nhận theo luật hiện hành, tham vấn kế toán/luật sư.
+  - id: "m10-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: rf lấy TPCP VN 10 năm; ERP thị trường mới nổi tham khảo Damodaran; cập nhật số liệu mới nhất trước …"
+    tags: ["lưu", "sme", "việt", "nam", "rf", "lấy", "tpcp", "vn", "10", "năm", "erp", "thị"]
+    text: |-
+      rf lấy TPCP VN 10 năm; ERP thị trường mới nổi tham khảo Damodaran; cập nhật số liệu mới nhất trước khi dùng.
+  - id: "m10-sme_vn_guidance-7"
+    title: "Lưu ý SME Việt Nam: Multiple ngón tay cái SME (quán 1.5-3x SDE; chuỗi F&B 3-5x EBITDA; sản xuất 4-7x; phân phối 3-5x; S…"
+    tags: ["lưu", "sme", "việt", "nam", "multiple", "ngón", "tay", "cái", "quán", "3x", "sde", "chuỗi"]
+    text: |-
+      Multiple ngón tay cái SME (quán 1.5-3x SDE; chuỗi F&B 3-5x EBITDA; sản xuất 4-7x; phân phối 3-5x; SaaS 2-5x doanh thu) chỉ để cross-check, không có nguồn chính thức.
+  - id: "m10-sme_vn_guidance-8"
+    title: "Lưu ý SME Việt Nam: Dữ liệu peer VN: báo cáo công bố HOSE/HNX, CafeF, Vietstock, FiinGroup (miễn phí/gói trả phí tùy nh…"
+    tags: ["lưu", "sme", "việt", "nam", "dữ", "liệu", "peer", "vn", "báo", "cáo", "công", "bố"]
+    text: |-
+      Dữ liệu peer VN: báo cáo công bố HOSE/HNX, CafeF, Vietstock, FiinGroup (miễn phí/gói trả phí tùy nhà cung cấp, cần xác nhận giá); Damodaran Online miễn phí; Bloomberg/Capital IQ/Refinitiv rất đắt (hàng nghìn USD/năm) - SME thường không cần.
+  - id: "m10-sme_vn_guidance-9"
+    title: "Lưu ý SME Việt Nam: Công cụ: Excel/Google Sheets với 8 sheet (Inputs, Historical, FCFF, WACC, DCF, Comps, Sensitivity, …"
+    tags: ["lưu", "sme", "việt", "nam", "công", "cụ", "excel", "google", "sheets", "với", "sheet", "inputs"]
+    text: |-
+      Công cụ: Excel/Google Sheets với 8 sheet (Inputs, Historical, FCFF, WACC, DCF, Comps, Sensitivity, Football); Data Table cho độ nhạy; Python pandas cho Monte Carlo.
+  - id: "m10-sme_vn_guidance-10"
+    title: "Lưu ý SME Việt Nam: Điều khoản thương lượng: earn-out, đảm bảo, cam kết không cạnh tranh, giữ lại cổ phần của chủ, chuy…"
+    tags: ["lưu", "sme", "việt", "nam", "điều", "khoản", "thương", "lượng", "earn", "out", "đảm", "bảo"]
+    text: |-
+      Điều khoản thương lượng: earn-out, đảm bảo, cam kết không cạnh tranh, giữ lại cổ phần của chủ, chuyển giao 1-2 năm.
+  - id: "m10-sme_vn_guidance-11"
+    title: "Lưu ý SME Việt Nam: Chuẩn bị data room: BCTC 3 năm, hợp đồng lớn, danh mục khách hàng, sổ phụ ngân hàng."
+    tags: ["lưu", "sme", "việt", "nam", "chuẩn", "bị", "data", "room", "bctc", "năm", "hợp", "đồng"]
+    text: |-
+      Chuẩn bị data room: BCTC 3 năm, hợp đồng lớn, danh mục khách hàng, sổ phụ ngân hàng.
+  - id: "m10-sme_vn_guidance-12"
+    title: "Lưu ý SME Việt Nam: Gia đình/kế thừa: định giá để chia cổ phần hoặc mua lại phần người rút vốn; cần định giá độc lập để…"
+    tags: ["lưu", "sme", "việt", "nam", "gia", "đình", "kế", "thừa", "định", "giá", "để", "chia"]
+    text: |-
+      Gia đình/kế thừa: định giá để chia cổ phần hoặc mua lại phần người rút vốn; cần định giá độc lập để tránh tranh chấp.
+  - id: "m10-sme_vn_guidance-13"
+    title: "Lưu ý SME Việt Nam: Ba mức giá luôn xác định trước đàm phán: giá chào (vùng cao), giá mục tiêu, giá rút lui (walk away)."
+    tags: ["lưu", "sme", "việt", "nam", "ba", "mức", "giá", "luôn", "xác", "định", "trước", "đàm"]
+    text: |-
+      Ba mức giá luôn xác định trước đàm phán: giá chào (vùng cao), giá mục tiêu, giá rút lui (walk away).
+  - id: "m10-case_lessons-1"
+    title: "Bài học case: Microsoft mua LinkedIn (26.2 tỷ USD, 2016)"
+    tags: ["bài", "học", "case", "microsoft", "mua", "linkedin", "26", "tỷ", "usd", "2016"]
+    text: |-
+      name: Microsoft mua LinkedIn (26.2 tỷ USD, 2016)
+      type: success
+      setup: Microsoft mua LinkedIn ~196 USD/cổ phiếu, phụ trội ~50% so với giá trước thông báo; LinkedIn doanh thu 2015 ~3.0 tỷ USD (tăng ~35%), lỗ GAAP do SBC; 433 triệu thành viên.
+      key_calculations:
+      - Equity/Revenue = 26.2/3.0 = 8.7x; EV (net cash ~2.5) = 23.7 -> EV/Revenue ≈ 7.9x
+      - 'EV/EBITDA: 26.2/0.45 ≈ 58x (EBITDA sau SBC); với EBITDA điều chỉnh 0.78: 26.2/0.78 ≈ 33.6x - định nghĩa EBITDA đổi cảm nhận về giá'
+      - Giá trước thông báo ≈ 26.2/1.49 = 17.58; phụ trội ≈ 8.62 tỷ USD
+      - Synergy 2.3 tỷ doanh thu/năm x 30% x 0.8 = 0.552; PV = 0.552/(0.09-0.03) = 9.2 tỷ > 8.62 -> giá trị tạo ra ≈ +0.58 tỷ, biên mỏng
+      - 'Hậu kiểm: doanh thu ~16 tỷ năm 2024, CAGR (16/3)^(1/8)-1 = 23.3%; EV/Rev 5x -> 80 tỷ -> IRR 15.0%; cần 52.2 tỷ (3.3x) để đạt 9%'
+      lesson: Đọc multiple cùng tăng trưởng; giá trị chiến lược trong hệ sinh thái; quy tắc PV synergy >= premium; vốn kiên nhẫn; biên an toàn mỏng thì thực thi quyết định.
+      data_reliability: illustrative
+  - id: "m10-case_lessons-2"
+    title: "Bài học case: HP mua Autonomy (11.1 tỷ USD, 2011-2012)"
+    tags: ["bài", "học", "case", "hp", "mua", "autonomy", "11", "tỷ", "usd", "2011", "2012"]
+    text: |-
+      name: HP mua Autonomy (11.1 tỷ USD, 2011-2012)
+      type: failure
+      setup: HP mua ~42.11 USD/cổ phiếu, phụ trội ~64%; sau ~1 năm ghi giảm 8.8 tỷ USD (~79% giá mua), cáo buộc phóng đại doanh thu; số liệu 'thực' do HP đưa ra, một phần còn tranh tụng.
+      key_calculations:
+      - EV/Revenue công bố = 11.1/1.0 = 11.1x; theo HP = 11.1/0.7 ≈ 15.9x
+      - EV/EBITDA công bố = 11.1/0.40 = 27.8x; thực = 11.1/(0.7x25%) = 11.1/0.175 ≈ 63x
+      - 'Với 4-6x doanh thu thực: giá trị 2.8-4.2 tỷ, trả thừa 6.9-8.3 tỷ, gần khoản ghi giảm 8.8 tỷ'
+      - Ghi giảm/giá mua = 8.8/11.1 = 79.3%
+      lesson: Kiểm chứng chất lượng doanh thu; DD độc lập; không trả phụ trội khi không có synergy cụ thể; red flags (biên 40%+, doanh thu phần cứng bán lại, khách hàng tập trung, chuẩn kế toán khác, phụ trội 64%); chạy Comps với multiple thận trọng là thấy ngay; kỷ luật walk away; HĐQT không đóng dấu trong vài tuần.
+      data_reliability: illustrative
+  - id: "m10-case_lessons-3"
+    title: "Bài học case: Bao Bì Xanh Việt (Bình Dương) - chủ bán 100% cho tập đoàn"
+    tags: ["bài", "học", "case", "bao", "bì", "xanh", "việt", "bình", "dương", "chủ", "bán", "100"]
+    text: |-
+      name: Bao Bì Xanh Việt (Bình Dương) - chủ bán 100% cho tập đoàn
+      type: sme
+      setup: 'Công ty giả định: doanh thu 80,000 triệu, EBIT 7,600, D&A 2,400, EBITDA 10,000, nợ 20,000 (9.5%), tiền 5,000, LNST 4,560, 1,000,000 cổ phần; bên mua chào 48,000 triệu cho vốn chủ. Số liệu hoàn toàn giả định.'
+      key_calculations:
+      - βL = 0.85 x [1 + 0.8 x 0.3/0.7] = 1.1414; Ke = 3% + 1.1414x8% + 3% = 15.13%; WACC = 30%x10%x0.8 + 70%x15.13% = 12.99%
+      - FCFF Y1 = 7,168 + 2,688 - 4,032 - 1,728 = 4,096; PV 5 năm = 21,532
+      - FCFF6 chuẩn hóa = 9,176; TV = 9,176/(0.1299-0.04) ≈ 102,040; PV(TV) ≈ 55,403; EV = 76,935 (7.7x EBITDA); Equity = 76,935 - 20,000 + 5,000 = 61,935; TV chiếm 72%
+      - RR = 17.0%, ROIC ngụ ý = 4%/17% ≈ 23.6% (cao, thử kịch bản thận trọng)
+      - 'Độ nhạy WACC ±1%, g=4%: Equity 53,663 - 72,305'
+      - 'Comps: median 7.2x, chiết khấu 15% -> 6.12x; EV 61,200; Equity 46,200; range 35,150 - 61,500'
+      - 'Precedent: median 7.15x -> EV 71,500; Equity 56,500; range 45,000 - 67,000'
+      - Khuyến nghị 0.5x61,935 + 0.25x46,200 + 0.25x56,500 = 56,643 (~7.2x EBITDA, 56,643 VND/cổ phần); chào 48,000 thấp hơn 15.3%
+      lesson: Chuẩn hóa EBITDA trước; dùng >=2 phương pháp; WACC có size premium; bảng độ nhạy là công cụ đàm phán (mức chào thấp hơn đáy bảng); giá chào ~66-72 tỷ, mục tiêu ~57-62 tỷ, walk away ~52 tỷ; key person -> earn-out, ở lại tư vấn.
+      data_reliability: illustrative
+  - id: "m10-case_lessons-4"
+    title: "Bài học case: Ví dụ DCF công ty công nghệ (tỷ VND)"
+    tags: ["bài", "học", "case", "ví", "dụ", "dcf", "công", "ty", "nghệ", "tỷ", "vnd"]
+    text: |-
+      name: Ví dụ DCF công ty công nghệ (tỷ VND)
+      type: success
+      setup: Doanh thu Y1 1,000 -> Y5 1,580; biên EBIT 20% -> 25%; T 20%; D&A 5%, CAPEX 7% doanh thu; ΔNWC 3% ΔDT; WACC 11%; g 3%; nợ ròng 300; 100 triệu cổ phiếu.
+      key_calculations:
+      - FCFF 140.0, 165.7, 198.3, 233.3, 280.5; PV tổng 725.8
+      - TV = 280.5x1.03/0.08 = 3,611; PV(TV) = 2,143; EV = 2,869; Equity = 2,569; 25,690 VND/cổ phiếu
+      - TV/EBITDA5 = 3,611/474 = 7.6x; PV(TV)/EV = 74.7%
+      lesson: Gần 3/4 giá trị nằm ở giả định sau năm 5; bảng độ nhạy cho 17,981 - 42,606 VND.
+      data_reliability: illustrative
+  - id: "m10-case_lessons-5"
+    title: "Bài học case: Mây Xanh - chuỗi trà sữa 3 cửa hàng"
+    tags: ["bài", "học", "case", "mây", "xanh", "chuỗi", "trà", "sữa", "cửa", "hàng"]
+    text: |-
+      name: Mây Xanh - chuỗi trà sữa 3 cửa hàng
+      type: sme
+      setup: EBITDA báo cáo 1,200 triệu; chủ không nhận lương (lương thị trường ~240/năm); nợ 600; tiền 200; multiple tham khảo 3.5x EBITDA; bên mua chào 2,500.
+      key_calculations:
+      - EBITDA chuẩn hóa = 1,200 - 240 = 960
+      - EV = 960 x 3.5 = 3,360; Equity = 3,360 - 600 + 200 = 2,960
+      - Chào 2,500 thấp hơn 2,960 khoảng 15.5% (2,500/2,960 - 1 = -15.5%)
+      lesson: Không chấp nhận ngay; thêm DCF/kịch bản để thương lượng; nhớ trừ lương quản lý thị trường khi chủ không nhận lương.
+      data_reliability: illustrative
+  - id: "m10-worked_examples-1"
+    title: "Ví dụ có lời giải: DCF đầy đủ công ty công nghệ"
+    tags: ["ví", "dụ", "có", "lời", "giải", "dcf", "đầy", "đủ", "công", "ty", "nghệ"]
+    text: |-
+      name: DCF đầy đủ công ty công nghệ
+      inputs:
+        revenue:
+        - 1000
+        - 1150
+        - 1300
+        - 1450
+        - 1580
+        ebit_margin:
+        - 0.2
+        - 0.21
+        - 0.22
+        - 0.23
+        - 0.25
+        tax: 0.2
+        da_pct: 0.05
+        capex_pct: 0.07
+        nwc_pct_of_delta_rev: 0.03
+        wacc: 0.11
+        g: 0.03
+        net_debt: 300
+        shares_million: 100
+      steps:
+      - 'Y1: EBIT 200, NOPAT 160, D&A 50, CAPEX 70, ΔNWC 0 -> FCFF 140; PV 126.1'
+      - 'Y2: EBIT 241.5, NOPAT 193.2, D&A 57.5, CAPEX 80.5, ΔNWC 4.5 -> FCFF 165.7; PV 134.5'
+      - 'Y3: FCFF 198.3; PV 145.0. Y4: FCFF 233.3; PV 153.7. Y5: FCFF 280.5; PV 166.5. Tổng PV = 725.8'
+      - TV = 280.5 x 1.03 / 0.08 = 3,611.4; PV(TV) = 3,611.4 / 1.11^5 = 2,143.2
+      - EV = 725.8 + 2,143.2 = 2,869.0; Equity = 2,869.0 - 300 = 2,569.0; Value/share = 2,569.0 / 100 triệu = 25,690 VND
+      - 'Cross-check: TV/EBITDA5 = 3,611.4/474 = 7.6x; PV(TV)/EV = 74.7%'
+      - 'Độ nhạy: WACC 9% g 4% = 42,606; WACC 13% g 2% = 17,981'
+      result: EV ≈ 2,869 tỷ; Equity ≈ 2,569 tỷ; giá nội tại ≈ 25,690 VND/cổ phiếu (khoảng 17,981 - 42,606 trong bảng độ nhạy)
+  - id: "m10-worked_examples-2"
+    title: "Ví dụ có lời giải: Định giá SME bán 100% (Bao Bì Xanh Việt) từ DCF đến khuyến nghị"
+    tags: ["ví", "dụ", "có", "lời", "giải", "định", "giá", "sme", "bán", "100", "bao", "bì"]
+    text: |-
+      name: Định giá SME bán 100% (Bao Bì Xanh Việt) từ DCF đến khuyến nghị
+      inputs:
+        ebitda: 10000
+        net_debt: 15000
+        wacc: 0.12992
+        g: 0.04
+        fcff_5y:
+        - 4096
+        - 5188
+        - 6883
+        - 7543
+        - 8187
+        fcff6: 9176
+        offer: 48000
+      steps:
+      - 'Beta/WACC: βL 1.1414; Ke 15.13%; WACC 12.99%'
+      - PV FCFF 5 năm = 21,532; TV = 9,176/0.08992 = 102,040; PV(TV) = 55,403
+      - EV = 76,935; Equity DCF = 76,935 - 20,000 + 5,000 = 61,935; TV share 72.0%
+      - 'Comps: 7.2x x 0.85 = 6.12x; EV 61,200; Equity 46,200'
+      - 'Precedent: median 7.15x; EV 71,500; Equity 56,500'
+      - Khuyến nghị = 0.5x61,935 + 0.25x46,200 + 0.25x56,500 = 56,642.5; EV = 71,642.5 (7.16x EBITDA)
+      - Offer gap = 48,000/56,642.5 - 1 = -15.3%; mức chào thấp hơn đáy DCF sensitivity (53,663)
+      result: Equity khuyến nghị ≈ 56,643 triệu (~56,643 VND/cổ phần); chào cao 66-72 tỷ, mục tiêu 57-62 tỷ, walk away ~52 tỷ
+  - id: "m10-worked_examples-3"
+    title: "Ví dụ có lời giải: Comps và Precedent cho công ty thương mại điện tử (EBITDA 400 tỷ, Revenue 5,000 tỷ)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "comps", "và", "precedent", "cho", "công", "ty", "thương"]
+    text: |-
+      name: Comps và Precedent cho công ty thương mại điện tử (EBITDA 400 tỷ, Revenue 5,000 tỷ)
+      inputs:
+        peers_ev_revenue:
+        - 0.8
+        - 0.5
+        - 2.5
+        - 1.5
+        peers_ev_ebitda:
+        - 10.5
+        - 8.2
+        - 25.0
+        precedent_ev_ebitda:
+        - 12.0
+        - 11.5
+        - 14.0
+        - 10.0
+      steps:
+      - Median EV/Revenue (4 giá trị) = (0.8+1.5)/2 = 1.15x; EV = 5,000 x 1.15 = 5,750
+      - Median EV/EBITDA (3 giá trị hợp lệ, loại NM của Tokopedia/GoTo) = 10.5x; EV = 400 x 10.5 = 4,200
+      - 'Chênh 5,750/4,200 - 1 = 36.9%: biên EBITDA 8% thấp hơn peer, nên không dựa một multiple'
+      - Precedent median EV/EBITDA = (11.5+12.0)/2 = 11.75x; EV = 400 x 11.75 = 4,700 (đã gồm control premium, cao hơn Comps hợp lý)
+      result: Comps 4,200 - 5,750 tỷ; Precedent 4,700 tỷ (peer là số minh họa)
+  - id: "m10-worked_examples-4"
+    title: "Ví dụ có lời giải: Kiểm tra phụ trội: Microsoft - LinkedIn"
+    tags: ["ví", "dụ", "có", "lời", "giải", "kiểm", "tra", "phụ", "trội", "microsoft", "linkedin"]
+    text: |-
+      name: 'Kiểm tra phụ trội: Microsoft - LinkedIn'
+      inputs:
+        price: 26.2
+        premium_pct: 0.49
+        rev_syn: 2.3
+        margin: 0.3
+        tax: 0.2
+        wacc: 0.09
+        g: 0.03
+      steps:
+      - Vốn hóa trước = 26.2/1.49 = 17.58; phụ trội = 26.2 - 17.58 = 8.62
+      - Lợi nhuận sau thuế synergy = 2.3 x 0.3 x 0.8 = 0.552/năm
+      - PV synergy = 0.552/0.06 = 9.2
+      - Giá trị tạo ra = 9.2 - 8.62 = +0.58 tỷ USD
+      result: 'PV synergy 9.2 > premium 8.62: hợp lý nhưng biên an toàn mỏng (~6.7% của premium)'
+  - id: "m10-worked_examples-5"
+    title: "Ví dụ có lời giải: Equity Bridge và giá/cổ phiếu"
+    tags: ["ví", "dụ", "có", "lời", "giải", "equity", "bridge", "và", "giá", "cổ", "phiếu"]
+    text: |-
+      name: Equity Bridge và giá/cổ phiếu
+      inputs:
+        ev: 3000
+        debt: 800
+        cash: 200
+        minority: 100
+        diluted_shares: 50000000
+      steps:
+      - Equity = 3,000 - 800 + 200 - 100 = 2,300 tỷ
+      - Giá/cổ phiếu = 2,300 tỷ / 50 triệu = 46,000 VND
+      result: 46,000 VND/cổ phiếu
+  - id: "m10-worked_examples-6"
+    title: "Ví dụ có lời giải: Pre-money / Post-money"
+    tags: ["ví", "dụ", "có", "lời", "giải", "pre", "money", "post"]
+    text: |-
+      name: Pre-money / Post-money
+      inputs:
+        pre_money: 40
+        investment: 10
+      steps:
+      - Post = 40 + 10 = 50 tỷ
+      - Nhà đầu tư = 10/50 = 20%; chủ cũ 80%; kiểm tra 80% x 50 = 40
+      result: Nhường 20% cổ phần
+  - id: "m10-worked_examples-7"
+    title: "Ví dụ có lời giải: Terminal Value và độ nhạy (bài tập 2 và 5)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "terminal", "value", "và", "độ", "nhạy", "bài", "tập"]
+    text: |-
+      name: Terminal Value và độ nhạy (bài tập 2 và 5)
+      inputs:
+        fcff5: 320
+        wacc: 0.11
+        g: 0.03
+      steps:
+      - TV = 320 x 1.03/0.08 = 4,120; PV(TV) = 4,120/1.11^5 = 2,445
+      - 'WACC 10%: mẫu số 0.07; TV/TV_old = 0.08/0.07 = 1.143 (+14.3%)'
+      result: TV 4,120 tỷ; PV 2,445 tỷ; giảm WACC 1% làm TV tăng 14.3%
+  - id: "m10-practice_questions-1"
+    title: "Câu hỏi luyện tập: EBIT 500 tỷ, thuế 20%, D&A 100, CAPEX 150, ΔNWC 30. Tính FCFF."
+    tags: ["câu", "hỏi", "luyện", "tập", "ebit", "500", "tỷ", "thuế", "20", "100", "capex", "150"]
+    text: |-
+      q: EBIT 500 tỷ, thuế 20%, D&A 100, CAPEX 150, ΔNWC 30. Tính FCFF.
+      a: NOPAT 400; FCFF = 400 + 100 - 150 - 30 = 320 tỷ.
+  - id: "m10-practice_questions-2"
+    title: "Câu hỏi luyện tập: FCFF năm 5 = 320, WACC 11%, g 3%. Tính TV và PV(TV)."
+    tags: ["câu", "hỏi", "luyện", "tập", "fcff", "năm", "320", "wacc", "11", "tính", "tv", "và"]
+    text: |-
+      q: FCFF năm 5 = 320, WACC 11%, g 3%. Tính TV và PV(TV).
+      a: TV = 320 x 1.03/0.08 = 4,120; PV(TV) = 4,120/1.11^5 ≈ 2,445 tỷ.
+  - id: "m10-practice_questions-3"
+    title: "Câu hỏi luyện tập: EV 3,000; nợ 800; tiền 200; thiểu số 100; 50 triệu cổ phiếu pha loãng. Giá/cổ phiếu?"
+    tags: ["câu", "hỏi", "luyện", "tập", "ev", "000", "nợ", "800", "tiền", "200", "thiểu", "số"]
+    text: |-
+      q: EV 3,000; nợ 800; tiền 200; thiểu số 100; 50 triệu cổ phiếu pha loãng. Giá/cổ phiếu?
+      a: Equity 2,300 tỷ; 46,000 VND/cổ phiếu.
+  - id: "m10-practice_questions-4"
+    title: "Câu hỏi luyện tập: Công ty tư nhân EBITDA 250; median EV/EBITDA peer 8x; chiết khấu 20%; nợ 400; tiền 100. Equity?"
+    tags: ["câu", "hỏi", "luyện", "tập", "công", "ty", "tư", "nhân", "ebitda", "250", "median", "ev"]
+    text: |-
+      q: Công ty tư nhân EBITDA 250; median EV/EBITDA peer 8x; chiết khấu 20%; nợ 400; tiền 100. Equity?
+      a: Multiple 6.4x; EV 1,600; Equity 1,300 tỷ.
+  - id: "m10-practice_questions-5"
+    title: "Câu hỏi luyện tập: Vì sao WACC giảm 11% -> 10% (g=3%) làm TV tăng ~14%?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "wacc", "giảm", "11", "10", "làm", "tv"]
+    text: |-
+      q: Vì sao WACC giảm 11% -> 10% (g=3%) làm TV tăng ~14%?
+      a: 'TV tỷ lệ 1/(WACC-g): 1/0.08=12.5 và 1/0.07=14.29, tăng 14.3%.'
+  - id: "m10-practice_questions-6"
+    title: "Câu hỏi luyện tập: Mây Xanh: EBITDA báo cáo 1,200; lương thị trường chủ không nhận 240; nợ 600; tiền 200; 3.5x. Chuẩn …"
+    tags: ["câu", "hỏi", "luyện", "tập", "mây", "xanh", "ebitda", "báo", "cáo", "200", "lương", "thị"]
+    text: |-
+      q: 'Mây Xanh: EBITDA báo cáo 1,200; lương thị trường chủ không nhận 240; nợ 600; tiền 200; 3.5x. Chuẩn hóa, EV, Equity; chào 2,500 có nên nhận?'
+      a: EBITDA chuẩn hóa 960; EV 3,360; Equity 2,960. Chào 2,500 thấp hơn 15.5% - chưa nên nhận, làm thêm DCF/kịch bản để thương lượng.
+  - id: "m10-practice_questions-7"
+    title: "Câu hỏi luyện tập: TV chiếm 90% EV trong DCF. Nêu >=3 hành động kiểm tra độ tin cậy."
+    tags: ["câu", "hỏi", "luyện", "tập", "tv", "chiếm", "90", "ev", "trong", "dcf", "nêu", "hành"]
+    text: |-
+      q: TV chiếm 90% EV trong DCF. Nêu >=3 hành động kiểm tra độ tin cậy.
+      a: Kiểm tra chéo bằng exit multiple; bảng độ nhạy WACC-g; kéo dài dự phóng 7-10 năm hoặc mô hình 3 giai đoạn; kiểm tra g = RR x ROIC; đối chiếu Comps.
+  - id: "m10-practice_questions-8"
+    title: "Câu hỏi luyện tập: Pre-money 40 tỷ, vốn 10 tỷ. Post-money và % của quỹ?"
+    tags: ["câu", "hỏi", "luyện", "tập", "pre", "money", "40", "tỷ", "vốn", "10", "post", "và"]
+    text: |-
+      q: Pre-money 40 tỷ, vốn 10 tỷ. Post-money và % của quỹ?
+      a: Post 50 tỷ; quỹ 20%.
+  - id: "m10-practice_questions-9"
+    title: "Câu hỏi luyện tập: Median EV/EBITDA của 4 deal 10.0; 11.5; 12.0; 14.0? Với EBITDA 400 thì EV?"
+    tags: ["câu", "hỏi", "luyện", "tập", "median", "ev", "ebitda", "của", "deal", "10", "11", "12"]
+    text: |-
+      q: Median EV/EBITDA của 4 deal 10.0; 11.5; 12.0; 14.0? Với EBITDA 400 thì EV?
+      a: Median 11.75x; EV 4,700 tỷ.
+  - id: "m10-practice_questions-10"
+    title: "Câu hỏi luyện tập: WACC SME: βU 0.85, D/E 30/70, T 20%, rf 3%, ERP 8%, size 3%, Kd 10%. Tính WACC."
+    tags: ["câu", "hỏi", "luyện", "tập", "wacc", "sme", "βu", "85", "30", "70", "20", "rf"]
+    text: |-
+      q: 'WACC SME: βU 0.85, D/E 30/70, T 20%, rf 3%, ERP 8%, size 3%, Kd 10%. Tính WACC.'
+      a: βL 1.1414; Ke 15.13%; WACC 12.99%.
+  - id: "m10-practice_questions-11"
+    title: "Câu hỏi luyện tập: Bên mua trả 26.2 tỷ USD, giá trước thông báo 17.58. PV synergy 9.2. Có đáng không?"
+    tags: ["câu", "hỏi", "luyện", "tập", "bên", "mua", "trả", "26", "tỷ", "usd", "giá", "trước"]
+    text: |-
+      q: Bên mua trả 26.2 tỷ USD, giá trước thông báo 17.58. PV synergy 9.2. Có đáng không?
+      a: Premium 8.62; PV synergy 9.2 > 8.62, tạo +0.58 tỷ USD, biên mỏng.
+  - id: "m10-practice_questions-12"
+    title: "Câu hỏi luyện tập: Công ty có g=4%, RR=17%. ROIC ngụ ý? Nhận xét."
+    tags: ["câu", "hỏi", "luyện", "tập", "công", "ty", "có", "rr", "17", "roic", "ngụ", "nhận"]
+    text: |-
+      q: Công ty có g=4%, RR=17%. ROIC ngụ ý? Nhận xét.
+      a: ROIC = 4%/17% ≈ 23.5% - cao, nên thử kịch bản thận trọng.
+  - id: "m10-checklist-1"
+    title: "Checklist: Mục đích định giá và cơ sở (100%/thiểu số, going concern) đã xác định?"
+    tags: ["checklist", "mục", "đích", "định", "giá", "và", "cơ", "sở", "100", "thiểu", "số", "going"]
+    text: |-
+      Mục đích định giá và cơ sở (100%/thiểu số, going concern) đã xác định?
+  - id: "m10-checklist-2"
+    title: "Checklist: Lợi nhuận quá khứ đã chuẩn hóa (chi phí cá nhân, lương thị trường, khoản bất thường, bên liên quan)…"
+    tags: ["checklist", "lợi", "nhuận", "quá", "khứ", "đã", "chuẩn", "hóa", "chi", "phí", "cá", "nhân"]
+    text: |-
+      Lợi nhuận quá khứ đã chuẩn hóa (chi phí cá nhân, lương thị trường, khoản bất thường, bên liên quan)? Đã đối chiếu thuế/ngân hàng/kiểm toán?
+  - id: "m10-checklist-3"
+    title: "Checklist: Dự phóng Revenue hợp lý so với lịch sử và thị trường? Biên có nguồn so với peer? CAPEX và D&A nhất …"
+    tags: ["checklist", "dự", "phóng", "revenue", "hợp", "lý", "so", "với", "lịch", "sử", "và", "thị"]
+    text: |-
+      Dự phóng Revenue hợp lý so với lịch sử và thị trường? Biên có nguồn so với peer? CAPEX và D&A nhất quán với tăng trưởng? Đã có ΔNWC?
+  - id: "m10-checklist-4"
+    title: "Checklist: WACC dùng giá trị thị trường, CAPM, beta relever, size premium (SME)?"
+    tags: ["checklist", "wacc", "dùng", "giá", "trị", "thị", "trường", "capm", "beta", "relever", "size", "premium"]
+    text: |-
+      WACC dùng giá trị thị trường, CAPM, beta relever, size premium (SME)?
+  - id: "m10-checklist-5"
+    title: "Checklist: TV: phương pháp được chọn và giải thích; g <= GDP; FCFF năm n+1 chuẩn hóa; TV share hợp lý (50-80%,…"
+    tags: ["checklist", "tv", "phương", "pháp", "được", "chọn", "và", "giải", "thích", "gdp", "fcff", "năm"]
+    text: |-
+      TV: phương pháp được chọn và giải thích; g <= GDP; FCFF năm n+1 chuẩn hóa; TV share hợp lý (50-80%, <85%); kiểm tra chéo exit multiple; g = RR x ROIC?
+  - id: "m10-checklist-6"
+    title: "Checklist: Có bảng độ nhạy (WACC, g, biên)?"
+    tags: ["checklist", "có", "bảng", "độ", "nhạy", "wacc", "biên"]
+    text: |-
+      Có bảng độ nhạy (WACC, g, biên)?
+  - id: "m10-checklist-7"
+    title: "Checklist: Comps: peer phù hợp (quy mô, tăng trưởng, ngành)? EV vs Equity multiple đúng? Báo cáo median và ran…"
+    tags: ["checklist", "comps", "peer", "phù", "hợp", "quy", "mô", "tăng", "trưởng", "ngành", "ev", "vs"]
+    text: |-
+      Comps: peer phù hợp (quy mô, tăng trưởng, ngành)? EV vs Equity multiple đúng? Báo cáo median và range? Outlier giải thích? Forward vs trailing? Chiết khấu quy mô/DLOM?
+  - id: "m10-checklist-8"
+    title: "Checklist: Precedent: thương vụ liên quan, gần đây? Control premium đã nằm trong multiple? Điều kiện thị trườn…"
+    tags: ["checklist", "precedent", "thương", "vụ", "liên", "quan", "gần", "đây", "control", "premium", "đã", "nằm"]
+    text: |-
+      Precedent: thương vụ liên quan, gần đây? Control premium đã nằm trong multiple? Điều kiện thị trường? Chiến lược vs tài chính? Tách phần synergy?
+  - id: "m10-checklist-9"
+    title: "Checklist: Equity Bridge: đã trừ nợ vay, ưu đãi, thiểu số, nợ thuê; đã cộng tiền thừa, tài sản phi hoạt động; …"
+    tags: ["checklist", "equity", "bridge", "đã", "trừ", "nợ", "vay", "ưu", "đãi", "thiểu", "số", "thuê"]
+    text: |-
+      Equity Bridge: đã trừ nợ vay, ưu đãi, thiểu số, nợ thuê; đã cộng tiền thừa, tài sản phi hoạt động; dùng cổ phiếu pha loãng?
+  - id: "m10-checklist-10"
+    title: "Checklist: Tổng hợp: Football Field có đủ phương pháp? Các phương pháp hội tụ? Value drivers? Upside/downside?…"
+    tags: ["checklist", "tổng", "hợp", "football", "field", "có", "đủ", "phương", "pháp", "các", "hội", "tụ"]
+    text: |-
+      Tổng hợp: Football Field có đủ phương pháp? Các phương pháp hội tụ? Value drivers? Upside/downside? Khuyến nghị có cơ sở? Có giá chào / mục tiêu / walk away?
+  - id: "m10-checklist-11"
+    title: "Checklist: Nếu là M&A: PV synergy >= premium? DD về chất lượng doanh thu? Không trộn EV và Equity khi thương l…"
+    tags: ["checklist", "nếu", "là", "pv", "synergy", "premium", "dd", "về", "chất", "lượng", "doanh", "thu"]
+    text: |-
+      Nếu là M&A: PV synergy >= premium? DD về chất lượng doanh thu? Không trộn EV và Equity khi thương lượng?
+  - id: "m10-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Mô hình DCF tối thiểu cho SME (8 sheet)"
+    tags: ["mẫu", "excel", "sheets", "mô", "hình", "dcf", "tối", "thiểu", "cho", "sme", "sheet"]
+    text: |-
+      name: Mô hình DCF tối thiểu cho SME (8 sheet)
+      structure:
+      - 'Sheet 1 Inputs: tăng trưởng, biên, capex, NWC, thuế, WACC, g'
+      - 'Sheet 2 Historical: 3 năm quá khứ đã chuẩn hóa (Normalized EBITDA)'
+      - 'Sheet 3 FCFF: dự phóng 5 năm Revenue -> EBIT -> NOPAT -> FCFF'
+      - 'Sheet 4 WACC: CAPM build-up (rf, ERP, beta relevered, size premium)'
+      - 'Sheet 5 DCF: chiết khấu, TV, EV -> Equity bridge'
+      - 'Sheet 6 Comps: bảng peer, median, áp chiết khấu'
+      - 'Sheet 7 Sensitivity: Data Table WACC x g'
+      - 'Sheet 8 Football: tổng hợp, biểu đồ thanh'
+      formulas:
+      - 'Hệ số chiết khấu: =1/(1+WACC)^năm'
+      - 'NPV dòng tiền: =NPV(WACC,FCFF_Y1:FCFF_Y5)'
+      - 'Terminal Value Gordon: =FCFF_Y5*(1+g)/(WACC-g)'
+      - 'Median multiple: =MEDIAN(range)'
+      - 'Bảng độ nhạy: Data > What-If Analysis > Data Table'
+      - 'Beta relever: =BetaU*(1+(1-T)*D/E)'
+  - id: "m10-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Football Field"
+    tags: ["mẫu", "excel", "sheets", "football", "field"]
+    text: |-
+      name: Football Field
+      structure:
+      - 'Cột: Phương pháp | Low | Mid | High | Trọng số (DCF 40-60%, Comps 20-30%, Precedent 20-30%)'
+      - 'Giá trị khuyến nghị: =SUMPRODUCT(Mid, Trọng số); vẽ biểu đồ thanh ngang (Low-High)'
+  - id: "m10-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: 10-corporate-valuation.md

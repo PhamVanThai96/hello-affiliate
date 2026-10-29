@@ -1,0 +1,847 @@
+# m09 - Mergers & Acquisitions. Distilled from 09-mergers-and-acquisitions.md
+id: "m09"
+name_vi: "Sáp nhập & Mua lại (M&A)"
+name_en: "Mergers & Acquisitions"
+purpose: >
+  Trả lời hai câu hỏi cốt lõi của mọi thương vụ: mua cái gì và vì sao (synergies có thật không),
+  và trả bao nhiêu, bằng gì (định giá, premium, walk-away price, cấu trúc thanh toán, EPS, đòn bẩy).
+  Về bản chất M&A là một quyết định Capital Budgeting đặc biệt: chỉ làm khi NPV > 0,
+  tức synergies (NPV) lớn hơn premium đã trả.
+when_to_use:
+  - "Có nên mua doanh nghiệp/đối thủ X không? Trả tối đa bao nhiêu (walk-away price)?"
+  - "Chủ doanh nghiệp đòi giá Y, giá đó có hợp lý không? Premium bao nhiêu là chấp nhận được?"
+  - "Định giá target bằng EV/EBITDA, comps, precedent, DCF; lập Football Field"
+  - "Ước tính và chiết khấu synergies (cost/revenue), chi phí tích hợp"
+  - "So sánh trả tiền mặt / vay / cổ phiếu / hỗn hợp; tác động EPS (accretion/dilution)"
+  - "Phân tích LBO: IRR, MoM, nguồn gốc lợi nhuận"
+  - "Kiểm tra khả năng chịu nợ sau thương vụ (Nợ/EBITDA, ICR, stress test)"
+  - "Goodwill, tỷ trọng goodwill, rủi ro ghi giảm"
+  - "Quy trình bán/mua, due diligence, chiến thuật phòng thủ, bài học thương vụ thất bại"
+  - "SME Việt Nam là bên mua, bên bán hoặc nhận vốn thiểu số"
+prerequisites: ["m01", "m02", "m03", "m05"]
+related_modules:
+  - "m10: định giá doanh nghiệp (DCF, multiples) - M&A dùng trực tiếp các phương pháp này"
+  - "m03: WACC làm tỷ lệ chiết khấu cho DCF và synergies"
+  - "m04: cơ cấu vốn, Pecking Order (Myers & Majluf) giải thích tín hiệu cash vs stock, đòn bẩy LBO"
+  - "m02: M&A là capital budgeting với NPV>0"
+  - "m05: phân tích BCTC, Quality of Earnings, ICR, Nợ/EBITDA"
+  - "m06: vốn lưu động trong FCF và due diligence"
+  - "m01: chiết khấu dòng tiền synergies, IRR"
+
+concepts:
+  - term_vi: "Sáp nhập"
+    term_en: "Merger"
+    definition: "Hai công ty hợp nhất thành một thực thể mới (A + B = C); cả hai pháp nhân cũ chấm dứt."
+    why_it_matters: "Thực tế hầu hết 'merger of equals' vẫn là acquisition được rebrand; luôn có một bên nắm quyền, giả vờ ngược lại gây hỗn loạn (AOL-Time Warner)."
+  - term_vi: "Mua lại"
+    term_en: "Acquisition"
+    definition: "Công ty A mua và kiểm soát công ty B; B có thể tồn tại như công ty con."
+    why_it_matters: "Là dạng phổ biến nhất; mọi phân tích định giá/premium áp dụng cho bên mua."
+  - term_vi: "Phân loại M&A"
+    term_en: "Types of M&A"
+    definition: >
+      Theo quan hệ kinh doanh: Horizontal (cùng ngành, vd Facebook-Instagram), Vertical (khác khâu chuỗi giá trị, vd Amazon-Whole Foods),
+      Conglomerate (khác ngành). Theo thái độ: Friendly vs Hostile (tender offer, proxy fight).
+      Theo thanh toán: Stock, Cash, Mixed, LBO. Theo đối tượng: Share deal (kế thừa mọi nghĩa vụ ẩn) vs Asset deal (chọn lọc tài sản, tránh nợ ẩn nhưng thủ tục chuyển nhượng phức tạp).
+    why_it_matters: "Loại thương vụ quyết định nguồn synergies, rủi ro pháp lý (chống độc quyền với horizontal) và rủi ro thừa kế nợ ẩn."
+  - term_vi: "Động lực M&A"
+    term_en: "M&A motives"
+    definition: >
+      Synergies, tăng trưởng nhanh, sức mạnh thị trường, đa dạng hóa, công nghệ/IP, nhân tài (acqui-hire),
+      lợi ích thuế (NOL), xây đế chế (empire building), mua target bị định giá thấp.
+    why_it_matters: >
+      Chỉ synergies, công nghệ và mua rẻ có thể tạo giá trị thật. Đa dạng hóa (cổ đông tự đa dạng hóa rẻ hơn)
+      và empire building chủ yếu phục vụ ban lãnh đạo và thường phá hủy giá trị.
+  - term_vi: "Làn sóng M&A"
+    term_en: "Merger waves"
+    definition: >
+      1890s-1904 sáp nhập ngang/độc quyền (Sherman 1890, Clayton 1914); 1916-1929 sáp nhập dọc; 1960s conglomerate;
+      1980s hostile, LBO, junk bond (RJR Nabisco 1988 ~25 tỷ USD, KKR); 1990s-2000 xuyên biên giới/công nghệ (kết thúc bằng dot-com);
+      2003-nay private equity, thương vụ công nghệ/AI.
+    why_it_matters: "Làn sóng đi cùng thị trường chứng khoán nóng và tín dụng rẻ; khi cổ phiếu đắt người ta dùng cổ phiếu để mua, bong bóng vỡ thì lộ ra trả quá cao."
+  - term_vi: "Giả thuyết kiêu ngạo và lời nguyền người thắng thầu"
+    term_en: "Hubris hypothesis and winner's curse"
+    definition: "Roll (1986): nhà quản lý tin mình định giá chính xác hơn thị trường nên trả quá cao. Winner's curse (Capen, Clapp, Campbell 1971, đấu giá dầu khí): bên thắng thường là bên ước lượng lạc quan nhất."
+    why_it_matters: "Giải thích vì sao phải chốt walk-away price trước đàm phán và rời đi khi giá vượt."
+  - term_vi: "Tỷ lệ thành công M&A"
+    term_en: "M&A success statistics"
+    definition: >
+      Số liệu tổng hợp thường dẫn (thay đổi theo mẫu): ~60-70% thương vụ không tạo giá trị cho cổ đông acquirer;
+      giá acquirer giảm nhẹ 1-3% khi công bố; premium trung bình 20-30%+; synergies thực hiện chỉ ~50-70% dự kiến; tích hợp kéo dài gấp 2-3 lần kế hoạch.
+    why_it_matters: "Giá trị thường chảy về phía target; bên mua chỉ lời nếu synergies > premium. Dùng làm lý do thận trọng, không phải để bỏ M&A."
+  - term_vi: "Giá trị doanh nghiệp"
+    term_en: "Enterprise Value (EV)"
+    definition: "Giá thật sự để sở hữu toàn bộ hoạt động kinh doanh = vốn hóa + nợ vay - tiền mặt."
+    why_it_matters: "Khi mua cả công ty ta gánh nợ và được hưởng tiền mặt, nên EV không phụ thuộc cách tài trợ, so sánh được giữa công ty có cơ cấu vốn khác nhau. Bước hay quên: từ EV phải trừ nợ ròng để ra giá trị vốn chủ."
+  - term_vi: "Các phương pháp định giá M&A"
+    term_en: "DCF, Comparable Companies, Precedent Transactions"
+    definition: >
+      DCF (nội tại: PV của FCF, nhạy với g và WACC); Comps (bội số công ty cùng ngành đang niêm yết, phản ánh tâm lý thị trường hiện tại);
+      Precedent (bội số thương vụ M&A đã xảy ra, đã gồm control premium nên thường cao hơn Comps).
+    why_it_matters: "Mỗi phương pháp trả lời một câu hỏi khác và mắc sai số khác; kết hợp thành một khoảng giá (Football Field) để không dựa vào một giả định duy nhất."
+  - term_vi: "Football Field"
+    term_en: "Football Field chart"
+    definition: "Biểu đồ thanh ngang chồng nhau biểu diễn khoảng giá (low-mid-high) của từng phương pháp: 52-week trading, DCF, Comps, Precedent."
+    why_it_matters: "Vùng chồng lấn của nhiều phương pháp là vùng giá an toàn nhất; offer range nằm giữa giá trị nội tại và premium thị trường chấp nhận."
+  - term_vi: "Phần bù kiểm soát"
+    term_en: "Control premium"
+    definition: "Phần giá cao hơn giá cổ phiếu chưa bị ảnh hưởng (unaffected price, trước tin đồn thâu tóm), điển hình 20-50%."
+    why_it_matters: "Giá sàn là giá cổ đông thiểu số; người mua có quyền thay ban lãnh đạo, cắt chi phí, đổi chiến lược - phải chia một phần giá trị đó cho cổ đông cũ để họ bán."
+  - term_vi: "Hiệp lực"
+    term_en: "Synergies"
+    definition: "V_combined - (V_A + V_B). Gồm cost, revenue, financial, operational synergies."
+    why_it_matters: "Là lý do duy nhất hợp lý để trả cao hơn giá thị trường. Phải đủ lớn để bù premium."
+  - term_vi: "Chi phí tích hợp"
+    term_en: "Integration cost"
+    definition: "Chi phí một lần: sa thải, di dời, hợp nhất hệ thống, đổi bao bì; thường 1-1,5 lần cost synergies hàng năm."
+    why_it_matters: "Hay bị quên khiến NPV synergies bị thổi phồng; luôn trừ ở t=0."
+  - term_vi: "Giá tối đa"
+    term_en: "Walk-away price"
+    definition: "Giá cao nhất bên mua có thể trả mà không phá hủy giá trị = stand-alone + NPV synergies (đã trừ chi phí tích hợp)."
+    why_it_matters: "Chốt trước khi đàm phán để không bị cuốn vào đấu giá (winner's curse)."
+  - term_vi: "Earn-out"
+    term_en: "Earn-out"
+    definition: "Phần giá trả sau, gắn với kết quả (giữ khách hàng, giữ nhân sự then chốt, đạt doanh thu/EBITDA)."
+    why_it_matters: "Chuyển một phần rủi ro synergies/key-man sang người bán; giữ giá cơ sở thấp hơn walk-away có biên an toàn."
+  - term_vi: "Trả tiền mặt vs cổ phiếu"
+    term_en: "Cash vs Stock deal"
+    definition: >
+      Cash: bên bán chịu thuế ngay, acquirer gánh toàn bộ rủi ro, không pha loãng, tín hiệu tự tin (cổ phiếu mình đang rẻ).
+      Stock: có thể hoãn thuế cho bên bán, chia sẻ rủi ro, pha loãng EPS, tín hiệu cổ phiếu mình đắt, không cần tiền.
+    why_it_matters: "Hệ quả của thông tin bất cân xứng (Pecking Order, Myers & Majluf): phát hành cổ phiếu để mua bị thị trường hiểu là cổ phiếu đang đắt nên giá thường giảm; cổ phiếu hợp khi synergies chưa chắc chắn vì chia sẻ rủi ro tích hợp."
+  - term_vi: "Mua lại bằng đòn bẩy"
+    term_en: "Leveraged Buyout (LBO)"
+    definition: >
+      Dùng nợ (Senior Debt, Mezzanine) cộng ít vốn chủ quỹ PE để mua target, dùng dòng tiền/tài sản target trả nợ, thoái vốn sau 3-7 năm.
+      Khởi nguồn thập niên 1960-70 (bootstrap acquisition), bùng nổ 1980s với KKR (thành lập 1976).
+    why_it_matters: "Giải quyết việc quỹ thiếu vốn tự có: mỗi đồng vốn chủ kiểm soát nhiều tài sản hơn, khuếch đại IRR; nhưng cũng khuếch đại lỗ (EBITDA -30% với đòn bẩy 70% có thể xóa vốn chủ)."
+  - term_vi: "Tăng/Pha loãng EPS"
+    term_en: "Accretion/Dilution"
+    definition: "Accretive nếu EPS_pro forma > EPS stand-alone; dilutive nếu thấp hơn."
+    why_it_matters: "Thị trường và ban lãnh đạo ám ảnh EPS. Nhưng accretion không đồng nghĩa tạo giá trị: có thể chỉ do nợ rẻ hoặc P/E acquirer cao; luôn đối chiếu bằng NPV (synergies - premium)."
+  - term_vi: "Lợi thế thương mại"
+    term_en: "Goodwill"
+    definition: "Giá mua - giá trị hợp lý (FV) tài sản ròng xác định được. Không khấu hao theo IFRS/US GAAP (chỉ kiểm tra impairment hàng năm); theo VAS thường phân bổ dần (cần xác nhận quy định hiện hành)."
+    why_it_matters: "Dấu vết kế toán của premium; tỷ trọng goodwill/giá mua cao nghĩa là phụ thuộc synergies, rủi ro ghi giảm lớn (AOL Time Warner write-down ~99 tỷ USD)."
+  - term_vi: "Quy trình M&A và thẩm định"
+    term_en: "M&A process and Due Diligence"
+    definition: >
+      Sell-side 6 giai đoạn: Chuẩn bị (4-6 tuần: advisor, Information Memo, 50-100 người mua, data room) -> Tiếp thị (4-6 tuần: teaser, NDA, IM, IOI, shortlist 5-10) ->
+      Thẩm định (4-8 tuần: binding bids) -> Đàm phán và ký SPA (2-4 tuần, fairness opinion) -> Closing (4-12 tuần: chống độc quyền, cổ đông) ->
+      Tích hợp PMI (6-24 tháng). Due diligence: Financial, Legal, Commercial, Operational, Tax, HR, IT, Environmental.
+    why_it_matters: "Người bán biết nhiều hơn người mua (bất cân xứng); DD thu hẹp khoảng cách, tìm 'quả mìn' (nợ ẩn, kiện tụng, khách rời bỏ) để chỉnh giá hoặc bỏ. Thành bại do giai đoạn tích hợp."
+  - term_vi: "Chiến thuật phòng thủ"
+    term_en: "Defensive tactics"
+    definition: >
+      Poison Pill (cổ đông hiện hữu mua giá chiết khấu 50% nếu kẻ thâu tóm nắm >15%), Staggered Board (mỗi năm bầu lại 1/3), White Knight, Crown Jewel Defense,
+      Pac-Man Defense, Golden Parachute, Shark Repellent (siêu đa số 80%+).
+    why_it_matters: "Tăng chi phí/kéo dài thời gian để board tìm giá tốt hơn, nhưng cũng có thể bị lạm dụng bảo vệ ghế lãnh đạo (xung đột đại diện)."
+  - term_vi: "Chất lượng lợi nhuận"
+    term_en: "Quality of Earnings (QoE)"
+    definition: "Điều chỉnh EBITDA SME: chi phí cá nhân chủ qua công ty, lương quản lý dưới thị trường, doanh thu chưa xuất hóa đơn, công nợ khó đòi."
+    why_it_matters: "Với SME VN, QoE quan trọng hơn mô hình định giá vì báo cáo thường chưa chuẩn, có thể hai sổ; EBITDA trên giấy sai thì mọi bội số sai."
+  - term_vi: "Rủi ro người then chốt và chiết khấu thanh khoản"
+    term_en: "Key man risk, discount for lack of marketability (DLOM)"
+    definition: "SME phụ thuộc chủ sở hữu (chủ đi khách đi), tập trung 1-3 khách lớn; chiết khấu thiếu thanh khoản 20-30%."
+    why_it_matters: "Giải thích bội số SME thấp (3-6x vs 8-12x niêm yết) và nhu cầu earn-out, giữ chân nhân sự."
+
+formulas:
+  - id: m09_ev
+    name_vi: "Giá trị doanh nghiệp"
+    name_en: "Enterprise Value"
+    expression_latex: 'EV = \text{Vốn hóa} + \text{Nợ vay} - \text{Tiền mặt}'
+    expression_python: "ev = market_cap + debt - cash"
+    excel: "=B1+B2-B3"
+    variables:
+      - {symbol: market_cap, meaning: "Vốn hóa thị trường (hoặc giá trị vốn chủ)", unit: "tiền tệ"}
+      - {symbol: debt, meaning: "Nợ vay", unit: "tiền tệ"}
+      - {symbol: cash, meaning: "Tiền mặt và tương đương", unit: "tiền tệ"}
+    when_to_use: "Khi cần giá thực để sở hữu toàn bộ hoạt động; so sánh công ty khác cơ cấu vốn."
+    why_it_works: "Mua cả công ty = trả cho cổ đông + gánh nợ - nhận tiền mặt; loại bỏ ảnh hưởng cách tài trợ."
+    assumptions: ["Nợ và tiền mặt theo giá trị thị trường/sổ sách hợp lý", "Bỏ qua cổ phiếu ưu đãi, lợi ích cổ đông thiểu số, nợ ngoài bảng nếu không nêu"]
+    pitfalls: ["Quên nợ ngoài bảng/thuê tài chính", "Dùng giá cổ phiếu thay EV khi so bội số"]
+    interpretation: "EV là mẫu số/đối tượng của bội số EV/EBITDA."
+    example:
+      inputs: {market_cap: 18500, debt: 2000, cash: 500}
+      steps: ["EV = 18.500 + 2.000 - 500 = 20.000"]
+      result: "EV = 20.000 triệu"
+  - id: m09_equity_from_ev
+    name_vi: "Giá trị vốn chủ từ EV"
+    name_en: "Equity Value from EV"
+    expression_latex: 'Equity = EV - (\text{Nợ vay} - \text{Tiền mặt})'
+    expression_python: "equity = ev - (debt - cash)"
+    excel: "=EV-(Nợ-Tiền)"
+    variables:
+      - {symbol: ev, meaning: "Enterprise Value", unit: "tiền tệ"}
+      - {symbol: debt, meaning: "Nợ vay", unit: "tiền tệ"}
+      - {symbol: cash, meaning: "Tiền mặt", unit: "tiền tệ"}
+    when_to_use: "Sau khi ra EV từ bội số hoặc DCF, để biết giá trả cho chủ sở hữu."
+    why_it_works: "Giá trị hoạt động thuộc về cả chủ nợ và cổ đông; trừ nợ ròng còn phần của cổ đông."
+    assumptions: ["Giá mua là mua 100% vốn chủ"]
+    pitfalls: ["Bước hay bị quên: so EV với giá chủ đòi (giá vốn chủ) làm sai lệch cả nợ ròng"]
+    interpretation: "So sánh với giá chào của người bán (là giá vốn chủ)."
+    example:
+      inputs: {ev: 20800, debt: 2000, cash: 500}
+      steps: ["Nợ ròng = 2.000 - 500 = 1.500", "Equity = 20.800 - 1.500 = 19.300"]
+      result: "Equity = 19.300 triệu"
+  - id: m09_ev_ebitda
+    name_vi: "Bội số EV/EBITDA và EV ngầm định"
+    name_en: "EV/EBITDA multiple"
+    expression_latex: 'EV/EBITDA = \frac{EV}{EBITDA}\;;\quad EV = \text{multiple}\times EBITDA'
+    expression_python: "multiple = ev / ebitda; ev_implied = multiple * ebitda"
+    excel: "=EV/EBITDA"
+    variables:
+      - {symbol: ev, meaning: "Enterprise Value", unit: "tiền tệ"}
+      - {symbol: ebitda, meaning: "Lợi nhuận trước lãi, thuế, khấu hao", unit: "tiền tệ"}
+      - {symbol: multiple, meaning: "Bội số EV/EBITDA", unit: "lần"}
+    when_to_use: "Định giá nhanh bằng Comps/Precedent; so sánh giữa các công ty."
+    why_it_works: "EBITDA loại ảnh hưởng của lãi vay, thuế, khấu hao (khác nhau theo công ty) nên ngang tầm được. Với ngành nặng tài sản cần kiểm tra EV/EBIT hoặc FCF vì EBITDA bỏ qua capex."
+    assumptions: ["Công ty so sánh thật sự tương đương ngành, quy mô, tăng trưởng", "EBITDA đã điều chỉnh (QoE)"]
+    pitfalls: ["Dùng bội số công ty niêm yết 8-12x cho SME (nên 3-6x)", "EBITDA SME chưa điều chỉnh", "Bỏ qua capex"]
+    interpretation: "Niêm yết điển hình 8-12x; SME VN 3-6x (chiết khấu thanh khoản/quy mô). Precedent thường cao hơn Comps vì có control premium."
+    example:
+      inputs: {ev: 20000, ebitda: 4000, multiple: 5.0, debt: 2000, cash: 500}
+      steps: ["EV = 5 x 4.000 = 20.000", "Nợ ròng = 1.500", "Equity = 18.500", "Precedent 5,5x: EV = 22.000, Equity = 20.500"]
+      result: "Comps: equity 18.500; Precedent: equity 20.500"
+  - id: m09_nopat
+    name_vi: "NOPAT"
+    name_en: "Net Operating Profit After Tax"
+    expression_latex: 'NOPAT = EBIT\,(1-t)'
+    expression_python: "nopat = ebit * (1 - t)"
+    excel: "=EBIT*(1-t)"
+    variables:
+      - {symbol: ebit, meaning: "Lợi nhuận hoạt động", unit: "tiền tệ"}
+      - {symbol: t, meaning: "Thuế suất TNDN", unit: "tỷ lệ"}
+    when_to_use: "Bước đầu tính FCF để định giá DCF."
+    why_it_works: "Lợi nhuận hoạt động sau thuế như thể công ty không vay, tách khỏi quyết định tài trợ."
+    assumptions: ["Thuế suất ổn định (VN TNDN phổ thông 20%, cần xác nhận)"]
+    pitfalls: ["Dùng lợi nhuận sau lãi vay rồi lại trừ nợ ròng"]
+    interpretation: "Lợi nhuận tạo ra bởi hoạt động cốt lõi."
+    example:
+      inputs: {ebit: 3400, t: 0.2}
+      steps: ["NOPAT = 3.400 x 0,8 = 2.720"]
+      result: "2.720 triệu"
+  - id: m09_fcf
+    name_vi: "Dòng tiền tự do"
+    name_en: "Free Cash Flow (FCFF)"
+    expression_latex: 'FCF = NOPAT + \text{Khấu hao} - Capex - \Delta NWC'
+    expression_python: "fcf = nopat + dep - capex - d_nwc"
+    excel: "=NOPAT+Dep-Capex-dNWC"
+    variables:
+      - {symbol: nopat, meaning: "NOPAT", unit: "tiền tệ"}
+      - {symbol: dep, meaning: "Khấu hao", unit: "tiền tệ"}
+      - {symbol: capex, meaning: "Chi đầu tư TSCĐ", unit: "tiền tệ"}
+      - {symbol: d_nwc, meaning: "Tăng vốn lưu động", unit: "tiền tệ"}
+    when_to_use: "Đầu vào DCF/Gordon."
+    why_it_works: "Tiền thật còn lại sau khi duy trì và tăng trưởng hoạt động; cộng lại khấu hao vì không phải chi tiền."
+    assumptions: ["Capex và NWC đại diện cho trạng thái ổn định"]
+    pitfalls: ["Bỏ capex", "Capex thấp hơn khấu hao kéo dài"]
+    interpretation: "Dòng tiền thuộc cả chủ nợ và cổ đông."
+    example:
+      inputs: {nopat: 2720, dep: 600, capex: 500, d_nwc: 20}
+      steps: ["FCF = 2.720 + 600 - 500 - 20 = 2.800"]
+      result: "2.800 triệu"
+  - id: m09_gordon_dcf
+    name_vi: "DCF tăng trưởng đều (Gordon)"
+    name_en: "Gordon Growth DCF"
+    expression_latex: 'EV = \frac{FCF\,(1+g)}{WACC - g}'
+    expression_python: "ev = fcf * (1 + g) / (wacc - g)"
+    excel: "=FCF*(1+g)/(WACC-g)"
+    variables:
+      - {symbol: fcf, meaning: "FCF năm hiện tại", unit: "tiền tệ"}
+      - {symbol: g, meaning: "Tăng trưởng vĩnh viễn", unit: "tỷ lệ"}
+      - {symbol: wacc, meaning: "Chi phí vốn bình quân", unit: "tỷ lệ"}
+    when_to_use: "Giá trị nội tại của target ổn định."
+    why_it_works: "Tổng chuỗi dòng tiền tăng đều vĩnh viễn hội tụ về FCF1/(WACC-g)."
+    assumptions: ["g < WACC và g bền vững", "WACC của SME cao hơn doanh nghiệp lớn (rủi ro, thiếu thanh khoản): 18% trong case"]
+    pitfalls: ["Cực nhạy với g và WACC", "g xấp xỉ WACC cho ra giá trị vô lý"]
+    interpretation: "Kẹp với Comps và Precedent trong Football Field."
+    example:
+      inputs: {fcf: 2800, g: 0.04, wacc: 0.18}
+      steps: ["EV = 2.800 x 1,04 / (0,18 - 0,04) = 2.912 / 0,14 = 20.800", "Equity = 20.800 - 1.500 = 19.300"]
+      result: "EV = 20.800 triệu"
+  - id: m09_premium
+    name_vi: "Premium mua lại"
+    name_en: "Acquisition Premium"
+    expression_latex: 'Premium\% = \frac{P_{offer} - P_{market}}{P_{market}}\;;\quad Premium_{abs} = P_{offer} - P_{market}'
+    expression_python: "premium_abs = offer - market; premium_pct = premium_abs / market"
+    excel: "=(Chào-ThịTrường)/ThịTrường"
+    variables:
+      - {symbol: offer, meaning: "Giá chào mua", unit: "tiền tệ"}
+      - {symbol: market, meaning: "Giá thị trường chưa bị ảnh hưởng (hoặc giá stand-alone)", unit: "tiền tệ"}
+    when_to_use: "Đo phần thưởng trả cho cổ đông target; đầu vào Value created."
+    why_it_works: "Premium là phần giá trị chuyển cho người bán; bên mua chỉ lời nếu synergies lớn hơn."
+    assumptions: ["Cơ sở so sánh thống nhất (unaffected price)"]
+    pitfalls: ["Đo premium trên giá đã gồm tin đồn", "Premium so với DCF khác so với Comps - nêu rõ cơ sở"]
+    interpretation: "Điển hình 20-50% công ty niêm yết; SME thường thấp hơn."
+    example:
+      inputs: {offer: 20500, market: 19300}
+      steps: ["Premium = 1.200", "% = 1.200/19.300 = 6,2% so với DCF"]
+      result: "Premium = 1.200 triệu (6,2%)"
+  - id: m09_synergy_value
+    name_vi: "Giá trị synergies"
+    name_en: "Value of Synergies"
+    expression_latex: 'V_{syn} = V_{AB} - (V_A + V_B)'
+    expression_python: "v_syn = v_ab - (v_a + v_b)"
+    excel: "=VAB-(VA+VB)"
+    variables:
+      - {symbol: v_ab, meaning: "Giá trị kết hợp", unit: "tiền tệ"}
+      - {symbol: v_a, meaning: "Giá trị A stand-alone", unit: "tiền tệ"}
+      - {symbol: v_b, meaning: "Giá trị B stand-alone", unit: "tiền tệ"}
+    when_to_use: "Định nghĩa khái niệm; trong thực tế tính bằng PV từng dòng synergy."
+    why_it_works: "Lý do duy nhất để trả cao hơn thị trường là tổng kết hợp lớn hơn tổng riêng lẻ."
+    assumptions: ["V_A, V_B định giá nhất quán"]
+    pitfalls: ["Đếm synergies chưa chiết khấu rủi ro", "Quên chi phí tích hợp"]
+    interpretation: "Dương và đủ lớn so với premium thì mới nên mua."
+    example:
+      inputs: {v_ab: 240, v_a: 100, v_b: 120}
+      steps: ["V_syn = 240 - 220 = 20"]
+      result: "20 (đơn vị bất kỳ)"
+  - id: m09_value_created
+    name_vi: "Giá trị tạo ra cho bên mua"
+    name_en: "Value created for acquirer"
+    expression_latex: 'Value\;created = NPV_{syn} - Premium\;paid'
+    expression_python: "value_created = npv_syn - premium"
+    excel: "=NPV_syn-Premium"
+    variables:
+      - {symbol: npv_syn, meaning: "NPV synergies (đã trừ chi phí tích hợp nếu có)", unit: "tiền tệ"}
+      - {symbol: premium, meaning: "Premium tuyệt đối", unit: "tiền tệ"}
+    when_to_use: "Kiểm tra quyết định mua/không mua; điều kiện sống còn."
+    why_it_works: "Acquirer trả premium cho target và nhận synergies; chênh lệch là lãi/lỗ cho cổ đông acquirer."
+    assumptions: ["Giá thị trường/stand-alone của target phản ánh đúng giá trị riêng"]
+    pitfalls: ["Chỉ nhìn EPS thay vì dòng này", "Synergies tính theo 100% xác suất"]
+    interpretation: "Synergies > Premium: tạo giá trị; < Premium: phá hủy giá trị."
+    example:
+      inputs: {npv_syn: 5000, premium: 3000}
+      steps: ["Target 10 tỷ USD, premium 30% = 3 tỷ", "Value created = 5 - 3 = 2 tỷ (Nếu synergies = 2 tỷ: -1 tỷ)"]
+      result: "+2.000 triệu USD"
+  - id: m09_walk_away
+    name_vi: "Giá tối đa chấp nhận được"
+    name_en: "Walk-away price"
+    expression_latex: 'P_{max} = V_{standalone} + NPV(Synergies) - \text{Chi phí tích hợp}'
+    expression_python: "p_max = v_standalone + pv_syn_risk_adj - integration_cost"
+    excel: "=Standalone+NPV_syn-ChiPhiTichHop"
+    variables:
+      - {symbol: v_standalone, meaning: "Giá trị vốn chủ stand-alone", unit: "tiền tệ"}
+      - {symbol: pv_syn_risk_adj, meaning: "PV synergies sau thuế, revenue đã chiết khấu xác suất", unit: "tiền tệ"}
+      - {symbol: integration_cost, meaning: "Chi phí tích hợp một lần", unit: "tiền tệ"}
+    when_to_use: "Chốt trước đàm phán; so với giá người bán đòi."
+    why_it_works: "Trả đúng bằng mức này thì toàn bộ synergies chảy sang người bán, bên mua hòa vốn (value created = 0); trả thêm là phá hủy giá trị."
+    assumptions: ["Synergies đã chiết khấu rủi ro", "Chi phí tích hợp tính ở t=0"]
+    pitfalls: ["Dùng walk-away có cả revenue synergy làm giá mục tiêu (không có biên an toàn)", "Quên stress test"]
+    interpretation: "Nếu giá đòi > Pmax: từ chối hoặc cấu trúc giá cơ sở thấp + earn-out. Giá mục tiêu nên thấp hơn nhiều walk-away."
+    example:
+      inputs: {v_standalone: 200, pv_syn_risk_adj: 55, integration_cost: 25}
+      steps: ["PV synergies = 40 + 30 x 50% = 55", "Pmax = 200 + 55 - 25 = 230"]
+      result: "230 tỷ; chủ đòi 240 tỷ vượt 10 tỷ"
+  - id: m09_cost_synergy_pv
+    name_vi: "PV cost synergies (5 năm + vĩnh viễn)"
+    name_en: "PV of cost synergies with terminal value"
+    expression_latex: 'PV = \sum_{k=1}^{5}\frac{S_k (1-t)}{(1+r)^k} + \frac{S_{\infty}(1-t)}{r\,(1+r)^5}'
+    expression_python: "pv = sum(s[k-1]*(1-t)/(1+r)**k for k in range(1,6)) + s_perp*(1-t)/r/(1+r)**5"
+    excel: "=NPV(r,dòng tiền sau thuế)+TV/(1+r)^5"
+    variables:
+      - {symbol: s, meaning: "Danh sách cost synergies trước thuế năm 1..5", unit: "tiền tệ/năm"}
+      - {symbol: s_perp, meaning: "Cost synergies hằng năm từ năm 6 (không tăng trưởng)", unit: "tiền tệ/năm"}
+      - {symbol: t, meaning: "Thuế suất", unit: "tỷ lệ"}
+      - {symbol: r, meaning: "Tỷ lệ chiết khấu", unit: "tỷ lệ"}
+    when_to_use: "Định lượng cost synergies (nguồn tin cậy nhất, 70-80% xác suất)."
+    why_it_works: "Tiết kiệm trước thuế phải qua thuế; vĩnh viễn không tăng trưởng = S(1-t)/r, chiết khấu về t=0."
+    assumptions: ["Giữ vĩnh viễn, không tăng trưởng (thận trọng)", "Dòng tiền cuối năm"]
+    pitfalls: ["Quên thuế", "Vĩnh viễn kèm tăng trưởng gây thổi phồng", "Quên chi phí tích hợp 1-1,5 lần synergies năm"]
+    interpretation: "Thường chiếm phần lớn NPV synergies của thương vụ hợp lý."
+    example:
+      inputs: {s: [300, 600, 600, 600, 600], s_perp: 600, t: 0.2, r: 0.18}
+      steps: ["PV 5 năm = 1.297,7", "TV cuối năm 5 = 480/0,18 = 2.666,7, PV = 1.165,6", "Tổng = 2.463,3"]
+      result: "2.463,3 triệu"
+  - id: m09_revenue_synergy_pv
+    name_vi: "PV revenue synergies điều chỉnh xác suất"
+    name_en: "Risk-adjusted PV of revenue synergies"
+    expression_latex: 'PV = \sum_{k=a}^{b}\frac{E\cdot p\,(1-t)}{(1+r)^k}'
+    expression_python: "pv = sum(e*p*(1-t)/(1+r)**k for k in range(a, b+1))"
+    excel: "=NPV(r,...)"
+    variables:
+      - {symbol: e, meaning: "EBITDA tăng thêm hằng năm", unit: "tiền tệ/năm"}
+      - {symbol: p, meaning: "Xác suất/hệ số chiết khấu (0,5 = giảm 50%)", unit: "tỷ lệ"}
+      - {symbol: a, meaning: "Năm bắt đầu", unit: "năm"}
+      - {symbol: b, meaning: "Năm kết thúc", unit: "năm"}
+      - {symbol: t, meaning: "Thuế suất", unit: "tỷ lệ"}
+      - {symbol: r, meaning: "Tỷ lệ chiết khấu", unit: "tỷ lệ"}
+    when_to_use: "Mọi revenue synergy; quy tắc chiết khấu ít nhất 50%."
+    why_it_works: "Revenue synergy phụ thuộc hành vi khách hàng và đối thủ (xác suất thực hiện 30-50%) nên không phải thứ mình quyết định một mình."
+    assumptions: ["Giai đoạn hữu hạn trong ví dụ (năm 2-5)"]
+    pitfalls: ["Tin 100% cross-sell", "Làm trụ cột của giá"]
+    interpretation: "Chỉ nên là phần thưởng; giá phải đứng được khi revenue = 0."
+    example:
+      inputs: {e: 500, p: 0.5, t: 0.2, r: 0.18, a: 2, b: 5}
+      steps: ["Dòng sau thuế mỗi năm = 500 x 0,5 x 0,8 = 200", "PV năm 2-5 = 455,9"]
+      result: "455,9 triệu"
+  - id: m09_npv_syn_net
+    name_vi: "NPV synergies ròng"
+    name_en: "Net NPV of synergies"
+    expression_latex: 'NPV_{syn} = PV_{cost} + PV_{rev,adj} - IntegrationCost'
+    expression_python: "npv_syn = pv_cost + pv_rev_adj - integration_cost"
+    excel: "=PV_cost+PV_rev-ChiPhiTichHop"
+    variables:
+      - {symbol: pv_cost, meaning: "PV cost synergies", unit: "tiền tệ"}
+      - {symbol: pv_rev_adj, meaning: "PV revenue synergies điều chỉnh", unit: "tiền tệ"}
+      - {symbol: integration_cost, meaning: "Chi phí tích hợp", unit: "tiền tệ"}
+    when_to_use: "Tổng hợp trước khi so với premium."
+    why_it_works: "Hoàn tất bức tranh lợi ích trừ chi phí một lần."
+    assumptions: ["Các thành phần cùng tỷ lệ chiết khấu"]
+    pitfalls: ["Chiết khấu sai tỷ lệ cho phần revenue rủi ro cao"]
+    interpretation: "Là trần premium; phải lớn hơn premium với biên an toàn."
+    example:
+      inputs: {pv_cost: 2463.28, pv_rev_adj: 455.94, integration_cost: 1200}
+      steps: ["NPV_syn = 2.463,3 + 455,9 - 1.200 = 1.719,2"]
+      result: "1.719,2 triệu"
+  - id: m09_breakeven_realization
+    name_vi: "Tỷ lệ thực hiện cost synergies hòa vốn"
+    name_en: "Breakeven cost-synergy realization"
+    expression_latex: 'x^{*} = \frac{Premium + IntegrationCost}{PV_{cost}}'
+    expression_python: "x_star = (premium + integration_cost) / pv_cost"
+    excel: "=(Premium+ChiPhiTichHop)/PV_cost"
+    variables:
+      - {symbol: premium, meaning: "Premium tuyệt đối", unit: "tiền tệ"}
+      - {symbol: integration_cost, meaning: "Chi phí tích hợp", unit: "tiền tệ"}
+      - {symbol: pv_cost, meaning: "PV cost synergies kế hoạch", unit: "tiền tệ"}
+    when_to_use: "Đo biên an toàn khi revenue synergies = 0."
+    why_it_works: "Giải x sao cho x x PV_cost - IC - Premium = 0."
+    assumptions: ["Revenue synergies = 0; chi phí tích hợp cố định"]
+    pitfalls: ["Hiểu nhầm số gần 100% là tốt"]
+    interpretation: "x* gần 100% = biên an toàn rất mỏng (case 97,4%). Mục tiêu x* thấp (vd <70%)."
+    example:
+      inputs: {premium: 1200, integration_cost: 1200, pv_cost: 2463.28}
+      steps: ["x* = 2.400 / 2.463,3 = 97,4%"]
+      result: "97,4%"
+  - id: m09_new_shares
+    name_vi: "Số cổ phần phát hành mới"
+    name_en: "New shares issued"
+    expression_latex: 'N_{new} = \frac{\text{Giá trị trả bằng cổ phiếu}}{P_{acquirer}}'
+    expression_python: "n_new = stock_consideration / price_acquirer"
+    excel: "=GiáTrịCP/GiáCP"
+    variables:
+      - {symbol: stock_consideration, meaning: "Giá trị thanh toán bằng cổ phiếu", unit: "tiền tệ"}
+      - {symbol: price_acquirer, meaning: "Giá cổ phiếu acquirer", unit: "tiền tệ/cổ phần (cùng đơn vị)"}
+    when_to_use: "Khi thanh toán toàn bộ/một phần bằng cổ phiếu."
+    why_it_works: "Số cổ phần = giá trị cần trả / giá mỗi cổ phần."
+    assumptions: ["Giá phát hành bằng giá thị trường/nội bộ 24.000 đ/cp"]
+    pitfalls: ["Lẫn đơn vị (triệu đồng / nghìn cổ phần / đồng)"]
+    interpretation: "Tỷ lệ sở hữu của chủ cũ target = N_new/(N_old+N_new)."
+    example:
+      inputs: {stock_consideration: 6000, price_acquirer: 24}
+      steps: ["Đơn vị: 6.000 triệu / 24 nghìn đồng = 250 nghìn cổ phần", "Tỷ lệ = 250/1.250 = 20%"]
+      result: "250 nghìn cổ phần (20%)"
+  - id: m09_after_tax_financing
+    name_vi: "Chi phí tài trợ sau thuế"
+    name_en: "After-tax financing cost"
+    expression_latex: 'C = \big(D_{new}\,i_d + Cash_{used}\,i_c\big)(1-t)'
+    expression_python: "c = (d_new*i_d + cash_used*i_c)*(1-t)"
+    excel: "=(Vay*LS_vay+Tiền*LS_tiền)*(1-t)"
+    variables:
+      - {symbol: d_new, meaning: "Vay mới", unit: "tiền tệ"}
+      - {symbol: i_d, meaning: "Lãi vay", unit: "tỷ lệ/năm"}
+      - {symbol: cash_used, meaning: "Tiền mặt sử dụng", unit: "tiền tệ"}
+      - {symbol: i_c, meaning: "Lãi tiền gửi bị mất", unit: "tỷ lệ/năm"}
+      - {symbol: t, meaning: "Thuế suất", unit: "tỷ lệ"}
+    when_to_use: "Đầu vào EPS pro forma; Quick Test."
+    why_it_works: "Lãi vay được khấu trừ thuế; dùng tiền mặt mất lãi tiền gửi (chi phí cơ hội)."
+    assumptions: ["Lãi vay 11%, tiền gửi 5%, thuế 20% (giả định case)"]
+    pitfalls: ["Quên chi phí cơ hội của tiền mặt dư"]
+    interpretation: "Lãi vay sau thuế 8,8%; tiền mặt 4,0%."
+    example:
+      inputs: {d_new: 6500, i_d: 0.11, cash_used: 8000, i_c: 0.05, t: 0.2}
+      steps: ["(715 + 400) x 0,8 = 892"]
+      result: "892 triệu"
+  - id: m09_eps_pro_forma
+    name_vi: "EPS pro forma"
+    name_en: "Pro forma EPS (accretion/dilution)"
+    expression_latex: 'EPS_{pf} = \frac{NI_A + NI_B + Syn_{(1-t)} - FinCost_{(1-t)}}{N_A + N_{new}}'
+    expression_python: "eps_pf = (ni_a + ni_b + syn_after_tax - fin_cost_after_tax) / (n_a + n_new); change = eps_pf / (ni_a / n_a) - 1"
+    excel: "=(NI_A+NI_B+Syn-Phí)/(CP_A+CP_mới)"
+    variables:
+      - {symbol: ni_a, meaning: "LNST acquirer", unit: "tiền tệ"}
+      - {symbol: ni_b, meaning: "LNST target", unit: "tiền tệ"}
+      - {symbol: syn_after_tax, meaning: "Synergies sau thuế trong năm", unit: "tiền tệ"}
+      - {symbol: fin_cost_after_tax, meaning: "Chi phí tài trợ sau thuế", unit: "tiền tệ"}
+      - {symbol: n_a, meaning: "Số cổ phần acquirer hiện tại", unit: "cổ phần"}
+      - {symbol: n_new, meaning: "Số cổ phần phát hành mới", unit: "cổ phần"}
+    when_to_use: "Đo tác động lên EPS cho từng phương án tài trợ, năm 1 và năm 3."
+    why_it_works: "Lợi nhuận kết hợp trừ chi phí tài trợ chia cho tổng số cổ phần mới."
+    assumptions: ["Chưa tính chi phí tích hợp một lần (nếu tính, EPS báo cáo năm 1 giảm: case A -7,5%)", "Không điều chỉnh khấu hao tài sản đánh giá lại"]
+    pitfalls: ["Ra quyết định chỉ bằng EPS: nợ làm EPS đẹp nhất nhưng giá trị tạo ra như nhau", "Nhầm EPS điều chỉnh với EPS báo cáo"]
+    interpretation: "Accretive nếu EPS_pf > EPS gốc. Đối chiếu bằng value created và rủi ro tài chính."
+    example:
+      inputs: {ni_a: 3000, ni_b: 2560, syn_after_tax: 0, fin_cost_after_tax: 892, n_a: 1000, n_new: 250}
+      steps: ["LNST kết hợp = 3.000 + 2.560 - 892 = 4.668", "EPS = 4.668 / 1.250 = 3,7344 (3.734 đ)", "+24,5% so với 3.000 đ"]
+      result: "EPS Y1 = 3.734 đ, +24,5% (phương án A)"
+  - id: m09_quick_test
+    name_vi: "Quick Test accretion"
+    name_en: "Earnings yield test"
+    expression_latex: 'E/P_{target} = \frac{NI_B}{Price_{paid}} \gtrless \text{Chi phí tài trợ sau thuế}'
+    expression_python: "ey_target = ni_b / price_paid; accretive = ey_target > financing_cost_rate"
+    excel: "=NI_B/Giá"
+    variables:
+      - {symbol: ni_b, meaning: "LNST target", unit: "tiền tệ"}
+      - {symbol: price_paid, meaning: "Giá mua", unit: "tiền tệ"}
+      - {symbol: financing_cost_rate, meaning: "Chi phí tài trợ sau thuế (lãi vay sau thuế, hoặc E/P acquirer = 1/PE nếu trả cổ phiếu)", unit: "tỷ lệ"}
+    when_to_use: "Kiểm tra nhanh dấu của accretion/dilution."
+    why_it_works: "Earnings yield là lợi suất mỗi đồng bỏ mua; lớn hơn chi phí của đồng đó thì EPS tăng. Trả cổ phiếu: acquirer P/E cao hơn target P/E thì accretive."
+    assumptions: ["Chưa tính synergies và chi phí một lần"]
+    pitfalls: ["Hiểu accretion là tạo giá trị"]
+    interpretation: "Bằng nhau thì trung lập."
+    example:
+      inputs: {ni_b: 2560, price_paid: 20500, financing_cost_rate: 0.125}
+      steps: ["E/P target = 2.560/20.500 = 12,49%", "E/P acquirer = 1/8 = 12,5%: gần bằng nên EPS Y1 trung lập (2.999 đ)"]
+      result: "Trung lập (12,49% vs 12,5%)"
+  - id: m09_goodwill
+    name_vi: "Lợi thế thương mại"
+    name_en: "Goodwill"
+    expression_latex: 'Goodwill = P_{purchase} - FV_{\text{tài sản ròng xác định}}\;;\quad \text{tỷ trọng} = \frac{Goodwill}{P_{purchase}}'
+    expression_python: "goodwill = price - fv_net_assets; share = goodwill / price"
+    excel: "=Giá-FV_TSròng"
+    variables:
+      - {symbol: price, meaning: "Giá mua", unit: "tiền tệ"}
+      - {symbol: fv_net_assets, meaning: "Giá trị hợp lý tài sản ròng xác định được (sổ sách + đánh giá lại)", unit: "tiền tệ"}
+    when_to_use: "Ghi nhận kế toán và đánh giá rủi ro ghi giảm."
+    why_it_works: "Premium vượt tài sản hữu hình/xác định được chuyển thành goodwill."
+    assumptions: ["Đánh giá lại tài sản (thương hiệu, thiết bị) đã thực hiện"]
+    pitfalls: ["Dùng giá trị sổ sách thay FV", "Quên impairment test (IFRS) hoặc phân bổ (VAS)"]
+    interpretation: "Tỷ trọng cao (gần 50%) nghĩa là phụ thuộc synergies, ghi giảm lớn nếu thất bại."
+    example:
+      inputs: {price: 20500, fv_net_assets: 10500}
+      steps: ["Vốn chủ sổ sách 9.000 + đánh giá lại 1.500 = 10.500", "Goodwill = 10.000, 48,8% giá mua"]
+      result: "10.000 triệu (48,8%)"
+  - id: m09_lbo_returns
+    name_vi: "LBO: MoM và IRR"
+    name_en: "LBO returns (MoM, IRR)"
+    expression_latex: 'MoM = \frac{Equity_{exit}}{Equity_{entry}}\;;\quad IRR = MoM^{1/n}-1\;;\quad Equity_{exit}= m_{exit}\cdot EBITDA_{exit} - Debt_{exit}'
+    expression_python: "equity_exit = exit_mult*ebitda_exit - debt_exit; mom = equity_exit/equity_entry; irr = mom**(1/n) - 1"
+    excel: "=(Thoái/Vào)^(1/n)-1  hoặc =IRR(dòng tiền)"
+    variables:
+      - {symbol: exit_mult, meaning: "Bội số EV/EBITDA lúc thoái", unit: "lần"}
+      - {symbol: ebitda_exit, meaning: "EBITDA lúc thoái", unit: "tiền tệ"}
+      - {symbol: debt_exit, meaning: "Nợ còn lại", unit: "tiền tệ"}
+      - {symbol: equity_entry, meaning: "Vốn chủ góp ban đầu", unit: "tiền tệ"}
+      - {symbol: n, meaning: "Số năm giữ", unit: "năm"}
+    when_to_use: "Đánh giá thương vụ mua bằng đòn bẩy của quỹ PE; mục tiêu IRR 20-25%+."
+    why_it_works: "Một dòng vào, một dòng ra (không cổ tức trung gian) nên IRR = căn bậc n của MoM trừ 1. Nợ nhỏ mà EV tăng nên đòn bẩy khuếch đại lợi suất vốn chủ."
+    assumptions: ["Không có dòng tiền trung gian cho vốn chủ", "Chi phí giao dịch bỏ qua"]
+    pitfalls: ["Đòn bẩy cũng khuếch đại lỗ", "Dựa vào mở rộng bội số (may mắn thị trường)"]
+    interpretation: "LBO lành mạnh: lợi nhuận từ EBITDA tăng và trả nợ. Đóng góp điển hình: tăng EBITDA 30-40%, trả nợ 30-40%, mở rộng bội số 20-30% (khoảng minh họa)."
+    example:
+      inputs: {exit_mult: 8, ebitda_exit: 17.5, debt_exit: 35, equity_entry: 30, n: 5}
+      steps: ["EV thoái = 8 x 17,5 = 140", "Vốn chủ thu về = 140 - 35 = 105", "MoM = 3,5x", "IRR = 3,5^(1/5) - 1 = 28,5%"]
+      result: "MoM 3,5x, IRR 28,5%"
+  - id: m09_lbo_attribution
+    name_vi: "Phân rã giá trị LBO"
+    name_en: "LBO value creation attribution"
+    expression_latex: 'ΔEquity = (EBITDA_{exit}-EBITDA_{entry})\,m_{entry} + (Debt_{entry}-Debt_{exit}) + (m_{exit}-m_{entry})\,EBITDA_{exit}'
+    expression_python: "d_equity = (e_exit-e_entry)*m_entry + (debt_entry-debt_exit) + (m_exit-m_entry)*e_exit"
+    excel: ""
+    variables:
+      - {symbol: e_entry, meaning: "EBITDA vào", unit: "tiền tệ"}
+      - {symbol: e_exit, meaning: "EBITDA thoái", unit: "tiền tệ"}
+      - {symbol: m_entry, meaning: "Bội số vào", unit: "lần"}
+      - {symbol: m_exit, meaning: "Bội số thoái", unit: "lần"}
+      - {symbol: debt_entry, meaning: "Nợ vào", unit: "tiền tệ"}
+      - {symbol: debt_exit, meaning: "Nợ thoái", unit: "tiền tệ"}
+    when_to_use: "Biết lãi đến từ vận hành, trả nợ hay may mắn bội số."
+    why_it_works: "Equity = m x EBITDA - Debt, phân rã thay đổi thành ba phần (EBITDA, nợ, bội số)."
+    assumptions: ["Phân rã tuần tự; thứ tự khác cho số khác một chút khi có hiệu ứng chéo"]
+    pitfalls: ["Bỏ phần hiệu ứng chéo"]
+    interpretation: "Phần mở rộng bội số bằng 0 là LBO lành mạnh."
+    example:
+      inputs: {e_entry: 12.5, e_exit: 17.5, m_entry: 8, m_exit: 8, debt_entry: 70, debt_exit: 35}
+      steps: ["EBITDA: (17,5-12,5) x 8 = 40", "Trả nợ: 70 - 35 = 35", "Bội số: 0", "Tổng 75 = 105 - 30"]
+      result: "75"
+  - id: m09_leverage_cover
+    name_vi: "Nợ/EBITDA và hệ số bảo vệ lãi vay"
+    name_en: "Net-debt/EBITDA and Interest Coverage Ratio"
+    expression_latex: 'Debt/EBITDA = \frac{D}{EBITDA}\;;\quad ICR = \frac{EBIT}{Interest}'
+    expression_python: "lev = debt/ebitda; icr = ebit/interest"
+    excel: "=Nợ/EBITDA ; =EBIT/Lãi"
+    variables:
+      - {symbol: debt, meaning: "Tổng nợ sau thương vụ", unit: "tiền tệ"}
+      - {symbol: ebitda, meaning: "EBITDA kết hợp", unit: "tiền tệ"}
+      - {symbol: ebit, meaning: "EBIT kết hợp", unit: "tiền tệ"}
+      - {symbol: interest, meaning: "Lãi vay kết hợp", unit: "tiền tệ"}
+    when_to_use: "Kiểm tra khả năng chịu đòn bẩy và stress test."
+    why_it_works: "Đo số năm EBITDA trả hết nợ và số lần lợi nhuận hoạt động phủ lãi."
+    assumptions: ["Stress test: EBITDA giảm, EBIT = EBITDA mới - khấu hao kết hợp 2.350, lãi cố định"]
+    pitfalls: ["Chỉ nhìn kịch bản cơ sở"]
+    interpretation: "Nợ/EBITDA <3-4x an toàn; ICR >3x. Case A: 0,89x và 7,8x; EBITDA -40% vẫn ICR 3,7x."
+    example:
+      inputs: {debt: 8500, ebitda: 9500, ebit: 7150, interest: 915}
+      steps: ["Nợ/EBITDA = 8.500/9.500 = 0,89x", "ICR = 7.150/915 = 7,8x", "EBITDA -40%: EBIT 3.350, ICR 3,7x, Nợ/EBITDA 1,49x"]
+      result: "0,89x; 7,8x"
+  - id: m09_roi_indicator
+    name_vi: "ROI chỉ báo thương vụ"
+    name_en: "Indicative deal ROI"
+    expression_latex: 'ROI = \frac{Value - Price}{Price}'
+    expression_python: "roi = (value - price) / price"
+    excel: "=(Giá trị-Giá)/Giá"
+    variables:
+      - {symbol: value, meaning: "Giá trị kinh tế ước tính quy về hiện tại", unit: "tiền tệ"}
+      - {symbol: price, meaning: "Giá đã trả", unit: "tiền tệ"}
+    when_to_use: "Đánh giá định tính hậu kiểm (case Disney-Pixar)."
+    why_it_works: "Tỷ lệ lãi trên vốn bỏ ra."
+    assumptions: ["Giá trị là ước tính, không phải doanh thu gộp"]
+    pitfalls: ["Lẫn doanh thu phòng vé với giá trị tạo ra"]
+    interpretation: "Chỉ báo định tính, không phải số liệu tài chính chính xác."
+    example:
+      inputs: {value: 50, price: 7.4}
+      steps: ["(50 - 7,4)/7,4 = 5,76 = 576%"]
+      result: "576% (illustrative)"
+
+procedures:
+  - id: m09_proc_full_valuation
+    name: "Quy trình đánh giá một thương vụ mua (từ đầu đến cuối)"
+    steps:
+      - "1. Làm rõ luận điểm chiến lược: synergy cụ thể nào bằng tiền? Không diễn đạt được thì dừng."
+      - "2. Chuẩn hóa số liệu target (Quality of Earnings): điều chỉnh EBITDA cho chi phí cá nhân chủ, lương dưới thị trường, doanh thu chưa xuất hóa đơn, nợ khó đòi."
+      - "3. Định giá stand-alone: EV/EBITDA Comps, Precedent (đã có control premium), DCF (NOPAT -> FCF -> Gordon). Từ EV trừ nợ ròng ra Equity. Lập Football Field, chọn giá trị neo trong vùng chồng lấn."
+      - "4. Định lượng synergies: cost (sau thuế, vĩnh viễn nếu hợp lý), revenue (chiết khấu >=50%), trừ chi phí tích hợp (1-1,5 lần cost synergies năm)."
+      - "5. Tính walk-away = Stand-alone + NPV synergies ròng; và walk-away chỉ-cost-synergies (không revenue)."
+      - "6. So sánh giá chủ đòi: nếu vượt walk-away thì từ chối; nếu giữa hai walk-away thì cấu trúc giá cơ sở + earn-out."
+      - "7. Value created = NPV_syn - Premium; stress test với cost 50%, revenue 0, chi phí tích hợp +50%; tính tỷ lệ cost synergy hòa vốn."
+      - "8. Chọn cấu trúc thanh toán: tính EPS Y1 và Y3 cho các phương án; đối chiếu bằng value created và rủi ro."
+      - "9. Kiểm tra đòn bẩy: Nợ/EBITDA, ICR, stress test EBITDA -20%, -30%, -40%."
+      - "10. Goodwill, cơ cấu sở hữu (nếu phát hành cổ phiếu), due diligence, kế hoạch PMI 100 ngày."
+    outputs: "Football Field, bảng synergies, walk-away, đề xuất giá cơ sở + earn-out, bảng EPS, bảng stress, khuyến nghị mua/không mua."
+  - id: m09_proc_eps_compare
+    name: "So sánh phương án tài trợ bằng EPS"
+    steps:
+      - "1. Đổi mọi số về cùng đơn vị (triệu đồng, nghìn cổ phần)."
+      - "2. Tính chi phí tài trợ sau thuế = (vay x lãi vay + tiền x lãi mất) x (1-t); lãi vay sau thuế = lãi x (1-t)."
+      - "3. Cổ phần mới = giá trị trả cổ phiếu / giá cổ phiếu."
+      - "4. EPS Y1 (chưa có synergies); EPS Y3 cộng cost synergies sau thuế."
+      - "5. Lập bảng EPS và % thay đổi; tính riêng EPS có/không có chi phí tích hợp."
+      - "6. Quick Test E/P target vs chi phí tài trợ; nhắc rằng accretion không bằng value."
+    outputs: "Bảng phương án (A hỗn hợp, B cổ phiếu, C tiền+vay) với EPS Y1, Y3 và khuyến nghị."
+  - id: m09_proc_lbo
+    name: "Đánh giá LBO"
+    steps:
+      - "1. Nguồn vốn: vốn chủ, senior debt, mezzanine; EV vào = bội số x EBITDA."
+      - "2. Dự phóng EBITDA, dòng tiền trả nợ, nợ còn lại năm n."
+      - "3. EV thoái = bội số thoái x EBITDA thoái; Vốn chủ thoái = EV - nợ."
+      - "4. MoM và IRR; phân rã nguồn lợi (EBITDA, trả nợ, bội số)."
+      - "5. Stress: EBITDA -30%, bội số thoái thấp hơn; kiểm ICR/Nợ-EBITDA."
+    outputs: "IRR, MoM, phân rã, mức nhạy."
+  - id: m09_proc_dd_process
+    name: "Quy trình giao dịch và thẩm định"
+    steps:
+      - "1. Chuẩn bị: advisor, Information Memo, danh sách người mua, data room (6 tuần)."
+      - "2. Tiếp thị: teaser -> NDA -> IM -> IOI -> shortlist."
+      - "3. Thẩm định tài chính, pháp lý, thương mại, vận hành, thuế, nhân sự, IT, môi trường; nhận binding bids."
+      - "4. Đàm phán SPA, board duyệt, fairness opinion, ký."
+      - "5. Closing: chống độc quyền, cổ đông, điều kiện tiên quyết."
+      - "6. PMI 6-24 tháng: kế hoạch 100 ngày, theo dõi synergies hàng quý, giữ nhân tài."
+    outputs: "Timeline 3-6 tháng đến closing, danh mục DD, kế hoạch PMI."
+  - id: m09_proc_sme_seller_prep
+    name: "SME làm bên bán (chuẩn bị 12-24 tháng)"
+    steps:
+      - "1. Chuẩn hóa sổ sách, tách chi phí cá nhân, xuất hóa đơn đầy đủ."
+      - "2. Giảm tập trung khách hàng và phụ thuộc chủ."
+      - "3. Chuẩn bị QoE và data room Google Drive/Dropbox phân quyền."
+      - "4. Chấp nhận earn-out và giữ vai trò chuyển giao."
+    outputs: "Hồ sơ bán sẵn sàng, giá kỳ vọng thực tế."
+
+decision_rules:
+  - "Nếu NPV synergies > Premium thì thương vụ tạo giá trị; nếu < thì phá hủy giá trị cho cổ đông bên mua."
+  - "Nếu giá người bán đòi > walk-away price thì từ chối hoặc đề nghị giá cơ sở thấp + earn-out."
+  - "Nếu thương vụ chỉ có lãi khi revenue synergies thực hiện thì không dùng nó để biện minh giá; chiết khấu revenue >=50%."
+  - "Nếu tỷ lệ cost synergy hòa vốn gần 100% thì biên an toàn mỏng: giảm giá cơ sở hoặc chuyển phần giá sang earn-out."
+  - "Nếu E/P target > chi phí tài trợ sau thuế thì accretive; nếu trả cổ phiếu và P/E acquirer > P/E target thì accretive."
+  - "Nếu EPS accretive nhưng value created <= 0 thì vẫn từ chối (accretion không phải tạo giá trị)."
+  - "Nếu cổ phiếu acquirer đang bị định giá cao (đỉnh thị trường) thì cân nhắc trả cổ phiếu nhưng thị trường sẽ đọc là tín hiệu tiêu cực; nếu synergies chưa chắc chắn thì stock deal chia sẻ rủi ro."
+  - "Nếu Nợ/EBITDA > 3-4x hoặc ICR < 3x sau thương vụ thì giảm vay, tăng vốn chủ/cổ phiếu hoặc earn-out."
+  - "Nếu goodwill > ~50% giá mua thì xem là phụ thuộc cao vào synergies, dự phòng rủi ro ghi giảm."
+  - "Nếu target là doanh nghiệp sáng tạo/con người là tài sản chính thì giữ độc lập có kiểm soát (mô hình Pixar), không ép tích hợp."
+  - "Nếu không diễn đạt synergy cụ thể bằng tiền thì không mua (bài học AOL)."
+  - "Nếu mô hình kinh doanh cốt lõi của target đang suy tàn vì công nghệ thì M&A không sửa được."
+  - "Nếu mua SME: dùng bội số 3-6x EV/EBITDA, ưu tiên Quality of Earnings và earn-out giữ chủ/nhân sự then chốt/khách lớn."
+  - "Nếu thương vụ horizontal có thị phần cao thì kiểm tra ngưỡng kiểm soát tập trung kinh tế (Luật Cạnh tranh 2018)."
+  - "Nếu mua cổ phần (share deal) thì thẩm định nợ ẩn kỹ hơn; nếu muốn tránh nợ ẩn thì cân nhắc asset deal."
+  - "Nếu giá đã được xác định trước đấu giá thì rời đi khi vượt walk-away dù bị cuốn vào cạnh tranh (winner's curse)."
+
+benchmarks:
+  - {metric: "Premium điển hình (niêm yết)", value: "20-50%", context: "So với unaffected price", confidence: medium}
+  - {metric: "Tỷ lệ M&A không tạo giá trị cho acquirer", value: "60-70%", context: "Số liệu tổng hợp nhiều nghiên cứu, thay đổi theo mẫu", confidence: low}
+  - {metric: "Giá acquirer khi công bố", value: "-1 đến -3%", context: "Trung bình", confidence: low}
+  - {metric: "Synergies thực hiện / dự kiến", value: "50-70%", context: "Thường gặp", confidence: low}
+  - {metric: "Xác suất thực hiện cost synergies", value: "70-80%", context: "Trong tầm kiểm soát", confidence: medium}
+  - {metric: "Xác suất revenue synergies", value: "30-50%", context: "Chiết khấu >=50%", confidence: medium}
+  - {metric: "Xác suất financial synergies", value: "60-70%", context: "", confidence: medium}
+  - {metric: "Xác suất operational synergies", value: "50-60%", context: "", confidence: medium}
+  - {metric: "Chi phí tích hợp", value: "1-1,5 lần cost synergies hàng năm", context: "Một lần", confidence: medium}
+  - {metric: "EV/EBITDA niêm yết", value: "8-12x", context: "Tùy ngành", confidence: medium}
+  - {metric: "EV/EBITDA SME VN", value: "3-6x", context: "Chiết khấu thanh khoản và quy mô; case dùng 5x comps, 5,5x precedent", confidence: low}
+  - {metric: "Chiết khấu thiếu thanh khoản SME", value: "20-30%", context: "DLOM", confidence: low}
+  - {metric: "IRR mục tiêu quỹ PE", value: "20-25%+", context: "LBO", confidence: medium}
+  - {metric: "Thời gian giữ LBO", value: "3-7 năm", context: "", confidence: medium}
+  - {metric: "Nợ/EBITDA an toàn", value: "<3-4x", context: "Case A: 0,89x", confidence: medium}
+  - {metric: "ICR mục tiêu", value: ">3x", context: "Case A: 7,8x", confidence: medium}
+  - {metric: "WACC SME trong case", value: "18%, g=4%", context: "Giả định của case Bánh Quê Xưa", confidence: low}
+  - {metric: "Thời gian sell-side", value: "3-6 tháng đến closing; tích hợp 6-24 tháng", context: "", confidence: medium}
+
+pitfalls:
+  - "Trả quá cao (winner's curse): lý do số 1 phá hủy giá trị; chốt walk-away trước."
+  - "Kiêu ngạo/xây đế chế (hubris): cần board độc lập giám sát."
+  - "Phóng đại synergies, nhất là revenue; quên chi phí tích hợp."
+  - "Quên trừ nợ ròng khi đi từ EV sang Equity."
+  - "Quyết định chỉ theo EPS accretive."
+  - "Bỏ qua xung đột văn hóa, mất nhân tài sau mua (cần golden handcuffs, rõ vai trò trước closing)."
+  - "Tích hợp quá chậm; không có kế hoạch 100 ngày, đội PMI, theo dõi synergies hàng quý, không đánh giá lại sau mua."
+  - "Dùng cổ phiếu bị định giá bong bóng để mua tài sản thật (AOL)."
+  - "Giả vờ 'merger of equals'."
+  - "Lẫn doanh thu gộp với giá trị tạo ra (Disney-Pixar)."
+  - "Dùng bội số công ty niêm yết cho SME, EBITDA SME chưa điều chỉnh."
+  - "Lẫn đơn vị khi tính cổ phần mới (triệu đồng / nghìn cổ phần)."
+  - "SME: mua vì 'cơ hội giá rẻ' không có chiến lược; không thẩm định khách hàng/nhân sự then chốt; dùng hết tiền mặt và vay quá nhiều."
+  - "Bị chặn bởi chống độc quyền sau khi đã chi phí lớn."
+
+sme_vn_guidance:
+  - "Ba vai trò SME: bên mua (walk-away, synergies, DD), bên bán (chuẩn hóa sổ sách 12-24 tháng trước, đàm phán earn-out), nhận vốn thiểu số 10-30% (định giá, quyền cổ đông thiểu số, lộ trình thoái vốn)."
+  - "Bội số SME 3-6x EBITDA (so 8-12x niêm yết); chiết khấu DLOM 20-30%; WACC SME cao (case 18%)."
+  - "Quality of Earnings quan trọng hơn mô hình: điều chỉnh chi phí cá nhân chủ, lương quản lý dưới thị trường, doanh thu chưa xuất hóa đơn, công nợ khó đòi; cảnh giác 'hai sổ'."
+  - "Key man risk và tập trung 1-3 khách lớn: dùng earn-out, hợp đồng giữ chân thợ chính/quản lý, điều kiện giữ >=90% doanh thu khách lớn."
+  - "Pháp lý (cần xác nhận với luật sư/kế toán): share deal kế thừa nghĩa vụ ẩn, asset deal chọn lọc nhưng phức tạp chuyển quyền và có thể phát sinh thuế/phí; Luật Cạnh tranh 2018 yêu cầu thông báo khi đạt ngưỡng thị phần/doanh thu/tài sản/giá trị giao dịch; thuế chuyển nhượng vốn khác nhau giữa cá nhân và doanh nghiệp; doanh nghiệp có yếu tố nước ngoài có thể cần thủ tục đầu tư/ngành hạn chế."
+  - "Thuế TNDN phổ thông 20% dùng trong case (cần xác nhận mức áp dụng hiện hành)."
+  - "Kế toán goodwill theo VAS thường phân bổ dần (cần xác nhận quy định hiện hành)."
+  - "Dữ liệu bội số VN: Vietstock, CafeF, FiinPro (có phí, vài chục triệu đồng/năm gói chuyên nghiệp), báo cáo công ty chứng khoán; quốc tế: Damodaran Online (miễn phí); tin M&A: Deloitte, PwC, KPMG, Grant Thornton VN, Vietnam M&A Forum."
+  - "Data room SME: Google Drive/Dropbox phân quyền (miễn phí); thương vụ lớn Datasite/Intralinks (hàng nghìn USD). Mức phí chỉ tham khảo, cần báo giá thực."
+  - "Ví dụ quy mô lớn VN để tham khảo xu hướng (số tiền cần tra tin chính thống): Masan-VinCommerce (2019), Central Group-Big C (2016), ThaiBev-Sabeco (2017)."
+  - "Tránh dùng hết tiền mặt; tích hợp thường tốn 1-1,5 lần synergies năm."
+
+case_lessons:
+  - name: "Disney + Pixar (2006)"
+    type: success
+    setup: "Disney mua Pixar ~7,4 tỷ USD toàn bằng cổ phiếu khi Disney Animation sa sút, hợp đồng phân phối sắp hết. CEO Iger, Steve Jobs vào board; Pixar giữ độc lập, Catmull và Lasseter điều hành cả Disney Animation. Premium thấp."
+    key_calculations:
+      - "Value created = Synergies - Premium: premium nhỏ nên chỉ cần synergies dương là có lời."
+      - "ROI chỉ báo giả định giá trị 50 tỷ USD: (50-7,4)/7,4 = 576%; kể cả giá trị chỉ 1/5 (~10 tỷ) vẫn dương."
+      - "Doanh thu phòng vé (Pixar >10 tỷ USD, Disney Animation hồi sinh >8 tỷ USD) không phải giá trị tạo ra."
+    lesson: "Doanh nghiệp sáng tạo: mua và giữ độc lập có kiểm soát, giữ nhân tài, đưa người của target dẫn dắt, luận điểm chiến lược rõ, giá hợp lý so với giá trị chiến lược. Revenue synergy có logic cụ thể (phân phối + sáng tạo) khác với 'bán chéo' chung chung."
+    data_reliability: illustrative
+  - name: "AOL + Time Warner (2000)"
+    type: failure
+    setup: "AOL (vốn hóa ~163 tỷ USD, đỉnh dot-com) mua Time Warner (~83 tỷ USD) ~182 tỷ USD bằng cổ phiếu, premium ~71%, 'merger of equals'."
+    key_calculations:
+      - "Premium trả = 83 x 0,71 = ~59 tỷ USD; cần NPV synergies >59 tỷ mới tạo giá trị."
+      - "Vốn hóa kết hợp ~280 -> ~72 tỷ USD: bốc hơi ~208 tỷ."
+      - "Write-down goodwill ~99 tỷ USD (2002)."
+    lesson: "Stock deal ở đỉnh thị trường nguy hiểm; synergy phải cụ thể bằng tiền; văn hóa; kế hoạch tích hợp trước khi ký; không mua sửa mô hình hỏng (dial-up); hubris; merger of equals là nói dối."
+    data_reliability: unverified
+  - name: "Bánh Quê Xưa mua Hạnh Phúc Bakery"
+    type: sme
+    setup: "Acquirer: EBITDA 5.500, LNST 3.000, 1.000 nghìn cp (EPS 3.000đ), P/E 8, tiền dư 10.000, không nợ. Target: EBITDA 4.000, EBIT 3.400, nợ 2.000, tiền 500, LNST 2.560, vốn chủ sổ sách 9.000. Chủ đòi 22.000 (triệu đồng)."
+    key_calculations:
+      - "Stand-alone: Comps 5x -> equity 18.500; DCF (FCF 2.800, g 4%, WACC 18%) -> EV 20.800, equity 19.300; Precedent 5,5x -> equity 20.500. Neo 19.300."
+      - "NPV synergies = 2.463,3 (cost) + 455,9 (revenue 50%) - 1.200 = 1.719,2."
+      - "Walk-away = 19.300 + 1.719,2 = 21.019; chỉ cost synergies: 20.563; giá 22.000 vượt 981."
+      - "Đề xuất 19.800 cơ sở + earn-out 700 = 20.500; premium 1.200; value created 519,2 (giá cơ sở 19.800: 1.219,2)."
+      - "Stress: revenue=0 +63,3; cost 50% -1.168,4; chi phí tích hợp 1.800 -536,7; cost synergy hòa vốn 97,4%."
+      - "EPS Y1: A hỗn hợp 3.734 (+24,5%), B cổ phiếu 2.999 (~0%), C tiền+vay 4.140 (+38%); Y3: +37,3%, +8,6%, +54%. Chi phí tích hợp 1.200 vào Y1 phương án A: -7,5%."
+      - "A: Nợ/EBITDA 0,89x, ICR 7,8x, chịu được EBITDA -40% (ICR 3,7x). Goodwill 10.000 = 48,8% giá mua; chủ cũ nhận 20% cổ phần."
+    lesson: "Giá trị nằm ở cost synergies, không ở EPS; EPS cao nhất (C) không tạo thêm giá trị; biên an toàn giữa giá trả và walk-away quyết định thương vụ; earn-out giải rủi ro; rủi ro thật là giá/synergies chứ không phải đòn bẩy. Lưu ý: nguồn có chỗ premium 10,8% so với Comps 18.500 (tính (20.500-18.500)/18.500) và 6,2% so DCF 19.300."
+    data_reliability: illustrative
+
+worked_examples:
+  - name: "Walk-away price và so sánh với giá đòi (Bài 4)"
+    inputs: {v_standalone: 200, pv_cost_after_tax: 40, pv_revenue_expected: 30, confidence: 0.5, integration_cost: 25, ask: 240}
+    steps:
+      - "Revenue điều chỉnh = 30 x 50% = 15"
+      - "NPV synergies ròng = 40 + 15 - 25 = 30"
+      - "Walk-away = 200 + 30 = 230 tỷ"
+      - "Giá đòi 240 vượt 10 tỷ; từ chối hoặc đề nghị giá cơ sở thấp + earn-out"
+    result: "Walk-away 230 tỷ; không trả 240"
+  - name: "Premium và value created (Bài 1)"
+    inputs: {market_cap: 500, premium_pct: 0.30, npv_syn: 120}
+    steps:
+      - "Premium = 500 x 0,3 = 150 tỷ"
+      - "Value created = 120 - 150 = -30 tỷ (phá hủy)"
+      - "Giá tối đa = 500 + 120 = 620 tỷ, premium tối đa 120 tỷ (24%)"
+    result: "-30 tỷ; trần 620 tỷ"
+  - name: "Accretion/dilution trả 100% cổ phiếu (Bài 2)"
+    inputs: {ni_a: 100, shares_a: 50, price: 20000, ni_b: 30, price_b: 400}
+    steps:
+      - "Cổ phần mới = 400 tỷ / 20.000 = 20 triệu; tổng 70 triệu"
+      - "EPS trước = 100 tỷ / 50 triệu = 2.000 đ"
+      - "EPS sau = 130 tỷ / 70 triệu = 1.857 đ (giảm 7,1%)"
+      - "Quick Test: E/P target = 30/400 = 7,5% < E/P acquirer 10% -> dilutive, khớp"
+    result: "Dilutive -7,1%"
+  - name: "LBO đơn giản (Bài 3)"
+    inputs: {ebitda_entry: 16, multiple: 5, equity: 40, debt: 40, ebitda_exit: 22, debt_exit: 20, n: 4}
+    steps:
+      - "EV vào = 5 x 16 = 80; EV thoái = 5 x 22 = 110"
+      - "Vốn chủ thu về = 110 - 20 = 90; MoM = 2,25x"
+      - "IRR = 2,25^(1/4) - 1 = 22,5%/năm"
+    result: "MoM 2,25x; IRR 22,5%"
+  - name: "LBO có phân rã (minh họa nguồn)"
+    inputs: {ev_entry: 100, equity: 30, debt: 70, ebitda_entry: 12.5, ebitda_exit: 17.5, multiple: 8, debt_exit: 35, n: 5}
+    steps:
+      - "EV thoái = 8 x 17,5 = 140; vốn chủ thoái = 105; MoM 3,5x; IRR 28,5%"
+      - "Phân rã 75 = 40 (EBITDA) + 35 (trả nợ) + 0 (bội số)"
+    result: "IRR 28,5%"
+  - name: "Định giá stand-alone Hạnh Phúc Bakery"
+    inputs: {ebitda: 4000, ebit: 3400, dep: 600, capex: 500, d_nwc: 20, g: 0.04, wacc: 0.18, debt: 2000, cash: 500, t: 0.2}
+    steps:
+      - "NOPAT = 3.400 x 0,8 = 2.720; FCF = 2.720 + 600 - 500 - 20 = 2.800"
+      - "DCF EV = 2.800 x 1,04 / 0,14 = 20.800; Equity = 19.300"
+      - "Comps 5x: 20.000 - 1.500 = 18.500; Precedent 5,5x: 22.000 - 1.500 = 20.500"
+    result: "Neo 19.300 trong khoảng 18.500-20.500"
+  - name: "NPV synergies và stress test (Bánh Quê Xưa)"
+    inputs: {r: 0.18, t: 0.2, integration: 1200, price: 20500, standalone: 19300}
+    steps:
+      - "PV cost = 1.297,7 + 1.165,6 = 2.463,3; PV revenue (50% xác suất, năm 2-5) = 455,9"
+      - "NPV_syn = 1.719,2; premium = 1.200; value created = 519,2"
+      - "Chỉ cost: 2.463,3 - 1.200 - 1.200 = +63,3; cost 50%: 1.231,6 - 1.200 - 1.200 = -1.168,4"
+      - "Hòa vốn cost synergy = 2.400/2.463,3 = 97,4%"
+    result: "+519,2 cơ sở; biên an toàn mỏng"
+  - name: "EPS ba phương án tài trợ"
+    inputs: {ni_a: 3000, ni_b: 2560, n_a: 1000, price: 24, syn_y3: 480, price_paid: 20500}
+    steps:
+      - "A: fin cost (6.500 x 11% + 8.000 x 5%) x 0,8 = 892; EPS Y1 = 4.668/1.250 = 3,734; Y3 = 5.148/1.250 = 4,118"
+      - "B: cổ phần mới 854,2; EPS Y1 = 5.560/1.854,2 = 2,999; Y3 = 6.040/1.854,2 = 3,258"
+      - "C: fin cost (12.500 x 11% + 400) x 0,8 = 1.420; EPS Y1 = 4.140/1.000 = 4,14; Y3 = 4,62"
+    result: "A +24,5%/+37,3%; B ~0%/+8,6%; C +38%/+54%"
+  - name: "Kiểm tra chịu nợ phương án A"
+    inputs: {debt: 8500, ebitda: 9500, ebit: 7150, interest: 915, dep_total: 2350}
+    steps:
+      - "Nợ/EBITDA = 0,89x; ICR = 7,8x"
+      - "EBITDA -20%: EBIT 5.250, ICR 5,7x; -30%: 4.300, 4,7x; -40%: 3.350, 3,7x"
+    result: "An toàn; rủi ro nằm ở synergies/giá"
+
+practice_questions:
+  - q: "X mua Y vốn hóa 500 tỷ, premium 30%, NPV synergies 120 tỷ. Premium? Value created? Giá tối đa?"
+    a: "150 tỷ; -30 tỷ (phá hủy); tối đa 620 tỷ (premium 120 tỷ = 24%)."
+  - q: "Acquirer LNST 100 tỷ, 50 triệu cp, P/E 10 (20.000 đ). Target LNST 30 tỷ, giá 400 tỷ, trả cổ phiếu. EPS trước/sau?"
+    a: "Cổ phần mới 20 triệu; EPS 2.000 -> 1.857 đ (-7,1%); E/P 7,5% < 10% nên dilutive."
+  - q: "LBO: EV 80 tỷ (5x EBITDA 16), vốn chủ 40, nợ 40; sau 4 năm EBITDA 22, bội số 5x, nợ 20. MoM, IRR?"
+    a: "Vốn chủ thoái 90; MoM 2,25x; IRR 22,5%."
+  - q: "B stand-alone 200 tỷ; PV cost synergies 40; PV revenue kỳ vọng 30 (tin 50%); chi phí tích hợp 25. Walk-away? Chủ đòi 240?"
+    a: "230 tỷ; vượt 10 tỷ nên từ chối hoặc giá cơ sở thấp + earn-out."
+  - q: "Chuỗi cà phê Đà Nẵng 30 tỷ mua 5 quán đối thủ: synergies và due diligence?"
+    a: "Cost synergies (gộp mua hạt, thuê mặt bằng, quản lý) tin cậy cao; revenue (thẻ thành viên chung) thấp. DD: doanh thu từng quán, hợp đồng thuê, nhân sự then chốt, nhà cung cấp, thương hiệu/giấy phép. Rủi ro văn hóa và nhân sự."
+  - q: "Vì sao phương án tiền+vay có EPS cao nhất nhưng không tạo thêm giá trị?"
+    a: "Cả ba cùng giá 20.500 và NPV synergies; EPS khác do chi phí vốn so sánh; nợ rẻ 8,8% đẩy rủi ro tài chính."
+  - q: "Tính goodwill khi giá 20.500, vốn chủ sổ sách 9.000, đánh giá lại +1.500."
+    a: "10.000 (48,8% giá mua)."
+
+checklist:
+  - "Lý do chiến lược rõ ràng, synergy định lượng bằng tiền; revenue chiết khấu >=50%"
+  - "Football Field (DCF + Comps + Precedent); trừ nợ ròng để ra equity"
+  - "Walk-away price chốt trước đàm phán; có walk-away chỉ cost synergies"
+  - "Nguồn vốn chắc chắn; kế hoạch tích hợp trước khi ký"
+  - "Due diligence: tài chính, pháp lý, thương mại, văn hóa, nhân tài, IT, thuế, nợ ẩn"
+  - "Accretion/dilution đã đối chiếu với NPV, không chỉ EPS"
+  - "Stress test: synergies 50%, chi phí tích hợp +50%, EBITDA giảm"
+  - "Chống độc quyền, cổ đông, truyền thông, Day-1 readiness, rủi ro goodwill"
+  - "PMI: văn phòng tích hợp, kế hoạch 100 ngày, theo dõi quý, giữ chân nhân tài, post-audit 1 và 3 năm, kill criteria"
+
+excel_google_sheets_templates:
+  - "Workbook 8 sheet: Inputs (ô xanh) / Stand-alone (=FCF*(1+g)/(WACC-g)) / Synergies (=NPV(r,...), xác suất) / Max Price (walk-away so giá chào) / Financing (số cổ phần mới) / EPS (Y1, Y3) / Stress (Data Table: synergies 0/50/100%, EBITDA giảm) / Goodwill."
+  - "IOI template: bên mua-bán và mục đích; khoảng giá và cơ sở; cấu trúc thanh toán (tiền/cổ phiếu/earn-out); nguồn tiền; điều kiện (DD, giữ chân nhân sự, exclusivity); mốc thời gian; NDA."
+
+source_file: "09-mergers-and-acquisitions.md"

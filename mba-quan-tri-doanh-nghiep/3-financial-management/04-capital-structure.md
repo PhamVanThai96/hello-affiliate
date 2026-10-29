@@ -473,10 +473,10 @@ Ngược lại, nếu ROIC chỉ là 3% (thấp hơn Kd = 6%): EBIT = 30, lãi v
 | Giai đoạn | D/E | Ke | Kd (sau thuế) | WACC |
 |--------|-----|-----|--------------|------|
 | Trước 2009 | 0% | 10% | - | 10,0% |
-| 2015 | 20% | 9,5% | 2,0% | 8,0% |
-| 2024 | 35% | 9,5% | 2,5% | 7,3% |
+| 2015 | 20% | 9,5% | 2,0% | 8,25% |
+| 2024 | 35% | 9,5% | 2,5% | 7,69% |
 
-→ WACC giảm 2,7 điểm phần trăm → **Giá trị doanh nghiệp tăng thêm ước tính 30-40%** chỉ nhờ tối ưu hóa cơ cấu vốn, hoàn toàn không cần cải thiện hoạt động kinh doanh cốt lõi.
+→ WACC giảm khoảng 2,3 điểm phần trăm (10,0% → 7,69%) → **Giá trị doanh nghiệp tăng thêm ước tính 30-40%** chỉ nhờ tối ưu hóa cơ cấu vốn, hoàn toàn không cần cải thiện hoạt động kinh doanh cốt lõi.
 
 #### Bài học
 1. Zero debt KHÔNG đồng nghĩa với tối ưu (bỏ lỡ giá trị tax shield đáng kể)

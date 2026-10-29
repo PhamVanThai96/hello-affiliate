@@ -1,0 +1,260 @@
+id: finance-report-templates
+title: "Tài chính — mẫu báo cáo/bảng biểu"
+summary: "Cấu trúc chung và các mẫu báo cáo tài chính."
+agents: ["financial_expert"]
+order: 61
+when: ["__chi_tra_cuu_bang_skill_search__"]
+sections:
+  - id: "tpl-cau-truc-chung"
+    title: "Mẫu báo cáo — cấu trúc chung"
+    tags: ["mẫu", "báo", "cáo", "cấu", "trúc"]
+    text: |-
+      - 1. Tóm tắt điều hành (kết luận + con số chính + khuyến nghị trong 3-5 dòng)
+      - 2. Bối cảnh và dữ liệu đầu vào (kèm nhãn VERIFIED/GIẢ ĐỊNH/CHƯA KIỂM CHỨNG)
+      - 3. Phương pháp và công thức sử dụng (và vì sao chọn)
+      - 4. Tính toán từng bước (bảng)
+      - 5. Phân tích độ nhạy / kịch bản
+      - 6. Diễn giải ý nghĩa kinh doanh và so sánh benchmark
+      - 7. Phương án và khuyến nghị (ưu/nhược, điều kiện thay đổi khuyến nghị)
+      - 8. Rủi ro, giả định, giới hạn và disclaimer
+      - 9. Bước hành động tiếp theo
+  - id: "tpl-rpt_project_appraisal"
+    title: "Mẫu báo cáo rpt_project_appraisal — Báo cáo thẩm định dự án"
+    tags: ["rpt_project_appraisal", "báo", "cáo", "thẩm", "định", "dự", "án", "mẫu"]
+    text: |-
+      title: Báo cáo thẩm định dự án
+      tables:
+      - name: Dòng tiền dự án
+        columns:
+        - Năm
+        - Doanh thu
+        - Chi phí
+        - EBITDA
+        - Khấu hao
+        - EBIT
+        - Thuế
+        - NOPAT
+        - +Khấu hao
+        - ΔVLĐ
+        - Capex
+        - FCF
+        - Hệ số chiết khấu
+        - PV
+      - name: Chỉ số quyết định
+        columns:
+        - NPV
+        - IRR
+        - MIRR
+        - Payback
+        - DPP
+        - PI
+        - EAA
+      - name: Độ nhạy
+        columns:
+        - Biến số
+        - -20%
+        - -10%
+        - Base
+        - +10%
+        - +20%
+        - NPV tương ứng
+      - name: Kịch bản
+        columns:
+        - Kịch bản
+        - Xác suất
+        - NPV
+  - id: "tpl-rpt_wacc"
+    title: "Mẫu báo cáo rpt_wacc — Báo cáo chi phí vốn"
+    tags: ["rpt_wacc", "báo", "cáo", "chi", "phí", "vốn", "mẫu"]
+    text: |-
+      title: Báo cáo chi phí vốn
+      tables:
+      - name: Thành phần WACC
+        columns:
+        - Nguồn vốn
+        - Giá trị
+        - Tỷ trọng
+        - Chi phí trước thuế
+        - Chi phí sau thuế
+        - Đóng góp WACC
+      - name: CAPM
+        columns:
+        - Rf
+        - Beta unlevered
+        - D/E
+        - Beta relevered
+        - MRP
+        - Premium khác
+        - Ke
+  - id: "tpl-rpt_capital_structure"
+    title: "Mẫu báo cáo rpt_capital_structure — So sánh phương án tài trợ"
+    tags: ["rpt_capital_structure", "so", "sánh", "phương", "án", "tài", "trợ", "mẫu", "báo", "cáo"]
+    text: |-
+      title: So sánh phương án tài trợ
+      tables:
+      - name: Phương án
+        columns:
+        - Phương án
+        - Nợ
+        - Vốn chủ
+        - Lãi vay
+        - Số cổ phần mới
+        - EPS
+        - ROE
+        - WACC
+        - ICR
+        - DSCR
+      - name: Stress test
+        columns:
+        - EBIT giảm
+        - EBIT
+        - Lãi vay
+        - ICR
+        - EPS
+        - Đánh giá
+  - id: "tpl-rpt_financial_health"
+    title: "Mẫu báo cáo rpt_financial_health — Báo cáo chẩn đoán sức khỏe tài chính"
+    tags: ["rpt_financial_health", "báo", "cáo", "chẩn", "đoán", "sức", "khỏe", "tài", "chính", "mẫu"]
+    text: |-
+      title: Báo cáo chẩn đoán sức khỏe tài chính
+      tables:
+      - name: Tỷ số
+        columns:
+        - Nhóm
+        - Chỉ số
+        - Kỳ trước
+        - Kỳ này
+        - Benchmark
+        - Đánh giá
+      - name: DuPont
+        columns:
+        - Biên LN ròng
+        - Vòng quay tài sản
+        - Đòn bẩy
+        - ROE
+      - name: Hành động 30-60-90 ngày
+        columns:
+        - Ưu tiên
+        - Vấn đề
+        - Hành động
+        - Tác động ước tính
+        - Phụ trách
+  - id: "tpl-rpt_working_capital"
+    title: "Mẫu báo cáo rpt_working_capital — Báo cáo vốn lưu động"
+    tags: ["rpt_working_capital", "báo", "cáo", "vốn", "lưu", "động", "mẫu"]
+    text: |-
+      title: Báo cáo vốn lưu động
+      tables:
+      - name: CCC
+        columns:
+        - Chỉ số
+        - Hiện tại
+        - Mục tiêu
+        - Chênh lệch
+        - Tiền giải phóng (triệu)
+  - id: "tpl-rpt_valuation"
+    title: "Mẫu báo cáo rpt_valuation — Báo cáo định giá"
+    tags: ["rpt_valuation", "báo", "cáo", "định", "giá", "mẫu"]
+    text: |-
+      title: Báo cáo định giá
+      tables:
+      - name: DCF
+        columns:
+        - Năm
+        - FCFF
+        - Hệ số chiết khấu
+        - PV
+      - name: Cầu nối EV sang Equity
+        columns:
+        - EV
+        - Nợ
+        - Tiền
+        - Lợi ích CĐ thiểu số
+        - Equity
+      - name: Độ nhạy WACC x g
+        columns:
+        - WACC \ g
+        - g1
+        - g2
+        - g3
+      - name: Football field
+        columns:
+        - Phương pháp
+        - Thấp
+        - Cao
+        - Trọng số
+  - id: "tpl-rpt_mna"
+    title: "Mẫu báo cáo rpt_mna — Báo cáo thương vụ M&A"
+    tags: ["rpt_mna", "báo", "cáo", "thương", "vụ", "mẫu"]
+    text: |-
+      title: Báo cáo thương vụ M&A
+      tables:
+      - name: Giá trị và synergy
+        columns:
+        - Giá trị độc lập
+        - NPV cost synergy
+        - NPV revenue synergy
+        - Chi phí tích hợp
+        - Walk-away price
+      - name: Accretion/Dilution
+        columns:
+        - Hình thức thanh toán
+        - EPS trước
+        - EPS sau
+        - Δ%
+        - Nợ/EBITDA
+        - ICR
+  - id: "tpl-rpt_portfolio"
+    title: "Mẫu báo cáo rpt_portfolio — Báo cáo phân bổ danh mục"
+    tags: ["rpt_portfolio", "báo", "cáo", "phân", "bổ", "danh", "mục", "mẫu"]
+    text: |-
+      title: Báo cáo phân bổ danh mục
+      tables:
+      - name: Tài sản
+        columns:
+        - Tài sản
+        - E(R)
+        - σ
+        - Tỷ trọng
+        - Đóng góp rủi ro
+      - name: Ma trận tương quan
+        columns:
+        - Tài sản
+        - A
+        - B
+        - C
+      - name: Chỉ số
+        columns:
+        - E(Rp)
+        - σp
+        - Sharpe
+        - Treynor
+        - Jensen alpha
+  - id: "tpl-rpt_dividend"
+    title: "Mẫu báo cáo rpt_dividend — Đề xuất chính sách cổ tức"
+    tags: ["rpt_dividend", "đề", "xuất", "chính", "sách", "cổ", "tức", "mẫu", "báo", "cáo"]
+    text: |-
+      title: Đề xuất chính sách cổ tức
+      tables:
+      - name: Payout theo kịch bản
+        columns:
+        - Kịch bản
+        - Lợi nhuận
+        - Cổ tức
+        - Payout
+        - Tiền giữ lại
+        - Tăng trưởng g
+  - id: "tpl-rpt_integrated"
+    title: "Mẫu báo cáo rpt_integrated — Báo cáo tài chính tích hợp"
+    tags: ["rpt_integrated", "báo", "cáo", "tài", "chính", "tích", "hợp", "mẫu"]
+    text: |-
+      title: Báo cáo tài chính tích hợp
+      sections:
+      - Chẩn đoán
+      - Đầu tư
+      - Nguồn vốn
+      - Vốn lưu động
+      - Cổ tức
+      - Rủi ro
+      - Định giá
+      - Lộ trình hành động

@@ -1,0 +1,875 @@
+# m01 - Time Value of Money. Đơn vị tiền mặc định: triệu VNĐ trừ khi ghi khác.
+id: "m01"
+name_vi: "Giá trị thời gian của tiền"
+name_en: "Time Value of Money (TVM)"
+purpose: >
+  Cung cấp "thước đo chung" để quy các dòng tiền xảy ra ở thời điểm khác nhau về cùng một mốc thời gian,
+  từ đó đánh giá khoản đầu tư (NPV/IRR/Payback), so sánh phương án trả góp - trả ngay, tính chi phí vay thực (EAR, PMT),
+  tiết kiệm định kỳ và định giá dòng tiền vĩnh viễn. Là nền tảng của toàn bộ tài chính doanh nghiệp (m02-m10).
+when_to_use:
+  - "Chủ SME hỏi: dự án (mở chi nhánh, mua máy, mở điểm bán) có đáng làm không?"
+  - "So sánh các phương án thanh toán (trả ngay giảm giá / trả góp năm / trả góp tháng) - phương án nào rẻ nhất?"
+  - "Khoản vay thực sự tốn bao nhiêu (PMT, tổng lãi, EAR, lãi flat vs dư nợ giảm dần)?"
+  - "Cần tiết kiệm/trích quỹ mỗi tháng bao nhiêu để đạt mục tiêu sau n năm?"
+  - "Thuê hay mua mặt bằng; định giá tiền thuê/cổ tức/dòng tiền vĩnh viễn hoặc tăng trưởng đều"
+  - "Có nên hưởng chiết khấu thanh toán sớm (2/10 net 30)?"
+  - "Cần xử lý lạm phát: lãi suất danh nghĩa vs thực, dòng tiền danh nghĩa vs thực"
+  - "Kiểm tra độ nhạy của NPV với dòng tiền và tỷ lệ chiết khấu; đánh giá biên an toàn"
+prerequisites: []
+related_modules:
+  m02: "Capital budgeting - mở rộng NPV/IRR/MIRR/Payback cho quyết định đầu tư, dòng tiền tăng thêm"
+  m03: "Cost of capital - cách chọn tỷ lệ chiết khấu (WACC, CAPM)"
+  m06: "Working capital - chiết khấu thanh toán sớm, chi phí tín dụng thương mại"
+  m08: "Risk and return - phần bù rủi ro cho tỷ lệ chiết khấu"
+  m10: "Corporate valuation - DCF, Gordon Growth làm Terminal Value"
+
+concepts:
+  - term_vi: "Giá trị thời gian của tiền"
+    term_en: "Time Value of Money"
+    definition: "1 đồng nhận hôm nay có giá trị cao hơn 1 đồng nhận trong tương lai."
+    why_it_matters: >
+      Tiền chi ra và thu về hiếm khi cùng lúc. Cộng trừ số học đơn thuần (ví dụ thu 1.410 - chi 800 = lãi 610) coi 1 đồng năm 5
+      bằng 1 đồng hôm nay, dẫn tới đánh giá quá cao dự án dài hạn và đánh giá thấp chi phí "trả góp". TVM quy mọi dòng tiền
+      về cùng mốc thời gian rồi mới so sánh được.
+  - term_vi: "Nguồn gốc lý thuyết TVM"
+    term_en: "Theoretical origins"
+    definition: "Böhm-Bawerk (1889, time preference); Irving Fisher (1930, The Theory of Interest, Fisher equation, Fisher Separation); John Burr Williams (1938, định giá bằng chiết khấu dòng tiền - DCF); Myron Gordon (1959, mô hình cổ tức tăng đều); Modigliani-Miller (1958, cấu trúc vốn)."
+    why_it_matters: >
+      Williams (1938, sau Đại suy thoái) đề xuất giá trị cổ phiếu = tổng PV cổ tức tương lai, mở đầu trường phái DCF.
+      Fisher chứng minh ở thị trường vốn hoàn hảo mọi chủ sở hữu đều đồng ý chọn dự án NPV cao nhất (Fisher Separation Theorem).
+  - term_vi: "Năm lý do 1 đồng hôm nay > 1 đồng mai"
+    term_en: "Reasons for time value"
+    definition: "Chi phí cơ hội (Opportunity Cost); lạm phát (Inflation); rủi ro/bất định (Risk); ưa thích tiêu dùng hiện tại (Consumption Preference); rủi ro tái đầu tư (Reinvestment Risk)."
+    why_it_matters: "Chi phí cơ hội là lý do quan trọng nhất cho quyết định kinh doanh: nhận tiền sớm có thể đem làm việc khác sinh lời nên chờ đợi luôn có giá. Lãi suất/tỷ lệ chiết khấu r định lượng 'giá của sự chờ đợi' đó."
+  - term_vi: "Lãi đơn vs lãi kép"
+    term_en: "Simple vs Compound interest"
+    definition: "Lãi đơn chỉ tính trên gốc; lãi kép tính cả lãi trên lãi nên tiền nhân (1+r) mỗi kỳ."
+    why_it_matters: "Lãi kép tạo dạng lũy thừa (1+r)^n; càng để lâu phần lãi sinh ra từ lãi càng lấn át lãi từ gốc. Lãi kép 8% sau 40 năm gấp 21,7 lần, lãi đơn chỉ 4,2 lần."
+  - term_vi: "Ghép lãi nhiều lần/liên tục"
+    term_en: "Compounding frequency / Continuous compounding"
+    definition: "Ghép m lần/năm, FV=PV(1+r/m)^(mn); m tiến vô hạn cho FV=PV e^(rn)."
+    why_it_matters: "Ghép càng thường xuyên FV càng lớn nhưng lợi ích tăng thêm giảm dần (diminishing returns); có trần là ghép liên tục. Ngân hàng thực tế ghép tháng/quý. Ghép liên tục dùng trong tài chính định lượng (Black-Scholes)."
+  - term_vi: "Tỷ lệ chiết khấu"
+    term_en: "Discount rate"
+    definition: "Tỷ suất sinh lời tối thiểu đòi hỏi cho mức rủi ro của dòng tiền, dùng để quy PV."
+    why_it_matters: "Không phải lãi tiết kiệm đơn thuần mà là lợi suất đòi hỏi (thường WACC hoặc lãi vay + phần bù rủi ro). Tỷ lệ càng cao, dòng tiền xa càng bị giảm mạnh (r=15% năm 10 còn 24,7%; r=5% còn 61,4%) nên dự án dòng tiền đến muộn rất nhạy với r."
+  - term_vi: "Hệ số tích lũy / hệ số chiết khấu"
+    term_en: "Compounding factor / Discount factor"
+    definition: "CF=(1+r)^n; DF=(1+r)^-n."
+    why_it_matters: "Là các 'viên gạch' để dựng mọi công thức. Bảng DF tham chiếu năm 5: 5%=0,7835; 8%=0,6806; 10%=0,6209; 12%=0,5674; 15%=0,4972. Năm 10 (10%)=0,3855; năm 30 (15%)=0,0151."
+  - term_vi: "Niên kim và niên kim vĩnh viễn"
+    term_en: "Annuity / Perpetuity / Growing perpetuity"
+    definition: "Annuity: n khoản bằng nhau cách đều (cuối kỳ = ordinary, đầu kỳ = due). Perpetuity: khoản đều vô hạn. Growing perpetuity: khoản đầu CF1 rồi tăng g mãi mãi."
+    why_it_matters: "Khoản vay, tiền thuê, lương, cổ tức lặp đều; công thức rút gọn nhờ tổng cấp số nhân thay vì cộng n số hạng. Perpetuity: khi n tiến vô hạn (1+r)^-n về 0 nên còn PMT/r (trực giác: gốc X sinh lãi X*r mỗi năm mà gốc nguyên vẹn)."
+  - term_vi: "Giá trị hiện tại ròng"
+    term_en: "Net Present Value (NPV)"
+    definition: "Tổng PV mọi dòng tiền tương lai trừ vốn đầu tư ban đầu."
+    why_it_matters: >
+      'Gold standard' của quyết định đầu tư: NPV=0 nghĩa là vừa đủ sinh lời bằng chi phí vốn; NPV>0 là thặng dư giá trị cho chủ sở hữu tính bằng tiền hôm nay.
+      Khác lợi nhuận kế toán vốn bỏ qua giá trị thời gian và chi phí cơ hội của vốn. Có tính cộng NPV(A+B)=NPV(A)+NPV(B) nên khớp mục tiêu tối đa hóa giá trị cổ đông.
+  - term_vi: "Tỷ suất hoàn vốn nội bộ"
+    term_en: "Internal Rate of Return (IRR)"
+    definition: "Tỷ lệ chiết khấu làm NPV=0; 'lãi suất thực' dự án tạo ra trên vốn đang đầu tư."
+    why_it_matters: "Dễ so sánh dưới dạng % với lãi vay/WACC/kỳ vọng nhà đầu tư. Khoảng cách IRR - r gọi là biên an toàn (margin of safety). Không có công thức đóng, phải dò thử/Excel IRR."
+  - term_vi: "NPV Profile"
+    term_en: "NPV Profile"
+    definition: "Đường NPV theo tỷ lệ chiết khấu r; giao điểm với trục hoành là IRR."
+    why_it_matters: "Dốc xuống vì r tăng làm mọi PV nhỏ đi. Ví dụ dự án cà phê (-500; 120,150,180,200,250): NPV 5%=266,3; 8%=199,8; 12%=123,8; 15%=74,8; 18%=31,4; 22%=-19,0; 25%=-52,0; IRR=20,4%."
+  - term_vi: "IRR điều chỉnh"
+    term_en: "Modified IRR (MIRR)"
+    definition: "Gộp dòng tiền dương về FV cuối vòng đời bằng lãi tái đầu tư (thường WACC), chia PV dòng âm, lấy căn bậc n trừ 1."
+    why_it_matters: "IRR ngầm giả định tái đầu tư dòng tiền trung gian đúng bằng IRR - phi thực tế khi IRR cao. MIRR dùng lãi tái đầu tư thực tế nên thấp hơn, đáng tin hơn, và có nghiệm duy nhất."
+  - term_vi: "Thời gian hoàn vốn (thường và chiết khấu)"
+    term_en: "Payback / Discounted Payback"
+    definition: "Số năm dòng tiền tích lũy bù vốn đầu tư; bản chiết khấu dùng dòng tiền đã chiết khấu nên luôn dài hơn."
+    why_it_matters: "Phản ánh khi nào lấy lại vốn và rủi ro thanh khoản, phổ biến với SME. Nhưng bỏ qua dòng tiền sau ngày hoàn vốn (và bản thường bỏ qua giá trị thời gian) nên chỉ là bộ lọc rủi ro bổ sung, không thay NPV."
+  - term_vi: "Lãi suất hiệu dụng năm"
+    term_en: "Effective Annual Rate (EAR) vs APR"
+    definition: "APR là lãi danh nghĩa ghi hợp đồng; EAR là lãi thực quy về cơ sở năm sau khi ghép lãi."
+    why_it_matters: "Hai ngân hàng cùng ghi 8% nhưng ghép khác nhau cho lãi thực khác nhau; EAR cho phép so sánh công bằng (11% ghép tháng = 11,57%)."
+  - term_vi: "Khấu hao nợ"
+    term_en: "Loan amortization"
+    definition: "Khoản vay trả đều PMT mỗi kỳ; lãi kỳ = dư nợ đầu kỳ x i, phần còn lại là gốc."
+    why_it_matters: "Dư nợ giảm nên lãi giảm, gốc tăng dù PMT không đổi (khoản vay 300tr: tháng 1 lãi chiếm 28% PMT, tháng 36 chỉ 0,9%). Do đó trả nợ sớm ở năm đầu tiết kiệm lãi nhiều hơn năm cuối."
+  - term_vi: "Lãi flat"
+    term_en: "Flat rate interest"
+    definition: "Lãi tính trên số vay ban đầu suốt kỳ hạn (không giảm theo dư nợ)."
+    why_it_matters: "Flat 11%/năm tương đương APR ~19,6% (EAR ~21,4%) trên dư nợ giảm dần, gần gấp đôi. Luôn quy đổi về EAR/APR dư nợ giảm dần để so sánh."
+  - term_vi: "Phương trình Fisher"
+    term_en: "Fisher equation (nominal vs real)"
+    definition: "(1+r_nominal)=(1+r_real)(1+pi)."
+    why_it_matters: "Phản ánh sức mua: lãi 14% với lạm phát 4% chỉ là 9,62% thực (không phải 10%; xấp xỉ trừ chỉ đúng khi lãi và lạm phát nhỏ). Nguyên tắc nhất quán: dòng tiền danh nghĩa dùng tỷ lệ danh nghĩa, thực dùng thực."
+  - term_vi: "Phân tích độ nhạy và kịch bản"
+    term_en: "Sensitivity & Scenario analysis"
+    definition: "Thay từng đầu vào (CF, r) để xem NPV đổi ra sao; tìm break-even; lập Best/Base/Worst kèm xác suất."
+    why_it_matters: "NPV dựa trên dự báo không chắc. Độ nhạy cho biết biến then chốt cần theo dõi và biên an toàn thật. Đổi r 2% có thể làm NPV thay đổi 20-50%."
+  - term_vi: "Rule of 72"
+    term_en: "Rule of 72"
+    definition: "Thời gian gấp đôi tiền xấp xỉ 72 / r%."
+    why_it_matters: "Chính xác n=ln2/ln(1+r)~69,3/r%; chọn 72 vì chia hết cho 2,3,4,6,8,9,12 nên tính nhẩm dễ và bù sai số ở r 6-10%."
+  - term_vi: "Tính cộng của NPV"
+    term_en: "NPV additivity"
+    definition: "NPV tổng danh mục dự án độc lập = tổng NPV từng dự án."
+    why_it_matters: "Là lý do NPV khớp tối đa hóa giá trị cổ đông; IRR không cộng được."
+  - term_vi: "Hai quy tắc vàng trước khi tính"
+    term_en: "Golden rules"
+    definition: "(1) Nhất quán đơn vị thời gian giữa lãi suất và số kỳ. (2) Vẽ timeline: thời điểm (đầu/cuối kỳ) và dấu (chi âm, thu dương) từng dòng tiền."
+    why_it_matters: "90% sai sót TVM do đặt sai thời điểm dòng tiền hoặc lệch đơn vị, không do sai công thức."
+
+formulas:
+  - id: "m01_fv"
+    name_vi: "Giá trị tương lai (lãi kép)"
+    name_en: "Future Value (compound interest)"
+    expression_latex: 'FV = PV \times (1+r)^n'
+    expression_python: "fv = pv * (1 + r) ** n"
+    excel: "=FV(rate, nper, 0, -pv)"
+    variables:
+      - {symbol: "PV", meaning: "Giá trị hiện tại / số tiền gốc", unit: "tiền"}
+      - {symbol: "r", meaning: "Lãi suất mỗi kỳ", unit: "thập phân/kỳ"}
+      - {symbol: "n", meaning: "Số kỳ", unit: "kỳ"}
+    when_to_use: "Biết số tiền hôm nay, cần giá trị sau n kỳ khi gửi/đầu tư một lần."
+    why_it_works: "Mỗi kỳ số dư được nhân (1+r) vì lãi kỳ sau tính trên cả gốc lẫn lãi đã cộng; n kỳ nhân n lần nên là lũy thừa."
+    assumptions: ["Lãi suất không đổi qua các kỳ", "Lãi được giữ lại tái đầu tư cùng lãi suất", "r và n cùng đơn vị thời gian"]
+    pitfalls: ["Dùng r năm với n tháng", "Nhầm với lãi đơn (tuyến tính)"]
+    interpretation: "Tiền gấp 2 khi (1+r)^n=2. Lãi kép 8%: 100tr sau 10 năm 215,9; 20 năm 466,1; 30 năm 1.006,3; 40 năm 2.172,5."
+    example:
+      inputs: {PV: 200, r: 0.09, n: 8}
+      steps: ["FV = 200 * 1.09^8 = 200 * 1.99256", "= 398.51"]
+      result: "FV = 398,51 triệu"
+  - id: "m01_fv_simple"
+    name_vi: "Giá trị tương lai (lãi đơn)"
+    name_en: "Future Value (simple interest)"
+    expression_latex: 'FV = PV \times (1 + r \times n)'
+    expression_python: "fv = pv * (1 + r * n)"
+    excel: "=pv*(1+rate*nper)"
+    variables:
+      - {symbol: "PV", meaning: "Gốc", unit: "tiền"}
+      - {symbol: "r", meaning: "Lãi suất năm", unit: "thập phân"}
+      - {symbol: "n", meaning: "Số năm", unit: "năm"}
+    when_to_use: "Chỉ để so sánh/đối chiếu với lãi kép hoặc khi hợp đồng quy định lãi đơn."
+    why_it_works: "Lãi mỗi kỳ cố định = PV*r, không sinh lãi trên lãi nên tăng tuyến tính."
+    assumptions: ["Lãi không được ghép vào gốc"]
+    pitfalls: ["Đánh giá thấp FV dài hạn so với lãi kép"]
+    interpretation: "Là mốc dưới; 100tr, 12%, 5 năm: lãi đơn 160,00 vs lãi kép năm 176,23."
+    example:
+      inputs: {PV: 100, r: 0.12, n: 5}
+      steps: ["FV = 100 * (1 + 0.12*5) = 160.00"]
+      result: "FV lãi đơn = 160,00 triệu"
+  - id: "m01_fv_compound_m"
+    name_vi: "Giá trị tương lai khi ghép lãi m lần/năm"
+    name_en: "FV with m compounding periods per year"
+    expression_latex: 'FV = PV \times \left(1+\frac{r}{m}\right)^{m n}'
+    expression_python: "fv = pv * (1 + r / m) ** (m * n)"
+    excel: "=pv*(1+r/m)^(m*n)"
+    variables:
+      - {symbol: "r", meaning: "Lãi suất danh nghĩa năm (APR)", unit: "thập phân/năm"}
+      - {symbol: "m", meaning: "Số lần ghép lãi/năm (tháng 12, quý 4, ngày 365)", unit: "lần/năm"}
+      - {symbol: "n", meaning: "Số năm", unit: "năm"}
+    when_to_use: "Hợp đồng ngân hàng ghép lãi theo tháng/quý."
+    why_it_works: "Mỗi lần ghép, lãi vừa sinh được cộng ngay vào gốc để sinh lãi tiếp; lãi kỳ = r/m, tổng m*n kỳ."
+    assumptions: ["APR cố định", "Lãi mỗi tiểu kỳ = r/m"]
+    pitfalls: ["Lợi ích tăng thêm giảm dần (năm->quý +4,38tr; tháng->liên tục chỉ +0,54tr)"]
+    interpretation: "100tr, 12%, 5 năm: năm 176,23; quý 180,61; tháng 181,67."
+    example:
+      inputs: {PV: 100, r: 0.12, n: 5, m: 12}
+      steps: ["FV = 100 * (1 + 0.12/12)^60 = 100 * 1.01^60", "= 181.67"]
+      result: "FV ghép tháng = 181,67 triệu (quý 180,61; năm 176,23)"
+  - id: "m01_fv_continuous"
+    name_vi: "Ghép lãi liên tục"
+    name_en: "Continuous compounding"
+    expression_latex: 'FV = PV \times e^{r n}'
+    expression_python: "import math\nfv = pv * math.exp(r * n)"
+    excel: "=pv*EXP(r*n)"
+    variables:
+      - {symbol: "r", meaning: "Lãi suất liên tục năm", unit: "thập phân/năm"}
+      - {symbol: "n", meaning: "Số năm", unit: "năm"}
+    when_to_use: "Tài chính định lượng, quyền chọn; làm cận trên của ghép lãi."
+    why_it_works: "Giới hạn của (1+r/m)^(mn) khi m tiến vô hạn; cho thấy ghép lãi có trần."
+    assumptions: ["Ghép vô hạn lần - gần như không có trong thực tế ngân hàng"]
+    pitfalls: ["Dùng cho khoản vay/tiết kiệm thông thường"]
+    interpretation: "100tr, 12%, 5 năm = 182,21; EAR liên tục = e^r - 1."
+    example:
+      inputs: {PV: 100, r: 0.12, n: 5}
+      steps: ["FV = 100 * e^0.6 = 182.21"]
+      result: "182,21 triệu"
+  - id: "m01_rule72"
+    name_vi: "Quy tắc 72"
+    name_en: "Rule of 72"
+    expression_latex: 'n \approx \frac{72}{r\%}, \quad n_{exact}=\frac{\ln 2}{\ln(1+r)}'
+    expression_python: "import math\nn_approx = 72 / (r * 100)\nn_exact = math.log(2) / math.log(1 + r)"
+    excel: "=NPER(r,0,-1,2)"
+    variables:
+      - {symbol: "r", meaning: "Lãi suất/năm", unit: "thập phân"}
+    when_to_use: "Ước nhanh thời gian tiền gấp đôi hoặc nợ gấp đôi, sức mua giảm nửa."
+    why_it_works: "Giải (1+r)^n=2 cho n=ln2/ln(1+r); ln2~0,693 và ln(1+r)~r nên n~69,3/r%; chọn 72 để dễ chia và bù sai số ở r 6-10%."
+    assumptions: ["r không quá cao hay quá thấp (chính xác nhất 6-10%)"]
+    pitfalls: ["Bản gốc cũ ghi 8% -> 8,66 năm là sai; đúng 9,01 năm"]
+    interpretation: "Chính xác: 6%=11,90; 8%=9,01; 10%=7,27; 12%=6,12; 15%=4,96; 20%=3,80 năm. Lạm phát 7% -> sức mua giảm nửa sau ~10,3 năm; nợ lãi 18% gấp đôi sau 4 năm."
+    example:
+      inputs: {r: 0.09}
+      steps: ["Rule 72: 72/9 = 8.00 năm", "Chính xác: ln2/ln1.09 = 8.04 năm"]
+      result: "Ước 8,00 năm; chính xác 8,04 năm"
+  - id: "m01_pv"
+    name_vi: "Giá trị hiện tại"
+    name_en: "Present Value"
+    expression_latex: 'PV = \frac{FV}{(1+r)^n} = FV \times (1+r)^{-n}'
+    expression_python: "pv = fv / (1 + r) ** n"
+    excel: "=PV(rate, nper, 0, -fv)"
+    variables:
+      - {symbol: "FV", meaning: "Số tiền nhận trong tương lai", unit: "tiền"}
+      - {symbol: "r", meaning: "Tỷ lệ chiết khấu mỗi kỳ", unit: "thập phân/kỳ"}
+      - {symbol: "n", meaning: "Số kỳ", unit: "kỳ"}
+    when_to_use: "Định giá lời hứa trả sau/khoản thu tương lai; so sánh nhận ngay vs nhận sau."
+    why_it_works: "Là FV đảo ngược: chia thay vì nhân cho hệ số tích lũy. 'Chiết khấu' vì r làm giảm giá trị dòng tiền xa."
+    assumptions: ["r phản ánh lợi suất đòi hỏi tương ứng rủi ro của khoản tiền", "Dòng tiền chắc chắn đến (nếu không phải điều chỉnh rủi ro)"]
+    pitfalls: ["Dùng lãi tiết kiệm làm r cho dòng tiền rủi ro cao", "Bỏ qua rủi ro đối tác không trả"]
+    interpretation: "Nếu giá nhận ngay < PV thì nên chờ; nếu giá ngay > PV thì nhận ngay. 1 triệu sau 30 năm ở 15% chỉ đáng ~15.100 VNĐ."
+    example:
+      inputs: {FV: 500, r: 0.10, n: 5}
+      steps: ["PV = 500 / 1.1^5 = 500 / 1.61051", "= 310.46"]
+      result: "PV = 310,46 triệu; trả ngay 300 hơi thiệt 10,46; trả ngay 350 thì nên nhận"
+  - id: "m01_pv_annuity"
+    name_vi: "PV niên kim cuối kỳ"
+    name_en: "PV of ordinary annuity"
+    expression_latex: 'PV = PMT \times \frac{1-(1+r)^{-n}}{r}'
+    expression_python: "pv = pmt * (1 - (1 + r) ** -n) / r"
+    excel: "=PV(rate, nper, -pmt)"
+    variables:
+      - {symbol: "PMT", meaning: "Khoản trả đều cuối mỗi kỳ", unit: "tiền/kỳ"}
+      - {symbol: "r", meaning: "Lãi suất/kỳ", unit: "thập phân"}
+      - {symbol: "n", meaning: "Số kỳ", unit: "kỳ"}
+    when_to_use: "Quy chuỗi trả góp, tiền thuê, dòng tiền đều về hiện tại; định giá phương án thanh toán."
+    why_it_works: "Tổng cấp số nhân của n số hạng PMT/(1+r)^t gộp thành công thức rút gọn; thừa số gọi là Annuity Factor."
+    assumptions: ["Khoản bằng nhau, cách đều", "Thanh toán cuối kỳ", "r không đổi"]
+    pitfalls: ["Nhầm đầu/cuối kỳ", "r tháng, n năm"]
+    interpretation: "150tr x 5 năm ở 10% có PV 568,62 dù tổng số học 750: chênh lệch là 'chi phí thời gian'."
+    example:
+      inputs: {PMT: 150, r: 0.10, n: 5}
+      steps: ["AF = (1 - 1.1^-5)/0.10 = 3.7908", "PV = 150 * 3.7908 = 568.62"]
+      result: "PV = 568,62 triệu (tổng nominal 750)"
+  - id: "m01_annuity_due"
+    name_vi: "PV niên kim đầu kỳ"
+    name_en: "PV of annuity due"
+    expression_latex: 'PV_{due} = PMT \times \frac{1-(1+r)^{-n}}{r} \times (1+r)'
+    expression_python: "pv_due = pmt * (1 - (1 + r) ** -n) / r * (1 + r)"
+    excel: "=PV(rate, nper, -pmt, 0, 1)"
+    variables:
+      - {symbol: "PMT", meaning: "Khoản trả đầu mỗi kỳ", unit: "tiền/kỳ"}
+      - {symbol: "r", meaning: "Lãi suất/kỳ", unit: "thập phân"}
+      - {symbol: "n", meaning: "Số kỳ", unit: "kỳ"}
+    when_to_use: "Thanh toán trả trước, ví dụ tiền thuê nhà trả đầu kỳ."
+    why_it_works: "Mỗi khoản xảy ra sớm hơn 1 kỳ so với cuối kỳ nên PV lớn hơn đúng (1+r) lần."
+    assumptions: ["Như ordinary annuity nhưng khoản đầu ở t=0"]
+    pitfalls: ["Quên nhân (1+r) (hoặc tham số type=1 trong Excel)"]
+    interpretation: "Luôn lớn hơn PV niên kim cuối kỳ cùng thông số."
+    example:
+      inputs: {PMT: 150, r: 0.10, n: 5}
+      steps: ["PV_due = 568.618 * 1.10 = 625.48"]
+      result: "625,48 triệu"
+  - id: "m01_fv_annuity"
+    name_vi: "FV niên kim (tiết kiệm định kỳ)"
+    name_en: "FV of annuity / sinking fund accumulation"
+    expression_latex: 'FV = PMT \times \frac{(1+r)^n - 1}{r}'
+    expression_python: "fv = pmt * ((1 + r) ** n - 1) / r"
+    excel: "=FV(rate, nper, -pmt)"
+    variables:
+      - {symbol: "PMT", meaning: "Khoản góp đều cuối kỳ", unit: "tiền/kỳ"}
+      - {symbol: "r", meaning: "Lãi suất/kỳ", unit: "thập phân"}
+      - {symbol: "n", meaning: "Số kỳ", unit: "kỳ"}
+    when_to_use: "Tiết kiệm/trích quỹ tái đầu tư định kỳ. Muốn biết PMT cần góp để đạt mục tiêu FV thì đảo: PMT = FV * r / ((1+r)^n - 1)."
+    why_it_works: "Mỗi khoản góp sinh lãi kép cho đến cuối kỳ rồi cộng lại (cấp số nhân)."
+    assumptions: ["Góp cuối kỳ", "Lãi suất không đổi"]
+    pitfalls: ["Dùng lãi năm với góp tháng"]
+    interpretation: "Góp 20tr/tháng, 0,5%/tháng, 60 tháng: gốc 1.200, lãi 195,40. Mục tiêu 800tr cần góp 11,47tr/tháng."
+    example:
+      inputs: {PMT: 20, r: 0.005, n: 60}
+      steps: ["factor = (1.005^60 - 1)/0.005 = 69.77", "FV = 20 * 69.77 = 1395.40", "Lãi = 1395.40 - 1200 = 195.40", "PMT cho mục tiêu 800 = 800/69.77 = 11.47"]
+      result: "FV = 1.395,40 triệu; góp 11,47tr/tháng để đạt 800tr"
+  - id: "m01_pv_perpetuity"
+    name_vi: "PV niên kim vĩnh viễn"
+    name_en: "PV of perpetuity"
+    expression_latex: 'PV = \frac{PMT}{r}'
+    expression_python: "pv = pmt / r"
+    excel: "=pmt/r"
+    variables:
+      - {symbol: "PMT", meaning: "Khoản nhận đều mỗi kỳ vô hạn", unit: "tiền/kỳ"}
+      - {symbol: "r", meaning: "Lợi suất đòi hỏi/kỳ", unit: "thập phân"}
+    when_to_use: "Định giá tiền thuê mặt bằng vĩnh viễn, cổ tức ổn định, vốn cần để nhận thu nhập thụ động."
+    why_it_works: "Khi n vô hạn (1+r)^-n về 0 nên annuity factor còn 1/r; gốc X sinh X*r mỗi kỳ mà gốc nguyên vẹn nên cần X=PMT/r."
+    assumptions: ["Dòng tiền không đổi, vô hạn"]
+    pitfalls: ["r và PMT khác đơn vị kỳ (12tr/tháng với r năm: phải đổi PMT=144/năm)"]
+    interpretation: "Nhận 144tr/năm với lợi suất 12% cần vốn 1.200tr."
+    example:
+      inputs: {PMT: 144, r: 0.12}
+      steps: ["PV = 144/0.12 = 1200"]
+      result: "1.200 triệu"
+  - id: "m01_gordon"
+    name_vi: "Perpetuity tăng trưởng (Gordon)"
+    name_en: "Growing perpetuity / Gordon Growth Model"
+    expression_latex: 'PV = \frac{CF_1}{r-g}, \quad r>g'
+    expression_python: "pv = cf1 / (r - g)  # yêu cầu r > g"
+    excel: "=cf1/(r-g)"
+    variables:
+      - {symbol: "CF1", meaning: "Dòng tiền năm kế tiếp", unit: "tiền"}
+      - {symbol: "r", meaning: "Tỷ lệ chiết khấu", unit: "thập phân"}
+      - {symbol: "g", meaning: "Tốc độ tăng trưởng đều mãi mãi", unit: "thập phân"}
+    when_to_use: "Định giá cổ phiếu cổ tức tăng đều, Terminal Value trong DCF (xem m10), tiền thuê tăng đều."
+    why_it_works: "Perpetuity với tốc độ chiết khấu hiệu dụng giảm còn r-g; Myron Gordon (1959) áp dụng cho cổ tức."
+    assumptions: ["g không đổi vô hạn", "r > g"]
+    pitfalls: ["g>=r cho giá trị âm/vô cực, vô nghĩa", "g dài hạn không được vượt tăng trưởng kinh tế", "Cực nhạy với r: CF1=100,g=3%: r=8%->2.000; 10%->1.428,6; 12%->1.111,1"]
+    interpretation: "Chỉ đổi r vài điểm % làm giá trị đổi gần 45%."
+    example:
+      inputs: {CF1: 60, r: 0.14, g: 0.04}
+      steps: ["PV = 60/(0.14-0.04) = 600"]
+      result: "600 triệu"
+  - id: "m01_npv"
+    name_vi: "Giá trị hiện tại ròng"
+    name_en: "Net Present Value"
+    expression_latex: 'NPV = -C_0 + \sum_{t=1}^{n} \frac{CF_t}{(1+r)^t}'
+    expression_python: "npv = sum(cf / (1 + r) ** t for t, cf in enumerate(cfs))  # cfs[0] = -C0"
+    excel: "=NPV(rate, CF1:CFn) + CF0   # NPV() của Excel chiết khấu từ kỳ 1, CF0 cộng riêng"
+    variables:
+      - {symbol: "C0", meaning: "Vốn đầu tư ban đầu tại t=0", unit: "tiền"}
+      - {symbol: "CF_t", meaning: "Dòng tiền ròng tăng thêm năm t (gồm thay đổi vốn lưu động, giá trị thanh lý năm cuối)", unit: "tiền"}
+      - {symbol: "r", meaning: "Tỷ lệ chiết khấu (WACC/lợi suất đòi hỏi)", unit: "thập phân"}
+      - {symbol: "n", meaning: "Vòng đời dự án", unit: "kỳ"}
+    when_to_use: "Tiêu chí quyết định đầu tư chính. Quy tắc: NPV>0 đầu tư; NPV=0 tùy chiến lược; NPV<0 từ chối."
+    why_it_works: "Đưa mọi dòng tiền về cùng thời điểm rồi trừ vốn gốc; NPV là thặng dư sau khi trả đủ công cho vốn với lợi suất r, tính bằng tiền hôm nay."
+    assumptions: ["Dòng tiền dự báo đúng và là incremental", "r phản ánh đúng rủi ro", "Nhất quán danh nghĩa/thực"]
+    pitfalls: ["Garbage in, garbage out", "Tính sunk cost", "Quên vốn lưu động, giá trị thanh lý", "Chỉ tin một con số NPV (cần sensitivity)", "Excel NPV() quên CF0"]
+    interpretation: "NPV đo giá trị tăng thêm cho chủ sở hữu quy về hôm nay; khi chọn dự án loại trừ nhau, chọn NPV cao nhất (hơn IRR)."
+    example:
+      inputs: {cfs: [-500, 120, 150, 180, 200, 250], r: 0.12}
+      steps: ["PV: 107.14, 119.58, 128.12, 127.10, 141.84 (tổng 623.78)", "NPV = -500 + 623.80 = 123.80"]
+      result: "NPV = +123,80 triệu (chính xác 123,8027; bảng làm tròn hệ số cho 123,78)"
+  - id: "m01_irr"
+    name_vi: "Tỷ suất hoàn vốn nội bộ"
+    name_en: "Internal Rate of Return"
+    expression_latex: '0 = -C_0 + \sum_{t=1}^{n} \frac{CF_t}{(1+IRR)^t}'
+    expression_python: "# bisection\nlo, hi = -0.9, 10\nfor _ in range(200):\n    mid = (lo + hi) / 2\n    if sum(c / (1 + mid) ** t for t, c in enumerate(cfs)) > 0: lo = mid\n    else: hi = mid\nirr = mid   # hoặc numpy_financial.irr(cfs)"
+    excel: "=IRR(CF0:CFn)"
+    variables:
+      - {symbol: "cfs", meaning: "Dãy dòng tiền từ t=0 (âm), các kỳ sau dương", unit: "tiền"}
+      - {symbol: "IRR", meaning: "Tỷ lệ làm NPV=0", unit: "thập phân/kỳ"}
+    when_to_use: "Cho biết lãi suất thực dự án tạo ra; so với WACC/lãi vay/kỳ vọng. Quy tắc: IRR>r đầu tư, IRR<r từ chối."
+    why_it_works: "Người ta dễ so sánh % hơn số tuyệt đối; IRR là điểm cắt trục của NPV profile. Không có nghiệm đóng (đa thức bậc n)."
+    assumptions: ["Dòng tiền thông thường: một lần đổi dấu", "Tái đầu tư ngầm ở IRR"]
+    pitfalls: ["Multiple IRR khi dòng tiền đổi dấu nhiều lần", "Scale-blind (dự án nhỏ IRR 50% có thể thua dự án lớn IRR 25% về NPV)", "Giả định tái đầu tư sai", "Xếp hạng mâu thuẫn NPV với dự án loại trừ (tin NPV hoặc dùng NPV chênh lệch)", "Không cộng được"]
+    interpretation: "Khoảng cách IRR - r là biên an toàn (margin of safety). Dự án cà phê IRR 20,4% vs r=12%: biên 8,4 điểm %."
+    example:
+      inputs: {cfs: [-500, 120, 150, 180, 200, 250]}
+      steps: ["NPV(18%) = 31.4 > 0; NPV(22%) = -19.0 < 0", "Nội suy/giải: IRR = 20.42%"]
+      result: "IRR = 20,42% (bản cũ ghi 21,5% là sai)"
+  - id: "m01_mirr"
+    name_vi: "IRR điều chỉnh"
+    name_en: "Modified IRR"
+    expression_latex: 'MIRR = \left(\frac{FV_{+}}{PV_{-}}\right)^{1/n} - 1'
+    expression_python: "fv_pos = sum(c * (1 + reinvest) ** (n - t) for t, c in enumerate(cfs) if c > 0)\npv_neg = -sum(c / (1 + finance) ** t for t, c in enumerate(cfs) if c < 0)\nmirr = (fv_pos / pv_neg) ** (1 / n) - 1"
+    excel: "=MIRR(values, finance_rate, reinvest_rate)"
+    variables:
+      - {symbol: "FV_+", meaning: "FV các dòng tiền dương tại cuối vòng đời với lãi tái đầu tư", unit: "tiền"}
+      - {symbol: "PV_-", meaning: "PV các dòng tiền âm theo lãi tài trợ", unit: "tiền"}
+      - {symbol: "n", meaning: "Số kỳ", unit: "kỳ"}
+    when_to_use: "Khi IRR cao đến phi thực tế hoặc dòng tiền đổi dấu nhiều lần."
+    why_it_works: "Thay giả định tái đầu tư ở IRR bằng lãi tái đầu tư thực (thường WACC), chỉ còn một nghiệm."
+    assumptions: ["Lãi tái đầu tư (thường WACC) đúng thực tế"]
+    pitfalls: ["Chọn lãi tái đầu tư tùy tiện"]
+    interpretation: "Thường thấp hơn IRR, thực tế hơn. Case SME: IRR 19,27% nhưng MIRR 17,22%."
+    example:
+      inputs: {cfs: [-800, 180, 230, 280, 300, 420], reinvest: 0.14}
+      steps: ["FV+ = 180*1.14^4 + 230*1.14^3 + 280*1.14^2 + 300*1.14 + 420 = 1770.66", "MIRR = (1770.66/800)^(1/5) - 1 = 17.22%"]
+      result: "MIRR = 17,22%"
+  - id: "m01_payback"
+    name_vi: "Thời gian hoàn vốn"
+    name_en: "Payback Period"
+    expression_latex: 'Payback = k + \frac{|\text{lũy kế âm cuối năm } k|}{CF_{k+1}}'
+    expression_python: "cum = 0\nfor t, c in enumerate(cfs):\n    prev = cum; cum += c\n    if t > 0 and cum >= 0:\n        payback = (t - 1) + (-prev) / c; break"
+    excel: "Tự dựng cột lũy kế: năm cuối còn âm + |lũy kế âm| / CF năm kế"
+    variables:
+      - {symbol: "k", meaning: "Năm cuối cùng lũy kế còn âm", unit: "năm"}
+      - {symbol: "CF_{k+1}", meaning: "Dòng tiền năm hoàn vốn", unit: "tiền"}
+    when_to_use: "Bộ lọc rủi ro thanh khoản bổ sung cho NPV; SME quan tâm 'khi nào lấy lại vốn'."
+    why_it_works: "Đếm thời gian dòng tiền tích lũy bù vốn, nội suy tuyến tính trong năm hoàn vốn."
+    assumptions: ["Dòng tiền phát sinh đều trong năm"]
+    pitfalls: ["Bỏ qua giá trị thời gian", "Bỏ qua dòng tiền sau hoàn vốn", "Không dùng riêng"]
+    interpretation: "Càng ngắn càng ít rủi ro thanh khoản. Dự án chi nhánh: 3,37 năm."
+    example:
+      inputs: {cfs: [-800, 180, 230, 280, 300, 420]}
+      steps: ["Lũy kế: -800, -620, -390, -110, +190, +610", "Payback = 3 + 110/300 = 3.37"]
+      result: "3,37 năm"
+  - id: "m01_discounted_payback"
+    name_vi: "Thời gian hoàn vốn có chiết khấu"
+    name_en: "Discounted Payback"
+    expression_latex: 'DPB = k + \frac{|\text{lũy kế PV âm cuối năm } k|}{PV_{k+1}}'
+    expression_python: "cum = 0\nfor t, c in enumerate(cfs):\n    pv = c / (1 + r) ** t\n    prev = cum; cum += pv\n    if t > 0 and cum >= 0:\n        dpb = (t - 1) + (-prev) / pv; break"
+    excel: "Cột lũy kế PV rồi nội suy như Payback"
+    variables:
+      - {symbol: "r", meaning: "Tỷ lệ chiết khấu", unit: "thập phân"}
+      - {symbol: "PV_{k+1}", meaning: "PV dòng tiền năm hoàn vốn", unit: "tiền"}
+    when_to_use: "Khi muốn payback có tính giá trị thời gian."
+    why_it_works: "Dùng dòng tiền đã chiết khấu nên luôn dài hơn payback thường."
+    assumptions: ["r đúng"]
+    pitfalls: ["Vẫn bỏ qua dòng tiền sau hoàn vốn"]
+    interpretation: "Khoảng cách với payback thường là 'chi phí thời gian' (3,37 vs 4,45 năm = 1,08 năm)."
+    example:
+      inputs: {cfs: [-800, 180, 230, 280, 300, 420], r: 0.14}
+      steps: ["Lũy kế PV: -800, -642.11, -465.13, -276.14, -98.51, +119.62", "DPB = 4 + 98.51/218.13 = 4.45"]
+      result: "4,45 năm"
+  - id: "m01_ear"
+    name_vi: "Lãi suất hiệu dụng năm"
+    name_en: "Effective Annual Rate"
+    expression_latex: 'EAR = \left(1+\frac{APR}{m}\right)^m - 1, \quad EAR_{cont}=e^{APR}-1'
+    expression_python: "ear = (1 + apr / m) ** m - 1"
+    excel: "=EFFECT(nominal_rate, npery)"
+    variables:
+      - {symbol: "APR", meaning: "Lãi suất danh nghĩa năm", unit: "thập phân"}
+      - {symbol: "m", meaning: "Số lần ghép/năm", unit: "lần"}
+    when_to_use: "So sánh các khoản vay/tiền gửi có cách ghép lãi khác nhau."
+    why_it_works: "Quy mọi lãi suất về cùng cơ sở lãi kép năm."
+    assumptions: ["Không tính phí phụ"]
+    pitfalls: ["Chưa gồm phí phụ (bảo hiểm, thẩm định)"]
+    interpretation: "8% ghép tháng = 8,30%; 12% ghép tháng = 12,68%; 12% liên tục = 12,75%; 11% tháng = 11,57%."
+    example:
+      inputs: {apr: 0.11, m: 12}
+      steps: ["EAR = (1 + 0.11/12)^12 - 1 = 0.115719"]
+      result: "EAR = 11,57%"
+  - id: "m01_monthly_rate"
+    name_vi: "Đổi lãi suất năm sang tháng"
+    name_en: "Periodic rate conversion"
+    expression_latex: 'r_{month}=(1+EAR)^{1/12}-1 \;\text{(nếu có EAR)};\quad r_{month}=APR/12 \;\text{(nếu APR ghép tháng)}'
+    expression_python: "r_month_from_ear = (1 + ear) ** (1 / 12) - 1\nr_month_from_apr = apr / 12"
+    excel: "=(1+ear)^(1/12)-1"
+    variables:
+      - {symbol: "EAR", meaning: "Lãi hiệu dụng năm", unit: "thập phân"}
+      - {symbol: "APR", meaning: "Lãi danh nghĩa năm ghép tháng", unit: "thập phân"}
+    when_to_use: "Chi phí vốn cho là EAR (ví dụ 14%) và cần chiết khấu dòng tiền tháng."
+    why_it_works: "Lãi tháng ghép 12 lần phải ra đúng EAR; chia 12 đơn giản chỉ đúng với APR."
+    assumptions: ["Biết loại lãi suất là EAR hay APR"]
+    pitfalls: ["Lấy 14%/12=1,1667% thay vì 1,0979% (EAR 14%)"]
+    interpretation: "EAR 14% -> 1,0979%/tháng."
+    example:
+      inputs: {ear: 0.14}
+      steps: ["r_m = 1.14^(1/12) - 1 = 0.010979"]
+      result: "1,0979%/tháng"
+  - id: "m01_pmt_loan"
+    name_vi: "Khoản trả đều của khoản vay"
+    name_en: "Loan payment (PMT)"
+    expression_latex: 'PMT = L \times \frac{i}{1-(1+i)^{-n}}'
+    expression_python: "pmt = L * i / (1 - (1 + i) ** -n)"
+    excel: "=PMT(rate, nper, -L)"
+    variables:
+      - {symbol: "L", meaning: "Số tiền vay", unit: "tiền"}
+      - {symbol: "i", meaning: "Lãi suất mỗi kỳ", unit: "thập phân/kỳ"}
+      - {symbol: "n", meaning: "Số kỳ trả", unit: "kỳ"}
+    when_to_use: "Tính tiền trả hàng tháng, tổng lãi (PMT*n - L), lập bảng khấu hao nợ."
+    why_it_works: "Đảo công thức PV annuity: L = PMT x AF. Mỗi kỳ lãi = dư nợ đầu kỳ x i, phần còn lại là gốc."
+    assumptions: ["Lãi suất cố định trên dư nợ giảm dần", "Trả cuối kỳ"]
+    pitfalls: ["Nhầm với lãi flat", "Chưa tính phí phụ"]
+    interpretation: "Kiểm tra PV các PMT ở i bằng L. Tổng lãi = PMT*n - L."
+    example:
+      inputs: {L: 300, i: 0.11/12, n: 36}
+      steps: ["PMT = 300 * 0.009167/(1 - 1.009167^-36) = 9.8216", "Tổng lãi = 9.8216*36 - 300 = 53.58"]
+      result: "PMT = 9,8216 triệu/tháng; tổng lãi 53,58 triệu"
+  - id: "m01_amort_interest"
+    name_vi: "Cơ cấu lãi/gốc từng kỳ (khấu hao nợ)"
+    name_en: "Amortization schedule (interest/principal split)"
+    expression_latex: 'I_k = B_{k-1}\, i;\quad P_k = PMT - I_k;\quad B_k = B_{k-1} - P_k'
+    expression_python: "b = L\nsched = []\nfor k in range(1, n + 1):\n    interest = b * i\n    principal = pmt - interest\n    b -= principal\n    sched.append((k, interest, principal, b))"
+    excel: "=IPMT(rate, per, nper, -L); =PPMT(rate, per, nper, -L)"
+    variables:
+      - {symbol: "B_k", meaning: "Dư nợ cuối kỳ k", unit: "tiền"}
+      - {symbol: "I_k", meaning: "Lãi kỳ k", unit: "tiền"}
+      - {symbol: "P_k", meaning: "Gốc trả kỳ k", unit: "tiền"}
+    when_to_use: "Vay lớn: cần biết lãi từng năm, lợi ích trả nợ sớm."
+    why_it_works: "Lãi tính trên dư nợ còn lại nên giảm dần, phần gốc tăng dần."
+    assumptions: ["Như PMT"]
+    pitfalls: ["Làm tròn tích lũy làm dư nợ cuối khác 0"]
+    interpretation: "Vay 300tr 36 tháng 11%: tháng 1 lãi 2,750/gốc 7,072; T2 2,685/7,136; T12 2,003/7,818 (dư nợ 210,729); T24 1,099/8,723 (dư 111,127); T36 0,089/9,732. Lãi Năm 1=28,59; Năm 2=18,26; Năm 3=6,73."
+    example:
+      inputs: {L: 300, i: 0.11/12, n: 36}
+      steps: ["T1: lãi = 300*0.009167 = 2.750; gốc = 9.8216-2.750 = 7.072; dư = 292.928", "Lãi theo năm: 28.59 + 18.26 + 6.73 = 53.58"]
+      result: "Tháng 1 lãi chiếm 28% PMT; tháng 36 chỉ 0,9%"
+  - id: "m01_nper"
+    name_vi: "Số kỳ trả hết nợ"
+    name_en: "Number of periods (NPER)"
+    expression_latex: 'n = -\frac{\ln\left(1 - \frac{L\, i}{PMT}\right)}{\ln(1+i)}'
+    expression_python: "import math\nn = -math.log(1 - L * i / pmt) / math.log(1 + i)"
+    excel: "=NPER(rate, -pmt, L)"
+    variables:
+      - {symbol: "L", meaning: "Dư nợ", unit: "tiền"}
+      - {symbol: "PMT", meaning: "Khoản trả/kỳ", unit: "tiền"}
+      - {symbol: "i", meaning: "Lãi/kỳ", unit: "thập phân"}
+    when_to_use: "Khi biết khả năng trả mỗi kỳ, cần biết bao lâu hết nợ."
+    why_it_works: "Giải ngược công thức PMT theo n."
+    assumptions: ["PMT > L*i (nếu không nợ không bao giờ hết)"]
+    pitfalls: ["PMT quá thấp -> log của số âm"]
+    interpretation: "Kiểm tra: L=300, PMT=9,8216, i=0,9167% cho n=36."
+    example:
+      inputs: {L: 300, pmt: 9.821615, i: 0.11/12}
+      steps: ["n = -ln(1 - 300*0.009167/9.8216)/ln(1.009167) = 36.0"]
+      result: "36 tháng"
+  - id: "m01_implied_rate"
+    name_vi: "Lãi suất ẩn (hàm ý) của phương án trả góp"
+    name_en: "Implied interest rate (RATE)"
+    expression_latex: 'P_{cash} = PMT \times \frac{1-(1+r)^{-n}}{r}\ \text{giải theo } r'
+    expression_python: "# bisection theo r\nlo, hi = 1e-9, 1\nfor _ in range(200):\n    mid = (lo + hi) / 2\n    if pmt * (1 - (1 + mid) ** -n) / mid > price_cash: lo = mid\n    else: hi = mid\nr_implied = mid"
+    excel: "=RATE(nper, -pmt, price_cash)"
+    variables:
+      - {symbol: "price_cash", meaning: "Giá trả ngay", unit: "tiền"}
+      - {symbol: "PMT", meaning: "Khoản trả góp/kỳ", unit: "tiền"}
+      - {symbol: "n", meaning: "Số kỳ", unit: "kỳ"}
+    when_to_use: "Biết trả góp rẻ hay đắt: so r_implied (đổi sang EAR) với chi phí cơ hội của tiền."
+    why_it_works: "Trả góp thực chất là vay giá trả ngay với lãi suất làm PV các kỳ trả bằng giá ngay."
+    assumptions: ["Giá trả ngay đã bao gồm mọi chi phí khác như nhau"]
+    pitfalls: ["Quên đổi lãi tháng sang EAR trước khi so"]
+    interpretation: "Quy tắc: trả góp rẻ khi lãi ẩn < chi phí cơ hội của tiền; đắt khi ngược lại."
+    example:
+      inputs: {price_cash: 540, pmt: 19, n: 36}
+      steps: ["r_m = 1.338%/tháng", "EAR = 1.01338^12 - 1 = 17.29%; danh nghĩa 12*1.338% = 16.06%"]
+      result: "Lãi ẩn phương án C: EAR 17,29%"
+  - id: "m01_flat_rate"
+    name_vi: "Quy đổi lãi flat sang lãi thực"
+    name_en: "Flat rate to effective rate"
+    expression_latex: 'PMT_{flat} = \frac{L(1 + f\, n_{years})}{n_{months}};\ \text{rồi giải RATE}'
+    expression_python: "pmt_flat = L * (1 + f * n_years) / (n_years * 12)\n# r_m = giải RATE(n_months, pmt_flat, L)\napr = r_m * 12\near = (1 + r_m) ** 12 - 1"
+    excel: "=RATE(36, -11.0833, 300)*12"
+    variables:
+      - {symbol: "f", meaning: "Lãi flat năm", unit: "thập phân"}
+      - {symbol: "L", meaning: "Số vay ban đầu", unit: "tiền"}
+    when_to_use: "Công ty tài chính/trả góp quảng cáo lãi 'flat' hoặc 0,8%/tháng."
+    why_it_works: "Flat tính lãi trên gốc ban đầu dù đã trả bớt gốc, nên lãi thực trên dư nợ giảm dần cao gần gấp đôi."
+    assumptions: ["Trả đều hàng tháng"]
+    pitfalls: ["So lãi flat với lãi ngân hàng dư nợ giảm dần"]
+    interpretation: "Vay 300tr, 36 tháng, flat 11%: tổng lãi 99, trả 11,083/tháng; APR ~19,6%, EAR ~21,4% (so với dư nợ giảm dần 11%: PMT 9,82)."
+    example:
+      inputs: {L: 300, f: 0.11, n_years: 3}
+      steps: ["Tổng lãi = 300*0.11*3 = 99", "PMT = 399/36 = 11.0833", "r_m = 1.6308%, APR = 19.57%, EAR = 21.42%"]
+      result: "Flat 11% = EAR 21,42%"
+  - id: "m01_early_discount_cost"
+    name_vi: "Chi phí vốn của việc bỏ chiết khấu thanh toán sớm"
+    name_en: "Cost of forgoing early-payment discount (2/10 net 30)"
+    expression_latex: 'Cost = \frac{d}{1-d} \times \frac{365}{N_{late}-N_{disc}}'
+    expression_python: "cost = d / (1 - d) * 365 / (n_late - n_disc)\ncost_compound = (1 + d / (1 - d)) ** (365 / (n_late - n_disc)) - 1"
+    excel: "=d/(1-d)*365/(n_late-n_disc)"
+    variables:
+      - {symbol: "d", meaning: "Tỷ lệ chiết khấu (2% = 0,02)", unit: "thập phân"}
+      - {symbol: "N_late", meaning: "Ngày hạn thanh toán đầy đủ", unit: "ngày"}
+      - {symbol: "N_disc", meaning: "Ngày hạn hưởng chiết khấu", unit: "ngày"}
+    when_to_use: "Quyết định có trả sớm để hưởng chiết khấu nhà cung cấp hay giữ tiền."
+    why_it_works: "Không trả sớm = vay d/(1-d) trong (N_late - N_disc) ngày; quy năm được lãi suất hàm ý."
+    assumptions: ["Dạng không ghép lãi"]
+    pitfalls: ["Bản có ghép lãi cho kết quả cao hơn nhiều"]
+    interpretation: "2/10 net 30: 2/98 x 365/20 = 37,2%/năm: nên trả sớm nếu vay được rẻ hơn 37,2%."
+    example:
+      inputs: {d: 0.02, n_late: 30, n_disc: 10}
+      steps: ["2/98 = 0.020408", "365/20 = 18.25", "0.020408*18.25 = 37.24%"]
+      result: "37,2%/năm"
+  - id: "m01_fisher"
+    name_vi: "Phương trình Fisher (danh nghĩa - thực)"
+    name_en: "Fisher equation"
+    expression_latex: 'r_{real} = \frac{1+r_{nominal}}{1+\pi} - 1'
+    expression_python: "r_real = (1 + r_nominal) / (1 + inflation) - 1"
+    excel: "=(1+nominal)/(1+inflation)-1"
+    variables:
+      - {symbol: "r_nominal", meaning: "Lãi danh nghĩa", unit: "thập phân"}
+      - {symbol: "pi", meaning: "Lạm phát", unit: "thập phân"}
+    when_to_use: "Chuyển tỷ lệ chiết khấu giữa danh nghĩa và thực; đánh giá lãi suất sau lạm phát."
+    why_it_works: "Sức mua của 1 đồng giảm theo (1+pi); lãi thực = lãi danh nghĩa / lạm phát."
+    assumptions: ["Lạm phát ổn định"]
+    pitfalls: ["Dùng xấp xỉ r - pi khi lãi và lạm phát lớn", "Trộn CF thực với r danh nghĩa (NPV bị đánh giá thấp) hoặc CF danh nghĩa với r thực (bị thổi phồng)"]
+    interpretation: "14% danh nghĩa, lạm phát 4% -> 9,62% thực."
+    example:
+      inputs: {r_nominal: 0.14, inflation: 0.04}
+      steps: ["r_real = 1.14/1.04 - 1 = 0.09615"]
+      result: "9,62%"
+  - id: "m01_pv_compare"
+    name_vi: "So sánh phương án thanh toán bằng PV"
+    name_en: "Payment option comparison by PV"
+    expression_latex: 'PV_{option}=\sum_t \frac{Payment_t}{(1+r)^t};\ \text{chọn PV nhỏ nhất (chi) / lớn nhất (thu)}'
+    expression_python: "pv_option = sum(p / (1 + r) ** t for t, p in payments)  # r cùng kỳ với t"
+    excel: "=PV(rate, nper, -pmt)"
+    variables:
+      - {symbol: "r", meaning: "Chi phí cơ hội của tiền (đổi cùng kỳ)", unit: "thập phân"}
+    when_to_use: "Mua máy trả ngay/trả góp; thuê vs mua; nhận tiền sớm vs muộn."
+    why_it_works: "Chỉ so sánh được các khoản tiền khi cùng mốc thời gian; tổng nominal sai vì bỏ qua thời điểm."
+    assumptions: ["r là chi phí cơ hội thực của người trả"]
+    pitfalls: ["So tổng nominal", "Dùng r tháng và r năm lẫn lộn"]
+    interpretation: "Máy rang ở r=14%: A=540,00; B (150x5)=514,96; C (19x36 tháng)=562,49 -> chọn B dù tổng nominal 750 cao nhất."
+    example:
+      inputs: {A: 540, B: "150 x 5 năm", C: "19 x 36 tháng", r_ear: 0.14}
+      steps: ["B = 150*3.4331 = 514.96", "C: r_m=1.0979%; PV = 562.49"]
+      result: "B < A < C"
+
+procedures:
+  - id: "m01_proc_tvm_basic"
+    name: "Giải bài toán TVM một dòng tiền / niên kim từ đầu đến cuối"
+    steps:
+      - "Xác định câu hỏi: tìm FV, PV, PMT, n hay r?"
+      - "Vẽ timeline: từng dòng tiền, thời điểm, dấu (chi âm, thu dương), đầu/cuối kỳ."
+      - "Thống nhất đơn vị: nếu trả theo tháng thì đổi r sang tháng (APR/12 hoặc (1+EAR)^(1/12)-1) và n sang tháng."
+      - "Chọn công thức: một lần (FV/PV), đều (annuity), vĩnh viễn (perpetuity/Gordon), nhiều khoản không đều (cộng PV từng khoản)."
+      - "Tính bằng python3 hoặc Excel; kiểm tra bằng đảo ngược (PV của kết quả có về input không)."
+      - "Diễn giải bằng ngôn ngữ kinh doanh: ý nghĩa, so với chi phí cơ hội."
+    outputs: "Kết quả số + timeline + diễn giải + giả định ghi rõ."
+  - id: "m01_proc_project_npv"
+    name: "Đánh giá dự án bằng NPV, IRR, MIRR, Payback và độ nhạy"
+    steps:
+      - "Thu thập dòng tiền ròng tăng thêm (incremental) theo năm: vốn ban đầu, dòng tiền hoạt động, thay đổi vốn lưu động, giá trị thanh lý năm cuối; loại sunk cost."
+      - "Xác định r theo mục IV.3 (lãi vay + phần bù rủi ro) hoặc WACC (m03); xác định nhất quán danh nghĩa/thực bằng Fisher."
+      - "Tính hệ số chiết khấu và PV từng năm; NPV = tổng PV - vốn."
+      - "Tính IRR (Excel IRR), so với r để lấy biên an toàn; tính MIRR với lãi tái đầu tư = r."
+      - "Lập bảng lũy kế CF và lũy kế PV; tính Payback và Discounted Payback."
+      - "Lập bảng độ nhạy 3x3: CF 80/90/100% x r thấp/cơ sở/cao (±2 điểm %); tìm break-even CF."
+      - "Lập kịch bản Best/Base/Worst (nếu có xác suất, tính NPV kỳ vọng)."
+      - "Kết luận: chấp nhận/từ chối/điều kiện; nêu rủi ro then chốt và việc kiểm chứng trước khi xuống tiền."
+    outputs: "Bảng PV, NPV, IRR, MIRR, Payback/Discounted, bảng độ nhạy, khuyến nghị."
+  - id: "m01_proc_payment_option"
+    name: "Chọn phương án thanh toán (trả ngay vs trả góp)"
+    steps:
+      - "Liệt kê từng phương án: số khoản, mức, thời điểm."
+      - "Xác định chi phí cơ hội của tiền (EAR) và đổi sang kỳ trả góp."
+      - "Tính PV từng phương án (PV annuity); chọn PV chi nhỏ nhất."
+      - "Tính lãi ẩn từng phương án trả góp so với giá trả ngay (RATE), đổi EAR, so với chi phí cơ hội."
+      - "Nếu chi phí cơ hội thấp (ví dụ 8%) thì trả ngay hấp dẫn hơn; nếu cao thì trả góp lợi hơn."
+    outputs: "Bảng PV các phương án, lãi ẩn, khuyến nghị."
+  - id: "m01_proc_loan"
+    name: "Phân tích khoản vay"
+    steps:
+      - "Xác định L, APR, kỳ hạn, loại lãi (dư nợ giảm dần hay flat), phí phụ."
+      - "Tính i = APR/12; PMT; tổng lãi = PMT*n - L."
+      - "Tính EAR; nếu flat, giải RATE để ra APR/EAR thực."
+      - "Lập bảng khấu hao nợ (lãi, gốc, dư nợ); tổng lãi theo năm."
+      - "So EAR với lợi suất vốn sinh lời để quyết định vay; xem xét trả nợ sớm (ưu tiên năm đầu)."
+    outputs: "PMT, tổng lãi, EAR, bảng khấu hao, khuyến nghị."
+  - id: "m01_proc_savings_goal"
+    name: "Lập kế hoạch tiết kiệm đạt mục tiêu"
+    steps:
+      - "Xác định mục tiêu FV, kỳ hạn n tháng, lãi tháng i."
+      - "Tính hệ số FV annuity = ((1+i)^n - 1)/i."
+      - "PMT cần góp = FV / hệ số; kiểm tra tổng gốc và lãi."
+    outputs: "Mức góp hàng tháng và cơ cấu gốc/lãi."
+  - id: "m01_proc_valuation_perpetuity"
+    name: "Định giá dòng tiền vĩnh viễn / tăng trưởng đều"
+    steps:
+      - "Kiểm tra dòng tiền có ổn định lâu dài; chọn không tăng trưởng (PMT/r) hay Gordon (CF1/(r-g))."
+      - "Đảm bảo r > g và g hợp lý (không vượt tăng trưởng kinh tế dài hạn)."
+      - "Tính giá trị và chạy độ nhạy theo r (±2 điểm %)."
+    outputs: "Giá trị, bảng độ nhạy theo r."
+
+decision_rules:
+  - "Nếu NPV > 0 thì dự án tạo giá trị -> đầu tư (có điều kiện nếu độ nhạy mỏng); NPV = 0 thì tùy chiến lược; NPV < 0 thì từ chối."
+  - "Nếu IRR > tỷ lệ chiết khấu thì chấp nhận; IRR < r thì từ chối; khoảng cách IRR - r là biên an toàn."
+  - "Nếu hai dự án loại trừ nhau và NPV với IRR xếp hạng ngược thì tin NPV."
+  - "Nếu dòng tiền đổi dấu nhiều lần thì không dùng IRR đơn thuần; dùng NPV hoặc MIRR."
+  - "Nếu IRR rất cao thì kiểm tra bằng MIRR vì IRR giả định tái đầu tư phi thực tế."
+  - "Nếu so sánh phương án trả góp thì phải quy về PV (không so tổng nominal), rồi so lãi ẩn với chi phí cơ hội."
+  - "Nếu lãi ẩn của trả góp < chi phí cơ hội của tiền thì chọn trả góp; nếu > thì trả ngay."
+  - "Nếu nhà cung cấp quảng cáo lãi flat thì quy đổi sang EAR/APR dư nợ giảm dần trước khi so với ngân hàng (flat 11% ~ EAR 21,4%)."
+  - "Nếu chiết khấu thanh toán sớm có chi phí hàm ý lớn hơn lãi vay của DN (2/10 net 30 = 37,2%) thì nên trả sớm để hưởng chiết khấu."
+  - "Nếu dòng tiền đã tính lạm phát (danh nghĩa) thì dùng r danh nghĩa; nếu giữ giá cố định thì dùng r thực (Fisher)."
+  - "Nếu NPV chuyển âm khi CF thấp hơn 10% hoặc r cao hơn 2 điểm % thì dự án không dư an toàn -> kiểm chứng dự báo (thử nghiệm quy mô nhỏ) trước khi xuống tiền."
+  - "Nếu dự án có giá trị chủ yếu từ Terminal Value xa thì chạy break-even TV và độ nhạy r; chấp nhận chỉ khi tin được lợi thế cạnh tranh bền vững."
+  - "Nếu mô hình dùng Gordon thì phải kiểm tra r > g; nếu g gần r thì giá trị bùng nổ, giảm g hoặc dùng mô hình nhiều giai đoạn (m10)."
+  - "Nếu cần chọn r cho SME thì lấy lãi vay bình quân làm sàn rồi cộng phần bù rủi ro (mở rộng SP hiện có +2-3%; thị trường mới +4-6%; ngành mới/startup +8-15%); thử ±2 điểm %."
+  - "Nếu cần hiệu suất thanh khoản thì dùng Payback/Discounted Payback làm bộ lọc phụ, không thay NPV."
+  - "Nếu thanh toán trả trước (đầu kỳ) thì nhân PV annuity thêm (1+r)."
+  - "Nếu có khoản vay lãi thấp hơn chi phí vốn của DN thì vay có thể hợp lý với điều kiện vốn dùng sinh lời hơn EAR khoản vay."
+  - "Nếu nhân bản mô hình (nhiều cửa hàng) thì kiểm tra NPV trên đơn vị cơ sở (từng cửa hàng) trước."
+
+benchmarks:
+  - {metric: "Phần bù rủi ro cộng vào lãi vay khi chọn r cho SME", value: "+2-3% (mở rộng SP hiện có); +4-6% (thị trường mới); +8-15% (ngành mới/startup)", context: "Hướng dẫn thực dụng trong nguồn, không phải chuẩn thị trường", confidence: "low"}
+  - {metric: "Lãi vay ngân hàng bình quân SME (ví dụ)", value: "10-12%/năm (ví dụ 11%)", context: "Dùng làm mức sàn của r; cần cập nhật theo thời điểm", confidence: "low"}
+  - {metric: "Lãi tiết kiệm (lợi suất thay thế)", value: "~5-6%/năm", context: "Chi phí cơ hội thấp nhất cho chủ SME; cần xác nhận hiện hành", confidence: "low"}
+  - {metric: "Rule of 72 chính xác nhất", value: "r trong 6-10%", context: "Ngoài khoảng này sai số tăng (ví dụ 20% -> 3,6 vs 3,80 năm)", confidence: "high"}
+  - {metric: "Biên an toàn IRR - r tối thiểu", value: "Không có chuẩn cứng; case: 5,27 điểm % mỏng, 8,4 điểm % tốt hơn", context: "Đánh giá cùng với độ nhạy", confidence: "low"}
+  - {metric: "Chi phí hàm ý 2/10 net 30", value: "37,2%/năm (không ghép lãi)", context: "Công thức d/(1-d) x 365/(N_late-N_disc)", confidence: "high"}
+  - {metric: "Flat 11% / 36 tháng", value: "APR ~19,6%, EAR ~21,4%", context: "So với dư nợ giảm dần 11% -> EAR 11,57%", confidence: "high"}
+  - {metric: "Độ nhạy NPV với r", value: "Đổi r 2% -> NPV đổi 20-50%", context: "Đặc biệt dòng tiền xa/Terminal Value", confidence: "medium"}
+
+pitfalls:
+  - "Nhầm đơn vị thời gian: r năm dùng với n tháng (hoặc ngược lại); chia 14%/12 cho EAR."
+  - "Đặt sai thời điểm dòng tiền (đầu/cuối kỳ) - nguồn gốc 90% sai sót; vẽ timeline trước khi tính."
+  - "Trộn danh nghĩa/thực giữa dòng tiền và tỷ lệ chiết khấu."
+  - "Tính sunk cost; dùng lợi nhuận kế toán thay dòng tiền tăng thêm."
+  - "Chọn tỷ lệ chiết khấu cảm tính; dùng r không đổi mãi mãi."
+  - "Dự báo CF lạc quan; chỉ dùng một con số NPV; không làm sensitivity/scenario."
+  - "Quên thay đổi vốn lưu động (dòng tiền chi thực) và giá trị thanh lý/salvage cuối dự án."
+  - "Chỉ dùng IRR/Payback một mình; IRR có multiple IRR, scale-blind, giả định tái đầu tư sai."
+  - "So tổng nominal các phương án trả góp; dùng lãi suất ghi hợp đồng không quy EAR; quên phí phụ (bảo hiểm, thẩm định)."
+  - "Excel: NPV() không tính kỳ 0; dấu PV và PMT phải ngược nhau."
+  - "Dùng Gordon với g >= r; coi Terminal Value như số chắc chắn."
+  - "Bỏ qua giá trị chiến lược và quyền chọn (real options) mà NPV không đo."
+  - "Không đánh giá sau đầu tư (post-investment audit)."
+  - "Lỗi nguồn cần lưu ý: bài tập 4 nguồn ghi NPV ~23,54 là sai (đúng 86,28); bài 6c lãi ẩn đúng 9,90%, không phải 10,1% (xem practice_questions)."
+
+sme_vn_guidance:
+  - "Chọn r cho SME: lãi vay NH bình quân (10-12%) làm sàn + phần bù rủi ro theo mức bất định; cân nhắc lợi suất thay thế (gửi tiết kiệm ~5-6%, vàng, trả bớt nợ). Số liệu lãi suất cần cập nhật/xác nhận theo thời điểm."
+  - "Mua máy móc: luôn quy PV các phương án trả góp và tính lãi ẩn trước khi chọn; đừng chọn theo tổng nominal."
+  - "Vay NH/công ty tài chính: yêu cầu bảng khấu hao nợ, quy lãi sang EAR, kiểm tra lãi flat (thường gặp ở trả góp tiêu dùng/mua xe/máy), cộng phí bảo hiểm/thẩm định; kiểm tra bằng Excel =RATE(36,-11.0833,300)*12."
+  - "Thuê vs mua mặt bằng: so PV tiền thuê với giá mua; thuê trả trước dùng annuity due."
+  - "Chiết khấu thanh toán sớm với nhà cung cấp: tính chi phí hàm ý (2/10 net 30 = 37,2%/năm) rồi so với lãi vay/lợi suất tiền nhàn rỗi."
+  - "Công cụ: Excel/Google Sheets (NPV, IRR, MIRR, PMT, RATE, EFFECT, NPER, IPMT, PPMT); máy tính tài chính (HP 12C, TI BA II Plus); Python numpy_financial; MISA/Fast để xuất dữ liệu doanh thu-chi phí thực tế cho dự báo dòng tiền. Phần mềm và giá cần xác nhận."
+  - "Luôn làm bảng độ nhạy 3x3 và kiểm chứng doanh thu năm 1 (khảo sát, thử nghiệm điểm bán nhỏ) trước khi mở chi nhánh; đặt lịch post-investment audit 6-12 tháng."
+  - "Thuế TNDN, khấu hao và tác động thuế lên dòng tiền chưa nằm trong nguồn này - cần xác nhận khi áp dụng (xem m02)."
+
+case_lessons:
+  - name: "Grab - mô hình NPV dài hạn và network effects"
+    type: "success"
+    setup: >
+      Grab (thành lập 2012, MyTeksi) đốt tiền khuyến mãi 2014-2018 để giành thị phần; IPO NASDAQ 12/2021 qua SPAC với vốn hóa khoảng 40 tỷ USD (số liệu công khai, cần đối chiếu nguồn). Bảng dòng tiền dưới đây là mô hình minh họa của tác giả, không phải số liệu nội bộ Grab. Con số huy động 2 tỷ USD năm 2017 và IRR kỳ vọng ~28% là ước tính từ bản cũ, chưa kiểm chứng.
+    key_calculations:
+      - "FCF (triệu USD) năm 0-10: -2000, -800, -800, -500, -200, 200, 500, 900, 1300, 1700, 2100; r=15%"
+      - "Tổng PV chưa có TV = -1.662,4 -> dự án bị loại nếu không có giá trị cuối kỳ"
+      - "PV(TV) = TV x 0,2472 (năm 10). TV=8.000 -> PV 1.977,5 -> NPV = +315,1; TV=12.000 -> NPV ~ +1.303,8"
+      - "TV hòa vốn = 1.662,4 / 0,2472 ~ 6.725 triệu USD"
+      - "IRR khi TV=8.000 ~ 16,1% (> 15% nên vừa đủ có lời)"
+      - "Độ nhạy r với TV=8.000: r=12% -> NPV +1.328,9; 15% -> +315,1; 18% -> -445,9"
+    lesson: >
+      Giá trị đến từ tương lai xa (PV TV > 100% NPV) nên NPV cực nhạy với r và TV; chấp nhận lỗ ban đầu chỉ khi có lợi thế mạng lưới
+      (network effects), vốn đủ dài để chịu lỗ và kịch bản thoát vốn. Quán cà phê đốt tiền khuyến mãi không có lợi thế mạng lưới chỉ là đốt tiền thật.
+    data_reliability: "illustrative"
+  - name: "WeWork - NPV sai vì đầu vào sai"
+    type: "failure"
+    setup: >
+      Thuê dài hạn 10-15 năm, cho thuê lại ngắn hạn; định giá đỉnh khoảng 47 tỷ USD (đầu 2019), hoãn IPO 9/2019, phá sản Chapter 11 11/2023. Số liệu theo thông tin công khai phổ biến, cần đối chiếu nguồn.
+    key_calculations:
+      - "Cam kết thuê 60 triệu USD/năm x 10 năm: PV ở r=6% = 441,6; ở r=12% = 339,0 -> chênh 102,6 (30% so với PV ở 12%) chỉ vì chọn r"
+      - "Lệch kỳ hạn: nghĩa vụ ra dài hạn cố định vs thu vào ngắn hạn biến mất khi suy thoái"
+    lesson: >
+      NPV chỉ tốt khi đầu vào đúng (GIGO): dự báo tăng trưởng 50%+ mãi, r 10-12% cho công ty lỗ nặng (đúng ~20%+), bỏ qua unit economics, không stress-test, dùng 'Community Adjusted EBITDA' tự chế.
+      Kiểm tra NPV trên đơn vị cơ sở (từng địa điểm) trước khi nhân bản; xem cấu trúc kỳ hạn dòng tiền; cảnh giác chỉ số điều chỉnh.
+    data_reliability: "unverified"
+  - name: "Cà Phê Nhà Vườn Tây Nguyên - mở chi nhánh, chọn mua máy rang và vay vốn"
+    type: "sme"
+    setup: >
+      DN rang xay + quán cà phê tại Buôn Ma Thuột; r yêu cầu 14% (vay ~11% + 3% rủi ro thị trường mới), lạm phát 4%.
+      Ba quyết định: (1) chi nhánh TP.HCM vốn 800tr; (2) chọn phương án thanh toán máy rang; (3) vay 300tr.
+    key_calculations:
+      - "CF: -800; 180; 230; 280; 300; 420 (320 hoạt động + 100 thanh lý). PV = 157,89 + 176,98 + 188,99 + 177,62 + 218,13 = 919,61 -> NPV = +119,62"
+      - "IRR = 19,27% (NPV 18% = +26,46; 20% = -14,78); MIRR (tái đầu tư 14%) = 17,22% với FV+ = 1.770,66"
+      - "Payback 3,37 năm; Discounted Payback 4,45 năm"
+      - "Độ nhạy NPV (CF 100/90/80% x r 12/14/16%): 172,3/119,6/71,1; 75,1/27,7/-16,0; -22,1/-64,3/-103,1"
+      - "r thực = 1,14/1,04 - 1 = 9,62%"
+      - "Máy rang ở 14%: A=540; B=150xAF(14%,5)=514,96; C=19xAF(1,0979%,36)=562,49. Lãi ẩn B=12,05% (< 14% nên trả góp), C: 1,338%/tháng, EAR 17,29% (> 14% nên tránh)"
+      - "Vay 300tr/36 tháng/11%: PMT=9,8216; tổng lãi=53,58; EAR=11,57%; lãi Năm 1/2/3 = 28,59/18,26/6,73; PV ở 14% của 36 khoản = 290,77 < 300 (vay rẻ hơn chi phí vốn ~9,23tr)"
+    lesson: >
+      Chi nhánh đáng làm có điều kiện vì NPV mỏng (CF thấp hơn 10% và r=16% thì lỗ nhẹ; ở 80% dự báo lỗ ở mọi r): kiểm chứng doanh thu năm 1 >= 90% dự báo.
+      Máy rang chọn B dù tổng nominal cao nhất (750). Khoản vay chấp nhận nếu vốn dùng sinh lời > 11,57%; ưu tiên trả sớm ở năm đầu.
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "NPV, IRR, Payback dự án quán cà phê (bản chiết khấu 12%)"
+    inputs: {cfs: [-500, 120, 150, 180, 200, 250], r: 0.12}
+    steps:
+      - "DF: 0.8929; 0.7972; 0.7118; 0.6355; 0.5674"
+      - "PV: 107.14 + 119.58 + 128.12 + 127.10 + 141.84 = 623.78 (chính xác 623.80)"
+      - "NPV = 623.80 - 500 = 123.80"
+      - "NPV tại 18% = 31.4; tại 22% = -19.0 -> IRR = 20.42%"
+      - "Biên an toàn = 20.42% - 12% = 8.42 điểm %"
+    result: "NPV = +123,80 triệu; IRR = 20,42% > 12% -> chấp nhận"
+  - name: "Dự án chi nhánh: NPV, IRR, MIRR, payback, độ nhạy (r = 14%)"
+    inputs: {cfs: [-800, 180, 230, 280, 300, 420], r: 0.14}
+    steps:
+      - "PV: 157.89, 176.98, 188.99, 177.62, 218.13 -> tổng 919.61"
+      - "NPV = 919.61 - 800 = 119.62"
+      - "IRR = 19.27%; MIRR = (1770.66/800)^(1/5) - 1 = 17.22%"
+      - "Payback = 3 + 110/300 = 3.37; DPB = 4 + 98.51/218.13 = 4.45"
+      - "Độ nhạy 90% CF, r=16%: NPV = -16.0"
+    result: "NPV +119,62; IRR 19,27%; MIRR 17,22%; payback 3,37; DPB 4,45; dự án mỏng biên an toàn"
+  - name: "So sánh 3 phương án thanh toán máy rang (r = 14% EAR)"
+    inputs: {A: "540 ngay", B: "150 x 5 năm", C: "19 x 36 tháng", r_ear: 0.14}
+    steps:
+      - "A = 540.00"
+      - "B = 150 * (1 - 1.14^-5)/0.14 = 150 * 3.4331 = 514.96"
+      - "r_month = 1.14^(1/12) - 1 = 1.0979%; C = 19 * (1 - 1.010979^-36)/0.010979 = 562.49"
+      - "Lãi ẩn B: RATE(5,-150,540) = 12.05%/năm; C: 1.338%/tháng -> EAR 17.29%"
+    result: "Chọn B (PV 514,96) vì lãi ẩn 12,05% < 14%; tránh C"
+  - name: "Khoản vay 300 triệu, 36 tháng, 11%/năm"
+    inputs: {L: 300, apr: 0.11, n: 36}
+    steps:
+      - "i = 0.11/12 = 0.9167%"
+      - "PMT = 300*i/(1 - (1+i)^-36) = 9.8216"
+      - "Tổng lãi = 9.8216*36 - 300 = 53.58"
+      - "EAR = (1 + 0.11/12)^12 - 1 = 11.57%"
+      - "Tháng 1: lãi 2.750, gốc 7.072, dư nợ 292.928"
+      - "Lãi theo năm: 28.59, 18.26, 6.73"
+      - "Flat 11% cùng khoản vay: PMT 11.0833; APR 19.57%; EAR 21.42%"
+    result: "PMT 9,8216 triệu/tháng; tổng lãi 53,58 triệu; EAR 11,57%; flat đắt gần gấp đôi"
+  - name: "Tiết kiệm định kỳ và quỹ tái đầu tư"
+    inputs: {PMT: 20, r_month: 0.005, n: 60, target: 800}
+    steps:
+      - "Hệ số = (1.005^60 - 1)/0.005 = 69.77"
+      - "FV = 20 * 69.77 = 1395.40; gốc 1200 -> lãi 195.40"
+      - "PMT cho mục tiêu 800 = 800/69.77 = 11.47"
+    result: "FV = 1.395,40 triệu; cần 11,47 triệu/tháng để đạt 800 triệu"
+  - name: "Định giá perpetuity, Gordon, annuity due và Fisher"
+    inputs: {PMT_year: 144, r: 0.12, CF1: 60, g: 0.04, r_g: 0.14, annuity_PMT: 150}
+    steps:
+      - "Perpetuity: 144/0.12 = 1200"
+      - "Gordon: 60/(0.14-0.04) = 600"
+      - "Annuity due 150 x 5 năm ở 10%: 568.62 * 1.10 = 625.48"
+      - "Fisher: 1.14/1.04 - 1 = 9.62%"
+    result: "1.200; 600; 625,48; 9,62%"
+  - name: "Mô hình Grab: tìm TV hòa vốn"
+    inputs: {fcf: [-2000, -800, -800, -500, -200, 200, 500, 900, 1300, 1700, 2100], r: 0.15}
+    steps:
+      - "Tổng PV (chưa có TV) = -1662.43"
+      - "DF năm 10 = 1/1.15^10 = 0.2472"
+      - "TV hòa vốn = 1662.43/0.2472 = 6725"
+      - "Với TV=8000: NPV = -1662.43 + 1977.48 = 315.05"
+    result: "TV hòa vốn ~6.725 triệu USD; TV=8.000 cho NPV +315,05"
+
+practice_questions:
+  - q: "Gửi 200tr lãi 9%/năm ghép hằng năm 8 năm. FV? Rule 72 so với chính xác?"
+    a: "FV = 398,51tr; Rule 72 = 8 năm; chính xác 8,04 năm."
+  - q: "Khách đề nghị (a) trả ngay 1.000tr hoặc (b) 1.400tr sau 4 năm; chi phí vốn 8%. Chọn?"
+    a: "PV(b) = 1.400/1,08^4 = 1.029,04 > 1.000 nên chọn (b), cân nhắc rủi ro khách không trả."
+  - q: "Mặt bằng thuê 12tr/tháng mãi mãi, lợi suất 12%/năm; nếu thuê tăng 4%/năm với r=14% (CF1=60) thì sao?"
+    a: "Perpetuity: 144/0,12 = 1.200tr; Gordon: 60/(0,14-0,04) = 600tr."
+  - q: "Dự án vốn 300tr, CF năm 1-4 lần lượt 100,120,140,160; r=12%. NPV, IRR, quyết định?"
+    a: "NPV = +86,28tr (nguồn ghi 23,54 sai: đó là PMT của bài 5); IRR = 23,96% > 12% -> chấp nhận."
+  - q: "Vay 500tr, lãi 12%/năm ghép tháng, 24 tháng. PMT và EAR?"
+    a: "PMT = 23,54tr/tháng; EAR = 12,68%."
+  - q: "Dự án A vốn 600tr, CF 200,250,300,350, r=10%: NPV, IRR; CF giảm 15% thì sao; trả góp 4 x 170tr thay vì trả ngay 540?"
+    a: "NPV = +252,88tr, IRR = 26,43%. Với 85% CF: NPV = +124,95tr (vẫn dương). PV 4x170 ở 10% = 538,88 ~ 540; lãi ẩn thực = 9,90% (nguồn ghi 10,1% là xấp xỉ sai) -> hai phương án gần như ngang nhau, chọn trả góp nếu chi phí cơ hội > 9,90%."
+  - q: "Lạm phát 7%/năm, bao lâu sức mua tiền mặt giảm nửa? Nợ lãi 18% bao lâu gấp đôi?"
+    a: "72/7 = 10,3 năm; 72/18 = 4 năm."
+  - q: "Chiết khấu 2/10 net 30: chi phí vốn khi bỏ qua chiết khấu?"
+    a: "2/98 x 365/20 = 37,2%/năm."
+  - q: "14% danh nghĩa, lạm phát 4%: lãi thực? Và CF thực + r danh nghĩa gây lỗi gì?"
+    a: "9,62%. NPV bị đánh giá thấp một cách hệ thống."
+  - q: "Bài thực hành: chọn quyết định thực tế (mua máy, mở điểm bán, vay vốn) và lập timeline, r theo mục IV.3, NPV/IRR/Payback, bảng 3x3, khuyến nghị 1 trang."
+    a: "Bài tự thực hành; dùng procedure m01_proc_project_npv."
+
+checklist:
+  - "Đã vẽ timeline (dấu + thời điểm đầu/cuối kỳ)?"
+  - "Dòng tiền là incremental, không tính sunk cost?"
+  - "Đã tính thay đổi vốn lưu động và giá trị thanh lý?"
+  - "Đơn vị thời gian của r và n nhất quán (tháng/năm)?"
+  - "Danh nghĩa/thực nhất quán giữa CF và r?"
+  - "r dựa trên WACC/CAPM hoặc lãi vay + phần bù rủi ro; đã thử ±2 điểm %?"
+  - "Đã tính NPV (chính), IRR/MIRR (biên an toàn), Payback và Discounted Payback?"
+  - "So phương án trả góp bằng PV + lãi ẩn, không so tổng nominal?"
+  - "Lãi vay đã quy EAR; xác định flat hay dư nợ giảm dần; đã tính phí phụ?"
+  - "Đã lập bảng khấu hao nợ cho khoản vay lớn?"
+  - "Đã làm bảng độ nhạy (CF x r) và kịch bản Best/Base/Worst?"
+  - "Đã kiểm tra NPV trên đơn vị cơ sở trước khi nhân bản?"
+  - "Đã kiểm chứng giả định dự báo độc lập?"
+  - "Đã cân nhắc giá trị chiến lược/quyền chọn mà NPV không đo?"
+  - "Đã ghi toàn bộ giả định và lên lịch post-investment audit 6-12 tháng?"
+
+excel_google_sheets_templates:
+  - name: "Hàm TVM Excel/Sheets"
+    description: |
+      FV =FV(rate,nper,pmt,[pv],[type]); PV =PV(...); NPV =NPV(rate,CF1:CFn)+CF0; IRR =IRR(CF0:CFn);
+      MIRR =MIRR(values,finance_rate,reinvest_rate); PMT =PMT(rate,nper,pv); RATE =RATE(nper,pmt,pv);
+      EAR =EFFECT(nominal,npery); NPER; IPMT/PPMT. Lưu ý dấu PV/PMT ngược nhau, NPV() không tính kỳ 0, đổi lãi năm sang tháng nhất quán.
+  - name: "Bảng tính NPV/IRR đơn giản"
+    description: |
+      Sheet Assumptions: B1 r=14%, B2 lạm phát=4%, B3 vốn=800.
+      Sheet Cashflow: A năm 0..5; B dòng tiền; C =1/(1+Assumptions!$B$1)^A2; D =B2*C2; E =SUM($B$2:B2); F =SUM($D$2:D2).
+      NPV =SUM(D2:D7); IRR =IRR(B2:B7); Payback = năm cuối lũy kế âm + |lũy kế âm|/CF năm kế.
+  - name: "Sheet Sensitivity"
+    description: "Data Table 2 chiều: hàng r (10%..20%), cột %CF (70%..110%) cho NPV."
+
+source_file: "01-time-value-of-money.md"

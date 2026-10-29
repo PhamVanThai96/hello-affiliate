@@ -1,0 +1,2150 @@
+id: finance-m05
+title: "Tài chính m05: Phân tích báo cáo tài chính"
+summary: "Đọc hiểu 3 báo cáo tài chính (Balance Sheet, Income Statement, Cash Flow Statement), tính và diễn giải các nhóm tỷ số (sinh lời, thanh khoản, đòn bẩy, hiệu quả hoạt động), phân rã ROE bằng DuPont, phát hiện red flag và chất lượng lợi nhuận, để trả lời: doanh nghiệp kiếm tiền thế…"
+agents: ["financial_expert"]
+order: 25
+when: ["phan tich bao cao tai chinh", "ty so", "ratio", "thanh khoan", "current ratio", "quick ratio", "roe", "roa", "dupont", "bien loi nhuan", "doanh thu giam", "suc khoe tai chinh", "common-size", "horizontal", "vertical", "z-score", "financial statement analysis"]
+body_max: 3387
+sections:
+  - id: "m05-tong-quan"
+    title: "Tổng quan m05"
+    tags: ["m05", "phân", "tích", "báo", "cáo", "tài", "chính", "financial", "statement", "analysis"]
+    text: |-
+      Phân tích báo cáo tài chính (Financial Statement Analysis) — module m05
+
+      Mục đích: Đọc hiểu 3 báo cáo tài chính (Balance Sheet, Income Statement, Cash Flow Statement), tính và diễn giải các nhóm tỷ số (sinh lời, thanh khoản, đòn bẩy, hiệu quả hoạt động), phân rã ROE bằng DuPont, phát hiện red flag và chất lượng lợi nhuận, để trả lời: doanh nghiệp kiếm tiền thế nào, có đủ tiền sống sót và trả nợ không, dùng vốn hiệu quả và tăng trưởng bền vững không.
+
+      Dùng khi:
+      - Chủ SME hỏi 'quán/công ty tôi có khỏe về tài chính không?', 'có lãi mà sao hết tiền?'
+      - Cần tính/diễn giải tỷ số (margin, ROE, ROA, ROIC, Current/Quick/Cash Ratio, D/E, Interest Coverage, DIO/DSO/DPO/CCC).
+      - Cần phân rã ROE (DuPont 3 hoặc 5 thành phần) để biết ROE đến từ biên lợi nhuận, vòng quay tài sản hay đòn bẩy.
+      - Rà soát BCTC của đối tác, đối thủ, mục tiêu M&A hoặc hồ sơ vay/gọi vốn: red flags, quality of earnings, off-balance sheet.
+      - Lập khung theo dõi tài chính hàng tháng/quý trên Excel/Google Sheets cho SME.
+      - So sánh qua thời gian (trend), cơ cấu (common-size) hoặc với ngành (cross-sectional).
+
+      Module liên quan: - 'm06 - Quản trị vốn lưu động: DIO/DSO/DPO/CCC chi tiết, tối ưu công nợ và tồn kho' - 'm04 - Cấu trúc vốn: D/E, Interest Coverage, đòn bẩy tài chính và ROE' - 'm03 - Chi phí vốn: so ROIC với WACC để xét tạo giá trị' - 'm10 - Định giá doanh nghiệp: dữ liệu BCTC (EBIT, NOPAT, FCF) là đầu vào của DCF/multiples' - 'm02 - Thẩm định dự án: dùng BCTC/dòng tiền lịch sử để dự phóng' - 'm09 - M&A: due dil…
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m05_balance_identity: Phương trình kế toán
+      - m05_retained_earnings: Lợi nhuận giữ lại cuối kỳ
+      - m05_ocf_indirect: Dòng tiền kinh doanh (phương pháp gián tiếp)
+      - m05_net_cash_change: Thay đổi tiền ròng và tiền cuối kỳ
+      - m05_eps: Lợi nhuận trên mỗi cổ phiếu
+      - m05_gross_margin: Biên lợi nhuận gộp
+      - m05_operating_margin: Biên lợi nhuận hoạt động
+      - m05_net_margin: Biên lợi nhuận ròng
+      - m05_roe: Tỷ suất sinh lời trên vốn chủ
+      - m05_roa: Tỷ suất sinh lời trên tổng tài sản
+      - m05_roic: Tỷ suất sinh lời trên vốn đầu tư
+      - m05_current_ratio: Tỷ số thanh toán hiện hành
+      - m05_quick_ratio: Tỷ số thanh toán nhanh
+      - m05_cash_ratio: Tỷ số tiền mặt
+      - m05_ocf_ratio: Tỷ số dòng tiền kinh doanh trên nợ ngắn hạn
+      - m05_debt_to_equity: Tỷ số nợ trên vốn chủ
+      - m05_debt_to_assets: Tỷ số nợ trên tổng tài sản
+      - m05_interest_coverage: Khả năng thanh toán lãi vay
+      - m05_debt_to_ebitda: Nợ trên EBITDA
+      - m05_inventory_turnover: Vòng quay hàng tồn kho
+      - m05_dio: Số ngày tồn kho
+      - m05_ar_turnover: Vòng quay phải thu
+      - m05_dso: Số ngày thu tiền bình quân
+      - m05_ap_turnover: Vòng quay phải trả
+      - m05_dpo: Số ngày trả nhà cung cấp
+      - m05_ccc: Chu kỳ chuyển đổi tiền mặt
+      - m05_asset_turnover: Vòng quay tổng tài sản
+      - m05_equity_multiplier: Hệ số nhân vốn chủ
+      - m05_dupont3: DuPont 3 thành phần
+      - m05_dupont5: DuPont 5 thành phần
+      - m05_growth_rate: Tốc độ tăng trưởng giữa các kỳ
+      - m05_common_size: Phân tích cơ cấu (Common-size)
+      - m05_ocf_to_ni: Tỷ lệ OCF trên lợi nhuận ròng
+
+      Kho tra cứu của module: Khái niệm 19, Công thức 33, Quy trình 6, Quy tắc quyết định 19, Chuẩn so sánh 20, Lỗi thường gặp 13, Lưu ý SME Việt Nam 9, Bài học case 6, Ví dụ có lời giải 7, Câu hỏi luyện tập 10, Checklist 11, Mẫu Excel/Sheets 6. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ NPV", "lỗi thường gặp WACC").
+  - id: "m05-concepts-1"
+    title: "Khái niệm: Phân tích báo cáo tài chính"
+    tags: ["khái", "niệm", "phân", "tích", "báo", "cáo", "tài", "chính"]
+    text: |-
+      term_vi: Phân tích báo cáo tài chính
+      term_en: Financial Statement Analysis
+      definition: 'Dùng BCTC đã lập để trả lời 3 câu hỏi: kiếm tiền thế nào (profitability), đủ tiền sống và trả nợ không (liquidity và solvency), dùng vốn hiệu quả và tăng trưởng bền vững không (efficiency và growth quality).'
+      why_it_matters: 'Buffett: ''kế toán là ngôn ngữ của kinh doanh''. Không đọc được BCTC thì đàm phán, vay, đầu tư mà không hiểu con số mình chấp nhận.'
+  - id: "m05-concepts-2"
+    title: "Khái niệm: Lợi nhuận khác tiền mặt"
+    tags: ["khái", "niệm", "lợi", "nhuận", "khác", "tiền", "mặt"]
+    text: |-
+      term_vi: Lợi nhuận khác tiền mặt
+      term_en: Profit is not Cash
+      definition: 'Income Statement theo nguyên tắc dồn tích (accrual): ghi doanh thu khi giao hàng, không phải khi thu tiền. Một DN có lãi vẫn có thể âm tiền mặt và phá sản (insolvency, ''growing broke'').'
+      why_it_matters: 'Là lý do phải đọc cả 3 báo cáo. Ví dụ Nội Thất Gỗ Việt: bán chịu 500tr, COGS 350, opex 80 thì NI +70 nhưng tiền ròng -430 (chưa thu 90 ngày); nếu tiền đầu kỳ 200 thì tiền cuối kỳ -230 (không đủ trả lương/nợ).'
+  - id: "m05-concepts-3"
+    title: "Khái niệm: Bảng cân đối kế toán"
+    tags: ["khái", "niệm", "bảng", "cân", "đối", "kế", "toán"]
+    text: |-
+      term_vi: Bảng cân đối kế toán
+      term_en: Balance Sheet
+      definition: 'Ảnh chụp (snapshot) tại một thời điểm: Assets = Liabilities + Equity. Chia Current/Non-current theo mốc 12 tháng.'
+      why_it_matters: 'Phương trình luôn đúng vì mọi tài sản đều có nguồn gốc: vay (nợ) hoặc chủ sở hữu (vốn góp, lợi nhuận giữ lại) - nguyên tắc kế toán kép. Ranh giới 12 tháng là nền tảng của nhóm tỷ số thanh khoản.'
+  - id: "m05-concepts-4"
+    title: "Khái niệm: Báo cáo kết quả kinh doanh"
+    tags: ["khái", "niệm", "báo", "cáo", "kết", "quả", "kinh", "doanh"]
+    text: |-
+      term_vi: Báo cáo kết quả kinh doanh
+      term_en: Income Statement
+      definition: 'Dòng chảy (flow) theo kỳ, dồn tích: Revenue - COGS = Gross Profit; - SG&A, R&D, D&A = EBIT; - Interest +/- Other = EBT; - Tax = Net Income. EPS = NI / số cổ phiếu lưu hành.'
+      why_it_matters: 'Tách nhiều tầng lợi nhuận để chẩn đoán đúng bệnh: Gross = sản phẩm có lời không; EBIT = hoạt động cốt lõi, so sánh công bằng giữa DN vay nợ khác nhau (chưa trừ lãi); Net = cổ đông thực nhận.'
+  - id: "m05-concepts-5"
+    title: "Khái niệm: Báo cáo lưu chuyển tiền tệ"
+    tags: ["khái", "niệm", "báo", "cáo", "lưu", "chuyển", "tiền", "tệ"]
+    text: |-
+      term_vi: Báo cáo lưu chuyển tiền tệ
+      term_en: Cash Flow Statement
+      definition: 'Dòng tiền thật theo 3 nhóm: Operating (OCF), Investing, Financing; tổng = thay đổi tiền (ΔCash). Phương pháp gián tiếp (indirect) bắt đầu từ Net Income rồi điều chỉnh.'
+      why_it_matters: 'Cho thấy khoảng cách lợi nhuận kế toán và tiền thật. Điều chỉnh: cộng khấu hao (non-cash); tăng AR hoặc Inventory thì trừ (tiền kẹt); tăng AP hoặc chi phí phải trả thì cộng (chiếm dụng tạm). DN khỏe lý tưởng: OCF dương mạnh, Investing âm (đang đầu tư), Financing linh hoạt theo giai đoạn.'
+  - id: "m05-concepts-6"
+    title: "Khái niệm: Liên kết 3 báo cáo"
+    tags: ["khái", "niệm", "liên", "kết", "báo", "cáo"]
+    text: |-
+      term_vi: Liên kết 3 báo cáo
+      term_en: Articulation of statements
+      definition: '(1) Net Income chảy vào Retained Earnings: RE cuối = RE đầu + NI - cổ tức/rút vốn. (2) NI là dòng đầu của OCF. (3) Cash cuối kỳ trên CFS phải khớp tuyệt đối Cash trên Balance Sheet.'
+      why_it_matters: 'Là phép thử tính nhất quán nhanh nhất: không khớp là có sai sót hoặc gian lận. Báo cáo bổ sung: Statement of Changes in Equity và Notes (thuyết minh) - nơi ''sự thật'' thường ẩn.'
+  - id: "m05-concepts-7"
+    title: "Khái niệm: Đối tượng sử dụng và mục đích phân tích"
+    tags: ["khái", "niệm", "đối", "tượng", "sử", "dụng", "và", "mục", "đích", "phân", "tích"]
+    text: |-
+      term_vi: Đối tượng sử dụng và mục đích phân tích
+      term_en: Stakeholders of analysis
+      definition: Nhà đầu tư (profitability, growth, valuation), chủ nợ/ngân hàng (leverage, liquidity, interest coverage), quản lý (efficiency, margin trend, chi phí bất thường), đối thủ (competitive intelligence), nhà cung cấp (khả năng trả đúng hạn), cơ quan thuế (doanh thu, chi phí hợp lệ), nhân viên (độ ổn định).
+      why_it_matters: Cùng BCTC nhưng mỗi bên đặt câu hỏi khác; chọn nhóm tỷ số theo người đọc. Ngân hàng VN thường yêu cầu BCTC 2-3 năm gần nhất cộng dòng tiền dự kiến.
+  - id: "m05-concepts-8"
+    title: "Khái niệm: Tỷ số tài chính"
+    tags: ["khái", "niệm", "tỷ", "số", "tài", "chính"]
+    text: |-
+      term_vi: Tỷ số tài chính
+      term_en: Ratio Analysis
+      definition: Chia số tuyệt đối cho một mẫu số phù hợp để so sánh giữa kỳ, giữa quy mô, giữa ngành.
+      why_it_matters: '''Lợi nhuận 2 tỷ'' vô nghĩa nếu không biết quy mô; tỷ số đo hiệu suất trên mỗi đồng đầu vào (như km trên mỗi lít xăng).'
+  - id: "m05-concepts-9"
+    title: "Khái niệm: ROE, ROA, ROIC"
+    tags: ["khái", "niệm", "roe", "roa", "roic"]
+    text: |-
+      term_vi: ROE, ROA, ROIC
+      term_en: Return ratios
+      definition: ROA đo hiệu quả toàn bộ tài sản bất kể nguồn vốn; ROE đo lợi nhuận trên vốn chủ; ROIC đo lợi nhuận hoạt động sau thuế (NOPAT) trên vốn đầu tư hoạt động (loại tiền thừa, nợ phi hoạt động).
+      why_it_matters: ROE >= ROA khi vay có lãi suất thấp hơn ROA (đòn bẩy có lợi). ROIC là thước nghiêm khắc nhất, so thẳng với WACC để biết có tạo giá trị thực (ROIC > WACC).
+  - id: "m05-concepts-10"
+    title: "Khái niệm: Thanh khoản"
+    tags: ["khái", "niệm", "thanh", "khoản"]
+    text: |-
+      term_vi: Thanh khoản
+      term_en: Liquidity
+      definition: Khả năng trả nợ đến hạn trong 12 tháng bằng tài sản chuyển thành tiền nhanh.
+      why_it_matters: 'Dùng tỷ lệ (CA/CL) thay vì hiệu số (CA-CL) vì phản ánh biên an toàn tương đối: dư 100tr trên CL 1000tr (10%) mong manh, trên CL 100tr (100%) an toàn. Quick Ratio (acid test) loại Inventory vì tồn kho là tài sản chậm hóa tiền nhất (phải bán được, thành AR, rồi mới thành tiền) - tránh ''ảo tưởng thanh khoản''.'
+  - id: "m05-concepts-11"
+    title: "Khái niệm: Đòn bẩy và khả năng trả lãi"
+    tags: ["khái", "niệm", "đòn", "bẩy", "và", "khả", "năng", "trả", "lãi"]
+    text: |-
+      term_vi: Đòn bẩy và khả năng trả lãi
+      term_en: Leverage and solvency
+      definition: D/E và Debt/Assets đo rủi ro cấu trúc (mức phụ thuộc nợ); Interest Coverage và Debt/EBITDA đo rủi ro dòng tiền trả nợ hiện tại.
+      why_it_matters: 'Nợ tạo 2 loại rủi ro khác nhau nên cần cả hai: DN có D/E thấp vẫn có thể mất khả năng trả lãi nếu EBIT sụt mạnh.'
+  - id: "m05-concepts-12"
+    title: "Khái niệm: Chu kỳ chuyển đổi tiền mặt"
+    tags: ["khái", "niệm", "chu", "kỳ", "chuyển", "đổi", "tiền", "mặt"]
+    text: |-
+      term_vi: Chu kỳ chuyển đổi tiền mặt
+      term_en: Cash Conversion Cycle (CCC)
+      definition: 'CCC = DSO + DIO - DPO: số ngày DN phải tự ứng vốn từ lúc chi tiền mua hàng đến lúc thu lại tiền bán hàng.'
+      why_it_matters: 'Mô tả hành trình 1 đồng vốn lưu động: bị đóng băng trong kho (DIO), rồi trong công nợ phải thu (DSO), được giảm bớt nhờ trì hoãn trả nhà cung cấp (DPO, vốn miễn phí nên TRỪ). CCC ngắn hoặc âm (bán lẻ, F&B thu tiền ngay) nghĩa là cần ít vốn lưu động tự có. Dùng ''số ngày'' thay ''số vòng quay'' vì trực quan hơn cho vận hành.'
+  - id: "m05-concepts-13"
+    title: "Khái niệm: Phân rã DuPont"
+    tags: ["khái", "niệm", "phân", "rã", "dupont"]
+    text: |-
+      term_vi: Phân rã DuPont
+      term_en: DuPont Analysis
+      definition: 'ROE = Net Margin x Asset Turnover x Equity Multiplier (3 thành phần); mở rộng 5 thành phần: Tax Burden x Interest Burden x Operating Margin x Asset Turnover x Equity Multiplier.'
+      why_it_matters: 'Phát triển 1920 bởi Donald Brown (kỹ sư DuPont Corporation) để so sánh công bằng hiệu quả giữa các mảng kinh doanh khác quy mô, đặc thù của tập đoàn - không phải cho nhà đầu tư ngoài. ROE tổng như ''triệu chứng sốt'', 3 thành phần là ''chẩn đoán nguyên nhân''. Cùng ROE nhưng chất lượng khác nhau: Equity Multiplier là thành phần dễ ''làm đẹp'' nhất vì tăng đòn bẩy luôn làm ROE tăng về toán học.'
+  - id: "m05-concepts-14"
+    title: "Khái niệm: Ba mô hình ROE điển hình"
+    tags: ["khái", "niệm", "ba", "mô", "hình", "roe", "điển"]
+    text: |-
+      term_vi: Ba mô hình ROE điển hình
+      term_en: DuPont business archetypes
+      definition: 'Luxury (margin 20% x turnover 0.5 x EM 1.5 = 15%): sức mạnh định giá. Retail kiểu Walmart (3% x 2.5 x 2.5 = 18.75%): quay vòng nhanh. Ngân hàng (25% x 0.08 x 10 = 20%): đòn bẩy cực lớn.'
+      why_it_matters: 'ROE tương đương nhưng chất lượng và rủi ro khác nhau: ROE luxury bền vững hơn; ROE ngân hàng phụ thuộc đòn bẩy 10 lần nên Equity có thể bị ''thổi bay'' khi tài sản mất giá nhẹ (khủng hoảng 2008).'
+  - id: "m05-concepts-15"
+    title: "Khái niệm: Phương pháp so sánh"
+    tags: ["khái", "niệm", "phương", "pháp", "so", "sánh"]
+    text: |-
+      term_vi: Phương pháp so sánh
+      term_en: Trend / Common-size / Cross-sectional
+      definition: 'Trend: cùng chỉ số của cùng DN qua 3-5 năm. Common-size: IS chia Revenue, BS chia Total Assets. Cross-sectional: so với đối thủ/trung bình ngành.'
+      why_it_matters: Bắt đầu bằng Trend nội bộ (dễ nhất, không cần dữ liệu đối thủ); Common-size hữu ích khi DN tăng trưởng nhanh; Cross-sectional cần cùng ngành (so Current Ratio ngân hàng với quán cà phê là vô nghĩa).
+  - id: "m05-concepts-16"
+    title: "Khái niệm: Chất lượng lợi nhuận"
+    tags: ["khái", "niệm", "chất", "lượng", "lợi", "nhuận"]
+    text: |-
+      term_vi: Chất lượng lợi nhuận
+      term_en: Quality of Earnings
+      definition: 'Mức độ lợi nhuận kế toán được hậu thuẫn bởi tiền thật và bền vững: OCF > NI liên tục, doanh thu tăng đi kèm thu tiền, ít khoản một lần, chính sách kế toán nhất quán, khấu hao hợp lý, working capital lành mạnh, kiểm toán sạch.'
+      why_it_matters: OCF thấp hơn NI nhiều năm là dấu hiệu thao túng accrual hoặc doanh thu ảo (bài học Enron).
+  - id: "m05-concepts-17"
+    title: "Khái niệm: Red flags"
+    tags: ["khái", "niệm", "red", "flags"]
+    text: |-
+      term_vi: Red flags
+      term_en: Red flags
+      definition: Revenue tăng nhưng OCF giảm; AR tăng nhanh hơn Revenue; Inventory tăng bất thường; chi phí 'một lần' lặp lại; Gross margin giảm dần; OCF < NI kéo dài; D/E tăng nhanh; đổi chính sách kế toán; giao dịch bên liên quan; off-balance sheet; nhân sự cấp cao nghỉ bất thường; BCTC phức tạp cố ý.
+      why_it_matters: Là tín hiệu để đào sâu (không phải kết luận gian lận); mỗi dấu hiệu gắn một hướng kiểm tra cụ thể.
+  - id: "m05-concepts-18"
+    title: "Khái niệm: VAS và IFRS"
+    tags: ["khái", "niệm", "vas", "và", "ifrs"]
+    text: |-
+      term_vi: VAS và IFRS
+      term_en: VAS vs IFRS
+      definition: 'VAS đơn giản hơn: fair value hạn chế, lease ít chặt chẽ, doanh thu ít chi tiết, công cụ tài chính đơn giản, thuyết minh ít. IFRS: fair value rộng, IFRS 16 (hầu hết thuê lên Balance Sheet), IFRS 15 (doanh thu 5 bước), IFRS 9 (công cụ tài chính), thuyết minh sâu.'
+      why_it_matters: SME gọi vốn quỹ nước ngoài thường bị yêu cầu quy đổi gần IFRS; hiểu khác biệt tránh so sánh khập khiễng số liệu VAS với công ty quốc tế (ví dụ nợ thuê tài chính làm D/E IFRS cao hơn).
+  - id: "m05-concepts-19"
+    title: "Khái niệm: Đòn bẩy từ chiếm dụng vốn nhà cung cấp"
+    tags: ["khái", "niệm", "đòn", "bẩy", "từ", "chiếm", "dụng", "vốn", "nhà", "cung", "cấp"]
+    text: |-
+      term_vi: Đòn bẩy từ chiếm dụng vốn nhà cung cấp
+      term_en: Supplier financing as free leverage
+      definition: AP tăng cao (DPO dài) làm Total Assets tăng mà không tốn lãi, nâng Equity Multiplier và ROE.
+      why_it_matters: 'Giải thích vì sao bán lẻ margin 1.3-1.5% vẫn ROE cao: turnover cao cộng đòn bẩy từ nhà cung cấp, không phải margin dày.'
+  - id: "m05-formulas-1"
+    title: "Công thức: m05_balance_identity — Phương trình kế toán"
+    tags: ["công", "thức", "m05_balance_identity", "phương", "trình", "kế", "toán"]
+    text: |-
+      id: m05_balance_identity
+      name_vi: Phương trình kế toán
+      name_en: Accounting equation
+      expression_latex: \text{Assets} = \text{Liabilities} + \text{Equity}
+      expression_python: assets - (liabilities + equity)
+      excel: =Assets-(Liabilities+Equity)
+      variables:
+      - symbol: assets
+        meaning: Tổng tài sản
+        unit: triệu VNĐ
+      - symbol: liabilities
+        meaning: Tổng nợ phải trả
+        unit: triệu VNĐ
+      - symbol: equity
+        meaning: Vốn chủ sở hữu
+        unit: triệu VNĐ
+      when_to_use: Kiểm tra Balance Sheet có cân (chênh lệch phải = 0) trước mọi phân tích; dùng khi tự dựng case.
+      why_it_works: Mỗi đồng tài sản được tài trợ bởi nợ hoặc vốn chủ (kế toán kép).
+      assumptions:
+      - Số liệu cùng một thời điểm, cùng đơn vị
+      pitfalls:
+      - Cân không có nghĩa số đúng (có thể sai cả hai vế); vẫn phải đối chiếu Cash với CFS
+      interpretation: Kết quả 0 là cân. Khác 0 là lỗi nhập hoặc thiếu khoản mục.
+      example:
+        inputs:
+          assets: 900
+          liabilities: 430
+          equity: 470
+        steps:
+        - 900 - (430 + 470) = 0
+        result: 0 (cân đối, Làn Gió Mới cuối kỳ)
+  - id: "m05-formulas-2"
+    title: "Công thức: m05_retained_earnings — Lợi nhuận giữ lại cuối kỳ"
+    tags: ["công", "thức", "m05_retained_earnings", "lợi", "nhuận", "giữ", "lại", "cuối", "kỳ"]
+    text: |-
+      id: m05_retained_earnings
+      name_vi: Lợi nhuận giữ lại cuối kỳ
+      name_en: Retained earnings roll-forward
+      expression_latex: RE_{end} = RE_{begin} + NI - \text{Dividends/Rút vốn}
+      expression_python: re_begin + ni - dividends
+      excel: =RE_dau + NI - CoTuc
+      variables:
+      - symbol: re_begin
+        meaning: Lợi nhuận giữ lại đầu kỳ
+        unit: triệu VNĐ
+      - symbol: ni
+        meaning: Lợi nhuận ròng kỳ
+        unit: triệu VNĐ
+      - symbol: dividends
+        meaning: Cổ tức hoặc lợi nhuận chủ rút
+        unit: triệu VNĐ
+      when_to_use: Nối Income Statement với Balance Sheet; suy ra khoản chủ rút khi biết RE hai kỳ.
+      why_it_works: Lợi nhuận chưa chia ở lại DN làm tăng Equity.
+      assumptions:
+      - Không có điều chỉnh kỳ trước hay khoản trực tiếp vào equity khác
+      pitfalls:
+      - Chủ rút tiền không ghi sổ làm RE sai
+      interpretation: RE âm là lỗ lũy kế; cuối kỳ tăng nghĩa là DN giữ lại lợi nhuận.
+      example:
+        inputs:
+          re_begin: -112
+          ni: 208
+          dividends: 126
+        steps:
+        - -112 + 208 - 126 = -30
+        result: -30 (khớp Balance Sheet Làn Gió Mới)
+  - id: "m05-formulas-3"
+    title: "Công thức: m05_ocf_indirect — Dòng tiền kinh doanh (phương pháp gián tiếp)"
+    tags: ["công", "thức", "m05_ocf_indirect", "dòng", "tiền", "kinh", "doanh", "phương", "pháp", "gián", "tiếp"]
+    text: |-
+      id: m05_ocf_indirect
+      name_vi: Dòng tiền kinh doanh (phương pháp gián tiếp)
+      name_en: Operating Cash Flow (indirect)
+      expression_latex: OCF = NI + D\&A - \Delta AR - \Delta Inv - \Delta Prepaid + \Delta AP + \Delta Accrued
+      expression_python: ni + dep - d_ar - d_inv - d_prepaid + d_ap + d_accrued
+      excel: =NI+KhauHao-(AR_cuoi-AR_dau)-(Inv_cuoi-Inv_dau)-(Prepaid_cuoi-Prepaid_dau)+(AP_cuoi-AP_dau)+(Accrued_cuoi-Accrued_dau)
+      variables:
+      - symbol: ni
+        meaning: Lợi nhuận ròng
+        unit: triệu VNĐ
+      - symbol: dep
+        meaning: Khấu hao và phân bổ (non-cash)
+        unit: triệu VNĐ
+      - symbol: d_ar
+        meaning: Thay đổi phải thu (cuối - đầu)
+        unit: triệu VNĐ
+      - symbol: d_inv
+        meaning: Thay đổi tồn kho
+        unit: triệu VNĐ
+      - symbol: d_prepaid
+        meaning: Thay đổi chi phí trả trước
+        unit: triệu VNĐ
+      - symbol: d_ap
+        meaning: Thay đổi phải trả nhà cung cấp
+        unit: triệu VNĐ
+      - symbol: d_accrued
+        meaning: Thay đổi chi phí phải trả
+        unit: triệu VNĐ
+      when_to_use: Dựng hoặc kiểm tra CFS từ IS và hai Balance Sheet; giải thích vì sao lãi mà tiền giảm.
+      why_it_works: 'Chuyển lợi nhuận dồn tích về tiền thật: tài sản vận hành tăng thì tiền bị kẹt (trừ), nợ vận hành tăng thì tạm giữ tiền (cộng), khấu hao không chi tiền (cộng).'
+      assumptions:
+      - Mọi khoản vận hành đều thể hiện qua working capital; không có lãi/lỗ bán tài sản
+      pitfalls:
+      - 'Nhầm dấu: tăng tài sản thì TRỪ, tăng nợ thì CỘNG'
+      - Quên khoản trả trước/phải trả
+      interpretation: OCF > NI là lành mạnh; OCF < NI kéo dài là cảnh báo chất lượng lợi nhuận.
+      example:
+        inputs:
+          ni: 208
+          dep: 100
+          d_ar: 10
+          d_inv: 15
+          d_prepaid: 2
+          d_ap: 20
+          d_accrued: 5
+        steps:
+        - 208 + 100 - 10 - 15 - 2 + 20 + 5 = 306
+        result: OCF = 306 triệu (Làn Gió Mới, lớn hơn NI 208)
+  - id: "m05-formulas-4"
+    title: "Công thức: m05_net_cash_change — Thay đổi tiền ròng và tiền cuối kỳ"
+    tags: ["công", "thức", "m05_net_cash_change", "thay", "đổi", "tiền", "ròng", "và", "cuối", "kỳ"]
+    text: |-
+      id: m05_net_cash_change
+      name_vi: Thay đổi tiền ròng và tiền cuối kỳ
+      name_en: Net change in cash
+      expression_latex: \Delta Cash = OCF + ICF + FCF_{fin}; \quad Cash_{end} = Cash_{begin} + \Delta Cash
+      expression_python: cash_begin + ocf + icf + fin_cf
+      excel: =Tien_dau+OCF+ICF+FinCF
+      variables:
+      - symbol: cash_begin
+        meaning: Tiền đầu kỳ
+        unit: triệu VNĐ
+      - symbol: ocf
+        meaning: Dòng tiền kinh doanh
+        unit: triệu VNĐ
+      - symbol: icf
+        meaning: Dòng tiền đầu tư (thường âm)
+        unit: triệu VNĐ
+      - symbol: fin_cf
+        meaning: Dòng tiền tài chính (vay, trả nợ, cổ tức, buyback)
+        unit: triệu VNĐ
+      when_to_use: Đối chiếu tiền cuối kỳ CFS với Cash trên Balance Sheet; dự báo thanh khoản.
+      why_it_works: Tiền chỉ thay đổi qua ba loại hoạt động.
+      assumptions:
+      - Không có chênh lệch tỷ giá hoặc tương đương tiền chưa phân loại
+      pitfalls:
+      - Quên phân loại trả nợ gốc và cổ tức vào Financing (không phải chi phí)
+      - Phân loại sai OCF sang Financing để che giấu (Enron)
+      interpretation: Phải bằng Cash cuối kỳ trên Balance Sheet; lệch là lỗi hoặc gian lận.
+      example:
+        inputs:
+          cash_begin: 90
+          ocf: 306
+          icf: -40
+          fin_cf: -206
+        steps:
+        - 90 + 306 - 40 - 206 = 150
+        result: Cash cuối kỳ = 150 (khớp Balance Sheet; ΔCash = +60)
+  - id: "m05-formulas-5"
+    title: "Công thức: m05_eps — Lợi nhuận trên mỗi cổ phiếu"
+    tags: ["công", "thức", "m05_eps", "lợi", "nhuận", "trên", "mỗi", "cổ", "phiếu"]
+    text: |-
+      id: m05_eps
+      name_vi: Lợi nhuận trên mỗi cổ phiếu
+      name_en: Earnings per Share (EPS)
+      expression_latex: EPS = \frac{NI}{\text{Shares Outstanding}}
+      expression_python: ni / shares
+      excel: =NI/SoCoPhieu
+      variables:
+      - symbol: ni
+        meaning: Lợi nhuận ròng
+        unit: triệu VNĐ
+      - symbol: shares
+        meaning: Số cổ phiếu lưu hành
+        unit: triệu cổ phiếu
+      when_to_use: Công ty cổ phần, so lợi nhuận trên mỗi cổ phần; đầu vào của P/E (m10).
+      why_it_works: Quy lợi nhuận về một đơn vị sở hữu.
+      assumptions:
+      - Dùng số cổ phiếu bình quân gia quyền nếu thay đổi trong kỳ
+      pitfalls:
+      - Buyback làm EPS tăng mà không cải thiện kinh doanh
+      interpretation: So qua các kỳ và với giá cổ phiếu (P/E).
+      example:
+        inputs:
+          ni: 84
+          shares: 10
+        steps:
+        - 84 / 10 = 8.4
+        result: EPS = 8.4 triệu VNĐ/cổ phiếu (số liệu IS mẫu của nguồn, giả định 10 triệu cp)
+  - id: "m05-formulas-6"
+    title: "Công thức: m05_gross_margin — Biên lợi nhuận gộp"
+    tags: ["công", "thức", "m05_gross_margin", "biên", "lợi", "nhuận", "gộp"]
+    text: |-
+      id: m05_gross_margin
+      name_vi: Biên lợi nhuận gộp
+      name_en: Gross Margin
+      expression_latex: \text{Gross Margin} = \frac{\text{Gross Profit}}{\text{Revenue}}
+      expression_python: gross_profit / revenue
+      excel: =LoiNhuanGop/DoanhThu
+      variables:
+      - symbol: gross_profit
+        meaning: Lợi nhuận gộp = Revenue - COGS
+        unit: triệu VNĐ
+      - symbol: revenue
+        meaning: Doanh thu thuần
+        unit: triệu VNĐ
+      when_to_use: Đánh giá sức mạnh định giá và kiểm soát giá vốn, trước chi phí vận hành.
+      why_it_works: Chia cho doanh thu để đo hiệu suất trên mỗi đồng bán ra, so được giữa quy mô khác nhau.
+      assumptions:
+      - Cùng cách phân loại COGS giữa các kỳ/DN
+      pitfalls:
+      - F&B hay đưa nhân công bếp/thuê vào COGS hay opex khác nhau, so ngành phải cùng định nghĩa
+      interpretation: Benchmark chung >30% tốt; quán cà phê specialty 65-75%. Giảm dần là mất pricing power hoặc giá đầu vào tăng.
+      example:
+        inputs:
+          gross_profit: 1680
+          revenue: 2400
+        steps:
+        - 1680 / 2400 = 0.70
+        result: 70%
+  - id: "m05-formulas-7"
+    title: "Công thức: m05_operating_margin — Biên lợi nhuận hoạt động"
+    tags: ["công", "thức", "m05_operating_margin", "biên", "lợi", "nhuận", "hoạt", "động"]
+    text: |-
+      id: m05_operating_margin
+      name_vi: Biên lợi nhuận hoạt động
+      name_en: Operating Margin
+      expression_latex: \text{Operating Margin} = \frac{EBIT}{Revenue}
+      expression_python: ebit / revenue
+      excel: =EBIT/DoanhThu
+      variables:
+      - symbol: ebit
+        meaning: Lợi nhuận trước lãi vay và thuế
+        unit: triệu VNĐ
+      - symbol: revenue
+        meaning: Doanh thu thuần
+        unit: triệu VNĐ
+      when_to_use: So hiệu quả vận hành giữa DN có cơ cấu vốn/thuế khác nhau.
+      why_it_works: EBIT chưa trừ lãi vay và thuế nên loại ảnh hưởng cấu trúc vốn.
+      assumptions:
+      - EBIT đã trừ khấu hao
+      pitfalls:
+      - Lẫn EBIT với EBITDA
+      interpretation: '>15% tốt (chung). Với quán: thuê mặt bằng 20% + nhân sự 22.5% = 42.5% doanh thu là hai khoản cần theo dõi nhất.'
+      example:
+        inputs:
+          ebit: 300
+          revenue: 2400
+        steps:
+        - 300 / 2400 = 0.125
+        result: 12.5%
+  - id: "m05-formulas-8"
+    title: "Công thức: m05_net_margin — Biên lợi nhuận ròng"
+    tags: ["công", "thức", "m05_net_margin", "biên", "lợi", "nhuận", "ròng"]
+    text: |-
+      id: m05_net_margin
+      name_vi: Biên lợi nhuận ròng
+      name_en: Net Margin
+      expression_latex: \text{Net Margin} = \frac{NI}{Revenue}
+      expression_python: ni / revenue
+      excel: =NI/DoanhThu
+      variables:
+      - symbol: ni
+        meaning: Lợi nhuận ròng
+        unit: triệu VNĐ
+      - symbol: revenue
+        meaning: Doanh thu thuần
+        unit: triệu VNĐ
+      when_to_use: Bottom line sau mọi chi phí, lãi vay, thuế; thành phần 1 của DuPont.
+      why_it_works: Cho biết mỗi đồng doanh thu còn lại bao nhiêu cho chủ sở hữu.
+      assumptions:
+      - Không có khoản bất thường làm lệch
+      pitfalls:
+      - Biên thấp không có nghĩa xấu nếu vòng quay cao (bán lẻ 1-3%)
+      interpretation: '>10% tốt (chung); quán cà phê độc lập 5-10%; bán lẻ siêu thị 1.3-1.5% vẫn ổn nhờ turnover.'
+      example:
+        inputs:
+          ni: 208
+          revenue: 2400
+        steps:
+        - 208 / 2400 = 0.08667
+        result: 8.67%
+  - id: "m05-formulas-9"
+    title: "Công thức: m05_roe — Tỷ suất sinh lời trên vốn chủ"
+    tags: ["công", "thức", "m05_roe", "tỷ", "suất", "sinh", "lời", "trên", "vốn", "chủ"]
+    text: |-
+      id: m05_roe
+      name_vi: Tỷ suất sinh lời trên vốn chủ
+      name_en: Return on Equity (ROE)
+      expression_latex: ROE = \frac{NI}{Equity}
+      expression_python: ni / equity
+      excel: =NI/VonCSH
+      variables:
+      - symbol: ni
+        meaning: Lợi nhuận ròng
+        unit: triệu VNĐ
+      - symbol: equity
+        meaning: Vốn chủ sở hữu (cuối hoặc bình quân kỳ)
+        unit: triệu VNĐ
+      when_to_use: Đo lợi nhuận trên vốn của cổ đông/chủ sở hữu.
+      why_it_works: Chỉ đồng vốn chủ (không tính phần đi vay).
+      assumptions:
+      - Equity dương; nhất quán dùng cuối kỳ hay bình quân
+      pitfalls:
+      - Equity nhỏ do buyback/lỗ lũy kế làm ROE ảo cao (Apple 171%)
+      - Equity âm thì ROE vô nghĩa
+      - Nguồn dùng Equity cuối kỳ
+      interpretation: '>15% tốt. Luôn hỏi ROE đến từ đâu bằng DuPont; so với ROIC để lọc ảnh hưởng đòn bẩy.'
+      example:
+        inputs:
+          ni: 208
+          equity: 470
+        steps:
+        - 208 / 470 = 0.4426
+        result: ROE = 44.3%
+  - id: "m05-formulas-10"
+    title: "Công thức: m05_roa — Tỷ suất sinh lời trên tổng tài sản"
+    tags: ["công", "thức", "m05_roa", "tỷ", "suất", "sinh", "lời", "trên", "tổng", "tài", "sản"]
+    text: |-
+      id: m05_roa
+      name_vi: Tỷ suất sinh lời trên tổng tài sản
+      name_en: Return on Assets (ROA)
+      expression_latex: ROA = \frac{NI}{Total\ Assets}
+      expression_python: ni / total_assets
+      excel: =NI/TongTaiSan
+      variables:
+      - symbol: ni
+        meaning: Lợi nhuận ròng
+        unit: triệu VNĐ
+      - symbol: total_assets
+        meaning: Tổng tài sản
+        unit: triệu VNĐ
+      when_to_use: Đo hiệu quả dùng toàn bộ tài sản bất kể tài trợ bằng nợ hay vốn.
+      why_it_works: ROA = Net Margin x Asset Turnover; ROE = ROA x Equity Multiplier.
+      assumptions:
+      - Dùng NI sau lãi vay nên hơi thiên lệch với DN vay nhiều
+      pitfalls:
+      - So ROA giữa ngành nặng tài sản và ngành nhẹ tài sản
+      interpretation: '>5% tốt (chung). ROE > ROA khi dùng nợ có lợi.'
+      example:
+        inputs:
+          ni: 208
+          total_assets: 900
+        steps:
+        - 208 / 900 = 0.2311
+        result: ROA = 23.1%
+  - id: "m05-formulas-11"
+    title: "Công thức: m05_roic — Tỷ suất sinh lời trên vốn đầu tư"
+    tags: ["công", "thức", "m05_roic", "tỷ", "suất", "sinh", "lời", "trên", "vốn", "đầu", "tư"]
+    text: |-
+      id: m05_roic
+      name_vi: Tỷ suất sinh lời trên vốn đầu tư
+      name_en: Return on Invested Capital (ROIC)
+      expression_latex: ROIC = \frac{NOPAT}{Invested\ Capital},\quad NOPAT = EBIT(1-T),\quad IC = Equity + Debt - Excess\ Cash
+      expression_python: ebit * (1 - tax_rate) / (equity + debt - excess_cash)
+      excel: =EBIT*(1-Thue)/(VonCSH+NoVay-TienThua)
+      variables:
+      - symbol: ebit
+        meaning: Lợi nhuận hoạt động
+        unit: triệu VNĐ
+      - symbol: tax_rate
+        meaning: Thuế suất
+        unit: tỷ lệ
+      - symbol: equity
+        meaning: Vốn chủ
+        unit: triệu VNĐ
+      - symbol: debt
+        meaning: Nợ vay có lãi
+        unit: triệu VNĐ
+      - symbol: excess_cash
+        meaning: Tiền mặt thừa không phục vụ vận hành
+        unit: triệu VNĐ
+      when_to_use: 'Xét có tạo giá trị thật không: ROIC so với WACC; so DN có đòn bẩy khác nhau.'
+      why_it_works: Loại tiền nhàn rỗi và nợ phi hoạt động, tách hiệu quả kinh doanh khỏi cấu trúc vốn.
+      assumptions:
+      - Xác định đúng phần tiền thừa (ước lượng chủ quan)
+      - Nguồn chỉ nêu định nghĩa, công thức chi tiết là cách tính chuẩn bổ sung
+      pitfalls:
+      - Định nghĩa Invested Capital không thống nhất giữa nguồn
+      - Lấy lãi suất danh nghĩa chưa xét thuế suất thực
+      interpretation: 'ROIC > WACC: tạo giá trị; ROIC < WACC: phá hủy giá trị. Apple ~55-60% so với WACC ~10%.'
+      example:
+        inputs:
+          ebit: 300
+          tax_rate: 0.2
+          equity: 470
+          debt: 320
+          excess_cash: 150
+        steps:
+        - NOPAT = 300 x 0.8 = 240
+        - IC = 470 + 320 - 150 = 640
+        - ROIC = 240/640 = 0.375
+        result: ROIC = 37.5% (minh họa, giả định toàn bộ tiền 150 là thừa)
+  - id: "m05-formulas-12"
+    title: "Công thức: m05_current_ratio — Tỷ số thanh toán hiện hành"
+    tags: ["công", "thức", "m05_current_ratio", "tỷ", "số", "thanh", "toán", "hiện", "hành"]
+    text: |-
+      id: m05_current_ratio
+      name_vi: Tỷ số thanh toán hiện hành
+      name_en: Current Ratio
+      expression_latex: CR = \frac{Current\ Assets}{Current\ Liabilities}
+      expression_python: ca / cl
+      excel: =TSNH/NoNganHan
+      variables:
+      - symbol: ca
+        meaning: Tài sản ngắn hạn
+        unit: triệu VNĐ
+      - symbol: cl
+        meaning: Nợ ngắn hạn
+        unit: triệu VNĐ
+      when_to_use: Đánh giá khả năng trả nợ 12 tháng tổng quát.
+      why_it_works: Tỷ lệ phản ánh biên an toàn tương đối, hiệu số thì không.
+      assumptions:
+      - Tài sản ngắn hạn chuyển thành tiền đúng hạn
+      pitfalls:
+      - Tồn kho ế hoặc AR khó đòi làm CR đẹp giả
+      - Ngành bán lẻ CR thấp vẫn bình thường vì CCC âm
+      interpretation: 1.5-2.5 là tốt; <1.0 nguy hiểm; quá cao có thể là tiền/tồn kho nằm im.
+      example:
+        inputs:
+          ca: 250
+          cl: 190
+        steps:
+        - 250 / 190 = 1.316
+        result: 1.32x (hơi thấp hơn lý tưởng 1.5-2.5)
+  - id: "m05-formulas-13"
+    title: "Công thức: m05_quick_ratio — Tỷ số thanh toán nhanh"
+    tags: ["công", "thức", "m05_quick_ratio", "tỷ", "số", "thanh", "toán", "nhanh"]
+    text: |-
+      id: m05_quick_ratio
+      name_vi: Tỷ số thanh toán nhanh
+      name_en: Quick Ratio (Acid-test)
+      expression_latex: QR = \frac{CA - Inventory}{CL}
+      expression_python: (ca - inventory) / cl
+      excel: =(TSNH-TonKho)/NoNganHan
+      variables:
+      - symbol: ca
+        meaning: Tài sản ngắn hạn
+        unit: triệu VNĐ
+      - symbol: inventory
+        meaning: Hàng tồn kho
+        unit: triệu VNĐ
+      - symbol: cl
+        meaning: Nợ ngắn hạn
+        unit: triệu VNĐ
+      when_to_use: Thử thách khắc nghiệt hơn Current Ratio, nhất là khi tồn kho lớn (thời trang, bán lẻ).
+      why_it_works: Loại Inventory vì chậm và bất định hóa tiền nhất.
+      assumptions:
+      - Phần còn lại (tiền, AR) hóa tiền nhanh
+      pitfalls:
+      - Nguồn chỉ loại Inventory, không loại thêm Prepaid
+      interpretation: '>1.0 an toàn tối thiểu. Khoảng cách CR - QR lớn nghĩa là phụ thuộc tồn kho (thời trang tồn 70% CA thì QR thấp hơn nhiều).'
+      example:
+        inputs:
+          ca: 250
+          inventory: 60
+          cl: 190
+        steps:
+        - (250 - 60) / 190 = 1.0
+        result: 1.0x (đúng ngưỡng tối thiểu)
+  - id: "m05-formulas-14"
+    title: "Công thức: m05_cash_ratio — Tỷ số tiền mặt"
+    tags: ["công", "thức", "m05_cash_ratio", "tỷ", "số", "tiền", "mặt"]
+    text: |-
+      id: m05_cash_ratio
+      name_vi: Tỷ số tiền mặt
+      name_en: Cash Ratio
+      expression_latex: Cash\ Ratio = \frac{Cash}{CL}
+      expression_python: cash / cl
+      excel: =TienMat/NoNganHan
+      variables:
+      - symbol: cash
+        meaning: Tiền và tương đương tiền
+        unit: triệu VNĐ
+      - symbol: cl
+        meaning: Nợ ngắn hạn
+        unit: triệu VNĐ
+      when_to_use: Thước đo khắt khe nhất, khi lo nợ đến hạn gấp.
+      why_it_works: Chỉ tiền thật mới trả nợ ngay.
+      assumptions:
+      - Tiền không bị hạn chế sử dụng
+      pitfalls:
+      - Quá cao là tiền nằm im, chi phí cơ hội
+      interpretation: '>0.2 là đủ; 0.79 là dư dả, cân nhắc đầu tư marketing/mở rộng.'
+      example:
+        inputs:
+          cash: 150
+          cl: 190
+        steps:
+        - 150 / 190 = 0.789
+        result: 0.79x
+  - id: "m05-formulas-15"
+    title: "Công thức: m05_ocf_ratio — Tỷ số dòng tiền kinh doanh trên nợ ngắn hạn"
+    tags: ["công", "thức", "m05_ocf_ratio", "tỷ", "số", "dòng", "tiền", "kinh", "doanh", "trên", "nợ", "ngắn"]
+    text: |-
+      id: m05_ocf_ratio
+      name_vi: Tỷ số dòng tiền kinh doanh trên nợ ngắn hạn
+      name_en: Operating Cash Flow Ratio
+      expression_latex: OCFR = \frac{OCF}{CL}
+      expression_python: ocf / cl
+      excel: =OCF/NoNganHan
+      variables:
+      - symbol: ocf
+        meaning: Dòng tiền từ kinh doanh
+        unit: triệu VNĐ
+      - symbol: cl
+        meaning: Nợ ngắn hạn
+        unit: triệu VNĐ
+      when_to_use: Xem dòng tiền thực có tự đủ trả nợ ngắn hạn, không dựa vào bán tài sản.
+      why_it_works: Dựa trên dòng tiền chứ không phải số dư tại một thời điểm.
+      assumptions:
+      - OCF kỳ này đại diện cho kỳ tới
+      pitfalls:
+      - OCF biến động theo mùa vụ
+      interpretation: '>1.0 tốt.'
+      example:
+        inputs:
+          ocf: 306
+          cl: 190
+        steps:
+        - 306 / 190 = 1.61
+        result: 1.61x (tính bổ sung từ số liệu case)
+  - id: "m05-formulas-16"
+    title: "Công thức: m05_debt_to_equity — Tỷ số nợ trên vốn chủ"
+    tags: ["công", "thức", "m05_debt_to_equity", "tỷ", "số", "nợ", "trên", "vốn", "chủ"]
+    text: |-
+      id: m05_debt_to_equity
+      name_vi: Tỷ số nợ trên vốn chủ
+      name_en: Debt-to-Equity (D/E)
+      expression_latex: D/E = \frac{Total\ Debt}{Equity}
+      expression_python: debt / equity
+      excel: =NoVay/VonCSH
+      variables:
+      - symbol: debt
+        meaning: Nợ vay có lãi (case dùng ngắn hạn đến hạn + dài hạn)
+        unit: triệu VNĐ
+      - symbol: equity
+        meaning: Vốn chủ
+        unit: triệu VNĐ
+      when_to_use: Đo mức phụ thuộc nợ (rủi ro cấu trúc).
+      why_it_works: So 'tiền người khác' với 'tiền của mình'.
+      assumptions:
+      - Thống nhất định nghĩa Total Debt (có lãi hay toàn bộ nợ phải trả)
+      pitfalls:
+      - 'Nguồn dùng 2 định nghĩa: D/E case SME dùng nợ có lãi (0.68) còn Debt/Assets dùng tổng nợ phải trả; luôn nêu rõ'
+      - Thuê tài chính IFRS 16 làm tăng nợ
+      interpretation: '>2.0 thận trọng. D/E tăng nhanh là red flag.'
+      example:
+        inputs:
+          debt: 320
+          equity: 470
+        steps:
+        - (80 + 240) = 320
+        - 320 / 470 = 0.681
+        result: 0.68x
+  - id: "m05-formulas-17"
+    title: "Công thức: m05_debt_to_assets — Tỷ số nợ trên tổng tài sản"
+    tags: ["công", "thức", "m05_debt_to_assets", "tỷ", "số", "nợ", "trên", "tổng", "tài", "sản"]
+    text: |-
+      id: m05_debt_to_assets
+      name_vi: Tỷ số nợ trên tổng tài sản
+      name_en: Debt-to-Assets
+      expression_latex: D/A = \frac{Total\ Debt}{Total\ Assets}
+      expression_python: debt / total_assets
+      excel: =Tongno/TongTaiSan
+      variables:
+      - symbol: debt
+        meaning: Tổng nợ (case dùng tổng nợ phải trả gồm AP)
+        unit: triệu VNĐ
+      - symbol: total_assets
+        meaning: Tổng tài sản
+        unit: triệu VNĐ
+      when_to_use: '% tài sản tài trợ bằng nợ.'
+      why_it_works: Đo rủi ro cấu trúc theo tài sản.
+      assumptions:
+      - Định nghĩa nợ nhất quán
+      pitfalls:
+      - Nợ gồm AP không lãi làm tỷ số cao hơn mức rủi ro thực
+      interpretation: '>60% rủi ro.'
+      example:
+        inputs:
+          debt: 430
+          total_assets: 900
+        steps:
+        - 430 / 900 = 0.478
+        result: 47.8%
+  - id: "m05-formulas-18"
+    title: "Công thức: m05_interest_coverage — Khả năng thanh toán lãi vay"
+    tags: ["công", "thức", "m05_interest_coverage", "khả", "năng", "thanh", "toán", "lãi", "vay"]
+    text: |-
+      id: m05_interest_coverage
+      name_vi: Khả năng thanh toán lãi vay
+      name_en: Interest Coverage (TIE)
+      expression_latex: ICR = \frac{EBIT}{Interest\ Expense}
+      expression_python: ebit / interest
+      excel: =EBIT/ChiPhiLaiVay
+      variables:
+      - symbol: ebit
+        meaning: Lợi nhuận hoạt động
+        unit: triệu VNĐ
+      - symbol: interest
+        meaning: Chi phí lãi vay
+        unit: triệu VNĐ
+      when_to_use: Đánh giá lợi nhuận hoạt động có đủ trả lãi ngay kỳ này; ngân hàng hay dùng khi duyệt vay.
+      why_it_works: Đo rủi ro dòng tiền trả lãi hiện tại, bổ sung cho D/E.
+      assumptions:
+      - EBIT ổn định
+      pitfalls:
+      - EBIT biến động mạnh theo chu kỳ
+      - Lãi vốn hóa không nằm trong chi phí lãi
+      interpretation: <3x nguy hiểm; 7.5x rất an toàn.
+      example:
+        inputs:
+          ebit: 300
+          interest: 40
+        steps:
+        - 300 / 40 = 7.5
+        result: 7.5x
+  - id: "m05-formulas-19"
+    title: "Công thức: m05_debt_to_ebitda — Nợ trên EBITDA"
+    tags: ["công", "thức", "m05_debt_to_ebitda", "nợ", "trên", "ebitda"]
+    text: |-
+      id: m05_debt_to_ebitda
+      name_vi: Nợ trên EBITDA
+      name_en: Debt/EBITDA
+      expression_latex: Debt/EBITDA = \frac{Total\ Debt}{EBIT + D\&A}
+      expression_python: debt / (ebit + dep)
+      excel: =NoVay/(EBIT+KhauHao)
+      variables:
+      - symbol: debt
+        meaning: Nợ vay có lãi
+        unit: triệu VNĐ
+      - symbol: ebit
+        meaning: EBIT
+        unit: triệu VNĐ
+      - symbol: dep
+        meaning: Khấu hao và phân bổ
+        unit: triệu VNĐ
+      when_to_use: Ước số năm cần trả hết nợ nếu dùng toàn bộ EBITDA.
+      why_it_works: Quy nợ thành số năm dòng tiền hoạt động thô.
+      assumptions:
+      - EBITDA = EBIT + D&A
+      pitfalls:
+      - Bỏ qua capex, thuế, lãi nên lạc quan
+      interpretation: '>4x rủi ro.'
+      example:
+        inputs:
+          debt: 320
+          ebit: 300
+          dep: 100
+        steps:
+        - EBITDA = 400
+        - 320 / 400 = 0.8
+        result: 0.8x (tính bổ sung từ số liệu case)
+  - id: "m05-formulas-20"
+    title: "Công thức: m05_inventory_turnover — Vòng quay hàng tồn kho"
+    tags: ["công", "thức", "m05_inventory_turnover", "vòng", "quay", "hàng", "tồn", "kho"]
+    text: |-
+      id: m05_inventory_turnover
+      name_vi: Vòng quay hàng tồn kho
+      name_en: Inventory Turnover
+      expression_latex: IT = \frac{COGS}{Avg\ Inventory}
+      expression_python: cogs / ((inv_begin + inv_end) / 2)
+      excel: =COGS/AVERAGE(TonDau,TonCuoi)
+      variables:
+      - symbol: cogs
+        meaning: Giá vốn hàng bán
+        unit: triệu VNĐ
+      - symbol: inv_begin
+        meaning: Tồn kho đầu kỳ
+        unit: triệu VNĐ
+      - symbol: inv_end
+        meaning: Tồn kho cuối kỳ
+        unit: triệu VNĐ
+      when_to_use: Đo tốc độ bán hết tồn kho.
+      why_it_works: Dùng COGS (cùng giá vốn với tồn kho, không dùng doanh thu có lãi) và tồn kho bình quân để tránh lệch thời điểm.
+      assumptions:
+      - Tồn kho bình quân đại diện cho cả kỳ
+      pitfalls:
+      - Mùa vụ làm bình quân hai điểm sai lệch
+      interpretation: Cao là bán nhanh; quá cao có thể thiếu hàng.
+      example:
+        inputs:
+          cogs: 720
+          inv_begin: 45
+          inv_end: 60
+        steps:
+        - avg = 52.5
+        - 720 / 52.5 = 13.71
+        result: 13.7 vòng/năm
+  - id: "m05-formulas-21"
+    title: "Công thức: m05_dio — Số ngày tồn kho"
+    tags: ["công", "thức", "m05_dio", "số", "ngày", "tồn", "kho"]
+    text: |-
+      id: m05_dio
+      name_vi: Số ngày tồn kho
+      name_en: Days Inventory Outstanding (DIO)
+      expression_latex: DIO = \frac{365}{Inventory\ Turnover}
+      expression_python: 365 / inventory_turnover
+      excel: =365/VongQuayTonKho
+      variables:
+      - symbol: inventory_turnover
+        meaning: Vòng quay tồn kho
+        unit: lần/năm
+      when_to_use: Diễn đạt tồn kho nằm kho bao lâu.
+      why_it_works: Số ngày gắn với vận hành hàng ngày hơn số vòng.
+      assumptions:
+      - 365 ngày/năm; kỳ quý dùng 90
+      pitfalls:
+      - Làm tròn trung gian gây lệch CCC (nguồn 27 ngày so với 26.6 chưa làm tròn)
+      interpretation: F&B nguyên liệu tươi nên ngắn (~27 ngày là hợp lý).
+      example:
+        inputs:
+          inventory_turnover: 13.714285714285714
+        steps:
+        - 365 / 13.714 = 26.61
+        result: 26.6 ngày
+  - id: "m05-formulas-22"
+    title: "Công thức: m05_ar_turnover — Vòng quay phải thu"
+    tags: ["công", "thức", "m05_ar_turnover", "vòng", "quay", "phải", "thu"]
+    text: |-
+      id: m05_ar_turnover
+      name_vi: Vòng quay phải thu
+      name_en: AR Turnover
+      expression_latex: ART = \frac{Revenue}{Avg\ AR}
+      expression_python: revenue / ((ar_begin + ar_end) / 2)
+      excel: =DoanhThu/AVERAGE(ARdau,ARcuoi)
+      variables:
+      - symbol: revenue
+        meaning: Doanh thu (lý tưởng là doanh thu bán chịu)
+        unit: triệu VNĐ
+      - symbol: ar_begin
+        meaning: Phải thu đầu kỳ
+        unit: triệu VNĐ
+      - symbol: ar_end
+        meaning: Phải thu cuối kỳ
+        unit: triệu VNĐ
+      when_to_use: Tốc độ thu hồi công nợ khách.
+      why_it_works: Doanh thu trên công nợ bình quân.
+      assumptions:
+      - Doanh thu đa phần bán chịu; nếu tiền mặt lẫn lộn, tỷ số phình
+      pitfalls:
+      - 'Quán thu tiền ngay: 96 lần chỉ phản ánh mẫu số nhỏ'
+      interpretation: Cao là thu tiền nhanh.
+      example:
+        inputs:
+          revenue: 2400
+          ar_begin: 20
+          ar_end: 30
+        steps:
+        - avg = 25
+        - 2400 / 25 = 96
+        result: 96 vòng/năm
+  - id: "m05-formulas-23"
+    title: "Công thức: m05_dso — Số ngày thu tiền bình quân"
+    tags: ["công", "thức", "m05_dso", "số", "ngày", "thu", "tiền", "bình", "quân"]
+    text: |-
+      id: m05_dso
+      name_vi: Số ngày thu tiền bình quân
+      name_en: Days Sales Outstanding (DSO)
+      expression_latex: DSO = \frac{365}{AR\ Turnover}
+      expression_python: 365 / ar_turnover
+      excel: =365/VongQuayPhaiThu
+      variables:
+      - symbol: ar_turnover
+        meaning: Vòng quay phải thu
+        unit: lần/năm
+      when_to_use: Số ngày chờ thu tiền sau bán.
+      why_it_works: Quy vòng quay về ngày.
+      assumptions:
+      - 365 ngày
+      pitfalls:
+      - DSO tăng nhanh hơn doanh thu là bán chịu quá đà hoặc doanh thu ảo
+      interpretation: Càng ngắn càng tốt trừ khi bán chịu là chiến lược; F&B ~3.8 ngày.
+      example:
+        inputs:
+          ar_turnover: 96
+        steps:
+        - 365 / 96 = 3.80
+        result: 3.8 ngày
+  - id: "m05-formulas-24"
+    title: "Công thức: m05_ap_turnover — Vòng quay phải trả"
+    tags: ["công", "thức", "m05_ap_turnover", "vòng", "quay", "phải", "trả"]
+    text: |-
+      id: m05_ap_turnover
+      name_vi: Vòng quay phải trả
+      name_en: AP Turnover
+      expression_latex: APT = \frac{COGS}{Avg\ AP}
+      expression_python: cogs / ((ap_begin + ap_end) / 2)
+      excel: =COGS/AVERAGE(APdau,APcuoi)
+      variables:
+      - symbol: cogs
+        meaning: Giá vốn hàng bán (xấp xỉ mua hàng)
+        unit: triệu VNĐ
+      - symbol: ap_begin
+        meaning: Phải trả NCC đầu kỳ
+        unit: triệu VNĐ
+      - symbol: ap_end
+        meaning: Phải trả NCC cuối kỳ
+        unit: triệu VNĐ
+      when_to_use: Tốc độ thanh toán nhà cung cấp.
+      why_it_works: COGS thay mua hàng khi không có số mua.
+      assumptions:
+      - COGS xấp xỉ giá trị mua
+      pitfalls:
+      - Tăng tồn kho làm mua hàng khác COGS
+      interpretation: Thấp nghĩa là trả chậm (DPO dài).
+      example:
+        inputs:
+          cogs: 720
+          ap_begin: 60
+          ap_end: 80
+        steps:
+        - avg = 70
+        - 720 / 70 = 10.29
+        result: 10.3 vòng/năm
+  - id: "m05-formulas-25"
+    title: "Công thức: m05_dpo — Số ngày trả nhà cung cấp"
+    tags: ["công", "thức", "m05_dpo", "số", "ngày", "trả", "nhà", "cung", "cấp"]
+    text: |-
+      id: m05_dpo
+      name_vi: Số ngày trả nhà cung cấp
+      name_en: Days Payable Outstanding (DPO)
+      expression_latex: DPO = \frac{365}{AP\ Turnover}
+      expression_python: 365 / ap_turnover
+      excel: =365/VongQuayPhaiTra
+      variables:
+      - symbol: ap_turnover
+        meaning: Vòng quay phải trả
+        unit: lần/năm
+      when_to_use: Đo vốn miễn phí từ nhà cung cấp.
+      why_it_works: Trì hoãn trả tiền là nguồn vốn không lãi.
+      assumptions:
+      - 365 ngày
+      pitfalls:
+      - Kéo DPO quá dài có thể phạt phí, mất chiết khấu, hỏng quan hệ NCC
+      interpretation: Dài hơn thì CCC ngắn hơn nhưng phải giữ uy tín.
+      example:
+        inputs:
+          ap_turnover: 10.285714285714286
+        steps:
+        - 365 / 10.2857 = 35.49
+        result: 35.5 ngày
+  - id: "m05-formulas-26"
+    title: "Công thức: m05_ccc — Chu kỳ chuyển đổi tiền mặt"
+    tags: ["công", "thức", "m05_ccc", "chu", "kỳ", "chuyển", "đổi", "tiền", "mặt"]
+    text: |-
+      id: m05_ccc
+      name_vi: Chu kỳ chuyển đổi tiền mặt
+      name_en: Cash Conversion Cycle (CCC)
+      expression_latex: CCC = DSO + DIO - DPO
+      expression_python: dso + dio - dpo
+      excel: =DSO+DIO-DPO
+      variables:
+      - symbol: dso
+        meaning: Số ngày thu tiền
+        unit: ngày
+      - symbol: dio
+        meaning: Số ngày tồn kho
+        unit: ngày
+      - symbol: dpo
+        meaning: Số ngày trả NCC
+        unit: ngày
+      when_to_use: Đo số ngày DN tự ứng vốn lưu động; ước nhu cầu vốn lưu động; so sánh mô hình.
+      why_it_works: Tổng thời gian tiền bị đóng băng trong kho và công nợ phải thu trừ thời gian dùng vốn NCC.
+      assumptions:
+      - DSO, DIO, DPO cùng cơ sở 365 ngày
+      pitfalls:
+      - 'Làm tròn trung gian: nguồn ghi -4.6 ngày (3.8 + 27 - 35.4), tính chính xác là -5.07'
+      - DPO kéo dài quá mức làm hại quan hệ
+      interpretation: Ngắn/âm là tốt (bán lẻ, F&B thu tiền ngay); mỗi ngày CCC giảm giải phóng một ngày chi phí hoạt động tiền mặt.
+      example:
+        inputs:
+          dso: 3.8020833333333335
+          dio: 26.614583333333336
+          dpo: 35.486111111111114
+        steps:
+        - 3.80 + 26.61 - 35.49 = -5.07
+        result: CCC = -5.07 ngày (nguồn làm tròn -4.6)
+  - id: "m05-formulas-27"
+    title: "Công thức: m05_asset_turnover — Vòng quay tổng tài sản"
+    tags: ["công", "thức", "m05_asset_turnover", "vòng", "quay", "tổng", "tài", "sản"]
+    text: |-
+      id: m05_asset_turnover
+      name_vi: Vòng quay tổng tài sản
+      name_en: Asset Turnover
+      expression_latex: AT = \frac{Revenue}{Total\ Assets}
+      expression_python: revenue / total_assets
+      excel: =DoanhThu/TongTaiSan
+      variables:
+      - symbol: revenue
+        meaning: Doanh thu
+        unit: triệu VNĐ
+      - symbol: total_assets
+        meaning: Tổng tài sản
+        unit: triệu VNĐ
+      when_to_use: Hiệu quả dùng tài sản tạo doanh thu; thành phần 2 DuPont.
+      why_it_works: Mỗi đồng tài sản sinh bao nhiêu đồng doanh thu.
+      assumptions:
+      - Có thể dùng tài sản bình quân; nguồn dùng cuối kỳ
+      pitfalls:
+      - Ngành nặng tài sản (BĐS 0.1-0.5) so với bán lẻ (5-10) không so được
+      interpretation: Cao là quay vòng nhanh (bán lẻ); thấp là biên dày (BĐS, luxury, ngân hàng).
+      example:
+        inputs:
+          revenue: 2400
+          total_assets: 900
+        steps:
+        - 2400 / 900 = 2.667
+        result: 2.67x
+  - id: "m05-formulas-28"
+    title: "Công thức: m05_equity_multiplier — Hệ số nhân vốn chủ"
+    tags: ["công", "thức", "m05_equity_multiplier", "hệ", "số", "nhân", "vốn", "chủ"]
+    text: |-
+      id: m05_equity_multiplier
+      name_vi: Hệ số nhân vốn chủ
+      name_en: Equity Multiplier
+      expression_latex: EM = \frac{Total\ Assets}{Equity}
+      expression_python: total_assets / equity
+      excel: =TongTaiSan/VonCSH
+      variables:
+      - symbol: total_assets
+        meaning: Tổng tài sản
+        unit: triệu VNĐ
+      - symbol: equity
+        meaning: Vốn chủ
+        unit: triệu VNĐ
+      when_to_use: Đo đòn bẩy tài chính trong DuPont.
+      why_it_works: 'EM = 1 + (Liabilities/Equity): tài sản gấp bao nhiêu lần vốn chủ.'
+      assumptions:
+      - Equity dương
+      pitfalls:
+      - Buyback làm EM phình (Apple 5.87)
+      - Gồm cả AP không lãi, khác D/E
+      interpretation: EM cao khuếch đại ROE nhưng cũng khuếch đại rủi ro.
+      example:
+        inputs:
+          total_assets: 900
+          equity: 470
+        steps:
+        - 900 / 470 = 1.915
+        result: 1.915x
+  - id: "m05-formulas-29"
+    title: "Công thức: m05_dupont3 — DuPont 3 thành phần"
+    tags: ["công", "thức", "m05_dupont3", "dupont", "thành", "phần"]
+    text: |-
+      id: m05_dupont3
+      name_vi: DuPont 3 thành phần
+      name_en: 3-Component DuPont
+      expression_latex: ROE = \frac{NI}{Rev}\times\frac{Rev}{Assets}\times\frac{Assets}{Equity}
+      expression_python: (ni / revenue) * (revenue / total_assets) * (total_assets / equity)
+      excel: =(NI/DT)*(DT/TTS)*(TTS/VCSH)
+      variables:
+      - symbol: ni
+        meaning: Lợi nhuận ròng
+        unit: triệu VNĐ
+      - symbol: revenue
+        meaning: Doanh thu
+        unit: triệu VNĐ
+      - symbol: total_assets
+        meaning: Tổng tài sản
+        unit: triệu VNĐ
+      - symbol: equity
+        meaning: Vốn chủ
+        unit: triệu VNĐ
+      when_to_use: Chẩn đoán ROE đến từ biên lợi nhuận (giá/chi phí), vòng quay (vận hành) hay đòn bẩy.
+      why_it_works: Các mẫu số và tử số triệt tiêu thành NI/Equity; tách ra để xem nguồn gốc.
+      assumptions:
+      - Dùng cùng cơ sở (cuối kỳ hay bình quân) cho Assets và Equity
+      pitfalls:
+      - Chỉ nhìn ROE tổng; không kiểm tra EM
+      - 'Apple: ROE 171% đến từ buyback, dùng ROIC để đánh giá vận hành'
+      interpretation: 'Phân loại: margin cao (luxury), turnover cao (retail), EM cao (ngân hàng). ROE chất lượng cao nếu EM vừa phải.'
+      example:
+        inputs:
+          ni: 208
+          revenue: 2400
+          total_assets: 900
+          equity: 470
+        steps:
+        - 0.0867 x 2.667 x 1.915 = 0.4426
+        result: ROE = 44.3% (khớp 208/470)
+  - id: "m05-formulas-30"
+    title: "Công thức: m05_dupont5 — DuPont 5 thành phần"
+    tags: ["công", "thức", "m05_dupont5", "dupont", "thành", "phần"]
+    text: |-
+      id: m05_dupont5
+      name_vi: DuPont 5 thành phần
+      name_en: 5-Component DuPont
+      expression_latex: ROE = \frac{NI}{EBT}\times\frac{EBT}{EBIT}\times\frac{EBIT}{Rev}\times\frac{Rev}{Assets}\times\frac{Assets}{Equity}
+      expression_python: (ni / ebt) * (ebt / ebit) * (ebit / revenue) * (revenue / total_assets) * (total_assets / equity)
+      excel: =(NI/EBT)*(EBT/EBIT)*(EBIT/DT)*(DT/TTS)*(TTS/VCSH)
+      variables:
+      - symbol: ni
+        meaning: Lợi nhuận ròng
+        unit: triệu VNĐ
+      - symbol: ebt
+        meaning: Lợi nhuận trước thuế
+        unit: triệu VNĐ
+      - symbol: ebit
+        meaning: Lợi nhuận hoạt động
+        unit: triệu VNĐ
+      - symbol: revenue
+        meaning: Doanh thu
+        unit: triệu VNĐ
+      - symbol: total_assets
+        meaning: Tổng tài sản
+        unit: triệu VNĐ
+      - symbol: equity
+        meaning: Vốn chủ
+        unit: triệu VNĐ
+      when_to_use: So 2 DN cùng hiệu quả vận hành nhưng khác cơ cấu vay hoặc ưu đãi thuế.
+      why_it_works: Tách Tax Burden (NI/EBT = 1 - T), Interest Burden (EBT/EBIT), Operating Margin, Turnover, Leverage.
+      assumptions:
+      - EBT > 0, EBIT > 0
+      pitfalls:
+      - Nguồn viết nhân thêm (1-T) trong biểu thức, thực chất Tax Burden = NI/EBT = 1-T đã nằm trong phân rã (không nhân hai lần)
+      interpretation: 'Làn Gió Mới: Tax Burden 0.8, Interest Burden 0.867, Op Margin 12.5%, AT 2.667, EM 1.915.'
+      example:
+        inputs:
+          ni: 208
+          ebt: 260
+          ebit: 300
+          revenue: 2400
+          total_assets: 900
+          equity: 470
+        steps:
+        - 0.8 x 0.8667 x 0.125 x 2.667 x 1.915 = 0.4426
+        result: ROE = 44.3%
+  - id: "m05-formulas-31"
+    title: "Công thức: m05_growth_rate — Tốc độ tăng trưởng giữa các kỳ"
+    tags: ["công", "thức", "m05_growth_rate", "tốc", "độ", "tăng", "trưởng", "giữa", "các", "kỳ"]
+    text: |-
+      id: m05_growth_rate
+      name_vi: Tốc độ tăng trưởng giữa các kỳ
+      name_en: Period-over-period growth (Trend analysis)
+      expression_latex: g = \frac{X_t}{X_{t-1}} - 1
+      expression_python: x_t / x_prev - 1
+      excel: =Xt/Xtruoc-1
+      variables:
+      - symbol: x_t
+        meaning: Giá trị kỳ này
+        unit: tùy chỉ tiêu
+      - symbol: x_prev
+        meaning: Giá trị kỳ trước
+        unit: tùy chỉ tiêu
+      when_to_use: Phân tích xu hướng; so tốc độ tăng của AR, Inventory, OCF với Revenue, NI.
+      why_it_works: Tốc độ so sánh lệch pha giữa các khoản mục là tín hiệu chất lượng tăng trưởng.
+      assumptions:
+      - Kỳ so sánh tương đương (cùng mùa vụ)
+      pitfalls:
+      - Giá trị tuyệt đối nhỏ làm % lớn nhưng không đáng lo (AR 20 sang 30)
+      interpretation: AR/Inventory tăng nhanh hơn Revenue kéo dài là red flag.
+      example:
+        inputs:
+          x_t: 55
+          x_prev: 28
+        steps:
+        - 55 / 28 - 1 = 0.964
+        result: AR tăng 96.4% (Công ty Y năm 3 trong khi Revenue chỉ +30.8%)
+  - id: "m05-formulas-32"
+    title: "Công thức: m05_common_size — Phân tích cơ cấu (Common-size)"
+    tags: ["công", "thức", "m05_common_size", "phân", "tích", "cơ", "cấu", "common", "size"]
+    text: |-
+      id: m05_common_size
+      name_vi: Phân tích cơ cấu (Common-size)
+      name_en: Common-size percentage
+      expression_latex: \%_i = \frac{Item_i}{Base}\ (Base = Revenue\ hoặc\ Total\ Assets)
+      expression_python: item / base
+      excel: =Khoanmuc/CoSo
+      variables:
+      - symbol: item
+        meaning: Khoản mục cần quy đổi
+        unit: triệu VNĐ
+      - symbol: base
+        meaning: Doanh thu (IS) hoặc Tổng tài sản (BS)
+        unit: triệu VNĐ
+      when_to_use: So cơ cấu chi phí/tài sản giữa các kỳ hoặc giữa DN khác quy mô; DN tăng trưởng nhanh.
+      why_it_works: Quy về % loại hiệu ứng quy mô.
+      assumptions:
+      - Cùng cơ sở
+      pitfalls:
+      - Không cho biết tốc độ tăng tuyệt đối
+      interpretation: 'Quán: thuê 20%, nhân sự 22.5%, tiện ích 4%, marketing 5%, khấu hao 4.2%, khác 1.8%.'
+      example:
+        inputs:
+          item: 480
+          base: 2400
+        steps:
+        - 480 / 2400 = 0.20
+        result: Chi phí thuê = 20% doanh thu
+  - id: "m05-formulas-33"
+    title: "Công thức: m05_ocf_to_ni — Tỷ lệ OCF trên lợi nhuận ròng"
+    tags: ["công", "thức", "m05_ocf_to_ni", "tỷ", "lệ", "ocf", "trên", "lợi", "nhuận", "ròng"]
+    text: |-
+      id: m05_ocf_to_ni
+      name_vi: Tỷ lệ OCF trên lợi nhuận ròng
+      name_en: OCF / Net Income (earnings quality)
+      expression_latex: \text{Cash Conversion of Earnings} = \frac{OCF}{NI}
+      expression_python: ocf / ni
+      excel: =OCF/NI
+      variables:
+      - symbol: ocf
+        meaning: Dòng tiền kinh doanh
+        unit: triệu VNĐ
+      - symbol: ni
+        meaning: Lợi nhuận ròng
+        unit: triệu VNĐ
+      when_to_use: Kiểm tra chất lượng lợi nhuận (checklist Quality of Earnings); phát hiện thao túng accrual.
+      why_it_works: Lợi nhuận thật phải biến thành tiền theo thời gian; khoảng cách OCF - NI chính là accruals.
+      assumptions:
+      - NI > 0; DN tăng trưởng nhanh có thể OCF < NI hợp lý do working capital
+      pitfalls:
+      - Chỉ số bổ sung (nguồn dùng so sánh OCF với NI, không định danh tỷ lệ)
+      - Một năm lệch chưa kết luận, cần chuỗi nhiều năm
+      interpretation: '>1.0 liên tục là tốt; giảm dần xa dưới 1 (Công ty Y: 0.9, 0.53, 0.14) là red flag.'
+      example:
+        inputs:
+          ocf: 3
+          ni: 22
+        steps:
+        - 3 / 22 = 0.136
+        result: '0.14 (Công ty Y năm 3: chỉ 14% lợi nhuận thành tiền)'
+  - id: "m05-procedures-1"
+    title: "Quy trình: m05_proc_full_analysis — Phân tích BCTC toàn diện 5 bước (A-Z)"
+    tags: ["quy", "trình", "m05_proc_full_analysis", "phân", "tích", "bctc", "toàn", "diện", "bước"]
+    text: |-
+      id: m05_proc_full_analysis
+      name: Phân tích BCTC toàn diện 5 bước (A-Z)
+      steps:
+      - 'Bước 0 - Intake: xác định đối tượng dùng (chủ DN, ngân hàng, nhà đầu tư), kỳ, đơn vị, VAS hay IFRS, có kiểm toán không, dữ liệu 2 kỳ Balance Sheet (để lấy bình quân và thay đổi).'
+      - 'Bước 1 - Đọc 3 báo cáo và kiểm tra tính nhất quán: Assets = Liabilities + Equity (m05_balance_identity); RE cuối = RE đầu + NI - rút (m05_retained_earnings); dựng hoặc kiểm tra OCF gián tiếp, ΔCash = OCF + ICF + Fin; Cash cuối kỳ khớp Balance Sheet. Không khớp thì dừng và hỏi lại số.'
+      - 'Bước 2 - Tính 4 nhóm tỷ số: Profitability (Gross/Operating/Net Margin, ROE, ROA, ROIC); Liquidity (Current, Quick, Cash, OCF ratio); Leverage (D/E, Debt/Assets, Interest Coverage, Debt/EBITDA); Efficiency (Inventory Turnover/DIO, AR Turnover/DSO, AP Turnover/DPO, CCC, Asset Turnover). Nêu rõ định nghĩa mẫu số (cuối kỳ hay bình quân, nợ có lãi hay tổng nợ).'
+      - 'Bước 3 - DuPont: tách ROE = Net Margin x Asset Turnover x Equity Multiplier (hoặc 5 thành phần); xác định nguồn sức mạnh ROE và độ bền (ROE nhờ margin hay nhờ đòn bẩy); kiểm tra tích khớp ROE trực tiếp.'
+      - 'Bước 4 - Rà red flags và Quality of Earnings: OCF vs NI, AR/Inventory vs Revenue, Gross margin xu hướng, D/E xu hướng, khoản một lần, đổi chính sách kế toán, off-balance sheet, giao dịch bên liên quan.'
+      - 'Bước 5 - So sánh: Trend nội bộ 3-5 kỳ trước; Common-size nếu quy mô thay đổi; Cross-sectional nếu có dữ liệu ngành cùng loại.'
+      - 'Bước 6 - Kết luận và hành động: đánh giá tổng thể, điểm cần cải thiện, cơ hội, lịch theo dõi, hành động cụ thể (ví dụ giữ lại lợi nhuận tăng đệm thanh khoản, đàm phán hạn mức vay dựa trên Interest Coverage).'
+      outputs: Bảng tỷ số kèm công thức, kết quả, diễn giải; phân rã DuPont; bảng red flag có/không và lý do; kết luận 3-5 hành động.
+  - id: "m05-procedures-2"
+    title: "Quy trình: m05_proc_profit_vs_cash — Chẩn đoán lợi nhuận khác tiền mặt"
+    tags: ["quy", "trình", "m05_proc_profit_vs_cash", "chẩn", "đoán", "lợi", "nhuận", "khác", "tiền", "mặt"]
+    text: |-
+      id: m05_proc_profit_vs_cash
+      name: Chẩn đoán lợi nhuận khác tiền mặt
+      steps:
+      - 'Lập IS kỳ: Revenue - COGS - Opex = NI.'
+      - 'Lập dòng tiền thật: tiền thu thực tế (trừ phần AR chưa thu) - tiền chi thực tế (COGS đã trả, lương, thuê).'
+      - So NI với ΔCash; chênh lệch giải thích bằng ΔAR, ΔInventory, ΔAP, khấu hao.
+      - Tính tiền cuối kỳ = tiền đầu kỳ + ΔCash; nếu âm hoặc < nghĩa vụ ngắn hạn thì cảnh báo thanh khoản.
+      - 'Khuyến nghị: thu nợ nhanh/đòi tạm ứng, chiết khấu thanh toán sớm, kéo DPO hợp lý, hạn mức vay vốn lưu động, hạn chế chủ rút tiền.'
+      outputs: Bảng so sánh NI và dòng tiền, tiền cuối kỳ, danh sách biện pháp.
+  - id: "m05-procedures-3"
+    title: "Quy trình: m05_proc_dupont_diag — Chẩn đoán ROE bằng DuPont"
+    tags: ["quy", "trình", "m05_proc_dupont_diag", "chẩn", "đoán", "roe", "bằng", "dupont"]
+    text: |-
+      id: m05_proc_dupont_diag
+      name: Chẩn đoán ROE bằng DuPont
+      steps:
+      - Tính Net Margin, Asset Turnover, Equity Multiplier; nhân lại kiểm tra bằng NI/Equity.
+      - 'Xác định thành phần nổi trội: margin (pricing power), turnover (volume/quay vốn), EM (đòn bẩy).'
+      - 'Đánh giá chất lượng: ROE nhờ margin/turnover là bền; nhờ EM cao là rủi ro (kiểm tra Interest Coverage, D/E).'
+      - Nếu EM bị phình do buyback hoặc lỗ lũy kế, dùng ROIC để đánh giá vận hành và so với WACC.
+      - Nếu cần tách lãi vay/thuế, dùng 5 thành phần.
+      - So sánh với mô hình chuẩn (luxury, retail, ngân hàng) hoặc đối thủ cùng ngành.
+      outputs: Phân rã ROE, kết luận ROE đến từ đâu, độ bền, khuyến nghị cải thiện thành phần yếu.
+  - id: "m05-procedures-4"
+    title: "Quy trình: m05_proc_red_flags — Rà soát red flags và chất lượng lợi nhuận"
+    tags: ["quy", "trình", "m05_proc_red_flags", "rà", "soát", "red", "flags", "và", "chất", "lượng", "lợi", "nhuận"]
+    text: |-
+      id: m05_proc_red_flags
+      name: Rà soát red flags và chất lượng lợi nhuận
+      steps:
+      - 'Lập chuỗi 3 kỳ: Revenue, NI, OCF, AR, Inventory, Gross margin, D/E.'
+      - Tính tăng trưởng từng khoản mục (m05_growth_rate) và OCF/NI.
+      - Đối chiếu từng dòng bảng Red Flag và Quality of Earnings Checklist (OCF > NI; thu tiền tương ứng doanh thu; không có khoản một lần lặp lại; chính sách kế toán nhất quán; khấu hao hợp lý; WC lành mạnh; không ghi nhận doanh thu sớm; MD&A khớp số; kiểm toán sạch; nội bộ bán cổ phiếu).
+      - 'Đọc Thuyết minh: off-balance sheet (SPE, thuê, bảo lãnh), giao dịch bên liên quan, nợ tiềm tàng.'
+      - 'Phân loại: nghiêm trọng (OCF-NI phân kỳ cộng AR vọt), cần theo dõi nhẹ (giá trị tuyệt đối nhỏ), không phát hiện; nêu giả thuyết và việc cần kiểm tra thêm (không kết luận gian lận).'
+      outputs: Bảng red flag, mức nghiêm trọng, giả thuyết, kế hoạch kiểm tra.
+  - id: "m05-procedures-5"
+    title: "Quy trình: m05_proc_sme_monitor — Thiết lập theo dõi tài chính định kỳ cho SME"
+    tags: ["quy", "trình", "m05_proc_sme_monitor", "thiết", "lập", "theo", "dõi", "tài", "chính", "định", "kỳ", "cho"]
+    text: |-
+      id: m05_proc_sme_monitor
+      name: Thiết lập theo dõi tài chính định kỳ cho SME
+      steps:
+      - 'Mức 1 - hàng tháng 5 phút: tiền cuối tháng so đầu tháng; doanh thu so tháng trước và cùng kỳ; nợ sắp đến hạn đã đủ tiền chưa.'
+      - 'Mức 2 - hàng quý 30 phút: Net Margin xu hướng; Current Ratio còn > 1.0; Inventory và AR có tăng nhanh hơn doanh thu.'
+      - 'Mức 3 - hàng năm hoặc khi vay/gọi vốn: bộ tỷ số đầy đủ, DuPont, so benchmark hoặc năm trước.'
+      - 'Phân tần suất theo quy mô: hộ/startup <2 tỷ tự làm; SME 2-20 tỷ kế toán chuẩn bị số liệu, chủ đọc; SME lớn chuẩn bị gọi vốn cần kế toán trưởng hoặc fractional CFO.'
+      - 'Dựng Google Sheet 5 tab: Input BS, Input IS, Cash Flow tự tính, Ratios Dashboard (conditional formatting xanh/vàng/đỏ), DuPont và Trend chart.'
+      outputs: Lịch kiểm tra, bảng dashboard, quy tắc cảnh báo.
+  - id: "m05-procedures-6"
+    title: "Quy trình: m05_proc_compare — Chọn phương pháp so sánh"
+    tags: ["quy", "trình", "m05_proc_compare", "chọn", "phương", "pháp", "so", "sánh"]
+    text: |-
+      id: m05_proc_compare
+      name: Chọn phương pháp so sánh
+      steps:
+      - Luôn bắt đầu với Trend nội bộ (3-5 kỳ).
+      - 'Khi quy mô thay đổi nhanh hoặc so DN khác cỡ: Common-size.'
+      - 'Khi có dữ liệu ngành đáng tin cậy và cùng loại hình: Cross-sectional; không so chéo ngành.'
+      - Ghi rõ nguồn và độ tin cậy benchmark.
+      outputs: Bảng so sánh có nhãn phương pháp và hạn chế.
+  - id: "m05-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu NI dương nhưng OCF âm hoặc ΔCash âm thì kiểm tra AR, Inventory, chu kỳ CCC; cảnh báo thanh khoả…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "ni", "dương", "nhưng", "ocf", "âm", "hoặc", "δcash"]
+    text: |-
+      Nếu NI dương nhưng OCF âm hoặc ΔCash âm thì kiểm tra AR, Inventory, chu kỳ CCC; cảnh báo thanh khoản và khuyên thu nợ/giữ lại lợi nhuận, không rút tiền chia.
+  - id: "m05-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu OCF < NI nhiều kỳ liên tiếp thì nghi vấn chất lượng lợi nhuận, đọc thuyết minh, kiểm tra ghi nh…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "ocf", "ni", "nhiều", "kỳ", "liên", "tiếp", "thì"]
+    text: |-
+      Nếu OCF < NI nhiều kỳ liên tiếp thì nghi vấn chất lượng lợi nhuận, đọc thuyết minh, kiểm tra ghi nhận doanh thu.
+  - id: "m05-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu AR (hoặc Inventory) tăng nhanh hơn Revenue kéo dài thì cảnh báo bán chịu quá đà/doanh thu ảo/tồ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "ar", "hoặc", "inventory", "tăng", "nhanh", "hơn", "revenue"]
+    text: |-
+      Nếu AR (hoặc Inventory) tăng nhanh hơn Revenue kéo dài thì cảnh báo bán chịu quá đà/doanh thu ảo/tồn ế; nếu giá trị tuyệt đối nhỏ so doanh thu thì chỉ theo dõi.
+  - id: "m05-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu Current Ratio < 1.0 thì thanh khoản nguy hiểm, xem Quick Ratio và OCF ratio; ngoại lệ bán lẻ CC…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "current", "ratio", "thì", "thanh", "khoản", "nguy", "hiểm"]
+    text: |-
+      Nếu Current Ratio < 1.0 thì thanh khoản nguy hiểm, xem Quick Ratio và OCF ratio; ngoại lệ bán lẻ CCC âm (cần xác nhận).
+  - id: "m05-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu Quick Ratio < 1.0 nhưng Current Ratio cao thì tài sản dồn ở tồn kho; xem DIO và khả năng thanh …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "quick", "ratio", "nhưng", "current", "cao", "thì", "tài"]
+    text: |-
+      Nếu Quick Ratio < 1.0 nhưng Current Ratio cao thì tài sản dồn ở tồn kho; xem DIO và khả năng thanh lý.
+  - id: "m05-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu Cash Ratio > 0.5 và Current Ratio dư thì cân nhắc dùng tiền thừa đầu tư/trả nợ; nếu < 0.2 thì d…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cash", "ratio", "và", "current", "dư", "thì", "cân"]
+    text: |-
+      Nếu Cash Ratio > 0.5 và Current Ratio dư thì cân nhắc dùng tiền thừa đầu tư/trả nợ; nếu < 0.2 thì dự phòng tiền mặt.
+  - id: "m05-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu Interest Coverage < 3x thì nguy hiểm, không nên tăng vay; nếu > 5x thì còn dư địa vay thêm."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "interest", "coverage", "3x", "thì", "nguy", "hiểm", "không"]
+    text: |-
+      Nếu Interest Coverage < 3x thì nguy hiểm, không nên tăng vay; nếu > 5x thì còn dư địa vay thêm.
+  - id: "m05-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu D/E > 2.0 hoặc Debt/Assets > 60% hoặc Debt/EBITDA > 4x thì rủi ro đòn bẩy cao; đề xuất giảm nợ/…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "hoặc", "debt", "assets", "60", "ebitda", "4x", "thì"]
+    text: |-
+      Nếu D/E > 2.0 hoặc Debt/Assets > 60% hoặc Debt/EBITDA > 4x thì rủi ro đòn bẩy cao; đề xuất giảm nợ/tăng vốn chủ.
+  - id: "m05-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu ROE cao nhưng Equity Multiplier cao thì ROE chất lượng thấp; dùng ROIC và Interest Coverage để …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "roe", "cao", "nhưng", "equity", "multiplier", "thì", "chất"]
+    text: |-
+      Nếu ROE cao nhưng Equity Multiplier cao thì ROE chất lượng thấp; dùng ROIC và Interest Coverage để đánh giá.
+  - id: "m05-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu ROIC > WACC thì tạo giá trị; nếu ROIC < WACC thì phá hủy giá trị dù có lãi kế toán."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "roic", "wacc", "thì", "tạo", "giá", "trị", "phá"]
+    text: |-
+      Nếu ROIC > WACC thì tạo giá trị; nếu ROIC < WACC thì phá hủy giá trị dù có lãi kế toán.
+  - id: "m05-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu Net Margin thấp nhưng Asset Turnover cao và CCC âm (bán lẻ) thì vẫn là mô hình tốt; không đánh …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "net", "margin", "thấp", "nhưng", "asset", "turnover", "cao"]
+    text: |-
+      Nếu Net Margin thấp nhưng Asset Turnover cao và CCC âm (bán lẻ) thì vẫn là mô hình tốt; không đánh giá chỉ bằng margin.
+  - id: "m05-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu Gross Margin giảm dần thì kiểm tra pricing power, giá đầu vào, khuyến mãi."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "gross", "margin", "giảm", "dần", "thì", "kiểm", "tra"]
+    text: |-
+      Nếu Gross Margin giảm dần thì kiểm tra pricing power, giá đầu vào, khuyến mãi.
+  - id: "m05-decision_rules-13"
+    title: "Quy tắc quyết định: Nếu CCC dài thì tối ưu: thu nợ nhanh hơn (DSO), giảm tồn kho (DIO), đàm phán DPO (không phá quan hệ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "ccc", "dài", "thì", "tối", "ưu", "thu", "nợ"]
+    text: |-
+      Nếu CCC dài thì tối ưu: thu nợ nhanh hơn (DSO), giảm tồn kho (DIO), đàm phán DPO (không phá quan hệ).
+  - id: "m05-decision_rules-14"
+    title: "Quy tắc quyết định: Nếu cần so sánh DN khác cấu trúc vốn thì dùng EBIT/Operating Margin hoặc ROIC thay vì Net Margin/RO…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cần", "so", "sánh", "dn", "khác", "cấu", "trúc"]
+    text: |-
+      Nếu cần so sánh DN khác cấu trúc vốn thì dùng EBIT/Operating Margin hoặc ROIC thay vì Net Margin/ROE.
+  - id: "m05-decision_rules-15"
+    title: "Quy tắc quyết định: Nếu so ngành khác nhau thì không dùng benchmark chéo; chỉ so cùng ngành/loại hình."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "so", "ngành", "khác", "nhau", "thì", "không", "dùng"]
+    text: |-
+      Nếu so ngành khác nhau thì không dùng benchmark chéo; chỉ so cùng ngành/loại hình.
+  - id: "m05-decision_rules-16"
+    title: "Quy tắc quyết định: Nếu người đọc là ngân hàng thì nhấn Interest Coverage, D/E, OCF, thanh khoản; nếu nhà đầu tư thì RO…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "người", "đọc", "là", "ngân", "hàng", "thì", "nhấn"]
+    text: |-
+      Nếu người đọc là ngân hàng thì nhấn Interest Coverage, D/E, OCF, thanh khoản; nếu nhà đầu tư thì ROE, ROIC, growth; nếu chủ DN thì efficiency và chi phí.
+  - id: "m05-decision_rules-17"
+    title: "Quy tắc quyết định: Nếu SME trộn lẫn tiền cá nhân và công ty hoặc không trích khấu hao thì dặn tách bạch/chuẩn hóa sổ s…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "sme", "trộn", "lẫn", "tiền", "cá", "nhân", "và"]
+    text: |-
+      Nếu SME trộn lẫn tiền cá nhân và công ty hoặc không trích khấu hao thì dặn tách bạch/chuẩn hóa sổ sách trước khi tin các tỷ số.
+  - id: "m05-decision_rules-18"
+    title: "Quy tắc quyết định: Nếu BCTC quá phức tạp, nhiều SPE/giao dịch bên liên quan, hoặc kiểm toán đồng thời tư vấn thì tăng …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "bctc", "quá", "phức", "tạp", "nhiều", "spe", "giao"]
+    text: |-
+      Nếu BCTC quá phức tạp, nhiều SPE/giao dịch bên liên quan, hoặc kiểm toán đồng thời tư vấn thì tăng mức hoài nghi.
+  - id: "m05-decision_rules-19"
+    title: "Quy tắc quyết định: Nếu DN gọi vốn quốc tế hoặc so với công ty IFRS thì lưu ý khác biệt VAS/IFRS (lease, doanh thu, fai…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dn", "gọi", "vốn", "quốc", "tế", "hoặc", "so"]
+    text: |-
+      Nếu DN gọi vốn quốc tế hoặc so với công ty IFRS thì lưu ý khác biệt VAS/IFRS (lease, doanh thu, fair value).
+  - id: "m05-benchmarks-1"
+    title: "Chuẩn so sánh: Gross Margin"
+    tags: ["chuẩn", "so", "sánh", "gross", "margin"]
+    text: |-
+      metric: Gross Margin
+      value: '>30% tốt; quán cà phê specialty 65-75%'
+      context: Chung và F&B
+      confidence: medium
+  - id: "m05-benchmarks-2"
+    title: "Chuẩn so sánh: Operating Margin"
+    tags: ["chuẩn", "so", "sánh", "operating", "margin"]
+    text: |-
+      metric: Operating Margin
+      value: '>15% tốt'
+      context: Chung
+      confidence: medium
+  - id: "m05-benchmarks-3"
+    title: "Chuẩn so sánh: Net Margin"
+    tags: ["chuẩn", "so", "sánh", "net", "margin"]
+    text: |-
+      metric: Net Margin
+      value: '>10% tốt; quán độc lập 5-10%; bán lẻ siêu thị 1.3-1.5%'
+      context: Chung, F&B, bán lẻ
+      confidence: medium
+  - id: "m05-benchmarks-4"
+    title: "Chuẩn so sánh: ROE"
+    tags: ["chuẩn", "so", "sánh", "roe"]
+    text: |-
+      metric: ROE
+      value: '>15% tốt'
+      context: Chung
+      confidence: medium
+  - id: "m05-benchmarks-5"
+    title: "Chuẩn so sánh: ROA"
+    tags: ["chuẩn", "so", "sánh", "roa"]
+    text: |-
+      metric: ROA
+      value: '>5% tốt'
+      context: Chung
+      confidence: medium
+  - id: "m05-benchmarks-6"
+    title: "Chuẩn so sánh: ROIC"
+    tags: ["chuẩn", "so", "sánh", "roic"]
+    text: |-
+      metric: ROIC
+      value: '> WACC (Apple ~55-60% vs WACC ~10%)'
+      context: Tạo giá trị
+      confidence: medium
+  - id: "m05-benchmarks-7"
+    title: "Chuẩn so sánh: Current Ratio"
+    tags: ["chuẩn", "so", "sánh", "current", "ratio"]
+    text: |-
+      metric: Current Ratio
+      value: 1.5-2.5
+      context: Chung
+      confidence: medium
+  - id: "m05-benchmarks-8"
+    title: "Chuẩn so sánh: Quick Ratio"
+    tags: ["chuẩn", "so", "sánh", "quick", "ratio"]
+    text: |-
+      metric: Quick Ratio
+      value: '>1.0'
+      context: Chung
+      confidence: medium
+  - id: "m05-benchmarks-9"
+    title: "Chuẩn so sánh: Cash Ratio"
+    tags: ["chuẩn", "so", "sánh", "cash", "ratio"]
+    text: |-
+      metric: Cash Ratio
+      value: '>0.2'
+      context: Chung
+      confidence: medium
+  - id: "m05-benchmarks-10"
+    title: "Chuẩn so sánh: Operating CF Ratio"
+    tags: ["chuẩn", "so", "sánh", "operating", "cf", "ratio"]
+    text: |-
+      metric: Operating CF Ratio
+      value: '>1.0'
+      context: Chung
+      confidence: medium
+  - id: "m05-benchmarks-11"
+    title: "Chuẩn so sánh: D/E"
+    tags: ["chuẩn", "so", "sánh"]
+    text: |-
+      metric: D/E
+      value: '>2.0 thận trọng'
+      context: Chung
+      confidence: medium
+  - id: "m05-benchmarks-12"
+    title: "Chuẩn so sánh: Debt/Assets"
+    tags: ["chuẩn", "so", "sánh", "debt", "assets"]
+    text: |-
+      metric: Debt/Assets
+      value: '>60% rủi ro'
+      context: Chung
+      confidence: medium
+  - id: "m05-benchmarks-13"
+    title: "Chuẩn so sánh: Interest Coverage"
+    tags: ["chuẩn", "so", "sánh", "interest", "coverage"]
+    text: |-
+      metric: Interest Coverage
+      value: <3x nguy hiểm
+      context: Chung
+      confidence: medium
+  - id: "m05-benchmarks-14"
+    title: "Chuẩn so sánh: Debt/EBITDA"
+    tags: ["chuẩn", "so", "sánh", "debt", "ebitda"]
+    text: |-
+      metric: Debt/EBITDA
+      value: '>4x rủi ro'
+      context: Chung
+      confidence: medium
+  - id: "m05-benchmarks-15"
+    title: "Chuẩn so sánh: DIO F&B"
+    tags: ["chuẩn", "so", "sánh", "dio"]
+    text: |-
+      metric: DIO F&B
+      value: ~27 ngày
+      context: Quán cà phê nguyên liệu tươi (case minh họa)
+      confidence: low
+  - id: "m05-benchmarks-16"
+    title: "Chuẩn so sánh: DSO bán lẻ/F&B"
+    tags: ["chuẩn", "so", "sánh", "dso", "bán", "lẻ"]
+    text: |-
+      metric: DSO bán lẻ/F&B
+      value: 2-4 ngày
+      context: Thu tiền mặt/thẻ ngay (minh họa)
+      confidence: low
+  - id: "m05-benchmarks-17"
+    title: "Chuẩn so sánh: CCC bán lẻ hiện đại"
+    tags: ["chuẩn", "so", "sánh", "ccc", "bán", "lẻ", "hiện", "đại"]
+    text: |-
+      metric: CCC bán lẻ hiện đại
+      value: 'âm (ví dụ -8 ngày: DSO 2 + DIO 25 - DPO 35)'
+      context: Chuỗi siêu thị giả định
+      confidence: low
+  - id: "m05-benchmarks-18"
+    title: "Chuẩn so sánh: Asset Turnover"
+    tags: ["chuẩn", "so", "sánh", "asset", "turnover"]
+    text: |-
+      metric: Asset Turnover
+      value: Bán lẻ 5-10x; BĐS/luxury 0.1-0.5x; ngân hàng ~0.08x
+      context: Theo mô hình
+      confidence: low
+  - id: "m05-benchmarks-19"
+    title: "Chuẩn so sánh: Chi phí dịch vụ kế toán trọn gói"
+    tags: ["chuẩn", "so", "sánh", "chi", "phí", "dịch", "vụ", "kế", "toán", "trọn", "gói"]
+    text: |-
+      metric: Chi phí dịch vụ kế toán trọn gói
+      value: ~2-5 triệu VNĐ/tháng
+      context: SME vừa VN, cần xác nhận
+      confidence: low
+  - id: "m05-benchmarks-20"
+    title: "Chuẩn so sánh: Phần mềm kế toán"
+    tags: ["chuẩn", "so", "sánh", "phần", "mềm", "kế", "toán"]
+    text: |-
+      metric: Phần mềm kế toán
+      value: MISA SME.NET ~3-8 triệu VNĐ/năm; Fast ~5-10 triệu VNĐ/năm; Excel/Google Sheets miễn phí
+      context: VN, cần xác nhận giá hiện hành
+      confidence: low
+  - id: "m05-pitfalls-1"
+    title: "Lỗi thường gặp: Nhầm lợi nhuận với tiền mặt; thấy lãi trên sổ liền rút tiền chia khi tiền đang kẹt trong AR/Invento…"
+    tags: ["lỗi", "thường", "gặp", "nhầm", "lợi", "nhuận", "với", "tiền", "mặt", "thấy", "lãi", "trên"]
+    text: |-
+      Nhầm lợi nhuận với tiền mặt; thấy lãi trên sổ liền rút tiền chia khi tiền đang kẹt trong AR/Inventory.
+  - id: "m05-pitfalls-2"
+    title: "Lỗi thường gặp: Chỉ nhìn một con số ROE (Apple 171%) mà không phân rã DuPont; ROE phình do buyback/đòn bẩy."
+    tags: ["lỗi", "thường", "gặp", "chỉ", "nhìn", "một", "con", "số", "roe", "apple", "171", "mà"]
+    text: |-
+      Chỉ nhìn một con số ROE (Apple 171%) mà không phân rã DuPont; ROE phình do buyback/đòn bẩy.
+  - id: "m05-pitfalls-3"
+    title: "Lỗi thường gặp: So benchmark chéo ngành (Current Ratio ngân hàng với quán cà phê); so DN IFRS với VAS khập khiễng."
+    tags: ["lỗi", "thường", "gặp", "so", "benchmark", "chéo", "ngành", "current", "ratio", "ngân", "hàng", "với"]
+    text: |-
+      So benchmark chéo ngành (Current Ratio ngân hàng với quán cà phê); so DN IFRS với VAS khập khiễng.
+  - id: "m05-pitfalls-4"
+    title: "Lỗi thường gặp: Dùng không nhất quán định nghĩa nợ (nợ có lãi hay tổng nợ phải trả) và mẫu số (cuối kỳ hay bình quâ…"
+    tags: ["lỗi", "thường", "gặp", "dùng", "không", "nhất", "quán", "định", "nghĩa", "nợ", "có", "lãi"]
+    text: |-
+      Dùng không nhất quán định nghĩa nợ (nợ có lãi hay tổng nợ phải trả) và mẫu số (cuối kỳ hay bình quân).
+  - id: "m05-pitfalls-5"
+    title: "Lỗi thường gặp: Làm tròn trung gian làm lệch CCC (nguồn -4.6, chính xác -5.07)."
+    tags: ["lỗi", "thường", "gặp", "làm", "tròn", "trung", "gian", "lệch", "ccc", "nguồn", "chính", "xác"]
+    text: |-
+      Làm tròn trung gian làm lệch CCC (nguồn -4.6, chính xác -5.07).
+  - id: "m05-pitfalls-6"
+    title: "Lỗi thường gặp: Quên trích khấu hao hoặc ghi thẳng tài sản vào chi phí một lần, làm lợi nhuận và xu hướng méo."
+    tags: ["lỗi", "thường", "gặp", "quên", "trích", "khấu", "hao", "hoặc", "ghi", "thẳng", "tài", "sản"]
+    text: |-
+      Quên trích khấu hao hoặc ghi thẳng tài sản vào chi phí một lần, làm lợi nhuận và xu hướng méo.
+  - id: "m05-pitfalls-7"
+    title: "Lỗi thường gặp: Không ghi nhận công nợ phải trả/phải thu ('nợ miệng', khách ghi sổ), BCTC không phản ánh thực."
+    tags: ["lỗi", "thường", "gặp", "không", "ghi", "nhận", "công", "nợ", "phải", "trả", "thu", "miệng"]
+    text: |-
+      Không ghi nhận công nợ phải trả/phải thu ('nợ miệng', khách ghi sổ), BCTC không phản ánh thực.
+  - id: "m05-pitfalls-8"
+    title: "Lỗi thường gặp: Không tách chi phí cá nhân và công ty; chủ lấy hàng về nhà không ghi sổ."
+    tags: ["lỗi", "thường", "gặp", "không", "tách", "chi", "phí", "cá", "nhân", "và", "công", "ty"]
+    text: |-
+      Không tách chi phí cá nhân và công ty; chủ lấy hàng về nhà không ghi sổ.
+  - id: "m05-pitfalls-9"
+    title: "Lỗi thường gặp: Chỉ tổng kết cuối năm nên không phát hiện tháng thiếu tiền theo mùa vụ."
+    tags: ["lỗi", "thường", "gặp", "chỉ", "tổng", "kết", "cuối", "năm", "nên", "không", "phát", "hiện"]
+    text: |-
+      Chỉ tổng kết cuối năm nên không phát hiện tháng thiếu tiền theo mùa vụ.
+  - id: "m05-pitfalls-10"
+    title: "Lỗi thường gặp: Kết luận gian lận chỉ từ một red flag; red flag chỉ là tín hiệu cần đào sâu."
+    tags: ["lỗi", "thường", "gặp", "kết", "luận", "gian", "lận", "chỉ", "từ", "một", "red", "flag"]
+    text: |-
+      Kết luận gian lận chỉ từ một red flag; red flag chỉ là tín hiệu cần đào sâu.
+  - id: "m05-pitfalls-11"
+    title: "Lỗi thường gặp: Bỏ qua Thuyết minh BCTC, nơi giấu off-balance sheet và giao dịch bên liên quan."
+    tags: ["lỗi", "thường", "gặp", "bỏ", "qua", "thuyết", "minh", "bctc", "nơi", "giấu", "off", "balance"]
+    text: |-
+      Bỏ qua Thuyết minh BCTC, nơi giấu off-balance sheet và giao dịch bên liên quan.
+  - id: "m05-pitfalls-12"
+    title: "Lỗi thường gặp: Coi nợ NCC là xấu: AP không lãi có thể là đòn bẩy miễn phí, nhưng kéo dài quá mức làm hại quan hệ."
+    tags: ["lỗi", "thường", "gặp", "coi", "nợ", "ncc", "là", "xấu", "ap", "không", "lãi", "có"]
+    text: |-
+      Coi nợ NCC là xấu: AP không lãi có thể là đòn bẩy miễn phí, nhưng kéo dài quá mức làm hại quan hệ.
+  - id: "m05-pitfalls-13"
+    title: "Lỗi thường gặp: Ghi chú nguồn: Apple 'ROE giả định' dùng nhầm đơn vị (1.15% thay 1.15x); số liệu quốc tế (Apple, En…"
+    tags: ["lỗi", "thường", "gặp", "ghi", "chú", "nguồn", "apple", "roe", "giả", "định", "dùng", "nhầm"]
+    text: |-
+      Ghi chú nguồn: Apple 'ROE giả định' dùng nhầm đơn vị (1.15% thay 1.15x); số liệu quốc tế (Apple, Enron) chỉ để minh họa.
+  - id: "m05-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: SME thường không kiểm toán, sổ sách đơn giản, trộn lẫn tiền cá nhân và công ty: độ tin cậy dữ liệu …"
+    tags: ["lưu", "sme", "việt", "nam", "thường", "không", "kiểm", "toán", "sổ", "sách", "đơn", "giản"]
+    text: |-
+      SME thường không kiểm toán, sổ sách đơn giản, trộn lẫn tiền cá nhân và công ty: độ tin cậy dữ liệu phụ thuộc ý thức ghi chép; việc đầu tiên là tách bạch tài chính và trích khấu hao.
+  - id: "m05-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: Mục đích SME: quyết định vận hành hằng ngày (có nên mở rộng, có lãi thật không, đủ tiền trả lương t…"
+    tags: ["lưu", "sme", "việt", "nam", "mục", "đích", "quyết", "định", "vận", "hành", "hằng", "ngày"]
+    text: |-
+      Mục đích SME: quyết định vận hành hằng ngày (có nên mở rộng, có lãi thật không, đủ tiền trả lương tháng sau không) hơn là định giá.
+  - id: "m05-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Chủ SME không cần đủ 20+ tỷ số: Mức 1 hằng tháng (dòng tiền ròng, doanh thu so tháng trước/cùng kỳ,…"
+    tags: ["lưu", "sme", "việt", "nam", "chủ", "không", "cần", "đủ", "20", "tỷ", "số", "mức"]
+    text: |-
+      Chủ SME không cần đủ 20+ tỷ số: Mức 1 hằng tháng (dòng tiền ròng, doanh thu so tháng trước/cùng kỳ, nợ sắp đến hạn), Mức 2 hằng quý (Net Margin, Current Ratio > 1.0, tồn kho và AR so doanh thu), Mức 3 hằng năm hoặc khi vay.
+  - id: "m05-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Ngân hàng (như Vietcombank) thường yêu cầu BCTC 2-3 năm cộng dòng tiền dự kiến: chuẩn bị Interest C…"
+    tags: ["lưu", "sme", "việt", "nam", "ngân", "hàng", "như", "vietcombank", "thường", "yêu", "cầu", "bctc"]
+    text: |-
+      Ngân hàng (như Vietcombank) thường yêu cầu BCTC 2-3 năm cộng dòng tiền dự kiến: chuẩn bị Interest Coverage, D/E, OCF, thanh khoản (cần xác nhận với từng ngân hàng).
+  - id: "m05-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: Phần mềm: Excel/Google Sheets (miễn phí), MISA SME.NET (~3-8 triệu/năm), Fast Accounting (~5-10 tri…"
+    tags: ["lưu", "sme", "việt", "nam", "phần", "mềm", "excel", "google", "sheets", "miễn", "phí", "misa"]
+    text: |-
+      Phần mềm: Excel/Google Sheets (miễn phí), MISA SME.NET (~3-8 triệu/năm), Fast Accounting (~5-10 triệu/năm); tham khảo cong-cu-quan-tri-doanh-nghiep-sme.md. Giá cần xác nhận.
+  - id: "m05-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: Kế toán dịch vụ trọn gói ~2-5 triệu/tháng cho SME vừa (2-20 tỷ doanh thu); SME lớn gọi vốn cần kế t…"
+    tags: ["lưu", "sme", "việt", "nam", "kế", "toán", "dịch", "vụ", "trọn", "gói", "triệu", "tháng"]
+    text: |-
+      Kế toán dịch vụ trọn gói ~2-5 triệu/tháng cho SME vừa (2-20 tỷ doanh thu); SME lớn gọi vốn cần kế toán trưởng hoặc fractional CFO.
+  - id: "m05-sme_vn_guidance-7"
+    title: "Lưu ý SME Việt Nam: Chủ nên tự đọc ít nhất Mức 1 và 2, không phó mặc hoàn toàn cho kế toán."
+    tags: ["lưu", "sme", "việt", "nam", "chủ", "nên", "tự", "đọc", "ít", "nhất", "mức", "và"]
+    text: |-
+      Chủ nên tự đọc ít nhất Mức 1 và 2, không phó mặc hoàn toàn cho kế toán.
+  - id: "m05-sme_vn_guidance-8"
+    title: "Lưu ý SME Việt Nam: F&B thu tiền ngay có CCC ngắn hoặc âm, tận dụng để mở rộng chi nhánh ít vốn, nhưng giữ đệm tiền cho…"
+    tags: ["lưu", "sme", "việt", "nam", "thu", "tiền", "ngay", "có", "ccc", "ngắn", "hoặc", "âm"]
+    text: |-
+      F&B thu tiền ngay có CCC ngắn hoặc âm, tận dụng để mở rộng chi nhánh ít vốn, nhưng giữ đệm tiền cho mùa thấp điểm (mùa mưa, Tết); chi phí thuê cộng nhân sự thường 40%+ doanh thu.
+  - id: "m05-sme_vn_guidance-9"
+    title: "Lưu ý SME Việt Nam: Gọi vốn nước ngoài có thể yêu cầu quy đổi gần IFRS (lease IFRS 16, doanh thu IFRS 15); thuế TNDN tr…"
+    tags: ["lưu", "sme", "việt", "nam", "gọi", "vốn", "nước", "ngoài", "có", "thể", "yêu", "cầu"]
+    text: |-
+      Gọi vốn nước ngoài có thể yêu cầu quy đổi gần IFRS (lease IFRS 16, doanh thu IFRS 15); thuế TNDN trong case 20% (cần xác nhận quy định hiện hành).
+  - id: "m05-case_lessons-1"
+    title: "Bài học case: Nội Thất Gỗ Việt - có lãi nhưng âm tiền"
+    tags: ["bài", "học", "case", "nội", "thất", "gỗ", "việt", "có", "lãi", "nhưng", "âm", "tiền"]
+    text: |-
+      name: Nội Thất Gỗ Việt - có lãi nhưng âm tiền
+      type: failure
+      setup: Bán 500tr nội thất cho chuỗi khách sạn, trả chậm 90 ngày; COGS 350tr đã trả trước; opex 80tr trả ngay; tiền đầu kỳ 200tr.
+      key_calculations:
+      - NI = 500 - 350 - 80 = +70tr
+      - Dòng tiền ròng = 0 - 350 - 80 = -430tr; OCF theo gián tiếp = NI 70 - ΔAR 500 = -430
+      - Tiền cuối kỳ = 200 - 430 = -230tr (không đủ trả lương, nợ)
+      lesson: Lợi nhuận dồn tích không phải tiền; bán chịu dài làm AR phình, DN lãi vẫn có thể phá sản (growing broke). Cần CFS và theo dõi thanh khoản, chính sách tín dụng và hạn mức vốn lưu động.
+      data_reliability: illustrative
+  - id: "m05-case_lessons-2"
+    title: "Bài học case: Apple FY2023 - ROE 171% không phải tốt nhất"
+    tags: ["bài", "học", "case", "apple", "fy2023", "roe", "171", "không", "phải", "tốt", "nhất"]
+    text: |-
+      name: Apple FY2023 - ROE 171% không phải tốt nhất
+      type: success
+      setup: Mô hình capital-light; Revenue 383B, NI 97B, Total Assets ~333B, Equity ~57B sau hơn 600B USD buyback; ROIC 55-60%; WACC ~10%.
+      key_calculations:
+      - Net Margin = 97/383 = 25.3%
+      - Asset Turnover = 383/333 = 1.15x
+      - Equity Multiplier = 333/57 = 5.84x (nguồn ghi 5.87)
+      - ROE = 25.3% x 1.15 x 5.87 = ~171%
+      - 'Nếu Equity 150B: EM = 333/150 = 2.22; ROE giả định = 25.3% x 1.15 x 2.22 = 64.6%'
+      lesson: Phần chênh lớn giữa 171% và 64.6% đến từ buyback làm co Equity (đòn bẩy), không phải cải thiện vận hành. Dùng ROIC để đánh giá năng lực vận hành; luôn hỏi 'ROE đến từ đâu'.
+      data_reliability: unverified
+  - id: "m05-case_lessons-3"
+    title: "Bài học case: Enron - gian lận BCTC (2001)"
+    tags: ["bài", "học", "case", "enron", "gian", "lận", "bctc", "2001"]
+    text: |-
+      name: Enron - gian lận BCTC (2001)
+      type: failure
+      setup: 'Công ty năng lượng Mỹ phá sản 12/2001; Arthur Andersen sụp đổ; ra đời Sarbanes-Oxley 2002. Số liệu theo nguồn (chưa kiểm chứng): doanh thu 2000 báo cáo $101B, nợ trên BS $13B vs thực $38B+, NI báo cáo $979 triệu nhưng thực lỗ nặng.'
+      key_calculations:
+      - 'Mark-to-market: ghi nhận lợi nhuận ước tính cả hợp đồng 20-30 năm ngay năm ký, dựa dự báo giá tự đưa ra.'
+      - '>3,000 SPE đưa $30B+ nợ ra ngoài Balance Sheet (cần bên thứ ba góp tối thiểu 3% vốn để không hợp nhất); CFO Fastow hưởng lợi cá nhân.'
+      - 'Phí Arthur Andersen: $25 triệu kiểm toán + $27 triệu tư vấn (độc lập bị nghi ngờ).'
+      lesson: 'Red flags: Revenue tăng mạnh nhưng OCF đi ngang/âm; BCTC phức tạp khó hiểu; off-balance sheet; giao dịch bên liên quan; thưởng gắn giá cổ phiếu; né câu hỏi; nhân sự cấp cao nghỉ đột ngột; kiểm toán đồng thời tư vấn. Bài học: OCF so NI, đọc Thuyết minh, hỏi ai hưởng lợi, độc lập kiểm toán, quản trị với HĐQT độc lập.'
+      data_reliability: unverified
+  - id: "m05-case_lessons-4"
+    title: "Bài học case: Masan/Bách Hóa Xanh - vòng quay nhanh, biên mỏng"
+    tags: ["bài", "học", "case", "masan", "bách", "hóa", "xanh", "vòng", "quay", "nhanh", "biên", "mỏng"]
+    text: |-
+      name: Masan/Bách Hóa Xanh - vòng quay nhanh, biên mỏng
+      type: success
+      setup: 'Chuỗi siêu thị mini giả định: vốn chủ 10 tỷ, nợ NCC 10 tỷ, Total Assets 20 tỷ, Net Margin 1.5%, Asset Turnover 9.'
+      key_calculations:
+      - Revenue = 20 x 9 = 180 tỷ
+      - NI = 180 x 1.5% = 2.7 tỷ
+      - 'ROE = 2.7/10 = 27%; DuPont: 1.5% x 9 x 2 = 27%'
+      - CCC = DSO 2 + DIO 25 - DPO 35 = -8 ngày
+      lesson: Bán lẻ kiếm lời nhờ quay vòng (turnover) và đòn bẩy miễn phí từ nhà cung cấp, không nhờ margin dày; CCC âm là lợi thế cấu trúc. So sánh với mô hình biên dày vòng quay chậm (BĐS, luxury) có rủi ro thanh khoản và lãi vay. Số liệu giả định minh họa; margin 1.3-1.5% của Masan/WinCommerce chưa xác minh.
+      data_reliability: illustrative
+  - id: "m05-case_lessons-5"
+    title: "Bài học case: Làn Gió Mới Coffee - SME Việt Nam A-Z"
+    tags: ["bài", "học", "case", "làn", "gió", "mới", "coffee", "sme", "việt", "nam"]
+    text: |-
+      name: Làn Gió Mới Coffee - SME Việt Nam A-Z
+      type: sme
+      setup: 'Quán cà phê specialty Q.3 TP.HCM, năm thứ 2: Revenue 2,400, COGS 720, EBIT 300, lãi vay 40, thuế 20%, NI 208; Total Assets 900, Equity 470, nợ vay 320; chủ rút 126. Đơn vị triệu VNĐ, số liệu minh họa nhưng nhất quán (BS cân, CFS khớp).'
+      key_calculations:
+      - Gross 1680/2400 = 70%; Operating 300/2400 = 12.5%; Net 208/2400 = 8.67%; ROE 208/470 = 44.3%; ROA 208/900 = 23.1%
+      - Current 250/190 = 1.32x; Quick (250-60)/190 = 1.0x; Cash 150/190 = 0.79x
+      - D/E (80+240)/470 = 0.68x; Debt/Assets 430/900 = 47.8%; Interest Coverage 300/40 = 7.5x
+      - Inventory Turnover 720/52.5 = 13.7 (DIO ~26.6); DSO ~3.8; DPO ~35.5; CCC ~ -5.07 (nguồn -4.6); Asset Turnover 2.67x
+      - 'DuPont: 8.67% x 2.67 x 1.915 = 44.3%'
+      - OCF = 208 + 100 - 10 - 15 - 2 + 20 + 5 = 306; ΔCash = 306 - 40 - 206 = +60; Cash 90 -> 150
+      - 'RE: -112 + 208 - 126 = -30'
+      lesson: 'Sức khỏe tốt, ROE chất lượng (cân bằng ba thành phần, Interest Coverage 7.5x, OCF 306 > NI 208). Cải thiện: Current Ratio 1.32 hơi thấp, nên giữ lại lợi nhuận thay vì rút 126; CCC âm cho phép mở chi nhánh ít vốn; theo dõi AR (+50%) và Inventory (+33%) mỗi quý dù tuyệt đối nhỏ; dùng Interest Coverage đàm phán vay, ROE thu hút nhà đầu tư.'
+      data_reliability: illustrative
+  - id: "m05-case_lessons-6"
+    title: "Bài học case: Công ty Y - mini case phát hiện red flags"
+    tags: ["bài", "học", "case", "công", "ty", "mini", "phát", "hiện", "red", "flags"]
+    text: |-
+      name: Công ty Y - mini case phát hiện red flags
+      type: failure
+      setup: Doanh thu 100/130/170 tỷ; NI 10/15/22; OCF 9/8/3; AR 15/28/55; Inventory 10/12/14.
+      key_calculations:
+      - Revenue +30%, +30.8%; NI +50%, +46.7%; AR +86.7%, +96.4%
+      - OCF/NI = 0.90, 0.53, 0.14
+      lesson: 'OCF giảm khi NI tăng và AR vọt gấp 2-3 lần tốc độ doanh thu: nghi bán chịu quá mức/channel stuffing/ghi nhận doanh thu sớm; cần điều tra chất lượng AR trước khi tin lợi nhuận.'
+      data_reliability: illustrative
+  - id: "m05-worked_examples-1"
+    title: "Ví dụ có lời giải: Tính bộ tỷ số thanh khoản cho cửa hàng"
+    tags: ["ví", "dụ", "có", "lời", "giải", "tính", "bộ", "tỷ", "số", "thanh", "khoản", "cho"]
+    text: |-
+      name: Tính bộ tỷ số thanh khoản cho cửa hàng
+      inputs:
+        current_assets: 300
+        inventory: 100
+        current_liabilities: 200
+      steps:
+      - Current Ratio = 300 / 200 = 1.5
+      - Quick Ratio = (300 - 100) / 200 = 1.0
+      result: CR 1.5x (ở ngưỡng tốt 1.5-2.5), QR 1.0x (đạt tối thiểu an toàn); thanh khoản ổn nhưng phụ thuộc 1/3 tài sản ngắn hạn là tồn kho.
+  - id: "m05-worked_examples-2"
+    title: "Ví dụ có lời giải: DuPont ngược từ Net Margin, Turnover, Total Assets, Equity"
+    tags: ["ví", "dụ", "có", "lời", "giải", "dupont", "ngược", "từ", "net", "margin", "turnover", "total"]
+    text: |-
+      name: DuPont ngược từ Net Margin, Turnover, Total Assets, Equity
+      inputs:
+        net_margin: 0.05
+        asset_turnover: 1.2
+        total_assets: 1000
+        equity: 500
+      steps:
+      - EM = 1000 / 500 = 2
+      - Revenue = 1.2 x 1000 = 1200
+      - NI = 5% x 1200 = 60
+      - 'ROE = 5% x 1.2 x 2 = 12% (kiểm: 60/500 = 12%)'
+      result: Revenue 1,200 triệu; NI 60 triệu; EM 2x; ROE 12%.
+  - id: "m05-worked_examples-3"
+    title: "Ví dụ có lời giải: CCC trước và sau đàm phán DPO"
+    tags: ["ví", "dụ", "có", "lời", "giải", "ccc", "trước", "và", "sau", "đàm", "phán", "dpo"]
+    text: |-
+      name: CCC trước và sau đàm phán DPO
+      inputs:
+        dio: 45
+        dso: 30
+        dpo_old: 20
+        dpo_new: 50
+      steps:
+      - CCC cũ = 30 + 45 - 20 = 55 ngày
+      - CCC mới = 30 + 45 - 50 = 25 ngày
+      - Giảm 30 ngày vốn lưu động phải tự ứng
+      result: CCC từ 55 xuống 25 ngày; nhu cầu vốn lưu động tự có giảm, giải phóng tiền cho mở rộng/trả nợ. Lưu ý rủi ro quan hệ NCC.
+  - id: "m05-worked_examples-4"
+    title: "Ví dụ có lời giải: Phân tích ROE Làn Gió Mới từ Balance Sheet và IS"
+    tags: ["ví", "dụ", "có", "lời", "giải", "phân", "tích", "roe", "làn", "gió", "mới", "từ"]
+    text: |-
+      name: Phân tích ROE Làn Gió Mới từ Balance Sheet và IS
+      inputs:
+        ni: 208
+        revenue: 2400
+        total_assets: 900
+        equity: 470
+        ebit: 300
+        interest: 40
+      steps:
+      - Net Margin = 208/2400 = 8.67%
+      - Asset Turnover = 2400/900 = 2.667
+      - EM = 900/470 = 1.915
+      - ROE = 8.67% x 2.667 x 1.915 = 44.3% (=208/470)
+      - Interest Coverage = 300/40 = 7.5x nên đòn bẩy 1.915 an toàn
+      result: 'ROE 44.3% chất lượng cao: cân bằng margin, turnover và đòn bẩy vừa phải.'
+  - id: "m05-worked_examples-5"
+    title: "Ví dụ có lời giải: Dựng CFS Làn Gió Mới và đối chiếu tiền"
+    tags: ["ví", "dụ", "có", "lời", "giải", "dựng", "cfs", "làn", "gió", "mới", "và", "đối"]
+    text: |-
+      name: Dựng CFS Làn Gió Mới và đối chiếu tiền
+      inputs:
+        ni: 208
+        dep: 100
+        d_ar: 10
+        d_inv: 15
+        d_prepaid: 2
+        d_ap: 20
+        d_accrued: 5
+        capex: 40
+        debt_repay: 80
+        owner_draw: 126
+        cash_begin: 90
+      steps:
+      - OCF = 208 + 100 - 10 - 15 - 2 + 20 + 5 = 306
+      - Investing = -40
+      - Financing = -80 - 126 = -206
+      - ΔCash = 306 - 40 - 206 = +60; Cash cuối = 150 khớp BS
+      - 'Kiểm RE: -112 + 208 - 126 = -30; kiểm BS: 900 = 430 + 470'
+      result: Tiền 90 -> 150; OCF 306 > NI 208; 3 báo cáo nhất quán.
+  - id: "m05-worked_examples-6"
+    title: "Ví dụ có lời giải: Phát hiện red flag Công ty Y"
+    tags: ["ví", "dụ", "có", "lời", "giải", "phát", "hiện", "red", "flag", "công", "ty"]
+    text: |-
+      name: Phát hiện red flag Công ty Y
+      inputs:
+        revenue:
+        - 100
+        - 130
+        - 170
+        ni:
+        - 10
+        - 15
+        - 22
+        ocf:
+        - 9
+        - 8
+        - 3
+        ar:
+        - 15
+        - 28
+        - 55
+      steps:
+      - 'Revenue growth: 30%, 30.8%'
+      - 'NI growth: 50%, 46.7%'
+      - 'AR growth: 86.7%, 96.4%'
+      - 'OCF/NI: 0.90, 0.53, 0.14'
+      result: 'Cảnh báo nghiêm trọng: lợi nhuận tăng nhưng tiền không về, AR vọt; cần kiểm tra bán chịu, ghi nhận doanh thu, khả năng thu hồi AR.'
+  - id: "m05-worked_examples-7"
+    title: "Ví dụ có lời giải: Bán lẻ ROE 27% từ margin 1.5%"
+    tags: ["ví", "dụ", "có", "lời", "giải", "bán", "lẻ", "roe", "27", "từ", "margin"]
+    text: |-
+      name: Bán lẻ ROE 27% từ margin 1.5%
+      inputs:
+        equity: 10
+        supplier_credit: 10
+        net_margin: 0.015
+        asset_turnover: 9
+      steps:
+      - Total Assets = 20; Revenue = 20 x 9 = 180
+      - NI = 180 x 1.5% = 2.7
+      - ROE = 2.7/10 = 27%; DuPont 1.5% x 9 x 2 = 27%
+      result: ROE 27% (tỷ VNĐ) nhờ turnover 9x và đòn bẩy 2x từ vốn nhà cung cấp.
+  - id: "m05-practice_questions-1"
+    title: "Câu hỏi luyện tập: Cửa hàng: CA 300tr, Inventory 100tr, CL 200tr. Tính Current và Quick Ratio, nhận xét."
+    tags: ["câu", "hỏi", "luyện", "tập", "cửa", "hàng", "ca", "300tr", "inventory", "100tr", "cl", "200tr"]
+    text: |-
+      q: 'Cửa hàng: CA 300tr, Inventory 100tr, CL 200tr. Tính Current và Quick Ratio, nhận xét.'
+      a: CR = 1.5x, QR = 1.0x; thanh khoản ở ngưỡng an toàn.
+  - id: "m05-practice_questions-2"
+    title: "Câu hỏi luyện tập: Giải thích vì sao Quick Ratio loại Inventory. Cửa hàng thời trang tồn kho 70% CA thì khoảng cách CR…"
+    tags: ["câu", "hỏi", "luyện", "tập", "giải", "thích", "vì", "sao", "quick", "ratio", "loại", "inventory"]
+    text: |-
+      q: Giải thích vì sao Quick Ratio loại Inventory. Cửa hàng thời trang tồn kho 70% CA thì khoảng cách CR và QR thế nào?
+      a: Inventory chậm và bất định hóa tiền nhất; khoảng cách CR - QR rất lớn, QR thấp hơn nhiều so với CR nên thanh khoản thực tế yếu hơn vẻ ngoài.
+  - id: "m05-practice_questions-3"
+    title: "Câu hỏi luyện tập: Công ty X: Net Margin 5%, Asset Turnover 1.2x, Total Assets 1,000tr, Equity 500tr. Tính Revenue, NI…"
+    tags: ["câu", "hỏi", "luyện", "tập", "công", "ty", "net", "margin", "asset", "turnover", "2x", "total"]
+    text: |-
+      q: 'Công ty X: Net Margin 5%, Asset Turnover 1.2x, Total Assets 1,000tr, Equity 500tr. Tính Revenue, NI, EM, ROE.'
+      a: EM = 2x; Revenue = 1,200tr; NI = 60tr; ROE = 12%.
+  - id: "m05-practice_questions-4"
+    title: "Câu hỏi luyện tập: DIO 45, DSO 30, DPO 20. Tính CCC; nếu DPO lên 50 thì sao?"
+    tags: ["câu", "hỏi", "luyện", "tập", "dio", "45", "dso", "30", "dpo", "20", "tính", "ccc"]
+    text: |-
+      q: DIO 45, DSO 30, DPO 20. Tính CCC; nếu DPO lên 50 thì sao?
+      a: CCC = 55 ngày; sau đó 25 ngày, giảm 30 ngày, cần ít vốn lưu động hơn.
+  - id: "m05-practice_questions-5"
+    title: "Câu hỏi luyện tập: Công ty Y (Revenue 100/130/170, NI 10/15/22, OCF 9/8/3, AR 15/28/55): tính tăng trưởng, red flag, g…"
+    tags: ["câu", "hỏi", "luyện", "tập", "công", "ty", "revenue", "100", "130", "170", "ni", "10"]
+    text: |-
+      q: 'Công ty Y (Revenue 100/130/170, NI 10/15/22, OCF 9/8/3, AR 15/28/55): tính tăng trưởng, red flag, giả thuyết.'
+      a: 'Revenue +30%/+30.8%; NI +50%/+46.7%; AR +86.7%/+96.4%. Red flag: OCF giảm khi NI tăng, AR vọt. Giả thuyết: bán chịu quá mức/ghi nhận doanh thu sớm/channel stuffing.'
+  - id: "m05-practice_questions-6"
+    title: "Câu hỏi luyện tập: Net Income 70tr nhưng tiền ròng -430tr: giải thích."
+    tags: ["câu", "hỏi", "luyện", "tập", "net", "income", "70tr", "nhưng", "tiền", "ròng", "430tr", "giải"]
+    text: |-
+      q: 'Net Income 70tr nhưng tiền ròng -430tr: giải thích.'
+      a: Doanh thu 500tr là AR chưa thu 90 ngày, COGS 350 và opex 80 đã chi tiền; lãi dồn tích khác dòng tiền.
+  - id: "m05-practice_questions-7"
+    title: "Câu hỏi luyện tập: Làn Gió Mới có cần lo về đòn bẩy không?"
+    tags: ["câu", "hỏi", "luyện", "tập", "làn", "gió", "mới", "có", "cần", "lo", "về", "đòn"]
+    text: |-
+      q: Làn Gió Mới có cần lo về đòn bẩy không?
+      a: 'Không: D/E 0.68, Interest Coverage 7.5x, nợ vay đang giảm (320 xuống 240 dài hạn).'
+  - id: "m05-practice_questions-8"
+    title: "Câu hỏi luyện tập: Tại sao chuỗi bán lẻ với Net Margin 1.5% vẫn ROE 27%?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tại", "sao", "chuỗi", "bán", "lẻ", "với", "net", "margin"]
+    text: |-
+      q: Tại sao chuỗi bán lẻ với Net Margin 1.5% vẫn ROE 27%?
+      a: 'Asset Turnover 9x và Equity Multiplier 2x (vốn NCC miễn phí): 1.5% x 9 x 2 = 27%.'
+  - id: "m05-practice_questions-9"
+    title: "Câu hỏi luyện tập: Apple ROE 171% có nghĩa Apple giỏi hơn 8.5 lần DN ROE 20% không?"
+    tags: ["câu", "hỏi", "luyện", "tập", "apple", "roe", "171", "có", "nghĩa", "giỏi", "hơn", "lần"]
+    text: |-
+      q: Apple ROE 171% có nghĩa Apple giỏi hơn 8.5 lần DN ROE 20% không?
+      a: 'Không: phần lớn do buyback giảm Equity (EM ~5.9); ROE giả định với Equity 150B chỉ 64.6%; nên dùng ROIC ~55-60% so WACC ~10%.'
+  - id: "m05-practice_questions-10"
+    title: "Câu hỏi luyện tập: Tự thực hành: thực hiện 5 bước như Làn Gió Mới cho DN của bạn và nêu 3 hành động quý tới."
+    tags: ["câu", "hỏi", "luyện", "tập", "tự", "thực", "hành", "hiện", "bước", "như", "làn", "gió"]
+    text: |-
+      q: 'Tự thực hành: thực hiện 5 bước như Làn Gió Mới cho DN của bạn và nêu 3 hành động quý tới.'
+      a: 'Gợi ý: kiểm tra cân Balance Sheet và CFS khớp tiền; tính 4 nhóm tỷ số; DuPont; red flags; 3 hành động ưu tiên (ví dụ thu nợ, giảm tồn kho, giữ lại lợi nhuận).'
+  - id: "m05-checklist-1"
+    title: "Checklist: Balance Sheet cân (Assets = Liabilities + Equity)? Cash cuối CFS khớp BS? RE roll-forward đúng?"
+    tags: ["checklist", "balance", "sheet", "cân", "assets", "liabilities", "equity", "cash", "cuối", "cfs", "khớp", "bs"]
+    text: |-
+      Balance Sheet cân (Assets = Liabilities + Equity)? Cash cuối CFS khớp BS? RE roll-forward đúng?
+  - id: "m05-checklist-2"
+    title: "Checklist: Xu hướng Revenue, Gross, Operating, Net Margin; OCF dương và OCF > NI?"
+    tags: ["checklist", "xu", "hướng", "revenue", "gross", "operating", "net", "margin", "ocf", "dương", "và", "ni"]
+    text: |-
+      Xu hướng Revenue, Gross, Operating, Net Margin; OCF dương và OCF > NI?
+  - id: "m05-checklist-3"
+    title: "Checklist: Đã đọc Thuyết minh: khoản bất thường, bên liên quan, nợ tiềm tàng, off-balance sheet?"
+    tags: ["checklist", "đã", "đọc", "thuyết", "minh", "khoản", "bất", "thường", "bên", "liên", "quan", "nợ"]
+    text: |-
+      Đã đọc Thuyết minh: khoản bất thường, bên liên quan, nợ tiềm tàng, off-balance sheet?
+  - id: "m05-checklist-4"
+    title: "Checklist: Profitability (Gross/Operating/Net, ROE, ROA, ROIC); Liquidity (Current > 1.5, Quick > 1, Cash, OCF…"
+    tags: ["checklist", "profitability", "gross", "operating", "net", "roe", "roa", "roic", "liquidity", "current", "quick", "cash"]
+    text: |-
+      Profitability (Gross/Operating/Net, ROE, ROA, ROIC); Liquidity (Current > 1.5, Quick > 1, Cash, OCF ratio); Leverage (D/E, Debt/Assets, Interest Coverage > 3x, Debt/EBITDA); Efficiency (turnover, DIO/DSO/DPO, CCC, Asset Turnover)?
+  - id: "m05-checklist-5"
+    title: "Checklist: Đã phân rã DuPont (3 hoặc 5 thành phần) và đánh giá chất lượng ROE?"
+    tags: ["checklist", "đã", "phân", "rã", "dupont", "hoặc", "thành", "phần", "và", "đánh", "giá", "chất"]
+    text: |-
+      Đã phân rã DuPont (3 hoặc 5 thành phần) và đánh giá chất lượng ROE?
+  - id: "m05-checklist-6"
+    title: "Checklist: Đã nêu định nghĩa mẫu số (bình quân hay cuối kỳ, nợ có lãi hay tổng nợ) và đơn vị?"
+    tags: ["checklist", "đã", "nêu", "định", "nghĩa", "mẫu", "số", "bình", "quân", "hay", "cuối", "kỳ"]
+    text: |-
+      Đã nêu định nghĩa mẫu số (bình quân hay cuối kỳ, nợ có lãi hay tổng nợ) và đơn vị?
+  - id: "m05-checklist-7"
+    title: "Checklist: Trend 3-5 kỳ, common-size, so ngành cùng loại (nếu có dữ liệu)?"
+    tags: ["checklist", "trend", "kỳ", "common", "size", "so", "ngành", "cùng", "loại", "nếu", "có", "dữ"]
+    text: |-
+      Trend 3-5 kỳ, common-size, so ngành cùng loại (nếu có dữ liệu)?
+  - id: "m05-checklist-8"
+    title: "Checklist: Red flags: OCF-NI phân kỳ, AR và Inventory vs Revenue, chính sách kế toán đổi, ghi nhận doanh thu s…"
+    tags: ["checklist", "red", "flags", "ocf", "ni", "phân", "kỳ", "ar", "và", "inventory", "vs", "revenue"]
+    text: |-
+      Red flags: OCF-NI phân kỳ, AR và Inventory vs Revenue, chính sách kế toán đổi, ghi nhận doanh thu sớm?
+  - id: "m05-checklist-9"
+    title: "Checklist: Quality of Earnings checklist 10 mục đã rà?"
+    tags: ["checklist", "quality", "of", "earnings", "10", "mục", "đã", "rà"]
+    text: |-
+      Quality of Earnings checklist 10 mục đã rà?
+  - id: "m05-checklist-10"
+    title: "Checklist: Số liệu đã tính lại bằng Python và tự nhất quán trước khi báo cáo?"
+    tags: ["checklist", "số", "liệu", "đã", "tính", "lại", "bằng", "python", "và", "tự", "nhất", "quán"]
+    text: |-
+      Số liệu đã tính lại bằng Python và tự nhất quán trước khi báo cáo?
+  - id: "m05-checklist-11"
+    title: "Checklist: Đã kèm disclaimer: đây là phân tích tham khảo, không phải tư vấn đầu tư/tài chính có giấy phép?"
+    tags: ["checklist", "đã", "kèm", "disclaimer", "đây", "là", "phân", "tích", "tham", "khảo", "không", "phải"]
+    text: |-
+      Đã kèm disclaimer: đây là phân tích tham khảo, không phải tư vấn đầu tư/tài chính có giấy phép?
+  - id: "m05-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Tab 1 Input Balance Sheet theo tháng: Cash, AR, Inventory, Prepaid, Fixed Assets net, AP, Short-ter…"
+    tags: ["mẫu", "excel", "sheets", "tab", "input", "balance", "sheet", "theo", "tháng", "cash", "ar", "inventory"]
+    text: |-
+      Tab 1 Input Balance Sheet theo tháng: Cash, AR, Inventory, Prepaid, Fixed Assets net, AP, Short-term Debt, Accrued, Long-term Debt, Paid-in Capital, Retained Earnings.
+  - id: "m05-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Tab 2 Input Income Statement theo tháng: Revenue, COGS, Gross Profit, Opex từng khoản, Depreciation…"
+    tags: ["mẫu", "excel", "sheets", "tab", "input", "income", "statement", "theo", "tháng", "revenue", "cogs", "gross"]
+    text: |-
+      Tab 2 Input Income Statement theo tháng: Revenue, COGS, Gross Profit, Opex từng khoản, Depreciation, EBIT, Interest, EBT, Tax, Net Income.
+  - id: "m05-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: Tab 3 Cash Flow tự tính: OCF = NI + Depreciation +/- ΔAR/ΔInventory/ΔAP (hiệu giá trị tháng này trừ…"
+    tags: ["mẫu", "excel", "sheets", "tab", "cash", "flow", "tự", "tính", "ocf", "ni", "depreciation", "δar"]
+    text: |-
+      Tab 3 Cash Flow tự tính: OCF = NI + Depreciation +/- ΔAR/ΔInventory/ΔAP (hiệu giá trị tháng này trừ tháng trước), Investing, Financing, ΔCash.
+  - id: "m05-excel_google_sheets_templates-4"
+    title: "Mẫu Excel/Sheets: Tab 4 Ratios Dashboard: Profitability, Liquidity, Leverage, Efficiency; conditional formatting xanh…"
+    tags: ["mẫu", "excel", "sheets", "tab", "ratios", "dashboard", "profitability", "liquidity", "leverage", "efficiency", "conditional", "formatting"]
+    text: |-
+      Tab 4 Ratios Dashboard: Profitability, Liquidity, Leverage, Efficiency; conditional formatting xanh/vàng/đỏ theo benchmark.
+  - id: "m05-excel_google_sheets_templates-5"
+    title: "Mẫu Excel/Sheets: Tab 5 DuPont và Trend chart: Net Margin x Asset Turnover x Equity Multiplier theo tháng; xu hướng R…"
+    tags: ["mẫu", "excel", "sheets", "tab", "dupont", "và", "trend", "chart", "net", "margin", "asset", "turnover"]
+    text: |-
+      Tab 5 DuPont và Trend chart: Net Margin x Asset Turnover x Equity Multiplier theo tháng; xu hướng ROE, Current Ratio, CCC.
+  - id: "m05-excel_google_sheets_templates-6"
+    title: "Mẫu Excel/Sheets: Công thức: =D3/D2 (Current Ratio), =(CA-Inv)/CL, =EBIT/Interest, =365/(COGS/AVERAGE(Inv_dau,Inv_cuo…"
+    tags: ["mẫu", "excel", "sheets", "công", "thức", "d3", "d2", "current", "ratio", "ca", "inv", "cl"]
+    text: |-
+      Công thức: =D3/D2 (Current Ratio), =(CA-Inv)/CL, =EBIT/Interest, =365/(COGS/AVERAGE(Inv_dau,Inv_cuoi)) (DIO), =DSO+DIO-DPO. Mẫu đầy đủ hơn xem templates/financial-model-excel-guide.md.
+  - id: "m05-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: 05-financial-statement-analysis.md

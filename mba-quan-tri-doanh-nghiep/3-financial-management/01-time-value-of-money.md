@@ -773,7 +773,7 @@ Mặt bằng cho thuê 12 triệu/tháng cố định mãi mãi. Nếu lợi su�
 
 ### Bài 4 (Trung bình – NPV và IRR)
 Dự án: vốn 300 triệu, dòng tiền năm 1–4 lần lượt 100, 120, 140, 160; r = 12%. Tính NPV, IRR và cho biết quyết định.
-*Gợi ý đáp số*: NPV ≈ +23,54 triệu; IRR ≈ 23,96% → NPV > 0 và IRR > 12% → chấp nhận.
+*Gợi ý đáp số*: NPV ≈ +86,28 triệu; IRR ≈ 23,96% → NPV > 0 và IRR > 12% → chấp nhận.
 
 ### Bài 5 (Trung bình – Vay)
 Vay 500 triệu, lãi 12%/năm ghép tháng, 24 tháng. Tính PMT và EAR.
@@ -781,7 +781,7 @@ Vay 500 triệu, lãi 12%/năm ghép tháng, 24 tháng. Tính PMT và EAR.
 
 ### Bài 6 (Nâng cao – Mini Case: Quyết định mở rộng xưởng)
 Dự án A: vốn 600 triệu, dòng tiền 200, 250, 300, 350 (năm 1–4), r = 10%. (a) Tính NPV, IRR. (b) Dòng tiền thực tế thấp hơn 15% — dự án có còn đáng làm không? (c) Nếu nhà cung cấp cho trả góp 4 năm × 170 triệu thay vì trả ngay 540 triệu, có nên chọn trả góp?
-*Gợi ý đáp số (a)*: NPV ≈ +252,88 triệu; IRR ≈ 26,43%. (b) Với dòng tiền bằng 85% dự báo: NPV ≈ +124,95 triệu (vẫn dương). (c) PV của 4 × 170 triệu ở 10% ≈ 538,9 triệu ≈ 540 triệu: hai phương án gần như ngang nhau, lãi ẩn của trả góp xấp xỉ 10,1% – tự dùng `=RATE(4,-170,540)` để xác nhận.
+*Gợi ý đáp số (a)*: NPV ≈ +252,88 triệu; IRR ≈ 26,43%. (b) Với dòng tiền bằng 85% dự báo: NPV ≈ +124,95 triệu (vẫn dương). (c) PV của 4 × 170 triệu ở 10% ≈ 538,9 triệu ≈ 540 triệu: hai phương án gần như ngang nhau, lãi ẩn của trả góp xấp xỉ 9,90%/năm – tự dùng `=RATE(4,-170,540)` để xác nhận.
 
 ### Bài 7 (Nâng cao – Tự thực hành với doanh nghiệp của bạn)
 Chọn một quyết định thực tế (mua máy, mở điểm bán, vay vốn). Lập timeline, chọn tỷ lệ chiết khấu theo mục IV.3, tính NPV/IRR/Payback bằng Excel, lập bảng độ nhạy 3×3 và đưa ra khuyến nghị bằng văn bản một trang.

@@ -1,0 +1,843 @@
+# m02 - Capital Budgeting. Chắt lọc từ 02-capital-budgeting.md. Đơn vị tiền mặc định: triệu đồng (trừ khi ghi khác).
+id: "m02"
+name_vi: "Hoạch định ngân sách vốn (Thẩm định dự án đầu tư)"
+name_en: "Capital Budgeting"
+purpose: >-
+  Quy trình đánh giá và chọn các dự án đầu tư dài hạn (thường trên 1 năm) để phân bổ vốn khan hiếm sao cho tối đa hóa giá trị doanh nghiệp.
+  Trả lời bằng con số câu hỏi: mua máy này, mở chi nhánh kia hay không làm gì, dựa trên dòng tiền tăng thêm sau thuế chiết khấu theo chi phí vốn
+  (NPV, IRR, MIRR, PI, Payback, DPP, EAA) kèm phân tích rủi ro (độ nhạy, kịch bản, hòa vốn, real options).
+when_to_use:
+  - "Có nên mua máy, mở chi nhánh, thay thiết bị, nâng cấp ERP/IT, ra sản phẩm mới? Tính NPV/IRR/Payback"
+  - "Chọn 1 trong 2 phương án loại trừ nhau (máy A vs máy B) và NPV, IRR cho kết luận ngược nhau"
+  - "Ngân sách/hạn mức vay có hạn, nhiều dự án tốt - cần chọn tổ hợp (capital rationing)"
+  - "So sánh phương án có vòng đời khác nhau (máy bền 3 năm vs 5 năm)"
+  - "Lập bảng dòng tiền dự án sau thuế: khấu hao, thuế, NWC, giá trị thu hồi, chi phí cơ hội, chi phí chìm"
+  - "Phân tích rủi ro dự án: độ nhạy, kịch bản, hòa vốn (Goal Seek), real options, tiêu chí dừng"
+  - "Dự án bắt buộc (luật môi trường, PCCC): chọn phương án chi phí hiện tại ròng thấp nhất"
+prerequisites: ["m01"]
+related_modules:
+  - "m01: giá trị thời gian của tiền (PV, FV, niên kim, hàm NPV/IRR nền tảng)"
+  - "m03: chi phí vốn WACC/CAPM là tỷ suất chiết khấu r của NPV"
+  - "m04: cấu trúc vốn; SME thường dùng lãi vay + phần bù rủi ro làm r"
+  - "m05: phân tích BCTC để lấy EBITDA, thuế, lịch sử dự báo"
+  - "m06: vốn lưu động (NWC) - khoản dòng tiền hay bị quên"
+  - "m08: rủi ro và suất sinh lời để điều chỉnh r theo rủi ro dự án"
+  - "m09, m10: M&A và định giá dùng cùng logic DCF"
+  - "m11: guide tích hợp áp dụng capital budgeting vào bài toán tổng hợp"
+
+concepts:
+  - term_vi: "Hoạch định ngân sách vốn"
+    term_en: "Capital Budgeting"
+    definition: "Quy trình đánh giá và lựa chọn dự án đầu tư dài hạn để phân bổ nguồn vốn khan hiếm, nhằm tối đa hóa giá trị doanh nghiệp/tài sản chủ sở hữu."
+    why_it_matters: >-
+      Quyết định tiền lớn, khó đảo ngược (máy chuyên dụng bán lại rất rẻ), tác động 5-20 năm, có chi phí cơ hội, định hình lợi thế cạnh tranh.
+      Buffett: quyết định quan trọng nhất của CEO là phân bổ vốn. Thay cảm tính bằng con số.
+  - term_vi: "Nguồn gốc lý thuyết"
+    term_en: "Theoretical origins"
+    definition: >-
+      Irving Fisher và Jack Hirshleifer (1930s-1950s): nền tảng NPV, tách quyết định đầu tư khỏi quyết định tài trợ.
+      Joel Dean (1951): sách Capital Budgeting hệ thống hóa. Lorie và Savage (1955): đa nghiệm IRR, capital rationing.
+      Stewart Myers (1977): tư duy Real Options. Các mốc năm theo cách giáo trình thường trích, cần đối chiếu bản gốc khi dùng học thuật.
+    why_it_matters: >-
+      Trước thập niên 1950 doanh nghiệp dùng kinh nghiệm và Payback thô (coi 1 đồng hôm nay bằng 1 đồng sau 5 năm, bỏ qua dòng tiền sau hoàn vốn).
+      Nguyên tắc hiện đại: dự án đáng làm nếu giá trị hiện tại ròng dương. Từ đó sinh NPV (đo trực tiếp), IRR (diễn đạt thành tỷ suất), PI (xếp hạng khi thiếu vốn),
+      mỗi công cụ vá một lỗ hổng của công cụ trước.
+  - term_vi: "Các loại dự án"
+    term_en: "Project types"
+    definition: >-
+      Theo mục đích: Expansion (mở rộng), Replacement (thay thế), Mandatory (bắt buộc pháp lý), R&D/Innovation, M&A, Strategic/Exploratory (pilot, thử thị trường).
+      Theo quan hệ: Independent (độc lập), Mutually exclusive (loại trừ lẫn nhau), Contingent (phụ thuộc: B chỉ làm được nếu có A).
+    why_it_matters: >-
+      Quy tắc ra quyết định đổi theo loại. Độc lập: NPV>0 là làm. Loại trừ: so sánh và chọn NPV cao nhất (nơi NPV và IRR xung đột).
+      Bắt buộc: NPV có thể âm nhưng vẫn phải làm, bài toán là chọn phương án chi phí hiện tại ròng thấp nhất.
+  - term_vi: "Quy trình 7 bước"
+    term_en: "7-step capital budgeting process"
+    definition: "1 Idea generation; 2 Preliminary screening (loại dự án lệch chiến lược); 3 Cash flow estimation; 4 Financial analysis (NPV, IRR, Payback, PI); 5 Project selection (ràng buộc vốn, chiến lược, rủi ro); 6 Implementation (milestone, kiểm soát ngân sách); 7 Post-audit (thực tế vs dự phóng)."
+    why_it_matters: >-
+      Post-audit là bước duy nhất giúp doanh nghiệp học; thiếu nó, người dự báo luôn lạc quan quá mức (optimism bias) mà không bị hiệu chỉnh.
+      Nhiều tập đoàn bắt người đề xuất chịu trách nhiệm với dự phóng của mình qua post-audit hằng quý.
+  - term_vi: "Dòng tiền tăng thêm"
+    term_en: "Incremental cash flow"
+    definition: "Chỉ phần dòng tiền THAY ĐỔI do dự án: CF có dự án trừ CF không có dự án."
+    why_it_matters: "Quyết định hướng về tương lai; chỉ những gì thay đổi theo quyết định mới liên quan."
+  - term_vi: "Chi phí chìm"
+    term_en: "Sunk cost"
+    definition: "Chi phí đã chi, không thu hồi được dù làm hay không làm dự án (ví dụ 500 triệu nghiên cứu đã chi, 40 triệu khảo sát) - phải LOẠI khỏi phân tích."
+    why_it_matters: "Gốc của ngụy biện chi phí chìm khiến Iridium tiếp tục đổ tiền. Câu hỏi kiểm tra: nếu chưa chi gì, hôm nay tôi có làm không?"
+  - term_vi: "Chi phí cơ hội"
+    term_en: "Opportunity cost"
+    definition: "Giá trị của phương án tốt nhất bị bỏ qua khi dùng tài sản/nhân sự sẵn có cho dự án (ví dụ xưởng trống đang cho thuê 60 triệu/năm thì 60 triệu là chi phí của dự án)."
+    why_it_matters: "Tài sản sẵn có không miễn phí; bỏ sót làm đánh giá quá cao dự án."
+  - term_vi: "Ngoại tác / ăn mòn doanh số"
+    term_en: "Externalities / Cannibalization"
+    definition: "Tác động phụ của dự án lên dự án/sản phẩm khác (sản phẩm mới ăn doanh số sản phẩm cũ) phải đưa vào dòng tiền tăng thêm."
+    why_it_matters: "Nếu bỏ qua, dòng tiền gia tăng bị thổi phồng."
+  - term_vi: "Không tính dòng tiền tài trợ"
+    term_en: "Ignore financing cash flows"
+    definition: "Không trừ lãi vay, trả gốc nợ trong dòng tiền dự án; chi phí vốn nằm trong tỷ suất chiết khấu (WACC)."
+    why_it_matters: "Vừa trừ lãi trong dòng tiền vừa chiết khấu WACC là phạt dự án hai lần (double counting). Đây cũng là tách bạch investment và financing của Fisher."
+  - term_vi: "Dòng tiền thay vì lợi nhuận kế toán"
+    term_en: "Cash flow vs accounting profit"
+    definition: "Thẩm định dùng dòng tiền tự do sau thuế của dự án, không dùng lợi nhuận kế toán."
+    why_it_matters: "Lợi nhuận kế toán chứa khoản không phải tiền (khấu hao) và ghi nhận dồn tích (bán chịu chưa thu tiền). Nhà đầu tư chỉ tiêu được tiền thật, và tiền nhận sớm quý hơn."
+  - term_vi: "Cấu trúc dòng tiền dự án"
+    term_en: "Initial / Operating / Terminal cash flows"
+    definition: >-
+      Initial (năm 0): CAPEX + lắp đặt/vận chuyển/chạy thử + thu từ bán tài sản cũ - thuế trên lãi bán (hoặc + tiết kiệm thuế nếu lỗ) + tăng NWC.
+      Operating (năm 1..n): EBIT(1-T)+Dep - dNWC - maintenance CAPEX.
+      Terminal (năm cuối): salvage value - thuế trên chênh lệch (giá bán - giá trị sổ sách) + thu hồi NWC.
+    why_it_matters: "NWC là tiền kẹt thật ở đầu dự án (tồn kho, công nợ phải thu) và thu hồi khi kết thúc. SME quên khoản này nên thiếu tiền mặt tháng thứ 3 dù dự án có lãi trên giấy."
+  - term_vi: "Lá chắn thuế khấu hao"
+    term_en: "Depreciation tax shield"
+    definition: "Khoản thuế tiết kiệm được nhờ khấu hao làm giảm lợi nhuận chịu thuế: Dep x T."
+    why_it_matters: "Khấu hao không phải tiền nhưng làm tăng NPV; khấu hao nhanh hơn thì lá chắn đến sớm hơn nên PV lớn hơn."
+  - term_vi: "Giá trị hiện tại ròng"
+    term_en: "Net Present Value (NPV)"
+    definition: "Tổng dòng tiền chiết khấu về hiện tại theo chi phí vốn r, trừ vốn đầu tư. Dương thì dự án tạo thêm giá trị."
+    why_it_matters: >-
+      Tiêu chuẩn vàng vì trả lời trực tiếp 'tôi giàu thêm bao nhiêu đồng (tiền hôm nay)'. Có tính cộng được (NPV(A+B)=NPV(A)+NPV(B)) nên cộng dự án ra giá trị công ty, đặc tính IRR không có.
+  - term_vi: "Tỷ suất hoàn vốn nội bộ"
+    term_en: "Internal Rate of Return (IRR)"
+    definition: "Mức chiết khấu làm NPV bằng 0; chi phí vốn tối đa mà dự án chịu được."
+    why_it_matters: "Quản lý và ngân hàng quen nghĩ theo tỷ lệ %; IRR diễn đạt chất lượng dự án thành tỷ suất so thẳng với lãi vay/chi phí vốn. Nhược: mù quy mô, ngầm giả định tái đầu tư ở IRR, có thể đa nghiệm."
+  - term_vi: "Đa nghiệm IRR"
+    term_en: "Multiple IRR"
+    definition: "Khi dòng tiền đổi dấu nhiều lần (bỏ vốn, thu lợi, rồi chi lớn phục hồi môi trường) phương trình IRR có thể có nhiều nghiệm. Ví dụ CF -100, +230, -132 cho IRR 10% và 20%."
+    why_it_matters: "Không biết tin nghiệm nào; giải pháp là dùng NPV hoặc MIRR."
+  - term_vi: "IRR điều chỉnh"
+    term_en: "Modified IRR (MIRR)"
+    definition: "IRR giả định dòng dương tái đầu tư ở chi phí vốn (thực tế), dòng âm chiết khấu ở lãi vay; luôn ra một nghiệm."
+    why_it_matters: "IRR thường ngầm giả định tái đầu tư ở chính IRR (phi thực tế khi IRR 40%). MIRR sửa điều này nên thấp hơn IRR và đáng tin hơn."
+  - term_vi: "Thời gian hoàn vốn"
+    term_en: "Payback Period (PP)"
+    definition: "Số năm để dòng tiền tích lũy chưa chiết khấu bù lại vốn đầu tư."
+    why_it_matters: "Thước đo thanh khoản và rủi ro của SME: hoàn vốn nhanh thì ít thời gian cho rủi ro xảy ra, tiền giải phóng sớm. Chỉ nên là bộ lọc phụ, vì bỏ qua TVM, bỏ qua dòng tiền sau hoàn vốn, ngưỡng tùy ý."
+  - term_vi: "Hoàn vốn có chiết khấu"
+    term_en: "Discounted Payback Period (DPP)"
+    definition: "Như PP nhưng chiết khấu từng dòng tiền về hiện tại trước khi tích lũy."
+    why_it_matters: "Khắc phục lỗ hổng TVM của PP (DPP luôn >= PP) nhưng vẫn bỏ qua dòng tiền sau hoàn vốn nên không thay được NPV."
+  - term_vi: "Chỉ số sinh lời"
+    term_en: "Profitability Index (PI)"
+    definition: "PV dòng tiền tương lai chia vốn ban đầu = 1 + NPV/C0; mỗi đồng vốn tạo bao nhiêu đồng giá trị hiện tại."
+    why_it_matters: "NPV không cho biết hiệu quả trên mỗi đồng vốn. Khi thiếu vốn (rất phổ biến ở SME) PI là công cụ xếp hạng tự nhiên."
+  - term_vi: "Hạn chế vốn"
+    term_en: "Capital rationing"
+    definition: "Tổng vốn giới hạn nên phải chọn tổ hợp dự án tối đa hóa tổng NPV trong ngân sách."
+    why_it_matters: "Xếp theo NPV tuyệt đối có thể kém hơn xếp theo PI; tổ hợp phức tạp cần quy hoạch nguyên (Solver, biến nhị phân)."
+  - term_vi: "Dòng tiền tương đương hằng năm"
+    term_en: "Equivalent Annual Annuity (EAA)"
+    definition: "Chuyển NPV thành niên kim đều hằng năm tương đương để so phương án khác vòng đời."
+    why_it_matters: "So NPV của dự án 3 năm với 5 năm là bất công vì dự án dài cộng thêm năm dòng tiền. Giả định có thể thay máy với cùng điều kiện khi hết vòng đời (replacement chain)."
+  - term_vi: "Xung đột NPV và IRR"
+    term_en: "NPV vs IRR conflict"
+    definition: "Dự án độc lập, dòng tiền thông thường: NPV và IRR luôn cùng kết luận. Dự án loại trừ có thể xung đột do (1) quy mô khác nhau, (2) thời điểm dòng tiền khác nhau (giả định tái đầu tư)."
+    why_it_matters: "NPV là phán quyết cuối; công cụ chẩn đoán là IRR gia tăng (IRR của dòng tiền chênh lệch dự án lớn trừ dự án nhỏ) so với chi phí vốn. Điểm giao hai đường NPV (crossover) chính là IRR gia tăng."
+  - term_vi: "Đồ thị NPV"
+    term_en: "NPV profile / Crossover rate"
+    definition: "Đồ thị NPV theo mức chiết khấu r. Hai đường NPV cắt nhau tại crossover rate (= IRR gia tăng): r thấp hơn thì dự án lớn thắng, cao hơn thì dự án nhỏ thắng."
+    why_it_matters: "Cho thấy kết luận phụ thuộc chi phí vốn và độ nhạy của dự án với r."
+  - term_vi: "Phân tích độ nhạy"
+    term_en: "Sensitivity analysis"
+    definition: "Đổi MỘT biến (giữ các biến khác) xem NPV đổi bao nhiêu để tìm biến nhạy nhất."
+    why_it_matters: "Dòng tiền là dự báo; một NPV duy nhất trông chính xác nhưng che độ bất định. Dồn nguồn lực dự báo cho biến nhạy nhất (thường CAPEX và doanh thu)."
+  - term_vi: "Phân tích kịch bản"
+    term_en: "Scenario analysis"
+    definition: "Đổi đồng thời nhiều biến theo kịch bản nhất quán (tốt/cơ sở/xấu) với xác suất, tính E[NPV] và độ lệch chuẩn."
+    why_it_matters: "Biến phối hợp với nhau; độ lệch chuẩn lớn so với kỳ vọng nghĩa là kết quả dao động mạnh, cần xét khả năng chịu lỗ của doanh nghiệp."
+  - term_vi: "Phân tích hòa vốn / biên an toàn"
+    term_en: "Break-even analysis / Margin of safety"
+    definition: "Tìm giá trị biến đầu vào (doanh thu, EBITDA, sản lượng) làm NPV=0. Khoảng cách giữa dự báo và điểm hòa vốn là biên an toàn."
+    why_it_matters: "Biến câu hỏi 'NPV bao nhiêu' thành 'dự báo phải sai bao nhiêu thì dự án thua'. Iridium cho thấy phép hòa vốn đơn giản đã lộ vấn đề (cần gấp 12 lần thuê bao thực tế)."
+  - term_vi: "Quyền chọn thực"
+    term_en: "Real Options"
+    definition: "Giá trị của linh hoạt quản trị: Expand (mở rộng nếu thành công), Delay (chờ thông tin), Abandon (dừng và bán tài sản), Switch (chuyển sản phẩm/công nghệ). Strategic NPV = Traditional NPV + Option Value."
+    why_it_matters: "NPV truyền thống giả định đóng đinh kế hoạch; thực tế nhà quản lý có thể thích ứng. Quyền đó có giá trị, nhất là khi bất định cao; lợi nhuận bất đối xứng (lỗ có giới hạn, lãi không giới hạn trên)."
+  - term_vi: "NPV thời đại số"
+    term_en: "Digital NPV"
+    definition: "Digital NPV = NPV truyền thống + NPV hiệu ứng mạng + NPV tài sản dữ liệu + Option Value. Đặc điểm số: tăng trưởng hàm mũ/đường S, tài sản vô hình, thị trường chưa tồn tại, winner-take-most, chân trời 10-15+ năm, nặng OPEX (cloud, thuê bao)."
+    why_it_matters: "NPV truyền thống định giá thấp nền tảng số; nhưng các thành phần mới là khung định tính, rất dễ bị thổi phồng để biện minh dự án - phải đặt giả định minh bạch và kiểm bằng kịch bản."
+  - term_vi: "Thiên lệch lạc quan"
+    term_en: "Optimism bias"
+    definition: "Người đề xuất có xu hướng thổi phồng dự phóng để dự án được duyệt."
+    why_it_matters: "Biện pháp: giảm doanh thu 10-20%, CAPEX dự phòng 10-15%, rà soát độc lập, post-audit, tiêu chí dừng."
+  - term_vi: "Ưu và nhược điểm của capital budgeting"
+    term_en: "Pros and cons"
+    definition: >-
+      Ưu: ra quyết định có hệ thống, tối đa hóa giá trị, phân bổ hiệu quả, trách nhiệm giải trình (post-audit), nhận diện rủi ro, kỷ luật.
+      Nhược: dòng tiền dài hạn khó ước lượng, r không chắc, bỏ yếu tố vô hình, optimism bias, bỏ sót real options, áp lực ngắn hạn (ưa Payback), tư duy silo bỏ qua hiệu ứng danh mục.
+    why_it_matters: "Biết giới hạn để dùng đúng: phương pháp chỉ tốt bằng chất lượng giả định đầu vào."
+  - term_vi: "Bảng so sánh phương pháp"
+    term_en: "Method comparison"
+    definition: >-
+      NPV: có TVM, rủi ro, quy mô, khó hơn một chút, hạng 1. IRR: TVM, rủi ro, KHÔNG quy mô, dễ hiểu, hạng 2. MIRR: như IRR, hạng 2.5.
+      PI: TVM, quy mô tương đối, hạng 3. Payback: KHÔNG TVM, không rủi ro, không quy mô, rất dễ hiểu, bổ trợ. DPP: có TVM, bổ trợ.
+    why_it_matters: "Dùng NPV làm chính, các chỉ số khác bổ trợ cho giao tiếp (IRR), thiếu vốn (PI), thanh khoản (PP/DPP)."
+
+formulas:
+  - id: "m02_ocf"
+    name_vi: "Dòng tiền hoạt động sau thuế"
+    name_en: "Operating Cash Flow (OCF)"
+    expression_latex: 'OCF = EBIT\times(1-T)+Dep = (Revenue-COGS-OpEx-Dep)(1-T)+Dep = EBITDA(1-T)+Dep\cdot T'
+    expression_python: "(ebitda - dep) * (1 - tax) + dep"
+    excel: "=(EBITDA-Dep)*(1-T)+Dep"
+    variables:
+      - {symbol: "ebitda", meaning: "EBITDA tăng thêm của dự án (đã trừ nhân công, nguyên liệu, chi phí cơ hội; chưa trừ khấu hao)", unit: "triệu đồng/năm"}
+      - {symbol: "dep", meaning: "Khấu hao hằng năm", unit: "triệu đồng/năm"}
+      - {symbol: "tax", meaning: "Thuế suất TNDN", unit: "tỷ lệ"}
+    when_to_use: "Mỗi năm vận hành của dự án không có lãi vay. Trừ thêm dNWC và maintenance CAPEX để ra FCF."
+    why_it_works: "Khấu hao làm giảm lợi nhuận chịu thuế (được hưởng lá chắn thuế) nhưng không có tiền chảy ra trong năm (tiền đã chi năm 0) nên phải cộng lại khi tính tiền."
+    assumptions: ["Khấu hao đường thẳng", "Không có lãi vay trong dòng tiền (chi phí vốn nằm trong r)", "EBIT dương đủ để dùng hết lá chắn thuế"]
+    pitfalls: ["Quên cộng lại khấu hao", "Trừ lãi vay (đếm hai lần chi phí vốn)", "Dùng lợi nhuận kế toán thay dòng tiền", "Quên trừ dNWC và maintenance CAPEX"]
+    interpretation: "Dòng tiền tiền mặt thật dự án sinh ra mỗi năm; hai dạng công thức phải cho cùng kết quả (dùng làm kiểm tra chéo)."
+    example:
+      inputs: {ebitda: 520, dep: 300, tax: 0.2}
+      steps: ["EBIT = 520-300 = 220", "Thuế = 220x0,2 = 44; NOPAT = 176", "OCF = 176+300 = 476", "Kiểm: 520x0,8 + 300x0,2 = 416+60 = 476"]
+      result: "OCF = 476 triệu (Máy A, Minh Tâm)"
+  - id: "m02_tax_shield"
+    name_vi: "Lá chắn thuế khấu hao"
+    name_en: "Depreciation Tax Shield"
+    expression_latex: 'TaxShield = Dep\times T'
+    expression_python: "dep * tax"
+    excel: "=Dep*T"
+    variables:
+      - {symbol: "dep", meaning: "Khấu hao hằng năm", unit: "triệu đồng"}
+      - {symbol: "tax", meaning: "Thuế suất TNDN", unit: "tỷ lệ"}
+    when_to_use: "Đo giá trị thuế tiết kiệm từ khấu hao; so sánh phương pháp/thời gian khấu hao."
+    why_it_works: "Khấu hao giảm lợi nhuận chịu thuế đúng Dep nên thuế nộp giảm Dep x T; đó là dòng tiền thật thuộc dự án."
+    assumptions: ["Doanh nghiệp có lợi nhuận chịu thuế đủ để hấp thụ khấu hao"]
+    pitfalls: ["Coi khấu hao là dòng tiền (chỉ phần thuế tiết kiệm mới là tiền)"]
+    interpretation: "Khấu hao nhanh hơn thì lá chắn đến sớm hơn nên PV cao hơn, NPV cao hơn."
+    example:
+      inputs: {dep: 200, tax: 0.2}
+      steps: ["Máy 1 tỷ khấu hao 5 năm = 200 triệu/năm", "Tax shield = 200x20% = 40"]
+      result: "40 triệu/năm tiết kiệm thuế"
+  - id: "m02_initial_outlay"
+    name_vi: "Vốn đầu tư ban đầu (năm 0)"
+    name_en: "Initial Investment (Total Initial Outflow)"
+    expression_latex: 'C_0 = CAPEX + Install - Proceeds_{old} + Tax_{gain\,on\,old} + \Delta NWC_0'
+    expression_python: "capex + install - proceeds_old + tax_on_old_gain + d_nwc"
+    excel: "=CAPEX+Install-Proceeds+TaxGain+dNWC"
+    variables:
+      - {symbol: "capex", meaning: "Giá mua tài sản/xây dựng", unit: "triệu đồng"}
+      - {symbol: "install", meaning: "Lắp đặt, vận chuyển, chạy thử", unit: "triệu đồng"}
+      - {symbol: "proceeds_old", meaning: "Thu từ bán tài sản cũ (dự án thay thế)", unit: "triệu đồng"}
+      - {symbol: "tax_on_old_gain", meaning: "Thuế trên lãi bán tài sản cũ (âm nếu lỗ vì tiết kiệm thuế)", unit: "triệu đồng"}
+      - {symbol: "d_nwc", meaning: "Tăng vốn lưu động ròng ban đầu", unit: "triệu đồng"}
+    when_to_use: "Xác định CF0 mọi dự án mở rộng/thay thế."
+    why_it_works: "Tiền thực chi ra ở thời điểm 0 gồm cả chi phí phụ trợ và vốn lưu động kẹt lại; bán tài sản cũ thu tiền nhưng chịu thuế trên lãi."
+    assumptions: ["Chi phí chìm đã loại", "Giá bán tài sản cũ ước lượng hợp lý"]
+    pitfalls: ["Quên NWC", "Quên chi phí lắp đặt/chạy thử", "Tính cả chi phí chìm (khảo sát đã chi)"]
+    interpretation: "CF0 = -C0. Ví dụ Máy A: 1.500 + 100 NWC = 1.600."
+    example:
+      inputs: {capex: 1500, install: 0, proceeds_old: 0, tax_on_old_gain: 0, d_nwc: 100}
+      steps: ["1.500 + 0 - 0 + 0 + 100 = 1.600"]
+      result: "C0 = 1.600 triệu (Máy A)"
+  - id: "m02_terminal_cf"
+    name_vi: "Dòng tiền kết thúc dự án"
+    name_en: "Terminal Cash Flow"
+    expression_latex: 'TCF = Salvage-(Salvage-BookValue)\times T + NWC_{recovered}'
+    expression_python: "salvage - (salvage - book) * tax + nwc"
+    excel: "=Salvage-(Salvage-Book)*T+NWC"
+    variables:
+      - {symbol: "salvage", meaning: "Giá bán lại/thu hồi tài sản cuối dự án", unit: "triệu đồng"}
+      - {symbol: "book", meaning: "Giá trị sổ sách cuối kỳ", unit: "triệu đồng"}
+      - {symbol: "tax", meaning: "Thuế suất", unit: "tỷ lệ"}
+      - {symbol: "nwc", meaning: "NWC thu hồi", unit: "triệu đồng"}
+    when_to_use: "Năm cuối của dự án; cộng vào OCF năm đó."
+    why_it_works: "Chênh lệch giá bán trên sổ sách là lãi chịu thuế (hoặc lỗ được khấu trừ); NWC được giải phóng trở lại thành tiền."
+    assumptions: ["Giá trị sổ sách đã tính theo khấu hao đã áp dụng"]
+    pitfalls: ["Quên thuế trên lãi thanh lý", "Quên thu hồi NWC", "Với lỗ thanh lý: thuế âm nghĩa là tiết kiệm thuế, chỉ đúng nếu có lợi nhuận để khấu trừ"]
+    interpretation: "Cộng vào dòng tiền năm cuối."
+    example:
+      inputs: {salvage: 150, book: 0, tax: 0.2, nwc: 100}
+      steps: ["150 - (150-0)x0,2 = 120", "+ 100 NWC = 220"]
+      result: "Terminal CF máy A = 220 triệu"
+  - id: "m02_npv"
+    name_vi: "Giá trị hiện tại ròng"
+    name_en: "Net Present Value"
+    expression_latex: 'NPV=\sum_{t=0}^{n}\frac{CF_t}{(1+r)^t}=-C_0+\frac{CF_1}{(1+r)}+\dots+\frac{CF_n}{(1+r)^n}'
+    expression_python: "sum(c / (1 + r) ** t for t, c in enumerate(cf))"
+    excel: "=NPV(r, CF1:CFn)+CF0 (NPV của Excel coi giá trị đầu là cuối năm 1 nên CF0 cộng riêng); XNPV(r, values, dates) khi ngày không đều"
+    variables:
+      - {symbol: "cf", meaning: "Danh sách dòng tiền ròng cf[0..n], cf[0] âm là vốn đầu tư", unit: "triệu đồng"}
+      - {symbol: "r", meaning: "Tỷ suất chiết khấu = chi phí vốn của dự án (WACC điều chỉnh rủi ro)", unit: "tỷ lệ/năm"}
+    when_to_use: "Tiêu chí chính cho mọi quyết định; dự án loại trừ chọn NPV cao nhất."
+    why_it_works: "Quy dòng tiền về hiện tại (1 đồng sau thấp giá hơn do cơ hội và rủi ro) rồi trừ vốn bỏ ra; dương nghĩa là dự án sinh ra nhiều hơn mức tối thiểu nhà đầu tư đòi. Có tính cộng được."
+    assumptions: ["Dòng tiền cuối kỳ", "r đúng và không đổi", "Dòng tiền tái đầu tư ở r"]
+    pitfalls: ["Chọn r sai (kết quả nhạy với r)", "Dòng tiền dài hạn khó dự báo", "Dùng hàm NPV Excel mà quên cộng CF0", "Dùng lãi suất tiết kiệm làm r"]
+    interpretation: "NPV>0 đầu tư; <0 từ chối; =0 hòa vốn kinh tế (vừa đủ trả chi phí vốn). Con số là lượng giá trị tạo ra theo tiền hôm nay."
+    example:
+      inputs: {cf: [-1600, 476, 476, 476, 476, 696], r: 0.12}
+      steps: ["PV năm 1-5 = 425,00 / 379,46 / 338,81 / 302,51 / 394,93; tổng 1.840,71", "NPV = 1.840,71 - 1.600 = 240,71"]
+      result: "NPV Máy A = +240,71 triệu"
+  - id: "m02_irr"
+    name_vi: "Tỷ suất hoàn vốn nội bộ"
+    name_en: "Internal Rate of Return"
+    expression_latex: '0=-C_0+\sum_{t=1}^{n}\frac{CF_t}{(1+IRR)^t}'
+    expression_python: "brentq(lambda x: sum(c / (1 + x) ** t for t, c in enumerate(cf)), -0.9, 5)"
+    excel: "=IRR(CF0:CFn, guess)"
+    variables:
+      - {symbol: "cf", meaning: "Dòng tiền cf[0..n]", unit: "triệu đồng"}
+    when_to_use: "Giao tiếp chất lượng dự án bằng %, so với lãi vay/WACC; dự án độc lập, dòng tiền thông thường."
+    why_it_works: "Là r làm NPV=0, tức chi phí vốn tối đa dự án chịu được; IRR lớn hơn chi phí vốn thì còn dư địa tạo giá trị."
+    assumptions: ["Dòng tiền đổi dấu một lần (thông thường)", "Tái đầu tư ở IRR (ngầm)"]
+    pitfalls: ["Đa nghiệm khi dòng tiền đổi dấu nhiều lần", "Mù quy mô (dự án nhỏ lãi cao có thể kém dự án lớn)", "Giả định tái đầu tư ở IRR phi thực tế khi IRR cao", "Không có công thức đóng, cần thử-sai/Excel/Python"]
+    interpretation: "IRR > WACC thì đầu tư. SME: IRR >= WACC + 3-5% làm dư địa sai số dự báo. Dự án loại trừ không dùng IRR để chọn, dùng NPV."
+    example:
+      inputs: {cf: [-1600, 476, 476, 476, 476, 696]}
+      steps: ["Giải NPV(x)=0 bằng brentq: x = 0,17598", "Kiểm: tại 15% NPV=+105,0; tại 18% NPV=-15,3"]
+      result: "IRR Máy A = 17,60%"
+  - id: "m02_mirr"
+    name_vi: "IRR điều chỉnh"
+    name_en: "Modified IRR"
+    expression_latex: 'MIRR=\left(\frac{FV_{+}\text{ (ghép lãi ở tỷ suất tái đầu tư)}}{PV_{-}\text{ (chiết khấu ở lãi vay)}}\right)^{1/n}-1'
+    expression_python: "(sum(c * (1 + rr) ** (len(cf) - 1 - t) for t, c in enumerate(cf) if c > 0) / (-sum(c / (1 + fr) ** t for t, c in enumerate(cf) if c < 0))) ** (1 / (len(cf) - 1)) - 1"
+    excel: "=MIRR(CF0:CFn, lãi_vay, tỷ_suất_tái_đầu_tư)"
+    variables:
+      - {symbol: "cf", meaning: "Dòng tiền cf[0..n]", unit: "triệu đồng"}
+      - {symbol: "fr", meaning: "Lãi suất tài trợ/chiết khấu dòng âm", unit: "tỷ lệ"}
+      - {symbol: "rr", meaning: "Tỷ suất tái đầu tư dòng dương (thường chi phí vốn)", unit: "tỷ lệ"}
+    when_to_use: "Khi IRR cao quá (phi thực tế) hoặc dòng tiền đổi dấu nhiều lần (multiple IRR)."
+    why_it_works: "Tái đầu tư ở chi phí vốn thực tế hơn ở IRR; gộp dòng dương thành một giá trị tương lai và dòng âm thành một giá trị hiện tại nên chỉ có một nghiệm."
+    assumptions: ["Tỷ suất tái đầu tư và lãi vay đã biết"]
+    pitfalls: ["Vẫn mù quy mô như IRR", "Kết quả phụ thuộc rr, fr chọn"]
+    interpretation: "MIRR > WACC thì đầu tư; thường thấp hơn IRR."
+    example:
+      inputs: {cf: [-1000, 400, 500, 600], fr: 0.1, rr: 0.1}
+      steps: ["FV dương = 400x1,1^2 + 500x1,1 + 600 = 484+550+600 = 1.634", "PV âm = 1.000", "MIRR = (1,634)^(1/3) - 1 = 17,78%", "IRR thường = 21,65% (cao hơn)"]
+      result: "MIRR = 17,78%"
+  - id: "m02_pp"
+    name_vi: "Thời gian hoàn vốn"
+    name_en: "Payback Period"
+    expression_latex: 'PP = t_{last\,neg} + \frac{|\text{cumulative CF}_{t}|}{CF_{t+1}}'
+    expression_python: "next(t - 1 + (-sum(cf[:t])) / cf[t] for t in range(1, len(cf)) if sum(cf[:t + 1]) >= 0)"
+    excel: "Cột CF tích lũy rồi nội suy thủ công"
+    variables:
+      - {symbol: "cf", meaning: "Dòng tiền cf[0..n]", unit: "triệu đồng"}
+    when_to_use: "Bộ lọc thanh khoản/rủi ro phụ cho SME; không phải tiêu chí quyết định chính."
+    why_it_works: "Phần nguyên là năm cuối tích lũy còn âm; phần lẻ là số tiền còn thiếu chia dòng tiền năm kế (giả định dòng tiền đều trong năm)."
+    assumptions: ["Dòng tiền phân bố đều trong năm"]
+    pitfalls: ["Bỏ qua TVM", "Bỏ qua dòng tiền sau hoàn vốn (loại oan dự án dài hạn giá trị cao)", "Ngưỡng chấp nhận tùy ý"]
+    interpretation: "So với ngưỡng nội bộ; không đủ để chấp nhận dự án, chỉ để lọc thanh khoản."
+    example:
+      inputs: {cf: [-500, 150, 150, 150, 150]}
+      steps: ["Tích lũy: -500, -350, -200, -50, +100", "PP = 3 + 50/150 = 3,33"]
+      result: "PP = 3,33 năm"
+  - id: "m02_dpp"
+    name_vi: "Hoàn vốn có chiết khấu"
+    name_en: "Discounted Payback Period"
+    expression_latex: 'DPP = t_{last\,neg} + \frac{|\text{cumulative PV}_{t}|}{PV_{t+1}}'
+    expression_python: "next(t - 1 + (-sum(c / (1 + r) ** i for i, c in enumerate(cf[:t]))) / (cf[t] / (1 + r) ** t) for t in range(1, len(cf)) if sum(c / (1 + r) ** i for i, c in enumerate(cf[:t + 1])) >= 0)"
+    excel: "Cột PV tích lũy rồi nội suy"
+    variables:
+      - {symbol: "cf", meaning: "Dòng tiền cf[0..n]", unit: "triệu đồng"}
+      - {symbol: "r", meaning: "Tỷ suất chiết khấu", unit: "tỷ lệ"}
+    when_to_use: "Bộ lọc thanh khoản có tính TVM; SME đặt ngưỡng DPP <= 50-60% vòng đời tài sản."
+    why_it_works: "Chiết khấu từng dòng về hiện tại trước khi tích lũy nên DPP >= PP."
+    assumptions: ["r đúng", "Dòng tiền đều trong năm"]
+    pitfalls: ["Vẫn bỏ qua dòng tiền sau hoàn vốn nên không thay NPV"]
+    interpretation: "Dự án vẫn có NPV dương nhưng phải sống ít nhất DPP năm mới hòa vốn thật sự."
+    example:
+      inputs: {cf: [-500, 150, 150, 150, 150, 150], r: 0.1}
+      steps: ["PV tích lũy: -500; -363,64; -239,67; -126,97; -24,52; +68,62", "DPP = 4 + 24,52/93,14 = 4,26"]
+      result: "DPP = 4,26 năm (PP = 3,33)"
+  - id: "m02_pi"
+    name_vi: "Chỉ số sinh lời"
+    name_en: "Profitability Index"
+    expression_latex: 'PI=\frac{PV\,of\,future\,CF}{Initial\,Investment}=1+\frac{NPV}{C_0}'
+    expression_python: "1 + npv / c0"
+    excel: "=1+NPV/C0"
+    variables:
+      - {symbol: "npv", meaning: "NPV của dự án", unit: "triệu đồng"}
+      - {symbol: "c0", meaning: "Vốn đầu tư ban đầu (dương)", unit: "triệu đồng"}
+    when_to_use: "Xếp hạng khi vốn giới hạn (capital rationing)."
+    why_it_works: "Mỗi đồng vốn tạo PI đồng giá trị hiện tại; xếp PI giảm dần là chuẩn hóa theo vốn."
+    assumptions: ["Dự án chia nhỏ được hoặc kiểm tra tổ hợp", "Hạn chế vốn chỉ một kỳ"]
+    pitfalls: ["Mù quy mô khi chọn dự án loại trừ", "Greedy theo PI có thể không tối ưu do vốn nguyên khối (cần kiểm tổ hợp/Solver)"]
+    interpretation: "PI > 1 tương đương NPV > 0; SME ngưỡng tham khảo > 1,1."
+    example:
+      inputs: {npv: 240.7074, c0: 1600}
+      steps: ["PI = 1 + 240,71/1.600 = 1,150"]
+      result: "PI Máy A = 1,150 (B = 1,139)"
+  - id: "m02_eaa"
+    name_vi: "Dòng tiền tương đương hằng năm"
+    name_en: "Equivalent Annual Annuity"
+    expression_latex: 'EAA=\frac{NPV}{PVIFA(r,n)}=NPV\times\frac{r}{1-(1+r)^{-n}}'
+    expression_python: "npv * r / (1 - (1 + r) ** -n)"
+    excel: "=PMT(r, n, -NPV)"
+    variables:
+      - {symbol: "npv", meaning: "NPV của phương án", unit: "triệu đồng"}
+      - {symbol: "r", meaning: "Chi phí vốn", unit: "tỷ lệ"}
+      - {symbol: "n", meaning: "Vòng đời (năm)", unit: "năm"}
+    when_to_use: "So phương án loại trừ có vòng đời khác nhau."
+    why_it_works: "Quy NPV thành dòng đều hằng năm để so 'mỗi năm tạo bao nhiêu' khi giả định thay thế lặp lại."
+    assumptions: ["Có thể thay phương án với cùng điều kiện khi hết vòng đời (replacement chain)"]
+    pitfalls: ["Không đúng nếu công nghệ/giá thay đổi mạnh theo thời gian"]
+    interpretation: "Chọn phương án EAA cao nhất (hoặc EAC thấp nhất nếu chỉ có chi phí)."
+    example:
+      inputs: {npv: 162.8120, r: 0.12, n: 5}
+      steps: ["Máy 2: NPV = 170x3,6048 - 450 = 162,81", "EAA = 162,81x0,2774 = 45,17; Máy 1 (3 năm, NPV 60,27) EAA = 25,10"]
+      result: "Máy 2 EAA 45,17 > Máy 1 25,10"
+  - id: "m02_annuity_factor"
+    name_vi: "Hệ số hiện giá niên kim"
+    name_en: "PVIFA"
+    expression_latex: 'PVIFA(r,n)=\frac{1-(1+r)^{-n}}{r}'
+    expression_python: "(1 - (1 + r) ** -n) / r"
+    excel: "=PV(r, n, -1)"
+    variables:
+      - {symbol: "r", meaning: "Tỷ suất chiết khấu", unit: "tỷ lệ"}
+      - {symbol: "n", meaning: "Số kỳ", unit: "năm"}
+    when_to_use: "Chiết khấu dòng tiền đều; tính EAA; tính dòng tiền hòa vốn."
+    why_it_works: "Tổng cấp số nhân của các hệ số chiết khấu."
+    assumptions: ["Dòng tiền đều, cuối kỳ"]
+    pitfalls: ["Dùng cho dòng tiền không đều"]
+    interpretation: "PV của 1 đồng/năm trong n năm."
+    example:
+      inputs: {r: 0.15, n: 10}
+      steps: ["(1-1,15^-10)/0,15 = 5,0188"]
+      result: "PVIFA(15%,10) = 5,0188"
+  - id: "m02_incremental_irr"
+    name_vi: "IRR gia tăng / điểm giao"
+    name_en: "Incremental IRR (Crossover rate)"
+    expression_latex: '0=\sum_{t=0}^{n}\frac{CF^{big}_t-CF^{small}_t}{(1+IRR_{inc})^t}'
+    expression_python: "brentq(lambda x: sum((b - a) / (1 + x) ** t for t, (a, b) in enumerate(zip(cf_small, cf_big))), -0.9, 5)"
+    excel: "=IRR(dòng tiền chênh lệch)"
+    variables:
+      - {symbol: "cf_small", meaning: "Dòng tiền dự án nhỏ", unit: "triệu đồng"}
+      - {symbol: "cf_big", meaning: "Dòng tiền dự án lớn", unit: "triệu đồng"}
+    when_to_use: "NPV và IRR cho kết luận ngược nhau giữa dự án loại trừ."
+    why_it_works: "Coi dự án lớn = dự án nhỏ + khoản đầu tư thêm; nếu khoản thêm có IRR > chi phí vốn thì đáng làm nên chọn dự án lớn. Cũng là điểm giao hai đường NPV."
+    assumptions: ["Dòng tiền chênh lệch thông thường (một lần đổi dấu)"]
+    pitfalls: ["Quên NPV của dòng chênh lệch bằng chênh lệch NPV hai dự án (dùng kiểm chứng)", "Bị đa nghiệm nếu chênh lệch đổi dấu nhiều lần"]
+    interpretation: "IRR gia tăng > r thì chọn dự án lớn; r nằm dưới điểm giao thì dự án lớn thắng, trên điểm giao thì dự án nhỏ thắng."
+    example:
+      inputs: {cf_small: [-1600, 476, 476, 476, 476, 696], cf_big: [-2550, 752, 752, 752, 752, 1094]}
+      steps: ["Chênh lệch: -950; 276 x4; 398", "NPV chênh lệch ở 12% = +114,14 (= 354,85 - 240,71)", "IRR gia tăng = 16,50%"]
+      result: "IRR gia tăng 16,50% > 12% nên chọn Máy B"
+  - id: "m02_expected_npv"
+    name_vi: "NPV kỳ vọng theo kịch bản"
+    name_en: "Expected NPV"
+    expression_latex: 'E[NPV]=\sum_i p_i\,NPV_i'
+    expression_python: "sum(p * v for p, v in zip(probs, npvs))"
+    excel: "=SUMPRODUCT(probs, npvs)"
+    variables:
+      - {symbol: "probs", meaning: "Xác suất các kịch bản (tổng = 1)", unit: "tỷ lệ"}
+      - {symbol: "npvs", meaning: "NPV từng kịch bản", unit: "triệu đồng"}
+    when_to_use: "Khi có nhiều kịch bản nhất quán với xác suất chủ quan."
+    why_it_works: "Trung bình có trọng số xác suất."
+    assumptions: ["Xác suất chủ quan hợp lý, kịch bản bao phủ"]
+    pitfalls: ["Xác suất bịa; chỉ nhìn kỳ vọng mà bỏ qua kịch bản xấu"]
+    interpretation: "Kỳ vọng dương chưa đủ, phải so với độ lệch chuẩn và khả năng chịu lỗ."
+    example:
+      inputs: {probs: [0.25, 0.5, 0.25], npvs: [350, 124, -80]}
+      steps: ["87,5 + 62 - 20 = 129,5"]
+      result: "E[NPV] = 129,5 triệu"
+  - id: "m02_sd_npv"
+    name_vi: "Độ lệch chuẩn NPV"
+    name_en: "Standard deviation of NPV"
+    expression_latex: '\sigma_{NPV}=\sqrt{\sum_i p_i(NPV_i-E[NPV])^2}'
+    expression_python: "sum(p * (v - sum(a * b for a, b in zip(probs, npvs))) ** 2 for p, v in zip(probs, npvs)) ** 0.5"
+    excel: "=SQRT(SUMPRODUCT(probs,(npvs-E)^2))"
+    variables:
+      - {symbol: "probs", meaning: "Xác suất", unit: "tỷ lệ"}
+      - {symbol: "npvs", meaning: "NPV từng kịch bản", unit: "triệu đồng"}
+    when_to_use: "Đo mức dao động/rủi ro của NPV."
+    why_it_works: "Độ lệch bình phương trung bình có trọng số."
+    assumptions: ["Rời rạc vài kịch bản"]
+    pitfalls: ["Ít kịch bản nên ước lượng thô"]
+    interpretation: "Độ lệch chuẩn lớn hơn cả kỳ vọng (152,1 vs 129,5) nghĩa là dao động mạnh, cần xét khả năng chịu kịch bản xấu (-80)."
+    example:
+      inputs: {probs: [0.25, 0.5, 0.25], npvs: [350, 124, -80]}
+      steps: ["0,25x(220,5)^2 + 0,5x(-5,5)^2 + 0,25x(-209,5)^2 = 23.141,4", "căn = 152,1"]
+      result: "sigma = 152,1 triệu"
+  - id: "m02_breakeven_ebitda"
+    name_vi: "EBITDA hòa vốn (NPV = 0) và biên an toàn"
+    name_en: "Break-even EBITDA and margin of safety"
+    expression_latex: 'EBITDA^{*}=\frac{C_0-PV(TCF)-PV(Dep\cdot T)}{(1-T)\cdot PVIFA(r,n)},\quad MoS=1-\frac{EBITDA^{*}}{EBITDA_{forecast}}'
+    expression_python: "(c0 - tcf / (1 + r) ** n - dep * tax * (1 - (1 + r) ** -n) / r) / ((1 - tax) * (1 - (1 + r) ** -n) / r)"
+    excel: "Goal Seek: đặt NPV = 0 bằng cách đổi EBITDA"
+    variables:
+      - {symbol: "c0", meaning: "Vốn ban đầu gồm NWC", unit: "triệu đồng"}
+      - {symbol: "tcf", meaning: "Terminal CF năm n", unit: "triệu đồng"}
+      - {symbol: "dep", meaning: "Khấu hao hằng năm", unit: "triệu đồng"}
+      - {symbol: "tax", meaning: "Thuế suất", unit: "tỷ lệ"}
+      - {symbol: "r", meaning: "Chi phí vốn", unit: "tỷ lệ"}
+      - {symbol: "n", meaning: "Vòng đời", unit: "năm"}
+    when_to_use: "Biến NPV thành 'dự báo phải sai bao nhiêu thì dự án thua'; thường dùng Goal Seek."
+    why_it_works: "Giải ngược NPV(EBITDA)=0; NPV tuyến tính theo EBITDA đều hằng năm."
+    assumptions: ["EBITDA đều các năm", "Khấu hao đường thẳng", "Các biến khác giữ nguyên"]
+    pitfalls: ["Chỉ đúng khi EBITDA đều hằng năm"]
+    interpretation: "Biên an toàn SME nên >= 10-15%."
+    example:
+      inputs: {c0: 1600, tcf: 220, dep: 300, tax: 0.2, r: 0.12, n: 5}
+      steps: ["PV(Terminal) = 220/1,12^5 = 124,83", "PV(Dep x T) = 60 x 3,6048 = 216,29", "EBITDA* = (1.600-124,83-216,29)/(0,8x3,6048) = 436,53", "MoS = 1-436,53/520 = 16,1%"]
+      result: "EBITDA hòa vốn Máy A = 436,5; biên an toàn 16,1%"
+  - id: "m02_breakeven_units"
+    name_vi: "Dòng tiền ròng hằng năm cần để hòa vốn / số đơn vị hòa vốn"
+    name_en: "Required annual net cash flow and break-even volume"
+    expression_latex: 'CF_{need}=\frac{C_0}{PVIFA(r,n)},\quad N_{units}=\frac{CF_{need}}{CF_{per\,unit}}'
+    expression_python: "capital / ((1 - (1 + r) ** -n) / r) / cf_per_unit"
+    excel: "=PMT(r,n,-C0)/CF_per_unit"
+    variables:
+      - {symbol: "capital", meaning: "Tổng vốn", unit: "triệu đồng"}
+      - {symbol: "r", meaning: "Chi phí vốn", unit: "tỷ lệ"}
+      - {symbol: "n", meaning: "Vòng đời", unit: "năm"}
+      - {symbol: "cf_per_unit", meaning: "Dòng tiền ròng mỗi khách/đơn vị mỗi năm", unit: "triệu đồng"}
+    when_to_use: "Kiểm tra nhanh quy mô thị trường cần thiết trước khi đầu tư (bài học Iridium)."
+    why_it_works: "Vốn bằng PV niên kim của dòng tiền đều cần có."
+    assumptions: ["Dòng tiền đều, vòng đời xác định, không giá trị thanh lý"]
+    pitfalls: ["Bỏ qua sụt giá/thay đổi công nghệ"]
+    interpretation: "So với số khách thực tế khả thi; nếu gấp nhiều lần thì cảnh báo."
+    example:
+      inputs: {capital: 5000, r: 0.15, n: 10, cf_per_unit: 0.0015}
+      steps: ["PVIFA = 5,0188", "Dòng tiền cần = 5.000/5,0188 = 996,3 triệu USD/năm", "Số thuê bao = 996,3/0,0015 = 664.000", "Thực tế 55.000 nên gấp khoảng 12 lần"]
+      result: "Cần khoảng 664.000 thuê bao (minh họa)"
+  - id: "m02_strategic_npv"
+    name_vi: "NPV chiến lược và giá trị quyền chọn"
+    name_en: "Strategic NPV / Option value"
+    expression_latex: 'StrategicNPV=NPV_{trad}+OptionValue;\quad OptionValue\approx p\cdot\frac{V_{expand}}{(1+r)^k}\ (\text{trừ chi phí pilot đã nằm trong }NPV_{trad})'
+    expression_python: "npv_trad + p * v_expand / (1 + r) ** k"
+    excel: "=NPV_trad + p*V/(1+r)^k"
+    variables:
+      - {symbol: "npv_trad", meaning: "NPV độc lập của giai đoạn đầu (cam kết chi phí)", unit: "triệu đồng"}
+      - {symbol: "p", meaning: "Xác suất kịch bản thuận lợi", unit: "tỷ lệ"}
+      - {symbol: "v_expand", meaning: "Giá trị mở rộng nếu thuận lợi (tại thời điểm k)", unit: "triệu đồng"}
+      - {symbol: "r", meaning: "Chiết khấu", unit: "tỷ lệ"}
+      - {symbol: "k", meaning: "Số năm đến thời điểm quyết định mở rộng", unit: "năm"}
+    when_to_use: "Dự án pilot, thị trường bất định, đầu tư theo giai đoạn (option to expand/delay/abandon/switch)."
+    why_it_works: "Lỗ giới hạn ở chi phí giai đoạn đầu, lãi mở rộng không giới hạn trên (bất đối xứng) nên chi phí đầu là giá mua quyền chọn."
+    assumptions: ["Xác suất và giá trị mở rộng là giả định minh bạch", "Có thể dừng ở cổng quyết định"]
+    pitfalls: ["Dùng để biện minh mọi dự án (survivorship bias)", "Giá trị quyền chọn bị thổi phồng khi giả định xác suất lạc quan"]
+    interpretation: "Xác suất hòa vốn của quyền chọn = chi phí / PV giá trị mở rộng; cược đáng làm nếu xác suất thực lớn hơn ngưỡng này."
+    example:
+      inputs: {npv_trad: -3000, p: 0.3, v_expand: 20000, r: 0.12, k: 4}
+      steps: ["PV mở rộng = 20.000/1,12^4 = 12.710", "E = -3.000 + 0,3x12.710 = +813", "Xác suất hòa vốn = 3.000/12.710 = 23,6%"]
+      result: "Strategic NPV = +813 triệu USD (minh họa AWS)"
+  - id: "m02_breakeven_prob"
+    name_vi: "Xác suất hòa vốn của quyền chọn"
+    name_en: "Break-even probability of option"
+    expression_latex: 'p^{*}=\frac{Cost}{PV(V_{expand})}'
+    expression_python: "cost / (v_expand / (1 + r) ** k)"
+    excel: "=Cost/(V/(1+r)^k)"
+    variables:
+      - {symbol: "cost", meaning: "Chi phí giai đoạn đầu (lỗ tối đa)", unit: "triệu đồng"}
+      - {symbol: "v_expand", meaning: "Giá trị mở rộng nếu thành công", unit: "triệu đồng"}
+      - {symbol: "r", meaning: "Chiết khấu", unit: "tỷ lệ"}
+      - {symbol: "k", meaning: "Năm quyết định", unit: "năm"}
+    when_to_use: "Kiểm tra mức xác suất thành công tối thiểu để đặt cược pilot."
+    why_it_works: "p x PV(V) = cost là điểm E=0."
+    assumptions: ["Như m02_strategic_npv"]
+    pitfalls: ["Xác suất thực tế khó ước lượng"]
+    interpretation: "Thấp (vd 7,5-24%) và niềm tin thị trường cao hơn thì nên thử."
+    example:
+      inputs: {cost: 3000, v_expand: 20000, r: 0.12, k: 4}
+      steps: ["3.000/12.710 = 0,236"]
+      result: "p* = 23,6%"
+  - id: "m02_digital_npv"
+    name_vi: "NPV thời đại số (khung điều chỉnh)"
+    name_en: "Digital NPV"
+    expression_latex: 'DigitalNPV=NPV_{traditional}+NPV_{network\,effects}+NPV_{data\,asset}+OptionValue'
+    expression_python: "npv_trad + npv_network + npv_data + option_value"
+    excel: "=Tổng bốn thành phần"
+    variables:
+      - {symbol: "npv_trad", meaning: "NPV dòng tiền thấy được", unit: "triệu đồng"}
+      - {symbol: "npv_network", meaning: "Giá trị hiệu ứng mạng", unit: "triệu đồng"}
+      - {symbol: "npv_data", meaning: "Giá trị tài sản dữ liệu dùng lại", unit: "triệu đồng"}
+      - {symbol: "option_value", meaning: "Giá trị quyền chọn mở rộng", unit: "triệu đồng"}
+    when_to_use: "Đánh giá nền tảng/dự án số có hiệu ứng mạng và dữ liệu."
+    why_it_works: "NPV truyền thống chỉ đếm dòng tiền thấy được nên định giá thấp dự án làm tăng giá trị dự án khác."
+    assumptions: ["Giả định từng thành phần minh bạch, kiểm bằng kịch bản"]
+    pitfalls: ["Rất dễ thổi phồng để biện minh; là khung định tính"]
+    interpretation: "Chỉ chấp nhận khi từng thành phần có giả định kiểm chứng được."
+    example:
+      inputs: {npv_trad: -100, npv_network: 60, npv_data: 40, option_value: 50}
+      steps: ["-100+60+40+50 = 50"]
+      result: "Digital NPV = 50 (số minh họa cách cộng)"
+  - id: "m02_sensitivity"
+    name_vi: "Độ nhạy NPV"
+    name_en: "Sensitivity of NPV"
+    expression_latex: '\Delta NPV=NPV(x\cdot(1\pm\delta))-NPV_{base}'
+    expression_python: "npv_shocked - npv_base"
+    excel: "Data Table một hoặc hai biến"
+    variables:
+      - {symbol: "npv_shocked", meaning: "NPV khi đổi một biến", unit: "triệu đồng"}
+      - {symbol: "npv_base", meaning: "NPV cơ sở", unit: "triệu đồng"}
+    when_to_use: "Xác định biến nhạy nhất để dồn nguồn lực dự báo."
+    why_it_works: "Đổi một biến cô lập ảnh hưởng của nó."
+    assumptions: ["Các biến khác giữ nguyên (khác kịch bản)"]
+    pitfalls: ["Bỏ qua tương quan giữa các biến"]
+    interpretation: "Biến có |dNPV| lớn nhất là biến rủi ro chính (thường CAPEX, doanh thu)."
+    example:
+      inputs: {npv_shocked: 90.7487, npv_base: 240.7074}
+      steps: ["EBITDA -10% (468): NPV = +90,75; dNPV = -149,96"]
+      result: "dNPV = -149,96 triệu (Máy A, EBITDA -10%)"
+
+procedures:
+  - id: "m02_proc_full_appraisal"
+    name: "Thẩm định một dự án từ đầu đến cuối"
+    steps:
+      - "Sàng lọc: dự án có phù hợp chiến lược, thuộc loại nào (mở rộng/thay thế/bắt buộc/độc lập/loại trừ)?"
+      - "Thu thập dữ kiện: vốn máy, lắp đặt, NWC, EBITDA tăng thêm từng năm, vòng đời, khấu hao, thuế T, giá bán lại, chi phí cơ hội, r."
+      - "Loại chi phí chìm; thêm chi phí cơ hội và ngoại tác (cannibalization); bỏ lãi vay/tài trợ."
+      - "Năm 0: C0 = CAPEX + lắp đặt - bán tài sản cũ + thuế lãi bán + NWC."
+      - "Năm 1..n: Dep = Vốn/n; EBIT = EBITDA-Dep; NOPAT = EBIT(1-T); OCF = NOPAT+Dep; trừ dNWC và maintenance CAPEX."
+      - "Năm n: cộng Terminal CF = Salvage - thuế (Salvage - book) + thu hồi NWC."
+      - "Lập bảng FCF năm 0..n; chiết khấu theo r; tính NPV, IRR, MIRR, PI, PP, DPP."
+      - "Kiểm tra: NPV hàm = tổng PV; tổng khấu hao = vốn máy; Terminal CF đã gồm NWC; hai công thức OCF khớp."
+      - "Rủi ro: độ nhạy (doanh thu, CAPEX, r, chi phí), kịch bản + xác suất, hòa vốn EBITDA (Goal Seek) và biên an toàn, real options."
+      - "Quyết định theo decision_rules; nêu kill criteria và kế hoạch post-audit."
+    outputs: "Bảng FCF năm 0-n, NPV/IRR/PI/PP/DPP, bảng độ nhạy/kịch bản, EBITDA hòa vốn, khuyến nghị và tiêu chí dừng."
+  - id: "m02_proc_mutually_exclusive"
+    name: "Chọn giữa hai dự án loại trừ nhau (NPV vs IRR xung đột)"
+    steps:
+      - "Tính NPV, IRR, PI, PP, DPP cho từng dự án."
+      - "Nếu NPV và IRR (hoặc PI) chọn khác nhau, lập dòng tiền chênh lệch (lớn - nhỏ)."
+      - "Tính NPV chênh lệch (phải bằng chênh lệch NPV hai dự án) và IRR gia tăng."
+      - "So IRR gia tăng với r: lớn hơn thì chọn dự án lớn."
+      - "Lập đồ thị/bảng NPV theo r để thấy điểm giao (crossover)."
+      - "Chạy độ nhạy và hòa vốn cho cả hai; dự án lớn thường có đòn bẩy hoạt động cao hơn."
+      - "Khuyến nghị có điều kiện: chọn lớn nếu có đơn hàng/hợp đồng chống lưng EBITDA và huy động được vốn thêm với chi phí < IRR gia tăng; nếu chưa chắc, chọn nhỏ và giữ option to expand."
+    outputs: "Quyết định có giải thích vì sao IRR 'sai', điều kiện chuyển đổi."
+  - id: "m02_proc_capital_rationing"
+    name: "Chọn tổ hợp khi vốn giới hạn"
+    steps:
+      - "Loại dự án NPV <= 0; tính PI = 1 + NPV/Vốn cho phần còn lại."
+      - "Xếp PI giảm dần, chọn lần lượt đến khi hết vốn (heuristic)."
+      - "Do vốn nguyên khối, liệt kê mọi tổ hợp thỏa ngân sách (n nhỏ) hoặc dùng Solver (biến nhị phân, mục tiêu max tổng NPV, ràng buộc tổng vốn <= ngân sách)."
+      - "Chọn tổ hợp có tổng NPV cao nhất; báo vốn còn dư (có thể dùng cho dự án khác/giữ tiền)."
+    outputs: "Danh sách dự án chọn, tổng vốn, tổng NPV, so sánh với heuristic."
+  - id: "m02_proc_unequal_lives"
+    name: "So phương án khác vòng đời"
+    steps:
+      - "Tính NPV từng phương án trên vòng đời riêng."
+      - "EAA = NPV x r/(1-(1+r)^-n) (hoặc PMT(r,n,-NPV))."
+      - "Chọn EAA cao nhất (hoặc chi phí hằng năm tương đương thấp nhất nếu chỉ có chi phí); nêu giả định thay thế lặp lại."
+    outputs: "Bảng NPV, EAA và lựa chọn."
+  - id: "m02_proc_risk"
+    name: "Phân tích rủi ro dự án"
+    steps:
+      - "Độ nhạy: đổi từng biến (doanh thu, CAPEX, chi phí, r, giá bán lại) một mức nhất định, ghi NPV; xếp biến theo |dNPV|."
+      - "Kịch bản: tốt/cơ sở/xấu thay đồng thời nhiều biến, gán xác suất, tính E[NPV] và sigma."
+      - "Hòa vốn: Goal Seek EBITDA/doanh thu/sản lượng làm NPV=0; tính biên an toàn."
+      - "Real options: dự án có thể chia giai đoạn/dừng/mở rộng không? Tính xác suất hòa vốn của quyền chọn."
+      - "Phản biện: đối thủ phản ứng, công nghệ thay thế, optimism bias; có reviewer độc lập."
+    outputs: "Bảng độ nhạy, kịch bản, EBITDA hòa vốn, kill criteria."
+  - id: "m02_proc_replacement"
+    name: "Thay thế thiết bị cũ bằng thiết bị mới"
+    steps:
+      - "C0 = giá máy mới + lắp đặt + dNWC - giá bán máy cũ + thuế trên lãi bán (hoặc - tiết kiệm thuế nếu lỗ: thuế = (giá bán - sổ sách) x T)."
+      - "Dòng tiền gia tăng hằng năm = tiết kiệm chi phí/doanh thu tăng thêm sau thuế + chênh lệch lá chắn thuế khấu hao (Dep_mới - Dep_cũ) x T."
+      - "Terminal: chênh lệch giá trị thanh lý sau thuế (máy mới - máy cũ nếu giữ) + thu hồi NWC."
+      - "Chiết khấu, tính NPV/IRR/DPP gia tăng; độ nhạy cho tiết kiệm nhân công và giá máy."
+    outputs: "NPV gia tăng của việc thay thế và khuyến nghị."
+
+decision_rules:
+  - "Nếu dự án độc lập và NPV > 0 thì chấp nhận; NPV < 0 thì từ chối; NPV = 0 thì hòa vốn kinh tế."
+  - "Nếu dự án loại trừ lẫn nhau thì chọn NPV cao nhất (sau khi kiểm tra rủi ro), không chọn theo IRR/PI."
+  - "Nếu NPV và IRR xung đột thì tính IRR gia tăng; IRR gia tăng > r thì chọn dự án lớn, ngược lại chọn dự án nhỏ."
+  - "Nếu r < điểm giao NPV profile thì dự án lớn thắng; r > điểm giao thì dự án nhỏ thắng."
+  - "Nếu dòng tiền đổi dấu nhiều lần thì không dùng IRR; dùng NPV hoặc MIRR."
+  - "Nếu IRR rất cao (vd 40%) thì nghi ngờ giả định tái đầu tư, kiểm bằng MIRR."
+  - "Nếu vốn bị giới hạn thì xếp theo PI và kiểm tra mọi tổ hợp/Solver; không xếp theo NPV tuyệt đối."
+  - "Nếu vòng đời khác nhau thì so EAA, không so NPV thuần."
+  - "Nếu dự án bắt buộc (luật) thì chọn phương án chi phí hiện tại ròng thấp nhất, dù NPV âm."
+  - "Nếu chỉ dựa vào Payback thì cảnh báo; dùng PP/DPP như bộ lọc thanh khoản cùng NPV > 0 (vd NPV > 0 VÀ DPP <= 60% vòng đời)."
+  - "Nếu chi phí đã chi không thu hồi được thì loại khỏi phân tích (sunk cost); chỉ đánh giá NPV hướng tới tương lai."
+  - "Nếu dùng tài sản/nhân sự sẵn có thì tính chi phí cơ hội theo giá thuê/thị trường."
+  - "Nếu có lãi vay trong dòng tiền và chiết khấu bằng WACC thì sửa: loại lãi vay khỏi dòng tiền."
+  - "Nếu NPV chỉ dương nhờ một biến lạc quan (doanh thu, CAPEX nhạy nhất) thì dồn nguồn lực dự báo biến đó; biên an toàn < 10% thì chưa nên làm."
+  - "Nếu bất định cao và có thể chia giai đoạn thì chọn pilot/stage-gate, tính xác suất hòa vốn của quyền chọn; đặt kill criteria trước."
+  - "Nếu đã trót chi nhiều (Iridium) thì hỏi 'nếu chưa chi gì, hôm nay có làm không?'; nếu giả định cốt lõi sai (thuê bao << dự phóng) thì DỪNG."
+  - "Nếu kỳ vọng NPV dương nhưng sigma lớn hơn kỳ vọng và kịch bản xấu vượt khả năng chịu lỗ thì giảm quy mô/phân kỳ."
+  - "Nếu dự án số có hiệu ứng mạng/dữ liệu thì có thể cộng thêm thành phần, nhưng chỉ khi giả định minh bạch và kiểm kịch bản."
+
+benchmarks:
+  - {metric: "Ngưỡng NPV cho SME", value: "NPV > 0 kèm biên an toàn >= 10-15% với doanh thu/EBITDA", context: "Từ hòa vốn", confidence: "medium"}
+  - {metric: "Ngưỡng IRR cho SME", value: ">= WACC + 3-5%", context: "Dư địa chống sai số dự báo", confidence: "medium"}
+  - {metric: "Ngưỡng PI", value: "> 1,1", context: "Ưu tiên PI cao khi thiếu vốn", confidence: "medium"}
+  - {metric: "Ngưỡng DPP", value: "<= 50-60% vòng đời", context: "Tùy ngành", confidence: "medium"}
+  - {metric: "CAPEX dự phòng", value: "10-15%", context: "Bài học Iridium (vượt 47%)", confidence: "medium"}
+  - {metric: "Điều chỉnh doanh thu thận trọng", value: "giảm 10-20% so với kỳ vọng người đề xuất", context: "Chống optimism bias", confidence: "medium"}
+  - {metric: "Chi phí vốn SME VN", value: "12-15% (lãi vay + phần bù rủi ro 2-5%)", context: "Cần cập nhật theo lãi suất thị trường hiện hành, xác nhận", confidence: "low"}
+  - {metric: "Thuế TNDN", value: "20%", context: "Theo ví dụ nguồn; cần xác nhận quy định hiện hành", confidence: "medium"}
+
+pitfalls:
+  - "Chỉ nhìn Payback nên bỏ dự án dài hạn tốt, chọn dự án hoàn vốn nhanh rồi chết."
+  - "Lẫn lộn lợi nhuận kế toán với dòng tiền (quên khấu hao, NWC, thuế)."
+  - "Tính lãi vay vào dòng tiền và chiết khấu bằng WACC (đếm hai lần chi phí vốn)."
+  - "Không tính chi phí cơ hội (xưởng sẵn có), ngoại tác (cannibalization)."
+  - "Tính chi phí chìm vào dự án / bị ngụy biện chi phí chìm."
+  - "So dự án khác vòng đời bằng NPV thuần thay vì EAA."
+  - "Chọn dự án có IRR/PI cao nhưng quy mô nhỏ thay vì NPV cao."
+  - "Dùng NPV() Excel mà quên cộng CF0; dùng IRR khi đổi dấu nhiều lần."
+  - "Dùng lãi suất tiết kiệm làm tỷ suất chiết khấu."
+  - "Không có post-audit; không có tiêu chí dừng; không có phản biện độc lập."
+  - "Bỏ qua phản ứng của đối thủ và công nghệ thay thế (Iridium)."
+  - "Cam kết toàn bộ vốn ngay từ đầu thay vì stage-gate."
+  - "Lạm dụng real options/digital NPV để biện minh dự án; survivorship bias từ case AWS."
+  - "Nhầm đơn vị: $3.000 của Iridium là giá máy, không phải doanh thu hằng tháng."
+
+sme_vn_guidance:
+  - "Dữ liệu thiếu, phần lớn dựa ước tính của chủ doanh nghiệp: giảm doanh thu dự báo 10-20%, tăng CAPEX dự phòng 10-15%, tìm đơn hàng/hợp đồng khung làm bằng chứng."
+  - "Chi phí vốn r: thường lấy lãi vay ngân hàng hiện hành (tài sản thế chấp, lãi suất cao hơn tập đoàn) cộng phần bù rủi ro dự án 2-5%, ví dụ 12-15% (cần xác nhận lãi suất hiện hành); không dùng lãi suất tiết kiệm."
+  - "Capital rationing rất phổ biến do hạn mức vay: dùng PI và xếp tổ hợp bằng Solver trong Excel/Google Sheets."
+  - "Dòng tiền eo hẹp nên dùng Payback/DPP làm bộ lọc phụ: NPV > 0 VÀ DPP <= 60% vòng đời tài sản."
+  - "Thuế TNDN 20% theo ví dụ nguồn (cần xác nhận quy định hiện hành, ưu đãi thuế, quy định khấu hao tài sản cố định tại Việt Nam)."
+  - "Phân kỳ (stage-gate): thử một chi nhánh/dây chuyền trước khi nhân rộng; đặt tiêu chí dừng trước khi bắt đầu."
+  - "Đừng quên NWC: SME thiếu tiền tháng thứ 3 dù dự án có lãi trên giấy; xem m06."
+  - "Tách chi phí chìm (khảo sát, thiết kế, đặt cọc đã chi) bằng câu hỏi: nếu chưa chi gì, hôm nay tôi có làm không?"
+  - "Công cụ: Excel/Google Sheets (miễn phí/có sẵn), Python numpy-financial/scipy cho tính hàng loạt, @RISK/Crystal Ball cho Monte Carlo (đắt, chủ yếu DN lớn), website ngân hàng và Tổng cục Thuế để tra lãi suất/thuế (kiểm tra quy định hiện hành)."
+  - "Post-audit sau 6-12 tháng: đối chiếu thực tế với dự phóng để hiệu chỉnh lần sau."
+
+case_lessons:
+  - name: "Amazon AWS - đầu tư táo bạo vào hạ tầng đám mây"
+    type: "success"
+    setup: >-
+      Đầu-giữa thập niên 2000 Amazon đầu tư hàng tỷ USD vào hạ tầng điện toán đám mây (S3 ra mắt 2006) cho thị trường gần như chưa tồn tại, thay vì chỉ tập trung thương mại điện tử.
+      Bảng dòng tiền trong nguồn là mô hình giả lập minh họa, không phải số nội bộ.
+    key_calculations:
+      - "Giai đoạn đầu CAPEX 3.000 triệu USD (NPV độc lập khoảng -3.000)"
+      - "PV mở rộng = 20.000/1,12^4 = 12.710 triệu USD"
+      - "E = 0,30 x 12.710 - 3.000 = +813 triệu USD"
+      - "Xác suất hòa vốn = 3.000/12.710 = 23,6%"
+      - "Thực tế công khai (làm tròn, ~FY2024): doanh thu AWS khoảng $100 tỷ+, lợi nhuận hoạt động $37-40 tỷ (biên ~37%), thị phần khoảng 30%"
+    lesson: >-
+      Cấu trúc quyết định như mua quyền chọn: lỗ tối đa có giới hạn, lãi không giới hạn trên (bất đối xứng); NPV truyền thống bảo thủ có thể âm nhưng Strategic NPV dương;
+      đầu tư theo giai đoạn, kiểm chứng nhu cầu nội bộ trước (Amazon.com), post-audit liên tục. Cẩn trọng survivorship bias: bài học là cách cấu trúc quyết định, không phải cứ liều là thắng.
+    data_reliability: "illustrative"
+  - name: "Iridium Satellite - thất bại 5 tỷ USD"
+    type: "failure"
+    setup: >-
+      Motorola và đối tác đầu tư khoảng 5 tỷ USD vào chòm 66 vệ tinh LEO (cuối 1980s-1998) cho điện thoại toàn cầu; mạng di động mặt đất lan nhanh và rẻ hơn dự kiến.
+      Số liệu dự phóng không thống nhất giữa các nguồn nên chỉ dùng minh họa.
+    key_calculations:
+      - "CAPEX ~3,4 tỷ dự kiến thành ~5 tỷ thực (+47%)"
+      - "Thuê bao thực khoảng 55.000 so với mục tiêu hàng triệu (thường trích ~5 triệu)"
+      - "PVIFA(15%,10) = 5,0188; dòng tiền cần = 5.000/5,0188 = 996 triệu USD/năm"
+      - "Nếu mỗi thuê bao 1.500 USD/năm thì cần 664.000 thuê bao, gấp khoảng 12 lần 55.000"
+      - "Kết quả: phá sản 1999, tài sản bán khoảng 25 triệu USD (~0,5% chi phí); Motorola xóa sổ khoảng 2,6 tỷ"
+    lesson: >-
+      Nguyên nhân: bỏ qua thay đổi công nghệ, ngụy biện chi phí chìm, không phân tích kịch bản, vượt CAPEX không dự phòng, nghiên cứu thị trường yếu, thiếu linh hoạt (cam kết cứng 66 vệ tinh), optimism bias.
+      Biện pháp: stage-gate, real options (quyền dừng), xét phản ứng đối thủ/công nghệ thay thế, kỷ luật chi phí chìm, post-audit hằng quý, rà soát độc lập, kiểm tra hòa vốn đơn giản.
+      So với AWS: thị trường đúng thời điểm vs sai, mô-đun vs cam kết cứng, vốn theo giai đoạn vs khóa $5B, kiểm chứng nhu cầu nội bộ vs không. Lưu ý $3.000 là giá máy chứ không phải doanh thu/tháng.
+    data_reliability: "unverified"
+  - name: "Công ty In ấn và Bao bì Minh Tâm (Long An) chọn máy in A vs B"
+    type: "sme"
+    setup: >-
+      Hai dự án loại trừ nhau, vòng đời 5 năm, khấu hao đường thẳng về 0, T = 20%, r = 12%, khảo sát 40 triệu là chi phí chìm (bỏ qua).
+      Máy A: vốn 1.500, NWC 100, EBITDA 520/năm, bán lại 150. Máy B: vốn 2.400, NWC 150, EBITDA 820/năm, bán lại 240. Đơn vị triệu đồng.
+    key_calculations:
+      - "C0: A = 1.600; B = 2.550"
+      - "Khấu hao: A 300, B 480; EBIT: A 220, B 340; thuế 44 và 68; OCF: A 476, B 752 (kiểm: 520x0,8+300x0,2 = 476; 820x0,8+480x0,2 = 752)"
+      - "Terminal: A = 150x0,8+100 = 220; B = 240x0,8+150 = 342"
+      - "NPV A = +240,71; NPV B = +354,85 (B hơn 114,14)"
+      - "IRR A 17,60% > IRR B 17,19% (xung đột); PI A 1,150 > PI B 1,139"
+      - "PP A 3,36 năm, B 3,39 năm; DPP A 4,39, B 4,43"
+      - "Dòng chênh lệch B-A: -950; 276 x4; 398; NPV chênh = +114,14; IRR gia tăng = 16,50% > 12%"
+      - "Độ nhạy EBITDA -10%: A +90,8 B +118,4; EBITDA -20%: A -59,2 B -118,1; CAPEX +20%: A -16,0 B -55,9; không bán lại: A +172,6 B +245,9; r = 15%: A +105,0 B +140,9; r = 18%: A -15,3 B -48,9"
+      - "EBITDA hòa vốn: A 436,5 (thấp hơn dự báo 16,1%); B 697,0 (thấp hơn 15,0%)"
+    lesson: >-
+      IRR và PI cao hơn của A chỉ vì A nhỏ hơn; khoản đầu tư thêm 950 triệu có IRR 16,5% > 12% nên chọn Máy B (NPV +114 triệu). Điểm giao ~16,5%: r thấp hơn thì B thắng, cao hơn thì A thắng.
+      B có đòn bẩy hoạt động cao hơn nên nhạy hơn (EBITDA -20%: -118 vs -59). Khuyến nghị: chọn B nếu có đơn hàng/hợp đồng khung cho EBITDA >= ~700 và huy động thêm 950 với chi phí < 16,5%; nếu chưa chắc sản lượng, chọn A và giữ option to expand.
+      Phương pháp: NPV là tiêu chí cuối, luôn tính IRR gia tăng khi mâu thuẫn, luôn chạy độ nhạy và hòa vốn.
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Dòng tiền và NPV/IRR/PI/PP/DPP của Máy A và B (Minh Tâm)"
+    inputs:
+      A: {capex: 1500, nwc: 100, ebitda: 520, salvage: 150}
+      B: {capex: 2400, nwc: 150, ebitda: 820, salvage: 240}
+      common: {life: 5, tax: 0.2, r: 0.12}
+    steps:
+      - "Khấu hao: A 1.500/5 = 300; B 2.400/5 = 480"
+      - "OCF = EBITDA(1-T)+Dep.T: A 416+60 = 476; B 656+96 = 752"
+      - "Terminal: A 150x0,8+100 = 220; B 240x0,8+150 = 342"
+      - "CF A: -1.600; 476 x4; 696. CF B: -2.550; 752 x4; 1.094"
+      - "NPV 12%: A +240,71; B +354,85. IRR: A 17,60%; B 17,19%. PI: A 1,150; B 1,139"
+    result: "NPV chọn B, IRR/PI chọn A; xung đột do quy mô, giải quyết bằng IRR gia tăng."
+  - name: "Giải xung đột bằng IRR gia tăng và NPV profile"
+    inputs: {delta_cf: [-950, 276, 276, 276, 276, 398], r: 0.12}
+    steps:
+      - "NPV chênh lệch 12% = -950 + 276x(0,8929+0,7972+0,7118+0,6355) + 398x0,5674 = +114,14 (bằng 354,85 - 240,71)"
+      - "IRR gia tăng = 16,50% > 12%"
+      - "NPV profile: r=0%: A 1.000,0 B 1.552,0; 5%: 633,2 vs 973,7; 10%: 341,0 vs 513,0; 15%: 105,0 vs 140,9; 20%: -88,1 vs -163,6; giao tại ~16,5%"
+    result: "Chọn B vì chi phí vốn 12% thấp hơn điểm giao 16,5%."
+  - name: "Phân bổ vốn khi ngân sách 3.000 (X, Y, Z, W)"
+    inputs: {budget: 3000, projects: {X: [1500, 300], Y: [1200, 264], Z: [1000, 140], W: [800, 200]}}
+    steps:
+      - "PI: X 1,200; Y 1,220; Z 1,140; W 1,250"
+      - "Xếp theo NPV: X+Y = 2.700 vốn, NPV 564"
+      - "Xếp theo PI: W+Y = 2.000; X không vừa; thêm Z = 3.000 vốn; NPV 200+264+140 = 604"
+    result: "Chọn W+Y+Z, tổng NPV 604 > 564."
+  - name: "EAA khi vòng đời khác nhau (r = 12%)"
+    inputs: {m1: {cost: 300, cf: 150, n: 3}, m2: {cost: 450, cf: 170, n: 5}}
+    steps:
+      - "Máy 1: NPV = 150x2,4018-300 = 60,27; EAA = 60,27x0,4163 = 25,10"
+      - "Máy 2: NPV = 170x3,6048-450 = 162,81; EAA = 162,81x0,2774 = 45,17"
+    result: "Máy 2 vượt trội (45,17 > 25,10/năm)."
+  - name: "Kịch bản NPV kỳ vọng và độ lệch chuẩn"
+    inputs: {scenarios: {best: [0.25, 350], base: [0.5, 124], worst: [0.25, -80]}}
+    steps:
+      - "E[NPV] = 87,5+62-20 = 129,5"
+      - "sigma = căn(0,25x220,5^2 + 0,5x5,5^2 + 0,25x209,5^2) = 152,1"
+    result: "Kỳ vọng 129,5, sigma 152,1 > kỳ vọng nên dao động rất mạnh; kịch bản xấu -80 cần chịu được."
+  - name: "MIRR vs IRR"
+    inputs: {cf: [-1000, 400, 500, 600], reinvest: 0.1}
+    steps:
+      - "IRR = 21,65%"
+      - "FV dương = 484+550+600 = 1.634; MIRR = 1,634^(1/3)-1 = 17,78%"
+    result: "MIRR 17,78% thấp hơn IRR vì tái đầu tư ở 10% thay vì 21,65%."
+  - name: "PP và DPP"
+    inputs: {cf: [-500, 150, 150, 150, 150, 150], r: 0.10}
+    steps:
+      - "PP = 3 + 50/150 = 3,33"
+      - "PV tích lũy tới năm 4 = -24,52; PV năm 5 = 93,14; DPP = 4 + 24,52/93,14 = 4,26"
+    result: "PP 3,33 năm; DPP 4,26 năm."
+  - name: "Real option (pilot rồi mở rộng) kiểu AWS"
+    inputs: {cost: 3000, p: 0.3, v_expand: 20000, r: 0.12, k: 4}
+    steps:
+      - "PV = 20.000/1,12^4 = 12.710"
+      - "E = 0,3x12.710 - 3.000 = +813; p* = 23,6%"
+    result: "Giá trị kỳ vọng +813 triệu USD; cần xác suất thành công > 23,6%."
+
+practice_questions:
+  - q: "Quán cà phê: vốn 800 triệu; dòng tiền ròng sau thuế 250/năm x 5 năm; r = 12%. Tính NPV, PI, PP, DPP."
+    a: "NPV = +101,19; PI = 1,126 (PV dòng tương lai 901,19/800); PP = 800/250 = 3,2 năm; DPP: PV tích lũy tới năm 4 = -40,66, PV năm 5 = 141,85, DPP = 4,29 năm; IRR 16,99%. Đáng đầu tư."
+  - q: "Giải thích vì sao (a) không trừ lãi vay, (b) khấu hao làm tăng NPV, (c) 30 triệu nghiên cứu thị trường đã trả có tính không."
+    a: "(a) WACC đã gồm chi phí nợ, trừ lãi nữa là đếm hai lần. (b) Khấu hao tạo lá chắn thuế Dep x T là tiền thật. (c) Không: chi phí chìm."
+  - q: "Máy 1,2 tỷ khấu hao 6 năm về 0; EBITDA +400/năm; T 20%; NWC +80 thu hồi cuối kỳ; bán lại 100 cuối năm 6. Lập CF, tax shield, NPV r = 11%."
+    a: "Dep = 200; tax shield = 40/năm; OCF = 400x0,8+200x0,2 = 360; CF0 = -1.280; năm 1-5 = 360; năm 6 = 360 + 100x0,8 + 80 = 520; NPV = +328,54; IRR 19,11%."
+  - q: "P: -100, +60, +60; Q: -500, 0, +630; r = 10%. NPV, IRR, IRR gia tăng; chọn dự án nào nếu loại trừ?"
+    a: "NPV P = +4,13, IRR 13,07%; NPV Q = +20,66, IRR 12,25% nên NPV và IRR xếp hạng ngược nhau. Dòng chênh Q-P = -400, -60, +570 có NPV +16,53, IRR gia tăng 12,11% > 10% nên chọn Q (NPV cao hơn)."
+  - q: "Ngân sách 2.000; A (800/160), B (700/154), C (600/90), D (900/171) (vốn/NPV). Chọn tổ hợp."
+    a: "PI: A 1,20; B 1,22; C 1,15; D 1,19. Greedy PI chọn B+A = 1.500 (NPV 314), phần còn 500 không vừa C hay D. Tối ưu là A+D = 1.700 vốn, NPV 331 (B+D = 325, C+D = 261). Bài học: greedy PI không luôn tối ưu, kiểm tổ hợp."
+  - q: "Xưởng may Hòa Bình: thay 10 máy cũ bằng máy mới. Cần có những khoản dòng tiền gia tăng nào?"
+    a: "Giá máy mới + lắp đặt + đào tạo + dNWC; bán máy cũ và thuế trên lãi/lỗ sổ sách; tiết kiệm nhân công và giảm phế phẩm sau thuế; chênh lệch lá chắn thuế khấu hao; terminal CF; sau đó NPV, IRR, DPP, độ nhạy tiết kiệm nhân công ±20% và giá máy +15%, khuyến nghị với kill criteria."
+  - q: "Pilot trà sữa: vốn 600 (NPV độc lập -150); thành công 40% thì nhân rộng 10 cửa hàng NPV +2.000. Giá trị kỳ vọng và xác suất hòa vốn?"
+    a: "E = -150 + 0,4x2.000 = +650 triệu (so với NPV truyền thống -150 nên bị từ chối); p* = 150/2.000 = 7,5%. Nên thử vì lỗ có giới hạn."
+  - q: "Khi nào NPV và IRR cho kết luận ngược nhau và xử lý thế nào?"
+    a: "Dự án loại trừ có khác quy mô hoặc khác thời điểm dòng tiền. Dùng NPV làm phán quyết và IRR gia tăng để chẩn đoán."
+
+checklist:
+  - "□ Dự án phù hợp chiến lược; đã phân loại (độc lập/loại trừ/bắt buộc)?"
+  - "□ Đủ initial + operating + terminal cash flows?"
+  - "□ Chỉ incremental CF: loại sunk cost, tính opportunity cost và cannibalization?"
+  - "□ Dòng tiền sau thuế, đã tính lá chắn thuế khấu hao?"
+  - "□ Đã tính dNWC và thu hồi cuối kỳ?"
+  - "□ Không tính lãi vay trong dòng tiền (đã nằm trong WACC)?"
+  - "□ NPV > 0? IRR > WACC? PI > 1? PP/DPP chấp nhận được?"
+  - "□ Xung đột NPV vs IRR đã giải bằng IRR gia tăng?"
+  - "□ Khác vòng đời đã so bằng EAA?"
+  - "□ Đã chạy độ nhạy, kịch bản (xác suất), hòa vốn/biên an toàn?"
+  - "□ Đã xem xét Real Options, phản ứng đối thủ, công nghệ thay thế?"
+  - "□ Có reviewer độc lập, stage-gate, post-audit, tiêu chí dừng (kill criteria)?"
+  - "□ Kiểm tra: NPV hàm = tổng PV; tổng khấu hao = vốn máy; Terminal CF gồm NWC?"
+
+excel_google_sheets_templates:
+  - "NPV: =NPV(r, CF1:CFn)+CF0; IRR: =IRR(CF0:CFn); MIRR: =MIRR(CF0:CFn, lãi_vay, tái_đầu_tư); XNPV cho ngày không đều; PV(r,n,-CF) cho niên kim; PMT(r,n,-NPV) cho EAA."
+  - "Goal Seek (Data - What-If): đặt NPV = 0 bằng cách đổi EBITDA để tìm hòa vốn; Data Table để lập bảng độ nhạy 1-2 biến; Solver (biến nhị phân) để chọn tổ hợp dự án khi thiếu vốn."
+  - "Sheet 1 ASSUMPTIONS (ô nhập tô xanh): vốn đầu tư, vòng đời, khấu hao, thuế, WACC, EBITDA, NWC, giá bán lại."
+  - "Sheet 2 CASH FLOW: năm 0..n với EBITDA, trừ khấu hao, EBIT, thuế, NOPAT, cộng khấu hao, trừ dNWC, trừ CAPEX, cộng Terminal CF, FCF, hệ số chiết khấu, PV, PV tích lũy."
+  - "Sheet 3 OUTPUT: NPV, IRR, MIRR, PI, PP, DPP. Sheet 4 SENSITIVITY và SCENARIO: data table NPV theo doanh thu/CAPEX/WACC, best/base/worst với xác suất. Sheet 5 CHECKS: NPV hàm = tổng PV; tổng khấu hao = vốn máy; Terminal CF gồm thu hồi NWC."
+  - "Tham khảo thêm mô hình tài chính đầy đủ trong templates/financial-model-excel-guide.md của knowledge base."
+source_file: "02-capital-budgeting.md"

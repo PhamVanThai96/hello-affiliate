@@ -427,7 +427,7 @@ Apple là một trong những công ty có giá trị vốn hóa lớn nhất th
 
 **Bước 2 – Asset Turnover**: Revenue $383B / Total Assets ~$333B ≈ **1.15x**. Con số này khá cao với một công ty công nghệ, lý do: Apple gần như **không sở hữu nhà máy sản xuất** (outsource cho Foxconn, Pegatron) → Total Assets thấp hơn nhiều so với một hãng sản xuất tự vận hành nhà máy (như Samsung). Đây là chiến lược "capital-light" kinh điển.
 
-**Bước 3 – Equity Multiplier**: Total Assets ~$333B / Equity ~$57B ≈ **5.87x**. Đây là con số **bất thường cao** và là chìa khóa giải thích ROE 171%. Nguyên nhân: suốt hơn 1 thập kỷ, Apple đã chi hơn **$600 tỷ VNĐ... (thực ra là $600+ tỷ USD)** mua lại cổ phiếu quỹ (share buyback), khiến khoản mục Equity trên Balance Sheet bị "co lại" rất nhiều (vì mua cổ phiếu quỹ làm giảm trực tiếp Equity), trong khi Total Assets gần như không đổi.
+**Bước 3 – Equity Multiplier**: Total Assets ~$333B / Equity ~$57B ≈ **5.87x**. Đây là con số **bất thường cao** và là chìa khóa giải thích ROE 171%. Nguyên nhân: suốt hơn 1 thập kỷ, Apple đã chi hơn **$600 tỷ USD** (ước tính, cần đối chiếu báo cáo thường niên) mua lại cổ phiếu quỹ (share buyback), khiến khoản mục Equity trên Balance Sheet bị "co lại" rất nhiều (vì mua cổ phiếu quỹ làm giảm trực tiếp Equity), trong khi Total Assets gần như không đổi.
 
 $$ROE = 25.3\% \times 1.15x \times 5.87x ≈ 171\%$$
 
@@ -435,7 +435,7 @@ $$ROE = 25.3\% \times 1.15x \times 5.87x ≈ 171\%$$
 
 Giả sử Apple giữ nguyên Equity ở mức "tự nhiên" (không bị bào mòn bởi buyback), ví dụ Equity giả định = $150B thay vì $57B thực tế:
 
-$$ROE_{giả định} = 25.3\% \times 1.15\% \times (333/150 = 2.22x) ≈ 64.6\%$$
+$$ROE_{giả định} = 25.3\% \times 1.15x \times (333/150 = 2.22x) ≈ 64.6\%$$
 
 Vẫn là một con số ROE xuất sắc (64.6%), nhưng **thấp hơn rất nhiều** so với 171% công bố. Điều này chứng minh: **phần lớn "sự khác biệt" giữa ROE 171% và ROE "thực chất" của hoạt động kinh doanh đến từ đòn bẩy tài chính (buyback), không phải từ cải thiện hiệu quả vận hành.**
 

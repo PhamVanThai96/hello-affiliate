@@ -1,0 +1,1837 @@
+id: finance-m07
+title: "Tài chính m07: Chính sách cổ tức"
+summary: "Trả lời bài toán \"mỗi đồng lợi nhuận sau thuế nên chia cho cổ đông hay giữ lại tái đầu tư\", chọn hình thức chi trả (tiền mặt, cổ phiếu, mua lại cổ phiếu), mức payout và thiết kế chính sách cổ tức bền vững cho DN, đặc biệt SME Việt Nam. Bản chất là quyết định phân bổ vốn (capital…"
+agents: ["financial_expert"]
+order: 27
+when: ["co tuc", "chia co tuc", "payout", "mua lai co phieu", "buyback", "co tuc co phieu", "lintner", "giu lai loi nhuan", "tai dau tu", "thuong co phieu", "chinh sach co tuc", "dividend policy"]
+body_max: 3172
+sections:
+  - id: "m07-tong-quan"
+    title: "Tổng quan m07"
+    tags: ["m07", "chính", "sách", "cổ", "tức", "dividend", "policy"]
+    text: |-
+      Chính sách cổ tức (Dividend Policy) — module m07
+
+      Mục đích: Trả lời bài toán "mỗi đồng lợi nhuận sau thuế nên chia cho cổ đông hay giữ lại tái đầu tư", chọn hình thức chi trả (tiền mặt, cổ phiếu, mua lại cổ phiếu), mức payout và thiết kế chính sách cổ tức bền vững cho DN, đặc biệt SME Việt Nam. Bản chất là quyết định phân bổ vốn (capital allocation), không chỉ là thủ tục chia tiền cuối năm.
+
+      Dùng khi:
+      - Chủ SME/HĐQT hỏi cuối năm nên chia bao nhiêu cổ tức, giữ lại bao nhiêu
+      - So sánh các phương án payout (ví dụ 70% / 0% / 20%) theo dòng tiền, nhu cầu đầu tư, nhu cầu cổ đông
+      - Tính Payout, Retention, Dividend Yield, FCF coverage, tăng trưởng bền vững g = ROE x b
+      - Chọn giữa cổ tức tiền mặt, cổ tức cổ phiếu, mua lại cổ phiếu (buyback); tính EPS/giá sau từng hình thức
+      - Giải thích M&M irrelevance, homemade dividend, bird-in-hand, tax preference, signaling, clientele, agency/FCF
+      - Tính thuế cổ tức vs thuế chuyển nhượng cho cổ đông cá nhân (VN)
+      - Có nên vay để chia cổ tức; có nên cắt/giữ cổ tức khi lợi nhuận giảm; stress test cổ tức
+      - Thiết kế chính sách nền + thưởng thêm, soạn đề xuất/nghị quyết cổ tức
+
+      Nên nắm trước: - m01; - m02; - m03; - m05
+
+      Module liên quan: - 'm01: giá trị thời gian của tiền, perpetuity dùng cho NPV dự án vĩnh viễn' - 'm02: NPV/IRR để chọn dự án NPV > 0 xác định nhu cầu giữ lại' - 'm03: chi phí vốn chủ Ke (CAPM/Gordon) làm tỷ lệ chiết khấu' - 'm04: capital structure, M&M 1958, nợ như công cụ kỷ luật, vay để chia cổ tức' - 'm05: ROE, DuPont, interest coverage, FCF từ báo cáo tài chính' - 'm06: vốn lưu động trong FCF; tiền mặt dự trữ …
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m07_ni_split: Phân chia lợi nhuận sau thuế
+      - m07_payout: Tỷ lệ chi trả cổ tức
+      - m07_retention: Tỷ lệ giữ lại
+      - m07_eps_pe: EPS, DPS và P/E
+      - m07_div_yield: Tỷ suất cổ tức
+      - m07_fcf_payout: Payout theo dòng tiền và hệ số bao phủ FCF
+      - m07_fcf: Dòng tiền tự do trước chia cổ tức (dạng SME)
+      - m07_buyback_yield: Tỷ suất mua lại và tổng tỷ suất cho cổ đông
+      - m07_ex_div: Giá tham chiếu ngày không hưởng quyền
+      - m07_homemade: Cổ tức tự chế (M&M)
+      - m07_tax_grossup: Số tiền gộp cần để nhận tiền ròng sau thuế
+      - m07_gordon_ke: Chi phí vốn chủ theo Gordon
+      - m07_gordon_price: Mô hình Gordon định giá cổ phiếu
+      - m07_lintner: Mô hình Lintner
+      - m07_residual: Cổ tức phần dư
+      - m07_low_extra: Cổ tức nền cộng thưởng thêm
+      - m07_sgr: Tốc độ tăng trưởng bền vững
+      - m07_buyback_eps: Tác động mua lại cổ phiếu lên EPS và giá
+      - m07_stock_div: Cổ tức bằng cổ phiếu
+      - m07_project_npv: ROIC và NPV dự án vĩnh viễn
+      - m07_funding_gap: Thiếu hụt và tiền thừa theo chính sách
+      - m07_idle_cost: Chi phí tiền nhàn rỗi
+      - m07_borrow_to_pay_leak: Rò rỉ giá trị khi vay để chia cổ tức
+      - m07_int_cov: Hệ số bao phủ lãi vay
+      - m07_compound_retain: Mô phỏng giữ lại và tái đầu tư vs chia cổ tức
+
+      Kho tra cứu của module: Khái niệm 21, Công thức 25, Quy trình 5, Quy tắc quyết định 16, Chuẩn so sánh 11, Lỗi thường gặp 14, Lưu ý SME Việt Nam 9, Bài học case 3, Ví dụ có lời giải 8, Câu hỏi luyện tập 9, Checklist 15, Mẫu Excel/Sheets 2. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ NPV", "lỗi thường gặp WACC").
+  - id: "m07-concepts-1"
+    title: "Khái niệm: Chính sách cổ tức"
+    tags: ["khái", "niệm", "chính", "sách", "cổ", "tức"]
+    text: |-
+      term_vi: Chính sách cổ tức
+      term_en: Dividend Policy
+      definition: |
+        Bộ nguyên tắc quyết định bao nhiêu lợi nhuận sau thuế chia cho cổ đông và bao nhiêu giữ lại (retained earnings), kèm hình thức (tiền mặt, cổ phiếu, buyback), tần suất (quý/nửa năm/năm) và tính ổn định (cố định hay thả nổi). NI = Dividends + Retained Earnings.
+      why_it_matters: |
+        Lợi nhuận thuộc về cổ đông, nên câu hỏi thật là ai tái đầu tư hiệu quả hơn: ban quản lý hay cổ đông. Nếu DN có dự án NPV > 0 (suất sinh lời cao hơn mức cổ đông tự kiếm với rủi ro tương đương) thì giữ lại; nếu hết dự án tốt, tiền nhàn rỗi bị lãng phí hoặc bị dùng "xây đế chế" nên phải trả lại.
+  - id: "m07-concepts-2"
+    title: "Khái niệm: Câu đố cổ tức"
+    tags: ["khái", "niệm", "câu", "đố", "cổ", "tức"]
+    text: |-
+      term_vi: Câu đố cổ tức
+      term_en: Dividend Puzzle
+      definition: 'Cách gọi của Fischer Black (1976): các mảnh ghép về cổ tức không khớp nhau (thuế bất lợi nhưng DN vẫn chia và cổ phiếu có cổ tức vẫn được ưa chuộng).'
+      why_it_matters: |
+        Không có lý thuyết nào thắng tuyệt đối; mỗi lý thuyết đúng trong một hoàn cảnh (thuế, thông tin, cổ đông, chu kỳ DN). Nhiệm vụ của agent là xác định lý thuyết nào đang chi phối DN đang tư vấn. Mốc lịch sử: Lintner 1956 (smoothing), Gordon/Lintner 1956-63 (bird-in-hand), Miller & Modigliani 1961 (irrelevance), Black & Scholes 1974 (không có bằng chứng chắc chắn cổ tức cao làm giá cao), Bhattacharya 1979 và Miller & Rock 1985 (signaling), Litzenberger & Ramaswamy 1980 (tax preference), Easterbrook 1984 và Jensen 1986 (agency/FCF).
+  - id: "m07-concepts-3"
+    title: "Khái niệm: Tỷ lệ chi trả và tỷ lệ giữ lại"
+    tags: ["khái", "niệm", "tỷ", "lệ", "chi", "trả", "và", "giữ", "lại"]
+    text: |-
+      term_vi: Tỷ lệ chi trả và tỷ lệ giữ lại
+      term_en: Payout Ratio and Retention Ratio (b)
+      definition: Payout = Dividends/NI = DPS/EPS; Retention b = 1 - Payout = lợi nhuận giữ lại / NI.
+      why_it_matters: 'Hai đại lượng điều khiển trade-off cốt lõi: chia nhiều thì giữ ít, tăng trưởng nội sinh g = ROE x b thấp.'
+  - id: "m07-concepts-4"
+    title: "Khái niệm: Tỷ suất cổ tức"
+    tags: ["khái", "niệm", "tỷ", "suất", "cổ", "tức"]
+    text: |-
+      term_vi: Tỷ suất cổ tức
+      term_en: Dividend Yield
+      definition: 'DPS / giá cổ phiếu: nhận bao nhiêu % bằng cổ tức mỗi năm trên số tiền bỏ ra mua.'
+      why_it_matters: Cổ tức tuyệt đối vô nghĩa nếu không đặt cạnh giá (yield), lợi nhuận (payout) và dòng tiền (coverage); cần cả ba góc nhìn.
+  - id: "m07-concepts-5"
+    title: "Khái niệm: Bao phủ cổ tức bằng dòng tiền tự do"
+    tags: ["khái", "niệm", "bao", "phủ", "cổ", "tức", "bằng", "dòng", "tiền", "tự", "do"]
+    text: |-
+      term_vi: Bao phủ cổ tức bằng dòng tiền tự do
+      term_en: FCF Dividend Coverage / FCF Payout
+      definition: Coverage = FCF / Dividends (an toàn khi trên 1,5 lần); FCF payout = Dividends / FCF.
+      why_it_matters: Cổ tức trả bằng tiền thật, không bằng lợi nhuận kế toán (có thể gồm phải thu chưa thu, khấu hao phi tiền). GE trả cổ tức từ lợi nhuận không bền vững.
+  - id: "m07-concepts-6"
+    title: "Khái niệm: Tỷ suất mua lại và tổng tỷ suất cho cổ đông"
+    tags: ["khái", "niệm", "tỷ", "suất", "mua", "lại", "và", "tổng", "cho", "cổ", "đông"]
+    text: |-
+      term_vi: Tỷ suất mua lại và tổng tỷ suất cho cổ đông
+      term_en: Buyback Yield and Total Shareholder Yield
+      definition: Buyback Yield = Buybacks / Market Cap; Total Shareholder Yield = Dividend Yield + Buyback Yield.
+      why_it_matters: DN trả lại vốn qua hai kênh; chỉ nhìn cổ tức sẽ đánh giá thấp mức hoàn trả thực tế (ví dụ S&P 500 năm 2023 buyback khoảng 795 tỷ USD, cổ tức khoảng 588 tỷ USD, số làm tròn cần kiểm chứng).
+  - id: "m07-concepts-7"
+    title: "Khái niệm: Dòng thời gian chi trả và ngày không hưởng quyền"
+    tags: ["khái", "niệm", "dòng", "thời", "gian", "chi", "trả", "và", "ngày", "không", "hưởng", "quyền"]
+    text: |-
+      term_vi: Dòng thời gian chi trả và ngày không hưởng quyền
+      term_en: 'Dividend Timeline: Declaration, Ex-dividend, Record, Payment'
+      definition: |
+        Ngày công bố (nghị quyết HĐQT/ĐHĐCĐ) -> ngày giao dịch không hưởng quyền (ex-date) -> ngày đăng ký cuối cùng (record date, chốt danh sách) -> ngày thanh toán. Ai sở hữu trước ex-date thì được nhận; từ ex-date giá tham chiếu giảm đúng bằng cổ tức.
+      why_it_matters: Giá giảm ngày ex không phải thua lỗ mà là tiền chuyển từ tài sản DN sang túi cổ đông (ví dụ đóng cửa 30.000, cổ tức 2.000 thì tham chiếu 28.000). Với SME chưa niêm yết, thay bằng nghị quyết ĐHĐCĐ và danh sách cổ đông.
+  - id: "m07-concepts-8"
+    title: "Khái niệm: Các hình thức chi trả"
+    tags: ["khái", "niệm", "các", "hình", "thức", "chi", "trả"]
+    text: |-
+      term_vi: Các hình thức chi trả
+      term_en: Forms of Payout
+      definition: |
+        Cổ tức tiền mặt; cổ tức bằng cổ phiếu (stock dividend); mua lại cổ phiếu (share buyback); cổ tức đặc biệt (special dividend, một lần từ tiền dư bất thường, ví dụ Costco 15 USD/CP); cổ tức bằng tài sản (property dividend, spin-off).
+      why_it_matters: Mỗi hình thức khác nhau về thuế, tín hiệu, tính linh hoạt, tác động EPS và dòng tiền; chọn hình thức theo cổ đông và mục tiêu.
+  - id: "m07-concepts-9"
+    title: "Khái niệm: Định lý bất tương quan cổ tức M&M (1961)"
+    tags: ["khái", "niệm", "định", "lý", "bất", "tương", "quan", "cổ", "tức", "1961"]
+    text: |-
+      term_vi: Định lý bất tương quan cổ tức M&M (1961)
+      term_en: M&M Dividend Irrelevance
+      definition: Trong thị trường hoàn hảo (không thuế, không chi phí giao dịch, thông tin đối xứng, nhà đầu tư lý trí, không agency cost, chính sách đầu tư cố định), giá trị DN chỉ phụ thuộc năng lực sinh lời của tài sản và rủi ro kinh doanh, không phụ thuộc chính sách cổ tức.
+      why_it_matters: |
+        Trực giác cái bánh pizza: cổ tức chỉ cắt bánh bên trong hay bên ngoài DN. Giá cổ phiếu giảm đúng bằng cổ tức; cổ đông muốn nhiều tiền hơn thì bán bớt (homemade dividend), muốn ít hơn thì dùng cổ tức mua thêm. Giá trị thực dụng: chỉ ra đúng các "ma sát" khiến cổ tức quan trọng: thuế (Tax Preference), thông tin (Signaling), giao dịch/thanh khoản (Clientele, Bird-in-Hand), chi phí đại diện (Agency). Mỗi lý thuyết là gỡ một giả định.
+  - id: "m07-concepts-10"
+    title: "Khái niệm: Cổ tức tự chế"
+    tags: ["khái", "niệm", "cổ", "tức", "tự", "chế"]
+    text: |-
+      term_vi: Cổ tức tự chế
+      term_en: Homemade Dividend
+      definition: Cổ đông tự tạo dòng tiền mong muốn bằng cách bán một phần cổ phiếu (muốn nhiều hơn) hoặc tái đầu tư cổ tức nhận được (muốn ít hơn).
+      why_it_matters: Là cơ chế làm cổ tức irrelevant. Với SME chưa niêm yết, cổ phần khó bán và phải chiết khấu thanh khoản nên homemade dividend không khả thi, cổ tức tiền mặt có giá trị thực.
+  - id: "m07-concepts-11"
+    title: "Khái niệm: Lý thuyết chim trong tay"
+    tags: ["khái", "niệm", "lý", "thuyết", "chim", "trong", "tay"]
+    text: |-
+      term_vi: Lý thuyết chim trong tay
+      term_en: Bird-in-Hand (Gordon & Lintner)
+      definition: Nhà đầu tư coi cổ tức chắc chắn hơn lãi vốn nên cổ tức cao làm Ke thấp và giá cao; Ke = D1/P0 + g.
+      why_it_matters: M&M phản biện là ngụy biện vì rủi ro nằm ở dòng tiền hoạt động của DN, không ở cách chia. Thực nghiệm yếu. Hiện tượng được giải thích tốt hơn bằng Clientele và thanh khoản.
+  - id: "m07-concepts-12"
+    title: "Khái niệm: Ưu tiên thuế"
+    tags: ["khái", "niệm", "ưu", "tiên", "thuế"]
+    text: |-
+      term_vi: Ưu tiên thuế
+      term_en: Tax Preference Theory
+      definition: Khi cổ tức bị đánh thuế nặng hơn và sớm hơn lãi vốn (lãi vốn chỉ chịu thuế khi bán, có thể hoãn), nhà đầu tư thích cổ tức thấp/buyback/giữ lại.
+      why_it_matters: |
+        Mỹ: cổ tức tới 20% + 3,8% NIIT, lãi vốn dài hạn 0/15/20%, có step-up khi thừa kế. VN cá nhân: 5% thuế TNCN trên cổ tức vs 0,1% giá chuyển nhượng cổ phiếu CTCP (TNHH: 20% trên chênh lệch); pháp nhân nhận cổ tức thường được miễn TNDN (cần xác nhận quy định hiện hành). Lợi thế thuế chỉ có ý nghĩa khi cổ phiếu thanh khoản.
+  - id: "m07-concepts-13"
+    title: "Khái niệm: Tín hiệu cổ tức"
+    tags: ["khái", "niệm", "tín", "hiệu", "cổ", "tức"]
+    text: |-
+      term_vi: Tín hiệu cổ tức
+      term_en: Signaling / Information Content of Dividends
+      definition: Ban quản lý biết hơn cổ đông; cổ tức là tiền thật rời DN và khó cắt, nên chỉ DN tự tin dòng tiền mới dám tăng. Thị trường đọc cổ tức như tín hiệu.
+      why_it_matters: |
+        Phản ứng tham khảo (kiểu Asquith & Mullins 1983, Healy & Palepu 1988; thay đổi theo thị trường): khởi xướng +1-3%, tăng +1-2%, giữ nguyên trung tính, cắt -5-10% hoặc hơn, ngừng hẳn -10-25% hoặc hơn. Bất đối xứng này khiến quản lý rất ngại cắt, dẫn tới smoothing của Lintner.
+  - id: "m07-concepts-14"
+    title: "Khái niệm: Hiệu ứng nhóm khách hàng"
+    tags: ["khái", "niệm", "hiệu", "ứng", "nhóm", "khách", "hàng"]
+    text: |-
+      term_vi: Hiệu ứng nhóm khách hàng
+      term_en: Clientele Effect
+      definition: Mỗi nhóm cổ đông (hưu trí, quỹ hưu trí, nhà đầu tư trẻ thuế cao, quỹ miễn thuế, quỹ tăng trưởng) tự chọn cổ phiếu có chính sách khớp nhu cầu và thuế.
+      why_it_matters: Đổi chính sách đột ngột (cắt cổ tức) làm nhóm cũ bán, nhóm mới chưa kịp vào nên giá giảm do chi phí chuyển đổi cổ đông; lý do cần giữ chính sách ổn định.
+  - id: "m07-concepts-15"
+    title: "Khái niệm: Lý thuyết đại diện và dòng tiền tự do"
+    tags: ["khái", "niệm", "lý", "thuyết", "đại", "diện", "và", "dòng", "tiền", "tự", "do"]
+    text: |-
+      term_vi: Lý thuyết đại diện và dòng tiền tự do
+      term_en: Agency Theory / Free Cash Flow (Jensen 1986)
+      definition: Quản lý không sở hữu 100% nên có xu hướng dùng FCF dư vào dự án NPV < 0 (xây đế chế, M&A giá cao). Chia cổ tức/buyback rút tiền dư, buộc quay lại thị trường vốn chịu giám sát.
+      why_it_matters: Cùng cơ chế kỷ luật như nợ vay trong lý thuyết cơ cấu vốn. Với SME chủ trùng quản lý, agency cost nhỏ nhưng có xung đột cổ đông lớn/nhỏ.
+  - id: "m07-concepts-16"
+    title: "Khái niệm: Mô hình Lintner (điều chỉnh từng phần)"
+    tags: ["khái", "niệm", "mô", "hình", "lintner", "điều", "chỉnh", "từng", "phần"]
+    text: |-
+      term_vi: Mô hình Lintner (điều chỉnh từng phần)
+      term_en: Lintner Partial Adjustment / Dividend Smoothing
+      definition: 'Lintner 1956 khảo sát 28 công ty Mỹ: có payout mục tiêu nhưng điều chỉnh dần với tốc độ c (thường 0,3-0,5); cổ tức tăng chậm, cực ngại giảm (sticky).'
+      why_it_matters: Giải thích vì sao EPS giảm 44% mà cổ tức chỉ giảm khoảng 11% và payout thực nhảy lên 61%; DN chấp nhận payout cao tạm thời để tránh tín hiệu xấu.
+  - id: "m07-concepts-17"
+    title: "Khái niệm: Mua lại cổ phiếu"
+    tags: ["khái", "niệm", "mua", "lại", "cổ", "phiếu"]
+    text: |-
+      term_vi: Mua lại cổ phiếu
+      term_en: Share Buyback
+      definition: DN dùng tiền mua cổ phiếu chính mình; cổ đông bán nhận tiền, cổ đông giữ có tỷ lệ sở hữu tăng.
+      why_it_matters: |
+        Phổ biến từ thập niên 1980 vì: thuế hoãn (cổ đông chọn bán hay giữ), linh hoạt (không cam kết, dừng được không phạt tín hiệu), tín hiệu cổ phiếu bị định giá thấp, EPS tăng. Nhưng EPS tăng không làm giá tăng vì vốn hóa cũng giảm đúng số tiền chi; buyback chỉ tạo giá trị khi mua dưới giá trị nội tại hoặc ngăn lãng phí tiền dư.
+  - id: "m07-concepts-18"
+    title: "Khái niệm: Tăng trưởng bền vững"
+    tags: ["khái", "niệm", "tăng", "trưởng", "bền", "vững"]
+    text: |-
+      term_vi: Tăng trưởng bền vững
+      term_en: Sustainable Growth Rate (g = ROE x b)
+      definition: Tốc độ tăng lợi nhuận/vốn chủ có thể đạt chỉ bằng lợi nhuận giữ lại, không phát hành thêm vốn chủ, ROE và đòn bẩy không đổi.
+      why_it_matters: 'Định lượng trade-off: chia nhiều thì g thấp. Muốn tăng nhanh hơn g mà không giảm cổ tức phải vay hoặc phát hành vốn. Gordon P0 = D1/(Ke - g) chỉ hợp lệ khi g < Ke vĩnh viễn.'
+  - id: "m07-concepts-19"
+    title: "Khái niệm: Các mô hình chính sách cổ tức"
+    tags: ["khái", "niệm", "các", "mô", "hình", "chính", "sách", "cổ", "tức"]
+    text: |-
+      term_vi: Các mô hình chính sách cổ tức
+      term_en: Dividend Policy Models
+      definition: |
+        Stable Dividend (DPS cố định/tăng nhẹ); Constant Payout (X% lợi nhuận); Residual Dividend (đầu tư dự án NPV>0 trước, dư mới chia); Low Regular + Extra (nền thấp chắc chắn + thưởng khi tốt); Stock Dividend.
+      why_it_matters: |
+        Stable hợp DN trưởng thành; Constant Payout hợp ngành chu kỳ nhưng cổ tức dao động; Residual tối ưu vốn nhưng cổ tức bấp bênh (payout 20-80%); thực tế dùng Residual quyết định tổng dài hạn rồi áp Low Regular + Extra để làm mượt.
+  - id: "m07-concepts-20"
+    title: "Khái niệm: Cổ tức bằng cổ phiếu"
+    tags: ["khái", "niệm", "cổ", "tức", "bằng", "phiếu"]
+    text: |-
+      term_vi: Cổ tức bằng cổ phiếu
+      term_en: Stock Dividend
+      definition: Phát hành thêm cổ phiếu cho cổ đông hiện hữu theo tỷ lệ (10% nghĩa là có 10 CP được thêm 1 CP).
+      why_it_matters: Bản chất chuyển lợi nhuận giữ lại thành vốn điều lệ; cổ đông không giàu thêm (EPS và giá cùng chia lại), DN giữ tiền mặt, vốn điều lệ tăng nên có thể tăng hạn mức vay. Thuế cá nhân thường phát sinh khi chuyển nhượng (cần xác nhận).
+  - id: "m07-concepts-21"
+    title: "Khái niệm: Vòng đời và payout"
+    tags: ["khái", "niệm", "vòng", "đời", "và", "payout"]
+    text: |-
+      term_vi: Vòng đời và payout
+      term_en: Life Cycle Theory of Dividends
+      definition: Startup 0%; Growth 0-20%; Mature 30-60%; Decline 60-100%+ payout.
+      why_it_matters: Khung nhanh để đặt payout khởi điểm; điều chỉnh theo thuế, cổ đông, dòng tiền, thông lệ ngành, covenant, cơ hội dự án.
+  - id: "m07-formulas-1"
+    title: "Công thức: m07_ni_split — Phân chia lợi nhuận sau thuế"
+    tags: ["công", "thức", "m07_ni_split", "phân", "chia", "lợi", "nhuận", "sau", "thuế"]
+    text: |-
+      id: m07_ni_split
+      name_vi: Phân chia lợi nhuận sau thuế
+      name_en: Net Income = Dividends + Retained Earnings
+      expression_latex: NI = D + RE
+      expression_python: ni - dividends
+      excel: =B2-B3
+      variables:
+      - symbol: ni
+        meaning: Lợi nhuận sau thuế
+        unit: triệu đồng
+      - symbol: dividends
+        meaning: Cổ tức chi trả
+        unit: triệu đồng
+      when_to_use: Tính lợi nhuận giữ lại RE khi biết cổ tức.
+      why_it_works: Lợi nhuận sau thuế thuộc cổ đông; phần không chia mặc nhiên ở lại làm vốn chủ.
+      assumptions:
+      - Không có khoản trích quỹ hay điều chỉnh khác (nếu có phải trừ trước)
+      pitfalls:
+      - Giữ lại (lợi nhuận) khác tiền sẵn có để đầu tư (cần FCF)
+      interpretation: RE là nguồn tài trợ nội bộ rẻ nhất nhưng có chi phí cơ hội bằng Ke.
+      example:
+        inputs:
+          ni: 3000
+          dividends: 600
+        steps:
+        - RE = 3000 - 600 = 2400
+        result: Lợi nhuận giữ lại 2.400 triệu
+  - id: "m07-formulas-2"
+    title: "Công thức: m07_payout — Tỷ lệ chi trả cổ tức"
+    tags: ["công", "thức", "m07_payout", "tỷ", "lệ", "chi", "trả", "cổ", "tức"]
+    text: |-
+      id: m07_payout
+      name_vi: Tỷ lệ chi trả cổ tức
+      name_en: Payout Ratio
+      expression_latex: \text{Payout}=\frac{\text{Dividends}}{NI}=\frac{DPS}{EPS}
+      expression_python: dps / eps
+      excel: =DPS/EPS
+      variables:
+      - symbol: dps
+        meaning: Cổ tức trên mỗi cổ phần
+        unit: đồng/CP
+      - symbol: eps
+        meaning: Lợi nhuận trên mỗi cổ phần
+        unit: đồng/CP
+      when_to_use: Đo % lợi nhuận được chia; so với ngành và với mục tiêu vòng đời.
+      why_it_works: Chuẩn hóa cổ tức theo năng lực sinh lời nên so sánh được giữa DN/kỳ.
+      assumptions:
+      - EPS dương và là lợi nhuận bền vững (không bất thường)
+      pitfalls:
+      - Payout kế toán đẹp nhưng FCF payout xấu (GE)
+      - EPS âm hoặc quá thấp làm payout vô nghĩa
+      interpretation: 'Tham chiếu: tăng trưởng cao 0-20%, large-cap tăng trưởng 20-35%, blue-chip 40-60%, điện nước/REIT 70-95%.'
+      example:
+        inputs:
+          dps: 1000
+          eps: 2500
+        steps:
+        - Payout = 1000 / 2500 = 0,40
+        result: Payout 40%
+  - id: "m07-formulas-3"
+    title: "Công thức: m07_retention — Tỷ lệ giữ lại"
+    tags: ["công", "thức", "m07_retention", "tỷ", "lệ", "giữ", "lại"]
+    text: |-
+      id: m07_retention
+      name_vi: Tỷ lệ giữ lại
+      name_en: Retention Ratio (b)
+      expression_latex: b = 1-\text{Payout} = \frac{RE}{NI}
+      expression_python: 1 - payout
+      excel: =1-payout
+      variables:
+      - symbol: payout
+        meaning: Tỷ lệ chi trả
+        unit: tỷ lệ 0-1
+      when_to_use: Đầu vào cho tăng trưởng bền vững.
+      why_it_works: Phần bù của payout; mọi lợi nhuận hoặc chia hoặc giữ.
+      assumptions:
+      - Không phát hành/mua lại vốn chủ
+      pitfalls:
+      - Nhầm retention với tiền mặt thực giữ lại
+      interpretation: b cao cho tăng trưởng nội sinh nhanh nhưng phải có dự án NPV>0 để dùng.
+      example:
+        inputs:
+          payout: 0.4
+        steps:
+        - b = 1 - 0,4 = 0,6
+        result: Retention 60%
+  - id: "m07-formulas-4"
+    title: "Công thức: m07_eps_pe — EPS, DPS và P/E"
+    tags: ["công", "thức", "m07_eps_pe", "eps", "dps", "và"]
+    text: |-
+      id: m07_eps_pe
+      name_vi: EPS, DPS và P/E
+      name_en: EPS, DPS, P/E
+      expression_latex: EPS=\frac{NI}{N},\; DPS=\frac{D}{N},\; P/E=\frac{P_0}{EPS}
+      expression_python: (ni*1e6/shares, div*1e6/shares, price/(ni*1e6/shares))
+      excel: =NI/N
+      variables:
+      - symbol: ni
+        meaning: Lợi nhuận sau thuế
+        unit: triệu đồng
+      - symbol: div
+        meaning: Tổng cổ tức
+        unit: triệu đồng
+      - symbol: shares
+        meaning: Số cổ phần lưu hành
+        unit: CP
+      - symbol: price
+        meaning: Giá cổ phiếu
+        unit: đồng/CP
+      when_to_use: Bước đầu tiên khi bài toán cho tổng số liệu DN.
+      why_it_works: Quy về từng cổ phần để so sánh với giá và cổ tức một cổ đông nhận.
+      assumptions:
+      - Số CP lưu hành bình quân không đổi trong kỳ
+      pitfalls:
+      - Quên đổi triệu đồng ra đồng (nhân 1e6)
+      interpretation: P/E thấp so với ngành có thể là định giá thấp hoặc kỳ vọng tăng trưởng thấp.
+      example:
+        inputs:
+          ni: 5000
+          div: 2000
+          shares: 2000000
+          price: 25000
+        steps:
+        - EPS = 5000e6/2e6 = 2500
+        - DPS = 2000e6/2e6 = 1000
+        - P/E = 25000/2500 = 10
+        result: EPS 2.500; DPS 1.000; P/E 10
+  - id: "m07-formulas-5"
+    title: "Công thức: m07_div_yield — Tỷ suất cổ tức"
+    tags: ["công", "thức", "m07_div_yield", "tỷ", "suất", "cổ", "tức"]
+    text: |-
+      id: m07_div_yield
+      name_vi: Tỷ suất cổ tức
+      name_en: Dividend Yield
+      expression_latex: \text{Div Yield}=\frac{DPS}{P_0}
+      expression_python: dps / price
+      excel: =DPS/Price
+      variables:
+      - symbol: dps
+        meaning: Cổ tức một năm trên CP
+        unit: đồng/CP
+      - symbol: price
+        meaning: Giá cổ phiếu hiện tại
+        unit: đồng/CP
+      when_to_use: Đánh giá thu nhập cổ tức nhà đầu tư nhận trên vốn bỏ ra.
+      why_it_works: 2.000đ trên giá 20.000đ khác hẳn trên giá 200.000đ; yield chuẩn hóa theo giá.
+      assumptions:
+      - Cổ tức năm giữ ổn định
+      pitfalls:
+      - Yield cao do giá sụt (dấu hiệu cảnh báo, như GE)
+      interpretation: Công nghệ 0-1%, large-cap tăng trưởng 1-2%, blue-chip 2-4%, điện nước/REIT 4-8%.
+      example:
+        inputs:
+          dps: 2000
+          price: 40000
+        steps:
+        - 2000/40000 = 0,05
+        result: Yield 5,0%
+  - id: "m07-formulas-6"
+    title: "Công thức: m07_fcf_payout — Payout theo dòng tiền và hệ số bao phủ FCF"
+    tags: ["công", "thức", "m07_fcf_payout", "payout", "theo", "dòng", "tiền", "và", "hệ", "số", "bao", "phủ"]
+    text: |-
+      id: m07_fcf_payout
+      name_vi: Payout theo dòng tiền và hệ số bao phủ FCF
+      name_en: FCF Payout and FCF Dividend Coverage
+      expression_latex: \text{FCF Payout}=\frac{D}{FCF},\quad \text{Coverage}=\frac{FCF}{D}
+      expression_python: (div / fcf, fcf / div)
+      excel: =FCF/Div
+      variables:
+      - symbol: fcf
+        meaning: Dòng tiền tự do = NI + khấu hao - capex duy trì - tăng vốn lưu động
+        unit: triệu đồng
+      - symbol: div
+        meaning: Tổng cổ tức
+        unit: triệu đồng
+      when_to_use: Kiểm tra cổ tức có trả được bằng tiền thật và có bền vững khi lợi nhuận giảm.
+      why_it_works: Cổ tức là dòng tiền ra; lợi nhuận kế toán có thể chứa phải thu hay khấu hao phi tiền.
+      assumptions:
+      - FCF tính sau capex duy trì, trước vốn đầu tư mở rộng (khi so với dự án mới phải trừ thêm)
+      pitfalls:
+      - Dùng FCF trước capex mở rộng rồi chia hết
+      - Không stress test
+      interpretation: Coverage lớn hơn 1,5 lần là an toàn; dưới 1 nghĩa là trả cổ tức bằng vay/tiền dự trữ.
+      example:
+        inputs:
+          fcf: 2100
+          div: 510
+        steps:
+        - Coverage = 2100/510 = 4,12 lần
+        - FCF payout = 510/2100 = 24,3%
+        result: Bao phủ 4,12 lần (an toàn)
+  - id: "m07-formulas-7"
+    title: "Công thức: m07_fcf — Dòng tiền tự do trước chia cổ tức (dạng SME)"
+    tags: ["công", "thức", "m07_fcf", "dòng", "tiền", "tự", "do", "trước", "chia", "cổ", "tức", "dạng"]
+    text: |-
+      id: m07_fcf
+      name_vi: Dòng tiền tự do trước chia cổ tức (dạng SME)
+      name_en: Free Cash Flow before Dividends
+      expression_latex: FCF = NI + Dep - Capex_{maint} - \Delta NWC
+      expression_python: ni + dep - capex_maint - d_nwc
+      excel: =NI+Dep-Capex-dNWC
+      variables:
+      - symbol: ni
+        meaning: Lợi nhuận sau thuế
+        unit: triệu đồng
+      - symbol: dep
+        meaning: Khấu hao
+        unit: triệu đồng
+      - symbol: capex_maint
+        meaning: Capex duy trì
+        unit: triệu đồng
+      - symbol: d_nwc
+        meaning: Tăng vốn lưu động ròng
+        unit: triệu đồng
+      when_to_use: 'Xác định khả năng chia an toàn: FCF trừ vốn đầu tư cần giữ.'
+      why_it_works: Chuyển lợi nhuận kế toán sang tiền thật có thể dùng.
+      assumptions:
+      - Lãi vay đã nằm trong NI
+      pitfalls:
+      - Quên Δ vốn lưu động khi tăng trưởng nhanh
+      interpretation: FCF - vốn đầu tư dự án NPV>0 = cổ tức tối đa chia mà không phải vay.
+      example:
+        inputs:
+          ni: 3000
+          dep: 500
+          capex_maint: 400
+          d_nwc: 100
+        steps:
+        - 3000 + 500 - 400 - 100 = 3000
+        result: FCF 3.000 triệu (Hương Quê)
+  - id: "m07-formulas-8"
+    title: "Công thức: m07_buyback_yield — Tỷ suất mua lại và tổng tỷ suất cho cổ đông"
+    tags: ["công", "thức", "m07_buyback_yield", "tỷ", "suất", "mua", "lại", "và", "tổng", "cho", "cổ", "đông"]
+    text: |-
+      id: m07_buyback_yield
+      name_vi: Tỷ suất mua lại và tổng tỷ suất cho cổ đông
+      name_en: Buyback Yield and Total Shareholder Yield
+      expression_latex: \text{BY}=\frac{Buybacks}{MarketCap},\quad TSY=\text{DivYield}+\text{BY}
+      expression_python: (buybacks / mcap, div_yield + buybacks / mcap)
+      excel: =Buyback/MktCap
+      variables:
+      - symbol: buybacks
+        meaning: Tiền mua lại cổ phiếu trong năm
+        unit: triệu đồng
+      - symbol: mcap
+        meaning: Vốn hóa thị trường
+        unit: triệu đồng
+      - symbol: div_yield
+        meaning: Tỷ suất cổ tức
+        unit: tỷ lệ
+      when_to_use: Đo tổng mức DN hoàn trả cho cổ đông.
+      why_it_works: Cổ tức và buyback là hai kênh cùng chuyển tiền ra khỏi DN.
+      assumptions:
+      - Buyback đều đặn, không phải đợt một lần
+      pitfalls:
+      - Buyback bù pha loãng do ESOP không phải hoàn trả ròng
+      interpretation: 'Tham chiếu ví dụ: yield 5% + buyback 2,5% = 7,5%.'
+      example:
+        inputs:
+          buybacks: 500
+          mcap: 20000
+          div_yield: 0.05
+        steps:
+        - BY = 500/20000 = 2,5%
+        - TSY = 5% + 2,5% = 7,5%
+        result: Total Shareholder Yield 7,5%
+  - id: "m07-formulas-9"
+    title: "Công thức: m07_ex_div — Giá tham chiếu ngày không hưởng quyền"
+    tags: ["công", "thức", "m07_ex_div", "giá", "tham", "chiếu", "ngày", "không", "hưởng", "quyền"]
+    text: |-
+      id: m07_ex_div
+      name_vi: Giá tham chiếu ngày không hưởng quyền
+      name_en: Ex-dividend Price
+      expression_latex: P_{ex}=P_{cum}-D
+      expression_python: p_cum - d
+      excel: =Pcum-D
+      variables:
+      - symbol: p_cum
+        meaning: Giá đóng cửa trước ex-date
+        unit: đồng/CP
+      - symbol: d
+        meaning: Cổ tức tiền mặt trên CP
+        unit: đồng/CP
+      when_to_use: Điều chỉnh giá tham chiếu; giải thích giá giảm không phải thua lỗ.
+      why_it_works: Tiền rời DN đúng bằng cổ tức nên tài sản trên mỗi CP giảm tương ứng (M&M, bỏ qua thuế).
+      assumptions:
+      - Không thuế; thị trường hiệu quả
+      pitfalls:
+      - Thực tế giá có thể giảm ít hơn D do thuế (tax clientele)
+      interpretation: Tổng tài sản cổ đông = cổ tức + giá ex không đổi.
+      example:
+        inputs:
+          p_cum: 30000
+          d: 2000
+        steps:
+        - 30000 - 2000 = 28000
+        result: Giá tham chiếu 28.000đ
+  - id: "m07-formulas-10"
+    title: "Công thức: m07_homemade — Cổ tức tự chế (M&M)"
+    tags: ["công", "thức", "m07_homemade", "cổ", "tức", "tự", "chế"]
+    text: |-
+      id: m07_homemade
+      name_vi: Cổ tức tự chế (M&M)
+      name_en: Homemade Dividend
+      expression_latex: n_{sell}=\frac{\text{Cash wanted}}{P_0},\quad n_{buy}=\frac{D\cdot n}{P_{ex}}
+      expression_python: (cash_wanted / p0, d * n / (p0 - d))
+      excel: =Cash/P0
+      variables:
+      - symbol: cash_wanted
+        meaning: Tiền mặt muốn có dưới chính sách không chia
+        unit: đồng
+      - symbol: p0
+        meaning: Giá cổ phiếu cum-dividend
+        unit: đồng/CP
+      - symbol: d
+        meaning: Cổ tức trên CP
+        unit: đồng/CP
+      - symbol: n
+        meaning: Số CP đang nắm
+        unit: CP
+      when_to_use: Chứng minh/kiểm tra cổ tức irrelevant; đánh giá cổ đông có tự chế được không.
+      why_it_works: Bán cổ phiếu giá P0 để có tiền thay cổ tức; hoặc dùng cổ tức mua thêm giá P0 - D; tài sản cuối giống nhau.
+      assumptions:
+      - Không thuế, không phí giao dịch, bán/mua được đúng giá
+      pitfalls:
+      - 'SME chưa niêm yết: không bán lẻ được, chiết khấu thanh khoản 25% làm homemade thất bại'
+      interpretation: Nếu homemade không khả thi thì cổ tức tiền mặt có giá trị thực cho cổ đông.
+      example:
+        inputs:
+          cash_wanted: 300000
+          p0: 20000
+          d: 3000
+          n: 100
+        steps:
+        - Bán 300000/20000 = 15 CP, còn 85 CP x 20000 = 1.700.000 + 300.000 tiền
+        - Mua thêm 3000*100/17000 = 17,6 CP
+        result: Bán 15 CP hoặc mua thêm 17,6 CP; tổng tài sản vẫn 2.000.000đ
+  - id: "m07-formulas-11"
+    title: "Công thức: m07_tax_grossup — Số tiền gộp cần để nhận tiền ròng sau thuế"
+    tags: ["công", "thức", "m07_tax_grossup", "số", "tiền", "gộp", "cần", "để", "nhận", "ròng", "sau", "thuế"]
+    text: |-
+      id: m07_tax_grossup
+      name_vi: Số tiền gộp cần để nhận tiền ròng sau thuế
+      name_en: Tax Gross-up (dividend vs sale)
+      expression_latex: G=\frac{N}{1-t}
+      expression_python: net / (1 - t)
+      excel: =Net/(1-t)
+      variables:
+      - symbol: net
+        meaning: Tiền ròng cần nhận
+        unit: triệu đồng
+      - symbol: t
+        meaning: Thuế suất (cổ tức 0,05; bán cổ phiếu CTCP 0,001)
+        unit: tỷ lệ
+      when_to_use: So sánh nhận tiền qua cổ tức và qua bán cổ phiếu.
+      why_it_works: Tiền ròng = gộp x (1 - t) nên gộp = ròng/(1-t).
+      assumptions:
+      - Thuế đánh trên toàn bộ số gộp (bán cổ phiếu CTCP tính trên giá trị chuyển nhượng); thuế suất VN cần xác nhận
+      pitfalls:
+      - 'TNHH: 20% trên chênh lệch, không phải 0,1%'
+      - Bỏ qua chiết khấu thanh khoản khi cổ phiếu khó bán
+      interpretation: Chênh lệch thuế VN khoảng 50 lần (5,26 vs 0,10 triệu cho 100 triệu ròng), nhưng chỉ có nghĩa khi dễ bán.
+      example:
+        inputs:
+          net: 100
+          t: 0.05
+        steps:
+        - 'Dividend: 100/0,95 = 105,26 (thuế 5,26)'
+        - 'Bán CP: 100/0,999 = 100,10 (thuế 0,10)'
+        result: Cổ tức 105,26 triệu vs bán 100,10 triệu
+  - id: "m07-formulas-12"
+    title: "Công thức: m07_gordon_ke — Chi phí vốn chủ theo Gordon"
+    tags: ["công", "thức", "m07_gordon_ke", "chi", "phí", "vốn", "chủ", "theo", "gordon"]
+    text: |-
+      id: m07_gordon_ke
+      name_vi: Chi phí vốn chủ theo Gordon
+      name_en: Cost of Equity (Gordon / Bird-in-Hand)
+      expression_latex: K_e=\frac{D_1}{P_0}+g
+      expression_python: d1 / p0 + g
+      excel: =D1/P0+g
+      variables:
+      - symbol: d1
+        meaning: Cổ tức kỳ vọng năm tới
+        unit: đồng/CP
+      - symbol: p0
+        meaning: Giá hiện tại
+        unit: đồng/CP
+      - symbol: g
+        meaning: Tăng trưởng kỳ vọng
+        unit: tỷ lệ
+      when_to_use: Ước Ke từ cổ tức; trình bày lập luận bird-in-hand.
+      why_it_works: Lợi suất kỳ vọng = yield cổ tức + lãi vốn; Gordon coi g là phần bấp bênh hơn.
+      assumptions:
+      - g ổn định vĩnh viễn, g < Ke
+      pitfalls:
+      - Bird-in-hand bị M&M bác; không dùng để kết luận chia nhiều làm giá tăng
+      interpretation: Với g=8%, D1/P0=10% thì Ke=18%.
+      example:
+        inputs:
+          d1: 2000
+          p0: 20000
+          g: 0.08
+        steps:
+        - 2000/20000 + 0,08 = 0,18
+        result: Ke 18%
+  - id: "m07-formulas-13"
+    title: "Công thức: m07_gordon_price — Mô hình Gordon định giá cổ phiếu"
+    tags: ["công", "thức", "m07_gordon_price", "mô", "hình", "gordon", "định", "giá", "cổ", "phiếu"]
+    text: |-
+      id: m07_gordon_price
+      name_vi: Mô hình Gordon định giá cổ phiếu
+      name_en: Gordon Growth Model
+      expression_latex: P_0=\frac{D_1}{K_e-g}
+      expression_python: d1 / (ke - g)
+      excel: =D1/(ke-g)
+      variables:
+      - symbol: d1
+        meaning: Cổ tức năm tới
+        unit: đồng/CP
+      - symbol: ke
+        meaning: Chi phí vốn chủ
+        unit: tỷ lệ
+      - symbol: g
+        meaning: Tăng trưởng cổ tức vĩnh viễn
+        unit: tỷ lệ
+      when_to_use: Định giá DN trưởng thành trả cổ tức ổn định.
+      why_it_works: Tổng chiết khấu dòng cổ tức tăng trưởng đều vĩnh viễn.
+      assumptions:
+      - g < Ke vĩnh viễn
+      pitfalls:
+      - g=ROE x b lớn hơn Ke chỉ là giai đoạn tạm thời; không dùng Gordon cho cả đời DN
+      interpretation: Rất nhạy với Ke - g nhỏ; kiểm tra bằng DCF.
+      example:
+        inputs:
+          d1: 2000
+          ke: 0.15
+          g: 0.05
+        steps:
+        - 2000/(0,15 - 0,05) = 20000
+        result: P0 = 20.000đ
+  - id: "m07-formulas-14"
+    title: "Công thức: m07_lintner — Mô hình Lintner"
+    tags: ["công", "thức", "m07_lintner", "mô", "hình", "lintner"]
+    text: |-
+      id: m07_lintner
+      name_vi: Mô hình Lintner
+      name_en: Lintner Partial Adjustment
+      expression_latex: \Delta D_t = c\,(\text{Payout}^{*}\,EPS_t - D_{t-1}),\quad D_t=D_{t-1}+\Delta D_t
+      expression_python: d_prev + c * (target_payout * eps - d_prev)
+      excel: =Dprev+c*(target*EPS-Dprev)
+      variables:
+      - symbol: d_prev
+        meaning: Cổ tức năm trước
+        unit: đồng/CP
+      - symbol: c
+        meaning: Tốc độ điều chỉnh (thường 0,3-0,5)
+        unit: tỷ lệ
+      - symbol: target_payout
+        meaning: Payout mục tiêu
+        unit: tỷ lệ
+      - symbol: eps
+        meaning: EPS năm nay
+        unit: đồng/CP
+      when_to_use: Dự báo cổ tức của DN làm mượt; giải thích tại sao cổ tức dính.
+      why_it_works: Quản lý biết cắt cổ tức bị phạt nặng hơn nhiều so với thưởng khi tăng, nên đi từng bước tới mục tiêu.
+      assumptions:
+      - Target payout và c ổn định
+      pitfalls:
+      - Áp dụng cho DN không có chính sách ổn định
+      interpretation: EPS 5.000 -> 2.800 (-44%) nhưng cổ tức chỉ -11%, payout lên 61%.
+      example:
+        inputs:
+          d_prev: 1912
+          c: 0.4
+          target_payout: 0.5
+          eps: 2800
+        steps:
+        - 1912 + 0,4*(1400 - 1912) = 1707,2
+        - Payout = 1707,2/2800 = 61,0%
+        result: D năm 3 = 1.707đ (chuỗi 1.520; 1.912; 1.707)
+  - id: "m07-formulas-15"
+    title: "Công thức: m07_residual — Cổ tức phần dư"
+    tags: ["công", "thức", "m07_residual", "cổ", "tức", "phần", "dư"]
+    text: |-
+      id: m07_residual
+      name_vi: Cổ tức phần dư
+      name_en: Residual Dividend
+      expression_latex: D = NI - (1-w_d)\,Capex
+      expression_python: ni - (1 - debt_share) * capex
+      excel: =NI-(1-D/V)*Capex
+      variables:
+      - symbol: ni
+        meaning: Lợi nhuận sau thuế
+        unit: triệu đồng
+      - symbol: debt_share
+        meaning: Tỷ trọng nợ mục tiêu D/V
+        unit: tỷ lệ
+      - symbol: capex
+        meaning: Ngân sách đầu tư
+        unit: triệu đồng
+      when_to_use: DN tăng trưởng có kế hoạch đầu tư NPV>0 và cơ cấu vốn mục tiêu.
+      why_it_works: Ưu tiên dự án tốt; vốn chủ cần = (1 - D/V) x ngân sách lấy từ lợi nhuận trước, dư mới chia, giảm phát hành vốn mới.
+      assumptions:
+      - Giữ cơ cấu vốn mục tiêu; luôn có đủ dự án
+      pitfalls:
+      - Payout dao động 20-80%, tín hiệu xấu mỗi lần giảm; chỉ dùng để quyết tổng dài hạn
+      - 'Nếu vốn chủ cần lớn hơn NI thì D âm: cần phát hành/ giảm đầu tư'
+      interpretation: Dùng kèm Low Regular + Extra để làm mượt.
+      example:
+        inputs:
+          ni: 3000
+          debt_share: 0.4
+          capex: 4000
+        steps:
+        - Vốn chủ cần = 0,6*4000 = 2400
+        - Cổ tức = 3000 - 2400 = 600 (payout 20%)
+        result: Cổ tức 600 triệu
+  - id: "m07-formulas-16"
+    title: "Công thức: m07_low_extra — Cổ tức nền cộng thưởng thêm"
+    tags: ["công", "thức", "m07_low_extra", "cổ", "tức", "nền", "cộng", "thưởng", "thêm"]
+    text: |-
+      id: m07_low_extra
+      name_vi: Cổ tức nền cộng thưởng thêm
+      name_en: Low Regular + Extra
+      expression_latex: D = D_{base} + x\cdot NI
+      expression_python: base + x * ni
+      excel: =Base+x*NI
+      variables:
+      - symbol: base
+        meaning: Cổ tức nền cam kết
+        unit: triệu đồng
+      - symbol: x
+        meaning: '% lợi nhuận bổ sung'
+        unit: tỷ lệ
+      - symbol: ni
+        meaning: Lợi nhuận sau thuế
+        unit: triệu đồng
+      when_to_use: Lợi nhuận biến động (nông sản, xây dựng, SME); muốn ổn định mà vẫn linh hoạt.
+      why_it_works: Nền thấp luôn được bao phủ nhiều lần bởi FCF nên không phải cắt; phần biến động nằm trong phần thưởng, không tạo tín hiệu xấu.
+      assumptions:
+      - Nền đặt thoải mái, duy trì được 3-5 năm
+      pitfalls:
+      - Đặt nền quá cao quay về thành cổ tức cố định dễ vỡ
+      interpretation: 'Hương Quê: NI 3000 -> 600; NI 2100 -> 510 (-15%, coverage 4,1 lần) so với payout cố định 70% (-30%).'
+      example:
+        inputs:
+          base: 300
+          x: 0.1
+          ni: 2100
+        steps:
+        - 300 + 0,10*2100 = 510
+        - Giảm so với 600 = -15%
+        result: Cổ tức 510 triệu
+  - id: "m07-formulas-17"
+    title: "Công thức: m07_sgr — Tốc độ tăng trưởng bền vững"
+    tags: ["công", "thức", "m07_sgr", "tốc", "độ", "tăng", "trưởng", "bền", "vững"]
+    text: |-
+      id: m07_sgr
+      name_vi: Tốc độ tăng trưởng bền vững
+      name_en: Sustainable Growth Rate
+      expression_latex: g = ROE\times b = ROE\times(1-\text{Payout})
+      expression_python: roe * (1 - payout)
+      excel: =ROE*(1-payout)
+      variables:
+      - symbol: roe
+        meaning: ROE
+        unit: tỷ lệ
+      - symbol: payout
+        meaning: Tỷ lệ chi trả
+        unit: tỷ lệ
+      when_to_use: Xác định tốc độ tăng trưởng nội sinh tối đa theo payout; xem payout có đủ cho kế hoạch tăng trưởng.
+      why_it_works: Lợi nhuận giữ lại b x NI cộng vào vốn chủ E nên E tăng b x ROE; vì NI = ROE x E, lợi nhuận tăng cùng tỷ lệ.
+      assumptions:
+      - Không phát hành vốn chủ; ROE ổn định; đòn bẩy không đổi
+      pitfalls:
+      - Dự án mới có ROIC khác ROE
+      - Vay thêm cho tăng trưởng thực cao hơn g
+      interpretation: 'ROE 20%: payout 30/50/80/100% cho g 14/10/4/0%.'
+      example:
+        inputs:
+          roe: 0.25
+          payout: 0.2
+        steps:
+        - 0,25*(1-0,2)=0,20
+        result: g = 20%
+  - id: "m07-formulas-18"
+    title: "Công thức: m07_buyback_eps — Tác động mua lại cổ phiếu lên EPS và giá"
+    tags: ["công", "thức", "m07_buyback_eps", "tác", "động", "mua", "lại", "cổ", "phiếu", "lên", "eps", "và"]
+    text: |-
+      id: m07_buyback_eps
+      name_vi: Tác động mua lại cổ phiếu lên EPS và giá
+      name_en: Buyback EPS and Price Effect
+      expression_latex: N_{new}=N-\frac{B}{P_0},\; EPS_{new}=\frac{NI}{N_{new}},\; P_{new}=\frac{MC-B}{N_{new}}
+      expression_python: (n - b / p0, ni / (n - b / p0), (p0 * n - b) / (n - b / p0), (p0 * n - b) / (n - b / p0) / (ni / (n - b / p0)))
+      excel: =NI/(N-B/P0)
+      variables:
+      - symbol: n
+        meaning: Số CP ban đầu
+        unit: CP
+      - symbol: b
+        meaning: Tiền mua lại
+        unit: đồng
+      - symbol: p0
+        meaning: Giá mua lại = giá thị trường
+        unit: đồng/CP
+      - symbol: ni
+        meaning: Lợi nhuận sau thuế
+        unit: đồng
+      when_to_use: Cho thấy EPS tăng không đồng nghĩa giá tăng; so sánh buyback với cổ tức.
+      why_it_works: Ít CP hơn nên EPS tăng, nhưng vốn hóa giảm đúng B nên giá mỗi CP không đổi; P/E giảm.
+      assumptions:
+      - Mua đúng giá thị trường, thị trường hiệu quả, không thuế
+      pitfalls:
+      - Cho rằng buyback luôn tăng giá
+      - Buyback giá cao hơn giá trị nội tại hủy giá trị
+      interpretation: Buyback tạo giá trị chỉ khi mua dưới giá trị nội tại hoặc ngăn lãng phí tiền dư.
+      example:
+        inputs:
+          n: 1000000
+          b: 1000000000
+          p0: 20000
+          ni: 3000000000
+        steps:
+        - Mua 50.000 CP, còn 950.000
+        - EPS = 3,157,9 (+5,3%)
+        - Giá = 19.000 triệu/950.000 = 20.000
+        - P/E = 20.000/3.157,9 = 6,33
+        result: EPS 3.157,9; giá 20.000 không đổi; P/E 6,33
+  - id: "m07-formulas-19"
+    title: "Công thức: m07_stock_div — Cổ tức bằng cổ phiếu"
+    tags: ["công", "thức", "m07_stock_div", "cổ", "tức", "bằng", "phiếu"]
+    text: |-
+      id: m07_stock_div
+      name_vi: Cổ tức bằng cổ phiếu
+      name_en: Stock Dividend
+      expression_latex: N_{new}=N(1+s),\; EPS=\frac{NI}{N_{new}},\; P=\frac{P_0}{1+s}
+      expression_python: (n * (1 + s), ni / (n * (1 + s)), p0 / (1 + s))
+      excel: =P0/(1+s)
+      variables:
+      - symbol: n
+        meaning: Số CP ban đầu
+        unit: CP
+      - symbol: s
+        meaning: Tỷ lệ cổ tức cổ phiếu
+        unit: tỷ lệ
+      - symbol: ni
+        meaning: Lợi nhuận sau thuế
+        unit: đồng
+      - symbol: p0
+        meaning: Giá trước
+        unit: đồng/CP
+      when_to_use: DN muốn giữ tiền mặt, tăng vốn điều lệ.
+      why_it_works: Quy mô DN không đổi, chỉ chia lại thành nhiều CP hơn; chuyển lợi nhuận giữ lại thành vốn điều lệ (s x N x mệnh giá).
+      assumptions:
+      - Giá điều chỉnh tỷ lệ nghịch
+      pitfalls:
+      - Tưởng cổ đông giàu thêm
+      - Loãng EPS
+      - Thuế cá nhân khi chuyển nhượng (xác nhận)
+      interpretation: Giá trị nắm giữ của cổ đông không đổi.
+      example:
+        inputs:
+          n: 1000000
+          s: 0.1
+          ni: 3000000000
+          p0: 20000
+        steps:
+        - N mới = 1.100.000
+        - EPS = 2.727,3
+        - Giá = 18.181,8
+        - 'Cổ đông 600.000 CP: 660.000 x 18.181,8 = 12.000 triệu'
+        result: EPS 2.727; giá 18.182; vốn điều lệ +1.000 triệu (mệnh giá 10.000)
+  - id: "m07-formulas-20"
+    title: "Công thức: m07_project_npv — ROIC và NPV dự án vĩnh viễn"
+    tags: ["công", "thức", "m07_project_npv", "roic", "và", "npv", "dự", "án", "vĩnh", "viễn"]
+    text: |-
+      id: m07_project_npv
+      name_vi: ROIC và NPV dự án vĩnh viễn
+      name_en: Project ROIC and Perpetuity NPV
+      expression_latex: ROIC=\frac{\Delta NI}{I},\quad NPV=\frac{\Delta NI}{K_e}-I
+      expression_python: (dni / invest, dni / ke - invest)
+      excel: =dNI/Ke-I
+      variables:
+      - symbol: dni
+        meaning: Lợi nhuận sau thuế tăng thêm/năm
+        unit: triệu đồng
+      - symbol: invest
+        meaning: Vốn đầu tư
+        unit: triệu đồng
+      - symbol: ke
+        meaning: Chi phí vốn chủ
+        unit: tỷ lệ
+      when_to_use: Quyết định có đáng giữ lại tiền cho dự án; bước đầu của quy trình cổ tức.
+      why_it_works: 'Dự án vĩnh viễn: giá trị hiện tại = dòng tiền/Ke. ROIC > Ke thì NPV > 0, cổ đông muốn DN giữ tiền.'
+      assumptions:
+      - Dòng tiền ổn định vĩnh viễn (đơn giản hóa; thực tế chiết khấu theo vòng đời)
+      - Dùng lợi nhuận như dòng tiền
+      pitfalls:
+      - Dùng Ke quá thấp; bỏ phụ thu vốn lưu động
+      interpretation: ROIC 18% > Ke 15% nên NPV +480 triệu.
+      example:
+        inputs:
+          dni: 432
+          invest: 2400
+          ke: 0.15
+        steps:
+        - ROIC=432/2400=18%
+        - NPV=432/0,15-2400=480
+        result: NPV +480 triệu
+  - id: "m07-formulas-21"
+    title: "Công thức: m07_funding_gap — Thiếu hụt và tiền thừa theo chính sách"
+    tags: ["công", "thức", "m07_funding_gap", "thiếu", "hụt", "và", "tiền", "thừa", "theo", "chính", "sách"]
+    text: |-
+      id: m07_funding_gap
+      name_vi: Thiếu hụt và tiền thừa theo chính sách
+      name_en: Funding Gap / Idle Cash
+      expression_latex: \text{Avail}=FCF-D;\ \text{Gap}=\max(0,I-\text{Avail});\ \text{Idle}=\max(0,\text{Avail}-I)
+      expression_python: (fcf - div, max(0, invest - (fcf - div)), max(0, (fcf - div) - invest))
+      excel: =MAX(0,I-(FCF-D))
+      variables:
+      - symbol: fcf
+        meaning: FCF trước cổ tức
+        unit: triệu đồng
+      - symbol: div
+        meaning: Cổ tức
+        unit: triệu đồng
+      - symbol: invest
+        meaning: Vốn dự án
+        unit: triệu đồng
+      when_to_use: 'So sánh phương án payout: chia xong còn đủ vốn dự án không.'
+      why_it_works: Tiền chia ra thì không còn để đầu tư; gap phải vay/phát hành, idle là tiền không việc.
+      assumptions:
+      - FCF dùng được hết, không cần dự trữ thêm
+      pitfalls:
+      - Quên tiền dự trữ tối thiểu (buffer)
+      interpretation: 'Phương án khớp tiền: gap = idle = 0 (Hương Quê P3 600 cổ tức).'
+      example:
+        inputs:
+          fcf: 3000
+          div: 2100
+          invest: 2400
+        steps:
+        - Sẵn có = 900
+        - Thiếu = 1500
+        - Thừa = 0
+        result: Thiếu 1.500 triệu (P1)
+  - id: "m07-formulas-22"
+    title: "Công thức: m07_idle_cost — Chi phí tiền nhàn rỗi"
+    tags: ["công", "thức", "m07_idle_cost", "chi", "phí", "tiền", "nhàn", "rỗi"]
+    text: |-
+      id: m07_idle_cost
+      name_vi: Chi phí tiền nhàn rỗi
+      name_en: Idle Cash Cost
+      expression_latex: C=\text{Idle}\times\big(K_e-r(1-T)\big)
+      expression_python: idle * (ke - r * (1 - tax))
+      excel: =Idle*(Ke-r*(1-T))
+      variables:
+      - symbol: idle
+        meaning: Tiền nhàn rỗi
+        unit: triệu đồng
+      - symbol: ke
+        meaning: Chi phí vốn chủ
+        unit: tỷ lệ
+      - symbol: r
+        meaning: Lãi suất gửi
+        unit: tỷ lệ
+      - symbol: tax
+        meaning: Thuế TNDN
+        unit: tỷ lệ
+      when_to_use: Chứng minh nên trả lại tiền dư thay vì giữ vô thời hạn.
+      why_it_works: Cổ đông đòi hỏi Ke nhưng tiền chỉ sinh lãi gửi sau thuế; chênh lệch là thiệt hại hằng năm.
+      assumptions:
+      - Không có dự án NPV>0 khác để dùng tiền
+      pitfalls:
+      - Bỏ qua nhu cầu dự phòng hợp lý
+      interpretation: 600 triệu nhàn rỗi mất ~66 triệu/năm.
+      example:
+        inputs:
+          idle: 600
+          ke: 0.15
+          r: 0.05
+          tax: 0.2
+        steps:
+        - 600*0,15=90
+        - 600*0,05*0,8=24
+        - 90-24=66
+        result: Thiệt hại 66 triệu/năm
+  - id: "m07-formulas-23"
+    title: "Công thức: m07_borrow_to_pay_leak — Rò rỉ giá trị khi vay để chia cổ tức"
+    tags: ["công", "thức", "m07_borrow_to_pay_leak", "rò", "rỉ", "giá", "trị", "khi", "vay", "để", "chia", "cổ"]
+    text: |-
+      id: m07_borrow_to_pay_leak
+      name_vi: Rò rỉ giá trị khi vay để chia cổ tức
+      name_en: Leakage from Borrowing to Pay Dividends
+      expression_latex: L=(D_1-D_0)\,t_d + L_{debt}\,f
+      expression_python: (d1 - d0) * t_d + loan * fee
+      excel: =(D1-D0)*td+Loan*fee
+      variables:
+      - symbol: d1
+        meaning: Cổ tức phương án chia nhiều
+        unit: triệu đồng
+      - symbol: d0
+        meaning: Cổ tức phương án so sánh
+        unit: triệu đồng
+      - symbol: t_d
+        meaning: Thuế TNCN cổ tức
+        unit: tỷ lệ
+      - symbol: loan
+        meaning: Khoản vay thêm
+        unit: triệu đồng
+      - symbol: fee
+        meaning: Phí hồ sơ vay
+        unit: tỷ lệ
+      when_to_use: Đánh giá phương án chia nhiều rồi vay lấp thiếu hụt.
+      why_it_works: M&M nói vay lãi suất thị trường không đổi giá trị, nhưng thực tế có thuế cổ tức và phí vay thất thoát.
+      assumptions:
+      - Cổ đông có nhu cầu tiền mặt như nhau giữa các phương án
+      pitfalls:
+      - Chưa tính lãi vay sau thuế (165 trước thuế, 132 sau thuế) vì M&M coi cùng chi phí vốn
+      interpretation: 'Hương Quê P1 so với P3: 75 + 15 = 90 triệu.'
+      example:
+        inputs:
+          d1: 2100
+          d0: 600
+          t_d: 0.05
+          loan: 1500
+          fee: 0.01
+        steps:
+        - (2100-600)*0,05=75
+        - 1500*0,01=15
+        - Tổng 90
+        result: Rò rỉ 90 triệu
+  - id: "m07-formulas-24"
+    title: "Công thức: m07_int_cov — Hệ số bao phủ lãi vay"
+    tags: ["công", "thức", "m07_int_cov", "hệ", "số", "bao", "phủ", "lãi", "vay"]
+    text: |-
+      id: m07_int_cov
+      name_vi: Hệ số bao phủ lãi vay
+      name_en: Interest Coverage
+      expression_latex: ICR=\frac{EBIT}{Interest}
+      expression_python: ebit / interest
+      excel: =EBIT/Int
+      variables:
+      - symbol: ebit
+        meaning: Lợi nhuận trước lãi vay và thuế
+        unit: triệu đồng
+      - symbol: interest
+        meaning: Lãi vay
+        unit: triệu đồng
+      when_to_use: Kiểm tra rủi ro vỡ nợ nếu vay thêm để chia cổ tức hoặc đầu tư.
+      why_it_works: Đo biên an toàn thu nhập so với nghĩa vụ lãi.
+      assumptions:
+      - EBIT = NI/(1-T) + lãi vay
+      pitfalls:
+      - Chỉ nhìn kịch bản cơ sở, không stress test
+      interpretation: Dưới 3 lần là đáng lo; Hương Quê P1 vẫn 9-12 lần.
+      example:
+        inputs:
+          ebit: 4490
+          interest: 365
+        steps:
+        - EBIT hiện tại 3000/0,8+200=3950, dự án 432/0,8=540
+        - Tổng 4490
+        - Lãi 200+165=365
+        - 4490/365=12,3
+        result: 'ICR P1 12,3 lần (xấu: 9,05)'
+  - id: "m07-formulas-25"
+    title: "Công thức: m07_compound_retain — Mô phỏng giữ lại và tái đầu tư vs chia cổ tức"
+    tags: ["công", "thức", "m07_compound_retain", "mô", "phỏng", "giữ", "lại", "và", "tái", "đầu", "tư", "vs"]
+    text: |-
+      id: m07_compound_retain
+      name_vi: Mô phỏng giữ lại và tái đầu tư vs chia cổ tức
+      name_en: Retention Compounding vs Payout Simulation
+      expression_latex: V_n = V_0(1+ROE(1-p))^n + \sum_{t=1}^n p\,ROE\,V_{t-1}(1-\tau)(1+r_m)^{n-t}
+      expression_python: v0 * (1 + roe * (1 - p)) ** n + sum(v0 * (1 + roe * (1 - p)) ** (t - 1) * p * roe * (1 - tau) * (1 + rm) ** (n - t) for t in range(1, n + 1))
+      excel: (mô phỏng bằng bảng theo năm)
+      variables:
+      - symbol: v0
+        meaning: Vốn đầu tư ban đầu
+        unit: USD
+      - symbol: roe
+        meaning: Suất sinh lời DN
+        unit: tỷ lệ
+      - symbol: p
+        meaning: Payout
+        unit: tỷ lệ
+      - symbol: tau
+        meaning: Thuế cổ tức
+        unit: tỷ lệ
+      - symbol: rm
+        meaning: Suất sinh lời thị trường mà cổ đông tự tái đầu tư
+        unit: tỷ lệ
+      - symbol: n
+        meaning: Số năm
+        unit: năm
+      when_to_use: Chứng minh giữ lại thắng chia khi ROE lớn hơn nhiều suất cổ đông tự kiếm, cộng bất lợi thuế.
+      why_it_works: Lãi kép trên phần giữ lại với ROE cao; phần chia ra chịu thuế rồi chỉ sinh lời ở mức thị trường.
+      assumptions:
+      - Mô hình stylized, ROE hằng định
+      - Chưa trừ thuế lãi vốn cuối kỳ
+      pitfalls:
+      - Đúng chỉ nếu DN thật sự tái đầu tư ROE cao; đa số DN không làm được
+      interpretation: Nếu ROE chỉ 8% thấp hơn thị trường thì nên chia.
+      example:
+        inputs:
+          v0: 1000
+          roe: 0.198
+          p: 0.3
+          tau: 0.238
+          rm: 0.102
+          n: 59
+        steps:
+        - Chạy mô phỏng 59 năm
+        result: 'Khoảng 4,356 triệu USD (15,3%/năm) so với 42,6 triệu nếu payout 0; 50% payout: 1,413 triệu; S&P 308 nghìn'
+  - id: "m07-procedures-1"
+    title: "Quy trình: m07_p_dividend_decision — Quy trình 6 bước quyết định cổ tức cho SME"
+    tags: ["quy", "trình", "m07_p_dividend_decision", "bước", "quyết", "định", "cổ", "tức", "cho", "sme"]
+    text: |-
+      id: m07_p_dividend_decision
+      name: Quy trình 6 bước quyết định cổ tức cho SME
+      steps:
+      - 'Bước 1 Pháp lý: kiểm tra LN sau thuế sau bù lỗ, trích quỹ theo điều lệ, đã nộp thuế, sau chia vẫn thanh toán nợ đến hạn, không vi phạm covenant.'
+      - 'Bước 2 Dự án: lập danh sách dự án, tính ROIC và NPV (m07_project_npv); tổng vốn dự án NPV > 0 là nhu cầu giữ lại.'
+      - 'Bước 3 FCF: tính FCF (m07_fcf); khả năng chia an toàn = FCF - vốn dự án NPV>0 (tránh vay).'
+      - 'Bước 4 Cổ đông: khảo sát nhu cầu tiền mặt từng nhóm, tính thuế 5% (m07_tax_grossup), kiểm tra homemade dividend có khả thi không.'
+      - Bước 5 Chọn mô hình và đặt mức (thường Low Regular + Extra cho SME lợi nhuận biến động); so sánh tối thiểu 3 phương án bằng m07_funding_gap, m07_sgr, m07_idle_cost, m07_int_cov; stress test NI -20 đến -30%.
+      - 'Bước 6 Văn bản hóa: ghi vào điều lệ/thỏa thuận cổ đông, thông báo trước, lập đề xuất HĐQT -> ĐHĐCĐ, ngày chốt, ngày thanh toán, khấu trừ thuế.'
+      outputs: Bảng so sánh phương án + khuyến nghị payout + đề xuất nghị quyết.
+  - id: "m07-procedures-2"
+    title: "Quy trình: m07_p_compare_policies — So sánh các phương án payout"
+    tags: ["quy", "trình", "m07_p_compare_policies", "so", "sánh", "các", "phương", "án", "payout"]
+    text: |-
+      id: m07_p_compare_policies
+      name: So sánh các phương án payout
+      steps:
+      - Lấy NI, FCF, vốn dự án, ROE, Ke, số cổ phần.
+      - 'Với từng payout p: cổ tức = NI x p; DPS; giữ lại; tiền sẵn có = FCF - cổ tức; gap; idle; g = ROE x (1-p).'
+      - 'Gap > 0: tính thêm chi phí vay, phí, thuế tăng thêm (m07_borrow_to_pay_leak), ICR sau vay.'
+      - 'Idle > 0: tính m07_idle_cost.'
+      - Tính thực nhận từng cổ đông (cổ tức x % x 0,95) so với nhu cầu.
+      - Chọn phương án khớp tiền nhất; chuyển thành cấu trúc nền + bổ sung; stress test.
+      outputs: Bảng cột P1..Pn và đề xuất.
+  - id: "m07-procedures-3"
+    title: "Quy trình: m07_p_dividend_vs_buyback — Chọn cổ tức hay mua lại cổ phiếu"
+    tags: ["quy", "trình", "m07_p_dividend_vs_buyback", "chọn", "cổ", "tức", "hay", "mua", "lại", "phiếu"]
+    text: |-
+      id: m07_p_dividend_vs_buyback
+      name: Chọn cổ tức hay mua lại cổ phiếu
+      steps:
+      - Xác định cổ đông (hưu trí cần dòng tiền đều hay quỹ/cá nhân thuế cao), thanh khoản cổ phần.
+      - 'Tính hiệu ứng từng hình thức: cổ tức (giá ex = P0 - D) vs buyback (m07_buyback_eps).'
+      - 'So thuế: cổ tức 5% tức thời vs lãi vốn 0,1% khi bán (nếu thanh khoản).'
+      - 'Đánh giá tín hiệu: tiền cam kết hay một lần (chọn special dividend/buyback nếu không bền vững).'
+      - Kiểm tra giá mua lại so với giá trị nội tại; SME chưa niêm yết xét luật và cách định giá.
+      outputs: Khuyến nghị hình thức chi trả.
+  - id: "m07-procedures-4"
+    title: "Quy trình: m07_p_stress_test — Stress test chính sách cổ tức"
+    tags: ["quy", "trình", "m07_p_stress_test", "stress", "test", "chính", "sách", "cổ", "tức"]
+    text: |-
+      id: m07_p_stress_test
+      name: Stress test chính sách cổ tức
+      steps:
+      - Giảm NI 10%, 20%, 30%; FCF giảm tương ứng.
+      - Tính cổ tức mới theo từng chính sách (payout cố định, DPS cố định, nền + thưởng).
+      - Tính % cắt và coverage FCF/cổ tức; coverage nhỏ hơn 1,5 là cờ đỏ; nền phải còn được bao phủ nhiều lần.
+      - Kiểm tra ICR và covenant vay.
+      outputs: Bảng độ nhạy và chọn chính sách chịu được kịch bản xấu.
+  - id: "m07-procedures-5"
+    title: "Quy trình: m07_p_homemade_check — Kiểm tra cổ đông có tự tạo cổ tức được không"
+    tags: ["quy", "trình", "m07_p_homemade_check", "kiểm", "tra", "cổ", "đông", "có", "tự", "tạo", "tức", "được"]
+    text: |-
+      id: m07_p_homemade_check
+      name: Kiểm tra cổ đông có tự tạo cổ tức được không
+      steps:
+      - Tính CP phải bán = tiền cần / giá.
+      - 'Kiểm tra thị trường mua bán, chiết khấu thanh khoản (ví dụ 25% làm giá 15.000 thay vì 20.000: cần bán 10.000 CP thay vì 7.500).'
+      - Nếu chi phí lớn hơn tiết kiệm thuế thì cổ tức tiền mặt có giá trị thực.
+      outputs: Kết luận cổ tức tiền mặt cần thiết hay không.
+  - id: "m07-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu có dự án NPV > 0 (ROIC > Ke) cần vốn thì giữ lại đúng bằng nhu cầu và chỉ chia phần dư."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "có", "dự", "án", "npv", "roic", "ke", "cần"]
+    text: |-
+      Nếu có dự án NPV > 0 (ROIC > Ke) cần vốn thì giữ lại đúng bằng nhu cầu và chỉ chia phần dư.
+  - id: "m07-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu không còn dự án NPV > 0 và FCF dư thì trả lại cổ đông (cổ tức, special dividend hoặc buyback), …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "không", "còn", "dự", "án", "npv", "và", "fcf"]
+    text: |-
+      Nếu không còn dự án NPV > 0 và FCF dư thì trả lại cổ đông (cổ tức, special dividend hoặc buyback), không giữ tiền nhàn rỗi vô thời hạn.
+  - id: "m07-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu phương án chia làm thiếu vốn dự án (gap > 0) thì giảm payout; chỉ vay để chia khi cổ đông có nh…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "phương", "án", "chia", "làm", "thiếu", "vốn", "dự"]
+    text: |-
+      Nếu phương án chia làm thiếu vốn dự án (gap > 0) thì giảm payout; chỉ vay để chia khi cổ đông có nhu cầu tiền thật và đã stress test.
+  - id: "m07-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu FCF coverage dưới 1,5 lần thì cổ tức chưa an toàn: hạ mức hoặc chuyển sang nền + thưởng."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "fcf", "coverage", "dưới", "lần", "thì", "cổ", "tức"]
+    text: |-
+      Nếu FCF coverage dưới 1,5 lần thì cổ tức chưa an toàn: hạ mức hoặc chuyển sang nền + thưởng.
+  - id: "m07-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu lợi nhuận biến động mạnh thì dùng Low Regular + Extra, không dùng DPS cố định cao hay payout cố…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "lợi", "nhuận", "biến", "động", "mạnh", "thì", "dùng"]
+    text: |-
+      Nếu lợi nhuận biến động mạnh thì dùng Low Regular + Extra, không dùng DPS cố định cao hay payout cố định cao.
+  - id: "m07-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu cổ phần khó bán (SME chưa niêm yết) và có cổ đông nhỏ/hưu trí cần thu nhập thì cổ tức tiền mặt …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cổ", "phần", "khó", "bán", "sme", "chưa", "niêm"]
+    text: |-
+      Nếu cổ phần khó bán (SME chưa niêm yết) và có cổ đông nhỏ/hưu trí cần thu nhập thì cổ tức tiền mặt có giá trị thực dù 5% thuế.
+  - id: "m07-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu cổ phiếu thanh khoản, thuế cổ tức cao hơn thuế lãi vốn, cổ đông thuế cao thì ưu tiên buyback/gi…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cổ", "phiếu", "thanh", "khoản", "thuế", "tức", "cao"]
+    text: |-
+      Nếu cổ phiếu thanh khoản, thuế cổ tức cao hơn thuế lãi vốn, cổ đông thuế cao thì ưu tiên buyback/giữ lại.
+  - id: "m07-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu cổ phiếu bị định giá thấp hơn giá trị nội tại và DN dư tiền thì buyback; nếu hơn thì không."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cổ", "phiếu", "bị", "giá", "thấp", "hơn", "trị"]
+    text: |-
+      Nếu cổ phiếu bị định giá thấp hơn giá trị nội tại và DN dư tiền thì buyback; nếu hơn thì không.
+  - id: "m07-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu cổ đông là người hưu trí/quỹ thu nhập thì giữ cổ tức ổn định, tránh cắt (clientele)."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cổ", "đông", "là", "người", "hưu", "trí", "quỹ"]
+    text: |-
+      Nếu cổ đông là người hưu trí/quỹ thu nhập thì giữ cổ tức ổn định, tránh cắt (clientele).
+  - id: "m07-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu muốn khởi xướng cổ tức thì chỉ làm khi duy trì được 3-5 năm; cổ tức là cam kết, cắt bị phạt -5-…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "muốn", "khởi", "xướng", "cổ", "tức", "thì", "chỉ"]
+    text: |-
+      Nếu muốn khởi xướng cổ tức thì chỉ làm khi duy trì được 3-5 năm; cổ tức là cam kết, cắt bị phạt -5-10% hoặc hơn.
+  - id: "m07-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu cần giữ tiền mặt nhưng vẫn muốn thưởng cổ đông thì cân nhắc cổ tức cổ phiếu; nhớ nó không làm c…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cần", "giữ", "tiền", "mặt", "nhưng", "vẫn", "muốn"]
+    text: |-
+      Nếu cần giữ tiền mặt nhưng vẫn muốn thưởng cổ đông thì cân nhắc cổ tức cổ phiếu; nhớ nó không làm cổ đông giàu thêm.
+  - id: "m07-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu DN ở vòng đời startup thì payout 0; growth 0-20; mature 30-60; decline 60-100."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dn", "vòng", "đời", "startup", "thì", "payout", "growth"]
+    text: |-
+      Nếu DN ở vòng đời startup thì payout 0; growth 0-20; mature 30-60; decline 60-100.
+  - id: "m07-decision_rules-13"
+    title: "Quy tắc quyết định: Nếu ROE tái đầu tư vượt xa suất cổ đông tự kiếm (kiểu Berkshire) thì giữ lại thắng; nếu ROE thấp hơ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "roe", "tái", "đầu", "tư", "vượt", "xa", "suất"]
+    text: |-
+      Nếu ROE tái đầu tư vượt xa suất cổ đông tự kiếm (kiểu Berkshire) thì giữ lại thắng; nếu ROE thấp hơn thì chia.
+  - id: "m07-decision_rules-14"
+    title: "Quy tắc quyết định: Nếu covenant ngân hàng cấm hoặc hạn chế cổ tức thì ưu tiên tuân thủ, kiểm tra trước mỗi lần chia."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "covenant", "ngân", "hàng", "cấm", "hoặc", "hạn", "chế"]
+    text: |-
+      Nếu covenant ngân hàng cấm hoặc hạn chế cổ tức thì ưu tiên tuân thủ, kiểm tra trước mỗi lần chia.
+  - id: "m07-decision_rules-15"
+    title: "Quy tắc quyết định: Nếu g = ROE x b mà g lớn hơn Ke thì không dùng Gordon cho cả đời; chỉ cho giai đoạn tạm thời."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "roe", "mà", "lớn", "hơn", "ke", "thì", "không"]
+    text: |-
+      Nếu g = ROE x b mà g lớn hơn Ke thì không dùng Gordon cho cả đời; chỉ cho giai đoạn tạm thời.
+  - id: "m07-decision_rules-16"
+    title: "Quy tắc quyết định: Nếu dùng cổ tức để che giấu suy thoái thì sai: sửa DN trước (dòng tiền -> đầu tư -> rồi cổ tức)."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dùng", "cổ", "tức", "để", "che", "giấu", "suy"]
+    text: |-
+      Nếu dùng cổ tức để che giấu suy thoái thì sai: sửa DN trước (dòng tiền -> đầu tư -> rồi cổ tức).
+  - id: "m07-benchmarks-1"
+    title: "Chuẩn so sánh: Payout theo vòng đời"
+    tags: ["chuẩn", "so", "sánh", "payout", "theo", "vòng", "đời"]
+    text: |-
+      metric: Payout theo vòng đời
+      value: Startup 0%; Growth 0-20%; Mature 30-60%; Decline 60-100%+
+      context: Lý thuyết vòng đời
+      confidence: medium
+  - id: "m07-benchmarks-2"
+    title: "Chuẩn so sánh: Payout SME VN"
+    tags: ["chuẩn", "so", "sánh", "payout", "sme", "vn"]
+    text: |-
+      metric: Payout SME VN
+      value: Khởi nghiệp 0%; tăng trưởng 0-30%; trưởng thành 30-60%; bão hòa 60-100%
+      context: Tham khảo theo vòng đời, không phải thống kê SME VN
+      confidence: low
+  - id: "m07-benchmarks-3"
+    title: "Chuẩn so sánh: Yield/Payout/Tăng trưởng theo loại DN"
+    tags: ["chuẩn", "so", "sánh", "yield", "payout", "tăng", "trưởng", "theo", "loại", "dn"]
+    text: |-
+      metric: Yield/Payout/Tăng trưởng theo loại DN
+      value: Công nghệ 0-1% / 0-20% / 20-40%; Large-cap 1-2% / 20-35% / 10-15%; Blue-chip 2-4% / 40-60% / 5-10%; Điện nước-REIT 4-8% / 70-95% / 2-5%
+      context: Tham khảo thị trường Mỹ
+      confidence: medium
+  - id: "m07-benchmarks-4"
+    title: "Chuẩn so sánh: FCF coverage an toàn"
+    tags: ["chuẩn", "so", "sánh", "fcf", "coverage", "an", "toàn"]
+    text: |-
+      metric: FCF coverage an toàn
+      value: Lớn hơn 1,5 lần
+      context: Quy tắc thực hành
+      confidence: medium
+  - id: "m07-benchmarks-5"
+    title: "Chuẩn so sánh: Tốc độ điều chỉnh Lintner c"
+    tags: ["chuẩn", "so", "sánh", "tốc", "độ", "điều", "chỉnh", "lintner"]
+    text: |-
+      metric: Tốc độ điều chỉnh Lintner c
+      value: 0,3-0,5
+      context: Nghiên cứu Lintner 1956
+      confidence: medium
+  - id: "m07-benchmarks-6"
+    title: "Chuẩn so sánh: Phản ứng giá với thông báo cổ tức"
+    tags: ["chuẩn", "so", "sánh", "phản", "ứng", "giá", "với", "thông", "báo", "cổ", "tức"]
+    text: |-
+      metric: Phản ứng giá với thông báo cổ tức
+      value: Khởi xướng +1-3%; tăng +1-2%; cắt -5-10%+; ngừng -10-25%+
+      context: Nghiên cứu thực nghiệm kiểu Asquith & Mullins 1983, Healy & Palepu 1988
+      confidence: medium
+  - id: "m07-benchmarks-7"
+    title: "Chuẩn so sánh: Thuế TNCN cổ tức (VN, cá nhân)"
+    tags: ["chuẩn", "so", "sánh", "thuế", "tncn", "cổ", "tức", "vn", "cá", "nhân"]
+    text: |-
+      metric: Thuế TNCN cổ tức (VN, cá nhân)
+      value: 5%
+      context: Cần xác nhận quy định hiện hành
+      confidence: medium
+  - id: "m07-benchmarks-8"
+    title: "Chuẩn so sánh: Thuế chuyển nhượng cổ phần CTCP (VN, cá nhân)"
+    tags: ["chuẩn", "so", "sánh", "thuế", "chuyển", "nhượng", "cổ", "phần", "ctcp", "vn", "cá", "nhân"]
+    text: |-
+      metric: Thuế chuyển nhượng cổ phần CTCP (VN, cá nhân)
+      value: 0,1% giá chuyển nhượng; TNHH 20% trên chênh lệch
+      context: Cần xác nhận quy định hiện hành
+      confidence: medium
+  - id: "m07-benchmarks-9"
+    title: "Chuẩn so sánh: Thuế cổ tức Mỹ"
+    tags: ["chuẩn", "so", "sánh", "thuế", "cổ", "tức", "mỹ"]
+    text: |-
+      metric: Thuế cổ tức Mỹ
+      value: Tới 20% + 3,8% NIIT; lãi vốn dài hạn 0/15/20%
+      context: Số tham khảo
+      confidence: medium
+  - id: "m07-benchmarks-10"
+    title: "Chuẩn so sánh: S&P 500 2023 buyback vs cổ tức"
+    tags: ["chuẩn", "so", "sánh", "500", "2023", "buyback", "vs", "cổ", "tức"]
+    text: |-
+      metric: S&P 500 2023 buyback vs cổ tức
+      value: Khoảng 795 tỷ vs 588 tỷ USD
+      context: Làm tròn từ S&P Dow Jones Indices, cần kiểm chứng
+      confidence: low
+  - id: "m07-benchmarks-11"
+    title: "Chuẩn so sánh: Interest coverage an toàn"
+    tags: ["chuẩn", "so", "sánh", "interest", "coverage", "an", "toàn"]
+    text: |-
+      metric: Interest coverage an toàn
+      value: Trên 3 lần
+      context: Quy tắc thực hành
+      confidence: medium
+  - id: "m07-pitfalls-1"
+    title: "Lỗi thường gặp: Chia cổ tức dựa trên lợi nhuận kế toán mà không xét tiền mặt/FCF; cạn tiền, phải vay trả lương và n…"
+    tags: ["lỗi", "thường", "gặp", "chia", "cổ", "tức", "dựa", "trên", "lợi", "nhuận", "kế", "toán"]
+    text: |-
+      Chia cổ tức dựa trên lợi nhuận kế toán mà không xét tiền mặt/FCF; cạn tiền, phải vay trả lương và nhà cung cấp.
+  - id: "m07-pitfalls-2"
+    title: "Lỗi thường gặp: Chia hết 'cho cổ đông vui' khi còn dự án NPV > 0, bỏ cơ hội tăng trưởng."
+    tags: ["lỗi", "thường", "gặp", "chia", "hết", "cho", "cổ", "đông", "vui", "khi", "còn", "dự"]
+    text: |-
+      Chia hết 'cho cổ đông vui' khi còn dự án NPV > 0, bỏ cơ hội tăng trưởng.
+  - id: "m07-pitfalls-3"
+    title: "Lỗi thường gặp: Giữ tiền nhàn rỗi vô thời hạn: chi phí cơ hội và xung đột cổ đông (ví dụ mất 66 triệu/năm cho 600 t…"
+    tags: ["lỗi", "thường", "gặp", "giữ", "tiền", "nhàn", "rỗi", "vô", "thời", "hạn", "chi", "phí"]
+    text: |-
+      Giữ tiền nhàn rỗi vô thời hạn: chi phí cơ hội và xung đột cổ đông (ví dụ mất 66 triệu/năm cho 600 triệu).
+  - id: "m07-pitfalls-4"
+    title: "Lỗi thường gặp: Cam kết cổ tức cao rồi cắt đột ngột (bài học GE); nên dùng nền + bổ sung."
+    tags: ["lỗi", "thường", "gặp", "cam", "kết", "cổ", "tức", "cao", "rồi", "cắt", "đột", "ngột"]
+    text: |-
+      Cam kết cổ tức cao rồi cắt đột ngột (bài học GE); nên dùng nền + bổ sung.
+  - id: "m07-pitfalls-5"
+    title: "Lỗi thường gặp: Vay ngân hàng để chia cổ tức: rò rỉ thuế + phí + tăng rủi ro."
+    tags: ["lỗi", "thường", "gặp", "vay", "ngân", "hàng", "để", "chia", "cổ", "tức", "rò", "rỉ"]
+    text: |-
+      Vay ngân hàng để chia cổ tức: rò rỉ thuế + phí + tăng rủi ro.
+  - id: "m07-pitfalls-6"
+    title: "Lỗi thường gặp: Không có văn bản chính sách cổ tức: tranh chấp giữa cổ đông lớn và nhỏ."
+    tags: ["lỗi", "thường", "gặp", "không", "có", "văn", "bản", "chính", "sách", "cổ", "tức", "tranh"]
+    text: |-
+      Không có văn bản chính sách cổ tức: tranh chấp giữa cổ đông lớn và nhỏ.
+  - id: "m07-pitfalls-7"
+    title: "Lỗi thường gặp: Bỏ qua covenant ngân hàng."
+    tags: ["lỗi", "thường", "gặp", "bỏ", "qua", "covenant", "ngân", "hàng"]
+    text: |-
+      Bỏ qua covenant ngân hàng.
+  - id: "m07-pitfalls-8"
+    title: "Lỗi thường gặp: Tin 'buyback làm EPS tăng nên giá tăng'; giá không đổi vì vốn hóa giảm."
+    tags: ["lỗi", "thường", "gặp", "tin", "buyback", "làm", "eps", "tăng", "nên", "giá", "không", "đổi"]
+    text: |-
+      Tin 'buyback làm EPS tăng nên giá tăng'; giá không đổi vì vốn hóa giảm.
+  - id: "m07-pitfalls-9"
+    title: "Lỗi thường gặp: Cho rằng cổ tức bằng cổ phiếu làm cổ đông giàu thêm."
+    tags: ["lỗi", "thường", "gặp", "cho", "rằng", "cổ", "tức", "bằng", "phiếu", "làm", "đông", "giàu"]
+    text: |-
+      Cho rằng cổ tức bằng cổ phiếu làm cổ đông giàu thêm.
+  - id: "m07-pitfalls-10"
+    title: "Lỗi thường gặp: Dùng homemade dividend/M&M cho SME chưa niêm yết, trong khi chi phí giao dịch và chiết khấu thanh k…"
+    tags: ["lỗi", "thường", "gặp", "dùng", "homemade", "dividend", "cho", "sme", "chưa", "niêm", "yết", "trong"]
+    text: |-
+      Dùng homemade dividend/M&M cho SME chưa niêm yết, trong khi chi phí giao dịch và chiết khấu thanh khoản rất lớn.
+  - id: "m07-pitfalls-11"
+    title: "Lỗi thường gặp: Dùng Gordon khi g gần hoặc lớn hơn Ke."
+    tags: ["lỗi", "thường", "gặp", "dùng", "gordon", "khi", "gần", "hoặc", "lớn", "hơn", "ke"]
+    text: |-
+      Dùng Gordon khi g gần hoặc lớn hơn Ke.
+  - id: "m07-pitfalls-12"
+    title: "Lỗi thường gặp: Lẫn đơn vị triệu đồng và đồng khi tính EPS/DPS."
+    tags: ["lỗi", "thường", "gặp", "lẫn", "đơn", "vị", "triệu", "đồng", "và", "khi", "tính", "eps"]
+    text: |-
+      Lẫn đơn vị triệu đồng và đồng khi tính EPS/DPS.
+  - id: "m07-pitfalls-13"
+    title: "Lỗi thường gặp: Quên khấu trừ thuế TNCN 5% tại nguồn khi chia cổ tức cá nhân."
+    tags: ["lỗi", "thường", "gặp", "quên", "khấu", "trừ", "thuế", "tncn", "tại", "nguồn", "khi", "chia"]
+    text: |-
+      Quên khấu trừ thuế TNCN 5% tại nguồn khi chia cổ tức cá nhân.
+  - id: "m07-pitfalls-14"
+    title: "Lỗi thường gặp: Trả lời tư vấn tuyệt đối về thuế/pháp lý mà không nhắc xác nhận lại với kế toán thuế/luật sư (quy đ…"
+    tags: ["lỗi", "thường", "gặp", "trả", "lời", "tư", "vấn", "tuyệt", "đối", "về", "thuế", "pháp"]
+    text: |-
+      Trả lời tư vấn tuyệt đối về thuế/pháp lý mà không nhắc xác nhận lại với kế toán thuế/luật sư (quy định thay đổi).
+  - id: "m07-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: SME chưa niêm yết: thanh khoản cổ phần rất thấp nên homemade dividend gần như không thực tế; cổ tức…"
+    tags: ["lưu", "sme", "việt", "nam", "chưa", "niêm", "yết", "thanh", "khoản", "cổ", "phần", "rất"]
+    text: |-
+      SME chưa niêm yết: thanh khoản cổ phần rất thấp nên homemade dividend gần như không thực tế; cổ tức tiền mặt có giá trị với cổ đông nhỏ/hưu trí.
+  - id: "m07-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: Chủ và quản lý thường trùng: agency cost nhỏ nhưng có xung đột cổ đông lớn/nhỏ; vốn khó huy động nê…"
+    tags: ["lưu", "sme", "việt", "nam", "chủ", "và", "quản", "lý", "thường", "trùng", "agency", "cost"]
+    text: |-
+      Chủ và quản lý thường trùng: agency cost nhỏ nhưng có xung đột cổ đông lớn/nhỏ; vốn khó huy động nên giữ lại thường hợp lý.
+  - id: "m07-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Thuế TNCN cổ tức 5% khấu trừ tại nguồn; chuyển nhượng cổ phần CTCP 0,1%, phần vốn góp TNHH 20% trên…"
+    tags: ["lưu", "sme", "việt", "nam", "thuế", "tncn", "cổ", "tức", "khấu", "trừ", "tại", "nguồn"]
+    text: |-
+      Thuế TNCN cổ tức 5% khấu trừ tại nguồn; chuyển nhượng cổ phần CTCP 0,1%, phần vốn góp TNHH 20% trên chênh lệch; pháp nhân nhận cổ tức thường được miễn TNDN; cổ tức bằng cổ phiếu thường chưa chịu thuế khi nhận. Tất cả cần xác nhận quy định hiện hành.
+  - id: "m07-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Điều kiện chia: LN sau thuế sau bù lỗ, trích quỹ theo điều lệ, hoàn thành nghĩa vụ thuế và vẫn than…"
+    tags: ["lưu", "sme", "việt", "nam", "điều", "kiện", "chia", "ln", "sau", "thuế", "bù", "lỗ"]
+    text: |-
+      Điều kiện chia: LN sau thuế sau bù lỗ, trích quỹ theo điều lệ, hoàn thành nghĩa vụ thuế và vẫn thanh toán nợ đến hạn; ĐHĐCĐ quyết định mức, HĐQT đề xuất (đối chiếu Luật Doanh nghiệp hiện hành).
+  - id: "m07-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: Kiểm tra covenant hợp đồng vay trước mỗi lần chia."
+    tags: ["lưu", "sme", "việt", "nam", "kiểm", "tra", "covenant", "hợp", "đồng", "vay", "trước", "mỗi"]
+    text: |-
+      Kiểm tra covenant hợp đồng vay trước mỗi lần chia.
+  - id: "m07-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: Mô hình khuyến nghị cho SME lợi nhuận biến động: cổ tức nền bằng văn bản + thưởng một % lợi nhuận."
+    tags: ["lưu", "sme", "việt", "nam", "mô", "hình", "khuyến", "nghị", "cho", "lợi", "nhuận", "biến"]
+    text: |-
+      Mô hình khuyến nghị cho SME lợi nhuận biến động: cổ tức nền bằng văn bản + thưởng một % lợi nhuận.
+  - id: "m07-sme_vn_guidance-7"
+    title: "Lưu ý SME Việt Nam: Dữ liệu tham chiếu: payout/yield DN niêm yết cùng ngành trên HOSE/HNX, CafeF, Vietstock, SSI iBoard…"
+    tags: ["lưu", "sme", "việt", "nam", "dữ", "liệu", "tham", "chiếu", "payout", "yield", "dn", "niêm"]
+    text: |-
+      Dữ liệu tham chiếu: payout/yield DN niêm yết cùng ngành trên HOSE/HNX, CafeF, Vietstock, SSI iBoard; Damodaran Online cho bảng ngành toàn cầu; BCTC xuất từ MISA, Fast để lấy NI, khấu hao, capex, vốn lưu động.
+  - id: "m07-sme_vn_guidance-8"
+    title: "Lưu ý SME Việt Nam: Cổ tức cổ phiếu giúp tăng vốn điều lệ (có thể tăng quy mô vay) mà không chi tiền."
+    tags: ["lưu", "sme", "việt", "nam", "cổ", "tức", "phiếu", "giúp", "tăng", "vốn", "điều", "lệ"]
+    text: |-
+      Cổ tức cổ phiếu giúp tăng vốn điều lệ (có thể tăng quy mô vay) mà không chi tiền.
+  - id: "m07-sme_vn_guidance-9"
+    title: "Lưu ý SME Việt Nam: Soạn đề xuất theo mẫu: căn cứ, nhu cầu đầu tư, mức đề xuất, hình thức, thời điểm, kiểm tra điều kiệ…"
+    tags: ["lưu", "sme", "việt", "nam", "soạn", "đề", "xuất", "theo", "mẫu", "căn", "cứ", "nhu"]
+    text: |-
+      Soạn đề xuất theo mẫu: căn cứ, nhu cầu đầu tư, mức đề xuất, hình thức, thời điểm, kiểm tra điều kiện, stress test, phê duyệt.
+  - id: "m07-case_lessons-1"
+    title: "Bài học case: Berkshire Hathaway: không cổ tức, tối đa giá trị"
+    tags: ["bài", "học", "case", "berkshire", "hathaway", "không", "cổ", "tức", "tối", "đa", "giá", "trị"]
+    text: |-
+      name: 'Berkshire Hathaway: không cổ tức, tối đa giá trị'
+      type: success
+      setup: |
+        Buffett chưa trả cổ tức tiền mặt kể từ khi kiểm soát (1965; ngoại lệ 0,10 USD/CP khoảng 1967). Lập luận: bất lợi thuế (cổ tức tối đa khoảng 23,8%), cơ hội tái đầu tư vượt thị trường, homemade dividend bằng bán cổ phiếu, linh hoạt. Gần đây dùng buyback khi tiền mặt dư và ít cơ hội.
+      key_calculations:
+      - 'Giữ lại 100% với ROE tương đương 19,8%/năm 59 năm: 1000 x 1,198^59 = khoảng 42,56 triệu USD.'
+      - 'S&P 500 10,2%/năm: 1000 x 1,102^59 = khoảng 308 nghìn USD.'
+      - 'Payout 30% (sau thuế 23,8% tái đầu tư S&P): vốn chủ 2,12 triệu + danh mục S&P 2,24 triệu = khoảng 4,36 triệu (15,3%/năm).'
+      - 'Payout 50%: khoảng 1,41 triệu (13,1%/năm).'
+      - Tăng trưởng lõi giảm từ 19,8% còn 13,86% (= 19,8% x 70%) khi payout 30%.
+      lesson: |
+        Giữ lại thắng vì suất sinh lời tái đầu tư (19,8%) cao hơn nhiều mức cổ đông tự kiếm (10,2%) cộng bất lợi thuế; nếu chỉ 8% thì nên chia. Chỉ hiệu quả khi DN thực sự tái đầu tư tốt (đa số không làm được: Agency Theory); hết cơ hội thì phải trả lại (buyback), buyback tốt hơn cổ tức khi giá thấp hơn giá trị nội tại.
+      data_reliability: illustrative
+  - id: "m07-case_lessons-2"
+    title: "Bài học case: General Electric: cắt cổ tức phá hủy niềm tin"
+    tags: ["bài", "học", "case", "general", "electric", "cắt", "cổ", "tức", "phá", "hủy", "niềm", "tin"]
+    text: |-
+      name: 'General Electric: cắt cổ tức phá hủy niềm tin'
+      type: failure
+      setup: |
+        GE là dividend aristocrat được quỹ hưu trí ưa chuộng; yield 3-4%. Cắt ba lần: 2009 (~1,24 -> ~0,40 USD, -68%, lần đầu sau gần 7 thập kỷ), cuối 2017 (~-50%), cuối 2018 (~-92%, còn khoảng 0,04 USD/năm). Số liệu làm tròn từ nguồn công khai, cần kiểm chứng.
+      key_calculations:
+      - 'Nhà đầu tư 10.000 CP: thu nhập từ 12.400 USD/năm xuống 4.000 USD (-8.400 USD, -68%) nên bị ép bán (clientele).'
+      - 'Cơ chế xoắn ốc: cắt -> quỹ bán -> giá giảm -> hạ bậc tín nhiệm -> tài trợ đắt -> xấu hơn -> cắt tiếp.'
+      - 'Root cause: tổn thất GE Capital (thiếu hụt dự phòng bảo hiểm hơn 15 tỷ USD, công bố đầu 2018), M&A phá giá trị (Alstom, Baker Hughes), earnings management; cổ tức trả từ lợi nhuận không bền vững.'
+      lesson: |
+        Bền vững hơn mức cao (FCF coverage trên 1,5 lần); đừng hứa cổ tức 'an toàn' rồi cắt; cổ tức là cam kết; hiểu cơ cấu cổ đông; sửa DN trước rồi mới cổ tức. Không có chính sách tốt tuyệt đối, chỉ có chính sách phù hợp cổ đông, dòng tiền và nhất quán.
+      data_reliability: unverified
+  - id: "m07-case_lessons-3"
+    title: "Bài học case: Hương Quê (SME VN): chia bao nhiêu cổ tức năm 2024"
+    tags: ["bài", "học", "case", "hương", "quê", "sme", "vn", "chia", "bao", "nhiêu", "cổ", "tức"]
+    text: |-
+      name: 'Hương Quê (SME VN): chia bao nhiêu cổ tức năm 2024'
+      type: sme
+      setup: |
+        CTCP thực phẩm sấy Long An, chưa niêm yết, NI 3.000 triệu, 1.000.000 CP, vốn chủ 12.000 (ROE 25%), giá trị 20.000đ/CP, Ke 15%, nợ 2.000 lãi 10%, thuế TNDN 20%, FCF 3.000. Cổ đông: ông Hùng 60% (muốn mở rộng), bà Lan 25% (cần 140 triệu/năm sau thuế), anh Minh 15%. Dự án vốn 2.400, lợi nhuận +432/năm. Ba phương án: P1 payout 70%, P2 0%, P3 20%.
+      key_calculations:
+      - 'Dự án: ROIC = 432/2400 = 18% lớn hơn Ke 15%; NPV = 432/0,15 - 2400 = +480 triệu.'
+      - 'Tiền sẵn có = FCF - cổ tức: P1 900 (thiếu 1.500), P2 3.000 (thừa 600), P3 2.400 (khớp).'
+      - 'g = 25% x b: P1 7,5%, P2 25%, P3 20%.'
+      - 'P1 vay 1.500 lãi 11%: lãi 165/năm; rò rỉ = (2.100-600) x 5% = 75 thuế thêm + phí 1% x 1.500 = 15, tổng 90 triệu; ICR 12,3 lần (xấu: 9,05), P3 22,45 (16,5).'
+      - 'P2 idle 600: Ke 90 - lãi gửi sau thuế 24 = mất 66 triệu/năm; bỏ qua nhu cầu bà Lan.'
+      - 'Bà Lan P3: 25% x 600 = 150, thuế 5% = 7,5, ròng 142,5 (đáp ứng 140). Tự bán cổ phần giá 20.000 cần 7.500 CP, chiết khấu 25% (giá 15.000) cần 10.000 CP, mất thêm 2.500 CP khoảng 50 triệu.'
+      - 'Stress test NI -30% = 2.100: payout 70% cổ tức 2.100 -> 1.470 (-30%, coverage 1,43); cố định 600 payout lên 28,6%; nền 300 + 10% NI: 510 (-15%, coverage 4,1).'
+      - 'Cổ tức cổ phiếu 10%: 1.100.000 CP, EPS 2.727, giá 18.182, ông Hùng 660.000 CP vẫn 12.000 triệu, vốn điều lệ +1.000 triệu.'
+      lesson: |
+        Khuyến nghị P3 dạng nền 300đ/CP + 10% NI (tổng 600 triệu, payout 20%): giữ 2.400 cho dự án NPV +480, đáp ứng bà Lan, không vay để chia, không dư tiền. Văn bản hóa cam kết nền; rà soát hằng năm và nâng payout khi hết dự án NPV>0. Giả định 432 triệu vĩnh viễn là đơn giản hóa; thực tế chiết khấu theo vòng đời.
+      data_reliability: illustrative
+  - id: "m07-worked_examples-1"
+    title: "Ví dụ có lời giải: Bộ chỉ số cổ tức cơ bản"
+    tags: ["ví", "dụ", "có", "lời", "giải", "bộ", "chỉ", "số", "cổ", "tức", "cơ", "bản"]
+    text: |-
+      name: Bộ chỉ số cổ tức cơ bản
+      inputs:
+        ni: 5000
+        div: 2000
+        shares: 2000000
+        price: 25000
+        roe: 0.18
+      steps:
+      - EPS = 5000e6/2e6 = 2.500; DPS = 2000e6/2e6 = 1.000
+      - Payout = 1000/2500 = 40%; b = 60%
+      - Yield = 1000/25000 = 4,0%; P/E = 25000/2500 = 10
+      - g = 18% x 60% = 10,8%
+      result: EPS 2.500; DPS 1.000; Payout 40%; b 60%; Yield 4%; P/E 10; g 10,8%
+  - id: "m07-worked_examples-2"
+    title: "Ví dụ có lời giải: Cổ tức tự chế (M&M)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "cổ", "tức", "tự", "chế"]
+    text: |-
+      name: Cổ tức tự chế (M&M)
+      inputs:
+        price: 20000
+        dps: 3000
+        shares_held: 100
+      steps:
+      - Giá ex = 17.000
+      - 'Tài sản: 300.000 tiền + 1.700.000 = 2.000.000 (giống không chia 2.000.000)'
+      - 'Nếu không muốn tiền: mua thêm 300.000/17.000 = 17,6 CP'
+      result: Tổng tài sản 2.000.000đ cả hai chính sách, cổ tức irrelevant
+  - id: "m07-worked_examples-3"
+    title: "Ví dụ có lời giải: Thuế cổ tức vs bán cổ phiếu"
+    tags: ["ví", "dụ", "có", "lời", "giải", "thuế", "cổ", "tức", "vs", "bán", "phiếu"]
+    text: |-
+      name: Thuế cổ tức vs bán cổ phiếu
+      inputs:
+        net_needed: 190
+      steps:
+      - 'Cổ tức: 190/0,95 = 200 triệu'
+      - 'Bán CP: 190/0,999 = 190,19 triệu'
+      - Chênh lệch tiết kiệm thuế khoảng 9,8 triệu, mất khi cổ phần khó bán
+      result: Cổ tức gộp 200 triệu vs bán 190,19 triệu
+  - id: "m07-worked_examples-4"
+    title: "Ví dụ có lời giải: Lintner 3 năm"
+    tags: ["ví", "dụ", "có", "lời", "giải", "lintner", "năm"]
+    text: |-
+      name: Lintner 3 năm
+      inputs:
+        target_payout: 0.5
+        c: 0.4
+        d0: 1200
+        eps:
+        - 4000
+        - 5000
+        - 2800
+      steps:
+      - D1 = 1200 + 0,4*(2000-1200) = 1.520 (payout 38,0%)
+      - D2 = 1520 + 0,4*(2500-1520) = 1.912 (38,2%)
+      - D3 = 1912 + 0,4*(1400-1912) = 1.707,2 (61,0%)
+      result: EPS -44% nhưng cổ tức chỉ -11%, payout 61%
+  - id: "m07-worked_examples-5"
+    title: "Ví dụ có lời giải: Buyback vs cổ tức (Bài 5)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "buyback", "vs", "cổ", "tức", "bài"]
+    text: |-
+      name: Buyback vs cổ tức (Bài 5)
+      inputs:
+        ni: 4000
+        shares: 2000000
+        price: 40000
+        return_cash: 2000
+      steps:
+      - 'Cổ tức: DPS = 2000e6/2e6 = 1.000; giá ex = 39.000; tổng = 40.000'
+      - 'Buyback: mua 2000e6/40000 = 50.000 CP, còn 1.950.000; EPS = 4000e6/1.950.000 = 2.051,3'
+      - Giá = (80.000 - 2.000) triệu/1.950.000 = 40.000; P/E = 40000/2051,3 = 19,5
+      result: Cả hai trả 2.000 triệu; buyback EPS tăng nhưng giá 40.000 không đổi; P/E từ 20 xuống 19,5
+  - id: "m07-worked_examples-6"
+    title: "Ví dụ có lời giải: Residual dividend 3 năm"
+    tags: ["ví", "dụ", "có", "lời", "giải", "residual", "dividend", "năm"]
+    text: |-
+      name: Residual dividend 3 năm
+      inputs:
+        ni: 3000
+        debt_share: 0.4
+        capex:
+        - 2400
+        - 4000
+        - 1000
+      steps:
+      - 'Năm 1: vốn chủ 1.440, cổ tức 1.560 (52%)'
+      - 'Năm 2: vốn chủ 2.400, cổ tức 600 (20%)'
+      - 'Năm 3: vốn chủ 600, cổ tức 2.400 (80%)'
+      result: Payout dao động 20-80%; thực tế dùng nền + thưởng để làm mượt
+  - id: "m07-worked_examples-7"
+    title: "Ví dụ có lời giải: Bát Tràng Xanh (mini case)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "bát", "tràng", "xanh", "mini", "case"]
+    text: |-
+      name: Bát Tràng Xanh (mini case)
+      inputs:
+        ni: 1800
+        shares: 600000
+        equity: 9000
+        fcf: 1700
+        ke: 0.16
+        invest: 1200
+        dni: 240
+      steps:
+      - ROIC = 240/1200 = 20%; NPV = 240/0,16 - 1200 = +300
+      - Cổ tức tối đa không vay = 1700 - 1200 = 500 triệu
+      - DPS = 500e6/600000 = 833; payout = 500/1800 = 27,8%; thuế 5% = 25 triệu; coverage = 1700/500 = 3,4
+      - ROE = 1800/9000 = 20%; g = 20% x (1 - 27,8%) = 14,4%
+      - 'Stress NI -30% = 1.260: đề xuất nền 300 + 11% NI: bình thường 498, xấu 438,6 (-11,9%, trong ngưỡng 15%)'
+      result: NPV +300; chia tối đa 500 triệu (DPS 833, payout 27,8%, coverage 3,4); g 14,4%; nền 300 + 11% NI cắt chỉ 11,9%
+  - id: "m07-worked_examples-8"
+    title: "Ví dụ có lời giải: Tăng trưởng bền vững theo payout"
+    tags: ["ví", "dụ", "có", "lời", "giải", "tăng", "trưởng", "bền", "vững", "theo", "payout"]
+    text: |-
+      name: Tăng trưởng bền vững theo payout
+      inputs:
+        roe: 0.2
+        payouts:
+        - 0.3
+        - 0.5
+        - 0.8
+        - 1.0
+      steps:
+      - 'g = 20% x b: 14%; 10%; 4%; 0%'
+      result: Chia 100% thì g = 0
+  - id: "m07-practice_questions-1"
+    title: "Câu hỏi luyện tập: NI 5.000 triệu, cổ tức 2.000 triệu, 2.000.000 CP, giá 25.000, ROE 18%. Tính EPS, DPS, payout, reten…"
+    tags: ["câu", "hỏi", "luyện", "tập", "ni", "000", "triệu", "cổ", "tức", "cp", "giá", "25"]
+    text: |-
+      q: NI 5.000 triệu, cổ tức 2.000 triệu, 2.000.000 CP, giá 25.000, ROE 18%. Tính EPS, DPS, payout, retention, yield, P/E, g.
+      a: EPS 2.500; DPS 1.000; payout 40%; b 60%; yield 4%; P/E 10; g 10,8%.
+  - id: "m07-practice_questions-2"
+    title: "Câu hỏi luyện tập: Giá 20.000, cổ tức 3.000/CP, nhà đầu tư 100 CP. Tính giá sau, tổng tài sản, nếu không muốn tiền thì…"
+    tags: ["câu", "hỏi", "luyện", "tập", "giá", "20", "000", "cổ", "tức", "cp", "nhà", "đầu"]
+    text: |-
+      q: Giá 20.000, cổ tức 3.000/CP, nhà đầu tư 100 CP. Tính giá sau, tổng tài sản, nếu không muốn tiền thì làm gì?
+      a: Giá 17.000; tổng tài sản 300.000 + 1.700.000 = 2.000.000; mua thêm 300.000/17.000 khoảng 17,6 CP; kết quả giống nhau nên M&M đúng.
+  - id: "m07-practice_questions-3"
+    title: "Câu hỏi luyện tập: Cổ đông cần 190 triệu ròng. Lấy từ cổ tức (5%) cần gộp bao nhiêu? Bán cổ phiếu (0,1%) cần bán bao n…"
+    tags: ["câu", "hỏi", "luyện", "tập", "cổ", "đông", "cần", "190", "triệu", "ròng", "lấy", "từ"]
+    text: |-
+      q: Cổ đông cần 190 triệu ròng. Lấy từ cổ tức (5%) cần gộp bao nhiêu? Bán cổ phiếu (0,1%) cần bán bao nhiêu? Khi nào lợi thế thuế mất?
+      a: Cổ tức gộp 200 triệu; bán 190,19 triệu; lợi thế mất khi cổ phần chưa niêm yết/thanh khoản thấp vì chiết khấu và chi phí tìm người mua lớn hơn khoảng 9,8 triệu tiết kiệm thuế.
+  - id: "m07-practice_questions-4"
+    title: "Câu hỏi luyện tập: Lintner: payout mục tiêu 50%, c 0,4, D0 1.200, EPS 4.000/5.000/2.800. Tính cổ tức và payout năm 3."
+    tags: ["câu", "hỏi", "luyện", "tập", "lintner", "payout", "mục", "tiêu", "50", "d0", "200", "eps"]
+    text: |-
+      q: 'Lintner: payout mục tiêu 50%, c 0,4, D0 1.200, EPS 4.000/5.000/2.800. Tính cổ tức và payout năm 3.'
+      a: 1.520; 1.912; 1.707; payout năm 3 khoảng 61% (cổ tức dính).
+  - id: "m07-practice_questions-5"
+    title: "Câu hỏi luyện tập: NI 4.000 triệu, 2.000.000 CP, giá 40.000. Trả 2.000 triệu: DPS, giá ex; buyback: CP mua, EPS, giá, …"
+    tags: ["câu", "hỏi", "luyện", "tập", "ni", "000", "triệu", "cp", "giá", "40", "trả", "dps"]
+    text: |-
+      q: 'NI 4.000 triệu, 2.000.000 CP, giá 40.000. Trả 2.000 triệu: DPS, giá ex; buyback: CP mua, EPS, giá, P/E?'
+      a: DPS 1.000, giá ex 39.000; mua 50.000 CP, còn 1.950.000, EPS 2.051,3, giá 40.000, P/E 19,5; EPS tăng nhưng giá không đổi vì vốn hóa cũng giảm 2.000 triệu.
+  - id: "m07-practice_questions-6"
+    title: "Câu hỏi luyện tập: Bát Tràng Xanh: NI 1.800, 600.000 CP, vốn chủ 9.000, FCF 1.700, Ke 16%, dự án 1.200 lợi nhuận +240/…"
+    tags: ["câu", "hỏi", "luyện", "tập", "bát", "tràng", "xanh", "ni", "800", "600", "000", "cp"]
+    text: |-
+      q: 'Bát Tràng Xanh: NI 1.800, 600.000 CP, vốn chủ 9.000, FCF 1.700, Ke 16%, dự án 1.200 lợi nhuận +240/năm. ROIC, NPV, cổ tức tối đa không vay, DPS, payout, thuế, coverage, g, và cấu trúc nền + thưởng khi NI -30% mà cắt không quá 15%?'
+      a: 'ROIC 20%, NPV +300; tối đa 500; DPS 833; payout 27,8%; thuế 25 triệu; coverage 3,4; g 14,4%; ví dụ nền 300 + 11% NI: 498 -> 438,6 (-11,9%).'
+  - id: "m07-practice_questions-7"
+    title: "Câu hỏi luyện tập: Hương Quê: vì sao P3 tốt hơn P1 và P2?"
+    tags: ["câu", "hỏi", "luyện", "tập", "hương", "quê", "vì", "sao", "p3", "tốt", "hơn", "p1"]
+    text: |-
+      q: 'Hương Quê: vì sao P3 tốt hơn P1 và P2?'
+      a: P3 giữ đúng 2.400 cho dự án NPV +480; P1 thiếu 1.500 phải vay, rò rỉ khoảng 90 triệu, g chỉ 7,5%; P2 dư 600 nhàn rỗi mất khoảng 66 triệu/năm và bỏ qua nhu cầu tiền mặt bà Lan.
+  - id: "m07-practice_questions-8"
+    title: "Câu hỏi luyện tập: EPS có thể mua lại cổ phiếu tăng giá không?"
+    tags: ["câu", "hỏi", "luyện", "tập", "eps", "có", "thể", "mua", "lại", "cổ", "phiếu", "tăng"]
+    text: |-
+      q: EPS có thể mua lại cổ phiếu tăng giá không?
+      a: Chỉ khi mua dưới giá trị nội tại hoặc ngăn lãng phí tiền dư; còn nếu mua đúng giá thì EPS tăng, giá không đổi.
+  - id: "m07-practice_questions-9"
+    title: "Câu hỏi luyện tập: Tại sao chính sách cổ tức vẫn quan trọng dù M&M nói irrelevant?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tại", "sao", "chính", "sách", "cổ", "tức", "vẫn", "quan"]
+    text: |-
+      q: Tại sao chính sách cổ tức vẫn quan trọng dù M&M nói irrelevant?
+      a: 'Vì giả định bị vi phạm: thuế, chi phí giao dịch/thanh khoản, thông tin bất cân xứng, agency cost; mỗi lý thuyết (Tax, Clientele, Signaling, Agency) gỡ một giả định.'
+  - id: "m07-checklist-1"
+    title: "Checklist: Payout hiện tại so với DN cùng ngành?"
+    tags: ["checklist", "payout", "hiện", "tại", "so", "với", "dn", "cùng", "ngành"]
+    text: |-
+      Payout hiện tại so với DN cùng ngành?
+  - id: "m07-checklist-2"
+    title: "Checklist: Cổ tức có bền vững (FCF coverage trên 1,5 lần)?"
+    tags: ["checklist", "cổ", "tức", "có", "bền", "vững", "fcf", "coverage", "trên", "lần"]
+    text: |-
+      Cổ tức có bền vững (FCF coverage trên 1,5 lần)?
+  - id: "m07-checklist-3"
+    title: "Checklist: Có dự án NPV > 0 cần vốn không?"
+    tags: ["checklist", "có", "dự", "án", "npv", "cần", "vốn", "không"]
+    text: |-
+      Có dự án NPV > 0 cần vốn không?
+  - id: "m07-checklist-4"
+    title: "Checklist: Tiền mặt dự trữ đủ sau khi chia?"
+    tags: ["checklist", "tiền", "mặt", "dự", "trữ", "đủ", "sau", "khi", "chia"]
+    text: |-
+      Tiền mặt dự trữ đủ sau khi chia?
+  - id: "m07-checklist-5"
+    title: "Checklist: Đã hiểu cơ cấu cổ đông (ai cần tiền, ai cần tăng trưởng)?"
+    tags: ["checklist", "đã", "hiểu", "cơ", "cấu", "cổ", "đông", "ai", "cần", "tiền", "tăng", "trưởng"]
+    text: |-
+      Đã hiểu cơ cấu cổ đông (ai cần tiền, ai cần tăng trưởng)?
+  - id: "m07-checklist-6"
+    title: "Checklist: Đã tính thuế (5% VN) lên từng nhóm cổ đông?"
+    tags: ["checklist", "đã", "tính", "thuế", "vn", "lên", "từng", "nhóm", "cổ", "đông"]
+    text: |-
+      Đã tính thuế (5% VN) lên từng nhóm cổ đông?
+  - id: "m07-checklist-7"
+    title: "Checklist: Giai đoạn vòng đời của DN? Tín hiệu mong muốn?"
+    tags: ["checklist", "giai", "đoạn", "vòng", "đời", "của", "dn", "tín", "hiệu", "mong", "muốn"]
+    text: |-
+      Giai đoạn vòng đời của DN? Tín hiệu mong muốn?
+  - id: "m07-checklist-8"
+    title: "Checklist: Mức cam kết duy trì được 3-5 năm?"
+    tags: ["checklist", "mức", "cam", "kết", "duy", "trì", "được", "năm"]
+    text: |-
+      Mức cam kết duy trì được 3-5 năm?
+  - id: "m07-checklist-9"
+    title: "Checklist: Cổ tức hay mua lại cổ phiếu phù hợp hơn?"
+    tags: ["checklist", "cổ", "tức", "hay", "mua", "lại", "phiếu", "phù", "hợp", "hơn"]
+    text: |-
+      Cổ tức hay mua lại cổ phiếu phù hợp hơn?
+  - id: "m07-checklist-10"
+    title: "Checklist: Tần suất (quý/nửa năm/năm); cần cổ tức đặc biệt?"
+    tags: ["checklist", "tần", "suất", "quý", "nửa", "năm", "cần", "cổ", "tức", "đặc", "biệt"]
+    text: |-
+      Tần suất (quý/nửa năm/năm); cần cổ tức đặc biệt?
+  - id: "m07-checklist-11"
+    title: "Checklist: Đã stress test NI giảm 20-30%?"
+    tags: ["checklist", "đã", "stress", "test", "ni", "giảm", "20", "30"]
+    text: |-
+      Đã stress test NI giảm 20-30%?
+  - id: "m07-checklist-12"
+    title: "Checklist: Đã bù lỗ, trích quỹ, hoàn thành nghĩa vụ thuế theo điều lệ?"
+    tags: ["checklist", "đã", "bù", "lỗ", "trích", "quỹ", "hoàn", "thành", "nghĩa", "vụ", "thuế", "theo"]
+    text: |-
+      Đã bù lỗ, trích quỹ, hoàn thành nghĩa vụ thuế theo điều lệ?
+  - id: "m07-checklist-13"
+    title: "Checklist: Sau chia vẫn thanh toán nợ đến hạn? Không vi phạm covenant?"
+    tags: ["checklist", "sau", "chia", "vẫn", "thanh", "toán", "nợ", "đến", "hạn", "không", "vi", "phạm"]
+    text: |-
+      Sau chia vẫn thanh toán nợ đến hạn? Không vi phạm covenant?
+  - id: "m07-checklist-14"
+    title: "Checklist: Có nghị quyết ĐHĐCĐ/HĐQT, ngày chốt, ngày thanh toán; đã khấu trừ và nộp thuế TNCN?"
+    tags: ["checklist", "có", "nghị", "quyết", "đhđcđ", "hđqt", "ngày", "chốt", "thanh", "toán", "đã", "khấu"]
+    text: |-
+      Có nghị quyết ĐHĐCĐ/HĐQT, ngày chốt, ngày thanh toán; đã khấu trừ và nộp thuế TNCN?
+  - id: "m07-checklist-15"
+    title: "Checklist: Theo dõi: xu hướng payout, coverage, phản ứng đối thủ và cổ đông, rà soát hằng năm."
+    tags: ["checklist", "theo", "dõi", "xu", "hướng", "payout", "coverage", "phản", "ứng", "đối", "thủ", "và"]
+    text: |-
+      Theo dõi: xu hướng payout, coverage, phản ứng đối thủ và cổ đông, rà soát hằng năm.
+  - id: "m07-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Mô phỏng chính sách cổ tức SME (5 tab)"
+    tags: ["mẫu", "excel", "sheets", "mô", "phỏng", "chính", "sách", "cổ", "tức", "sme", "tab"]
+    text: |-
+      name: Mô phỏng chính sách cổ tức SME (5 tab)
+      structure: |
+        TAB1 INPUTS (NI, số CP, mệnh giá, vốn chủ, Ke, FCF = NI + khấu hao - capex duy trì - Δ vốn lưu động, ngân sách và lợi nhuận dự án, thuế cổ tức 5%, lãi vay, danh sách cổ đông %/nhu cầu); TAB2 ĐÁNH GIÁ DỰ ÁN (ROIC = LN dự án/vốn; NPV = LN/Ke - vốn; cảnh báo NPV>0); TAB3 SO SÁNH CHÍNH SÁCH P1..P5 (cổ tức, DPS, giữ lại, g, tiền sẵn có, thiếu/thừa, thuế, thực nhận, ICR; conditional formatting đỏ khi thiếu hụt > 0 hoặc coverage < 1,5); TAB4 STRESS TEST (NI -10/-20/-30%); TAB5 DASHBOARD (biểu đồ, khuyến nghị IF).
+      formulas:
+      - 'Cổ tức: =B2*B3'
+      - 'Lợi nhuận giữ lại: =B2-B2*B3'
+      - 'Tiền sẵn có đầu tư: =B4-B2*B3'
+      - 'Thiếu hụt: =MAX(0,B5-(B4-B2*B3))'
+      - 'Tiền thừa: =MAX(0,(B4-B2*B3)-B5)'
+      - 'Tăng trưởng bền vững: =ROE*(1-B3)'
+  - id: "m07-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Mẫu đề xuất chính sách cổ tức (văn bản)"
+    tags: ["mẫu", "excel", "sheets", "đề", "xuất", "chính", "sách", "cổ", "tức", "văn", "bản"]
+    text: |-
+      name: Mẫu đề xuất chính sách cổ tức (văn bản)
+      structure: |
+        Căn cứ (LN sau thuế, FCF, quỹ đã trích); nhu cầu đầu tư (dự án, vốn, NPV); mức đề xuất (nền đ/CP + % LN); hình thức (tiền mặt/cổ phiếu/kết hợp); thời điểm (ngày chốt, ngày thanh toán); kiểm tra điều kiện (bù lỗ, trích quỹ, thanh toán nợ, covenant); stress test (-30% còn bao phủ ... lần); phê duyệt HĐQT/ĐHĐCĐ.
+  - id: "m07-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: 07-dividend-policy.md

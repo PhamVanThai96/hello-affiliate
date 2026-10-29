@@ -1,0 +1,858 @@
+# m11 - Cẩm nang tích hợp tài chính doanh nghiệp (13 case xuyên chủ đề)
+# Nguồn: 11-integrated-corporate-finance-guide.md. Công thức nền tảng nằm ở m01-m10; file này chỉ chứa công thức MỚI/chưa có chỗ khác
+# + bản đồ tích hợp, procedures đa module, 13 case_lessons, worked_examples. Mọi số đã chạy python3 verify.
+id: "m11"
+name_vi: "Cẩm nang tích hợp tài chính doanh nghiệp"
+name_en: "Integrated Corporate Finance Guide"
+purpose: >-
+  Kết nối toàn bộ m01-m10 thành một hệ thống ra quyết định: huy động vốn (WACC, cấu trúc vốn) -> đầu tư (capital budgeting) ->
+  tạo dòng tiền (FCFF, vốn lưu động) -> hoàn vốn (cổ tức, mua lại), cộng định giá, M&A, rủi ro định lượng (VaR, ES, Monte Carlo)
+  và chuẩn mực kế toán (IFRS 15/16). Dùng khi bài toán đa chiều cần chuỗi module theo đúng thứ tự tính.
+when_to_use:
+  - "Một quyết định đồng thời đụng nhiều khối kiến thức (ví dụ: vay vốn mở chi nhánh = chi phí vốn + cơ cấu vốn + NPV + dòng tiền trả nợ + vốn lưu động + rủi ro)."
+  - "Cần chọn đúng chuỗi module/công thức và thứ tự tính cho bài toán lớn, hoặc tìm case tương tự để làm khuôn bắt chước."
+  - "Cần các công thức không nằm ở m01-m10 - VaR, Expected Shortfall, Monte Carlo NPV, DSCR, Baumol, Miller-Orr, IFRS 15 phân bổ giá, IFRS 16 nợ thuê, EPS accretion/dilution, hoạch định ROIC ngầm định."
+  - "Cần ma trận tổng hợp/checklist trước khi trình bày quyết định tài chính, hoặc rà soát tính nhất quán số liệu."
+  - "Tư vấn SME Việt Nam có vay ngân hàng (Case 13 là khuôn mẫu đầy đủ)."
+prerequisites: [m01, m02, m03, m04, m05, m06, m07, m08, m09, m10]
+related_modules:
+  - "m01 - PV, annuity, perpetuity, ghép lãi liên tục, Fisher (nền của mọi chuỗi tính)."
+  - "m02 - NPV/IRR/MIRR/PI/DPP, dòng tiền tăng thêm, Real Options, đồ thị NPV."
+  - "m03 - CAPM, WACC, Hamada, chi phí nợ, MCC/break point."
+  - "m04 - M&M I/II (có/không thuế), Miller 1977, Trade-off, Pecking Order, agency costs."
+  - "m05 - ICR, Current/Quick/Cash Ratio, kiểm tra nhất quán BCTC."
+  - "m06 - CCC, DIO/DSO/DPO, EOQ, overtrading (BAT/Miller-Orr khai báo ở đây vì chưa có công thức chuẩn nơi khác)."
+  - "m07 - M&M cổ tức, Lintner, buyback vs dividend, DRIP, timeline cổ tức."
+  - "m08 - Markowitz 2 tài sản, MVP, Sharpe/Treynor/Jensen, CML/SML, Fama-French."
+  - "m09 - Synergy, premium, Price_max, swap ratio, EPS accretion, takeover defenses."
+  - "m10 - FCFF/FCFE, TV Gordon/exit multiple, EV->Equity bridge, multiples, ma trận độ nhạy WACC-g."
+
+concepts:
+  - term_vi: "Bản đồ dòng chuyển vốn"
+    term_en: "Capital flow map / financial decision system"
+    definition: >-
+      Vòng tuần hoàn 3 quyết định cốt lõi của giám đốc tài chính. (1) Huy động vốn từ thị trường tài chính (cổ đông + chủ nợ) với chi phí WACC;
+      (2) đầu tư vào tài sản dài hạn (capital budgeting) và vận hành (vốn lưu động CCC) để sinh dòng tiền tự do FCFF; (3) phân bổ FCFF
+      trả nợ gốc/lãi, chi cổ tức/mua lại cổ phiếu, giữ lại tái đầu tư. Dòng (3) quay lại thị trường vốn và quyết định giá cổ phiếu.
+    why_it_matters: >-
+      Tránh tư duy "mỗi công thức là một ốc đảo". Tỷ suất chiết khấu của dự án (WACC) chính là đầu ra của khối huy động vốn;
+      FCFF của dự án là đầu vào của định giá; chính sách chi trả phụ thuộc FCFF và cơ hội NPV>0. Sai ở một khâu (ví dụ WACC dùng lãi vay)
+      lan sang tất cả khâu sau (NPV sai, giá trị sai).
+  - term_vi: "Sơ đồ phụ thuộc giữa các khối"
+    term_en: "Dependency chain of finance blocks"
+    definition: >-
+      Thứ tự phụ thuộc chuẩn: m01 (TVM) -> m03 (cost of capital) -> m04 (cơ cấu vốn đích để chọn trọng số WACC, r_d phụ thuộc đòn bẩy) ->
+      m02 (NPV với WACC) -> m06 (ΔNWC trong dòng tiền, CCC) -> m10 (FCFF, TV, equity) -> m09 (synergy, premium) -> m07 (hoàn vốn) -> m08/m11 VaR (rủi ro, stress).
+    why_it_matters: "Agent phải tính theo thứ tự này; đảo thứ tự (ví dụ NPV trước khi biết WACC thật) sẽ cho kết luận sai."
+  - term_vi: "Nguyên tắc nhất quán giữa dòng tiền và tỷ suất chiết khấu"
+    term_en: "Cash flow / discount rate consistency"
+    definition: >-
+      Dòng tiền trước lãi vay (FCFF) chiết khấu bằng WACC; dòng tiền cho vốn chủ (FCFE) chiết khấu bằng r_e; dòng tiền danh nghĩa dùng tỷ suất danh nghĩa; thuế tính trên EBIT
+      (lá chắn thuế đã nằm trong WACC, không tính hai lần).
+    why_it_matters: "Vi phạm nguyên tắc này là lỗi phổ biến nhất khiến NPV/EV lệch hàng chục phần trăm (Case 13: dùng lãi vay 11% làm tỷ suất chiết khấu khiến NPV +415,6 thay vì +194,9)."
+  - term_vi: "Lợi nhuận không phải tiền mặt - tăng trưởng cần nguồn vốn"
+    term_en: "Profit is not cash; growth consumes capital"
+    definition: "Tăng trưởng doanh thu làm tăng ΔNWC (tồn kho + phải thu - phải trả). Nếu ΔNWC vượt lợi nhuận giữ lại + hạn mức tín dụng thì doanh nghiệp vỡ nợ dù P&L lãi (overtrading)."
+    why_it_matters: "Case 8 Home-Pro: lãi ròng 55,2 tỷ nhưng ΔNWC 221,1 tỷ; thiếu hụt tài trợ 165,9 tỷ, vượt hạn mức thấu chi 100 tỷ -> thiếu 65,9 tỷ."
+  - term_vi: "Giá trị thuộc về động cơ giá trị chứ không phải cơ cấu chia"
+    term_en: "Value drivers vs. financing/payout (M&M logic)"
+    definition: "Trong thị trường hoàn hảo, giá trị công ty do tài sản/dòng tiền quyết định; cơ cấu vốn và cổ tức chỉ chia chiếc bánh. Thuế, kiệt quệ tài chính, bất cân xứng thông tin mới tạo ra khác biệt thực."
+    why_it_matters: "Giúp agent hỏi đúng: ma sát nào (thuế, chi phí phá sản, tín hiệu) khiến quyết định này có giá trị? Nếu không có ma sát, đừng khẳng định lợi ích."
+  - term_vi: "Giá trị quyền chọn / linh hoạt quản lý"
+    term_en: "Value of managerial flexibility (real options)"
+    definition: "Quyền (không phải nghĩa vụ) trì hoãn/mở rộng/từ bỏ có giá trị dương, lớn nhất khi bất định cao và khi có thể chờ thông tin trước khi chi tiền không hoàn lại."
+    why_it_matters: "Case 1 GEC: NPV tích hợp +76,58 so với NPV tĩnh +8,79. Với SME: chạy thử/pop-up/thuê ngắn hạn trước khi ký hợp đồng 5 năm."
+  - term_vi: "Giá trị cuối kỳ là phần nguy hiểm nhất của định giá"
+    term_en: "Terminal value dominance"
+    definition: "TV thường chiếm 60-80% EV (S-Green 82,5%); kết quả nhạy với g và WACC theo hàm nghịch đảo (WACC - g), nên không đối xứng."
+    why_it_matters: "Phải trình bày khoảng giá trị, ma trận độ nhạy, và kiểm tra implied multiple/ROIC ngầm định (g = tỷ lệ tái đầu tư × ROIC)."
+  - term_vi: "Rủi ro định lượng: ngưỡng và đuôi"
+    term_en: "VaR, Expected Shortfall, Monte Carlo"
+    definition: >-
+      VaR: tổn thất tối đa ở độ tin cậy α trong kỳ T. ES: trung bình tổn thất khi đã vượt VaR. Monte Carlo: gán phân phối cho nhiều biến đầu vào bất định,
+      chạy hàng chục nghìn lần để ra phân phối NPV (xác suất NPV<0, P5, P95).
+    why_it_matters: >-
+      JP Morgan phổ biến VaR đầu thập niên 1990 (RiskMetrics) theo yêu cầu "một con số cho biết hôm nay có thể mất bao nhiêu"; Basel dùng cho vốn dự phòng.
+      VaR giả định chuẩn nên đánh giá thấp đuôi dày; ES bù điểm yếu "không biết mất bao nhiêu khi vượt ngưỡng". Monte Carlo (Ulam, von Neumann thập niên 1940; Hertz 1964 áp dụng cho thẩm định đầu tư) thay 3 kịch bản rời rạc bằng phân phối.
+  - term_vi: "Chuẩn mực kế toán ảnh hưởng đầu vào định giá"
+    term_en: "IFRS 15 and IFRS 16 impact"
+    definition: >-
+      IFRS 15: phân bổ giá hợp đồng theo giá bán độc lập cho từng nghĩa vụ thực hiện, ghi nhận khi hoàn thành. IFRS 16: thuê >12 tháng ghi ROU asset + lease liability (PV các khoản thuê).
+      VN: Quyết định 345/QĐ-BTC (2020) lộ trình áp dụng IFRS (cần xác nhận hiệu lực/lộ trình hiện hành).
+    why_it_matters: >-
+      IFRS 15 đổi thời điểm doanh thu/EBIT/thuế nhưng không đổi tiền thu - phải chỉnh ΔNWC (deferred revenue) khi dự phóng FCFF. IFRS 16 làm EBITDA tăng, nợ tăng, D/E tăng, Beta và WACC dịch chuyển;
+      không so bội số EV/EBITDA giữa công ty có/không IFRS 16 mà chưa điều chỉnh.
+  - term_vi: "Tính nhất quán số liệu"
+    term_en: "Numerical consistency discipline"
+    definition: "Mọi case tự tạo phải tự khớp: Assets = Liabilities + Equity, dòng tiền khớp thay đổi tiền mặt, EBIT = Doanh thu - OpEx - Khấu hao, FCFF cộng đúng; chạy Python/Excel trước khi báo cáo."
+    why_it_matters: "Quy ước chất lượng của knowledge base: không bịa số liệu không khớp phép tính."
+
+# ---------------------------------------------------------------- FORMULAS (chỉ công thức mới / chưa có chỗ khác)
+formulas:
+  - id: "m11_var_parametric"
+    name_vi: "Giá trị chịu rủi ro tham số (VaR)"
+    name_en: "Parametric Value at Risk"
+    expression_latex: 'VaR_{\alpha}(T) = V_p \times \left(z_{\alpha}\,\sigma_T - \mu_T\right),\quad \sigma_T=\sigma\sqrt{T},\ \mu_T=\mu T'
+    expression_python: "Vp*(z*sigma*T**0.5 - mu*T)"
+    excel: "=Vp*(NORM.S.INV(alpha)*sigma*SQRT(T)-mu*T)"
+    variables:
+      - {symbol: "Vp", meaning: "Giá trị danh mục", unit: "tiền"}
+      - {symbol: "z", meaning: "Giá trị tới hạn chuẩn tắc (1,645 cho 95%; 2,326 cho 99%)", unit: "đơn vị độ lệch chuẩn"}
+      - {symbol: "sigma", meaning: "Độ lệch chuẩn lợi suất 1 ngày", unit: "tỷ lệ/ngày"}
+      - {symbol: "mu", meaning: "Lợi suất kỳ vọng 1 ngày", unit: "tỷ lệ/ngày"}
+      - {symbol: "T", meaning: "Số ngày nắm giữ", unit: "ngày"}
+    when_to_use: "Cần một con số tổn thất tối đa ở độ tin cậy cho trước (danh mục chứng khoán, vốn dự phòng); giả định lợi suất xấp xỉ phân phối chuẩn."
+    why_it_works: >-
+      Với phân phối chuẩn, lợi suất xấu nhất ở xác suất (1-α) nằm cách trung bình z độ lệch chuẩn. Nhân với giá trị danh mục ra tổn thất tiền.
+      σ tăng theo căn bậc hai thời gian (các ngày độc lập), μ tăng tuyến tính nên VaR 10 ngày không bằng 10 × VaR 1 ngày.
+    assumptions: ["Lợi suất phân phối chuẩn, độc lập theo thời gian", "Danh mục không đổi trong T ngày", "σ ổn định (lấy từ dữ liệu quá khứ)"]
+    pitfalls:
+      - "Đánh giá thấp đuôi dày (khủng hoảng 2008): VaR 99% có thể sai rất lớn."
+      - "VaR là ngưỡng, không cho biết tổn thất khi vượt ngưỡng (dùng ES)."
+      - "Nhập μ dương làm VaR nhỏ đi; nhiều nơi dùng μ=0 cho thận trọng. Nêu rõ lựa chọn."
+      - "Quên đổi σ, μ về cùng đơn vị thời gian với T."
+    interpretation: "VaR95 1 ngày = 182.400 USD nghĩa là 95% số ngày tổn thất không vượt ngưỡng này; 5% số ngày xấu nhất sẽ vượt."
+    example:
+      inputs: {Vp: 10000000, mu: 0.0015, sigma: 0.012, z95: 1.645, z99: 2.326, T_long: 10}
+      steps:
+        - "VaR95 1 ngày = 10.000.000 × (1,645×0,012 - 0,0015) = 10.000.000 × 0,01824 = 182.400"
+        - "VaR99 1 ngày = 10.000.000 × (2,326×0,012 - 0,0015) = 264.120"
+        - "VaR95 10 ngày: σ10 = 0,012×√10 = 3,795%; μ10 = 1,5%; VaR = 10.000.000 × (1,645×0,03795 - 0,015) = 474.234 (làm tròn 474.233,6)"
+      result: "182.400 / 264.120 / 474.234 USD"
+
+  - id: "m11_expected_shortfall"
+    name_vi: "Tổn thất kỳ vọng vượt ngưỡng (ES / CVaR)"
+    name_en: "Expected Shortfall (Conditional VaR), normal"
+    expression_latex: 'ES_{\alpha} = V_p \times \left(\sigma \frac{\phi(z_{\alpha})}{1-\alpha} - \mu\right)'
+    expression_python: "Vp*(sigma*phi/(1-alpha) - mu)  # phi = norm.pdf(z)"
+    excel: "=Vp*(sigma*NORM.S.DIST(z,FALSE)/(1-alpha)-mu)"
+    variables:
+      - {symbol: "phi", meaning: "Hàm mật độ chuẩn tắc tại z (phi(1,645) = 0,1031)", unit: "-"}
+      - {symbol: "alpha", meaning: "Độ tin cậy (0,95)", unit: "-"}
+      - {symbol: "sigma, mu, Vp", meaning: "Như VaR (cùng kỳ)", unit: "-"}
+    when_to_use: "Cần biết tổn thất trung bình trong những ngày tồi tệ nhất (đuôi), quy định hiện đại ưa dùng hơn VaR."
+    why_it_works: "VaR chỉ là điểm cắt; ES lấy trung bình toàn bộ phần đuôi vượt điểm cắt nên nhạy với độ dày đuôi và là thước đo rủi ro nhất quán (coherent)."
+    assumptions: ["Phân phối chuẩn (công thức đóng); với phân phối thực dùng lịch sử/mô phỏng"]
+    pitfalls: ["Làm tròn phi quá sớm: dùng phi=0,1031 cho 232.440; công thức nguồn ghi 232.466 do làm tròn khác - sai khác nhỏ, ghi rõ khi trích.", "ES luôn lớn hơn VaR cùng α; nếu ES < VaR là tính sai."]
+    interpretation: "ES95 ≈ 232.440 USD > VaR95 182.400: trong 5% ngày xấu nhất, mất trung bình khoảng 232 nghìn USD."
+    example:
+      inputs: {Vp: 10000000, mu: 0.0015, sigma: 0.012, phi: 0.1031, alpha: 0.95}
+      steps: ["ES = 10.000.000 × (0,012×0,1031/0,05 - 0,0015) = 10.000.000 × (0,024744 - 0,0015) = 232.440"]
+      result: "232.440 USD (nguồn ghi 232.466; chênh do làm tròn)"
+
+  - id: "m11_monte_carlo_npv_prob"
+    name_vi: "Xác suất NPV âm (giải tích & mô phỏng Monte Carlo)"
+    name_en: "Probability of negative NPV (analytic and Monte Carlo)"
+    expression_latex: 'P(NPV<0)=\Phi\!\left(-\frac{NPV_{base}}{\sigma_k\,\cdot\,\partial NPV/\partial k}\right),\quad NPV(k)=NPV_0+k\cdot S'
+    expression_python: "norm.cdf(-npv_base/(sens_per_unit_k*sigma_k))  # hoặc (npv_mc<0).mean()"
+    excel: "=NORM.S.DIST(-NPV_base/(slope*sigma_k),TRUE)"
+    variables:
+      - {symbol: "NPV_base", meaning: "NPV kịch bản cơ sở (k = 1)", unit: "tiền"}
+      - {symbol: "slope", meaning: "Độ nhạy NPV theo hệ số doanh thu k (NPV(1)-NPV(0))", unit: "tiền/1,0 k"}
+      - {symbol: "sigma_k", meaning: "Độ lệch chuẩn của doanh thu so với kế hoạch", unit: "tỷ lệ"}
+    when_to_use: "Một biến đầu vào chi phối NPV (doanh thu) và NPV gần tuyến tính theo biến đó; muốn nói được 'xác suất lỗ' thay vì 3 kịch bản."
+    why_it_works: "Nếu k ~ Chuẩn(1, σ_k) và NPV tuyến tính theo k, NPV cũng chuẩn; xác suất NPV<0 là xác suất k vượt dưới điểm hòa vốn (1 - NPV_base/slope). Monte Carlo tổng quát hóa cho nhiều biến, phi tuyến."
+    assumptions: ["Phân phối của doanh thu chuẩn quanh kế hoạch", "Các biến khác cố định (hoặc gán phân phối riêng)", "Có thuế sàn (EBIT âm không có lá chắn thuế) làm NPV hơi phi tuyến ở vùng xấu"]
+    pitfalls: ["Phân phối chuẩn có thể cho k<0; cắt hoặc dùng log-normal.", "Không tính tương quan giữa các biến đầu vào.", "Seed khác -> số liệu khác nhẹ; báo cáo kèm seed và số lần chạy."]
+    interpretation: "Case 13: NPV base +194,9, slope xấp xỉ 3.250 (mỗi 1% doanh thu ≈ 32 triệu), σ_k=10% -> xác suất NPV<0 ≈ 27%."
+    example:
+      inputs: {npv_base: 194.85, slope: 3200, note: "slope xấp xỉ 32 triệu/1% doanh thu, tuyến tính gần đúng (xem kết quả verify)", sigma_k: 0.10}
+      steps:
+        - "Hòa vốn: k* = 0,9391 (doanh thu thấp hơn kế hoạch 6,1%)"
+        - "z = (0,9391 - 1)/0,10 = -0,609; Φ(-0,609) ≈ 27,1% (giải tích)"
+        - "Monte Carlo 20.000 lần, seed 42, σ=10%: NPV TB ≈ +196; SD ≈ 322; P5 ≈ -332; P95 ≈ +730; P(NPV<0) ≈ 26,9%"
+      result: "Khoảng 27% xác suất NPV âm (nguồn: TB +195,9, SD 322,9, P5 -333,6, P95 +729,6; kiểm lại: +196,5, 321,6, -331,4, +729,6)"
+
+  - id: "m11_dscr"
+    name_vi: "Hệ số khả năng trả nợ (DSCR)"
+    name_en: "Debt Service Coverage Ratio"
+    expression_latex: 'DSCR_t=\frac{EBITDA_t - Tax_t}{Principal_t + Interest_t}'
+    expression_python: "(ebitda - tax)/(principal + interest)"
+    excel: "=(EBITDA-Thue)/(Goc+Lai)"
+    variables:
+      - {symbol: "EBITDA", meaning: "Lợi nhuận trước lãi, thuế, khấu hao", unit: "tiền"}
+      - {symbol: "Tax", meaning: "Thuế TNDN thực nộp", unit: "tiền"}
+      - {symbol: "Principal+Interest", meaning: "Nghĩa vụ trả nợ trong năm (annuity payment)", unit: "tiền"}
+    when_to_use: "Thẩm định khả năng trả nợ của dự án vay vốn (ngân hàng, SME); thường kèm ICR."
+    why_it_works: "Ngân hàng cần tiền thực để trả gốc + lãi, không phải lợi nhuận kế toán. Dòng tiền khả dụng cho nợ = EBITDA trừ thuế (chưa trừ capex/vốn lưu động trong biến thể đơn giản)."
+    assumptions: ["Capex duy trì và ΔNWC nhỏ/bỏ qua trong biến thể này", "Nghĩa vụ trả nợ theo annuity đều"]
+    pitfalls: ["Công thức này lạc quan hơn nếu capex duy trì lớn: dùng CFADS (sau capex, ΔNWC) khi cần chặt.", "Chỉ xét DSCR năm trung bình mà bỏ qua năm đầu (EBITDA thấp nhất).", "Quên tính tiền thuê vào chi phí hoạt động (EBITDA đã trừ rent)."]
+    interpretation: "DSCR > 1,5 thường được ngân hàng chấp nhận (cần xác nhận chính sách từng ngân hàng); < 1,0 không đủ trả nợ. Case 13: năm 1 = 2,11; năm 5 = 3,10."
+    example:
+      inputs: {loan: 840, r: 0.11, n: 5, ebitda_y1: 510.0, tax_y1: 30.0}
+      steps:
+        - "Annuity payment = 840/PVIFA(11%,5) = 840/3,6959 = 227,28"
+        - "DSCR năm 1 = (510,0 - 30,0)/227,28 = 2,11"
+      result: "DSCR năm 1 = 2,11; qua 5 năm: 2,11; 2,58; 2,85; 3,01; 3,10"
+
+  - id: "m11_level_payment"
+    name_vi: "Khoản trả nợ đều hằng kỳ (annuity loan payment)"
+    name_en: "Level loan payment"
+    expression_latex: 'PMT = \frac{L\,r}{1-(1+r)^{-n}} = \frac{L}{PVIFA(r,n)}'
+    expression_python: "L*r/(1-(1+r)**-n)"
+    excel: "=-PMT(r,n,L)"
+    variables:
+      - {symbol: "L", meaning: "Số tiền vay", unit: "tiền"}
+      - {symbol: "r", meaning: "Lãi suất theo kỳ", unit: "tỷ lệ"}
+      - {symbol: "n", meaning: "Số kỳ trả", unit: "kỳ"}
+    when_to_use: "Lập lịch trả nợ để tính lãi, gốc, dư nợ và DSCR."
+    why_it_works: "Đảo ngược công thức PV của annuity (m01): PV khoản vay = PMT × PVIFA. Mỗi kỳ lãi = dư nợ đầu kỳ × r; gốc = PMT - lãi."
+    assumptions: ["Lãi cố định, trả cuối kỳ"]
+    pitfalls: ["Lãi thả nổi thay đổi PMT", "Nhầm lãi tháng với lãi năm"]
+    interpretation: "Dùng để dựng bảng lịch trả nợ và kiểm tra dư nợ cuối cùng = 0."
+    example:
+      inputs: {L: 840, r: 0.11, n: 5}
+      steps: ["PMT = 840/3,6959 = 227,28", "Năm 1: lãi 92,4; gốc 134,9; dư nợ 705,1", "Năm 5: gốc 204,8; dư nợ 0"]
+      result: "227,28 triệu VNĐ/năm"
+
+  - id: "m11_interest_coverage"
+    name_vi: "Hệ số bao phủ lãi vay (ICR) và đòn bẩy EBIT"
+    name_en: "Interest coverage and debt/EBIT"
+    expression_latex: 'ICR=\frac{EBIT}{Interest},\qquad Leverage=\frac{D}{EBIT}'
+    expression_python: "ebit/(D*rd), D/ebit"
+    excel: "=EBIT/(D*rd)"
+    variables:
+      - {symbol: "EBIT", meaning: "Lợi nhuận trước lãi và thuế", unit: "tiền/năm"}
+      - {symbol: "D", meaning: "Dư nợ", unit: "tiền"}
+      - {symbol: "rd", meaning: "Lãi suất nợ", unit: "tỷ lệ"}
+    when_to_use: "Kiểm tra lãi vay có an toàn, lá chắn thuế còn tồn tại không, đánh giá kiệt quệ tài chính."
+    why_it_works: "Lá chắn thuế chỉ có giá trị khi EBIT đủ lớn để khấu trừ lãi; ICR<1 nghĩa là EBT âm, lá chắn thuế mất và phải bù lãi bằng bán tài sản/vay mới."
+    assumptions: ["EBIT ổn định (với EBIT biến động mạnh cần ngưỡng cao hơn)"]
+    pitfalls: ["Lãi suất cao nhưng chỉ nhìn ICR trung bình, bỏ qua nợ ngắn hạn đáo hạn (refinancing risk).", "Dùng ICR danh nghĩa bỏ qua gốc phải trả - dùng thêm DSCR."]
+    interpretation: "ICR an toàn thường > 2,5-3 lần. Ever-G: ICR 1,59 (9%), 1,19 (12%), 0,65 (22%)."
+    example:
+      inputs: {EBIT: 500, D: 3500, rd: 0.22}
+      steps: ["Lãi = 3.500×22% = 770; EBT = 500-770 = -270; ICR = 500/770 = 0,65", "D/EBIT = 3.500/500 = 7,0 lần"]
+      result: "ICR 0,65 < 1: không bao phủ được lãi"
+
+  - id: "m11_baumol_bat"
+    name_vi: "Lượng tiền mặt rút tối ưu Baumol-Allais-Tobin (BAT)"
+    name_en: "Baumol-Allais-Tobin cash model"
+    expression_latex: 'C^{*}=\sqrt{\frac{2\,T\,F}{r}}'
+    expression_python: "(2*T*F/r)**0.5"
+    excel: "=SQRT(2*T*F/r)"
+    variables:
+      - {symbol: "T", meaning: "Tổng nhu cầu tiền mặt cả kỳ", unit: "tiền"}
+      - {symbol: "F", meaning: "Chi phí cố định mỗi lần chuyển đổi chứng khoán/tiết kiệm sang tiền", unit: "tiền/lần"}
+      - {symbol: "r", meaning: "Lãi suất cơ hội (lãi gửi/chứng khoán ngắn hạn)", unit: "tỷ lệ/năm"}
+    when_to_use: "Chi tiêu tiền mặt đều đặn, ổn định; cần quyết định mỗi lần rút bao nhiêu từ tài khoản sinh lãi."
+    why_it_works: "Giống EOQ: tiền mặt là hàng tồn kho. Rút nhiều lần giảm tiền nhàn rỗi mất lãi nhưng tốn phí giao dịch; tối ưu khi chi phí giao dịch = chi phí cơ hội. Baumol (1952), Tobin (1956)."
+    assumptions: ["Dòng chi đều tuyến tính", "Không có thu nhập tiền mặt ngẫu nhiên", "F và r hằng số"]
+    pitfalls: ["Dòng tiền biến động ngẫu nhiên -> dùng Miller-Orr.", "Đơn vị r (năm) phải khớp T (năm)."]
+    interpretation: "Tại tối ưu, phí giao dịch = chi phí cơ hội = 4,24 triệu, tổng 8,49 triệu/năm (ví dụ SME)."
+    example:
+      inputs: {T: 1200, F: 0.5, r: 0.06}
+      steps: ["C* = √(2×1.200×0,5/0,06) = √20.000 = 141,42", "Số lần = 1.200/141,42 = 8,49 lần/năm", "Phí giao dịch = 8,49×0,5 = 4,24; chi phí cơ hội = 141,42/2×6% = 4,24"]
+      result: "C* = 141,4 triệu VNĐ mỗi lần; tổng chi phí tối thiểu 8,49 triệu/năm"
+
+  - id: "m11_miller_orr"
+    name_vi: "Mô hình tiền mặt Miller-Orr (sàn-điểm quay về-trần)"
+    name_en: "Miller-Orr cash management model"
+    expression_latex: 'spread = 3\left(\frac{3F\sigma^{2}}{4r}\right)^{1/3},\quad Z=L+\frac{spread}{3},\quad H=L+spread'
+    expression_python: "sp=3*(3*F*var/(4*r_daily))**(1/3); Z=L+sp/3; H=L+sp"
+    excel: "=3*(3*F*sigma^2/(4*r_ngay))^(1/3)"
+    variables:
+      - {symbol: "L", meaning: "Mức sàn an toàn do doanh nghiệp đặt", unit: "tiền"}
+      - {symbol: "F", meaning: "Chi phí mỗi lần giao dịch", unit: "tiền/lần"}
+      - {symbol: "sigma^2", meaning: "Phương sai dòng tiền ròng hằng ngày", unit: "tiền^2"}
+      - {symbol: "r_daily", meaning: "Lãi suất cơ hội theo ngày", unit: "tỷ lệ/ngày"}
+      - {symbol: "Z, H", meaning: "Điểm quay về và mức trần", unit: "tiền"}
+    when_to_use: "Dòng tiền ròng ngày dao động ngẫu nhiên; cần quy tắc tự động: chạm trần mua chứng khoán, chạm sàn bán."
+    why_it_works: "Miller và Orr (1966) mở rộng BAT cho dòng tiền ngẫu nhiên: biến động σ lớn cần dải rộng hơn (spread tỷ lệ σ^{2/3}); phí F cao cũng làm dải rộng hơn; lãi suất r cao làm dải hẹp lại."
+    assumptions: ["Dòng tiền ngày độc lập, phân phối đối xứng", "Khoản chuyển đổi tức thì"]
+    pitfalls: ["Công thức nguồn spread = 115,48 (làm tròn cube root 38,49): Z = L + spread/3 = 48,49; H = 125,48.", "Dùng r năm thay r ngày sẽ sai hàng chục lần."]
+    interpretation: "Giữ số dư trong dải [L,H]; chạm H -> mua chứng khoán về Z; chạm L -> bán về Z."
+    example:
+      inputs: {L: 10, F: 0.5, sigma: 5, r_annual: 0.06}
+      steps: ["r ngày = 0,06/365 = 0,000164", "Cube root = (3×0,5×25/(4×0,000164))^{1/3} = 38,49 -> spread = 115,48", "Z = 10+38,49 = 48,49; H = 10+115,48 = 125,48"]
+      result: "Z = 48,49 triệu; H = 125,48 triệu (sàn 10)"
+
+  - id: "m11_real_option_delay"
+    name_vi: "Giá trị quyền chọn trì hoãn đầu tư (2 kịch bản)"
+    name_en: "Option to delay (two-state)"
+    expression_latex: 'NPV_{int}=-Fee+\frac{p\max(PV_H-I,0)+(1-p)\max(PV_L-I,0)}{(1+r)^{t}},\quad Option=NPV_{int}-NPV_{static},\ p^{*}=\frac{I-PV_L}{PV_H-PV_L}'
+    expression_python: "-fee + (p*max(PVH-I,0)+(1-p)*max(PVL-I,0))/(1+r)**t"
+    excel: "=-fee+(p*MAX(PVH-I,0)+(1-p)*MAX(PVL-I,0))/(1+r)^t"
+    variables:
+      - {symbol: "I", meaning: "Vốn đầu tư (tại thời điểm cam kết)", unit: "tiền"}
+      - {symbol: "PV_H, PV_L", meaning: "PV dòng tiền ở kịch bản tốt/xấu", unit: "tiền"}
+      - {symbol: "p", meaning: "Xác suất kịch bản tốt", unit: "-"}
+      - {symbol: "Fee, t", meaning: "Phí mua quyền và thời gian chờ", unit: "tiền, năm"}
+    when_to_use: "Dự án lớn có bất định chính sách/thị trường được giải quyết sau thời gian chờ, có thể trả phí nhỏ để giữ quyền."
+    why_it_works: "Chờ thông tin rồi chỉ đầu tư khi NPV>0 cắt bỏ phía xấu (max(.,0)) nhưng giữ phía tốt, giống call option (Black-Scholes 1973; Myers 1977 đặt tên real options)."
+    assumptions: ["Bất định giải quyết hoàn toàn sau t", "Không mất cơ hội vì đối thủ/luật thay đổi (mô hình cho bằng 0)", "Chiết khấu bằng WACC (đơn giản hóa)"]
+    pitfalls: ["Bỏ qua chi phí chờ đợi (2 năm doanh thu), rủi ro đối thủ chiếm khu vực.", "Quyền chọn mất giá trị khi gần chắc chắn kịch bản tốt (p->1)."]
+    interpretation: "GEC: NPV tĩnh +8,79; tích hợp +76,58; giá trị quyền = 67,79; phí tối đa hợp lý = 82,79 (phí thực 15)."
+    example:
+      inputs: {I: 800, PVH: 1021.63, PVL: 595.95, p: 0.5, fee: 15, r: 0.10, t: 2}
+      steps: ["NPV_H=+221,63; NPV_L=-204,05; NPV tĩnh=+8,79; p*=47,9%", "E[NPV năm 2]=0,5×221,63+0,5×0=110,81; PV=110,81/1,21=91,58", "NPV tích hợp = -15+91,58 = 76,58"]
+      result: "Quyền chọn có giá trị ròng 67,79 triệu USD"
+
+  - id: "m11_ifrs15_allocation"
+    name_vi: "Phân bổ giá hợp đồng theo giá bán độc lập (IFRS 15)"
+    name_en: "IFRS 15 transaction price allocation"
+    expression_latex: 'Alloc_i = Price_{contract}\times\frac{SSP_i}{\sum_j SSP_j}'
+    expression_python: "price*ssp_i/sum(ssp)"
+    excel: "=Gia_HD*SSP_i/SUM(SSP)"
+    variables:
+      - {symbol: "Price_contract", meaning: "Giá hợp đồng", unit: "tiền"}
+      - {symbol: "SSP_i", meaning: "Giá bán độc lập của nghĩa vụ i", unit: "tiền"}
+    when_to_use: "Hợp đồng gói nhiều hạng mục (hàng + dịch vụ bảo trì) khi dự phóng doanh thu/FCFF theo chuẩn IFRS."
+    why_it_works: "Ngăn ghi nhận sớm: mỗi nghĩa vụ thực hiện nhận phần doanh thu tỷ lệ với giá bán độc lập và được ghi nhận khi hoàn thành. Phần chưa hoàn thành thành doanh thu chưa thực hiện (deferred revenue)."
+    assumptions: ["Có SSP quan sát được/ước tính hợp lý", "Mô hình 5 bước của IFRS 15"]
+    pitfalls: ["Tiền mặt không đổi nhưng doanh thu/EBIT/thuế năm 1 thấp hơn; phải điều chỉnh ΔNWC (deferred revenue) trong FCFF để dòng tiền không méo."]
+    interpretation: "Hợp đồng 120 (máy SSP 100 + bảo trì 3 năm SSP 50): máy 80, bảo trì 40 (13,33/năm); doanh thu năm 1 = 93,33 thay vì 120; deferred 26,67."
+    example:
+      inputs: {price: 120, ssp_machine: 100, ssp_maint: 50}
+      steps: ["Máy = 120×100/150 = 80", "Bảo trì = 120×50/150 = 40 (13,33/năm)", "Năm 1 = 80+13,33 = 93,33; deferred = 26,67"]
+      result: "Doanh thu năm 1: 93,33 triệu VNĐ (vs 120 theo cách cũ)"
+
+  - id: "m11_ifrs16_lease"
+    name_vi: "Nợ thuê tài sản theo IFRS 16"
+    name_en: "IFRS 16 lease liability and expense profile"
+    expression_latex: 'Lease\ Liability_0 = PMT\times PVIFA(r,n);\quad Interest_1=Liab_0\,r;\quad Dep_{ROU}=\frac{Liab_0}{n}'
+    expression_python: "liab=pmt*(1-(1+r)**-n)/r; interest1=liab*r; dep=liab/n"
+    excel: "=PMT_thue*(1-(1+r)^-n)/r"
+    variables:
+      - {symbol: "PMT", meaning: "Tiền thuê hằng năm", unit: "tiền/năm"}
+      - {symbol: "r", meaning: "Lãi suất chiết khấu thuê (incremental borrowing rate)", unit: "tỷ lệ"}
+      - {symbol: "n", meaning: "Thời hạn thuê", unit: "năm"}
+    when_to_use: "Doanh nghiệp thuê nhiều (bán lẻ, F&B, hàng không): điều chỉnh EBITDA, nợ, D/E, WACC, EV bridge khi so sánh giữa các công ty."
+    why_it_works: "Thuê dài hạn thực chất là mua tài sản bằng nợ; ghi nhận ROU + nợ thuê làm bảng cân đối phản ánh đòn bẩy thật, tiền thuê chuyển từ OpEx sang khấu hao + lãi."
+    assumptions: ["Thuê > 12 tháng", "Chi phí vay biên chiết khấu hợp lý"]
+    pitfalls: ["EBITDA tăng đúng bằng tiền thuê (+10) nhưng tiền mặt không đổi; không so EV/EBITDA giữa công ty áp dụng/không áp dụng.", "Nếu EV gồm nợ thuê, phải trừ nợ thuê khi sang Equity Value.", "Chi phí năm đầu (lãi+khấu hao) cao hơn tiền thuê (front-loaded)."]
+    interpretation: "Thuê 10/năm × 5 năm @8%: nợ thuê 39,93; năm 1 lãi 3,19 + khấu hao 7,99 = 11,18 > 10; EBIT tăng 2,01."
+    example:
+      inputs: {pmt: 10, r: 0.08, n: 5}
+      steps: ["Liab = 10×3,9927 = 39,93", "Lãi năm 1 = 39,93×8% = 3,19; Dep = 39,93/5 = 7,99; tổng 11,18", "EBITDA +10; EBIT +2,01 (=10-7,99)"]
+      result: "Nợ thuê 39,93 triệu USD; D/E tăng, WACC dịch chuyển"
+
+  - id: "m11_eps_accretion"
+    name_vi: "EPS sau thâu tóm bằng cổ phiếu (accretion/dilution)"
+    name_en: "Post-merger EPS accretion/dilution"
+    expression_latex: 'EPS_{pro}=\frac{NI_A+NI_B+Syn_{AT}}{N_A+\frac{Price}{P_A}},\quad Accretive\iff EPS_{pro}>EPS_A'
+    expression_python: "(NI_A+NI_B+syn)/(N_A+price/P_A)"
+    excel: "=(NI_A+NI_B+Syn)/(N_A+Gia_tra/P_A)"
+    variables:
+      - {symbol: "NI_A, NI_B", meaning: "Lợi nhuận ròng bên mua/mục tiêu", unit: "tiền"}
+      - {symbol: "Syn_AT", meaning: "Synergy sau thuế hằng năm", unit: "tiền/năm"}
+      - {symbol: "N_A", meaning: "Cổ phiếu hiện hành bên mua", unit: "cổ phiếu"}
+      - {symbol: "Price, P_A", meaning: "Giá trả cho mục tiêu và giá cổ phiếu bên mua", unit: "tiền"}
+    when_to_use: "Thương vụ trả bằng cổ phiếu; cần biết EPS bị pha loãng hay tăng và ai gánh rủi ro synergy."
+    why_it_works: "EPS tăng nếu P/E bên mua cao hơn P/E trả (cổ phiếu đắt đổi lấy lợi nhuận rẻ). Accretion cơ học không bằng tạo giá trị; giá trị = synergy - premium."
+    assumptions: ["Giá cổ phiếu bên mua không đổi khi phát hành", "Synergy thực hiện đầy đủ ngay"]
+    pitfalls: ["EPS dilutive có thể vẫn tạo giá trị nếu synergy lớn; ngược lại accretive vẫn có thể phá giá trị nếu premium > synergy.", "Chi phí tích hợp, nhân sự rời đi chưa trừ."]
+    interpretation: "Bev-Co: không synergy EPS 0,990 (-0,97%, dilutive); có synergy 20 -> 1,039 (+3,86%, accretive). Trả bằng cổ phiếu chia sẻ rủi ro synergy với cổ đông mục tiêu."
+    example:
+      inputs: {NI_A: 400, NI_B: 10, syn: 20, N_A: 400, price: 280, P_A: 20}
+      steps: ["Cổ phiếu mới = 280/20 = 14 -> tổng 414", "EPS không synergy = 410/414 = 0,9903; có synergy = 430/414 = 1,0386", "Giá trị/cổ phiếu hợp nhất = 8.400/414 = 20,29; cổ đông cũ +115,9, cổ đông Tea-Pro +84,1 (tổng 200)"]
+      result: "-0,97% (dilutive) -> +3,86% (accretive)"
+
+  - id: "m11_ex_dividend_buyback"
+    name_vi: "So sánh cổ tức và mua lại cổ phiếu theo giá trị nội tại"
+    name_en: "Dividend vs buyback: intrinsic value per remaining share"
+    expression_latex: 'IV_{after}=\frac{V_{equity}-Cash_{paid}}{N-\frac{Cash_{paid}}{P_{buy}}},\quad P_{ex}=P_0-DPS'
+    expression_python: "(V-cash)/(N-cash/Pbuy)"
+    excel: "=(V-Cash)/(N-Cash/Pbuy)"
+    variables:
+      - {symbol: "V", meaning: "Giá trị nội tại vốn chủ trước hoàn vốn (gồm tiền dư)", unit: "tiền"}
+      - {symbol: "Cash_paid", meaning: "Tiền dùng hoàn vốn", unit: "tiền"}
+      - {symbol: "P_buy", meaning: "Giá mua lại", unit: "tiền/cp"}
+      - {symbol: "N", meaning: "Cổ phiếu lưu hành", unit: "cổ phiếu"}
+    when_to_use: "Có tiền dư không có dự án NPV>0 và phải chọn hình thức hoàn vốn."
+    why_it_works: "Cổ đông ở lại chỉ có lợi nếu giá mua < nội tại, vì phần chênh được chuyển từ người bán sang người ở lại. Cổ tức trung tính về giá trị trước thuế (P_ex = P0 - DPS) nhưng bị đánh thuế ngay."
+    assumptions: ["Giá trị nội tại ước tính được", "Không bất cân xứng thông tin về tín hiệu"]
+    pitfalls: ["EPS tăng cơ học không chứng minh tạo giá trị; mua lại giá cao (55 vs nội tại 45) phá 0,34 USD/cp.", "Thuế cổ tức 10% làm mất 0,18/cp (đầu vào giả định)."]
+    interpretation: "C-Pharma: buy 36 -> nội tại 45,47 (+0,47); buy 45 -> 45,00 (0); buy 55 -> 44,66 (-0,34). EPS 2,00 -> 2,105 (+5,26%); giá P/E 18x -> 37,89."
+    example:
+      inputs: {V: 4500, cash: 180, N: 100}
+      steps: ["Còn lại giá trị = 4.500-180 = 4.320", "P=36: mua 5,00tr -> 95tr cp -> 45,47", "P=45: 96tr -> 45,00; P=55: 96,73tr -> 44,66", "Cổ tức 1,80/cp: P_ex = 34,20; sau thuế 10% tổng 35,82 (mất 0,18)"]
+      result: "Mua lại chỉ tạo giá trị khi P_buy < giá trị nội tại"
+
+  - id: "m11_tv_implied_roic"
+    name_vi: "Kiểm tra TV: bội số ngầm định và ROIC ngầm định"
+    name_en: "Terminal value sanity: implied multiple and implied ROIC"
+    expression_latex: 'ROIC_{implied}=\frac{g}{Reinvestment\ rate},\quad Reinv=\frac{CapEx-Dep+\Delta NWC}{NOPAT},\quad EV/EBITDA_{exit}=\frac{TV}{EBITDA_n}'
+    expression_python: "g/reinv, TV/ebitda_n"
+    excel: "=g/Reinv"
+    variables:
+      - {symbol: "g", meaning: "Tăng trưởng vĩnh viễn", unit: "tỷ lệ"}
+      - {symbol: "Reinv", meaning: "Tỷ lệ tái đầu tư năm cuối", unit: "tỷ lệ"}
+    when_to_use: "Sau khi tính DCF, kiểm tra giả định g có thể được tài trợ bởi tái đầu tư với ROIC hợp lý hay không."
+    why_it_works: "Tăng trưởng cần vốn: g = tỷ lệ tái đầu tư × ROIC. Nếu ROIC ngầm định quá cao so với WACC bền vững không thực tế."
+    assumptions: ["Tái đầu tư năm cuối đại diện cho giai đoạn ổn định"]
+    pitfalls: ["Chỉ nhìn TV mà không kiểm tra bội số ngầm định.", "g vượt tăng trưởng danh nghĩa dài hạn nền kinh tế (2-4%)."]
+    interpretation: "S-Green: Reinv = (23,0-16,5+7,5)/65,74 = 21,3%; ROIC ngầm định 14,1% > WACC 9,76%; exit multiple 8,0x EBITDA; TV/EV = 82,5%; EV/EBITDA năm 1 = 17,1x."
+    example:
+      inputs: {capex: 23.0, dep: 16.5, dNWC: 7.5, nopat: 65.74, g: 0.03, TV: 788.35, ebitda_n: 98.67}
+      steps: ["Reinv = 14,0/65,74 = 21,3%", "ROIC = 3%/21,3% = 14,1%", "TV/EBITDA = 788,35/98,67 = 7,99x"]
+      result: "ROIC ngầm định 14,1%, exit multiple 8,0x"
+
+  - id: "m11_npv_breakeven_shortfall"
+    name_vi: "Điểm hòa vốn NPV theo doanh thu (stress test)"
+    name_en: "NPV break-even revenue shortfall"
+    expression_latex: 'k^{*}:\ NPV(k^{*})=0,\qquad shortfall=1-k^{*},\qquad \frac{\Delta NPV}{1\%\ revenue}\approx\frac{NPV(1)-NPV(0)}{100}'
+    expression_python: "brentq(lambda k: NPV(cfs(k), wacc), 0.5, 1)"
+    excel: "Goal Seek: đặt NPV=0 bằng cách đổi hệ số doanh thu k"
+    variables:
+      - {symbol: "k", meaning: "Hệ số doanh thu thực/kế hoạch", unit: "-"}
+    when_to_use: "Mọi dự án SME: cho biết biên an toàn doanh thu trước khi NPV về 0."
+    why_it_works: "Một kế hoạch duy nhất che giấu rủi ro. Điểm hòa vốn NPV cho ngưỡng cụ thể (6,1%) để chủ SME so sánh với biến động thực tế; thuế sàn (EBIT<0 không có lá chắn thuế) làm NPV giảm nhanh hơn tuyến tính ở vùng xấu."
+    assumptions: ["Chi phí cố định (thuê) không đổi; chi phí biến đổi tỷ lệ doanh thu", "Thuế không được hoàn khi lỗ (tax floor)"]
+    pitfalls: ["Quên tax floor: NPV ở 80% sai (-445,4 thay vì -453,8; 75%: -605,4 vs -622,6)."]
+    interpretation: "Case 13: hòa vốn NPV khi doanh thu năm 1 ≈ 2.817 triệu (≈7,8 triệu/ngày), thiếu 6,1%; mỗi 1% ≈ 32 triệu NPV."
+    example:
+      inputs: {wacc: 0.14276, scenarios: [1.0, 0.9, 0.85, 0.8, 0.75]}
+      steps: ["NPV: +194,9; -125,3; -285,3; -453,8; -622,6 (với tax floor)", "IRR: 17,6%; 12,1%; 9,2%; 6,2%; 3,0%"]
+      result: "k* = 0,939 (hụt 6,1%)"
+
+  - id: "m11_overtrading_gap"
+    name_vi: "Khoảng thiếu hụt tài trợ do tăng trưởng (overtrading gap)"
+    name_en: "Growth funding gap"
+    expression_latex: 'NWC=\frac{DIO\cdot COGS+DSO\cdot Sales-DPO\cdot COGS}{365},\quad Gap=\Delta NWC-NI-Credit\ line'
+    expression_python: "dNWC = nwc(after)-nwc(before); gap = dNWC - NI - credit"
+    excel: "=(DIO*COGS+DSO*Doanhthu-DPO*COGS)/365"
+    variables:
+      - {symbol: "DIO,DSO,DPO", meaning: "Số ngày tồn kho, phải thu, phải trả", unit: "ngày"}
+      - {symbol: "NI", meaning: "Lợi nhuận ròng giữ lại", unit: "tiền"}
+    when_to_use: "Trước khi nới tín dụng, tăng tồn kho, hoặc đẩy tăng trưởng nhanh."
+    why_it_works: "Quy đổi số ngày CCC thành tiền thực bị đóng băng; tăng trưởng bền vững bị giới hạn bởi dòng tiền, không phải nhu cầu thị trường."
+    assumptions: ["Giá vốn tỷ lệ doanh thu", "DIO/DSO/DPO quan sát ổn định"]
+    pitfalls: ["Chỉ nhìn P&L lãi mà bỏ qua ΔNWC.", "Nhà cung cấp siết điều khoản khi chậm trả (DPO co lại) làm vấn đề tệ hơn."]
+    interpretation: "Home-Pro: NWC 18,6 -> 239,7; ΔNWC 221,1; thiếu 165,9 sau lãi 55,2; vượt hạn mức 100 -> thiếu 65,9 tỷ."
+    example:
+      inputs: {S0: 200, C0: 160, S1: 500, C1: 400}
+      steps: ["NWC0 = (45×160+30×200-40×160)/365 = 18,63", "NWC1 = (90×400+115×500-15×400)/365 = 239,73", "ΔNWC = 221,1; NI = 69×0,8 = 55,2; gap = 165,9; sau hạn mức 100 -> 65,9"]
+      result: "Thiếu hụt tài trợ 65,9 tỷ VNĐ dù lãi 55,2 tỷ"
+
+# ---------------------------------------------------------------- PROCEDURES (tích hợp đa module)
+procedures:
+  - id: "m11_proc_capital_flow_map"
+    name: "Bản đồ dòng chuyển vốn - chẩn đoán vấn đề nằm ở khâu nào"
+    steps:
+      - "Khâu 1 - Huy động vốn: hỏi WACC hiện tại là bao nhiêu, cơ cấu vốn đích là gì, r_d có tăng theo đòn bẩy không? (m03, m04)"
+      - "Khâu 2 - Đầu tư: dòng tiền tăng thêm có đủ (CapEx, ΔNWC, thuế, thanh lý, tiền cọc)? NPV/MIRR so với WACC? (m02)"
+      - "Khâu 3 - Vận hành/thanh khoản: CCC, ΔNWC có tài trợ được? Lợi nhuận có chuyển thành tiền? (m06)"
+      - "Khâu 4 - Hoàn vốn: FCFF còn lại sau tái đầu tư NPV>0 đủ cho nợ gốc/lãi, cổ tức/mua lại? (m07)"
+      - "Khâu 5 - Định giá/M&A: EV, TV, synergy-premium có kỷ luật? (m10, m09)"
+      - "Khâu 6 - Rủi ro: stress test, Monte Carlo, VaR/ES, DSCR (m11, m08)"
+    outputs: "Chẩn đoán khâu yếu nhất + chuỗi module cần chạy tiếp."
+
+  - id: "m11_proc_master_decision_chain"
+    name: "Chuỗi tích hợp chuẩn cho một quyết định đầu tư có tài trợ (mẫu Case 13)"
+    steps:
+      - "B1 (m03/m04): Xác định cơ cấu vốn đích; unlever beta ngành (β_u), relever theo D/E (Hamada); r_e = Rf + β×ERP (+ size/illiquidity premium nếu chưa niêm yết); r_d theo mức vay; WACC = E/V r_e + D/V r_d (1-T)."
+      - "B2 (m04): Quét WACC theo các mức D/V với r_d tăng dần để chọn mức vay (SME: mục tiêu giữ quyền sở hữu, không phải hạ WACC). Case 13: 40% -> 14,28% ≈ 0% -> 14,30%; 60% -> 14,74%; 70% -> 15,38%."
+      - "B3 (m02/m06): Dựng FCFF: EBITDA, trừ khấu hao -> EBIT, thuế, NOPAT, cộng khấu hao, trừ capex/ΔNWC; năm cuối cộng thu hồi NWC + tiền cọc + thanh lý sau thuế."
+      - "B4 (m02): NPV @WACC, IRR, MIRR (tái đầu tư ở WACC), PI = 1 + NPV/I, payback & DPP. Kiểm tra dòng tiền đổi dấu nhiều lần (nhiều IRR)."
+      - "B5 (m11): Dựng lịch trả nợ (PMT annuity), tính DSCR từng năm, ICR, IRR vốn chủ (sau trả nợ) so với r_e."
+      - "B6 (m06): CCC của dự án (DIO+DSO-DPO) để phân tách vốn lưu động thành tồn kho/phải thu/quỹ đệm; dựng quỹ dự phòng trả nợ ≥ 6 tháng."
+      - "B7 (m11): Stress test doanh thu -10/-15/-20/-25% (nhớ tax floor); tìm điểm hòa vốn NPV; độ nhạy theo biến đàm phán được (giá thuê); Monte Carlo ra P(NPV<0), P5, P95."
+      - "B8 (m02 Real Options): Đề xuất giai đoạn hóa (chạy thử/pop-up) trước khi cam kết dài hạn."
+      - "B9: Kết luận có điều kiện + hành động cụ thể (đàm phán thuê, ân hạn, quỹ dự phòng, giới hạn mức vay)."
+    outputs: "Bảng WACC, bảng FCFF, NPV/IRR/MIRR/PI/payback, lịch nợ + DSCR, stress/MC, khuyến nghị có điều kiện."
+
+  - id: "m11_proc_dcf_valuation_chain"
+    name: "Chuỗi định giá DCF tích hợp (mẫu S-Green)"
+    steps:
+      - "WACC theo cơ cấu vốn mục tiêu dài hạn (không dùng cơ cấu hiện tại nếu sẽ thay đổi): 0,6×12% + 0,4×8%×0,8 = 9,76%."
+      - "Dự phóng 3 báo cáo nối nhau -> FCFF 5 năm = NOPAT + Dep - CapEx - ΔNWC (kiểm từng cột)."
+      - "TV = FCFF_n(1+g)/(WACC-g) với g ≤ tăng trưởng danh nghĩa dài hạn; chiết khấu về t=0."
+      - "EV -> Equity = EV - Debt + Cash - minority; chia cho số cổ phiếu."
+      - "Sanity: TV/EV, EV/EBITDA, exit multiple ngầm định, ROIC ngầm định (m11_tv_implied_roic)."
+      - "Ma trận độ nhạy WACC (±1pp) × g (2-4%); trình bày khoảng giá trị. Kiểm chéo bằng multiples (P/E, EV/EBITDA)."
+      - "Nếu có hợp đồng nhiều hạng mục/thuê: áp IFRS 15/16 trước (chỉnh ΔNWC, nợ thuê trong EV bridge)."
+    outputs: "EV, Equity, giá/cổ phiếu, khoảng giá trị, bảng độ nhạy, cảnh báo TV."
+
+  - id: "m11_proc_ma_discipline"
+    name: "Quy trình M&A có kỷ luật giá (mẫu Bev-Co)"
+    steps:
+      - "Định giá V_B độc lập; định lượng synergy: cost PV = ΔCost sau thuế / WACC (vĩnh viễn) + revenue synergy PV; giảm trừ chi phí tích hợp."
+      - "Price_max = V_B + Synergies (walk-away). Chào premium thấp hơn nhiều (Bev-Co 40% premium = 80 so với synergy 200)."
+      - "NPV mua = Synergies - Premium; tính break-even synergy realization = Premium/Synergies (40%)."
+      - "Kịch bản thực hiện synergy 100%/50%/30%: NPV +120/+20/-20."
+      - "Nếu trả cổ phiếu: số cổ phiếu mới = Price/P_A, EPS accretion/dilution, phân chia giá trị hợp nhất; ai gánh rủi ro synergy."
+    outputs: "Giá trần, giá chào, NPV thương vụ, bảng độ nhạy synergy, phương án thanh toán."
+
+  - id: "m11_proc_payout_decision"
+    name: "Chọn chính sách hoàn vốn cho cổ đông"
+    steps:
+      - "Loại bỏ nhu cầu tái đầu tư NPV>0 trước (Residual Dividend); đảm bảo thanh khoản."
+      - "So giá thị trường với giá trị nội tại (m10): mua lại chỉ khi giá < nội tại."
+      - "Tính ảnh hưởng thuế (cổ tức bị đánh thuế ngay, buyback hoãn thuế), tín hiệu (cắt cổ tức = tin xấu), tính linh hoạt."
+      - "Dùng Lintner với SOA phù hợp; trong khủng hoảng chọn SOA cao, đừng vay để trả cổ tức."
+    outputs: "Hình thức hoàn vốn + mức chi, kèm ràng buộc thanh khoản."
+
+  - id: "m11_proc_portfolio_risk"
+    name: "Rà soát rủi ro danh mục / quyết định lớn"
+    steps:
+      - "Danh mục: tính E(Rp), σp qua công thức 2 tài sản (m08), thử các ρ (+1, +0,8, +0,5, 0, -0,5, -1) để thấy ảnh hưởng tương quan."
+      - "Tìm MVP: w_A = (σ_C² - ρσ_Aσ_C)/(σ_A²+σ_C²-2ρσ_Aσ_C); tính Sharpe."
+      - "Stress ρ→+1 trong khủng hoảng; VaR/ES (m11); Monte Carlo cho dự án."
+      - "Dự phòng vốn theo ES/P5, không chỉ VaR."
+    outputs: "Bảng rủi ro-lợi suất, VaR/ES, cảnh báo tương quan."
+
+  - id: "m11_proc_consistency_check"
+    name: "Kiểm tra nhất quán trước khi trình bày số liệu"
+    steps:
+      - "Bảng cân đối: Tài sản = Nợ + Vốn chủ; Cash Flow Statement khớp thay đổi tiền mặt hai kỳ."
+      - "EBIT = Doanh thu - OpEx - Khấu hao; FCFF cộng đúng từng cột; PV nhân đúng hệ số chiết khấu."
+      - "Chạy lại bằng Python/Excel; so với kiểm tra chéo hai cách (ví dụ Case 5: V_l tính bằng M&M = 1.080 và bằng EBIT(1-T)/WACC = 1.080)."
+    outputs: "Số liệu tự nhất quán, sẵn sàng đưa vào báo cáo."
+
+# ---------------------------------------------------------------- DECISION RULES
+decision_rules:
+  - "Nếu dòng tiền dự án đổi dấu nhiều hơn một lần (đại tu, hoàn nguyên môi trường, tiền ứng trước) thì KHÔNG dùng IRR đơn lẻ; dùng NPV và MIRR, vẽ đồ thị NPV theo tỷ suất chiết khấu."
+  - "Nếu NPV tĩnh chỉ dương nhẹ nhờ bù trừ hai kịch bản lệch (+221 / -204) và có thể chờ thông tin thì hãy tính quyền chọn trì hoãn trước khi cam kết vốn."
+  - "Nếu chọn tỷ suất chiết khấu thì dùng WACC phản ánh rủi ro dự án, không dùng lãi vay (SME thường đánh giá NPV cao gấp ~2 lần nếu dùng lãi vay)."
+  - "Nếu giữ r_d cố định khi tăng đòn bẩy thì kết quả sai; luôn để r_d tăng theo D/E hoặc theo ICR (Fly-Ind: WACC 10,10% giả định vs 15,22% thực tế)."
+  - "Nếu ICR < 2,5-3 lần hoặc nợ ngắn hạn tài trợ tài sản dài hạn thì cảnh báo rủi ro tái cấp vốn/kiệt quệ; ICR < 1 nghĩa là lá chắn thuế biến mất."
+  - "Nếu lãi suất nợ vượt lợi suất hoạt động thì không vay thêm; vay để mua thêm quỹ đất/tài sản là nguyên nhân sụp đổ Ever-G."
+  - "Nếu doanh thu tăng nhanh thì tính ΔNWC và nguồn tài trợ; nếu ΔNWC > lợi nhuận + hạn mức thì dừng nới tín dụng/đẩy tồn kho (overtrading)."
+  - "Nếu DPO được kéo dài nhờ sức mua thì cần quỹ dự phòng thanh khoản vì khi doanh thu giảm lợi thế đảo ngược."
+  - "Nếu có tiền dư không có dự án NPV>0 thì mua lại cổ phiếu chỉ khi giá < giá trị nội tại; ngược lại chi cổ tức hoặc giữ tiền."
+  - "Nếu EPS gần như 0 hoặc dòng tiền suy sụp thì cắt cổ tức nhanh (SOA cao); không vay để trả cổ tức."
+  - "Nếu hai tài sản có ρ cao thì thay bằng tài sản ρ thấp/âm thay vì tài sản 'ít rủi ro' (Pan-Capital: thay thép bằng vàng giảm σ 21,2% -> 14,3%, Sharpe +34%)."
+  - "Nếu Premium ≥ Synergies thì không mua; đặt giá trần Price_max = V_B + Synergies và chào thấp hơn; kiểm tra break-even synergy realization."
+  - "Nếu P/E bên mua thấp hơn P/E trả thì thương vụ trả cổ phiếu sẽ dilutive ban đầu; xét synergy bù đắp."
+  - "Nếu TV/EV > 70-80% thì bắt buộc báo cáo khoảng giá trị (ma trận WACC-g) thay vì một con số; kiểm tra g ≤ tăng trưởng danh nghĩa dài hạn và implied ROIC/multiple."
+  - "Nếu so EV/EBITDA giữa công ty áp dụng và không áp dụng IFRS 16 thì phải điều chỉnh (cộng nợ thuê, EBITDA đã tăng)."
+  - "Nếu hợp đồng gói nhiều hạng mục thì phân bổ theo IFRS 15 và điều chỉnh ΔNWC (deferred revenue) trong FCFF."
+  - "Nếu DSCR năm 1 < 1,5 thì giảm mức vay, tăng ân hạn, hoặc kéo dài kỳ hạn; luôn kiểm tra năm đầu vì EBITDA thấp nhất."
+  - "Nếu NPV âm ở kịch bản -10% doanh thu và xác suất NPV<0 > 25% thì quyết định phải có điều kiện (đàm phán thuê, chạy thử, quỹ dự phòng), không duyệt vô điều kiện."
+  - "Nếu cần một con số tổn thất đuôi thì dùng ES thay VaR; nếu phân phối đuôi dày thì không dựa vào VaR chuẩn."
+
+# ---------------------------------------------------------------- BENCHMARKS
+benchmarks:
+  - {metric: "DSCR chấp nhận bởi ngân hàng", value: "> 1,5 (an toàn); < 1,0 không đủ trả", context: "SME vay dự án; xác nhận chính sách từng ngân hàng", confidence: medium}
+  - {metric: "ICR an toàn", value: "> 2,5 - 3 lần", context: "Nguồn gốc case Ever-G; ICR 0,65 là thất bại", confidence: medium}
+  - {metric: "Tỷ trọng TV trong EV", value: "60 - 80% (S-Green 82,5%)", context: "DCF 5 năm với g=3%", confidence: medium}
+  - {metric: "g vĩnh viễn", value: "≤ tăng trưởng danh nghĩa dài hạn (thường 2 - 4%)", context: "Terminal value", confidence: high}
+  - {metric: "CCC siêu thị bán lẻ", value: "-53 ngày (S-Mart giả định); quán cà phê -8 ngày", context: "Illustrative", confidence: low}
+  - {metric: "Biên an toàn doanh thu của dự án SME", value: "Hòa vốn NPV khi hụt 6,1% (Case 13); mỗi 1% ≈ 32 triệu NPV", context: "Illustrative", confidence: low}
+  - {metric: "Biên IRR - WACC dự án SME", value: "17,6% so 14,28% (3,3 điểm) - coi là mỏng", context: "Case 13 illustrative", confidence: low}
+  - {metric: "WACC SME F&B ví dụ", value: "14,28% (Rf 3,5%; ERP 8%; β_u 0,85; size premium 4%; vay 40% @11%)", context: "Giả định minh họa, cập nhật Rf/ERP VN hiện hành", confidence: low}
+  - {metric: "Quỹ dự phòng trả nợ", value: "≥ 6 tháng nghĩa vụ trả nợ (≈114 triệu)", context: "Khuyến nghị Case 13", confidence: low}
+  - {metric: "Phản ứng WACC với 1pp thay đổi (S-Green)", value: "-15,7% (WACC+1pp) / +21,2% (WACC-1pp); g -1pp -> -12,4%", context: "Không đối xứng", confidence: medium}
+  - {metric: "DRIP chiết khấu", value: "1 - 5% so thị giá", context: "Thực hành thị trường phát triển", confidence: low}
+  - {metric: "z VaR", value: "1,645 (95%); 2,326 (99%)", context: "Phân phối chuẩn", confidence: high}
+
+pitfalls:
+  - "Đọc IRR 24,5% > WACC 12% là duyệt: dòng tiền đổi dấu hai lần có hai nghiệm (24,5% và 60%), NPV(12%) = -47,83; MIRR = 10,96% < WACC."
+  - "Dùng lãi vay (11%) hay r_e (17,93%) làm tỷ suất chiết khấu: lần lượt NPV +415,6 (quá lạc quan) hoặc -17,8 (bác bỏ sai); đúng là WACC 14,28% -> +194,9."
+  - "Tính hai lần lá chắn thuế: tính thuế sau lãi vay trong FCFF rồi lại dùng WACC đã giảm thuế."
+  - "Giữ r_d cố định ở mọi mức đòn bẩy; bỏ qua chi phí kiệt quệ tài chính (Fly-Ind)."
+  - "Tin M&M lá chắn thuế 80 triệu là thực tế: đó là mức tối đa lý thuyết (nợ vĩnh viễn, không kiệt quệ)."
+  - "Nợ ngắn hạn tài trợ tài sản dài hạn (refinancing risk); bỏ qua D/EBIT 7 lần."
+  - "Báo lãi nhưng không tiền (overtrading): Home-Pro lãi 55,2 tỷ, CCC 190 ngày."
+  - "Cổ tức cứng nhắc: payout 600%, vay để trả cổ tức làm nợ 103,6 sau 2 năm."
+  - "Đánh giá mua lại cổ phiếu theo EPS thay vì giá so với giá trị nội tại."
+  - "Giả định tương quan cố định; trong khủng hoảng ρ có thể tăng về +1."
+  - "Quên chi phí tích hợp/nhân sự/văn hóa trong M&A; giả định 100% synergy."
+  - "TV chiếm >80% EV mà chỉ báo một con số; quên kiểm tra implied multiple/ROIC."
+  - "So sánh bội số giữa công ty có và không có IFRS 16 mà chưa điều chỉnh; quên ΔNWC deferred revenue theo IFRS 15."
+  - "Dùng VaR thay thế đánh giá đuôi; quên đổi σ theo √T."
+  - "Stress test quên tax floor làm NPV xấu bị đánh giá thấp quá mức (80% doanh thu: -445,4 sai so với -453,8)."
+  - "Dữ liệu Case 1-12 là giả định minh họa - không trích như số liệu thật của doanh nghiệp."
+
+sme_vn_guidance:
+  - "Dùng khuôn Case 13 cho mọi quyết định mở chi nhánh/mua thiết bị có vay: WACC (có size premium 3-5% cho DN chưa niêm yết) -> FCFF có tiền cọc/thanh lý/thuế -> NPV/IRR/MIRR/PI/DPP -> DSCR -> stress -> Monte Carlo -> quyết định có điều kiện."
+  - "Mục tiêu vay của SME là giữ quyền sở hữu và nhân vốn chủ, không phải hạ WACC (WACC 14,28% vs 14,30%); đừng vay > 40-50% tổng nhu cầu vốn."
+  - "Thuế TNDN phổ thông 20% (cần xác nhận quy định hiện hành, ưu đãi SME); lãi vay khấu trừ theo giới hạn quy định (cần xác nhận)."
+  - "Rf VN: lợi suất trái phiếu Chính phủ 10 năm (giả định 3,5% trong case; cập nhật theo thị trường); ERP thị trường mới nổi cao hơn; cộng size/illiquidity premium cho DN chưa niêm yết."
+  - "Đàm phán giá thuê mặt bằng là đòn bẩy giá trị lớn nhất: giảm 60 triệu/năm thêm ≈172 triệu NPV; xin ân hạn/giảm giá 3-6 tháng đầu."
+  - "Chạy thử (pop-up, quầy mang đi) vài tháng trước khi ký hợp đồng thuê 5 năm; mục tiêu doanh thu ≥ 250 triệu/tháng."
+  - "Quán cà phê có CCC âm (-8 ngày): vốn lưu động chủ yếu là quỹ tiền mặt đệm, không phải tồn kho."
+  - "Giữ quỹ dự phòng trả nợ ≥ 6 tháng ngoài vốn lưu động; theo dõi CCC, DSCR hằng tháng."
+  - "Nếu có hợp đồng thuê dài hạn và báo cáo theo IFRS (lộ trình QĐ 345/QĐ-BTC, cần xác nhận hiệu lực): nợ thuê và EBITDA thay đổi, lưu ý khi gọi vốn/so sánh."
+  - "Công cụ: Excel/Google Sheets với hàm NPV, IRR, MIRR, PMT, NORM.S.INV, Goal Seek; chạy Python cho Monte Carlo (numpy)."
+
+# ---------------------------------------------------------------- CASE LESSONS (13 case)
+case_lessons:
+  - name: "Case 1 - GEC điện gió ngoài khơi Bình Thuận (Real Options)"
+    type: success
+    setup: "Vốn 800 triệu USD; hai kịch bản FIT 50/50: dòng tiền 120 hoặc 70 triệu USD/năm × 20 năm; WACC 10%; mua quyền trì hoãn 2 năm giá 15 triệu."
+    key_calculations:
+      - "PVIFA(10%,20) = 8,5136; PV_H = 1.021,63; PV_L = 595,95"
+      - "NPV_H = +221,63; NPV_L = -204,05; NPV tĩnh = 0,5×221,63 + 0,5×(-204,05) = +8,79; p* hòa vốn = 47,9%"
+      - "Tích hợp: -15 + 0,5×221,63/1,21 = -15 + 91,58 = +76,58; giá trị quyền = 67,79; phí tối đa = 82,79"
+      - "Độ nhạy p: 30% -> tĩnh -76,35 / tích hợp +39,95; 70% -> +93,92 / +113,21"
+    lesson: "Không duyệt dự án lớn bất định chính sách chỉ bằng NPV tĩnh; chia giai đoạn, trả phí nhỏ mua thông tin. Quyền chọn giá trị nhất khi bất định cao; chi phí chờ đợi (mất 2 năm doanh thu, đối thủ) cần cân nhắc."
+    data_reliability: illustrative
+  - name: "Case 2 - X-Refinery (bẫy IRR nhiều nghiệm)"
+    type: failure
+    setup: "Dòng tiền (triệu USD): năm 0 -1.000; năm 1 +2.845 (ứng trước); năm 2 -1.992 (chi phí/đại tu). WACC 12%. Ban dự án báo IRR 24,5%."
+    key_calculations:
+      - "v=1/(1+r): 1.992v² - 2.845v + 1.000 = 0 -> r1 = 24,5%, r2 = 60%"
+      - "NPV(12%) = -1.000 + 2.540,18 - 1.588,01 = -47,83; NPV dương chỉ trong 24,5%-60%"
+      - "MIRR = √(3.186,4/2.588,01) - 1 = 10,96% < 12%"
+    lesson: "Dòng tiền đổi dấu nhiều lần -> dùng NPV/MIRR, vẽ đồ thị NPV; khoản thu lớn sớm kèm chi lớn muộn là khoản vay ngầm."
+    data_reliability: illustrative
+  - name: "Case 3 - VTE (hạ hurdle rate bằng cấu trúc vốn)"
+    type: success
+    setup: "Công nghệ, D/E = 0, β_l = 1,6, Rf 6%, ERP 5%, T 20%; phát hành trái phiếu 8% mua lại cổ phiếu, D/E -> 1,0."
+    key_calculations:
+      - "WACC ban đầu = r_e = 6% + 1,6×5% = 14,0%"
+      - "β_lh = 1,6×(1+0,8×1,0) = 2,88; r_e = 20,4%; WACC = 0,5×20,4% + 0,5×8%×0,8 = 13,4%"
+      - "Quét D/E: 0 -> 14,00%; 0,25 -> 13,76%; 0,5 -> 13,60%; 1,0 -> 13,40%; 2,0 -> 13,20% (r_d cố định 8%)"
+      - "Dự án 100 triệu, lợi suất 13,8%: NPV = 13,8/0,14 - 100 = -1,43 (bác) vs 13,8/0,134 - 100 = +2,99 (duyệt)"
+    lesson: "Vay vừa phải hạ WACC dù r_e tăng; nhưng bảng giả định r_d cố định -> thực tế r_d tăng (xem Case 4)."
+    data_reliability: illustrative
+  - name: "Case 4 - Fly-Ind (đòn bẩy cực đoan, WACC bùng nổ)"
+    type: failure
+    setup: "Hàng không, D/E = 4 (D/V 80%), β_u = 0,9, Rf 6%, ERP 5%, T 20%; ngân hàng nâng r_d 8% -> 16%."
+    key_calculations:
+      - "β_lh = 0,9×(1+0,8×4) = 3,78; r_e = 6% + 3,78×5% = 24,9%"
+      - "WACC = 0,2×24,9% + 0,8×16%×0,8 = 4,98% + 10,24% = 15,22%"
+      - "So sánh: D/E=1, r_d 8% -> 10,25% (β 1,62; r_e 14,1%); D/E=4, r_d 8% -> 10,10%; D/E=4, r_d 16% -> 15,22%"
+    lesson: "Nếu r_d giữ 8% thì WACC gần như không đổi (M&M); phần +5,12pp đến từ chi phí kiệt quệ. Luôn để r_d biến thiên theo đòn bẩy/ICR."
+    data_reliability: illustrative
+  - name: "Case 5 - R-Center (lá chắn thuế nợ vay)"
+    type: success
+    setup: "Không nợ, V_u = 1.000, EBIT 150, r_0 12%, T 20%; phát hành 400 trái phiếu 7% vĩnh viễn, mua lại cổ phiếu."
+    key_calculations:
+      - "V_u = 150×0,8/0,12 = 1.000; V_l = 1.000 + 0,2×400 = 1.080; E = 680"
+      - "r_e = 12% + (400/680)×0,8×(12%-7%) = 14,35%; WACC = 9,04% + 2,07% = 11,11%; V = 120/0,1111 = 1.080"
+      - "Dòng tiền cho nhà tài trợ: 120 -> 125,6; chênh 5,6 = 0,2×28; PV = 5,6/0,07 = 80 = T×D"
+      - "ICR = 150/28 = 5,4 lần"
+    lesson: "Giá trị tăng +80 (+8%) thuần tái cấu trúc; là mức tối đa lý thuyết vì nợ vĩnh viễn, không kiệt quệ. Kiểm chéo hai cách (M&M và WACC)."
+    data_reliability: illustrative
+  - name: "Case 6 - Ever-G (nợ ngắn hạn lãi cao)"
+    type: failure
+    setup: "Bất động sản, nợ trái phiếu ngắn hạn 22%, dư nợ 3.500 triệu USD, EBIT 500, 60% đáo hạn 12 tháng, tiền 200."
+    key_calculations:
+      - "Lãi 9%: 315, EBT +185, ICR 1,59; 12%: 420, +80, 1,19; 22%: 770, -270, ICR 0,65"
+      - "Đáo hạn = 3.500×60% = 2.100; thiếu 2.100 - 200 = 1.900; D/EBIT = 7,0"
+    lesson: "ICR > 2,5-3; không dùng nợ ngắn hạn tài trợ tài sản dài hạn; lá chắn thuế biến mất khi EBT âm; debt overhang và risk-shifting bùng phát."
+    data_reliability: illustrative
+  - name: "Case 7 - S-Mart (CCC âm)"
+    type: success
+    setup: "Siêu thị 12.000 tỷ doanh thu, COGS 10.200 tỷ; DIO 45->12, DSO 6->0, DPO 30->65."
+    key_calculations:
+      - "CCC: 45+6-30 = +21 -> 12+0-65 = -53 ngày"
+      - "Tồn kho 1.257,5 -> 335,3; phải thu 197,3 -> 0; phải trả 838,4 -> 1.816,4; NWC +616,4 -> -1.481,1"
+      - "Tiền giải phóng = 616,4 + 1.481,1 = 2.097,5 tỷ; tiết kiệm lãi 8% = 167,8 tỷ (sau thuế 134,2)"
+    lesson: "CCC âm biến tăng trưởng thành nguồn vốn; rủi ro: phụ thuộc sức mạnh thương lượng, mất NCC, đảo ngược khi doanh số giảm -> quỹ dự phòng thanh khoản."
+    data_reliability: illustrative
+  - name: "Case 8 - Home-Pro (overtrading)"
+    type: failure
+    setup: "Doanh thu 200 -> 500 tỷ; COGS 80%; chi phí hoạt động 31; DIO 45->90, DSO 30->115, DPO 40->15."
+    key_calculations:
+      - "Lãi ròng = (500-400-31)×0,8 = 55,2; CCC 35 -> 190 ngày"
+      - "NWC 18,6 -> 239,7; ΔNWC = 221,1; thiếu hụt = 221,1 - 55,2 = 165,9; sau hạn mức 100 còn thiếu 65,9 tỷ"
+    lesson: "Tính ΔNWC trước khi nới tín dụng; theo dõi CCC hằng tháng; thưởng sales theo tiền thu về; Cash is King."
+    data_reliability: illustrative
+  - name: "Case 9 - C-Pharma (mua lại hay cổ tức)"
+    type: success
+    setup: "NI 200, 100 triệu cp, giá 36, tiền dư 180, không nợ; EPS 2,0; P/E 18x."
+    key_calculations:
+      - "Cổ tức 1,80: P_ex = 34,20; sau thuế 10% còn 35,82 (mất 0,18)"
+      - "Buyback 36: 5tr cp -> 95tr; EPS = 2,105 (+5,26%); P = 18×2,105 = 37,89"
+      - "Nội tại 4.500: mua ở 36 -> 45,47 (+0,47); 45 -> 45,00; 55 -> 44,66 (-0,34)"
+    lesson: "Buyback chỉ tạo giá trị khi giá < nội tại; EPS tăng chỉ là phép chia; cổ tức tạo kỳ vọng khó cắt."
+    data_reliability: illustrative
+  - name: "Case 10 - H-Hotel (cổ tức cứng nhắc)"
+    type: failure
+    setup: "20 triệu cp, DPS 3,00 cố định 10 năm; năm 2020 EPS 0,50; vay 9% để trả cổ tức."
+    key_calculations:
+      - "Payout = 3,00/0,50 = 600%; NI 10 vs cổ tức 60; thiếu 50/năm"
+      - "Năm 2: lãi thêm sau thuế = 50×9%×0,8 = 3,6; NI 6,4; vay thêm 53,6; nợ lũy kế 103,6"
+      - "Lintner (mục tiêu 50% EPS): SOA 0,4 -> 1,90 (payout 380%); 0,7 -> 1,075; 1,0 -> 0,25"
+    lesson: "Mượt hóa quá mức khi nền tảng sụp đổ nguy hiểm; dùng Residual Dividend + quỹ thanh khoản; không vay để trả cổ tức."
+    data_reliability: illustrative
+  - name: "Case 11 - Pan-Capital (đổi tương quan thay vì đổi lợi suất)"
+    type: success
+    setup: "500 triệu USD: A (BĐS) 15%/25%, B (thép) 11%/18%, ρ_AB 0,8; C (vàng) 9%/12%, ρ_AC -0,3; Rf 5%."
+    key_calculations:
+      - "60A+40B: E=13,4%; σ²=0,044964, σ=21,2%; Sharpe 0,396"
+      - "Quét ρ_AB: 22,20%; 21,20%; 19,62%; 16,64%; 12,99%; 7,80% ứng +1; +0,8; +0,5; 0; -0,5; -1"
+      - "60A+40C: E=12,6%; σ²=0,020484, σ=14,31%; Sharpe 0,531 (+34%)"
+      - "MVP A-C: w_A=24,66%, σ=9,29%, E=10,48%, Sharpe 0,590"
+    lesson: "Giảm rủi ro bằng tài sản tương quan thấp/âm; ρ không cố định, stress test khi ρ->+1."
+    data_reliability: illustrative
+  - name: "Case 12 - Bev-Co mua Tea-Pro (kỷ luật synergy)"
+    type: success
+    setup: "V_A 8.000, 400 triệu cp @20 (P/E 20x), NI 400; V_B 200, NI 10; WACC 10%."
+    key_calculations:
+      - "Synergy = 8/0,10 + 12/0,10 = 80 + 120 = 200; Price_max = 400"
+      - "Chào premium 40%: 280; Premium = 80; NPV = 200 - 80 = +120; V_Bev sau = 8.000+200+200-280 = 8.120"
+      - "Trả cổ phiếu: 14tr cp mới, 414tr; EPS không synergy 0,990 (-0,97%); có synergy 20 -> 1,039 (+3,86%); giá trị 8.400/414 = 20,29"
+      - "Synergy thực hiện 100%/50%/30%: NPV +120/+20/-20; break-even 40%"
+    lesson: "Không trả quá phần synergy chắc chắn; đặt giá trần; tính break-even synergy; trừ chi phí tích hợp; trả cổ phiếu chia sẻ rủi ro."
+    data_reliability: illustrative
+  - name: "S-Green - mô hình định giá DCF (Chương VIII)"
+    type: success
+    setup: "Nhà máy bao bì tái chế, định giá đầu 2026; WACC 9,76% (D/V 40% mục tiêu); g 3%; nợ 60, tiền 10, 10 triệu cp."
+    key_calculations:
+      - "FCFF 5 năm: 10,00; 17,40; 28,30; 39,62; 51,74; ΣPV = 104,73"
+      - "TV = 51,74×1,03/(0,0976-0,03) = 788,35; PV(TV) = 494,88 (nguồn 494,84)"
+      - "EV = 599,6; Equity = 549,6; giá = 54,96 USD/cp"
+      - "TV/EV 82,5%; EV/EBITDA 17,1x; exit 8,0x; ROIC ngầm định 14,1%"
+      - "Độ nhạy: WACC 10,76% -> 46,34 (-15,7%); 8,76% -> 66,62 (+21,2%); g 2% -> 48,17 (-12,4%)"
+    lesson: "Trình bày khoảng giá trị (≈46-66 USD), tập trung kiểm chứng giả định dài hạn hơn chi phí năm 1; kết hợp multiples."
+    data_reliability: illustrative
+  - name: "IFRS 15/16 và VaR - ví dụ chuẩn mực & rủi ro (Chương IX-X)"
+    type: sme
+    setup: "Hợp đồng 120 (máy + bảo trì), thuê 10/năm × 5 năm @8%, danh mục 10 triệu USD."
+    key_calculations:
+      - "IFRS 15: máy 80, bảo trì 40; doanh thu năm 1 = 93,33 (vs 120)"
+      - "IFRS 16: nợ thuê 39,93; năm 1 lãi 3,19 + khấu hao 7,99; EBITDA +10"
+      - "VaR95 1 ngày 182.400; VaR99 264.120; VaR95 10 ngày 474.234; ES95 ≈ 232.440"
+    lesson: "Chuẩn mực kế toán thay đổi đầu vào FCFF/EV/WACC; VaR là ngưỡng, ES bù đuôi; Monte Carlo cho phân phối NPV."
+    data_reliability: illustrative
+  - name: "Case 13 - Quán cà phê Nhà Rang, chi nhánh 2 (SME Việt Nam)"
+    type: sme
+    setup: >-
+      Biên Hòa; nhu cầu vốn 2.100 triệu VNĐ (cải tạo 1.100 + thiết bị 700 + cọc 200 + NWC 100); vay 840 (40%) lãi 11% annuity 5 năm,
+      vốn chủ 1.260; T 20%; doanh thu năm 1 3.000, tăng 15/8/5/3%; giá vốn 33%, nhân sự 24%, chi khác 10%, thuê 480 (tăng 3%/năm); thanh lý thiết bị 180.
+    key_calculations:
+      - "D/E = 0,667; β_lh = 0,85×(1+0,8×0,667) = 1,303; r_e = 3,5%+1,303×8%+4% = 17,93%; WACC = 0,6×17,93%+0,4×11%×0,8 = 14,28%"
+      - "Quét đòn bẩy: 0% -> 14,30%; 40% -> 14,28%; 60% (12%) -> 14,74%; 70% (13%) -> 15,38%"
+      - "FCFF: 480,0; 587,3; 648,3; 685,2; 1.147,6 (năm 5 gồm 444 = 100 + 200 + 180×0,8)"
+      - "NPV @14,28% = +194,9; IRR 17,6%; MIRR 16,3%; PI 1,093; payback 3,56 năm; DPP 4,67 năm"
+      - "Sai tỷ suất: lãi vay 11% -> NPV +415,6; r_e 17,93% -> -17,8"
+      - "PMT = 840/3,6959 = 227,3; DSCR 2,11; 2,58; 2,85; 3,01; 3,10; IRR vốn chủ 22,2% > r_e 17,93%"
+      - "CCC = 10+0-18 = -8 ngày; tồn kho 27,1, phải trả 48,8, NWC thương mại -21,7; quỹ đệm ≈ 73"
+      - "Stress: 90% -> -125,3 (IRR 12,1%); 85% -> -285,3; 80% -> -453,8; 75% -> -622,6; hòa vốn NPV khi hụt 6,1%"
+      - "Monte Carlo (σ 10%, 20.000 lần, seed 42): P(NPV<0) ≈ 27%; P5 ≈ -333,6; P95 ≈ +729,6"
+      - "Thuê 420 -> NPV +367,3 (IRR 20,5%); thuê 360 -> +539,8 (IRR 23,3%)"
+    lesson: >-
+      Nên làm nhưng có điều kiện: đàm phán thuê (đòn bẩy giá trị lớn nhất), chạy thử trước khi ký 5 năm (Real Options), quỹ dự phòng trả nợ ≥ 6 tháng (≈114),
+      vay không quá 40-50%. Kiểm lại: dùng đúng WACC; NPV mỏng nên P(NPV<0) 27%.
+    data_reliability: illustrative
+
+# ---------------------------------------------------------------- WORKED EXAMPLES (đã verify bằng Python)
+worked_examples:
+  - id: "m11_we_sme_branch_decision"
+    name: "Tích hợp: SME vay mở chi nhánh (mẫu Case 13, rút gọn)"
+    inputs: {capex_total: 2100, loan: 840, rate_loan: 0.11, equity: 1260, tax: 0.20, Rf: 0.035, ERP: 0.08, beta_u: 0.85, size_premium: 0.04, rev_y1: 3000, growth: [0.15, 0.08, 0.05, 0.03]}
+    steps:
+      - "D/E = 840/1.260 = 0,667; β_lh = 0,85×(1+0,8×0,667) = 1,3033"
+      - "r_e = 3,5% + 1,3033×8% + 4% = 17,93%; WACC = 0,6×17,93% + 0,4×11%×0,8 = 14,276%"
+      - "Doanh thu: 3.000; 3.450; 3.726; 3.912,3; 4.029,7. EBITDA = 33% doanh thu - thuê; EBITDA 510,0; 644,1; 720,3; 766,6; 789,5"
+      - "EBIT = EBITDA - 360; NOPAT = 0,8×EBIT; FCFF = NOPAT + 360 (+444 năm 5): 480,0; 587,3; 648,3; 685,2; 1.147,6"
+      - "NPV = Σ FCFF/(1,14276)^t - 2.100 = +194,9; IRR 17,6%; MIRR 16,3%; PI 1,093"
+      - "Payback thường: lũy kế -1.620; -1.032,7; -384,4; +300,8 -> 3 + 384,4/685,2 = 3,56 năm; DPP: -1.680; -1.230; -795,8; -394,0; +194,9 -> 4,67 năm"
+      - "PMT = 227,28; DSCR năm 1 = (510-30)/227,28 = 2,11; IRR vốn chủ = 22,2%"
+      - "Hòa vốn NPV: doanh thu hụt 6,1% (k*=0,939); P(NPV<0) ≈ 27%"
+    result: "Nên làm có điều kiện: NPV +194,9; biên IRR - WACC chỉ 3,3 điểm; DSCR 2,11; rủi ro 27%."
+
+  - id: "m11_we_irr_trap"
+    name: "Tích hợp: kiểm tra bẫy IRR nhiều nghiệm (mẫu Case 2)"
+    inputs: {cf: [-1000, 2845, -1992], wacc: 0.12}
+    steps:
+      - "Giải 1.992v² - 2.845v + 1.000 = 0 -> r = 24,5% và 60%"
+      - "NPV(12%) = -1.000 + 2.845/1,12 - 1.992/1,12² = -47,83"
+      - "MIRR: TV = 2.845×1,12 = 3.186,4; PV(out) = 1.000 + 1.992/1,2544 = 2.588,01; MIRR = √1,2312 - 1 = 10,96%"
+    result: "Bác bỏ dự án (NPV âm, MIRR 10,96% < 12%) dù Excel báo IRR 24,5%."
+
+  - id: "m11_we_wacc_leverage_curve"
+    name: "Tích hợp: đường WACC theo đòn bẩy có r_d biến thiên (Case 3-4)"
+    inputs: {beta_u: 1.6, Rf: 0.06, ERP: 0.05, tax: 0.2, rd_fixed: 0.08}
+    steps:
+      - "D/E=0: β 1,60 -> r_e 14,00% -> WACC 14,00%"
+      - "D/E=0,25: β 1,92 -> r_e 15,6% -> WACC 13,76%; D/E=0,5: β 2,24 -> 17,2% -> 13,60%; D/E=1: β 2,88 -> 20,4% -> 13,40%; D/E=2: β 4,16 -> 26,8% -> 13,20%"
+      - "Nếu D/E=4 (β_u 0,9): r_d 8% -> WACC 10,10%; r_d 16% -> WACC 15,22%"
+    result: "WACC giảm khi r_d cố định nhưng bùng nổ khi r_d tăng theo rủi ro; luôn mô hình hóa r_d(D/E)."
+
+  - id: "m11_we_valuation_to_price"
+    name: "Tích hợp: DCF S-Green -> giá cổ phiếu -> độ nhạy"
+    inputs: {wacc: 0.0976, g: 0.03, fcff: [10, 17.4, 28.3, 39.62, 51.74], debt: 60, cash: 10, shares: 10}
+    steps:
+      - "ΣPV FCFF = 104,73; TV = 51,74×1,03/(0,0976-0,03) = 788,35; PV TV = 494,88"
+      - "EV = 599,6; Equity = 599,6 - 60 + 10 = 549,6; giá = 54,96"
+      - "Kiểm tra: TV/EV 82,5%; exit multiple 8,0x; EV/EBITDA năm 1 17,1x"
+      - "Độ nhạy: WACC 10,76% -> 46,34; WACC 8,76% -> 66,62; g=2% -> 48,17"
+    result: "54,96 USD/cp, khoảng 46-67 USD theo WACC ±1pp."
+
+  - id: "m11_we_ma_pricing"
+    name: "Tích hợp: giá trần M&A, NPV thương vụ và EPS (Case 12)"
+    inputs: {V_A: 8000, V_B: 200, cost_syn: 8, rev_syn: 12, wacc: 0.10, premium_pct: 0.40, shares_A: 400, price_A: 20, NI_A: 400, NI_B: 10}
+    steps:
+      - "Synergy = 8/0,10 + 12/0,10 = 200; Price_max = 400; chào 280 -> Premium 80"
+      - "NPV = 200 - 80 = +120; break-even: synergy ≥ 80 (40%)"
+      - "Trả cổ phiếu: 14 triệu cp; EPS 0,990 (dilutive -0,97%) -> 1,039 (+3,86%) khi synergy"
+    result: "Thương vụ tạo +120 triệu USD cho Bev-Co; hòa vốn nếu synergy ≥ 40% dự kiến."
+
+  - id: "m11_we_risk_var_mc"
+    name: "Tích hợp: VaR 1/10 ngày, ES và Monte Carlo cho dự án"
+    inputs: {Vp: 10000000, mu: 0.0015, sigma: 0.012}
+    steps:
+      - "VaR95 = 182.400; VaR99 = 264.120; VaR95(10d) = 474.234; ES95 ≈ 232.440"
+      - "Dự án: mô phỏng NPV với k ~ N(1; 10%): P(NPV<0) ≈ 27%, P5 ≈ -333, P95 ≈ +730 (Case 13)"
+    result: "Dự phòng vốn nên dựa trên ES/P5 thay vì chỉ VaR."
+
+  - id: "m11_we_working_capital_growth"
+    name: "Tích hợp: ΔNWC khi tăng trưởng nhanh (Case 8 vs Case 7)"
+    inputs: {S0: 200, C0: 160, S1: 500, C1: 400, days0: [45, 30, 40], days1: [90, 115, 15]}
+    steps:
+      - "NWC0 = 45/365×160 + 30/365×200 - 40/365×160 = 19,7 + 16,4 - 17,5 = 18,6"
+      - "NWC1 = 98,6 + 157,5 - 16,4 = 239,7; ΔNWC = 221,1; NI = 55,2; gap 165,9; sau hạn mức 100 -> 65,9"
+      - "S-Mart đối chiếu: NWC +616,4 -> -1.481,1 giải phóng 2.097,5 tỷ"
+    result: "Cùng một công thức CCC có thể là lợi thế (S-Mart) hoặc bẫy (Home-Pro)."
+
+practice_questions:
+  - q: "Dự án có dòng tiền -1.000; +2.845; -1.992 với WACC 12%. Excel báo IRR 24,5%. Có nên duyệt?"
+    a: "Không. NPV(12%) = -47,83; có hai IRR (24,5% và 60%); MIRR = 10,96% < 12%."
+  - q: "Quán cà phê vay 40%, r_d 11%, T 20%, β_u 0,85, Rf 3,5%, ERP 8%, size 4%. WACC?"
+    a: "β_lh 1,303; r_e 17,93%; WACC 14,28%."
+  - q: "Danh mục 10 triệu USD, μ ngày 0,15%, σ ngày 1,2%. VaR95 1 ngày và 10 ngày?"
+    a: "182.400 USD và 474.234 USD; ES95 ≈ 232.440."
+  - q: "Hợp đồng 120 triệu gồm máy (SSP 100) và bảo trì 3 năm (SSP 50). Doanh thu năm 1 theo IFRS 15?"
+    a: "Máy 80 + 13,33 = 93,33 triệu; deferred 26,67."
+  - q: "Mua Tea-Pro: synergy 200, V_B 200. Trả tối đa? Chào 280 thì NPV và break-even?"
+    a: "Tối đa 400; NPV +120; break-even synergy thực hiện 40% (80/200)."
+  - q: "BAT: T=1.200, F=0,5, r=6%. Lượng rút tối ưu và số lần?"
+    a: "C* = 141,4 triệu; 8,49 lần/năm."
+  - q: "DSCR năm 1 cho vay 840 @11% 5 năm, EBITDA 510, thuế 30?"
+    a: "PMT 227,28; DSCR = 480/227,28 = 2,11."
+  - q: "Công ty có ICR 0,65 và 60% nợ đáo hạn trong 12 tháng. Chẩn đoán?"
+    a: "Lá chắn thuế mất, rủi ro tái cấp vốn; thiếu 1.900; cần tái cấu trúc, bán tài sản, không vay thêm."
+
+checklist:
+  - "□ Dòng tiền là dòng tiền tăng thêm (incremental), đã tính thuế, vốn lưu động và giá trị thanh lý/tiền cọc?"
+  - "□ Tỷ suất chiết khấu là WACC phản ánh rủi ro dự án (không phải lãi vay, không phải lợi suất chung)?"
+  - "□ Đã tính NPV, IRR, MIRR, PI, DPP? Dòng tiền có đổi dấu nhiều lần (nhiều IRR) không?"
+  - "□ Đã stress test doanh thu -10 đến -20% (có tax floor) và tìm điểm hòa vốn NPV?"
+  - "□ Có thể mua quyền chọn (chạy thử, thuê ngắn hạn, chia giai đoạn) trước khi cam kết vốn lớn?"
+  - "□ Tỷ trọng WACC theo giá trị thị trường hoặc cơ cấu mục tiêu?"
+  - "□ r_d có tăng khi tỷ lệ nợ tăng? ICR > 2,5 - 3 lần?"
+  - "□ DSCR từng năm > 1,5? Có quỹ dự phòng trả nợ ≥ 6 tháng?"
+  - "□ Nợ ngắn hạn có đang tài trợ tài sản dài hạn không?"
+  - "□ Đã đo CCC, DIO, DSO, DPO hằng tháng? CCC có tăng khi doanh thu tăng?"
+  - "□ Mỗi lần nới tín dụng/tăng tồn kho đã tính ΔNWC và nguồn tài trợ?"
+  - "□ Có hạn mức tín dụng dự phòng và quỹ tiền mặt đệm?"
+  - "□ Cổ tức/mua lại nằm trong khả năng FCF, không đi vay để trả cổ tức?"
+  - "□ Mua lại chỉ khi giá thấp hơn giá trị nội tại? Chính sách cổ tức linh hoạt khi khủng hoảng?"
+  - "□ Đã xem tương quan giữa tài sản và kiểm tra khi khủng hoảng? Sharpe/Treynor thay vì chỉ lợi suất?"
+  - "□ Đã tính VaR/ES hoặc Monte Carlo cho quyết định lớn?"
+  - "□ Synergy định lượng và chiết khấu; premium < synergy chắc chắn thực hiện; đã đặt giá trần?"
+  - "□ DCF: TV chiếm bao nhiêu % EV? g ≤ tăng trưởng danh nghĩa dài hạn? Đã kiểm tra implied multiple/ROIC?"
+  - "□ Đã lập ma trận độ nhạy WACC - g, trình bày khoảng giá trị?"
+  - "□ Đã kiểm tra tác động IFRS 15/16 tới EBITDA, nợ và so sánh bội số?"
+  - "□ Tài sản = Nợ + Vốn chủ; dòng tiền khớp thay đổi tiền mặt; EBIT = DT - OpEx - KH; FCFF cộng đúng?"
+  - "□ Đã chạy kiểm tra bằng Excel/Python trước khi đưa vào báo cáo?"
+  - "MA TRẬN TỔNG HỢP - 1. Đầu tư (NPV, IRR, MIRR, PI, DPP, Real Options): NPV>0; MIRR>WACC; vẽ đồ thị NPV. IRR ngầm tái đầu tư ở chính IRR và có thể nhiều nghiệm."
+  - "MA TRẬN TỔNG HỢP - 2. Hurdle rate (CAPM, WACC, Hamada): β_u, β_lh, r_e. Nợ hạ WACC chỉ ở mức vừa phải."
+  - "MA TRẬN TỔNG HỢP - 3. Cấu trúc vốn (M&M, Trade-off, Pecking Order): lá chắn thuế T×D, ICR, kiệt quệ; tối ưu ở điểm cân bằng."
+  - "MA TRẬN TỔNG HỢP - 4. Thanh khoản (CCC, EOQ, BAT, Miller-Orr): DIO/DSO/DPO, NWC, Quick; lợi nhuận không phải tiền mặt."
+  - "MA TRẬN TỔNG HỢP - 5. Chi trả (Lintner, buyback): payout ratio, giá mua so nội tại."
+  - "MA TRẬN TỔNG HỢP - 6. Rủi ro-lợi suất (Markowitz, CML/SML, Sharpe, Treynor, Jensen, Fama-French): tương quan, Sharpe; đa dạng hóa hiệu quả khi ρ thấp/âm."
+  - "MA TRẬN TỔNG HỢP - 7. Định giá (DCF FCFF, multiples, synergy): EV, TV/EV, premium vs synergy; TV nhạy g và WACC."
+  - "MA TRẬN TỔNG HỢP - 8. Quản trị rủi ro (VaR, ES, Monte Carlo, stress, DSCR): lượng hóa tổn thất và xác suất để dự phòng."
+  - "TÀI LIỆU THAM KHẢO 1 - Brealey, Myers, Allen: Principles of Corporate Finance (14th ed.)."
+  - "TÀI LIỆU THAM KHẢO 2 - Ross, Westerfield, Jaffe: Corporate Finance (13th ed.)."
+  - "TÀI LIỆU THAM KHẢO 3 - Damodaran: Investment Valuation (3rd ed.), NYU Stern."
+  - "TÀI LIỆU THAM KHẢO 4 - Koller, Goedhart, Wessels (McKinsey): Valuation (7th ed.)."
+  - "TÀI LIỆU THAM KHẢO 5 - CFA Program Curriculum (Levels I-III): Corporate Issuers and Portfolio Management."
+
+excel_google_sheets_templates:
+  - "Sheet Assumptions: Rf, ERP, β_u, size premium, T, D/V, r_d(D/V) -> WACC; ô input màu xanh, tính toán màu trắng."
+  - "Sheet FCFF: =EBIT*(1-T)+KH-CapEx-dNWC; năm cuối thêm thu hồi NWC + cọc + thanh lý*(1-T)."
+  - "Sheet Debt: =-PMT(r,n,L); lãi=DuNo*r; gốc=PMT-lãi; DSCR=(EBITDA-Thuế)/PMT."
+  - "Sheet Valuation: =NPV(WACC,FCFF)+TV/(1+WACC)^n; bảng độ nhạy bằng Data Table hai biến (WACC × g)."
+  - "Sheet Stress: hệ số k doanh thu 100/90/85/80/75%; Goal Seek NPV=0; =MAX(EBIT,0)*T cho tax floor."
+  - "Monte Carlo trong Excel: =NORM.INV(RAND(),1,0.1) cho k, 5.000-20.000 dòng; P(NPV<0)=COUNTIF(<0)/COUNT; PERCENTILE(.,0.05)."
+  - "Sheet VaR: =Vp*(NORM.S.INV(0.95)*sigma*SQRT(T)-mu*T)."
+
+source_file: "11-integrated-corporate-finance-guide.md"

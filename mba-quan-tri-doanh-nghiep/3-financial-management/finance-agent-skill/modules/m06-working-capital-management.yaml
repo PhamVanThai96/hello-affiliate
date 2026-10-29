@@ -1,0 +1,818 @@
+id: "m06"
+name_vi: "Quản lý vốn lưu động"
+name_en: "Working Capital Management"
+purpose: >
+  Quản lý tài sản ngắn hạn và nợ ngắn hạn để doanh nghiệp (DN) luôn đủ thanh khoản cho hoạt động hằng ngày
+  mà không chôn vốn quá mức. Giải quyết bài toán "có lãi nhưng hết tiền" của SME: đo vòng đời tiền mặt (CCC),
+  tính nhu cầu vốn khi tăng trưởng (ΔOWC, funding gap), và tối ưu AR, tồn kho, AP, tiền mặt.
+when_to_use:
+  - "Doanh nghiệp báo lãi nhưng thiếu tiền, trả lương/NCC khó khăn"
+  - "Tính DSO, DIO, DPO, CCC, OWC từ báo cáo tài chính hoặc từ số ngày"
+  - "Dự báo nhu cầu vốn khi tăng trưởng doanh thu (bẫy tăng trưởng, overtrading)"
+  - "Quyết định có lấy/cho chiết khấu thanh toán sớm (2/10 net 30) hay không"
+  - "Thiết lập chính sách tín dụng, AR aging, trích lập dự phòng"
+  - "Tính EOQ, safety stock, reorder point, phân loại ABC"
+  - "Số dư tiền mặt tối ưu (Baumol), dự báo dòng tiền 13 tuần"
+  - "Chọn chính sách tài trợ vốn lưu động (khớp kỳ hạn, mạo hiểm, thận trọng)"
+  - "Đưa ΔOWC vào FCF khi định giá DCF doanh nghiệp tăng trưởng"
+prerequisites: ["m05"]
+related_modules:
+  - "m05: nguồn số liệu (AR, tồn kho, AP, COGS) và các tỷ số thanh khoản Current/Quick Ratio"
+  - "m04: vay ngắn hạn tài trợ tài sản dài hạn là lệch kỳ hạn; đòn bẩy cao cộng WC mỏng là tổ hợp rủi ro (Toys R Us)"
+  - "m10: ΔOWC là một thành phần của FCF trong DCF; bỏ qua sẽ định giá quá cao DN tăng trưởng"
+  - "m01: chi phí năm hóa của chiết khấu thanh toán dùng tư duy lãi suất hiệu dụng"
+  - "m02: đầu tư vốn lưu động là một phần dòng tiền dự án"
+concepts:
+  - term_vi: "Vốn lưu động ròng"
+    term_en: "Net Working Capital (NWC)"
+    definition: "Tài sản ngắn hạn trừ nợ ngắn hạn (CA - CL). Thước đo thanh khoản theo kế toán."
+    why_it_matters: >
+      Trả lời câu hỏi: nếu toàn bộ nợ ngắn hạn đáo hạn cùng lúc thì tài sản ngắn hạn có đủ trả không.
+      Là ảnh chụp tĩnh tại ngày lập bảng cân đối, không cho biết tiền chạy nhanh hay chậm.
+  - term_vi: "Vốn lưu động hoạt động"
+    term_en: "Operating Working Capital (OWC)"
+    definition: "AR + Inventory - AP. Loại tiền mặt và vay ngắn hạn."
+    why_it_matters: >
+      Tiền mặt là kết quả của kinh doanh, vay ngắn hạn là cách tài trợ (quyết định tài chính), không phải hoạt động.
+      Muốn biết mô hình kinh doanh cần chôn bao nhiêu vốn thì chỉ nhìn AR + tồn kho - AP. Đây là con số đi vào FCF.
+  - term_vi: "Vốn lưu động chôn trong hoạt động"
+    term_en: "Cash tied up in operations"
+    definition: "Phần vốn nằm trong hàng tồn kho, tiền khách còn nợ, tiền ứng trước NCC."
+    why_it_matters: "Càng ít vốn bị chôn thì đồng vốn càng hiệu quả, nhưng chôn quá ít thì mất an toàn (hết hàng, trễ trả NCC)."
+  - term_vi: "Chu kỳ chuyển đổi tiền mặt"
+    term_en: "Cash Conversion Cycle (CCC)"
+    definition: "Số ngày DN phải tự tài trợ = DSO + DIO - DPO."
+    why_it_matters: >
+      Verlyn Richards và Eugene Laughlin (1980) đề xuất như thước đo động, thay cho các tỷ số tĩnh như Current Ratio
+      (có từ thực hành cho vay ngân hàng Mỹ cuối thế kỷ 19). Câu hỏi quản trị chuyển từ "ta có bao nhiêu tài sản ngắn hạn"
+      sang "tiền của ta bị giam bao lâu". DIO+DSO là thời gian tiền bị giam, DPO là thời gian dùng tiền của người khác nên trừ đi.
+  - term_vi: "CCC âm"
+    term_en: "Negative CCC"
+    definition: "Thu tiền khách trước khi trả NCC; NCC và khách tài trợ cho DN."
+    why_it_matters: "Lợi thế cạnh tranh cấu trúc (Amazon, Costco, Dell): vốn lưu động miễn phí, ROIC cao, tự tài trợ tăng trưởng. Là kết quả của đổi mới mô hình kinh doanh."
+  - term_vi: "Bẫy tăng trưởng / Overtrading"
+    term_en: "Growth trap / Overtrading"
+    definition: "Doanh thu tăng nhanh hơn mức vốn lưu động DN tài trợ được: lãi sổ sách nhưng cạn tiền."
+    why_it_matters: "Lợi nhuận ghi nhận khi bán, không phải khi thu tiền; tăng trưởng làm OWC phình ra. Dấu hiệu: vay nóng, trả NCC trễ, mất uy tín."
+  - term_vi: "Vốn lưu động thường xuyên và tạm thời"
+    term_en: "Permanent vs Temporary (Seasonal) Working Capital"
+    definition: "Thường xuyên: mức tối thiểu luôn cần dù mùa thấp (tồn kho tối thiểu, AR bình quân). Tạm thời: phần tăng thêm mùa cao điểm (Tết, du lịch)."
+    why_it_matters: "Là cơ sở chọn nguồn tài trợ theo nguyên tắc khớp kỳ hạn."
+  - term_vi: "Nguyên tắc khớp kỳ hạn"
+    term_en: "Matching Principle"
+    definition: "Tài sản dài hạn và WC thường xuyên tài trợ bằng nguồn dài hạn; WC tạm thời bằng nguồn ngắn hạn."
+    why_it_matters: "Dùng vay ngắn hạn nuôi nhu cầu dài hạn buộc phải đảo nợ liên tục, vỡ khi ngân hàng siết tín dụng (lệch kỳ hạn)."
+  - term_vi: "Ba chính sách tài trợ vốn lưu động"
+    term_en: "Matching / Aggressive / Conservative financing policy"
+    definition: "Khớp kỳ hạn (rủi ro, chi phí trung bình); mạo hiểm (vay ngắn hạn cả một phần WC thường xuyên: rủi ro đảo nợ cao, chi phí thấp); thận trọng (vốn dài hạn cả WC tạm thời, giữ nhiều tiền: rủi ro thấp, chi phí cao)."
+    why_it_matters: "Đánh đổi rủi ro thanh khoản và chi phí lãi; phổ chiến lược aggressive đến conservative quyết định NWC thấp hay cao."
+  - term_vi: "Chính sách tín dụng"
+    term_en: "Credit Policy"
+    definition: "Gồm Credit Standards (ai được mua chịu), Credit Terms (kỳ hạn, chiết khấu), Collection Policy (thu hồi)."
+    why_it_matters: "Bán chịu tăng doanh thu nhưng tạo AR chiếm vốn và rủi ro nợ xấu; chính sách tìm điểm cân bằng: đúng khách, đúng kỳ hạn, thu đúng hạn."
+  - term_vi: "5C của tín dụng"
+    term_en: "5C of Credit"
+    definition: "Character (uy tín), Capacity (khả năng trả), Capital (vốn), Collateral (tài sản đảm bảo), Conditions (điều kiện kinh tế/ngành)."
+    why_it_matters: "Khung chuẩn đánh giá khách trước khi cấp hạn mức; phân nhóm chính sách theo chất lượng tín dụng."
+  - term_vi: "Điều khoản chiết khấu thanh toán"
+    term_en: "Cash discount terms (2/10, net 30)"
+    definition: "Giảm 2% nếu trả trong 10 ngày, nếu không phải trả đủ trong 30 ngày."
+    why_it_matters: "Bỏ lỡ chiết khấu thực chất là vay với lãi rất cao (37% đơn giản, 44,6% hiệu dụng); khi bạn là bên bán thì đó là giá đắt để thu tiền sớm."
+  - term_vi: "Bảng tuổi nợ"
+    term_en: "AR Aging Schedule"
+    definition: "Phân loại AR theo tuổi: 0-30, 31-60, 61-90, >90 ngày."
+    why_it_matters: "Cùng tổng AR nhưng cơ cấu tuổi nợ khác nhau cho rủi ro khác hẳn; xác suất thu hồi giảm mạnh theo tuổi nợ. Hành động: bình thường, nhắc nhở, gọi cảnh báo, pháp lý/trích dự phòng."
+  - term_vi: "Chi phí đặt hàng và chi phí lưu kho"
+    term_en: "Ordering cost (S) and Holding cost (H)"
+    definition: "S: phí mỗi lần đặt (vận chuyển, nhân công, thủ tục). H: chi phí giữ 1 đơn vị trong 1 năm (vốn bị giam, thuê kho, hư hỏng, lỗi thời, bảo hiểm), thường 15-30% giá trị hàng/năm."
+    why_it_matters: "Hai chi phí kéo ngược chiều: đặt ít lần thì S thấp nhưng H cao. EOQ (Ford W. Harris, 1913) là điểm tổng chi phí nhỏ nhất."
+  - term_vi: "Phân tích ABC"
+    term_en: "ABC Analysis"
+    definition: "A: khoảng 80% giá trị, khoảng 20% mặt hàng; B trung gian; C phần còn lại."
+    why_it_matters: "Dựa nguyên lý Pareto (1896), ứng dụng quản lý tồn kho tại General Electric đầu thập niên 1950; dồn nguồn lực quản lý cho nhóm A."
+  - term_vi: "Just-In-Time"
+    term_en: "JIT"
+    definition: "Tồn kho tối thiểu, đặt hàng khi có nhu cầu (Taiichi Ohno, Toyota 1950-1970)."
+    why_it_matters: "Giảm DIO mạnh nhưng dễ tổn thương trước cú sốc chuỗi cung ứng (COVID-19); cần safety stock cho mặt hàng trọng yếu."
+  - term_vi: "Tồn kho an toàn và điểm đặt hàng lại"
+    term_en: "Safety Stock and Reorder Point"
+    definition: "SS là đệm cho biến động nhu cầu trong lead time; ROP là mức tồn kho kích hoạt đặt hàng."
+    why_it_matters: "EOQ chỉ cho biết đặt bao nhiêu, chưa cho biết đặt khi nào; chờ hết hàng mới đặt sẽ đứt hàng."
+  - term_vi: "Bốn động cơ giữ tiền mặt"
+    term_en: "Cash motives"
+    definition: "Giao dịch (lương, NCC); dự phòng (chi bất ngờ); đầu cơ (nắm cơ hội, chiết khấu); số dư bù trừ (ngân hàng yêu cầu khi cấp hạn mức)."
+    why_it_matters: "Tiền mặt không sinh lời nên giữ nhiều là lãi; giữ ít thì không trả được lương, NCC. Cần mức tối ưu."
+  - term_vi: "Mô hình Baumol và Miller-Orr"
+    term_en: "Baumol (1952) and Miller-Orr (1966) cash models"
+    definition: "Baumol: dùng logic EOQ cho tiền mặt (phí chuyển đổi F như chi phí đặt hàng, lãi r như chi phí lưu kho), giả định dòng chi ổn định. Miller-Orr mở rộng cho dòng tiền ngẫu nhiên (nguồn chỉ nhắc tên, không có công thức)."
+    why_it_matters: "Cho SME biết rút/chuyển đổi bao nhiêu mỗi lần để cân bằng phí giao dịch và lãi mất đi."
+  - term_vi: "Đòn bẩy tối ưu vốn lưu động"
+    term_en: "WC optimization levers"
+    definition: "Giảm DSO (xuất hóa đơn ngay, kiểm tra tín dụng, nhắc nợ tự động, factoring), giảm DIO (ABC, dự báo, JIT, xả hàng chậm, ký gửi/VMI), tăng DPO (đàm phán kỳ hạn, supply chain financing, nhưng giữ quan hệ NCC), giảm tiền nằm không (cash pooling, sweep account, dự báo dòng tiền, hạn mức dự phòng)."
+    why_it_matters: "Mỗi ngày CCC cắt đi giải phóng một lượng vốn bằng doanh thu (hoặc COGS) bình quân 1 ngày."
+formulas:
+  - id: "m06_nwc"
+    name_vi: "Vốn lưu động ròng"
+    name_en: "Net Working Capital"
+    expression_latex: 'NWC = CA - CL = (Cash + AR + Inventory + Prepaid) - (AP + Accrued + STDebt)'
+    expression_python: "CA - CL"
+    excel: "=CA-CL"
+    variables:
+      - {symbol: "CA", meaning: "Tài sản ngắn hạn", unit: "VNĐ"}
+      - {symbol: "CL", meaning: "Nợ ngắn hạn", unit: "VNĐ"}
+    when_to_use: "Đánh giá thanh khoản kế toán nhanh tại một thời điểm."
+    why_it_works: "Nếu mọi nợ ngắn hạn đáo hạn, phần tài sản ngắn hạn dư ra là đệm an toàn."
+    assumptions: ["Tài sản ngắn hạn có thể chuyển thành tiền theo giá sổ sách"]
+    pitfalls: ["Tồn kho lỗi thời hoặc AR khó đòi làm giá trị thực thấp hơn sổ sách", "NWC dương lớn không có nghĩa hiệu quả: có thể chôn vốn quá mức"]
+    interpretation: "NWC dương: có đệm thanh khoản. NWC âm có thể nguy hiểm, trừ mô hình thu tiền trước (bán lẻ thực phẩm, Amazon)."
+    example:
+      inputs: {CA: 8000, CL: 5000}
+      steps: ["NWC = 8000 - 5000 = 3000 triệu"]
+      result: "3000"
+  - id: "m06_owc"
+    name_vi: "Vốn lưu động hoạt động"
+    name_en: "Operating Working Capital"
+    expression_latex: 'OWC = AR + Inventory - AP'
+    expression_python: "AR + Inventory - AP"
+    excel: "=AR+Inventory-AP"
+    variables:
+      - {symbol: "AR", meaning: "Khoản phải thu", unit: "VNĐ"}
+      - {symbol: "Inventory", meaning: "Hàng tồn kho", unit: "VNĐ"}
+      - {symbol: "AP", meaning: "Khoản phải trả NCC", unit: "VNĐ"}
+    when_to_use: "Đo vốn mô hình kinh doanh cần chôn; đầu vào cho ΔOWC, FCF, OWC/doanh thu."
+    why_it_works: "Loại tiền mặt (kết quả) và vay ngắn hạn (cách tài trợ), chỉ giữ chu trình mua-bán-thu."
+    assumptions: ["Prepaid và accrued bỏ qua cho đơn giản (nguồn dùng AR + Inv - AP)"]
+    pitfalls: ["Nhầm OWC với NWC kế toán"]
+    interpretation: "Càng thấp so với doanh thu thì vốn chôn càng ít; âm nghĩa là NCC tài trợ ròng."
+    example:
+      inputs: {AR: 1500, Inventory: 1800, AP: 900}
+      steps: ["OWC = 1500 + 1800 - 900 = 2400 triệu"]
+      result: "2400"
+  - id: "m06_delta_owc"
+    name_vi: "Thay đổi vốn lưu động hoạt động"
+    name_en: "Change in OWC"
+    expression_latex: '\Delta OWC = OWC_{end} - OWC_{begin}'
+    expression_python: "OWC_end - OWC_begin"
+    excel: "=OWC_t-OWC_t1"
+    variables:
+      - {symbol: "OWC_end", meaning: "OWC cuối kỳ", unit: "VNĐ"}
+      - {symbol: "OWC_begin", meaning: "OWC đầu kỳ", unit: "VNĐ"}
+    when_to_use: "Tính tiền bị giam/giải phóng khi doanh thu đổi; đầu vào FCF và funding gap."
+    why_it_works: "Lợi nhuận ghi nhận khi bán, không khi thu tiền; phần OWC tăng thêm là tiền đã bỏ ra nhưng chưa về."
+    assumptions: []
+    pitfalls: ["Quên dấu: ΔOWC dương làm tiền GIẢM"]
+    interpretation: "ΔOWC > 0: tiền mặt giảm (bị giam thêm). ΔOWC < 0: tiền được giải phóng."
+    example:
+      inputs: {OWC_end: 8569.3, OWC_begin: 6591.8}
+      steps: ["ΔOWC = 8569,3 - 6591,8 = 1977,5 triệu"]
+      result: "1977.5"
+  - id: "m06_fcf"
+    name_vi: "Dòng tiền tự do có tính vốn lưu động"
+    name_en: "Free Cash Flow"
+    expression_latex: 'FCF = EBIT(1-T) + Depreciation - CAPEX - \Delta OWC'
+    expression_python: "EBIT*(1-T) + Depreciation - CAPEX - dOWC"
+    excel: "=EBIT*(1-T)+Dep-CAPEX-dOWC"
+    variables:
+      - {symbol: "EBIT", meaning: "Lợi nhuận trước lãi vay và thuế", unit: "VNĐ"}
+      - {symbol: "T", meaning: "Thuế suất", unit: "tỷ lệ"}
+      - {symbol: "Depreciation", meaning: "Khấu hao", unit: "VNĐ"}
+      - {symbol: "CAPEX", meaning: "Chi đầu tư tài sản cố định", unit: "VNĐ"}
+      - {symbol: "dOWC", meaning: "Thay đổi OWC", unit: "VNĐ"}
+    when_to_use: "Định giá DCF (m10) và đánh giá dự án (m02) với DN tăng trưởng."
+    why_it_works: "Mỗi đồng ΔOWC tăng thêm là một đồng trừ thẳng khỏi tiền tự do."
+    assumptions: ["Thuế suất không đổi", "Nguồn lấy T là thuế suất biên"]
+    pitfalls: ["Bỏ qua ΔOWC làm định giá quá cao DN tăng trưởng nhanh"]
+    interpretation: "FCF âm dù lãi dương là dấu hiệu bẫy tăng trưởng."
+    example:
+      inputs: {EBIT: 2000, T: 0.2, Depreciation: 300, CAPEX: 500, dOWC: 760}
+      steps: ["EBIT(1-T) = 1600", "FCF = 1600 + 300 - 500 - 760 = 640"]
+      result: "640"
+  - id: "m06_owc_pct"
+    name_vi: "Tỷ lệ OWC trên doanh thu"
+    name_en: "OWC to Revenue"
+    expression_latex: '\frac{OWC}{Revenue}'
+    expression_python: "OWC / Revenue"
+    excel: "=OWC/(Doanh_thu_thang*12)"
+    variables:
+      - {symbol: "OWC", meaning: "Vốn lưu động hoạt động", unit: "VNĐ"}
+      - {symbol: "Revenue", meaning: "Doanh thu năm", unit: "VNĐ"}
+    when_to_use: "Cho biết mỗi 100 đồng doanh thu cần chôn bao nhiêu vốn; dùng ước ΔOWC khi tăng trưởng."
+    why_it_works: "Nếu OWC tỷ lệ với doanh thu thì ΔOWC = tỷ lệ x Δdoanh thu."
+    assumptions: ["Tỷ lệ không đổi khi quy mô tăng"]
+    pitfalls: ["Hàng tồn và AP không luôn tăng tuyến tính"]
+    interpretation: "Bình Minh 27,5% là cao; tối ưu xuống 16,8%."
+    example:
+      inputs: {OWC: 6591.8, Revenue: 24000}
+      steps: ["6591,8 / 24000 = 0,2747"]
+      result: "0.2747"
+  - id: "m06_funding_gap"
+    name_vi: "Khoảng trống tài trợ"
+    name_en: "Funding gap"
+    expression_latex: 'Gap = \Delta OWC - RetainedEarnings'
+    expression_python: "dOWC - RetainedEarnings"
+    excel: "=dOWC-LoiNhuanGiuLai"
+    variables:
+      - {symbol: "dOWC", meaning: "Thay đổi OWC", unit: "VNĐ"}
+      - {symbol: "RetainedEarnings", meaning: "Lợi nhuận giữ lại", unit: "VNĐ"}
+    when_to_use: "Cảnh báo sớm overtrading trước khi ký hợp đồng tăng trưởng."
+    why_it_works: "Lợi nhuận giữ lại là nguồn nội bộ nuôi vốn lưu động; phần thiếu phải vay/góp vốn."
+    assumptions: ["Chưa tính CAPEX mới", "Giả định toàn bộ lợi nhuận giữ lại (nếu chia cổ tức phải trừ)"]
+    pitfalls: ["Bỏ qua đầu tư tài sản cố định đi kèm làm gap thực lớn hơn"]
+    interpretation: "Gap > 0: phải vay thêm; chi phí lãi = Gap x lãi suất. Gap < 0: tăng trưởng tự tài trợ được."
+    example:
+      inputs: {dOWC: 1977.5, RetainedEarnings: 1248}
+      steps: ["Gap = 1977,5 - 1248 = 729,5 triệu", "Lãi 11% = 80,2 triệu/năm"]
+      result: "729.5"
+  - id: "m06_dso"
+    name_vi: "Số ngày thu tiền bình quân"
+    name_en: "Days Sales Outstanding"
+    expression_latex: 'DSO = \frac{AR}{Revenue} \times 365'
+    expression_python: "AR / Revenue * 365"
+    excel: "=AR/Doanh_thu*365"
+    variables:
+      - {symbol: "AR", meaning: "Khoản phải thu (bình quân hoặc cuối kỳ)", unit: "VNĐ"}
+      - {symbol: "Revenue", meaning: "Doanh thu", unit: "VNĐ"}
+    when_to_use: "Đo tốc độ thu tiền khách."
+    why_it_works: "AR ghi theo giá bán nên mẫu số là doanh thu; AR/Revenue là phần năm doanh thu còn treo."
+    assumptions: ["Doanh thu đều trong năm (dùng 30 nếu số liệu tháng)", "Toàn bộ doanh thu là bán chịu"]
+    pitfalls: ["Trộn mẫu số COGS vào DSO", "Doanh thu mùa vụ làm DSO nhiễu", "Dùng số cuối kỳ khi doanh thu tăng nhanh"]
+    interpretation: "So với kỳ hạn cho phép và ngành (B2B VN khoảng 30-60). DSO vượt kỳ hạn nghĩa là khách trả chậm."
+    example:
+      inputs: {AR: 1500, Revenue: 12000}
+      steps: ["1500/12000 x 365 = 45,6 ngày"]
+      result: "45.6"
+  - id: "m06_dio"
+    name_vi: "Số ngày tồn kho"
+    name_en: "Days Inventory Outstanding"
+    expression_latex: 'DIO = \frac{Inventory}{COGS} \times 365'
+    expression_python: "Inventory / COGS * 365"
+    excel: "=Ton_kho/COGS*365"
+    variables:
+      - {symbol: "Inventory", meaning: "Hàng tồn kho", unit: "VNĐ"}
+      - {symbol: "COGS", meaning: "Giá vốn hàng bán", unit: "VNĐ"}
+    when_to_use: "Đo hàng nằm kho bao lâu."
+    why_it_works: "Tồn kho ghi theo giá mua nên chia cho COGS."
+    assumptions: ["COGS đều trong năm"]
+    pitfalls: ["Dùng doanh thu thay COGS"]
+    interpretation: "DIO cao: chôn vốn, rủi ro lỗi thời; quá thấp: nguy cơ đứt hàng."
+    example:
+      inputs: {Inventory: 1800, COGS: 9000}
+      steps: ["1800/9000 x 365 = 73 ngày"]
+      result: "73.0"
+  - id: "m06_dpo"
+    name_vi: "Số ngày trả NCC"
+    name_en: "Days Payable Outstanding"
+    expression_latex: 'DPO = \frac{AP}{COGS} \times 365'
+    expression_python: "AP / COGS * 365"
+    excel: "=AP/COGS*365"
+    variables:
+      - {symbol: "AP", meaning: "Khoản phải trả NCC", unit: "VNĐ"}
+      - {symbol: "COGS", meaning: "Giá vốn hàng bán", unit: "VNĐ"}
+    when_to_use: "Đo thời gian dùng vốn của NCC."
+    why_it_works: "AP ghi theo giá mua nên mẫu số là COGS."
+    assumptions: ["Toàn bộ mua hàng là mua chịu"]
+    pitfalls: ["Kéo DPO quá mức mất chiết khấu và hỏng quan hệ NCC"]
+    interpretation: "DPO cao tốt cho tiền mặt nhưng phải trong kỳ hạn thỏa thuận."
+    example:
+      inputs: {AP: 900, COGS: 9000}
+      steps: ["900/9000 x 365 = 36,5 ngày"]
+      result: "36.5"
+  - id: "m06_ccc"
+    name_vi: "Chu kỳ chuyển đổi tiền mặt"
+    name_en: "Cash Conversion Cycle"
+    expression_latex: 'CCC = DSO + DIO - DPO'
+    expression_python: "DSO + DIO - DPO"
+    excel: "=DSO+DIO-DPO"
+    variables:
+      - {symbol: "DSO", meaning: "Số ngày thu tiền", unit: "ngày"}
+      - {symbol: "DIO", meaning: "Số ngày tồn kho", unit: "ngày"}
+      - {symbol: "DPO", meaning: "Số ngày trả NCC", unit: "ngày"}
+    when_to_use: "Thước đo động tốc độ vòng quay tiền; so sánh ngành/đối thủ/theo kỳ."
+    why_it_works: "Tiền ra ngày trả NCC (DPO), tiền vào ngày DIO + DSO; khoảng trống giữa hai mốc là số ngày tự tài trợ."
+    assumptions: ["Ba chỉ số cùng cơ sở số ngày (365 hoặc 30)", "Chu trình mua - tồn - bán - thu tuần tự"]
+    pitfalls: ["Trộn mẫu số doanh thu và COGS", "Áp benchmark ngành máy móc", "DPO giảm khi NCC rút tài trợ làm CCC tăng đúng lúc DN yếu"]
+    interpretation: "Càng ngắn càng tốt, âm là lợi thế. Mỗi ngày CCC tương ứng khoảng COGS/365 (hoặc doanh thu/365) vốn."
+    example:
+      inputs: {DSO: 40, DIO: 55, DPO: 35}
+      steps: ["CCC = 40 + 55 - 35 = 60 ngày"]
+      result: "60"
+  - id: "m06_wc_from_days"
+    name_vi: "Suy AR, tồn kho, AP từ số ngày"
+    name_en: "Balances from days metrics"
+    expression_latex: 'AR = \frac{Revenue \cdot DSO}{365};\; Inv = \frac{COGS \cdot DIO}{365};\; AP = \frac{COGS \cdot DPO}{365}'
+    expression_python: "(Revenue*DSO/365, COGS*DIO/365, COGS*DPO/365)"
+    excel: "=Doanh_thu*DSO/365"
+    variables:
+      - {symbol: "Revenue", meaning: "Doanh thu dự báo", unit: "VNĐ"}
+      - {symbol: "COGS", meaning: "Giá vốn dự báo", unit: "VNĐ"}
+      - {symbol: "DSO", meaning: "Số ngày thu tiền", unit: "ngày"}
+      - {symbol: "DIO", meaning: "Số ngày tồn kho", unit: "ngày"}
+      - {symbol: "DPO", meaning: "Số ngày trả NCC", unit: "ngày"}
+    when_to_use: "Dự báo OWC kịch bản tăng trưởng hoặc kịch bản mục tiêu."
+    why_it_works: "Đảo công thức DSO/DIO/DPO."
+    assumptions: ["Số ngày giữ nguyên hoặc theo mục tiêu"]
+    pitfalls: ["Quên COGS tăng theo doanh thu (biên gộp không đổi)"]
+    interpretation: "Một ngày DSO = Revenue/365 tiền; một ngày DIO hoặc DPO = COGS/365."
+    example:
+      inputs: {Revenue: 24000, COGS: 18000, DSO: 65, DIO: 75, DPO: 28}
+      steps: ["AR = 4273,97", "Inv = 3698,63", "AP = 1380,82", "OWC = 6591,78"]
+      result: "(4273.97, 3698.63, 1380.82)"
+  - id: "m06_turnover"
+    name_vi: "Vòng quay AR, tồn kho, AP"
+    name_en: "AR / Inventory / AP turnover"
+    expression_latex: 'T_{AR}=\frac{Revenue}{AR};\; T_{Inv}=\frac{COGS}{Inventory};\; T_{AP}=\frac{COGS}{AP}'
+    expression_python: "(Revenue/AR, COGS/Inventory, COGS/AP)"
+    excel: "=Doanh_thu/AR"
+    variables:
+      - {symbol: "Revenue", meaning: "Doanh thu", unit: "VNĐ"}
+      - {symbol: "COGS", meaning: "Giá vốn", unit: "VNĐ"}
+      - {symbol: "AR", meaning: "Phải thu", unit: "VNĐ"}
+      - {symbol: "Inventory", meaning: "Tồn kho", unit: "VNĐ"}
+      - {symbol: "AP", meaning: "Phải trả", unit: "VNĐ"}
+    when_to_use: "Dạng vòng/năm của DSO, DIO, DPO (turnover = 365/số ngày)."
+    why_it_works: "Số vòng một khoản mục quay trong năm; nghịch đảo của số ngày."
+    assumptions: ["Cùng cơ sở thời gian"]
+    pitfalls: ["Lẫn mẫu số"]
+    interpretation: "Vòng quay cao: vốn xoay nhanh."
+    example:
+      inputs: {Revenue: 24000, COGS: 18000, AR: 4274.0, Inventory: 3698.6, AP: 1380.8}
+      steps: ["AR 5,62", "Inv 4,87", "AP 13,04"]
+      result: "(5.62, 4.87, 13.04)"
+  - id: "m06_discount_cost"
+    name_vi: "Chi phí năm hóa của bỏ lỡ chiết khấu (đơn giản)"
+    name_en: "Annualized cost of forgone cash discount (simple)"
+    expression_latex: 'k = \frac{d}{1-d} \times \frac{365}{N-n}'
+    expression_python: "d/(1-d) * 365/(N-n)"
+    excel: "=d/(1-d)*365/(N-n)"
+    variables:
+      - {symbol: "d", meaning: "Tỷ lệ chiết khấu (0,02 = 2%)", unit: "tỷ lệ"}
+      - {symbol: "N", meaning: "Kỳ hạn thanh toán đầy đủ (net)", unit: "ngày"}
+      - {symbol: "n", meaning: "Số ngày để được chiết khấu", unit: "ngày"}
+    when_to_use: "Quyết định lấy/không lấy chiết khấu, trả sớm hay chậm."
+    why_it_works: >
+      Không lấy chiết khấu = vay (1-d) đồng trong (N-n) ngày và trả 1 đồng, lãi d/(1-d) cho mỗi kỳ ngắn;
+      nhân 365/(N-n) số kỳ trong năm.
+    assumptions: ["Lãi đơn, không kép", "Trả đúng ngày N, không trễ thêm"]
+    pitfalls: ["Trả trễ sau ngày N làm chi phí thực thấp giả tạo nhưng mất uy tín", "Nhầm d/(1-d) thành d"]
+    interpretation: "So với lãi vay: nếu k > lãi vay thì nên lấy chiết khấu (ngay cả phải vay). Chiều bán: nếu k > chi phí vốn của bạn thì chiết khấu là cách thu tiền đắt."
+    example:
+      inputs: {d: 0.02, N: 30, n: 10}
+      steps: ["0,02/0,98 = 0,020408", "365/20 = 18,25", "k = 0,3724"]
+      result: "0.3724"
+  - id: "m06_discount_ear"
+    name_vi: "Chi phí hiệu dụng năm của bỏ lỡ chiết khấu"
+    name_en: "Effective annual cost of forgone discount"
+    expression_latex: 'EAR = \left(1+\frac{d}{1-d}\right)^{365/(N-n)} - 1'
+    expression_python: "(1 + d/(1-d))**(365/(N-n)) - 1"
+    excel: "=(1+d/(1-d))^(365/(N-n))-1"
+    variables:
+      - {symbol: "d", meaning: "Tỷ lệ chiết khấu", unit: "tỷ lệ"}
+      - {symbol: "N", meaning: "Kỳ hạn đầy đủ", unit: "ngày"}
+      - {symbol: "n", meaning: "Kỳ hạn chiết khấu", unit: "ngày"}
+    when_to_use: "Khi muốn so sánh theo lãi kép (EAR)."
+    why_it_works: "Vay lặp lại nhiều kỳ trong năm, lãi tính lãi."
+    assumptions: ["Có thể lặp lại việc vay đều đặn mỗi kỳ"]
+    pitfalls: ["Dùng EAR để so với lãi vay danh nghĩa không cùng cơ sở"]
+    interpretation: "Với 2/10 net 30: 44,6%/năm."
+    example:
+      inputs: {d: 0.02, N: 30, n: 10}
+      steps: ["(1,020408)^18,25 - 1 = 0,4459"]
+      result: "0.4459"
+  - id: "m06_discount_net_benefit"
+    name_vi: "Lợi ròng khi lấy chiết khấu NCC"
+    name_en: "Net benefit of taking supplier discount"
+    expression_latex: 'Benefit = d \cdot P - P(1-d)\frac{N-n}{365} r'
+    expression_python: "d*P - P*(1-d)*(N-n)/365*r"
+    excel: "=d*P-P*(1-d)*(N-n)/365*r"
+    variables:
+      - {symbol: "P", meaning: "Giá trị mua hằng năm từ NCC", unit: "VNĐ"}
+      - {symbol: "d", meaning: "Tỷ lệ chiết khấu", unit: "tỷ lệ"}
+      - {symbol: "N", meaning: "Kỳ hạn đầy đủ", unit: "ngày"}
+      - {symbol: "n", meaning: "Kỳ hạn chiết khấu", unit: "ngày"}
+      - {symbol: "r", meaning: "Lãi vay", unit: "tỷ lệ/năm"}
+    when_to_use: "Lượng hóa bằng tiền khi quyết định có lấy chiết khấu (Bình Minh, NCC A)."
+    why_it_works: "Tiết kiệm d x P so với lãi vay phải trả cho khoản trả sớm (N-n) ngày."
+    assumptions: ["Mua đều trong năm, vay được ở lãi r"]
+    pitfalls: ["Quên vốn trả sớm là P(1-d)"]
+    interpretation: "Dương: nên lấy."
+    example:
+      inputs: {P: 6000, d: 0.02, N: 30, n: 10, r: 0.11}
+      steps: ["Tiết kiệm 120", "Lãi vốn trả sớm 6000x0,98x20/365x0,11 = 35,44", "Ròng 84,56"]
+      result: "84.56"
+  - id: "m06_eoq"
+    name_vi: "Lượng đặt hàng kinh tế"
+    name_en: "Economic Order Quantity"
+    expression_latex: 'EOQ = \sqrt{\frac{2DS}{H}}'
+    expression_python: "(2*D*S/H)**0.5"
+    excel: "=SQRT(2*D*S/H)"
+    variables:
+      - {symbol: "D", meaning: "Nhu cầu hằng năm", unit: "đơn vị/năm"}
+      - {symbol: "S", meaning: "Chi phí mỗi lần đặt hàng", unit: "VNĐ/lần"}
+      - {symbol: "H", meaning: "Chi phí lưu kho 1 đơn vị/năm", unit: "VNĐ/đơn vị/năm"}
+    when_to_use: "Xác định cỡ lô đặt hàng cho hàng nhu cầu ổn định (nhóm A)."
+    why_it_works: "Tổng chi phí TC(Q) = (D/Q)S + (Q/2)H; đạo hàm bằng 0 tại điểm hai thành phần bằng nhau (Harris 1913)."
+    assumptions: ["Nhu cầu ổn định", "Giá không đổi theo số lượng (không chiết khấu số lượng)", "Lead time cố định"]
+    pitfalls: ["Lệ thuộc ước lượng S và H; nhu cầu biến động cần safety stock", "Nhập lô lớn vì giá tốt mà quên H"]
+    interpretation: "Số lần đặt = D/EOQ; chu kỳ = 365/số lần. Tại EOQ chi phí đặt = chi phí lưu kho."
+    example:
+      inputs: {D: 10000, S: 500000, H: 50000}
+      steps: ["2x10000x500000/50000 = 200000", "EOQ = 447,2", "Số lần đặt = 22,4, chu kỳ 16,3 ngày"]
+      result: "447.2"
+  - id: "m06_inventory_tc"
+    name_vi: "Tổng chi phí tồn kho"
+    name_en: "Total inventory cost"
+    expression_latex: 'TC(Q) = \frac{D}{Q}S + \frac{Q}{2}H'
+    expression_python: "D/Q*S + Q/2*H"
+    excel: "=D/Q*S+Q/2*H"
+    variables:
+      - {symbol: "D", meaning: "Nhu cầu năm", unit: "đơn vị"}
+      - {symbol: "Q", meaning: "Cỡ lô", unit: "đơn vị"}
+      - {symbol: "S", meaning: "Chi phí đặt", unit: "VNĐ"}
+      - {symbol: "H", meaning: "Chi phí lưu kho", unit: "VNĐ"}
+    when_to_use: "So sánh cỡ lô hiện tại với EOQ, lượng hóa lợi ích."
+    why_it_works: "Tồn kho bình quân là Q/2; số lần đặt là D/Q."
+    assumptions: ["Như EOQ"]
+    pitfalls: ["Bỏ qua chi phí vốn trong H"]
+    interpretation: "Tại Q=EOQ hai hạng tử bằng nhau và TC nhỏ nhất."
+    example:
+      inputs: {D: 12000, Q: 894.43, S: 400000, H: 12000}
+      steps: ["Chi phí đặt = 5,367 triệu", "Chi phí lưu kho = 5,367 triệu", "TC = 10,73 triệu"]
+      result: "10733126"
+  - id: "m06_safety_stock"
+    name_vi: "Tồn kho an toàn"
+    name_en: "Safety Stock"
+    expression_latex: 'SS = z \cdot \sigma_d \cdot \sqrt{L}'
+    expression_python: "z*sigma_d*L**0.5"
+    excel: "=z*sigma_d*SQRT(L)"
+    variables:
+      - {symbol: "z", meaning: "Hệ số mức phục vụ (1,65 cho 95%, 2,33 cho 99%)", unit: "không đơn vị"}
+      - {symbol: "sigma_d", meaning: "Độ lệch chuẩn nhu cầu theo ngày", unit: "đơn vị/ngày"}
+      - {symbol: "L", meaning: "Thời gian giao hàng", unit: "ngày"}
+    when_to_use: "Nhu cầu bất định trong thời gian chờ giao."
+    why_it_works: "Độ lệch chuẩn nhu cầu qua L ngày độc lập là sigma_d nhân căn L."
+    assumptions: ["Nhu cầu ngày độc lập, phân phối chuẩn", "Lead time cố định"]
+    pitfalls: ["Bỏ qua biến động lead time", "Nhu cầu tự tương quan (mùa vụ) làm đánh giá thấp"]
+    interpretation: "Tăng mức phục vụ 95 lên 99 tăng SS khoảng 41%."
+    example:
+      inputs: {z: 1.65, sigma_d: 8, L: 10}
+      steps: ["SS = 1,65 x 8 x 3,1623 = 41,74"]
+      result: "41.7"
+  - id: "m06_rop"
+    name_vi: "Điểm đặt hàng lại"
+    name_en: "Reorder Point"
+    expression_latex: 'ROP = d \cdot L + SS'
+    expression_python: "d*L + SS"
+    excel: "=d*L+SS"
+    variables:
+      - {symbol: "d", meaning: "Nhu cầu bình quân ngày", unit: "đơn vị/ngày"}
+      - {symbol: "L", meaning: "Lead time", unit: "ngày"}
+      - {symbol: "SS", meaning: "Tồn kho an toàn", unit: "đơn vị"}
+    when_to_use: "Tự động hóa thời điểm đặt hàng."
+    why_it_works: "Đủ bán trong lead time cộng lớp đệm."
+    assumptions: ["d ổn định"]
+    pitfalls: ["Dùng d trung bình trong mùa cao điểm"]
+    interpretation: "Khi tồn kho chạm ROP thì đặt EOQ."
+    example:
+      inputs: {d: 32.877, L: 10, SS: 41.74}
+      steps: ["32,877x10 + 41,74 = 370,5"]
+      result: "370.5"
+  - id: "m06_baumol"
+    name_vi: "Số dư tiền mặt tối ưu Baumol"
+    name_en: "Baumol cash model"
+    expression_latex: 'C^* = \sqrt{\frac{2TF}{r}}'
+    expression_python: "(2*T*F/r)**0.5"
+    excel: "=SQRT(2*T*F/r)"
+    variables:
+      - {symbol: "T", meaning: "Tổng nhu cầu tiền mặt trong kỳ", unit: "VNĐ"}
+      - {symbol: "F", meaning: "Phí cố định mỗi lần chuyển đổi (cùng đơn vị với T)", unit: "VNĐ"}
+      - {symbol: "r", meaning: "Lãi suất/chi phí cơ hội cùng kỳ với T", unit: "tỷ lệ"}
+    when_to_use: "Tính lượng rút/chuyển đổi tối ưu mỗi lần từ tiền gửi."
+    why_it_works: "Giống EOQ: phí chuyển đổi giống chi phí đặt hàng, lãi mất đi giống chi phí lưu kho."
+    assumptions: ["Chi tiêu đều, ổn định", "F cố định, không có tiền thu vào ngẫu nhiên"]
+    pitfalls: ["Lệch đơn vị T và F (triệu hay đồng)", "Dòng tiền biến động mạnh thì cần Miller-Orr"]
+    interpretation: "Số lần rút = T/C*."
+    example:
+      inputs: {T: 1200, F: 0.3, r: 0.06}
+      steps: ["2x1200x0,3/0,06 = 12000", "C* = 109,5 triệu", "Số lần = 1200/109,5 = 11"]
+      result: "109.5"
+  - id: "m06_current_ratio"
+    name_vi: "Tỷ số thanh toán hiện hành"
+    name_en: "Current Ratio"
+    expression_latex: 'CR = \frac{CA}{CL}'
+    expression_python: "CA / CL"
+    excel: "=CA/CL"
+    variables:
+      - {symbol: "CA", meaning: "Tài sản ngắn hạn", unit: "VNĐ"}
+      - {symbol: "CL", meaning: "Nợ ngắn hạn", unit: "VNĐ"}
+    when_to_use: "Kiểm tra nhanh thanh khoản; chi tiết ở m05."
+    why_it_works: "Mỗi đồng nợ ngắn hạn có bao nhiêu đồng tài sản ngắn hạn đảm bảo."
+    assumptions: ["Giá trị sổ sách phản ánh giá trị thực"]
+    pitfalls: ["Tồn kho lỗi thời làm thực tế thấp hơn", "Ảnh chụp tĩnh"]
+    interpretation: "Mục tiêu tham khảo lớn hơn 1,5; dưới 1,0 nguy hiểm (Toys R Us 0,9 rồi 0,7)."
+    example:
+      inputs: {CA: 8000, CL: 5000}
+      steps: ["8000/5000 = 1,6"]
+      result: "1.6"
+  - id: "m06_quick_ratio"
+    name_vi: "Tỷ số thanh toán nhanh"
+    name_en: "Quick Ratio"
+    expression_latex: 'QR = \frac{CA - Inventory}{CL}'
+    expression_python: "(CA - Inventory) / CL"
+    excel: "=(CA-Inventory)/CL"
+    variables:
+      - {symbol: "CA", meaning: "Tài sản ngắn hạn", unit: "VNĐ"}
+      - {symbol: "Inventory", meaning: "Tồn kho", unit: "VNĐ"}
+      - {symbol: "CL", meaning: "Nợ ngắn hạn", unit: "VNĐ"}
+    when_to_use: "Thanh khoản bi quan hơn, loại tồn kho khó chuyển thành tiền nhanh."
+    why_it_works: "Tồn kho là tài sản ngắn hạn kém thanh khoản nhất."
+    assumptions: ["Tồn kho khó/chậm bán"]
+    pitfalls: ["Với ngành bán lẻ tồn kho quay nhanh, tỷ số này có thể quá khắt khe"]
+    interpretation: "Mục tiêu tham khảo lớn hơn 1,0."
+    example:
+      inputs: {CA: 8000, Inventory: 3000, CL: 5000}
+      steps: ["(8000 - 3000)/5000 = 1,0"]
+      result: "1.0"
+procedures:
+  - id: "m06_proc_ccc_diagnosis"
+    name: "Chẩn đoán CCC từ báo cáo tài chính"
+    steps:
+      - "Thu thập doanh thu, COGS, AR, tồn kho, AP (nên dùng số dư bình quân hai kỳ; nếu thiếu dùng số cuối kỳ và ghi rõ)."
+      - "Chọn cơ sở ngày (365 cho năm, 30 cho tháng) và dùng nhất quán."
+      - "DSO = AR/Doanh thu x 365; DIO = Tồn kho/COGS x 365; DPO = AP/COGS x 365 (đúng mẫu số)."
+      - "CCC = DSO + DIO - DPO; OWC = AR + Tồn - AP; OWC/Doanh thu."
+      - "So với benchmark ngành, kỳ hạn hợp đồng, và xu hướng các kỳ trước."
+      - "Xác định đòn bẩy lớn nhất: giải phóng được = số ngày giảm x (Doanh thu/365 với DSO hoặc COGS/365 với DIO/DPO)."
+    outputs: "Bảng DSO, DIO, DPO, CCC, OWC, OWC/doanh thu, đòn bẩy ưu tiên"
+  - id: "m06_proc_growth_funding"
+    name: "Kiểm tra bẫy tăng trưởng (ΔOWC và funding gap)"
+    steps:
+      - "Lấy doanh thu, COGS kế hoạch (COGS tăng theo biên gộp)."
+      - "Tính AR, tồn kho, AP kế hoạch từ DSO, DIO, DPO hiện tại (m06_wc_from_days)."
+      - "OWC kế hoạch, ΔOWC = OWC kế hoạch - OWC hiện tại."
+      - "Lợi nhuận giữ lại = doanh thu kế hoạch x biên ròng x (1 - tỷ lệ chia cổ tức)."
+      - "Gap = ΔOWC - lợi nhuận giữ lại; nếu cộng CAPEX mới thì cộng vào."
+      - "Chi phí lãi = Gap x lãi suất vay."
+      - "Chạy kịch bản xấu (DSO, DIO tăng 8-10 ngày) để kiểm tra độ nhạy."
+      - "Nếu Gap > 0 thì lập kế hoạch giảm CCC hoặc xin hạn mức trước khi ký hợp đồng."
+    outputs: "ΔOWC, funding gap, chi phí lãi, kịch bản nhạy cảm"
+  - id: "m06_proc_ccc_target"
+    name: "Lập kế hoạch tối ưu CCC theo mục tiêu"
+    steps:
+      - "Đặt mục tiêu DSO, DIO, DPO có biện pháp tương ứng và kiểm tra tính khả thi (NCC, khách đồng ý)."
+      - "Tính OWC mục tiêu bằng m06_wc_from_days với doanh thu/COGS kế hoạch."
+      - "Tiền giải phóng = OWC kịch bản cũ - OWC mục tiêu; phân rã theo AR, tồn kho, AP."
+      - "Tiết kiệm lãi = tiền giải phóng x lãi vay."
+      - "So OWC mục tiêu với OWC hiện tại để biết có tự tài trợ được không."
+      - "Ưu tiên theo tác động và độ dễ: DPO dễ nhất, DSO khó nhất vì ảnh hưởng khách."
+    outputs: "Bảng hiện tại / mục tiêu, tiền giải phóng, tiết kiệm lãi"
+  - id: "m06_proc_discount_decision"
+    name: "Quyết định chiết khấu thanh toán"
+    steps:
+      - "Tính chi phí năm hóa k = d/(1-d) x 365/(N-n) (và EAR nếu cần)."
+      - "So với chi phí vốn (lãi vay hoặc lợi suất đầu tư tiền nhàn rỗi)."
+      - "Bên mua: k lớn hơn lãi vay thì lấy chiết khấu (vay để trả sớm nếu cần)."
+      - "Bên bán: k lớn hơn lãi vay thì không dùng chiết khấu làm công cụ chính; dùng nhắc nợ, phạt chậm, siết hạn mức."
+      - "Tính bằng tiền: lợi ròng = d x P - P(1-d)(N-n)/365 x r."
+    outputs: "Quyết định + lợi ròng/năm"
+  - id: "m06_proc_inventory"
+    name: "Tối ưu tồn kho nhóm A: EOQ, SS, ROP"
+    steps:
+      - "Phân loại ABC theo giá trị tiêu thụ hằng năm; tập trung nhóm A."
+      - "Ước S (phí mỗi lần đặt) và H (khoảng 15-30% giá vốn/năm)."
+      - "EOQ, số lần đặt D/EOQ, chu kỳ 365/số lần."
+      - "d = D/365; SS = z x sigma_d x căn(L); ROP = d x L + SS."
+      - "So TC cỡ lô hiện tại với TC tại EOQ và vốn chôn (tồn trung bình x giá vốn)."
+      - "Xử lý hàng chậm luân chuyển (>90 ngày): giảm giá, bán kèm, ký gửi."
+    outputs: "EOQ, SS, ROP, chi phí tiết kiệm, vốn giải phóng"
+  - id: "m06_proc_credit_policy"
+    name: "Xây dựng chính sách tín dụng và thu hồi AR"
+    steps:
+      - "Đánh giá khách theo 5C; phân nhóm khách và hạn mức."
+      - "Văn bản hóa Credit Standards, Credit Terms (kỳ hạn, phạt chậm), Collection Policy (nhắc ngày 25, gọi ngày 35, pháp lý ngày 60)."
+      - "Lập AR aging hằng tuần; hành động theo tuổi nợ."
+      - "Trích lập dự phòng cho nhóm quá 90 ngày."
+      - "Xuất hóa đơn ngay khi giao; cân nhắc factoring khi cần tiền gấp."
+    outputs: "Chính sách tín dụng, bảng aging, dự phòng"
+  - id: "m06_proc_financing_policy"
+    name: "Chọn nguồn tài trợ vốn lưu động"
+    steps:
+      - "Phân tách nhu cầu thành thường xuyên (mức tối thiểu cả năm) và tạm thời (mùa vụ) bằng dự báo theo tháng."
+      - "Tài trợ thường xuyên và tài sản cố định bằng nguồn dài hạn."
+      - "Tài trợ tạm thời bằng hạn mức/vay ngắn hạn đúng mùa."
+      - "Chọn khẩu vị: matching mặc định; aggressive nếu chấp nhận rủi ro đảo nợ; conservative nếu ưu tiên an toàn."
+    outputs: "Cơ cấu nguồn vốn ngắn/dài hạn cho vốn lưu động"
+  - id: "m06_proc_cash13w"
+    name: "Dự báo dòng tiền 13 tuần và số dư tiền mặt"
+    steps:
+      - "Hàng thu: thu từ AR theo tuổi nợ, bán mặt. Hàng chi: NCC theo lịch, lương, thuế, thuê, trả nợ."
+      - "Tiền cuối kỳ = tiền đầu kỳ + thu - chi; cuốn chiếu hằng tuần."
+      - "Đặt mức tiền tối thiểu; cảnh báo khi dưới mức."
+      - "Dùng Baumol cho quỹ tiền mặt nhỏ lẻ; dự phòng hạn mức tín dụng thay vì giữ tiền quá nhiều."
+    outputs: "Bảng 13 tuần, cảnh báo, kế hoạch hạn mức"
+decision_rules:
+  - "Nếu doanh thu kế hoạch tăng và OWC/Doanh thu không đổi thì ΔOWC = tỷ lệ x Δdoanh thu; nếu lợi nhuận giữ lại nhỏ hơn ΔOWC thì có funding gap, phải giảm CCC hoặc xin vốn trước khi ký hợp đồng."
+  - "Nếu chi phí năm hóa của chiết khấu (ví dụ 2/10 net 30 = 37,2%) lớn hơn lãi vay ngân hàng thì mua hàng nên lấy chiết khấu, kể cả phải vay."
+  - "Nếu mình là bên bán và chi phí chiết khấu lớn hơn lãi vay (1,5/10 net 40 = 18,5% so với 11%) thì không dùng chiết khấu làm công cụ chính giảm DSO; ưu tiên nhắc nợ, phạt chậm, giới hạn hạn mức. Chỉ dùng khi cần tiền gấp hoặc nợ xấu cao."
+  - "Nếu CCC dài hơn ngành rõ rệt thì tìm đòn bẩy lớn nhất trong DSO, DIO, DPO theo giá trị giải phóng được và độ dễ thực hiện."
+  - "Nếu Current Ratio dưới 1,0 thì cảnh báo thanh khoản, kiểm tra chất lượng tồn kho và khả năng gia hạn nợ; dưới 1,0 kèm CCC tăng là tín hiệu nguy hiểm."
+  - "Nếu NCC bắt đầu đòi trả nhanh (DPO giảm) thì CCC tăng đúng lúc yếu; chủ động đàm phán và dự phòng hạn mức."
+  - "Nếu vốn lưu động thường xuyên đang được tài trợ bằng vay ngắn hạn thì chuyển một phần sang vay trung-dài hạn hoặc vốn chủ (nguyên tắc khớp kỳ hạn)."
+  - "Nếu nhu cầu có tính mùa vụ thì dùng dự báo theo tháng/tuần và vay ngắn hạn đúng mùa, không lập ngân sách chỉ theo năm."
+  - "Nếu một khách lớn chiếm tỷ trọng cao trong AR thì đặt hạn mức riêng, theo dõi aging hằng tuần, tránh phụ thuộc."
+  - "Nếu DIO cao và hàng nhóm C chiếm vốn lớn thì xả hàng chậm; nếu nhóm A đứt hàng thì tăng safety stock thay vì cắt tiếp."
+  - "Nếu cắt NWC làm đứt hàng, mất doanh thu hoặc căng thẳng với NCC thì đã cắt quá mức; cân bằng với chi phí cơ hội."
+  - "Nếu định giá DCF DN tăng trưởng nhanh thì bắt buộc đưa ΔOWC vào FCF."
+  - "Nếu nhu cầu ổn định, chi phí đặt hàng và lưu kho biết rõ thì dùng EOQ; nếu nhu cầu biến động thì thêm safety stock; mặt hàng dự báo được và nhà cung cấp tin cậy mới dùng JIT."
+  - "Nếu có thể nhận cọc hoặc thanh toán trước (đặt may, nội thất, in ấn) thì làm vậy để giảm AR và DSO, tiến tới CCC thấp hoặc âm; tính rủi ro khách hủy."
+  - "Nếu khách không đạt 5C thì không bán chịu hoặc yêu cầu đặt cọc/bảo lãnh."
+benchmarks:
+  - {metric: "CCC bán lẻ thực phẩm", value: "-7 ngày (DSO 3, DIO 25, DPO 35)", context: "Minh họa theo tài liệu gốc", confidence: "low"}
+  - {metric: "CCC Amazon", value: "-25 ngày (DSO 20, DIO 35, DPO 80)", context: "Minh họa, chưa kiểm chứng", confidence: "low"}
+  - {metric: "CCC sản xuất", value: "65 ngày (45/60/40)", context: "Minh họa", confidence: "low"}
+  - {metric: "CCC xây dựng", value: "60 ngày (90/30/60)", context: "Minh họa", confidence: "low"}
+  - {metric: "CCC phần mềm SaaS", value: "20 ngày (40/0/20)", context: "Minh họa", confidence: "low"}
+  - {metric: "CCC bất động sản", value: "320+ ngày", context: "Minh họa", confidence: "low"}
+  - {metric: "CCC phân phối B2B tại VN", value: "45-90 ngày", context: "Ước tính tham khảo trong nguồn", confidence: "low"}
+  - {metric: "Quán cà phê/nhà hàng SME", value: "DSO 0-3, DIO 5-15, DPO 15-30, CCC -15 đến 0", context: "Mục tiêu định hướng", confidence: "low"}
+  - {metric: "Bán lẻ/shop online SME", value: "DSO 0-10, DIO 45-90, DPO 20-40, CCC 30-70", context: "Mục tiêu định hướng", confidence: "low"}
+  - {metric: "Phân phối B2B SME", value: "DSO 30-60, DIO 40-70, DPO 30-45, CCC 40-80", context: "Mục tiêu định hướng", confidence: "low"}
+  - {metric: "Sản xuất nhỏ SME", value: "DSO 30-60, DIO 60-100, DPO 30-45, CCC 60-110", context: "Mục tiêu định hướng", confidence: "low"}
+  - {metric: "Dịch vụ/agency SME", value: "DSO 30-60, DIO 0, DPO 15-30, CCC 15-45", context: "Mục tiêu định hướng", confidence: "low"}
+  - {metric: "Current Ratio", value: "lớn hơn 1,5; dưới 1,0 là nguy hiểm", context: "Ngưỡng tham khảo trong nguồn", confidence: "medium"}
+  - {metric: "Quick Ratio", value: "lớn hơn 1,0", context: "Ngưỡng tham khảo", confidence: "medium"}
+  - {metric: "Chi phí lưu kho H", value: "15-30% giá trị hàng/năm", context: "Nguồn nêu chung", confidence: "medium"}
+  - {metric: "Lãi vay vốn lưu động SME VN", value: "9-13%/năm (nguồn); Bình Minh dùng 11%", context: "Cần cập nhật theo thị trường", confidence: "low"}
+  - {metric: "Mức phục vụ và z", value: "95% z=1,65; 99% z=2,33", context: "Phân phối chuẩn", confidence: "high"}
+  - {metric: "Chi phí 2/10 net 30", value: "37,2% đơn giản; 44,6% EAR", context: "Tính toán", confidence: "high"}
+  - {metric: "Tỷ lệ DN nhỏ thất bại do dòng tiền", value: "khoảng 82% (U.S. Bank)", context: "Trích dẫn chưa kiểm chứng độc lập, không áp cho VN", confidence: "low"}
+pitfalls:
+  - "Bỏ qua ΔOWC khi định giá DCF: định giá quá cao DN tăng trưởng."
+  - "Trộn mẫu số: DSO dùng doanh thu, DIO và DPO dùng COGS."
+  - "Đánh đồng lợi nhuận với tiền mặt; luôn lập báo cáo dòng tiền song song P&L."
+  - "Cùng một chính sách tín dụng cho mọi khách: nên phân nhóm theo chất lượng tín dụng."
+  - "JIT không có kế hoạch dự phòng: cú sốc chuỗi cung ứng gây đình trệ."
+  - "Kéo AP quá mức: mất chiết khấu (tới 37%) và hỏng quan hệ NCC."
+  - "Chỉ nhìn NWC tuyệt đối, bỏ sót CCC và vòng quay."
+  - "Chỉ lập ngân sách năm: bỏ sót đỉnh mùa vụ; cần dự báo tháng/tuần."
+  - "Nhập số lượng lớn vì giá tốt mà không tính chi phí lưu kho và vốn chôn."
+  - "Bán chịu không kiểm tra tín dụng khách mới."
+  - "Dùng vay ngắn hạn tài trợ tài sản dài hạn (lệch kỳ hạn)."
+  - "Cắt giảm vốn lưu động quá sâu phá hủy dịch vụ khách hàng (bài học Toys R Us)."
+  - "Áp benchmark ngành minh họa máy móc; cần đối chiếu đối thủ cùng quy mô."
+  - "Lệch đơn vị khi dùng Baumol (triệu và đồng)."
+sme_vn_guidance:
+  - "Khách B2B trả chậm, DSO dài: hợp đồng ghi kỳ hạn và phạt chậm, đặt cọc."
+  - "NCC ít cho nợ SME nhỏ (DPO ngắn): xây uy tín trả đúng hạn, tăng quy mô mua, đàm phán theo quý."
+  - "Tín dụng khó và lãi cao: ưu tiên giải phóng vốn nội bộ trước khi vay."
+  - "Tách tài khoản công ty và cá nhân để biết nhu cầu vốn thực."
+  - "Mùa vụ (Tết, du lịch): lập kế hoạch vốn theo tháng, vay ngắn hạn đúng mùa."
+  - "Mô hình nhận cọc/thanh toán trước, nhập theo đơn, đàm phán công nợ NCC (tinh thần Dell ở quy mô nhỏ)."
+  - "Lộ trình 90 ngày: tháng 1 đo lường (CCC, AR aging, ABC, dự báo 13 tuần); tháng 2 quick wins (hóa đơn ngay, nhắc nợ trước hạn 5 ngày, xả hàng chậm >90 ngày, đàm phán 3 NCC lớn); tháng 3 chuẩn hóa (chính sách 5C, EOQ/ROP nhóm A, KPI hằng tháng)."
+  - "Công cụ (cần xác nhận bảng giá hiện hành): MISA SME, Fast Accounting (từ vài triệu/năm) cho sổ công nợ và tuổi nợ; KiotViet, Sapo (vài trăm nghìn đến vài triệu/tháng) cho tồn kho và công nợ; Excel/Google Sheets cho dự báo 13 tuần."
+  - "Tài chính: hạn mức tín dụng, ứng vốn theo hóa đơn/bao thanh toán tại BIDV, VPBank, Vietcombank... (lãi và phí hỏi trực tiếp)."
+  - "Kiểm tra tín dụng khách mới bằng CIC và thông tin DN công khai (theo biểu phí, cần xác nhận)."
+case_lessons:
+  - name: "Dell - CCC âm nhờ Build-to-Order"
+    type: "success"
+    setup: >
+      Dell (thành lập 1984) lắp ráp sau khi có đơn, bán trực tiếp, khách trả trước, kéo giãn thanh toán linh kiện.
+      Đối thủ (HP, Compaq, IBM) sản xuất theo dự báo qua nhà phân phối.
+    key_calculations:
+      - "CCC Dell = 30 + 4 - 70 = -36; HP = 49 + 29 - 42 = +36; Apple = 25 + 3 - 54 = -26 (số minh họa)"
+      - "Chênh lệch Dell - HP = 72 ngày"
+      - "Giả định COGS 35.000 triệu USD/năm: 95,9 triệu USD/ngày x 72 = 6.904 triệu USD vốn không phải bỏ ra"
+      - "Với chi phí vốn 3%: tiết kiệm khoảng 207 triệu USD/năm"
+    lesson: >
+      CCC âm là kết quả đổi mới mô hình kinh doanh (BTO, thu tiền trước, bán trực tiếp, sức mạnh đàm phán NCC),
+      làm mẫu số ROIC rất nhỏ và tự tài trợ tăng trưởng. Rủi ro: phụ thuộc quan hệ NCC, thiếu linh kiện thì đứt hàng.
+      SME áp dụng: nhận cọc, nhập theo đơn, đàm phán công nợ.
+    data_reliability: "unverified"
+  - name: "Toys R Us - vòng xoáy nợ và vốn lưu động"
+    type: "failure"
+    setup: >
+      LBO 2005 bởi KKR, Bain Capital, Vornado; dòng tiền chủ yếu trả lãi, không tái đầu tư cửa hàng, e-commerce, tồn kho.
+      Phá sản Chapter 11 năm 2017, thanh lý 2018.
+    key_calculations:
+      - "Current Ratio 1,5 (2005) xuống 0,9 (2015) xuống 0,7 (2017); CCC 45 lên 70+ ngày (số minh họa)"
+      - "Giả định COGS 8.000 triệu USD/năm: 21,9 triệu USD/ngày x 25 ngày = 548 triệu USD vốn bị giam thêm"
+      - "Cơ chế CCC tăng: DIO tăng do nhập sai, DPO giảm do NCC rút tài trợ"
+      - "Khoảng 40% doanh thu dồn Q4"
+    lesson: >
+      Quản lý WC không chỉ là cắt giảm; Current Ratio dưới 1,0 là cảnh báo; mất niềm tin NCC mất quyền tiếp cận hàng hot;
+      kế hoạch vốn phải tính đỉnh mùa vụ; đòn bẩy cao cộng WC mỏng là tổ hợp chết người (xem m04).
+    data_reliability: "illustrative"
+  - name: "Công ty TNHH Thương mại Bình Minh - tăng trưởng 30% nhưng cạn tiền"
+    type: "sme"
+    setup: >
+      Nhà phân phối vật tư vệ sinh công nghiệp TP.HCM (số liệu tự thiết kế). 2024: doanh thu 24.000 triệu, COGS 18.000,
+      LNST 960 (biên ròng 4%), DSO 65, DIO 75, DPO 28, lãi vay 11%. Kế hoạch 2025: tăng trưởng 30%.
+    key_calculations:
+      - "2024: AR 4.274,0; Tồn 3.698,6; AP 1.380,8; OWC 6.591,8; CCC 112; OWC/Doanh thu 27,5%"
+      - "Vòng quay AR 5,62; Tồn 4,87; AP 13,04"
+      - "2025 không đổi chính sách: doanh thu 31.200, COGS 23.400, OWC 8.569,3, ΔOWC +1.977,5"
+      - "LNST 2025 = 31.200 x 4% = 1.248; Gap = 1.977,5 - 1.248 = 729,5; lãi vay 80,2/năm"
+      - "Mục tiêu DSO 50, DIO 55, DPO 40: CCC 65; OWC 5.235,6 (16,8% doanh thu)"
+      - "Giải phóng: AR 1.282,2 + Tồn 1.282,2 + AP 769,3 = 3.333,7; tiết kiệm lãi 366,7/năm"
+      - "OWC mục tiêu thấp hơn 2024 là 1.356,2 dù doanh thu +30%"
+      - "NCC A 2/10 net 30 (mua 6.000): k = 37,2% lớn hơn 11%, lợi ròng 84,6 triệu/năm"
+      - "Chiết khấu cho khách 1,5/10 net 40: 18,5% lớn hơn 11%, không nên dùng làm công cụ chính"
+      - "Máy chà sàn nhóm A: EOQ 894, SS 42, ROP 371; TC tối thiểu 10,7 triệu/năm"
+      - "Baumol 109,5 triệu/lần (khoảng 11 lần/năm)"
+    lesson: >
+      Mỗi 100 đồng doanh thu tăng thêm chôn 27,5 đồng vốn lưu động nên lợi nhuận không đủ nuôi tăng trưởng.
+      Phải tính trước ΔOWC và gap, giảm CCC thay vì vay; nhận chiết khấu NCC, hạn chế chiết khấu cho khách.
+      Mục tiêu DPO và DSO giả định đối tác đồng ý; cần chạy kịch bản xấu (DSO 58, DIO 62).
+    data_reliability: "illustrative"
+worked_examples:
+  - name: "Từ báo cáo tài chính sang DSO, DIO, DPO, CCC, OWC"
+    inputs: {Revenue: 12000, COGS: 9000, AR: 1500, Inventory: 1800, AP: 900}
+    steps:
+      - "DSO = 1500/12000 x 365 = 45,625"
+      - "DIO = 1800/9000 x 365 = 73,0"
+      - "DPO = 900/9000 x 365 = 36,5"
+      - "CCC = 45,625 + 73 - 36,5 = 82,125"
+      - "OWC = 1500 + 1800 - 900 = 2400; OWC/Revenue = 20%"
+    result: "DSO 45,6; DIO 73; DPO 36,5; CCC 82,1 ngày; OWC 2.400 triệu"
+  - name: "Chi phí chiết khấu 3/10 net 45 và quyết định vay"
+    inputs: {d: 0.03, N: 45, n: 10, loan_rate: 0.12}
+    steps:
+      - "d/(1-d) = 0,03/0,97 = 0,030928"
+      - "365/(45-10) = 10,4286"
+      - "k = 0,030928 x 10,4286 = 32,25%"
+      - "EAR = (1,030928)^10,4286 - 1 = 37,4%"
+      - "32,25% lớn hơn 12% nên vay để trả sớm và lấy chiết khấu"
+    result: "k = 32,3% năm; nên lấy chiết khấu"
+  - name: "EOQ và số lần đặt hàng"
+    inputs: {D: 4800, S: 250000, H: 40000}
+    steps:
+      - "EOQ = căn(2x4800x250000/40000) = căn(60000) = 244,9"
+      - "Số lần = 4800/244,9 = 19,6"
+      - "Chu kỳ = 365/19,6 = 18,6 ngày"
+    result: "EOQ 245 đơn vị, 19,6 lần/năm"
+  - name: "Bẫy tăng trưởng 8 tỷ lên 12 tỷ"
+    inputs: {Rev0: 8, Rev1: 12, owc_pct: 0.20, net_margin: 0.05}
+    steps:
+      - "ΔOWC = 20% x (12 - 8) = 0,8 tỷ"
+      - "Lợi nhuận = 12 x 5% = 0,6 tỷ"
+      - "Gap = 0,8 - 0,6 = 0,2 tỷ"
+      - "Tỷ lệ OWC hòa vốn x: x.12 - 1,6 = 0,6 suy ra x = 18,33%"
+    result: "Gap 0,2 tỷ; cần OWC/doanh thu không quá 18,3% để Gap = 0"
+  - name: "Cửa hàng nội thất Gỗ Việt: nhận cọc 30%"
+    inputs: {Revenue: 18000, COGS: 12600, AR: 3000, Inventory: 2800, AP: 1100, loan_rate: 0.12}
+    steps:
+      - "DSO = 3000/18000x365 = 60,8; DIO = 2800/12600x365 = 81,1; DPO = 1100/12600x365 = 31,9"
+      - "CCC = 60,8 + 81,1 - 31,9 = 110,0 ngày"
+      - "Giả sử cọc 30% giảm AR 30%: giải phóng 900 triệu"
+      - "Tiết kiệm lãi = 900 x 12% = 108 triệu/năm"
+    result: "CCC khoảng 110 ngày; tiết kiệm lãi 108 triệu/năm (rủi ro khách hủy cần bàn thêm)"
+  - name: "Bình Minh: OWC kịch bản tăng trưởng và mục tiêu"
+    inputs: {Revenue2025: 31200, COGS2025: 23400, DSO: 65, DIO: 75, DPO: 28, DSO_t: 50, DIO_t: 55, DPO_t: 40, r: 0.11}
+    steps:
+      - "OWC cũ = 5556,2 + 4808,2 - 1795,1 = 8569,3"
+      - "OWC mục tiêu = 4274,0 + 3526,0 - 2564,4 = 5235,6"
+      - "Giải phóng = 3333,7; lãi tiết kiệm = 366,7"
+    result: "OWC 8.569,3 xuống 5.235,6; tiết kiệm lãi 366,7 triệu/năm"
+  - name: "Dell: quy đổi CCC thành tiền (minh họa)"
+    inputs: {COGS_usd_m: 35000, gap_days: 72, cost_of_capital: 0.03}
+    steps:
+      - "COGS/ngày = 35000/365 = 95,89"
+      - "Vốn không phải bỏ ra = 95,89 x 72 = 6904"
+      - "Lãi tiết kiệm = 6904 x 3% = 207"
+    result: "Khoảng 6.904 triệu USD vốn, 207 triệu USD/năm (số minh họa)"
+  - name: "Tăng trưởng startup 50%/năm"
+    inputs: {Rev: [10, 15, 22.5], AR_days: 30, inv_pct: 0.15, ap_pct: 0.08}
+    steps:
+      - "OWC năm 1 = 0,822 + 1,5 - 0,8 = 1,52"
+      - "OWC năm 2 = 1,233 + 2,25 - 1,2 = 2,28"
+      - "OWC năm 3 = 1,849 + 3,375 - 1,8 = 3,42"
+      - "ΔOWC năm 2 = 0,76; năm 3 = 1,14 (nguồn làm tròn 1,15)"
+    result: "Tăng trưởng 50%/năm cần thêm khoảng 0,8-1,1 tỷ vốn lưu động mỗi năm"
+practice_questions:
+  - {q: "DSO 40, DIO 55, DPO 35: CCC là bao nhiêu?", a: "60 ngày"}
+  - {q: "Doanh thu 12.000, COGS 9.000, AR 1.500, tồn 1.800, AP 900: tính DSO, DIO, DPO, CCC, OWC.", a: "45,6; 73; 36,5; 82,1; 2.400 triệu"}
+  - {q: "Chiết khấu 3/10 net 45: chi phí năm hóa? Lãi vay 12% có nên vay trả sớm?", a: "32,3% lớn hơn 12%, nên vay để lấy chiết khấu"}
+  - {q: "D = 4.800, S = 250.000, H = 40.000: EOQ và số lần đặt?", a: "245 đơn vị; 19,6 lần"}
+  - {q: "Doanh thu 8 tỷ lên 12 tỷ, OWC 20% doanh thu, biên ròng 5%, giữ lại hết: ΔOWC, lợi nhuận, gap?", a: "0,8 tỷ; 0,6 tỷ; gap 0,2 tỷ; OWC dưới 18,3% doanh thu thì gap = 0"}
+  - {q: "Gỗ Việt: CCC và tiết kiệm nếu nhận cọc giảm AR 30%, lãi 12%?", a: "CCC khoảng 110 ngày; giải phóng 900 triệu, tiết kiệm 108 triệu/năm; xem xét rủi ro hủy đơn"}
+  - {q: "Vì sao DSO dùng doanh thu còn DIO và DPO dùng COGS?", a: "AR ghi theo giá bán, tồn kho và AP ghi theo giá mua"}
+  - {q: "Vì sao tăng trưởng nhanh có thể làm DN cạn tiền dù có lãi?", a: "ΔOWC dương làm tiền giảm; nếu ΔOWC lớn hơn lợi nhuận giữ lại thì có funding gap"}
+  - {q: "Tính SS và ROP: d=32,9/ngày, L=10, sigma=8, mức phục vụ 95%.", a: "SS 41,7; ROP 370,5"}
+  - {q: "Baumol: T 600 triệu, F 200.000 đồng, r 8%.", a: "C* = 54,8 triệu/lần"}
+  - {q: "Thực hành: lấy 12 tháng số liệu DN, tính CCC từng quý, so với đối thủ, lập kế hoạch 90 ngày.", a: "Theo procedures m06_proc_ccc_diagnosis và m06_proc_ccc_target"}
+checklist:
+  - "NWC và CCC đã tính, so xu hướng và ngành?"
+  - "DSO, DIO, DPO đúng mẫu số (doanh thu và COGS)?"
+  - "Current Ratio lớn hơn 1,5 và Quick Ratio lớn hơn 1,0?"
+  - "Đã tính ΔOWC và funding gap cho kế hoạch tăng trưởng?"
+  - "Chính sách tín dụng 5C văn bản hóa; hạn mức từng khách; phạt chậm trong hợp đồng?"
+  - "AR aging theo dõi hằng tuần; dự phòng nợ khó đòi đủ; quy trình thu hồi tự động?"
+  - "Đã phân loại ABC; EOQ/ROP nhóm A; xử lý hàng chậm luân chuyển; safety stock theo mức phục vụ?"
+  - "Điều khoản AP đã đàm phán; đã so chiết khấu sớm với chi phí vốn; quan hệ NCC duy trì?"
+  - "Dự báo dòng tiền 13 tuần cuốn chiếu; mức tiền tối thiểu; hạn mức dự phòng; tiền nhàn rỗi được đầu tư ngắn hạn?"
+  - "WC thường xuyên tài trợ dài hạn; vay ngắn hạn chỉ cho nhu cầu tạm thời?"
+excel_google_sheets_templates:
+  - name: "Bảng theo dõi vốn lưu động hằng tháng"
+    columns: "Doanh thu (A), COGS (B), AR (C), Tồn kho (D), AP (E); DSO =C/A*30; DIO =D/B*30; DPO =E/B*30; CCC =DSO+DIO-DPO; OWC =C+D-E; ΔOWC =OWC_t-OWC_t-1; OWC/Doanh thu năm =OWC/(A*12); Cảnh báo =IF(CCC>Target,\"CẢNH BÁO\",\"OK\") với tô màu có điều kiện"
+  - name: "Dự báo dòng tiền 13 tuần"
+    columns: "Hàng thu (AR theo tuổi nợ, bán mặt), hàng chi (NCC, lương, thuế, thuê, trả nợ); 13 cột tuần; tiền cuối = đầu + thu - chi; cảnh báo khi dưới mức tối thiểu"
+source_file: "06-working-capital-management.md"

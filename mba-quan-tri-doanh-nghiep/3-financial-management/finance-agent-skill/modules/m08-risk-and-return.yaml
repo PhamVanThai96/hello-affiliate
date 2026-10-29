@@ -1,0 +1,790 @@
+# m08 - Risk & Return (CAPM, Beta, Portfolio Theory). Distilled from 08-risk-and-return.md
+# Quy ước: lợi nhuận/rủi ro nhập dạng PHẦN TRĂM (vd 11.6 nghĩa 11,6%) trừ khi ghi rõ; expression_python dùng đúng tên biến trong variables.
+id: "m08"
+name_vi: "Rủi ro và Lợi nhuận (CAPM, Beta, Lý thuyết danh mục)"
+name_en: "Risk and Return (CAPM, Beta, Portfolio Theory)"
+purpose: "Định lượng sự đánh đổi giữa rủi ro và lợi nhuận để (1) so sánh các khoản đầu tư trên cùng thang đo, (2) xây dựng danh mục đa dạng hóa, (3) tính lợi nhuận yêu cầu/chi phí vốn chủ sở hữu Ke bằng CAPM làm ngưỡng cho dự án và WACC, (4) đánh giá hiệu suất đã điều chỉnh rủi ro. Với SME: tư duy tránh tập trung, tách vốn nhàn rỗi khỏi vốn kinh doanh, định giá Ke đúng."
+when_to_use:
+  - "Chủ DN có vốn nhàn rỗi và hỏi nên gửi tiết kiệm, mua quỹ chỉ số, vàng hay cổ phiếu; chia tỷ trọng thế nào"
+  - "Cần so sánh hai khoản đầu tư/dự án có lợi nhuận và rủi ro khác nhau (CV, Sharpe)"
+  - "Cần tính Ke (cost of equity) bằng CAPM, ước lượng Beta cho DN chưa niêm yết (peer beta, Blume, Hamada)"
+  - "Hỏi đa dạng hóa giảm rủi ro bao nhiêu khi tương quan khác nhau; tìm danh mục phương sai nhỏ nhất"
+  - "Đánh giá quỹ/danh mục có thật sự giỏi không (Sharpe, Treynor, Jensen Alpha, Information Ratio)"
+  - "Cổ phiếu/tài sản đang rẻ hay đắt so với rủi ro hệ thống (SML)"
+  - "Stress test, rủi ro đuôi, VaR, tác hại của đòn bẩy (bài học LTCM)"
+  - "Nghe số 'trung bình lời X%/năm' và cần biết là trung bình cộng hay nhân (CAGR)"
+prerequisites: ["m01"]
+related_modules:
+  - "m01: giá trị thời gian của tiền, lãi suất phi rủi ro Rf, CAGR"
+  - "m02: Ke/WACC dùng làm tỷ suất chiết khấu khi thẩm định dự án (NPV, IRR)"
+  - "m03: CAPM chính là cách chuẩn tính Ke trong WACC; Hamada/unlever beta dùng ở đó"
+  - "m04: đòn bẩy tài chính làm tăng Beta vốn chủ và rủi ro phá sản (liên hệ LTCM)"
+  - "m06: quỹ dự phòng thanh khoản và vốn lưu động phải được giữ trước khi đầu tư tài chính"
+  - "m10: Ke từ CAPM là đầu vào của DCF và định giá doanh nghiệp"
+concepts:
+  - term_vi: "Rủi ro (Risk)"
+    term_en: "Risk"
+    definition: "Sự không chắc chắn về lợi nhuận tương lai: kết quả thực tế lệch khỏi kỳ vọng cả hướng xấu lẫn tốt; thường đo bằng phương sai hoặc độ lệch chuẩn của tỷ suất sinh lời."
+    why_it_matters: "10% gần như chắc chắn (tiền gửi) khác hẳn 10% là trung bình của khoảng -40% đến +60%. Cần ngôn ngữ số để so sánh. Rủi ro cao hơn kéo theo lợi nhuận kỳ vọng cao hơn (không có bữa trưa miễn phí) nhưng KHÔNG đảm bảo lợi nhuận cao, chỉ làm kết quả phân tán rộng hơn."
+  - term_vi: "Lợi nhuận (Return)"
+    term_en: "Return"
+    definition: "Phần thưởng cho việc chấp nhận rủi ro, gồm thu nhập định kỳ (cổ tức, lãi) và lãi vốn (chênh lệch giá), chuẩn hóa theo vốn ban đầu."
+    why_it_matters: "Chia cho giá ban đầu để so sánh khoản đầu tư khác quy mô (lãi 10 triệu trên 100 triệu là 10%, trên 1 tỷ là 1%)."
+  - term_vi: "Đa dạng hóa (Diversification)"
+    term_en: "Diversification"
+    definition: "Kết hợp nhiều tài sản không đồng biến hoàn toàn để giảm rủi ro danh mục mà không giảm lợi nhuận kỳ vọng."
+    why_it_matters: "Markowitz (1952) lần đầu biến lời khuyên 'đừng bỏ trứng một giỏ' thành công thức: rủi ro danh mục phụ thuộc tương quan, không phải trung bình rủi ro từng tài sản. Với mọi rho nhỏ hơn 1, rủi ro danh mục nhỏ hơn trung bình có trọng số các sigma - 'bữa trưa miễn phí' duy nhất của tài chính."
+  - term_vi: "Rủi ro hệ thống (Systematic / Market risk)"
+    term_en: "Systematic risk"
+    definition: "Phần rủi ro do yếu tố toàn thị trường (suy thoái, lãi suất, lạm phát, chiến tranh/dịch bệnh, chính sách nhà nước); không đa dạng hóa được; đo bằng Beta."
+    why_it_matters: "Thị trường chỉ trả công (phần bù rủi ro) cho thứ không thể tự loại bỏ miễn phí. Đây là mấu chốt của CAPM."
+  - term_vi: "Rủi ro phi hệ thống (Idiosyncratic / Specific risk)"
+    term_en: "Unsystematic risk"
+    definition: "Rủi ro riêng của từng DN (scandal CEO, thu hồi sản phẩm, kiện tụng, đối thủ mới, báo cáo thất vọng); đa dạng hóa được; KHÔNG được thị trường trả công."
+    why_it_matters: "Nghiên cứu thị trường Mỹ: khoảng 20-30 cổ phiếu loại bỏ phần lớn rủi ro riêng (số tham khảo). Tại VN, thị trường tập trung ngành (ngân hàng, BĐS, chứng khoán) và tương quan cao nên 20-30 mã cùng ngành KHÔNG đạt hiệu quả đó; điều quan trọng là tương quan thấp chứ không phải số lượng."
+  - term_vi: "Phương sai / Độ lệch chuẩn"
+    term_en: "Variance / Standard deviation"
+    definition: "Kỳ vọng bình phương độ lệch so với lợi nhuận kỳ vọng; sigma là căn bậc hai, cùng đơn vị với lợi nhuận."
+    why_it_matters: "Bình phương để (1) độ lệch dương âm không triệt tiêu, (2) phạt nặng lệch lớn (lỗ -40% đáng sợ hơn nhiều so với bốn lần lỗ -10%), (3) cộng được theo danh mục. Hạn chế: coi biến động lên và xuống như nhau, giả định phân phối chuẩn."
+  - term_vi: "Hệ số biến thiên (CV)"
+    term_en: "Coefficient of variation"
+    definition: "sigma / E(R): rủi ro trên mỗi đơn vị lợi nhuận kỳ vọng; càng thấp càng tốt."
+    why_it_matters: "So sánh hai khoản có E(R) khác nhau. Bất ổn khi E(R) gần 0 hoặc âm: khi đó dùng Sharpe."
+  - term_vi: "Hiệp phương sai và Tương quan"
+    term_en: "Covariance and Correlation"
+    definition: "Cov đo hai tài sản đi cùng nhau; rho = Cov/(sigmaA*sigmaB) chuẩn hóa về [-1, +1]."
+    why_it_matters: "Là nguyên liệu quyết định hiệu quả đa dạng hóa. Tương quan KHÔNG hằng số: trong khủng hoảng thường tiến về 1, mất lợi ích đa dạng hóa đúng lúc cần nhất (bài học LTCM, Yale 2008)."
+  - term_vi: "Lý thuyết danh mục hiện đại (MPT)"
+    term_en: "Modern Portfolio Theory"
+    definition: "Markowitz 1952: chọn tỷ trọng để tối đa E(R) với mức sigma cho trước, dựa trên E(R), sigma và tương quan của các tài sản."
+    why_it_matters: "Nobel 1990 (Markowitz, Sharpe, Miller). Mốc lịch sử: Tobin 1958 (định lý tách biệt), Sharpe 1964 và Lintner/Mossin 1965-66 (CAPM), Fama 1970 (EMH), Ross 1976 (APT), Fama-French 1993 (3 nhân tố)."
+  - term_vi: "Đường biên hiệu quả và danh mục phương sai nhỏ nhất"
+    term_en: "Efficient Frontier and Minimum Variance Portfolio (MVP)"
+    definition: "Tập các danh mục cho E(R) cao nhất tại mỗi mức rủi ro; điểm trái nhất là MVP. Chỉ nhánh trên MVP là hiệu quả; từng tài sản riêng lẻ thường nằm dưới đường biên."
+    why_it_matters: "Không ai nên chọn nhánh dưới vì luôn có danh mục cùng rủi ro mà lợi nhuận cao hơn. Thêm một ít tài sản rủi ro hơn nhưng tương quan âm có thể GIẢM rủi ro tổng (ví dụ 30% cổ phiếu/70% vàng rủi ro thấp hơn 100% vàng)."
+  - term_vi: "CAPM và SML"
+    term_en: "Capital Asset Pricing Model, Security Market Line"
+    definition: "E(Ri) = Rf + beta_i * MRP. SML vẽ lợi nhuận hợp lý của MỌI tài sản theo Beta. Tài sản nằm trên SML bị định giá thấp (hấp dẫn), dưới SML bị định giá cao."
+    why_it_matters: "Trả lời câu hỏi thực dụng: tài sản này phải đòi hỏi lợi nhuận tối thiểu bao nhiêu? Dùng để tính Ke, ngưỡng chấp nhận dự án, định giá cổ phiếu."
+  - term_vi: "Beta"
+    term_en: "Beta"
+    definition: "Độ nhạy của tài sản với thị trường = độ dốc hồi quy R_i theo R_m = Cov(Ri,Rm)/Var(Rm) = rho_im*sigma_i/sigma_m."
+    why_it_matters: "Thị trường tăng 1% thì tài sản trung bình tăng beta%. Beta 0: phi rủi ro; 0,5: điện nước/hàng thiết yếu; 1: quỹ chỉ số (VN30 ETF); 1,5: công nghệ/tài chính; 2: DN đòn bẩy cao/small-cap; âm: đi ngược thị trường (vàng đôi khi)."
+  - term_vi: "Phần bù rủi ro thị trường (MRP)"
+    term_en: "Market Risk Premium"
+    definition: "E(Rm) - Rf, độ dốc của SML."
+    why_it_matters: "Khó ước lượng và tranh cãi (5%? 7%? 10%) nhưng ảnh hưởng mọi phép tính Ke; nên dùng khoảng 5-8% và phân tích độ nhạy."
+  - term_vi: "Đường thị trường vốn (CML) và Định lý tách biệt"
+    term_en: "Capital Market Line, Separation Theorem"
+    definition: "CML: E(Rp) = Rf + Sharpe_thị_trường * sigma_p, chỉ áp dụng cho danh mục hiệu quả (trộn tài sản phi rủi ro với danh mục thị trường). Tobin 1958: quyết định danh mục rủi ro tối ưu tách khỏi quyết định mức khẩu vị rủi ro."
+    why_it_matters: "CML trục X là tổng rủi ro sigma, độ dốc là Sharpe thị trường; SML trục X là Beta, độ dốc là MRP, áp dụng cho mọi tài sản. Trộn tiền gửi với danh mục rủi ro đi trên đường thẳng, giữ nguyên Sharpe."
+  - term_vi: "Thước đo hiệu suất điều chỉnh rủi ro"
+    term_en: "Risk-adjusted performance measures"
+    definition: "Sharpe (1966, chia cho tổng rủi ro), Treynor (1965, chia cho Beta), Jensen Alpha (1968, chênh với CAPM), Information Ratio (chia cho tracking error), Sortino (chia cho downside deviation)."
+    why_it_matters: "Quỹ lời 14% chưa chắc hơn quỹ lời 11% nếu chịu rủi ro gấp đôi. Mỗi thước đo dùng mẫu số rủi ro khác nhau: Sharpe cho toàn bộ tài sản chưa đa dạng hóa; Treynor/Alpha cho danh mục là một phần của danh mục lớn đã đa dạng hóa."
+  - term_vi: "Trung bình cộng và trung bình nhân (volatility drag)"
+    term_en: "Arithmetic vs geometric mean"
+    definition: "Cộng dùng ước lượng lợi nhuận kỳ vọng một kỳ tương lai; nhân (CAGR) đo tăng trưởng gộp thực tế đã đạt. Cộng luôn lớn hơn hoặc bằng nhân; biến động càng lớn chênh lệch càng rộng."
+    why_it_matters: "Lãi nhân gộp: +50% rồi -50% có trung bình cộng 0% nhưng tiền thật 100 -> 150 -> 75, tức -13,4%/năm. Nghe 'quỹ lời trung bình 15%' phải hỏi là cộng hay nhân."
+  - term_vi: "Thước đo rủi ro nâng cao (VaR, CVaR, Max Drawdown, Downside Deviation, Skewness, Kurtosis)"
+    term_en: "Advanced risk measures"
+    definition: "VaR: mức lỗ tối đa ở độ tin cậy x% trong một kỳ. CVaR: lỗ kỳ vọng khi đã vượt VaR. Max Drawdown: sụt giảm lớn nhất từ đỉnh xuống đáy. Downside deviation: sigma chỉ của lợi nhuận âm (cho Sortino). Skewness: bất đối xứng (ưa lệch dương). Kurtosis: đuôi dày."
+    why_it_matters: "Sigma giả định phân phối chuẩn, nhưng thị trường có đuôi dày và nhà đầu tư chỉ sợ biến động xuống. VaR tham số đánh giá thấp rủi ro đuôi (LTCM)."
+  - term_vi: "Mô hình thay thế CAPM"
+    term_en: "Alternative factor models"
+    definition: "Fama-French 3 nhân tố (thị trường + SMB quy mô + HML giá trị, 1993); Carhart 4 nhân tố (+ momentum WML); Fama-French 5 nhân tố (+ RMW sinh lời, CMA đầu tư); APT (Ross 1976, nhiều nhân tố vĩ mô); Black-Litterman (cân bằng thị trường + quan điểm nhà đầu tư)."
+    why_it_matters: "CAPM chỉ một nhân tố; thực nghiệm cho thấy quy mô, giá trị, momentum cũng được trả công, và cổ phiếu beta thấp thường vượt trội (Betting Against Beta)."
+  - term_vi: "Ưu và nhược điểm của CAPM/MPT"
+    term_en: "Strengths and limits of CAPM/MPT"
+    definition: "Ưu: đơn giản, chuẩn rộng rãi để tính Ke, logic kinh tế (chỉ trả công rủi ro hệ thống), chuẩn so sánh qua SML, hướng dẫn phân bổ. Nhược: một nhân tố; beta không ổn định; ex-ante kiểm bằng dữ liệu ex-post; giả định thị trường hoàn hảo, kỳ vọng đồng nhất; danh mục thị trường không quan sát được; dị thường beta thấp; MRP tranh cãi; mô hình một kỳ tĩnh."
+    why_it_matters: "Dùng CAPM như điểm khởi đầu có kỷ luật, luôn kèm phân tích độ nhạy, không như chân lý."
+formulas:
+  - id: "m08_single_return"
+    name_vi: "Lợi nhuận một kỳ"
+    name_en: "Single period return"
+    expression_latex: 'R = \frac{P_1 - P_0 + D}{P_0}'
+    expression_python: "(P1 - P0 + D) / P0"
+    excel: "=(P1-P0+D)/P0"
+    variables:
+      - {symbol: "P0", meaning: "Giá mua đầu kỳ", unit: "VND hoặc tiền tệ bất kỳ"}
+      - {symbol: "P1", meaning: "Giá cuối kỳ", unit: "cùng đơn vị với P0"}
+      - {symbol: "D", meaning: "Cổ tức/lãi nhận trong kỳ", unit: "cùng đơn vị với P0"}
+    when_to_use: "Tính lợi nhuận thực tế của một khoản đầu tư trong một kỳ."
+    why_it_works: "Chia cho vốn ban đầu để đo mỗi đồng bỏ ra sinh lời bao nhiêu, so sánh được các khoản khác quy mô. Tử số gồm lãi vốn và thu nhập."
+    assumptions: ["Một kỳ duy nhất", "Cổ tức không tái đầu tư trong kỳ"]
+    pitfalls: ["Quên cộng cổ tức/lãi", "Dùng giá cuối làm mẫu số"]
+    interpretation: "Kết quả là tỷ lệ (0,14 = 14%). Chưa điều chỉnh rủi ro nên không đủ để so sánh các khoản có rủi ro khác nhau."
+    example:
+      inputs: {P0: 50, P1: 55, D: 2}
+      steps: ["Lãi vốn = 55 - 50 = 5", "Thu nhập = 2", "R = (5 + 2) / 50 = 0,14"]
+      result: "14%"
+  - id: "m08_expected_return_scenarios"
+    name_vi: "Lợi nhuận kỳ vọng theo kịch bản"
+    name_en: "Expected return (scenario-weighted)"
+    expression_latex: 'E(R) = \sum_{s} p_s R_s'
+    expression_python: "sum(p*r for p, r in zip(probs, returns))"
+    excel: "=SUMPRODUCT(probs, returns)"
+    variables:
+      - {symbol: "probs", meaning: "Danh sách xác suất các kịch bản (tổng 1)", unit: "tỷ lệ"}
+      - {symbol: "returns", meaning: "Lợi nhuận mỗi kịch bản", unit: "%"}
+    when_to_use: "Có bộ kịch bản kinh tế với xác suất (tốt, khá, đi ngang, xấu, khủng hoảng)."
+    why_it_works: "Giá trị kỳ vọng là trung bình có trọng số xác suất; kịch bản khả dĩ hơn đóng góp nhiều hơn."
+    assumptions: ["Xác suất tổng bằng 100%", "Kịch bản bao phủ đủ cả đuôi xấu"]
+    pitfalls: ["Quên kịch bản khủng hoảng", "Xác suất chủ quan lạc quan", "Tổng xác suất khác 100%"]
+    interpretation: "Là con số trung bình; không nói gì về mức dao động, phải đi kèm sigma."
+    example:
+      inputs: {probs: [0.5, 0.3, 0.2], returns: [20, 10, -10]}
+      steps: ["0,5*20 = 10", "0,3*10 = 3", "0,2*(-10) = -2", "Tổng = 11"]
+      result: "11%"
+  - id: "m08_portfolio_return"
+    name_vi: "Lợi nhuận kỳ vọng của danh mục"
+    name_en: "Portfolio expected return"
+    expression_latex: 'E(R_p) = \sum_{i=1}^{n} w_i E(R_i)'
+    expression_python: "sum(w*e for w, e in zip(weights, exp_returns))"
+    excel: "=SUMPRODUCT(weights, exp_returns)"
+    variables:
+      - {symbol: "weights", meaning: "Tỷ trọng từng tài sản (tổng 1)", unit: "tỷ lệ"}
+      - {symbol: "exp_returns", meaning: "Lợi nhuận kỳ vọng từng tài sản", unit: "%"}
+    when_to_use: "Tính E(R) của danh mục nhiều tài sản."
+    why_it_works: "Kỳ vọng tuyến tính nên lợi nhuận danh mục đúng bằng trung bình có trọng số. Khác rủi ro (không tuyến tính vì tương quan)."
+    assumptions: ["Tổng tỷ trọng bằng 1 (không đòn bẩy)", "Không tính chi phí giao dịch"]
+    pitfalls: ["Áp cùng cách trung bình cho sigma (sai)", "Quên tiền gửi trong tỷ trọng"]
+    interpretation: "Lợi nhuận kỳ vọng của danh mục nằm giữa lợi nhuận kỳ vọng thấp nhất và cao nhất của thành phần."
+    example:
+      inputs: {weights: [0.5, 0.5], exp_returns: [12, 8]}
+      steps: ["0,5*12 + 0,5*8 = 10"]
+      result: "10%"
+  - id: "m08_geometric_mean"
+    name_vi: "Trung bình nhân (CAGR) và so với trung bình cộng"
+    name_en: "Geometric vs arithmetic mean"
+    expression_latex: 'R_G = \left[\prod_{t=1}^{n}(1+R_t)\right]^{1/n} - 1 \qquad R_A = \frac{1}{n}\sum R_t'
+    expression_python: "(__import__('math').prod(1 + r/100 for r in returns)) ** (1/len(returns)) - 1"
+    excel: "=GEOMEAN(1+r)-1 (mảng) hoặc =(Giá_cuối/Giá_đầu)^(1/n)-1"
+    variables:
+      - {symbol: "returns", meaning: "Danh sách lợi nhuận từng kỳ", unit: "% mỗi kỳ"}
+    when_to_use: "Đo lợi nhuận thực tế đã đạt qua nhiều kỳ (tăng trưởng gộp). Dùng trung bình cộng chỉ để ước lượng kỳ vọng một kỳ tương lai."
+    why_it_works: "Lợi nhuận nhân gộp (lãi mẹ đẻ lãi con) nên phải nhân (1+R). Biến động càng lớn, trung bình nhân càng thấp hơn trung bình cộng (volatility drag)."
+    assumptions: ["Kỳ đều nhau", "Không rút/nạp vốn giữa kỳ"]
+    pitfalls: ["Nhầm trung bình cộng với tăng trưởng thực", "Quên đổi % sang tỷ lệ trước khi nhân"]
+    interpretation: "Trung bình nhân nhỏ hơn hoặc bằng cộng. Dùng CAGR cho kỳ vọng tăng trưởng dài hạn của tiền thật."
+    example:
+      inputs: {returns: [30, -20, 10]}
+      steps: ["Cộng = (30 - 20 + 10)/3 = 6,67%", "Nhân = (1,3*0,8*1,1)^(1/3) - 1 = 1,144^(1/3) - 1 = 4,59%", "Ví dụ +50%/-50%: cộng 0% nhưng nhân -13,4%; 100 -> 150 -> 75"]
+      result: "Cộng 6,67%; nhân 4,59%/năm"
+  - id: "m08_variance_sd"
+    name_vi: "Phương sai và độ lệch chuẩn"
+    name_en: "Variance and standard deviation"
+    expression_latex: '\sigma^2 = \sum_s p_s [R_s - E(R)]^2, \quad \sigma = \sqrt{\sigma^2}'
+    expression_python: "(sum(p*(r - sum(q*x for q, x in zip(probs, returns)))**2 for p, r in zip(probs, returns))) ** 0.5"
+    excel: "=SQRT(SUMPRODUCT(probs,(returns-E)^2)); mẫu lịch sử: =STDEV.S(range)"
+    variables:
+      - {symbol: "probs", meaning: "Xác suất các kịch bản", unit: "tỷ lệ"}
+      - {symbol: "returns", meaning: "Lợi nhuận mỗi kịch bản", unit: "%"}
+    when_to_use: "Đo tổng rủi ro của một tài sản/danh mục (biểu thức Python trả về sigma)."
+    why_it_works: "Bình phương để bỏ dấu, phạt nặng lệch lớn, cộng được theo danh mục; lấy căn để về cùng đơn vị với lợi nhuận."
+    assumptions: ["Phân phối xấp xỉ chuẩn", "Phân phối ổn định theo thời gian"]
+    pitfalls: ["Quên lấy căn (nhầm phương sai với sigma)", "Coi biến động lên xấu như biến động xuống", "Dữ liệu lịch sử dùng STDEV.S/STDEV.P không nhất quán"]
+    interpretation: "Sigma càng lớn kết quả càng phân tán. Quỹ cổ phiếu ví dụ sigma 18,5% so với tiết kiệm 0%."
+    example:
+      inputs: {probs: [0.15, 0.30, 0.25, 0.20, 0.10], returns: [40, 22, 10, -5, -25]}
+      steps: ["E = 11,6", "Phương sai = 0,15*28,4^2 + 0,30*10,4^2 + 0,25*(-1,6)^2 + 0,20*(-16,6)^2 + 0,10*(-36,6)^2 = 343,14", "sigma = sqrt(343,14) = 18,52"]
+      result: "sigma = 18,52%"
+  - id: "m08_cv"
+    name_vi: "Hệ số biến thiên"
+    name_en: "Coefficient of variation"
+    expression_latex: 'CV = \frac{\sigma}{E(R)}'
+    expression_python: "sigma / exp_return"
+    excel: "=sigma/E"
+    variables:
+      - {symbol: "sigma", meaning: "Độ lệch chuẩn", unit: "%"}
+      - {symbol: "exp_return", meaning: "Lợi nhuận kỳ vọng (dương)", unit: "%"}
+    when_to_use: "So sánh nhanh các khoản đầu tư có E(R) khác nhau khi E(R) dương và không quá nhỏ."
+    why_it_works: "Trả lời: mỗi 1% lợi nhuận kỳ vọng phải chịu bao nhiêu % rủi ro."
+    assumptions: ["E(R) dương, không gần 0", "Không tính đến lãi suất phi rủi ro"]
+    pitfalls: ["Nổ khi E(R) gần 0 hoặc âm", "Không trừ Rf nên khác Sharpe"]
+    interpretation: "Thấp hơn là tốt hơn. Bài 2: X 1,50; Y 1,25; Z 1,00. Nên kiểm tra bằng Sharpe."
+    example:
+      inputs: {sigma: 18.52, exp_return: 11.6}
+      steps: ["CV = 18,52 / 11,6 = 1,60", "Vàng: 5,33 / 7,4 = 0,72 (hiệu quả hơn theo rủi ro/đơn vị lợi nhuận)"]
+      result: "CV quỹ cổ phiếu = 1,60"
+  - id: "m08_covariance"
+    name_vi: "Hiệp phương sai"
+    name_en: "Covariance"
+    expression_latex: 'Cov(R_A,R_B) = \sum_s p_s [R_{A,s} - E(R_A)][R_{B,s} - E(R_B)]'
+    expression_python: "sum(p*(a - sum(q*x for q, x in zip(probs, ra)))*(b - sum(q*y for q, y in zip(probs, rb))) for p, a, b in zip(probs, ra, rb))"
+    excel: "=SUMPRODUCT(probs,(ra-EA)*(rb-EB)); mẫu lịch sử: =COVARIANCE.S(ra,rb)"
+    variables:
+      - {symbol: "probs", meaning: "Xác suất kịch bản", unit: "tỷ lệ"}
+      - {symbol: "ra", meaning: "Lợi nhuận tài sản A theo kịch bản", unit: "%"}
+      - {symbol: "rb", meaning: "Lợi nhuận tài sản B theo kịch bản", unit: "%"}
+    when_to_use: "Đo hai tài sản đi cùng chiều (dương) hay ngược chiều (âm); đầu vào cho rủi ro danh mục và beta."
+    why_it_works: "Tích hai độ lệch dương khi cùng vượt/thấp hơn kỳ vọng, âm khi ngược nhau."
+    assumptions: ["Quan hệ tuyến tính"]
+    pitfalls: ["Độ lớn phụ thuộc đơn vị nên khó diễn giải trực tiếp (dùng rho)", "Nhầm đơn vị % và tỷ lệ (Cov % bình phương gấp 10.000 lần tỷ lệ)"]
+    interpretation: "Dấu cho hướng; độ mạnh cần chuẩn hóa thành rho."
+    example:
+      inputs: {probs: [0.15, 0.30, 0.25, 0.20, 0.10], ra: [40, 22, 10, -5, -25], rb: [-3, 10, 5, 14, 8]}
+      steps: ["Tích có trọng số: -44,304 + 8,112 + 0,960 - 21,912 - 2,196", "Tổng = -59,34"]
+      result: "Cov(cổ phiếu, vàng) = -59,34 (đơn vị %^2)"
+  - id: "m08_correlation"
+    name_vi: "Hệ số tương quan"
+    name_en: "Correlation coefficient"
+    expression_latex: '\rho_{AB} = \frac{Cov(R_A,R_B)}{\sigma_A \sigma_B}'
+    expression_python: "cov / (sigma_a * sigma_b)"
+    excel: "=CORREL(ra, rb)"
+    variables:
+      - {symbol: "cov", meaning: "Hiệp phương sai", unit: "%^2"}
+      - {symbol: "sigma_a", meaning: "Độ lệch chuẩn A", unit: "%"}
+      - {symbol: "sigma_b", meaning: "Độ lệch chuẩn B", unit: "%"}
+    when_to_use: "Chuẩn hóa mức đi cùng nhau về thang -1 đến +1 để đánh giá tiềm năng đa dạng hóa."
+    why_it_works: "Chia cho tích sigma loại bỏ ảnh hưởng đơn vị và độ lớn biến động."
+    assumptions: ["Quan hệ tuyến tính", "Ổn định theo thời gian (thường SAI trong khủng hoảng)"]
+    pitfalls: ["Tin tương quan thời bình dùng cho khủng hoảng (rho tiến về 1)", "Tương quan 0 không có nghĩa độc lập"]
+    interpretation: "+1 không có lợi ích đa dạng hóa; 0 tốt; -1 có thể khử toàn bộ rủi ro. Ví dụ cổ phiếu-vàng: -0,60."
+    example:
+      inputs: {cov: -59.34, sigma_a: 18.524, sigma_b: 5.3329}
+      steps: ["rho = -59,34 / (18,524 * 5,3329) = -0,6007"]
+      result: "rho = -0,60"
+  - id: "m08_portfolio_sd_2asset"
+    name_vi: "Rủi ro danh mục hai tài sản"
+    name_en: "Two-asset portfolio risk"
+    expression_latex: '\sigma_p^2 = w_A^2\sigma_A^2 + w_B^2\sigma_B^2 + 2w_Aw_B\sigma_A\sigma_B\rho_{AB}'
+    expression_python: "(w_a**2*sigma_a**2 + (1-w_a)**2*sigma_b**2 + 2*w_a*(1-w_a)*sigma_a*sigma_b*rho) ** 0.5"
+    excel: "=SQRT(w^2*sA^2+(1-w)^2*sB^2+2*w*(1-w)*sA*sB*rho)"
+    variables:
+      - {symbol: "w_a", meaning: "Tỷ trọng tài sản A (B = 1 - w_a)", unit: "tỷ lệ"}
+      - {symbol: "sigma_a", meaning: "Sigma A", unit: "%"}
+      - {symbol: "sigma_b", meaning: "Sigma B", unit: "%"}
+      - {symbol: "rho", meaning: "Tương quan A-B", unit: "-1..1"}
+    when_to_use: "Tính sigma danh mục 2 tài sản; minh họa lợi ích đa dạng hóa. Dạng tổng quát nhiều tài sản: w'Cov w."
+    why_it_works: "Hai số hạng đầu là rủi ro riêng theo tỷ trọng; số hạng thứ ba là hiệu ứng tương tác: rho dương cộng hưởng, rho âm khử bớt. Chỉ khi rho = 1 thì sigma_p bằng trung bình có trọng số; mọi rho < 1 cho sigma_p nhỏ hơn."
+    assumptions: ["Sigma và rho ổn định", "Tỷ trọng cố định (không tái cân bằng trong kỳ)", "Không bán khống nếu w trong [0,1]"]
+    pitfalls: ["Dùng rho lịch sử thời bình cho khủng hoảng", "Trộn đơn vị % và tỷ lệ giữa các số hạng", "Cộng sigma theo tỷ trọng (chỉ đúng khi rho = 1)"]
+    interpretation: "Hai tài sản sigma 15% chia 50/50: rho +1 -> 15,00%; 0,8 -> 14,23%; 0,5 -> 12,99%; 0,2 -> 11,62%; 0 -> 10,61%; -0,5 -> 7,50%."
+    example:
+      inputs: {w_a: 0.5, sigma_a: 20, sigma_b: 15, rho: 0.3}
+      steps: ["Var = 0,25*400 + 0,25*225 + 2*0,25*20*15*0,3 = 100 + 56,25 + 45 = 201,25", "sigma_p = sqrt(201,25) = 14,19%", "So với trung bình có trọng số 17,5%: giảm 3,31 điểm"]
+      result: "sigma_p = 14,19% (E(Rp) = 10%)"
+  - id: "m08_mvp_weight"
+    name_vi: "Tỷ trọng danh mục phương sai nhỏ nhất (2 tài sản)"
+    name_en: "Minimum variance portfolio weight"
+    expression_latex: 'w_A^{MVP} = \frac{\sigma_B^2 - Cov(A,B)}{\sigma_A^2 + \sigma_B^2 - 2\,Cov(A,B)}'
+    expression_python: "(var_b - cov) / (var_a + var_b - 2*cov)"
+    excel: "=(varB-cov)/(varA+varB-2*cov)"
+    variables:
+      - {symbol: "var_a", meaning: "Phương sai A", unit: "%^2"}
+      - {symbol: "var_b", meaning: "Phương sai B", unit: "%^2"}
+      - {symbol: "cov", meaning: "Hiệp phương sai A-B", unit: "%^2"}
+    when_to_use: "Tìm điểm trái nhất của đường biên (rủi ro thấp nhất có thể) với hai tài sản."
+    why_it_works: "Đạo hàm sigma_p^2 theo w_A bằng 0 cho nghiệm này. Tương quan âm làm MVP có rủi ro thấp hơn cả tài sản an toàn hơn."
+    assumptions: ["Cho phép w trong [0,1] (nếu ngoài khoảng nghĩa là cần bán khống)", "Cov và Var ổn định"]
+    pitfalls: ["Kết quả ngoài [0,1] thì cắt về 0 hoặc 1 nếu không bán khống", "MVP không phải danh mục tối ưu theo Sharpe"]
+    interpretation: "Điểm khởi đầu của đường biên hiệu quả; chọn tỷ trọng cao hơn MVP về phía tài sản kỳ vọng cao hơn để đổi rủi ro lấy lợi nhuận."
+    example:
+      inputs: {var_a: 343.14, var_b: 28.44, cov: -59.34}
+      steps: ["Tử = 28,44 + 59,34 = 87,78", "Mẫu = 343,14 + 28,44 + 118,68 = 490,26", "w = 87,78/490,26 = 17,9% cổ phiếu, 82,1% vàng", "E(Rp) = 8,15%; sigma_p = 3,57%"]
+      result: "MVP: 17,9% cổ phiếu / 82,1% vàng; sigma 3,57%"
+  - id: "m08_portfolio_beta"
+    name_vi: "Beta của danh mục"
+    name_en: "Portfolio beta"
+    expression_latex: '\beta_p = \sum_i w_i \beta_i'
+    expression_python: "sum(w*b for w, b in zip(weights, betas))"
+    excel: "=SUMPRODUCT(weights, betas)"
+    variables:
+      - {symbol: "weights", meaning: "Tỷ trọng", unit: "tỷ lệ"}
+      - {symbol: "betas", meaning: "Beta từng tài sản", unit: "số"}
+    when_to_use: "Tính rủi ro hệ thống của danh mục để dùng trong CAPM, Treynor, Alpha."
+    why_it_works: "Beta cộng tuyến tính theo tỷ trọng (khác sigma). Tiền gửi có beta 0."
+    assumptions: ["Beta từng tài sản ước lượng đúng"]
+    pitfalls: ["Quên beta tiền mặt = 0", "Beta thị trường = 1 theo định nghĩa"]
+    interpretation: "Beta danh mục 0,179 nghĩa gần như không nhạy với thị trường."
+    example:
+      inputs: {weights: [0.3, 0.7], betas: [1.0, -0.173]}
+      steps: ["0,3*1 + 0,7*(-0,173) = 0,3 - 0,1211 = 0,1789"]
+      result: "beta_p = 0,179"
+  - id: "m08_beta_cov"
+    name_vi: "Beta (theo hiệp phương sai) và dạng tương quan"
+    name_en: "Beta"
+    expression_latex: '\beta_i = \frac{Cov(R_i,R_m)}{Var(R_m)} = \frac{\rho_{i,m}\,\sigma_i}{\sigma_m}'
+    expression_python: "cov_im / var_m"
+    excel: "=SLOPE(R_i, R_m) hoặc =COVARIANCE.S(Ri,Rm)/VAR.S(Rm)"
+    variables:
+      - {symbol: "cov_im", meaning: "Cov(Ri, Rm)", unit: "%^2"}
+      - {symbol: "var_m", meaning: "Phương sai thị trường", unit: "%^2"}
+    when_to_use: "Đo rủi ro hệ thống từ dữ liệu kịch bản hoặc lịch sử (hồi quy). Dạng thứ hai: beta = rho * sigma_i / sigma_m."
+    why_it_works: "Là độ dốc hồi quy: thị trường +1% thì tài sản trung bình +beta%. Beta cao khi tài sản vừa biến động mạnh vừa đi cùng thị trường."
+    assumptions: ["Quan hệ tuyến tính", "Chỉ số thị trường đại diện đúng", "Cửa sổ ước lượng phù hợp (tuần/tháng, 3-5 năm)"]
+    pitfalls: ["Cửa sổ 2 năm khác 5 năm", "Chọn chỉ số sai (dùng S&P cho DN VN)", "Cổ phiếu ít thanh khoản làm beta lệch thấp", "Beta không ổn định theo thời gian và khi DN đổi ngành hoặc đòn bẩy"]
+    interpretation: "Beta 1,3: biến động mạnh hơn thị trường 30%. Beta âm: đi ngược thị trường."
+    example:
+      inputs: {cov_im: 1685, var_m: 1375.5}
+      steps: ["Dữ liệu 6 năm VN-Index (22,-8,15,30,-12,10) và peer (30,-2,10,34,-24,14)", "Tổng tích độ lệch = 1.685; tổng bình phương độ lệch thị trường = 1.375,5", "beta = 1.685/1.375,5 = 1,225"]
+      result: "beta_raw = 1,225"
+  - id: "m08_beta_adjusted"
+    name_vi: "Beta hiệu chỉnh Blume"
+    name_en: "Blume adjusted beta"
+    expression_latex: '\beta_{adj} = \tfrac{2}{3}\beta_{raw} + \tfrac{1}{3}'
+    expression_python: "2/3*beta_raw + 1/3"
+    excel: "=2/3*beta+1/3"
+    variables:
+      - {symbol: "beta_raw", meaning: "Beta thô từ hồi quy", unit: "số"}
+    when_to_use: "Trước khi dùng beta lịch sử cho dự báo tương lai."
+    why_it_works: "Beta có xu hướng hồi quy về trung bình 1,0 theo thời gian; Blume kéo 1/3 về 1."
+    assumptions: ["Hệ số 2/3 - 1/3 là quy ước thực nghiệm"]
+    pitfalls: ["Chỉ áp dụng cho beta thô lịch sử, không áp dụng cho beta ngành đã chuẩn hóa nếu đã điều chỉnh", "Áp dụng hai lần"]
+    interpretation: "Beta thô 1,5 thành 1,333; 1,225 thành 1,150."
+    example:
+      inputs: {beta_raw: 1.225}
+      steps: ["2/3*1,225 + 1/3 = 0,8167 + 0,3333 = 1,150"]
+      result: "beta_adj = 1,150"
+  - id: "m08_hamada"
+    name_vi: "Hamada: tách và gộp đòn bẩy beta"
+    name_en: "Hamada unlever / relever"
+    expression_latex: '\beta_L = \beta_U[1+(1-T)D/E] \;\Rightarrow\; \beta_U = \frac{\beta_L}{1+(1-T)D/E}'
+    expression_python: "beta_u * (1 + (1 - tax) * de_target)  # beta_u = beta_l_peer / (1 + (1 - tax) * de_peer)"
+    excel: "=beta_L/(1+(1-T)*D/E) rồi =beta_U*(1+(1-T)*D/E_target)"
+    variables:
+      - {symbol: "beta_u", meaning: "Beta không đòn bẩy (rủi ro kinh doanh thuần)", unit: "số"}
+      - {symbol: "tax", meaning: "Thuế suất TNDN", unit: "tỷ lệ"}
+      - {symbol: "de_target", meaning: "D/E mục tiêu của DN", unit: "lần"}
+      - {symbol: "de_peer", meaning: "D/E của peer (dùng ở bước unlever)", unit: "lần"}
+    when_to_use: "DN chưa niêm yết hoặc cơ cấu vốn khác peer: unlever beta peer, rồi relever theo D/E của DN."
+    why_it_works: "Nợ vay làm vốn chủ gánh rủi ro tài chính bổ sung nên beta vốn chủ tăng theo D/E; tách đòn bẩy cô lập rủi ro kinh doanh để so sánh các DN khác cơ cấu vốn."
+    assumptions: ["Nợ không có rủi ro (beta nợ = 0)", "Lá chắn thuế ổn định", "Peer cùng ngành, cùng rủi ro kinh doanh"]
+    pitfalls: ["Dùng D/E sổ sách thay vì giá thị trường", "Quên (1 - T)", "Nhầm D/E và D/(D+E)", "Dùng beta peer có đòn bẩy cao mà không unlever"]
+    interpretation: "Bài 6b: beta 1,2 ở D/E 0,5 -> beta_u 0,857 -> ở D/E 1,0 beta_L 1,543."
+    example:
+      inputs: {beta_l_peer: 1.2, de_peer: 0.5, de_target: 1.0, tax: 0.2}
+      steps: ["beta_u = 1,2 / (1 + 0,8*0,5) = 1,2/1,4 = 0,857", "beta_L = 0,857*(1 + 0,8*1,0) = 0,857*1,8 = 1,543"]
+      result: "beta_u = 0,857; beta_L = 1,543"
+  - id: "m08_capm"
+    name_vi: "CAPM (lợi nhuận yêu cầu / Ke)"
+    name_en: "Capital Asset Pricing Model"
+    expression_latex: 'E(R_i) = R_f + \beta_i\,[E(R_m) - R_f]'
+    expression_python: "rf + beta * mrp"
+    excel: "=Rf + Beta*MRP"
+    variables:
+      - {symbol: "rf", meaning: "Lãi suất phi rủi ro (vd trái phiếu chính phủ 10 năm)", unit: "%"}
+      - {symbol: "beta", meaning: "Beta (nên là beta hiệu chỉnh/relever)", unit: "số"}
+      - {symbol: "mrp", meaning: "Phần bù rủi ro thị trường = E(Rm) - Rf", unit: "%"}
+    when_to_use: "Tính lợi nhuận tối thiểu cần đòi hỏi cho tài sản/dự án; tính Ke cho WACC; xác định ngưỡng chấp nhận dự án; định giá cổ phiếu qua SML. Với SME có thể cộng thêm phần bù quy mô/thanh khoản."
+    why_it_works: "Thị trường chỉ trả công cho rủi ro hệ thống vì rủi ro riêng đã bị đa dạng hóa. Lợi nhuận yêu cầu = bù giá trị thời gian của tiền (Rf) + bù rủi ro hệ thống (beta nhân MRP)."
+    assumptions: ["Thị trường hoàn hảo, nhà đầu tư duy lý đa dạng hóa", "Kỳ vọng đồng nhất", "Mô hình một kỳ, một nhân tố", "Rf, beta, MRP ước lượng đúng"]
+    pitfalls: ["Chọn MRP tùy tiện (lệch Ke hàng điểm %)", "Rf không cùng đồng tiền/kỳ hạn với dòng tiền", "Beta không ổn định", "Dùng CAPM cho DN nhỏ mà bỏ phần bù quy mô/thanh khoản", "CAPM chỉ đúng khi mọi tài sản nằm trên SML"]
+    interpretation: "Ví dụ Rf 4%, MRP 6%: beta 0,4 -> 6,4%; beta 1 -> 10%; beta 1,5 -> 13%; beta 2,5 -> 19%. Dự án đáng làm nếu E(R) lớn hơn Ke."
+    example:
+      inputs: {rf: 6, beta: 1.15, mrp: 5.6}
+      steps: ["Beta peer Gỗ Việt: 1,225 -> Blume 1,150", "Ke = 6 + 1,150*5,6 = 12,44%"]
+      result: "Ke = 12,44%"
+  - id: "m08_sml_alpha_check"
+    name_vi: "Kiểm tra định giá theo SML"
+    name_en: "SML mispricing check"
+    expression_latex: '\alpha_i = E_{analyst}(R_i) - [R_f + \beta_i\,MRP]'
+    expression_python: "exp_return - (rf + beta * mrp)"
+    excel: "=E_analyst-(Rf+Beta*MRP)"
+    variables:
+      - {symbol: "exp_return", meaning: "Lợi nhuận kỳ vọng do phân tích/kịch bản", unit: "%"}
+      - {symbol: "rf", meaning: "Lãi suất phi rủi ro", unit: "%"}
+      - {symbol: "beta", meaning: "Beta", unit: "số"}
+      - {symbol: "mrp", meaning: "Phần bù rủi ro thị trường", unit: "%"}
+    when_to_use: "Biết tài sản nằm trên hay dưới SML: hấp dẫn hay đắt."
+    why_it_works: "So lợi nhuận kỳ vọng với lợi nhuận yêu cầu cho cùng rủi ro hệ thống."
+    assumptions: ["Kỳ vọng phân tích đáng tin", "CAPM đúng"]
+    pitfalls: ["Kỳ vọng lạc quan tạo ảo tưởng bị định giá thấp", "Vàng trong case nằm trên SML do kịch bản tự thiết kế"]
+    interpretation: "Dương: trên SML, bị định giá thấp/hấp dẫn; âm: dưới SML, bị định giá cao. Bài 4: K -1,4 điểm."
+    example:
+      inputs: {exp_return: 12, rf: 5, beta: 1.4, mrp: 6}
+      steps: ["Yêu cầu = 5 + 1,4*6 = 13,4%", "Chênh = 12 - 13,4 = -1,4"]
+      result: "-1,4 điểm %: dưới SML, định giá cao"
+  - id: "m08_cml"
+    name_vi: "Đường thị trường vốn (CML)"
+    name_en: "Capital Market Line"
+    expression_latex: 'E(R_p) = R_f + \frac{E(R_m)-R_f}{\sigma_m}\,\sigma_p'
+    expression_python: "rf + (rm - rf) / sigma_m * sigma_p"
+    excel: "=Rf+(Rm-Rf)/sigma_m*sigma_p"
+    variables:
+      - {symbol: "rf", meaning: "Lãi suất phi rủi ro", unit: "%"}
+      - {symbol: "rm", meaning: "Lợi nhuận kỳ vọng danh mục thị trường", unit: "%"}
+      - {symbol: "sigma_m", meaning: "Sigma danh mục thị trường", unit: "%"}
+      - {symbol: "sigma_p", meaning: "Mức rủi ro mong muốn của danh mục hiệu quả", unit: "%"}
+    when_to_use: "Xác định lợi nhuận tối đa đạt được trên một mức rủi ro bằng cách trộn tài sản phi rủi ro với danh mục thị trường."
+    why_it_works: "Định lý tách biệt Tobin: danh mục rủi ro tối ưu như nhau cho mọi người; khẩu vị rủi ro chỉ quyết định tỷ lệ trộn với tiền gửi. Độ dốc là Sharpe thị trường."
+    assumptions: ["Vay/cho vay ở Rf", "Danh mục thị trường quan sát được (thực tế không)"]
+    pitfalls: ["Nhầm CML (chỉ danh mục hiệu quả, trục sigma) với SML (mọi tài sản, trục beta)", "Giả định vay được ở Rf"]
+    interpretation: "Rf 4%, Rm 10%, sigma_m 15%: sigma_p 20% cho E = 12% (cần đòn bẩy 1,33 lần)."
+    example:
+      inputs: {rf: 4, rm: 10, sigma_m: 15, sigma_p: 20}
+      steps: ["Sharpe thị trường = 6/15 = 0,4", "E = 4 + 0,4*20 = 12"]
+      result: "12%"
+  - id: "m08_sharpe"
+    name_vi: "Tỷ số Sharpe"
+    name_en: "Sharpe ratio"
+    expression_latex: 'Sharpe = \frac{R_p - R_f}{\sigma_p}'
+    expression_python: "(rp - rf) / sigma_p"
+    excel: "=(Rp-Rf)/sigma_p"
+    variables:
+      - {symbol: "rp", meaning: "Lợi nhuận danh mục (kỳ vọng hoặc thực hiện)", unit: "%"}
+      - {symbol: "rf", meaning: "Lãi suất phi rủi ro", unit: "%"}
+      - {symbol: "sigma_p", meaning: "Tổng rủi ro danh mục", unit: "%"}
+    when_to_use: "So sánh các danh mục/quỹ trên cơ sở tổng rủi ro; chọn tỷ trọng; khi E(R) gần 0 thay CV."
+    why_it_works: "Tử số là phần thưởng thật sự cho rủi ro (bỏ phần lãi tiết kiệm ai cũng có); mẫu số là rủi ro. Là độ dốc đường nối Rf với danh mục nên danh mục Sharpe cao nhất là điểm tiếp xúc trên đường biên (Sharpe 1966)."
+    assumptions: ["Sigma đại diện đủ cho rủi ro (phân phối đối xứng)", "Rf cùng kỳ hạn"]
+    pitfalls: ["Phạt cả biến động tăng", "Dễ bị thao túng bởi chiến lược bán quyền chọn đuôi", "Dùng một năm quá ngắn", "Lấy chênh lệch Sharpe nhỏ làm kết luận"]
+    interpretation: "Càng cao càng tốt. Bảng Gỗ Việt: 100% cổ phiếu 0,302; 30/70 0,596; 20/80 0,623 (cao nhất). Yale 0,75 so 60/40 0,55 (+36%, số gốc chưa kiểm chứng)."
+    example:
+      inputs: {rp: 8.66, rf: 6, sigma_p: 4.46}
+      steps: ["(8,66 - 6) / 4,46 = 2,66/4,46 = 0,596"]
+      result: "Sharpe = 0,596"
+  - id: "m08_treynor"
+    name_vi: "Tỷ số Treynor"
+    name_en: "Treynor ratio"
+    expression_latex: 'Treynor = \frac{R_p - R_f}{\beta_p}'
+    expression_python: "(rp - rf) / beta_p"
+    excel: "=(Rp-Rf)/beta_p"
+    variables:
+      - {symbol: "rp", meaning: "Lợi nhuận danh mục", unit: "%"}
+      - {symbol: "rf", meaning: "Lãi suất phi rủi ro", unit: "%"}
+      - {symbol: "beta_p", meaning: "Beta danh mục", unit: "số"}
+    when_to_use: "Danh mục là một phần của danh mục lớn đã đa dạng hóa nên rủi ro riêng không còn quan trọng."
+    why_it_works: "Chia phần thưởng cho rủi ro hệ thống (Treynor 1965) vì chỉ phần đó được trả công."
+    assumptions: ["Đa dạng hóa tốt", "Beta dương và đủ lớn"]
+    pitfalls: ["Beta gần 0 phóng đại tỷ số (case Gỗ Việt 26,3 vs 4,0)", "Vô nghĩa khi beta âm hoặc bằng 0", "Bỏ qua rủi ro riêng"]
+    interpretation: "Thị trường: (Rm - Rf)/1 = MRP. Danh mục có Treynor cao hơn MRP thì vượt thị trường theo rủi ro hệ thống."
+    example:
+      inputs: {rp: 14, rf: 4, beta_p: 1.2}
+      steps: ["(14 - 4)/1,2 = 8,33"]
+      result: "Treynor quỹ A = 8,33"
+  - id: "m08_jensen_alpha"
+    name_vi: "Jensen Alpha"
+    name_en: "Jensen's alpha"
+    expression_latex: '\alpha = R_p - [R_f + \beta_p(R_m - R_f)]'
+    expression_python: "rp - (rf + beta_p * (rm - rf))"
+    excel: "=Rp-(Rf+beta*(Rm-Rf))"
+    variables:
+      - {symbol: "rp", meaning: "Lợi nhuận thực hiện của danh mục", unit: "%"}
+      - {symbol: "rf", meaning: "Lãi suất phi rủi ro", unit: "%"}
+      - {symbol: "beta_p", meaning: "Beta danh mục", unit: "số"}
+      - {symbol: "rm", meaning: "Lợi nhuận thực hiện của thị trường cùng kỳ", unit: "%"}
+    when_to_use: "Đánh giá kỹ năng nhà quản lý: lợi nhuận vượt mức CAPM dự đoán."
+    why_it_works: "Trừ phần lợi nhuận đáng lẽ có do rủi ro hệ thống đã chịu; phần dư là alpha (kỹ năng hoặc may mắn)."
+    assumptions: ["CAPM đúng", "Beta ước lượng chính xác", "Chỉ số chuẩn phù hợp"]
+    pitfalls: ["Một năm quá ngắn", "Alpha có thể đến từ lớp tài sản ngoài chỉ số chuẩn (vàng), không phải kỹ năng", "Dùng sai chuẩn so sánh"]
+    interpretation: "Dương: vượt kỳ vọng CAPM; âm: kém. Bài 5: A +2,8; B +3,4. Case Gỗ Việt +3,98% chủ yếu do vàng."
+    example:
+      inputs: {rp: 10.7, rf: 6, beta_p: 0.179, rm: 10}
+      steps: ["CAPM kỳ vọng = 6 + 0,179*(10-6) = 6,716%", "alpha = 10,7 - 6,716 = 3,98"]
+      result: "alpha = +3,98 điểm %"
+  - id: "m08_information_ratio"
+    name_vi: "Information Ratio"
+    name_en: "Information ratio"
+    expression_latex: 'IR = \frac{R_p - R_b}{\text{Tracking error}}'
+    expression_python: "(rp - rb) / tracking_error"
+    excel: "=(Rp-Rb)/STDEV.S(Rp_series-Rb_series)"
+    variables:
+      - {symbol: "rp", meaning: "Lợi nhuận danh mục", unit: "%"}
+      - {symbol: "rb", meaning: "Lợi nhuận chuẩn (benchmark)", unit: "%"}
+      - {symbol: "tracking_error", meaning: "Độ lệch chuẩn của chênh lệch lợi nhuận so với chuẩn", unit: "%"}
+    when_to_use: "Đánh giá nhà quản lý chủ động so với chỉ số chuẩn."
+    why_it_works: "Đo lợi nhuận vượt chuẩn trên mỗi đơn vị rủi ro lệch khỏi chuẩn."
+    assumptions: ["Chuẩn đại diện đúng chiến lược"]
+    pitfalls: ["Chọn chuẩn sai", "Tracking error quá nhỏ làm IR phóng đại"]
+    interpretation: "Cao hơn là tốt hơn; ví dụ vượt chuẩn 2% với tracking error 4% -> 0,5."
+    example:
+      inputs: {rp: 12, rb: 10, tracking_error: 4}
+      steps: ["(12 - 10)/4 = 0,5"]
+      result: "IR = 0,5"
+  - id: "m08_sortino"
+    name_vi: "Tỷ số Sortino và độ lệch chuẩn phía xấu"
+    name_en: "Sortino ratio / downside deviation"
+    expression_latex: 'Sortino = \frac{R_p - MAR}{DD}, \quad DD = \sqrt{\frac{1}{n}\sum \min(R_t - MAR, 0)^2}'
+    expression_python: "(sum(returns)/len(returns) - mar) / ((sum(min(r - mar, 0)**2 for r in returns)/len(returns)) ** 0.5)"
+    excel: "Không có hàm sẵn; dùng SUMPRODUCT với IF(R<MAR,(R-MAR)^2,0)"
+    variables:
+      - {symbol: "returns", meaning: "Chuỗi lợi nhuận kỳ", unit: "%"}
+      - {symbol: "mar", meaning: "Lợi nhuận tối thiểu chấp nhận (Minimum Acceptable Return)", unit: "%"}
+    when_to_use: "Khi nhà đầu tư chỉ lo biến động xuống; phân phối lệch."
+    why_it_works: "Chỉ phạt độ lệch phía dưới ngưỡng MAR, đúng cảm nhận rủi ro."
+    assumptions: ["Có đủ quan sát lợi nhuận âm"]
+    pitfalls: ["Ít quan sát âm làm DD không ổn định", "Chọn MAR tùy tiện"]
+    interpretation: "Cao hơn là tốt hơn; luôn kết hợp Sharpe."
+    example:
+      inputs: {returns: [10, -5, 8, -12, 15, 3], mar: 0}
+      steps: ["Trung bình = 3,17", "DD = sqrt((25 + 144)/6) = 5,31", "Sortino = 3,17/5,31 = 0,597"]
+      result: "Sortino = 0,597"
+  - id: "m08_var_parametric"
+    name_vi: "VaR tham số và CVaR"
+    name_en: "Parametric Value at Risk / CVaR"
+    expression_latex: 'VaR_{95\%} = V\,[E(R) - 1{,}645\,\sigma] \quad (\text{lỗ nếu âm})'
+    expression_python: "value * (exp_return - z * sigma) / 100"
+    excel: "=V*(E-NORM.S.INV(0.95)*sigma)/100"
+    variables:
+      - {symbol: "value", meaning: "Giá trị khoản đầu tư", unit: "triệu VND"}
+      - {symbol: "exp_return", meaning: "E(R)", unit: "%"}
+      - {symbol: "sigma", meaning: "Sigma", unit: "%"}
+      - {symbol: "z", meaning: "1,645 cho 95%; 2,326 cho 99%", unit: "số"}
+    when_to_use: "Ước lượng nhanh lỗ ở ngưỡng tin cậy; luôn kèm stress test."
+    why_it_works: "Với phân phối chuẩn, 5% kết quả xấu nhất nằm dưới E - 1,645 sigma. CVaR (Expected Shortfall) = lỗ trung bình khi đã vượt VaR."
+    assumptions: ["Phân phối chuẩn", "Tương quan ổn định"]
+    pitfalls: ["Đánh giá thấp đuôi dày (LTCM)", "Tương quan khủng hoảng tăng", "VaR không nói lỗ sâu thế nào khi đã vượt"]
+    interpretation: "Kết quả là mức kết quả ở phân vị 5%; âm là lỗ, dương nghĩa là gần như không lỗ ở ngưỡng đó. Gỗ Việt 1.500 triệu: 100% cổ phiếu -283 triệu; 50/50 -53,7; 30/70 +19,8."
+    example:
+      inputs: {value: 1500, exp_return: 11.6, sigma: 18.524, z: 1.645}
+      steps: ["11,6 - 1,645*18,524 = -18,87%", "-18,87% * 1.500 = -283,0 triệu"]
+      result: "VaR95 xấp xỉ -283 triệu (tham số, xấp xỉ)"
+  - id: "m08_max_drawdown"
+    name_vi: "Sụt giảm tối đa"
+    name_en: "Maximum drawdown"
+    expression_latex: 'MDD = \min_t \left(\frac{V_t}{\max_{s\le t} V_s} - 1\right)'
+    expression_python: "min(v / max(values[:i+1]) - 1 for i, v in enumerate(values))"
+    excel: "Cột đỉnh lũy kế =MAX($B$2:B2); drawdown =B2/đỉnh-1; MIN cột"
+    variables:
+      - {symbol: "values", meaning: "Chuỗi giá trị danh mục theo thời gian", unit: "VND"}
+    when_to_use: "Đánh giá mức chịu đựng tâm lý/tài chính, so sánh quỹ."
+    why_it_works: "Đo nỗi đau thực tế của người giữ đúng đỉnh."
+    assumptions: ["Dữ liệu đủ dài và đủ tần suất"]
+    pitfalls: ["Phụ thuộc cửa sổ dữ liệu", "Không cho biết thời gian phục hồi"]
+    interpretation: "Ví dụ 100,120,90,110,80,130: đỉnh 120 -> đáy 80 = -33,3%."
+    example:
+      inputs: {values: [100, 120, 90, 110, 80, 130]}
+      steps: ["Đỉnh 120, đáy sau 80", "80/120 - 1 = -33,3%"]
+      result: "MDD = -33,3%"
+  - id: "m08_leverage_wipeout"
+    name_vi: "Ngưỡng sụt giá xóa sạch vốn chủ khi dùng đòn bẩy"
+    name_en: "Leverage wipe-out threshold"
+    expression_latex: 'Drop_{wipe} = \frac{1}{L}, \quad L = \frac{\text{Tài sản}}{\text{Vốn chủ}}'
+    expression_python: "equity / assets"
+    excel: "=Von_chu/Tai_san"
+    variables:
+      - {symbol: "assets", meaning: "Tổng tài sản", unit: "tiền tệ"}
+      - {symbol: "equity", meaning: "Vốn chủ", unit: "tiền tệ"}
+    when_to_use: "Đánh giá rủi ro khi đầu tư bằng vốn vay (bài học LTCM)."
+    why_it_works: "Tài sản giảm x% làm vốn chủ giảm L*x%; mất hết khi x = 1/L."
+    assumptions: ["Nợ không đổi giá trị", "Margin call buộc bán tháo"]
+    pitfalls: ["Bỏ qua phái sinh ngoài bảng", "Thanh khoản biến mất đúng lúc cần"]
+    interpretation: "LTCM 125/4,7 = 26,6 lần: sụt 3,76% xóa vốn; thực tế mất khoảng 97,9% vốn (4,6/4,7)."
+    example:
+      inputs: {assets: 125, equity: 4.7}
+      steps: ["L = 125/4,7 = 26,6", "Ngưỡng = 1/26,6 = 3,76%", "Đòn bẩy 25:1 -> 4%"]
+      result: "Sụt khoảng 3,76% là mất toàn bộ vốn chủ"
+  - id: "m08_ke_sme"
+    name_vi: "Ke của SME (CAPM cộng phần bù)"
+    name_en: "SME cost of equity (build-up)"
+    expression_latex: 'K_e = R_f + \beta_{L}\times MRP + SP + LP'
+    expression_python: "rf + beta * mrp + size_premium + liquidity_premium"
+    excel: "=Rf+Beta*MRP+SizePrem+IlliqPrem"
+    variables:
+      - {symbol: "rf", meaning: "Lãi suất phi rủi ro", unit: "%"}
+      - {symbol: "beta", meaning: "Beta relever theo D/E của DN", unit: "số"}
+      - {symbol: "mrp", meaning: "MRP", unit: "%"}
+      - {symbol: "size_premium", meaning: "Phần bù quy mô nhỏ (SP) - cần xác nhận số liệu", unit: "%"}
+      - {symbol: "liquidity_premium", meaning: "Phần bù thiếu thanh khoản (LP) - cần xác nhận", unit: "%"}
+    when_to_use: "Ke cho DN chưa niêm yết; làm ngưỡng cho dự án."
+    why_it_works: "Nhà đầu tư vào DN nhỏ, khó thoái vốn đòi hỏi thêm lợi nhuận. Mức phần bù là ước tính chuyên gia, không có trong nguồn."
+    assumptions: ["Phần bù lấy từ nguồn đáng tin hoặc phân tích độ nhạy"]
+    pitfalls: ["Phần bù bịa số", "Cộng chồng chéo"]
+    interpretation: "Ke SME thường cao hơn DN niêm yết cùng ngành vài điểm %. Ví dụ Bài 6b: Ke 15,3% chưa gồm phần bù."
+    example:
+      inputs: {rf: 4.5, beta: 1.5429, mrp: 7, size_premium: 0, liquidity_premium: 0}
+      steps: ["4,5 + 1,5429*7 = 15,30 (phần bù đặt 0 vì chưa có số xác thực)"]
+      result: "Ke = 15,3% (trước phần bù SME)"
+procedures:
+  - id: "m08_proc_portfolio_scenarios"
+    name: "Phân tích danh mục từ kịch bản (2 tài sản + tiền gửi)"
+    steps:
+      - "Xác định vốn, thời hạn chưa dùng, mức lỗ tối đa chấp nhận (triệu đồng), tách quỹ dự phòng thanh khoản (tối thiểu 3-6 tháng chi phí cố định) rồi mới tính phần đầu tư"
+      - "Lập 3-5 kịch bản (có kịch bản khủng hoảng) với xác suất tổng 100%"
+      - "Tính E(R) từng tài sản (m08_expected_return_scenarios)"
+      - "Tính phương sai, sigma, CV (m08_variance_sd, m08_cv)"
+      - "Tính Cov, rho, beta của tài sản so với thị trường (m08_covariance, m08_correlation, m08_beta_cov)"
+      - "Với mỗi tỷ trọng (0%, 10%, ..., 100%): E(Rp) tuyến tính, sigma_p (m08_portfolio_sd_2asset), Sharpe với Rf là lãi tiết kiệm"
+      - "Tính MVP (m08_mvp_weight) và chọn tỷ trọng đánh đổi: Sharpe cao nhưng giữ E(R) hợp lý"
+      - "Trộn với tiền gửi: E toàn bộ = tỷ trọng tiền gửi*Rf + tỷ trọng rủi ro*E(Rp), sigma = tỷ trọng rủi ro*sigma_p; Sharpe giữ nguyên"
+      - "Stress test: lỗ từng kịch bản bằng tiền; tương quan = 1; VaR tham số (có caveat đuôi dày)"
+      - "So E(R) danh mục với Ke của DN; nếu có dự án kinh doanh E(R) lớn hơn Ke thì ưu tiên dự án"
+    outputs: "Bảng tỷ trọng - E(R) - sigma - Sharpe, khuyến nghị phân bổ có quỹ dự phòng, lỗ tối đa bằng tiền, so sánh với Ke."
+  - id: "m08_proc_ke_unlisted"
+    name: "Tính Ke cho DN chưa niêm yết bằng peer beta"
+    steps:
+      - "Chọn 1-3 DN niêm yết cùng ngành làm peer (nếu có thể nên dùng beta ngành quốc tế, Damodaran)"
+      - "Lấy lợi nhuận kỳ (tuần/tháng, 3-5 năm) của peer và VN-Index; beta = SLOPE(R_peer, R_market)"
+      - "Hiệu chỉnh Blume: 2/3 beta + 1/3"
+      - "Unlever theo D/E và thuế của peer, relever theo D/E mục tiêu của DN (Hamada)"
+      - "Rf = lãi suất trái phiếu chính phủ 10 năm (HNX); MRP khoảng 5-8% kèm phân tích độ nhạy"
+      - "Ke = Rf + beta*MRP, cộng phần bù quy mô/thanh khoản nếu có cơ sở"
+      - "Dùng Ke làm ngưỡng chấp nhận dự án hoặc đầu vào WACC (m03)"
+    outputs: "Ke với khoảng nhạy theo MRP và beta."
+  - id: "m08_proc_performance"
+    name: "Đánh giá hiệu suất danh mục đã điều chỉnh rủi ro"
+    steps:
+      - "Lấy Rp, sigma_p, beta_p, Rf và Rm cùng kỳ"
+      - "Tính Sharpe, Treynor, Alpha, nếu có chuẩn thì Information Ratio"
+      - "Chọn thước đo theo ngữ cảnh: Sharpe cho toàn bộ tài sản; Treynor/Alpha cho phần của danh mục lớn"
+      - "Kiểm tra beta gần 0 (Treynor phóng đại) và độ dài kỳ (một năm quá ngắn để kết luận kỹ năng)"
+      - "Giải thích nguồn alpha (lớp tài sản ngoài chỉ số chuẩn, may mắn, hay kỹ năng)"
+    outputs: "Bảng so sánh và kết luận thận trọng."
+  - id: "m08_proc_diversification_audit"
+    name: "Kiểm tra đa dạng hóa (SME trong kinh doanh)"
+    steps:
+      - "Liệt kê nguồn tập trung: khách hàng, sản phẩm, nhà cung cấp, thị trường, vùng"
+      - "Đo tỷ trọng doanh thu top 1/top 3 và ước tính tương quan giữa các mảng (cùng chuỗi cung ứng = tương quan cao)"
+      - "Chạy stress test: mất khách lớn nhất, doanh thu -10%, -20%, -30%, tương quan = 1"
+      - "Đề xuất giảm tập trung với mảng tương quan thấp"
+    outputs: "Danh sách rủi ro tập trung và kịch bản chịu đựng."
+decision_rules:
+  - "Nếu rủi ro cao hơn mà không thấy lợi nhuận kỳ vọng cao hơn tương xứng thì khoản đó nằm dưới đường biên hoặc SML, không nên chọn."
+  - "Nếu hai khoản có E(R) khác nhau thì so bằng CV (E(R) dương) hoặc Sharpe, không so riêng lợi nhuận."
+  - "Nếu rho giữa hai tài sản càng thấp thì đa dạng hóa càng hiệu quả; nếu rho gần 1 thì thêm tài sản không giảm rủi ro."
+  - "Nếu thêm tài sản tương quan âm thì có thể giảm sigma tổng dù tài sản đó rủi ro hơn (kiểm tra MVP)."
+  - "Nếu E(R) dự án lớn hơn Ke (hoặc NPV dương theo WACC) thì chấp nhận; nếu nhỏ hơn thì loại hoặc ưu tiên dự án khác."
+  - "Nếu tài sản nằm trên SML (E(R) lớn hơn Rf + beta*MRP) thì hấp dẫn; dưới SML thì đắt."
+  - "Nếu so danh mục chưa đa dạng hóa/toàn bộ tài sản thì dùng Sharpe; nếu là một phần danh mục lớn thì dùng Treynor/Alpha."
+  - "Nếu beta danh mục gần 0 thì không diễn giải Treynor như kỹ năng."
+  - "Nếu kết quả quỹ nêu 'trung bình lời X%' thì hỏi cộng hay nhân; dùng CAGR cho tăng trưởng dài hạn."
+  - "Nếu chênh Sharpe giữa hai phương án rất nhỏ thì chọn phương án có E(R) cao hơn (ví dụ 30/70 thay 20/80)."
+  - "Nếu DN chưa niêm yết thì dùng beta peer + Blume + Hamada, không dùng beta lịch sử của chính nó."
+  - "Nếu D/E mục tiêu khác peer thì phải unlever rồi relever beta."
+  - "Nếu dữ liệu thanh khoản thấp (thị trường VN) thì dùng dữ liệu tuần/tháng và đối chiếu beta ngành quốc tế."
+  - "Nếu có nhu cầu tiền trong 12 tháng (thuế, lương, nợ) thì để phần đó ở tiền gửi, chỉ đầu tư vốn nhàn rỗi thực sự."
+  - "Nếu định đầu tư tài chính bằng tiền vay hoặc vốn lưu động thì không làm (đòn bẩy cộng thiếu thanh khoản, bài học LTCM)."
+  - "Nếu mô hình dùng rho/sigma lịch sử thì stress test thêm rho = 1 và sụt 30% trước khi chốt."
+  - "Nếu tỷ trọng thực tế lệch mục tiêu quá 5-10 điểm phần trăm thì tái cân bằng; rà soát hằng quý."
+  - "Nếu mục đích là kiểm soát lỗ phía xuống thì bổ sung Sortino, VaR/CVaR, max drawdown ngoài sigma."
+  - "Nếu MRP chưa chắc chắn thì chạy Ke với MRP 5%, 6,5%, 8% và báo khoảng."
+sme_vn_guidance:
+  - "Chủ SME dồn gần như toàn bộ tài sản vào một DN nên chịu rủi ro phi hệ thống rất cao (không được thị trường bù); giá trị thực tế của lý thuyết là tư duy đa dạng hóa trong kinh doanh (khách hàng, sản phẩm, nhà cung cấp, thị trường), định giá Ke đúng và tách vốn nhàn rỗi khỏi vốn kinh doanh."
+  - "DN chưa niêm yết không có beta: dùng beta ngành/peer (Damodaran Online miễn phí; HOSE/HNX cho dữ liệu giá VN-Index, VN30), Blume, Hamada."
+  - "Rf: lợi suất trái phiếu chính phủ 10 năm từ HNX/Bộ Tài chính (cần xác nhận số liệu hiện hành)."
+  - "Ke SME thường cao hơn DN niêm yết cùng ngành vài điểm phần trăm (phần bù quy mô/thanh khoản - mức cụ thể cần xác nhận)."
+  - "Công cụ: Excel/Google Sheets (SUMPRODUCT, SLOPE, CORREL), Python pandas/numpy, dữ liệu giá từ SSI iBoard, VNDirect, Vietstock, CafeF (cơ bản miễn phí), Yahoo/Google Finance."
+  - "Nhóm tài sản định tính: tiết kiệm/CCTG (rủi ro rất thấp, quỹ dự phòng); trái phiếu CP/quỹ trái phiếu (vốn 1-3 năm); vàng (phòng thủ, tương quan thấp/âm với cổ phiếu); VN30 ETF (vốn dài hạn trên 3-5 năm); cổ phiếu riêng lẻ (số vốn nhỏ, chấp nhận mất); bất động sản (thanh khoản thấp, đòn bẩy thận trọng); dự án cốt lõi (ưu tiên nếu E(R) lớn hơn Ke)."
+  - "Quỹ dự phòng thanh khoản tối thiểu 3-6 tháng chi phí cố định trước khi đầu tư tài chính."
+  - "Đa dạng hóa cổ phiếu VN: cổ phiếu cùng ngành tương quan cao; ưu tiên khác ngành/khác lớp tài sản thay vì tăng số mã."
+  - "Lãi suất tiết kiệm, giá vàng, thuế đầu tư tài chính: các con số trong case là giả định, cần xác nhận và tham vấn chuyên gia. Không phải lời khuyên đầu tư cá nhân."
+benchmarks:
+  - {metric: "Beta theo loại", value: "0 phi rủi ro; 0,5 điện nước/hàng thiết yếu; 1 quỹ chỉ số; 1,5 công nghệ/tài chính; 2 đòn bẩy cao/small-cap", context: "Tham chiếu chung", confidence: "medium"}
+  - {metric: "Số cổ phiếu loại phần lớn rủi ro riêng", value: "khoảng 20-30", context: "Nghiên cứu thị trường Mỹ; không áp dụng máy móc cho VN do tương quan cao", confidence: "low"}
+  - {metric: "MRP", value: "5-8% (kèm độ nhạy)", context: "Khoảng tham khảo trong nguồn", confidence: "low"}
+  - {metric: "Phần bù thiếu thanh khoản", value: "khoảng 3-5%/năm", context: "Ước tính học thuật phổ biến", confidence: "low"}
+  - {metric: "Blume", value: "2/3 beta + 1/3", context: "Hồi quy về 1", confidence: "high"}
+  - {metric: "Cửa sổ ước lượng beta", value: "dữ liệu tuần/tháng 3-5 năm", context: "Khuyến nghị", confidence: "medium"}
+  - {metric: "Quỹ dự phòng thanh khoản", value: "3-6 tháng chi phí cố định", context: "SME", confidence: "medium"}
+  - {metric: "Ngưỡng tái cân bằng", value: "lệch 5-10 điểm phần trăm", context: "Rà soát hằng quý", confidence: "medium"}
+  - {metric: "z VaR", value: "95%: 1,645; 99%: 2,326", context: "Phân phối chuẩn", confidence: "high"}
+pitfalls:
+  - "Chạy theo lợi nhuận cao không hỏi rủi ro; luôn hỏi lỗ tối đa bao nhiêu."
+  - "Đa dạng hóa giả (cùng ngành, cùng chuỗi cung ứng, tương quan cao)."
+  - "Dùng vốn vay hoặc vốn lưu động cho đầu tư tài chính."
+  - "Tin σ, β, ρ lịch sử là bất biến; tương quan tiến về 1 khi khủng hoảng."
+  - "Dùng trung bình cộng để kỳ vọng tăng trưởng dài hạn (phải dùng CAGR)."
+  - "So hiệu suất không điều chỉnh rủi ro."
+  - "Chọn MRP tùy tiện; không làm độ nhạy."
+  - "Nhầm CML với SML; nhầm Sharpe với Treynor (tổng rủi ro với rủi ro hệ thống)."
+  - "Treynor khi beta gần 0 và kết luận kỹ năng sau một năm."
+  - "Nhầm đơn vị % và tỷ lệ khi tính Cov, phương sai."
+  - "Dùng beta thô không Blume, không unlever/relever."
+  - "Tin quá mức VaR tham số (đuôi dày) và quên rủi ro thanh khoản, rủi ro mô hình, rủi ro hệ thống (mọi người dùng cùng mô hình)."
+case_lessons:
+  - name: "Yale Endowment (David Swensen, CIO 1985-2021)"
+    type: "success"
+    setup: "Quỹ tài trợ Yale áp dụng MPT cực đoan, phân bổ mạnh vào tài sản thay thế: cổ phiếu Mỹ 2,3%, nước ngoài 11,4%, vốn tư nhân 41,0%, tài sản thực 9,8%, hedge fund 23,5%, trái phiếu 4,5%, tiền 7,5% (so với quỹ điển hình 25/20/10/5/10/25/5). Số liệu hiệu suất lấy từ tài liệu gốc, cần đối chiếu báo cáo Yale."
+    key_calculations:
+      - "Hai tài sản sigma 15% chia 50/50: rho 0,8 -> sigma_p 14,23% (giảm 5%); rho 0,2 -> 11,62% (giảm 22,5%); rho 0 -> 10,61%. Chuyển sang tài sản 'khác họ' cắt thêm 2,6-3,6 điểm rủi ro."
+      - "Gần 74% (41,0 + 23,5 + 9,8 = 74,3%) ở ba lớp tài sản tương quan thấp với cổ phiếu đại chúng"
+      - "Số liệu gốc: 20 năm 11,3% vs 60/40 7,5% (+3,8%); 2009-2021 14,5% vs 11%; sigma 12% vs 10%; Sharpe 0,75 vs 0,55 -> 0,75/0,55 - 1 = 36,4%"
+      - "Khủng hoảng 2008-09: Yale -24,6% vs 60/40 -22% (tệ hơn do tài sản kém thanh khoản và tương quan tăng)"
+    lesson: "Đa dạng hóa thực sự (tương quan thấp) đẩy đường biên; phần bù thiếu thanh khoản có thật nhưng chỉ nhà đầu tư dài hạn vốn vĩnh viễn mới khai thác được; tái cân bằng kỷ luật; kết quả phụ thuộc chọn nhà quản lý giỏi, khó sao chép; đa dạng hóa không bảo vệ tuyệt đối khi khủng hoảng; SME thì thanh khoản là ràng buộc cứng."
+    data_reliability: "unverified"
+  - name: "Long-Term Capital Management (LTCM) 1998"
+    type: "failure"
+    setup: "Quỹ phòng hộ của John Meriwether, có Merton và Scholes (Nobel 1997). Chiến lược arbitrage hội tụ chênh lệch trái phiếu, đòn bẩy khoảng 25:1; vốn chủ khoảng 4,7 tỷ USD, tài sản khoảng 125 tỷ USD. Mất khoảng 4,6 tỷ USD trong vài tháng, 14 ngân hàng cứu trợ do Fed New York điều phối ngày 23/9/1998 sau khủng hoảng Nga."
+    key_calculations:
+      - "Đòn bẩy = 125/4,7 = 26,6 lần; sụt giá tài sản 1/26,6 = 3,76% xóa vốn chủ; mất 4,6/4,7 = 97,9% vốn"
+      - "Đòn bẩy 25:1: sụt 4% xóa 100% vốn (vốn chủ 100, tài sản 2.500)"
+      - "Sự kiện lệch 4 sigma theo phân phối chuẩn xác suất khoảng 3,17x10^-5 mỗi ngày, tức khoảng 31.574 ngày (khoảng 125 năm giao dịch); thực tế sự kiện cực đoan xảy ra nhiều lần"
+      - "Timeline vốn chủ (làm tròn, minh họa): đầu 1998 ~4,7; 5/1998 ~4,0; 8/1998 ~2,3; 9/1998 ~0,6; 23/9 ~0,4 tỷ USD"
+    lesson: "Tương quan không hằng số (rho tiến về 1 khi khủng hoảng, đa dạng hóa biến mất); đuôi dày làm VaR/Gauss đánh giá thấp rủi ro; đòn bẩy là nhân tử của sai lầm; thanh khoản là rủi ro riêng; rủi ro mô hình; rủi ro hệ thống khi mọi người dùng cùng mô hình. Với SME: không vay hoặc dùng vốn lưu động để đầu tư tài chính; luôn stress test với rho = 1 và dự trữ tiền mặt."
+    data_reliability: "illustrative"
+  - name: "SME: Nội thất Gỗ Việt (Bình Dương) phân bổ 2 tỷ đồng vốn nhàn rỗi"
+    type: "sme"
+    setup: "DN nội thất xuất khẩu có 2.000 triệu chưa cần dùng 12 tháng. 3 kênh: tiết kiệm 6% (Rf), quỹ VN30 (beta 1), vàng. 5 kịch bản (xác suất 15/30/25/20/10): cổ phiếu +40/+22/+10/-5/-25; vàng -3/+10/+5/+14/+8. Số liệu giả định bài học, không phải dự báo."
+    key_calculations:
+      - "E(cổ phiếu) = 11,6%; E(vàng) = 7,4%; MRP = 11,6 - 6 = 5,6%"
+      - "Var cổ phiếu = 343,14, sigma 18,52%; Var vàng = 28,44, sigma 5,33%; CV 1,60 và 0,72"
+      - "Cov = -59,34; rho = -0,60; beta vàng = -59,34/343,14 = -0,173"
+      - "30/70: E = 8,66%, Var = 30,8826 + 13,9356 - 24,9228 = 19,8954, sigma 4,46%, Sharpe 0,596; 100% cổ phiếu Sharpe 0,302; 20/80 Sharpe 0,623 (cao nhất)"
+      - "MVP: w cổ phiếu = 87,78/490,26 = 17,9%, E = 8,15%, sigma 3,57%"
+      - "100% vàng sigma 5,33% cao hơn 30/70 (4,46%): thêm cổ phiếu giảm rủi ro nhờ rho âm"
+      - "Beta danh mục 30/70 = 0,179; CAPM yêu cầu 6 + 0,179*5,6 = 7,0% nhưng kỳ vọng 8,66% (vàng nằm trên SML do kịch bản)"
+      - "Beta peer (6 năm VN-Index vs peer): 1.685/1.375,5 = 1,225; Blume 1,150; Ke = 6 + 1,150*5,6 = 12,44%"
+      - "Khủng hoảng trên 1.500 triệu: 100% cổ phiếu lỗ 375 triệu; 50/50 lỗ 127,5 triệu; 30/70 lỗ 28,5 triệu. VaR95 tham số: -283 / -53,7 / +19,8 triệu"
+      - "Phân bổ khuyến nghị: 500 tiết kiệm (25%), 450 VN30 (22,5%), 1.050 vàng (52,5%); E toàn bộ = 0,25*6 + 0,75*8,66 = 7,995% (khoảng 159,9 triệu so với 120 triệu), sigma 3,35%, Sharpe 0,596"
+      - "Sau 1 năm (VN30 +10%, vàng +11%): danh mục 10,7%; Treynor 26,3 vs thị trường 4,0 (beta gần 0 nên phóng đại); alpha = 10,7 - 6,72 = +3,98% nhưng do vàng, một năm quá ngắn"
+    lesson: "Giữ quỹ dự phòng thanh khoản; chọn Sharpe cao nhưng không cực đại nếu E(R) hy sinh nhiều; danh mục tài chính E(R) 8,66% thấp hơn Ke 12,44% nên dự án kinh doanh E(R) từ 12,4% trở lên được ưu tiên; thận trọng khi diễn giải Treynor và alpha."
+    data_reliability: "illustrative"
+worked_examples:
+  - name: "Danh mục hai tài sản và so sánh với trung bình có trọng số"
+    inputs: {E_A: 14, sigma_A: 22, E_B: 8, sigma_B: 12, rho: 0.25, w_A: 0.6}
+    steps:
+      - "E(Rp) = 0,6*14 + 0,4*8 = 11,6%"
+      - "Var = 0,36*484 + 0,16*144 + 2*0,6*0,4*22*12*0,25 = 174,24 + 23,04 + 31,68 = 228,96 (0,022896 dạng tỷ lệ)"
+      - "sigma_p = sqrt(228,96) = 15,13%"
+      - "Trung bình có trọng số sigma = 0,6*22 + 0,4*12 = 18,0%"
+      - "Giảm khoảng 2,9 điểm %"
+    result: "E = 11,6%; sigma_p = 15,13% so với 18,0% (đa dạng hóa giảm 2,9 điểm)"
+  - name: "Sharpe, Treynor, Alpha cho hai quỹ"
+    inputs: {rf: 4, rm: 10, fund_A: {rp: 14, sigma: 16, beta: 1.2}, fund_B: {rp: 11, sigma: 8, beta: 0.6}}
+    steps:
+      - "A: Sharpe = 10/16 = 0,625; Treynor = 10/1,2 = 8,33; alpha = 14 - (4 + 1,2*6) = 2,8"
+      - "B: Sharpe = 7/8 = 0,875; Treynor = 7/0,6 = 11,67; alpha = 11 - (4 + 0,6*6) = 3,4"
+    result: "Quỹ B tốt hơn theo cả ba thước đo"
+  - name: "Ke với beta thô, Blume và Hamada cho xưởng bao bì Long An"
+    inputs: {rf: 4.5, mrp: 7, tax: 0.2, beta_raw: 1.5, peer2: {beta: 1.2, de: 0.5}, target_de: 1.0}
+    steps:
+      - "(a) Ke với beta thô = 4,5 + 1,5*7 = 15,0%"
+      - "Beta Blume = 2/3*1,5 + 1/3 = 1,333; Ke = 4,5 + 1,333*7 = 13,83%"
+      - "(b) beta_u = 1,2/(1 + 0,8*0,5) = 0,857"
+      - "beta_L = 0,857*(1 + 0,8*1,0) = 1,543; Ke = 4,5 + 1,543*7 = 15,3%"
+    result: "(a) 15,0% và 13,83%; (b) beta_L 1,543, Ke 15,3%"
+  - name: "Danh mục cổ phiếu/vàng 30/70 từ kịch bản (Gỗ Việt)"
+    inputs: {probs: [0.15, 0.30, 0.25, 0.20, 0.10], stock: [40, 22, 10, -5, -25], gold: [-3, 10, 5, 14, 8], rf: 6, w_stock: 0.3}
+    steps:
+      - "E(stock) = 11,6; E(gold) = 7,4"
+      - "Var(stock) = 343,14; Var(gold) = 28,44; Cov = -59,34"
+      - "E(Rp) = 0,3*11,6 + 0,7*7,4 = 8,66"
+      - "Var(Rp) = 0,09*343,14 + 0,49*28,44 + 2*0,21*(-59,34) = 19,895; sigma_p = 4,46"
+      - "Sharpe = (8,66 - 6)/4,46 = 0,596"
+    result: "E 8,66%; sigma 4,46%; Sharpe 0,596"
+  - name: "Trung bình cộng so với nhân (+30, -20, +10)"
+    inputs: {returns: [30, -20, 10]}
+    steps: ["Cộng = 20/3 = 6,67%", "Nhân = (1,3*0,8*1,1)^(1/3) - 1 = 1,144^(1/3) - 1 = 4,59%"]
+    result: "6,67% so với 4,59%/năm; chênh do hiệu ứng gộp (volatility drag)"
+practice_questions:
+  - {q: "Quỹ có lợi nhuận +30%, -20%, +10%. Tính trung bình cộng và nhân.", a: "Cộng 6,67%; nhân 4,59%/năm (lãi gộp nên nhân thấp hơn)."}
+  - {q: "X (E 18%, sigma 27%), Y (12%, 15%), Z (9%, 9%): tính CV.", a: "CV_X 1,50; CV_Y 1,25; CV_Z 1,00 -> Z hiệu quả nhất theo CV; kiểm tra thêm Sharpe."}
+  - {q: "A: E 14%, sigma 22%; B: E 8%, sigma 12%; rho 0,25; danh mục 60/40. Tính E, sigma_p.", a: "E 11,6%; sigma_p 15,13% (so với 18,0%)."}
+  - {q: "Rf 5%, MRP 6%, cổ phiếu K beta 1,4 kỳ vọng 12%. Định giá cao hay thấp?", a: "Yêu cầu 13,4%; kỳ vọng thấp hơn 1,4 điểm -> dưới SML, định giá cao."}
+  - {q: "Rf 4%, Rm 10%. A: Rp 14, sigma 16, beta 1,2. B: Rp 11, sigma 8, beta 0,6. Sharpe, Treynor, Alpha?", a: "A: 0,625; 8,33; +2,8. B: 0,875; 11,67; +3,4. B tốt hơn cả ba."}
+  - {q: "Rf 4,5%, MRP 7%, thuế 20%. (a) Peer beta thô 1,5: Ke thô và Blume? (b) Peer 2 beta 1,2, D/E 0,5; xưởng D/E 1,0: beta_L và Ke?", a: "(a) 15,0% và 13,83% (beta 1,333). (b) beta_u 0,857; beta_L 1,543; Ke 15,3%."}
+  - {q: "Hai tài sản sigma 15%, tỷ trọng 50/50. Sigma_p khi rho = 0,5 và -0,5?", a: "12,99% và 7,50%."}
+  - {q: "Đòn bẩy 25:1: sụt bao nhiêu % tài sản xóa hết vốn chủ?", a: "1/25 = 4%."}
+  - {q: "Tự thực hành: áp dụng quy trình 7 bước (Gỗ Việt) cho vốn nhàn rỗi của DN bạn.", a: "Gợi ý: quỹ dự phòng, 3 kênh, 5 kịch bản có khủng hoảng, E/sigma/rho/Sharpe, Ke bằng peer beta, stress test rồi khuyến nghị."}
+checklist:
+  - "Phân biệt rủi ro hệ thống/phi hệ thống; hiểu đa dạng hóa phụ thuộc tương quan?"
+  - "Tách quỹ dự phòng thanh khoản (3-6 tháng chi phí cố định) và vốn nhàn rỗi thực sự?"
+  - "Kịch bản có đủ khủng hoảng, xác suất tổng 100%?"
+  - "Tính E(R), sigma, CV, Cov, rho; so sánh bằng Sharpe?"
+  - "Sigma_p dùng đúng đơn vị; kiểm tra rho = 1 stress?"
+  - "Beta: dùng peer, cửa sổ phù hợp, Blume, Hamada unlever/relever?"
+  - "Ke = Rf + beta*MRP (+ phần bù SME); MRP có độ nhạy?"
+  - "Đã so E(R) danh mục tài chính với Ke dự án?"
+  - "Chọn thước đo hiệu suất đúng ngữ cảnh (Sharpe/Treynor/Alpha)?"
+  - "Không dùng đòn bẩy/vốn vay cho đầu tư tài chính?"
+  - "Lưu ý rủi ro đuôi, giới hạn VaR; ghi chú số liệu giả định/không phải lời khuyên đầu tư?"
+  - "Đặt lịch rà soát hằng quý và tái cân bằng khi lệch 5-10 điểm %?"
+excel_google_sheets_templates:
+  - "TAB 1 Kịch bản: Kịch bản | Xác suất | R_A | R_B; kiểm tra tổng xác suất = 100%"
+  - "TAB 2 Thống kê: E=SUMPRODUCT(p,R); Var=SUMPRODUCT(p,(R-E)^2); sigma=SQRT(Var); CV=sigma/E; Cov=SUMPRODUCT(p,(RA-EA)*(RB-EB)); rho=Cov/(sA*sB)"
+  - "TAB 3 Danh mục: bảng tỷ trọng 0..100% bước 10%: E=w*EA+(1-w)*EB; sigma_p=SQRT(w^2*VarA+(1-w)^2*VarB+2*w*(1-w)*Cov); Sharpe=(Ep-Rf)/sigma_p; tô xanh Sharpe cao nhất, tô đỏ lỗ xấu nhất vượt mức chấp nhận"
+  - "TAB 4 Beta và Ke: Beta=SLOPE(R_peer,R_market); Adj=2/3*Beta+1/3; Unlever beta_U=beta_L/(1+(1-T)*D/E peer); Relever beta_L=beta_U*(1+(1-T)*D/E DN); Ke=Rf+beta*MRP (+ phần bù)"
+  - "Tờ quyết định phân bổ vốn nhàn rỗi: vốn; số tháng chưa dùng; quỹ dự phòng giữ lại; lỗ tối đa chấp nhận (triệu đồng); ngưỡng Ke; tỷ trọng các kênh; E, sigma, Sharpe; kết quả stress test (rho = 1); thời điểm rà soát"
+source_file: "08-risk-and-return.md"
