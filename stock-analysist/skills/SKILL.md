@@ -39,8 +39,8 @@ flowchart TD
 ```
 
 ### Bước 1: Quản lý Session & Đồng bộ RAG
-1. Đọc cấu hình từ `yh-fin-monitor/dev/config_analysis.json` hoặc danh sách mã người dùng chỉ định.
-2. Nạp session gần nhất từ `yh-fin-monitor/ai-session/agent_session.json`.
+1. Đọc cấu hình từ `stock-analysist/dev/config_analysis.json` hoặc danh sách mã người dùng chỉ định.
+2. Nạp session gần nhất từ `stock-analysist/ai-session/agent_session.json`.
 3. Kiểm tra thay đổi tài liệu trong `./documents/` qua MD5 hash và đồng bộ `doc_index.json`.
 
 ### Bước 2: Thu thập Dữ liệu Khung Ngày & Tính Kênh xu hướng Toán học
@@ -84,12 +84,12 @@ flowchart TD
   - Vùng hỗ trợ tĩnh (xanh dương đậm nét liền), vùng kháng cự tĩnh (đỏ đậm nét liền).
   - Chú thích mô hình nến Nhật bằng mũi tên trỏ vào nến.
   - Badge khuyến nghị ở góc trái (Xanh đậm = MUA, Vàng = THEO DÕI, Đỏ = BÁN).
-  - Lưu file ảnh: `yh-fin-monitor/output/[TICKER]_analysis.png`.
+  - Lưu file ảnh: `stock-analysist/output/[TICKER]_analysis.png`.
 
 ### Bước 6: Trực quan Mindmap & Ghi nhận Lịch sử
 1. Sinh đồ thị tư duy Mermaid.js theo luồng: `Vĩ mô` $\rightarrow$ `Kênh xu hướng` $\rightarrow$ `Mô hình nến` $\rightarrow$ `Hành động & Lý do`.
-2. Ghi nhật ký vào `yh-fin-monitor/ai-session/recommendation_log.jsonl`.
-3. Cập nhật trạng thái mới nhất vào `yh-fin-monitor/ai-session/agent_session.json`.
+2. Ghi nhật ký vào `stock-analysist/ai-session/recommendation_log.jsonl`.
+3. Cập nhật trạng thái mới nhất vào `stock-analysist/ai-session/agent_session.json`.
 
 ---
 
@@ -98,24 +98,24 @@ flowchart TD
 > [!IMPORTANT]
 > **Bắt buộc kích hoạt Virtual Environment** trước khi chạy bất kỳ script Python nào để đảm bảo nạp đủ các thư viện (`numpy`, `scipy`, `pandas`, `mplfinance`, `yfinance`):
 > ```bash
-> source yh-fin-monitor/venv/bin/activate
+> source stock-analysist/venv/bin/activate
 > # hoặc: source google-ads/venv/bin/activate
 > ```
 
-Agent có thể chạy trực tiếp bộ công cụ độc lập từ thư mục gốc repo hoặc thư mục `yh-fin-monitor/`:
+Agent có thể chạy trực tiếp bộ công cụ độc lập từ thư mục gốc repo hoặc thư mục `stock-analysist/`:
 
 ```bash
 # 1. Phân tích Kỹ thuật Toàn diện v2.0 (Khuyến nghị: MFI, MA Cross 9/26, Hộp tích lũy, Đồ thị 3 bảng):
-source yh-fin-monitor/venv/bin/activate && python3 yh-fin-monitor/dev/analysis_script.py STB.VN
+source stock-analysist/venv/bin/activate && python3 stock-analysist/dev/analysis_script.py STB.VN
 
 # 2. Phân tích hàng loạt đa mã v2.0 theo config_analysis.json:
-source yh-fin-monitor/venv/bin/activate && python3 yh-fin-monitor/dev/analysis_script.py
+source stock-analysist/venv/bin/activate && python3 stock-analysist/dev/analysis_script.py
 
 # 3. Phân tích phiên bản tiêu chuẩn v1.0:
-source yh-fin-monitor/venv/bin/activate && python3 yh-fin-monitor/dev/chart_analysis_skill.py STB.VN
+source stock-analysist/venv/bin/activate && python3 stock-analysist/dev/chart_analysis_skill.py STB.VN
 
 # 4. Chạy kiểm tra đồng bộ tài liệu RAG:
-source yh-fin-monitor/venv/bin/activate && python3 -c "import sys; sys.path.insert(0, 'yh-fin-monitor/dev'); from chart_analysis_skill import rag_sync_check; print(rag_sync_check())"
+source stock-analysist/venv/bin/activate && python3 -c "import sys; sys.path.insert(0, 'stock-analysist/dev'); from chart_analysis_skill import rag_sync_check; print(rag_sync_check())"
 ```
 
 ---

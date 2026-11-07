@@ -1,7 +1,7 @@
 # Sổ Tay Hướng Dẫn Vận Hành Hệ Thống Phân Tích Chứng Khoán AI (Quantitative Stock Analysis System)
 
 > **Phiên bản:** v1.0  
-> **Dự án:** `yh-fin-monitor`  
+> **Dự án:** `stock-analysist`  
 > **Mục tiêu:** Hệ thống tự động hóa phân tích kỹ thuật chứng khoán kết hợp mô hình nến Nhật thực chiến (Steve Nison) và thuật toán toán học (Cực trị địa phương, Hồi quy tuyến tính, Tỷ lệ R:R kỷ luật).
 
 ---
@@ -9,7 +9,7 @@
 ## 1. Cấu Trúc Dự Án & Luồng Dữ Liệu
 
 ```
-yh-fin-monitor/
+stock-analysist/
 ├── prompt-stock-analyze.md       # Tài liệu đặc tả vai trò và quy trình 6 bước của AI Agent
 ├── dev/                          # Thư mục chứa toàn bộ mã nguồn thực thi
 │   ├── analysis_script.py        # [MỚI - v2.0] Script phân tích nâng cao (MFI, MA Cross, Hộp cam, Nến Steve Nison mở rộng, Đồ thị 3 bảng)
@@ -41,14 +41,14 @@ Trước khi chạy bất kỳ script Python nào, luôn kích hoạt môi trư�
 
 ```bash
 # 1. Tạo môi trường ảo nếu chưa có:
-python3 -m venv yh-fin-monitor/venv
+python3 -m venv stock-analysist/venv
 
 # 2. Kích hoạt môi trường ảo:
-source yh-fin-monitor/venv/bin/activate
+source stock-analysist/venv/bin/activate
 # (Hoặc: source google-ads/venv/bin/activate)
 
 # 3. Cài đặt các thư viện phụ thuộc:
-pip install -r yh-fin-monitor/dev/requirements.txt
+pip install -r stock-analysist/dev/requirements.txt
 ```
 
 Các thư viện chính được sử dụng:
@@ -62,19 +62,19 @@ Các thư viện chính được sử dụng:
 ## 3. Hướng Dẫn Sử Dụng (Usage)
 
 > [!IMPORTANT]
-> Luôn đảm bảo đã kích hoạt Virtual Environment (`source yh-fin-monitor/venv/bin/activate`) trước khi chạy các lệnh dưới đây.
+> Luôn đảm bảo đã kích hoạt Virtual Environment (`source stock-analysist/venv/bin/activate`) trước khi chạy các lệnh dưới đây.
 
 ### 3.1. Phân tích Kỹ thuật Toàn diện v2.0 (Khuyến nghị dùng `analysis_script.py`)
 Phiên bản v2.0 tích hợp đầy đủ MFI dòng tiền, MA Cross (9, 26), tự động vẽ Hộp tích lũy, thư viện nến Steve Nison mở rộng và đồ thị chuyên nghiệp 3 bảng con:
 ```bash
 # Đảm bảo đã activate venv:
-source yh-fin-monitor/venv/bin/activate
+source stock-analysist/venv/bin/activate
 
 # 1. Phân tích 1 mã cụ thể:
-python3 yh-fin-monitor/dev/analysis_script.py STB.VN
+python3 stock-analysist/dev/analysis_script.py STB.VN
 
 # 2. Phân tích hàng loạt theo config_analysis.json:
-python3 yh-fin-monitor/dev/analysis_script.py
+python3 stock-analysist/dev/analysis_script.py
 ```
 Kết quả hiển thị trên màn hình:
 * Xu hướng dài hạn (`MA200`), Kênh giá, Median Line & Trạng thái Hộp tích lũy.
@@ -85,11 +85,11 @@ Kết quả hiển thị trên màn hình:
 
 ### 3.2. Chạy Phân tích Phiên bản Chuẩn v1.0 (`chart_analysis_skill.py`)
 ```bash
-source yh-fin-monitor/venv/bin/activate
-python3 yh-fin-monitor/dev/chart_analysis_skill.py STB.VN
+source stock-analysist/venv/bin/activate
+python3 stock-analysist/dev/chart_analysis_skill.py STB.VN
 ```
 * Biểu đồ xuất tại: `output/[TICKER]-[DD-MM-YYYY]-[KHUYẾN NGHỊ].png`.
-Chỉnh sửa file `yh-fin-monitor/dev/config_analysis.json` để khai báo danh sách các mã cổ phiếu cần quét:
+Chỉnh sửa file `stock-analysist/dev/config_analysis.json` để khai báo danh sách các mã cổ phiếu cần quét:
 ```json
 {
   "tickers": ["STB.VN", "HPG.VN", "VCB.VN", "VNM.VN", "MWG.VN"],
@@ -103,7 +103,7 @@ Chỉnh sửa file `yh-fin-monitor/dev/config_analysis.json` để khai báo dan
 ```
 Sau đó chạy lệnh mà không cần đối số:
 ```bash
-python3 yh-fin-monitor/dev/chart_analysis_skill.py
+python3 stock-analysist/dev/chart_analysis_skill.py
 ```
 Hệ thống sẽ lần lượt phân tích từng mã, tự động lưu biểu đồ riêng biệt vào `output/`, ghi log vào `recommendation_log.jsonl`, và cập nhật `agent_session.json`. Nếu một mã bị lỗi, các mã còn lại vẫn tiếp tục bình thường.
 

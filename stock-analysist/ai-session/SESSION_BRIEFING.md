@@ -1,4 +1,4 @@
-# SESSION BRIEFING: HỆ THỐNG PHÂN TÍCH CHỨNG KHOÁN ĐỊNH LƯỢNG (YH-FIN-MONITOR)
+# SESSION BRIEFING: HỆ THỐNG PHÂN TÍCH CHỨNG KHOÁN ĐỊNH LƯỢNG (stock-analysist)
 
 > **Mã phiên:** `STOCK-AI-SESSION-2026-09-17`  
 > **Khung thời gian mặc định:** NGÀY (Daily - `interval: "1d"`, `period: "12mo"`)  
@@ -27,7 +27,7 @@ Tổng hợp từ `ai-session/agent_session.json` và `ai-session/recommendation
 1. **Tài liệu nến Nhật chuyên sâu:** `documents/Đồ thị nến Nhật - Steve Nison.pdf`
 2. **Hướng dẫn vận hành hệ thống:** `documents/HUONG_DAN_SU_DUNG.md`
 3. **Kho dữ liệu 407 biểu đồ thực tế:** `documents/Chart/` (Bao gồm các mẫu hình hộp tích lũy, mũi tên dự báo sóng hồi, các mốc hỗ trợ/kháng cự lịch sử).
-4. **Hệ thống Skill:** `.agents/skills/stock-analysis/` và `yh-fin-monitor/skills/`.
+4. **Hệ thống Skill:** `.agents/skills/stock-analysis/` và `stock-analysist/skills/`.
 
 ---
 
