@@ -1,0 +1,1513 @@
+id: accounting-m08
+title: "Kế toán m08: Cẩm nang case study kế toán tích hợp"
+summary: "Tích hợp kế toán tài chính, quản trị, giá thành, ngân sách, chênh lệch và tỷ số vào 7 tình huống doanh nghiệp (F&B, sản xuất gọi vốn, bán lẻ thất bại, công nghệ chế tạo, xe điện, sữa, SME rang cà phê). Dạy chuỗi: bối cảnh -> số liệu -> tính từng bước -> diễn giải -> bài học, kèm…"
+agents: ["accountant"]
+order: 28
+when: ["cam nang case study ke toan tich hop", "comprehensive accounting case studies manual"]
+body_max: 2986
+sections:
+  - id: "m08-tong-quan"
+    title: "Tổng quan m08"
+    tags: ["m08", "cẩm", "nang", "case", "study", "kế", "toán", "tích", "hợp", "comprehensive", "accounting", "studies"]
+    text: |-
+      Cẩm nang case study kế toán tích hợp (Comprehensive Accounting Case Studies Manual) — module m08
+
+      Mục đích: Tích hợp kế toán tài chính, quản trị, giá thành, ngân sách, chênh lệch và tỷ số vào 7 tình huống doanh nghiệp (F&B, sản xuất gọi vốn, bán lẻ thất bại, công nghệ chế tạo, xe điện, sữa, SME rang cà phê). Dạy chuỗi: bối cảnh -> số liệu -> tính từng bước -> diễn giải -> bài học, kèm kiểm tra nhất quán (Bảng cân đối cân, dòng tiền khớp tiền mặt, tổng phân bổ = tổng chi phí).
+
+      Dùng khi:
+      - Bài toán đa chiều cần phối hợp nhiều module kế toán (ví dụ vừa tính giá thành ABC vừa lập ngân sách tiền mặt vừa phân tích chênh lệch).
+      - Cần phân bổ chi phí bộ phận hỗ trợ phục vụ lẫn nhau (trực tiếp / bậc thang / tương hỗ) hoặc giải hệ phương trình tương hỗ.
+      - Chuyển báo cáo VAS sang IFRS, ghi nhận doanh thu đa cấu phần (IFRS 15), vốn hóa thuê (IFRS 16), vốn hóa R&D (IAS 38), kiểm tra suy giảm (IAS 36), thuế hoãn lại…
+      - Chủ SME hỏi 'lãi mà sao cạn tiền' - cần dựng 3 báo cáo khớp nhau và giải thích dòng tiền.
+      - Phát hiện dấu hiệu gian lận/che giấu số liệu (red flags): doanh thu ký gửi, thiếu dự phòng tồn kho, thuê ngoài bảng, thiếu báo cáo phân khúc, ngân sách lạc qua…
+      - Cần sàng lọc nguy cơ phá sản (Altman Z') hoặc kiểm tra tính nhất quán của một bộ số liệu giả định.
+
+      Nên nắm trước: - m01; - m02; - m03; - m04; - m05; - m06
+
+      Module liên quan: - 'm01 - Kế toán tài chính: VAS/IFRS, ghi nhận doanh thu, thuê, nền của IFRS 15/16, IAS 2/12/36/37/38 (ở đây chỉ nêu ứng dụng số).' - 'm02 - Kế toán quản trị: CVP, hòa vốn, biên an toàn, DOL, đa sản phẩm (m02_weighted_cm_bep), Menu Engineering.' - 'm03 - Giá thành: Job costing, ABC, TDABC, chi phí chưa hấp thụ (m03_under_over_applied), phân bổ lại overhead.' - 'm04 - Ngân sách và dự báo: Master B…
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m08_reciprocal_allocation: Phân bổ chi phí hỗ trợ theo phương pháp tương hỗ
+      - m08_stepdown_allocation: Phân bổ bậc thang và trực tiếp
+      - m08_ifrs15_ssp_allocation: Phân bổ giá giao dịch theo giá bán độc lập (SSP)
+      - m08_ifrs16_pv: Nợ thuê tài sản (PV các khoản thuê cố định)
+      - m08_ias36_recoverable: Giá trị sử dụng, giá trị thu hồi và tổn thất tài sản
+      - m08_altman_z: Altman Z' (doanh nghiệp sản xuất không niêm yết)
+      - m08_deferred_tax_transition: Điều chỉnh chuyển đổi VAS sang IFRS kèm thuế hoãn lại
+      - m08_nrv_provision: Dự phòng giảm giá hàng tồn kho theo NRV
+      - m08_under_absorbed: Chi phí sản xuất chung chưa hấp thụ
+      - m08_shadow_price: Giá bóng của nguồn lực nút cổ chai
+      - m08_variable_consideration_revenue: Doanh thu thuần sau yếu tố biến đổi (trả hàng, thưởng, trưn…
+
+      Kho tra cứu của module: Khái niệm 7, Công thức 11, frameworks 5, Quy trình 6, Quy tắc quyết định 16, Chuẩn so sánh 7, Lỗi thường gặp 13, Lưu ý SME Việt Nam 8, Bài học case 7, Ví dụ có lời giải 12, Câu hỏi luyện tập 12, Checklist 14, Mẫu Excel/Sheets 6. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ định khoản", "lỗi thường gặp khấu hao").
+  - id: "m08-concepts-1"
+    title: "Khái niệm: Tính nhất quán số liệu (kỷ luật Balance/Reconcile)"
+    tags: ["khái", "niệm", "tính", "nhất", "quán", "số", "liệu", "kỷ", "luật", "balance", "reconcile"]
+    text: |-
+      term_vi: Tính nhất quán số liệu (kỷ luật Balance/Reconcile)
+      term_en: Numerical consistency discipline
+      definition: 'Mọi bộ số tự dựng phải tự khớp: Tài sản = Nợ + Vốn chủ; tiền cuối kỳ trên CFS = tiền trên Bảng cân đối; tổng chi phí phân bổ = tổng chi phí gốc; tổng chênh lệch thành phần = chênh lệch tổng; tổng lãi + giảm gốc nợ thuê = tổng tiền thuê.'
+      why_it_matters: Bản cũ của cẩm nang có nhiều lỗi (CFS không khớp, ROE tính sai, bảng điều chỉnh không cân). Một lỗi cộng nhỏ trong hồ sơ gọi vốn làm mất uy tín. Agent luôn chạy lại bằng Python trước khi trình bày.
+  - id: "m08-concepts-2"
+    title: "Khái niệm: Đo lường lại thay vì dịch báo cáo (VAS -> IFRS)"
+    tags: ["khái", "niệm", "đo", "lường", "lại", "thay", "vì", "dịch", "báo", "cáo", "vas", "ifrs"]
+    text: |-
+      term_vi: Đo lường lại thay vì dịch báo cáo (VAS -> IFRS)
+      term_en: Re-measurement, not translation
+      definition: VAS thiên về hình thức pháp lý/chứng từ/giá gốc; IFRS thiên về bản chất kinh tế (chuyển giao quyền kiểm soát, giá trị thu hồi, nghĩa vụ thuê). Chuyển đổi lần đầu (IFRS 1) điều chỉnh vào lợi nhuận giữ lại đầu kỳ, kèm thuế hoãn lại (IAS 12).
+      why_it_matters: Nhà đầu tư ngoại đọc EBITDA, nợ ròng, ROE theo IFRS. Điều chỉnh làm lợi nhuận giữ lại giảm nhưng tránh bị hạ định giá khi thẩm định. Quy định áp dụng tại VN cần xác nhận hiện hành.
+  - id: "m08-concepts-3"
+    title: "Khái niệm: Giá trị có thể thu hồi (max của bán và dùng)"
+    tags: ["khái", "niệm", "giá", "trị", "có", "thể", "thu", "hồi", "max", "của", "bán", "và"]
+    text: |-
+      term_vi: Giá trị có thể thu hồi (max của bán và dùng)
+      term_en: Recoverable amount = max(FVLCD, VIU)
+      definition: Số tiền cao hơn giữa giá trị hợp lý trừ chi phí thanh lý (bán) và giá trị sử dụng (PV dòng tiền tương lai). Tài sản/CGU không được ghi sổ cao hơn mức này.
+      why_it_matters: 'Chủ sở hữu hợp lý chọn phương án có lợi hơn. Nếu FVLCD > VIU thì bán còn hơn dùng: tín hiệu chiến lược thanh lý/thuê ngoài, không chỉ là bút toán.'
+  - id: "m08-concepts-4"
+    title: "Khái niệm: Front-loading của IFRS 16"
+    tags: ["khái", "niệm", "front", "loading", "của", "ifrs", "16"]
+    text: |-
+      term_vi: Front-loading của IFRS 16
+      term_en: Lease expense front-loading
+      definition: Chi phí thuê = khấu hao ROU (đều) + lãi trên dư nợ giảm dần, nên cao ở đầu hợp đồng và thấp ở cuối; tổng cả kỳ bằng tổng tiền thuê. EBITDA tăng đúng bằng tiền thuê, EBIT tăng ít hơn.
+      why_it_matters: So sánh công ty đã/chưa áp IFRS 16 phải điều chỉnh tương thích (nợ ròng gồm nợ thuê, EV/EBITDA nhất quán). Ngoài bảng thuê = che đòn bẩy (Case 3).
+  - id: "m08-concepts-5"
+    title: "Khái niệm: Lãi kế toán khác tiền"
+    tags: ["khái", "niệm", "lãi", "kế", "toán", "khác", "tiền"]
+    text: |-
+      term_vi: Lãi kế toán khác tiền
+      term_en: Profit is not cash
+      definition: Lợi nhuận bị giữ lại trong phải thu, tồn kho, TSCĐ; tiền còn chịu chia lợi tức và trả nợ. CFO = NI + D&A - ΔAR - ΔInv + ΔAP.
+      why_it_matters: 'Case 7: lãi 220,8 triệu nhưng tiền giảm 150 -> 80,8. Chủ chỉ chia lợi tức từ dòng tiền tự do sau đầu tư và trả nợ, giữ quỹ đệm >= 1 tháng chi phí.'
+  - id: "m08-concepts-6"
+    title: "Khái niệm: Bù chéo ngầm giữa sản phẩm/điểm bán"
+    tags: ["khái", "niệm", "bù", "chéo", "ngầm", "giữa", "sản", "phẩm", "điểm", "bán"]
+    text: |-
+      term_vi: Bù chéo ngầm giữa sản phẩm/điểm bán
+      term_en: Hidden cross-subsidisation
+      definition: Phân bổ cào bằng hoặc báo cáo hợp nhất che việc đơn hàng/điểm bán lãi đang nuôi đơn hàng/điểm bán lỗ.
+      why_it_matters: 'GreenPack: Job X lãi 23,5% nuôi Y,Z (~10%); TechMart: 2 flagship +24 tỷ nuôi 8 showroom lỗ -28 tỷ. ABC và báo cáo phân khúc là thuốc chữa.'
+  - id: "m08-concepts-7"
+    title: "Khái niệm: Dấu hiệu cảnh báo kế toán"
+    tags: ["khái", "niệm", "dấu", "hiệu", "cảnh", "báo", "kế", "toán"]
+    text: |-
+      term_vi: Dấu hiệu cảnh báo kế toán
+      term_en: Accounting red flags (forensic)
+      definition: CFO thấp hơn lợi nhuận kéo dài, DSO/DIO tăng, tồn kho cũ giữ giá gốc, hợp đồng thuê ngoài bảng, ngân sách lệch bất lợi nhiều kỳ không hành động.
+      why_it_matters: TechMart không sụp vì thương mại điện tử đơn thuần mà vì hệ thống kế toán che điểm yếu. Phát hiện sớm bằng phép tính cụ thể.
+  - id: "m08-formulas-1"
+    title: "Công thức: m08_reciprocal_allocation — Phân bổ chi phí hỗ trợ theo phương pháp tương hỗ"
+    tags: ["công", "thức", "m08_reciprocal_allocation", "phân", "bổ", "chi", "phí", "hỗ", "trợ", "theo", "phương", "pháp"]
+    text: |-
+      id: m08_reciprocal_allocation
+      name_vi: Phân bổ chi phí hỗ trợ theo phương pháp tương hỗ
+      name_en: Reciprocal method (linear algebra)
+      expression_latex: S_i = C_i + \sum_j a_{ji} S_j \;\Rightarrow\; \mathbf{S} = (\mathbf{I}-\mathbf{A}^{T})^{-1}\mathbf{C}
+      expression_python: np.linalg.solve(np.eye(n) - A.T, C)
+      excel: =MMULT(MINVERSE(I - TRANSPOSE(A)), C)
+      variables:
+      - symbol: C_i
+        meaning: chi phí gốc của bộ phận hỗ trợ i
+        unit: VNĐ
+      - symbol: a_ji
+        meaning: tỷ lệ dịch vụ bộ phận j cấp cho i (hàng j, cột i; a_ii = 0)
+        unit: tỷ lệ
+      - symbol: S_i
+        meaning: tổng chi phí sau khi tính phục vụ chéo
+        unit: VNĐ
+      when_to_use: Hai bộ phận hỗ trợ (kho - đội xe, IT - bảo trì) phục vụ lẫn nhau đáng kể (hơn khoảng 10%) và kết quả ảnh hưởng quyết định (thứ hạng kênh, giá thành).
+      why_it_works: Chi phí A phụ thuộc chi phí B và ngược lại - vòng lặp vô hạn. Thay vì lặp tay, giải hệ phương trình một lần. Phần chuyển ra bộ phận sản xuất của i là (1 - tổng a_ij) x S_i; cộng lại phải bằng tổng chi phí gốc.
+      assumptions:
+      - Tỷ lệ dịch vụ ổn định và đo được
+      - Chi phí gốc đã gom đúng bộ phận
+      pitfalls:
+      - Dùng I - A thay vì I - A chuyển vị (nhầm hàng/cột) cho hệ nghiệm sai - bản cũ của nguồn mắc lỗi này.
+      - S1+S2+S3 lớn hơn tổng chi phí gốc (đếm hai lần phần qua lại); chỉ phần chuyển ra sản xuất mới vào giá thành.
+      - 'Không dùng nếu dịch vụ lẫn nhau không đáng kể: tốn công mà kết quả gần như bậc thang.'
+      interpretation: 'Chính xác duy nhất, không phụ thuộc thứ tự. Kiểm tra: tổng phân bổ cho sản xuất/kênh = tổng chi phí gốc.'
+      example:
+        inputs:
+          C:
+          - 600
+          - 400
+          K_to_X: 0.2
+          X_to_K: 0.1
+          K_to_GT: 0.5
+          K_to_MT: 0.3
+          X_to_GT: 0.4
+          X_to_MT: 0.5
+        steps:
+        - K = 600 + 0,10 X; X = 400 + 0,20 K -> K = 640/0,98 = 653,06; X = 530,61
+        - GT = 0,5x653,06 + 0,4x530,61 = 538,78; MT = 0,3x653,06 + 0,5x530,61 = 461,22
+        result: Tổng 1.000 khớp 600+400; GT 538,78 và MT 461,22 (triệu VNĐ).
+  - id: "m08-formulas-2"
+    title: "Công thức: m08_stepdown_allocation — Phân bổ bậc thang và trực tiếp"
+    tags: ["công", "thức", "m08_stepdown_allocation", "phân", "bổ", "bậc", "thang", "và", "trực", "tiếp"]
+    text: |-
+      id: m08_stepdown_allocation
+      name_vi: Phân bổ bậc thang và trực tiếp
+      name_en: Step-down and direct allocation
+      expression_latex: Alloc_{j\to i}=Cost_j\times share_{ji}; \quad direct:\; share_{ji}/\sum_{i\in prod}share_{ji}
+      expression_python: cost_j * share_ji
+      excel: =B2*C2
+      variables:
+      - symbol: Cost_j
+        meaning: chi phí bộ phận j (đã cộng phần nhận từ bộ phận trước)
+        unit: VNĐ
+      - symbol: share_ji
+        meaning: tỷ lệ dịch vụ j cấp cho i
+        unit: tỷ lệ
+      when_to_use: 'Cần cách gần đúng đơn giản: trực tiếp (bỏ qua phục vụ lẫn nhau), bậc thang (một chiều, bộ phận đã đóng sổ không nhận lại).'
+      why_it_works: Bậc thang ghi nhận một phần phục vụ lẫn nhau. Xếp bộ phận phục vụ nhiều bộ phận hỗ trợ khác nhất lên trước để giảm sai lệch.
+      assumptions:
+      - Thứ tự phân bổ cố định
+      pitfalls:
+      - Đổi thứ tự cho kết quả khác
+      - Thứ hạng lợi nhuận hai kênh có thể đảo chiều giữa 3 phương pháp (Case 6)
+      interpretation: Dùng so sánh độ nhạy với phương pháp tương hỗ; chênh nhỏ thì chấp nhận bậc thang.
+      example:
+        inputs:
+          S1: 160
+          S2: 240
+          S1_share:
+          - 0.2
+          - 0.5
+          - 0.3
+          S2_share_to_P:
+          - 0.6
+          - 0.3
+        steps:
+        - S1 160 -> S2 32, P1 80, P2 48; S2 = 240 + 32 = 272 -> P1 181,33, P2 90,67
+        result: P1 261,33; P2 138,67 (tổng 400). Tương hỗ cùng dữ liệu cho P1 260,41; P2 139,59.
+  - id: "m08-formulas-3"
+    title: "Công thức: m08_ifrs15_ssp_allocation — Phân bổ giá giao dịch theo giá bán độc lập (SSP)"
+    tags: ["công", "thức", "m08_ifrs15_ssp_allocation", "phân", "bổ", "giá", "giao", "dịch", "theo", "bán", "độc", "lập"]
+    text: |-
+      id: m08_ifrs15_ssp_allocation
+      name_vi: Phân bổ giá giao dịch theo giá bán độc lập (SSP)
+      name_en: IFRS 15 transaction price allocation by relative SSP
+      expression_latex: Rev_i = Price \times \frac{SSP_i}{\sum_k SSP_k}
+      expression_python: price * ssp_i / sum(ssp)
+      excel: =Price*SSP_i/SUM(SSP)
+      variables:
+      - symbol: Price
+        meaning: giá giao dịch của hợp đồng gói
+        unit: VNĐ
+      - symbol: SSP_i
+        meaning: giá bán độc lập của nghĩa vụ thực hiện i
+        unit: VNĐ
+      when_to_use: Hợp đồng gói gồm phần cứng giao ngay + phần mềm/bảo trì nhiều năm.
+      why_it_works: Nếu không phân bổ theo SSP, toàn bộ chiết khấu gói dồn vào một nghĩa vụ; ghi 100% khi giao phần cứng kéo doanh thu tương lai về hiện tại, năm đầu phình năm sau rỗng.
+      assumptions:
+      - Các cấu phần tách biệt được
+      - SSP quan sát/ước tính tin cậy
+      pitfalls:
+      - Phần dịch vụ phải ghi theo thời gian (đường thẳng), không ghi một lần
+      - Quên doanh thu chưa thực hiện (contract liability) trên bảng cân đối
+      interpretation: Năm 1 = phần cứng + 1/3 dịch vụ; phần còn lại là Deferred Revenue.
+      example:
+        inputs:
+          price: 100
+          ssp:
+          - 60
+          - 30
+          - 30
+        steps:
+        - HW 50; SW 25; MT 25
+        - Năm 1 = 50 + 8,33 + 8,33 = 66,67; chưa thực hiện 33,33
+        result: Doanh thu 66,67 / 16,67 / 16,67 (triệu VNĐ).
+  - id: "m08-formulas-4"
+    title: "Công thức: m08_ifrs16_pv — Nợ thuê tài sản (PV các khoản thuê cố định)"
+    tags: ["công", "thức", "m08_ifrs16_pv", "nợ", "thuê", "tài", "sản", "pv", "các", "khoản", "cố", "định"]
+    text: |-
+      id: m08_ifrs16_pv
+      name_vi: Nợ thuê tài sản (PV các khoản thuê cố định)
+      name_en: IFRS 16 lease liability PV (level and growing)
+      expression_latex: PV = PMT\frac{1-(1+r)^{-n}}{r} \;;\; PV_g = PMT_1\frac{1-\left(\frac{1+g}{1+r}\right)^{n}}{r-g}
+      expression_python: 'pmt*(1-(1+r)**-n)/r  # tăng g: pmt1*(1-((1+g)/(1+r))**n)/(r-g)'
+      excel: =PV(r,n,-PMT)
+      variables:
+      - symbol: PMT
+        meaning: tiền thuê cố định mỗi kỳ (cuối kỳ)
+        unit: tiền tệ
+      - symbol: r
+        meaning: lãi suất vay cận biên (IBR)
+        unit: '%/năm'
+      - symbol: g
+        meaning: tăng cố định hằng năm của tiền thuê
+        unit: '%/năm'
+      - symbol: n
+        meaning: số năm
+        unit: năm
+      when_to_use: Thuê dài hạn không hủy ngang (nhà xưởng, showroom, đội xe).
+      why_it_works: Cam kết thuê là nghĩa vụ trả tiền cố định giống khoản vay; nợ = PV các khoản phải trả, ROU = nợ ban đầu (giả định không chi phí trực tiếp/ưu đãi).
+      assumptions:
+      - Trả cuối kỳ
+      - Khoản tăng theo CPI chỉ tính theo chỉ số tại ngày bắt đầu (phần biến động sau là biến phí)
+      pitfalls:
+      - Dùng lãi vay nhầm IBR
+      - 'Quên nợ thuê khi tính D/E (Case 3: 2,0 -> 2,92)'
+      interpretation: Nợ tăng ngay khi ký; EBITDA tăng bằng tiền thuê; EBIT tăng ít.
+      example:
+        inputs:
+          pmt: 150
+          r: 0.1
+          n: 5
+        steps:
+        - PV = 150 x 3,7908 = 568,62
+        - KH ROU = 113,72/năm; lãi năm 1 = 56,86; chi phí P&L năm 1 = 170,59
+        result: Nợ thuê 568,62 triệu; chi phí năm 1 170,59 so với 150 tiền thuê.
+  - id: "m08-formulas-5"
+    title: "Công thức: m08_ias36_recoverable — Giá trị sử dụng, giá trị thu hồi và tổn thất tài sản"
+    tags: ["công", "thức", "m08_ias36_recoverable", "giá", "trị", "sử", "dụng", "thu", "hồi", "và", "tổn", "thất"]
+    text: |-
+      id: m08_ias36_recoverable
+      name_vi: Giá trị sử dụng, giá trị thu hồi và tổn thất tài sản
+      name_en: VIU, recoverable amount and impairment loss
+      expression_latex: VIU=\sum_t \frac{FCF_t}{(1+r)^t}+\frac{FCF_n(1+g)}{(r-g)(1+r)^n};\; RA=\max(FVLCD,VIU);\; Loss=CA-RA
+      expression_python: max(fvlcd, viu); loss = max(0, carrying - max(fvlcd, viu))
+      excel: =NPV(r,FCF)+TV/(1+r)^n
+      variables:
+      - symbol: FCF_t
+        meaning: dòng tiền dự kiến của CGU
+        unit: tiền tệ
+      - symbol: r
+        meaning: tỷ suất chiết khấu (IAS 36 yêu cầu nhất quán trước thuế)
+        unit: '%'
+      - symbol: g
+        meaning: tăng trưởng dài hạn
+        unit: '%'
+      - symbol: CA
+        meaning: giá trị ghi sổ của CGU
+        unit: tiền tệ
+      when_to_use: Có dấu hiệu suy giảm (công suất giảm, thị trường xấu) hoặc kiểm tra goodwill hằng năm.
+      why_it_works: Tài sản không được cao hơn số tiền thu về được; chọn phương án có lợi hơn (bán hoặc dùng). Kiểm tra theo CGU vì dòng tiền chỉ phát sinh khi tài sản hoạt động cùng nhau.
+      assumptions:
+      - Dòng tiền và tỷ suất cùng cơ sở thuế
+      - TV theo Gordon
+      pitfalls:
+      - Không 'ấn định' VIU - phải tái lập được từ dòng tiền (bản cũ nguồn mắc lỗi).
+      - 'TV chiếm 61% VIU: rất nhạy với g và r, phải chạy dải kịch bản.'
+      - Goodwill đã ghi giảm không được hoàn nhập; tài sản khác có thể hoàn nhập.
+      - 'Nguồn gọi dòng tiền là ''tự do'' nhưng không nêu rõ trước/sau thuế: cần xác nhận.'
+      interpretation: Tổn thất phân bổ goodwill trước, phần còn lại theo tỷ lệ giá trị ghi sổ. FVLCD > VIU nghĩa là nên xem xét thanh lý.
+      example:
+        inputs:
+          fcf:
+          - 300
+          - 320
+          - 340
+          - 350
+          - 360
+          g: 0.01
+          r: 0.12
+          fvlcd: 3200
+          carrying: 4500
+        steps:
+        - PV(1-5) = 1.191,67; TV = 3.305,45; PV(TV) = 1.875,60
+        - VIU = 3.067,27; RA = max(3.200; 3.067,27) = 3.200; tổn thất 1.300
+        result: Goodwill -300; máy móc -714,29; nhà xưởng -285,71 (tỷ VNĐ).
+  - id: "m08-formulas-6"
+    title: "Công thức: m08_altman_z — Altman Z' (doanh nghiệp sản xuất không niêm yết)"
+    tags: ["công", "thức", "m08_altman_z", "altman", "doanh", "nghiệp", "sản", "xuất", "không", "niêm", "yết"]
+    text: |-
+      id: m08_altman_z
+      name_vi: Altman Z' (doanh nghiệp sản xuất không niêm yết)
+      name_en: Altman Z-Score (Z' variant)
+      expression_latex: Z' = 0.717X_1 + 0.847X_2 + 3.107X_3 + 0.420X_4 + 0.998X_5
+      expression_python: 0.717*x1 + 0.847*x2 + 3.107*x3 + 0.420*x4 + 0.998*x5
+      excel: =0.717*X1+0.847*X2+3.107*X3+0.42*X4+0.998*X5
+      variables:
+      - symbol: X1
+        meaning: vốn lưu động / tổng tài sản
+        unit: tỷ lệ
+      - symbol: X2
+        meaning: lợi nhuận giữ lại / tổng tài sản
+        unit: tỷ lệ
+      - symbol: X3
+        meaning: EBIT / tổng tài sản
+        unit: tỷ lệ
+      - symbol: X4
+        meaning: vốn chủ sổ sách / nợ phải trả
+        unit: tỷ lệ
+      - symbol: X5
+        meaning: doanh thu / tổng tài sản
+        unit: lần
+      when_to_use: Sàng lọc nhanh rủi ro phá sản doanh nghiệp sản xuất không niêm yết.
+      why_it_works: Edward Altman (1968) dùng phân tích phân biệt trên doanh nghiệp phá sản và không phá sản để gán trọng số cho 5 tỷ số thanh khoản, tích lũy, sinh lời, đòn bẩy, hoạt động. Hệ số và ngưỡng cần đối chiếu nguồn.
+      assumptions:
+      - Đúng mô hình theo ngành (bán lẻ/dịch vụ dùng bản khác)
+      pitfalls:
+      - Chỉ là công cụ sàng lọc, không thay phân tích dòng tiền
+      - Nguồn dùng số TechMart 2022 tự đặt (vốn lưu động -30, RE -40, EBIT -10) không truy ra từ số Case 3
+      interpretation: Z' < 1,23 vùng nguy hiểm; 1,23-2,90 vùng xám; > 2,90 an toàn.
+      example:
+        inputs:
+          x1: -0.09
+          x2: -0.12
+          x3: -0.03
+          x4: 0.286
+          x5: 0.9
+        steps:
+        - 'Đóng góp: -0,065; -0,102; -0,093; 0,120; 0,898'
+        result: Z' = 0,759 < 1,23 -> vùng nguy hiểm.
+  - id: "m08-formulas-7"
+    title: "Công thức: m08_deferred_tax_transition — Điều chỉnh chuyển đổi VAS sang IFRS kèm thuế hoãn lại"
+    tags: ["công", "thức", "m08_deferred_tax_transition", "điều", "chỉnh", "chuyển", "đổi", "vas", "sang", "ifrs", "kèm", "thuế"]
+    text: |-
+      id: m08_deferred_tax_transition
+      name_vi: Điều chỉnh chuyển đổi VAS sang IFRS kèm thuế hoãn lại
+      name_en: VAS-to-IFRS transition adjustment with deferred tax
+      expression_latex: DTA = t \times \sum \text{pre-tax deductible differences};\; \Delta RE = \sum adj_{pre\text{-}tax} + DTA
+      expression_python: dta = t*sum(diffs); d_re = sum(adj) + dta
+      excel: =t*SUM(diffs)
+      variables:
+      - symbol: t
+        meaning: thuế suất thuế TNDN (giả định 20%)
+        unit: '%'
+      - symbol: diffs
+        meaning: các chênh lệch tạm thời được khấu trừ trước thuế
+        unit: tiền tệ
+      when_to_use: Chuyển lần đầu sang IFRS (IFRS 1) hoặc lập bảng đối chiếu VAS-IFRS.
+      why_it_works: Mỗi điều chỉnh làm thay đổi tài sản/nợ nhưng cơ sở tính thuế giữ nguyên, tạo chênh lệch tạm thời. Điều chỉnh vào lợi nhuận giữ lại đầu kỳ và kiểm tra phần điều chỉnh tự cân.
+      assumptions:
+      - Chênh lệch đều được khấu trừ
+      - Có lợi nhuận tính thuế tương lai để thu hồi DTA
+      pitfalls:
+      - Điều chỉnh thuê (ROU = nợ thuê) không đổi lợi nhuận giữ lại ngày đầu
+      - Bản cũ ghi -320 sai; đúng là -440
+      interpretation: Tăng tài sản điều chỉnh = tăng nợ điều chỉnh + thay đổi vốn chủ.
+      example:
+        inputs:
+          adj:
+          - -150
+          - -400
+          t: 0.2
+        steps:
+        - DTA = 0,2 x 550 = 110
+        - Delta RE = -150 - 400 + 110 = -440; LN giữ lại 3.500 -> 3.060
+        result: Tài sản +1.479,7 = nợ +1.919,7 - 440 (khớp).
+  - id: "m08-formulas-8"
+    title: "Công thức: m08_nrv_provision — Dự phòng giảm giá hàng tồn kho theo NRV"
+    tags: ["công", "thức", "m08_nrv_provision", "dự", "phòng", "giảm", "giá", "hàng", "tồn", "kho", "theo", "nrv"]
+    text: |-
+      id: m08_nrv_provision
+      name_vi: Dự phòng giảm giá hàng tồn kho theo NRV
+      name_en: Inventory write-down to net realisable value
+      expression_latex: NRV = P_{est} - C_{sell};\; Provision = \max(0, Cost - NRV);\; \Delta NI = Provision(1-t)
+      expression_python: prov = max(0, cost - (price_est - sell_cost)); d_ni = prov*(1-t)
+      excel: =MAX(0,Cost-(Price-SellCost))
+      variables:
+      - symbol: Cost
+        meaning: giá gốc lô hàng
+        unit: tiền tệ
+      - symbol: P_est
+        meaning: giá bán ước tính
+        unit: tiền tệ
+      - symbol: C_sell
+        meaning: chi phí bán ước tính
+        unit: tiền tệ
+      when_to_use: Hàng điện tử/thời trang lỗi mốt, tồn kho cũ.
+      why_it_works: 'Thận trọng: tồn kho ghi theo giá thấp hơn giữa giá gốc và NRV; giữ giá gốc là chuyển khoản lỗ chưa thừa nhận sang tương lai.'
+      assumptions:
+      - Giá bán ước tính đáng tin cậy
+      pitfalls:
+      - Dồn lỗ vào một kỳ khi bị buộc xả kho
+      interpretation: Theo dõi inventory ageing, DIO tăng.
+      example:
+        inputs:
+          cost: 36
+          price_est: 16
+          sell_cost: 1.6
+          t: 0.2
+        steps:
+        - NRV = 14,4; dự phòng 21,6; sau thuế 17,28
+        result: LNST báo cáo 38,4 chỉ còn 21,12 (-45%).
+  - id: "m08-formulas-9"
+    title: "Công thức: m08_under_absorbed — Chi phí sản xuất chung chưa hấp thụ"
+    tags: ["công", "thức", "m08_under_absorbed", "chi", "phí", "sản", "xuất", "chung", "chưa", "hấp", "thụ"]
+    text: |-
+      id: m08_under_absorbed
+      name_vi: Chi phí sản xuất chung chưa hấp thụ
+      name_en: Under-absorbed fixed overhead (normal capacity)
+      expression_latex: SR = \frac{F}{Q_{normal}};\; Absorbed=Q_{act}\times SR;\; Under = F - Absorbed
+      expression_python: under = f - q_act*(f/q_normal)
+      excel: =F-Qact*(F/Qnormal)
+      variables:
+      - symbol: F
+        meaning: định phí sản xuất chung
+        unit: VNĐ
+      - symbol: Q_normal
+        meaning: công suất bình thường
+        unit: đơn vị
+      - symbol: Q_act
+        meaning: sản lượng thực tế
+        unit: đơn vị
+      when_to_use: Công suất thực tế thấp hơn bình thường.
+      why_it_works: 'IAS 2: định phí phân bổ theo công suất bình thường; phần chưa hấp thụ vào giá vốn kỳ này, không biến công suất nhàn rỗi thành tài sản tồn kho. Sản lượng vượt bình thường: giảm đơn giá để không vượt chi phí thực tế. Xem thêm m03_under_over_applied.'
+      assumptions:
+      - Công suất bình thường xác định hợp lý
+      pitfalls:
+      - Dồn hết định phí vào ít sản phẩm làm giá thành và tồn kho phình
+      interpretation: Chưa hấp thụ là chi phí công suất nhàn rỗi.
+      example:
+        inputs:
+          f: 500000000
+          q_normal: 10000
+          q_act: 8000
+        steps:
+        - SR = 50.000; hấp thụ 400 triệu; chưa hấp thụ 100 triệu (20%)
+        result: Nợ 154 400 triệu; Nợ 632 100 triệu; Có 627 500 triệu (tài khoản tham chiếu, cần xác nhận).
+  - id: "m08-formulas-10"
+    title: "Công thức: m08_shadow_price — Giá bóng của nguồn lực nút cổ chai"
+    tags: ["công", "thức", "m08_shadow_price", "giá", "bóng", "của", "nguồn", "lực", "nút", "cổ", "chai"]
+    text: |-
+      id: m08_shadow_price
+      name_vi: Giá bóng của nguồn lực nút cổ chai
+      name_en: Shadow price / contribution per bottleneck hour
+      expression_latex: CM/\text{giờ máy}=\frac{CM_i}{h_i};\; \text{xếp ưu tiên giảm dần}; \; \lambda=\frac{CM}{h}\text{ của SP cận biên}
+      expression_python: cm_i / hours_i
+      excel: =CM/Hours
+      variables:
+      - symbol: CM_i
+        meaning: biên đóng góp đơn vị sản phẩm i
+        unit: VNĐ
+      - symbol: h_i
+        meaning: giờ máy nút cổ chai mỗi đơn vị
+        unit: giờ
+      when_to_use: Công suất một hoạt động bị giới hạn, chọn cơ cấu sản phẩm tối đa hóa lợi nhuận (LP trong ABC).
+      why_it_works: Khi một nguồn lực khan hiếm, sản phẩm xếp theo CM trên đơn vị nguồn lực; giá bóng là mức tối đa nên trả để có thêm một đơn vị nguồn lực.
+      assumptions:
+      - Cầu tối đa mỗi sản phẩm biết trước
+      - Tuyến tính
+      pitfalls:
+      - Xếp theo CM/đơn vị thay vì CM/giờ máy
+      interpretation: Đơn hàng dùng nhiều giờ nút cổ chai phải có giá bù được giá bóng.
+      example:
+        inputs:
+          A:
+            cm: 500
+            h: 0.1
+            max: 600
+          B:
+            cm: 1200
+            h: 0.4
+            max: 300
+          cap: 100
+        steps:
+        - A 5.000/giờ; B 3.000/giờ
+        - Làm 600 A (60 giờ), còn 40 giờ -> 100 B
+        - CM = 300.000 + 120.000 = 420.000
+        result: Giá bóng = 3.000 VNĐ/giờ máy.
+  - id: "m08-formulas-11"
+    title: "Công thức: m08_variable_consideration_revenue — Doanh thu thuần sau yếu tố biến đổi (trả hàng, thưởng, trưng bày)"
+    tags: ["công", "thức", "m08_variable_consideration_revenue", "doanh", "thu", "thuần", "sau", "yếu", "tố", "biến", "đổi", "trả"]
+    text: |-
+      id: m08_variable_consideration_revenue
+      name_vi: Doanh thu thuần sau yếu tố biến đổi (trả hàng, thưởng, trưng bày)
+      name_en: IFRS 15 net revenue after variable consideration
+      expression_latex: Rev = Invoice - Returns - Rebates - Slotting;\; COGS = Cost(1-ret\%)
+      expression_python: rev = invoice - returns - rebates - slotting
+      excel: =Invoice-Returns-Rebates-Slotting
+      variables:
+      - symbol: Invoice
+        meaning: giá hóa đơn
+        unit: VNĐ
+      - symbol: Returns
+        meaning: ước tính trả hàng (refund liability)
+        unit: VNĐ
+      - symbol: Rebates
+        meaning: chiết khấu thưởng doanh số ước tính
+        unit: VNĐ
+      - symbol: Slotting
+        meaning: phí trưng bày coi như giảm giá (nếu không đổi lấy dịch vụ riêng)
+        unit: VNĐ
+      when_to_use: Bán qua siêu thị/đại lý có quyền trả hàng và chiết khấu theo doanh số.
+      why_it_works: Doanh thu là số tiền kỳ vọng nhận được; ghi 100% rồi đảo ngược làm nhiễu lợi nhuận. Hàng có thể trả ghi thêm quyền thu hồi hàng bằng giá vốn.
+      assumptions:
+      - Ước tính trả hàng từ lịch sử
+      pitfalls:
+      - Ước tính sai tạo giải phóng dự phòng hoặc điều chỉnh giảm kỳ sau
+      interpretation: Biên gộp thực thấp hơn biên trên hóa đơn (36,7% so với 40%).
+      example:
+        inputs:
+          invoice: 10000
+          cost: 6000
+          ret_est: 500
+          rebate: 200
+          slot: 300
+          ret_actual: 300
+        steps:
+        - Ban đầu 9.000; giải phóng 200 -> 9.200
+        - Giá vốn 5.700 + 120 = 5.820
+        result: LN gộp 3.380 (36,7%); tiền thuần 9.200 khớp doanh thu.
+  - id: "m08-frameworks-1"
+    title: "Frameworks: m08_consistency_framework — Khung kiểm tra nhất quán số liệu kế toán"
+    tags: ["frameworks", "m08_consistency_framework", "khung", "kiểm", "tra", "nhất", "quán", "số", "liệu", "kế", "toán"]
+    text: |-
+      id: m08_consistency_framework
+      name_vi: Khung kiểm tra nhất quán số liệu kế toán
+      name_en: Numerical consistency framework
+      origin: 'Đúc kết từ các lỗi của bản cũ cẩm nang (CFS không khớp, ROE sai, bảng điều chỉnh không cân, PV lệch). Yêu cầu của CLAUDE.md: mọi số tự dựng phải chạy Python.'
+      components:
+      - 'Cân đối: A = L + E'
+      - 'Khớp tiền: CFS = BS'
+      - Bảo toàn phân bổ
+      - Tổng chênh lệch thành phần = tổng
+      - Lịch trả nợ về 0
+      when_to_use: Trước khi trình bày bất kỳ case/hồ sơ nào.
+      how_to_apply:
+      - Dựng số bằng Python, không tính nhẩm.
+      - Kiểm tra từng đẳng thức ở trên.
+      - Ghi 'giả định minh họa' cho số tự đặt; 'cần đối chiếu nguồn' cho số công ty thật.
+      how_to_read_results: Mọi đẳng thức phải khớp (sai số làm tròn dưới 1 đơn vị).
+      pitfalls:
+      - Chỉ tin vào tính nhẩm
+      - Quên kiểm tra phần điều chỉnh chuyển đổi cũng phải cân
+      example: 'Case 7: tài sản 970,8 = nguồn vốn 970,8; tiền cuối 80,8 trên cả CFS lẫn BS.'
+  - id: "m08-frameworks-2"
+    title: "Frameworks: m08_ifrs_standard_map — Bản đồ chuẩn mực trong cẩm nang"
+    tags: ["frameworks", "m08_ifrs_standard_map", "bản", "đồ", "chuẩn", "mực", "trong", "cẩm", "nang"]
+    text: |-
+      id: m08_ifrs_standard_map
+      name_vi: Bản đồ chuẩn mực trong cẩm nang
+      name_en: Standards map (IFRS 15/16, IAS 2/12/36/37/38)
+      origin: 'IFRS 15 (IASB 2014, hiệu lực 2018); IFRS 16 (2016, hiệu lực 2019); IAS 36, IAS 38, IAS 2, IAS 12, IAS 37. Áp dụng tại VN theo lộ trình IFRS/VAS: cần xác nhận hiện hành.'
+      components:
+      - 'IFRS 15: 5 bước, phân bổ theo SSP, yếu tố biến đổi.'
+      - 'IFRS 16: ROU + nợ thuê, chi phí = KH + lãi.'
+      - 'IAS 36: so sánh ghi sổ với giá trị thu hồi.'
+      - 'IAS 38: nghiên cứu ghi chi phí; phát triển vốn hóa nếu đủ 6 điều kiện.'
+      - 'IAS 2: giá thấp hơn của giá gốc và NRV; định phí theo công suất bình thường.'
+      - 'IAS 12: thuế hoãn lại.'
+      - 'IAS 37: dự phòng khi có nghĩa vụ hiện tại đáng tin cậy.'
+      when_to_use: Khi chuẩn bị báo cáo cho nhà đầu tư/IPO hoặc đọc báo cáo IFRS.
+      how_to_apply:
+      - Xác định giao dịch thuộc chuẩn mực nào.
+      - Đo lường theo chuẩn, lập bút toán.
+      - Đối chiếu với sổ VAS (dual ledger) nếu cần.
+      how_to_read_results: EBITDA IFRS 16 cao hơn nhưng nợ ròng gồm nợ thuê; tổn thất tài sản là khoản không tiền.
+      pitfalls:
+      - Dùng VAS 19 cho chi phí phát triển (VAS 19 là hợp đồng bảo hiểm; liên quan là VAS 04)
+      - Bắt buộc/không bắt buộc áp dụng tại VN cần kiểm tra
+      example: 'Case 5: R&D 500 tỷ = 200 chi phí + 300 vốn hóa (KH 60 tỷ/năm).'
+  - id: "m08-frameworks-3"
+    title: "Frameworks: m08_ias38_six_conditions — 6 điều kiện vốn hóa chi phí phát triển (IAS 38)"
+    tags: ["frameworks", "m08_ias38_six_conditions", "điều", "kiện", "vốn", "hóa", "chi", "phí", "phát", "triển", "ias", "38"]
+    text: |-
+      id: m08_ias38_six_conditions
+      name_vi: 6 điều kiện vốn hóa chi phí phát triển (IAS 38)
+      name_en: IAS 38 development cost capitalisation criteria
+      origin: IAS 38 phân biệt nghiên cứu (chưa chắc có lợi ích) và phát triển (đã áp dụng kiến thức vào thiết kế cụ thể), để ghép chi phí với doanh thu (matching).
+      components:
+      - Khả thi kỹ thuật
+      - Ý định hoàn thành
+      - Khả năng dùng/bán
+      - Chứng minh lợi ích kinh tế tương lai
+      - Đủ nguồn lực hoàn tất
+      - Đo lường đáng tin cậy chi phí
+      when_to_use: Doanh nghiệp công nghệ/chế tạo có R&D lớn.
+      how_to_apply:
+      - Phân tách chi phí theo giai đoạn
+      - Kiểm 6 điều kiện, lưu bằng chứng
+      - Vốn hóa vào XDCB dở dang, nghiệm thu thì chuyển TSCĐ vô hình, khấu hao
+      how_to_read_results: Theo dõi tỷ lệ R&D vốn hóa / tổng R&D; tăng bất thường là cờ đỏ vốn hóa quá tay.
+      pitfalls:
+      - Vốn hóa quá tay để làm đẹp lợi nhuận
+      - Thiếu bằng chứng đủ 6 điều kiện
+      example: Ghi chi phí 200; vốn hóa 300; 3 tháng đầu lợi nhuận giảm 200 + 15 = 215 thay vì 500; tài sản vô hình 285.
+  - id: "m08-frameworks-4"
+    title: "Frameworks: m08_dual_ledger — Hệ thống sổ đôi song song VAS/IFRS"
+    tags: ["frameworks", "m08_dual_ledger", "hệ", "thống", "sổ", "đôi", "song", "vas", "ifrs"]
+    text: |-
+      id: m08_dual_ledger
+      name_vi: Hệ thống sổ đôi song song VAS/IFRS
+      name_en: Dual-ledger (parallel ledgers)
+      origin: ERP hiện đại ghi một giao dịch gốc, hai cách đo lường, để tránh làm lại cuối năm.
+      components:
+      - Giao dịch gốc
+      - Sổ VAS (Thông tư 200 - cần xác nhận)
+      - Sổ IFRS
+      - Bảng đối chiếu hằng tháng
+      when_to_use: Tập đoàn có cổ đông ngoại hoặc chuẩn bị IPO.
+      how_to_apply:
+      - Cấu hình hai ledger
+      - Ghi giao dịch một lần
+      - Đối chiếu hằng tháng chênh lệch và nguồn gốc
+      how_to_read_results: 'Ví dụ: VAS 10.000 so với IFRS 9.000 = trả hàng 500 + thưởng 200 + trưng bày 300.'
+      pitfalls:
+      - Dữ liệu gốc bẩn
+      - Cấu hình sai chính sách
+      example: Case 6 phase 3 và phụ lục H (Universal Journal ACDOCA).
+  - id: "m08-frameworks-5"
+    title: "Frameworks: m08_sustainability_eabc — Kế toán bền vững và chi phí môi trường (E-ABC)"
+    tags: ["frameworks", "m08_sustainability_eabc", "kế", "toán", "bền", "vững", "và", "chi", "phí", "môi", "trường", "abc"]
+    text: |-
+      id: m08_sustainability_eabc
+      name_vi: Kế toán bền vững và chi phí môi trường (E-ABC)
+      name_en: Sustainability accounting / environmental ABC
+      origin: 'Nhà đầu tư và đối tác xuất khẩu yêu cầu ESG (GRI, ISSB IFRS S1/S2; CBAM của EU). Lộ trình áp dụng tại VN: cần đối chiếu.'
+      components:
+      - Nhóm hoạt động môi trường (khí thải, nước thải, bao bì)
+      - 'Động lực: kg CO2e, m3 nước thải, kg nhựa'
+      - Dự phòng IAS 37 nếu có nghĩa vụ hiện tại
+      when_to_use: Doanh nghiệp xuất khẩu hoặc sản phẩm có chi phí môi trường đáng kể.
+      how_to_apply:
+      - Tách chi phí môi trường khỏi chi phí chung
+      - Phân bổ theo động lực
+      - Đánh giá điều kiện ghi nhận dự phòng
+      how_to_read_results: Sản phẩm bao bì nhựa một lần gánh chi phí cao hơn bao bì sinh học.
+      pitfalls:
+      - Ghi dự phòng khi chưa có nghĩa vụ hiện tại đáng tin cậy
+      - Dùng số minh họa 120 triệu như thật
+      example: 'Bút toán minh họa: Nợ chi phí chứng chỉ carbon 120 triệu; Có dự phòng phải trả 120 triệu (nếu đủ điều kiện).'
+  - id: "m08-procedures-1"
+    title: "Quy trình: m08_proc_ledger_build — Dựng ba báo cáo khớp nhau cho SME"
+    tags: ["quy", "trình", "m08_proc_ledger_build", "dựng", "ba", "báo", "cáo", "khớp", "nhau", "cho", "sme"]
+    text: |-
+      id: m08_proc_ledger_build
+      name: Dựng ba báo cáo khớp nhau cho SME
+      steps:
+      - Lấy BS đầu kỳ (cân), P&L năm, các giao dịch lớn (mua TSCĐ, trả nợ, chia lợi tức), số dư cuối kỳ của phải thu, tồn kho, phải trả.
+      - CFO = NI + D&A - ΔAR - ΔInv + ΔAP; CFI = -mua TSCĐ; CFF = -trả nợ - chia lợi tức.
+      - Tiền cuối = tiền đầu + CFO + CFI + CFF.
+      - 'BS cuối: TSCĐ = đầu + mua - KH; vay = đầu - trả; LN giữ lại = đầu + LNST - cổ tức.'
+      - Kiểm tra A = L + E và tiền BS = tiền CFS; sau đó tính thanh toán, DSO/DIO/DPO/CCC, DuPont.
+      outputs: BS, P&L, CFS khớp + giải thích tiền đi đâu + 3 hành động quản trị.
+  - id: "m08-procedures-2"
+    title: "Quy trình: m08_proc_ifrs_transition — Chuyển đổi VAS sang IFRS"
+    tags: ["quy", "trình", "m08_proc_ifrs_transition", "chuyển", "đổi", "vas", "sang", "ifrs"]
+    text: |-
+      id: m08_proc_ifrs_transition
+      name: Chuyển đổi VAS sang IFRS
+      steps:
+      - 'Liệt kê các khoản đo lường khác nhau: doanh thu chưa chuyển giao, tài sản suy giảm, thuê dài hạn, hoãn thuế.'
+      - Lập bút toán điều chỉnh từng khoản vào lợi nhuận giữ lại đầu kỳ.
+      - Tính PV nợ thuê bằng IBR (ROU = nợ thuê).
+      - Tính DTA = thuế suất x chênh lệch được khấu trừ.
+      - Lập bảng chuyển đổi VAS - Điều chỉnh - IFRS; kiểm tra phần điều chỉnh cân.
+      - Xác nhận các điểm VAS/Thông tư 200 với kế toán trưởng/kiểm toán.
+      outputs: Bảng chuyển đổi và nhận xét ảnh hưởng EBITDA, nợ ròng, vốn chủ.
+  - id: "m08-procedures-3"
+    title: "Quy trình: m08_proc_job_abc_margin — Giá thành đơn hàng ABC và lợi nhuận từng đơn"
+    tags: ["quy", "trình", "m08_proc_job_abc_margin", "giá", "thành", "đơn", "hàng", "abc", "và", "lợi", "nhuận", "từng"]
+    text: |-
+      id: m08_proc_job_abc_margin
+      name: Giá thành đơn hàng ABC và lợi nhuận từng đơn
+      steps:
+      - Gom overhead thành các nhóm hoạt động với động lực (setup, kiểm định, giờ thiết kế).
+      - Đơn giá mỗi động lực = chi phí nhóm / tổng lượng động lực.
+      - Overhead/job = tổng (lượng động lực x đơn giá); chia sản lượng ra đơn vị.
+      - So sánh với phân bổ cào bằng, tính biên lợi nhuận hai cách.
+      - Tăng giá/đặt số lượng tối thiểu/phí setup cho đơn tùy biến; kiểm tra độ co giãn cầu.
+      outputs: Bảng biên lợi nhuận theo job, danh sách đơn đang được trợ cấp ngầm.
+  - id: "m08-procedures-4"
+    title: "Quy trình: m08_proc_redflag_scan — Quét dấu hiệu cảnh báo (forensic)"
+    tags: ["quy", "trình", "m08_proc_redflag_scan", "quét", "dấu", "hiệu", "cảnh", "báo", "forensic"]
+    text: |-
+      id: m08_proc_redflag_scan
+      name: Quét dấu hiệu cảnh báo (forensic)
+      steps:
+      - So CFO với lợi nhuận và DSO nhiều kỳ.
+      - Kiểm tuổi hàng tồn, so giá gốc với NRV.
+      - Liệt kê hợp đồng thuê dài hạn, tính D/E gồm nợ thuê.
+      - Dựng báo cáo biên đóng góp từng điểm bán.
+      - Theo dõi chênh lệch ngân sách; nếu lệch bất lợi hai kỳ liên tiếp vượt ngưỡng thì cập nhật dự báo và kích hoạt phương án chi phí.
+      - Chạy DuPont (biên - vòng quay - đòn bẩy) và Altman Z'.
+      outputs: Bảng cờ đỏ với con số và hành động.
+  - id: "m08-procedures-5"
+    title: "Quy trình: m08_proc_support_allocation — Chọn và chạy phương pháp phân bổ bộ phận hỗ trợ"
+    tags: ["quy", "trình", "m08_proc_support_allocation", "chọn", "và", "chạy", "phương", "pháp", "phân", "bổ", "bộ", "phận"]
+    text: |-
+      id: m08_proc_support_allocation
+      name: Chọn và chạy phương pháp phân bổ bộ phận hỗ trợ
+      steps:
+      - Lập ma trận tỷ lệ dịch vụ (hàng cấp, cột nhận).
+      - 'Nếu phục vụ lẫn nhau nhỏ: trực tiếp. Vừa: bậc thang (bộ phận phục vụ nhiều bộ phận hỗ trợ nhất đứng trước). Đáng kể: tương hỗ.'
+      - Giải hệ (I - A chuyển vị) S = C bằng np.linalg.solve.
+      - Kiểm tra tổng phân bổ cho sản xuất/kênh = tổng chi phí gốc.
+      - So thứ hạng lợi nhuận giữa các phương pháp để biết quyết định có nhạy không.
+      outputs: Chi phí phân bổ từng kênh/sản phẩm và độ nhạy.
+  - id: "m08-procedures-6"
+    title: "Quy trình: m08_proc_master_budget_q — Ngân sách quý: doanh thu - mua hàng - tiền mặt"
+    tags: ["quy", "trình", "m08_proc_master_budget_q", "ngân", "sách", "quý", "doanh", "thu", "mua", "hàng", "tiền", "mặt"]
+    text: |-
+      id: m08_proc_master_budget_q
+      name: 'Ngân sách quý: doanh thu - mua hàng - tiền mặt'
+      steps:
+      - Doanh thu = sản lượng x giá.
+      - Nhu cầu nguyên liệu = sản lượng x định mức; cần mua = nhu cầu + tồn cuối mong muốn - tồn đầu.
+      - Tiền chi NCC theo chính sách trả (60% tháng mua, 40% tháng sau) + nợ đầu kỳ.
+      - Ngân sách tiền = đầu + thu - chi NCC - lương/vận hành - đầu tư.
+      - Giữ quỹ đệm 1-2 tháng chi phí vận hành; nhớ chưa tính thuế/lãi vay.
+      outputs: Bảng tiền mặt 3 tháng và quỹ khả dụng cho chi nhánh mới.
+  - id: "m08-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu hai bộ phận hỗ trợ phục vụ lẫn nhau trên khoảng 10% và quyết định nhạy với thứ hạng kênh thì dù…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "hai", "bộ", "phận", "hỗ", "trợ", "phục", "vụ"]
+    text: |-
+      Nếu hai bộ phận hỗ trợ phục vụ lẫn nhau trên khoảng 10% và quyết định nhạy với thứ hạng kênh thì dùng tương hỗ; nếu nhỏ thì bậc thang hoặc trực tiếp.
+  - id: "m08-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu hợp đồng gói có phần dịch vụ nhiều kỳ thì phân bổ theo SSP và ghi dịch vụ theo thời gian, phần …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "hợp", "đồng", "gói", "có", "phần", "dịch", "vụ"]
+    text: |-
+      Nếu hợp đồng gói có phần dịch vụ nhiều kỳ thì phân bổ theo SSP và ghi dịch vụ theo thời gian, phần chưa giao là contract liability.
+  - id: "m08-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu có hàng ký gửi/đại lý có quyền trả thì chỉ ghi doanh thu phần đã bán cho người cuối."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "có", "hàng", "ký", "gửi", "đại", "lý", "quyền"]
+    text: |-
+      Nếu có hàng ký gửi/đại lý có quyền trả thì chỉ ghi doanh thu phần đã bán cho người cuối.
+  - id: "m08-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu FVLCD lớn hơn VIU thì bán còn hơn tiếp tục dùng: xem xét thanh lý/thuê ngoài; tổn thất phân bổ …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "fvlcd", "lớn", "hơn", "viu", "thì", "bán", "còn"]
+    text: |-
+      Nếu FVLCD lớn hơn VIU thì bán còn hơn tiếp tục dùng: xem xét thanh lý/thuê ngoài; tổn thất phân bổ goodwill trước.
+  - id: "m08-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu CGU/tài sản có dấu hiệu suy giảm (công suất giảm, thị trường xấu) thì kiểm tra giá trị thu hồi …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cgu", "tài", "sản", "có", "dấu", "hiệu", "suy"]
+    text: |-
+      Nếu CGU/tài sản có dấu hiệu suy giảm (công suất giảm, thị trường xấu) thì kiểm tra giá trị thu hồi trước khi trình bày báo cáo.
+  - id: "m08-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu cơ cấu bán hàng tính theo số lượng thì quy về gói (WACM) rồi mới tính hòa vốn; không chia doanh…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cơ", "cấu", "bán", "hàng", "tính", "theo", "số"]
+    text: |-
+      Nếu cơ cấu bán hàng tính theo số lượng thì quy về gói (WACM) rồi mới tính hòa vốn; không chia doanh thu hòa vốn theo cơ cấu số lượng.
+  - id: "m08-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu ABC đảo chiều biên lợi nhuận so với cào bằng thì tăng giá/điều kiện cho đơn phức tạp, đẩy đơn đ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "abc", "đảo", "chiều", "biên", "lợi", "nhuận", "so"]
+    text: |-
+      Nếu ABC đảo chiều biên lợi nhuận so với cào bằng thì tăng giá/điều kiện cho đơn phức tạp, đẩy đơn đơn giản; kiểm tra co giãn cầu trước.
+  - id: "m08-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu chênh lệch giá thuận lợi nhưng lượng bất lợi thì không thưởng cả chi nhánh: tách trách nhiệm th…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chênh", "lệch", "giá", "thuận", "lợi", "nhưng", "lượng"]
+    text: |-
+      Nếu chênh lệch giá thuận lợi nhưng lượng bất lợi thì không thưởng cả chi nhánh: tách trách nhiệm thu mua và bếp; kiểm tra chất lượng thịt.
+  - id: "m08-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu chênh lệch khối lượng cố định lớn thì trách nhiệm kinh doanh/kế hoạch (thiếu đơn), không phải x…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chênh", "lệch", "khối", "lượng", "cố", "lớn", "thì"]
+    text: |-
+      Nếu chênh lệch khối lượng cố định lớn thì trách nhiệm kinh doanh/kế hoạch (thiếu đơn), không phải xưởng.
+  - id: "m08-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu chênh lệch ngân sách bất lợi hai kỳ liên tiếp vượt ngưỡng (ví dụ 10%) thì cập nhật dự báo, chạy…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chênh", "lệch", "ngân", "sách", "bất", "lợi", "hai"]
+    text: |-
+      Nếu chênh lệch ngân sách bất lợi hai kỳ liên tiếp vượt ngưỡng (ví dụ 10%) thì cập nhật dự báo, chạy kịch bản thấp, kích hoạt phương án chi phí.
+  - id: "m08-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu có hợp đồng thuê dài hạn thì tính D/E gồm nợ thuê và dùng nợ ròng/EBITDA nhất quán khi so sánh."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "có", "hợp", "đồng", "thuê", "dài", "hạn", "thì"]
+    text: |-
+      Nếu có hợp đồng thuê dài hạn thì tính D/E gồm nợ thuê và dùng nợ ròng/EBITDA nhất quán khi so sánh.
+  - id: "m08-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu lãi dương nhưng tiền giảm thì lập CFS gián tiếp, tìm vốn lưu động/đầu tư/chia lợi tức; chỉ chia…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "lãi", "dương", "nhưng", "tiền", "giảm", "thì", "lập"]
+    text: |-
+      Nếu lãi dương nhưng tiền giảm thì lập CFS gián tiếp, tìm vốn lưu động/đầu tư/chia lợi tức; chỉ chia lợi tức từ dòng tiền tự do và giữ quỹ đệm >= 1 tháng.
+  - id: "m08-decision_rules-13"
+    title: "Quy tắc quyết định: Nếu Z' dưới 1,23 thì coi là vùng nguy hiểm: kiểm tra dòng tiền, khả năng tái tài trợ; không dùng Z'…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dưới", "23", "thì", "coi", "là", "vùng", "nguy"]
+    text: |-
+      Nếu Z' dưới 1,23 thì coi là vùng nguy hiểm: kiểm tra dòng tiền, khả năng tái tài trợ; không dùng Z' làm kết luận duy nhất.
+  - id: "m08-decision_rules-14"
+    title: "Quy tắc quyết định: Nếu ROE tăng thì phân rã DuPont 5 nhân tố: tăng nhờ biên/vòng quay (chất lượng) hay đòn bẩy (rủi ro…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "roe", "tăng", "thì", "phân", "rã", "dupont", "nhân"]
+    text: |-
+      Nếu ROE tăng thì phân rã DuPont 5 nhân tố: tăng nhờ biên/vòng quay (chất lượng) hay đòn bẩy (rủi ro).
+  - id: "m08-decision_rules-15"
+    title: "Quy tắc quyết định: Nếu số liệu là giả định minh họa hoặc thương hiệu thật chỉ làm bối cảnh thì ghi rõ và cần đối chiếu…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "số", "liệu", "là", "giả", "minh", "họa", "hoặc"]
+    text: |-
+      Nếu số liệu là giả định minh họa hoặc thương hiệu thật chỉ làm bối cảnh thì ghi rõ và cần đối chiếu báo cáo kiểm toán trước khi trích dẫn.
+  - id: "m08-decision_rules-16"
+    title: "Quy tắc quyết định: Nếu quy định VAS/IFRS/thuế VN được hỏi thì chỉ nêu nguyên tắc và yêu cầu xác nhận hiện hành, không …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "vas", "ifrs", "thuế", "vn", "được", "hỏi", "thì"]
+    text: |-
+      Nếu quy định VAS/IFRS/thuế VN được hỏi thì chỉ nêu nguyên tắc và yêu cầu xác nhận hiện hành, không khẳng định điều khoản cụ thể.
+  - id: "m08-benchmarks-1"
+    title: "Chuẩn so sánh: Biên an toàn (Case 7 giả định)"
+    tags: ["chuẩn", "so", "sánh", "biên", "an", "toàn", "case", "giả", "định"]
+    text: |-
+      metric: Biên an toàn (Case 7 giả định)
+      value: 25,6%
+      context: Xưởng rang bán sỉ; DOL 3,6
+      confidence: low
+  - id: "m08-benchmarks-2"
+    title: "Chuẩn so sánh: Tỷ lệ hao hụt rang cà phê nhân xanh"
+    tags: ["chuẩn", "so", "sánh", "tỷ", "lệ", "hao", "hụt", "rang", "cà", "phê", "nhân", "xanh"]
+    text: |-
+      metric: Tỷ lệ hao hụt rang cà phê nhân xanh
+      value: khoảng 16% (1 kg xanh ra khoảng 0,84 kg rang)
+      context: Nguồn nêu; cần đối chiếu thực tế
+      confidence: low
+  - id: "m08-benchmarks-3"
+    title: "Chuẩn so sánh: Altman Z' (ngưỡng)"
+    tags: ["chuẩn", "so", "sánh", "altman", "ngưỡng"]
+    text: |-
+      metric: Altman Z' (ngưỡng)
+      value: dưới 1,23 nguy hiểm; trên 2,90 an toàn
+      context: Doanh nghiệp sản xuất không niêm yết; nguồn ghi cần đối chiếu
+      confidence: medium
+  - id: "m08-benchmarks-4"
+    title: "Chuẩn so sánh: Tỷ lệ lấp đầy hòa vốn quán phở"
+    tags: ["chuẩn", "so", "sánh", "tỷ", "lệ", "lấp", "đầy", "hòa", "vốn", "quán", "phở"]
+    text: |-
+      metric: Tỷ lệ lấp đầy hòa vốn quán phở
+      value: 46,3%
+      context: Giả định minh họa Case 1
+      confidence: low
+  - id: "m08-benchmarks-5"
+    title: "Chuẩn so sánh: Biên gộp F&B sanity (tham khảo CLAUDE.md)"
+    tags: ["chuẩn", "so", "sánh", "biên", "gộp", "sanity", "tham", "khảo", "claude", "md"]
+    text: |-
+      metric: Biên gộp F&B sanity (tham khảo CLAUDE.md)
+      value: 40-70%
+      context: Dùng kiểm tra hợp lý mô hình
+      confidence: low
+  - id: "m08-benchmarks-6"
+    title: "Chuẩn so sánh: CCC doanh nghiệp công nghệ (Case 4 giả định)"
+    tags: ["chuẩn", "so", "sánh", "ccc", "doanh", "nghiệp", "công", "nghệ", "case", "giả", "định"]
+    text: |-
+      metric: CCC doanh nghiệp công nghệ (Case 4 giả định)
+      value: 85 -> 25 ngày
+      context: Minh họa tiềm năng giải phóng vốn
+      confidence: low
+  - id: "m08-benchmarks-7"
+    title: "Chuẩn so sánh: Thuế suất TNDN giả định"
+    tags: ["chuẩn", "so", "sánh", "thuế", "suất", "tndn", "giả", "định"]
+    text: |-
+      metric: Thuế suất TNDN giả định
+      value: 20%
+      context: Cần xác nhận thuế suất và ưu đãi SME hiện hành
+      confidence: low
+  - id: "m08-pitfalls-1"
+    title: "Lỗi thường gặp: Số liệu trong case (kể cả VinFast/Vinamilk) là GIẢ ĐỊNH; không trích như số công bố."
+    tags: ["lỗi", "thường", "gặp", "số", "liệu", "trong", "case", "kể", "cả", "vinfast", "vinamilk", "là"]
+    text: |-
+      Số liệu trong case (kể cả VinFast/Vinamilk) là GIẢ ĐỊNH; không trích như số công bố.
+  - id: "m08-pitfalls-2"
+    title: "Lỗi thường gặp: Lỗi nguồn 1: Menu Engineering ở Case 1 dùng 'biên đóng góp ABC' = giá - nguyên liệu - overhead ABC …"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "menu", "engineering", "case", "dùng", "biên", "đóng", "góp", "abc"]
+    text: |-
+      Lỗi nguồn 1: Menu Engineering ở Case 1 dùng 'biên đóng góp ABC' = giá - nguyên liệu - overhead ABC đã phân bổ; đó là biên sau phân bổ chi phí chung, không phải biên đóng góp thuần (CM thuần = giá - nguyên liệu). Menu Engineering truyền thống dùng CM thuần; cần phân biệt.
+  - id: "m08-pitfalls-3"
+    title: "Lỗi thường gặp: Lỗi nguồn 2: Case 3 D/E 2,0 (vốn chủ 100) và DuPont 2022 (vốn chủ 74,1; nợ 259,3) và Altman (vốn lư…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "case", "vốn", "chủ", "100", "và", "dupont", "2022", "74"]
+    text: |-
+      Lỗi nguồn 2: Case 3 D/E 2,0 (vốn chủ 100) và DuPont 2022 (vốn chủ 74,1; nợ 259,3) và Altman (vốn lưu động -30, RE -40, EBIT -10) là các bộ số rời rạc, không cùng một bảng cân đối; không ghép.
+  - id: "m08-pitfalls-4"
+    title: "Lỗi thường gặp: Lỗi nguồn 3: Case 5 VIU không nói rõ dòng tiền trước hay sau thuế dù IAS 36 yêu cầu nhất quán trước…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "case", "viu", "không", "nói", "rõ", "dòng", "tiền", "trước"]
+    text: |-
+      Lỗi nguồn 3: Case 5 VIU không nói rõ dòng tiền trước hay sau thuế dù IAS 36 yêu cầu nhất quán trước thuế.
+  - id: "m08-pitfalls-5"
+    title: "Lỗi thường gặp: Lỗi nguồn 4: Case 2 điều chỉnh 1 ghi Có 'Doanh thu chưa thực hiện' 500 khi hàng chưa chuyển giao: t…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "case", "điều", "chỉnh", "ghi", "có", "doanh", "thu", "chưa"]
+    text: |-
+      Lỗi nguồn 4: Case 2 điều chỉnh 1 ghi Có 'Doanh thu chưa thực hiện' 500 khi hàng chưa chuyển giao: thực tế thường đảo doanh thu và khoản phải thu/nhận trước, tùy hợp đồng - là giản lược sư phạm.
+  - id: "m08-pitfalls-6"
+    title: "Lỗi thường gặp: Lỗi nguồn 5: nhiều ví dụ lịch sử có chữ 'cần đối chiếu nguồn' (Rautenstrauch 1930, Kaplan-Cooper, D…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "nhiều", "ví", "dụ", "lịch", "sử", "có", "chữ", "cần"]
+    text: |-
+      Lỗi nguồn 5: nhiều ví dụ lịch sử có chữ 'cần đối chiếu nguồn' (Rautenstrauch 1930, Kaplan-Cooper, Donaldson Brown, Altman 1968): chưa kiểm chứng.
+  - id: "m08-pitfalls-7"
+    title: "Lỗi thường gặp: Lỗi nguồn 6: nguồn nhắc chuyển 'VAS 19' cho chi phí phát triển ở bản cũ là nhầm (đã sửa); liên quan…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "nhắc", "chuyển", "vas", "19", "cho", "chi", "phí", "phát"]
+    text: |-
+      Lỗi nguồn 6: nguồn nhắc chuyển 'VAS 19' cho chi phí phát triển ở bản cũ là nhầm (đã sửa); liên quan là VAS 04. Điều khoản VAS vẫn cần xác nhận.
+  - id: "m08-pitfalls-8"
+    title: "Lỗi thường gặp: Nhầm cơ cấu theo số lượng với cơ cấu theo doanh thu trong CVP đa sản phẩm (bản cũ: 64 IoT + 240 sen…"
+    tags: ["lỗi", "thường", "gặp", "nhầm", "cơ", "cấu", "theo", "số", "lượng", "với", "doanh", "thu"]
+    text: |-
+      Nhầm cơ cấu theo số lượng với cơ cấu theo doanh thu trong CVP đa sản phẩm (bản cũ: 64 IoT + 240 sensor còn lỗ).
+  - id: "m08-pitfalls-9"
+    title: "Lỗi thường gặp: Dùng I - A thay vì I - A chuyển vị khi giải tương hỗ."
+    tags: ["lỗi", "thường", "gặp", "dùng", "thay", "vì", "chuyển", "vị", "khi", "giải", "tương", "hỗ"]
+    text: |-
+      Dùng I - A thay vì I - A chuyển vị khi giải tương hỗ.
+  - id: "m08-pitfalls-10"
+    title: "Lỗi thường gặp: Phân bổ bậc thang rồi coi là chính xác: kết quả phụ thuộc thứ tự."
+    tags: ["lỗi", "thường", "gặp", "phân", "bổ", "bậc", "thang", "rồi", "coi", "là", "chính", "xác"]
+    text: |-
+      Phân bổ bậc thang rồi coi là chính xác: kết quả phụ thuộc thứ tự.
+  - id: "m08-pitfalls-11"
+    title: "Lỗi thường gặp: Kéo dài DPO quá mức (CCC đẹp) có thể mất chiết khấu thanh toán sớm và căng quan hệ nhà cung cấp."
+    tags: ["lỗi", "thường", "gặp", "kéo", "dài", "dpo", "quá", "mức", "ccc", "đẹp", "có", "thể"]
+    text: |-
+      Kéo dài DPO quá mức (CCC đẹp) có thể mất chiết khấu thanh toán sớm và căng quan hệ nhà cung cấp.
+  - id: "m08-pitfalls-12"
+    title: "Lỗi thường gặp: Dòng tiền ngân sách chỉ tính phần mua thịt: chưa gồm thuế, lãi vay, khấu hao thuê; không đọc là lợi…"
+    tags: ["lỗi", "thường", "gặp", "dòng", "tiền", "ngân", "sách", "chỉ", "tính", "phần", "mua", "thịt"]
+    text: |-
+      Dòng tiền ngân sách chỉ tính phần mua thịt: chưa gồm thuế, lãi vay, khấu hao thuê; không đọc là lợi nhuận.
+  - id: "m08-pitfalls-13"
+    title: "Lỗi thường gặp: Coi tổn thất tài sản là tiền: nó là khoản không tiền, nhưng giảm khấu hao các kỳ sau."
+    tags: ["lỗi", "thường", "gặp", "coi", "tổn", "thất", "tài", "sản", "là", "tiền", "nó", "khoản"]
+    text: |-
+      Coi tổn thất tài sản là tiền: nó là khoản không tiền, nhưng giảm khấu hao các kỳ sau.
+  - id: "m08-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Hộp công cụ tối thiểu mỗi SME chạy hằng tháng: ba báo cáo khớp nhau, hòa vốn + DOL, chênh lệch giá/…"
+    tags: ["lưu", "sme", "việt", "nam", "hộp", "công", "cụ", "tối", "thiểu", "mỗi", "chạy", "hằng"]
+    text: |-
+      Hộp công cụ tối thiểu mỗi SME chạy hằng tháng: ba báo cáo khớp nhau, hòa vốn + DOL, chênh lệch giá/lượng nguyên liệu. Làm bằng Google Sheets với ô kiểm tra tự động.
+  - id: "m08-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: SME F&B: bắt đầu ABC với 3-5 động lực chi phí chính (độ phức tạp sơ chế, phút QC, kg hao hụt); cân …"
+    tags: ["lưu", "sme", "việt", "nam", "bắt", "đầu", "abc", "với", "động", "lực", "chi", "phí"]
+    text: |-
+      SME F&B: bắt đầu ABC với 3-5 động lực chi phí chính (độ phức tạp sơ chế, phút QC, kg hao hụt); cân tiểu ly điện tử tại vị trí ra món để chuẩn hóa định mức.
+  - id: "m08-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Xưởng rang xay/chế biến: cân đầu vào và đầu ra từng mẻ, chuẩn hóa đường cong rang; ký hợp đồng giá …"
+    tags: ["lưu", "sme", "việt", "nam", "xưởng", "rang", "xay", "chế", "biến", "cân", "đầu", "vào"]
+    text: |-
+      Xưởng rang xay/chế biến: cân đầu vào và đầu ra từng mẻ, chuẩn hóa đường cong rang; ký hợp đồng giá cố định để giảm biến động giá nhân xanh.
+  - id: "m08-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Vay ngắn hạn không nên tài trợ thiết bị dài hạn: cân nhắc vay trung hạn; lập ngân sách tiền mặt hằn…"
+    tags: ["lưu", "sme", "việt", "nam", "vay", "ngắn", "hạn", "không", "nên", "tài", "trợ", "thiết"]
+    text: |-
+      Vay ngắn hạn không nên tài trợ thiết bị dài hạn: cân nhắc vay trung hạn; lập ngân sách tiền mặt hằng tháng trước khi chia lợi tức.
+  - id: "m08-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: Đặt hạn mức công nợ từng đại lý, nhắc nợ sớm; theo dõi DSO/DIO/DPO hằng tháng."
+    tags: ["lưu", "sme", "việt", "nam", "đặt", "hạn", "mức", "công", "nợ", "từng", "đại", "lý"]
+    text: |-
+      Đặt hạn mức công nợ từng đại lý, nhắc nợ sớm; theo dõi DSO/DIO/DPO hằng tháng.
+  - id: "m08-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: Gọi vốn ngoại: chuẩn bị bảng chuyển đổi VAS-IFRS và giá thành theo đơn hàng; chuẩn bị kịch bản thận…"
+    tags: ["lưu", "sme", "việt", "nam", "gọi", "vốn", "ngoại", "chuẩn", "bị", "bảng", "chuyển", "đổi"]
+    text: |-
+      Gọi vốn ngoại: chuẩn bị bảng chuyển đổi VAS-IFRS và giá thành theo đơn hàng; chuẩn bị kịch bản thận trọng và phân tích độ nhạy.
+  - id: "m08-sme_vn_guidance-7"
+    title: "Lưu ý SME Việt Nam: Quy định VAS/Thông tư 200/lộ trình IFRS/thuế TNDN và ưu đãi SME: cần xác nhận hiện hành với kế toán…"
+    tags: ["lưu", "sme", "việt", "nam", "quy", "định", "vas", "thông", "tư", "200", "lộ", "trình"]
+    text: |-
+      Quy định VAS/Thông tư 200/lộ trình IFRS/thuế TNDN và ưu đãi SME: cần xác nhận hiện hành với kế toán trưởng/kiểm toán viên.
+  - id: "m08-sme_vn_guidance-8"
+    title: "Lưu ý SME Việt Nam: Phần mềm kế toán theo quy mô: xem cong-cu-quan-tri-doanh-nghiep-sme.md; ERP lớn chưa cần, bảng tính…"
+    tags: ["lưu", "sme", "việt", "nam", "phần", "mềm", "kế", "toán", "theo", "quy", "mô", "xem"]
+    text: |-
+      Phần mềm kế toán theo quy mô: xem cong-cu-quan-tri-doanh-nghiep-sme.md; ERP lớn chưa cần, bảng tính có kiểm tra tự động là đủ phần lớn giá trị (giá cụ thể cần xác nhận).
+  - id: "m08-case_lessons-1"
+    title: "Bài học case: Case 1 - Chuỗi F&B Phở Việt Chain (CVP, ABC, Master Budget, chênh lệch)"
+    tags: ["bài", "học", "case", "chuỗi", "phở", "việt", "chain", "cvp", "abc", "master", "budget", "chênh"]
+    text: |-
+      name: Case 1 - Chuỗi F&B Phở Việt Chain (CVP, ABC, Master Budget, chênh lệch)
+      type: sme
+      setup: 'Chuỗi 8 quán phở, doanh thu khoảng 30 tỷ/năm, chuẩn bị gọi vốn và nhượng quyền thêm 5 chi nhánh. Cần: hòa vốn một quán, món nào thật sự lãi, ngân sách tiền Q1, kiểm soát hao hụt thịt.'
+      key_calculations:
+      - 'CVP: P 80.000, V 32.000, F 120 triệu -> CM 48.000 (60%); hòa vốn 2.500 tô/tháng (83,3/ngày; 46,3% công suất 180 khách/ngày); doanh thu hòa vốn 200 triệu.'
+      - 'ABC: R_prep 1.066,67/điểm; R_QC 246,91/phút; R_waste 749,06/đơn vị; Wagyu overhead 19.201 so với cào bằng 9.000 -> biên Wagyu 33,0% (thay vì 39,4%); đồ uống 80,3% (thay vì 49,0%).'
+      - 'Menu Engineering: ngưỡng ưa chuộng 14%; CM bình quân gia quyền khoảng 41.100 (nguồn ghi 41.099); Star: phở bò TT, Wagyu, phở gà; Plow Horse: bún bò; Dog: đồ uống.'
+      - 'Master budget: cần mua thịt 1.866/2.184/2.424 kg, chi 335,88/393,12/436,32 triệu; tiền cuối Q1 1.829,21 triệu.'
+      - 'Variance Bình Thạnh: MPV = (175.000-180.000) x 1.350 = -6,75 triệu (F); MQV = (1.350-1.200) x 180.000 = +27 triệu (U); tổng +20,25 triệu (U).'
+      lesson: 'ABC không đổi tổng chi phí, chỉ phân phối lại cho đúng nơi tiêu dùng nguồn lực và có thể đảo chiều nhận định. CM% cao đi cùng đòn bẩy hoạt động cao. Giá mua tốt không bù được bếp lãng phí. Dòng tiền ngân sách chưa phải lợi nhuận. Lưu ý: nhãn ''biên đóng góp ABC'' thực chất là biên sau phân bổ overhead.'
+      data_reliability: illustrative
+  - id: "m08-case_lessons-2"
+    title: "Bài học case: Case 2 - GreenPack gọi vốn Series A (VAS -> IFRS, Job costing + ABC, P&L 5 năm)"
+    tags: ["bài", "học", "case", "greenpack", "gọi", "vốn", "series", "vas", "ifrs", "job", "costing", "abc"]
+    text: |-
+      name: Case 2 - GreenPack gọi vốn Series A (VAS -> IFRS, Job costing + ABC, P&L 5 năm)
+      type: sme
+      setup: Sản xuất bao bì sinh học, tăng 40%/năm, gọi 3 triệu USD. Quỹ ngoại yêu cầu báo cáo IFRS và giá thành theo đơn hàng.
+      key_calculations:
+      - 'Chuyển đổi 1/1/2025: doanh thu chưa chuyển giao ảnh hưởng -500+350 = -150; tổn thất máy ép 600-200 = -400; nợ thuê PV = 365 x 3,8897 = 1.419,7; DTA = 20% x 550 = 110.'
+      - 'LN giữ lại 3.500 -> 3.060 (-440); phần điều chỉnh cân: tài sản +1.479,7 = nợ +1.919,7 - 440.'
+      - 'ABC: R_setup 3.846.154/lần; R_test 857.143/lần; R_design 4.444.444/giờ; overhead/sp X 142, Y 2.107, Z 3.313 (cào bằng 741).'
+      - 'Biên: X 2,1% -> 23,5%; Y 31,7% -> 10,7%; Z 36,4% -> 9,3%. Tăng giá Y 20% (7.800) -> 25,6%; Z 20% (11.400) -> 24,4%.'
+      - 'P&L Năm 1: EBIT = 7,20 - 0,50 - 2,00 - 0,80 - 2,20 = 1,70; EBITDA 2,90; Năm 5 EBIT margin 28,2%.'
+      lesson: 'Chuyển IFRS là đo lường lại, làm vốn chủ giảm nhưng minh bạch; kiểm tra phần điều chỉnh tự cân. ABC phơi bày bù chéo: đơn hàng lớn đơn giản đang trợ cấp đơn tùy biến. Dự phóng biên gộp tăng phải đến từ chỉnh giá/cơ cấu, và cần kịch bản thận trọng.'
+      data_reliability: illustrative
+  - id: "m08-case_lessons-3"
+    title: "Bài học case: Case 3 - TechMart (thất bại): 5 sai lầm kế toán và DuPont đảo ngược"
+    tags: ["bài", "học", "case", "techmart", "thất", "bại", "sai", "lầm", "kế", "toán", "và", "dupont"]
+    text: |-
+      name: 'Case 3 - TechMart (thất bại): 5 sai lầm kế toán và DuPont đảo ngược'
+      type: failure
+      setup: Chuỗi điện máy 15 showroom, doanh thu đỉnh 500 tỷ năm 2019, 2023 vỡ nợ kỹ thuật, đóng 10 cửa hàng. Hệ thống kế toán bị dùng để che điểm yếu.
+      key_calculations:
+      - 'Ký gửi: xuất 80 tỷ, bán 70% = 56 tỷ; LN gộp sai 16 tỷ so với đúng 11,2 -> thổi phồng 4,8 tỷ/quý (30%).'
+      - 'Tồn kho: NRV = 16 - 1,6 = 14,4; dự phòng 21,6; sau thuế 17,28; LNST 38,4 -> 21,12 (-45%).'
+      - 'Thuê: PV = 15 x 6,1446 = 92,17; D/E 2,0 -> 2,92.'
+      - 'Phân khúc: +24 +10 -28 = +6 tỷ toàn chuỗi; 8 showroom tỉnh lẻ lỗ gấp 4,7 lần lợi nhuận chung; đóng chúng đạt 34 tỷ (chưa tính phí đóng cửa).'
+      - 'Ngân sách 40 tỷ, thực tế 36/33/30/27: lệch lũy kế -34 tỷ sau 4 tháng.'
+      - 'DuPont: 2019 ROE = 4% x 2,2 x 1,7 = 14,96%; 2022 = -8% x 0,9 x 4,5 = -32,4%. Altman Z'' 2022 = 0,759.'
+      lesson: 'Cờ đỏ: CFO dưới lợi nhuận, DSO/DIO tăng, thuê ngoài bảng, báo cáo hợp nhất che lỗ điểm bán, ngân sách tăng dần không hành động. Khi biên ròng âm, đòn bẩy cao khuếch đại lỗ cho cổ đông.'
+      data_reliability: illustrative
+  - id: "m08-case_lessons-4"
+    title: "Bài học case: Case 4 - S-Tech (IoT): IFRS 15/16, bậc thang, CVP đa sản phẩm, 4-Variance, DuPont 5, CCC"
+    tags: ["bài", "học", "case", "tech", "iot", "ifrs", "15", "16", "bậc", "thang", "cvp", "đa"]
+    text: |-
+      name: 'Case 4 - S-Tech (IoT): IFRS 15/16, bậc thang, CVP đa sản phẩm, 4-Variance, DuPont 5, CCC'
+      type: success
+      setup: Tập đoàn công nghệ chế tạo doanh thu 1.200 tỷ năm 2025, chuẩn bị IPO quốc tế cuối 2027; tái cấu trúc hệ thống kế toán theo 6 hướng.
+      key_calculations:
+      - 'IFRS 15: SSP 60/30/30 -> HW 50, SW 25, MT 25; năm 1 ghi 66,67, chưa thực hiện 33,33.'
+      - 'IFRS 16: PV = 150 x 3,7908 = 568,62; KH ROU 113,72; chi phí năm 1 170,59 -> năm 5 127,36; tổng 750; EBITDA tăng 150, EBIT tăng 36,28 (năm 1).'
+      - 'Bậc thang: P1 261,33; P2 138,67 (tương hỗ cùng dữ liệu: P1 260,41; P2 139,59).'
+      - 'CVP đa sản phẩm: gói 2 IoT + 3 Sensor, CM gói 8,4; WACM% 52,5%; hòa vốn 50 gói = 800 triệu (IoT 100 bộ, Sensor 150).'
+      - '4-Variance: chi tiêu +12, hiệu năng +18, ngân sách +15, khối lượng +60 = +105 (U) = 585 - 480.'
+      - 'DuPont 5: ROE 14,05% -> 23,85%; đòn bẩy giảm 2,10 -> 1,60; CCC 85 -> 25 ngày, giải phóng khoảng 166 tỷ.'
+      lesson: IFRS 16 làm EBITDA tăng nhưng nợ tăng; bậc thang phụ thuộc thứ tự; CVP đa sản phẩm phải quy về gói theo số lượng; chênh lệch khối lượng 57% tổng thuộc về kinh doanh; ROE tăng khi đòn bẩy giảm nghĩa là chất lượng cao.
+      data_reliability: illustrative
+  - id: "m08-case_lessons-5"
+    title: "Bài học case: Case 5 - Hãng xe điện (bối cảnh VinFast): IAS 38, IAS 36, IFRS 16"
+    tags: ["bài", "học", "case", "hãng", "xe", "điện", "bối", "cảnh", "vinfast", "ias", "38", "36"]
+    text: |-
+      name: 'Case 5 - Hãng xe điện (bối cảnh VinFast): IAS 38, IAS 36, IFRS 16'
+      type: success
+      setup: R&D lớn (nền tảng xe điện, ADAS), xưởng dập khuôn cũ giảm công suất, thuê showroom nước ngoài dài hạn. Toàn bộ số liệu là giả định, không phải số của công ty.
+      key_calculations:
+      - 'R&D: nghiên cứu 200 ghi chi phí; phát triển 300 vốn hóa, KH 5 năm = 60 tỷ/năm = 5 tỷ/tháng; 3 tháng đầu LN giảm 215, tài sản vô hình 285.'
+      - 'IAS 36: VIU = 1.191,67 + 1.875,60 = 3.067,27; FVLCD 3.200 -> thu hồi 3.200; tổn thất 4.500 - 3.200 = 1.300; goodwill -300; máy -714,29; nhà xưởng -285,71; TV = 61% VIU.'
+      - 'Thuê: PV = 500.000 x 7,5501 = 3.775.067 USD; KH 377.507; lãi năm 1 302.005; chi phí P&L 679.512 so với tiền 500.000 (cao hơn 36%); dư nợ cuối năm 1 = 3.577.072.'
+      lesson: Kỷ luật 6 điều kiện vốn hóa; thu hồi là max(bán, dùng); tổn thất phân bổ goodwill trước; FVLCD > VIU là tín hiệu thanh lý; nợ thuê đưa vào nợ ròng. Số thật phải lấy từ báo cáo kiểm toán.
+      data_reliability: illustrative
+  - id: "m08-case_lessons-6"
+    title: "Bài học case: Case 6 - Công ty sữa (bối cảnh Vinamilk): doanh thu đa kênh, phân bổ tương hỗ, sổ đôi"
+    tags: ["bài", "học", "case", "công", "ty", "sữa", "bối", "cảnh", "vinamilk", "doanh", "thu", "đa"]
+    text: |-
+      name: 'Case 6 - Công ty sữa (bối cảnh Vinamilk): doanh thu đa kênh, phân bổ tương hỗ, sổ đôi'
+      type: success
+      setup: Bán qua kênh truyền thống (GT) và hiện đại (MT) với trả hàng, thưởng doanh số, phí trưng bày; kho và đội xe phục vụ lẫn nhau. Số liệu giả định.
+      key_calculations:
+      - Doanh thu ban đầu 10.000 - 500 - 200 - 300 = 9.000; cuối 9.200; giá vốn 5.820; LN gộp 3.380 = 36,7% (so với 40% theo hóa đơn).
+      - 'Tương hỗ: K = 640/0,98 = 653,06; X = 530,61; GT 538,78; MT 461,22 (tổng 1.000).'
+      - 'Lợi nhuận sau hậu cần: trực tiếp GT 647,22 / MT 652,78 (MT nhỉnh hơn); bậc thang 668,89 / 631,11; tương hỗ 661,22 / 638,78 (GT hơn): thứ hạng đảo chiều.'
+      lesson: Doanh thu IFRS 15 là số kỳ vọng nhận sau yếu tố biến đổi, tiền thuần thu = doanh thu cuối là kiểm tra tự nhiên. Phương pháp phân bổ có thể đổi cả thứ hạng kênh. Sổ đôi giúp hai báo cáo nói cùng câu chuyện.
+      data_reliability: illustrative
+  - id: "m08-case_lessons-7"
+    title: "Bài học case: Case 7 - Xưởng rang xay Núi Lửa (Đắk Lắk): ba báo cáo, hòa vốn, chênh lệch rang, lãi mà cạn tiền"
+    tags: ["bài", "học", "case", "xưởng", "rang", "xay", "núi", "lửa", "đắk", "lắk", "ba", "báo"]
+    text: |-
+      name: 'Case 7 - Xưởng rang xay Núi Lửa (Đắk Lắk): ba báo cáo, hòa vốn, chênh lệch rang, lãi mà cạn tiền'
+      type: sme
+      setup: SME TNHH doanh thu 3,6 tỷ, LNST 220,8 triệu nhưng tiền từ 150 xuống 80,8; đồng thời hụt sản lượng rang tháng 12.
+      key_calculations:
+      - CFO = 220,8 + 80 - 70 - 50 + 50 = 230,8; CFI -150; CFF -150; tiền -69,2 -> 80,8.
+      - 'BS cuối: TSCĐ 470; LN giữ lại 230,8; tổng 970,8 hai phía (cân).'
+      - 'Chỉ số: current 1,47; quick 0,80; DSO 19,3; DIO 33,3; DPO 27,5; CCC 25,1; ROE 35,0% = 6,13% x 3,71 x 1,54.'
+      - 'Hòa vốn: CM 30%; F = 804; doanh thu hòa vốn 2.680 (223,3/tháng); biên an toàn 25,6%; DOL 3,6 (mất 15% doanh thu -> EBIT -54%, còn khoảng 138).'
+      - 'Chênh lệch: SQ = 1.428 kg; MPV +4,428 triệu; MQV +4,56 triệu; tổng +8,988 triệu (U); thu hồi 81,3% so với chuẩn 84,0%.'
+      lesson: 'Lãi không phải tiền: vốn lưu động nuốt 70, đầu tư 150, chia lợi tức và trả nợ 150. Hòa vốn và DOL đo độ mong manh; tách giá (khó kiểm soát) và lượng/hao hụt rang (kiểm soát được). 9 triệu/tháng kéo dài cả năm khoảng 108 triệu.'
+      data_reliability: illustrative
+  - id: "m08-worked_examples-1"
+    title: "Ví dụ có lời giải: m08_we_reciprocal_2dept — Phân bổ tương hỗ kho - đội xe cho hai kênh (Case 6)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m08_we_reciprocal_2dept", "phân", "bổ", "tương", "hỗ", "kho", "đội"]
+    text: |-
+      id: m08_we_reciprocal_2dept
+      title: Phân bổ tương hỗ kho - đội xe cho hai kênh (Case 6)
+      inputs:
+        cost_K: 600
+        cost_X: 400
+        K_to_X: 0.2
+        X_to_K: 0.1
+        K_to_GT: 0.5
+        K_to_MT: 0.3
+        X_to_GT: 0.4
+        X_to_MT: 0.5
+      steps:
+      - K = 600 + 0,10 X; X = 400 + 0,20 K -> K = 653,06; X = 530,61
+      - GT = 538,78; MT = 461,22; tổng 1.000
+      - 'So sánh: trực tiếp 552,78/447,22; bậc thang (K trước) 531,11/468,89'
+      result: 'Lợi nhuận sau hậu cần: GT 661,22; MT 638,78 (tương hỗ). Thứ hạng đảo so với phương pháp trực tiếp.'
+  - id: "m08-worked_examples-2"
+    title: "Ví dụ có lời giải: m08_we_reciprocal_3dept — Giải tương hỗ 3 bộ phận hỗ trợ (Phụ lục A)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m08_we_reciprocal_3dept", "tương", "hỗ", "bộ", "phận", "trợ", "phụ"]
+    text: |-
+      id: m08_we_reciprocal_3dept
+      title: Giải tương hỗ 3 bộ phận hỗ trợ (Phụ lục A)
+      inputs:
+        C:
+        - 100
+        - 150
+        - 200
+        A: '[[0,.10,.15],[.05,0,.10],[.10,.05,0]]'
+      steps:
+      - 'Hệ: S1 = 100 + 0,05 S2 + 0,10 S3; S2 = 150 + 0,10 S1 + 0,05 S3; S3 = 200 + 0,15 S1 + 0,10 S2'
+      - 'Nghiệm: S1 = 132,495; S2 = 175,119; S3 = 237,386'
+      - 'Chuyển ra sản xuất: 0,75 x 132,495 + 0,85 x 175,119 + 0,85 x 237,386 = 450 = 100+150+200; tổng S = 545 lớn hơn 450 do đếm qua lại'
+      result: Phân bổ hết 450 cho sản xuất, không dư không thiếu.
+  - id: "m08-worked_examples-3"
+    title: "Ví dụ có lời giải: m08_we_ifrs16_schedule — Lịch nợ thuê IFRS 16 nhà xưởng 5 năm (Case 4) và bút toán"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m08_we_ifrs16_schedule", "lịch", "nợ", "thuê", "ifrs", "16", "nhà"]
+    text: |-
+      id: m08_we_ifrs16_schedule
+      title: Lịch nợ thuê IFRS 16 nhà xưởng 5 năm (Case 4) và bút toán
+      inputs:
+        pmt: 150
+        r: 0.1
+        n: 5
+      steps:
+      - 'PV = 568,62; ngày bắt đầu: Nợ ROU 568,62; Có Nợ thuê 568,62'
+      - 'Năm 1: lãi 56,86; giảm gốc 93,14; dư nợ 475,48; KH 113,72; chi phí 170,59'
+      - 'Năm 2-5 chi phí: 161,27; 151,03; 139,76; 127,36; tổng lãi 181,38; tổng chi phí 750'
+      - 'Bút toán hằng năm: Nợ KH ROU, Có Hao mòn ROU; Nợ Chi phí lãi, Có Nợ thuê; Nợ Nợ thuê, Có Tiền 150'
+      result: Dư nợ cuối năm 5 = 0; EBITDA tăng 150, EBIT tăng 36,28 năm 1.
+  - id: "m08-worked_examples-4"
+    title: "Ví dụ có lời giải: m08_we_ifrs15_bundle — Hợp đồng gói IoT theo IFRS 15 (Case 4)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m08_we_ifrs15_bundle", "hợp", "đồng", "gói", "iot", "theo", "ifrs"]
+    text: |-
+      id: m08_we_ifrs15_bundle
+      title: Hợp đồng gói IoT theo IFRS 15 (Case 4)
+      inputs:
+        price: 100
+        ssp:
+          HW: 60
+          SW: 30
+          MT: 30
+      steps:
+      - Phân bổ 50/25/25
+      - 'Năm 1: Nợ Tiền 100; Có Doanh thu 66,67; Có Doanh thu chưa thực hiện 33,33'
+      - 'Năm 2 và 3: Nợ Doanh thu chưa thực hiện 16,67; Có Doanh thu 16,67'
+      result: Tổng 100; năm 1 không ghi 100 như thực hành hóa đơn.
+  - id: "m08-worked_examples-5"
+    title: "Ví dụ có lời giải: m08_we_ias36 — Suy giảm giá trị CGU Xưởng dập khuôn (Case 5)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m08_we_ias36", "suy", "giảm", "giá", "trị", "cgu", "xưởng"]
+    text: |-
+      id: m08_we_ias36
+      title: Suy giảm giá trị CGU Xưởng dập khuôn (Case 5)
+      inputs:
+        carrying:
+          goodwill: 300
+          machine: 3000
+          plant: 1200
+        fvlcd: 3200
+        fcf:
+        - 300
+        - 320
+        - 340
+        - 350
+        - 360
+        g: 0.01
+        r: 0.12
+      steps:
+      - VIU = 3.067,27; thu hồi = 3.200; tổn thất 1.300
+      - Goodwill -300; còn 1.000 phân bổ theo 3.000:1.200 -> máy -714,29; nhà xưởng -285,71
+      - 'Bút toán: Nợ Chi phí tổn thất 1.300; Có Goodwill 300; Có Hao mòn/tổn thất máy 714,29; Có Hao mòn/tổn thất nhà xưởng 285,71'
+      result: Tổng giá trị sau = 3.200 (0 + 2.285,71 + 914,29).
+  - id: "m08-worked_examples-6"
+    title: "Ví dụ có lời giải: m08_we_transition — Bảng chuyển đổi VAS sang IFRS GreenPack (Case 2)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m08_we_transition", "bảng", "chuyển", "đổi", "vas", "sang", "ifrs"]
+    text: |-
+      id: m08_we_transition
+      title: Bảng chuyển đổi VAS sang IFRS GreenPack (Case 2)
+      inputs:
+        adj_revenue: -150
+        adj_impair: -400
+        lease_pv: 1419.7
+        t: 0.2
+      steps:
+      - 'Bút toán 1: Nợ LN giữ lại 500, Có DT chưa thực hiện 500; Nợ TK 157 350, Có LN giữ lại 350'
+      - 'Bút toán 2: Nợ LN giữ lại 400, Có Hao mòn/tổn thất 400'
+      - 'Bút toán 3: Nợ ROU 1.419,7; Có Nợ thuê 1.419,7'
+      - 'Bút toán 4: Nợ DTA 110; Có LN giữ lại 110'
+      - 'Cân: tài sản 350 - 400 + 1.419,7 + 110 = 1.479,7; nợ 500 + 1.419,7 = 1.919,7; vốn chủ -440'
+      result: LN giữ lại 3.500 -> 3.060; phần điều chỉnh cân.
+  - id: "m08-worked_examples-7"
+    title: "Ví dụ có lời giải: m08_we_three_statements — Ba báo cáo khớp nhau - Núi Lửa (Case 7)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m08_we_three_statements", "ba", "báo", "cáo", "khớp", "nhau", "núi"]
+    text: |-
+      id: m08_we_three_statements
+      title: Ba báo cáo khớp nhau - Núi Lửa (Case 7)
+      inputs:
+        cash0: 150
+        ar:
+        - 120
+        - 190
+        inv:
+        - 180
+        - 230
+        ap:
+        - 140
+        - 190
+        ni: 220.8
+        dep: 80
+        capex: 150
+        debt_repay: 50
+        dividend: 100
+      steps:
+      - CFO = 220,8 + 80 - 70 - 50 + 50 = 230,8
+      - Tiền thuần = 230,8 - 150 - 150 = -69,2; tiền cuối 80,8
+      - 'BS cuối: tài sản 80,8+190+230+470 = 970,8; nguồn vốn 190+150+400+230,8 = 970,8'
+      result: Cân, và tiền BS = tiền CFS.
+  - id: "m08-worked_examples-8"
+    title: "Ví dụ có lời giải: m08_we_altman — Altman Z' TechMart 2022 (số giả định)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m08_we_altman", "altman", "techmart", "2022", "số", "giả", "định"]
+    text: |-
+      id: m08_we_altman
+      title: Altman Z' TechMart 2022 (số giả định)
+      inputs:
+        TA: 333.3
+        WC: -30
+        RE: -40
+        EBIT: -10
+        equity: 74.1
+        debt: 259.3
+        sales: 300
+      steps:
+      - X1 = -0,090; X2 = -0,120; X3 = -0,030; X4 = 0,286; X5 = 0,900
+      - Z' = -0,065 - 0,102 - 0,093 + 0,120 + 0,898 = 0,759
+      result: 'Z'' = 0,76 < 1,23: vùng nguy hiểm.'
+  - id: "m08-worked_examples-9"
+    title: "Ví dụ có lời giải: m08_we_moh_4var — Chênh lệch chi phí sản xuất chung 4 thành phần (Case 4)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m08_we_moh_4var", "chênh", "lệch", "chi", "phí", "sản", "xuất"]
+    text: |-
+      id: m08_we_moh_4var
+      title: Chênh lệch chi phí sản xuất chung 4 thành phần (Case 4)
+      inputs:
+        NH: 25000
+        BF: 300
+        SR_fixed: 0.012
+        SR_var: 0.012
+        SH: 20000
+        AH: 21500
+        AV: 270
+        AF: 315
+      steps:
+      - 'Chi tiêu: 270 - 21.500 x 0,012 = +12; Hiệu năng: 1.500 x 0,012 = +18'
+      - 'Ngân sách: 315 - 300 = +15; Khối lượng: 300 - 240 = +60'
+      - 'Đối chiếu: 585 - 480 = 105'
+      result: Tổng +105 (U); khối lượng chiếm 57%.
+  - id: "m08-worked_examples-10"
+    title: "Ví dụ có lời giải: m08_we_abc_job — ABC theo đơn hàng GreenPack (Case 2)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m08_we_abc_job", "abc", "theo", "đơn", "hàng", "greenpack", "case"]
+    text: |-
+      id: m08_we_abc_job
+      title: ABC theo đơn hàng GreenPack (Case 2)
+      inputs:
+        overhead:
+          setup: 500
+          test: 300
+          design: 200
+        jobs:
+          X:
+          - 20
+          - 50
+          - 5
+          Y:
+          - 80
+          - 100
+          - 30
+          Z:
+          - 30
+          - 200
+          - 10
+      steps:
+      - R_setup = 3.846.154; R_test = 857.143; R_design = 4.444.444
+      - 'Overhead job: X 142,0 triệu; Y 526,7; Z 331,3 (tổng 1.000)'
+      - 'Biên ABC: X 23,5%; Y 10,7%; Z 9,3%'
+      result: Job X đang trợ cấp ngầm cho Y và Z.
+  - id: "m08-worked_examples-11"
+    title: "Ví dụ có lời giải: m08_we_variable_revenue_journals — Chuỗi bút toán doanh thu MT biến đổi (Case 6)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m08_we_variable_revenue_journals", "chuỗi", "bút", "toán", "doanh", "thu", "mt"]
+    text: |-
+      id: m08_we_variable_revenue_journals
+      title: Chuỗi bút toán doanh thu MT biến đổi (Case 6)
+      inputs:
+        invoice: 10000
+        cost: 6000
+        ret_est: 0.05
+        rebate: 200
+        slot: 300
+        ret_actual: 0.03
+      steps:
+      - 'Bán: Nợ Phải thu 10.000; Có Doanh thu 9.000; Có Nợ hoàn tiền 500; Có Nợ chiết khấu thưởng 200; Có Phải trả trưng bày 300'
+      - 'Giá vốn: Nợ Giá vốn 5.700; Nợ Quyền thu hồi hàng trả lại 300; Có Hàng hóa 6.000'
+      - 'Thu tiền: Nợ Tiền 9.700; Nợ Phải trả trưng bày 300; Có Phải thu 10.000'
+      - 'Trả hàng thực tế 300: Nợ Nợ hoàn tiền 300, Có Tiền 300; Nợ Hàng hóa 180, Có Quyền thu hồi 180'
+      - 'Giải phóng 200: Nợ Nợ hoàn tiền 200, Có Doanh thu 200; Nợ Giá vốn 120, Có Quyền thu hồi 120'
+      - 'Thưởng: Nợ Nợ chiết khấu 200, Có Tiền 200'
+      result: Doanh thu 9.200; giá vốn 5.820; LN gộp 3.380; tiền thuần 9.200.
+  - id: "m08-worked_examples-12"
+    title: "Ví dụ có lời giải: m08_we_cash_budget — Ngân sách tiền mặt Q1 Phở Việt (Case 1)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m08_we_cash_budget", "ngân", "sách", "tiền", "mặt", "q1", "phở"]
+    text: |-
+      id: m08_we_cash_budget
+      title: Ngân sách tiền mặt Q1 Phở Việt (Case 1)
+      inputs:
+        volume:
+        - 15000
+        - 18000
+        - 20000
+        price: 80000
+        kg_per_bowl: 0.12
+        cost_kg: 180000
+        begin_ap: 120
+      steps:
+      - Cần mua thịt 1.866/2.184/2.424 kg; chi 335,88/393,12/436,32 triệu
+      - 'Chi NCC: 321,53; 370,22; 419,04 (tổng 1.110,79)'
+      - 'Tiền cuối: 478,47; 1.098,25; 1.829,21'
+      result: Tiền cuối Q1 1.829,21 triệu.
+  - id: "m08-practice_questions-1"
+    title: "Câu hỏi luyện tập: Kho K (chi phí 600) cấp 20% cho đội xe X, X (400) cấp 10% cho K. K cấp 50%/30% cho GT/MT, X cấp 40%…"
+    tags: ["câu", "hỏi", "luyện", "tập", "kho", "chi", "phí", "600", "cấp", "20", "cho", "đội"]
+    text: |-
+      q: Kho K (chi phí 600) cấp 20% cho đội xe X, X (400) cấp 10% cho K. K cấp 50%/30% cho GT/MT, X cấp 40%/50%. Phân bổ tương hỗ cho GT, MT?
+      a: K = 640/0,98 = 653,06; X = 530,61. GT 538,78; MT 461,22; tổng 1.000.
+  - id: "m08-practice_questions-2"
+    title: "Câu hỏi luyện tập: Hợp đồng gói 100 triệu, SSP phần cứng 60, phần mềm 3 năm 30, bảo trì 3 năm 30. Doanh thu năm 1 theo…"
+    tags: ["câu", "hỏi", "luyện", "tập", "hợp", "đồng", "gói", "100", "triệu", "ssp", "phần", "cứng"]
+    text: |-
+      q: Hợp đồng gói 100 triệu, SSP phần cứng 60, phần mềm 3 năm 30, bảo trì 3 năm 30. Doanh thu năm 1 theo IFRS 15?
+      a: HW 50 + 25/3 + 25/3 = 66,67; chưa thực hiện 33,33.
+  - id: "m08-practice_questions-3"
+    title: "Câu hỏi luyện tập: Thuê 150 triệu/năm trong 5 năm, IBR 10%, trả cuối năm. Nợ thuê ban đầu và chi phí P&L năm 1?"
+    tags: ["câu", "hỏi", "luyện", "tập", "thuê", "150", "triệu", "năm", "trong", "ibr", "10", "trả"]
+    text: |-
+      q: Thuê 150 triệu/năm trong 5 năm, IBR 10%, trả cuối năm. Nợ thuê ban đầu và chi phí P&L năm 1?
+      a: PV 568,62; KH 113,72 + lãi 56,86 = 170,59.
+  - id: "m08-practice_questions-4"
+    title: "Câu hỏi luyện tập: CGU ghi sổ 4.500 (goodwill 300), FVLCD 3.200, VIU 3.067,27. Tổn thất và phân bổ?"
+    tags: ["câu", "hỏi", "luyện", "tập", "cgu", "ghi", "sổ", "500", "goodwill", "300", "fvlcd", "200"]
+    text: |-
+      q: CGU ghi sổ 4.500 (goodwill 300), FVLCD 3.200, VIU 3.067,27. Tổn thất và phân bổ?
+      a: Thu hồi 3.200; tổn thất 1.300; goodwill 300; máy 714,29; nhà xưởng 285,71 (phần còn 1.000 theo tỷ lệ 3.000:1.200).
+  - id: "m08-practice_questions-5"
+    title: "Câu hỏi luyện tập: Sản lượng hòa vốn: P 80.000, V 32.000, F 120 triệu. Biên an toàn nếu bán 130 tô/ngày?"
+    tags: ["câu", "hỏi", "luyện", "tập", "sản", "lượng", "hòa", "vốn", "80", "000", "32", "120"]
+    text: |-
+      q: 'Sản lượng hòa vốn: P 80.000, V 32.000, F 120 triệu. Biên an toàn nếu bán 130 tô/ngày?'
+      a: BEQ 2.500 tô/tháng (83,3/ngày); biên an toàn = (130-83,3)/130 = 35,9%.
+  - id: "m08-practice_questions-6"
+    title: "Câu hỏi luyện tập: IoT 5,0 triệu (biến phí 2,0), Sensor 2,0 (1,2); cơ cấu số lượng 40:60; F = 420. Hòa vốn?"
+    tags: ["câu", "hỏi", "luyện", "tập", "iot", "triệu", "biến", "phí", "sensor", "cơ", "cấu", "số"]
+    text: |-
+      q: IoT 5,0 triệu (biến phí 2,0), Sensor 2,0 (1,2); cơ cấu số lượng 40:60; F = 420. Hòa vốn?
+      a: Gói 2 IoT + 3 Sensor, CM gói 8,4; 50 gói; doanh thu 800 triệu; IoT 100, Sensor 150.
+  - id: "m08-practice_questions-7"
+    title: "Câu hỏi luyện tập: Định phí SX chung 500 triệu, công suất bình thường 10.000 sp, thực tế 8.000. Chưa hấp thụ?"
+    tags: ["câu", "hỏi", "luyện", "tập", "định", "phí", "sx", "chung", "500", "triệu", "công", "suất"]
+    text: |-
+      q: Định phí SX chung 500 triệu, công suất bình thường 10.000 sp, thực tế 8.000. Chưa hấp thụ?
+      a: Hấp thụ 400 triệu; chưa hấp thụ 100 triệu vào giá vốn kỳ này.
+  - id: "m08-practice_questions-8"
+    title: "Câu hỏi luyện tập: Tại sao ROE của TechMart 2022 là -32,4% chứ không phải -28,8%?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tại", "sao", "roe", "của", "techmart", "2022", "là", "32"]
+    text: |-
+      q: Tại sao ROE của TechMart 2022 là -32,4% chứ không phải -28,8%?
+      a: -0,08 x 0,9 x 4,5 = -0,324.
+  - id: "m08-practice_questions-9"
+    title: "Câu hỏi luyện tập: Xưởng rang: lãi 220,8, vì sao tiền giảm 69,2?"
+    tags: ["câu", "hỏi", "luyện", "tập", "xưởng", "rang", "lãi", "220", "vì", "sao", "tiền", "giảm"]
+    text: |-
+      q: 'Xưởng rang: lãi 220,8, vì sao tiền giảm 69,2?'
+      a: Vốn lưu động -70, mua thiết bị -150, trả vay -50, chia lợi tức -100; CFO 230,8 - 300 = -69,2.
+  - id: "m08-practice_questions-10"
+    title: "Câu hỏi luyện tập: Rang: thực tế 1.476 kg xanh giá 98.000 cho 1.200 kg rang; định mức 1,19 kg, giá chuẩn 95.000. Chênh…"
+    tags: ["câu", "hỏi", "luyện", "tập", "rang", "thực", "tế", "476", "kg", "xanh", "giá", "98"]
+    text: |-
+      q: 'Rang: thực tế 1.476 kg xanh giá 98.000 cho 1.200 kg rang; định mức 1,19 kg, giá chuẩn 95.000. Chênh lệch?'
+      a: SQ 1.428; MPV +4,428 triệu; MQV +4,56 triệu; tổng +8,988 triệu (U).
+  - id: "m08-practice_questions-11"
+    title: "Câu hỏi luyện tập: Z' với X1..X5 = -0,090; -0,120; -0,030; 0,286; 0,900?"
+    tags: ["câu", "hỏi", "luyện", "tập", "với", "x1", "x5", "090", "120", "030", "286", "900"]
+    text: |-
+      q: Z' với X1..X5 = -0,090; -0,120; -0,030; 0,286; 0,900?
+      a: 0,759; dưới 1,23 là vùng nguy hiểm.
+  - id: "m08-practice_questions-12"
+    title: "Câu hỏi luyện tập: Vì sao nên phân bổ giá thành ABC thay vì cào bằng khi đơn hàng khác nhau số lần setup?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "nên", "phân", "bổ", "giá", "thành", "abc"]
+    text: |-
+      q: Vì sao nên phân bổ giá thành ABC thay vì cào bằng khi đơn hàng khác nhau số lần setup?
+      a: Cào bằng làm đơn nhỏ phức tạp trông lãi và đơn lớn đơn giản trông lỗ; ABC gán theo mức dùng hoạt động, phơi bày bù chéo (X 2,1% -> 23,5%).
+  - id: "m08-checklist-1"
+    title: "Checklist: □ A = L + E ở đầu kỳ, cuối kỳ và phần điều chỉnh chuyển đổi?"
+    tags: ["checklist", "đầu", "kỳ", "cuối", "và", "phần", "điều", "chỉnh", "chuyển", "đổi"]
+    text: |-
+      □ A = L + E ở đầu kỳ, cuối kỳ và phần điều chỉnh chuyển đổi?
+  - id: "m08-checklist-2"
+    title: "Checklist: □ Tiền cuối trên CFS khớp BS?"
+    tags: ["checklist", "tiền", "cuối", "trên", "cfs", "khớp", "bs"]
+    text: |-
+      □ Tiền cuối trên CFS khớp BS?
+  - id: "m08-checklist-3"
+    title: "Checklist: □ Mọi tổng đã chạy Python/Excel?"
+    tags: ["checklist", "mọi", "tổng", "đã", "chạy", "python", "excel"]
+    text: |-
+      □ Mọi tổng đã chạy Python/Excel?
+  - id: "m08-checklist-4"
+    title: "Checklist: □ Số tự đặt ghi 'giả định minh họa'; số công ty thật ghi nguồn?"
+    tags: ["checklist", "số", "tự", "đặt", "ghi", "giả", "định", "minh", "họa", "công", "ty", "thật"]
+    text: |-
+      □ Số tự đặt ghi 'giả định minh họa'; số công ty thật ghi nguồn?
+  - id: "m08-checklist-5"
+    title: "Checklist: □ Định phí/biến phí tách đúng; cơ cấu bán hàng tính theo số lượng hay doanh thu?"
+    tags: ["checklist", "định", "phí", "biến", "tách", "đúng", "cơ", "cấu", "bán", "hàng", "tính", "theo"]
+    text: |-
+      □ Định phí/biến phí tách đúng; cơ cấu bán hàng tính theo số lượng hay doanh thu?
+  - id: "m08-checklist-6"
+    title: "Checklist: □ Overhead phân bổ theo động lực chi phí; bộ phận hỗ trợ phục vụ lẫn nhau đáng kể thì dùng tương hỗ?"
+    tags: ["checklist", "overhead", "phân", "bổ", "theo", "động", "lực", "chi", "phí", "bộ", "phận", "hỗ"]
+    text: |-
+      □ Overhead phân bổ theo động lực chi phí; bộ phận hỗ trợ phục vụ lẫn nhau đáng kể thì dùng tương hỗ?
+  - id: "m08-checklist-7"
+    title: "Checklist: □ Chênh lệch gắn người chịu trách nhiệm?"
+    tags: ["checklist", "chênh", "lệch", "gắn", "người", "chịu", "trách", "nhiệm"]
+    text: |-
+      □ Chênh lệch gắn người chịu trách nhiệm?
+  - id: "m08-checklist-8"
+    title: "Checklist: □ Hợp đồng gói phân bổ theo SSP; doanh thu biến đổi đã trừ?"
+    tags: ["checklist", "hợp", "đồng", "gói", "phân", "bổ", "theo", "ssp", "doanh", "thu", "biến", "đổi"]
+    text: |-
+      □ Hợp đồng gói phân bổ theo SSP; doanh thu biến đổi đã trừ?
+  - id: "m08-checklist-9"
+    title: "Checklist: □ Hợp đồng thuê dài hạn đã tính nợ thuê/ROU và nợ ròng?"
+    tags: ["checklist", "hợp", "đồng", "thuê", "dài", "hạn", "đã", "tính", "nợ", "rou", "và", "ròng"]
+    text: |-
+      □ Hợp đồng thuê dài hạn đã tính nợ thuê/ROU và nợ ròng?
+  - id: "m08-checklist-10"
+    title: "Checklist: □ R&D đã kiểm 6 điều kiện; tài sản đã kiểm suy giảm; tồn kho đã so NRV, có ageing?"
+    tags: ["checklist", "đã", "kiểm", "điều", "kiện", "tài", "sản", "suy", "giảm", "tồn", "kho", "so"]
+    text: |-
+      □ R&D đã kiểm 6 điều kiện; tài sản đã kiểm suy giảm; tồn kho đã so NRV, có ageing?
+  - id: "m08-checklist-11"
+    title: "Checklist: □ Đã xác nhận quy định VAS/Thông tư 200/IFRS/thuế hiện hành?"
+    tags: ["checklist", "đã", "xác", "nhận", "quy", "định", "vas", "thông", "tư", "200", "ifrs", "thuế"]
+    text: |-
+      □ Đã xác nhận quy định VAS/Thông tư 200/IFRS/thuế hiện hành?
+  - id: "m08-checklist-12"
+    title: "Checklist: □ Ngân sách tiền mặt theo chuỗi doanh thu - mua hàng - tiền; có quỹ đệm trước khi chia lợi tức?"
+    tags: ["checklist", "ngân", "sách", "tiền", "mặt", "theo", "chuỗi", "doanh", "thu", "mua", "hàng", "có"]
+    text: |-
+      □ Ngân sách tiền mặt theo chuỗi doanh thu - mua hàng - tiền; có quỹ đệm trước khi chia lợi tức?
+  - id: "m08-checklist-13"
+    title: "Checklist: □ Có ngưỡng cảnh báo chênh lệch và quy tắc rolling forecast; báo cáo lãi lỗ theo điểm bán?"
+    tags: ["checklist", "có", "ngưỡng", "cảnh", "báo", "chênh", "lệch", "và", "quy", "tắc", "rolling", "forecast"]
+    text: |-
+      □ Có ngưỡng cảnh báo chênh lệch và quy tắc rolling forecast; báo cáo lãi lỗ theo điểm bán?
+  - id: "m08-checklist-14"
+    title: "Checklist: □ Theo dõi CCC, DSO, DIO, DPO hằng tháng; DuPont phân rã; Z' sàng lọc; độ nhạy cho kết luận quan tr…"
+    tags: ["checklist", "theo", "dõi", "ccc", "dso", "dio", "dpo", "hằng", "tháng", "dupont", "phân", "rã"]
+    text: |-
+      □ Theo dõi CCC, DSO, DIO, DPO hằng tháng; DuPont phân rã; Z' sàng lọc; độ nhạy cho kết luận quan trọng?
+  - id: "m08-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Tab Reciprocal: ma trận A, =MMULT(MINVERSE(I-TRANSPOSE(A)),C), kiểm tra tổng phân bổ = tổng chi phí…"
+    tags: ["mẫu", "excel", "sheets", "tab", "reciprocal", "ma", "trận", "mmult", "minverse", "transpose", "kiểm", "tra"]
+    text: |-
+      Tab Reciprocal: ma trận A, =MMULT(MINVERSE(I-TRANSPOSE(A)),C), kiểm tra tổng phân bổ = tổng chi phí gốc.
+  - id: "m08-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Tab Lease: lịch nợ thuê (nợ đầu, lãi, trả, gốc, nợ cuối, KH ROU, chi phí P&L) kèm ô kiểm tra nợ cuố…"
+    tags: ["mẫu", "excel", "sheets", "tab", "lease", "lịch", "nợ", "thuê", "đầu", "lãi", "trả", "gốc"]
+    text: |-
+      Tab Lease: lịch nợ thuê (nợ đầu, lãi, trả, gốc, nợ cuối, KH ROU, chi phí P&L) kèm ô kiểm tra nợ cuối = 0.
+  - id: "m08-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: Tab IAS36: dòng tiền, NPV, TV, so sánh FVLCD, phân bổ tổn thất goodwill rồi theo tỷ lệ."
+    tags: ["mẫu", "excel", "sheets", "tab", "ias36", "dòng", "tiền", "npv", "tv", "so", "sánh", "fvlcd"]
+    text: |-
+      Tab IAS36: dòng tiền, NPV, TV, so sánh FVLCD, phân bổ tổn thất goodwill rồi theo tỷ lệ.
+  - id: "m08-excel_google_sheets_templates-4"
+    title: "Mẫu Excel/Sheets: Tab ThreeStatements: BS đầu kỳ, P&L, CFS gián tiếp, BS cuối, ô check A-L=0 và tiền CFS=BS."
+    tags: ["mẫu", "excel", "sheets", "tab", "threestatements", "bs", "đầu", "kỳ", "cfs", "gián", "tiếp", "cuối"]
+    text: |-
+      Tab ThreeStatements: BS đầu kỳ, P&L, CFS gián tiếp, BS cuối, ô check A-L=0 và tiền CFS=BS.
+  - id: "m08-excel_google_sheets_templates-5"
+    title: "Mẫu Excel/Sheets: Tab Variance: giá/lượng nguyên liệu và 4-Variance MOH, ô đối chiếu thực tế - chuẩn."
+    tags: ["mẫu", "excel", "sheets", "tab", "variance", "giá", "lượng", "nguyên", "liệu", "và", "moh", "đối"]
+    text: |-
+      Tab Variance: giá/lượng nguyên liệu và 4-Variance MOH, ô đối chiếu thực tế - chuẩn.
+  - id: "m08-excel_google_sheets_templates-6"
+    title: "Mẫu Excel/Sheets: Tab ABC: nhóm hoạt động, động lực, đơn giá, overhead theo job/món, so biên cào bằng và ABC."
+    tags: ["mẫu", "excel", "sheets", "tab", "abc", "nhóm", "hoạt", "động", "lực", "đơn", "giá", "overhead"]
+    text: |-
+      Tab ABC: nhóm hoạt động, động lực, đơn giá, overhead theo job/món, so biên cào bằng và ABC.
+  - id: "m08-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: 08-comprehensive-accounting-case-studies-manual.md

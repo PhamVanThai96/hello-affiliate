@@ -1,0 +1,913 @@
+id: strategy-m04
+title: "Chiến lược m04: Chiến lược tăng trưởng: Ansoff, BCG, GE-McKinsey"
+summary: "Trả lời hai câu hỏi: (1) tăng trưởng BẰNG CÁCH NÀO (Ansoff: thâm nhập, phát triển thị trường, phát triển sản phẩm, đa dạng hóa) và (2) đầu tư/rút lui Ở ĐÂU, BAO NHIÊU trong danh mục nhiều đơn vị kinh doanh (BCG 2x2, GE-McKinsey 3x3). Dùng để chọn hướng tăng trưởng cho SME, phân …"
+agents: ["strategist"]
+order: 24
+when: ["tang truong", "ansoff", "tham nhap thi truong", "phat trien thi truong", "phat trien san pham", "da dang hoa", "bcg", "ma tran bcg", "stars cash cows", "ge-mckinsey", "danh muc kinh doanh", "mo rong chi nhanh", "nhuong quyen", "m&a dinh huong", "mo rong sang thi truong moi", "chien luoc tang truong: ansoff, bcg, ge-mckinsey", "growth strategy: ansoff matrix, bcg matrix, ge-mckinsey matrix"]
+body_max: 2193
+sections:
+  - id: "m04-tong-quan"
+    title: "Tổng quan m04"
+    tags: ["m04", "chiến", "lược", "tăng", "trưởng", "ansoff", "bcg", "ge", "mckinsey", "growth", "strategy", "matrix"]
+    text: |-
+      Chiến lược tăng trưởng: Ansoff, BCG, GE-McKinsey (Growth Strategy: Ansoff Matrix, BCG Matrix, GE-McKinsey Matrix) — module m04
+
+      Mục đích: Trả lời hai câu hỏi: (1) tăng trưởng BẰNG CÁCH NÀO (Ansoff: thâm nhập, phát triển thị trường, phát triển sản phẩm, đa dạng hóa) và (2) đầu tư/rút lui Ở ĐÂU, BAO NHIÊU trong danh mục nhiều đơn vị kinh doanh (BCG 2x2, GE-McKinsey 3x3). Dùng để chọn hướng tăng trưởng cho SME, phân bổ vốn khan hiếm giữa các sản phẩm/chi nhánh, và quyết định giữ-đầu tư-thu hoạch-bán.
+
+      Dùng khi:
+      - Chủ SME hỏi 'nên mở thêm chi nhánh, ra sản phẩm mới, bán kênh mới hay làm ngành khác?'
+      - Có nhiều dòng sản phẩm/cửa hàng/mảng kinh doanh và vốn có hạn: nên dồn tiền vào đâu, cắt cái nào?
+      - Đánh giá một kế hoạch đa dạng hóa (ví dụ DN nhà hàng muốn làm BĐS, thương mại muốn làm sản xuất).
+      - Phân tích case tập đoàn (Vingroup, Samsung, Unilever, VinFast) theo Ansoff/BCG/GE.
+      - Cần lập luận chiến lược trước khi tính tài chính (NPV/IRR ở 3-financial, m02).
+
+      Nên nắm trước: - m01; - m02
+
+      Module liên quan: - 'm01 - Môi trường bên ngoài (PESTEL, 5 Forces): nguồn điểm cho trục Sức hấp dẫn ngành của GE-McKinsey' - 'm02 - Phân tích nội bộ (Value Chain, VRIO): nguồn điểm cho trục Vị thế cạnh tranh; kiểm tra có đủ năng lực trước khi chọn hướng' - 'm03 - Chiến lược cạnh tranh: sau khi chọn hướng tăng trưởng phải chọn cách cạnh tranh trong thị trường đó' - 'm05 - Blue Ocean: lựa chọn thay thế khi thị trườn…
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m04_relative_market_share: Thị phần tương đối
+      - m04_market_growth: Tốc độ tăng trưởng thị trường / CAGR
+      - m04_bcg_quadrant: Phân loại ô BCG
+      - m04_weighted_score: Điểm có trọng số (trục GE-McKinsey)
+      - m04_ge_zone: Ô và hướng hành động GE-McKinsey
+      - m04_ansoff_option_value: Giá trị kỳ vọng điều chỉnh rủi ro của một hướng Ansoff
+
+      Kho tra cứu của module: Khái niệm 6, Công thức 6, frameworks 4, Quy trình 3, Quy tắc quyết định 13, Chuẩn so sánh 6, Lỗi thường gặp 9, Lưu ý SME Việt Nam 9, Bài học case 4, Ví dụ có lời giải 4, Câu hỏi luyện tập 10, Checklist 11, Mẫu Excel/Sheets 4. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ SWOT", "lỗi thường gặp BSC").
+  - id: "m04-concepts-1"
+    title: "Khái niệm: Chiến lược tăng trưởng"
+    tags: ["khái", "niệm", "chiến", "lược", "tăng", "trưởng"]
+    text: |-
+      term_vi: Chiến lược tăng trưởng
+      term_en: Growth Strategy
+      definition: 'Lựa chọn có chủ đích về việc doanh thu/lợi nhuận sẽ tăng nhờ đâu: bán nhiều hơn cho khách cũ, đem sản phẩm cũ tới khách mới, bán sản phẩm mới cho khách cũ, hay làm cái mới cho khách mới.'
+      why_it_matters: Tăng trưởng tiêu tốn vốn và sự chú ý của chủ. Chọn sai hướng là nguyên nhân phổ biến của khủng hoảng tiền mặt ở SME. Khung chiến lược giúp xếp hướng theo rủi ro và năng lực thay vì theo cảm hứng.
+  - id: "m04-concepts-2"
+    title: "Khái niệm: Rủi ro tăng dần theo mức độ xa lạ"
+    tags: ["khái", "niệm", "rủi", "ro", "tăng", "dần", "theo", "mức", "độ", "xa", "lạ"]
+    text: |-
+      term_vi: Rủi ro tăng dần theo mức độ xa lạ
+      term_en: Risk as Distance from Core
+      definition: Mỗi trục 'mới' (sản phẩm mới, thị trường mới) cộng thêm ẩn số. Một ẩn số = rủi ro trung bình; hai ẩn số (đa dạng hóa) = rủi ro cao nhất.
+      why_it_matters: 'Là logic cốt lõi của Ansoff: DN có kinh nghiệm ở một trong hai trục nên ưu tiên đi bằng cách chỉ đổi MỘT trục mỗi lần, và khai thác hết ô rủi ro thấp trước.'
+  - id: "m04-concepts-3"
+    title: "Khái niệm: Thị phần tương đối"
+    tags: ["khái", "niệm", "thị", "phần", "tương", "đối"]
+    text: |-
+      term_vi: Thị phần tương đối
+      term_en: Relative Market Share (RMS)
+      definition: Thị phần của mình chia cho thị phần của đối thủ lớn nhất. RMS >= 1 nghĩa là mình là số 1 (hoặc ngang số 1).
+      why_it_matters: 'BCG dùng thị phần TƯƠNG ĐỐI vì đường kinh nghiệm (experience curve): ai có khối lượng tích lũy lớn nhất có chi phí đơn vị thấp nhất. Thị phần 20% là rất mạnh nếu đối thủ lớn nhất chỉ 10%, rất yếu nếu đối thủ có 60%.'
+  - id: "m04-concepts-4"
+    title: "Khái niệm: Đơn vị kinh doanh chiến lược"
+    tags: ["khái", "niệm", "đơn", "vị", "kinh", "doanh", "chiến", "lược"]
+    text: |-
+      term_vi: Đơn vị kinh doanh chiến lược
+      term_en: Strategic Business Unit (SBU)
+      definition: Đơn vị có thị trường, đối thủ và chiến lược riêng (dòng sản phẩm, chi nhánh, mảng kinh doanh). Là 'bóng' trên ma trận BCG/GE.
+      why_it_matters: 'Không phân tích gộp cả công ty: một công ty có thể vừa có mảng ngôi sao vừa có mảng cần cắt. Quyết định đầu tư phải theo từng SBU.'
+  - id: "m04-concepts-5"
+    title: "Khái niệm: Cân bằng danh mục theo dòng tiền"
+    tags: ["khái", "niệm", "cân", "bằng", "danh", "mục", "theo", "dòng", "tiền"]
+    text: |-
+      term_vi: Cân bằng danh mục theo dòng tiền
+      term_en: Portfolio Cash Balance
+      definition: 'Ý tưởng BCG: Cash Cow tạo tiền dư, Question Mark và Star cần tiền; danh mục khỏe khi tiền từ nhóm trưởng thành nuôi nhóm tăng trưởng.'
+      why_it_matters: Tăng trưởng nhanh ngốn tiền (vốn lưu động, marketing, đầu tư); lập kế hoạch tăng trưởng không tính nguồn tiền là cách phá sản phổ biến.
+  - id: "m04-concepts-6"
+    title: "Khái niệm: Đa dạng hóa liên quan / không liên quan"
+    tags: ["khái", "niệm", "đa", "dạng", "hóa", "liên", "quan", "không"]
+    text: |-
+      term_vi: Đa dạng hóa liên quan / không liên quan
+      term_en: Related vs Unrelated Diversification
+      definition: 'Liên quan: sản phẩm/thị trường mới có chung năng lực, kênh, công nghệ hoặc khách hàng với lõi. Không liên quan: không có điểm chung ngoài vốn.'
+      why_it_matters: Synergy (hiệp lực) là lý do duy nhất khiến một DN nên làm hai việc thay vì để nhà đầu tư tự đa dạng hóa. Không có synergy thì chỉ còn rủi ro.
+  - id: "m04-formulas-1"
+    title: "Công thức: m04_relative_market_share — Thị phần tương đối"
+    tags: ["công", "thức", "m04_relative_market_share", "thị", "phần", "tương", "đối"]
+    text: |-
+      id: m04_relative_market_share
+      name_vi: Thị phần tương đối
+      name_en: Relative Market Share
+      expression_latex: RMS = \frac{s_{own}}{s_{leader}}
+      expression_python: own_share / top_competitor_share
+      excel: =B2/B3
+      variables:
+      - symbol: own_share
+        meaning: Thị phần của SBU mình (doanh thu SBU / doanh thu thị trường)
+        unit: '% hoặc tỷ lệ'
+      - symbol: top_competitor_share
+        meaning: Thị phần của đối thủ lớn nhất TRONG THỊ TRƯỜNG ĐÓ (nếu mình là số 1 thì dùng số 2)
+        unit: '% hoặc tỷ lệ'
+      when_to_use: Chấm trục ngang BCG; cũng là một yếu tố điểm 'Thị phần' trong GE-McKinsey.
+      why_it_works: So với đối thủ mạnh nhất cho biết mình có lợi thế quy mô/kinh nghiệm hay không; tránh bị đánh lừa bởi thị phần tuyệt đối.
+      assumptions:
+      - Thị phần tương quan với chi phí và lợi nhuận (giả định đường kinh nghiệm), không đúng ở ngành khác biệt hóa cao hoặc ngách
+      pitfalls:
+      - Xác định sai ranh giới thị trường (quán trà sữa Q.1 hay toàn ngành đồ uống?) làm RMS sai hoàn toàn.
+      - Nếu mình là số 1, mẫu số là số 2 (không phải chính mình), nếu không RMS luôn =1.
+      interpretation: RMS >= 1,0 coi là CAO (Star/Cash Cow); < 1,0 là THẤP (Question Mark/Dog). Có thể dùng ngưỡng 1,0 hoặc thấp hơn tuỳ ngành.
+      example:
+        inputs:
+          own_share: 0.3
+          top_competitor_share: 0.25
+        steps:
+        - RMS = 0,30 / 0,25 = 1,2
+        result: 'RMS = 1,2: đứng đầu, thị phần tương đối cao'
+  - id: "m04-formulas-2"
+    title: "Công thức: m04_market_growth — Tốc độ tăng trưởng thị trường / CAGR"
+    tags: ["công", "thức", "m04_market_growth", "tốc", "độ", "tăng", "trưởng", "thị", "trường", "cagr"]
+    text: |-
+      id: m04_market_growth
+      name_vi: Tốc độ tăng trưởng thị trường / CAGR
+      name_en: Market Growth Rate / CAGR
+      expression_latex: g = \left(\frac{V_{end}}{V_{start}}\right)^{1/n} - 1
+      expression_python: (v_end / v_start) ** (1 / n_years) - 1
+      excel: =(B2/B1)^(1/B3)-1
+      variables:
+      - symbol: v_start
+        meaning: Quy mô thị trường đầu kỳ
+        unit: VNĐ
+      - symbol: v_end
+        meaning: Quy mô thị trường cuối kỳ
+        unit: VNĐ
+      - symbol: n_years
+        meaning: Số năm
+        unit: năm
+      when_to_use: Chấm trục dọc BCG và yếu tố 'tăng trưởng' trong Sức hấp dẫn ngành.
+      why_it_works: Tăng trưởng bình quân kép làm phẳng biến động từng năm, phản ánh xu hướng thật.
+      assumptions:
+      - Dữ liệu quy mô thị trường đáng tin cậy (báo cáo ngành, Statista, Euromonitor, số Tổng cục Thống kê)
+      pitfalls:
+      - Lấy năm bùng nổ bất thường (hậu COVID) làm điểm cuối.
+      - Dùng tăng trưởng cả ngành thay vì phân khúc SBU hoạt động.
+      interpretation: Ngưỡng 'cao' thường ~10%/năm hoặc cao hơn GDP danh nghĩa; chọn ngưỡng nhất quán và ghi rõ.
+      example:
+        inputs:
+          v_start: 10000
+          v_end: 14641
+          n_years: 4
+        steps:
+        - (14641/10000)^(1/4) - 1 = 1,1 - 1
+        result: g = 10%/năm
+  - id: "m04-formulas-3"
+    title: "Công thức: m04_bcg_quadrant — Phân loại ô BCG"
+    tags: ["công", "thức", "m04_bcg_quadrant", "phân", "loại", "bcg"]
+    text: |-
+      id: m04_bcg_quadrant
+      name_vi: Phân loại ô BCG
+      name_en: BCG Quadrant Classification
+      expression_latex: Q = f(RMS \ge 1,\ g \ge g^*)
+      expression_python: ('Star' if g >= g_threshold else 'Cash Cow') if rms >= rms_threshold else ('Question Mark' if g >= g_threshold else 'Dog')
+      excel: =IF(RMS>=1,IF(g>=0.1,"Star","Cash Cow"),IF(g>=0.1,"Question Mark","Dog"))
+      variables:
+      - symbol: rms
+        meaning: Thị phần tương đối
+        unit: tỷ lệ
+      - symbol: g
+        meaning: Tăng trưởng thị trường
+        unit: tỷ lệ/năm
+      - symbol: rms_threshold
+        meaning: Ngưỡng thị phần tương đối
+        unit: thường 1.0
+      - symbol: g_threshold
+        meaning: Ngưỡng tăng trưởng
+        unit: thường 0.10
+      when_to_use: Phân loại nhanh nhiều SBU.
+      why_it_works: 'Quy 2 biến liên tục về 4 loại có hàm ý dòng tiền: thị phần cao -> sinh tiền; tăng trưởng cao -> cần tiền.'
+      assumptions:
+      - Dòng tiền tỷ lệ thuận thị phần tương đối và tỷ lệ nghịch tốc độ tăng trưởng
+      pitfalls:
+      - 'Ngưỡng tuỳ tiện: SBU nằm sát ngưỡng dễ đổi ô; đọc cùng xu hướng.'
+      - Dog có thể đang hỗ trợ SBU khác (khách đi qua, đủ menu).
+      interpretation: 'Star: đầu tư duy trì/tăng thị phần. Cash Cow: thu hoạch. Question Mark: đầu tư chọn lọc hoặc loại. Dog: rút lui/bán, trừ khi có vai trò hỗ trợ.'
+      example:
+        inputs:
+          rms: 0.4
+          g: 0.25
+          rms_threshold: 1.0
+          g_threshold: 0.1
+        steps:
+        - rms < 1 và g >= 10%
+        result: Question Mark
+  - id: "m04-formulas-4"
+    title: "Công thức: m04_weighted_score — Điểm có trọng số (trục GE-McKinsey)"
+    tags: ["công", "thức", "m04_weighted_score", "điểm", "có", "trọng", "số", "trục", "ge", "mckinsey"]
+    text: |-
+      id: m04_weighted_score
+      name_vi: Điểm có trọng số (trục GE-McKinsey)
+      name_en: Weighted Factor Score
+      expression_latex: S = \sum_i w_i s_i,\quad \sum_i w_i = 1
+      expression_python: sum(w * s for w, s in zip(weights, scores))
+      excel: =SUMPRODUCT(weights, scores)
+      variables:
+      - symbol: w_i
+        meaning: Trọng số yếu tố i (tổng = 1)
+        unit: tỷ lệ
+      - symbol: s_i
+        meaning: 'Điểm yếu tố i thang 1-5 (yếu tố bất lợi như cạnh tranh gay gắt được đảo điểm: gay gắt = điểm thấp)'
+        unit: điểm
+      when_to_use: Tính điểm Sức hấp dẫn ngành và Vị thế cạnh tranh cho mỗi SBU.
+      why_it_works: Gộp nhiều tiêu chí khác tầm quan trọng thành một thang để đặt lên ma trận; trọng số buộc ban lãnh đạo công khai điều họ coi trọng.
+      assumptions:
+      - Các yếu tố độc lập tương đối; điểm cùng thang
+      - Trọng số chốt TRƯỚC khi chấm để tránh chỉnh theo kết quả mong muốn
+      pitfalls:
+      - Tổng trọng số khác 100%.
+      - Quên đảo điểm cho yếu tố tiêu cực (cạnh tranh, rủi ro).
+      - 'Điểm chủ quan do một người chấm: nên lấy trung bình nhóm 3-5 người.'
+      interpretation: 'Chia thang 1-5 thành 3 mức: thấp < 2,33; trung bình 2,33-3,67; cao > 3,67.'
+      example:
+        inputs:
+          weights:
+          - 0.3
+          - 0.15
+          - 0.2
+          - 0.2
+          - 0.15
+          scores:
+          - 5
+          - 5
+          - 5
+          - 2
+          - 3
+        steps:
+        - 0,3x5 + 0,15x5 + 0,2x5 + 0,2x2 + 0,15x3 = 1,5 + 0,75 + 1,0 + 0,4 + 0,45
+        result: 4,1 (VinFast - Sức hấp dẫn ngành, sau khi sửa số trong nguồn)
+  - id: "m04-formulas-5"
+    title: "Công thức: m04_ge_zone — Ô và hướng hành động GE-McKinsey"
+    tags: ["công", "thức", "m04_ge_zone", "và", "hướng", "hành", "động", "ge", "mckinsey"]
+    text: |-
+      id: m04_ge_zone
+      name_vi: Ô và hướng hành động GE-McKinsey
+      name_en: GE-McKinsey Zone
+      expression_latex: zone = f(level(IA), level(CS))
+      expression_python: '(lambda lv: {(''high'',''high''):''Invest/Grow'',(''high'',''mid''):''Invest/Grow'',(''mid'',''high''):''Invest/Grow'',(''high'',''low''):''Selective'',(''mid'',''mid''):''Selective'',(''low'',''high''):''Selective'',(''mid'',''low''):''Harvest/Divest'',(''low'',''mid''):''Harvest/Divest'',(''low'',''low''):''Harvest/Divest''}[(lv(ia), lv(cs))])(lambda x: ''high'' if x > 3.67 else (''mid'' if x >= 2.33 else ''low''))'
+      excel: Tra bảng 3x3 sau khi đổi điểm thành mức Cao/TB/Thấp
+      variables:
+      - symbol: ia
+        meaning: Điểm Sức hấp dẫn ngành
+        unit: 1-5
+      - symbol: cs
+        meaning: Điểm Vị thế cạnh tranh
+        unit: 1-5
+      when_to_use: 'Chuyển hai điểm thành khuyến nghị (đường chéo: xanh = góc trên-trái, vàng = đường chéo giữa, đỏ = góc dưới-phải).'
+      why_it_works: 'Quy tắc đường chéo: đầu tư khi ngành hấp dẫn VÀ mình mạnh; thu hoạch/rút khi ngành kém VÀ mình yếu; các trường hợp lệch cần chọn lọc.'
+      assumptions:
+      - Cách quy ô theo bản 9 ô chuẩn; (high,mid) và (mid,high) xếp Invest/Grow, ô (high,low) xếp chọn lọc theo hình trong nguồn, (mid,low)/(low,mid) xếp thu hoạch/rút lui
+      pitfalls:
+      - 'Điểm sát ngưỡng 3,67 hay 2,33: nhạy với chấm điểm; kiểm tra độ nhạy ±0,3.'
+      interpretation: 'Xanh: đầu tư tăng trưởng. Vàng: chọn lọc/duy trì bảo vệ. Đỏ: thu hoạch hoặc bán. Phân bổ cụ thể bao nhiêu tiền cần mô hình tài chính (hạn chế của GE).'
+      example:
+        inputs:
+          ia: 4.1
+          cs: 3.25
+        steps:
+        - IA 4,1 > 3,67 = high
+        - CS 3,25 trong 2,33-3,67 = mid
+        result: Invest/Grow (nhưng thận trọng, chọn lọc - khớp nhận định VinFast trong nguồn)
+  - id: "m04-formulas-6"
+    title: "Công thức: m04_ansoff_option_value — Giá trị kỳ vọng điều chỉnh rủi ro của một hướng Ansoff"
+    tags: ["công", "thức", "m04_ansoff_option_value", "giá", "trị", "kỳ", "vọng", "điều", "chỉnh", "rủi", "ro", "của"]
+    text: |-
+      id: m04_ansoff_option_value
+      name_vi: Giá trị kỳ vọng điều chỉnh rủi ro của một hướng Ansoff
+      name_en: Risk-adjusted Option Value (screening heuristic)
+      expression_latex: V = p \cdot (\Delta R \cdot m \cdot T) - I
+      expression_python: p * (extra_rev_per_year * margin * years) - invest
+      excel: =p*(dR*m*T)-I
+      variables:
+      - symbol: p
+        meaning: Xác suất thành công (thâm nhập 0,6-0,8; mở thị trường/sản phẩm 0,4-0,6; đa dạng hóa 0,1-0,3 - ước lượng chủ quan)
+        unit: tỷ lệ
+      - symbol: extra_rev_per_year
+        meaning: Doanh thu tăng thêm mỗi năm khi thành công
+        unit: triệu VNĐ
+      - symbol: margin
+        meaning: Biên lợi nhuận đóng góp
+        unit: tỷ lệ
+      - symbol: years
+        meaning: Số năm xét
+        unit: năm
+      - symbol: invest
+        meaning: Vốn đầu tư ban đầu
+        unit: triệu VNĐ
+      when_to_use: Sàng lọc nhanh 4 hướng Ansoff TRƯỚC khi làm NPV đầy đủ (heuristic của skill này, KHÔNG phải công thức gốc của Ansoff).
+      why_it_works: Ansoff chỉ xếp hạng rủi ro định tính; nhân với xác suất buộc đưa rủi ro vào số tiền. Không chiết khấu nên chỉ để sàng lọc.
+      assumptions:
+      - p là ước lượng chủ quan - cần ghi rõ cơ sở
+      - Bỏ qua giá trị thời gian của tiền; hướng nổi lên phải làm lại bằng NPV/IRR
+      pitfalls:
+      - Lạc quan p cho đa dạng hóa.
+      - Quên chi phí cơ hội của thời gian chủ.
+      interpretation: 'V > 0: đáng xem xét tiếp. So sánh giữa các hướng; V âm nghĩa là chưa đủ lý do ở khung thời gian đó.'
+      example:
+        inputs:
+          p: 0.7
+          extra_rev_per_year: 600
+          margin: 0.15
+          years: 3
+          invest: 100
+        steps:
+        - 0,7 x (600 x 0,15 x 3) - 100 = 0,7 x 270 - 100 = 189 - 100
+        result: V = +89 triệu
+  - id: "m04-frameworks-1"
+    title: "Frameworks: m04_ansoff — Ma trận Ansoff"
+    tags: ["frameworks", "m04_ansoff", "ma", "trận", "ansoff"]
+    text: |-
+      id: m04_ansoff
+      name_vi: Ma trận Ansoff
+      name_en: Ansoff Matrix (Product/Market Expansion Grid)
+      origin: |
+        Igor Ansoff, 1957, bài 'Strategies for Diversification' (Harvard Business Review). Ra đời khi các công ty Mỹ hậu chiến bùng nổ đa dạng hóa mà thiếu khung đánh giá rủi ro; Ansoff đưa ra khung 2 trục để biết mình đang bước xa lõi tới đâu.
+      components:
+      - 'Trục: Sản phẩm (hiện tại/mới) x Thị trường (hiện tại/mới).'
+      - 'Ô 1 Market Penetration (SP cũ, TT cũ): rủi ro THẤP. Cách: tăng tần suất dùng, tăng lượng mua mỗi lần (upsell/upsizing), giành khách đối thủ, biến non-user thành user.'
+      - 'Ô 2 Market Development (SP cũ, TT mới): rủi ro TRUNG BÌNH. Cách: mở địa lý, phân khúc mới, kênh bán mới (e-commerce, B2B, wholesale), nhóm tuổi mới.'
+      - 'Ô 3 Product Development (SP mới, TT cũ): rủi ro TRUNG BÌNH. Cách: cải tiến, mở rộng dòng (variant, size), sản phẩm hoàn toàn mới, bổ sung dịch vụ.'
+      - 'Ô 4 Diversification (SP mới, TT mới): rủi ro CAO. Related (có chung năng lực/khách) rủi ro trung bình-cao; Unrelated rất cao.'
+      when_to_use: Chọn hướng tăng trưởng cho MỘT đơn vị kinh doanh (SBU).
+      how_to_apply:
+      - 'Bước 1: Xác định rõ SBU và tăng trưởng mục tiêu (ví dụ +30% doanh thu trong 24 tháng) và nguồn lực tối đa (vốn, người, thời gian chủ).'
+      - 'Bước 2: Kiểm tra dư địa ô 1: thị phần hiện tại, mức bão hòa, tần suất/giá trị đơn trung bình, tỷ lệ khách quay lại. Còn dư địa thì bắt đầu ở đây.'
+      - 'Bước 3: Liệt kê 2-3 ý tưởng cho mỗi ô còn lại, ghi rõ ''ẩn số'' (khách mới ở đâu? sản phẩm mới cần năng lực gì?).'
+      - 'Bước 4: Với mỗi ý tưởng chấm: nhu cầu thị trường, năng lực hiện có (m02), đối thủ (m01), vốn, thời gian hoàn vốn; tính V sàng lọc (m04_ansoff_option_value).'
+      - 'Bước 5: Chọn 1 hướng chính (đổi một trục) và có thể 1 hướng phụ thử nghiệm nhỏ; mọi hướng 2 ẩn số phải qua thử nghiệm quy mô nhỏ.'
+      - 'Bước 6: Đặt cột mốc dừng/đi tiếp (KPI, ngân sách tối đa), giao cho BSC (m06) theo dõi.'
+      how_to_read_results: 'Thứ tự ưu tiên mặc định: Penetration -> (Market Dev hoặc Product Dev tuỳ nơi có năng lực) -> Diversification. Ansoff cho biết hướng và mức rủi ro, KHÔNG cho biết đối thủ, nguồn lực, thời điểm - phải bổ sung bằng m01/m02/tài chính.'
+      pitfalls:
+      - Nhảy thẳng vào diversification khi lõi chưa khai thác hết hoặc chưa ổn định.
+      - Ghép cả hai trục mới cùng lúc vì 'cơ hội hiếm' mà không thử nghiệm nhỏ.
+      - 'Coi ''mới'' và ''hiện tại'' là nhị phân: thực tế có mức độ (sản phẩm tương tự vs rất khác).'
+      - Bỏ qua phản ứng đối thủ khi thâm nhập bằng giảm giá (cuộc chiến giá làm hao biên).
+      - 'Không kiểm tra năng lực: vốn nhiều không thay thế năng lực cốt lõi (Vsmart).'
+      example: 'Quán cà phê 3 chi nhánh: Penetration = combo sáng + thẻ thành viên; Market Dev = bán qua GrabFood/mở quầy kiosk khu văn phòng; Product Dev = cà phê rang xay đóng gói; Diversification = mở trường dạy barista cho người mới (khách mới + sản phẩm mới).'
+  - id: "m04-frameworks-2"
+    title: "Frameworks: m04_bcg — Ma trận BCG"
+    tags: ["frameworks", "m04_bcg", "ma", "trận", "bcg"]
+    text: |-
+      id: m04_bcg
+      name_vi: Ma trận BCG
+      name_en: BCG Growth-Share Matrix
+      origin: |
+        Bruce Henderson, Boston Consulting Group, 1970 (The Product Portfolio). Ra đời để các tập đoàn đa ngành có công cụ chia vốn nội bộ; dựa trên đường kinh nghiệm (kinh nghiệm tích lũy gấp đôi thì chi phí đơn vị giảm khoảng 20-30%) và quan sát rằng thị trường tăng nhanh ngốn tiền mặt.
+      components:
+      - 'Trục ngang: thị phần tương đối (RMS); trục dọc: tăng trưởng thị trường.'
+      - 'Star (RMS cao, tăng trưởng cao): sinh doanh thu lớn nhưng cũng cần vốn lớn để giữ vị thế; chiến lược đầu tư mạnh; dòng tiền khoảng 0; sẽ thành Cash Cow khi thị trường chậm lại.'
+      - 'Cash Cow (RMS cao, tăng trưởng thấp): sinh tiền dư; thu hoạch để nuôi Star và Question Mark; duy trì lâu nhất có thể.'
+      - 'Question Mark (RMS thấp, tăng trưởng cao): hấp dẫn nhưng chưa có vị thế, tiêu tốn tiền; đầu tư chọn lọc vào đơn vị triển vọng nhất, loại phần còn lại; thành Star hoặc Dog.'
+      - 'Dog (RMS thấp, tăng trưởng thấp): hòa vốn/lỗ; rút lui hoặc bán.'
+      - 'Vòng đời lý tưởng: Question Mark -> Star -> Cash Cow -> Dog -> thoái vốn. Kích thước bong bóng = doanh thu SBU.'
+      when_to_use: Phân loại nhanh nhiều SBU/sản phẩm, quyết định chia vốn; hợp tập đoàn hoặc SME có >= 3 dòng sản phẩm/chi nhánh.
+      how_to_apply:
+      - 'Bước 1: Liệt kê SBU (>= 3) và xác định ranh giới thị trường của từng SBU.'
+      - 'Bước 2: Tính doanh thu SBU, thị phần, thị phần đối thủ lớn nhất -> RMS (m04_relative_market_share).'
+      - 'Bước 3: Tính tăng trưởng thị trường (m04_market_growth) - chọn ngưỡng (thường 10% hoặc trung bình ngành) và RMS=1.'
+      - 'Bước 4: Phân ô (m04_bcg_quadrant) và vẽ bong bóng theo doanh thu.'
+      - 'Bước 5: Gán chiến lược: Star = đầu tư giữ vị thế; Cow = thu hoạch; QM = chọn 1-2 SBU để biến thành Star, còn lại loại; Dog = bán/đóng, trừ khi có vai trò hỗ trợ.'
+      - 'Bước 6: Lập ngân sách dòng tiền: tiền từ Cow >= nhu cầu vốn của Star + QM được chọn; nếu thiếu, giảm số QM theo đuổi.'
+      - 'Bước 7: Đánh giá lại hàng năm vì tăng trưởng và vị thế thay đổi.'
+      how_to_read_results: 'Danh mục khỏe: có Cow nuôi Star/QM chọn lọc, không có quá nhiều QM rải đều (mỗi cái thiếu vốn), không Dog âm tiền kéo dài. Nhiều Cow mà ít Star/QM = công ty sẽ già.'
+      pitfalls:
+      - 'Chỉ 2 tiêu chí: bỏ sót cạnh tranh, công nghệ, rủi ro, năng lực.'
+      - Giả định sai 'thị phần cao = lợi nhuận cao' (đúng khi có lợi thế chi phí theo quy mô, sai ở ngành khác biệt hóa).
+      - Ranh giới thị trường và ngưỡng cao/thấp mơ hồ, đổi cách định nghĩa là đổi ô.
+      - Bỏ qua synergy giữa các SBU (Dog là món bắt buộc trong menu, kéo khách).
+      - Không dự đoán được cú sốc thị trường (Dollar Shave Club được Unilever mua khoảng 1 tỷ USD năm 2016 nhưng không thành Star vì Gillette phản công).
+      example: 'Chuỗi F&B: Trà đào (RMS 1,2, tăng trưởng 22%) = Star; Trà sữa truyền thống (RMS 1,14, tăng trưởng 6%) = Cash Cow; Bánh ngọt (RMS 0,4, tăng trưởng 25%) = Question Mark; Cà phê phin (RMS 0,4, tăng trưởng -2%) = Dog (xem worked example).'
+  - id: "m04-frameworks-3"
+    title: "Frameworks: m04_ge_mckinsey — Ma trận GE-McKinsey (9 ô)"
+    tags: ["frameworks", "m04_ge_mckinsey", "ma", "trận", "ge", "mckinsey"]
+    text: |-
+      id: m04_ge_mckinsey
+      name_vi: Ma trận GE-McKinsey (9 ô)
+      name_en: GE-McKinsey Nine-Box Matrix
+      origin: |
+        McKinsey & Company phát triển cho General Electric thập niên 1970 (có tài liệu ghi GE tự phát triển cùng McKinsey khoảng 1971). Ra đời vì ban lãnh đạo GE thấy BCG chỉ 2 biến là quá thô để quyết định chia vốn cho hàng chục SBU; cần nhiều tiêu chí và mức trung gian.
+      components:
+      - 'Trục dọc: Sức hấp dẫn ngành. Yếu tố mẫu và trọng số: quy mô thị trường 20%, tăng trưởng 20%, lợi nhuận ngành 15%, cường độ cạnh tranh (đảo điểm) 15%, rào cản gia nhập 10%, công nghệ 10%, rủi ro môi trường (PESTEL) 10%.'
+      - 'Trục ngang: Vị thế cạnh tranh. Yếu tố mẫu: thị phần 20%, chất lượng sản phẩm 15%, thương hiệu 15%, chi phí sản xuất 15%, R&D 10%, phân phối 10%, quản lý và nhân sự 10%, tài chính 5%.'
+      - Thang 1-5; mức Thấp/Trung bình/Cao; bong bóng có kích thước = doanh thu.
+      - 'Xanh (góc trên-trái: ngành Cao x Vị thế Mạnh/TB; ngành TB x Mạnh): đầu tư tăng trưởng. Vàng (đường chéo giữa): chọn lọc/duy trì bảo vệ. Đỏ (góc dưới-phải): thu hoạch/rút lui/bán.'
+      when_to_use: 'Khi cần phân bổ vốn chính xác hơn BCG: nhiều SBU, quyết định lớn, cần lập luận có trọng số; phù hợp tập đoàn, ít hợp DN nhỏ chỉ 1-2 SBU.'
+      how_to_apply:
+      - 'Bước 1: Chọn SBU cần đánh giá.'
+      - 'Bước 2: Chọn yếu tố và trọng số cho ''Sức hấp dẫn ngành'' (có thể lấy từ PESTEL/5 Forces, m01) - chốt trước khi chấm.'
+      - 'Bước 3: Chọn yếu tố và trọng số cho ''Vị thế cạnh tranh'' (từ Value Chain/VRIO, m02).'
+      - 'Bước 4: Chấm 1-5 từng yếu tố từng SBU, có bằng chứng; nhiều người chấm rồi lấy trung bình.'
+      - 'Bước 5: Tính điểm có trọng số 2 trục (m04_weighted_score).'
+      - 'Bước 6: Đặt lên ma trận 3x3 (m04_ge_zone), kích thước bong bóng = doanh thu.'
+      - 'Bước 7: Gán chiến lược theo ô: đầu tư tăng trưởng / chọn lọc / duy trì bảo vệ / thu hoạch / rút bán.'
+      - 'Bước 8: Phân bổ nguồn lực, kiểm tra độ nhạy (±0,3 điểm hoặc đổi trọng số), và bổ sung mô hình tài chính để biết đầu tư BAO NHIÊU.'
+      how_to_read_results: Vị trí chỉ cho HƯỚNG hành động (đầu tư/chọn lọc/thu hoạch), không cho số tiền. Hai SBU cùng ô vẫn khác nhau về tính khả thi; dùng xu hướng dịch chuyển giữa các kỳ.
+      pitfalls:
+      - 'Chủ quan: lựa chọn yếu tố, trọng số, điểm số dễ bị bias (chỉnh trọng số để ra kết quả mong muốn).'
+      - Phức tạp, tốn dữ liệu; không có best practice chung nên khó benchmark.
+      - Tĩnh (snapshot) và bỏ synergy giữa SBU.
+      - Không hợp DN nhỏ ít SBU.
+      - Đếm trùng yếu tố (thị phần vừa trong Vị thế vừa ngầm trong Thương hiệu).
+      example: 'Samsung: Semiconductor (5,0 / 4,5) = đầu tư tăng trưởng; Heavy Industries đóng tàu (2,0 / 2,5) = thu hoạch/tái cấu trúc (điểm trong nguồn là minh họa). VinFast EV: Hấp dẫn 4,1; Vị thế 3,25 -> Invest chọn lọc.'
+  - id: "m04-frameworks-4"
+    title: "Frameworks: m04_combined_process — Quy trình kết hợp 3 công cụ"
+    tags: ["frameworks", "m04_combined_process", "quy", "trình", "kết", "hợp", "công", "cụ"]
+    text: |-
+      id: m04_combined_process
+      name_vi: Quy trình kết hợp 3 công cụ
+      name_en: Combined Growth + Portfolio Process
+      origin: 'Cách phối hợp theo mục IV của nguồn: mỗi công cụ trả lời một câu hỏi khác nhau (Ansoff: bằng cách nào; BCG: loại gì; GE: bao nhiêu và vì sao).'
+      components:
+      - 'Ansoff: xác định HƯỚNG tăng trưởng cho từng SBU'
+      - 'BCG: phân loại nhanh SBU (Star, Cow, QM, Dog)'
+      - 'GE-McKinsey: đánh giá chi tiết, quyết định đầu tư chính xác'
+      when_to_use: Doanh nghiệp có nhiều SBU và cần kế hoạch tăng trưởng + chia vốn trọn vẹn.
+      how_to_apply:
+      - 'Bước 1: BCG sàng nhanh toàn danh mục để thấy SBU nào cần xem kỹ.'
+      - 'Bước 2: GE-McKinsey cho SBU quan trọng (hoặc bỏ qua nếu SME chỉ có 3-4 dòng).'
+      - 'Bước 3: Với SBU được chọn đầu tư, Ansoff chọn hướng tăng trưởng.'
+      - 'Bước 4: Định lượng bằng NPV/IRR (3-financial m02) và lập ngân sách dòng tiền.'
+      how_to_read_results: 'Danh mục được chia vốn có thứ tự: Star/Xanh trước, QM chọn lọc, Cow cấp vừa đủ, Dog thoái. Mỗi SBU có hướng Ansoff cụ thể.'
+      pitfalls:
+      - 'Làm đủ cả ba cho SME 1 sản phẩm: lãng phí, chỉ cần Ansoff.'
+      - Dừng ở ma trận, không chuyển thành ngân sách và cột mốc.
+      example: Xem procedure m04_p_portfolio.
+  - id: "m04-procedures-1"
+    title: "Quy trình: m04_p_choose_growth — Chọn hướng tăng trưởng cho một SME (Ansoff end-to-end)"
+    tags: ["quy", "trình", "m04_p_choose_growth", "chọn", "hướng", "tăng", "trưởng", "cho", "một", "sme", "ansoff", "end"]
+    text: |-
+      id: m04_p_choose_growth
+      name: Chọn hướng tăng trưởng cho một SME (Ansoff end-to-end)
+      steps:
+      - 'Hỏi (intake): ngành, sản phẩm, doanh thu/lợi nhuận hiện tại, số khách và tần suất, thị phần ước tính, đối thủ lớn nhất, mục tiêu tăng trưởng, vốn khả dụng, thời gian chủ, chấp nhận rủi ro/ngưỡng thua lỗ, năng lực nổi trội.'
+      - 'Chẩn đoán lõi: biên lợi nhuận đóng góp, tỷ lệ khách quay lại, công suất (giờ thấp điểm), dòng tiền. Lõi chưa lãi hoặc chưa ổn định -> sửa trước, chưa tăng trưởng.'
+      - Liệt kê ý tưởng cho 4 ô Ansoff, mỗi ô 2-3 ý, ghi rõ ẩn số (khách mới ở đâu? sản phẩm mới cần năng lực gì?).
+      - 'Chấm sơ bộ từng ý: nhu cầu, năng lực (m02), đối thủ/phản ứng (m01), vốn, thời gian hoàn vốn, p ước lượng; tính V (m04_ansoff_option_value).'
+      - 'Chọn hướng: ưu tiên ô rủi ro thấp còn dư địa; chỉ lên ô tiếp theo khi mục tiêu chưa đủ hoặc ô 1 sắp bão hòa.'
+      - Với hướng nổi lên, chạy NPV/IRR/payback đầy đủ (3-financial m02) và kịch bản xấu (m07).
+      - 'Chốt kế hoạch: 1 hướng chính + tối đa 1 thử nghiệm nhỏ, ngân sách trần, KPI, mốc dừng/tiếp tục (BSC m06).'
+      outputs: Bảng 4 ô Ansoff với ý tưởng + điểm; hướng khuyến nghị + lý do; V và NPV; ngân sách trần; KPI; điều kiện dừng; rủi ro chính.
+  - id: "m04-procedures-2"
+    title: "Quy trình: m04_p_portfolio — Chia vốn cho danh mục sản phẩm/chi nhánh (BCG -> GE -> hành động)"
+    tags: ["quy", "trình", "m04_p_portfolio", "chia", "vốn", "cho", "danh", "mục", "sản", "phẩm", "chi", "nhánh"]
+    text: |-
+      id: m04_p_portfolio
+      name: Chia vốn cho danh mục sản phẩm/chi nhánh (BCG -> GE -> hành động)
+      steps:
+      - Liệt kê SBU (sản phẩm/chi nhánh/mảng) với doanh thu, biên đóng góp, dòng tiền riêng.
+      - 'Với mỗi SBU: định nghĩa thị trường; tính thị phần, RMS và tăng trưởng thị trường (ghi nguồn dữ liệu và độ tin cậy).'
+      - Phân ô BCG; gắn nhãn Star/Cow/QM/Dog và chiến lược mặc định.
+      - Sàng lại bằng GE-McKinsey cho SBU nằm sát ngưỡng hoặc quyết định lớn; lập trọng số trước, chấm nhóm, kiểm tra độ nhạy.
+      - Kiểm tra vai trò hỗ trợ của Dog (kéo khách, hoàn thiện menu) trước khi cắt.
+      - 'Lập ngân sách dòng tiền: tiền sinh ra từ Cow vs nhu cầu Star + QM chọn; cắt bớt QM nếu thiếu.'
+      - Đặt cột mốc 6-12 tháng cho QM (đạt RMS/doanh thu nào thì tiếp, không thì thoái).
+      outputs: Bảng phân loại SBU; ma trận; kế hoạch chia vốn theo SBU; danh sách SBU thoái/giữ; dòng tiền dự kiến; mốc đánh giá lại.
+  - id: "m04-procedures-3"
+    title: "Quy trình: m04_p_diversification_gate — Cổng kiểm tra trước khi đa dạng hóa"
+    tags: ["quy", "trình", "m04_p_diversification_gate", "cổng", "kiểm", "tra", "trước", "khi", "đa", "dạng", "hóa"]
+    text: |-
+      id: m04_p_diversification_gate
+      name: Cổng kiểm tra trước khi đa dạng hóa
+      steps:
+      - 'Phân loại: related hay unrelated? Chung năng lực/kênh/khách với lõi ở điểm nào (liệt kê cụ thể).'
+      - 'Kiểm tra 5 cổng: (1) Lõi đã ổn định và có dòng tiền dư; (2) Có năng lực cốt lõi cho lĩnh vực mới hoặc đối tác bổ khuyết; (3) Vốn thua lỗ tối đa chịu được 24-36 tháng không làm lõi nguy hiểm; (4) Có synergy đo được (chi phí/doanh thu); (5) Có thể thử nghiệm quy mô nhỏ/pilot.'
+      - 'Nếu thiếu >= 2 cổng: không làm, hoặc đổi thành partnership/thử nghiệm nhỏ.'
+      - 'Nếu qua: pilot 3-6 tháng với mốc rõ ràng, ngân sách trần, người phụ trách riêng.'
+      outputs: Kết luận Go / Pilot / No-go với bằng chứng từng cổng.
+  - id: "m04-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu ô Market Penetration còn dư địa (thị phần < 30% và còn công suất/khách chưa phục vụ) thì khai t…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "market", "penetration", "còn", "dư", "địa", "thị", "phần"]
+    text: |-
+      Nếu ô Market Penetration còn dư địa (thị phần < 30% và còn công suất/khách chưa phục vụ) thì khai thác trước khi sang ô khác.
+  - id: "m04-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu thị trường hiện tại gần bão hòa (tăng trưởng thấp, thị phần đã cao) thì chuyển sang Market Deve…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "thị", "trường", "hiện", "tại", "gần", "bão", "hòa"]
+    text: |-
+      Nếu thị trường hiện tại gần bão hòa (tăng trưởng thấp, thị phần đã cao) thì chuyển sang Market Development hoặc Product Development, đổi MỘT trục mỗi lần.
+  - id: "m04-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu có năng lực sản phẩm mạnh nhưng thiếu khách thì chọn Market Development; nếu có khách trung thà…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "có", "năng", "lực", "sản", "phẩm", "mạnh", "nhưng"]
+    text: |-
+      Nếu có năng lực sản phẩm mạnh nhưng thiếu khách thì chọn Market Development; nếu có khách trung thành nhưng sản phẩm hết hấp dẫn thì chọn Product Development.
+  - id: "m04-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu hướng cần đổi CẢ sản phẩm lẫn thị trường (Diversification) thì bắt buộc qua cổng m04_p_diversif…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "hướng", "cần", "đổi", "cả", "sản", "phẩm", "lẫn"]
+    text: |-
+      Nếu hướng cần đổi CẢ sản phẩm lẫn thị trường (Diversification) thì bắt buộc qua cổng m04_p_diversification_gate; ưu tiên related, thử nghiệm nhỏ.
+  - id: "m04-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu diversification là unrelated và không có năng lực/đối tác thì khuyến nghị không làm (bài học Vs…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "diversification", "là", "unrelated", "và", "không", "có", "năng"]
+    text: |-
+      Nếu diversification là unrelated và không có năng lực/đối tác thì khuyến nghị không làm (bài học Vsmart).
+  - id: "m04-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu SBU là Star thì đầu tư giữ vị thế; Cash Cow thì thu hoạch và đừng đầu tư thêm ngoài duy trì; Qu…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "sbu", "là", "star", "thì", "đầu", "tư", "giữ"]
+    text: |-
+      Nếu SBU là Star thì đầu tư giữ vị thế; Cash Cow thì thu hoạch và đừng đầu tư thêm ngoài duy trì; Question Mark thì chọn lọc và đặt mốc; Dog thì rút lui, trừ khi có vai trò hỗ trợ.
+  - id: "m04-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu có nhiều Question Mark thì chọn 1-2 cái triển vọng nhất để đầu tư tập trung, loại phần còn lại …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "có", "nhiều", "question", "mark", "thì", "chọn", "cái"]
+    text: |-
+      Nếu có nhiều Question Mark thì chọn 1-2 cái triển vọng nhất để đầu tư tập trung, loại phần còn lại (đừng chia đều).
+  - id: "m04-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu dòng tiền từ Cash Cow không đủ nuôi Star + QM thì giảm số QM, không vay thêm để tăng trưởng đồn…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dòng", "tiền", "từ", "cash", "cow", "không", "đủ"]
+    text: |-
+      Nếu dòng tiền từ Cash Cow không đủ nuôi Star + QM thì giảm số QM, không vay thêm để tăng trưởng đồng loạt.
+  - id: "m04-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu chỉ có 1-2 SBU thì dùng Ansoff, không cần BCG/GE; nếu >= 3 SBU và quyết định lớn thì BCG -> GE."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chỉ", "có", "sbu", "thì", "dùng", "ansoff", "không"]
+    text: |-
+      Nếu chỉ có 1-2 SBU thì dùng Ansoff, không cần BCG/GE; nếu >= 3 SBU và quyết định lớn thì BCG -> GE.
+  - id: "m04-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu điểm GE sát ngưỡng (±0,3) thì kiểm tra độ nhạy trọng số; nếu kết luận đổi thì xếp ô 'chọn lọc'."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "điểm", "ge", "sát", "ngưỡng", "thì", "kiểm", "tra"]
+    text: |-
+      Nếu điểm GE sát ngưỡng (±0,3) thì kiểm tra độ nhạy trọng số; nếu kết luận đổi thì xếp ô 'chọn lọc'.
+  - id: "m04-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu SBU ở ô đỏ GE nhưng có vai trò hỗ trợ SBU khác thì giữ ở mức tối thiểu, không đầu tư mới."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "sbu", "đỏ", "ge", "nhưng", "có", "vai", "trò"]
+    text: |-
+      Nếu SBU ở ô đỏ GE nhưng có vai trò hỗ trợ SBU khác thì giữ ở mức tối thiểu, không đầu tư mới.
+  - id: "m04-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu quá trình thâm nhập dựa vào giảm giá thì đánh giá phản ứng đối thủ và biên lợi nhuận còn lại; k…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "quá", "trình", "thâm", "nhập", "dựa", "vào", "giảm"]
+    text: |-
+      Nếu quá trình thâm nhập dựa vào giảm giá thì đánh giá phản ứng đối thủ và biên lợi nhuận còn lại; không đánh đổi biên bằng lượng nếu LTV/CAC xấu.
+  - id: "m04-decision_rules-13"
+    title: "Quy tắc quyết định: Nếu hướng đã chọn tốn vốn lớn thì tính NPV/IRR và kịch bản xấu trước khi duyệt, không dừng ở ma trậ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "hướng", "đã", "chọn", "tốn", "vốn", "lớn", "thì"]
+    text: |-
+      Nếu hướng đã chọn tốn vốn lớn thì tính NPV/IRR và kịch bản xấu trước khi duyệt, không dừng ở ma trận.
+  - id: "m04-benchmarks-1"
+    title: "Chuẩn so sánh: Ngưỡng thị phần tương đối (BCG)"
+    tags: ["chuẩn", "so", "sánh", "ngưỡng", "thị", "phần", "tương", "đối", "bcg"]
+    text: |-
+      metric: Ngưỡng thị phần tương đối (BCG)
+      value: 1,0 (bằng đối thủ lớn nhất)
+      context: Ngưỡng chuẩn; có thể dùng thấp hơn ở thị trường phân mảnh
+      confidence: high
+  - id: "m04-benchmarks-2"
+    title: "Chuẩn so sánh: Ngưỡng tăng trưởng thị trường (BCG)"
+    tags: ["chuẩn", "so", "sánh", "ngưỡng", "tăng", "trưởng", "thị", "trường", "bcg"]
+    text: |-
+      metric: Ngưỡng tăng trưởng thị trường (BCG)
+      value: ~10%/năm hoặc trung bình ngành
+      context: Quy ước phổ biến, không phải quy luật; nêu rõ khi dùng
+      confidence: medium
+  - id: "m04-benchmarks-3"
+    title: "Chuẩn so sánh: Chia thang GE"
+    tags: ["chuẩn", "so", "sánh", "chia", "thang", "ge"]
+    text: |-
+      metric: Chia thang GE
+      value: Thấp < 2,33; TB 2,33-3,67; Cao > 3,67
+      context: Chia đều thang 1-5 thành 3 mức
+      confidence: high
+  - id: "m04-benchmarks-4"
+    title: "Chuẩn so sánh: Đường kinh nghiệm"
+    tags: ["chuẩn", "so", "sánh", "đường", "kinh", "nghiệm"]
+    text: |-
+      metric: Đường kinh nghiệm
+      value: Chi phí đơn vị giảm ~20-30% khi sản lượng tích lũy gấp đôi
+      context: Quan sát gốc của BCG; thay đổi theo ngành
+      confidence: medium
+  - id: "m04-benchmarks-5"
+    title: "Chuẩn so sánh: Xác suất thành công ước lượng"
+    tags: ["chuẩn", "so", "sánh", "xác", "suất", "thành", "công", "ước", "lượng"]
+    text: |-
+      metric: Xác suất thành công ước lượng
+      value: Penetration 0,6-0,8; Market/Product Dev 0,4-0,6; Diversification 0,1-0,3
+      context: Heuristic của skill này, chỉ để sàng lọc
+      confidence: low
+  - id: "m04-benchmarks-6"
+    title: "Chuẩn so sánh: Trọng số GE mẫu"
+    tags: ["chuẩn", "so", "sánh", "trọng", "số", "ge", "mẫu"]
+    text: |-
+      metric: Trọng số GE mẫu
+      value: 'Hấp dẫn: quy mô 20, tăng trưởng 20, lợi nhuận 15, cạnh tranh 15, rào cản 10, công nghệ 10, rủi ro 10; Vị thế: thị phần 20, chất lượng 15, thương hiệu 15, chi phí 15, R&D 10, phân phối 10, quản lý 10, tài chính 5'
+      context: Mẫu trong nguồn, tuỳ chỉnh theo ngành
+      confidence: medium
+  - id: "m04-pitfalls-1"
+    title: "Lỗi thường gặp: Chọn hướng tăng trưởng theo cảm hứng/cơ hội mà không kiểm tra năng lực và dòng tiền."
+    tags: ["lỗi", "thường", "gặp", "chọn", "hướng", "tăng", "trưởng", "theo", "cảm", "hứng", "cơ", "hội"]
+    text: |-
+      Chọn hướng tăng trưởng theo cảm hứng/cơ hội mà không kiểm tra năng lực và dòng tiền.
+  - id: "m04-pitfalls-2"
+    title: "Lỗi thường gặp: Nhảy qua ô rủi ro thấp để chạy đa dạng hóa."
+    tags: ["lỗi", "thường", "gặp", "nhảy", "qua", "rủi", "ro", "thấp", "để", "chạy", "đa", "dạng"]
+    text: |-
+      Nhảy qua ô rủi ro thấp để chạy đa dạng hóa.
+  - id: "m04-pitfalls-3"
+    title: "Lỗi thường gặp: Tăng trưởng đồng loạt nhiều hướng làm vốn và sự chú ý của chủ bị xé nhỏ."
+    tags: ["lỗi", "thường", "gặp", "tăng", "trưởng", "đồng", "loạt", "nhiều", "hướng", "làm", "vốn", "và"]
+    text: |-
+      Tăng trưởng đồng loạt nhiều hướng làm vốn và sự chú ý của chủ bị xé nhỏ.
+  - id: "m04-pitfalls-4"
+    title: "Lỗi thường gặp: Dùng ma trận như đáp án thay vì công cụ lập luận: BCG/GE chỉ đưa ra giả thuyết cần kiểm chứng."
+    tags: ["lỗi", "thường", "gặp", "dùng", "ma", "trận", "như", "đáp", "án", "thay", "vì", "công"]
+    text: |-
+      Dùng ma trận như đáp án thay vì công cụ lập luận: BCG/GE chỉ đưa ra giả thuyết cần kiểm chứng.
+  - id: "m04-pitfalls-5"
+    title: "Lỗi thường gặp: Định nghĩa thị trường mơ hồ nên tính sai thị phần/RMS."
+    tags: ["lỗi", "thường", "gặp", "định", "nghĩa", "thị", "trường", "mơ", "hồ", "nên", "tính", "sai"]
+    text: |-
+      Định nghĩa thị trường mơ hồ nên tính sai thị phần/RMS.
+  - id: "m04-pitfalls-6"
+    title: "Lỗi thường gặp: Bỏ Dog hoặc QM mà không xét vai trò hỗ trợ và chi phí chìm."
+    tags: ["lỗi", "thường", "gặp", "bỏ", "dog", "hoặc", "qm", "mà", "không", "xét", "vai", "trò"]
+    text: |-
+      Bỏ Dog hoặc QM mà không xét vai trò hỗ trợ và chi phí chìm.
+  - id: "m04-pitfalls-7"
+    title: "Lỗi thường gặp: Chấm điểm GE một người, trọng số điều chỉnh sau để ra kết quả mong muốn."
+    tags: ["lỗi", "thường", "gặp", "chấm", "điểm", "ge", "một", "người", "trọng", "số", "điều", "chỉnh"]
+    text: |-
+      Chấm điểm GE một người, trọng số điều chỉnh sau để ra kết quả mong muốn.
+  - id: "m04-pitfalls-8"
+    title: "Lỗi thường gặp: Không chuyển kết quả ma trận thành ngân sách, KPI, mốc dừng."
+    tags: ["lỗi", "thường", "gặp", "không", "chuyển", "kết", "quả", "ma", "trận", "thành", "ngân", "sách"]
+    text: |-
+      Không chuyển kết quả ma trận thành ngân sách, KPI, mốc dừng.
+  - id: "m04-pitfalls-9"
+    title: "Lỗi thường gặp: Chép case tập đoàn (Samsung, Vingroup) cho SME mà không điều chỉnh quy mô vốn."
+    tags: ["lỗi", "thường", "gặp", "chép", "case", "tập", "đoàn", "samsung", "vingroup", "cho", "sme", "mà"]
+    text: |-
+      Chép case tập đoàn (Samsung, Vingroup) cho SME mà không điều chỉnh quy mô vốn.
+  - id: "m04-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Với SME 1 sản phẩm/1 cửa hàng: dùng Ansoff, bắt đầu bằng Penetration (combo, thẻ thành viên, giờ th…"
+    tags: ["lưu", "sme", "việt", "nam", "với", "sản", "phẩm", "cửa", "hàng", "dùng", "ansoff", "bắt"]
+    text: |-
+      Với SME 1 sản phẩm/1 cửa hàng: dùng Ansoff, bắt đầu bằng Penetration (combo, thẻ thành viên, giờ thấp điểm, giao hàng qua app). BCG/GE chỉ có ý nghĩa khi có >= 3 dòng sản phẩm/chi nhánh.
+  - id: "m04-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: Market Development phổ biến ở SME VN: mở thêm quận/tỉnh, bán qua TikTok Shop/Shopee/GrabFood/ZaloSh…"
+    tags: ["lưu", "sme", "việt", "nam", "market", "development", "phổ", "biến", "vn", "mở", "thêm", "quận"]
+    text: |-
+      Market Development phổ biến ở SME VN: mở thêm quận/tỉnh, bán qua TikTok Shop/Shopee/GrabFood/ZaloShop, B2B (văn phòng, trường học, khách sạn), xuất khẩu qua Alibaba/Amazon. Cần tính chi phí sàn (phí cố định + dịch vụ + vận chuyển) vào biên - cần xác nhận biểu phí hiện hành của từng sàn.
+  - id: "m04-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Product Development: bắt đầu bằng sản phẩm bổ sung (combo, topping, đóng gói mang đi) tận dụng bếp/…"
+    tags: ["lưu", "sme", "việt", "nam", "product", "development", "bắt", "đầu", "bằng", "sản", "phẩm", "bổ"]
+    text: |-
+      Product Development: bắt đầu bằng sản phẩm bổ sung (combo, topping, đóng gói mang đi) tận dụng bếp/nhân sự sẵn có trước khi đầu tư dây chuyền mới.
+  - id: "m04-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Đa dạng hóa ở SME dễ nhất khi related (cùng khách, cùng kênh): ví dụ quán ăn -> bán đồ ăn đóng gói,…"
+    tags: ["lưu", "sme", "việt", "nam", "đa", "dạng", "hóa", "dễ", "nhất", "khi", "related", "cùng"]
+    text: |-
+      Đa dạng hóa ở SME dễ nhất khi related (cùng khách, cùng kênh): ví dụ quán ăn -> bán đồ ăn đóng gói, catering. Unrelated (nhà hàng -> BĐS, kinh doanh vàng) là rủi ro lớn khi vốn nhỏ.
+  - id: "m04-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: Mở thêm chi nhánh: tính lại NPV/payback từng điểm, lưu ý mặt bằng tăng giá thuê (cần xác nhận hợp đ…"
+    tags: ["lưu", "sme", "việt", "nam", "mở", "thêm", "chi", "nhánh", "tính", "lại", "npv", "payback"]
+    text: |-
+      Mở thêm chi nhánh: tính lại NPV/payback từng điểm, lưu ý mặt bằng tăng giá thuê (cần xác nhận hợp đồng), nhân sự quản lý, và 'ăn lẫn khách' của chính mình (cannibalization).
+  - id: "m04-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: Khi vay ngân hàng/gọi vốn: trình bày hướng tăng trưởng theo Ansoff + dòng tiền + NPV; ngân hàng qua…"
+    tags: ["lưu", "sme", "việt", "nam", "khi", "vay", "ngân", "hàng", "gọi", "vốn", "trình", "bày"]
+    text: |-
+      Khi vay ngân hàng/gọi vốn: trình bày hướng tăng trưởng theo Ansoff + dòng tiền + NPV; ngân hàng quan tâm dòng tiền trả nợ hơn ma trận.
+  - id: "m04-sme_vn_guidance-7"
+    title: "Lưu ý SME Việt Nam: Dữ liệu thị trường VN: Tổng cục Thống kê, báo cáo ngành (Euromonitor, Statista, Nielsen/Kantar, Vie…"
+    tags: ["lưu", "sme", "việt", "nam", "dữ", "liệu", "thị", "trường", "vn", "tổng", "cục", "thống"]
+    text: |-
+      Dữ liệu thị trường VN: Tổng cục Thống kê, báo cáo ngành (Euromonitor, Statista, Nielsen/Kantar, Vietdata), báo cáo của hiệp hội ngành; đánh dấu 'cần xác nhận' khi dùng ước lượng nội bộ.
+  - id: "m04-sme_vn_guidance-8"
+    title: "Lưu ý SME Việt Nam: Công cụ: Google Sheets/Excel (SUMPRODUCT cho điểm GE), bubble chart; không cần phần mềm riêng."
+    tags: ["lưu", "sme", "việt", "nam", "công", "cụ", "google", "sheets", "excel", "sumproduct", "cho", "điểm"]
+    text: |-
+      Công cụ: Google Sheets/Excel (SUMPRODUCT cho điểm GE), bubble chart; không cần phần mềm riêng.
+  - id: "m04-sme_vn_guidance-9"
+    title: "Lưu ý SME Việt Nam: Khi nghi ngờ nên thử nhỏ: mở pop-up/kiosk 3 tháng, bán thử trên 1 sàn, ra mắt 1 SKU mới, trước khi …"
+    tags: ["lưu", "sme", "việt", "nam", "khi", "nghi", "ngờ", "nên", "thử", "nhỏ", "mở", "pop"]
+    text: |-
+      Khi nghi ngờ nên thử nhỏ: mở pop-up/kiosk 3 tháng, bán thử trên 1 sàn, ra mắt 1 SKU mới, trước khi cam kết vốn lớn.
+  - id: "m04-case_lessons-1"
+    title: "Bài học case: Vingroup - đa dạng hóa và rút lui"
+    tags: ["bài", "học", "case", "vingroup", "đa", "dạng", "hóa", "và", "rút", "lui"]
+    text: |-
+      name: Vingroup - đa dạng hóa và rút lui
+      type: failure
+      setup: Vingroup là tập đoàn tư nhân lớn nhất VN; mở rộng từ BĐS (Vinhomes) sang bán lẻ (VinMart), resort, ô tô (VinFast), điện thoại (Vsmart), giáo dục (VinSchool), y tế (Vinmec), kế hoạch hàng không (Vinpearl Air) rồi thu hẹp.
+      key_calculations:
+      - 'Phân loại Ansoff theo nguồn: BĐS cao cấp = Penetration/lõi; VinMart, Vinpearl = Product Development (khách Vinhomes); VinFast, Vsmart = Unrelated Diversification; VinSchool, Vinmec = có synergy hệ sinh thái.'
+      - 'Kết quả: Vsmart đóng cửa 2021; VinMart bán cho Masan (2019); kế hoạch hàng không hủy; tập trung VinFast, Vinhomes.'
+      lesson: 'Ansoff cảnh báo đúng: unrelated diversification rủi ro nhất dù vốn lớn; thiếu năng lực cốt lõi (phần mềm, brand ô tô, dealer network) thì vốn không bù được. Synergy (đa dạng hóa liên quan) làm tăng tỷ lệ thành công. Với SME: vốn nhỏ hơn nhiều nên tolerance cho thất bại thấp hơn.'
+      data_reliability: unverified
+  - id: "m04-case_lessons-2"
+    title: "Bài học case: Unilever - quản lý danh mục theo BCG"
+    tags: ["bài", "học", "case", "unilever", "quản", "lý", "danh", "mục", "theo", "bcg"]
+    text: |-
+      name: Unilever - quản lý danh mục theo BCG
+      type: success
+      setup: Dove = Star; OMO/Surf = Cash Cow (số 1 VN và Đông Nam Á, thị trường bão hòa); Dollar Shave Club = Question Mark; mảng margarine = Dog.
+      key_calculations:
+      - Bán margarine cho KKR giá khoảng 8 tỷ USD (2018) -> giải phóng vốn cho thương hiệu tăng trưởng.
+      - Dollar Shave Club mua khoảng 1 tỷ USD (2016) nhưng không thành Star do Gillette phản công.
+      lesson: 'Dùng Cash Cow nuôi Star/QM, bán Dog khi mua được giá tốt. Hạn chế BCG: không dự đoán phản ứng đối thủ, nên mỗi QM cần mốc và điều kiện dừng.'
+      data_reliability: unverified
+  - id: "m04-case_lessons-3"
+    title: "Bài học case: Samsung - phân bổ vốn bằng GE-McKinsey"
+    tags: ["bài", "học", "case", "samsung", "phân", "bổ", "vốn", "bằng", "ge", "mckinsey"]
+    text: |-
+      name: Samsung - phân bổ vốn bằng GE-McKinsey
+      type: success
+      setup: '6 SBU chấm hấp dẫn ngành/vị thế: Semiconductor 5,0/4,5; Galaxy 3,5/4,0; Display OLED 4,5/5,0; Gia dụng 3,0/3,5; SDI pin 4,5/3,0; Heavy (đóng tàu) 2,0/2,5.'
+      key_calculations:
+      - 'Hành động theo ô: đầu tư lớn cho chip (nguồn nêu khoảng 230 tỷ USD, 2022-2042); chọn lọc cho Galaxy và SDI; duy trì gia dụng; thu hoạch/tái cấu trúc đóng tàu.'
+      lesson: 'GE giúp tập trung vốn vào ô xanh thay vì chia đều; hạn chế: không nói được đầu tư BAO NHIÊU, cần mô hình tài chính. Điểm số trong nguồn là minh họa, không phải số của Samsung.'
+      data_reliability: illustrative
+  - id: "m04-case_lessons-4"
+    title: "Bài học case: VinFast EV - GE-McKinsey"
+    tags: ["bài", "học", "case", "vinfast", "ev", "ge", "mckinsey"]
+    text: |-
+      name: VinFast EV - GE-McKinsey
+      type: sme
+      setup: 'Đánh giá SBU xe điện toàn cầu: Hấp dẫn ngành 5 yếu tố (tăng trưởng 0,30 điểm 5; rào cản 0,15 điểm 5; pháp lý 0,20 điểm 5; cạnh tranh 0,20 điểm 2; bền vững lợi nhuận 0,15 điểm 3); Vị thế 5 yếu tố (thị phần 0,20 điểm 2; tài chính 0,25 điểm 4; R&D 0,20 điểm 3; thương hiệu 0,15 điểm 3; chuỗi cung ứng 0,20 điểm 4).'
+      key_calculations:
+      - Hấp dẫn = 1,50 + 0,75 + 1,00 + 0,40 + 0,45 = 4,10 (nguồn cũ ghi 4,2 - đã sửa)
+      - Vị thế = 0,40 + 1,00 + 0,60 + 0,45 + 0,80 = 3,25 (nguồn cũ ghi 3,2 - đã sửa)
+      - 'Ô: Hấp dẫn Cao x Vị thế TB = đầu tư chọn lọc'
+      lesson: 'Tấn công có chọn lọc: củng cố lõi (VN, hệ sinh thái, trạm sạc), mở rộng quốc tế kiểu vết dầu loang, tối ưu chi phí (thuê pin, phần mềm); điểm yếu then chốt là độ tin cậy sản phẩm. Điểm số mang tính đánh giá chủ quan, minh họa.'
+      data_reliability: illustrative
+  - id: "m04-worked_examples-1"
+    title: "Ví dụ có lời giải: SME: chuỗi 3 quán trà sữa chọn hướng Ansoff"
+    tags: ["ví", "dụ", "có", "lời", "giải", "sme", "chuỗi", "quán", "trà", "sữa", "chọn", "hướng"]
+    text: |-
+      name: 'SME: chuỗi 3 quán trà sữa chọn hướng Ansoff'
+      inputs: Doanh thu 6.000 triệu/năm, mục tiêu +25% trong 3 năm, vốn tối đa 500 triệu. 4 phương án, 3 năm; biên đóng góp m và xác suất p ước lượng.
+      steps:
+      - 'Penetration (combo + app thành viên + giao hàng): p=0,7; thêm 600 tr/năm; m=15%; vốn 100 -> V = 0,7 x (600x0,15x3) - 100 = 0,7 x 270 - 100 = +89.'
+      - 'Market Development (mở quán thứ 4 khu mới): p=0,5; thêm 1.200 tr/năm; m=15%; vốn 500 -> V = 0,5 x 540 - 500 = -230.'
+      - 'Product Development (dòng trà trái cây + bánh ăn kèm): p=0,55; thêm 900 tr/năm; m=18%; vốn 200 -> V = 0,55 x 486 - 200 = +67,3.'
+      - 'Diversification (nhượng quyền/nhà máy đóng chai): p=0,2; thêm 2.000 tr/năm; m=12%; vốn 1.500 -> V = 0,2 x 720 - 1.500 = -1.356.'
+      - 'Kết luận: làm Penetration (V=+89) trước, kèm Product Development thử trên menu (V=+67,3); chưa mở quán 4 (V<0 trong 3 năm, cần NPV 5 năm và kiểm tra cannibalization); không đa dạng hóa.'
+      result: 'Hướng chính: Penetration; hướng phụ: Product Development thử nghiệm. Mở quán 4 chỉ khi có NPV dương ở kịch bản xấu.'
+  - id: "m04-worked_examples-2"
+    title: "Ví dụ có lời giải: SME: shop F&B 4 dòng sản phẩm - BCG"
+    tags: ["ví", "dụ", "có", "lời", "giải", "sme", "shop", "dòng", "sản", "phẩm", "bcg"]
+    text: |-
+      name: 'SME: shop F&B 4 dòng sản phẩm - BCG'
+      inputs: 'Thị phần / thị phần đối thủ lớn nhất / tăng trưởng thị trường: Trà đào 30%/25%/22%; Trà sữa truyền thống 40%/35%/6%; Bánh ngọt 6%/15%/25%; Cà phê phin 4%/10%/-2%. Ngưỡng RMS=1; g=10%.'
+      steps:
+      - 'RMS: 30/25 = 1,2; 40/35 = 1,14; 6/15 = 0,4; 4/10 = 0,4.'
+      - 'Phân ô: Trà đào (RMS>=1, g=22%) = Star; Trà sữa truyền thống (RMS>=1, g=6%) = Cash Cow; Bánh ngọt (RMS<1, g=25%) = Question Mark; Cà phê phin (RMS<1, g=-2%) = Dog.'
+      - 'Hành động: Star = đầu tư giữ vị thế (marketing, nhân sự); Cow = thu hoạch giữ giá, không đầu tư thêm ngoài duy trì; QM = thử 3 tháng với mốc RMS >= 0,6 hoặc doanh thu đạt X, không đạt thì loại; Dog = giảm còn vài món hoặc bỏ (kiểm tra có kéo khách buổi sáng không).'
+      - 'Ngân sách: tiền ra từ Cash Cow trích 60% cho Trà đào, 25% cho Bánh ngọt thử nghiệm, 15% dự phòng.'
+      result: Một Star, một Cow, một QM được đầu tư có điều kiện, một Dog thu hẹp.
+  - id: "m04-worked_examples-3"
+    title: "Ví dụ có lời giải: SME: tập đoàn gia đình 3 SBU - GE-McKinsey"
+    tags: ["ví", "dụ", "có", "lời", "giải", "sme", "tập", "đoàn", "gia", "đình", "sbu", "ge"]
+    text: |-
+      name: 'SME: tập đoàn gia đình 3 SBU - GE-McKinsey'
+      inputs: 'Trọng số cả hai trục [0,30; 0,25; 0,25; 0,20]. SBU A (chuỗi giao hàng): hấp dẫn [4,4,3,4], vị thế [4,3,4,4]; SBU B (xưởng bao bì): [3,3,3,2], [3,3,3,3]; SBU C (kho cho thuê cũ): [2,2,3,2], [2,2,3,2].'
+      steps:
+      - 'Hấp dẫn: A = 0,3x4+0,25x4+0,25x3+0,2x4 = 3,75; B = 0,9+0,75+0,75+0,4 = 2,80; C = 0,6+0,5+0,75+0,4 = 2,25.'
+      - 'Vị thế: A = 0,3x4+0,25x3+0,25x4+0,2x4 = 3,75; B = 3,00; C = 2,25.'
+      - 'Ô: A cao/cao (3,75>3,67) = Invest/Grow; B TB/TB = chọn lọc/duy trì bảo vệ; C thấp/thấp = thu hoạch/bán.'
+      - 'Độ nhạy: A sát ngưỡng 3,67 (3,75), kiểm tra bằng cách giảm điểm một yếu tố 1 bậc: nếu < 3,67 thì xếp chọn lọc, không rót mạnh.'
+      - 'Hành động: dồn vốn vào A; giữ B, tối ưu chi phí; bán/ngừng C, giải phóng vốn.'
+      result: A đầu tư tăng trưởng; B duy trì; C thoái vốn.
+  - id: "m04-worked_examples-4"
+    title: "Ví dụ có lời giải: Kiểm tra số liệu VinFast trong nguồn"
+    tags: ["ví", "dụ", "có", "lời", "giải", "kiểm", "tra", "số", "liệu", "vinfast", "trong", "nguồn"]
+    text: |-
+      name: Kiểm tra số liệu VinFast trong nguồn
+      inputs: Trọng số và điểm trong nguồn cho hai trục.
+      steps:
+      - Hấp dẫn = 0,3x5 + 0,15x5 + 0,2x5 + 0,2x2 + 0,15x3 = 4,10.
+      - Vị thế = 0,2x2 + 0,25x4 + 0,2x3 + 0,15x3 + 0,2x4 = 3,25.
+      result: 4,1 và 3,25 (nguồn đã sửa cho khớp).
+  - id: "m04-practice_questions-1"
+    title: "Câu hỏi luyện tập: Công ty có thị phần 18%, đối thủ lớn nhất 36%, thị trường tăng 12%/năm. Phân ô BCG thế nào?"
+    tags: ["câu", "hỏi", "luyện", "tập", "công", "ty", "có", "thị", "phần", "18", "đối", "thủ"]
+    text: |-
+      q: Công ty có thị phần 18%, đối thủ lớn nhất 36%, thị trường tăng 12%/năm. Phân ô BCG thế nào?
+      a: 'RMS = 18/36 = 0,5 < 1; tăng trưởng 12% >= 10%: Question Mark. Cần quyết định đầu tư chọn lọc hay loại.'
+  - id: "m04-practice_questions-2"
+    title: "Câu hỏi luyện tập: Nếu bạn là số 1 với thị phần 40% và số 2 là 30%, RMS bằng bao nhiêu?"
+    tags: ["câu", "hỏi", "luyện", "tập", "nếu", "bạn", "là", "số", "với", "thị", "phần", "40"]
+    text: |-
+      q: Nếu bạn là số 1 với thị phần 40% và số 2 là 30%, RMS bằng bao nhiêu?
+      a: 40/30 = 1,33 (mẫu số là đối thủ lớn nhất, ở đây là số 2).
+  - id: "m04-practice_questions-3"
+    title: "Câu hỏi luyện tập: Quán ăn đang đông giờ trưa, vắng chiều. Hướng Ansoff nào đầu tiên?"
+    tags: ["câu", "hỏi", "luyện", "tập", "quán", "ăn", "đang", "đông", "giờ", "trưa", "vắng", "chiều"]
+    text: |-
+      q: Quán ăn đang đông giờ trưa, vắng chiều. Hướng Ansoff nào đầu tiên?
+      a: 'Market Penetration: tăng tần suất/giá trị đơn buổi chiều (combo, giảm giá giờ thấp điểm, giao hàng), vì dùng công suất nhàn rỗi, rủi ro thấp.'
+  - id: "m04-practice_questions-4"
+    title: "Câu hỏi luyện tập: Chủ cửa hàng thời trang muốn mở xưởng sản xuất vải. Đây là gì trong Ansoff và nên làm sao?"
+    tags: ["câu", "hỏi", "luyện", "tập", "chủ", "cửa", "hàng", "thời", "trang", "muốn", "mở", "xưởng"]
+    text: |-
+      q: Chủ cửa hàng thời trang muốn mở xưởng sản xuất vải. Đây là gì trong Ansoff và nên làm sao?
+      a: 'Diversification (SP mới + khách mới là nhà may); qua cổng đa dạng hóa: nếu thiếu năng lực và vốn thì không làm hoặc partnership/gia công thử nhỏ.'
+  - id: "m04-practice_questions-5"
+    title: "Câu hỏi luyện tập: Hấp dẫn ngành: trọng số [0,4; 0,3; 0,3], điểm [4,3,2]. Tính điểm và mức."
+    tags: ["câu", "hỏi", "luyện", "tập", "hấp", "dẫn", "ngành", "trọng", "số", "điểm", "tính", "và"]
+    text: |-
+      q: 'Hấp dẫn ngành: trọng số [0,4; 0,3; 0,3], điểm [4,3,2]. Tính điểm và mức.'
+      a: 1,6 + 0,9 + 0,6 = 3,1 -> mức trung bình (2,33-3,67).
+  - id: "m04-practice_questions-6"
+    title: "Câu hỏi luyện tập: Điểm Hấp dẫn 4,0; Vị thế 2,0. Hành động theo GE?"
+    tags: ["câu", "hỏi", "luyện", "tập", "điểm", "hấp", "dẫn", "vị", "thế", "hành", "động", "theo"]
+    text: |-
+      q: Điểm Hấp dẫn 4,0; Vị thế 2,0. Hành động theo GE?
+      a: 'Ngành Cao, vị thế Thấp: chọn lọc đầu tư (nâng vị thế) hoặc rút nếu không thể cải thiện; cần mô hình tài chính.'
+  - id: "m04-practice_questions-7"
+    title: "Câu hỏi luyện tập: Vì sao BCG dùng thị phần tương đối?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "bcg", "dùng", "thị", "phần", "tương", "đối"]
+    text: |-
+      q: Vì sao BCG dùng thị phần tương đối?
+      a: 'Vì đường kinh nghiệm: số 1 có chi phí đơn vị thấp nhất; so với số 1 mới phản ánh lợi thế chi phí.'
+  - id: "m04-practice_questions-8"
+    title: "Câu hỏi luyện tập: Tăng trưởng thị trường từ 8.000 lên 11.000 tỷ trong 3 năm là bao nhiêu %/năm?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tăng", "trưởng", "thị", "trường", "từ", "000", "lên", "11"]
+    text: |-
+      q: Tăng trưởng thị trường từ 8.000 lên 11.000 tỷ trong 3 năm là bao nhiêu %/năm?
+      a: (11000/8000)^(1/3)-1 = 1,375^(0,3333)-1 ≈ 11,2%/năm.
+  - id: "m04-practice_questions-9"
+    title: "Câu hỏi luyện tập: Hạn chế chính của GE so với BCG?"
+    tags: ["câu", "hỏi", "luyện", "tập", "hạn", "chế", "chính", "của", "ge", "so", "với", "bcg"]
+    text: |-
+      q: Hạn chế chính của GE so với BCG?
+      a: 'Phức tạp, chủ quan, không chỉ ra số tiền đầu tư; ưu điểm: nhiều tiêu chí, 9 ô, tuỳ chỉnh.'
+  - id: "m04-practice_questions-10"
+    title: "Câu hỏi luyện tập: Vì sao Vsmart thất bại dù Vingroup có vốn lớn?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "vsmart", "thất", "bại", "dù", "vingroup", "có"]
+    text: |-
+      q: Vì sao Vsmart thất bại dù Vingroup có vốn lớn?
+      a: 'Unrelated Diversification: thiếu năng lực công nghệ và kênh smartphone; vốn không thay thế năng lực; Ansoff cảnh báo đúng.'
+  - id: "m04-checklist-1"
+    title: "Checklist: □ Đã xác định SBU, thị trường, mục tiêu tăng trưởng, vốn tối đa."
+    tags: ["checklist", "đã", "xác", "định", "sbu", "thị", "trường", "mục", "tiêu", "tăng", "trưởng", "vốn"]
+    text: |-
+      □ Đã xác định SBU, thị trường, mục tiêu tăng trưởng, vốn tối đa.
+  - id: "m04-checklist-2"
+    title: "Checklist: □ Đã xác định dư địa của Market Penetration trước."
+    tags: ["checklist", "đã", "xác", "định", "dư", "địa", "của", "market", "penetration", "trước"]
+    text: |-
+      □ Đã xác định dư địa của Market Penetration trước.
+  - id: "m04-checklist-3"
+    title: "Checklist: □ Mỗi ý tưởng Ansoff có ẩn số, năng lực, vốn, p, V; nêu rõ cơ sở p."
+    tags: ["checklist", "mỗi", "tưởng", "ansoff", "có", "ẩn", "số", "năng", "lực", "vốn", "nêu", "rõ"]
+    text: |-
+      □ Mỗi ý tưởng Ansoff có ẩn số, năng lực, vốn, p, V; nêu rõ cơ sở p.
+  - id: "m04-checklist-4"
+    title: "Checklist: □ Hướng đa dạng hóa đã qua 5 cổng; có pilot và mốc dừng."
+    tags: ["checklist", "hướng", "đa", "dạng", "hóa", "đã", "qua", "cổng", "có", "pilot", "và", "mốc"]
+    text: |-
+      □ Hướng đa dạng hóa đã qua 5 cổng; có pilot và mốc dừng.
+  - id: "m04-checklist-5"
+    title: "Checklist: □ BCG: ranh giới thị trường rõ, RMS dùng đối thủ lớn nhất, ngưỡng ghi rõ, nguồn dữ liệu có độ tin c…"
+    tags: ["checklist", "bcg", "ranh", "giới", "thị", "trường", "rõ", "rms", "dùng", "đối", "thủ", "lớn"]
+    text: |-
+      □ BCG: ranh giới thị trường rõ, RMS dùng đối thủ lớn nhất, ngưỡng ghi rõ, nguồn dữ liệu có độ tin cậy.
+  - id: "m04-checklist-6"
+    title: "Checklist: □ GE: tổng trọng số = 100%, chốt trọng số trước khi chấm, yếu tố tiêu cực đã đảo điểm, chấm nhóm, k…"
+    tags: ["checklist", "ge", "tổng", "trọng", "số", "100", "chốt", "trước", "khi", "chấm", "yếu", "tố"]
+    text: |-
+      □ GE: tổng trọng số = 100%, chốt trọng số trước khi chấm, yếu tố tiêu cực đã đảo điểm, chấm nhóm, kiểm tra độ nhạy.
+  - id: "m04-checklist-7"
+    title: "Checklist: □ Dog/QM đã xét vai trò hỗ trợ trước khi cắt."
+    tags: ["checklist", "dog", "qm", "đã", "xét", "vai", "trò", "hỗ", "trợ", "trước", "khi", "cắt"]
+    text: |-
+      □ Dog/QM đã xét vai trò hỗ trợ trước khi cắt.
+  - id: "m04-checklist-8"
+    title: "Checklist: □ Có ngân sách dòng tiền: tiền từ Cow >= nhu cầu Star + QM."
+    tags: ["checklist", "có", "ngân", "sách", "dòng", "tiền", "từ", "cow", "nhu", "cầu", "star", "qm"]
+    text: |-
+      □ Có ngân sách dòng tiền: tiền từ Cow >= nhu cầu Star + QM.
+  - id: "m04-checklist-9"
+    title: "Checklist: □ NPV/IRR và kịch bản xấu cho hướng được chọn."
+    tags: ["checklist", "npv", "irr", "và", "kịch", "bản", "xấu", "cho", "hướng", "được", "chọn"]
+    text: |-
+      □ NPV/IRR và kịch bản xấu cho hướng được chọn.
+  - id: "m04-checklist-10"
+    title: "Checklist: □ Có KPI, ngân sách trần, mốc dừng/tiếp tục và người chịu trách nhiệm."
+    tags: ["checklist", "có", "kpi", "ngân", "sách", "trần", "mốc", "dừng", "tiếp", "tục", "và", "người"]
+    text: |-
+      □ Có KPI, ngân sách trần, mốc dừng/tiếp tục và người chịu trách nhiệm.
+  - id: "m04-checklist-11"
+    title: "Checklist: □ Đã nêu giới hạn của công cụ (chủ quan, snapshot) trong báo cáo."
+    tags: ["checklist", "đã", "nêu", "giới", "hạn", "của", "công", "cụ", "chủ", "quan", "snapshot", "trong"]
+    text: |-
+      □ Đã nêu giới hạn của công cụ (chủ quan, snapshot) trong báo cáo.
+  - id: "m04-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Sheet Ansoff: cột Ý tưởng | Ô Ansoff | p | Doanh thu thêm/năm | Biên | Năm | Vốn | V = p*(Rev*Biên*…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "ansoff", "cột", "tưởng", "doanh", "thu", "thêm", "năm", "biên"]
+    text: |-
+      Sheet Ansoff: cột Ý tưởng | Ô Ansoff | p | Doanh thu thêm/năm | Biên | Năm | Vốn | V = p*(Rev*Biên*Năm) - Vốn | Rủi ro | Quyết định.
+  - id: "m04-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Sheet BCG: Tên SBU | Doanh thu | Thị phần | Thị phần đối thủ lớn nhất | RMS | Tăng trưởng TT | Ô (c…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "bcg", "tên", "sbu", "doanh", "thu", "thị", "phần", "đối"]
+    text: |-
+      Sheet BCG: Tên SBU | Doanh thu | Thị phần | Thị phần đối thủ lớn nhất | RMS | Tăng trưởng TT | Ô (công thức IF) | Chiến lược | Bubble chart (X=RMS, Y=g, size=doanh thu).
+  - id: "m04-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: Sheet GE: bảng yếu tố x trọng số x điểm từng SBU, SUMPRODUCT cho hai trục, kiểm tra tổng trọng số =…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "ge", "bảng", "yếu", "tố", "trọng", "số", "điểm", "từng"]
+    text: |-
+      Sheet GE: bảng yếu tố x trọng số x điểm từng SBU, SUMPRODUCT cho hai trục, kiểm tra tổng trọng số =1, cột Mức (Thấp/TB/Cao), cột Hành động, Scatter/Bubble.
+  - id: "m04-excel_google_sheets_templates-4"
+    title: "Mẫu Excel/Sheets: Sheet Ngân sách: nguồn tiền (từ Cow) và sử dụng (Star, QM chọn, duy trì), kiểm tra cân đối."
+    tags: ["mẫu", "excel", "sheets", "sheet", "ngân", "sách", "nguồn", "tiền", "từ", "cow", "và", "sử"]
+    text: |-
+      Sheet Ngân sách: nguồn tiền (từ Cow) và sử dụng (Star, QM chọn, duy trì), kiểm tra cân đối.
+  - id: "m04-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: 04-chien-luoc-tang-truong.md

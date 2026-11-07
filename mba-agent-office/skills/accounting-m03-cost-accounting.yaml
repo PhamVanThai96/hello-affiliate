@@ -1,0 +1,2063 @@
+id: accounting-m03
+title: "Kế toán m03: Kế toán chi phí"
+summary: "Giúp tập hợp, phân bổ và phân tích chi phí để biết chính xác một đơn hàng/sản phẩm/công đoạn/khách hàng/chi nhánh tốn bao nhiêu: tính giá thành (Job Order Costing, Process Costing), phân bổ chi phí chung đúng nguyên nhân (POHR, ABC, TDABC), chọn Absorption hay Variable Costing, …"
+agents: ["accountant"]
+order: 23
+when: ["gia thanh don hang", "job costing", "gia thanh san pham", "chi phi nguyen vat lieu truc tiep", "nhan cong truc tiep", "chi phi san xuat chung", "ty le phan bo chi phi chung", "bao gia", "gia thanh theo cong doan", "process costing", "san pham do dang", "abc", "activity-based costing", "chi phi theo hoat dong", "cost driver", "phan bo chi phi chung", "san pham lo an", "loi nhuan theo san pham", "loi nhuan theo khach hang", "trung tam chi phi", "phan bo bo phan ho tro", "ke toan chi phi", "cost accounting"]
+body_max: 3600
+sections:
+  - id: "m03-tong-quan"
+    title: "Tổng quan m03"
+    tags: ["m03", "kế", "toán", "chi", "phí", "cost", "accounting"]
+    text: |-
+      Kế toán chi phí (Cost Accounting) — module m03
+
+      Mục đích: Giúp tập hợp, phân bổ và phân tích chi phí để biết chính xác một đơn hàng/sản phẩm/công đoạn/khách hàng/chi nhánh tốn bao nhiêu: tính giá thành (Job Order Costing, Process Costing), phân bổ chi phí chung đúng nguyên nhân (POHR, ABC, TDABC), chọn Absorption hay Variable Costing, thiết kế chi phí từ giá thị trường (Target/Kaizen/Life-cycle Costing) và hạch toán dòng chi phí 621/622/627 -> 154 -> 155 -> 632. Đầu ra phục vụ định giá, ra quyết định nhận/bỏ đơn-sản phẩm-khách hàng, kiểm soát chi phí …
+
+      Dùng khi:
+      - Chủ xưởng hỏi 'đơn này lời hay lỗ?', 'giá thành 1 sản phẩm là bao nhiêu?', 'báo giá tối thiểu bao nhiêu thì không lỗ?'.
+      - Cần lập Job Cost Sheet, tính POHR, phân bổ MOH, xử lý chênh lệch under/over-applied cuối kỳ.
+      - Sản xuất liên tục (thực phẩm, hóa chất, nhựa...) cần tính giá thành theo công đoạn có sản phẩm dở dang -> Equivalent Units, Weighted Average/FIFO.
+      - Nghi ngờ đơn nhỏ/khách nhỏ/sản phẩm phức tạp 'lời trên giấy' nhưng cuối năm lợi nhuận thấp -> ABC/TDABC để tìm trợ giá chéo (cross-subsidization).
+      - Cần so sánh lợi nhuận Absorption vs Variable Costing, hoặc nghi ngờ sản xuất thừa để làm đẹp lợi nhuận.
+      - Thiết kế sản phẩm mới từ giá thị trường (Target Costing), đặt mục tiêu giảm chi phí liên tục (Kaizen), nhìn chi phí vòng đời (Life-cycle).
+      - Hạch toán chi phí sản xuất (TK 621, 622, 627, 154, 155, 632), lập báo cáo giá thành và đối chiếu giá thành quản trị với giá thành BCTC.
+      - Mở rộng chuỗi/chi nhánh: cần P&L, điểm hòa vốn, food cost theo chi nhánh/món/kênh trước khi scale.
+
+      Nên nắm trước: - 'm01 - Kế toán tài chính: hiểu hàng tồn kho, giá vốn, BCTC, hệ thống tài khoản'; - 'm02 - Kế toán quản trị: cost behavior, CVP, hòa vốn, biên đóng góp'
+
+      Module liên quan: - 'm02 - Managerial accounting: CVP/hòa vốn/quyết định ngắn hạn dùng chi phí tránh được; nguồn cost behavior chi tiết' - 'm04 - Budgeting & forecasting: ngân sách MOH và hoạt động là đầu vào của POHR/activity rate' - 'm05 - Variance analysis: chênh lệch chi phí thực tế vs tiêu chuẩn/ngân sách; under/over-applied là chênh lệch đầu tiên cần nắm' - 'm06 - Financial ratios: biên lãi gộp, vòng quay hà…
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m03_pohr: Tỷ lệ phân bổ chi phí chung định trước
+      - m03_applied_moh: Chi phí sản xuất chung áp dụng (phân bổ vào job)
+      - m03_job_cost: Giá thành và lãi gộp đơn hàng
+      - m03_under_over_applied: Chênh lệch chi phí chung phân bổ thiếu/thừa
+      - m03_overhead_reallocation: Phân bổ lại chênh lệch MOH theo số dư (ngoài nguồn phần côn…
+      - m03_equivalent_units_wa: Sản lượng tương đương - Bình quân gia quyền
+      - m03_cost_per_eu: Chi phí trên mỗi đơn vị tương đương
+      - m03_equivalent_units_fifo: Sản lượng tương đương - FIFO
+      - m03_activity_rate: Đơn giá hoạt động (ABC)
+      - m03_abc_allocation: Phân bổ MOH theo ABC cho sản phẩm/đơn/khách
+      - m03_cost_per_minute: Chi phí mỗi phút công suất (TDABC)
+      - m03_activity_cost_time: Chi phí hoạt động theo thời gian (TDABC)
+      - m03_idle_capacity: Chi phí công suất nhàn rỗi (TDABC)
+      - m03_absorption_unit_cost: Giá thành đơn vị - Absorption Costing
+      - m03_profit_difference: Chênh lệch lợi nhuận Absorption vs Variable
+      - m03_target_cost: Chi phí mục tiêu
+      - m03_cost_gap: Khoảng cách chi phí cần cắt giảm
+      - m03_min_price_for_margin: Giá tối thiểu để đạt biên lãi mục tiêu
+      - m03_breakeven: Điểm hòa vốn và biên an toàn
+      - m03_weighted_food_cost: Food cost bình quân gia quyền theo nhóm món
+      - m03_cogm_cogs: Giá thành sản phẩm hoàn thành và giá vốn hàng bán (ngoài ng…
+
+      Kho tra cứu của module: Khái niệm 31, Công thức 21, frameworks 10, Quy trình 9, Quy tắc quyết định 17, Chuẩn so sánh 9, Lỗi thường gặp 15, Lưu ý SME Việt Nam 9, Bài học case 3, Ví dụ có lời giải 8, Câu hỏi luyện tập 10, Checklist 13, Mẫu Excel/Sheets 4. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ định khoản", "lỗi thường gặp khấu hao").
+  - id: "m03-concepts-1"
+    title: "Khái niệm: Kế toán chi phí"
+    tags: ["khái", "niệm", "kế", "toán", "chi", "phí"]
+    text: |-
+      term_vi: Kế toán chi phí
+      term_en: Cost Accounting
+      definition: Nhánh kế toán đo lường, tập hợp, phân bổ và phân tích chi phí vào sản phẩm, dịch vụ, dự án, bộ phận để biết mỗi đối tượng tốn bao nhiêu tiền.
+      why_it_matters: |
+        Kế toán tài chính chỉ trả lời 'cả công ty lãi bao nhiêu' cho thuế/ngân hàng/cổ đông; chủ doanh nghiệp cần biết sản phẩm nào lãi, đơn nào lỗ, khách nào đáng giữ. Lịch sử môn này là lịch sử trả lời ngày càng chính xác câu hỏi đó: Cách mạng công nghiệp (chi phí cố định lớn), đầu thế kỷ 20 (sản xuất hàng loạt -> Process/Standard Costing), 1980s (tự động hóa làm overhead phình to; Johnson & Kaplan, Relevance Lost, 1987), 1988-1992 ABC (Cooper & Kaplan), 2004 TDABC (Kaplan & Anderson). Câu 'You can't manage what you can't measure' thường gán cho Drucker nhưng cần đối chiếu nguồn gốc.
+  - id: "m03-concepts-2"
+    title: "Khái niệm: Giá thành sản phẩm"
+    tags: ["khái", "niệm", "giá", "thành", "sản", "phẩm"]
+    text: |-
+      term_vi: Giá thành sản phẩm
+      term_en: Product Cost / Cost of Goods Manufactured (COGM)
+      definition: Tổng chi phí sản xuất đã tập hợp (DM + DL + MOH, điều chỉnh dở dang) chia cho số lượng sản phẩm hoàn thành.
+      why_it_matters: Là đầu vào của định giá, giá trị hàng tồn kho (VAS 02/IAS 2) và giá vốn; sai giá thành làm sai giá bán, sai lãi gộp, sai quyết định giữ/bỏ sản phẩm.
+  - id: "m03-concepts-3"
+    title: "Khái niệm: Chi phí sản phẩm vs chi phí thời kỳ"
+    tags: ["khái", "niệm", "chi", "phí", "sản", "phẩm", "vs", "thời", "kỳ"]
+    text: |-
+      term_vi: Chi phí sản phẩm vs chi phí thời kỳ
+      term_en: Product Cost vs Period Cost
+      definition: Chi phí sản phẩm = DM + DL + MOH, nằm trong hàng tồn kho (TK 154/155) đến khi bán mới thành giá vốn (TK 632). Chi phí thời kỳ = bán hàng (TK 641) + quản lý DN (TK 642), ghi nhận ngay vào kỳ phát sinh.
+      why_it_matters: 'Nguyên tắc phù hợp (Matching): chi phí làm ra sản phẩm chưa bán chưa phải chi phí của kỳ mà là tài sản (hàng tồn kho) cho đến khi bán. Nhầm hai loại này làm lệch lợi nhuận kỳ.'
+  - id: "m03-concepts-4"
+    title: "Khái niệm: Nguyên vật liệu trực tiếp"
+    tags: ["khái", "niệm", "nguyên", "vật", "liệu", "trực", "tiếp"]
+    text: |-
+      term_vi: Nguyên vật liệu trực tiếp
+      term_en: Direct Materials (DM) - TK 621
+      definition: Vật liệu cấu thành thực thể sản phẩm, truy nguyên rõ ràng được vào đối tượng tính giá.
+      why_it_matters: Phần chi phí dễ truy nguyên nhất; thường là biến phí chính. Phụ liệu nhỏ (keo, ốc vít) nếu không tách riêng được có thể coi là MOH hoặc gộp DM tùy mức trọng yếu.
+  - id: "m03-concepts-5"
+    title: "Khái niệm: Nhân công trực tiếp"
+    tags: ["khái", "niệm", "nhân", "công", "trực", "tiếp"]
+    text: |-
+      term_vi: Nhân công trực tiếp
+      term_en: Direct Labor (DL) - TK 622
+      definition: Lương công nhân trực tiếp làm ra sản phẩm (giờ x đơn giá).
+      why_it_matters: Từng là phần lớn giá thành; từ thập niên 1980 chỉ còn khoảng 5-10% ở nhà máy tự động hóa nên dùng nó làm tiêu thức phân bổ MOH trở nên sai lệch (động cơ ra đời của ABC).
+  - id: "m03-concepts-6"
+    title: "Khái niệm: Chi phí sản xuất chung"
+    tags: ["khái", "niệm", "chi", "phí", "sản", "xuất", "chung"]
+    text: |-
+      term_vi: Chi phí sản xuất chung
+      term_en: Manufacturing Overhead (MOH) - TK 627
+      definition: 'Mọi chi phí sản xuất còn lại ngoài DM, DL: lương quản đốc, khấu hao máy, điện nước xưởng, bảo trì, setup, kiểm tra chất lượng...'
+      why_it_matters: Là chi phí gián tiếp phải PHÂN BỔ; toàn bộ cuộc tranh luận Traditional vs ABC xoay quanh cách phân bổ MOH.
+  - id: "m03-concepts-7"
+    title: "Khái niệm: Chi phí cơ bản và chi phí chế biến"
+    tags: ["khái", "niệm", "chi", "phí", "cơ", "bản", "và", "chế", "biến"]
+    text: |-
+      term_vi: Chi phí cơ bản và chi phí chế biến
+      term_en: Prime Cost and Conversion Cost
+      definition: Prime Cost = DM + DL. Conversion Cost = DL + MOH (chi phí chế biến, phát sinh dần theo tiến độ sản xuất).
+      why_it_matters: Process Costing phải tính Equivalent Units riêng cho DM (thường đưa vào đầu quy trình) và cho Conversion (đưa vào dần).
+  - id: "m03-concepts-8"
+    title: "Khái niệm: Chi phí trực tiếp vs gián tiếp"
+    tags: ["khái", "niệm", "chi", "phí", "trực", "tiếp", "vs", "gián"]
+    text: |-
+      term_vi: Chi phí trực tiếp vs gián tiếp
+      term_en: Direct vs Indirect Cost
+      definition: 'Trực tiếp: truy nguyên được vào một job/sản phẩm. Gián tiếp: phục vụ nhiều đối tượng, phải phân bổ.'
+      why_it_matters: Càng nhiều chi phí gián tiếp và đa dạng sản phẩm thì độ chính xác của tiêu thức phân bổ càng quyết định chất lượng giá thành.
+  - id: "m03-concepts-9"
+    title: "Khái niệm: Ứng xử chi phí"
+    tags: ["khái", "niệm", "ứng", "xử", "chi", "phí"]
+    text: |-
+      term_vi: Ứng xử chi phí
+      term_en: Cost Behavior (Variable / Fixed / Mixed)
+      definition: 'Biến phí: tổng thay đổi tỷ lệ theo sản lượng, trên 1 đơn vị không đổi. Định phí: tổng không đổi trong phạm vi hoạt động liên quan, trên 1 đơn vị giảm khi sản lượng tăng. Hỗn hợp: có cả hai (vd điện).'
+      why_it_matters: Nền tảng cho hòa vốn, Variable Costing và quyết định bỏ/giữ; chi tiết xem module m02.
+  - id: "m03-concepts-10"
+    title: "Khái niệm: Dòng chi phí sản xuất"
+    tags: ["khái", "niệm", "dòng", "chi", "phí", "sản", "xuất"]
+    text: |-
+      term_vi: Dòng chi phí sản xuất
+      term_en: Cost Flow
+      definition: NVL tồn kho (152) -> WIP/sản phẩm dở dang (154) -> Thành phẩm (155) -> Giá vốn hàng bán (632); DM (621), DL (622), MOH (627) kết chuyển vào 154 (kê khai thường xuyên).
+      why_it_matters: Biết chi phí 'đang ở đâu' (tài sản hay chi phí kỳ) quyết định lợi nhuận kỳ và giá trị tồn kho trên Balance Sheet.
+  - id: "m03-concepts-11"
+    title: "Khái niệm: Đối tượng tính giá và đối tượng tập hợp chi phí"
+    tags: ["khái", "niệm", "đối", "tượng", "tính", "giá", "và", "tập", "hợp", "chi", "phí"]
+    text: |-
+      term_vi: Đối tượng tính giá và đối tượng tập hợp chi phí
+      term_en: Cost Object
+      definition: 'Thứ cần biết chi phí: đơn hàng (job), công đoạn (process), sản phẩm, khách hàng, chi nhánh, kênh bán.'
+      why_it_matters: Job vs Process trả lời câu hỏi 'gom chi phí theo đối tượng nào'; ABC trả lời 'phân bổ chi phí gián tiếp bằng tiêu thức nào'. Hai câu độc lập nên ABC kết hợp được với cả Job và Process.
+  - id: "m03-concepts-12"
+    title: "Khái niệm: Phiếu giá thành đơn hàng"
+    tags: ["khái", "niệm", "phiếu", "giá", "thành", "đơn", "hàng"]
+    text: |-
+      term_vi: Phiếu giá thành đơn hàng
+      term_en: Job Cost Sheet
+      definition: Chứng từ riêng cho mỗi job gom DM thực tế, DL thực tế, MOH áp dụng, tổng giá thành, giá bán, lãi gộp và so sánh với giá báo.
+      why_it_matters: Dùng để báo giá, biết đơn nào lãi/lỗ và rút kinh nghiệm cho đơn sau (so báo giá với thực tế).
+  - id: "m03-concepts-13"
+    title: "Khái niệm: Tỷ lệ phân bổ chi phí chung định trước"
+    tags: ["khái", "niệm", "tỷ", "lệ", "phân", "bổ", "chi", "phí", "chung", "định", "trước"]
+    text: |-
+      term_vi: Tỷ lệ phân bổ chi phí chung định trước
+      term_en: Predetermined Overhead Rate (POHR)
+      definition: Tỷ lệ MOH ước tính trên tiêu thức phân bổ ước tính, đặt từ đầu kỳ (thường cả năm).
+      why_it_matters: |
+        MOH thực tế chỉ biết đủ cuối tháng/quý/năm trong khi khách cần giá báo ngay; MOH có mùa vụ nên chia MOH thực tế tháng cho khối lượng tháng khiến tháng thấp điểm có 'giá thành' cao bất thường dù quy trình không đổi. POHR cho giá thành ổn định và có sớm; cái giá phải trả là chênh lệch under/over-applied cuối kỳ.
+  - id: "m03-concepts-14"
+    title: "Khái niệm: Tiêu thức phân bổ"
+    tags: ["khái", "niệm", "tiêu", "thức", "phân", "bổ"]
+    text: |-
+      term_vi: Tiêu thức phân bổ
+      term_en: Allocation Base / Cost Driver
+      definition: Đại lượng dùng để phân bổ MOH (giờ lao động, giờ máy, chi phí nhân công, số đơn vị, số lần setup...).
+      why_it_matters: 'Nguyên tắc chọn: có quan hệ nhân quả với việc phát sinh MOH. Chọn tiêu thức tùy tiện (ví dụ doanh thu) tạo trợ giá chéo.'
+  - id: "m03-concepts-15"
+    title: "Khái niệm: Chi phí chung phân bổ thiếu/thừa"
+    tags: ["khái", "niệm", "chi", "phí", "chung", "phân", "bổ", "thiếu", "thừa"]
+    text: |-
+      term_vi: Chi phí chung phân bổ thiếu/thừa
+      term_en: Under-applied / Over-applied Overhead
+      definition: 'Under-applied: MOH thực tế > MOH đã áp dụng (tính thiếu vào giá thành -> tăng giá vốn). Over-applied: MOH áp dụng > thực tế (tính dư -> giảm giá vốn).'
+      why_it_matters: POHR dựa trên ước tính nên cuối kỳ hầu như luôn lệch; nguyên nhân gốc thường là sản lượng thực tế khác dự kiến trong khi định phí không đổi (tín hiệu chạy dưới/trên công suất).
+  - id: "m03-concepts-16"
+    title: "Khái niệm: Công suất bình thường"
+    tags: ["khái", "niệm", "công", "suất", "bình", "thường"]
+    text: |-
+      term_vi: Công suất bình thường
+      term_en: Normal Capacity
+      definition: Mức sản lượng trung bình đạt được trong điều kiện bình thường nhiều kỳ/mùa; cơ sở phân bổ MOH cố định vào giá thành theo VAS 02/IAS 2.
+      why_it_matters: Phần MOH cố định do sản lượng thấp hơn công suất bình thường KHÔNG dồn vào tồn kho mà ghi vào giá vốn kỳ đó, tránh đội giá hàng tồn kho (cần xác nhận hiện hành).
+  - id: "m03-concepts-17"
+    title: "Khái niệm: Sản phẩm dở dang"
+    tags: ["khái", "niệm", "sản", "phẩm", "dở", "dang"]
+    text: |-
+      term_vi: Sản phẩm dở dang
+      term_en: Work-in-Process (WIP)
+      definition: Sản phẩm đã đưa vào sản xuất nhưng chưa hoàn thành cuối kỳ (TK 154).
+      why_it_matters: Nếu chỉ chia tổng chi phí cho thành phẩm thì dồn chi phí phần dở dang vào thành phẩm (giá thành quá cao); đếm WIP là 1 sản phẩm đầy đủ thì giá thành quá thấp.
+  - id: "m03-concepts-18"
+    title: "Khái niệm: Đơn vị sản lượng tương đương"
+    tags: ["khái", "niệm", "đơn", "vị", "sản", "lượng", "tương", "đương"]
+    text: |-
+      term_vi: Đơn vị sản lượng tương đương
+      term_en: Equivalent Units (EU)
+      definition: Số sản phẩm hoàn thành tương đương sau khi quy đổi WIP theo mức độ hoàn thành của từng yếu tố chi phí.
+      why_it_matters: 'Mức hoàn thành KHÁC nhau theo yếu tố: NVL thường 100% ngay đầu quy trình, chế biến (nhân công + MOH) hoàn thành dần. Phải tính EU riêng cho NVL và chế biến.'
+  - id: "m03-concepts-19"
+    title: "Khái niệm: Bình quân gia quyền và nhập trước xuất trước trong Process Costing"
+    tags: ["khái", "niệm", "bình", "quân", "gia", "quyền", "và", "nhập", "trước", "xuất", "trong", "process"]
+    text: |-
+      term_vi: Bình quân gia quyền và nhập trước xuất trước trong Process Costing
+      term_en: Weighted Average vs FIFO (process costing)
+      definition: BQGQ gộp chi phí WIP đầu kỳ + phát sinh để tính đơn giá bình quân. FIFO tách WIP đầu kỳ, chỉ dùng chi phí phát sinh trong kỳ cho đơn giá kỳ.
+      why_it_matters: FIFO đo hiệu quả kỳ hiện tại chính xác hơn khi giá đầu vào biến động mạnh; BQGQ đơn giản, phổ biến trong SME VN và thường đủ dùng.
+  - id: "m03-concepts-20"
+    title: "Khái niệm: Tính giá theo hoạt động"
+    tags: ["khái", "niệm", "tính", "giá", "theo", "hoạt", "động"]
+    text: |-
+      term_vi: Tính giá theo hoạt động
+      term_en: Activity-Based Costing (ABC)
+      definition: Phương pháp phân bổ MOH qua các hoạt động (setup, QC, giao hàng, bảo trì...) bằng activity driver rồi tới sản phẩm/khách hàng.
+      why_it_matters: |
+        Nguyên lý Cooper & Kaplan: 'products consume activities, activities consume resources'. Sản phẩm không tiêu thụ overhead trực tiếp mà kích hoạt các hoạt động. ABC không tạo ra tiền (tổng lợi nhuận không đổi) mà phân bổ lại cho đúng để quyết định đúng.
+  - id: "m03-concepts-21"
+    title: "Khái niệm: Bể chi phí hoạt động"
+    tags: ["khái", "niệm", "bể", "chi", "phí", "hoạt", "động"]
+    text: |-
+      term_vi: Bể chi phí hoạt động
+      term_en: Activity Cost Pool
+      definition: Tổng chi phí gom cho một hoạt động (vd Setup 150 triệu).
+      why_it_matters: Đơn vị phân tích của ABC; tổng các pool phải bằng tổng MOH (kiểm tra cân).
+  - id: "m03-concepts-22"
+    title: "Khái niệm: Cấp bậc hoạt động"
+    tags: ["khái", "niệm", "cấp", "bậc", "hoạt", "động"]
+    text: |-
+      term_vi: Cấp bậc hoạt động
+      term_en: Activity Hierarchy (Unit / Batch / Product / Facility)
+      definition: Unit-level phát sinh theo mỗi đơn vị (giờ máy); Batch-level theo mỗi lô (setup, xử lý đơn, kiểm tra lô); Product-level duy trì dòng sản phẩm (thiết kế mẫu, số mã); Facility-level duy trì cơ sở (thuê xưởng, bảo vệ).
+      why_it_matters: Giúp chọn driver; facility-level thường không có driver nhân quả nên không phân bổ theo driver mà giữ riêng hoặc phân bổ tùy ý có nhãn rõ.
+  - id: "m03-concepts-23"
+    title: "Khái niệm: Trợ giá chéo"
+    tags: ["khái", "niệm", "trợ", "giá", "chéo"]
+    text: |-
+      term_vi: Trợ giá chéo
+      term_en: Cross-subsidization
+      definition: Sản phẩm/khách đơn giản số lượng lớn gánh chi phí của sản phẩm/khách phức tạp số lượng nhỏ khi phân bổ bằng một tiêu thức không phản ánh nguyên nhân chi phí.
+      why_it_matters: Dẫn đến định giá sai, đẩy mạnh sai sản phẩm, khách lớn trả hộ khách nhỏ (rủi ro mất khách lớn sang đối thủ).
+  - id: "m03-concepts-24"
+    title: "Khái niệm: Tính giá theo hoạt động dựa trên thời gian"
+    tags: ["khái", "niệm", "tính", "giá", "theo", "hoạt", "động", "dựa", "trên", "thời", "gian"]
+    text: |-
+      term_vi: Tính giá theo hoạt động dựa trên thời gian
+      term_en: Time-Driven ABC (TDABC)
+      definition: 'ABC đơn giản hóa chỉ cần 2 tham số: chi phí mỗi phút công suất của bộ phận và số phút mỗi hoạt động cần.'
+      why_it_matters: 'ABC truyền thống đòi phỏng vấn % thời gian từng người - tốn kém, nhanh lỗi thời; Kaplan & Anderson (2004) đưa ra TDABC. Lợi ích phụ: thấy thẳng chi phí công suất nhàn rỗi.'
+  - id: "m03-concepts-25"
+    title: "Khái niệm: Công suất thực dụng và công suất nhàn rỗi"
+    tags: ["khái", "niệm", "công", "suất", "thực", "dụng", "và", "nhàn", "rỗi"]
+    text: |-
+      term_vi: Công suất thực dụng và công suất nhàn rỗi
+      term_en: Practical Capacity and Idle Capacity
+      definition: Công suất thực dụng = công suất lý thuyết trừ nghỉ, họp, chờ (thường khoảng 80-85% lý thuyết theo nguồn). Idle capacity = (công suất thực dụng - phút đã dùng) x chi phí/phút.
+      why_it_matters: Phân bổ chi phí theo công suất thực dụng (không theo công suất đang dùng) để chi phí đơn hàng không bị đội khi vắng việc; chi phí nhàn rỗi hiện thành một dòng quản trị riêng.
+  - id: "m03-concepts-26"
+    title: "Khái niệm: Tính giá thành toàn bộ"
+    tags: ["khái", "niệm", "tính", "giá", "thành", "toàn", "bộ"]
+    text: |-
+      term_vi: Tính giá thành toàn bộ
+      term_en: Absorption (Full) Costing
+      definition: Tính cả định phí sản xuất chung vào giá thành sản phẩm; bắt buộc cho báo cáo tài chính (VAS 02/IAS 2, phân bổ theo công suất bình thường).
+      why_it_matters: Tồn kho chứa định phí -> khi sản xuất > bán, lợi nhuận cao hơn Variable Costing (có thể bị lợi dụng làm đẹp lợi nhuận bằng sản xuất thừa).
+  - id: "m03-concepts-27"
+    title: "Khái niệm: Tính giá theo biến phí"
+    tags: ["khái", "niệm", "tính", "giá", "theo", "biến", "phí"]
+    text: |-
+      term_vi: Tính giá theo biến phí
+      term_en: Variable (Direct) Costing
+      definition: Chỉ biến phí sản xuất vào giá thành; định phí sản xuất chung ghi chi phí kỳ ngay.
+      why_it_matters: Dùng cho quản trị nội bộ (CVP, quyết định ngắn hạn), lợi nhuận phản ánh bán hàng thay vì sản xuất; không dùng cho BCTC.
+  - id: "m03-concepts-28"
+    title: "Khái niệm: Tính giá mục tiêu"
+    tags: ["khái", "niệm", "tính", "giá", "mục", "tiêu"]
+    text: |-
+      term_vi: Tính giá mục tiêu
+      term_en: Target Costing
+      definition: Target Cost = Target Price - Target Profit; thị trường quyết định giá, kỹ thuật/thiết kế phải đạt chi phí đó.
+      why_it_matters: Cost-plus (chi phí + lợi nhuận = giá) có thể cho giá cao hơn thị trường chấp nhận. Toyota và các hãng Nhật Bản đảo logic (nguồn gốc cụ thể cần xác nhận); thực hiện qua Value Engineering ở giai đoạn thiết kế.
+  - id: "m03-concepts-29"
+    title: "Khái niệm: Tính giá cải tiến liên tục"
+    tags: ["khái", "niệm", "tính", "giá", "cải", "tiến", "liên", "tục"]
+    text: |-
+      term_vi: Tính giá cải tiến liên tục
+      term_en: Kaizen Costing
+      definition: Đặt mục tiêu giảm chi phí định kỳ (vd 1-2%/quý) SAU khi sản phẩm đã vào sản xuất, kết hợp Lean.
+      why_it_matters: 'Bổ sung cho Target Costing: Target tác động giai đoạn thiết kế, Kaizen giai đoạn sản xuất.'
+  - id: "m03-concepts-30"
+    title: "Khái niệm: Tính giá vòng đời"
+    tags: ["khái", "niệm", "tính", "giá", "vòng", "đời"]
+    text: |-
+      term_vi: Tính giá vòng đời
+      term_en: Life-Cycle Costing
+      definition: 'Tính chi phí toàn bộ vòng đời sản phẩm: R&D -> Production -> Distribution -> After-sales -> Disposal.'
+      why_it_matters: Thường được trích dẫn rằng khoảng 70-80% chi phí vòng đời bị 'khóa' ở giai đoạn thiết kế (con số tham khảo, cần đối chiếu nguồn), nên cần quyết định chi phí sớm.
+  - id: "m03-concepts-31"
+    title: "Khái niệm: Giá vốn hàng bán và giá thành sản phẩm hoàn thành"
+    tags: ["khái", "niệm", "giá", "vốn", "hàng", "bán", "và", "thành", "sản", "phẩm", "hoàn"]
+    text: |-
+      term_vi: Giá vốn hàng bán và giá thành sản phẩm hoàn thành
+      term_en: COGS and COGM (ngoài nguồn)
+      definition: COGM = DM dùng + DL + MOH + WIP đầu - WIP cuối. COGS = Thành phẩm đầu + COGM - Thành phẩm cuối.
+      why_it_matters: Cầu nối giữa sổ chi phí sản xuất và Income Statement; giúp kiểm tra bút toán 154/155/632 khớp nhau.
+  - id: "m03-formulas-1"
+    title: "Công thức: m03_pohr — Tỷ lệ phân bổ chi phí chung định trước"
+    tags: ["công", "thức", "m03_pohr", "tỷ", "lệ", "phân", "bổ", "chi", "phí", "chung", "định", "trước"]
+    text: |-
+      id: m03_pohr
+      name_vi: Tỷ lệ phân bổ chi phí chung định trước
+      name_en: Predetermined Overhead Rate (POHR)
+      expression_latex: \text{POHR} = \dfrac{\text{Estimated Total MOH}}{\text{Estimated Total Allocation Base}}
+      expression_python: est_moh / est_base
+      excel: =SUM(MOH_est)/SUM(Base_est)
+      variables:
+      - symbol: est_moh
+        meaning: MOH ngân sách/ước tính cả kỳ (thường năm)
+        unit: VND
+      - symbol: est_base
+        meaning: Tổng tiêu thức phân bổ ước tính cả kỳ (giờ lao động, giờ máy, chi phí nhân công, số sản phẩm)
+        unit: giờ / VND / đơn vị
+      when_to_use: Đầu kỳ, trước khi nhận job; để báo giá và tính giá thành job sớm, ổn định giữa các tháng mùa vụ.
+      why_it_works: |
+        Chi phí chung thực tế chỉ biết đủ cuối kỳ và biến động theo mùa. Chia MOH dự kiến cả năm cho khối lượng hoạt động dự kiến cả năm cho ra 'giá một đơn vị hoạt động' ổn định. Mỗi job tiêu thụ bao nhiêu đơn vị hoạt động thì gánh bấy nhiêu MOH.
+      assumptions:
+      - Tiêu thức có quan hệ nhân quả với MOH (giờ máy cho xưởng thâm dụng máy, giờ lao động cho thâm dụng lao động).
+      - Ước tính MOH và khối lượng đủ sát thực tế; MOH tương đối ổn định trong năm.
+      - Một bể MOH duy nhất đồng nhất (nếu không, dùng nhiều POHR theo bộ phận hoặc ABC).
+      pitfalls:
+      - Chọn base không nhân quả (doanh thu, số đơn vị khi sản phẩm không đồng nhất) -> trợ giá chéo.
+      - Dùng một POHR cho cả xưởng khi các bộ phận khác hẳn nhau.
+      - Không rà soát POHR giữa năm; lệch quá khoảng 5% nên xem lại (ngưỡng tham khảo).
+      - Ước tính MOH cố định chia cho khối lượng quá lạc quan -> POHR thấp -> luôn under-applied.
+      interpretation: 'POHR 70.000 VND/giờ nghĩa là mỗi giờ lao động trực tiếp mang theo 70.000 VND chi phí chung. So POHR với đơn giá nhân công: nếu MOH/giờ cao hơn lương/giờ, overhead là phần giá thành lớn.'
+      example:
+        inputs:
+          est_moh: 840000000
+          est_base: 12000
+        steps:
+        - 'ABC Furniture: ngân sách MOH 840.000.000; DLH ước tính 12.000 giờ.'
+        - POHR = 840.000.000 / 12.000 = 70.000 VND/DLH.
+        result: 70.000 VND/giờ lao động trực tiếp
+  - id: "m03-formulas-2"
+    title: "Công thức: m03_applied_moh — Chi phí sản xuất chung áp dụng (phân bổ vào job)"
+    tags: ["công", "thức", "m03_applied_moh", "chi", "phí", "sản", "xuất", "chung", "áp", "dụng", "phân", "bổ"]
+    text: |-
+      id: m03_applied_moh
+      name_vi: Chi phí sản xuất chung áp dụng (phân bổ vào job)
+      name_en: Applied Manufacturing Overhead
+      expression_latex: \text{Applied MOH} = \text{POHR} \times \text{Actual Activity}
+      expression_python: pohr * actual_base
+      excel: =POHR*Actual_Base
+      variables:
+      - symbol: pohr
+        meaning: Tỷ lệ phân bổ định trước
+        unit: VND/đơn vị tiêu thức
+      - symbol: actual_base
+        meaning: Hoạt động thực tế của job (hoặc của cả kỳ khi đối chiếu cuối kỳ)
+        unit: giờ / VND / đơn vị
+      when_to_use: 'Mỗi khi ghi DL/giờ máy vào job: cộng MOH áp dụng vào Job Cost Sheet; cuối kỳ để so với MOH thực tế.'
+      why_it_works: Job nào dùng nhiều hoạt động gánh nhiều chi phí chung; tổng phân bổ cả kỳ xấp xỉ MOH thực tế nếu ước tính tốt.
+      assumptions:
+      - Hoạt động thực tế của job đo được chính xác (chấm công, nhật ký máy).
+      pitfalls:
+      - Dùng giờ dự kiến thay giờ thực tế của job; quên cộng MOH áp dụng vào giá thành job.
+      interpretation: 'MOH áp dụng của job #201 là 75h x 70.000 = 5.250.000 (cùng kỳ khác POHR sẽ cho kết quả khác).'
+      example:
+        inputs:
+          pohr: 70000
+          actual_base: 75
+        steps:
+        - 'Job #201 dùng 75 giờ lao động (60 thợ mộc + 15 thợ sơn).'
+        - Applied MOH = 70.000 x 75 = 5.250.000.
+        result: 5.250.000 VND
+  - id: "m03-formulas-3"
+    title: "Công thức: m03_job_cost — Giá thành và lãi gộp đơn hàng"
+    tags: ["công", "thức", "m03_job_cost", "giá", "thành", "và", "lãi", "gộp", "đơn", "hàng"]
+    text: |-
+      id: m03_job_cost
+      name_vi: Giá thành và lãi gộp đơn hàng
+      name_en: Job Cost and Gross Profit
+      expression_latex: \text{Job Cost} = DM + DL + \text{Applied MOH};\quad GP\% = \dfrac{\text{Price} - \text{Job Cost}}{\text{Price}}
+      expression_python: (dm + dl + applied_moh, (price - (dm + dl + applied_moh)) / price)
+      excel: =DM+DL+MOH ; =(Giá-Giáthành)/Giá
+      variables:
+      - symbol: dm
+        meaning: NVL trực tiếp thực tế của job (gồm phụ kiện truy nguyên được)
+        unit: VND
+      - symbol: dl
+        meaning: Nhân công trực tiếp thực tế (giờ x đơn giá từng loại thợ)
+        unit: VND
+      - symbol: applied_moh
+        meaning: MOH áp dụng = POHR x giờ/driver của job
+        unit: VND
+      - symbol: price
+        meaning: Giá bán của job
+        unit: VND
+      when_to_use: Khi đóng job để biết lãi/lỗ; khi báo giá để kiểm tra giá sàn.
+      why_it_works: Mỗi đơn khác nhau nên 'tổng chi phí chia số lượng' vô nghĩa; phải gom chi phí riêng từng đơn rồi mới so với giá bán.
+      assumptions:
+      - DM, DL được ghi theo job; MOH phân bổ bằng POHR hợp lý.
+      pitfalls:
+      - Biên gộp 'đẹp giả' ở đơn nhỏ nhiều setup khi MOH phân bổ chỉ theo giờ công/giờ máy (xem ABC).
+      - Chỉ báo giá, không so lại giá thành thực tế sau job.
+      interpretation: 'Job #201: giá thành 20.950.000, lãi gộp 30,2%; job #202: 8.650.000, 33,5%. Biên cao hơn ở job nhỏ cần kiểm tra bằng ABC trước khi kết luận.'
+      example:
+        inputs:
+          dm: 8500000
+          dl: 7200000
+          applied_moh: 5250000
+          price: 30000000
+        steps:
+        - 'Job #201: DM = 8.000.000 gỗ + 500.000 phụ kiện = 8.500.000; DL = 6.000.000 + 1.200.000 = 7.200.000.'
+        - Giá thành = 8.500.000 + 7.200.000 + 5.250.000 = 20.950.000.
+        - GP = 9.050.000; GP% = 9.050.000/30.000.000 = 30,2%.
+        result: Giá thành 20.950.000; lãi gộp 30,17%
+  - id: "m03-formulas-4"
+    title: "Công thức: m03_under_over_applied — Chênh lệch chi phí chung phân bổ thiếu/thừa"
+    tags: ["công", "thức", "m03_under_over_applied", "chênh", "lệch", "chi", "phí", "chung", "phân", "bổ", "thiếu", "thừa"]
+    text: |-
+      id: m03_under_over_applied
+      name_vi: Chênh lệch chi phí chung phân bổ thiếu/thừa
+      name_en: Under/Over-applied Overhead
+      expression_latex: \text{Variance} = \text{Actual MOH} - \text{Applied MOH}\quad(>0\ \text{under},\ <0\ \text{over})
+      expression_python: actual_moh - applied_moh
+      excel: =Actual_MOH-Applied_MOH (dương = under)
+      variables:
+      - symbol: actual_moh
+        meaning: MOH thực tế phát sinh cả kỳ (TK 627)
+        unit: VND
+      - symbol: applied_moh
+        meaning: MOH đã áp dụng vào các job cả kỳ = POHR x hoạt động thực tế
+        unit: VND
+      when_to_use: Cuối kỳ (tháng/quý/năm) đối chiếu POHR.
+      why_it_works: 'POHR dựa trên ước tính nên cần một bước ''quyết toán'' đưa chi phí về thực tế: dương = đã tính thiếu vào giá thành, cần tăng giá vốn; âm = tính dư.'
+      assumptions: []
+      pitfalls:
+      - 'Nhầm dấu: Actual - Applied dương là Under-applied (không phải over).'
+      - 'Không tìm nguyên nhân: giờ thực tế thấp hơn dự kiến trong khi định phí không giảm = chạy dưới công suất, cần thêm đơn có lãi.'
+      - Đưa toàn bộ MOH cố định chạy dưới công suất vào hàng tồn kho (trái VAS 02, cần xác nhận).
+      interpretation: 'Chênh lệch nhỏ (không trọng yếu) -> Nợ 632 / Có 627. Lớn so với lợi nhuận -> phân bổ lại theo số dư WIP/thành phẩm/giá vốn. Lệch > khoảng 5% POHR: điều chỉnh POHR (ngưỡng tham khảo).'
+      example:
+        inputs:
+          actual_moh: 852000000
+          applied_moh: 850500000
+        steps:
+        - Applied = 12.150 giờ x 70.000 = 850.500.000.
+        - Variance = 852.000.000 - 850.500.000 = 1.500.000 -> under-applied.
+        result: Under-applied 1.500.000 VND
+  - id: "m03-formulas-5"
+    title: "Công thức: m03_overhead_reallocation — Phân bổ lại chênh lệch MOH theo số dư (ngoài nguồn phần công thức tổng quát)"
+    tags: ["công", "thức", "m03_overhead_reallocation", "phân", "bổ", "lại", "chênh", "lệch", "moh", "theo", "số", "dư"]
+    text: |-
+      id: m03_overhead_reallocation
+      name_vi: Phân bổ lại chênh lệch MOH theo số dư (ngoài nguồn phần công thức tổng quát)
+      name_en: Proration of Under/Over-applied Overhead
+      expression_latex: \text{Share}_i = \text{Variance} \times \dfrac{B_i}{\sum B}
+      expression_python: variance * balance_i / total_balance
+      excel: =Variance*B_i/SUM(B)
+      variables:
+      - symbol: variance
+        meaning: Chênh lệch under/over
+        unit: VND
+      - symbol: balance_i
+        meaning: Số dư MOH áp dụng nằm trong tài khoản i (WIP, thành phẩm, giá vốn)
+        unit: VND
+      - symbol: total_balance
+        meaning: Tổng các số dư trên
+        unit: VND
+      when_to_use: Chênh lệch trọng yếu so với lợi nhuận.
+      why_it_works: Đưa hàng tồn kho gần giá thực tế hơn thay vì dồn hết vào giá vốn.
+      assumptions:
+      - Nguồn minh họa dùng tỷ lệ giả định 15%/25%/60% cho WIP/thành phẩm/giá vốn.
+      pitfalls:
+      - Tỷ lệ phải lấy từ số dư thực tế (MOH áp dụng nằm trong từng tài khoản), không bịa.
+      interpretation: Tổng các phần bằng đúng variance.
+      example:
+        inputs:
+          variance: 1500000
+          balance_i: 15
+          total_balance: 100
+        steps:
+        - 'Tỷ lệ WIP 15%: 1.500.000 x 15/100 = 225.000.'
+        - Thành phẩm 25% = 375.000; giá vốn 60% = 900.000; tổng 1.500.000.
+        result: WIP 225.000 (cộng 375.000 + 900.000 = 1.500.000)
+  - id: "m03-formulas-6"
+    title: "Công thức: m03_equivalent_units_wa — Sản lượng tương đương - Bình quân gia quyền"
+    tags: ["công", "thức", "m03_equivalent_units_wa", "sản", "lượng", "tương", "đương", "bình", "quân", "gia", "quyền"]
+    text: |-
+      id: m03_equivalent_units_wa
+      name_vi: Sản lượng tương đương - Bình quân gia quyền
+      name_en: Equivalent Units - Weighted Average
+      expression_latex: \text{EU} = \text{Units Completed} + (\text{WIP}_{end} \times \text{\% Completion})
+      expression_python: completed + wip_end * pct_end
+      excel: =Completed+WIP_end*Pct
+      variables:
+      - symbol: completed
+        meaning: Số đơn vị hoàn thành và chuyển đi trong kỳ
+        unit: đơn vị
+      - symbol: wip_end
+        meaning: Số đơn vị dở dang cuối kỳ
+        unit: đơn vị
+      - symbol: pct_end
+        meaning: Mức hoàn thành của yếu tố chi phí đó (NVL 100% nếu đưa đầu quy trình; chế biến theo tiến độ)
+        unit: tỷ lệ 0-1
+      when_to_use: Mỗi kỳ, mỗi công đoạn; tính RIÊNG cho NVL và cho chế biến.
+      why_it_works: WIP 1.000 lít với chế biến 40% chỉ tương đương 400 lít đã chế biến xong; quy đổi để chia chi phí công bằng giữa thành phẩm và WIP.
+      assumptions:
+      - Mức hoàn thành WIP ước tính đáng tin (kiểm kê, kỹ thuật viên xác nhận).
+      pitfalls:
+      - Dùng chung một cột EU cho NVL và chế biến.
+      - Quên rằng BQGQ coi WIP đầu kỳ như đã bắt đầu trong kỳ (không tách).
+      interpretation: Kết quả luôn <= số đơn vị bắt đầu + WIP đầu.
+      example:
+        inputs:
+          completed: 3500
+          wip_end: 1000
+          pct_end: 0.4
+        steps:
+        - EU NVL = 3.500 + 1.000 x 100% = 4.500.
+        - EU chế biến = 3.500 + 1.000 x 40% = 3.900.
+        result: EU chế biến = 3.900 (EU NVL = 4.500)
+  - id: "m03-formulas-7"
+    title: "Công thức: m03_cost_per_eu — Chi phí trên mỗi đơn vị tương đương"
+    tags: ["công", "thức", "m03_cost_per_eu", "chi", "phí", "trên", "mỗi", "đơn", "vị", "tương", "đương"]
+    text: |-
+      id: m03_cost_per_eu
+      name_vi: Chi phí trên mỗi đơn vị tương đương
+      name_en: Cost per Equivalent Unit
+      expression_latex: \text{Cost per EU} = \dfrac{\text{Cost (opening WIP + current)}}{\text{EU}}
+      expression_python: cost_total / eu
+      excel: =Cost/EU
+      variables:
+      - symbol: cost_total
+        meaning: 'Chi phí yếu tố đó (BQGQ: WIP đầu + phát sinh; FIFO: chỉ phát sinh kỳ)'
+        unit: VND
+      - symbol: eu
+        meaning: EU của yếu tố tương ứng
+        unit: đơn vị tương đương
+      when_to_use: Sau khi có EU, tính riêng NVL và chế biến rồi cộng thành giá thành đơn vị.
+      why_it_works: Chi phí gộp chia cho sản lượng quy đổi cho đơn giá mỗi đơn vị tương đương; nhân với EU của thành phẩm và WIP để phân bổ.
+      assumptions:
+      - Chi phí và EU cùng yếu tố, cùng kỳ.
+      pitfalls:
+      - Nhân WIP cuối bằng giá thành đủ (NVL + chế biến) thay vì NVL 100% + chế biến theo %.
+      - 'Bỏ qua kiểm tra: tổng phân bổ phải bằng tổng chi phí.'
+      interpretation: Giá thành thành phẩm/lít = tổng cost per EU các yếu tố.
+      example:
+        inputs:
+          cost_total: 58500000
+          eu: 3900
+        steps:
+        - 'Chế biến: 58.500.000 / 3.900 = 15.000/EU.'
+        - 'NVL: 90.000.000 / 4.500 = 20.000/EU; tổng 35.000/lít.'
+        result: 15.000 VND/EU chế biến
+  - id: "m03-formulas-8"
+    title: "Công thức: m03_equivalent_units_fifo — Sản lượng tương đương - FIFO"
+    tags: ["công", "thức", "m03_equivalent_units_fifo", "sản", "lượng", "tương", "đương", "fifo"]
+    text: |-
+      id: m03_equivalent_units_fifo
+      name_vi: Sản lượng tương đương - FIFO
+      name_en: Equivalent Units - FIFO
+      expression_latex: \text{EU}_{FIFO} = WIP_{beg}(1-p_{beg}) + (\text{Completed} - WIP_{beg}) + WIP_{end}\, p_{end}
+      expression_python: wip_begin * (1 - pct_begin) + (completed - wip_begin) + wip_end * pct_end
+      excel: =WIPbeg*(1-Pbeg)+(Completed-WIPbeg)+WIPend*Pend
+      variables:
+      - symbol: wip_begin
+        meaning: WIP đầu kỳ
+        unit: đơn vị
+      - symbol: pct_begin
+        meaning: Mức hoàn thành WIP đầu kỳ của yếu tố
+        unit: tỷ lệ 0-1
+      - symbol: completed
+        meaning: Tổng hoàn thành trong kỳ (gồm WIP đầu kỳ)
+        unit: đơn vị
+      - symbol: wip_end
+        meaning: WIP cuối kỳ
+        unit: đơn vị
+      - symbol: pct_end
+        meaning: Mức hoàn thành WIP cuối kỳ
+        unit: tỷ lệ 0-1
+      when_to_use: Giá đầu vào biến động mạnh giữa các kỳ, cần đo hiệu quả kỳ hiện tại.
+      why_it_works: Chi phí WIP đầu kỳ thuộc kỳ trước nên chỉ tính phần công việc làm thêm trong kỳ này; đơn giá kỳ chỉ dùng chi phí phát sinh kỳ.
+      assumptions:
+      - Có số liệu chi tiết WIP đầu kỳ theo từng yếu tố.
+      pitfalls:
+      - Với NVL đưa đầu quy trình, WIP đầu kỳ đã 100% NVL nên phần NVL làm thêm bằng 0.
+      - Phức tạp hơn BQGQ, dễ sai khi tay làm.
+      interpretation: So với BQGQ chênh lệch nhỏ khi đơn giá ít đổi.
+      example:
+        inputs:
+          wip_begin: 500
+          pct_begin: 0.8
+          completed: 3500
+          wip_end: 1000
+          pct_end: 0.4
+        steps:
+        - EU chế biến FIFO = 500 x 20% + 3.000 + 400 = 3.500.
+        - EU NVL FIFO = 0 + 3.000 + 1.000 = 4.000.
+        result: EU chế biến FIFO = 3.500
+  - id: "m03-formulas-9"
+    title: "Công thức: m03_activity_rate — Đơn giá hoạt động (ABC)"
+    tags: ["công", "thức", "m03_activity_rate", "đơn", "giá", "hoạt", "động", "abc"]
+    text: |-
+      id: m03_activity_rate
+      name_vi: Đơn giá hoạt động (ABC)
+      name_en: Activity Rate
+      expression_latex: \text{Activity Rate} = \dfrac{\text{Activity Cost Pool}}{\text{Total Cost Driver}}
+      expression_python: pool / driver_total
+      excel: =Pool/Total_Driver
+      variables:
+      - symbol: pool
+        meaning: Chi phí gom cho hoạt động
+        unit: VND
+      - symbol: driver_total
+        meaning: Tổng số lượng driver cả kỳ (số lần setup, số đơn giao...)
+        unit: đơn vị driver
+      when_to_use: Bước 4 của quy trình ABC.
+      why_it_works: Mỗi lần hoạt động diễn ra tốn trung bình bao nhiêu tiền; sản phẩm nào kích hoạt hoạt động nhiều thì gánh nhiều.
+      assumptions:
+      - Chi phí trong pool đồng nhất, tương quan tuyến tính với driver.
+      - Tách được chi phí hoạt động từ sổ chi tiết.
+      pitfalls:
+      - Driver không có dữ liệu để đo.
+      - Pool trộn nhiều hoạt động khác nhau làm rate vô nghĩa.
+      - Làm hàng chục hoạt động -> tốn công, nhanh lỗi thời.
+      interpretation: Rate setup 3.000.000/lần cho biết một lần setup tốn 3 triệu; so sánh với lợi ích để quyết định gom lô.
+      example:
+        inputs:
+          pool: 150000000
+          driver_total: 50
+        steps:
+        - Setup 150.000.000 / 50 lần = 3.000.000/lần.
+        result: 3.000.000 VND/lần setup
+  - id: "m03-formulas-10"
+    title: "Công thức: m03_abc_allocation — Phân bổ MOH theo ABC cho sản phẩm/đơn/khách"
+    tags: ["công", "thức", "m03_abc_allocation", "phân", "bổ", "moh", "theo", "abc", "cho", "sản", "phẩm", "đơn"]
+    text: |-
+      id: m03_abc_allocation
+      name_vi: Phân bổ MOH theo ABC cho sản phẩm/đơn/khách
+      name_en: ABC Overhead Allocation
+      expression_latex: \text{MOH}_{ABC} = \sum_{k} \text{Rate}_k \times \text{Driver}_{k}
+      expression_python: sum(r * d for r, d in zip(rates, drivers))
+      excel: =SUMPRODUCT(Rates,Drivers)
+      variables:
+      - symbol: rates
+        meaning: Danh sách activity rate
+        unit: VND/driver
+      - symbol: drivers
+        meaning: Số driver mà đối tượng tiêu thụ cho từng hoạt động (cùng thứ tự)
+        unit: đơn vị driver
+      when_to_use: 'Bước 5 ABC: tính MOH cho từng sản phẩm/job/khách; sau đó so với Traditional.'
+      why_it_works: Chi phí theo đúng hoạt động mà đối tượng kích hoạt thay vì một tiêu thức duy nhất.
+      assumptions:
+      - Tổng phân bổ cho mọi đối tượng bằng tổng MOH.
+      pitfalls:
+      - Quên kiểm tra tổng phân bổ = tổng pool.
+      - Dùng driver tổng của cả công ty nhưng driver đối tượng chỉ lấy từ mẫu.
+      interpretation: Chia cho số lượng để ra MOH/đơn vị rồi tính lãi gộp theo ABC; so với Traditional để thấy trợ giá chéo.
+      example:
+        inputs:
+          rates:
+          - 3000000
+          - 1250000
+          - 750000
+          - 16666.6667
+          drivers:
+          - 40
+          - 60
+          - 150
+          - 1000
+        steps:
+        - 'Bánh B: 40 x 3.000.000 + 60 x 1.250.000 + 150 x 750.000 + 1.000 x 16.667 = 324.166.667.'
+        - MOH/cái = 324.166.667 / 2.000 = 162.083.
+        result: Bánh B MOH ABC 324.166.667
+  - id: "m03-formulas-11"
+    title: "Công thức: m03_cost_per_minute — Chi phí mỗi phút công suất (TDABC)"
+    tags: ["công", "thức", "m03_cost_per_minute", "chi", "phí", "mỗi", "phút", "suất", "tdabc"]
+    text: |-
+      id: m03_cost_per_minute
+      name_vi: Chi phí mỗi phút công suất (TDABC)
+      name_en: Cost per Minute of Capacity
+      expression_latex: \text{Cost per minute} = \dfrac{\text{Total department cost}}{\text{Practical capacity (minutes)}}
+      expression_python: dept_cost / practical_minutes
+      excel: =DeptCost/PracticalMinutes
+      variables:
+      - symbol: dept_cost
+        meaning: Tổng chi phí bộ phận trong kỳ (lương, thuê, công cụ...)
+        unit: VND
+      - symbol: practical_minutes
+        meaning: Số phút công suất thực dụng = người x ngày x giờ thực dụng x 60
+        unit: phút
+      when_to_use: Bộ phận dịch vụ/xử lý (đơn hàng, CSKH, kho, QC) nhiều loại giao dịch khác thời gian.
+      why_it_works: Chỉ cần hai tham số (chi phí/phút và thời gian mỗi hoạt động), không phỏng vấn % thời gian; cập nhật nhanh khi quy trình đổi.
+      assumptions:
+      - Thời gian từng hoạt động đo/ước tính được (bấm giờ, mẫu).
+      - Chi phí mỗi phút đồng nhất trong bộ phận.
+      pitfalls:
+      - Lấy công suất lý thuyết (nên dùng thực dụng khoảng 80-85% theo nguồn).
+      - 'Mâu thuẫn nguồn: giải thích 80-85% nhưng ví dụ dùng 6/8 giờ = 75% - nên ghi rõ giả định riêng.'
+      interpretation: 1.500 VND/phút -> đơn chuẩn 4 phút = 6.000, đổi trả 15 phút = 22.500 (gấp 3,75 lần).
+      example:
+        inputs:
+          dept_cost: 54000000
+          practical_minutes: 36000
+        steps:
+        - Phút thực dụng = 5 x 20 x 6 x 60 = 36.000.
+        - Chi phí/phút = 54.000.000 / 36.000 = 1.500.
+        result: 1.500 VND/phút
+  - id: "m03-formulas-12"
+    title: "Công thức: m03_activity_cost_time — Chi phí hoạt động theo thời gian (TDABC)"
+    tags: ["công", "thức", "m03_activity_cost_time", "chi", "phí", "hoạt", "động", "theo", "thời", "gian", "tdabc"]
+    text: |-
+      id: m03_activity_cost_time
+      name_vi: Chi phí hoạt động theo thời gian (TDABC)
+      name_en: TDABC Activity Cost
+      expression_latex: \text{Activity cost} = \text{Minutes} \times \text{Cost per minute}
+      expression_python: minutes * cost_per_minute
+      excel: =Minutes*CostPerMin
+      variables:
+      - symbol: minutes
+        meaning: Số phút cần cho 1 lần hoạt động (hoặc tổng phút)
+        unit: phút
+      - symbol: cost_per_minute
+        meaning: Chi phí mỗi phút công suất
+        unit: VND/phút
+      when_to_use: Định giá phí dịch vụ/đơn đặc biệt; so sánh chi phí xử lý các loại giao dịch.
+      why_it_works: Thời gian là driver đồng nhất cho mọi hoạt động của bộ phận; cho phép time equation khi có yếu tố biến thể.
+      assumptions:
+      - Cost per minute đúng.
+      pitfalls:
+      - Quên cộng thời gian biến thể (đơn tùy chỉnh).
+      interpretation: Chi phí mỗi giao dịch -> quyết định phí đổi trả, MOQ, kênh.
+      example:
+        inputs:
+          minutes: 15
+          cost_per_minute: 1500
+        steps:
+        - Đổi trả 15 phút x 1.500 = 22.500.
+        result: 22.500 VND/đơn đổi trả
+  - id: "m03-formulas-13"
+    title: "Công thức: m03_idle_capacity — Chi phí công suất nhàn rỗi (TDABC)"
+    tags: ["công", "thức", "m03_idle_capacity", "chi", "phí", "suất", "nhàn", "rỗi", "tdabc"]
+    text: |-
+      id: m03_idle_capacity
+      name_vi: Chi phí công suất nhàn rỗi (TDABC)
+      name_en: Idle Capacity Cost
+      expression_latex: \text{Idle cost} = (\text{Practical minutes} - \text{Used minutes}) \times \text{Cost per minute}
+      expression_python: (practical_minutes - used_minutes) * cost_per_minute
+      excel: =(Practical-Used)*CostPerMin
+      variables:
+      - symbol: practical_minutes
+        meaning: Phút công suất thực dụng
+        unit: phút
+      - symbol: used_minutes
+        meaning: Phút đã dùng = sum(số lượng x phút/đơn)
+        unit: phút
+      - symbol: cost_per_minute
+        meaning: Chi phí mỗi phút
+        unit: VND/phút
+      when_to_use: Đánh giá bộ phận dư/thiếu nhân lực.
+      why_it_works: Tách công suất chưa dùng khỏi chi phí đơn hàng, tránh đội chi phí sản phẩm vì nhàn rỗi.
+      assumptions:
+      - Used minutes đo/ước tính đúng.
+      pitfalls:
+      - Phân bổ cả chi phí nhàn rỗi vào đơn hàng (giá thành tăng giả tạo).
+      interpretation: Mức sử dụng 91,7% và nhàn rỗi 4.500.000; dưới khoảng 80% cân nhắc điều chỉnh nhân sự/nhận thêm việc (ngưỡng tham khảo, confidence low).
+      example:
+        inputs:
+          practical_minutes: 36000
+          used_minutes: 33000
+          cost_per_minute: 1500
+        steps:
+        - Phút dùng = 4.000x4 + 800x10 + 600x15 = 33.000.
+        - Nhàn rỗi = 3.000 x 1.500 = 4.500.000; sử dụng 91,7%.
+        result: 4.500.000 VND/tháng
+  - id: "m03-formulas-14"
+    title: "Công thức: m03_absorption_unit_cost — Giá thành đơn vị - Absorption Costing"
+    tags: ["công", "thức", "m03_absorption_unit_cost", "giá", "thành", "đơn", "vị", "absorption", "costing"]
+    text: |-
+      id: m03_absorption_unit_cost
+      name_vi: Giá thành đơn vị - Absorption Costing
+      name_en: Absorption Unit Cost
+      expression_latex: \text{Unit cost}_{abs} = VC + \dfrac{\text{Fixed MOH}}{\text{Units produced}}
+      expression_python: vc + fixed_moh / units_produced
+      excel: =VC+FixedMOH/UnitsProduced
+      variables:
+      - symbol: vc
+        meaning: Biến phí sản xuất đơn vị (DM, DL, MOH biến đổi)
+        unit: VND/sp
+      - symbol: fixed_moh
+        meaning: Định phí sản xuất chung kỳ (phân bổ theo công suất bình thường)
+        unit: VND
+      - symbol: units_produced
+        meaning: Số lượng sản xuất (hoặc công suất bình thường)
+        unit: sp
+      when_to_use: Lập BCTC, định giá toàn phần, giá trị tồn kho.
+      why_it_works: Định phí sản xuất là chi phí để làm ra sản phẩm nên tính vào giá trị tồn kho theo nguyên tắc phù hợp.
+      assumptions:
+      - Sản xuất ở mức xấp xỉ công suất bình thường.
+      pitfalls:
+      - Chia định phí cho sản lượng thấp hơn công suất bình thường làm đội giá thành (phần dư phải vào giá vốn).
+      - Chạy sản xuất thừa để 'giấu' định phí vào tồn kho.
+      interpretation: 150.000 = 100.000 biến phí + 50.000 định phí/sp.
+      example:
+        inputs:
+          vc: 100000
+          fixed_moh: 50000000
+          units_produced: 1000
+        steps:
+        - 50.000.000 / 1.000 = 50.000 định phí/sp; unit cost = 150.000.
+        result: 150.000 VND/sp
+  - id: "m03-formulas-15"
+    title: "Công thức: m03_profit_difference — Chênh lệch lợi nhuận Absorption vs Variable"
+    tags: ["công", "thức", "m03_profit_difference", "chênh", "lệch", "lợi", "nhuận", "absorption", "vs", "variable"]
+    text: |-
+      id: m03_profit_difference
+      name_vi: Chênh lệch lợi nhuận Absorption vs Variable
+      name_en: Absorption vs Variable Profit Difference
+      expression_latex: \Delta = (\text{Units produced} - \text{Units sold}) \times \dfrac{\text{Fixed MOH}}{\text{Units produced}}
+      expression_python: (units_produced - units_sold) * fixed_moh / units_produced
+      excel: =(Produced-Sold)*FixedMOH/Produced
+      variables:
+      - symbol: units_produced
+        meaning: Số sản xuất
+        unit: sp
+      - symbol: units_sold
+        meaning: Số bán
+        unit: sp
+      - symbol: fixed_moh
+        meaning: Định phí SX chung kỳ
+        unit: VND
+      when_to_use: Đối chiếu lợi nhuận hai phương pháp (bảng đối chiếu giá thành quản trị vs BCTC).
+      why_it_works: 'Chênh lệch bằng định phí nằm trong thay đổi tồn kho: sản xuất > bán thì absorption cao hơn; sản xuất < bán thì ngược lại; sản xuất = bán thì bằng nhau.'
+      assumptions:
+      - Không có tồn kho đầu kỳ hoặc đơn giá định phí đầu kỳ bằng kỳ này (nếu khác phải điều chỉnh).
+      pitfalls:
+      - Bỏ qua tồn kho đầu kỳ khi đơn giá định phí khác nhau giữa kỳ.
+      interpretation: Dương = absorption lãi cao hơn; nếu thưởng theo lợi nhuận absorption có rủi ro khuyến khích sản xuất thừa.
+      example:
+        inputs:
+          units_produced: 1000
+          units_sold: 800
+          fixed_moh: 50000000
+        steps:
+        - Absorption profit = 800 x 250.000 - 800 x 150.000 = 80.000.000.
+        - Variable profit = 800 x 150.000 - 50.000.000 = 70.000.000.
+        - Delta = 200 x 50.000 = 10.000.000.
+        result: 10.000.000 VND (absorption cao hơn)
+  - id: "m03-formulas-16"
+    title: "Công thức: m03_target_cost — Chi phí mục tiêu"
+    tags: ["công", "thức", "m03_target_cost", "chi", "phí", "mục", "tiêu"]
+    text: |-
+      id: m03_target_cost
+      name_vi: Chi phí mục tiêu
+      name_en: Target Cost
+      expression_latex: \text{Target Cost} = \text{Target Price} - \text{Target Profit} = \text{Price}(1-m)
+      expression_python: target_price * (1 - margin)
+      excel: =Price*(1-Margin)
+      variables:
+      - symbol: target_price
+        meaning: Giá thị trường chấp nhận
+        unit: VND
+      - symbol: margin
+        meaning: Biên lợi nhuận mục tiêu trên giá bán
+        unit: tỷ lệ 0-1
+      when_to_use: Thiết kế sản phẩm mới, giá bị thị trường áp đặt.
+      why_it_works: 'Đảo logic cost-plus: giá do thị trường, lợi nhuận do doanh nghiệp, phần còn lại là ngân sách chi phí cho thiết kế và sản xuất.'
+      assumptions:
+      - Giá thị trường ước lượng đúng (khảo sát WTP, đối thủ).
+      - Biên là % trên giá bán (không phải markup trên giá vốn).
+      pitfalls:
+      - Nhầm margin với markup.
+      - Cắt chi phí làm hỏng chất lượng/định vị.
+      interpretation: Khoảng cách (cost gap) = chi phí hiện tại - target cost; đóng bằng Value Engineering.
+      example:
+        inputs:
+          target_price: 300000
+          margin: 0.3
+        steps:
+        - Target cost = 300.000 x 70% = 210.000.
+        - Nếu chi phí hiện tại 230.000 thì gap = 20.000.
+        result: 210.000 VND
+  - id: "m03-formulas-17"
+    title: "Công thức: m03_cost_gap — Khoảng cách chi phí cần cắt giảm"
+    tags: ["công", "thức", "m03_cost_gap", "khoảng", "cách", "chi", "phí", "cần", "cắt", "giảm"]
+    text: |-
+      id: m03_cost_gap
+      name_vi: Khoảng cách chi phí cần cắt giảm
+      name_en: Cost Reduction Gap
+      expression_latex: \text{Gap} = \text{Current Cost} - \text{Target Cost}
+      expression_python: current_cost - target_cost
+      excel: =Current-Target
+      variables:
+      - symbol: current_cost
+        meaning: Chi phí đơn vị hiện tại
+        unit: VND/sp
+      - symbol: target_cost
+        meaning: Chi phí mục tiêu
+        unit: VND/sp
+      when_to_use: Sau khi có target cost.
+      why_it_works: Số tiền cần cắt cụ thể hóa mục tiêu để chia việc cho thiết kế, mua hàng, vận hành.
+      assumptions: []
+      pitfalls:
+      - Gap dương lớn mà không có phương án = không nên launch.
+      interpretation: 'Gap 22.500 = 6,25% chi phí hiện tại (bài 5: 450.000, 25%, chi phí 360.000).'
+      example:
+        inputs:
+          current_cost: 360000
+          target_cost: 337500
+        steps:
+        - Gap = 360.000 - 337.500 = 22.500; 22.500/360.000 = 6,25%.
+        result: 22.500 VND/sp
+  - id: "m03-formulas-18"
+    title: "Công thức: m03_min_price_for_margin — Giá tối thiểu để đạt biên lãi mục tiêu"
+    tags: ["công", "thức", "m03_min_price_for_margin", "giá", "tối", "thiểu", "để", "đạt", "biên", "lãi", "mục", "tiêu"]
+    text: |-
+      id: m03_min_price_for_margin
+      name_vi: Giá tối thiểu để đạt biên lãi mục tiêu
+      name_en: Minimum Price for Target Margin
+      expression_latex: \text{Price} = \dfrac{\text{Cost}}{1 - m}
+      expression_python: cost / (1 - margin)
+      excel: =Cost/(1-Margin)
+      variables:
+      - symbol: cost
+        meaning: Giá thành (nên dùng ABC)
+        unit: VND
+      - symbol: margin
+        meaning: Biên lãi gộp mục tiêu trên giá bán
+        unit: tỷ lệ 0-1
+      when_to_use: Tái định giá đơn nhỏ/phức tạp, đặt phí setup/MOQ.
+      why_it_works: Lãi = Giá - Cost = m x Giá nên Giá = Cost/(1-m).
+      assumptions:
+      - Giá thành ABC phản ánh đúng chi phí phục vụ.
+      pitfalls:
+      - Dùng cost + m% (markup) thay vì chia 1-m.
+      interpretation: Hải Long P-102 cần 17,03 triệu để biên 15%, nghĩa là tăng khoảng 21,6% hoặc thu phí setup.
+      example:
+        inputs:
+          cost: 14475000
+          margin: 0.15
+        steps:
+        - 14.475.000 / 0,85 = 17.029.412; tăng 3.029.412 (+21,6% so với 14.000.000).
+        result: 17.029.412 VND
+  - id: "m03-formulas-19"
+    title: "Công thức: m03_breakeven — Điểm hòa vốn và biên an toàn"
+    tags: ["công", "thức", "m03_breakeven", "điểm", "hòa", "vốn", "và", "biên", "an", "toàn"]
+    text: |-
+      id: m03_breakeven
+      name_vi: Điểm hòa vốn và biên an toàn
+      name_en: Break-even and Margin of Safety
+      expression_latex: Q_{BE} = \dfrac{F}{p - v};\quad R_{BE} = \dfrac{F}{CM\%};\quad MoS = \dfrac{R - R_{BE}}{R}
+      expression_python: (fixed / (price - vc), fixed / ((price - vc) / price), (revenue - fixed / ((price - vc) / price)) / revenue)
+      excel: =Fixed/(Price-VC)
+      variables:
+      - symbol: fixed
+        meaning: Tổng định phí kỳ
+        unit: VND
+      - symbol: price
+        meaning: Giá bán đơn vị
+        unit: VND
+      - symbol: vc
+        meaning: Biến phí đơn vị
+        unit: VND
+      - symbol: revenue
+        meaning: Doanh thu thực tế kỳ
+        unit: VND
+      when_to_use: Đánh giá chi nhánh/sản phẩm trước khi mở rộng (chi tiết m02).
+      why_it_works: Mỗi đơn vị bán đóng góp (p - v) cho định phí; hòa vốn khi tổng đóng góp bằng định phí.
+      assumptions:
+      - Tách đúng biến/định phí; giá, biến phí ổn định trong phạm vi liên quan.
+      pitfalls:
+      - Giả định đơn giản hóa (nguồn coi labor là định phí) cần nói rõ.
+      - Biên an toàn âm = đang dưới hòa vốn.
+      interpretation: 'Quán cà phê: BE = 2.500 ly và 150 triệu doanh thu; bán 2.000 ly lỗ 18 triệu.'
+      example:
+        inputs:
+          fixed: 90000000
+          price: 60000
+          vc: 24000
+          revenue: 120000000
+        steps:
+        - CM/ly = 36.000; Q_BE = 90.000.000/36.000 = 2.500 ly.
+        - R_BE = 90.000.000/0,6 = 150.000.000; MoS = (120 - 150)/120 = -25%.
+        result: BE 2.500 ly / 150.000.000 VND; MoS âm
+  - id: "m03-formulas-20"
+    title: "Công thức: m03_weighted_food_cost — Food cost bình quân gia quyền theo nhóm món"
+    tags: ["công", "thức", "m03_weighted_food_cost", "food", "cost", "bình", "quân", "gia", "quyền", "theo", "nhóm", "món"]
+    text: |-
+      id: m03_weighted_food_cost
+      name_vi: Food cost bình quân gia quyền theo nhóm món
+      name_en: Weighted Average Food Cost %
+      expression_latex: \text{FC}\% = \sum_i w_i \times fc_i
+      expression_python: sum(w * f for w, f in zip(weights, fcs))
+      excel: =SUMPRODUCT(Weights,FoodCost%)
+      variables:
+      - symbol: weights
+        meaning: Tỷ trọng doanh thu từng nhóm món
+        unit: tỷ lệ
+      - symbol: fcs
+        meaning: Food cost % từng nhóm
+        unit: tỷ lệ
+      when_to_use: Phân tích menu F&B (ABC-lite theo nhóm món).
+      why_it_works: Food cost tổng là trung bình có trọng số; cho phép đo tác động khi đổi một nhóm món.
+      assumptions:
+      - Tỷ trọng doanh thu ổn định.
+      pitfalls:
+      - Cắt món chỉ vì CM% thấp mà bỏ qua đóng góp tuyệt đối và chi phí tránh được.
+      interpretation: 'TasteVN: 33,3%; giảm món Âu fusion từ 45% xuống 38% tiết kiệm 2,1% doanh thu.'
+      example:
+        inputs:
+          weights:
+          - 0.4
+          - 0.3
+          - 0.2
+          - 0.1
+          fcs:
+          - 0.28
+          - 0.45
+          - 0.18
+          - 0.5
+        steps:
+        - 0,4x28% + 0,3x45% + 0,2x18% + 0,1x50% = 11,2% + 13,5% + 3,6% + 5% = 33,3%.
+        result: 33,3% (CM bình quân 66,7%)
+  - id: "m03-formulas-21"
+    title: "Công thức: m03_cogm_cogs — Giá thành sản phẩm hoàn thành và giá vốn hàng bán (ngoài nguồn)"
+    tags: ["công", "thức", "m03_cogm_cogs", "giá", "thành", "sản", "phẩm", "hoàn", "và", "vốn", "hàng", "bán"]
+    text: |-
+      id: m03_cogm_cogs
+      name_vi: Giá thành sản phẩm hoàn thành và giá vốn hàng bán (ngoài nguồn)
+      name_en: COGM and COGS Schedule
+      expression_latex: COGM = DM + DL + MOH + WIP_{beg} - WIP_{end};\quad COGS = FG_{beg} + COGM - FG_{end}
+      expression_python: (dm + dl + moh + wip_beg - wip_end, fg_beg + (dm + dl + moh + wip_beg - wip_end) - fg_end)
+      excel: =DM+DL+MOH+WIPbeg-WIPend
+      variables:
+      - symbol: dm
+        meaning: NVL trực tiếp dùng trong kỳ
+        unit: VND
+      - symbol: dl
+        meaning: Nhân công trực tiếp
+        unit: VND
+      - symbol: moh
+        meaning: Chi phí sản xuất chung (đã phân bổ/điều chỉnh)
+        unit: VND
+      - symbol: wip_beg
+        meaning: WIP đầu kỳ
+        unit: VND
+      - symbol: wip_end
+        meaning: WIP cuối kỳ
+        unit: VND
+      - symbol: fg_beg
+        meaning: Thành phẩm đầu kỳ
+        unit: VND
+      - symbol: fg_end
+        meaning: Thành phẩm cuối kỳ
+        unit: VND
+      when_to_use: Lập báo cáo giá thành và giá vốn cuối kỳ, kiểm tra khớp với sổ.
+      why_it_works: 'Quy tắc kế toán dòng chi phí: chi phí vào WIP, ra thành phẩm, ra giá vốn khi bán.'
+      assumptions:
+      - Kê khai thường xuyên; tồn kho đầu/cuối định giá nhất quán.
+      pitfalls:
+      - Nhầm MOH thực tế và MOH áp dụng; quên điều chỉnh under/over.
+      - Đưa chi phí bán hàng, quản lý vào giá thành.
+      interpretation: COGM là giá trị nhập kho thành phẩm (Nợ 155 / Có 154); COGS là giá vốn kỳ (Nợ 632).
+      example:
+        inputs:
+          dm: 120000000
+          dl: 60000000
+          moh: 80000000
+          wip_beg: 20000000
+          wip_end: 30000000
+          fg_beg: 40000000
+          fg_end: 55000000
+        steps:
+        - COGM = 120 + 60 + 80 + 20 - 30 = 250 triệu.
+        - COGS = 40 + 250 - 55 = 235 triệu.
+        result: COGM 250.000.000; COGS 235.000.000
+  - id: "m03-frameworks-1"
+    title: "Frameworks: m03_cost_classification — Phân loại chi phí (bảng chữ cái của kế toán chi phí)"
+    tags: ["frameworks", "m03_cost_classification", "phân", "loại", "chi", "phí", "bảng", "chữ", "cái", "của", "kế", "toán"]
+    text: |-
+      id: m03_cost_classification
+      name_vi: Phân loại chi phí (bảng chữ cái của kế toán chi phí)
+      name_en: Cost Classification
+      origin: Hệ thống hóa trong kế toán chi phí thế kỷ 20 (Horngren, Hilton, CIMA/CMA); tại VN gắn với TK 621/622/627/641/642 của chế độ kế toán DN.
+      components:
+      - 'Theo chức năng: DM (621), DL (622), MOH (627) = chi phí sản phẩm; bán hàng (641), quản lý (642) = chi phí thời kỳ.'
+      - 'Theo mối quan hệ với đối tượng tính giá: trực tiếp / gián tiếp (phải phân bổ).'
+      - 'Theo ứng xử: biến phí / định phí / hỗn hợp.'
+      when_to_use: Luôn là bước đầu tiên trước khi chọn phương pháp tính giá.
+      how_to_apply:
+      - Liệt kê từng khoản chi và gán chức năng (sản xuất / bán hàng / quản lý).
+      - 'Với chi phí sản xuất: xác định trực tiếp hay gián tiếp với đối tượng tính giá.'
+      - 'Tách hỗn hợp thành cố định + biến đổi (vd điện: phí cơ bản + theo kWh).'
+      - 'Hạch toán: DM/DL/MOH vào 621/622/627; kết chuyển 154; bán hàng/quản lý vào 641/642.'
+      how_to_read_results: Chi phí sản phẩm vào giá thành, chi phí thời kỳ không; cơ cấu DM/DL/MOH cho biết overhead lớn hay nhỏ để chọn Traditional hay ABC.
+      pitfalls:
+      - Đưa chi phí bán hàng, quản lý vào giá thành sản xuất.
+      - Coi mọi chi phí chung là gián tiếp mà không tìm driver nhân quả.
+      - Nhầm chi phí sản phẩm với chi phí thời kỳ -> lệch lợi nhuận kỳ.
+      example: 'Xưởng nội thất: gỗ (DM), lương thợ (DL), khấu hao máy cưa và điện xưởng (MOH), quảng cáo (641), lương kế toán (642).'
+  - id: "m03-frameworks-2"
+    title: "Frameworks: m03_cost_flow_journal — Dòng chi phí và bút toán sản xuất (kê khai thường xuyên)"
+    tags: ["frameworks", "m03_cost_flow_journal", "dòng", "chi", "phí", "và", "bút", "toán", "sản", "xuất", "kê", "khai"]
+    text: |-
+      id: m03_cost_flow_journal
+      name_vi: Dòng chi phí và bút toán sản xuất (kê khai thường xuyên)
+      name_en: Manufacturing Cost Flow and Journal Entries
+      origin: Cấu trúc tài khoản chi phí sản xuất của chế độ kế toán DN VN (TT 200/2014/TT-BTC; TT 133/2016/TT-BTC cho DN nhỏ và vừa) - cần xác nhận văn bản hiện hành.
+      components:
+      - 'Xuất NVL cho sản xuất: Nợ 621 / Có 152.'
+      - 'Tính lương công nhân sản xuất: Nợ 622 / Có 334 (kèm các khoản trích theo lương tùy chế độ).'
+      - 'Chi phí SX chung (khấu hao, điện, lương quản đốc...): Nợ 627 / Có 214, 111, 112, 334, 152...'
+      - 'Kết chuyển vào giá thành: Nợ 154 / Có 621, 622, 627.'
+      - 'Nhập kho thành phẩm: Nợ 155 / Có 154.'
+      - 'Bán hàng ghi nhận giá vốn: Nợ 632 / Có 155 (doanh thu ghi riêng Nợ 111/131 / Có 511, 3331).'
+      - 'Chênh lệch MOH under-applied (không trọng yếu): Nợ 632 / Có 627; over-applied ngược lại.'
+      when_to_use: Khi hạch toán chi phí và tính giá thành theo kê khai thường xuyên.
+      how_to_apply:
+      - Cuối kỳ gom 621, 622, 627 theo đối tượng (job/công đoạn).
+      - Phân bổ 627 vào các đối tượng theo tiêu thức (POHR hoặc driver); điều chỉnh under/over.
+      - Kết chuyển vào 154; xác định WIP cuối kỳ (EU nếu process costing).
+      - Giá thành thành phẩm nhập kho vào 155; xuất bán chuyển sang 632 theo phương pháp tính giá xuất kho nhất quán.
+      how_to_read_results: Số dư 154 = WIP; số dư 155 = thành phẩm tồn; 632 = giá vốn; kiểm tra COGM và COGS đối chiếu.
+      pitfalls:
+      - Bút toán chỉ ở mức nguyên tắc - cần xác nhận chế độ kế toán hiện hành và chi tiết tài khoản cấp 2.
+      - Bỏ sót chi phí SX chung cố định vượt công suất bình thường vào giá vốn (VAS 02).
+      - Giá thành quản trị (ABC) khác giá thành BCTC; cần bảng đối chiếu.
+      example: Xem worked_examples we_job_costing và we_process_costing; mỗi ví dụ có bút toán mẫu.
+  - id: "m03-frameworks-3"
+    title: "Frameworks: m03_job_order_costing — Tính giá theo đơn đặt hàng"
+    tags: ["frameworks", "m03_job_order_costing", "tính", "giá", "theo", "đơn", "đặt", "hàng"]
+    text: |-
+      id: m03_job_order_costing
+      name_vi: Tính giá theo đơn đặt hàng
+      name_en: Job Order Costing
+      origin: Gốc từ xưởng thủ công và công trình xây dựng/in ấn; hoàn thiện cùng sự phát triển kế toán chi phí đầu thế kỷ 20; POHR là công cụ để có giá thành sớm.
+      components:
+      - Job Cost Sheet cho mỗi đơn.
+      - DM, DL thực tế truy nguyên vào job.
+      - MOH phân bổ bằng POHR x hoạt động của job.
+      - Đối chiếu MOH áp dụng vs thực tế cuối kỳ.
+      when_to_use: Sản phẩm đặt riêng, khác nhau (xây dựng, nội thất theo đơn, in ấn, phần mềm/agency/tư vấn).
+      how_to_apply:
+      - Nhận đơn -> mở Job Cost Sheet (mã job, khách, ngày).
+      - Ghi DM theo phiếu xuất kho, DL theo phiếu giao việc/chấm công.
+      - Tính POHR đầu kỳ; cộng MOH áp dụng vào job.
+      - 'Khi xong: tổng giá thành, so giá bán, so giá báo ban đầu.'
+      - 'Cuối kỳ: so MOH áp dụng vs thực tế, xử lý under/over.'
+      how_to_read_results: Lãi gộp từng job; chênh lệch giá báo vs thực tế cho biết sai số báo giá; nhiều đơn nhỏ nhiều setup nên kiểm tra bằng ABC.
+      pitfalls:
+      - Biên đẹp giả của đơn nhỏ do POHR một tiêu thức.
+      - Không so giá báo với giá thành thực tế.
+      - DL ghi chung, không theo job.
+      example: 'ABC Furniture: Job #201 bàn họp giá thành 20,95 triệu (lãi gộp 30,2%), Job #202 kệ sách 8,65 triệu (33,5%).'
+  - id: "m03-frameworks-4"
+    title: "Frameworks: m03_process_costing — Tính giá theo quy trình"
+    tags: ["frameworks", "m03_process_costing", "tính", "giá", "theo", "quy", "trình"]
+    text: |-
+      id: m03_process_costing
+      name_vi: Tính giá theo quy trình
+      name_en: Process Costing
+      origin: Từ các ngành sản xuất liên tục thế kỷ 19-20 (dệt, hóa chất, đường, xi măng); hoàn thiện cùng sản xuất hàng loạt và standard costing đầu thế kỷ 20.
+      components:
+      - Tập hợp chi phí theo công đoạn/kỳ; chi phí công đoạn trước chuyển sang công đoạn sau.
+      - 'Cân đối số lượng: đầu kỳ + bắt đầu = hoàn thành + cuối kỳ.'
+      - EU riêng cho NVL và chế biến.
+      - Chọn Weighted Average hoặc FIFO.
+      when_to_use: Sản phẩm đồng nhất, liên tục (thực phẩm đóng gói, hóa chất, nhựa, vật liệu xây dựng).
+      how_to_apply:
+      - 'Bước 1: lập luồng số lượng (physical flow) và kiểm tra cân đối.'
+      - 'Bước 2: xác định mức hoàn thành WIP đầu/cuối cho NVL và chế biến.'
+      - 'Bước 3: tính EU từng yếu tố.'
+      - 'Bước 4: cost per EU = chi phí / EU (BQGQ gộp WIP đầu; FIFO chỉ chi phí kỳ).'
+      - 'Bước 5: phân bổ cho thành phẩm chuyển đi và WIP cuối; kiểm tra tổng bằng tổng chi phí.'
+      how_to_read_results: Giá thành/lít (đơn vị) dùng để định giá và nhập kho; chênh BQGQ vs FIFO chỉ đáng kể khi giá biến động mạnh.
+      pitfalls:
+      - Một cột EU chung cho NVL và chế biến (nguồn từng mắc lỗi này và đã sửa).
+      - Gán WIP cuối giá thành đầy đủ.
+      - Không cộng chi phí chuyển từ công đoạn trước (transferred-in) vào công đoạn sau.
+      example: 'Nước mắm P3 tháng 6: BQGQ giá thành 35.000/lít (thành phẩm 122,5 triệu, WIP cuối 26 triệu); FIFO khoảng 34.974/lít.'
+  - id: "m03-frameworks-5"
+    title: "Frameworks: m03_abc — Tính giá theo hoạt động (ABC) - 5 bước"
+    tags: ["frameworks", "m03_abc", "tính", "giá", "theo", "hoạt", "động", "abc", "bước"]
+    text: |-
+      id: m03_abc
+      name_vi: Tính giá theo hoạt động (ABC) - 5 bước
+      name_en: Activity-Based Costing
+      origin: Cooper & Kaplan (1988-1992, khảo sát nhà máy Mỹ), trên nền Johnson & Kaplan 'Relevance Lost' (1987). Tự động hóa làm DL chỉ còn 5-10% giá thành, overhead phình to và không tỷ lệ với giờ máy/giờ lao động -> phân bổ truyền thống gây trợ giá chéo.
+      components:
+      - 'Bước 1: xác định hoạt động (setup, QC, giao hàng, bảo trì...).'
+      - 'Bước 2: gom chi phí vào activity cost pool.'
+      - 'Bước 3: chọn cost driver.'
+      - 'Bước 4: Rate = Pool / Total Driver.'
+      - 'Bước 5: phân bổ = Rate x Driver tiêu thụ.'
+      - 'Phân cấp hoạt động: unit / batch / product / facility.'
+      when_to_use: Overhead lớn (ngưỡng tham khảo >30% tổng chi phí), nhiều sản phẩm/khách đa dạng về độ phức tạp, nghi ngờ trợ giá chéo, e-commerce/logistics/dịch vụ chi phí gián tiếp cao.
+      how_to_apply:
+      - Lấy sổ chi tiết MOH, chọn 3-5 hoạt động tốn kém nhất.
+      - Tách chi phí vào pool, chọn driver có dữ liệu.
+      - Tính rate, phân bổ cho sản phẩm/job/khách, kiểm tra tổng phân bổ = tổng MOH.
+      - So sánh Traditional vs ABC, liệt kê đối tượng bị trợ giá chéo/được trợ giá.
+      - 'Quyết định: tái định giá, phí setup/MOQ, gom lô, chuẩn hóa mẫu, bỏ/giữ.'
+      how_to_read_results: Tổng lợi nhuận KHÔNG đổi; giá trị là ở phân bổ lại. Đối tượng có MOH/đơn vị ABC >> Traditional đang được trợ giá (lãi thật thấp hơn lãi trên giấy).
+      pitfalls:
+      - Quá nhiều hoạt động -> tốn công, nhanh lỗi thời.
+      - Không có dữ liệu driver; văn hóa kháng cự.
+      - 'Overhead dưới khoảng 10% tổng chi phí: ABC ít giá trị (ngưỡng tham khảo).'
+      - Chỉ làm một lần, không cập nhật.
+      - Nhầm giá thành ABC quản trị là giá thành BCTC.
+      example: 'Công ty bánh: Traditional MOH/cái 41.667 cho cả hai bánh; ABC: A 17.583, B 162.083 - Bánh A hóa ra lãi 32%, Bánh B chỉ 5,9%.'
+  - id: "m03-frameworks-6"
+    title: "Frameworks: m03_tdabc — ABC dựa trên thời gian (TDABC)"
+    tags: ["frameworks", "m03_tdabc", "abc", "dựa", "trên", "thời", "gian", "tdabc"]
+    text: |-
+      id: m03_tdabc
+      name_vi: ABC dựa trên thời gian (TDABC)
+      name_en: Time-Driven ABC
+      origin: Kaplan & Anderson (2004). ABC truyền thống tốn khảo sát, nhanh lỗi thời; TDABC chỉ cần chi phí/phút và số phút.
+      components:
+      - Cost per minute = chi phí bộ phận / phút công suất thực dụng.
+      - 'Time equation: phút mỗi loại hoạt động.'
+      - Công suất nhàn rỗi tách riêng.
+      when_to_use: Bộ phận xử lý đơn/CSKH/kho/QC có nhiều loại giao dịch với thời gian khác nhau.
+      how_to_apply:
+      - Tính phút công suất thực dụng (người x ngày x giờ thực dụng x 60).
+      - Tính cost per minute.
+      - Đo phút từng loại giao dịch, nhân số lượng.
+      - So sánh phút đã dùng với công suất -> idle capacity.
+      how_to_read_results: Chi phí mỗi loại giao dịch (đổi trả 22.500 gấp 3,75 lần đơn chuẩn 6.000); mức sử dụng công suất (91,7%).
+      pitfalls:
+      - Thời gian ước tính sai.
+      - Dùng công suất lý thuyết.
+      - Dồn chi phí nhàn rỗi vào đơn hàng.
+      example: 'Bộ phận xử lý đơn: 54 triệu/36.000 phút = 1.500/phút; nhàn rỗi 4,5 triệu.'
+  - id: "m03-frameworks-7"
+    title: "Frameworks: m03_method_selection — Chọn phương pháp tính giá (Job vs Process vs ABC)"
+    tags: ["frameworks", "m03_method_selection", "chọn", "phương", "pháp", "tính", "giá", "job", "vs", "process", "abc"]
+    text: |-
+      id: m03_method_selection
+      name_vi: Chọn phương pháp tính giá (Job vs Process vs ABC)
+      name_en: Costing Method Selection
+      origin: 'Hệ thống hóa trong giáo trình quản trị chi phí; nguyên tắc: Job/Process chọn theo bản chất sản phẩm, ABC chọn theo mức độ quan trọng và độ đa dạng của overhead.'
+      components:
+      - Sản phẩm đặt riêng -> Job; đồng nhất liên tục -> Process.
+      - Overhead >30% tổng chi phí (ngưỡng tham khảo) và đa dạng -> kết hợp ABC/TDABC cho phần MOH.
+      - 'Lộ trình SME: Excel + biến phí/SP + CM -> Job/Process + POHR -> ABC 3-5 hoạt động + TDABC + Target/Kaizen.'
+      when_to_use: Khi bắt đầu thiết lập hệ thống tính giá hoặc đánh giá hệ thống hiện tại.
+      how_to_apply:
+      - 'Phân loại sản phẩm: unique hay identical?'
+      - Tính tỷ trọng MOH trong tổng chi phí.
+      - Đánh giá độ đa dạng sản phẩm/khách và sẵn dữ liệu driver.
+      - Chọn phương pháp tối giản đủ dùng; ghi lý do.
+      how_to_read_results: 'Ngành: xây dựng/nội thất/in ấn/phần mềm -> Job; thực phẩm/hóa chất/nhựa -> Process; dệt may/giày da -> kết hợp; nhà hàng/cà phê -> food costing + P&L chi nhánh/kênh; e-commerce/logistics/ngân hàng/bệnh viện -> ABC/TDABC.'
+      pitfalls:
+      - Làm ABC cho DN 1-2 sản phẩm.
+      - 'Ngưỡng 30% và 10% chỉ tham khảo - mâu thuẫn nguồn: có vùng 10-30% chưa nêu; dùng phán đoán.'
+      example: 'Xưởng in bao bì: Job Costing + ABC cho MOH.'
+  - id: "m03-frameworks-8"
+    title: "Frameworks: m03_absorption_vs_variable — Absorption vs Variable Costing"
+    tags: ["frameworks", "m03_absorption_vs_variable", "absorption", "vs", "variable", "costing"]
+    text: |-
+      id: m03_absorption_vs_variable
+      name_vi: Absorption vs Variable Costing
+      name_en: Absorption vs Variable Costing
+      origin: Hai trường phái xử lý định phí SX chung; absorption là yêu cầu của chuẩn mực (VAS 02/IAS 2), variable dành cho quản trị nội bộ.
+      components:
+      - 'Absorption: định phí SX chung vào giá thành, nằm trong tồn kho.'
+      - 'Variable: định phí SX chung ghi chi phí kỳ.'
+      - Đối chiếu chênh lệch = thay đổi tồn kho x định phí đơn vị.
+      when_to_use: Báo cáo tài chính (absorption); CVP và quyết định ngắn hạn, đánh giá kinh doanh (variable).
+      how_to_apply:
+      - Tính giá thành đơn vị theo absorption và variable.
+      - Lập Income Statement theo từng cách.
+      - Đối chiếu chênh lệch, giải thích bằng thay đổi tồn kho.
+      how_to_read_results: 'Sản xuất > bán: absorption lãi cao hơn (giấu định phí vào tồn kho). Sản xuất = bán: bằng nhau.'
+      pitfalls:
+      - Thưởng theo lợi nhuận absorption khuyến khích sản xuất thừa.
+      - Phân bổ định phí theo sản lượng thấp hơn công suất bình thường.
+      example: 'Sản xuất 1.000, bán 800 giá 250.000: absorption 80 triệu, variable 70 triệu, lệch 10 triệu (200 x 50.000).'
+  - id: "m03-frameworks-9"
+    title: "Frameworks: m03_target_kaizen_lifecycle — Target Costing, Kaizen Costing, Life-cycle Costing"
+    tags: ["frameworks", "m03_target_kaizen_lifecycle", "target", "costing", "kaizen", "life", "cycle"]
+    text: |-
+      id: m03_target_kaizen_lifecycle
+      name_vi: Target Costing, Kaizen Costing, Life-cycle Costing
+      name_en: Target, Kaizen and Life-Cycle Costing
+      origin: 'Các hãng Nhật Bản (Toyota thường được trích dẫn; năm/nguồn gốc cụ thể cần xác nhận). Mục đích: đảo logic cost-plus, kiểm soát chi phí từ thiết kế đến sản xuất.'
+      components:
+      - 'Target: Target Cost = Target Price - Target Profit; Value Engineering ở giai đoạn thiết kế.'
+      - 'Kaizen: giảm chi phí định kỳ (vd 1-2%/quý) khi đã sản xuất.'
+      - 'Life-cycle: R&D -> Production -> Distribution -> After-sales -> Disposal.'
+      when_to_use: Sản phẩm mới có giá bị thị trường áp đặt; sản phẩm đang sản xuất cần giảm chi phí; sản phẩm có chi phí hậu mãi/vận hành lớn.
+      how_to_apply:
+      - Xác định giá thị trường và biên mục tiêu -> target cost.
+      - So với chi phí hiện tại -> gap; lập phương án Value Engineering.
+      - 'Sau khi sản xuất: đặt mục tiêu giảm chi phí theo kỳ (Kaizen).'
+      - Lập bảng chi phí toàn vòng đời để quyết định thiết kế.
+      how_to_read_results: Gap > 0 cần phương án rõ; nếu không đạt target thì thiết kế lại hoặc không launch.
+      pitfalls:
+      - Nhầm margin với markup.
+      - Giảm chi phí phá vỡ chất lượng/định vị.
+      - Con số 70-80% chi phí bị khóa ở giai đoạn thiết kế chỉ là tham khảo, cần đối chiếu.
+      example: 'Giá 300.000, biên 30%: target 210.000; chi phí hiện tại 230.000 nên gap 20.000.'
+  - id: "m03-frameworks-10"
+    title: "Frameworks: m03_branch_menu_profitability — Phân tích lãi/lỗ chi nhánh và menu (ABC-lite cho F&B)"
+    tags: ["frameworks", "m03_branch_menu_profitability", "phân", "tích", "lãi", "lỗ", "chi", "nhánh", "và", "menu", "abc", "lite"]
+    text: |-
+      id: m03_branch_menu_profitability
+      name_vi: Phân tích lãi/lỗ chi nhánh và menu (ABC-lite cho F&B)
+      name_en: Branch P&L and Menu Cost Analysis
+      origin: Tình huống minh họa TasteVN trong nguồn; kết hợp P&L theo đơn vị, hòa vốn và menu engineering (popularity x profitability).
+      components:
+      - P&L từng chi nhánh/kênh.
+      - 'Hòa vốn: BE = Định phí / CM ratio.'
+      - Food cost theo nhóm món, CM% từng nhóm.
+      - Quyết định bỏ món dựa trên chi phí tránh được và chi phí cơ hội.
+      when_to_use: Trước khi mở chi nhánh mới hoặc khi chuỗi có chi nhánh yếu.
+      how_to_apply:
+      - Lập P&L tách chi nhánh/kênh.
+      - Phân loại biến/định phí; tính CM ratio và BE từng chi nhánh.
+      - 'Phân tích nhóm món: tỷ trọng, food cost, CM; xác định star, cần tối ưu, cash cow.'
+      - Chỉ scale khi chi nhánh mẫu đạt BE ổn định.
+      how_to_read_results: 'Chi nhánh dưới BE (Thủ Đức: BE 210 triệu > thực tế 200 triệu) cần cải thiện trước khi nhân rộng; tổng toàn chuỗi có lãi che lấp chi nhánh lỗ.'
+      pitfalls:
+      - Chỉ nhìn tổng toàn chuỗi.
+      - Cắt món vì CM% thấp.
+      - Coi labor là định phí hoàn toàn (đơn giản hóa).
+      example: 'TasteVN: tổng +80 triệu (8%) nhưng Thủ Đức -6 triệu; mở 5 chi nhánh -> đóng 2 sau 18 tháng, lỗ khoảng 3 tỷ (giả định).'
+  - id: "m03-procedures-1"
+    title: "Quy trình: proc_job_costing — Tính giá thành đơn hàng (Job Costing) từ đầu đến cuối"
+    tags: ["quy", "trình", "proc_job_costing", "tính", "giá", "thành", "đơn", "hàng", "job", "costing", "từ", "đầu"]
+    text: |-
+      id: proc_job_costing
+      name: Tính giá thành đơn hàng (Job Costing) từ đầu đến cuối
+      steps:
+      - 'Hỏi: sản phẩm có đặt riêng không? MOH lớn hay nhỏ? Tiêu thức nào gây ra MOH (giờ máy/giờ công)? Có ngân sách MOH và hoạt động năm?'
+      - 'Phân loại chi phí: DM (621), DL (622), MOH (627); loại chi phí bán hàng/quản lý (641/642).'
+      - Tính POHR = MOH ước tính / tiêu thức ước tính (nếu chỉ có 1 xưởng đồng nhất).
+      - Mở Job Cost Sheet; ghi DM theo phiếu xuất kho (Nợ 621 / Có 152), DL theo giờ x đơn giá (Nợ 622 / Có 334).
+      - 'Cộng MOH áp dụng = POHR x giờ/driver thực tế của job (bút toán nguyên tắc: Nợ 154 / Có 627 phần phân bổ; cần xác nhận cách ghi theo kỳ).'
+      - Tổng giá thành = DM + DL + MOH áp dụng; tính lãi gộp và %.
+      - 'Nhập kho/giao: Nợ 155 (hoặc 632 nếu giao thẳng) / Có 154.'
+      - So sánh giá báo vs thực tế; ghi sai lệch vào sổ rút kinh nghiệm.
+      - 'Cuối kỳ: so MOH thực tế với MOH áp dụng; xử lý under/over (không trọng yếu: Nợ 632 / Có 627; trọng yếu: phân bổ lại).'
+      - 'Nghi ngờ đơn nhỏ/nhiều setup: chạy ABC so sánh trước khi kết luận.'
+      outputs: Job Cost Sheet từng đơn (giá thành, lãi gộp, so giá báo); bút toán 621/622/627/154/155/632; báo cáo chênh lệch MOH cuối kỳ.
+  - id: "m03-procedures-2"
+    title: "Quy trình: proc_process_costing — Tính giá thành theo quy trình (Process Costing, BQGQ/FIFO)"
+    tags: ["quy", "trình", "proc_process_costing", "tính", "giá", "thành", "theo", "process", "costing", "bqgq", "fifo"]
+    text: |-
+      id: proc_process_costing
+      name: Tính giá thành theo quy trình (Process Costing, BQGQ/FIFO)
+      steps:
+      - 'Hỏi: công đoạn nào? WIP đầu kỳ (số lượng, mức hoàn thành NVL/chế biến, chi phí)? Bắt đầu trong kỳ? Hoàn thành? WIP cuối? NVL đưa vào đầu hay dần?'
+      - 'Kiểm tra cân đối số lượng: đầu kỳ + bắt đầu = hoàn thành + cuối kỳ.'
+      - Tập hợp chi phí NVL và chế biến (WIP đầu + phát sinh); nếu có công đoạn trước thì cộng chi phí chuyển sang (transferred-in).
+      - Chọn BQGQ (mặc định SME) hoặc FIFO (giá biến động mạnh).
+      - Tính EU NVL và EU chế biến riêng (công thức BQGQ hoặc FIFO).
+      - Tính cost per EU từng yếu tố; giá thành đơn vị = tổng.
+      - 'Phân bổ: thành phẩm = hoàn thành x giá thành; WIP cuối = EU NVL x rate NVL + EU chế biến x rate chế biến.'
+      - 'Kiểm tra: tổng phân bổ = tổng chi phí tập hợp.'
+      - 'Bút toán nguyên tắc: Nợ 154 (621, 622, 627) ; hoàn thành Nợ 155 / Có 154; công đoạn trung gian chuyển bán thành phẩm - cần xác nhận cách hạch toán.'
+      outputs: 'Báo cáo sản lượng tương đương và giá thành công đoạn: giá thành đơn vị, giá trị thành phẩm chuyển đi, giá trị WIP cuối; bảng kiểm tra cân.'
+  - id: "m03-procedures-3"
+    title: "Quy trình: proc_abc — Triển khai ABC cho SME (có câu hỏi cần hỏi)"
+    tags: ["quy", "trình", "proc_abc", "triển", "khai", "abc", "cho", "sme", "có", "câu", "hỏi", "cần"]
+    text: |-
+      id: proc_abc
+      name: Triển khai ABC cho SME (có câu hỏi cần hỏi)
+      steps:
+      - 'Hỏi: MOH chiếm bao nhiêu % tổng chi phí? Có bao nhiêu sản phẩm/khách? Có dữ liệu số lần setup, đơn, giờ máy, lần giao hàng không? Quyết định sắp tới (định giá, bỏ khách, MOQ) là gì?'
+      - 'Nếu MOH <10% tổng chi phí hoặc 1-2 sản phẩm: giữ Traditional, dừng.'
+      - Chọn 3-5 hoạt động lớn nhất từ sổ chi tiết MOH; gom chi phí vào pool (tổng pool = tổng MOH).
+      - 'Chọn driver theo activity hierarchy (batch: setup, đơn; product: số mã/mẫu; unit: giờ máy); facility giữ riêng.'
+      - Thu thập tổng driver cả kỳ và driver của từng sản phẩm/job/khách.
+      - Tính rate = pool / driver; MOH ABC = sum(rate x driver); kiểm tra tổng = MOH.
+      - 'Lập bảng so sánh Traditional vs ABC: MOH/đơn vị, lãi gộp, biên.'
+      - 'Xác định đối tượng bị trợ giá chéo; hành động: tái định giá (giá = cost/(1-m)), phí setup/mẫu, MOQ, gom lô, chuẩn hóa.'
+      - Cập nhật rate định kỳ (hàng quý/năm); lưu bảng đối chiếu với giá thành BCTC.
+      outputs: Bảng Pools - Drivers - Rates - Allocation - Compare; danh sách sản phẩm/khách lãi thật vs lãi trên giấy; khuyến nghị giá/MOQ/phí.
+  - id: "m03-procedures-4"
+    title: "Quy trình: proc_tdabc — Triển khai TDABC cho bộ phận dịch vụ"
+    tags: ["quy", "trình", "proc_tdabc", "triển", "khai", "tdabc", "cho", "bộ", "phận", "dịch", "vụ"]
+    text: |-
+      id: proc_tdabc
+      name: Triển khai TDABC cho bộ phận dịch vụ
+      steps:
+      - 'Hỏi: bộ phận, số nhân sự, ngày làm/tháng, giờ thực dụng/người/ngày (trừ nghỉ, họp), tổng chi phí bộ phận.'
+      - Tính phút thực dụng = người x ngày x giờ x 60.
+      - Cost per minute = chi phí / phút thực dụng.
+      - Đo thời gian từng loại giao dịch (bấm giờ mẫu/khảo sát).
+      - Chi phí giao dịch = phút x cost per minute; tổng phút dùng = sum(số lượng x phút).
+      - Tính mức sử dụng công suất và chi phí nhàn rỗi; đề xuất điều chỉnh (nhân sự, nhận thêm việc, phí dịch vụ).
+      outputs: Bảng chi phí mỗi loại giao dịch, mức sử dụng công suất, chi phí công suất nhàn rỗi.
+  - id: "m03-procedures-5"
+    title: "Quy trình: proc_year_end_overhead — Quyết toán MOH cuối kỳ (under/over-applied)"
+    tags: ["quy", "trình", "proc_year_end_overhead", "quyết", "toán", "moh", "cuối", "kỳ", "under", "over", "applied"]
+    text: |-
+      id: proc_year_end_overhead
+      name: Quyết toán MOH cuối kỳ (under/over-applied)
+      steps:
+      - Lấy MOH thực tế (số phát sinh TK 627) và hoạt động thực tế cả kỳ.
+      - Applied = POHR x hoạt động thực tế; variance = Actual - Applied.
+      - Đánh giá trọng yếu so với lợi nhuận/giá vốn.
+      - 'Không trọng yếu: Nợ 632 / Có 627 (under) hoặc ngược lại (over).'
+      - 'Trọng yếu: phân bổ theo tỷ lệ MOH áp dụng nằm trong WIP, thành phẩm, giá vốn; điều chỉnh từng tài khoản.'
+      - 'Phần định phí SX chung do sản lượng dưới công suất bình thường: ghi giá vốn kỳ (VAS 02 - cần xác nhận).'
+      - Chẩn đoán nguyên nhân (sản lượng, ước tính MOH); điều chỉnh POHR cho kỳ sau.
+      outputs: Bút toán điều chỉnh, bảng phân bổ lại (nếu trọng yếu), POHR mới, nhận xét về công suất.
+  - id: "m03-procedures-6"
+    title: "Quy trình: proc_cogm_cogs_report — Lập báo cáo giá thành và giá vốn kỳ"
+    tags: ["quy", "trình", "proc_cogm_cogs_report", "lập", "báo", "cáo", "giá", "thành", "và", "vốn", "kỳ"]
+    text: |-
+      id: proc_cogm_cogs_report
+      name: Lập báo cáo giá thành và giá vốn kỳ
+      steps:
+      - Thu DM dùng (621), DL (622), MOH (627 đã điều chỉnh), WIP đầu/cuối (154).
+      - COGM = DM + DL + MOH + WIP đầu - WIP cuối.
+      - COGS = thành phẩm đầu + COGM - thành phẩm cuối (đối chiếu số xuất bán x giá xuất kho).
+      - Đối chiếu số dư 154/155/632 với báo cáo; kiểm tra phương pháp tính giá xuất kho nhất quán.
+      - Lập bảng đối chiếu giá thành quản trị (ABC) vs giá thành BCTC nếu khác.
+      outputs: Báo cáo giá thành (COGM) và giá vốn (COGS), bảng kiểm tra cân với sổ.
+  - id: "m03-procedures-7"
+    title: "Quy trình: proc_absorption_variable — Đối chiếu lợi nhuận Absorption vs Variable"
+    tags: ["quy", "trình", "proc_absorption_variable", "đối", "chiếu", "lợi", "nhuận", "absorption", "vs", "variable"]
+    text: |-
+      id: proc_absorption_variable
+      name: Đối chiếu lợi nhuận Absorption vs Variable
+      steps:
+      - 'Hỏi: biến phí/sp, định phí SX chung kỳ, sản xuất, bán, giá bán, tồn đầu kỳ.'
+      - 'Absorption: giá thành = VC + F/sản xuất; lợi nhuận = bán x (giá - giá thành) (trừ chi phí thời kỳ).'
+      - 'Variable: lợi nhuận = bán x (giá - VC) - F (trừ chi phí thời kỳ).'
+      - Chênh lệch = (sản xuất - bán) x F/sản xuất; giải thích bằng tồn kho.
+      - 'Khuyến nghị: dùng variable cho đánh giá hoạt động, absorption cho BCTC.'
+      outputs: Hai Income Statement, bảng đối chiếu chênh lệch và nhận xét.
+  - id: "m03-procedures-8"
+    title: "Quy trình: proc_target_costing — Target Costing và kế hoạch giảm chi phí"
+    tags: ["quy", "trình", "proc_target_costing", "target", "costing", "và", "kế", "hoạch", "giảm", "chi", "phí"]
+    text: |-
+      id: proc_target_costing
+      name: Target Costing và kế hoạch giảm chi phí
+      steps:
+      - 'Hỏi: giá thị trường (khảo sát WTP, đối thủ)? Biên mục tiêu trên giá bán? Chi phí hiện tại/ước tính thiết kế?'
+      - Target cost = Giá x (1 - biên); gap = chi phí hiện tại - target.
+      - 'Liệt kê phương án Value Engineering: thay vật liệu, đơn giản hóa thiết kế, giảm công đoạn, đổi nhà cung cấp.'
+      - 'Nếu gap không đóng được: điều chỉnh biên, giá hoặc không launch.'
+      - 'Sau sản xuất: đặt mục tiêu Kaizen (vd 1-2%/quý) và theo dõi.'
+      outputs: Bảng target cost - gap - phương án; kế hoạch Kaizen định kỳ.
+  - id: "m03-procedures-9"
+    title: "Quy trình: proc_branch_profitability — Phân tích lãi/lỗ và hòa vốn chi nhánh/menu trước khi mở rộng"
+    tags: ["quy", "trình", "proc_branch_profitability", "phân", "tích", "lãi", "lỗ", "và", "hòa", "vốn", "chi", "nhánh"]
+    text: |-
+      id: proc_branch_profitability
+      name: Phân tích lãi/lỗ và hòa vốn chi nhánh/menu trước khi mở rộng
+      steps:
+      - Lập P&L riêng từng chi nhánh/kênh (không chỉ tổng).
+      - Phân loại food cost là biến phí; lao động, thuê, khác là định phí (ghi rõ đơn giản hóa).
+      - Tính CM ratio, BE doanh thu, biên an toàn từng chi nhánh.
+      - 'Phân tích menu: tỷ trọng, food cost, CM% theo nhóm; chọn nhóm cần tối ưu (không cắt vội).'
+      - Chỉ mở rộng khi chi nhánh mẫu đạt BE và có kế hoạch ramp-up; ước tính thời gian đến BE.
+      outputs: Bảng BE, biên an toàn, menu matrix; quyết định mở/đóng/cải thiện.
+  - id: "m03-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu sản phẩm đặt riêng, khác nhau từng đơn thì dùng Job Order Costing; nếu đồng nhất sản xuất liên …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "sản", "phẩm", "đặt", "riêng", "khác", "nhau", "từng"]
+    text: |-
+      Nếu sản phẩm đặt riêng, khác nhau từng đơn thì dùng Job Order Costing; nếu đồng nhất sản xuất liên tục thì dùng Process Costing.
+  - id: "m03-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu MOH lớn (khoảng >30% tổng chi phí - ngưỡng tham khảo) và sản phẩm/khách đa dạng về độ phức tạp …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "moh", "lớn", "khoảng", "30", "tổng", "chi", "phí"]
+    text: |-
+      Nếu MOH lớn (khoảng >30% tổng chi phí - ngưỡng tham khảo) và sản phẩm/khách đa dạng về độ phức tạp thì thêm ABC/TDABC cho phần MOH.
+  - id: "m03-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu MOH nhỏ (khoảng <10% tổng chi phí), chỉ 1-2 sản phẩm, hoặc không có dữ liệu driver thì giữ Trad…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "moh", "nhỏ", "khoảng", "10", "tổng", "chi", "phí"]
+    text: |-
+      Nếu MOH nhỏ (khoảng <10% tổng chi phí), chỉ 1-2 sản phẩm, hoặc không có dữ liệu driver thì giữ Traditional/POHR, chưa làm ABC.
+  - id: "m03-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu công đoạn có WIP cuối kỳ thì tính EU riêng cho NVL và chế biến; không dùng một cột EU chung."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "công", "đoạn", "có", "wip", "cuối", "kỳ", "thì"]
+    text: |-
+      Nếu công đoạn có WIP cuối kỳ thì tính EU riêng cho NVL và chế biến; không dùng một cột EU chung.
+  - id: "m03-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu giá NVL/nhân công biến động mạnh giữa các kỳ thì cân nhắc FIFO; ngược lại dùng Weighted Average."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "nvl", "nhân", "công", "biến", "động", "mạnh"]
+    text: |-
+      Nếu giá NVL/nhân công biến động mạnh giữa các kỳ thì cân nhắc FIFO; ngược lại dùng Weighted Average.
+  - id: "m03-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu MOH thực tế > MOH áp dụng thì under-applied: tăng giá vốn (Nợ 632 / Có 627 nếu không trọng yếu)…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "moh", "thực", "tế", "áp", "dụng", "thì", "under"]
+    text: |-
+      Nếu MOH thực tế > MOH áp dụng thì under-applied: tăng giá vốn (Nợ 632 / Có 627 nếu không trọng yếu); nếu ngược lại thì over-applied: giảm giá vốn.
+  - id: "m03-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu chênh lệch under/over trọng yếu thì phân bổ lại theo số dư MOH áp dụng trong WIP, thành phẩm, g…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chênh", "lệch", "under", "over", "trọng", "yếu", "thì"]
+    text: |-
+      Nếu chênh lệch under/over trọng yếu thì phân bổ lại theo số dư MOH áp dụng trong WIP, thành phẩm, giá vốn.
+  - id: "m03-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu chênh lệch lệch POHR > khoảng 5% thì rà lại POHR (ngưỡng tham khảo)."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chênh", "lệch", "pohr", "khoảng", "thì", "rà", "lại"]
+    text: |-
+      Nếu chênh lệch lệch POHR > khoảng 5% thì rà lại POHR (ngưỡng tham khảo).
+  - id: "m03-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu sản lượng thấp hơn công suất bình thường thì phần MOH cố định không được phân bổ phải ghi vào g…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "sản", "lượng", "thấp", "hơn", "công", "suất", "bình"]
+    text: |-
+      Nếu sản lượng thấp hơn công suất bình thường thì phần MOH cố định không được phân bổ phải ghi vào giá vốn kỳ, không dồn vào hàng tồn kho (VAS 02 - cần xác nhận).
+  - id: "m03-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu ABC cho thấy đơn/khách nhỏ lỗ thì tăng giá (giá = cost/(1-m)), thu phí setup/mẫu, đặt MOQ, gom …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "abc", "cho", "thấy", "đơn", "khách", "nhỏ", "lỗ"]
+    text: |-
+      Nếu ABC cho thấy đơn/khách nhỏ lỗ thì tăng giá (giá = cost/(1-m)), thu phí setup/mẫu, đặt MOQ, gom lô; nếu khách lớn đang trả hộ thì bảo vệ khách lớn (rủi ro chuyển đối thủ).
+  - id: "m03-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu tổng lợi nhuận không đổi khi đổi phương pháp thì giá trị ABC nằm ở quyết định đúng (giá, mix, k…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "tổng", "lợi", "nhuận", "không", "đổi", "khi", "phương"]
+    text: |-
+      Nếu tổng lợi nhuận không đổi khi đổi phương pháp thì giá trị ABC nằm ở quyết định đúng (giá, mix, khách), không phải lợi nhuận tăng thêm.
+  - id: "m03-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu sản xuất > bán thì absorption cho lợi nhuận cao hơn variable; đánh giá hiệu quả kinh doanh dùng…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "sản", "xuất", "bán", "thì", "absorption", "cho", "lợi"]
+    text: |-
+      Nếu sản xuất > bán thì absorption cho lợi nhuận cao hơn variable; đánh giá hiệu quả kinh doanh dùng variable, BCTC dùng absorption.
+  - id: "m03-decision_rules-13"
+    title: "Quy tắc quyết định: Nếu thị trường quyết định giá (sản phẩm mới) thì dùng Target Costing; nếu đã sản xuất thì Kaizen Co…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "thị", "trường", "giá", "sản", "phẩm", "mới", "thì"]
+    text: |-
+      Nếu thị trường quyết định giá (sản phẩm mới) thì dùng Target Costing; nếu đã sản xuất thì Kaizen Costing.
+  - id: "m03-decision_rules-14"
+    title: "Quy tắc quyết định: Nếu chi nhánh có doanh thu thực < BE thì không nhân rộng; cải thiện lưu lượng/định phí trước."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chi", "nhánh", "có", "doanh", "thu", "thực", "be"]
+    text: |-
+      Nếu chi nhánh có doanh thu thực < BE thì không nhân rộng; cải thiện lưu lượng/định phí trước.
+  - id: "m03-decision_rules-15"
+    title: "Quy tắc quyết định: Nếu cân nhắc bỏ sản phẩm/món thì chỉ xét định phí tránh được và chi phí cơ hội, không chỉ dựa trên …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cân", "nhắc", "bỏ", "sản", "phẩm", "món", "thì"]
+    text: |-
+      Nếu cân nhắc bỏ sản phẩm/món thì chỉ xét định phí tránh được và chi phí cơ hội, không chỉ dựa trên CM%.
+  - id: "m03-decision_rules-16"
+    title: "Quy tắc quyết định: Nếu TDABC cho thấy mức sử dụng công suất thấp thì cân nhắc điều chỉnh nhân sự/nhận thêm việc thay v…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "tdabc", "cho", "thấy", "mức", "sử", "dụng", "công"]
+    text: |-
+      Nếu TDABC cho thấy mức sử dụng công suất thấp thì cân nhắc điều chỉnh nhân sự/nhận thêm việc thay vì dồn chi phí nhàn rỗi vào đơn hàng.
+  - id: "m03-decision_rules-17"
+    title: "Quy tắc quyết định: Nếu giá thành quản trị (ABC) khác giá thành BCTC thì lập bảng đối chiếu; BCTC theo VAS 02/chế độ kế…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "thành", "quản", "trị", "abc", "khác", "bctc"]
+    text: |-
+      Nếu giá thành quản trị (ABC) khác giá thành BCTC thì lập bảng đối chiếu; BCTC theo VAS 02/chế độ kế toán (cần xác nhận).
+  - id: "m03-benchmarks-1"
+    title: "Chuẩn so sánh: Ngưỡng overhead đáng làm ABC"
+    tags: ["chuẩn", "so", "sánh", "ngưỡng", "overhead", "đáng", "làm", "abc"]
+    text: |-
+      metric: Ngưỡng overhead đáng làm ABC
+      value: MOH >30% tổng chi phí (tham khảo)
+      context: nguồn dùng trong sơ đồ chọn phương pháp và checklist; chưa đủ để kết luận
+      confidence: low
+  - id: "m03-benchmarks-2"
+    title: "Chuẩn so sánh: Ngưỡng overhead ít giá trị ABC"
+    tags: ["chuẩn", "so", "sánh", "ngưỡng", "overhead", "ít", "giá", "trị", "abc"]
+    text: |-
+      metric: Ngưỡng overhead ít giá trị ABC
+      value: MOH <10% tổng chi phí (tham khảo)
+      context: mâu thuẫn/khoảng trống 10-30% chưa nêu rõ
+      confidence: low
+  - id: "m03-benchmarks-3"
+    title: "Chuẩn so sánh: Công suất thực dụng TDABC"
+    tags: ["chuẩn", "so", "sánh", "công", "suất", "thực", "dụng", "tdabc"]
+    text: |-
+      metric: Công suất thực dụng TDABC
+      value: 80-85% công suất lý thuyết (tham khảo)
+      context: nguồn nêu 80-85% nhưng ví dụ dùng 6/8 giờ = 75%
+      confidence: medium
+  - id: "m03-benchmarks-4"
+    title: "Chuẩn so sánh: Chênh lệch POHR cần xem lại"
+    tags: ["chuẩn", "so", "sánh", "chênh", "lệch", "pohr", "cần", "xem", "lại"]
+    text: |-
+      metric: Chênh lệch POHR cần xem lại
+      value: lệch >5% (tham khảo)
+      context: under/over-applied so với POHR/MOH
+      confidence: low
+  - id: "m03-benchmarks-5"
+    title: "Chuẩn so sánh: Chi phí vòng đời bị khóa ở thiết kế"
+    tags: ["chuẩn", "so", "sánh", "chi", "phí", "vòng", "đời", "bị", "khóa", "thiết", "kế"]
+    text: |-
+      metric: Chi phí vòng đời bị khóa ở thiết kế
+      value: khoảng 70-80% (thường được trích dẫn)
+      context: Life-cycle Costing; cần đối chiếu nguồn
+      confidence: low
+  - id: "m03-benchmarks-6"
+    title: "Chuẩn so sánh: Kaizen Costing mục tiêu giảm"
+    tags: ["chuẩn", "so", "sánh", "kaizen", "costing", "mục", "tiêu", "giảm"]
+    text: |-
+      metric: Kaizen Costing mục tiêu giảm
+      value: khoảng 1-2% mỗi quý (ví dụ)
+      context: Lean/kaizen; đặt theo ngành
+      confidence: low
+  - id: "m03-benchmarks-7"
+    title: "Chuẩn so sánh: Tỷ trọng nhân công trực tiếp trong giá thành khi tự động hóa"
+    tags: ["chuẩn", "so", "sánh", "tỷ", "trọng", "nhân", "công", "trực", "tiếp", "trong", "giá", "thành"]
+    text: |-
+      metric: Tỷ trọng nhân công trực tiếp trong giá thành khi tự động hóa
+      value: khoảng 5-10%
+      context: bối cảnh ra đời ABC thập niên 1980
+      confidence: medium
+  - id: "m03-benchmarks-8"
+    title: "Chuẩn so sánh: Food cost bình quân trong ví dụ TasteVN"
+    tags: ["chuẩn", "so", "sánh", "food", "cost", "bình", "quân", "trong", "ví", "dụ", "tastevn"]
+    text: |-
+      metric: Food cost bình quân trong ví dụ TasteVN
+      value: 33,3% (nhóm 18% - 50%)
+      context: số liệu giả định minh họa
+      confidence: low
+  - id: "m03-benchmarks-9"
+    title: "Chuẩn so sánh: Biên lãi gộp F&B/bao bì trong ví dụ"
+    tags: ["chuẩn", "so", "sánh", "biên", "lãi", "gộp", "bao", "bì", "trong", "ví", "dụ"]
+    text: |-
+      metric: Biên lãi gộp F&B/bao bì trong ví dụ
+      value: 'Hải Long: 19% đơn lớn; ví dụ ABC Furniture 30-33%'
+      context: giả định minh họa, không phải benchmark ngành
+      confidence: low
+  - id: "m03-pitfalls-1"
+    title: "Lỗi thường gặp: Nhầm chi phí sản phẩm với chi phí thời kỳ: đưa bán hàng/quản lý vào giá thành hoặc ngược lại."
+    tags: ["lỗi", "thường", "gặp", "nhầm", "chi", "phí", "sản", "phẩm", "với", "thời", "kỳ", "đưa"]
+    text: |-
+      Nhầm chi phí sản phẩm với chi phí thời kỳ: đưa bán hàng/quản lý vào giá thành hoặc ngược lại.
+  - id: "m03-pitfalls-2"
+    title: "Lỗi thường gặp: Phân bổ MOH theo doanh thu hoặc một tiêu thức không nhân quả -> trợ giá chéo, định giá sai."
+    tags: ["lỗi", "thường", "gặp", "phân", "bổ", "moh", "theo", "doanh", "thu", "hoặc", "một", "tiêu"]
+    text: |-
+      Phân bổ MOH theo doanh thu hoặc một tiêu thức không nhân quả -> trợ giá chéo, định giá sai.
+  - id: "m03-pitfalls-3"
+    title: "Lỗi thường gặp: Tin biên lãi 'đẹp' của đơn nhỏ khi chưa tính setup, thiết kế, giao hàng (ví dụ Hải Long: đơn nhỏ 18…"
+    tags: ["lỗi", "thường", "gặp", "tin", "biên", "lãi", "đẹp", "của", "đơn", "nhỏ", "khi", "chưa"]
+    text: |-
+      Tin biên lãi 'đẹp' của đơn nhỏ khi chưa tính setup, thiết kế, giao hàng (ví dụ Hải Long: đơn nhỏ 18,6% Traditional nhưng -3,4% ABC).
+  - id: "m03-pitfalls-4"
+    title: "Lỗi thường gặp: Không đối chiếu POHR cuối kỳ (under/over-applied) nên giá vốn và lợi nhuận bị bóp méo."
+    tags: ["lỗi", "thường", "gặp", "không", "đối", "chiếu", "pohr", "cuối", "kỳ", "under", "over", "applied"]
+    text: |-
+      Không đối chiếu POHR cuối kỳ (under/over-applied) nên giá vốn và lợi nhuận bị bóp méo.
+  - id: "m03-pitfalls-5"
+    title: "Lỗi thường gặp: Dồn toàn bộ MOH vào giá thành dù chạy dưới công suất; trái nguyên tắc công suất bình thường của VAS…"
+    tags: ["lỗi", "thường", "gặp", "dồn", "toàn", "bộ", "moh", "vào", "giá", "thành", "dù", "chạy"]
+    text: |-
+      Dồn toàn bộ MOH vào giá thành dù chạy dưới công suất; trái nguyên tắc công suất bình thường của VAS 02 (cần xác nhận).
+  - id: "m03-pitfalls-6"
+    title: "Lỗi thường gặp: Process Costing: một cột EU chung cho NVL và chế biến; định giá WIP cuối bằng giá thành đầy đủ."
+    tags: ["lỗi", "thường", "gặp", "process", "costing", "một", "cột", "eu", "chung", "cho", "nvl", "và"]
+    text: |-
+      Process Costing: một cột EU chung cho NVL và chế biến; định giá WIP cuối bằng giá thành đầy đủ.
+  - id: "m03-pitfalls-7"
+    title: "Lỗi thường gặp: Nhầm dấu under/over: Actual - Applied dương là under-applied."
+    tags: ["lỗi", "thường", "gặp", "nhầm", "dấu", "under", "over", "actual", "applied", "dương", "là"]
+    text: |-
+      Nhầm dấu under/over: Actual - Applied dương là under-applied.
+  - id: "m03-pitfalls-8"
+    title: "Lỗi thường gặp: ABC quá chi tiết (hàng chục hoạt động) -> tốn công, nhanh lỗi thời; nên 3-5 hoạt động lớn nhất."
+    tags: ["lỗi", "thường", "gặp", "abc", "quá", "chi", "tiết", "hàng", "chục", "hoạt", "động", "tốn"]
+    text: |-
+      ABC quá chi tiết (hàng chục hoạt động) -> tốn công, nhanh lỗi thời; nên 3-5 hoạt động lớn nhất.
+  - id: "m03-pitfalls-9"
+    title: "Lỗi thường gặp: Bỏ sản phẩm/món chỉ vì % margin thấp, bỏ qua định phí tránh được và chi phí cơ hội."
+    tags: ["lỗi", "thường", "gặp", "bỏ", "sản", "phẩm", "món", "chỉ", "vì", "margin", "thấp", "qua"]
+    text: |-
+      Bỏ sản phẩm/món chỉ vì % margin thấp, bỏ qua định phí tránh được và chi phí cơ hội.
+  - id: "m03-pitfalls-10"
+    title: "Lỗi thường gặp: Nhầm margin (trên giá bán) với markup (trên giá vốn) trong Target Costing và tái định giá."
+    tags: ["lỗi", "thường", "gặp", "nhầm", "margin", "trên", "giá", "bán", "với", "markup", "vốn", "trong"]
+    text: |-
+      Nhầm margin (trên giá bán) với markup (trên giá vốn) trong Target Costing và tái định giá.
+  - id: "m03-pitfalls-11"
+    title: "Lỗi thường gặp: Dùng lợi nhuận Absorption để thưởng -> khuyến khích sản xuất thừa."
+    tags: ["lỗi", "thường", "gặp", "dùng", "lợi", "nhuận", "absorption", "để", "thưởng", "khuyến", "khích", "sản"]
+    text: |-
+      Dùng lợi nhuận Absorption để thưởng -> khuyến khích sản xuất thừa.
+  - id: "m03-pitfalls-12"
+    title: "Lỗi thường gặp: Mở rộng chuỗi/chi nhánh khi chưa biết P&L và điểm hòa vốn từng đơn vị (case TasteVN)."
+    tags: ["lỗi", "thường", "gặp", "mở", "rộng", "chuỗi", "chi", "nhánh", "khi", "chưa", "biết", "và"]
+    text: |-
+      Mở rộng chuỗi/chi nhánh khi chưa biết P&L và điểm hòa vốn từng đơn vị (case TasteVN).
+  - id: "m03-pitfalls-13"
+    title: "Lỗi thường gặp: Nhầm giá thành quản trị ABC là giá thành BCTC; thiếu bảng đối chiếu."
+    tags: ["lỗi", "thường", "gặp", "nhầm", "giá", "thành", "quản", "trị", "abc", "là", "bctc", "thiếu"]
+    text: |-
+      Nhầm giá thành quản trị ABC là giá thành BCTC; thiếu bảng đối chiếu.
+  - id: "m03-pitfalls-14"
+    title: "Lỗi thường gặp: Lỗi/mâu thuẫn nguồn đã ghi: (1) Lỗi cũ Process Costing 'dùng chung một cột EU' đã sửa trong nguồn n…"
+    tags: ["lỗi", "thường", "gặp", "mâu", "thuẫn", "nguồn", "đã", "ghi", "cũ", "process", "costing", "dùng"]
+    text: |-
+      Lỗi/mâu thuẫn nguồn đã ghi: (1) Lỗi cũ Process Costing 'dùng chung một cột EU' đã sửa trong nguồn nhưng cần giữ làm cảnh báo; (2) ngưỡng ABC >30% (sơ đồ/checklist) vs <10% (mục IV.3) có vùng 10-30% chưa nêu; (3) TDABC nêu 80-85% công suất nhưng ví dụ 75% (6/8 giờ); (4) HP case số liệu chưa kiểm chứng, nguồn tự ghi là mô hình giả định; (5) phần 'Đối tượng/Mục tiêu' trích dẫn Drucker cần đối chiếu.
+  - id: "m03-pitfalls-15"
+    title: "Lỗi thường gặp: Số liệu giá/gói phần mềm kế toán là ước tính, thay đổi theo thời gian."
+    tags: ["lỗi", "thường", "gặp", "số", "liệu", "giá", "gói", "phần", "mềm", "kế", "toán", "là"]
+    text: |-
+      Số liệu giá/gói phần mềm kế toán là ước tính, thay đổi theo thời gian.
+  - id: "m03-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Phần mềm (giá là ước tính, confidence low, cần xác nhận với nhà cung cấp): MISA SME / MISA AMIS Kế …"
+    tags: ["lưu", "sme", "việt", "nam", "phần", "mềm", "giá", "là", "ước", "tính", "confidence", "low"]
+    text: |-
+      Phần mềm (giá là ước tính, confidence low, cần xác nhận với nhà cung cấp): MISA SME / MISA AMIS Kế toán - tính giá thành theo đơn hàng/công đoạn, hạch toán TK 621/622/627/154, khoảng vài triệu đến hơn chục triệu VND/năm tùy gói. FAST Accounting - giá thành sản xuất, kế toán quản trị, thường báo giá riêng từ vài chục triệu. KiotViet/Sapo/iPOS - quản lý kho, giá vốn nguyên liệu, BOM cho F&B/bán lẻ, từ khoảng vài trăm nghìn VND/tháng. Excel/Google Sheets - Job Cost Sheet, POHR, ABC, TDABC (miễn phí đến phí gói Microsoft 365/Google Workspace). Power BI/Looker Studio - dashboard biên lãi theo sản phẩm/khách.
+  - id: "m03-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: Chọn phương pháp theo ngành: xây dựng/nội thất theo đơn -> Job Costing; in ấn/bao bì -> Job + ABC c…"
+    tags: ["lưu", "sme", "việt", "nam", "chọn", "phương", "pháp", "theo", "ngành", "xây", "dựng", "nội"]
+    text: |-
+      Chọn phương pháp theo ngành: xây dựng/nội thất theo đơn -> Job Costing; in ấn/bao bì -> Job + ABC cho MOH; phần mềm/agency/tư vấn -> Job theo giờ công dự án; thực phẩm đóng gói, hóa chất, nhựa, VLXD -> Process; dệt may, giày da -> Process + Job; nhà hàng/cà phê -> food costing theo món + P&L chi nhánh/kênh; e-commerce/logistics -> ABC/TDABC; ngân hàng, bảo hiểm, bệnh viện -> ABC.
+  - id: "m03-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Lộ trình theo giai đoạn: Startup -> Excel, biến phí/SP, CM/unit, giá vốn từng món; Tăng trưởng -> J…"
+    tags: ["lưu", "sme", "việt", "nam", "lộ", "trình", "theo", "giai", "đoạn", "startup", "excel", "biến"]
+    text: |-
+      Lộ trình theo giai đoạn: Startup -> Excel, biến phí/SP, CM/unit, giá vốn từng món; Tăng trưởng -> Job/Process + POHR + budget variance; Trưởng thành -> ABC 3-5 hoạt động + TDABC + Target/Kaizen Costing.
+  - id: "m03-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: SME không cần ABC toàn công ty: chọn 3-4 hoạt động tốn nhất; dữ liệu lấy từ phiếu giao việc/Excel l…"
+    tags: ["lưu", "sme", "việt", "nam", "không", "cần", "abc", "toàn", "công", "ty", "chọn", "hoạt"]
+    text: |-
+      SME không cần ABC toàn công ty: chọn 3-4 hoạt động tốn nhất; dữ liệu lấy từ phiếu giao việc/Excel là đủ.
+  - id: "m03-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: Pháp lý/thuế (cần xác nhận hiện hành): hàng tồn kho và giá vốn theo VAS 02 và chế độ kế toán DN (TT…"
+    tags: ["lưu", "sme", "việt", "nam", "pháp", "lý", "thuế", "cần", "xác", "nhận", "hiện", "hành"]
+    text: |-
+      Pháp lý/thuế (cần xác nhận hiện hành): hàng tồn kho và giá vốn theo VAS 02 và chế độ kế toán DN (TT 200/2014/TT-BTC; DN nhỏ và vừa có thể áp dụng TT 133/2016/TT-BTC) - cần kiểm tra văn bản còn hiệu lực/sửa đổi.
+  - id: "m03-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: Phương pháp tính giá xuất kho (bình quân gia quyền, FIFO, đích danh) phải áp dụng nhất quán (cần xá…"
+    tags: ["lưu", "sme", "việt", "nam", "phương", "pháp", "tính", "giá", "xuất", "kho", "bình", "quân"]
+    text: |-
+      Phương pháp tính giá xuất kho (bình quân gia quyền, FIFO, đích danh) phải áp dụng nhất quán (cần xác nhận quy định).
+  - id: "m03-sme_vn_guidance-7"
+    title: "Lưu ý SME Việt Nam: Chi phí được trừ khi tính thuế TNDN có điều kiện về hóa đơn, chứng từ và định mức hợp lý - cần tham…"
+    tags: ["lưu", "sme", "việt", "nam", "chi", "phí", "được", "trừ", "khi", "tính", "thuế", "tndn"]
+    text: |-
+      Chi phí được trừ khi tính thuế TNDN có điều kiện về hóa đơn, chứng từ và định mức hợp lý - cần tham vấn kế toán/thuế.
+  - id: "m03-sme_vn_guidance-8"
+    title: "Lưu ý SME Việt Nam: Giá thành quản trị (ABC/TDABC) dùng cho quyết định nội bộ, có thể khác giá thành BCTC; giữ bảng đối…"
+    tags: ["lưu", "sme", "việt", "nam", "giá", "thành", "quản", "trị", "abc", "tdabc", "dùng", "cho"]
+    text: |-
+      Giá thành quản trị (ABC/TDABC) dùng cho quyết định nội bộ, có thể khác giá thành BCTC; giữ bảng đối chiếu.
+  - id: "m03-sme_vn_guidance-9"
+    title: "Lưu ý SME Việt Nam: Việc chấm công, phiếu xuất kho, nhật ký máy theo job là điều kiện để Job Costing tin cậy; bắt đầu b…"
+    tags: ["lưu", "sme", "việt", "nam", "việc", "chấm", "công", "phiếu", "xuất", "kho", "nhật", "ký"]
+    text: |-
+      Việc chấm công, phiếu xuất kho, nhật ký máy theo job là điều kiện để Job Costing tin cậy; bắt đầu bằng mẫu Excel trước khi mua phần mềm.
+  - id: "m03-case_lessons-1"
+    title: "Bài học case: HP - ABC phơi bày lợi nhuận thật dòng máy in (mô hình giả định)"
+    tags: ["bài", "học", "case", "hp", "abc", "phơi", "bày", "lợi", "nhuận", "thật", "dòng", "máy"]
+    text: |-
+      name: HP - ABC phơi bày lợi nhuận thật dòng máy in (mô hình giả định)
+      type: success
+      setup: MOH 600 triệu (đơn vị quy ước); InkJet 40.000 máy (nhỏ, nhiều đơn lẻ), LaserJet 8.000 máy; phân bổ Traditional theo giờ lao động 10.000 giờ vs ABC 4 hoạt động (mua hàng, QC, hỗ trợ KH, giao hàng).
+      key_calculations:
+      - POHR = 600.000.000 / 10.000 = 60.000/giờ; InkJet 3.000/máy, LaserJet 60.000/máy.
+      - 'ABC: InkJet 410.000.000 (10.250/máy), LaserJet 190.000.000 (23.750/máy).'
+      - 'Lãi/máy: InkJet 9.000 (45%) -> 1.750 (8,75%); LaserJet 10.000 (10%) -> 46.250 (46,25%).'
+      - Tổng lợi nhuận không đổi 440.000.000; InkJet chiếm 20% giờ lao động nhưng tiêu thụ 68% overhead.
+      lesson: 'ABC phá vỡ ảo tưởng lợi nhuận do trợ giá chéo. Sản phẩm đơn giản chưa chắc rẻ, phức tạp chưa chắc đắt. Hành động: giảm chi phí hỗ trợ InkJet, gom đơn mua, định giá lại hoặc chuyển margin sang vật tư tiêu hao.'
+      data_reliability: illustrative
+  - id: "m03-case_lessons-2"
+    title: "Bài học case: TasteVN - mở rộng khi không biết chi phí thực"
+    tags: ["bài", "học", "case", "tastevn", "mở", "rộng", "khi", "không", "biết", "chi", "phí", "thực"]
+    text: |-
+      name: TasteVN - mở rộng khi không biết chi phí thực
+      type: failure
+      setup: 3 chi nhánh TP.HCM, tổng lãi 8% nên mở thêm 5 chi nhánh; không có food cost từng món, P&L từng chi nhánh/kênh.
+      key_calculations:
+      - Q1 lãi 50 (10%), Q7 36 (12%), Thủ Đức -6 (-3%); tổng +80 (8%).
+      - BE Q1 ~423,1; Q7 ~246,3; Thủ Đức 210 > doanh thu 200 (biên an toàn -5%).
+      - Food cost bình quân 33,3%; giảm món Âu fusion 45% -> 38% tiết kiệm 2,1% doanh thu ~ 21 triệu/tháng.
+      lesson: 'Biết tổng thể có lãi chưa đủ; Cost Accounting là tiền đề của scaling; nhân rộng mô hình chưa tối ưu là nhân rộng lỗ; cắt món cần xét chi phí tránh được và chi phí cơ hội. Hậu quả giả định: đóng 2 chi nhánh sau 18 tháng, lỗ khoảng 3 tỷ.'
+      data_reliability: illustrative
+  - id: "m03-case_lessons-3"
+    title: "Bài học case: Xưởng in bao bì Hải Long - đơn nhỏ lời trên giấy, lỗ khi ABC"
+    tags: ["bài", "học", "case", "xưởng", "in", "bao", "bì", "hải", "long", "đơn", "nhỏ", "lời"]
+    text: |-
+      name: Xưởng in bao bì Hải Long - đơn nhỏ lời trên giấy, lỗ khi ABC
+      type: sme
+      setup: Bình Dương, 18 nhân sự, 2 máy in offset; MOH 960 triệu/năm, 4.800 giờ máy; POHR 200.000/giờ; chủ ưu tiên đơn nhỏ vì biên Traditional cao.
+      key_calculations:
+      - 'Traditional: P-101 giá thành 126.000.000 (lãi 10,0%); P-102 11.400.000 (lãi 18,6%).'
+      - 'ABC rates: setup 500.000/lần, mẫu 500.000/mẫu, máy 68.750/giờ, giao 150.000/lần.'
+      - 'ABC MOH: P-101 11.050.000; P-102 5.475.000 -> lãi P-101 19,25%, P-102 -3,4%.'
+      - Giá tối thiểu P-102 để biên 15% = 14.475.000/0,85 = 17.029.412 (+21,6%).
+      - 'Under-applied cuối năm: 972.000.000 - 4.700 x 200.000 = 32.000.000 (Nợ 632 / Có 627).'
+      lesson: 'Biên Traditional có thể đẹp giả; đơn nhỏ nhiều setup/mẫu là nguồn rò rỉ lợi nhuận; khách lớn đang trả hộ khách nhỏ. Giải pháp: phí setup/mẫu, MOQ, gom lô, chuẩn hóa mẫu; chỉ cần ABC 3-4 hoạt động.'
+      data_reliability: illustrative
+  - id: "m03-worked_examples-1"
+    title: "Ví dụ có lời giải: we_job_costing — Xưởng cơ khí Tân Phát - tính giá thành job và quyết toán MOH cuối năm (SME VN, ví dụ mới)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "we_job_costing", "xưởng", "cơ", "khí", "tân", "phát", "tính"]
+    text: |-
+      id: we_job_costing
+      name: Xưởng cơ khí Tân Phát - tính giá thành job và quyết toán MOH cuối năm (SME VN, ví dụ mới)
+      scenario: 'Xưởng cơ khí nhỏ tại Bình Dương; ngân sách MOH 480.000.000 và 8.000 giờ lao động trực tiếp (DLH) cả năm. Job C-07: gia công khung thép; vật tư 18.000.000, 90 giờ thợ x 70.000/giờ, giá bán 38.000.000. Cuối năm thực tế MOH 470.000.000, DLH 7.600.'
+      inputs:
+        est_moh: 480000000
+        est_dlh: 8000
+        dm: 18000000
+        dl_hours: 90
+        dl_rate: 70000
+        price: 38000000
+        actual_moh: 470000000
+        actual_dlh: 7600
+      steps:
+      - POHR = 480.000.000 / 8.000 = 60.000/giờ.
+      - DL job = 90 x 70.000 = 6.300.000; MOH áp dụng = 90 x 60.000 = 5.400.000.
+      - Giá thành job C-07 = 18.000.000 + 6.300.000 + 5.400.000 = 29.700.000; lãi gộp = 8.300.000 = 21,84%.
+      - 'Bút toán nguyên tắc (cần xác nhận): xuất vật tư Nợ 621 / Có 152 = 18.000.000; lương công nhân Nợ 622 / Có 334 = 6.300.000; MOH phân bổ Nợ 154 / Có 627 = 5.400.000 (kết chuyển Nợ 154 / Có 621, 622); giao hàng Nợ 632 / Có 155 = 29.700.000 (nếu nhập kho).'
+      - 'Cuối năm: applied = 7.600 x 60.000 = 456.000.000; variance = 470.000.000 - 456.000.000 = 14.000.000 under-applied.'
+      - 'Nếu không trọng yếu: Nợ 632 / Có 627 = 14.000.000. Nguyên nhân: DLH thực tế 7.600 < 8.000 trong khi định phí không giảm.'
+      result: 'Giá thành job 29.700.000 (lãi gộp 21,84%); under-applied 14.000.000, hạch toán vào 632 nếu không trọng yếu; hành động: thêm đơn để lấp công suất.'
+  - id: "m03-worked_examples-2"
+    title: "Ví dụ có lời giải: we_process_costing — Nước mắm - Process 3, tháng 6: Weighted Average vs FIFO"
+    tags: ["ví", "dụ", "có", "lời", "giải", "we_process_costing", "nước", "mắm", "process", "tháng", "weighted", "average"]
+    text: |-
+      id: we_process_costing
+      name: 'Nước mắm - Process 3, tháng 6: Weighted Average vs FIFO'
+      scenario: 'WIP đầu 500 lít (NVL 100%, chế biến 80%); bắt đầu 4.000; hoàn thành 3.500; WIP cuối 1.000 (NVL 100%, chế biến 40%). Chi phí: NVL đầu 10.000.000 + phát sinh 80.000.000; chế biến đầu 5.200.000 + phát sinh 53.300.000.'
+      inputs:
+        wip_begin: 500
+        pct_begin: 0.8
+        started: 4000
+        completed: 3500
+        wip_end: 1000
+        pct_end_conv: 0.4
+        mat_beg: 10000000
+        mat_cur: 80000000
+        conv_beg: 5200000
+        conv_cur: 53300000
+      steps:
+      - 'Cân đối số lượng: 500 + 4.000 = 4.500 = 3.500 + 1.000.'
+      - 'BQGQ: EU NVL = 4.500; EU chế biến = 3.500 + 400 = 3.900.'
+      - Rate NVL = 90.000.000/4.500 = 20.000; chế biến = 58.500.000/3.900 = 15.000; giá thành 35.000/lít.
+      - Thành phẩm = 3.500 x 35.000 = 122.500.000; WIP cuối = 1.000 x 20.000 + 400 x 15.000 = 26.000.000; tổng 148.500.000.
+      - 'FIFO: EU NVL = 0 + 3.000 + 1.000 = 4.000; EU chế biến = 100 + 3.000 + 400 = 3.500; rate NVL 20.000; chế biến 53.300.000/3.500 = 15.228,57.'
+      - FIFO thành phẩm = 15.200.000 + 100 x 15.228,57 + 3.000 x 35.228,57 = 122.408.571; WIP cuối = 26.091.429.
+      - 'Bút toán nguyên tắc (cần xác nhận): Nợ 155 hoặc chuyển công đoạn sau = 122.500.000 / Có 154; số dư 154 = 26.000.000.'
+      result: BQGQ 35.000/lít (thành phẩm 122,5 triệu, WIP 26,0 triệu); FIFO khoảng 34.974/lít; SME dùng BQGQ là đủ.
+  - id: "m03-worked_examples-3"
+    title: "Ví dụ có lời giải: we_abc_traditional — Công ty bánh: Traditional vs ABC - phát hiện trợ giá chéo"
+    tags: ["ví", "dụ", "có", "lời", "giải", "we_abc_traditional", "công", "ty", "bánh", "traditional", "vs", "abc"]
+    text: |-
+      id: we_abc_traditional
+      name: 'Công ty bánh: Traditional vs ABC - phát hiện trợ giá chéo'
+      scenario: 'MOH 500 triệu. Bánh A: 10.000 cái, 5.000 giờ máy, 10 setup, 20 QC, 50 đơn giao, giá 70.000, chi phí trực tiếp 30.000. Bánh B: 2.000 cái, 1.000 giờ máy, 40 setup, 60 QC, 150 đơn giao, giá 220.000, chi phí trực tiếp 45.000. Pool: setup 150 triệu/50 lần; QC 100 triệu/80; giao 150 triệu/200; bảo trì 100 triệu/6.000 giờ.'
+      steps:
+      - 'Traditional: POHR = 500.000.000/6.000 = 83.333/giờ máy; MOH/cái cả hai = 41.667.'
+      - 'ABC rates: setup 3.000.000/lần; QC 1.250.000/lần; giao 750.000/đơn; bảo trì 16.667/giờ.'
+      - 'MOH ABC: A = 175.833.333 (17.583/cái); B = 324.166.667 (162.083/cái); tổng 500.000.000.'
+      - 'Lãi/cái: Traditional A -1.667 (lỗ 16,7 triệu), B +133.333; ABC A +22.417 (32,0%), B +12.917 (5,9%).'
+      - Tổng lợi nhuận 250 triệu cả hai cách.
+      result: 'Quyết định đảo ngược: Bánh A là ngôi sao, Bánh B lãi mỏng 5,9% do setup/QC/giao hàng; cần tăng giá, gom lô, giảm setup.'
+  - id: "m03-worked_examples-4"
+    title: "Ví dụ có lời giải: we_giftshop_abc — Cửa hàng quà tặng: ABC phát hiện khách lẻ tốn gấp 7,3 lần (SME VN)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "we_giftshop_abc", "cửa", "hàng", "quà", "tặng", "abc", "phát"]
+    text: |-
+      id: we_giftshop_abc
+      name: 'Cửa hàng quà tặng: ABC phát hiện khách lẻ tốn gấp 7,3 lần (SME VN)'
+      scenario: 'MOH 100.000.000/tháng: đóng gói 40.000.000 (2.000 gói), giao hàng 60.000.000 (1.000 chuyến). Khách sỉ doanh thu 600 triệu, 300 gói, 100 chuyến; khách lẻ 400 triệu, 1.700 gói, 900 chuyến.'
+      steps:
+      - Rate đóng gói = 40.000.000/2.000 = 20.000/gói; giao = 60.000.000/1.000 = 60.000/chuyến.
+      - 'Theo doanh thu: sỉ 60.000.000, lẻ 40.000.000.'
+      - 'ABC: sỉ = 300x20.000 + 100x60.000 = 12.000.000; lẻ = 1.700x20.000 + 900x60.000 = 88.000.000; tổng 100.000.000.'
+      result: Khách lẻ tốn gấp khoảng 7,3 lần dù doanh thu thấp hơn -> đặt phí giao hàng, mức đơn tối thiểu hoặc giá bậc thang.
+  - id: "m03-worked_examples-5"
+    title: "Ví dụ có lời giải: we_absorption_variable — Absorption vs Variable Costing"
+    tags: ["ví", "dụ", "có", "lời", "giải", "we_absorption_variable", "absorption", "vs", "variable", "costing"]
+    text: |-
+      id: we_absorption_variable
+      name: Absorption vs Variable Costing
+      scenario: Biến phí SX 100.000/sp; định phí SX chung 50.000.000/kỳ; sản xuất 1.000; bán 800 giá 250.000.
+      steps:
+      - Giá thành absorption = 100.000 + 50.000.000/1.000 = 150.000.
+      - Lợi nhuận absorption = 800 x 250.000 - 800 x 150.000 = 80.000.000.
+      - Lợi nhuận variable = 800 x 150.000 - 50.000.000 = 70.000.000.
+      - Chênh lệch = 200 x 50.000 = 10.000.000 (định phí nằm trong 200 sp tồn kho).
+      - Nếu bán hết 1.000 sp thì cả hai cùng 100.000.000.
+      result: Chênh 10 triệu do tồn kho; sản xuất thừa làm absorption đẹp hơn.
+  - id: "m03-worked_examples-6"
+    title: "Ví dụ có lời giải: we_tdabc — TDABC bộ phận CSKH và xử lý đơn"
+    tags: ["ví", "dụ", "có", "lời", "giải", "we_tdabc", "tdabc", "bộ", "phận", "cskh", "và", "xử"]
+    text: |-
+      id: we_tdabc
+      name: TDABC bộ phận CSKH và xử lý đơn
+      scenario: Bộ phận CSKH chi phí 54.000.000/tháng, 36.000 phút thực dụng. Cuộc gọi 6 phút, email 3 phút; tháng này 3.000 cuộc gọi và 4.000 email.
+      steps:
+      - Chi phí/phút = 54.000.000/36.000 = 1.500.
+      - Cuộc gọi = 6 x 1.500 = 9.000; email = 3 x 1.500 = 4.500.
+      - Phút dùng = 3.000x6 + 4.000x3 = 30.000; sử dụng = 83,3%; nhàn rỗi 6.000 phút = 9.000.000.
+      result: Công suất nhàn rỗi 9.000.000/tháng; xem xét giảm người hoặc nhận thêm việc.
+  - id: "m03-worked_examples-7"
+    title: "Ví dụ có lời giải: we_target_cost_be — Target Costing và hòa vốn chuỗi cà phê"
+    tags: ["ví", "dụ", "có", "lời", "giải", "we_target_cost_be", "target", "costing", "và", "hòa", "vốn", "chuỗi"]
+    text: |-
+      id: we_target_cost_be
+      name: Target Costing và hòa vốn chuỗi cà phê
+      scenario: 'Giá thị trường 450.000, biên 25%, chi phí hiện tại 360.000. Cà phê: định phí 90 triệu/tháng, giá 60.000/ly, biến phí 24.000/ly.'
+      steps:
+      - Target cost = 450.000 x 75% = 337.500; gap = 22.500 (6,25% chi phí hiện tại).
+      - CM/ly = 36.000; BE = 90.000.000/36.000 = 2.500 ly; doanh thu BE = 150.000.000.
+      - 'Bán 2.000 ly: 72.000.000 - 90.000.000 = -18.000.000.'
+      result: Cần cắt 22.500/sp để đạt biên; chi nhánh cà phê chưa đạt 2.500 ly không nên nhân rộng.
+  - id: "m03-worked_examples-8"
+    title: "Ví dụ có lời giải: we_cogm_cogs — Báo cáo giá thành và giá vốn kỳ (ví dụ mới)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "we_cogm_cogs", "báo", "cáo", "giá", "thành", "và", "vốn"]
+    text: |-
+      id: we_cogm_cogs
+      name: Báo cáo giá thành và giá vốn kỳ (ví dụ mới)
+      scenario: DM 120 triệu, DL 60 triệu, MOH 80 triệu (đã điều chỉnh), WIP đầu 20, WIP cuối 30; thành phẩm đầu 40, cuối 55 (triệu).
+      steps:
+      - COGM = 120 + 60 + 80 + 20 - 30 = 250 triệu.
+      - COGS = 40 + 250 - 55 = 235 triệu.
+      - 'Bút toán nguyên tắc (cần xác nhận): Nợ 154 / Có 621, 622, 627 = 260 triệu; nhập kho Nợ 155 / Có 154 = 250 triệu; giá vốn Nợ 632 / Có 155 = 235 triệu.'
+      result: COGM 250 triệu; COGS 235 triệu; WIP cuối 30 triệu và thành phẩm cuối 55 triệu là tài sản trên Balance Sheet.
+  - id: "m03-practice_questions-1"
+    title: "Câu hỏi luyện tập: Xưởng cơ khí ước tính MOH 480.000.000 và 8.000 giờ lao động. Thực tế MOH 470.000.000; 7.600 giờ. Tí…"
+    tags: ["câu", "hỏi", "luyện", "tập", "xưởng", "cơ", "khí", "ước", "tính", "moh", "480", "000"]
+    text: |-
+      q: Xưởng cơ khí ước tính MOH 480.000.000 và 8.000 giờ lao động. Thực tế MOH 470.000.000; 7.600 giờ. Tính POHR, MOH áp dụng, under/over và bút toán nếu không trọng yếu.
+      a: POHR 60.000/giờ; applied 456.000.000; under-applied 14.000.000; Nợ 632 / Có 627 = 14.000.000.
+  - id: "m03-practice_questions-2"
+    title: "Câu hỏi luyện tập: Công đoạn pha trộn: hoàn thành 2.000; WIP cuối 500 (NVL 100%, chế biến 60%); NVL 50.000.000, chế bi…"
+    tags: ["câu", "hỏi", "luyện", "tập", "công", "đoạn", "pha", "trộn", "hoàn", "thành", "000", "wip"]
+    text: |-
+      q: 'Công đoạn pha trộn: hoàn thành 2.000; WIP cuối 500 (NVL 100%, chế biến 60%); NVL 50.000.000, chế biến 36.800.000 (đã gồm WIP đầu). Tính EU, giá thành đơn vị, thành phẩm và WIP cuối.'
+      a: EU NVL 2.500 (20.000/EU); EU chế biến 2.300 (16.000/EU); giá thành 36.000; thành phẩm 72.000.000; WIP cuối 14.800.000; tổng 86.800.000.
+  - id: "m03-practice_questions-3"
+    title: "Câu hỏi luyện tập: Cửa hàng quà tặng MOH 100 triệu (đóng gói 40 triệu/2.000 gói; giao 60 triệu/1.000 chuyến). Sỉ: 300 …"
+    tags: ["câu", "hỏi", "luyện", "tập", "cửa", "hàng", "quà", "tặng", "moh", "100", "triệu", "đóng"]
+    text: |-
+      q: 'Cửa hàng quà tặng MOH 100 triệu (đóng gói 40 triệu/2.000 gói; giao 60 triệu/1.000 chuyến). Sỉ: 300 gói, 100 chuyến; lẻ: 1.700 gói, 900 chuyến. Phân bổ theo ABC?'
+      a: Sỉ 12.000.000; lẻ 88.000.000; khách lẻ tốn gấp khoảng 7,3 lần; chia theo doanh thu cho sỉ 60 triệu, lẻ 40 triệu.
+  - id: "m03-practice_questions-4"
+    title: "Câu hỏi luyện tập: Bộ phận CSKH 54 triệu/tháng, 36.000 phút; gọi 6 phút, email 3 phút; 3.000 cuộc gọi, 4.000 email. Tí…"
+    tags: ["câu", "hỏi", "luyện", "tập", "bộ", "phận", "cskh", "54", "triệu", "tháng", "36", "000"]
+    text: |-
+      q: Bộ phận CSKH 54 triệu/tháng, 36.000 phút; gọi 6 phút, email 3 phút; 3.000 cuộc gọi, 4.000 email. Tính TDABC.
+      a: 1.500/phút; gọi 9.000, email 4.500; dùng 30.000 phút (83,3%); nhàn rỗi 9.000.000.
+  - id: "m03-practice_questions-5"
+    title: "Câu hỏi luyện tập: Giá thị trường 450.000, biên 25%, chi phí 360.000. Target cost và gap?"
+    tags: ["câu", "hỏi", "luyện", "tập", "giá", "thị", "trường", "450", "000", "biên", "25", "chi"]
+    text: |-
+      q: Giá thị trường 450.000, biên 25%, chi phí 360.000. Target cost và gap?
+      a: 337.500; gap 22.500 (6,25%).
+  - id: "m03-practice_questions-6"
+    title: "Câu hỏi luyện tập: Chi nhánh cà phê: định phí 90 triệu, giá 60.000, biến phí 24.000. BE? Bán 2.000 ly lãi/lỗ? Có nên n…"
+    tags: ["câu", "hỏi", "luyện", "tập", "chi", "nhánh", "cà", "phê", "định", "phí", "90", "triệu"]
+    text: |-
+      q: 'Chi nhánh cà phê: định phí 90 triệu, giá 60.000, biến phí 24.000. BE? Bán 2.000 ly lãi/lỗ? Có nên nhân rộng?'
+      a: BE 2.500 ly = 150.000.000; lỗ 18.000.000; không nên nhân rộng khi chưa đạt 2.500 ly.
+  - id: "m03-practice_questions-7"
+    title: "Câu hỏi luyện tập: Vì sao Process Costing phải tính EU riêng cho NVL và chế biến?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "process", "costing", "phải", "tính", "eu", "riêng"]
+    text: |-
+      q: Vì sao Process Costing phải tính EU riêng cho NVL và chế biến?
+      a: NVL thường vào đầu quy trình (100% ngay), chế biến hoàn thành dần theo tiến độ; dùng một cột EU sẽ định giá sai WIP và thành phẩm.
+  - id: "m03-practice_questions-8"
+    title: "Câu hỏi luyện tập: Tại sao tổng lợi nhuận không đổi giữa Traditional và ABC mà ABC vẫn quan trọng?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tại", "sao", "tổng", "lợi", "nhuận", "không", "đổi", "giữa"]
+    text: |-
+      q: Tại sao tổng lợi nhuận không đổi giữa Traditional và ABC mà ABC vẫn quan trọng?
+      a: Tổng MOH không đổi; ABC chỉ phân bổ lại. Giá trị là quyết định đúng (giá, mix, khách) vì đối tượng được trợ giá chéo lộ ra.
+  - id: "m03-practice_questions-9"
+    title: "Câu hỏi luyện tập: Sản xuất 1.200, bán 1.000 (đơn giá định phí 40.000/sp). Absorption lãi nhiều hơn variable bao nhiêu…"
+    tags: ["câu", "hỏi", "luyện", "tập", "sản", "xuất", "200", "bán", "000", "đơn", "giá", "định"]
+    text: |-
+      q: Sản xuất 1.200, bán 1.000 (đơn giá định phí 40.000/sp). Absorption lãi nhiều hơn variable bao nhiêu và vì sao?
+      a: (1.200 - 1.000) x 40.000 = 8.000.000; định phí nằm trong 200 sp tồn kho.
+  - id: "m03-practice_questions-10"
+    title: "Câu hỏi luyện tập: Thực hành: chọn 5 đơn gần nhất, lập Job Cost Sheet, POHR, ABC 3 hoạt động, so sánh biên và đề xuất …"
+    tags: ["câu", "hỏi", "luyện", "tập", "thực", "hành", "chọn", "đơn", "gần", "nhất", "lập", "job"]
+    text: |-
+      q: 'Thực hành: chọn 5 đơn gần nhất, lập Job Cost Sheet, POHR, ABC 3 hoạt động, so sánh biên và đề xuất 2 hành động.'
+      a: Theo procedures proc_job_costing và proc_abc; nộp bảng Pools - Drivers - Rates - Allocation - Compare.
+  - id: "m03-checklist-1"
+    title: "Checklist: Đã phân biệt chi phí sản phẩm (DM, DL, MOH) và chi phí thời kỳ (bán hàng, quản lý)?"
+    tags: ["checklist", "đã", "phân", "biệt", "chi", "phí", "sản", "phẩm", "dm", "dl", "moh", "và"]
+    text: |-
+      Đã phân biệt chi phí sản phẩm (DM, DL, MOH) và chi phí thời kỳ (bán hàng, quản lý)?
+  - id: "m03-checklist-2"
+    title: "Checklist: Đã phân loại trực tiếp/gián tiếp và biến phí/định phí?"
+    tags: ["checklist", "đã", "phân", "loại", "trực", "tiếp", "gián", "và", "biến", "phí", "định"]
+    text: |-
+      Đã phân loại trực tiếp/gián tiếp và biến phí/định phí?
+  - id: "m03-checklist-3"
+    title: "Checklist: Biết dòng chi phí 621/622/627 -> 154 -> 155 -> 632 (kê khai thường xuyên)? Bút toán đã được xác nhậ…"
+    tags: ["checklist", "biết", "dòng", "chi", "phí", "621", "622", "627", "154", "155", "632", "kê"]
+    text: |-
+      Biết dòng chi phí 621/622/627 -> 154 -> 155 -> 632 (kê khai thường xuyên)? Bút toán đã được xác nhận với chế độ hiện hành?
+  - id: "m03-checklist-4"
+    title: "Checklist: Phương pháp tính giá xuất kho áp dụng nhất quán (cần xác nhận quy định)?"
+    tags: ["checklist", "phương", "pháp", "tính", "giá", "xuất", "kho", "áp", "dụng", "nhất", "quán", "cần"]
+    text: |-
+      Phương pháp tính giá xuất kho áp dụng nhất quán (cần xác nhận quy định)?
+  - id: "m03-checklist-5"
+    title: "Checklist: Job: mỗi đơn có Job Cost Sheet? POHR từ ước tính đầu kỳ, base nhân quả? Đối chiếu applied vs actual…"
+    tags: ["checklist", "job", "mỗi", "đơn", "có", "cost", "sheet", "pohr", "từ", "ước", "tính", "đầu"]
+    text: |-
+      Job: mỗi đơn có Job Cost Sheet? POHR từ ước tính đầu kỳ, base nhân quả? Đối chiếu applied vs actual cuối kỳ? So giá báo vs thực tế?
+  - id: "m03-checklist-6"
+    title: "Checklist: Process: số lượng đầu vào = đầu ra? EU tính riêng NVL và chế biến? Tổng phân bổ = tổng chi phí? Đã …"
+    tags: ["checklist", "process", "số", "lượng", "đầu", "vào", "ra", "eu", "tính", "riêng", "nvl", "và"]
+    text: |-
+      Process: số lượng đầu vào = đầu ra? EU tính riêng NVL và chế biến? Tổng phân bổ = tổng chi phí? Đã chọn BQGQ/FIFO phù hợp?
+  - id: "m03-checklist-7"
+    title: "Checklist: ABC/TDABC: overhead đủ lớn (tham khảo >30%)? 3-5 hoạt động lớn nhất, driver có dữ liệu? Tổng phân b…"
+    tags: ["checklist", "abc", "tdabc", "overhead", "đủ", "lớn", "tham", "khảo", "30", "hoạt", "động", "nhất"]
+    text: |-
+      ABC/TDABC: overhead đủ lớn (tham khảo >30%)? 3-5 hoạt động lớn nhất, driver có dữ liệu? Tổng phân bổ ABC = tổng MOH? Đã so Traditional vs ABC và tìm trợ giá chéo? Có tính công suất nhàn rỗi (TDABC)?
+  - id: "m03-checklist-8"
+    title: "Checklist: Đã tính điểm hòa vốn từng sản phẩm/chi nhánh trước khi mở rộng?"
+    tags: ["checklist", "đã", "tính", "điểm", "hòa", "vốn", "từng", "sản", "phẩm", "chi", "nhánh", "trước"]
+    text: |-
+      Đã tính điểm hòa vốn từng sản phẩm/chi nhánh trước khi mở rộng?
+  - id: "m03-checklist-9"
+    title: "Checklist: Có phí dịch vụ/MOQ cho đơn nhỏ, phức tạp?"
+    tags: ["checklist", "có", "phí", "dịch", "vụ", "moq", "cho", "đơn", "nhỏ", "phức", "tạp"]
+    text: |-
+      Có phí dịch vụ/MOQ cho đơn nhỏ, phức tạp?
+  - id: "m03-checklist-10"
+    title: "Checklist: Có Target Costing khi thiết kế sản phẩm mới, Kaizen Costing khi đã sản xuất?"
+    tags: ["checklist", "có", "target", "costing", "khi", "thiết", "kế", "sản", "phẩm", "mới", "kaizen", "đã"]
+    text: |-
+      Có Target Costing khi thiết kế sản phẩm mới, Kaizen Costing khi đã sản xuất?
+  - id: "m03-checklist-11"
+    title: "Checklist: Quyết định cắt sản phẩm dựa trên chi phí tránh được, không chỉ % margin?"
+    tags: ["checklist", "quyết", "định", "cắt", "sản", "phẩm", "dựa", "trên", "chi", "phí", "tránh", "được"]
+    text: |-
+      Quyết định cắt sản phẩm dựa trên chi phí tránh được, không chỉ % margin?
+  - id: "m03-checklist-12"
+    title: "Checklist: Giá thành quản trị đối chiếu được với giá thành báo cáo tài chính?"
+    tags: ["checklist", "giá", "thành", "quản", "trị", "đối", "chiếu", "được", "với", "báo", "cáo", "tài"]
+    text: |-
+      Giá thành quản trị đối chiếu được với giá thành báo cáo tài chính?
+  - id: "m03-checklist-13"
+    title: "Checklist: Số liệu ví dụ đã verify bằng Python; mọi ngưỡng tham khảo đã gắn confidence low?"
+    tags: ["checklist", "số", "liệu", "ví", "dụ", "đã", "verify", "bằng", "python", "mọi", "ngưỡng", "tham"]
+    text: |-
+      Số liệu ví dụ đã verify bằng Python; mọi ngưỡng tham khảo đã gắn confidence low?
+  - id: "m03-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Job Cost Sheet"
+    tags: ["mẫu", "excel", "sheets", "job", "cost", "sheet"]
+    text: |-
+      name: Job Cost Sheet
+      description: 'A: mã job/ngày/khách; B: NVL (mã, số lượng, đơn giá, thành tiền); C: nhân công (loại thợ, giờ, đơn giá); D: MOH = POHR x giờ; E: tổng giá thành, giá bán, lãi gộp, %; F: so giá báo vs thực tế.'
+  - id: "m03-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: ABC cho SME (5 sheet)"
+    tags: ["mẫu", "excel", "sheets", "abc", "cho", "sme", "sheet"]
+    text: |-
+      name: ABC cho SME (5 sheet)
+      description: Pools (hoạt động và chi phí từ sổ chi tiết); Drivers (số lượng driver từng sản phẩm/khách); Rates (= Pool/Total driver); Allocation (ma trận sản phẩm x hoạt động = rate x driver); Compare (Traditional vs ABC, check tổng phân bổ - tổng pool = 0).
+  - id: "m03-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: Công thức Excel gợi ý"
+    tags: ["mẫu", "excel", "sheets", "công", "thức", "gợi"]
+    text: |-
+      name: Công thức Excel gợi ý
+      description: POHR =SUM(MOH_est)/SUM(Base_est); Applied =POHR*Actual_Base; Under/Over =Actual_MOH-Applied_MOH (dương = under); EU =Completed+WIP_end*Pct; Activity rate =Pool/Total_Driver; Check =SUM(Allocated)-SUM(Pools) phải bằng 0.
+  - id: "m03-excel_google_sheets_templates-4"
+    title: "Mẫu Excel/Sheets: Process Costing report"
+    tags: ["mẫu", "excel", "sheets", "process", "costing", "report"]
+    text: |-
+      name: Process Costing report
+      description: 'Các cột: luồng số lượng, EU NVL, EU chế biến, chi phí gộp, cost per EU, phân bổ thành phẩm và WIP cuối, ô kiểm tra tổng.'
+  - id: "m03-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: 03-cost-accounting.md

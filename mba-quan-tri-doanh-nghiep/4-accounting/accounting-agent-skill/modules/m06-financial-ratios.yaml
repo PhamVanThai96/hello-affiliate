@@ -1,0 +1,1098 @@
+# m06 - Tỷ số tài chính góc nhìn kế toán (distill từ 06-financial-ratios.md)
+id: "m06"
+name_vi: "Tỷ số tài chính (góc nhìn kế toán)"
+name_en: "Financial Ratios (accounting perspective)"
+purpose: >
+  Biến BCTC (theo VAS) thành bộ tỷ số Thanh khoản - Hiệu quả - Đòn bẩy - Lợi nhuận kèm DuPont, red flags và quy trình chẩn đoán
+  sức khỏe tài chính. Góc nhìn kế toán: tỷ số nằm ở mã số/tài khoản nào, chính sách kế toán (giá xuất kho, khấu hao, dự phòng,
+  cut-off, phân loại nợ) làm méo tỷ số ra sao, window dressing, quy ước số cuối kỳ/bình quân, nợ ngoài bảng/IFRS 16, Burn Rate/Runway, DSCR.
+  Trả lời: doanh nghiệp có trả được nợ không, tiền đang kẹt ở đâu, ROE cao do biên, vòng quay hay đòn bẩy, số liệu có đáng tin không.
+when_to_use:
+  - "Chủ SME/ngân hàng hỏi 'công ty khỏe hay yếu?', 'lãi mà sao hết tiền?', 'có đủ điều kiện vay không?'."
+  - "Cần tính Current/Quick/Cash Ratio, DIO/DSO/DPO/CCC, D/E, ICR, DSCR, các biên lợi nhuận, ROE/ROA, DuPont 3 và 5."
+  - "Cần ánh xạ mã số BCTC (B01-DN, B02-DN) và tài khoản TT200 vào từng thành phần tỷ số, hoặc tính EBIT từ mã 50 và 23."
+  - "So sánh hai doanh nghiệp/hai kỳ nhưng chính sách kế toán khác nhau (FIFO vs bình quân, khấu hao, dự phòng)."
+  - "Nghi ngờ BCTC làm đẹp (window dressing, ghi doanh thu sớm, không trích dự phòng, nợ ngoài bảng)."
+  - "Startup lỗ cần Burn Rate và Runway; SME vay vốn cần DSCR và lịch trả gốc."
+  - "Lập dashboard tỷ số hằng tháng trên Excel/Google Sheets, đặt cảnh báo xanh-vàng-đỏ."
+prerequisites: []
+related_modules:
+  - "m01 - Kế toán tài chính: nguồn số liệu BCTC, mã số VAS, chính sách kế toán, dự phòng, cut-off"
+  - "m02 - Kế toán quản trị: số quản trị theo tháng để tính tỷ số nhanh, CVP"
+  - "m03 - Kế toán giá thành: giá vốn và biên gộp phụ thuộc phân loại chi phí"
+  - "m04 - Ngân sách và dự báo: dự báo dòng tiền 13 tuần khi CCC kéo dài, runway"
+  - "m05 - Phân tích chênh lệch: tỷ số trend khi variance lặp lại"
+  - "m07 - Case tích hợp: ghép tỷ số vào bài toán tổng hợp"
+  - "Skill tài chính module m05-financial-statement-analysis: cùng bộ tỷ số nhưng nhấn Quality of Earnings, Enron, định giá; ở đây nhấn mã số, chính sách kế toán, window dressing"
+
+concepts:
+  - term_vi: "Tỷ số tài chính"
+    term_en: "Financial Ratio"
+    definition: "Thương số giữa hai khoản mục BCTC (hoặc cùng khoản mục ở hai kỳ) dùng đánh giá thanh khoản, hiệu quả, đòn bẩy, sinh lời."
+    why_it_matters: "Số tuyệt đối không có thước đo (lãi 1 tỷ là nhiều hay ít?). Tỷ số chuẩn hóa về cùng thang để so sánh giữa doanh nghiệp, ngành, kỳ. Lịch sử (cần đối chiếu nguồn) - cuối thế kỷ 19 ngân hàng Mỹ đòi bảng cân đối khi cho vay, Current Ratio ngưỡng 2:1 ra đời phục vụ chủ nợ; 1919 Alexander Wall đề xuất dùng hệ nhiều tỷ số thay vì một; thập niên 1910-1920 DuPont (gắn tên Donaldson Brown) tách ROE để quy trách nhiệm từng bộ phận."
+  - term_vi: "Tỷ số là đầu ra của hệ thống kế toán"
+    term_en: "Ratios depend on accounting policies"
+    definition: "Chuỗi chứng từ - sổ cái - bảng cân đối phát sinh - BCTC - tỷ số; chính sách kế toán tác động lên mọi khâu."
+    why_it_matters: "Sổ sai hoặc cắt kỳ sai thì tỷ số sai; hai doanh nghiệp khác chính sách thì tỷ số không so được; BCTC làm đẹp cho tỷ số đẹp vô nghĩa. Agent phải luôn hỏi chính sách kế toán trước khi so sánh."
+  - term_vi: "Bốn nhóm tỷ số"
+    term_en: "Liquidity, Efficiency, Leverage, Profitability"
+    definition: "Thanh khoản (trả nợ gần được không), Hiệu quả (vốn quay nhanh không), Đòn bẩy (vay quá mức không), Lợi nhuận (kiếm đủ không)."
+    why_it_matters: "Một tỷ số đơn lẻ luôn thiếu: ICR đẹp vẫn có thể cạn tiền. Phải xem đủ 4 nhóm cộng dòng tiền CFO và tìm sự phân kỳ giữa các tỷ số."
+  - term_vi: "Lãi kế toán khác tiền mặt"
+    term_en: "Profit vs cash"
+    definition: "Lợi nhuận theo dồn tích có thể dương trong khi CFO âm vì phải thu, tồn kho tăng."
+    why_it_matters: "Doanh nghiệp có lãi vẫn vỡ nợ vì không có tiền trả nợ đúng hạn; nhóm thanh khoản và CCC sinh ra để bắt hiện tượng này."
+  - term_vi: "Số dư cuối kỳ và số dư bình quân"
+    term_en: "Ending vs average balances"
+    definition: "Tử số (doanh thu, giá vốn, lợi nhuận) là dòng chảy cả kỳ, mẫu số (AR, HTK, tài sản, vốn chủ) là ảnh chụp một thời điểm. Chuẩn lý thuyết dùng bình quân (đầu kỳ + cuối kỳ)/2."
+    why_it_matters: "Doanh nghiệp tăng trưởng nhanh thì số cuối kỳ lớn hơn mức bình quân cả năm nên DSO/DIO tính cuối kỳ cao hơn thực tế còn ROE/ROA thấp hơn. Ví dụ Hải Long ROE cuối kỳ 21,5% nhưng bình quân 23,4%. Phải ghi rõ cách tính và nhất quán giữa các kỳ."
+  - term_vi: "Quy ước ngày trong năm và chiều tỷ số"
+    term_en: "365 vs 360 days; direction of ratios"
+    definition: "Dùng 365 ngày (một số tài liệu dùng 360), nhất quán giữa kỳ. Lợi nhuận/vòng quay cao thường tốt; đòn bẩy cao thường rủi ro; DSO/DIO/CCC thấp thường tốt."
+    why_it_matters: "Tránh đọc nhầm chiều và so sánh lệch."
+  - term_vi: "Ánh xạ mã số BCTC theo VAS"
+    term_en: "VAS statement code mapping (TT200)"
+    definition: "B01-DN mã 100 TS ngắn hạn, 110 tiền, 130 phải thu ngắn hạn, 140 HTK, 270 tổng tài sản, 300 nợ phải trả, 310 nợ ngắn hạn, 400 vốn chủ. B02-DN mã 10 doanh thu thuần, 11 giá vốn, 20 lợi nhuận gộp, 22 chi phí tài chính, 23 chi phí lãi vay, 50 LN trước thuế, 60 LN sau thuế. TK tương ứng 511, 632, 635, 131, 151-156, 331, 411, 421."
+    why_it_matters: "Agent mới phải biết lấy đúng dòng từ BCTC thật, không đoán. Mã số và chế độ (TT200 hay TT133 cho DN nhỏ) cần đối chiếu mẫu biểu hiện hành. EBIT không có dòng riêng: EBIT = mã 50 + mã 23 (loại thu nhập/chi phí khác bất thường)."
+  - term_vi: "Window dressing (làm đẹp cuối kỳ)"
+    term_en: "Window dressing"
+    definition: "Thao tác sát ngày khóa sổ để tỷ số đẹp: trả bớt nợ ngắn hạn rồi vay lại đầu kỳ sau, tái phân loại nợ ngắn hạn thành dài hạn, đẩy doanh thu sang kỳ này, hoãn chi phí."
+    why_it_matters: "Current Ratio 2,0 thành 3,0 chỉ bằng cách dùng 500 tiền trả nợ 500 (CA 2.000-500, CL 1.000-500). Dùng bình quân và xu hướng nhiều kỳ, đọc thuyết minh, kiểm tra cut-off."
+  - term_vi: "Nợ ngoài bảng và IFRS 16"
+    term_en: "Off-balance-sheet debt, IFRS 16 leases"
+    definition: "Thuê dài hạn, bảo lãnh vay cho bên liên quan, cam kết ngoài bảng là nghĩa vụ thực nhưng có thể không nằm trong nợ phải trả. IFRS 16 buộc hầu hết hợp đồng thuê lên bảng (tài sản quyền sử dụng và nợ thuê); VAS ít chặt hơn (cần xác nhận hiện hành)."
+    why_it_matters: "D/E và Debt Ratio theo VAS có thể thấp hơn thực chất với doanh nghiệp thuê nhiều (chuỗi cửa hàng, F&B). Khi so sánh với công ty IFRS hoặc khi ngân hàng thẩm định phải điều chỉnh."
+  - term_vi: "Burn Rate và Runway"
+    term_en: "Burn Rate, Runway"
+    definition: "Burn Rate là tiền mặt tiêu hao ròng mỗi tháng; Runway = tiền mặt hiện có / Burn Rate = số tháng còn sống."
+    why_it_matters: "Startup lỗ chưa có lợi nhuận để tính ICR/ROE; Current Ratio không nói còn sống được bao lâu. Runway trả lời trực tiếp."
+  - term_vi: "Khớp kỳ hạn tài trợ"
+    term_en: "Maturity matching"
+    definition: "Tài sản dài hạn phải được tài trợ bằng nguồn dài hạn; vốn lưu động bằng nguồn ngắn hạn/chu kỳ."
+    why_it_matters: "Vay ngắn hạn để đầu tư TSCĐ (Hải Long) làm Cash Ratio tụt và rủi ro tái tài trợ dù ICR vẫn đẹp."
+
+formulas:
+  - id: "m06_ebit_vas"
+    name_vi: "EBIT từ BCTC theo VAS"
+    name_en: "EBIT from VAS statements"
+    expression_latex: '\text{EBIT} = \text{EBT (mã 50)} + \text{Chi phí lãi vay (mã 23)} - \text{Thu nhập khác bất thường} + \text{Chi phí khác bất thường}'
+    expression_python: 'ebt + interest - abnormal_income + abnormal_expense'
+    excel: "=B02_ma50+B02_ma23-ThuNhapBatThuong+ChiPhiBatThuong"
+    variables:
+      - {symbol: "ebt", meaning: "Lợi nhuận trước thuế (mã 50)", unit: "triệu VNĐ"}
+      - {symbol: "interest", meaning: "Chi phí lãi vay (mã 23, nằm trong chi phí tài chính mã 22)", unit: "triệu VNĐ"}
+      - {symbol: "abnormal_income", meaning: "Thu nhập khác bất thường cần loại", unit: "triệu VNĐ"}
+      - {symbol: "abnormal_expense", meaning: "Chi phí khác bất thường cần cộng lại", unit: "triệu VNĐ"}
+    when_to_use: "Mọi lần cần EBIT (ICR, Operating Margin, DuPont 5, EBITDA) vì BCTC VAS không có dòng EBIT riêng."
+    why_it_works: "Lợi nhuận trước thuế đã trừ lãi vay; cộng lại lãi vay ra lợi nhuận trước cấu trúc vốn và thuế; loại khoản bất thường để EBIT phản ánh hoạt động cốt lõi."
+    assumptions: ["Chi phí lãi vay tách được từ thuyết minh", "Thu nhập/chi phí khác bất thường xác định được"]
+    pitfalls: ["Quên loại khoản bất thường làm ICR và Operating Margin sai", "Lấy mã 22 (chi phí tài chính, gồm cả lỗ tỷ giá, dự phòng đầu tư) thay vì mã 23 (lãi vay)"]
+    interpretation: "Là lợi nhuận hoạt động cốt lõi trước lãi vay và thuế."
+    example:
+      inputs: {ebt: 960, interest: 240, abnormal_income: 0, abnormal_expense: 0}
+      steps: ["960 + 240 = 1.200 (Hải Long năm N)"]
+      result: "EBIT = 1.200 triệu"
+  - id: "m06_average_balance"
+    name_vi: "Số dư bình quân"
+    name_en: "Average balance"
+    expression_latex: '\bar{B} = \frac{B_{\text{đầu kỳ}} + B_{\text{cuối kỳ}}}{2}'
+    expression_python: '(opening + closing) / 2'
+    excel: "=AVERAGE(DauKy,CuoiKy)"
+    variables:
+      - {symbol: "opening", meaning: "Số dư đầu kỳ", unit: "triệu VNĐ"}
+      - {symbol: "closing", meaning: "Số dư cuối kỳ", unit: "triệu VNĐ"}
+    when_to_use: "Mẫu số của mọi tỷ số có tử số là dòng chảy (vòng quay, ROE, ROA)."
+    why_it_works: "Tử số tích lũy cả kỳ nên mẫu số cũng nên đại diện cả kỳ; bình quân hai điểm giảm méo khi tăng trưởng nhanh."
+    assumptions: ["Số dư biến động tương đối đều trong kỳ"]
+    pitfalls: ["Doanh nghiệp mùa vụ: bình quân 2 điểm vẫn méo, dùng bình quân 4 quý hoặc 12 tháng", "Trộn tỷ số tính cuối kỳ của kỳ này với bình quân của kỳ trước"]
+    interpretation: "Ghi rõ trong báo cáo đã dùng bình quân hay cuối kỳ."
+    example:
+      inputs: {opening: 1800, closing: 2900}
+      steps: ["(1.800 + 2.900)/2 = 2.350"]
+      result: "AR bình quân = 2.350 triệu"
+  - id: "m06_current_ratio"
+    name_vi: "Tỷ số thanh toán hiện hành"
+    name_en: "Current Ratio"
+    expression_latex: '\text{CR} = \frac{\text{Tài sản ngắn hạn (mã 100)}}{\text{Nợ ngắn hạn (mã 310)}}'
+    expression_python: 'current_assets / current_liabilities'
+    excel: "=B01_ma100/B01_ma310"
+    variables:
+      - {symbol: "current_assets", meaning: "Tài sản ngắn hạn", unit: "triệu VNĐ"}
+      - {symbol: "current_liabilities", meaning: "Nợ ngắn hạn", unit: "triệu VNĐ"}
+    when_to_use: "Bước đầu đánh giá khả năng trả nợ trong 12 tháng/1 chu kỳ."
+    why_it_works: "Nếu mọi tài sản ngắn hạn thanh lý đúng giá sổ thì có đủ trả nợ ngắn hạn không. Ngưỡng 2:1 cổ điển là đệm an toàn cho trường hợp tài sản bán không được giá sổ."
+    assumptions: ["Tài sản ngắn hạn chuyển thành tiền đúng giá sổ", "Nợ ngắn hạn đã phân loại đúng"]
+    pitfalls: ["Bị window dressing cuối kỳ", "Phân loại nợ ngắn hạn thành dài hạn làm đẹp", "Tử số chứa HTK và phải thu có thể khó thu/bán", "CR dưới 1 không tự động nguy hiểm (Apple 0,99 vì nợ ngắn hạn chủ yếu là phải trả NCC và dòng tiền khổng lồ)"]
+    interpretation: "Dưới 1,0 nguy hiểm; 1,0-1,5 cảnh báo; 1,5-3,0 khỏe; trên 3,0 có thể giữ quá nhiều tiền/HTK/phải thu. Đọc cùng Quick Ratio và dòng tiền."
+    example:
+      inputs: {current_assets: 5868, current_liabilities: 3500}
+      steps: ["5.868/3.500 = 1,68 (Hải Long năm N; năm N-1 là 2,14)"]
+      result: "CR = 1,68"
+  - id: "m06_quick_ratio"
+    name_vi: "Tỷ số thanh toán nhanh"
+    name_en: "Quick (Acid-Test) Ratio"
+    expression_latex: '\text{QR} = \frac{\text{CA} - \text{Inventory}}{\text{CL}} = \frac{\text{Cash} + \text{ST Investments} + \text{AR}}{\text{CL}}'
+    expression_python: '(current_assets - inventory) / current_liabilities'
+    excel: "=(B01_ma100-B01_ma140)/B01_ma310"
+    variables:
+      - {symbol: "current_assets", meaning: "Tài sản ngắn hạn", unit: "triệu VNĐ"}
+      - {symbol: "inventory", meaning: "Hàng tồn kho (mã 140)", unit: "triệu VNĐ"}
+      - {symbol: "current_liabilities", meaning: "Nợ ngắn hạn", unit: "triệu VNĐ"}
+    when_to_use: "Kiểm tra thanh khoản khi không bán thêm được hàng nào; ưu tiên với bán lẻ, phân phối, sản xuất."
+    why_it_works: "Tên Acid-Test mượn phép thử axit của thợ vàng. Loại HTK vì khó chuyển thành tiền nhất, ghi theo giá gốc chứ không phải giá bán gấp, và là thứ bị đóng băng đầu tiên trong khủng hoảng."
+    assumptions: ["Phải thu thu được gần giá sổ (đã trích dự phòng)", "Tài sản ngắn hạn khác không đáng kể hoặc đã xử lý nhất quán"]
+    pitfalls: ["Phải thu quá hạn chưa trích dự phòng làm QR đẹp giả", "Hai biến thể công thức (CA - HTK hay Cash + đầu tư + AR) cho kết quả khác khi có tài sản ngắn hạn khác: ghi rõ dùng biến thể nào"]
+    interpretation: "Dưới 0,5 nguy hiểm; 0,5-1,0 chấp nhận được, hơi tight; 1,0-2,0 tốt; trên 2,0 rất tốt nhưng có thể giữ quá nhiều tiền."
+    example:
+      inputs: {current_assets: 5868, inventory: 2600, current_liabilities: 3500}
+      steps: ["(5.868 - 2.600)/3.500 = 0,934 theo CA - HTK (bằng 0,905 theo (Cash + AR)/CL = 3.168/3.500 vì còn 100 tài sản ngắn hạn khác)"]
+      result: "QR = 0,93 (biến thể 1) hoặc 0,91 (biến thể 2)"
+  - id: "m06_cash_ratio"
+    name_vi: "Tỷ số tiền mặt"
+    name_en: "Cash Ratio"
+    expression_latex: '\text{Cash Ratio} = \frac{\text{Tiền và tương đương tiền (mã 110)}}{\text{Nợ ngắn hạn}}'
+    expression_python: 'cash / current_liabilities'
+    excel: "=B01_ma110/B01_ma310"
+    variables:
+      - {symbol: "cash", meaning: "Tiền và tương đương tiền", unit: "triệu VNĐ"}
+      - {symbol: "current_liabilities", meaning: "Nợ ngắn hạn", unit: "triệu VNĐ"}
+    when_to_use: "Phép thử khắt khe nhất: nếu ngày mai chủ nợ đồng loạt đòi thì trả được bao nhiêu phần; ngân hàng quan tâm khi nhiều khoản vay đến hạn cùng lúc."
+    why_it_works: "Chỉ tính tiền, loại mọi giả định về thu nợ hay bán hàng."
+    assumptions: ["Tiền không bị phong tỏa hay ký quỹ"]
+    pitfalls: ["Tiền gửi ký quỹ, tiền bị phong tỏa vẫn nằm trong mã 110", "Mong đạt bằng 1 là lãng phí vốn"]
+    interpretation: "Dưới 0,1 rất mong manh; doanh nghiệp bình thường không cần bằng 1."
+    example:
+      inputs: {cash: 268, current_liabilities: 3500}
+      steps: ["268/3.500 = 0,0766 (năm N-1 là 900/2.100 = 0,43)"]
+      result: "Cash Ratio = 0,08"
+  - id: "m06_nwc"
+    name_vi: "Vốn lưu động ròng"
+    name_en: "Net Working Capital (balance-sheet basis)"
+    expression_latex: '\text{NWC} = \text{CA} - \text{CL}'
+    expression_python: 'current_assets - current_liabilities'
+    excel: "=B01_ma100-B01_ma310"
+    variables:
+      - {symbol: "current_assets", meaning: "Tài sản ngắn hạn", unit: "triệu VNĐ"}
+      - {symbol: "current_liabilities", meaning: "Nợ ngắn hạn", unit: "triệu VNĐ"}
+    when_to_use: "Xem đệm thanh khoản tuyệt đối; luôn đọc cùng cấu trúc (tiền hay HTK/phải thu)."
+    why_it_works: "Là phần tài sản ngắn hạn còn lại sau khi trả hết nợ ngắn hạn."
+    assumptions: ["Phân loại ngắn hạn/dài hạn đúng"]
+    pitfalls: ["NWC không đổi nhưng chất lượng xấu đi (tiền giảm, phải thu/HTK tăng, vay ngắn hạn tăng) - Hải Long N-1 2.400 và N 2.368"]
+    interpretation: "Dương là có đệm; đọc cơ cấu bên trong chứ không chỉ con số."
+    example:
+      inputs: {current_assets: 5868, current_liabilities: 3500}
+      steps: ["5.868 - 3.500 = 2.368"]
+      result: "NWC = 2.368 triệu (N-1 là 2.400)"
+  - id: "m06_inventory_turnover_dio"
+    name_vi: "Vòng quay hàng tồn kho và số ngày tồn kho"
+    name_en: "Inventory Turnover and DIO"
+    expression_latex: '\text{Turnover} = \frac{\text{COGS}}{\text{Avg Inventory}},\quad \text{DIO} = \frac{365}{\text{Turnover}}'
+    expression_python: '365 / (cogs / avg_inventory)'
+    excel: "=365/(GiaVon/HTKBinhQuan)"
+    variables:
+      - {symbol: "cogs", meaning: "Giá vốn hàng bán (mã 11, TK 632)", unit: "triệu VNĐ/năm"}
+      - {symbol: "avg_inventory", meaning: "Hàng tồn kho bình quân (mã 140)", unit: "triệu VNĐ"}
+    when_to_use: "Đánh giá hàng nằm kho bao lâu; phát hiện tồn kho ứ đọng."
+    why_it_works: "Dùng COGS vì HTK ghi theo giá vốn; chia doanh thu (chứa lãi) cho HTK so hai thứ khác thước đo và thổi phồng vòng quay theo biên lợi nhuận. 365/vòng quay đổi sang ngày để dễ hình dung và cộng trừ trong CCC."
+    assumptions: ["Giá xuất kho nhất quán", "Đã trích dự phòng giảm giá HTK (TK 2294)"]
+    pitfalls: ["FIFO hay bình quân làm giá vốn và HTK khác nhau", "Không trích dự phòng HTK chậm luân chuyển làm DIO và lợi nhuận đẹp giả", "Dùng doanh thu thay COGS", "Số cuối kỳ khi mùa vụ"]
+    interpretation: "Đọc theo ngành: FMCG 8-12 vòng (30-45 ngày), thời trang 4-6 (60-90), điện tử 6-10 (35-60), nội thất 2-4 (90-180), xây dựng 1-3 (120-365). Tăng +30% so cùng kỳ là cờ vàng."
+    example:
+      inputs: {cogs: 2000, avg_inventory: 400}
+      steps: ["Vòng quay = 2.000/400 = 5,0 lần", "DIO = 365/5 = 73 ngày"]
+      result: "DIO = 73 ngày (thời trang chấp nhận được, FMCG quá chậm)"
+  - id: "m06_ar_turnover_dso"
+    name_vi: "Vòng quay phải thu và số ngày thu tiền"
+    name_en: "AR Turnover and DSO"
+    expression_latex: '\text{DSO} = \frac{365}{\text{Net Credit Sales}/\text{Avg AR}} = \frac{\text{Avg AR}}{\text{Net Credit Sales}}\times 365'
+    expression_python: 'avg_ar / credit_sales * 365'
+    excel: "=PhaiThuBinhQuan/DoanhThuBanChiu*365"
+    variables:
+      - {symbol: "avg_ar", meaning: "Phải thu khách hàng bình quân (TK 131)", unit: "triệu VNĐ"}
+      - {symbol: "credit_sales", meaning: "Doanh thu bán chịu thuần (nếu không tách được dùng doanh thu thuần mã 10)", unit: "triệu VNĐ/năm"}
+    when_to_use: "Đo bán xong bao lâu thì thu tiền; so với điều khoản bán hàng."
+    why_it_works: "AR là doanh thu chưa thu; AR/doanh thu một ngày cho số ngày doanh thu còn nằm trong công nợ."
+    assumptions: ["Doanh thu đều trong năm", "Doanh thu chịu thuế GTGT: AR gồm VAT nên đồng nhất tử và mẫu hoặc ghi chú"]
+    pitfalls: ["Dùng cả doanh thu thu tiền ngay làm DSO thấp hơn thực tế", "AR quá hạn không trích dự phòng (TK 2293) làm đẹp giả", "AR gồm VAT còn doanh thu thuần chưa gồm VAT làm DSO cao hơn khoảng 8-10%", "DSO tăng nhanh hơn doanh thu: nới bán chịu hoặc ghi doanh thu sớm"]
+    interpretation: "Dưới 30 xuất sắc; 30-45 tốt; 45-60 trung bình; 60-90 cần cải thiện; trên 90 nguy hiểm. Luôn so với hạn thanh toán cho khách (hạn 30 ngày mà DSO 45 tức trả chậm trung bình 15 ngày)."
+    example:
+      inputs: {avg_ar: 2900, credit_sales: 24000}
+      steps: ["2.900/24.000 x 365 = 44,1 ngày (dùng cuối kỳ; N-1 là 36,5)"]
+      result: "DSO = 44,1 ngày"
+  - id: "m06_ap_turnover_dpo"
+    name_vi: "Vòng quay phải trả và số ngày trả tiền"
+    name_en: "AP Turnover and DPO"
+    expression_latex: '\text{DPO} = \frac{\text{Avg AP}}{\text{COGS (hoặc Purchases)}}\times 365'
+    expression_python: 'avg_ap / purchases_or_cogs * 365'
+    excel: "=PhaiTraBinhQuan/GiaVon*365"
+    variables:
+      - {symbol: "avg_ap", meaning: "Phải trả nhà cung cấp bình quân (TK 331)", unit: "triệu VNĐ"}
+      - {symbol: "purchases_or_cogs", meaning: "Giá trị mua vào; xấp xỉ bằng giá vốn nếu tồn kho ổn định", unit: "triệu VNĐ/năm"}
+    when_to_use: "Đo số ngày giữ tiền của nhà cung cấp (nguồn vốn lưu động miễn phí)."
+    why_it_works: "AP phát sinh từ mua hàng nên tử số lý tưởng là Purchases; COGS là xấp xỉ."
+    assumptions: ["Tồn kho ổn định nếu dùng COGS thay Purchases"]
+    pitfalls: ["Kéo DPO vượt điều khoản làm mất uy tín, bị siết hàng, mất chiết khấu thanh toán sớm", "Khi tồn kho tăng mạnh dùng COGS làm DPO sai lệch"]
+    interpretation: "DPO cao tốt cho dòng tiền nếu trong điều khoản; phải so điều khoản NCC."
+    example:
+      inputs: {avg_ap: 1500, purchases_or_cogs: 20400}
+      steps: ["1.500/20.400 x 365 = 26,8 ngày"]
+      result: "DPO = 26,8 ngày"
+  - id: "m06_ccc"
+    name_vi: "Chu kỳ chuyển đổi tiền mặt"
+    name_en: "Cash Conversion Cycle"
+    expression_latex: '\text{CCC} = \text{DIO} + \text{DSO} - \text{DPO}'
+    expression_python: 'dio + dso - dpo'
+    excel: "=DIO+DSO-DPO"
+    variables:
+      - {symbol: "dio", meaning: "Số ngày tồn kho", unit: "ngày"}
+      - {symbol: "dso", meaning: "Số ngày thu tiền", unit: "ngày"}
+      - {symbol: "dpo", meaning: "Số ngày trả tiền", unit: "ngày"}
+    when_to_use: "Doanh nghiệp phân phối/bán lẻ/sản xuất; quy đổi sang số tiền cần tài trợ hoặc giải phóng được."
+    why_it_works: "Đi theo một đồng vốn: hàng nằm kho DIO ngày, bán chịu chờ DSO ngày thì tiền bị kẹt DIO + DSO, nhưng trong thời gian đó chưa phải trả NCC DPO ngày (NCC tài trợ) nên trừ đi. Phần còn lại là số ngày doanh nghiệp tự tìm vốn."
+    assumptions: ["Ba thành phần tính cùng quy ước (cuối kỳ hoặc bình quân, 365 ngày)", "Giá vốn làm cơ sở cho DIO và DPO, doanh thu cho DSO"]
+    pitfalls: ["CCC âm kiểu Apple/Dell dựa trên sức mạnh đàm phán, SME không sao chép máy móc", "Cộng ngày tính trên cơ sở khác nhau (doanh thu vs giá vốn) khi quy đổi tiền: dùng giá vốn/ngày cho DIO, DPO và doanh thu/ngày cho DSO"]
+    interpretation: "Âm là tuyệt vời; 0-30 rất tốt; 30-60 bình thường; 60-90 cần tối ưu; trên 90 vốn lưu động bị đóng băng. Xu hướng tăng khi doanh thu tăng là dấu hiệu tăng trưởng đốt tiền."
+    example:
+      inputs: {dio: 46.5196, dso: 44.1042, dpo: 26.8382}
+      steps: ["46,5 + 44,1 - 26,8 = 63,8 ngày (N-1 là 51,0; tăng 12,8 ngày)"]
+      result: "CCC = 63,8 ngày"
+  - id: "m06_cash_release"
+    name_vi: "Tiền giải phóng khi rút ngắn CCC"
+    name_en: "Cash released by days saved"
+    expression_latex: '\Delta\text{Cash} = \Delta\text{DSO}\times\frac{\text{Revenue}}{365} + \Delta\text{DIO}\times\frac{\text{COGS}}{365} + \Delta\text{DPO}\times\frac{\text{COGS}}{365}'
+    expression_python: 'd_dso * revenue / 365 + d_dio * cogs / 365 + d_dpo * cogs / 365'
+    excel: "=dDSO*DoanhThu/365+dDIO*GiaVon/365+dDPO*GiaVon/365"
+    variables:
+      - {symbol: "d_dso", meaning: "Số ngày DSO giảm", unit: "ngày"}
+      - {symbol: "d_dio", meaning: "Số ngày DIO giảm", unit: "ngày"}
+      - {symbol: "d_dpo", meaning: "Số ngày DPO tăng", unit: "ngày"}
+      - {symbol: "revenue", meaning: "Doanh thu thuần năm", unit: "triệu VNĐ"}
+      - {symbol: "cogs", meaning: "Giá vốn năm", unit: "triệu VNĐ"}
+    when_to_use: "Biến tỷ số thành quyết định tiền thật: mỗi ngày CCC = một lượng tiền cụ thể."
+    why_it_works: "Một ngày DSO bằng doanh thu bình quân một ngày nằm trong công nợ; một ngày DIO/DPO bằng giá vốn một ngày."
+    assumptions: ["Doanh thu và giá vốn đều trong năm", "Giữ nguyên quy mô hoạt động"]
+    pitfalls: ["Dùng doanh thu cho cả DIO/DPO làm số tiền chênh vài phần trăm", "Giả định thu hồi nợ dễ dàng: cần kiểm tra khách hàng và điều khoản"]
+    interpretation: "Số tiền ước tính giải phóng, dùng trả bớt vay ngắn hạn hoặc khôi phục đệm tiền."
+    example:
+      inputs: {d_dso: 7.6042, d_dio: 5.4812, d_dpo: 8.1618, revenue: 24000, cogs: 20400}
+      steps: ["DSO: 65,75 x 7,60 = 500", "DIO: 55,89 x 5,48 = 307", "DPO (35 - 26,84 = 8,16): 55,89 x 8,16 = 456", "Tổng khoảng 1.263 (nguồn làm tròn ngày ra 1.262-1.265)"]
+      result: "Khoảng 1.263 triệu giải phóng, CCC còn 42,5 ngày"
+  - id: "m06_asset_turnover"
+    name_vi: "Vòng quay tổng tài sản"
+    name_en: "Total Asset Turnover"
+    expression_latex: '\text{AT} = \frac{\text{Revenue}}{\text{Avg Total Assets (mã 270)}}'
+    expression_python: 'revenue / avg_total_assets'
+    excel: "=DoanhThu/TongTaiSanBinhQuan"
+    variables:
+      - {symbol: "revenue", meaning: "Doanh thu thuần (mã 10)", unit: "triệu VNĐ"}
+      - {symbol: "avg_total_assets", meaning: "Tổng tài sản bình quân", unit: "triệu VNĐ"}
+    when_to_use: "Mỗi đồng tài sản tạo bao nhiêu đồng doanh thu; trụ cột thứ hai của DuPont."
+    why_it_works: "Tài sản là vốn đã bỏ ra; doanh thu là sản phẩm của tài sản."
+    assumptions: ["Tài sản phản ánh đúng quy mô hoạt động"]
+    pitfalls: ["Tài sản ghi giá gốc trừ khấu hao: tài sản cũ đã khấu hao nhiều làm AT cao giả tạo so với công ty đầu tư mới", "Tài sản thuê ngoài bảng làm AT cao giả"]
+    interpretation: "Bán lẻ 2-3; FMCG 1-2; sản xuất nặng 0,3-0,8; tech/SaaS 0,5-1,0; bất động sản 0,1-0,3."
+    example:
+      inputs: {revenue: 24000, avg_total_assets: 8268}
+      steps: ["24.000/8.268 = 2,90 (cuối kỳ);"]
+      result: "AT = 2,90 (cuối kỳ)"
+  - id: "m06_debt_to_equity"
+    name_vi: "Tỷ số nợ trên vốn chủ"
+    name_en: "Debt-to-Equity (D/E)"
+    expression_latex: '\text{D/E} = \frac{\text{Nợ phải trả (mã 300)}}{\text{Vốn chủ sở hữu (mã 400)}}'
+    expression_python: 'total_liabilities / equity'
+    excel: "=B01_ma300/B01_ma400"
+    variables:
+      - {symbol: "total_liabilities", meaning: "Tổng nợ phải trả", unit: "triệu VNĐ"}
+      - {symbol: "equity", meaning: "Vốn chủ sở hữu", unit: "triệu VNĐ"}
+    when_to_use: "Đo đệm vốn chủ bảo vệ chủ nợ; ngân hàng thẩm định vay."
+    why_it_works: "So tiền của người ngoài với tiền của chủ: D/E = 1 nghĩa là 1 đồng vốn chủ đệm cho 1 đồng nợ."
+    assumptions: ["Ghi rõ định nghĩa: tổng nợ phải trả/vốn chủ (dùng ở đây) hay chỉ nợ vay có lãi/vốn chủ"]
+    pitfalls: ["Hai định nghĩa cho kết quả rất khác (Apple 4,67 theo tổng nợ so với khoảng 2 theo nợ vay)", "Nợ ngoài bảng và thuê dài hạn làm D/E thấp giả", "Vốn chủ thấp do lỗ lũy kế hay mua lại cổ phiếu"]
+    interpretation: "Dưới 0,5 bảo thủ; 0,5-1,5 cân bằng; 1,5-3,0 aggressive; trên 3,0 nguy hiểm. Ngành: utilities 1,5-3; BĐS 2-5; tech 0-0,5; bán lẻ 0,5-1,5; ngân hàng 8-15."
+    example:
+      inputs: {total_liabilities: 4700, equity: 3568}
+      steps: ["4.700/3.568 = 1,317 (N-1 là 3.500/3.000 = 1,167)"]
+      result: "D/E = 1,32"
+  - id: "m06_debt_ratio"
+    name_vi: "Tỷ số nợ trên tổng tài sản"
+    name_en: "Debt Ratio"
+    expression_latex: '\text{Debt Ratio} = \frac{\text{TL}}{\text{TA}} = 1 - \text{Equity Ratio};\quad \text{D/E} = \frac{\text{DR}}{1-\text{DR}}'
+    expression_python: 'total_liabilities / total_assets'
+    excel: "=B01_ma300/B01_ma270"
+    variables:
+      - {symbol: "total_liabilities", meaning: "Tổng nợ phải trả", unit: "triệu VNĐ"}
+      - {symbol: "total_assets", meaning: "Tổng tài sản", unit: "triệu VNĐ"}
+    when_to_use: "Cùng thông tin D/E nhưng ở dạng phần trăm tài sản tài trợ bằng nợ, dễ hiểu cho người không quen D/E."
+    why_it_works: "Tài sản = Nợ + Vốn chủ nên DR và D/E là hai cách biểu diễn cùng một cơ cấu."
+    assumptions: ["Bảng cân đối đã cân"]
+    pitfalls: ["Quên nợ ngoài bảng", "Nhầm DR 56,85% với D/E"]
+    interpretation: "Trên 50% là tài sản chủ yếu tài trợ bằng nợ. Chuyển đổi: DR 56,85% tương ứng D/E 1,32."
+    example:
+      inputs: {total_liabilities: 4700, total_assets: 8268}
+      steps: ["4.700/8.268 = 56,85%", "D/E = 0,5685/0,4315 = 1,32"]
+      result: "Debt Ratio = 56,8%"
+  - id: "m06_interest_coverage"
+    name_vi: "Khả năng thanh toán lãi vay"
+    name_en: "Interest Coverage Ratio (ICR)"
+    expression_latex: '\text{ICR} = \frac{\text{EBIT}}{\text{Chi phí lãi vay}}'
+    expression_python: 'ebit / interest_expense'
+    excel: "=EBIT/ChiPhiLaiVay"
+    variables:
+      - {symbol: "ebit", meaning: "Lợi nhuận trước lãi vay và thuế", unit: "triệu VNĐ"}
+      - {symbol: "interest_expense", meaning: "Chi phí lãi vay (mã 23)", unit: "triệu VNĐ"}
+    when_to_use: "Ngân hàng/chủ nợ đánh giá đệm lợi nhuận trả lãi; kiểm tra độ nhạy khi EBIT giảm."
+    why_it_works: "Lãi vay trả từ lợi nhuận trước lãi và thuế (chi phí được trừ trước thuế), nên mẫu số là EBIT chứ không phải lợi nhuận ròng. ICR = 5 thì EBIT có thể giảm 80% mà vẫn đủ trả lãi."
+    assumptions: ["EBIT ổn định, không bất thường", "Lãi vay đã gồm lãi vốn hóa nếu có"]
+    pitfalls: ["Chỉ xét lãi, không xét gốc: ICR 5,0x vẫn vỡ nợ nếu gốc đến hạn lớn (cần DSCR)", "ICR dưới 1 nghĩa là phải vay mới để trả lãi cũ", "Lãi vốn hóa vào tài sản không nằm trong chi phí lãi vay"]
+    interpretation: "Dưới 1,0 rất nguy; 1,0-1,5 nguy hiểm; 1,5-3,0 chấp nhận cẩn thận; 3,0-6,0 tốt; trên 6,0 rất tốt hoặc ít nợ."
+    example:
+      inputs: {ebit: 600, interest_expense: 400}
+      steps: ["600/400 = 1,5", "EBIT giảm 30% còn 420: 420/400 = 1,05 (gần như không đủ trả lãi)"]
+      result: "ICR = 1,5 và 1,05 sau cú sốc"
+  - id: "m06_equity_multiplier"
+    name_vi: "Hệ số vốn chủ sở hữu"
+    name_en: "Equity Multiplier"
+    expression_latex: '\text{EM} = \frac{\text{TA}}{\text{Equity}} = 1 + \text{D/E}'
+    expression_python: 'total_assets / equity'
+    excel: "=B01_ma270/B01_ma400"
+    variables:
+      - {symbol: "total_assets", meaning: "Tổng tài sản", unit: "triệu VNĐ"}
+      - {symbol: "equity", meaning: "Vốn chủ sở hữu", unit: "triệu VNĐ"}
+    when_to_use: "Thành phần đòn bẩy trong DuPont; mỗi đồng vốn chủ chống đỡ bao nhiêu đồng tài sản."
+    why_it_works: "Chứng minh: TA = TL + Equity nên TA/Equity = TL/Equity + 1."
+    assumptions: ["Bảng cân đối cân"]
+    pitfalls: ["EM tăng nhờ lỗ lũy kế hay mua lại cổ phiếu chứ không do kinh doanh"]
+    interpretation: "EM cao khuếch đại cả lãi lẫn lỗ; luôn đọc cùng ICR và Cash Ratio."
+    example:
+      inputs: {total_assets: 8268, equity: 3568}
+      steps: ["8.268/3.568 = 2,317 = 1 + 1,317"]
+      result: "EM = 2,32"
+  - id: "m06_dscr"
+    name_vi: "Hệ số khả năng trả nợ (gốc và lãi)"
+    name_en: "Debt Service Coverage Ratio (DSCR)"
+    expression_latex: '\text{DSCR} = \frac{\text{EBITDA} - \text{Thuế TNDN} - \text{Capex duy trì}}{\text{Gốc phải trả trong kỳ} + \text{Lãi phải trả trong kỳ}}'
+    expression_python: '(ebitda - tax - maintenance_capex) / (principal + interest)'
+    excel: "=(EBITDA-Thue-CapexDuyTri)/(Goc+Lai)"
+    variables:
+      - {symbol: "ebitda", meaning: "EBIT + khấu hao", unit: "triệu VNĐ"}
+      - {symbol: "tax", meaning: "Thuế TNDN đã nộp", unit: "triệu VNĐ"}
+      - {symbol: "maintenance_capex", meaning: "Chi đầu tư duy trì năng lực", unit: "triệu VNĐ"}
+      - {symbol: "principal", meaning: "Gốc nợ phải trả trong kỳ", unit: "triệu VNĐ"}
+      - {symbol: "interest", meaning: "Lãi vay phải trả trong kỳ", unit: "triệu VNĐ"}
+    when_to_use: "Thẩm định vay và rà soát SME có lịch trả gốc lớn; bổ sung cho ICR chỉ xét lãi."
+    why_it_works: "Vỡ nợ xảy ra vì không đủ tiền trả gốc và lãi đúng hạn chứ không phải vì lợi nhuận kế toán thấp. Tử số là dòng tiền khả dụng sau thuế và duy trì tài sản; mẫu số là tổng nghĩa vụ trả nợ."
+    assumptions: ["Định nghĩa tử số khác nhau giữa ngân hàng: ghi rõ dùng định nghĩa nào", "Lịch trả gốc lấy từ hợp đồng vay"]
+    pitfalls: ["Dùng EBITDA thô bỏ qua thuế và capex duy trì làm DSCR cao giả", "Quên khoản vay ngắn hạn đáo hạn một lần (bullet) cần tái tài trợ", "Coi vay ngắn hạn được đảo nợ luôn là chắc chắn"]
+    interpretation: "Dưới 1,0 không đủ trả nợ từ dòng tiền; ngân hàng thường yêu cầu khoảng 1,2-1,5 trở lên (ngưỡng thực hành, confidence medium, cần xác nhận với từng ngân hàng)."
+    example:
+      inputs: {ebitda: 1500, tax: 192, maintenance_capex: 300, principal: 400, interest: 240}
+      steps: ["Tử số = 1.500 - 192 - 300 = 1.008", "Mẫu số = 400 + 240 = 640", "1.008/640 = 1,575"]
+      result: "DSCR = 1,58 (giả định gốc phải trả 400)"
+  - id: "m06_gross_margin"
+    name_vi: "Biên lợi nhuận gộp"
+    name_en: "Gross Margin"
+    expression_latex: '\text{GM} = \frac{\text{Revenue} - \text{COGS}}{\text{Revenue}}\times 100\%'
+    expression_python: '(revenue - cogs) / revenue'
+    excel: "=(B02_ma10-B02_ma11)/B02_ma10"
+    variables:
+      - {symbol: "revenue", meaning: "Doanh thu thuần", unit: "triệu VNĐ"}
+      - {symbol: "cogs", meaning: "Giá vốn hàng bán", unit: "triệu VNĐ"}
+    when_to_use: "Đo sức mạnh định giá và hiệu quả mua hàng/sản xuất."
+    why_it_works: "Phần doanh thu còn lại sau chi phí trực tiếp tạo ra hàng bán; giảm tức giá bán giảm hoặc giá vốn tăng nhanh hơn."
+    assumptions: ["Phân loại chi phí giá vốn (TK 632) và bán hàng (TK 641) nhất quán", "Giá xuất kho nhất quán"]
+    pitfalls: ["Cùng khoản (lương đầu bếp) xếp giá vốn hay QLDN làm GM khác mà lãi ròng không đổi", "FIFO vs bình quân khi giá thay đổi lệch GM vài điểm phần trăm"]
+    interpretation: "SaaS 70-90%; dược 60-80%; thời trang 50-65%; F&B 60-70%; bán lẻ 25-40%; phân phối tiêu dùng 10-20%; xây dựng 10-20%. Giảm 5 điểm YoY là cờ vàng."
+    example:
+      inputs: {revenue: 24000, cogs: 20400}
+      steps: ["(24.000 - 20.400)/24.000 = 15,0% (N-1 là 16,0%)"]
+      result: "GM = 15,0%"
+  - id: "m06_operating_margin"
+    name_vi: "Biên lợi nhuận hoạt động"
+    name_en: "Operating Margin"
+    expression_latex: '\text{OM} = \frac{\text{EBIT}}{\text{Revenue}}'
+    expression_python: 'ebit / revenue'
+    excel: "=EBIT/DoanhThuThuan"
+    variables:
+      - {symbol: "ebit", meaning: "Lợi nhuận trước lãi vay và thuế", unit: "triệu VNĐ"}
+      - {symbol: "revenue", meaning: "Doanh thu thuần", unit: "triệu VNĐ"}
+    when_to_use: "So hiệu quả cốt lõi giữa hai doanh nghiệp vay nợ khác nhau."
+    why_it_works: "Trước lãi vay và thuế nên không phụ thuộc cấu trúc vốn."
+    assumptions: ["EBIT đã loại khoản bất thường"]
+    pitfalls: ["Chính sách khấu hao khác nhau làm EBIT khác"]
+    interpretation: "So cùng ngành và xu hướng."
+    example:
+      inputs: {ebit: 1200, revenue: 24000}
+      steps: ["1.200/24.000 = 5,0%"]
+      result: "Operating Margin = 5,0%"
+  - id: "m06_ebitda_margin"
+    name_vi: "Biên EBITDA"
+    name_en: "EBITDA Margin"
+    expression_latex: '\text{EBITDA Margin} = \frac{\text{EBIT} + \text{D\&A}}{\text{Revenue}}'
+    expression_python: '(ebit + depreciation_amortization) / revenue'
+    excel: "=(EBIT+KhauHao)/DoanhThuThuan"
+    variables:
+      - {symbol: "ebit", meaning: "EBIT", unit: "triệu VNĐ"}
+      - {symbol: "depreciation_amortization", meaning: "Khấu hao và phân bổ", unit: "triệu VNĐ"}
+      - {symbol: "revenue", meaning: "Doanh thu thuần", unit: "triệu VNĐ"}
+    when_to_use: "Xem khả năng tạo dòng tiền hoạt động thô; so công ty có chính sách khấu hao khác nhau."
+    why_it_works: "Khấu hao là chi phí không dùng tiền trong kỳ và phụ thuộc chính sách (đường thẳng/số dư giảm dần, thời gian hữu dụng ước tính)."
+    assumptions: ["Khấu hao lấy từ thuyết minh hoặc LCTT"]
+    pitfalls: ["EBITDA bỏ qua nhu cầu tái đầu tư tài sản nên doanh nghiệp nhiều tài sản (nhà hàng, sản xuất) không coi như tiền chi tự do"]
+    interpretation: "Dùng làm biên dòng tiền thô; đọc cùng capex."
+    example:
+      inputs: {ebit: 1200, depreciation_amortization: 300, revenue: 24000}
+      steps: ["(1.200 + 300)/24.000 = 6,25%"]
+      result: "EBITDA Margin = 6,25%"
+  - id: "m06_net_margin"
+    name_vi: "Biên lợi nhuận ròng"
+    name_en: "Net Profit Margin"
+    expression_latex: '\text{NM} = \frac{\text{Net Income (mã 60)}}{\text{Revenue}}\times 100\%'
+    expression_python: 'net_income / revenue'
+    excel: "=B02_ma60/B02_ma10"
+    variables:
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế", unit: "triệu VNĐ"}
+      - {symbol: "revenue", meaning: "Doanh thu thuần", unit: "triệu VNĐ"}
+    when_to_use: "Bottom line: giữ lại bao nhiêu từ mỗi đồng doanh thu sau mọi chi phí, lãi vay và thuế."
+    why_it_works: "Tổng hợp mọi khoản; biên vài % không tệ nếu vòng quay nhanh (DuPont)."
+    assumptions: ["Không có khoản bất thường lớn"]
+    pitfalls: ["Đánh giá riêng lẻ ngành phân phối bán lẻ mà bỏ qua vòng quay"]
+    interpretation: "Ngành: bán lẻ 2-6%, phân phối 1-4%, dịch vụ 10-20%, F&B 5-12%, sản xuất nhỏ 3-8% (ước lượng, cần đối chiếu số liệu ngành)."
+    example:
+      inputs: {net_income: 768, revenue: 24000}
+      steps: ["768/24.000 = 3,2%"]
+      result: "Net Margin = 3,2%"
+  - id: "m06_roe"
+    name_vi: "Tỷ suất sinh lời trên vốn chủ"
+    name_en: "Return on Equity (ROE)"
+    expression_latex: '\text{ROE} = \frac{\text{Net Income}}{\text{Avg Equity}}\times 100\%'
+    expression_python: 'net_income / avg_equity'
+    excel: "=B02_ma60/VonChuBinhQuan"
+    variables:
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế", unit: "triệu VNĐ"}
+      - {symbol: "avg_equity", meaning: "Vốn chủ bình quân (hoặc cuối kỳ, phải ghi rõ)", unit: "triệu VNĐ"}
+    when_to_use: "Góc nhìn chủ sở hữu: mỗi đồng vốn bỏ vào kiếm bao nhiêu; so chi phí cơ hội."
+    why_it_works: "Phải cao hơn lãi tiết kiệm/chi phí cơ hội vốn chủ, nếu không chủ gửi ngân hàng còn hơn."
+    assumptions: ["Vốn chủ dương"]
+    pitfalls: ["ROE cao do đòn bẩy, hoặc do vốn chủ thấp vì lỗ lũy kế/mua lại cổ phiếu/cổ tức lớn", "Vốn chủ âm hoặc gần 0 làm ROE vô nghĩa", "Phải phân rã bằng DuPont"]
+    interpretation: "Dưới 5% yếu; 5-10% trung bình; 10-20% tốt; 20-30% rất tốt; trên 30% xuất sắc hoặc đòn bẩy rất cao."
+    example:
+      inputs: {net_income: 768, avg_equity: 3568}
+      steps: ["768/3.568 = 21,5% (cuối kỳ); bình quân (3.000+3.568)/2 = 3.284 cho 23,4%"]
+      result: "ROE = 21,5% (cuối kỳ)"
+  - id: "m06_roa"
+    name_vi: "Tỷ suất sinh lời trên tài sản"
+    name_en: "Return on Assets (ROA)"
+    expression_latex: '\text{ROA} = \frac{\text{Net Income}}{\text{Avg Total Assets}}\times 100\%;\quad \text{ROA hiệu chỉnh} = \frac{\text{NI} + \text{Lãi vay}(1-T)}{\text{Avg TA}}'
+    expression_python: 'net_income / avg_total_assets'
+    excel: "=B02_ma60/TongTaiSanBinhQuan"
+    variables:
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế", unit: "triệu VNĐ"}
+      - {symbol: "avg_total_assets", meaning: "Tổng tài sản bình quân", unit: "triệu VNĐ"}
+    when_to_use: "Đánh giá năng lực quản lý dùng tài sản, độc lập cấu trúc vốn."
+    why_it_works: "Mẫu số là toàn bộ tài sản dù tài trợ bằng nợ hay vốn chủ."
+    assumptions: ["Ghi rõ định nghĩa tử số (NI hay NI + lãi vay x (1-T))"]
+    pitfalls: ["Tài sản khấu hao nhiều làm ROA cao giả", "Trộn hai định nghĩa tử số khi so sánh"]
+    interpretation: "ROE lớn hơn ROA nhiều là đòn bẩy cao; ROA ít bị đòn bẩy tác động."
+    example:
+      inputs: {net_income: 768, avg_total_assets: 8268}
+      steps: ["768/8.268 = 9,3% (N-1 là 576/6.500 = 8,9%)"]
+      result: "ROA = 9,3% (cuối kỳ)"
+  - id: "m06_burn_runway"
+    name_vi: "Burn Rate và Runway"
+    name_en: "Burn Rate and Runway"
+    expression_latex: '\text{Runway (tháng)} = \frac{\text{Tiền mặt hiện có}}{\text{Burn Rate/tháng}}'
+    expression_python: 'cash_on_hand / monthly_burn'
+    excel: "=TienMat/BurnRate"
+    variables:
+      - {symbol: "cash_on_hand", meaning: "Tiền mặt và tương đương tiền khả dụng", unit: "triệu VNĐ"}
+      - {symbol: "monthly_burn", meaning: "Tiền mặt tiêu hao ròng mỗi tháng (chi - thu hoạt động và đầu tư)", unit: "triệu VNĐ/tháng"}
+    when_to_use: "Startup/SME lỗ hoặc dòng tiền âm, cần biết còn sống bao lâu."
+    why_it_works: "Với doanh nghiệp lỗ, Current Ratio không nói thời gian sống; chia tiền hiện có cho tốc độ tiêu hao cho trực tiếp số tháng."
+    assumptions: ["Burn Rate ổn định (nên dùng bình quân 3 tháng gần nhất)"]
+    pitfalls: ["Burn Rate tăng khi mở rộng làm runway ngắn hơn dự tính", "Tính burn trên lỗ kế toán thay dòng tiền", "Quên khoản trả nợ gốc đến hạn"]
+    interpretation: "Dưới 6 tháng cần gọi vốn hoặc cắt chi ngay; cần kế hoạch gọi vốn bắt đầu khi còn trên 9-12 tháng (ngưỡng thực hành, confidence low)."
+    example:
+      inputs: {cash_on_hand: 480, monthly_burn: 60}
+      steps: ["480/60 = 8 tháng", "Nếu burn tăng lên 80: 480/80 = 6 tháng"]
+      result: "Runway = 8 tháng"
+  - id: "m06_cfo_to_ni"
+    name_vi: "Tỷ lệ dòng tiền hoạt động trên lợi nhuận ròng"
+    name_en: "CFO to Net Income"
+    expression_latex: '\text{CFO/NI} = \frac{\text{Lưu chuyển tiền thuần từ HĐKD}}{\text{Lợi nhuận sau thuế}}'
+    expression_python: 'cfo / net_income'
+    excel: "=CFO/LNST"
+    variables:
+      - {symbol: "cfo", meaning: "Dòng tiền thuần từ hoạt động kinh doanh", unit: "triệu VNĐ"}
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế", unit: "triệu VNĐ"}
+    when_to_use: "Kiểm tra chất lượng lợi nhuận; phát hiện tăng trưởng đốt tiền hoặc ghi nhận doanh thu sớm."
+    why_it_works: "Lợi nhuận dồn tích khác tiền; tỷ lệ này cho biết bao nhiêu phần lãi đã thành tiền."
+    assumptions: ["LCTT lập đúng, khớp tiền trên bảng cân đối"]
+    pitfalls: ["Một kỳ thấp có thể do mùa vụ, cần 3 kỳ", "Lãi vay đã trả có thể xếp ở CFO hoặc CFF tùy chính sách (cần xác nhận)"]
+    interpretation: "Gần 1 hoặc hơn là tốt; CFO nhỏ hơn NI liên tục 3 kỳ trở lên là cờ vàng; CFO âm khi NI dương là cờ đỏ."
+    example:
+      inputs: {cfo: -432, net_income: 768}
+      steps: ["-432/768 = -0,56 (Hải Long năm N)"]
+      result: "CFO/NI = -0,56: cờ đỏ chất lượng lợi nhuận"
+  - id: "m06_operating_wc"
+    name_vi: "Vốn lưu động hoạt động"
+    name_en: "Operating working capital"
+    expression_latex: '\text{OWC} = \text{AR} + \text{Inventory} - \text{AP}'
+    expression_python: 'ar + inventory - ap'
+    excel: "=PhaiThu+HTK-PhaiTra"
+    variables:
+      - {symbol: "ar", meaning: "Phải thu khách hàng", unit: "triệu VNĐ"}
+      - {symbol: "inventory", meaning: "Hàng tồn kho", unit: "triệu VNĐ"}
+      - {symbol: "ap", meaning: "Phải trả nhà cung cấp", unit: "triệu VNĐ"}
+    when_to_use: "Lượng vốn thực sự bị kẹt trong chu kỳ hoạt động; giải thích vì sao lãi mà thiếu tiền."
+    why_it_works: "Là phần hoạt động cần tài trợ; tăng OWC trừ trực tiếp vào CFO."
+    assumptions: ["Các khoản mục hoạt động tách khỏi tiền và nợ vay"]
+    pitfalls: ["NWC theo bảng cân đối lẫn tiền và vay ngắn hạn nên che mất mức tăng của OWC"]
+    interpretation: "OWC tăng nhanh hơn doanh thu là dấu hiệu tăng trưởng nuốt tiền."
+    example:
+      inputs: {ar: 2900, inventory: 2600, ap: 1500}
+      steps: ["2.900 + 2.600 - 1.500 = 4.000 (N-1: 1.800 + 1.700 - 1.100 = 2.400; tăng 1.600)"]
+      result: "OWC = 4.000 triệu"
+  - id: "m06_revenue_growth"
+    name_vi: "Tăng trưởng và so sánh tốc độ tăng"
+    name_en: "Growth rate comparison"
+    expression_latex: 'g = \frac{X_t}{X_{t-1}} - 1'
+    expression_python: 'current / previous - 1'
+    excel: "=KyNay/KyTruoc-1"
+    variables:
+      - {symbol: "current", meaning: "Giá trị kỳ này", unit: "tuỳ chỉ tiêu"}
+      - {symbol: "previous", meaning: "Giá trị kỳ trước", unit: "tuỳ chỉ tiêu"}
+    when_to_use: "So tốc độ tăng của doanh thu với phải thu, tồn kho, phải trả, lợi nhuận, CFO để lộ sự phân kỳ."
+    why_it_works: "Phải thu hoặc tồn kho tăng nhanh hơn doanh thu nghĩa là bán chịu nhiều hơn hoặc hàng chậm bán."
+    assumptions: ["Hai kỳ cùng độ dài và cùng chính sách kế toán"]
+    pitfalls: ["Nền thấp làm phần trăm lớn giả", "Mùa vụ nếu so kỳ không cùng mùa"]
+    interpretation: "AR tăng nhiều hơn doanh thu liên tục là cờ vàng/đỏ."
+    example:
+      inputs: {current: 2900, previous: 1800}
+      steps: ["2.900/1.800 - 1 = 61,1% so với doanh thu 33,3%"]
+      result: "AR +61,1%"
+  - id: "m06_cogs_fifo_wavg"
+    name_vi: "Giá vốn theo FIFO và bình quân gia quyền"
+    name_en: "COGS under FIFO vs weighted average"
+    expression_latex: '\text{COGS}_{FIFO} = \sum \text{lô cũ trước};\quad \text{COGS}_{WA} = Q_{bán}\times\frac{\text{Giá trị tồn đầu} + \text{Giá trị nhập}}{Q_{tồn đầu}+Q_{nhập}}'
+    expression_python: 'qty_sold * (open_qty * open_price + buy_qty * buy_price) / (open_qty + buy_qty)'
+    excel: "=SL_ban*(SL_dau*Gia_dau+SL_nhap*Gia_nhap)/(SL_dau+SL_nhap)"
+    variables:
+      - {symbol: "qty_sold", meaning: "Số lượng bán", unit: "đơn vị"}
+      - {symbol: "open_qty", meaning: "Tồn đầu kỳ (số lượng)", unit: "đơn vị"}
+      - {symbol: "open_price", meaning: "Giá tồn đầu", unit: "nghìn đồng/đơn vị"}
+      - {symbol: "buy_qty", meaning: "Số lượng nhập", unit: "đơn vị"}
+      - {symbol: "buy_price", meaning: "Giá nhập", unit: "nghìn đồng/đơn vị"}
+    when_to_use: "So sánh hai doanh nghiệp khác phương pháp giá xuất kho; đánh giá ảnh hưởng chính sách lên Gross Margin, HTK, DIO."
+    why_it_works: "Giá tăng thì FIFO xuất hàng cũ rẻ trước nên giá vốn thấp, GM cao, tồn cuối đắt; giá giảm thì ngược lại (bình quân cho GM cao hơn). VAS 02 không cho LIFO (cần xác nhận hiện hành)."
+    assumptions: ["Một lần nhập trong kỳ", "Phương pháp bình quân tính cuối kỳ"]
+    pitfalls: ["So Gross Margin giữa hai doanh nghiệp mà chưa đọc thuyết minh giá xuất kho", "Đổi chính sách phải thuyết minh và áp dụng nhất quán"]
+    interpretation: "Chênh lệch 3,3 điểm GM ở ví dụ giá tăng cho thấy chính sách có thể lớn hơn khác biệt kinh doanh thực."
+    example:
+      inputs: {qty_sold: 120, open_qty: 100, open_price: 10, buy_qty: 100, buy_price: 12}
+      steps: ["BQGQ: 120 x (1.000 + 1.200)/200 = 1.320", "FIFO: 100 x 10 + 20 x 12 = 1.240", "GM FIFO = (2.400 - 1.240)/2.400 = 48,3%; BQ = 45,0%"]
+      result: "Giá vốn BQGQ 1.320 so với FIFO 1.240"
+
+frameworks:
+  - id: "m06_four_group_system"
+    name_vi: "Hệ thống bốn nhóm tỷ số"
+    name_en: "Liquidity - Efficiency - Leverage - Profitability system"
+    origin: "Alexander Wall 1919 (hệ nhiều tỷ số thay vì một); Current Ratio 2:1 từ yêu cầu ngân hàng Mỹ cuối thế kỷ 19 (cần đối chiếu nguồn)."
+    components:
+      - "Thanh khoản: Current, Quick, Cash Ratio, NWC (trả nợ gần được không)"
+      - "Hiệu quả: DIO, DSO, DPO, CCC, Asset Turnover (vốn quay nhanh không)"
+      - "Đòn bẩy: D/E, Debt Ratio, ICR, EM, DSCR (vay quá mức không)"
+      - "Lợi nhuận: Gross, Operating, EBITDA, Net Margin, ROE, ROA (kiếm đủ không)"
+      - "Bổ sung: CFO/NI, Burn Rate/Runway, tăng trưởng"
+    when_to_use: "Mọi lần chẩn đoán sức khỏe tài chính."
+    how_to_apply:
+      - "Tính đủ cả bốn nhóm cho ít nhất 2 kỳ."
+      - "So YoY và kỳ trước, so ngành cùng quy mô."
+      - "Tìm sự phân kỳ giữa các nhóm (lợi nhuận tốt, tiền xấu)."
+    how_to_read_results: "Một tỷ số tốt không bù được tỷ số xấu ở nhóm khác (ICR 5,0x nhưng Cash Ratio 0,08)."
+    pitfalls: ["Chỉ nhìn lợi nhuận", "Benchmark khác ngành", "Quên dòng tiền"]
+    example: "Hải Long: lợi nhuận và ICR đẹp, thanh khoản và CCC xấu đi, CFO âm."
+  - id: "m06_statement_code_mapping"
+    name_vi: "Ánh xạ mã số BCTC theo VAS vào tỷ số"
+    name_en: "VAS statement code to ratio mapping"
+    origin: "Thông tư 200/2014/TT-BTC (B01-DN, B02-DN); DN nhỏ có thể áp dụng TT133/2016/TT-BTC với mẫu khác - cần xác nhận hiện hành."
+    components:
+      - "B01-DN: 100 TS ngắn hạn; 110 tiền; 130 phải thu ngắn hạn; 140 HTK (trừ dự phòng TK 2294); 270 tổng tài sản; 300 nợ phải trả; 310 nợ ngắn hạn; 400 vốn chủ"
+      - "B02-DN: 10 doanh thu thuần (01 - 02, TK 511); 11 giá vốn (TK 632); 20 lợi nhuận gộp; 22 chi phí tài chính; 23 chi phí lãi vay (TK 635); 50 LN trước thuế; 60 LN sau thuế"
+      - "Dự phòng phải thu khó đòi TK 2293; dự phòng giảm giá HTK TK 2294"
+    when_to_use: "Khi nhận BCTC thật và cần lấy đúng số cho từng tỷ số."
+    how_to_apply:
+      - "Xác nhận chế độ kế toán (TT200 hay TT133) và mẫu biểu."
+      - "Lấy số từng dòng theo bảng và ghi mã số nguồn trong bảng tính."
+      - "Tính EBIT = mã 50 + mã 23 (loại bất thường)."
+      - "Đối chiếu tổng tài sản = nợ + vốn chủ, tiền LCTT khớp mã 110."
+    how_to_read_results: "Mã số chỉ định hướng; mọi mã cần đối chiếu mẫu hiện hành."
+    pitfalls: ["Dùng mã 22 làm lãi vay", "Dùng HTK chưa trừ dự phòng", "Dùng mã của chế độ cũ"]
+    example: "Quick Ratio = (mã 100 - mã 140)/mã 310."
+  - id: "m06_dupont_3"
+    name_vi: "DuPont 3 thành phần"
+    name_en: "DuPont 3-factor"
+    origin: "Thập niên 1910-1920 tại DuPont, gắn với Donaldson Brown, khi DuPont kiểm soát General Motors: cần biết bộ phận nào chịu trách nhiệm khi ROE biến động (cần đối chiếu nguồn)."
+    components:
+      - "Net Margin = NI/Revenue (bán hàng, định giá, kiểm soát chi phí)"
+      - "Asset Turnover = Revenue/Assets (vận hành, vốn lưu động, tài sản)"
+      - "Equity Multiplier = Assets/Equity (tài chính, đòn bẩy)"
+      - "ROE = NM x AT x EM (đồng nhất thức đại số: Revenue và Assets triệt tiêu)"
+    when_to_use: "ROE biến động hoặc cần so hai doanh nghiệp cùng ROE nhưng rủi ro khác."
+    how_to_apply:
+      - "Tính ba thành phần cho hai kỳ (cùng quy ước cuối kỳ hoặc bình quân)."
+      - "Kiểm tra tích bằng ROE tính trực tiếp."
+      - "Phân rã thay đổi ROE: thành phần nào đổi, cái nào đứng yên."
+    how_to_read_results: "ROE tăng mà NM không đổi, EM tăng là ROE nhờ đòn bẩy, đẹp mặt rỗng ruột. Luxury 15% x 0,8 x 1,5 = 18% (rủi ro thấp) khác bán lẻ giá rẻ 3% x 3,0 x 2,5 = 22,5% (nhạy suy thoái)."
+    pitfalls: ["Trộn cuối kỳ và bình quân", "Bỏ qua rủi ro của EM cao", "Gộp thuế và lãi vay vào NM"]
+    example: "Hải Long N: 3,2% x 2,90 x 2,32 = 21,5%; N-1: 3,2% x 2,77 x 2,17 = 19,2%."
+  - id: "m06_dupont_5"
+    name_vi: "DuPont 5 thành phần"
+    name_en: "DuPont 5-factor"
+    origin: "Mở rộng DuPont 3 để tách thuế và lãi vay ra khỏi biên ròng."
+    components:
+      - "Tax Burden = NI/EBT"
+      - "Interest Burden = EBT/EBIT"
+      - "Operating Margin = EBIT/Revenue"
+      - "Asset Turnover = Revenue/Assets"
+      - "Equity Multiplier = Assets/Equity"
+    when_to_use: "Phân biệt ROE tăng do kinh doanh cốt lõi hay do thuế/lãi vay giảm."
+    how_to_apply:
+      - "Tính 5 thành phần từ mã 60, 50, EBIT, 10, 270, 400."
+      - "Kiểm tra tích 5 thành phần = ROE."
+      - "Interest Burden thấp (0,5) nghĩa là nửa lợi nhuận hoạt động bị lãi vay nuốt."
+    how_to_read_results: "Hải Long: 0,8 x 0,8 x 5,0% x 2,90 x 2,32 = 21,5%; Operating Margin đứng yên nên cải thiện ROE nằm ở AT và EM, không ở hoạt động."
+    pitfalls: ["EBIT tính sai", "Thuế hiệu dụng thay đổi do khoản không được trừ"]
+    example: "Tax Burden 768/960 = 0,8; Interest Burden 960/1.200 = 0,8."
+  - id: "m06_accounting_policy_effects"
+    name_vi: "Ảnh hưởng chính sách kế toán lên tỷ số"
+    name_en: "Accounting policy effects on ratios"
+    origin: "Nguyên tắc nhất quán và thận trọng của kế toán; VAS 02 về HTK."
+    components:
+      - "Giá xuất kho (FIFO, bình quân, đích danh): Gross Margin, Current Ratio, DIO"
+      - "Khấu hao và thời gian hữu dụng: Operating Margin, ROA, Asset Turnover"
+      - "Dự phòng phải thu/HTK: Current Ratio, DSO, DIO, Net Margin"
+      - "Cut-off ghi nhận doanh thu: gần như mọi tỷ số"
+      - "Vốn hóa vs ghi chi phí ngay: Margin, ROA, AT"
+      - "Phân loại nợ ngắn/dài hạn: Current Ratio, Quick Ratio"
+      - "Phân loại chi phí giá vốn vs bán hàng/QLDN: Gross Margin"
+    when_to_use: "So sánh giữa doanh nghiệp hoặc kỳ khi chính sách có thể khác."
+    how_to_apply:
+      - "Đọc thuyết minh BCTC lấy chính sách của từng bên."
+      - "Chuẩn hóa nếu có thể (tính lại giá vốn theo cùng phương pháp)."
+      - "Nếu không chuẩn hóa được, ghi rõ không so sánh trực tiếp."
+    how_to_read_results: "Hai doanh nghiệp đồng nhất kinh doanh nhưng khác chính sách có thể chênh Gross Margin vài điểm phần trăm."
+    pitfalls: ["Đổi chính sách không thuyết minh", "So sánh khi chưa đọc thuyết minh"]
+    example: "Giá nhập tăng: FIFO GM 48,3% so với BQGQ 45,0%; giá giảm: FIFO 51,7% so với BQGQ 55,0%."
+  - id: "m06_window_dressing_check"
+    name_vi: "Rà soát window dressing và chất lượng số liệu"
+    name_en: "Window dressing and data quality check"
+    origin: "Thực hành kiểm toán/thẩm định tín dụng: số cuối kỳ là điểm dễ thao tác nhất."
+    components:
+      - "Trả nợ ngắn hạn sát ngày khóa sổ rồi vay lại đầu kỳ sau"
+      - "Tái phân loại vay ngắn hạn thành dài hạn qua tái cơ cấu hợp đồng"
+      - "Đẩy doanh thu/hoãn chi phí qua cut-off"
+      - "Không trích dự phòng phải thu/HTK"
+      - "Nợ ngoài bảng, thuê dài hạn, bảo lãnh"
+    when_to_use: "Thẩm định vay, đầu tư, mua bán doanh nghiệp, hoặc khi tỷ số đẹp bất thường."
+    how_to_apply:
+      - "Dùng số bình quân nhiều kỳ và xu hướng quý/tháng thay vì một mốc cuối năm."
+      - "Đọc thuyết minh nợ vay, cam kết, bên liên quan."
+      - "Kiểm tra giao dịch lớn 5-10 ngày quanh ngày khóa sổ."
+      - "Đối chiếu công nợ, kiểm kê kho, đối chiếu CFO với lợi nhuận."
+    how_to_read_results: "Ví dụ CA 2.000, CL 1.000 (CR 2,0); trả 500 nợ bằng tiền: CA 1.500, CL 500 (CR 3,0) mà doanh nghiệp không giàu hơn."
+    pitfalls: ["Tin tỷ số một mốc", "Không phân biệt thao tác hợp pháp (quản trị tiền) và gian lận"]
+    example: "Cash Ratio cuối năm đột nhiên đẹp rồi tụt đầu quý sau."
+  - id: "m06_off_balance_ifrs16"
+    name_vi: "Điều chỉnh nợ ngoài bảng và thuê theo IFRS 16"
+    name_en: "Off-balance-sheet and IFRS 16 adjustment"
+    origin: "IFRS 16 (hiệu lực 2019) đưa hầu hết hợp đồng thuê lên bảng: tài sản quyền sử dụng và nợ thuê; VAS chưa chặt như vậy (cần xác nhận hiện hành và lộ trình IFRS tại Việt Nam)."
+    components:
+      - "Nợ thuê = giá trị hiện tại của tiền thuê tương lai chiết khấu theo lãi suất vay biên"
+      - "Cộng nợ thuê vào cả tổng nợ lẫn tổng tài sản (tài sản quyền sử dụng)"
+      - "Các nghĩa vụ khác: bảo lãnh cho bên liên quan, cam kết mua hàng"
+    when_to_use: "Doanh nghiệp thuê nhiều (chuỗi cửa hàng, nhà hàng, kho); so với công ty IFRS; ngân hàng thẩm định."
+    how_to_apply:
+      - "Liệt kê hợp đồng thuê dài hạn và tiền thuê còn lại."
+      - "Tính hiện giá tiền thuê (chiết khấu theo lãi vay biên)."
+      - "Tính lại D/E, Debt Ratio, Asset Turnover, ROA với số điều chỉnh."
+    how_to_read_results: "Ví dụ tiền thuê 600/năm trong 5 năm, lãi 10%: nợ thuê 2.274; D/E 1,32 tăng lên 1,95."
+    pitfalls: ["Chiết khấu bằng lãi suất sai", "Điều chỉnh một bên mà không điều chỉnh bên so sánh"]
+    example: "Xem worked example IFRS 16."
+  - id: "m06_ratio_red_flags"
+    name_vi: "Bảng red flags tỷ số"
+    name_en: "Ratio red flags"
+    origin: "Quy tắc kinh nghiệm từ thẩm định tín dụng và phân tích BCTC, không phải quy định pháp lý."
+    components:
+      - "Đỏ - Current Ratio dưới 1,0 giảm 3 quý liên tiếp"
+      - "Đỏ - D/E tăng nhanh, +50% trong 1 năm"
+      - "Đỏ - ICR dưới 1,5 và đang giảm"
+      - "Vàng - DIO +30% so với cùng kỳ"
+      - "Vàng - DSO trên 90 ngày hoặc tăng nhanh hơn doanh thu"
+      - "Vàng - Gross Margin giảm 5 điểm phần trăm YoY"
+      - "Vàng - ROE tăng do EM tăng trong khi Net Margin không đổi hoặc giảm"
+      - "Vàng - CFO dưới Net Income trong 3 kỳ liên tiếp"
+      - "Đỏ - CFO âm khi Net Income dương"
+    when_to_use: "Quét nhanh dashboard hằng tháng/quý."
+    how_to_apply:
+      - "Tính các tỷ số liên quan và so ngưỡng."
+      - "Tìm sự phân kỳ: doanh thu +20% nhưng DSO 45 lên 85, DIO 30 lên 55, CR 2,0 xuống 1,2, CFO +100 xuống -50."
+      - "Gán giả thuyết (ghi doanh thu sớm, bán chịu mạnh, hàng chậm bán) và hành động kiểm tra."
+    how_to_read_results: "Nhiều cờ cùng chiều nghiêm trọng hơn một cờ riêng lẻ."
+    pitfalls: ["Ngưỡng cứng bỏ qua đặc thù ngành (Apple CR dưới 1)", "Cờ đơn lẻ"]
+    example: "Công ty Y bài tập: AR +96%, DSO 118 ngày, CFO/NI 0,14."
+  - id: "m06_ratio_diagnosis_flow"
+    name_vi: "Quy trình chẩn đoán sức khỏe tài chính"
+    name_en: "Financial health diagnosis flow"
+    origin: "Tổng hợp từ nguồn: 7 bước của case Hải Long."
+    components:
+      - "B1 Kiểm tra số liệu (cân đối, khớp LCTT, cut-off, chính sách)"
+      - "B2 Tính 4 nhóm tỷ số hai kỳ"
+      - "B3 DuPont 3 và 5"
+      - "B4 Đối chiếu CFO và vốn lưu động hoạt động"
+      - "B5 Quét red flags"
+      - "B6 Chẩn đoán nguyên nhân và lượng hóa"
+      - "B7 Khuyến nghị hành động có chủ, hạn"
+    when_to_use: "Mọi yêu cầu 'phân tích BCTC/sức khỏe tài chính'."
+    how_to_apply:
+      - "Theo thứ tự B1 đến B7, không bỏ B1."
+      - "Ghi cách tính (cuối kỳ/bình quân) và nguồn mã số."
+      - "Kết luận gồm điểm mạnh, rủi ro, ưu tiên hành động và số tiền giải phóng."
+    how_to_read_results: "Kết luận phải nêu được tiền đang kẹt ở đâu và vì sao lợi nhuận không thành tiền."
+    pitfalls: ["Bỏ B1", "Chỉ nêu tỷ số không nêu hành động"]
+    example: "Hải Long: tăng trưởng nuốt tiền, ROE nhờ đòn bẩy, vay ngắn hạn tài trợ TSCĐ."
+  - id: "m06_three_red_lines"
+    name_vi: "Ba lằn ranh đỏ (Trung Quốc, BĐS)"
+    name_en: "Three Red Lines policy"
+    origin: "Chính sách ban hành khoảng 2020 giới hạn đòn bẩy nhà phát triển bất động sản Trung Quốc (diễn đạt mức nguyên tắc, cần đối chiếu quy định gốc)."
+    components:
+      - "Lằn 1: (Nợ phải trả - tiền nhận trước)/Tài sản không quá 70%"
+      - "Lằn 2: Nợ ròng/Vốn chủ không quá 100%"
+      - "Lằn 3: Tiền/Nợ vay ngắn hạn tối thiểu 1,0"
+    when_to_use: "Mẫu để SME tự đặt lằn ranh đỏ (ICR tối thiểu, Cash Ratio tối thiểu, D/E trần) khi không có cơ quan quản lý đặt hộ."
+    how_to_apply:
+      - "Tính ba tỷ số trên số giả định hoặc thực."
+      - "Tự đặt ba lằn ranh cho SME."
+    how_to_read_results: "Mô hình giả định: 72,0%, 142,5%, 0,36 đều vi phạm."
+    pitfalls: ["Số Evergrande trong nguồn là giả định minh họa chứ không phải số thật", "Phiên bản cũ ghi lằn 1 là D/E nhỏ hơn 1 - sai"]
+    example: "Xem worked example Evergrande mô phỏng."
+  - id: "m06_ratio_use_context"
+    name_vi: "Chọn tỷ số theo mục đích và giai đoạn"
+    name_en: "Ratios by purpose and lifecycle"
+    origin: "Thực hành phân tích tài chính."
+    components:
+      - "Xin vay: Current Ratio, D/E, ICR, DSO, DSCR"
+      - "Gọi vốn: ROE, tăng trưởng doanh thu, Net Margin"
+      - "Quản trị nội bộ: Gross Margin, CCC, Asset Turnover"
+      - "M&A: EV/EBITDA, ROA, DuPont"
+      - "Startup: Burn Rate, Runway, CAC/LTV, CCC"
+      - "Tăng trưởng: Revenue Growth, Gross Margin, CCC"
+      - "Trưởng thành: Net Margin, ROE/ROA, DuPont, Dividend Payout"
+      - "Suy thoái: Cash Ratio, D/E, ICR"
+    when_to_use: "Chọn bộ tỷ số ưu tiên theo người đọc và giai đoạn."
+    how_to_apply:
+      - "Xác định người đọc và mục đích."
+      - "Chọn 5-8 tỷ số ưu tiên theo bảng."
+      - "Đặt tần suất: tháng cho margin, thanh khoản, DSO; quý cho CCC, D/E, ROE."
+    how_to_read_results: "Cùng một báo cáo, ngân hàng và nhà đầu tư nhìn tỷ số khác nhau."
+    pitfalls: ["Dùng một bộ cho mọi đối tượng"]
+    example: "Hải Long xin vay: nhấn Quick Ratio, DSCR, CCC."
+
+procedures:
+  - id: "m06_proc_health_diagnosis"
+    name: "Chẩn đoán sức khỏe tài chính từ BCTC (từ đầu đến cuối)"
+    steps:
+      - "Hỏi đủ đầu vào: BCTC 2 kỳ trở lên (B01, B02, B03 LCTT, thuyết minh), chế độ kế toán (TT200/TT133), mục đích (vay, gọi vốn, nội bộ), ngành, quy ước cuối kỳ hay bình quân. Thiếu LCTT thì lập gián tiếp từ hai bảng cân đối."
+      - "B1 kiểm tra số liệu: Tài sản = Nợ + Vốn chủ; lợi nhuận chưa phân phối cuối = đầu + LNST - cổ tức - phân phối khác; tiền cuối LCTT = mã 110; TSCĐ cuối = đầu + đầu tư - khấu hao; đối chiếu công nợ, kiểm kê kho, cut-off, đọc thuyết minh chính sách (giá xuất kho, khấu hao, dự phòng)."
+      - "Ánh xạ số liệu vào tỷ số theo mã số; tính EBIT = mã 50 + mã 23."
+      - "B2 tính 4 nhóm tỷ số cho mọi kỳ cùng một quy ước; nếu chọn bình quân thì ghi rõ."
+      - "B3 DuPont 3 và 5; phân rã thay đổi ROE giữa hai kỳ."
+      - "B4 lập hoặc đọc LCTT gián tiếp; tính CFO/NI, OWC, tăng trưởng AR/HTK/AP so với doanh thu."
+      - "B5 quét red flags theo bảng; tìm phân kỳ giữa các nhóm; kiểm tra window dressing và nợ ngoài bảng."
+      - "B6 chẩn đoán: tiền kẹt ở đâu (AR, HTK), vì sao ROE đổi, cơ cấu nợ (ngắn dài, khớp kỳ hạn), ICR và DSCR; so benchmark ngành."
+      - "B7 lượng hóa hành động: số ngày CCC giảm x doanh thu/giá vốn một ngày; đề xuất ai - làm gì - hạn; cập nhật dự báo dòng tiền 13 tuần."
+      - "Xuất báo cáo: bảng tỷ số 2 kỳ có cờ xanh-vàng-đỏ, DuPont, chẩn đoán, 3 hành động, ghi chú giả định và mục cần xác nhận."
+    outputs: "Bảng tỷ số 4 nhóm hai kỳ, DuPont 3/5, danh sách red flags kèm nguyên nhân, lượng tiền giải phóng ước tính, 3 hành động có chủ và hạn, danh mục giả định và mục cần xác nhận."
+  - id: "m06_proc_data_reliability"
+    name: "Kiểm tra độ tin cậy số liệu trước khi tính tỷ số"
+    steps:
+      - "Bảng cân đối đã cân; LNST khớp giữa KQKD và vốn chủ (lợi nhuận chưa phân phối)."
+      - "Tiền cuối kỳ LCTT khớp bảng cân đối."
+      - "Đối chiếu công nợ phải thu, phải trả với đối tác; kiểm kê hàng tồn kho với sổ."
+      - "Kiểm tra dự phòng phải thu khó đòi (TK 2293) và giảm giá HTK (TK 2294) đã trích khi có cơ sở (cần xác nhận hiện hành)."
+      - "Kiểm tra cut-off doanh thu/chi phí đúng kỳ."
+      - "Kiểm tra chính sách kế toán nhất quán với kỳ trước, thay đổi đã thuyết minh."
+      - "Kiểm tra đơn vị và định nghĩa để so sánh được với kỳ trước/đối thủ."
+    outputs: "Danh sách sai lệch phát hiện và mức ảnh hưởng đến tỷ số; quyết định có đủ tin cậy để tính chưa."
+  - id: "m06_proc_dupont_decompose"
+    name: "Phân rã thay đổi ROE bằng DuPont"
+    steps:
+      - "Tính NM, AT, EM (và Tax/Interest Burden, Operating Margin cho bản 5) cho kỳ trước và kỳ này."
+      - "Kiểm tra tích bằng ROE trực tiếp."
+      - "So từng thành phần: cái nào đổi, bao nhiêu."
+      - "Nếu EM tăng mà NM không đổi: kết luận ROE nhờ đòn bẩy, kiểm tra ICR, Cash Ratio, DSCR."
+      - "Nếu OM tăng: kinh doanh cốt lõi tốt lên; nếu Interest/Tax Burden đổi: nguồn không phải hoạt động."
+      - "Gán trách nhiệm: bán hàng (margin), vận hành (AT), tài chính (EM)."
+    outputs: "Bảng thành phần hai kỳ và nhận định nguồn gốc tăng/giảm ROE."
+  - id: "m06_proc_ccc_optimize"
+    name: "Tối ưu CCC và quy đổi ra tiền"
+    steps:
+      - "Tính DIO, DSO, DPO, CCC hai kỳ cùng quy ước."
+      - "Tìm thành phần lệch nhất so với kỳ trước hoặc benchmark."
+      - "Đặt mục tiêu ngày cho từng thành phần (DSO về mức cũ, DIO giảm SKU chậm, DPO thương lượng trong điều khoản)."
+      - "Quy đổi tiền: ngày x doanh thu/365 (DSO) hoặc giá vốn/365 (DIO, DPO)."
+      - "Thiết kế chính sách: hạn mức tín dụng khách, chiết khấu thanh toán sớm, phạt chậm, nhập hàng theo cầu, đổi vay ngắn hạn tài trợ TSCĐ sang trung/dài hạn."
+      - "Theo dõi hằng tháng bằng số luỹ kế 12 tháng nhân 365 để tránh mùa vụ."
+    outputs: "Bảng mục tiêu ngày, số tiền giải phóng, hành động và người chịu trách nhiệm."
+  - id: "m06_proc_dashboard_setup"
+    name: "Dựng dashboard tỷ số hằng tháng cho SME"
+    steps:
+      - "Đóng sổ tháng đúng hạn; xuất B01 và B02 ra Excel/Google Sheets."
+      - "Tab INPUT_BS, INPUT_PL theo tháng với mã số; Tab RATIOS công thức; Tab DASHBOARD biểu đồ xu hướng và tô màu; Tab NOTES ghi chính sách và thay đổi bất thường."
+      - "Số tháng: DSO = AR/doanh thu tháng x 30 hoặc luỹ kế 12 tháng x 365; ROE năm hóa x 12 thận trọng với mùa vụ."
+      - "Đặt cờ: IF dưới 1 đỏ, dưới 1,5 vàng, còn lại xanh (đặt ngưỡng theo chỉ tiêu)."
+      - "Phân công: kế toán nhập và đóng sổ hằng ngày/tháng; kế toán trưởng tính dashboard hằng tháng; chủ DN và kế toán trưởng phân tích DuPont hằng quý."
+    outputs: "Dashboard 1 trang gồm 4 nhóm tỷ số, tăng trưởng, màu cảnh báo và ghi chú."
+  - id: "m06_proc_policy_compare"
+    name: "So sánh hai doanh nghiệp khác chính sách kế toán"
+    steps:
+      - "Lấy chính sách giá xuất kho, khấu hao, dự phòng, cut-off, phân loại chi phí của cả hai từ thuyết minh."
+      - "Nếu khác: chuẩn hóa (tính lại giá vốn theo cùng phương pháp nếu có dữ liệu lô)."
+      - "Nếu không chuẩn hóa được: dùng tỷ số ít nhạy chính sách (EBITDA Margin, CFO/NI) và ghi chú."
+      - "Báo cáo kết quả kèm chênh lệch ước tính do chính sách."
+    outputs: "Bảng so sánh đã chuẩn hóa hoặc có chú thích hạn chế."
+
+decision_rules:
+  - "Nếu Current Ratio dưới 1,0 thì xem cấu trúc nợ ngắn hạn và dòng tiền hoạt động trước khi kết luận nguy hiểm; chỉ cờ đỏ khi kèm Cash Ratio thấp, CFO âm hoặc ICR dưới 1,5."
+  - "Nếu Current Ratio đẹp nhưng Quick Ratio dưới 1,0 thì thanh khoản phụ thuộc bán tồn kho: kiểm tra DIO và dự phòng HTK."
+  - "Nếu Cash Ratio dưới 0,1 trong khi có nhiều khoản vay đáo hạn thì cảnh báo rủi ro thanh khoản dù Current Ratio ổn."
+  - "Nếu lợi nhuận dương mà CFO âm thì tìm nguyên nhân ở AR, HTK, AP (tăng trưởng nuốt tiền hay ghi doanh thu sớm) và đề xuất giải phóng vốn lưu động."
+  - "Nếu DSO tăng nhanh hơn doanh thu hoặc trên 90 ngày thì kiểm tra cut-off, đối chiếu công nợ, dự phòng phải thu khó đòi và chính sách tín dụng."
+  - "Nếu DIO tăng 30% so cùng kỳ thì kiểm tra SKU chậm, dự phòng giảm giá HTK và chính sách mua."
+  - "Nếu CCC tăng thì tách DIO, DSO, DPO, rồi quy đổi từng ngày ra tiền bằng doanh thu hoặc giá vốn một ngày."
+  - "Nếu ICR dưới 1,5 và đang giảm thì cờ đỏ; nếu ICR dưới 1 thì doanh nghiệp đang vay mới để trả lãi cũ."
+  - "Nếu ICR đẹp nhưng có nhiều vay ngắn hạn đáo hạn hoặc gốc lớn thì tính DSCR và lịch trả nợ thay vì tin ICR."
+  - "Nếu DSCR dưới 1,0 thì dòng tiền không đủ trả nợ: đề xuất tái cơ cấu kỳ hạn, giảm chi, tăng vốn chủ."
+  - "Nếu ROE tăng mà Net Margin không đổi và EM tăng thì ROE nhờ đòn bẩy: kiểm tra ICR, Cash Ratio và không khen thưởng thành tích đó."
+  - "Nếu hai doanh nghiệp cùng ROE thì dùng DuPont để so nguồn (biên, vòng quay, đòn bẩy) và rủi ro."
+  - "Nếu so Gross Margin hoặc Current Ratio giữa hai doanh nghiệp thì kiểm tra chính sách giá xuất kho và phân loại chi phí trước."
+  - "Nếu doanh nghiệp tăng trưởng nhanh hoặc mùa vụ thì dùng số bình quân hoặc luỹ kế 12 tháng; ghi rõ quy ước."
+  - "Nếu tỷ số cuối năm đẹp bất thường so với quý trước thì nghi window dressing: kiểm tra giao dịch sát ngày khóa sổ và dùng bình quân."
+  - "Nếu doanh nghiệp thuê nhiều tài sản thì điều chỉnh nợ thuê (IFRS 16) trước khi đánh giá D/E; theo VAS D/E có thể thấp giả."
+  - "Nếu doanh nghiệp vay ngắn hạn để đầu tư TSCĐ thì cảnh báo sai khớp kỳ hạn, đề xuất chuyển sang vay trung/dài hạn."
+  - "Nếu startup lỗ thì dùng Burn Rate và Runway; dưới 6 tháng thì cắt chi hoặc gọi vốn ngay."
+  - "Nếu D/E được định nghĩa khác nhau giữa các nguồn thì ghi rõ (tổng nợ phải trả/vốn chủ hay nợ vay có lãi/vốn chủ) trước khi so sánh."
+  - "Nếu benchmark khác ngành hoặc khác quy mô thì không dùng; nếu không có số ngành thì so với chính mình qua thời gian."
+  - "Nếu số liệu BCTC chưa cân hoặc LCTT không khớp thì dừng tính tỷ số, báo lỗi dữ liệu."
+  - "Nếu cần pháp lý/thuế (mã số, thuế suất, trần lãi vay, dự phòng) thì đánh dấu cần xác nhận hiện hành và không khẳng định."
+
+benchmarks:
+  - {metric: "Current Ratio", value: "dưới 1,0 nguy hiểm; 1,0-1,5 cảnh báo; 1,5-3,0 khỏe; trên 3,0 có thể quá nhiều tài sản nhàn rỗi", context: "Quy tắc kinh nghiệm, ngưỡng 2:1 cổ điển", confidence: "medium"}
+  - {metric: "Quick Ratio", value: "dưới 0,5 nguy hiểm; 0,5-1,0 chấp nhận; 1,0-2,0 tốt", context: "Quy tắc kinh nghiệm", confidence: "medium"}
+  - {metric: "Cash Ratio", value: "dưới 0,1 rất mong manh", context: "Quy tắc kinh nghiệm", confidence: "medium"}
+  - {metric: "DSO", value: "dưới 30 xuất sắc; 30-45 tốt; 45-60 trung bình; 60-90 cần cải thiện; trên 90 nguy hiểm", context: "So với điều khoản bán hàng", confidence: "medium"}
+  - {metric: "CCC", value: "âm tuyệt vời; 0-30 rất tốt; 30-60 bình thường; 60-90 cần tối ưu; trên 90 quá dài", context: "Phụ thuộc ngành", confidence: "medium"}
+  - {metric: "Inventory Turnover theo ngành", value: "FMCG 8-12; thời trang 4-6; điện tử 6-10; nội thất 2-4; xây dựng 1-3", context: "Tham khảo chung", confidence: "low"}
+  - {metric: "D/E", value: "dưới 0,5 bảo thủ; 0,5-1,5 cân bằng; 1,5-3 aggressive; trên 3 nguy hiểm", context: "Tổng nợ phải trả / vốn chủ", confidence: "medium"}
+  - {metric: "D/E theo ngành", value: "Utilities 1,5-3; BĐS 2-5; Tech 0-0,5; Bán lẻ 0,5-1,5; Ngân hàng 8-15", context: "Tham khảo", confidence: "low"}
+  - {metric: "ICR", value: "dưới 1 rất nguy; 1-1,5 nguy hiểm; 1,5-3 chấp nhận; 3-6 tốt; trên 6 rất tốt", context: "Quy tắc kinh nghiệm", confidence: "medium"}
+  - {metric: "DSCR", value: "tối thiểu khoảng 1,2-1,5 theo thực hành ngân hàng", context: "Từng ngân hàng khác nhau, cần xác nhận", confidence: "low"}
+  - {metric: "Gross Margin theo ngành", value: "SaaS 70-90%; dược 60-80%; thời trang 50-65%; F&B 60-70%; bán lẻ 25-40%; phân phối tiêu dùng 10-20%; xây dựng 10-20%", context: "Tham khảo chung", confidence: "low"}
+  - {metric: "ROE", value: "dưới 5% yếu; 5-10% trung bình; 10-20% tốt; 20-30% rất tốt; trên 30% xuất sắc hoặc đòn bẩy cao", context: "Quy tắc kinh nghiệm", confidence: "medium"}
+  - {metric: "Asset Turnover theo ngành", value: "Bán lẻ 2-3; FMCG 1-2; sản xuất nặng 0,3-0,8; tech/SaaS 0,5-1,0; BĐS 0,1-0,3", context: "Tham khảo", confidence: "low"}
+  - {metric: "SME VN - Gross/Net Margin, CCC", value: "F&B 60-70%/5-12%/gần 0 hoặc âm; Bán lẻ 25-40%/2-6%/30-60 ngày; Phân phối 10-20%/1-4%/40-80 ngày; Dịch vụ 40-70%/10-20%/30-60 ngày; Sản xuất nhỏ 20-35%/3-8%/60-120 ngày", context: "Ước lượng, cần đối chiếu số liệu ngành thực tế", confidence: "low"}
+  - {metric: "Runway tối thiểu", value: "khoảng 6 tháng cắt chi/gọi vốn; bắt đầu gọi vốn khi còn 9-12 tháng", context: "Thực hành startup", confidence: "low"}
+  - {metric: "Số ngày trong năm", value: "365 (một số tài liệu 360)", context: "Nhất quán giữa kỳ", confidence: "high"}
+
+pitfalls:
+  - "Tính tỷ số khi sổ chưa đúng/cắt kỳ sai; tỷ số đẹp nhờ BCTC làm đẹp là vô nghĩa."
+  - "Chỉ nhìn một tỷ số (thường là lợi nhuận) bỏ sót rủi ro tiền; phải xem đủ 4 nhóm cộng CFO."
+  - "So sánh khác ngành, khác quy mô, khác chính sách kế toán; không đọc thuyết minh."
+  - "Trộn số cuối kỳ và bình quân giữa các kỳ hoặc giữa các tỷ số; không ghi quy ước."
+  - "Dùng số một mốc cuối năm khi có mùa vụ hoặc window dressing."
+  - "Dùng doanh thu thay giá vốn cho DIO/DPO; dùng doanh thu cả thu tiền ngay cho DSO."
+  - "Hiểu D/E theo hai định nghĩa mà không ghi rõ (Apple 4,67 so với khoảng 2)."
+  - "Tin ICR mà bỏ quên trả gốc (cần DSCR)."
+  - "Tối ưu ROE bằng vay thêm; luôn kèm DuPont, ICR, Cash Ratio."
+  - "Coi Current Ratio dưới 1 là chắc chắn nguy hiểm (Apple), hoặc coi CCC âm là mô hình sao chép được cho SME."
+  - "Quên nợ ngoài bảng/thuê dài hạn làm D/E thấp giả theo VAS."
+  - "Dùng mã 22 làm lãi vay; quên loại khoản bất thường khỏi EBIT."
+  - "Coi EBITDA như tiền chi tự do, bỏ qua capex."
+  - "Bỏ qua tăng trưởng nuốt tiền: lợi nhuận tăng 33% mà CFO âm (Hải Long)."
+  - "Vay ngắn hạn tài trợ TSCĐ (sai khớp kỳ hạn)."
+  - "Lỗi/mâu thuẫn trong nguồn đã dùng giá trị đúng: (1) nguồn Hải Long Bước 7 cộng 500 + 306 + 456 = 1.263 trong khi tính chính xác là 500 + 307 + 458 = 1.265 (làm tròn ngày), không đổi kết luận; (2) QR Hải Long nguồn tính (Cash + AR)/CL = 0,91 trong khi công thức CA - HTK cho 0,93 do còn 100 tài sản ngắn hạn khác, ghi rõ biến thể; (3) Apple Cash/AT/D/E dùng số cuối kỳ, số cũ DIO 9, DPO 97, CCC -60, AT 1,16, D/E 2,0 đã được nguồn sửa thành 10,8, 106,7, -67,8 (làm tròn -68), 1,087, 4,67; (4) Evergrande: số trong nguồn là mô phỏng giả định chứ không phải số thật; lằn ranh 1 đúng là (nợ - tiền nhận trước)/tài sản không quá 70%, không phải D/E nhỏ hơn 1; (5) AT của Hải Long cuối kỳ 2,90 (làm tròn 2,9027) và tích DuPont 3,2% x 2,90 x 2,32 = 21,5% vì làm tròn; (6) tổng tài sản Apple 352,6 trong khi nợ + vốn chủ = 352,5 (sai lệch làm tròn)."
+  - "Số Apple, Evergrande chỉ minh họa nguyên lý, cần đối chiếu 10-K/báo cáo chính thức trước khi trích dẫn; Hải Long là giả định tự nhất quán."
+  - "Mã số BCTC, tài khoản, thuế suất TNDN (giả định 20%), trần lãi vay là cần xác nhận hiện hành (TT200/TT133, VAS, quy định thuế)."
+
+sme_vn_guidance:
+  - "Xuất B01 và B02 hằng tháng từ phần mềm kế toán ra Excel rồi dùng template tỷ số; phần mềm kế toán xuất BCTC nhưng thường không tính sẵn bộ tỷ số."
+  - "Top 10 tỷ số theo dõi: Gross Margin (tháng), Net Margin (tháng), Current/Quick Ratio (tháng), CCC (quý; tháng với phân phối/bán lẻ), D/E (quý), Burn Rate/Runway (tuần-tháng, startup), Revenue Growth (tháng, kèm vốn lưu động), DSO (tháng), ROE kèm DuPont (quý), Operating Margin và ICR (tháng-quý)."
+  - "Số quản trị theo tháng song song BCTC thuế: số thuế phục vụ tuân thủ, số quản trị phục vụ ra quyết định."
+  - "Đóng sổ tháng đúng hạn, đối chiếu công nợ, kiểm kê kho định kỳ, cắt kỳ đúng, trích lập dự phòng khi có cơ sở (cần xác nhận hiện hành), ghi rõ chính sách kế toán và giữ nhất quán."
+  - "Phân công: kế toán nhập liệu, đóng sổ; kế toán trưởng/tổng hợp tính dashboard hằng tháng; chủ DN và kế toán trưởng phân tích DuPont, so ngành, kiến nghị hằng quý; kiểm toán/tư vấn thuế soát xét độc lập hằng năm khi cần."
+  - "SME không có cơ quan quản lý đặt lằn ranh đỏ: tự đặt (ví dụ ICR tối thiểu, Cash Ratio tối thiểu, D/E trần) và cam kết với ngân hàng."
+  - "Chế độ kế toán: TT200/2014/TT-BTC hoặc chế độ cho DN nhỏ và siêu nhỏ (TT133/2016/TT-BTC); mẫu biểu, mã số, thuế suất TNDN, trần chi phí lãi vay, quy định dự phòng - tất cả cần xác nhận hiện hành."
+  - "Khi gọi vốn nước ngoài/niêm yết: chuẩn bị đối chiếu VAS và IFRS (thuê tài sản, ghi nhận doanh thu, công cụ tài chính); lộ trình IFRS tại Việt Nam cần xác nhận."
+  - "Phần mềm (giá ước tính, confidence low, cần xác nhận với nhà cung cấp): Excel/Google Sheets miễn phí hoặc có sẵn; MISA SME/AMIS Kế toán khoảng 3-8 triệu/năm; Fast Accounting khoảng 5-10 triệu/năm; KiotViet khoảng 3-6 triệu/năm; Sapo khoảng 4-10 triệu/năm; Looker Studio miễn phí, Power BI Desktop miễn phí hoặc chi phí thấp."
+  - "Dùng named range thay ô tham chiếu cứng; với số tháng tính DSO/DIO bằng doanh thu/giá vốn tháng x 30 hoặc luỹ kế 12 tháng x 365."
+  - "Mỗi SME phân phối nên xem CCC mỗi tháng; mỗi ngày DSO tương đương doanh thu một ngày: doanh thu 24.000 triệu/năm thì 8 ngày DSO khoảng 526 triệu."
+  - "Với quán F&B, CCC thường gần 0 hoặc âm (thu tiền ngay, trả NCC chịu); chú ý thuê mặt bằng dài hạn là nợ ngoài bảng theo VAS."
+
+case_lessons:
+  - name: "Apple - vòng quay vốn lưu động và Current Ratio dưới 1"
+    type: "success"
+    setup: "FY2023 xấp xỉ (USD tỷ, cần đối chiếu 10-K): doanh thu 383,3; giá vốn 214,1; lợi nhuận ròng 97,0; TS ngắn hạn 143,6; nợ ngắn hạn 145,3; tổng tài sản 352,6; nợ phải trả 290,4; vốn chủ 62,1; HTK 6,3; phải thu 29,5; phải trả NCC 62,6."
+    key_calculations:
+      - "Current Ratio = 143,6/145,3 = 0,99 (dưới 1 nhưng nợ ngắn hạn chủ yếu là phải trả NCC 62,6)."
+      - "DIO = 6,3/214,1 x 365 = 10,8; DSO = 29,5/383,3 x 365 = 28,1; DPO = 62,6/214,1 x 365 = 106,7; CCC = -67,9 ngày."
+      - "NM = 25,3%; AT = 1,087; EM = 5,68; ROE = 156%; D/E = 4,68."
+      - "Nếu vốn chủ giả định 150 thì ROE = 97/150 = 64,7% vẫn rất cao."
+    lesson: "Current Ratio dưới 1 không tự động nguy hiểm; CCC âm là đỉnh quản trị vốn lưu động dựa trên sức mạnh đàm phán; ROE cao nhờ mua lại cổ phiếu quỹ làm giảm vốn chủ khác với ROE nhờ vay; phải ghi rõ cuối kỳ/bình quân và định nghĩa D/E. SME học tư duy biến NCC thành nguồn vốn qua DPO hợp lý, không sao chép CCC âm."
+    data_reliability: "unverified"
+  - name: "Evergrande (mô phỏng) - đòn bẩy và thanh khoản mất kiểm soát"
+    type: "failure"
+    setup: "Bộ số GIẢ ĐỊNH nhà phát triển BĐS vay cao (tỷ NDT), không phải số thật của Evergrande: TS 2.500; nợ phải trả 2.100 (tiền nhận trước 300); nợ vay 700 (ngắn hạn 360); tiền 130; vốn chủ 400; CA 1.500; CL 1.700; HTK 1.300; giá vốn 400; EBIT 120; lãi vay 160. Thực tế (cần đối chiếu): vỡ nợ 2021, Tòa án Hồng Kông ra lệnh thanh lý tháng 1/2024."
+    key_calculations:
+      - "D/E = 2.100/400 = 5,25; Current Ratio = 0,88; Cash Ratio = 0,076; ICR = 0,75; DIO = 1.300/400 x 365 = 1.186 ngày."
+      - "Lằn 1 = (2.100 - 300)/2.500 = 72,0%; lằn 2 = (700 - 130)/400 = 142,5%; lằn 3 = 130/360 = 0,36: cả ba vi phạm."
+    lesson: "Không tỷ số riêng lẻ nào đủ cảnh báo, phải đồng thời xấu cả đòn bẩy, thanh khoản, hiệu quả; ICR dưới 1 nghĩa là vay để trả lãi; đòn bẩy trong ngành chu kỳ khuếch đại hai chiều; tiền nhận trước của khách là nghĩa vụ giao nhà ghi nợ chứ không phải doanh thu; SME tự đặt lằn ranh đỏ."
+    data_reliability: "illustrative"
+  - name: "Hải Long - nhà phân phối thực phẩm TP.HCM: doanh thu +33%, lãi +33%, tiền cạn"
+    type: "sme"
+    setup: "Giả định (triệu VNĐ, thuế 20%, số cuối kỳ, 365 ngày): doanh thu 18.000 lên 24.000, giá vốn 15.120 lên 20.400, lợi nhuận ròng 576 lên 768. Mở thêm tuyến giao hàng, nới bán chịu. Cuối năm tiền chỉ còn 268, ngân hàng nhắc hạn mức."
+    key_calculations:
+      - "BS cân: N-1 3.500 + 3.000 = 6.500; N 4.700 + 3.568 = 8.268. CFO = 768 + 300 - 1.100 - 900 + 400 + 100 = -432; CFI -700; CFF +500; tiền 900 - 632 = 268."
+      - "CR 2,14 xuống 1,68; QR 1,29 xuống 0,91; Cash Ratio 0,43 xuống 0,08; DIO 41,0 lên 46,5; DSO 36,5 lên 44,1; DPO 26,6 lên 26,8; CCC 51,0 lên 63,8."
+      - "GM 16,0% xuống 15,0%; OM 5,0%; NM 3,2%; ICR 5,0x; D/E 1,17 lên 1,32; ROE 19,2% lên 21,5%."
+      - "OWC 2.400 lên 4.000 (+1.600); FCF = -432 - 700 = -1.132, bù bằng vay ngắn hạn +900 và dùng 632 tiền."
+      - "Giải phóng: DSO về 36,5 (500) + DIO về 41,0 (307) + DPO lên 35 (456-458) khoảng 1.263-1.265; CCC còn 42,5 ngày."
+    lesson: "Lãi tăng không bằng tiền tăng: tăng trưởng nuốt vốn lưu động. ROE tăng nhờ vay (EM 2,17 lên 2,32), không nhờ biên. ICR đẹp che mất Cash Ratio gần 0 và vay ngắn hạn tài trợ TSCĐ (sai khớp kỳ hạn). CCC là kim chỉ nam cho phân phối; mỗi ngày bằng một số tiền cụ thể. Kế toán đóng sổ đúng hạn giúp thấy cảnh báo sớm."
+    data_reliability: "illustrative"
+  - name: "Công ty Y - doanh thu +30% nhưng AR +96% và CFO sụp (bài tập red flags)"
+    type: "sme"
+    setup: "Giả định (tỷ VNĐ): doanh thu 100, 130, 170; lợi nhuận 10, 15, 22; CFO 9, 8, 3; AR 15, 28, 55; HTK 10, 12, 14."
+    key_calculations:
+      - "Doanh thu +30,0%, +30,8%; lợi nhuận +50,0%, +46,7%; AR +86,7%, +96,4%."
+      - "DSO = 54,8; 78,6; 118,1 ngày. CFO/NI = 0,90; 0,53; 0,14."
+    lesson: "AR tăng gấp 2-3 lần tốc độ doanh thu, DSO gấp đôi, CFO tụt khi lợi nhuận tăng: nghi bán chịu mạnh hoặc ghi nhận doanh thu sớm; cần kiểm tra cut-off, dự phòng phải thu và đối chiếu công nợ."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Hải Long: chẩn đoán đầy đủ (BS cân, CFS khớp, 4 nhóm tỷ số, DuPont 3 và 5)"
+    inputs: {units: "triệu VNĐ", tax_rate: 0.2, revenue: [18000, 24000], cogs: [15120, 20400], opex: [1980, 2400], interest: [180, 240], depreciation: [250, 300], cash: [900, 268], ar: [1800, 2900], inventory: [1700, 2600], other_current: [100, 100], fixed_assets: [2000, 2400], ap: [1100, 1500], short_debt: [700, 1600], other_current_liab: [300, 400], long_debt: [1400, 1200], equity: [3000, 3568], dividend_N: 200, capex_N: 700}
+    steps:
+      - "KQKD: LN gộp 2.880/3.600; EBIT 900/1.200; EBT 720/960; thuế 144/192; LNST 576/768."
+      - "BS: TSNH 4.500/5.868; TS 6.500/8.268; nợ ngắn hạn 2.100/3.500; nợ phải trả 3.500/4.700; vốn chủ 3.000/3.568; cân ở cả hai năm. LN chưa phân phối N = 1.000 + 768 - 200 = 1.568; TSCĐ N = 2.000 + 700 - 300 = 2.400."
+      - "LCTT N: 768 + 300 - 1.100 - 900 + 400 + 100 = CFO -432; CFI -700; CFF = +900 - 200 - 200 = +500; Δ tiền -632; 900 - 632 = 268 khớp."
+      - "Thanh khoản: CR 2,14 xuống 1,68; QR (tiền + AR)/CL 1,29 xuống 0,91; Cash 0,43 xuống 0,08."
+      - "Hiệu quả: DIO 41,0 lên 46,5; DSO 36,5 lên 44,1; DPO 26,6 lên 26,8; CCC 51,0 lên 63,8; AT 2,77 lên 2,90."
+      - "Đòn bẩy: D/E 1,17 lên 1,32; Debt Ratio 53,8% lên 56,8%; ICR 5,0 và 5,0; EM 2,17 lên 2,32."
+      - "Lợi nhuận: GM 16,0% xuống 15,0%; OM 5,0%; NM 3,2%; ROA 8,9% lên 9,3%; ROE 19,2% lên 21,5%."
+      - "DuPont 5 N: 0,8 x 0,8 x 5,0% x 2,90 x 2,32 = 21,5%."
+      - "Chẩn đoán: OWC 2.400 lên 4.000; CFO/NI -0,56; FCF -1.132; vay ngắn hạn tài trợ TSCĐ; khuyến nghị giải phóng khoảng 1.263-1.265."
+    result: "ROE tăng 2,3 điểm nhờ AT và EM chứ không nhờ biên; lợi nhuận dương mà CFO -432; cần siết DSO, giảm tồn chậm, tăng DPO trong điều khoản, tái cơ cấu vay ngắn thành dài; python đã verify cân và khớp."
+  - name: "FIFO và bình quân gia quyền khi giá tăng và giảm"
+    inputs: {open_qty: 100, open_price: 10, buy_qty: 100, buy_price: [12, 8], qty_sold: 120, sell_price: 20}
+    steps:
+      - "Doanh thu = 120 x 20 = 2.400."
+      - "Giá tăng (12): FIFO = 100 x 10 + 20 x 12 = 1.240, GM 48,3%, tồn cuối 960; BQGQ = 120 x 11 = 1.320, GM 45,0%, tồn cuối 880."
+      - "Giá giảm (8): FIFO = 100 x 10 + 20 x 8 = 1.160, GM 51,7%; BQGQ = 120 x 9 = 1.080, GM 55,0%."
+    result: "Giá tăng FIFO cho GM cao hơn; giá giảm bình quân cho GM cao hơn. Không so GM giữa hai doanh nghiệp khi chưa kiểm tra giá xuất kho."
+  - name: "Window dressing và ICR nhạy cảm"
+    inputs: {current_assets: 2000, current_liabilities: 1000, repay: 500, ebit: 600, interest: 400, ebit_shock: 0.3}
+    steps:
+      - "CR trước = 2.000/1.000 = 2,0."
+      - "Dùng 500 tiền trả nợ ngắn hạn sát ngày khóa sổ: CA 1.500, CL 500, CR = 3,0 trong khi doanh nghiệp không giàu hơn."
+      - "ICR = 600/400 = 1,5; EBIT giảm 30% còn 420 thì ICR = 1,05."
+    result: "CR tăng 1,0 chỉ nhờ thao tác thời điểm; ICR 1,5 rất dễ vỡ chỉ với EBIT giảm 30%. Dùng bình quân và xu hướng."
+  - name: "DSCR: ICR đẹp nhưng gốc nợ lớn"
+    inputs: {ebitda: 1500, tax: 192, maintenance_capex: 300, principal: 400, interest: 240, ebit: 1200}
+    steps:
+      - "ICR = 1.200/240 = 5,0."
+      - "CFADS = 1.500 - 192 - 300 = 1.008."
+      - "DSCR = 1.008/(400 + 240) = 1,575."
+      - "Nếu gốc phải trả tăng lên 900 (vay ngắn hạn đáo hạn): DSCR = 1.008/1.140 = 0,88."
+    result: "ICR 5,0 che mất rủi ro gốc: khi gốc 900 DSCR dưới 1 nghĩa là không đủ trả nợ từ dòng tiền."
+  - name: "IFRS 16: điều chỉnh nợ thuê ngoài bảng"
+    inputs: {total_liabilities: 4700, equity: 3568, total_assets: 8268, annual_rent: 600, years: 5, rate: 0.10}
+    steps:
+      - "Hiện giá tiền thuê = 600 x (1 - 1,1^-5)/0,1 = 2.274,5."
+      - "Nợ điều chỉnh = 4.700 + 2.274,5 = 6.974,5; tài sản điều chỉnh = 8.268 + 2.274,5 = 10.542,5."
+      - "D/E = 6.974,5/3.568 = 1,95 (so với 1,32); Debt Ratio = 66,2% (so với 56,8%)."
+    result: "Doanh nghiệp thuê nhiều có D/E thực cao hơn 48% so với số VAS; số minh họa giả định."
+  - name: "Burn Rate và Runway"
+    inputs: {cash_on_hand: 480, monthly_burn: 60, burn_after_growth: 80}
+    steps:
+      - "Runway = 480/60 = 8 tháng."
+      - "Burn tăng 80: 480/80 = 6 tháng."
+    result: "Mở rộng làm runway giảm từ 8 xuống 6 tháng; cần gọi vốn hoặc cắt chi."
+  - name: "Apple: Current Ratio dưới 1 và CCC âm"
+    inputs: {revenue: 383.3, cogs: 214.1, net_income: 97.0, ca: 143.6, cl: 145.3, ta: 352.6, tl: 290.4, equity: 62.1, inventory: 6.3, ar: 29.5, ap: 62.6}
+    steps:
+      - "CR = 0,988; DIO = 10,7; DSO = 28,1; DPO = 106,7; CCC = -67,9."
+      - "NM = 25,3%; AT = 1,087; EM = 5,68; tích = 156%; D/E = 4,68."
+    result: "Số xấp xỉ, cần đối chiếu 10-K; CCC âm nhờ sức mạnh đàm phán NCC."
+  - name: "Công ty Y: phát hiện red flag từ 3 năm"
+    inputs: {revenue: [100, 130, 170], net_income: [10, 15, 22], cfo: [9, 8, 3], ar: [15, 28, 55]}
+    steps:
+      - "Tăng trưởng doanh thu 30,0%, 30,8%; lợi nhuận 50,0%, 46,7%; AR 86,7%, 96,4%."
+      - "DSO = 54,8; 78,6; 118,1 ngày; CFO/NI = 0,90; 0,53; 0,14."
+    result: "Cờ đỏ lớn nhất: AR tăng nhanh gấp 2-3 lần doanh thu và CFO tụt; kiểm tra cut-off, dự phòng phải thu, đối chiếu công nợ."
+
+practice_questions:
+  - q: "TS ngắn hạn 450, HTK 200, nợ ngắn hạn 300 (triệu). Tính CR, QR và nhận xét."
+    a: "CR = 1,5; QR = (450 - 200)/300 = 0,83. CR tốt nhưng QR dưới 1 nên thanh khoản phụ thuộc bán hết tồn kho."
+  - q: "Giải thích bằng lời: (a) Quick Ratio vì sao loại HTK; (b) ICR vì sao dùng EBIT; (c) Inventory Turnover vì sao dùng giá vốn."
+    a: "(a) HTK khó chuyển thành tiền nhất, ghi giá gốc chứ không phải giá bán gấp; (b) lãi vay trả từ lợi nhuận trước lãi và thuế; (c) cùng cơ sở giá gốc với giá trị HTK, doanh thu chứa lãi sẽ thổi phồng vòng quay."
+  - q: "NM 4%, AT 2,5, tổng tài sản 2.000, vốn chủ 1.000. Tính EM, doanh thu, lợi nhuận ròng, ROE."
+    a: "EM = 2,0; doanh thu = 2,5 x 2.000 = 5.000; NI = 4% x 5.000 = 200; ROE = 4% x 2,5 x 2,0 = 20% = 200/1.000."
+  - q: "DIO 45, DSO 30, DPO 20, giá vốn 7.300 triệu/năm. Tính CCC; nếu DPO lên 50 thì CCC và tiền giải phóng?"
+    a: "CCC = 55; với DPO 50: CCC = 25 (giảm 30 ngày); giá vốn/ngày = 20 triệu nên giải phóng 600 triệu."
+  - q: "Giá nhập thứ hai giảm xuống 8 (tồn đầu 100 x 10; nhập 100 x 8; bán 120 x 20). GM theo FIFO và bình quân? Chính sách nào cao hơn?"
+    a: "FIFO: giá vốn 1.160, GM 51,7%. Bình quân: đơn giá 9, giá vốn 1.080, GM 55,0%. Khi giá giảm, bình quân cho GM cao hơn (ngược khi giá tăng)."
+  - q: "Công ty Y (doanh thu 100/130/170; LN 10/15/22; CFO 9/8/3; AR 15/28/55): tăng trưởng, DSO, CFO/LN và red flag lớn nhất?"
+    a: "Doanh thu +30,0%, +30,8%; lợi nhuận +50,0%, +46,7%; AR +86,7%, +96,4%. DSO 54,8, 78,6, 118,1 ngày. CFO/NI 0,90, 0,53, 0,14. Red flag: AR tăng gấp 2-3 lần doanh thu, CFO tụt khi lợi nhuận tăng (ghi doanh thu sớm hoặc bán chịu mạnh)."
+  - q: "EBIT 600, lãi vay 400. ICR? Nếu EBIT giảm 30%? Nhận xét."
+    a: "ICR = 1,5; EBIT 420 thì ICR = 1,05; chỉ giảm 30% EBIT là gần không đủ trả lãi, rất nhạy cảm."
+  - q: "Hải Long: NWC hai năm và vì sao thanh khoản xấu đi dù NWC gần như đứng yên? Đề xuất 3 hành động."
+    a: "NWC N-1 = 4.500 - 2.100 = 2.400; N = 5.868 - 3.500 = 2.368. Cơ cấu đổi: tiền 900 xuống 268, AR/HTK tăng (khó chuyển thành tiền), vay ngắn hạn tăng nên Quick và Cash Ratio giảm mạnh. Hành động: siết DSO, giảm tồn chậm, vay dài hạn thay vay ngắn hạn cho đầu tư TSCĐ."
+  - q: "Vì sao nên dùng số dư bình quân cho DSO, ROE? Hải Long ROE bình quân là bao nhiêu?"
+    a: "Tử số là dòng chảy cả kỳ nên mẫu số cũng nên đại diện cả kỳ; tăng trưởng nhanh làm số cuối kỳ lệch. ROE bình quân = 768/3.284 = 23,4% (so với 21,5% cuối kỳ)."
+  - q: "Cho CA 2.000, CL 1.000. Trả nợ ngắn hạn 500 bằng tiền sát cuối kỳ thì CR là bao nhiêu và đây là dấu hiệu gì?"
+    a: "CR = 1.500/500 = 3,0 (từ 2,0). Dấu hiệu window dressing nếu vay lại sau ngày khóa sổ; kiểm tra giao dịch quanh ngày khóa sổ."
+  - q: "Tiền 480 triệu, burn 60 triệu/tháng. Runway? Nếu mở rộng làm burn 80?"
+    a: "Runway = 8 tháng; với burn 80: 6 tháng."
+  - q: "Hải Long N: tính DSCR nếu gốc phải trả 400, EBITDA 1.500, thuế 192, capex duy trì 300, lãi 240."
+    a: "(1.500 - 192 - 300)/(400 + 240) = 1.008/640 = 1,575."
+  - q: "Vì sao Apple có CR 0,99 mà không rủi ro thanh khoản?"
+    a: "Nợ ngắn hạn chủ yếu là phải trả NCC (nguồn vốn hoạt động nhờ DPO khoảng 107 ngày), CCC âm khoảng -68 ngày, dòng tiền hoạt động rất lớn, đầu tư tài chính dễ thanh khoản. Phải xem bản chất, không chỉ ngưỡng."
+
+checklist:
+  - "Bảng cân đối đã cân; LNST khớp vốn chủ (lợi nhuận chưa phân phối); tiền LCTT khớp bảng cân đối."
+  - "Công nợ đã đối chiếu, HTK đã kiểm kê, dự phòng phải thu/HTK đã trích theo quy định hiện hành (cần xác nhận)."
+  - "Doanh thu/chi phí ghi nhận đúng kỳ (cut-off); chính sách kế toán nhất quán, thay đổi đã thuyết minh."
+  - "Đã ghi rõ chế độ kế toán (TT200/TT133), mẫu biểu và mã số nguồn (cần xác nhận hiện hành)."
+  - "Đã ghi rõ quy ước: 365 ngày, cuối kỳ hay bình quân, định nghĩa D/E và ROA."
+  - "Đã tính đủ 4 nhóm tỷ số, hai kỳ trở lên, so YoY và kỳ trước."
+  - "Đã benchmark cùng ngành, cùng quy mô, cùng chính sách kế toán (hoặc ghi hạn chế)."
+  - "Đã phân rã DuPont 3 và 5 để biết ROE đến từ biên, vòng quay hay đòn bẩy."
+  - "Đã tính CCC và quy đổi ra số tiền giải phóng được."
+  - "Đã đối chiếu CFO với lợi nhuận ròng, tính OWC, so tăng trưởng AR/HTK/AP với doanh thu."
+  - "Đã quét red flags và tìm phân kỳ giữa các tỷ số."
+  - "Đã kiểm tra ảnh hưởng chính sách kế toán (FIFO/BQGQ, khấu hao, dự phòng, phân loại chi phí)."
+  - "Đã xét window dressing, nợ ngoài bảng/thuê dài hạn/bảo lãnh (IFRS 16 nếu cần)."
+  - "Đã xét ICR cùng DSCR và lịch trả gốc; kiểm tra khớp kỳ hạn tài trợ."
+  - "Startup: đã tính Burn Rate và Runway."
+  - "Action items cho tỷ số xấu có người chịu trách nhiệm và hạn; đã cập nhật dự báo dòng tiền nếu xu hướng đổi."
+  - "Đã đánh dấu 'cần xác nhận' cho thuế suất TNDN, trần chi phí lãi vay, quy định dự phòng, IFRS và giá phần mềm."
+  - "Số liệu Apple, Evergrande ghi rõ là xấp xỉ/mô phỏng cần đối chiếu nguồn."
+
+excel_google_sheets_templates:
+  - "TAB INPUT_BS: cột tháng 1-12; hàng Tiền (110), Phải thu (130), Tồn kho (140), TS ngắn hạn (100), Tổng tài sản (270), Nợ ngắn hạn (310), Nợ phải trả (300), Vốn chủ (400), Phải trả NCC."
+  - "TAB INPUT_PL: Doanh thu thuần, Giá vốn, Lợi nhuận gộp, Chi phí lãi vay, EBT (50), LNST (60), Khấu hao."
+  - "TAB RATIOS: Current =TS_ngan_han/No_ngan_han; Quick =(TS_ngan_han-HTK)/No_ngan_han; Cash =Tien/No_ngan_han; DSO =AR/DoanhThuThang*30 (hoặc luỹ kế 12 tháng*365); DIO =HTK/GiaVonThang*30; DPO =AP/GiaVonThang*30; CCC =DSO+DIO-DPO; D/E =No_phai_tra/Von_chu; ICR =EBIT/LaiVay; ROE =LNST*12/Von_chu (thận trọng mùa vụ)."
+  - "Cảnh báo: =IF(C10<1,\"ĐỎ\",IF(C10<1.5,\"VÀNG\",\"XANH\")) (đặt ngưỡng theo từng chỉ tiêu; với DSO/DIO/CCC chiều ngược)."
+  - "TAB DASHBOARD: 4 nhóm Liquidity, Efficiency, Leverage, Profitability + Growth; biểu đồ xu hướng và tô màu xanh-vàng-đỏ."
+  - "TAB NOTES: ghi chính sách kế toán, thay đổi bất thường, quy ước cuối kỳ/bình quân."
+  - "Dùng named range để tránh sai khi chèn hàng; tab CHECK: Tài sản - (Nợ + Vốn chủ) = 0, Tiền LCTT - Tiền BS = 0."
+
+source_file: "06-financial-ratios.md"

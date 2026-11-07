@@ -32,15 +32,15 @@ const DECOR = [
 const AV = {
   user: { skin: '#f2c9a0', hair: '#c0392b', style: 'cap', shirt: '#d6584b' },
   manager: { skin: '#e0a878', hair: '#2b2b2b', style: 'short', glasses: true, shirt: '#2f3a52' },
-  secretary: { skin: '#f5d6b8', hair: '#6b3f2a', style: 'long', shirt: '#d08aa0' },
+  strategist: { skin: '#f5d6b8', hair: '#6b3f2a', style: 'long', shirt: '#d08aa0' },
   reviewer: { skin: '#c68a5e', hair: '#1f1f1f', style: 'short', glasses: true, shirt: '#7fae8f' },
   rag: { skin: '#f2c9a0', hair: '#d9a441', style: 'bun', shirt: '#5fa8b8' },
   analyst: { skin: '#8d5a3b', hair: '#141414', style: 'curly', shirt: '#8f86c9' },
   designer: { skin: '#e0a878', hair: '#c0508a', style: 'long', shirt: '#d48b7e' },
-  content: { skin: '#f2c9a0', hair: '#e8a33d', style: 'bun', glasses: true, shirt: '#e8a33d' },
+  marketing_expert: { skin: '#f2c9a0', hair: '#e8a33d', style: 'bun', glasses: true, shirt: '#e8a33d' },
   writer: { skin: '#f2c9a0', hair: '#e8a33d', style: 'bun', glasses: true, shirt: '#e8a33d' },
-  dev: { skin: '#c68a5e', hair: '#2b2b2b', style: 'cap', shirt: '#6b93d6' },
-  tester: { skin: '#f2c9a0', hair: '#4a2c1a', style: 'curly', shirt: '#5fb3a1' },
+  stock_analyst: { skin: '#e0b48a', hair: '#1f1f1f', style: 'short', glasses: true, shirt: '#2f9e6b' },
+  accountant: { skin: '#f2c9a0', hair: '#5a3a22', style: 'long', shirt: '#c9892b' },
   ops: { skin: '#8d5a3b', hair: '#1a1a1a', style: 'short', shirt: '#d19a66' },
   planner: { skin: '#f5d6b8', hair: '#6b3f2a', style: 'long', shirt: '#d08aa0' },
   signal: { skin: '#f2c9a0', hair: '#d9a441', style: 'bun', shirt: '#5fa8b8' },
@@ -796,6 +796,7 @@ function openConfig() {
   fillProvider();
   cd.showModal();
 }
+$('openCfg').onclick = () => openConfig();
 $('cfProvider').onchange = fillProvider;
 $('cfDetail').onchange = () => { const b = $('cfDetail').value === 'brief'; $('cfWorkMax').value = b ? 1500 : 4000; $('cfSumMax').value = b ? 500 : 2500; };
 $('cfConn').onchange = fillProvider;

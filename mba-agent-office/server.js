@@ -178,7 +178,7 @@ const readJson = (req) => new Promise((resolve) => {
   req.on('end', () => { try { resolve(JSON.parse(body)); } catch { resolve({}); } });
 });
 
-const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json; charset=utf-8', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml' };
+const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json; charset=utf-8', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.mjs': 'text/javascript' };
 const rmime = {
   '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   '.html': 'text/html; charset=utf-8', '.htm': 'text/html; charset=utf-8', '.csv': 'text/csv; charset=utf-8', '.json': 'application/json; charset=utf-8',
@@ -479,12 +479,13 @@ const server = http.createServer(async (req, res) => {
   }
 
   const pub = path.join(dir, 'public');
-  const file = path.join(pub, url.pathname === '/' ? 'index.html' : path.normalize(url.pathname));
+  const file = path.join(pub, url.pathname === '/' ? 'index.html' : path.normalize(url.pathname.endsWith('/') ? url.pathname + 'index.html' : url.pathname));   // (thư mục con như /office3d/ → index.html)
   if (!file.startsWith(pub + path.sep) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
     res.writeHead(404).end('not found');
     return;
   }
-  res.writeHead(200, { 'content-type': mime[path.extname(file)] || 'application/octet-stream' });
+  const head = { 'content-type': mime[path.extname(file)] || 'application/octet-stream', 'cache-control': /\/office3d\/(assets|vendor|css\/fonts)\//.test(url.pathname) ? 'public, max-age=3600' : 'no-cache' };
+  res.writeHead(200, head);
   fs.createReadStream(file).pipe(res);
 });
 

@@ -1,0 +1,688 @@
+# 06-formulas-index.yaml — SINH TỰ ĐỘNG bởi tools/build_and_validate.py từ modules/*.yaml. Không sửa tay.
+total: 59
+formulas:
+- id: m01_force_score_mean
+  module: m01
+  name_vi: Điểm cường độ trung bình và Chỉ số hấp dẫn ngành (5 Forces)
+  name_en: Mean force score and Industry Attractiveness Index
+  expression_latex: \bar{F}=\frac{1}{5}\sum_{i=1}^{5}F_i,\quad A = 6-\bar{F}
+  expression_python: A = 6 - sum(F)/len(F)
+  excel: =6-AVERAGE(B2:B6)
+  variables:
+  - F
+  - A
+  when_to_use: Chuyển đánh giá Cao/Trung bình/Thấp thành điểm để so sánh hai ngành hoặc theo dõi theo thời gian; nên dùng
+    song song giải thích định tính.
+- id: m01_force_score_weighted
+  module: m01
+  name_vi: Chỉ số hấp dẫn ngành có trọng số
+  name_en: Weighted Industry Attractiveness Index
+  expression_latex: A_w = 6 - \sum_{i=1}^{5} w_i F_i,\quad \sum w_i = 1
+  expression_python: A = 6 - sum(w*f for w,f in zip(W,F))
+  excel: =6-SUMPRODUCT(B2:B6,C2:C6)
+  variables:
+  - W
+  - F
+  when_to_use: 'Khi một lực rõ ràng quan trọng hơn trong ngành cụ thể (F&B: Rivalry và Buyer; sản xuất: Supplier).'
+- id: m01_cr4
+  module: m01
+  name_vi: Tỷ lệ tập trung 4 DN lớn nhất
+  name_en: Four-firm Concentration Ratio (CR4)
+  expression_latex: CR_4=\sum_{i=1}^{4}s_{(i)}
+  expression_python: CR4 = sum(sorted(shares)[-4:])
+  excel: =SUM(LARGE(B2:B11,{1,2,3,4}))
+  variables:
+  - shares
+  when_to_use: Nhanh chóng ước lượng ngành phân tán hay tập trung khi chỉ biết thị phần top đầu.
+- id: m01_hhi
+  module: m01
+  name_vi: Chỉ số Herfindahl-Hirschman
+  name_en: Herfindahl-Hirschman Index (HHI)
+  expression_latex: HHI=\sum_{i=1}^{n}s_i^2
+  expression_python: HHI = sum(s*s for s in shares)
+  excel: =SUMSQ(B2:B11)
+  variables:
+  - shares
+  when_to_use: Đo tập trung chính xác hơn CR4 khi có đủ dữ liệu thị phần; nghiên cứu chống độc quyền (Luật cạnh tranh).
+- id: m01_pestel_priority
+  module: m01
+  name_vi: Điểm ưu tiên yếu tố PESTEL (tác động x xác suất)
+  name_en: PESTEL factor priority score (Impact x Likelihood)
+  expression_latex: P_j = I_j \times L_j
+  expression_python: P = [i*l for i,l in zip(I,L)]
+  excel: =B2*C2
+  variables:
+  - I
+  - L
+  when_to_use: Chọn 3-5 yếu tố PESTEL đáng chú ý nhất trong danh sách dài để tránh analysis paralysis.
+- id: m01_pestel_net_impact
+  module: m01
+  name_vi: Chỉ số tác động ròng PESTEL có trọng số
+  name_en: Weighted net PESTEL impact
+  expression_latex: N=\sum_j w_j I_j d_j,\quad d_j\in\{+1,-1\}
+  expression_python: N = sum(w*i*d for w,i,d in zip(W,I,D))
+  excel: =SUMPRODUCT(B2:B7,C2:C7,D2:D7)
+  variables:
+  - w
+  - I
+  - d
+  when_to_use: Tổng hợp một nhận định 'môi trường vĩ mô nhìn chung thuận hay nghịch' để đưa vào quyết định vào/ở/dừng.
+- id: m02_swot_weighted_score
+  module: m02
+  name_vi: Điểm SWOT có trọng số (cho từng nhóm S, W, O hoặc T)
+  name_en: Weighted SWOT group score
+  expression_latex: Score_{group} = \sum_{i=1}^{n} w_i \cdot s_i,\quad \sum w_i = 1,\ s_i \in [1,5]
+  expression_python: sum(w*s for w, s in zip(weights, scores))
+  excel: =SUMPRODUCT(weights_range, scores_range)
+  variables:
+  - weights
+  - scores
+  when_to_use: Khi cần ưu tiên và so sánh các nhóm S/W/O/T thay vì liệt kê ngang nhau (khắc phục nhược điểm 'không ưu tiên,
+    không định lượng' của SWOT).
+- id: m02_swot_net_position
+  module: m02
+  name_vi: Vị thế ròng nội bộ và bên ngoài (định hướng quadrant TOWS)
+  name_en: SWOT net position
+  expression_latex: Net_{int} = S - W,\quad Net_{ext} = O - T
+  expression_python: (S - W, O - T)
+  excel: =S-W ; =O-T
+  variables:
+  - S
+  - W
+  - O
+  - T
+  when_to_use: Sau khi chấm 4 nhóm, để chọn nhóm chiến lược TOWS nên ưu tiên (SO/ST/WO/WT).
+- id: m02_vrio_classify
+  module: m02
+  name_vi: Phân loại kết quả VRIO
+  name_en: VRIO classification
+  expression_latex: result = f(V,R,I,O)\ \text{(kiểm tra tuần tự, dừng ở tiêu chí đầu tiên không đạt)}
+  expression_python: ('disadvantage' if not V else 'parity' if not R else 'temporary' if not I else 'unused' if not O else
+    'sustained')
+  excel: =IF(NOT(V),"disadvantage",IF(NOT(R),"parity",IF(NOT(I),"temporary",IF(NOT(O),"unused","sustained"))))
+  variables:
+  - V
+  - R
+  - I
+  - O
+  when_to_use: Khi phân loại từng nguồn lực/năng lực đã liệt kê (mỗi nguồn lực một dòng).
+- id: m02_value_chain_margin
+  module: m02
+  name_vi: Biên lợi nhuận chuỗi giá trị
+  name_en: Value Chain margin
+  expression_latex: Margin = V_{customer} - \sum_{a} C_a,\quad Margin\% = Margin / V_{customer}
+  expression_python: price - sum(costs.values())
+  excel: =Price-SUM(cost_range)
+  variables:
+  - price
+  - costs
+  when_to_use: Khi dựng bảng chi phí theo hoạt động để thấy lợi nhuận bị 'ăn' ở khâu nào.
+- id: m02_value_cost_ratio
+  module: m02
+  name_vi: Tỷ số giá trị/chi phí của hoạt động
+  name_en: Activity value-to-cost ratio
+  expression_latex: R_a = \frac{V_a / \sum V}{C_a / \sum C}
+  expression_python: (value_a / sum(values.values())) / (cost_a / sum(costs.values()))
+  excel: =(Va/SUM(V))/(Ca/SUM(C))
+  variables:
+  - value_a
+  - cost_a
+  - values
+  - costs
+  when_to_use: 'Khi muốn ưu tiên cắt giảm/đầu tư: hoạt động nào khách coi trọng nhưng ta chi ít (R lớn) hoặc chi nhiều mà
+    khách không quan tâm (R nhỏ).'
+- id: m02_tows_priority
+  module: m02
+  name_vi: Điểm ưu tiên chiến lược TOWS
+  name_en: TOWS action priority score
+  expression_latex: P = Impact \times Feasibility
+  expression_python: impact * feasibility
+  excel: =Impact*Feasibility
+  variables:
+  - impact
+  - feasibility
+  when_to_use: 'Bước 5 quy trình SWOT: chọn 2-3 chiến lược khả thi nhất từ danh sách SO/ST/WO/WT.'
+- id: m03_experience_curve
+  module: m03
+  name_vi: Đường cong kinh nghiệm (chi phí/thời gian đơn vị thứ n)
+  name_en: Experience / Learning Curve (Wright)
+  expression_latex: C_n = C_1 \cdot n^{b},\quad b=\log_2(r)
+  expression_python: c1 * n ** math.log(rate, 2)
+  excel: =C1*n^(LOG(rate,2))
+  variables:
+  - c1
+  - n
+  - rate
+  when_to_use: Ước lượng lợi thế chi phí của DN đi trước/quy mô tích lũy lớn hơn; lập kế hoạch giá và điểm hòa vốn khi sản
+    xuất lặp lại (lắp ráp, may, bán dẫn).
+- id: m03_unit_cost_utilization
+  module: m03
+  name_vi: Chi phí đơn vị theo công suất sử dụng
+  name_en: Unit Cost vs Capacity Utilization
+  expression_latex: c = \frac{F}{Cap\cdot u} + v
+  expression_python: fixed / (capacity * utilization) + var_cost
+  excel: =F/(Cap*u)+v
+  variables:
+  - fixed
+  - capacity
+  - utilization
+  - var_cost
+  when_to_use: Đánh giá nguồn Capacity Utilization (xưởng, quán, đội xe, hàng không). Nguồn lợi thế chi phí dễ khai thác nhất
+    của SME.
+- id: m03_cost_advantage
+  module: m03
+  name_vi: Lợi thế chi phí tương đối và margin tại giá thị trường
+  name_en: Relative Cost Advantage
+  expression_latex: ADV = \frac{c_{rival}-c_{own}}{c_{rival}},\quad margin=\frac{P-c_{own}}{P}
+  expression_python: (c_rival - c_own) / c_rival
+  excel: =(c_rival-c_own)/c_rival
+  variables:
+  - c_rival
+  - c_own
+  when_to_use: Bước benchmark (Bước 2 của Cost Leadership) để xác nhận có thực sự là 'lowest cost' hay không.
+- id: m03_price_war_volume
+  module: m03
+  name_vi: Sản lượng cần tăng bù cho giảm giá (phá giá có đáng không)
+  name_en: Required Volume Uplift for a Price Cut
+  expression_latex: \Delta Q\% = \frac{d}{m-d}
+  expression_python: d / (m - d)
+  excel: =d/(m-d)
+  variables:
+  - m
+  - d
+  when_to_use: 'Khi đối thủ phá giá hoặc DN tính giảm giá để theo Cost Leadership: cần biết phải bán thêm bao nhiêu % mới
+    hòa lợi nhuận.'
+- id: m03_premium_breakeven
+  module: m03
+  name_vi: Premium tối thiểu để khác biệt hóa có lời
+  name_en: Break-even Price Premium
+  expression_latex: x_{min}=\frac{m_0}{1-L}-m_0+e
+  expression_python: m0 / (1 - L) - m0 + e
+  excel: =m0/(1-L)-m0+e
+  variables:
+  - m0
+  - L
+  - e
+  when_to_use: 'Kiểm tra điều kiện thành công #5: chi phí khác biệt < premium thu được, có tính đến mất khách.'
+- id: m03_weighted_score
+  module: m03
+  name_vi: Điểm có trọng số (chọn niche/chiến lược)
+  name_en: Weighted Scoring
+  expression_latex: S=\sum_i w_i s_i,\ \sum w_i=1
+  expression_python: sum(w * s for w, s in zip(weights, scores))
+  excel: =SUMPRODUCT(weights,scores)
+  variables:
+  - weights
+  - scores
+  when_to_use: Chấm điểm hấp dẫn của phân khúc cho Focus (đủ lớn, đủ nhỏ, nhu cầu khác biệt, có rào cản, tăng trưởng) hoặc
+    mức phù hợp giữa năng lực DN và từng chiến lược.
+- id: m04_relative_market_share
+  module: m04
+  name_vi: Thị phần tương đối
+  name_en: Relative Market Share
+  expression_latex: RMS = \frac{s_{own}}{s_{leader}}
+  expression_python: own_share / top_competitor_share
+  excel: =B2/B3
+  variables:
+  - own_share
+  - top_competitor_share
+  when_to_use: Chấm trục ngang BCG; cũng là một yếu tố điểm 'Thị phần' trong GE-McKinsey.
+- id: m04_market_growth
+  module: m04
+  name_vi: Tốc độ tăng trưởng thị trường / CAGR
+  name_en: Market Growth Rate / CAGR
+  expression_latex: g = \left(\frac{V_{end}}{V_{start}}\right)^{1/n} - 1
+  expression_python: (v_end / v_start) ** (1 / n_years) - 1
+  excel: =(B2/B1)^(1/B3)-1
+  variables:
+  - v_start
+  - v_end
+  - n_years
+  when_to_use: Chấm trục dọc BCG và yếu tố 'tăng trưởng' trong Sức hấp dẫn ngành.
+- id: m04_bcg_quadrant
+  module: m04
+  name_vi: Phân loại ô BCG
+  name_en: BCG Quadrant Classification
+  expression_latex: Q = f(RMS \ge 1,\ g \ge g^*)
+  expression_python: ('Star' if g >= g_threshold else 'Cash Cow') if rms >= rms_threshold else ('Question Mark' if g >= g_threshold
+    else 'Dog')
+  excel: =IF(RMS>=1,IF(g>=0.1,"Star","Cash Cow"),IF(g>=0.1,"Question Mark","Dog"))
+  variables:
+  - rms
+  - g
+  - rms_threshold
+  - g_threshold
+  when_to_use: Phân loại nhanh nhiều SBU.
+- id: m04_weighted_score
+  module: m04
+  name_vi: Điểm có trọng số (trục GE-McKinsey)
+  name_en: Weighted Factor Score
+  expression_latex: S = \sum_i w_i s_i,\quad \sum_i w_i = 1
+  expression_python: sum(w * s for w, s in zip(weights, scores))
+  excel: =SUMPRODUCT(weights, scores)
+  variables:
+  - w_i
+  - s_i
+  when_to_use: Tính điểm Sức hấp dẫn ngành và Vị thế cạnh tranh cho mỗi SBU.
+- id: m04_ge_zone
+  module: m04
+  name_vi: Ô và hướng hành động GE-McKinsey
+  name_en: GE-McKinsey Zone
+  expression_latex: zone = f(level(IA), level(CS))
+  expression_python: '(lambda lv: {(''high'',''high''):''Invest/Grow'',(''high'',''mid''):''Invest/Grow'',(''mid'',''high''):''Invest/Grow'',(''high'',''low''):''Selective'',(''mid'',''mid''):''Selective'',(''low'',''high''):''Selective'',(''mid'',''low''):''Harvest/Divest'',(''low'',''mid''):''Harvest/Divest'',(''low'',''low''):''Harvest/Divest''}[(lv(ia),
+    lv(cs))])(lambda x: ''high'' if x > 3.67 else (''mid'' if x >= 2.33 else ''low''))'
+  excel: Tra bảng 3x3 sau khi đổi điểm thành mức Cao/TB/Thấp
+  variables:
+  - ia
+  - cs
+  when_to_use: 'Chuyển hai điểm thành khuyến nghị (đường chéo: xanh = góc trên-trái, vàng = đường chéo giữa, đỏ = góc dưới-phải).'
+- id: m04_ansoff_option_value
+  module: m04
+  name_vi: Giá trị kỳ vọng điều chỉnh rủi ro của một hướng Ansoff
+  name_en: Risk-adjusted Option Value (screening heuristic)
+  expression_latex: V = p \cdot (\Delta R \cdot m \cdot T) - I
+  expression_python: p * (extra_rev_per_year * margin * years) - invest
+  excel: =p*(dR*m*T)-I
+  variables:
+  - p
+  - extra_rev_per_year
+  - margin
+  - years
+  - invest
+  when_to_use: Sàng lọc nhanh 4 hướng Ansoff TRƯỚC khi làm NPV đầy đủ (heuristic của skill này, KHÔNG phải công thức gốc của
+    Ansoff).
+- id: m05_value_curve_divergence
+  module: m05
+  name_vi: Độ phân kỳ đường cong giá trị (trung bình sai lệch tuyệt đối)
+  name_en: Value curve divergence (mean absolute deviation)
+  expression_latex: D = \frac{1}{n}\sum_{i=1}^{n}\left|s_i - c_i\right|
+  expression_python: sum(abs(s - c) for s, c in zip(scores, competitor_avg)) / len(scores)
+  excel: =SUMPRODUCT(ABS(B2:B11-C2:C11))/COUNT(B2:B11)
+  variables:
+  - s_i
+  - c_i
+  - n
+  when_to_use: Lượng hóa tiêu chí Divergence của value curve (không phải công thức của tác giả, là thang bổ trợ để agent kiểm
+    tra khách quan).
+- id: m05_value_curve_correlation
+  module: m05
+  name_vi: Tương quan hình dạng giữa hai đường cong giá trị
+  name_en: Value curve shape correlation (Pearson r)
+  expression_latex: r = \frac{\sum (s_i-\bar s)(c_i-\bar c)}{\sqrt{\sum (s_i-\bar s)^2 \sum (c_i-\bar c)^2}}
+  expression_python: '(lambda a,b: sum((x-sum(a)/len(a))*(y-sum(b)/len(b)) for x,y in zip(a,b))/(sum((x-sum(a)/len(a))**2
+    for x in a)*sum((y-sum(b)/len(b))**2 for y in b))**0.5)(scores, competitor_avg)'
+  excel: =CORREL(B2:B11,C2:C11)
+  variables:
+  - s_i, c_i
+  when_to_use: 'Bổ trợ cho D: D đo chênh độ cao, r đo giống hình dạng (cùng đỉnh, cùng đáy) hay không.'
+- id: m05_target_cost
+  module: m05
+  name_vi: Chi phí mục tiêu (BOS Sequence cổng Chi phí)
+  name_en: Target Cost
+  expression_latex: C_{target} = P_{strategic} - \pi_{target} = P_{strategic}(1 - m_{target})
+  expression_python: price_strategic - price_strategic * target_margin
+  excel: =B1-B1*B2
+  variables:
+  - P_strategic
+  - m_target
+  when_to_use: 'Khi kiểm tra cổng Cost: mô hình có sinh lời ở mức giá đại chúng chấp nhận không.'
+- id: m05_errc_net_cost
+  module: m05
+  name_vi: Tác động chi phí ròng của ERRC
+  name_en: ERRC net unit cost
+  expression_latex: C_{new} = C_{base} - S_{E} - S_{R} + I_{Ra} + I_{C}
+  expression_python: cost_base - saving_eliminate - saving_reduce + invest_raise + invest_create
+  excel: =B1-B2-B3+B4+B5
+  variables:
+  - C_base
+  - S_E, S_R
+  - I_Ra, I_C
+  when_to_use: Kiểm chứng ERRC có thật sự 'rẻ hơn' (value innovation) hay chỉ là thêm chi phí.
+- id: m05_noncustomer_demand
+  module: m05
+  name_vi: Ước lượng cầu tiềm năng từ 3 tầng non-customers
+  name_en: Noncustomer demand sizing
+  expression_latex: Q = \sum_{k=1}^{3} N_k \cdot r_k
+  expression_python: sum(n * r for n, r in tiers)
+  excel: =SUMPRODUCT(B2:B4,C2:C4)
+  variables:
+  - N_k
+  - r_k
+  when_to_use: Ước lượng sơ bộ quy mô đại dương xanh trước khi đầu tư.
+- id: m05_breakeven_units
+  module: m05
+  name_vi: Điểm hòa vốn (số khách/đơn vị) cho mô hình mới
+  name_en: Break-even units
+  expression_latex: BE = \frac{F}{p(1 - v)}
+  expression_python: fixed_cost / (price * (1 - variable_ratio))
+  excel: =B1/(B2*(1-B3))
+  variables:
+  - F
+  - p
+  - v
+  when_to_use: 'Cổng Price + Cost của BOS Sequence: số khách cần có so với cầu Q.'
+- id: m05_bum_opportunity
+  module: m05
+  name_vi: Chỉ số ô trống trên Buyer Utility Map
+  name_en: Buyer Utility Map blank-cell ratio
+  expression_latex: B = \frac{36 - N_{served}}{36}
+  expression_python: (36 - cells_served) / 36
+  excel: =(36-B1)/36
+  variables:
+  - N_served
+  when_to_use: Chọn ô cơ hội để ưu tiên ERRC.
+- id: m06_kpi_score_higher
+  module: m06
+  name_vi: Điểm KPI (càng cao càng tốt, có chỉ tiêu)
+  name_en: KPI Achievement - higher is better
+  expression_latex: S = \min\left(\frac{A}{T},\ cap\right)
+  expression_python: min(actual/target, cap)
+  excel: =MIN(A/T, 1.2)
+  variables:
+  - A
+  - T
+  - cap
+  when_to_use: 'KPI mà số lớn là tốt: doanh thu, retention, giờ đào tạo, biên lợi nhuận.'
+- id: m06_kpi_score_lower
+  module: m06
+  name_vi: Điểm KPI (càng thấp càng tốt)
+  name_en: KPI Achievement - lower is better
+  expression_latex: S = \min\left(\frac{T}{A},\ cap\right)
+  expression_python: min(target/actual, cap)
+  excel: =MIN(T/A, 1.2)
+  variables:
+  - A
+  - T
+  - cap
+  when_to_use: Thời gian phục vụ, tỷ lệ lỗi, turnover, chi phí đơn vị.
+- id: m06_kpi_score_baseline
+  module: m06
+  name_vi: Điểm tiến độ KPI theo mốc nền
+  name_en: Progress from baseline
+  expression_latex: S = \frac{A - B}{T - B}
+  expression_python: (actual - baseline) / (target - baseline)
+  excel: =(A-B)/(T-B)
+  variables:
+  - A
+  - B
+  - T
+  when_to_use: 'KPI mà mốc nền khác 0 và chỉ tiêu là mức cải thiện: NPS, tăng trưởng, thị phần.'
+- id: m06_perspective_score
+  module: m06
+  name_vi: Điểm viễn cảnh (trung bình có trọng số KPI)
+  name_en: Perspective score
+  expression_latex: P_j = \sum_i w_i S_i,\ \sum_i w_i = 1
+  expression_python: sum(w*s for w,s in zip(weights, scores))
+  excel: =SUMPRODUCT(w_range, s_range)
+  variables:
+  - w_i
+  - S_i
+  when_to_use: Tổng hợp KPI thành điểm của từng viễn cảnh.
+- id: m06_overall_score
+  module: m06
+  name_vi: Điểm BSC tổng thể
+  name_en: Overall BSC score
+  expression_latex: BSC = \sum_j W_j P_j,\ \sum_j W_j = 1
+  expression_python: sum(W[j]*P[j] for j in W)
+  excel: =SUMPRODUCT(W_range, P_range)
+  variables:
+  - W_j
+  - P_j
+  when_to_use: Báo cáo một con số tổng cho Ban lãnh đạo, liên kết thưởng.
+- id: m06_nps
+  module: m06
+  name_vi: Chỉ số NPS
+  name_en: Net Promoter Score
+  expression_latex: NPS = \%Promoters - \%Detractors
+  expression_python: pct_promoters - pct_detractors
+  excel: =P - D
+  variables:
+  - Promoters
+  - Detractors
+  when_to_use: 'KPI lòng trung thành viễn cảnh Khách hàng (chỉ tiêu ví dụ trong nguồn: NPS >= 50).'
+- id: m06_retention
+  module: m06
+  name_vi: Tỷ lệ giữ chân khách hàng
+  name_en: Customer Retention Rate
+  expression_latex: CRR = \frac{E - N}{S}
+  expression_python: (end_customers - new_customers) / start_customers
+  excel: =(E-N)/S
+  variables:
+  - E
+  - N
+  - S
+  when_to_use: KPI giữ chân (chỉ tiêu ví dụ >= 90% trong nguồn).
+- id: m06_turnover
+  module: m06
+  name_vi: Tỷ lệ nghỉ việc
+  name_en: Employee Turnover Rate
+  expression_latex: TR = \frac{L}{(H_0 + H_1)/2}
+  expression_python: leavers / ((headcount_start + headcount_end) / 2)
+  excel: =L/AVERAGE(H0,H1)
+  variables:
+  - L
+  - H0, H1
+  when_to_use: 'KPI Học hỏi (chỉ tiêu ví dụ trong nguồn: < 20%/năm cho chuỗi cà phê).'
+- id: m06_okr_score
+  module: m06
+  name_vi: Điểm OKR
+  name_en: OKR Score
+  expression_latex: OKR = \frac{1}{n}\sum_k KR_k
+  expression_python: sum(kr_scores)/len(kr_scores)
+  excel: =AVERAGE(KR_range)
+  variables:
+  - KR_k
+  when_to_use: Chấm Objective hàng quý (3-5 Objectives, mỗi cái 3-5 KR).
+- id: m06_initiative_roi
+  module: m06
+  name_vi: ROI sáng kiến (kiểm chứng giả thuyết nhân quả)
+  name_en: Initiative ROI
+  expression_latex: ROI = \frac{\Delta Rev \cdot GM - Cost}{Cost}
+  expression_python: (delta_rev * gross_margin - cost) / cost
+  excel: =(dRev*GM-Cost)/Cost
+  variables:
+  - dRev
+  - GM
+  - Cost
+  when_to_use: Chứng minh chuỗi nhân quả Học hỏi/Quy trình/Khách hàng ra tiền, xếp ưu tiên sáng kiến.
+- id: m06_rag_status
+  module: m06
+  name_vi: Trạng thái xanh-vàng-đỏ
+  name_en: RAG Status
+  expression_latex: Status = \begin{cases} Green & S \ge 0.9 \\ Amber & 0.7 \le S < 0.9 \\ Red & S < 0.7 \end{cases}
+  expression_python: '''Green'' if s >= 0.9 else (''Amber'' if s >= 0.7 else ''Red'')'
+  excel: =IF(S>=0.9,"Xanh",IF(S>=0.7,"Vàng","Đỏ"))
+  variables:
+  - S
+  when_to_use: Dashboard cho lãnh đạo, ưu tiên chú ý.
+- id: m07_impact_uncertainty_score
+  module: m07
+  name_vi: Điểm ưu tiên yếu tố (Tác động x Bất định)
+  name_en: Impact x Uncertainty priority score
+  expression_latex: S_i = I_i \times U_i
+  expression_python: I * U
+  excel: =B2*C2
+  variables:
+  - I
+  - U
+  when_to_use: 'Bước 3 của quy trình: xếp hạng 10-15 driving forces để chọn ứng viên làm trục kịch bản.'
+- id: m07_joint_scenario_weight
+  module: m07
+  name_vi: Trọng số kịch bản từ hai trục (giả định độc lập)
+  name_en: Scenario weight from two axes
+  expression_latex: P(A_i, B_j) = P(A_i)\times P(B_j)
+  expression_python: pa * pb
+  excel: =B1*B2
+  variables:
+  - pa
+  - pb
+  when_to_use: Chỉ khi cần gán trọng số để tính giá trị kỳ vọng hoặc phân bổ ngân sách dự phòng; không dùng để 'dự báo kịch
+    bản thắng'.
+- id: m07_expected_value
+  module: m07
+  name_vi: Giá trị kỳ vọng của chiến lược qua các kịch bản
+  name_en: Scenario-weighted expected value
+  expression_latex: EV_s = \sum_{k} w_k \, X_{s,k}
+  expression_python: sum(w_k * x for w_k, x in zip(w, payoffs))
+  excel: =SUMPRODUCT(B2:E2,$B$7:$E$7)
+  variables:
+  - w
+  - payoffs
+  when_to_use: So sánh phương án khi chấp nhận rủi ro lặp lại và có trọng số tạm tin được.
+- id: m07_maximin
+  module: m07
+  name_vi: Tiêu chí Maximin (kết quả xấu nhất tốt nhất)
+  name_en: Maximin / worst-case criterion
+  expression_latex: \max_s \min_k X_{s,k}
+  expression_python: max(min(row) for row in matrix)
+  excel: =MAX(F2:F5) với F = MIN(B:E) mỗi hàng
+  variables:
+  - matrix
+  when_to_use: DN mỏng vốn, vay nhiều, hoặc quyết định có thể dẫn đến mất khả năng thanh toán.
+- id: m07_regret
+  module: m07
+  name_vi: Regret lớn nhất (Minimax regret, Savage)
+  name_en: Minimax regret
+  expression_latex: R_{s,k}=\max_{s'}X_{s',k}-X_{s,k};\; \min_s \max_k R_{s,k}
+  expression_python: min(max(max(col) - row[k] for k, col in enumerate(zip(*matrix))) for row in matrix)
+  excel: Bảng regret = MAX(cột) - ô; rồi MIN của MAX theo hàng
+  variables:
+  - matrix
+  when_to_use: Quyết định một lần, khó đảo ngược, nỗi sợ lớn nhất là 'chọn sai khi đáng lẽ chọn khác'.
+- id: m07_robustness_share
+  module: m07
+  name_vi: Tỷ lệ kịch bản sống sót (độ vững)
+  name_en: Robustness share
+  expression_latex: 'Rb_s=\frac{\#\{k: X_{s,k}\ge T\}}{K}'
+  expression_python: sum(1 for x in payoffs if x >= T) / len(payoffs)
+  excel: =COUNTIF(B2:E2,">="&T)/COUNT(B2:E2)
+  variables:
+  - payoffs
+  - T
+  when_to_use: 'Bước wind-tunnel: đo định lượng thế nào là ''robust'' (không cần xác suất).'
+- id: m07_cash_runway
+  module: m07
+  name_vi: Thời gian chịu đựng tiền mặt trong kịch bản xấu
+  name_en: Cash runway under a scenario
+  expression_latex: Runway=\frac{Cash}{MonthlyOutflow-MonthlyInflow}
+  expression_python: cash / (outflow - inflow)
+  excel: =B1/(B2-B3)
+  variables:
+  - cash
+  - outflow
+  - inflow
+  when_to_use: 'Đánh giá kịch bản xấu: DN sống được bao tháng; xác định quỹ dự phòng (nguồn nêu 6 tháng vận hành cho DN XNK).'
+- id: m07_signal_score
+  module: m07
+  name_vi: Điểm tín hiệu của một kịch bản
+  name_en: Weighted early-warning signal score
+  expression_latex: SS=\frac{\sum_j w_j s_j}{\sum_j w_j}
+  expression_python: sum(w * s for w, s in zip(weights, signals)) / sum(weights)
+  excel: =SUMPRODUCT(B2:B5,C2:C5)/SUM(B2:B5)
+  variables:
+  - weights
+  - signals
+  when_to_use: Gộp nhiều tín hiệu rời rạc thành một con số để quyết định kích hoạt phương án contingent.
+- id: m08_weighted_score
+  module: m08
+  name_vi: Điểm có trọng số để xếp hạng lựa chọn chiến lược
+  name_en: Weighted scoring model
+  expression_latex: S_j = \sum_{i} w_i \, x_{ij},\quad \sum_i w_i = 1
+  expression_python: sum(w[i]*x[i] for i in range(len(w)))
+  excel: =SUMPRODUCT(w_range, x_range)
+  variables:
+  - w_i
+  - x_ij
+  when_to_use: Chọn giữa 3-5 hướng đi (Ansoff, concept mới, kênh) khi không có đủ số liệu NPV; cũng dùng để tổng hợp điểm
+    áp lực 5 Forces.
+- id: m08_store_closure_rule
+  module: m08
+  name_vi: Quy tắc đóng cửa hàng theo EBITDA cấp cửa hàng
+  name_en: Store-level (4-wall) closure rule and payback
+  expression_latex: ClosePayback = \dfrac{\sum_k C_k}{\sum_k |E_k|},\quad \text{đóng nếu } E_k < 0 \ \text{và } L_k > 6
+  expression_python: sum(closing_costs)/sum(-e for e in monthly_losses)
+  excel: =SUM(closing_costs)/-SUM(monthly_losses)
+  variables:
+  - E_k
+  - L_k
+  - C_k
+  when_to_use: 'Giai đoạn Cắt tỉa của lộ trình: chọn cửa hàng đóng cửa theo tiêu chí lỗ > 6 tháng (ngưỡng 6 tháng lấy từ giải
+    pháp đề xuất trong case).'
+- id: m09_swot_weighted
+  module: m09
+  name_vi: Điểm SWOT có trọng số theo từng góc
+  name_en: Weighted SWOT quadrant score
+  expression_latex: Q = \sum_{i} w_i s_i,\ \sum_i w_i = 1
+  expression_python: 'sum(w*s for w, s in items)  # items=[(trọng số, điểm 1-5)], tổng trọng số trong góc = 1'
+  excel: =SUMPRODUCT(w_range, s_range)
+  variables:
+  - w_i
+  - s_i
+  when_to_use: Khắc phục chỉ trích 'SWOT chỉ liệt kê, mọi yếu tố ngang nhau, không định lượng'.
+- id: m09_tows_priority
+  module: m09
+  name_vi: Điểm ưu tiên cặp TOWS
+  name_en: TOWS pair priority
+  expression_latex: P_{ij} = (w_i s_i)(w_j s_j)
+  expression_python: (wi*si)*(wj*sj)
+  excel: =(w_i*s_i)*(w_j*s_j)
+  variables:
+  - w_i s_i
+  - w_j s_j
+  when_to_use: Xếp hạng nhiều chiến lược SO/ST/WO/WT để chọn 2-3 chiến lược khả thi nhất (bước 5 nguồn).
+- id: m09_relative_share
+  module: m09
+  name_vi: Thị phần tương đối (BCG)
+  name_en: Relative market share
+  expression_latex: RMS = \frac{MS_{own}}{MS_{largest\ competitor}}
+  expression_python: own_share / top_competitor_share
+  excel: =own/competitor
+  variables:
+  - own_share
+  - top_competitor_share
+  when_to_use: Xếp từng SBU/sản phẩm vào ô BCG.
+- id: m10_ge_axis_score
+  module: m10
+  name_vi: Điểm trục GE-McKinsey với bảng trọng số mẫu của nguồn
+  name_en: GE-McKinsey axis score (source weight templates)
+  expression_latex: IA = \sum_{i=1}^{7} w_i s_i,\quad CS = \sum_{j=1}^{8} v_j t_j,\quad \sum w_i = \sum v_j = 1
+  expression_python: sum(w*s for w, s in zip(weights, scores))
+  excel: =SUMPRODUCT(weights, scores)
+  variables:
+  - w_i
+  - v_j
+  - s_i, t_j
+  when_to_use: 'Bước 4-5 quy trình GE-McKinsey 8 bước: chấm điểm từng SBU rồi ra điểm hai trục (đặt ô bằng m04_ge_zone).'
+- id: m10_portfolio_cash_balance
+  module: m10
+  name_vi: Cân đối dòng tiền danh mục (Cow nuôi Star và Question Mark)
+  name_en: Portfolio cash balance
+  expression_latex: N = \sum_{k \in Cow} F_k - \sum_{k \in Star \cup QM} I_k
+  expression_python: sum(cow_surplus) - sum(star_need) - sum(qm_need)
+  excel: =SUM(cow_range)-SUM(star_range)-SUM(qm_range)
+  variables:
+  - F_k
+  - I_k
+  when_to_use: 'Kiểm tra logic nền của BCG: danh mục có Cash Cow đủ nuôi các đơn vị tiêu tiền không. Công thức là quy ước
+    của skill, nguồn chỉ nêu nguyên tắc ''bò sữa nuôi sao và dấu hỏi''.'
+- id: m10_wind_tunnel_score
+  module: m10
+  name_vi: Điểm hầm gió (chất lượng chiến lược qua các kịch bản)
+  name_en: Wind-tunnel score from qualitative grades
+  expression_latex: W_s = \sum_{k=1}^{K} g_{s,k},\quad g \in \{0,1,2\}
+  expression_python: sum(grades)
+  excel: =SUM(B2:E2)
+  variables:
+  - g_{s,k}
+  when_to_use: Chuyển bảng 'Robust?' bằng biểu tượng của nguồn (Bước 6-7 BĐS VN) thành số để so sánh. Là quy ước của skill,
+    nguồn chỉ dùng biểu tượng.
+- id: m10_pct_change
+  module: m10
+  name_vi: Phần trăm thay đổi (kiểm tra số trong case)
+  name_en: Percentage change (case-number sanity check)
+  expression_latex: \Delta\% = \frac{new - old}{old}\times 100
+  expression_python: (new - old) / old * 100
+  excel: =(new-old)/old
+  variables:
+  - old, new
+  when_to_use: Mọi lần trích 'tăng X%' trong case, đặc biệt các mệnh đề về giá dầu, doanh thu, thị phần.

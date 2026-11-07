@@ -14,7 +14,7 @@ import { skillsText, contextSkillsText, searchSkills } from './skills.js';
 const ROOM_CAPACITY = 3;
 const FILE = path.join(path.dirname(fileURLToPath(import.meta.url)), 'agents.json');
 // Tên 4 phòng đọc từ "rooms" trong agents.json (giao diện có đúng 4 khu vực, mỗi khu 3 chỗ).
-const DEFAULT_ROOMS = ['Ban điều hành', 'Phòng nghiên cứu', 'Phòng sáng tạo', 'Phòng kỹ thuật'];
+const DEFAULT_ROOMS = ['Ban điều hành', 'Phòng nghiên cứu', 'Phòng sáng tạo', 'Phòng đầu tư'];
 function readRooms() {
   try {
     const r = JSON.parse(fs.readFileSync(FILE, 'utf8')).rooms;
@@ -137,15 +137,15 @@ export function templatePlan(command) {
 }
 
 const MOCK = {
-  secretary: (c) => `Đã ghi nhận yêu cầu "${short(c, 50)}", yêu cầu rõ ràng.`,
+  strategist: (c) => `Đã ghi nhận yêu cầu "${short(c, 50)}", yêu cầu rõ ràng.`,
   rag: () => 'Top 3 nguồn liên quan đã được xếp hạng; nguồn #1 độ tin cậy 0.92.',
   financial_expert: () => 'Kết luận: nên chấp nhận dự án (NPV > 0).\n\n| Chỉ tiêu | Giá trị |\n|---|---|\n| NPV (WACC 12%) | 412 triệu đ (GIẢ ĐỊNH) |\n| IRR | 18,5% |\n| Hoàn vốn | 3,2 năm |\n\nGiả định: dòng tiền minh hoạ; thay bằng số liệu thật của bạn để có kết quả chính xác.',
   analyst: () => 'Nhận định: doanh thu tăng đều, tháng 3 cao nhất; nên tập trung nguồn lực vào quý 2.\n\n| Tháng | Doanh thu (triệu) | Tăng trưởng |\n|---|---|---|\n| T1 | 120 | - |\n| T2 | 150 | 25% |\n| T3 | 180 | 20% |\n\n```chart\n{"type":"bar","title":"Doanh thu theo tháng (dữ liệu mẫu)","labels":["T1","T2","T3"],"series":[{"name":"Doanh thu","data":[120,150,180]}],"unit":"triệu"}\n```',
   designer: () => 'Đề xuất bố cục 2 cột, tông màu dịu, ưu tiên đọc nhanh.',
-  content: () => 'Kịch bản TikTok 30s: hook 3s đầu, 4 cảnh, CTA cuối + caption Facebook 100 từ, 5 hashtag.',
+  marketing_expert: () => 'Kịch bản TikTok 30s: hook 3s đầu, 4 cảnh, CTA cuối + caption Facebook 100 từ, 5 hashtag.',
   writer: () => 'Đã viết xong nội dung chính và tiêu đề.',
-  dev: () => 'Đã triển khai chức năng chính, 3 module, sẵn sàng kiểm thử.',
-  tester: () => 'Chạy 12 test: 12 đạt, 0 lỗi.',
+  stock_analyst: () => 'Phân tích tham khảo: định giá theo P/E và DCF cho kết quả khoảng giá, nêu rõ giả định; không phải khuyến nghị mua/bán.',
+  accountant: () => 'Đã định khoản và kiểm tra cân đối: Tài sản = Nợ phải trả + Vốn chủ.',
   ops: () => 'Dịch vụ đã khởi động đủ, cleanup xác nhận. Sẵn sàng bàn giao.',
   reviewer: () => 'Đã duyệt. Kết quả đạt yêu cầu.',
   manager: () => 'Đã xử lý xong yêu cầu.',
@@ -154,12 +154,8 @@ const MOCK = {
 const MOCK_REVISE = 'KẾT LUẬN: YÊU CẦU SỬA\n1. Cần nêu rõ nguồn và giả định của số liệu.\n2. Phần kết luận chưa trả lời thẳng yêu cầu.';
 
 // Ở chế độ mock, một số agent giả lập việc cần truy cập file hoặc hỏi đồng nghiệp.
-const MOCK_ACCESS = {
-  dev: { fn: 'listDir', path: '.', ok: (r) => `Thư mục nguồn có ${r.entries.length} file: ${r.entries.join(', ')}` },
-};
-const MOCK_CONSULT = {
-  tester: { to: 'dev', q: 'Có chức năng nào chưa ổn định không?', a: 'Chưa có, nhưng nên test kỹ phần phân quyền.' },
-};
+const MOCK_ACCESS = {};
+const MOCK_CONSULT = {};
 const MOCK_ANSWER = (agent, q) => {
   for (const c of Object.values(MOCK_CONSULT)) if (c.to === agent.id && c.q === q) return c.a;
   return 'Đã nhận câu hỏi, tôi sẽ phản hồi chi tiết sau.';

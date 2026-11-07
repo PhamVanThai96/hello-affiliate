@@ -1,0 +1,617 @@
+# m07 - Lập kế hoạch theo kịch bản (distill từ 07-scenario-planning.md)
+id: "m07"
+name_vi: "Lập kế hoạch theo kịch bản"
+name_en: "Scenario Planning"
+purpose: >
+  Giúp doanh nghiệp ra quyết định chiến lược dài hạn khi tương lai bất định: thay vì dự báo một con số, xây 3-4 câu chuyện
+  tương lai hợp lý từ hai yếu tố vừa quan trọng vừa khó đoán nhất, thử từng phương án chiến lược trong từng kịch bản
+  (wind-tunnel) để tìm chiến lược vững (robust), rồi đặt hệ thống tín hiệu sớm để biết kịch bản nào đang thành hình
+  và khi nào kích hoạt phương án dự phòng (contingent).
+when_to_use:
+  - "Quyết định đầu tư/mở rộng dài hạn (5-10 năm) hoặc khó đảo ngược: mở chi nhánh, xây nhà máy, vay lớn, mua đất, vào thị trường mới."
+  - "Ngành đang bị đảo lộn (disruption) hoặc phụ thuộc biến số vĩ mô khó đoán: lãi suất, chính sách, thuế quan, tỷ giá, cước vận tải."
+  - "Chủ SME hỏi 'nếu lãi suất/thuế/đối tác thay đổi thì sao?', 'nên chuẩn bị gì cho 3-5 năm tới?'"
+  - "Cần kiểm tra (stress-test) chiến lược hiện tại hoặc một thương vụ M&A / mở rộng quốc tế trong nhiều bối cảnh."
+  - "Cần thiết kế hệ thống cảnh báo sớm và ngưỡng kích hoạt phương án B."
+  - "KHÔNG dùng cho quyết định vận hành hằng ngày; với startup rất sớm chỉ dùng bản rút gọn 2-3 kịch bản."
+prerequisites: ["m01"]
+related_modules:
+  - "m01 - PESTEL/Porter: nguồn để liệt kê driving forces (Bước 2)"
+  - "m02 - Phân tích nội bộ: đánh giá năng lực DN có chịu nổi từng kịch bản không (Bước 6)"
+  - "m03 - Chiến lược cạnh tranh: các phương án chiến lược đem thử trong wind-tunnel"
+  - "m04 - Chiến lược tăng trưởng: phương án mở rộng/đa dạng hóa được test bằng kịch bản"
+  - "m05 - Blue Ocean: tìm không gian mới khi kịch bản làm thị trường hiện tại thu hẹp"
+  - "m06 - Balanced Scorecard: biến early warning signals thành KPI theo dõi định kỳ"
+  - "Tài chính (finance-agent-skill): sensitivity/NPV theo kịch bản, vốn lưu động và dự phòng tiền mặt"
+
+concepts:
+  - term_vi: "Lập kế hoạch theo kịch bản"
+    term_en: "Scenario Planning"
+    definition: >
+      Phương pháp xây nhiều câu chuyện hợp lý (plausible) về tương lai dựa trên các yếu tố bất định có tác động lớn,
+      để chuẩn bị, kiểm tra và điều chỉnh chiến lược. Là công cụ tư duy chiến lược, không phải công cụ dự báo.
+    why_it_matters: >
+      Nguồn gốc: war gaming quân sự sau Thế chiến II; Herman Kahn (RAND, thập niên 1950) dùng cho chiến lược quốc phòng;
+      Pierre Wack (Royal Dutch Shell, thập niên 1970) đưa vào kinh doanh; Peter Schwartz (GBN, 1991, 'The Art of the Long View')
+      phổ biến; van der Heijden (1996) và Schoemaker (1995) hệ thống hóa. Ra đời vì dự báo một con số thất bại đúng lúc cần nhất
+      (ngoặt chiến lược), và vì người ra quyết định không đổi niềm tin chỉ vì một biểu đồ nhưng đổi niềm tin vì một câu chuyện thuyết phục.
+  - term_vi: "Hợp lý, không phải xác suất"
+    term_en: "Plausibility vs Probability"
+    definition: >
+      Kịch bản được chọn theo tính hợp lý và tính khác biệt của nó, không gán xác suất khách quan. Mục tiêu là mở rộng
+      tầm nhìn của đội ngũ, chứ không đoán kịch bản nào thắng.
+    why_it_matters: >
+      Gán xác suất khiến người ta bám vào kịch bản 'có khả năng nhất' rồi bỏ qua kịch bản xấu nhưng sống còn (tunnel vision).
+      Với SME, khi cần so sánh phương án có thể dùng trọng số chủ quan, nhưng phải coi là công cụ phụ (xem công thức), không phải kết luận.
+  - term_vi: "Thế giới VUCA"
+    term_en: "VUCA (Volatility, Uncertainty, Complexity, Ambiguity)"
+    definition: "Biến động nhanh, bất định, phức tạp (nhiều yếu tố liên kết), mơ hồ (cùng dữ kiện, nhiều cách diễn giải)."
+    why_it_matters: "Là bối cảnh khiến kế hoạch 1 kịch bản dễ vỡ; thập niên 2020 (COVID, xung đột, lãi suất, thuế quan) là minh họa điển hình."
+  - term_vi: "Yếu tố dẫn dắt"
+    term_en: "Driving forces"
+    definition: "Xu hướng/lực lượng bên ngoài định hình tương lai ngành (chính trị, kinh tế, xã hội, công nghệ, môi trường, pháp lý)."
+    why_it_matters: "Là nguyên liệu đầu vào; thường lấy từ PESTEL. Phải tách yếu tố 'chắc chắn' (xu hướng rõ, vd đô thị hóa) khỏi yếu tố 'bất định'."
+  - term_vi: "Yếu tố chắc chắn và yếu tố bất định"
+    term_en: "Predetermined elements vs Critical uncertainties"
+    definition: >
+      Predetermined elements: xu hướng gần như chắc chắn, đưa vào mọi kịch bản. Critical uncertainties: yếu tố tác động lớn nhưng
+      không biết sẽ diễn ra theo hướng nào; chỉ 2 yếu tố trong nhóm này được chọn làm trục.
+    why_it_matters: "Nếu đem yếu tố chắc chắn làm trục, các kịch bản sẽ giống nhau; nếu đem yếu tố ít tác động làm trục, kịch bản không đáng quan tâm."
+  - term_vi: "Chiến lược vững và chiến lược dự phòng"
+    term_en: "Robust strategy vs Contingent strategy"
+    definition: >
+      Robust: chiến lược chạy tốt hoặc ít nhất sống sót ở hầu hết kịch bản, triển khai NGAY. Contingent: chỉ kích hoạt khi tín hiệu cho thấy
+      một kịch bản cụ thể đang xảy ra; chuẩn bị sẵn nhưng chưa dùng.
+    why_it_matters: "Giải quyết nhược điểm 'biết nhiều kịch bản nhưng không biết làm gì': chia hành động thành làm ngay (robust), chuẩn bị sẵn (contingent), và chờ tín hiệu."
+  - term_vi: "Tín hiệu cảnh báo sớm"
+    term_en: "Early Warning Signals / Leading indicators"
+    definition: "Chỉ báo quan sát được, đo được, đi trước sự kiện và gắn với một kịch bản cụ thể, kèm ngưỡng và người chịu trách nhiệm."
+    why_it_matters: "Không có tín hiệu thì kịch bản chỉ là tài liệu trên giấy; tín hiệu sớm biến kịch bản thành phản xạ nhanh (Shell phản ứng sớm hơn đối thủ 6-12 tháng theo mô tả trong tài liệu nguồn)."
+  - term_vi: "Thiên nga đen"
+    term_en: "Black Swan"
+    definition: "Sự kiện hiếm, bất ngờ, tác động cực lớn, thường nằm ngoài tất cả kịch bản đã dựng (COVID-19, khủng hoảng Biển Đỏ 2024)."
+    why_it_matters: "Là giới hạn của phương pháp. Cách đối phó: giữ khả năng chịu sốc chung (tiền mặt, đa dạng nguồn cung) thay vì cố dự đoán sự kiện cụ thể; rà soát kịch bản định kỳ."
+
+formulas:
+  - id: "m07_impact_uncertainty_score"
+    name_vi: "Điểm ưu tiên yếu tố (Tác động x Bất định)"
+    name_en: "Impact x Uncertainty priority score"
+    expression_latex: "S_i = I_i \\times U_i"
+    expression_python: "I * U"
+    excel: "=B2*C2"
+    variables:
+      - {symbol: "I", meaning: "Mức tác động của yếu tố lên quyết định chiến lược (thang 1-5)", unit: "điểm"}
+      - {symbol: "U", meaning: "Mức bất định về hướng diễn biến của yếu tố (thang 1-5)", unit: "điểm"}
+    when_to_use: "Bước 3 của quy trình: xếp hạng 10-15 driving forces để chọn ứng viên làm trục kịch bản."
+    why_it_works: >
+      Một yếu tố đáng làm trục khi VỪA tác động lớn VỪA khó đoán. Nhân hai điểm làm điểm cao chỉ khi cả hai cùng cao
+      (5x5=25), còn yếu tố chỉ cao một chiều (5x1=5) tự bị loại: tác động lớn nhưng chắc chắn thì đưa vào mọi kịch bản,
+      bất định nhưng tác động nhỏ thì chỉ theo dõi.
+    assumptions: ["Điểm do nhóm chấm đồng thuận, cùng một thang.", "Hai trục được chọn nên độc lập tương đối (xem decision_rules)."]
+    pitfalls:
+      - "Chấm theo cảm tính của một người; cần workshop đa chức năng."
+      - "Chọn 2 yếu tố điểm cao nhất nhưng chúng phụ thuộc nhau (vd lãi suất và tín dụng BĐS), khiến 4 ô thực ra chỉ có 2 kịch bản thật."
+      - "Dùng điểm này như xác suất. Nó chỉ xếp hạng ưu tiên."
+    interpretation: "Điểm 16-25 là ứng viên làm trục; 9-15 theo dõi chặt; dưới 9 đưa vào bối cảnh hoặc bỏ qua. Ngưỡng là quy ước thực hành, không phải chuẩn học thuật."
+    example:
+      inputs: {I: 5, U: 5}
+      steps: ["Thuế quan Mỹ: tác động 5, bất định 5", "S = 5 x 5 = 25 (cao nhất trong danh sách)"]
+      result: "25"
+  - id: "m07_joint_scenario_weight"
+    name_vi: "Trọng số kịch bản từ hai trục (giả định độc lập)"
+    name_en: "Scenario weight from two axes"
+    expression_latex: "P(A_i, B_j) = P(A_i)\\times P(B_j)"
+    expression_python: "pa * pb"
+    excel: "=B1*B2"
+    variables:
+      - {symbol: "pa", meaning: "Trọng số chủ quan cho cực của trục 1 (0-1)", unit: "tỷ lệ"}
+      - {symbol: "pb", meaning: "Trọng số chủ quan cho cực của trục 2 (0-1)", unit: "tỷ lệ"}
+    when_to_use: "Chỉ khi cần gán trọng số để tính giá trị kỳ vọng hoặc phân bổ ngân sách dự phòng; không dùng để 'dự báo kịch bản thắng'."
+    why_it_works: "Nếu hai trục độc lập thì khả năng đồng thời bằng tích. 4 ô có tổng trọng số bằng 1 vì mỗi trục có hai cực loại trừ nhau."
+    assumptions: ["Hai trục độc lập.", "pa, pb là phán đoán chủ quan có nhóm đồng thuận, ghi rõ nguồn."]
+    pitfalls:
+      - "Hai trục thường tương quan (lãi suất cao thường đi với siết tín dụng): tích sẽ đánh giá sai ô chéo."
+      - "Tin con số thập phân như thật. Nên làm tròn, và chạy lại với trọng số khác (sensitivity)."
+    interpretation: "Dùng để xếp thứ tự quan tâm, không để loại bỏ kịch bản có trọng số thấp nhưng thiệt hại sống còn (vd 12%)."
+    example:
+      inputs: {pa: 0.6, pb: 0.3}
+      steps: ["P(A cao)=0.6, P(B cao)=0.3", "Ô (A cao, B cao) = 0.6 x 0.3 = 0.18", "Ô (A thấp, B thấp) = 0.4 x 0.7 = 0.28; ô (A cao, B thấp) = 0.6 x 0.7 = 0.42; ô (A thấp, B cao) = 0.4 x 0.3 = 0.12; tổng = 1"]
+      result: "0.18"
+  - id: "m07_expected_value"
+    name_vi: "Giá trị kỳ vọng của chiến lược qua các kịch bản"
+    name_en: "Scenario-weighted expected value"
+    expression_latex: "EV_s = \\sum_{k} w_k \\, X_{s,k}"
+    expression_python: "sum(w_k * x for w_k, x in zip(w, payoffs))"
+    excel: "=SUMPRODUCT(B2:E2,$B$7:$E$7)"
+    variables:
+      - {symbol: "w", meaning: "Trọng số từng kịch bản, tổng bằng 1", unit: "tỷ lệ"}
+      - {symbol: "payoffs", meaning: "Kết quả (lợi nhuận/NPV 3 năm) của chiến lược s ở từng kịch bản k", unit: "tỷ VNĐ"}
+    when_to_use: "So sánh phương án khi chấp nhận rủi ro lặp lại và có trọng số tạm tin được."
+    why_it_works: "Là bình quân gia quyền: mỗi kịch bản đóng góp kết quả của nó theo mức quan tâm."
+    assumptions: ["Trọng số chủ quan nhưng nhất quán.", "Payoff cùng đơn vị, cùng horizon, đã chiết khấu nếu cần."]
+    pitfalls:
+      - "Kịch bản đuôi (phá sản) bị trung bình hóa: EV dương vẫn có thể che một kịch bản không thể sống sót."
+      - "Phương án EV cao nhất thường là phương án 'cược' mạnh nhất."
+    interpretation: "Dùng cùng maximin và regret; nếu EV chọn một phương án nhưng maximin có kết quả âm lớn thì cần trần rủi ro (xem decision_rules)."
+    example:
+      inputs: {w: [0.3, 0.4, 0.2, 0.1], payoffs: [600, 350, 50, -250]}
+      steps: ["0.3x600=180; 0.4x350=140; 0.2x50=10; 0.1x(-250)=-25", "EV = 180+140+10-25 = 305"]
+      result: "305 (triệu VNĐ)"
+  - id: "m07_maximin"
+    name_vi: "Tiêu chí Maximin (kết quả xấu nhất tốt nhất)"
+    name_en: "Maximin / worst-case criterion"
+    expression_latex: "\\max_s \\min_k X_{s,k}"
+    expression_python: "max(min(row) for row in matrix)"
+    excel: "=MAX(F2:F5) với F = MIN(B:E) mỗi hàng"
+    variables:
+      - {symbol: "matrix", meaning: "Ma trận payoff, hàng = chiến lược, cột = kịch bản", unit: "tỷ VNĐ"}
+    when_to_use: "DN mỏng vốn, vay nhiều, hoặc quyết định có thể dẫn đến mất khả năng thanh toán."
+    why_it_works: "Với DN không chịu nổi cú ngã lớn, điều cần là sống sót ở kịch bản xấu nhất rồi mới nói đến tối ưu."
+    assumptions: ["Kịch bản xấu nhất đã được đưa vào ma trận (không bị 'dễ dãi' quá mức)."]
+    pitfalls: ["Quá bi quan, luôn chọn phương án an toàn kém sinh lời (giữ tiền mặt)."]
+    interpretation: "Giá trị maximin âm nghĩa là phương án có kịch bản gây lỗ; so sánh với vốn chủ và dự phòng tiền mặt."
+    example:
+      inputs: {matrix: [[900, 300, -200, -900], [600, 350, 50, -250], [400, 320, 150, 60], [50, 50, 50, 50]]}
+      steps: ["min từng hàng: -900, -250, 60, 50", "max trong các min = 60 (Nâng cấp 3 chi nhánh + delivery)"]
+      result: "60"
+  - id: "m07_regret"
+    name_vi: "Regret lớn nhất (Minimax regret, Savage)"
+    name_en: "Minimax regret"
+    expression_latex: "R_{s,k}=\\max_{s'}X_{s',k}-X_{s,k};\\; \\min_s \\max_k R_{s,k}"
+    expression_python: "min(max(max(col) - row[k] for k, col in enumerate(zip(*matrix))) for row in matrix)"
+    excel: "Bảng regret = MAX(cột) - ô; rồi MIN của MAX theo hàng"
+    variables:
+      - {symbol: "matrix", meaning: "Ma trận payoff", unit: "tỷ VNĐ"}
+    when_to_use: "Quyết định một lần, khó đảo ngược, nỗi sợ lớn nhất là 'chọn sai khi đáng lẽ chọn khác'."
+    why_it_works: "L. J. Savage (1951) đề xuất đo thiệt hại so với phương án tốt nhất ở từng kịch bản; chọn phương án mà hối tiếc tệ nhất vẫn nhỏ nhất."
+    assumptions: ["Các phương án trong ma trận bao quát các lựa chọn thực tế."]
+    pitfalls: ["Thêm/bớt một phương án làm đổi regret của các phương án khác."]
+    interpretation: "Regret nhỏ nghĩa là ít bị 'bỏ lỡ' hoặc 'dính đòn' so với phương án tối ưu ở mọi kịch bản."
+    example:
+      inputs: {matrix: [[900, 300, -200, -900], [600, 350, 50, -250], [400, 320, 150, 60], [50, 50, 50, 50]]}
+      steps: ["max từng cột: 900, 350, 150, 60", "Hàng 1 regret [0,50,350,960] max 960; hàng 2 [300,0,100,310] max 310; hàng 3 [500,30,0,0] max 500; hàng 4 [850,300,100,10] max 850", "min của các max = 310 (Mở CN4 vốn tự có)"]
+      result: "310"
+  - id: "m07_robustness_share"
+    name_vi: "Tỷ lệ kịch bản sống sót (độ vững)"
+    name_en: "Robustness share"
+    expression_latex: "Rb_s=\\frac{\\#\\{k: X_{s,k}\\ge T\\}}{K}"
+    expression_python: "sum(1 for x in payoffs if x >= T) / len(payoffs)"
+    excel: "=COUNTIF(B2:E2,\">=\"&T)/COUNT(B2:E2)"
+    variables:
+      - {symbol: "payoffs", meaning: "Kết quả của một chiến lược ở K kịch bản", unit: "tỷ VNĐ"}
+      - {symbol: "T", meaning: "Ngưỡng chấp nhận (thường 0 = hòa vốn, hoặc mức lợi nhuận tối thiểu)", unit: "tỷ VNĐ"}
+    when_to_use: "Bước wind-tunnel: đo định lượng thế nào là 'robust' (không cần xác suất)."
+    why_it_works: "Robust nghĩa là đạt ngưỡng ở nhiều kịch bản; đếm số kịch bản đạt ngưỡng là cách không đòi hỏi trọng số."
+    assumptions: ["T phản ánh ngưỡng sống sót thật của DN (dòng tiền, nghĩa vụ nợ)."]
+    pitfalls: ["T = 0 che việc lợi nhuận quá thấp; đặt T theo chi phí vốn hoặc mức tối thiểu của chủ DN."]
+    interpretation: "1.0 = đạt ngưỡng ở mọi kịch bản (robust); 0.75 = thất bại ở một kịch bản, cần kế hoạch dự phòng cụ thể; dưới 0.5 = cược."
+    example:
+      inputs: {payoffs: [900, 300, -200, -900], T: 0}
+      steps: ["Đạt ngưỡng ở KB1 (900) và KB2 (300): 2 kịch bản", "2/4 = 0.5"]
+      result: "0.5 (Mở CN4 vay 70% không robust)"
+  - id: "m07_cash_runway"
+    name_vi: "Thời gian chịu đựng tiền mặt trong kịch bản xấu"
+    name_en: "Cash runway under a scenario"
+    expression_latex: "Runway=\\frac{Cash}{MonthlyOutflow-MonthlyInflow}"
+    expression_python: "cash / (outflow - inflow)"
+    excel: "=B1/(B2-B3)"
+    variables:
+      - {symbol: "cash", meaning: "Tiền mặt và tương đương tiền có thể dùng", unit: "triệu VNĐ"}
+      - {symbol: "outflow", meaning: "Tiền chi hằng tháng (chi phí cố định + biến phí) trong kịch bản", unit: "triệu VNĐ/tháng"}
+      - {symbol: "inflow", meaning: "Tiền thu hằng tháng trong kịch bản", unit: "triệu VNĐ/tháng"}
+    when_to_use: "Đánh giá kịch bản xấu: DN sống được bao tháng; xác định quỹ dự phòng (nguồn nêu 6 tháng vận hành cho DN XNK)."
+    why_it_works: "Phá sản là cạn tiền, không phải lỗ kế toán; runway cho biết 'thời gian mua' để chuyển sang chiến lược contingent."
+    assumptions: ["Outflow > inflow (đang đốt tiền); nếu không, runway vô hạn.", "Dòng tiền trong kịch bản ổn định (thực tế dao động)."]
+    pitfalls: ["Quên các khoản nợ đến hạn đột ngột (gốc vay, thuế) khỏi outflow.", "Dùng cash đã cam kết cho việc khác."]
+    interpretation: "Dưới 6 tháng là vùng nguy hiểm theo quy ước thực hành (nguồn nêu mốc 6 tháng); trên 12 tháng thoải mái."
+    example:
+      inputs: {cash: 480, outflow: 140, inflow: 60}
+      steps: ["Burn = 140 - 60 = 80", "Runway = 480 / 80 = 6 tháng"]
+      result: "6 tháng"
+  - id: "m07_signal_score"
+    name_vi: "Điểm tín hiệu của một kịch bản"
+    name_en: "Weighted early-warning signal score"
+    expression_latex: "SS=\\frac{\\sum_j w_j s_j}{\\sum_j w_j}"
+    expression_python: "sum(w * s for w, s in zip(weights, signals)) / sum(weights)"
+    excel: "=SUMPRODUCT(B2:B5,C2:C5)/SUM(B2:B5)"
+    variables:
+      - {symbol: "weights", meaning: "Trọng số từng tín hiệu (độ tin cậy/độ sớm)", unit: "điểm"}
+      - {symbol: "signals", meaning: "1 nếu tín hiệu đã xuất hiện, 0 nếu chưa", unit: "0/1"}
+    when_to_use: "Gộp nhiều tín hiệu rời rạc thành một con số để quyết định kích hoạt phương án contingent."
+    why_it_works: "Một tín hiệu đơn lẻ dễ nhiễu; nhiều tín hiệu độc lập cùng chỉ một hướng tăng độ tin cậy. Ngưỡng định trước tránh phản ứng cảm tính."
+    assumptions: ["Tín hiệu tương đối độc lập, ngưỡng được thống nhất TRƯỚC khi sự kiện xảy ra."]
+    pitfalls: ["Đổi ngưỡng sau khi thấy dữ liệu (confirmation bias).", "Tín hiệu trùng nguồn (3 bài báo cùng một nguồn) bị đếm 3 lần."]
+    interpretation: "Ngưỡng gợi ý thực hành: dưới 0.4 theo dõi; 0.4-0.7 chuẩn bị nguồn lực; từ 0.7 kích hoạt phương án contingent."
+    example:
+      inputs: {weights: [3, 2, 2, 1], signals: [1, 1, 0, 1]}
+      steps: ["Tử số = 3x1 + 2x1 + 2x0 + 1x1 = 6", "Mẫu số = 3+2+2+1 = 8", "SS = 6/8 = 0.75"]
+      result: "0.75 (đạt ngưỡng kích hoạt)"
+
+frameworks:
+  - id: "m07_shell_8_steps"
+    name_vi: "Quy trình 8 bước (Phương pháp Shell / Trực giác-Logic)"
+    name_en: "Eight-step scenario planning process (Shell method)"
+    origin: >
+      Pierre Wack và nhóm Group Planning của Royal Dutch Shell (London, đầu thập niên 1970) phát triển sau khi nhận thấy dự báo
+      một con số về giá dầu sắp mất tác dụng. Họ không dự đoán chiến tranh Yom Kippur 1973 nhưng đã xây kịch bản 'OPEC kiểm soát giá',
+      giúp lãnh đạo Shell chuẩn bị tinh thần và chiến lược trước cú sốc. Wack công bố trên HBR 1985; Schwartz hệ thống hóa 1991.
+    components: ["B1 Xác định vấn đề chiến lược", "B2 Driving forces", "B3 Xếp hạng tác động x bất định", "B4 Chọn 2 trục và dựng ma trận 2x2", "B5 Viết kịch bản", "B6 Phân tích tác động", "B7 Xây chiến lược robust và contingent", "B8 Giám sát tín hiệu sớm"]
+    when_to_use: "Quyết định chiến lược lớn, horizon 5-10 năm (SME 3-5 năm), ngành bất định, có thể tổ chức workshop."
+    how_to_apply:
+      - "B1 Viết câu hỏi quyết định dạng 'Có nên X trong N năm tới?' (không hỏi 'tương lai ra sao'). Xác định horizon (thường 5-10 năm; SME 3-5 năm) và người quyết định."
+      - "B2 Liệt kê 10-15 driving forces qua PESTEL, Porter, báo cáo ngành, phỏng vấn khách hàng/nhà cung cấp/ngân hàng."
+      - "B3 Chấm mỗi yếu tố Tác động (1-5) và Bất định (1-5); tính điểm; tách nhóm 'chắc chắn' (bất định thấp) đưa vào mọi kịch bản."
+      - "B4 Chọn 2 yếu tố tác động và bất định cao nhất, độc lập nhau; định nghĩa hai cực rõ ràng, đo được (vd lãi suất 6-8% vs 10-14%); dựng ma trận 2x2 = 4 ô."
+      - "B5 Mỗi ô: đặt tên gợi hình, viết câu chuyện 1-3 trang (điều gì đã xảy ra, ai thắng ai thua, thị trường trông ra sao), đảm bảo nhất quán nội tại."
+      - "B6 Với mỗi kịch bản, ước tính tác động lên doanh thu, chi phí, dòng tiền, năng lực chủ chốt; xác định điểm gãy (vd mất khả năng thanh toán)."
+      - "B7 Wind-tunnel các phương án chiến lược qua 4 kịch bản; chọn chiến lược robust làm ngay, contingent chuẩn bị sẵn (xem m07_wind_tunnel)."
+      - "B8 Với mỗi kịch bản chọn 2-3 tín hiệu sớm đo được, ngưỡng kích hoạt, nguồn dữ liệu, người theo dõi; họp rà soát định kỳ (hằng tháng với DN nhỏ nhạy biến động, 6-12 tháng rà lại cả bộ kịch bản)."
+    how_to_read_results: >
+      Kết quả không phải 'kịch bản nào đúng' mà là (1) danh sách hành động làm ngay (robust), (2) phương án sẵn sàng khi tín hiệu xuất hiện,
+      (3) bảng tín hiệu theo dõi. Nếu phải chọn giữa phương án, đọc thêm EV, maximin, regret.
+    pitfalls:
+      - "Chọn trục là yếu tố chắc chắn hoặc phụ thuộc nhau nên các kịch bản giống nhau hoặc chỉ còn 2 kịch bản thật."
+      - "Viết 3 kịch bản 'xấu - trung bình - tốt', trong đó tốt-xấu chỉ khác con số, không khác bản chất; trục phải sinh ra câu chuyện khác nhau."
+      - "Gán xác suất rồi chỉ bám kịch bản 'có khả năng nhất' (tunnel vision)."
+      - "Làm xong để trong ngăn kéo, không đặt tín hiệu và không rà soát (kịch bản chết)."
+      - "Confirmation bias: chọn kịch bản mình muốn tin; cần người phản biện (devil's advocate)."
+      - "Quá nhiều yếu tố bất định dẫn đến paralysis; giới hạn 2 trục, 4 kịch bản."
+    example: "Xem worked_examples we_wood_export (xưởng gỗ XNK) và we_cafe_expansion (chuỗi cà phê)."
+  - id: "m07_impact_uncertainty_matrix"
+    name_vi: "Ma trận Tác động - Bất định"
+    name_en: "Impact / Uncertainty matrix"
+    origin: "Công cụ sàng lọc trong quy trình scenario của Shell/GBN: chọn trục từ nhiều driving forces dựa trên hai chiều tác động và bất định."
+    components: ["Ô 1 (tác động cao, bất định cao): chọn làm trục kịch bản", "Ô 2 (tác động thấp, bất định cao): theo dõi chặt", "Ô 3 (tác động cao, bất định thấp): lập kế hoạch cụ thể, nằm trong mọi kịch bản (predetermined)", "Ô 4 (thấp, thấp): bỏ qua"]
+    when_to_use: "Bước 3 của quy trình, khi có hơn 8-10 driving forces."
+    how_to_apply:
+      - "Lập bảng yếu tố, chấm I và U 1-5 (công thức m07_impact_uncertainty_score)."
+      - "Vẽ lên lưới 2x2; ngưỡng chia ở mức giữa (3)."
+      - "Chọn 2 yếu tố ở ô trên-phải, bất định hơn và ít liên quan nhau; thử nói cực cao/thấp bằng một câu để chắc chúng định nghĩa được."
+      - "Yếu tố tác động cao nhưng chắc chắn (vd đô thị hóa) ghi vào bối cảnh chung của mọi kịch bản."
+    how_to_read_results: "Nhóm ô 1 có thể có 3-5 yếu tố; tinh lọc bằng câu hỏi 'hai yếu tố này có thể đi ngược nhau không?' và 'chúng có tương quan mạnh không?'."
+    pitfalls:
+      - "Lẫn 'ít biết' với 'bất định thật'; yếu tố chưa nghiên cứu nên nghiên cứu thêm trước khi chấm bất định cao."
+      - "Chọn hai yếu tố cùng ngành (lãi suất và tín dụng) khiến ô chéo phi thực tế."
+    example: "Xưởng gỗ XNK: thuế quan Mỹ (5x5=25) và cước container (4x5=20) được chọn; luật xuất xứ (20) có tương quan với thuế quan nên gộp vào kịch bản thay vì làm trục thứ ba."
+  - id: "m07_scenario_matrix_2x2"
+    name_vi: "Ma trận kịch bản 2x2"
+    name_en: "2x2 scenario matrix (Schwartz / GBN axes method)"
+    origin: "Peter Schwartz và Global Business Network (1991) chuẩn hóa cách dựng 4 kịch bản bằng hai trục bất định; là dạng phổ biến nhất vì đủ khác nhau, đủ ít để thảo luận."
+    components: ["Trục 1 với hai cực", "Trục 2 với hai cực", "4 ô = 4 kịch bản, mỗi ô có tên gợi hình, câu chuyện, tác động, hàm ý chiến lược"]
+    when_to_use: "Mọi bài toán scenario; thay bằng 3 kịch bản (thấp/trung bình/cao) cho SME khi nguồn lực ít."
+    how_to_apply:
+      - "Đặt tên trục trung tính, đo được (vd 'Lãi suất: 6-8% ↔ 10-14%', không dùng 'tốt/xấu')."
+      - "Điền 4 ô; đặt tên có hình ảnh (Bùng nổ, Chọn lọc, Đóng băng từ từ, Khủng hoảng)."
+      - "Viết câu chuyện theo thứ tự: sự kiện kích hoạt, hành vi các bên, hệ quả cho ngành, trông ra sao ở năm cuối horizon."
+      - "Kiểm tra: mỗi kịch bản có hợp lý không, nhất quán nội tại không, có khác biệt thực sự không, có hàm ý chiến lược khác nhau không."
+      - "Đặt 'dấu hiệu' xác định mình đang ở/hướng tới ô nào (sang Bước 8)."
+    how_to_read_results: "Thường có một ô thuận lợi, một ô khủng hoảng, hai ô ở giữa; phương án tốt không chỉ thắng ở ô thuận lợi mà phải sống sót ở ô khủng hoảng."
+    pitfalls:
+      - "Bốn ô thiếu cân bằng (ba ô tốt, một ô xấu) là dấu hiệu bias lạc quan."
+      - "Tên kịch bản mơ hồ khiến ban lãnh đạo không nhớ và không dùng."
+    example: >
+      BĐS Việt Nam 2025-2030: trục Lãi suất (6-8% ↔ 10-14%) x Chính sách (thông thoáng ↔ siết chặt) cho 4 kịch bản
+      Bùng nổ, Chọn lọc, Đóng băng từ từ, Khủng hoảng; giá có thể +20-30% ở KB1 và -20-40% ở KB4 (con số minh họa của tài liệu nguồn).
+  - id: "m07_wind_tunnel"
+    name_vi: "Thử nghiệm chiến lược trong hầm gió"
+    name_en: "Wind tunneling / Wind-tunnel testing"
+    origin: "Thuật ngữ dùng trong thực hành scenario (van der Heijden 1996; Schoemaker 1995): ví với thử mô hình máy bay trong hầm gió trước khi bay thật; thử chiến lược trong mỗi kịch bản trước khi cam kết nguồn lực."
+    components: ["Danh sách phương án chiến lược", "4 kịch bản", "Ma trận chấm điểm (định tính hoặc payoff)", "Kết luận robust / contingent / loại"]
+    when_to_use: "Bước 6-7: chọn giữa các phương án đầu tư, mở rộng, đa dạng hóa."
+    how_to_apply:
+      - "Liệt kê 3-5 phương án (gồm cả 'giữ nguyên' và 'giữ tiền mặt')."
+      - "Với mỗi cặp phương án x kịch bản, chấm kết quả (định tính ✅/⚠️/❌ hoặc payoff số) và nêu lý do một dòng."
+      - "Gạch phương án có ❌ ở kịch bản gây mất khả năng thanh toán; tính maximin, regret, EV, độ vững (xem formulas)."
+      - "Phương án sống sót ở nhiều kịch bản nhất = robust. Phương án thắng lớn ở một kịch bản = contingent, gắn với tín hiệu."
+      - "Thử cải tiến: nhiều phương án có thể ghép (vd mở chi nhánh bằng vốn tự có + chuẩn bị gói delivery)."
+    how_to_read_results: "Robust không phải 'tốt nhất ở mọi nơi' mà là 'không chết và vẫn tạo giá trị ở mọi nơi'; chấp nhận hy sinh phần upside của kịch bản đẹp."
+    pitfalls:
+      - "Chấm điểm cảm tính không có lý do viết ra; thiếu kiểm chứng chéo."
+      - "Quên chi phí đa dạng hóa (tiền, quản lý) khi gọi chiến lược 'đa dạng' là robust."
+    example: >
+      Ma trận BĐS của nguồn: Mở rộng nhanh vay nhiều (phá sản ở KB4, không robust); Tập trung cao cấp (khá); Đa dạng bán + cho thuê + dịch vụ (robust, dòng tiền ổn ở mọi KB);
+      Bảo thủ giữ tiền mặt (khá, bỏ lỡ KB1).
+  - id: "m07_early_warning"
+    name_vi: "Hệ thống tín hiệu cảnh báo sớm"
+    name_en: "Early Warning Signals / Signposts"
+    origin: "Bước 8 trong quy trình Shell; Schoemaker (1995) nhấn mạnh 'signposts' để kịch bản không chết trên giấy."
+    components: ["Tín hiệu (chỉ số đo được)", "Kịch bản liên quan", "Ngưỡng kích hoạt", "Nguồn dữ liệu", "Người chịu trách nhiệm", "Hành động khi vượt ngưỡng"]
+    when_to_use: "Sau khi chọn chiến lược; chạy liên tục (họp hằng tháng cho DN nhạy biến động)."
+    how_to_apply:
+      - "Mỗi kịch bản chọn 2-3 tín hiệu dẫn dắt (leading), tránh chỉ số trễ (lagging)."
+      - "Đặt ngưỡng định lượng trước (vd NHNN giảm lãi suất 2 lần liên tiếp; cước tàu +30% trong 4 tuần; tỷ giá biến động >5% ngắn hạn)."
+      - "Gắn mỗi tín hiệu vào hành động: theo dõi, chuẩn bị, kích hoạt (điểm tín hiệu m07_signal_score)."
+      - "Lập 'Ban chỉ đạo kịch bản' họp hằng tháng; ghi lại tín hiệu nào đã xuất hiện, đảo ngược chưa."
+      - "Rà soát cả bộ kịch bản mỗi 6-12 tháng và sau mọi cú sốc lớn."
+    how_to_read_results: "Nhiều tín hiệu cùng chỉ một ô là bằng chứng mạnh; tín hiệu mâu thuẫn nghĩa là hệ thống đang ở giữa/không tuân theo trục đã chọn, cần xem lại trục."
+    pitfalls:
+      - "Chọn tín hiệu không đo được hoặc không có dữ liệu thường xuyên."
+      - "Phản ứng quá muộn vì ngưỡng đặt sau khi sự kiện diễn ra."
+    example: "BĐS: NHNN giảm lãi suất 2 lần liên tiếp -> KB1/KB3; trái phiếu DN BĐS vỡ nợ tăng -> KB4; giao dịch +30% cùng kỳ -> KB1. XNK: cước tàu tăng -> KB3/KB4; thay đổi thuế quan đối tác -> KB2."
+  - id: "m07_backcasting"
+    name_vi: "Lập kế hoạch ngược"
+    name_en: "Backcasting"
+    origin: "Khái niệm do John Robinson (1982) đề xuất trong nghiên cứu năng lượng; dùng trong foresight và quy hoạch bền vững, kết hợp với scenario khi muốn đạt một mục tiêu tương lai cụ thể."
+    components: ["Tương lai mong muốn", "Các mốc trung gian", "Bước đầu hiện tại", "Rào cản và điều kiện cần"]
+    when_to_use: "Khi đã có tầm nhìn/mục tiêu rõ (vd đạt 100 triệu USD doanh thu năm 2030) và cần biết đường đi; bổ trợ scenario khi đã chọn ô mong muốn."
+    how_to_apply:
+      - "Mô tả tương lai mong muốn đo được (năm, chỉ số)."
+      - "Đi ngược: để đạt mốc đó, năm kề trước phải thế nào? Lặp đến hiện tại."
+      - "Liệt kê điều kiện cần/rào cản ở mỗi mốc; gắn với kịch bản bất lợi có thể làm lệch lộ trình."
+      - "Chuyển các mốc thành mục tiêu năm và KPI (liên kết BSC)."
+    how_to_read_results: "Cho ra lộ trình hành động; khác scenario (đi từ hiện tại ra nhiều tương lai) ở chỗ backcasting đi từ MỘT tương lai mong muốn lùi về."
+    pitfalls: ["Biến thành kế hoạch 1 kịch bản (mong muốn) và bỏ qua rủi ro.", "Mục tiêu tương lai quá chung chung."]
+    example: "Nguồn: 2030 đạt 100M USD -> 2028 đạt 50M -> 2026 mở thị trường mới -> 2025 hiện tại."
+  - id: "m07_related_methods"
+    name_vi: "So sánh với phương pháp liên quan"
+    name_en: "Scenario planning vs Forecasting, Sensitivity, Monte Carlo, Contingency, Strategic Foresight"
+    origin: "Tập hợp các công cụ dự báo/phân tích rủi ro có trước hoặc song hành với scenario; mỗi công cụ trả lời một câu hỏi khác nhau."
+    components: ["Forecasting: một tương lai duy nhất", "Sensitivity analysis: đổi một biến, giữ nguyên còn lại", "Monte Carlo: mô phỏng hàng nghìn kịch bản xác suất", "Contingency planning: kế hoạch B nếu A thất bại", "Strategic Foresight: scenario + trend analysis + weak signals"]
+    when_to_use: "Chọn công cụ đúng bài toán."
+    how_to_apply:
+      - "Tương lai gần, quy luật ổn định, cần con số: forecasting."
+      - "Muốn biết dự án nhạy với biến nào: sensitivity (kết hợp tài chính)."
+      - "Có phân phối xác suất đáng tin cho nhiều biến: Monte Carlo."
+      - "Bất định cấu trúc, ngoặt chiến lược, không có xác suất tin được: scenario planning."
+      - "Đã chọn chiến lược chính, cần phương án B: contingency (scenario cho ra cả robust lẫn contingent)."
+    how_to_read_results: "Có thể dùng chồng lớp: scenario để chọn hướng, sensitivity/Monte Carlo để tinh chỉnh số trong từng kịch bản."
+    pitfalls: ["Dùng Monte Carlo cho biến không có phân phối đáng tin, tạo ảo giác chính xác."]
+    example: "Mở chi nhánh: scenario chọn khung (thuê mặt bằng ổn định vs tăng mạnh), sensitivity kiểm doanh số hòa vốn trong từng khung."
+
+procedures:
+  - id: "m07_build_4_scenarios"
+    name: "Dựng 4 kịch bản cho một ngành/SME (từ đầu đến cuối)"
+    steps:
+      - "Hỏi người dùng (intake): quyết định cần đưa ra là gì? Horizon bao lâu? Ngân sách và vốn có thể đặt cược? Ai ra quyết định? Có phụ thuộc lớn vào lãi suất, tỷ giá, chính sách, một khách hàng/nhà cung cấp/nền tảng nào không?"
+      - "Viết lại thành câu hỏi quyết định một câu (vd 'Có nên mở chi nhánh thứ 4 trong 3 năm tới?'). Đây là 'bộ lọc' cho mọi bước sau."
+      - "Lập 10-15 driving forces (PESTEL + ngành + khách hàng). Tách: chắc chắn (đưa vào nền chung) và bất định."
+      - "Chấm I và U (1-5), tính S=I x U; chọn các yếu tố S>=16; kiểm tra tương quan; chọn 2 trục độc lập, mỗi trục có hai cực định nghĩa đo được."
+      - "Dựng ma trận 2x2; đặt 4 tên gợi hình; viết câu chuyện mỗi kịch bản 150-300 chữ (sự kiện kích hoạt, hành vi khách hàng/đối thủ/chính sách, hệ quả, trông ra sao cuối horizon)."
+      - "Ước tính tác động định lượng thô lên doanh thu, chi phí, dòng tiền cho mỗi kịch bản (dựa trên mô hình tài chính hiện có); xác định runway (m07_cash_runway) ở kịch bản xấu nhất."
+      - "Liệt kê 3-5 phương án chiến lược (gồm giữ nguyên và giữ tiền mặt); wind-tunnel: ma trận payoff hoặc ✅/⚠️/❌; tính maximin, regret, EV (nếu có trọng số), độ vững."
+      - "Phân loại hành động: robust (làm ngay), contingent (chuẩn bị, kích hoạt theo tín hiệu), bỏ."
+      - "Đặt 2-3 tín hiệu sớm cho mỗi kịch bản, ngưỡng, nguồn dữ liệu, người theo dõi; lịch họp rà soát; lịch refresh kịch bản (6-12 tháng)."
+      - "Báo cáo: câu hỏi quyết định, bảng driving forces, ma trận 2x2 + 4 câu chuyện, bảng wind-tunnel, đề xuất hành động 30-60-90 ngày, bảng tín hiệu."
+    outputs: "Gói 5 mục: ma trận kịch bản kèm narrative; bảng wind-tunnel; danh sách robust/contingent; bảng tín hiệu và ngưỡng; lịch rà soát."
+  - id: "m07_lean_scenario_sme"
+    name: "Bản rút gọn cho SME/startup (workshop nửa ngày)"
+    steps:
+      - "Chủ DN + 2-4 người (tài chính, vận hành, bán hàng, một người ngoài) họp 3-4 giờ."
+      - "Viết quyết định cần ra (một câu) và horizon 2-3 năm."
+      - "Sticky-note 10 yếu tố ngoài DN có thể làm thay đổi kết quả; chấm I, U bằng bỏ phiếu 1-5."
+      - "Chọn 2 trục; vẽ 4 ô; mỗi ô viết 5 gạch đầu dòng thay cho narrative dài."
+      - "Với mỗi ô trả lời 3 câu: doanh thu/biên lợi nhuận thay đổi bao nhiêu? tiền mặt chịu được mấy tháng? mình sẽ làm gì?"
+      - "Chọn 3 hành động 'không hối tiếc' (làm ngay) + 1 phương án dự phòng; chọn 4-6 tín hiệu dễ theo dõi (Google Trends, giá cước, tỷ giá, lãi suất NH, số đơn)."
+      - "Đặt lịch rà soát 15 phút hằng tháng và refresh sau 6 tháng."
+    outputs: "1 trang A3: ma trận 2x2, 3 hành động không hối tiếc, 1 phương án dự phòng, bảng 4-6 tín hiệu."
+  - id: "m07_stress_test_existing_strategy"
+    name: "Stress-test một chiến lược hoặc thương vụ có sẵn"
+    steps:
+      - "Mô tả chiến lược/thương vụ (đầu tư, doanh thu kỳ vọng, cơ cấu vốn)."
+      - "Dựng 4 kịch bản (procedure m07_build_4_scenarios bước 3-5), chỉ lấy thông số ảnh hưởng đến chiến lược."
+      - "Tính kết quả chiến lược ở từng kịch bản (NPV, EBITDA, DSCR, runway)."
+      - "Tìm điểm gãy: kịch bản nào làm DN không trả nợ/cạn tiền; cần điều chỉnh gì (cấu trúc vốn, tiến độ, hợp đồng) để sống sót."
+      - "Đề xuất sửa chiến lược (giảm vay, chia giai đoạn, thêm nguồn thu, option mua/bán) rồi test lại."
+    outputs: "Bảng kết quả theo kịch bản, điểm gãy, phiên bản chiến lược đã điều chỉnh."
+  - id: "m07_scenario_governance"
+    name: "Vận hành sau khi dựng kịch bản"
+    steps:
+      - "Lập Ban chỉ đạo kịch bản (chủ DN + tài chính + vận hành + bán hàng), họp hằng tháng 30-45 phút."
+      - "Cập nhật bảng tín hiệu (xuất hiện/chưa), tính điểm tín hiệu, ghi quyết định."
+      - "Khi điểm tín hiệu vượt ngưỡng: kích hoạt phương án contingent đã chuẩn bị; ghi ngày, người chịu trách nhiệm."
+      - "Sau sự kiện lớn hoặc 6-12 tháng: rà lại trục, kịch bản, trọng số; loại kịch bản đã lạc hậu, thêm kịch bản mới."
+      - "Ghi bài học: kịch bản nào gần đúng, tín hiệu nào hiệu quả."
+    outputs: "Nhật ký tín hiệu, quyết định kích hoạt, phiên bản kịch bản cập nhật."
+
+decision_rules:
+  - "Nếu quyết định ngắn hạn/vận hành hằng ngày thì KHÔNG dùng scenario planning; dùng kế hoạch thường và theo dõi KPI."
+  - "Nếu quyết định có horizon 5-10 năm, vốn lớn hoặc khó đảo ngược thì dùng đầy đủ 8 bước; SME horizon 3-5 năm thì dùng bản rút gọn."
+  - "Nếu yếu tố có tác động cao nhưng bất định thấp (xu hướng rõ) thì đưa vào nền chung của mọi kịch bản, KHÔNG dùng làm trục."
+  - "Nếu hai trục ứng viên tương quan mạnh (lãi suất và tín dụng BĐS) thì thay một trục bằng yếu tố độc lập hơn, hoặc gộp thành một trục và tìm trục thứ hai."
+  - "Nếu 4 kịch bản dẫn tới cùng một chiến lược thì trục chưa đủ khác biệt, chọn lại trục."
+  - "Nếu một phương án có kết quả dưới ngưỡng sống sót (mất khả năng thanh toán) ở bất kỳ kịch bản nào thì loại hoặc buộc phải có biện pháp bảo vệ trước khi thực hiện."
+  - "Nếu EV chọn phương án A, maximin chọn B, regret chọn C thì đưa ba kết quả cho chủ DN: lựa chọn phụ thuộc khẩu vị rủi ro; DN mỏng vốn nghiêng về maximin/regret, DN dư vốn có thể nghiêng về EV."
+  - "Nếu runway ở kịch bản xấu nhất dưới 6 tháng thì ưu tiên tạo dự phòng tiền mặt/hạn mức tín dụng trước mọi kế hoạch tăng trưởng."
+  - "Nếu điểm tín hiệu của một kịch bản vượt ngưỡng đã đặt thì kích hoạt phương án contingent, không chờ thêm 'chắc chắn'."
+  - "Nếu tín hiệu mâu thuẫn kéo dài thì kiểm tra lại trục/kịch bản thay vì bỏ qua tín hiệu."
+  - "Nếu một chiến lược chỉ thắng ở một kịch bản (vay nhiều, mở rộng nhanh) thì coi là cược; chỉ làm khi có tín hiệu xác nhận hoặc phần vốn mất được."
+  - "Nếu người dùng đòi 'kịch bản nào khả năng cao nhất' thì giải thích scenario là hợp lý, không phải xác suất; có thể dùng trọng số chủ quan nhưng ghi rõ giả định và chạy sensitivity."
+  - "Nếu xảy ra cú sốc ngoài kịch bản (Black Swan) thì rà lại ngay bộ kịch bản và đối chiếu runway, đa dạng nguồn cung/nguồn thu."
+  - "Nếu startup rất sớm thì chỉ dùng 2-3 kịch bản (thấp-cơ sở-cao) và 3 tín hiệu."
+
+benchmarks:
+  - {metric: "Số driving forces liệt kê", value: "10-15", context: "Quy ước thực hành trong nguồn", confidence: "medium"}
+  - {metric: "Số trục / số kịch bản", value: "2 trục, 4 kịch bản (SME có thể 3)", context: "Tránh paralysis khi quá nhiều kịch bản", confidence: "high"}
+  - {metric: "Thời gian workshop đầy đủ", value: "2-4 tuần (nguồn nêu); bản SME rút gọn nửa ngày", context: "Mốc nửa ngày là gợi ý thực hành, chưa kiểm chứng", confidence: "low"}
+  - {metric: "Horizon", value: "5-10 năm (DN lớn); 3-5 năm (SME)", context: "Gợi ý thực hành", confidence: "medium"}
+  - {metric: "Narrative mỗi kịch bản", value: "2-3 trang (đầy đủ); 150-300 chữ (SME)", context: "Nguồn nêu 2-3 trang", confidence: "medium"}
+  - {metric: "Chu kỳ rà soát kịch bản", value: "6-12 tháng; họp tín hiệu hằng tháng", context: "Nguồn nêu 6-12 tháng", confidence: "medium"}
+  - {metric: "Dự phòng tiền mặt trong kịch bản chuỗi cung ứng đứt gãy", value: "6 tháng vận hành", context: "Khuyến nghị trong case XNK của nguồn; cần điều chỉnh theo từng DN", confidence: "low"}
+  - {metric: "Ngưỡng điểm I x U để làm trục", value: "16-25 (thang 1-5)", context: "Quy ước gợi ý của module", confidence: "low"}
+
+pitfalls:
+  - "Nhầm scenario với dự báo hoặc xác suất; kỳ vọng 'đoán đúng' thay vì 'chuẩn bị sẵn'."
+  - "Chọn trục chắc chắn, phụ thuộc nhau hoặc quá mơ hồ để đo."
+  - "Kịch bản chỉ là 'tốt - xấu - trung bình' của cùng một yếu tố; không có câu chuyện khác nhau."
+  - "Thiên kiến xác nhận: chọn kịch bản mình muốn tin; thiếu người phản biện."
+  - "Chiến lược 'robust' nhưng không ai xác định tiền và người thực hiện ngay; kịch bản nằm trong ngăn kéo."
+  - "Không đặt tín hiệu sớm và ngưỡng trước khi sự kiện xảy ra."
+  - "Bỏ qua chi phí giữ nhiều lựa chọn (quỹ dự phòng, đa dạng hóa) khi đánh giá robust."
+  - "Quá nhiều kịch bản hoặc quá chi tiết nên lãnh đạo bị paralysis."
+  - "Coi scenario đã đủ; Black Swan vẫn nằm ngoài, cần khả năng chịu sốc chung."
+  - "Dùng số liệu minh họa (giá giảm 20-40%, 70% doanh thu) như dự báo thực."
+
+sme_vn_guidance:
+  - "Bản rút gọn nửa ngày (procedure m07_lean_scenario_sme) đủ cho đa số SME; không cần tư vấn đắt tiền. Cần xác nhận lại nếu quyết định liên quan vay lớn hoặc đầu tư trên 1 tỷ VNĐ (nên thêm mô hình tài chính chi tiết)."
+  - "Yếu tố bất định thường gặp với SME VN: lãi suất cho vay và chính sách tín dụng NHNN; tỷ giá USD/VND (XNK); thuế quan/luật xuất xứ của thị trường xuất khẩu (Mỹ, EU); cước container; chính sách phí và thuật toán của sàn TMĐT (Shopee, TikTok Shop, Lazada); giá thuê mặt bằng; giá nguyên liệu; quy định pháp lý ngành (thuế hộ kinh doanh, hóa đơn điện tử). Cần cập nhật từ nguồn chính thức khi áp dụng."
+  - "Nguồn dữ liệu miễn phí cho tín hiệu: cổng thông tin NHNN, Tổng cục Thống kê, Google Trends, báo cáo cước tàu (Drewry, Freightos), tin hiệp hội ngành (VASEP, VIFOREST), số liệu nội bộ (đơn hàng, công nợ, tồn kho). Cần xác nhận quyền truy cập từng nguồn."
+  - "Công cụ: Google Sheets/Excel đủ để làm ma trận payoff, EV, regret, runway; Notion/Miro cho workshop; bảng tín hiệu một trang dán trên dashboard theo dõi tháng. Chi phí gần như 0 (cần xác nhận gói bản quyền nếu dùng Miro bản trả phí)."
+  - "Tập trung vào 'hành động không hối tiếc': tăng dự phòng tiền mặt, đa dạng khách hàng/nhà cung cấp, hợp đồng linh hoạt (thuê ngắn hạn, option gia hạn), giảm phụ thuộc một nền tảng."
+  - "Đừng thuê mặt bằng/vay dài hạn lãi thả nổi chỉ dựa trên kịch bản thuận lợi; ghi rõ kịch bản xấu nhất mình sống được bao lâu."
+  - "Gắn kịch bản với kế hoạch tài chính (finance-agent-skill): chạy NPV/IRR/runway theo từng kịch bản."
+  - "Hộ kinh doanh/DN siêu nhỏ: 3 kịch bản và 3 tín hiệu; phiên bản đầy đủ chỉ cần khi quyết định sinh tử."
+
+case_lessons:
+  - name: "Royal Dutch Shell và khủng hoảng dầu mỏ 1973"
+    type: "success"
+    setup: >
+      Đầu thập niên 1970, ngành dầu tin giá dầu ổn định quanh 2-3 USD/thùng. Nhóm Pierre Wack xây kịch bản với hai yếu tố bất định (phản ứng của OPEC; nhu cầu dầu toàn cầu), trong đó có kịch bản OPEC kiểm soát giá.
+    key_calculations:
+      - "Giá dầu tăng từ khoảng 3 lên khoảng 12 USD/thùng (xấp xỉ +300-400% tùy cách tính; nguồn nêu +400%): (12-3)/3 = 300% mức tăng tuyệt đối."
+      - "Lợi thế phản ứng sớm 6-12 tháng so với đối thủ (nguồn mô tả)."
+    lesson: >
+      Mục đích không phải đoán chính xác cú sốc (chiến tranh Yom Kippur) mà đã suy nghĩ về nó trước; khi xảy ra, Shell phản ứng nhanh. Kịch bản thay đổi 'mô hình tinh thần' của lãnh đạo.
+    data_reliability: "illustrative"
+  - name: "Maersk và kịch bản hậu COVID (2020)"
+    type: "success"
+    setup: >
+      Hai trục: phục hồi kinh tế (nhanh/chậm) x toàn cầu hóa (tiếp tục/phân mảnh). Chiến lược robust: chuyển từ hãng tàu sang nhà cung cấp logistics tích hợp; mua LF Logistics (khoảng 3,6 tỷ USD, 2022) và Senator International.
+    key_calculations:
+      - "Logic robust: dù toàn cầu hóa hay không, nhu cầu logistics tồn tại; đa dạng khỏi cước tàu giảm rủi ro khi cước hạ (2023)."
+    lesson: >
+      Chiến lược đa dạng hóa dịch vụ chạy qua nhiều kịch bản. Giới hạn: không dự đoán khủng hoảng Biển Đỏ 2024 (Black Swan), cho thấy cần rà soát kịch bản định kỳ.
+    data_reliability: "illustrative"
+  - name: "Starbucks tại Trung Quốc (2010s)"
+    type: "success"
+    setup: "Hai trục tăng trưởng kinh tế (nhanh/chậm) x rủi ro chính trị (ổn định/biến động); chiến lược robust 'premium experience'."
+    key_calculations: ["Không có số liệu kịch bản công khai; chỉ minh họa logic robust: khách chịu trả cho trải nghiệm cao cấp ở mọi kịch bản."]
+    lesson: >
+      Chiến lược định vị chạy tốt ở nhiều kịch bản vĩ mô. Hạn chế: không lường trước bùng nổ giao đồ ăn nên phải hợp tác nền tảng (Meituan). Dùng như ví dụ minh họa phương pháp, không coi là tài liệu nội bộ của Starbucks.
+    data_reliability: "unverified"
+  - name: "Công ty BĐS hạng trung Việt Nam 2025-2030 (minh họa)"
+    type: "sme"
+    setup: "Trục lãi suất (6-8% vs 10-14%) x chính sách (thông thoáng vs siết chặt) cho 4 kịch bản Bùng nổ, Chọn lọc, Đóng băng từ từ, Khủng hoảng."
+    key_calculations:
+      - "Giá +20-30% ở KB1; giá -20-40% ở KB4 (con số định tính của nguồn, tham khảo giai đoạn 2022-2023)."
+      - "Wind-tunnel: 'Đa dạng bán + cho thuê + dịch vụ' đạt ✅ ở cả 4 kịch bản = robust; 'Mở rộng nhanh vay nhiều' ❌ ở KB4."
+    lesson: "Chiến lược dòng tiền đa nguồn sống sót cả khi khủng hoảng; chiến lược đòn bẩy cao thắng lớn ở một kịch bản nhưng phá sản ở kịch bản xấu."
+    data_reliability: "illustrative"
+  - name: "DN xuất nhập khẩu 2025-2030 (minh họa)"
+    type: "sme"
+    setup: "Quyết định đa dạng hóa nguồn cung/thị trường hay tập trung thị trường truyền thống; trục chính sách thương mại (tự do/bảo hộ) x chi phí logistics (ổn định/tăng vọt)."
+    key_calculations:
+      - "Nếu bảo hộ cực đoan, có thể mất tới 70% doanh thu thị trường chính nếu thiếu chứng chỉ xuất xứ mới (con số minh họa)."
+      - "Dự phòng tiền mặt 6 tháng vận hành; tín hiệu: cước tàu tăng, thay đổi thuế quan đối tác, tỷ giá biến động >5% ngắn hạn."
+    lesson: "Robust chung: đa dạng nhà cung cấp, số hóa quản trị kho vận, dự phòng tiền mặt; họp Ban chỉ đạo kịch bản hằng tháng và kích hoạt phương án khi tín hiệu xuất hiện."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - id: "we_cafe_expansion"
+    title: "Chuỗi cà phê 3 chi nhánh: có nên mở chi nhánh thứ 4 (vay 70%) không?"
+    context: >
+      Chuỗi 'Cà Phê Hẻm' tại TP.HCM có 3 chi nhánh; chủ cân nhắc mở chi nhánh 4 (đầu tư khoảng 1,5 tỷ VNĐ) trong 3 năm.
+      Horizon 3 năm. Hai trục bất định: sức mua F&B (hồi phục mạnh/yếu) x chi phí đầu vào + thuê mặt bằng (ổn định/tăng mạnh).
+      Bốn kịch bản: KB1 'Hồi sinh' (sức mua mạnh, chi phí ổn), KB2 'Chọn lọc' (sức mua mạnh, chi phí tăng), KB3 'Áp lực chi phí' (sức mua yếu, chi phí ổn), KB4 'Đóng băng' (sức mua yếu, chi phí tăng). (Số liệu minh họa.)
+    inputs:
+      payoff_trieu_vnd_loi_nhuan_rong_3_nam:
+        mo_cn4_vay_70: [900, 300, -200, -900]
+        mo_cn4_von_tu_co: [600, 350, 50, -250]
+        nang_cap_3_cn_va_delivery: [400, 320, 150, 60]
+        giu_tien_mat: [50, 50, 50, 50]
+      trong_so_ky_bao: [0.3, 0.4, 0.2, 0.1]
+      runway_kb4: {cash: 480, outflow: 120, inflow: 90}
+    steps:
+      - "Trọng số chủ quan (đã chuẩn hóa) w = [0.3, 0.4, 0.2, 0.1] (nhóm đồng thuận)."
+      - "EV vay 70% = 0.3x900 + 0.4x300 + 0.2x(-200) + 0.1x(-900) = 270+120-40-90 = 260."
+      - "EV vốn tự có = 180+140+10-25 = 305. EV nâng cấp = 120+128+30+6 = 284. EV giữ tiền = 50."
+      - "Maximin: min mỗi phương án = -900, -250, 60, 50 -> chọn Nâng cấp (60)."
+      - "Regret: max cột = 900, 350, 150, 60; regret lớn nhất mỗi hàng = 960, 310, 500, 850 -> minimax regret chọn Mở CN4 vốn tự có (310)."
+      - "Độ vững (T=0): vay 70% = 0.5; vốn tự có = 0.75; nâng cấp = 1.0; giữ tiền = 1.0."
+      - "Runway KB4 hiện tại (nếu giữ nguyên, burn 120-90=30): 480/30 = 16 tháng; nếu mở CN4 vay 70%, outflow tăng và runway ngắn đi nhiều (cần dòng tiền nhà vay)."
+    result: >
+      Ba tiêu chí không đồng thuận (EV chọn vốn tự có 305; maximin chọn nâng cấp 60; regret chọn vốn tự có 310). Đề xuất: không vay 70% (không robust, âm lớn ở KB3-KB4); làm ngay phần robust (nâng cấp 3 chi nhánh + delivery),
+      chuẩn bị chi nhánh 4 bằng vốn tự có như phương án contingent, kích hoạt khi tín hiệu: doanh thu cùng cửa hàng +10% trong 3 tháng liên tiếp, giá thuê khu vực không tăng quá 5%, lãi suất vay ổn định.
+  - id: "we_wood_export"
+    title: "Xưởng gỗ xuất khẩu Bình Dương: tập trung Mỹ, đa dạng thị trường hay tối ưu chi phí"
+    context: >
+      Xưởng gỗ nội thất, doanh thu 60 tỷ VNĐ/năm, 70% xuất Mỹ. Hai trục: thuế quan/luật xuất xứ Mỹ (thấp/cao) x cước container (ổn định/tăng vọt).
+      KB1 'Thông thoáng', KB2 'Pháo đài' (thuế cao, cước ổn), KB3 'Bão cước' (thuế thấp, cước tăng), KB4 'Sụp đổ chuỗi' (cả hai xấu). Số liệu minh họa.
+    inputs:
+      driving_forces_I_U: {thue_quan_my: [5, 5], cuoc_container: [4, 5], luat_xuat_xu: [5, 4], ty_gia: [4, 4], chung_chi_FSC_EUDR: [4, 3], gia_go_nhap: [3, 3], nhan_cong: [3, 2], do_thi_hoa: [2, 1]}
+      payoff_ty_vnd_npv_3_nam:
+        tap_trung_my_mo_rong: [8, 5, 2, -4]
+        da_dang_EU_Nhat_noi_dia: [6, 5, 4, 1]
+        toi_uu_chi_phi_giu_thi_truong: [7, 4, -1, -6]
+      w: [0.25, 0.35, 0.3, 0.1]
+    steps:
+      - "Điểm S=IxU: thuế quan Mỹ 25; cước container 20; luật xuất xứ 20; tỷ giá 16; chứng chỉ 12; giá gỗ nhập 9; nhân công 6; đô thị hóa 2."
+      - "Chọn trục: thuế quan Mỹ (25) và cước container (20). Luật xuất xứ (20) tương quan mạnh với thuế quan nên gộp vào câu chuyện KB2/KB4, không làm trục thứ ba."
+      - "EV: tập trung Mỹ = 0.25x8+0.35x5+0.3x2+0.1x(-4) = 2+1.75+0.6-0.4 = 3.95; đa dạng = 1.5+1.75+1.2+0.1 = 4.55; tối ưu chi phí = 1.75+1.4-0.3-0.6 = 2.25."
+      - "Maximin: -4, 1, -6 -> chọn Đa dạng (1)."
+      - "Regret: max cột = 8, 5, 4, 1; regret lớn nhất = 5 (tập trung Mỹ), 2 (đa dạng), 7 (tối ưu chi phí) -> chọn Đa dạng (2)."
+      - "Cả ba tiêu chí đồng thuận: Đa dạng EU/Nhật/nội địa là robust."
+    result: >
+      Làm ngay: xin chứng chỉ (FSC, truy xuất nguồn gốc), chào hàng EU/Nhật, mở kênh nội địa, giữ dự phòng tiền mặt 6 tháng vận hành. Contingent: nếu thuế quan Mỹ tăng và cước +30% 4 tuần liền thì giảm tồn kho nguyên liệu, chuyển đơn sang thị trường phụ.
+      Tín hiệu: thông báo thuế quan/điều tra chống lẩn tránh, cước tàu hằng tuần, tỷ giá biến động >5% ngắn hạn.
+  - id: "we_online_shop"
+    title: "Shop online TikTok Shop/Shopee: quỹ dự phòng và tín hiệu kích hoạt"
+    context: >
+      Shop thời trang online doanh thu 500 triệu/tháng; hai trục: chính sách phí sàn (ổn định/tăng mạnh) x chi phí quảng cáo CPC (ổn định/tăng mạnh). Tiền mặt 480 triệu. Quyết định: tăng ngân sách quảng cáo hay xây kênh sở hữu (Zalo OA, website, khách quen)? Số liệu minh họa.
+    inputs:
+      cash: 480
+      burn_kich_ban: {co_so: [120, 90], xau: [140, 60]}
+      signals: {weights: [3, 2, 2, 1], present: [1, 1, 0, 1]}
+    steps:
+      - "Cơ sở: outflow 120, inflow 90 -> burn 30; runway = 480/30 = 16 tháng."
+      - "Kịch bản xấu (phí sàn và CPC cùng tăng): outflow 140, inflow 60 -> burn 80; runway = 480/80 = 6 tháng (đúng ngưỡng nguy hiểm)."
+      - "Tín hiệu: (1) sàn thông báo tăng phí (w=3, có), (2) CPC +20% 3 tuần (w=2, có), (3) tỷ lệ hoàn đơn >15% (w=2, chưa), (4) đối thủ giảm giá mạnh (w=1, có)."
+      - "SS = (3+2+0+1)/8 = 0.75 >= 0.7 -> kích hoạt phương án contingent."
+    result: >
+      Phương án contingent: dừng tăng quảng cáo, chuyển 30% ngân sách sang xây danh sách khách quen (Zalo OA, inbox), giảm SKU kém biên lợi nhuận, thương lượng hạn mức tín dụng để nâng runway lên hơn 9 tháng.
+      Hành động robust làm ngay: giữ dự phòng ít nhất 6 tháng, không phụ thuộc quá 60% doanh thu vào một sàn.
+  - id: "we_signal_score_bds"
+    title: "Điểm tín hiệu nhiều nguồn: BĐS cho thuê/dịch vụ"
+    context: "Công ty BĐS nhỏ theo dõi 4 tín hiệu hướng KB4 (Khủng hoảng): trái phiếu DN BĐS vỡ nợ tăng (w=3), lãi suất huy động tăng liên tiếp (w=2), quy định siết tín dụng (w=3), thanh khoản giao dịch giảm 20% (w=2)."
+    inputs: {weights: [3, 2, 3, 2], signals: [1, 1, 0, 1]}
+    steps:
+      - "Tử số = 3x1+2x1+3x0+2x1 = 7; Mẫu số = 10; SS = 0.7."
+      - "Ngưỡng kích hoạt 0.7 -> chuyển sang phương án bảo toàn dòng tiền: giảm vay, tăng tỷ trọng cho thuê."
+    result: "SS = 0.7; kích hoạt sớm vì chờ thêm tín hiệu thứ 3 (siết tín dụng) có thể đã muộn."
+
+practice_questions:
+  - q: "Phân biệt Scenario Planning và Forecasting trong một câu. Vì sao scenario không gán xác suất?"
+    a: "Forecasting dự báo MỘT tương lai (có thể xảy ra), scenario xây nhiều tương lai hợp lý để chuẩn bị. Không gán xác suất vì mục tiêu là mở rộng tầm nhìn và tránh tunnel vision; gán xác suất khiến người ta bỏ qua kịch bản xấu nhưng sống còn."
+  - q: "Tại sao chọn trục là yếu tố 'tác động cao + bất định cao' mà không phải 'tác động cao + bất định thấp'?"
+    a: "Yếu tố chắc chắn (đô thị hóa) diễn ra giống nhau ở mọi kịch bản, nếu làm trục thì các kịch bản giống nhau. Nó đưa vào nền chung (predetermined). Trục phải là thứ KHÔNG biết hướng nào."
+  - q: "Chấm 6 yếu tố I,U: A (5,5), B (5,2), C (2,5), D (4,4), E (3,3), F (4,5). Chọn 2 trục."
+    a: "S=25,10,10,16,9,20. Hai cao nhất là A (25) và F (20); nếu A và F tương quan mạnh, chọn A và D (16)."
+  - q: "Ma trận payoff (tỷ VNĐ): P1 [10,4,-3], P2 [6,5,2], P3 [3,3,3]. Tính maximin và minimax regret."
+    a: "Maximin: min = -3, 2, 3 -> chọn P3 (3). Regret: max cột = 10,5,3; regret P1 [0,1,6] max 6; P2 [4,0,1] max 4; P3 [7,2,0] max 7 -> chọn P2 (4)."
+  - q: "Tính EV của P2 trên nếu trọng số [0.2, 0.5, 0.3]."
+    a: "0.2x6 + 0.5x5 + 0.3x2 = 1.2+2.5+0.6 = 4.3."
+  - q: "Cửa hàng có tiền mặt 300 triệu; kịch bản xấu chi 90, thu 40 triệu/tháng. Runway? Có an toàn không?"
+    a: "Burn = 50; runway = 300/50 = 6 tháng; ở ngưỡng nguy hiểm theo quy ước, nên tăng dự phòng hoặc hạn mức vay."
+  - q: "Hai trục: P(lãi suất cao)=0.5, P(chính sách siết)=0.4. Tính trọng số ô 'lãi suất cao + siết' nếu độc lập. Vì sao có thể sai?"
+    a: "0.5x0.4 = 0.20. Có thể sai vì lãi suất cao và siết tín dụng thường đi cùng nhau (tương quan dương), thực tế ô này khả năng cao hơn 0.2."
+  - q: "Wind-tunnel là gì và khác contingency planning thế nào?"
+    a: "Wind-tunnel thử mọi phương án trong mọi kịch bản để chọn robust; contingency là kế hoạch B sau khi đã chọn A. Scenario cho ra cả hai: robust (làm ngay) và contingent (chờ tín hiệu)."
+  - q: "Điểm tín hiệu: weights [4,3,2,1], signals [1,0,1,0]. Có kích hoạt (ngưỡng 0.7)?"
+    a: "(4+0+2+0)/10 = 0.6 < 0.7 -> chuẩn bị nguồn lực, chưa kích hoạt."
+  - q: "Nêu 3 giới hạn của scenario planning và cách giảm."
+    a: "(1) Chủ quan -> workshop đa dạng và người phản biện. (2) Không xác suất -> dùng trọng số chủ quan có kiểm tra sensitivity. (3) Black Swan -> giữ khả năng chịu sốc chung (tiền mặt, đa dạng) và rà kịch bản 6-12 tháng."
+
+checklist:
+  - "□ Đã viết quyết định chiến lược cần kịch bản thành MỘT câu hỏi và horizon rõ ràng?"
+  - "□ Đội ngũ đa dạng (tài chính, vận hành, bán hàng, người ngoài) và có người phản biện?"
+  - "□ Đã liệt kê 10-15 driving forces từ PESTEL, Porter, báo cáo ngành?"
+  - "□ Đã chấm Tác động và Bất định cho từng yếu tố, tách yếu tố chắc chắn ra nền chung?"
+  - "□ Hai trục độc lập, đo được, hai cực rõ ràng?"
+  - "□ Bốn kịch bản có tên gợi hình, narrative nhất quán, khác nhau về bản chất?"
+  - "□ Đã ước tính tác động (doanh thu, chi phí, dòng tiền, runway) cho từng kịch bản?"
+  - "□ Đã wind-tunnel các phương án (kể cả giữ nguyên và giữ tiền mặt)?"
+  - "□ Đã tính maximin, regret, EV (nếu có trọng số), độ vững; ghi rõ trọng số là chủ quan?"
+  - "□ Phân loại: robust (làm ngay), contingent (chuẩn bị), loại?"
+  - "□ Mỗi kịch bản có 2-3 tín hiệu đo được, ngưỡng, nguồn, người theo dõi?"
+  - "□ Có lịch họp tín hiệu hằng tháng và rà soát kịch bản 6-12 tháng?"
+  - "□ Đã cập nhật khi có cú sốc lớn (Black Swan)?"
+  - "□ Số liệu minh họa/giả định được đánh dấu rõ, không trình bày như dự báo?"
+
+excel_google_sheets_templates:
+  - name: "Bảng xếp hạng yếu tố"
+    layout: "Cột A yếu tố; B Tác động (1-5); C Bất định (1-5); D = B*C; sắp xếp giảm dần; tô màu D>=16."
+  - name: "Ma trận payoff và tiêu chí chọn"
+    layout: "Hàng = phương án, cột = KB1-KB4; hàng 7 trọng số w. Cột F: =SUMPRODUCT(B2:E2,$B$7:$E$7) (EV); G: =MIN(B2:E2) (min); bảng regret: =MAX(B$2:B$5)-B2; H: MAX regret theo hàng; I: =COUNTIF(B2:E2,\">=0\")/4 (độ vững)."
+  - name: "Bảng tín hiệu và runway"
+    layout: "Cột tín hiệu, kịch bản, ngưỡng, nguồn, người, trọng số, đã xuất hiện (0/1), điểm SS = SUMPRODUCT/SUM; ô runway = cash/(outflow-inflow) theo kịch bản."
+
+source_file: "07-scenario-planning.md"

@@ -1,0 +1,73 @@
+# 00-README.yaml — ĐIỂM VÀO. Agent mới: đọc file này TRƯỚC, rồi làm theo load_order.
+skill:
+  id: marketing-agent-skill
+  version: 1.0
+  language: vi (thuật ngữ Anh trong ngoặc)
+  created: 2026-11-07
+  purpose: >
+    Bộ tri thức đã chắt lọc từ giáo trình "Quản trị Marketing" (MBA ứng dụng SME Việt Nam) để agent "Marketing Expert"
+    tư vấn chiến lược marketing, STP, marketing mix 4P/7P/4C, định giá, thương hiệu, digital marketing và growth hacking,
+    CLV/CAC, nghiên cứu thị trường, IMC, vòng đời sản phẩm, UGC; đồng thời soạn nội dung (kịch bản video, bài Facebook...)
+    thay vai Content Creator.
+  source_material: >
+    12 file markdown trong thư mục cha (01-stp... đến 12-comprehensive-marketing-case-studies-manual.md) cùng ugc-content.md.
+    Skill tự đủ (self-contained): agent không cần đọc markdown gốc để làm việc; markdown gốc chỉ để tham chiếu sâu thêm.
+  portability: >
+    Chỉ gồm YAML (+ 1 script Python tùy chọn tools/build_and_validate.py). Copy nguyên thư mục marketing-agent-skill/ sang
+    máy khác là dùng được. Không có đường dẫn tuyệt đối, không phụ thuộc phần mềm ngoài. Script cần python3 + pyyaml.
+
+how_to_bootstrap:    # dành cho agent mới hoàn toàn
+  step_1: Đọc toàn bộ file này.
+  step_2: Đọc 01-agent-profile.yaml (vai trò, nguyên tắc, quy trình trả lời, nhãn độ tin cậy, quy ước đầu ra nội dung) — BẮT BUỘC tuân thủ.
+  step_3: Đọc SCHEMA.yaml để hiểu cấu trúc các module (concepts, formulas, frameworks, procedures...).
+  step_4: Với mỗi yêu cầu của người dùng, dùng 02-decision-router.yaml để chọn module + playbook.
+  step_5: Nạp module cần dùng trong modules/ (đọc đầy đủ), tra công thức ở 06-formulas-index.yaml, chạy playbook ở 03-playbooks.yaml.
+  step_6: Trình bày kết quả theo 04-report-templates.yaml; tra thuật ngữ ở 05-glossary.yaml.
+  note_on_context: >
+    Nếu giới hạn ngữ cảnh chặt: luôn nạp 00, 01, 02; chỉ nạp thêm module liên quan (router chỉ ra tối đa 3-4 module cho mỗi tình huống).
+
+load_order:
+  always: [00-README.yaml, 01-agent-profile.yaml, 02-decision-router.yaml]
+  on_demand: [03-playbooks.yaml, 04-report-templates.yaml, 05-glossary.yaml, 06-formulas-index.yaml, "modules/*.yaml"]
+  reference_only: [SCHEMA.yaml]
+
+file_index:
+  - {file: 00-README.yaml, role: Điểm vào, hướng dẫn nạp skill}
+  - {file: SCHEMA.yaml, role: Định nghĩa cấu trúc dữ liệu}
+  - {file: 01-agent-profile.yaml, role: "Vai trò, phạm vi, nguyên tắc, workflow, quy ước đầu ra nội dung, disclaimer"}
+  - {file: 02-decision-router.yaml, role: Định tuyến câu hỏi -> module/playbook, chuỗi module cho bài toán đa chiều}
+  - {file: 03-playbooks.yaml, role: 12 kịch bản giải quyết vấn đề end-to-end}
+  - {file: 04-report-templates.yaml, role: Mẫu báo cáo/bảng biểu/nội dung đầu ra}
+  - {file: 05-glossary.yaml, role: Thuật ngữ Việt-Anh và ký hiệu}
+  - {file: 06-formulas-index.yaml, role: "Registry mọi công thức (sinh tự động từ modules/: CAC, LTV, ROAS, độ co giãn, hòa vốn...)"}
+  - {file: modules/m01-stp.yaml, role: "STP: phân khúc, chọn mục tiêu, định vị"}
+  - {file: modules/m02-marketing-mix-4p-7p.yaml, role: "Marketing Mix 4P/7P, kênh phân phối, omnichannel, promotion"}
+  - {file: modules/m03-customer-lifetime-value.yaml, role: "CLV, CAC, LTV:CAC, RFM, cohort, retention"}
+  - {file: modules/m04-brand-management.yaml, role: "Brand equity, identity, CBBE, xây dựng thương hiệu"}
+  - {file: modules/m05-digital-marketing-growth-hacking.yaml, role: "SEO/SEM/social/content, AARRR, growth hacking, affiliate"}
+  - {file: modules/m06-consumer-behavior.yaml, role: "Hành vi người tiêu dùng, hành trình quyết định mua, yếu tố ảnh hưởng"}
+  - {file: modules/m07-marketing-research.yaml, role: "Quy trình nghiên cứu, khảo sát, phân tích dữ liệu"}
+  - {file: modules/m08-integrated-marketing-communications.yaml, role: "IMC: công cụ truyền thông, lập kế hoạch IMC"}
+  - {file: modules/m09-product-life-cycle.yaml, role: "Vòng đời sản phẩm và chiến lược theo giai đoạn"}
+  - {file: modules/m10-pricing-strategies.yaml, role: "Chiến lược giá: cost/value/competition-based, độ co giãn, hòa vốn"}
+  - {file: modules/m11-marketing-mix-4c-and-ugc-content.yaml, role: "4C kỹ thuật số, UGC, creator vs influencer"}
+  - {file: modules/m12-marketing-case-studies-manual.yaml, role: "Cẩm nang case tích hợp, ma trận sức khỏe marketing"}
+
+maintenance:
+  validate: "python3 tools/build_and_validate.py   # kiểm tra YAML, trùng id, sinh lại 06-formulas-index.yaml"
+  update_rule: "Sửa module trong modules/, rồi chạy lại script để cập nhật 06-formulas-index.yaml. Không sửa tay 06-formulas-index.yaml."
+  data_quality_notes: >
+    Mỗi case_lessons có data_reliability (verified/illustrative/unverified). Số liệu công ty (Nike, Spotify, Grab, Vinamilk,
+    Shopee, Apple...), giá quảng cáo, CPM/CPC, tỷ lệ chuyển đổi ngành đều là tham khảo, cần đối chiếu nguồn trước khi dùng cho quyết định thật.
+    Xem known_data_caveats trong 01-agent-profile.yaml.
+
+conventions_for_calculation:
+  expression_python: >
+    Biểu thức hoặc đoạn code Python minh họa cách tính; tên biến khớp mục variables và example.inputs.
+    Ví dụ: CAC = tổng chi phí marketing và bán hàng / số khách mới; LTV = ARPU x biên gộp x tuổi thọ trung bình.
+    Nhiều dòng hoặc cần thư viện thì coi là mã tham chiếu, không nhất thiết eval một dòng.
+  units_and_rates: >
+    Nêu rõ đơn vị (VNĐ, triệu VNĐ, %), kỳ (tháng/năm), doanh thu hay biên gộp (LTV phải tính theo biên gộp, không theo doanh thu).
+    Tỷ lệ phần trăm viết dạng số thập phân trong code (0.25) và % trong báo cáo.
+  precedence: >
+    Khi markdown gốc và YAML mâu thuẫn số liệu, ưu tiên YAML (đã tính lại bằng Python).

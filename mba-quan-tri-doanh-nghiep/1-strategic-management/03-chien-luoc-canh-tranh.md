@@ -106,9 +106,9 @@ Bước 6: Theo dõi liên tục → Đối thủ có thể bắt chước
 
 **Kết quả**:
 - Giá vé thấp hơn VNA 30-50%
-- Thị phần nội địa #1 (~45% năm 2023)
+- Thị phần nội địa thuộc nhóm dẫn đầu, ngang/nhỉnh hơn Vietnam Airlines (~40-45% những năm gần đây; số liệu thay đổi theo năm, cần kiểm tra lại)
 - Doanh thu ancillary chiếm 25-30% tổng doanh thu
-- IPO thành công, CEO Nguyễn Thị Phương Thảo trở thành nữ tỉ phú đầu tiên ĐNÁ
+- IPO thành công (2017), CEO Nguyễn Thị Phương Thảo được biết đến là nữ tỉ phú USD đầu tiên của Việt Nam (theo Forbes)
 
 **Bài học thực tế**:
 - Cost Leadership không có nghĩa là "rẻ tiền" – Vietjet duy trì an toàn bay ở mức cao
@@ -135,7 +135,9 @@ Bước 6: Theo dõi liên tục → Đối thủ có thể bắt chước
 | **Kênh phân phối** | Cách tiếp cận khách hàng độc đáo | Dell (trước đây) – bán PC trực tiếp |
 | **Mối quan hệ** | Gắn kết sâu với khách hàng | Salesforce – ecosystem partner |
 
-### 3. Điều kiện thành công
+### 3. Điều kiện thành công và cách áp dụng
+
+**Cách áp dụng (6 bước)**: (1) Xác định phân khúc khách hàng và tiêu chí mua hàng (Purchase Criteria) thực sự quan trọng → (2) Xếp hạng DN so với đối thủ theo từng tiêu chí → (3) Chọn 1-2 nguồn khác biệt có giá trị cao với khách và khó bắt chước (VRIO) → (4) Tính chi phí để tạo khác biệt so với Premium kỳ vọng (điều kiện: Premium > chi phí tăng thêm, sau khi trừ phần khách bỏ đi vì giá cao) → (5) Truyền thông để khách *cảm nhận* được → (6) Theo dõi bắt chước, đổi mới liên tục.
 
 **Differentiation hiệu quả cần đáp ứng**:
 1. **Khách hàng cảm nhận được**: Khác biệt phải rõ ràng, không chỉ tự nghĩ là khác biệt
@@ -179,7 +181,7 @@ Bước 6: Theo dõi liên tục → Đối thủ có thể bắt chước
 **Kết quả**:
 - iPhone chiếm 85%+ lợi nhuận toàn ngành smartphone (2023)
 - Premium price: iPhone 15 Pro Max giá $1,199 (vs Samsung S24 Ultra $1,299 nhưng margin Apple cao hơn)
-- Brand loyalty: 92% user iPhone tiếp tục dùng iPhone
+- Brand loyalty: tỷ lệ giữ chân người dùng iPhone rất cao (khảo sát thường nêu ~90%+; số liệu chưa kiểm chứng)
 - Market cap #1 thế giới (~$3 trillion)
 
 **Bài học thực tế**:
@@ -212,7 +214,11 @@ Phân khúc hấp dẫn cho Focus Strategy cần:
 - **Có rào cản** ngăn đối thủ lớn xâm nhập
 - **Tăng trưởng** hoặc ổn định
 
-### 3. Ưu điểm và Nhược điểm
+### 3. Cách áp dụng Focus (5 bước)
+
+(1) Liệt kê các phân khúc theo địa lý/nhóm khách/kênh/nhu cầu → (2) Chấm điểm hấp dẫn theo 5 tiêu chí ở mục 2 (thang 1-5, có trọng số) → (3) Chọn Cost Focus nếu khách trong niche nhạy giá và DN có lợi thế chi phí cục bộ; chọn Differentiation Focus nếu khách sẵn sàng trả thêm cho nhu cầu đặc thù → (4) Dồn nguồn lực (sản phẩm, kênh, thương hiệu) cho niche, từ chối khách ngoài niche → (5) Theo dõi dấu hiệu đối thủ lớn nhòm ngó hoặc niche co lại để mở rộng sang niche kế cận.
+
+### 4. Ưu điểm và Nhược điểm
 
 #### ✅ Ưu điểm:
 1. **Phù hợp DN nhỏ**: Không cần quy mô lớn hay vốn khủng
@@ -228,7 +234,7 @@ Phân khúc hấp dẫn cho Focus Strategy cần:
 4. **Phụ thuộc**: Quá phụ thuộc vào một nhóm khách hàng
 5. **Sub-segment**: Đối thủ focus hẹp hơn có thể "niche within niche"
 
-### 4. Case Study: Rolls-Royce – Differentiation Focus
+### 5. Case Study: Rolls-Royce – Differentiation Focus
 
 **Bối cảnh**: Rolls-Royce Motor Cars trong thị trường ô tô siêu sang (ultra-luxury).
 

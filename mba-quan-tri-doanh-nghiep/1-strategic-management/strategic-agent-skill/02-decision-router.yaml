@@ -1,0 +1,75 @@
+# 02-decision-router.yaml — Định tuyến: câu hỏi/tình huống -> module + playbook
+# Cách dùng: khớp từ khóa/ý định của người dùng với `triggers`, nạp các `modules` liệt kê, chạy `playbook` (nếu có) trong 03-playbooks.yaml.
+# Module: m01 môi trường ngoài | m02 nội bộ | m03 cạnh tranh | m04 tăng trưởng | m05 đại dương xanh | m06 BSC | m07 kịch bản | m08 case Coffee House | m09-m10 case tích hợp
+routes:
+  - id: r_external
+    triggers: [PESTEL, môi trường vĩ mô, môi trường bên ngoài, Five Forces, 5 lực lượng, Porter, cấu trúc ngành, sức mạnh nhà cung cấp, quyền lực khách hàng, đối thủ mới gia nhập, sản phẩm thay thế, cơ hội và đe dọa, hấp dẫn của ngành, chính sách, xu hướng thị trường]
+    modules: [m01, m07]
+    playbook: pb_external_analysis
+  - id: r_internal
+    triggers: [SWOT, TOWS, điểm mạnh điểm yếu, VRIO, chuỗi giá trị, value chain, năng lực cốt lõi, lợi thế cạnh tranh bền vững, nguồn lực, năng lực, core competency, tại sao đối thủ không bắt chước được]
+    modules: [m02, m01, m03]
+    playbook: pb_internal_analysis
+  - id: r_competitive
+    triggers: [chiến lược cạnh tranh, dẫn đầu chi phí, khác biệt hóa, tập trung, generic strategies, kẹt giữa, stuck in the middle, định vị, cạnh tranh về giá, lợi thế cạnh tranh, chọn chiến lược cho quán, chiến lược cho SME]
+    modules: [m03, m02, m01]
+    playbook: pb_competitive_strategy_choice
+  - id: r_growth
+    triggers: [tăng trưởng, Ansoff, thâm nhập thị trường, phát triển thị trường, phát triển sản phẩm, đa dạng hóa, BCG, ma trận BCG, Stars Cash Cows, GE-McKinsey, danh mục kinh doanh, mở rộng chi nhánh, nhượng quyền, M&A định hướng, mở rộng sang thị trường mới]
+    modules: [m04, m02, m01]
+    playbook: pb_growth_direction
+  - id: r_blue_ocean
+    triggers: [đại dương xanh, blue ocean, đại dương đỏ, Strategy Canvas, ERRC, Four Actions, tạo thị trường mới, đổi mới giá trị, value innovation, không có đối thủ, phá vỡ ngành, loại bỏ giảm thiểu gia tăng tạo mới]
+    modules: [m05, m03, m01]
+    playbook: pb_blue_ocean_design
+  - id: r_bsc
+    triggers: [BSC, balanced scorecard, thẻ điểm cân bằng, KPI, bản đồ chiến lược, strategy map, đo lường chiến lược, OKR, mục tiêu tài chính khách hàng quy trình học hỏi, theo dõi thực thi chiến lược, dashboard chiến lược]
+    modules: [m06, m02]
+    playbook: pb_bsc_build
+  - id: r_scenario
+    triggers: [kịch bản, scenario, bất định, không chắc chắn, tương lai, kế hoạch dự phòng, tín hiệu cảnh báo, 2x2, bất định then chốt, rủi ro chiến lược, stress test chiến lược, nếu thị trường thay đổi]
+    modules: [m07, m01]
+    playbook: pb_scenario_plan
+  - id: r_full_review
+    triggers: [chiến lược toàn diện, xây dựng chiến lược, rà soát chiến lược, kế hoạch chiến lược 3 năm, tư vấn chiến lược cho công ty, làm chiến lược từ đầu, đánh giá toàn bộ chiến lược, strategic plan]
+    modules: [m01, m02, m03, m04, m06, m07]
+    playbook: pb_full_strategy_review
+  - id: r_case
+    triggers: [phân tích case, case study, The Coffee House, bài học từ, tại sao thất bại, tại sao thành công, Highlands, Nokia, Kodak, Netflix, Starbucks, so sánh doanh nghiệp, bài tập tình huống, tích hợp nhiều framework]
+    modules: [m08, m09, m10]
+    playbook: pb_case_analysis
+  - id: r_clarify
+    triggers: [giúp tôi với chiến lược, không biết bắt đầu từ đâu, làm rõ yêu cầu, tóm tắt yêu cầu, biên bản, ghi chú cuộc họp, nhắc việc, phân công, action items, mơ hồ, tóm tắt cuộc họp chiến lược]
+    modules: []   # chỉ nạp module sau khi làm rõ
+    playbook: pb_clarify_request
+  - id: r_finance_handoff
+    triggers: [tính NPV, IRR, WACC, định giá, dòng tiền dự án, điểm hòa vốn chi tiết, mô hình tài chính, ROI chi tiết, cơ cấu vốn]
+    modules: []   # ngoài phạm vi: chuyển #financial_expert, chỉ dùng kết quả trả về làm luận cứ chiến lược
+    playbook: null
+  - id: r_concept_qa
+    triggers: [là gì, giải thích, tại sao, khác nhau, lịch sử, ai tạo ra, khi nào dùng]
+    modules: []   # chọn theo chủ đề; xem trường why_it_matters và origin của frameworks trong module liên quan
+    playbook: null
+
+chaining_rules:   # bài toán đa chiều: thứ tự gọi module
+  - when: "Phân tích chiến lược toàn diện cho một doanh nghiệp"
+    chain: [m01 PESTEL, m01 Five Forces, m02 SWOT và VRIO và Chuỗi giá trị, m03 chọn chiến lược cạnh tranh, m04 Ansoff và BCG chọn hướng tăng trưởng, m06 BSC chuyển thành KPI, m07 kịch bản kiểm tra độ vững]
+  - when: "Mở quán hoặc doanh nghiệp mới / chọn thị trường"
+    chain: [m01 PESTEL và 5 Forces đánh giá độ hấp dẫn, m02 kiểm tra nguồn lực, m03 chọn định vị, m05 nếu muốn tạo khác biệt thật sự, m07 kịch bản rủi ro, hỏi financial_expert về NPV]
+  - when: "Doanh nghiệp bị cạnh tranh giá khốc liệt"
+    chain: [m01 Five Forces, m02 VRIO tìm lợi thế, m03 chọn khác biệt hóa hoặc tập trung, m05 ERRC nếu muốn thoát đại dương đỏ, m06 KPI theo dõi]
+  - when: "Muốn tăng trưởng nhưng chưa biết hướng nào"
+    chain: [m02 năng lực hiện có, m04 Ansoff đánh giá 4 hướng, m04 BCG nếu nhiều dòng sản phẩm, m07 kịch bản, m06 BSC, hỏi financial_expert về tính khả thi tài chính]
+  - when: "Thị trường biến động mạnh / bất định cao"
+    chain: [m01 PESTEL tìm yếu tố bất định, m07 kịch bản 2x2, m03 hoặc m04 chiến lược theo từng kịch bản, m06 KPI cảnh báo sớm]
+  - when: "Thực thi chiến lược đã chọn"
+    chain: [m06 BSC và bản đồ chiến lược, m02 kiểm tra năng lực triển khai, pb_clarify_request để ghi biên bản và nhắc việc]
+  - when: "Học từ case study"
+    chain: [m08 hoặc m09/m10 case phù hợp, framework liên quan ở m01-m07 để đối chiếu, rút bài học áp dụng cho SME]
+
+clarifying_questions_default:   # hỏi khi thiếu
+  - Mục tiêu chiến lược và khung thời gian là gì (tăng trưởng, giữ thị phần, thoát cạnh tranh giá, gọi vốn)?
+  - Doanh nghiệp đang ở ngành nào, quy mô, địa bàn, mô hình kinh doanh và giai đoạn (khởi nghiệp, tăng trưởng, trưởng thành)?
+  - Ai là khách hàng mục tiêu và đối thủ chính hiện nay?
+  - Nguồn lực hiện có (vốn, nhân sự, thương hiệu, công nghệ, kênh phân phối) và ràng buộc?
+  - Đầu ra mong muốn (phân tích, khuyến nghị, kế hoạch hành động, báo cáo, biên bản)?

@@ -1,7 +1,7 @@
 id: finance-00-core
 title: "Chuyên gia tài chính doanh nghiệp — vai trò, quy tắc, định tuyến"
 summary: "Bộ skill finance-agent-skill v1.0 cho agent financial_expert: vai trò, nguyên tắc, định tuyến câu hỏi → module."
-agents: ["financial_expert"]
+agents: ["financial_expert", "stock_analyst", "accountant"]
 order: 5
 body_max: 6000
 sections:
@@ -64,7 +64,7 @@ sections:
     tags: ["skill_search", "tra", "cứu"]
     text: |-
       Bộ kiến thức tài chính doanh nghiệp (11 module, 286 công thức, thuật ngữ, playbook, mẫu báo cáo) KHÔNG nằm hết trong prompt: tra bằng công cụ skill_search.
-      - Công thức: skill_search("m03_wacc") hoặc tên/biến ("WACC", "chi phí vốn chủ"). Playbook: skill_search("pb_wacc"). Mẫu báo cáo: skill_search("mẫu báo cáo ...").
+      - Công thức/framework: skill_search("m03_wacc") hoặc tên/biến ("WACC", "chi phí vốn chủ"). Playbook: skill_search("pb_wacc"). Mẫu báo cáo: skill_search("mẫu báo cáo ...").
       - Thuật ngữ: skill_search("<thuật ngữ>"). Ví dụ có lời giải/checklist/lỗi thường gặp của module cũng tra được bằng từ khoá của chủ đề.
       - Trước khi tính, tra công thức và điều kiện áp dụng; sau khi tính, kiểm tra lại bằng run_command (python) với số quan trọng.
   - id: "pham-vi"

@@ -1,0 +1,2447 @@
+id: accounting-m04
+title: "Kế toán m04: Lập ngân sách và dự báo"
+summary: "Biến chiến lược thành kế hoạch tài chính bằng con số (Master Budget gồm bán hàng, sản xuất, mua NVL, nhân công, chi phí chung, tiền mặt và báo cáo tài chính dự kiến), chọn phương pháp lập ngân sách phù hợp (incremental, ZBB, linh hoạt, cuốn chiếu, driver-based), dự báo định lượn…"
+agents: ["accountant"]
+order: 24
+when: ["ngan sach", "budget", "master budget", "ngan sach tong the", "ngan sach linh hoat", "zero-based", "rolling forecast", "du bao", "lap ke hoach tai chinh nam", "ngan sach ban hang", "ngan sach mua hang", "ngan sach tien", "du phong bctc", "dong tien", "cash flow", "dong tien 13 tuan", "thieu tien", "het tien", "runway", "tien mat", "lai nhung khong co tien", "thu chi", "ke hoach tien mat", "cash conversion", "von luu dong", "lap ngan sach va du bao", "budgeting and forecasting"]
+body_max: 3522
+sections:
+  - id: "m04-tong-quan"
+    title: "Tổng quan m04"
+    tags: ["m04", "lập", "ngân", "sách", "và", "dự", "báo", "budgeting", "and", "forecasting"]
+    text: |-
+      Lập ngân sách và dự báo (Budgeting and Forecasting) — module m04
+
+      Mục đích: Biến chiến lược thành kế hoạch tài chính bằng con số (Master Budget gồm bán hàng, sản xuất, mua NVL, nhân công, chi phí chung, tiền mặt và báo cáo tài chính dự kiến), chọn phương pháp lập ngân sách phù hợp (incremental, ZBB, linh hoạt, cuốn chiếu, driver-based), dự báo định lượng (trung bình di động, san mũ, mùa vụ, hồi quy) và đo sai số, tính hòa vốn/biên an toàn, dựng dòng tiền 13 tuần để cảnh báo thiếu tiền sớm. Trả lời: năm tới bán bao nhiêu, cần sản xuất/mua/chi bao nhiêu, quý nào thiếu ti…
+
+      Dùng khi:
+      - Chủ SME hỏi 'lập ngân sách năm sau thế nào?', 'cần bao nhiêu tiền mặt/vay quý nào?', 'bán tối thiểu bao nhiêu thì hòa vốn?'.
+      - Cần dựng Master Budget 8 bước hoặc ngân sách 1 trang (Bán hàng - Chi phí - Tiền mặt) cho SME.
+      - Cần ngân sách sản xuất (Bán + Tồn cuối - Tồn đầu), ngân sách mua NVL, lịch thu tiền, ngân sách tiền mặt kèm vay/trả nợ.
+      - Doanh số vượt kế hoạch nhưng lợi nhuận thấp: cần chuyển ngân sách tĩnh sang linh hoạt và tách chênh lệch khối lượng/giá/biến phí/định phí.
+      - Cần chọn phương pháp: Incremental, ZBB, ABB, Flexible, Rolling, Driver-based, Beyond Budgeting; xếp hạng gói chi tiêu theo trần ngân sách.
+      - Cần dự báo doanh thu (MA, san mũ, chỉ số mùa vụ, hồi quy) và đo MAD, MAPE, MSE, Tracking Signal.
+      - Cần dòng tiền 13 tuần cho startup/SME, cảnh báo tuần tiền thấp, quyết định hoãn CapEx/thuê tài chính.
+      - Cần lịch họp variance hằng tháng, bảng 10 chỉ số cảnh báo, kịch bản Tốt - Cơ sở - Xấu, chống gaming ngân sách.
+
+      Module liên quan: - 'm02 - Kế toán quản trị: phân loại biến phí/định phí, CM, CVP, absorption vs variable costing' - 'm03 - Kế toán giá thành: định mức biến phí đơn vị, phân bổ chi phí chung dùng làm đầu vào ngân sách' - 'm05 - Phân tích chênh lệch: đi tiếp từ ngân sách linh hoạt sang giá/lượng NVL, giờ công, MOH, Sales Mix' - 'm01 - Kế toán tài chính: số thực tế, VAS/TT200/TT133 cho báo cáo chính thức, dồn tích, …
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m04_production_budget: Sản lượng cần sản xuất (Ngân sách sản xuất)
+      - m04_materials_purchase: NVL cần mua
+      - m04_cash_collections: Lịch thu tiền bán hàng
+      - m04_cash_budget: Ngân sách tiền mặt và nhu cầu vay
+      - m04_profit_to_cash: Đối chiếu lợi nhuận sang dòng tiền
+      - m04_flexible_budget: Ngân sách linh hoạt
+      - m04_volume_variance: Chênh lệch khối lượng bán
+      - m04_price_variance: Chênh lệch giá bán
+      - m04_vc_variance: Chênh lệch biến phí
+      - m04_fc_variance: Chênh lệch định phí
+      - m04_variance_reconciliation: Đối chiếu tổng chênh lệch lợi nhuận
+      - m04_breakeven: Sản lượng và doanh thu hòa vốn
+      - m04_margin_of_safety: Biên an toàn
+      - m04_moving_average: Trung bình di động
+      - m04_exp_smoothing: San mũ đơn
+      - m04_seasonal_index: Chỉ số mùa vụ
+      - m04_linear_regression: Hồi quy tuyến tính đơn
+      - m04_mad: Độ lệch tuyệt đối trung bình (MAD)
+      - m04_mape: Sai số phần trăm tuyệt đối trung bình (MAPE)
+      - m04_mse: Sai số bình phương trung bình (MSE)
+      - m04_tracking_signal: Tín hiệu theo dõi (thiên lệch dự báo)
+      - m04_zbb_ratio: Tỷ lệ lợi ích/chi phí xếp hạng gói ZBB
+      - m04_cash_13week: Tiền cuối tuần trong dòng tiền 13 tuần
+
+      Kho tra cứu của module: Khái niệm 24, Công thức 23, frameworks 12, Quy trình 8, Quy tắc quyết định 20, Chuẩn so sánh 14, Lỗi thường gặp 17, Lưu ý SME Việt Nam 12, Bài học case 5, Ví dụ có lời giải 6, Câu hỏi luyện tập 10, Checklist 19, Mẫu Excel/Sheets 5. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ định khoản", "lỗi thường gặp khấu hao").
+  - id: "m04-concepts-1"
+    title: "Khái niệm: Lập ngân sách"
+    tags: ["khái", "niệm", "lập", "ngân", "sách"]
+    text: |-
+      term_vi: Lập ngân sách
+      term_en: Budgeting
+      definition: 'Chuyển chiến lược thành kế hoạch tài chính bằng con số cho một kỳ (thường 1 năm, chia quý/tháng): doanh thu, chi phí được phép chi, lợi nhuận mục tiêu, dòng tiền, nhu cầu vốn. Vừa là bản đồ (đi đâu), thước đo (đã đến đâu) và cam kết (ai chịu con số nào).'
+      why_it_matters: Ngân sách doanh nghiệp ra đời từ ngân sách nhà nước (Budget and Accounting Act 1921 của Mỹ); GE, DuPont, GM thập niên 1920 đưa vào doanh nghiệp để phối hợp các bộ phận (sản xuất không làm nhiều hơn bán được, mua hàng không vượt khả năng chi trả). James O. McKinsey xuất bản Budgetary Control năm 1922 (mốc cần đối chiếu nguồn). Không có ngân sách thì không có thước đo cho variance và không có cam kết trách nhiệm.
+  - id: "m04-concepts-2"
+    title: "Khái niệm: Dự báo"
+    tags: ["khái", "niệm", "dự", "báo"]
+    text: |-
+      term_vi: Dự báo
+      term_en: Forecasting
+      definition: Ước tính kết quả có nhiều khả năng xảy ra nhất dựa trên dữ liệu lịch sử, xu hướng và giả định. Không phải mục tiêu nên được phép cập nhật liên tục.
+      why_it_matters: Ngân sách cứng lỗi thời sau khoảng 3 tháng; dự báo giữ tính cập nhật, ngân sách giữ tính cam kết. Hai thứ bổ sung nhau chứ không thay nhau.
+  - id: "m04-concepts-3"
+    title: "Khái niệm: Budget so với Forecast"
+    tags: ["khái", "niệm", "budget", "so", "với", "forecast"]
+    text: |-
+      term_vi: Budget so với Forecast
+      term_en: Budget vs Forecast
+      definition: Budget trả lời 'ta muốn/cam kết đạt gì', thường 1 năm, rất chi tiết, cần phê duyệt, cứng, dùng làm benchmark đánh giá. Forecast trả lời 'ta nhiều khả năng đạt gì', cập nhật hằng tháng/quý, tổng quát theo driver, mềm, không dùng để thưởng phạt.
+      why_it_matters: Dùng dự báo để thưởng phạt khiến quản lý giấu tin xấu; dùng ngân sách cũ như dự báo khiến quyết định dựa trên con số lỗi thời.
+  - id: "m04-concepts-4"
+    title: "Khái niệm: Sáu chức năng của ngân sách"
+    tags: ["khái", "niệm", "sáu", "chức", "năng", "của", "ngân", "sách"]
+    text: |-
+      term_vi: Sáu chức năng của ngân sách
+      term_en: Planning, Communication, Coordination, Motivation, Control, Evaluation
+      definition: Lập kế hoạch, truyền thông mục tiêu, phối hợp bộ phận, tạo động lực, kiểm soát chi tiêu, đánh giá hiệu suất.
+      why_it_matters: Mỗi chức năng giải một vấn đề khác nhau (vd Evaluation đòi so thực tế với ngân sách LINH HOẠT chứ không với ngân sách tĩnh).
+  - id: "m04-concepts-5"
+    title: "Khái niệm: Ngân sách tổng thể"
+    tags: ["khái", "niệm", "ngân", "sách", "tổng", "thể"]
+    text: |-
+      term_vi: Ngân sách tổng thể
+      term_en: Master Budget
+      definition: 'Bộ ngân sách tích hợp gồm Operating Budget (bán hàng, sản xuất, NVL, nhân công, SX chung, bán hàng và QLDN), Financial Budget (tiền mặt, báo cáo dự kiến) và Capital Budget (CapEx), kết thúc bằng ba báo cáo pro-forma: KQKD, Bảng cân đối, Dòng tiền.'
+      why_it_matters: 'Các bộ phận phụ thuộc nhau: sản xuất cần biết bán bao nhiêu, mua hàng cần biết sản xuất bao nhiêu, tài chính cần biết thu chi từng quý. Lập rời rạc gây mâu thuẫn ngầm (chỉ tiêu bán vượt công suất; lãi trên giấy nhưng hết tiền).'
+  - id: "m04-concepts-6"
+    title: "Khái niệm: Yếu tố giới hạn"
+    tags: ["khái", "niệm", "yếu", "tố", "giới", "hạn"]
+    text: |-
+      term_vi: Yếu tố giới hạn
+      term_en: Limiting factor
+      definition: Nguồn lực hay ràng buộc quyết định quy mô hoạt động. Thường là nhu cầu thị trường (doanh số) nên Master Budget bắt đầu từ ngân sách bán hàng.
+      why_it_matters: Nếu giới hạn là công suất máy hoặc NVL khan hiếm thì chuỗi ngân sách phải bắt đầu từ chính yếu tố đó.
+  - id: "m04-concepts-7"
+    title: "Khái niệm: Báo cáo dự kiến"
+    tags: ["khái", "niệm", "báo", "cáo", "dự", "kiến"]
+    text: |-
+      term_vi: Báo cáo dự kiến
+      term_en: Pro-forma financial statements
+      definition: Báo cáo tài chính dựng trước khi sự việc xảy ra từ các ngân sách thành phần.
+      why_it_matters: 'Kiểm tra tính nhất quán: Bảng cân đối phải cân, dòng tiền phải khớp thay đổi tiền giữa hai kỳ. Nếu không khớp là có lỗi nối chuỗi.'
+  - id: "m04-concepts-8"
+    title: "Khái niệm: Lợi nhuận khác tiền mặt"
+    tags: ["khái", "niệm", "lợi", "nhuận", "khác", "tiền", "mặt"]
+    text: |-
+      term_vi: Lợi nhuận khác tiền mặt
+      term_en: Profit vs Cash (accrual vs cash)
+      definition: KQKD ghi nhận theo dồn tích. Tiền khác lợi nhuận vì bán chịu, mua tài sản (CapEx), khấu hao không chi tiền, tồn kho tăng là chi tiền chưa thành chi phí, thuế chưa nộp.
+      why_it_matters: Nhiều SME có lãi trên sổ nhưng phá sản vì hết tiền. Ngân sách tiền mặt phát hiện thời điểm thiếu tiền trước khi xảy ra.
+  - id: "m04-concepts-9"
+    title: "Khái niệm: Biến phí, định phí, tầm hoạt động phù hợp"
+    tags: ["khái", "niệm", "biến", "phí", "định", "tầm", "hoạt", "động", "phù", "hợp"]
+    text: |-
+      term_vi: Biến phí, định phí, tầm hoạt động phù hợp
+      term_en: Variable cost, Fixed cost, Relevant range
+      definition: Biến phí đổi theo sản lượng; định phí không đổi trong tầm hoạt động phù hợp (vượt công suất có thể nhảy bậc).
+      why_it_matters: Là điều kiện để làm ngân sách linh hoạt và hòa vốn. Phân loại sai thì mọi so sánh sai.
+  - id: "m04-concepts-10"
+    title: "Khái niệm: Ngân sách tăng dần"
+    tags: ["khái", "niệm", "ngân", "sách", "tăng", "dần"]
+    text: |-
+      term_vi: Ngân sách tăng dần
+      term_en: Incremental Budgeting
+      definition: Lấy ngân sách/chi tiêu năm trước cộng trừ một tỷ lệ phần trăm.
+      why_it_matters: Nhanh, ít tranh cãi nhưng nhân bản sai lầm cũ và khoản chi vô ích không bao giờ bị hỏi lại; trong môi trường bị phá vỡ (Sears) là chết chậm.
+  - id: "m04-concepts-11"
+    title: "Khái niệm: Ngân sách gốc không"
+    tags: ["khái", "niệm", "ngân", "sách", "gốc", "không"]
+    text: |-
+      term_vi: Ngân sách gốc không
+      term_en: Zero-Based Budgeting (ZBB)
+      definition: Mỗi khoản chi phải biện minh lại từ con số 0 qua Decision Unit, Decision Package (mức tối thiểu/hiện tại/tăng cường), xếp hạng theo ROI/độ cấp thiết, rồi phân bổ từ trên xuống đến khi chạm trần.
+      why_it_matters: Peter Pyhrr (Texas Instruments) đề xuất cuối thập niên 1960, đăng HBR 1970, Carter dùng ở bang Georgia rồi liên bang (cần đối chiếu nguồn). Chữa bệnh phòng ban hỗ trợ phình ra. ZBB là phân bổ lại về nơi tạo giá trị chứ không phải cắt giảm thuần túy.
+  - id: "m04-concepts-12"
+    title: "Khái niệm: Ngân sách theo hoạt động"
+    tags: ["khái", "niệm", "ngân", "sách", "theo", "hoạt", "động"]
+    text: |-
+      term_vi: Ngân sách theo hoạt động
+      term_en: Activity-Based Budgeting (ABB)
+      definition: Ngân sách xây từ hoạt động (đặt đơn, giao hàng, xử lý khiếu nại) x số lần x chi phí mỗi lần (cost driver).
+      why_it_matters: Chính xác hơn nhưng cần hệ thống ABC; SME chỉ nên áp cho 1-2 hoạt động tốn kém nhất (vd giao hàng).
+  - id: "m04-concepts-13"
+    title: "Khái niệm: Ngân sách theo yếu tố dẫn dắt"
+    tags: ["khái", "niệm", "ngân", "sách", "theo", "yếu", "tố", "dẫn", "dắt"]
+    text: |-
+      term_vi: Ngân sách theo yếu tố dẫn dắt
+      term_en: Driver-based Budgeting
+      definition: Dựng ngân sách từ driver kinh doanh thật (số quán x kg/quý, số khách x giá trị đơn, giờ máy) thay vì lấy năm ngoái cộng X phần trăm.
+      why_it_matters: Khi có chênh lệch biết ngay giả định nào sai (số khách, giá hay chi phí/đơn vị); 'tăng 15%' trừu tượng không cho biết giả định nằm ở đâu.
+  - id: "m04-concepts-14"
+    title: "Khái niệm: Ngân sách linh hoạt"
+    tags: ["khái", "niệm", "ngân", "sách", "linh", "hoạt"]
+    text: |-
+      term_vi: Ngân sách linh hoạt
+      term_en: Flexible Budget
+      definition: 'Ngân sách tính lại cho đúng sản lượng thực tế: biến phí đơn vị x sản lượng thực tế + định phí.'
+      why_it_matters: 'So ngân sách tĩnh với thực tế khi sản lượng khác kế hoạch là so táo với cam. Ví dụ bán 12.000 thay vì 10.000: so tĩnh thấy +15tr (vượt kế hoạch), so linh hoạt thấy -45tr (bất lợi) - kết luận ngược nhau.'
+  - id: "m04-concepts-15"
+    title: "Khái niệm: Dự báo cuốn chiếu"
+    tags: ["khái", "niệm", "dự", "báo", "cuốn", "chiếu"]
+    text: |-
+      term_vi: Dự báo cuốn chiếu
+      term_en: Rolling Forecast
+      definition: 'Luôn giữ 12 tháng (hoặc 4-6 quý) phía trước: khép sổ xong một kỳ thì thêm một kỳ mới vào cuối.'
+      why_it_matters: Ngân sách năm co dần (tháng 10 chỉ còn thấy 3 tháng) trong khi tuyển dụng, mua hàng, đàm phán vay cần tầm nhìn 12 tháng. Là hệ thống cảnh báo sớm (case Sears).
+  - id: "m04-concepts-16"
+    title: "Khái niệm: Beyond Budgeting"
+    tags: ["khái", "niệm", "beyond", "budgeting"]
+    text: |-
+      term_vi: Beyond Budgeting
+      term_en: Beyond Budgeting
+      definition: Bỏ cam kết con số cứng; dùng mục tiêu tương đối, dự báo cuốn chiếu, phân bổ nguồn lực theo nhu cầu (Hope và Fraser, BBRT cuối thập niên 1990; mẫu Svenska Handelsbanken - cần đối chiếu nguồn).
+      why_it_matters: Đòi hỏi niềm tin và minh bạch dữ liệu rất cao; không khuyến nghị cho SME chưa có nền tảng ngân sách cơ bản.
+  - id: "m04-concepts-17"
+    title: "Khái niệm: Hành vi phản tác dụng của ngân sách"
+    tags: ["khái", "niệm", "hành", "vi", "phản", "tác", "dụng", "của", "ngân", "sách"]
+    text: |-
+      term_vi: Hành vi phản tác dụng của ngân sách
+      term_en: Budget slack, Sandbagging, Spend-it-or-lose-it, Ratchet effect, Short-termism
+      definition: 'Slack: khai chi cao/doanh thu thấp. Sandbagging: cố ý đặt target thấp để vượt thưởng. Spend-it-or-lose-it: cuối năm chi vội. Ratchet: vượt năm nay thì năm sau bị nâng target. Short-termism: cắt đào tạo/bảo trì để đạt lợi nhuận quý.'
+      why_it_matters: 'Chris Argyris (Harvard, 1952, The Impact of Budgets on People): khi ngân sách là công cụ gây áp lực thưởng phạt, con người chơi ngân sách thay vì phục vụ mục tiêu thật. Giảm thiểu: ZBB, benchmark ngoài, tách thưởng khỏi mốc cứng, KPI dài hạn (BSC).'
+  - id: "m04-concepts-18"
+    title: "Khái niệm: Ngân sách có sự tham gia"
+    tags: ["khái", "niệm", "ngân", "sách", "có", "sự", "tham", "gia"]
+    text: |-
+      term_vi: Ngân sách có sự tham gia
+      term_en: Participative budgeting
+      definition: Cấp dưới cùng bàn bạc đặt con số.
+      why_it_matters: Tăng cam kết nhưng tăng nguy cơ slack; SME ít cấp bậc thì chủ DN là người kiểm chứng tốt nhất.
+  - id: "m04-concepts-19"
+    title: "Khái niệm: Chênh lệch ngân sách (3 tầng)"
+    tags: ["khái", "niệm", "chênh", "lệch", "ngân", "sách", "tầng"]
+    text: |-
+      term_vi: Chênh lệch ngân sách (3 tầng)
+      term_en: Sales Volume Variance, Flexible Budget Variance
+      definition: Lợi nhuận thực tế - lợi nhuận ngân sách tĩnh = Chênh lệch khối lượng bán (Linh hoạt - Tĩnh) + Chênh lệch ngân sách linh hoạt (Thực tế - Linh hoạt, tách tiếp thành giá bán, biến phí, định phí).
+      why_it_matters: 'Nguyên tắc kiểm soát được (controllability): chỉ đánh giá quản lý trên điều họ kiểm soát. Khối lượng phụ thuộc thị trường/kinh doanh; giá, biến phí, định phí là trách nhiệm vận hành.'
+  - id: "m04-concepts-20"
+    title: "Khái niệm: Điểm hòa vốn và biên an toàn"
+    tags: ["khái", "niệm", "điểm", "hòa", "vốn", "và", "biên", "an", "toàn"]
+    text: |-
+      term_vi: Điểm hòa vốn và biên an toàn
+      term_en: Break-even point, Margin of Safety
+      definition: Sản lượng hòa vốn = Định phí / CM đơn vị. Biên an toàn = (Sản lượng dự kiến - Hòa vốn) / Sản lượng dự kiến.
+      why_it_matters: 'Mỗi đơn vị bán đóng góp CM trang trải định phí. Biên an toàn là lớp đệm trước biến động và là chỉ báo sớm mà ngân sách tĩnh không phát hiện (case Cầu Đất Xanh: 25% tụt còn 4,3% trong một quý).'
+  - id: "m04-concepts-21"
+    title: "Khái niệm: Phương pháp dự báo"
+    tags: ["khái", "niệm", "phương", "pháp", "dự", "báo"]
+    text: |-
+      term_vi: Phương pháp dự báo
+      term_en: Qualitative, Time-series, Causal forecasting
+      definition: Định tính (ý kiến chuyên gia, Delphi, khảo sát, ước tính đội bán hàng), chuỗi thời gian (trung bình di động, san mũ, xu hướng, mùa vụ), nhân quả (hồi quy, tương quan, kinh tế lượng).
+      why_it_matters: 'Chọn theo dữ liệu: sản phẩm mới chưa có lịch sử thì định tính; ổn định thì MA/san mũ; có mùa vụ thì chỉ số mùa vụ; có driver đo được thì hồi quy.'
+  - id: "m04-concepts-22"
+    title: "Khái niệm: Phương pháp Delphi"
+    tags: ["khái", "niệm", "phương", "pháp", "delphi"]
+    text: |-
+      term_vi: Phương pháp Delphi
+      term_en: Delphi method
+      definition: 'Thu ý kiến chuyên gia qua nhiều vòng ẩn danh, mỗi vòng xem tổng hợp vòng trước rồi điều chỉnh (RAND thập niên 1950, cần đối chiếu nguồn). Phiên bản SME: 3-5 người viết riêng dự báo rồi so sánh, thảo luận chênh lệch.'
+      why_it_matters: Tránh 'người nói to thắng' (groupthink).
+  - id: "m04-concepts-23"
+    title: "Khái niệm: Dòng tiền 13 tuần"
+    tags: ["khái", "niệm", "dòng", "tiền", "13", "tuần"]
+    text: |-
+      term_vi: Dòng tiền 13 tuần
+      term_en: 13-Week Cash Flow Forecast
+      definition: Dự báo tiền thực thu/thực chi theo tuần cho 1 quý, cập nhật hằng tuần (thay dự báo tuần vừa qua bằng thực tế, thêm tuần mới).
+      why_it_matters: 13 tuần đủ ngắn để chính xác, đủ dài để kịp hành động (đàm phán vay, hoãn chi, giục nợ). Phổ biến trong tái cơ cấu doanh nghiệp tại Mỹ (cần đối chiếu nguồn); SME dùng vì cùng nỗi lo hết tiền trước khi hết ngân sách.
+  - id: "m04-concepts-24"
+    title: "Khái niệm: Số học hai quy ước dấu"
+    tags: ["khái", "niệm", "số", "học", "hai", "quy", "ước", "dấu"]
+    text: |-
+      term_vi: Số học hai quy ước dấu
+      term_en: Sign convention in this module
+      definition: Nguồn mục II.C ghi số dương = thuận lợi (F), âm = bất lợi (U) (tác động lên lợi nhuận). Module m05 dùng Variance = Actual - Standard (chi phí dương = U). Khi báo cáo luôn ghi chữ (F) hoặc (U) sau con số.
+      why_it_matters: Trộn hai quy ước là nguồn nhầm lẫn số một. Trong m04, mọi chênh lệch lợi nhuận được ghi là TÁC ĐỘNG LÊN LỢI NHUẬN (dương = F, âm = U).
+  - id: "m04-formulas-1"
+    title: "Công thức: m04_production_budget — Sản lượng cần sản xuất (Ngân sách sản xuất)"
+    tags: ["công", "thức", "m04_production_budget", "sản", "lượng", "cần", "xuất", "ngân", "sách"]
+    text: |-
+      id: m04_production_budget
+      name_vi: Sản lượng cần sản xuất (Ngân sách sản xuất)
+      name_en: Production budget
+      expression_latex: \text{Sản xuất} = \text{Bán} + \text{Tồn cuối mong muốn} - \text{Tồn đầu}
+      expression_python: sales + ending_inv - beginning_inv
+      excel: =Ban+TonCuoi-TonDau (TonCuoi = 0.2*Ban_ky_sau)
+      variables:
+      - symbol: sales
+        meaning: Dự kiến bán trong kỳ
+        unit: đơn vị SP
+      - symbol: ending_inv
+        meaning: Tồn kho thành phẩm cuối kỳ mong muốn (vd 20% nhu cầu bán kỳ sau)
+        unit: đơn vị SP
+      - symbol: beginning_inv
+        meaning: Tồn kho thành phẩm đầu kỳ (= tồn cuối kỳ trước)
+        unit: đơn vị SP
+      when_to_use: Bước 2 của Master Budget, sau ngân sách bán hàng.
+      why_it_works: 'Phương trình cân bằng tồn kho: Tồn đầu + Sản xuất = Bán + Tồn cuối. Đã có sẵn tồn đầu thì chỉ sản xuất phần thiếu; muốn đệm an toàn cuối kỳ thì sản xuất thêm. Tồn quá ít thì hụt hàng, quá nhiều thì chôn vốn và hết hạn (nước ép).'
+      assumptions:
+      - Chính sách tồn kho đã chốt rõ (% nhu cầu kỳ sau)
+      - Cần dự kiến bán kỳ đầu năm sau để tính tồn cuối Q4
+      - Công suất đủ để sản xuất con số này
+      pitfalls:
+      - Quên dự kiến bán Q1 năm sau nên tồn cuối Q4 sai
+      - Tồn đầu kỳ này phải bằng tồn cuối kỳ trước
+      - Không kiểm tra công suất nhà máy
+      interpretation: Đường sản xuất mượt hơn đường bán nhờ chính sách tồn kho đi theo quý sau. Q3 sản xuất cao nhất nhưng tồn cuối thấp vì Q4 bán chậm.
+      example:
+        inputs:
+          sales:
+          - 10000
+          - 15000
+          - 20000
+          - 12000
+          next_year_q1_sales: 11000
+          beginning_q1: 2000
+          policy_pct: 0.2
+        steps:
+        - 'Tồn cuối: Q1 3.000; Q2 4.000; Q3 2.400; Q4 2.200'
+        - Q1 = 10.000 + 3.000 - 2.000 = 11.000; Q2 = 15.000 + 4.000 - 3.000 = 16.000
+        - Q3 = 20.000 + 2.400 - 4.000 = 18.400; Q4 = 12.000 + 2.200 - 2.400 = 11.800; cả năm 57.200
+        result: Sản xuất 11.000; 16.000; 18.400; 11.800 = 57.200 chai
+  - id: "m04-formulas-2"
+    title: "Công thức: m04_materials_purchase — NVL cần mua"
+    tags: ["công", "thức", "m04_materials_purchase", "nvl", "cần", "mua"]
+    text: |-
+      id: m04_materials_purchase
+      name_vi: NVL cần mua
+      name_en: Direct materials purchases
+      expression_latex: \text{Mua} = \text{Dùng} + \text{Tồn cuối} - \text{Tồn đầu};\quad \text{Dùng} = \text{Sản lượng SX} \times \text{định mức}
+      expression_python: production * qty_per_unit + ending_rm - beginning_rm
+      excel: =SX*DinhMuc+TonCuoiNVL-TonDauNVL
+      variables:
+      - symbol: production
+        meaning: Sản lượng cần sản xuất
+        unit: SP
+      - symbol: qty_per_unit
+        meaning: Định mức NVL trên 1 SP
+        unit: lít/SP
+      - symbol: ending_rm
+        meaning: Tồn NVL cuối kỳ (vd 10% nhu cầu dùng kỳ sau)
+        unit: lít
+      - symbol: beginning_rm
+        meaning: Tồn NVL đầu kỳ
+        unit: lít
+      when_to_use: Bước 3 Master Budget; tính chi phí mua = lượng mua x đơn giá.
+      why_it_works: Cùng phương trình tồn kho nhưng áp cho NVL.
+      assumptions:
+      - Giá mua chuẩn ổn định
+      - Chính sách tồn NVL rõ
+      pitfalls:
+      - Nhầm lượng dùng với lượng mua
+      - Dùng sản lượng bán thay cho sản lượng sản xuất để tính lượng dùng
+      interpretation: Chi phí mua NVL đi vào lịch chi tiền (không phải giá vốn).
+      example:
+        inputs:
+          production:
+          - 11000
+          - 16000
+          - 18400
+          - 11800
+          qty_per_unit: 0.5
+          price: 10000
+          beginning_rm: 550
+          next_year_q1_use: 5500
+        steps:
+        - 'Dùng: 5.500; 8.000; 9.200; 5.900 lít. Tồn cuối 10% kỳ sau: 800; 920; 590; 550'
+        - Mua Q1 = 5.500 + 800 - 550 = 5.750; Q2 8.120; Q3 8.870; Q4 5.860; cả năm 28.600 lít
+        - 'Chi phí: 57,5; 81,2; 88,7; 58,6 triệu (tổng 286)'
+        result: Mua 28.600 lít, 286 triệu đồng
+  - id: "m04-formulas-3"
+    title: "Công thức: m04_cash_collections — Lịch thu tiền bán hàng"
+    tags: ["công", "thức", "m04_cash_collections", "lịch", "thu", "tiền", "bán", "hàng"]
+    text: |-
+      id: m04_cash_collections
+      name_vi: Lịch thu tiền bán hàng
+      name_en: Cash collections schedule
+      expression_latex: '\text{Thu}_t = p \times \text{DT}_t + (1-p)\times \text{DT}_{t-1}\ (\text{kỳ 1: } + \text{phải thu đầu năm})'
+      expression_python: p * revenue_t + (1 - p) * revenue_prev
+      excel: =0.9*DT_ky+0.1*DT_ky_truoc
+      variables:
+      - symbol: p
+        meaning: Tỷ lệ thu ngay trong kỳ (vd 0,9)
+        unit: tỷ lệ
+      - symbol: revenue_t
+        meaning: Doanh thu kỳ này
+        unit: triệu đồng
+      - symbol: revenue_prev
+        meaning: 'Doanh thu kỳ trước (với kỳ 1: phải thu đầu năm)'
+        unit: triệu đồng
+      when_to_use: Chuyển ngân sách doanh thu (dồn tích) sang tiền thu thực.
+      why_it_works: Bán chịu làm tiền về chậm hơn doanh thu; phần chưa thu kỳ này sẽ thu kỳ sau.
+      assumptions:
+      - Tỷ lệ thu chậm ổn định, không nợ xấu
+      - Kỳ 1 dùng phải thu đầu năm thay doanh thu kỳ trước
+      pitfalls:
+      - Quên phải thu đầu năm
+      - Coi doanh thu là tiền thu
+      interpretation: Phải thu cuối năm = (1 - p) x DT kỳ cuối (360 x 0,1 = 36).
+      example:
+        inputs:
+          p: 0.9
+          revenue:
+          - 300
+          - 450
+          - 600
+          - 360
+          opening_ar: 40
+        steps:
+        - Q1 = 270 + 40 = 310; Q2 = 405 + 30 = 435; Q3 = 540 + 45 = 585; Q4 = 324 + 60 = 384; tổng 1.714
+        result: Thu tiền 310; 435; 585; 384 (tr)
+  - id: "m04-formulas-4"
+    title: "Công thức: m04_cash_budget — Ngân sách tiền mặt và nhu cầu vay"
+    tags: ["công", "thức", "m04_cash_budget", "ngân", "sách", "tiền", "mặt", "và", "nhu", "cầu", "vay"]
+    text: |-
+      id: m04_cash_budget
+      name_vi: Ngân sách tiền mặt và nhu cầu vay
+      name_en: Cash budget and financing need
+      expression_latex: \text{Tiền trước tài trợ} = C_0 + \text{Thu} - \text{Chi}; \quad \text{Vay} = \lceil (C_{min} - \text{Tiền trước TT})/b \rceil \times b\ \text{nếu} < C_{min}; \quad C_{end} = \text{trước TT} + \text{Vay} - \text{Trả nợ}
+      expression_python: (opening + receipts - disbursements) + ((-(-(min_cash - (opening + receipts - disbursements)) // multiple)) * multiple if (opening + receipts - disbursements) < min_cash else 0) - repay
+      excel: =Dau+Thu-Chi ; Vay =IF(Pre<Min,CEILING(Min-Pre,10),0)
+      variables:
+      - symbol: opening
+        meaning: Tiền đầu kỳ
+        unit: triệu đồng
+      - symbol: receipts
+        meaning: Tổng thu tiền
+        unit: triệu đồng
+      - symbol: disbursements
+        meaning: Tổng chi tiền (NVL, nhân công, SX chung bằng tiền, bán hàng, CapEx, lãi, thuế đã đến hạn; không gồm khấu hao)
+        unit: triệu đồng
+      - symbol: min_cash
+        meaning: Tiền tối thiểu cần giữ
+        unit: triệu đồng
+      - symbol: multiple
+        meaning: Bội số vay (vd 10)
+        unit: triệu đồng
+      - symbol: repay
+        meaning: Trả nợ vay trong kỳ
+        unit: triệu đồng
+      when_to_use: 'Bước 7 Master Budget: phát hiện quý thiếu tiền để kịp vay, thương lượng kỳ hạn hoặc hoãn đầu tư.'
+      why_it_works: Lợi nhuận khác tiền; chỉ tiền thật mới trả được lương và nhà cung cấp. Ngân sách tiền mặt là hệ thống cảnh báo.
+      assumptions:
+      - Chi trả ngay trong kỳ (đơn giản hóa)
+      - Lãi vay tính trên dư nợ x lãi suất x thời gian
+      - Khấu hao bị loại khỏi chi tiền
+      pitfalls:
+      - Đưa khấu hao vào chi tiền
+      - Quên CapEx
+      - Quên lãi vay trả
+      - Quên thuế nộp năm sau trong Bảng cân đối
+      interpretation: Quý nguy hiểm (Q1 ví dụ) là quý bán yếu + dựng tồn kho + mua máy.
+      example:
+        inputs:
+          opening: 50
+          receipts_q1: 310
+          disbursements_q1: 359
+          min_cash: 20
+          multiple: 10
+        steps:
+        - 'Q1: 50 + 310 - (57,5 + 55 + 76,5 + 40 + 80 + 50 = 359) = 1 < 20, vay 20 -> tiền cuối 21'
+        - 'Q2: 21 + 435 - (81,2 + 80 + 84 + 60 + 80) - lãi 0,5 = 70,3; trả nợ 20 -> 50,3'
+        - 'Q3: 50,3 + 585 - (88,7 + 92 + 87,6 + 80 + 80) = 207; Q4: 207 + 384 - (58,6 + 59 + 77,7 + 48 + 80) = 267,7'
+        result: Tiền cuối 21; 50,3; 207; 267,7 (tr). Lãi Q2 = 20 x 10% / 4 = 0,5
+  - id: "m04-formulas-5"
+    title: "Công thức: m04_profit_to_cash — Đối chiếu lợi nhuận sang dòng tiền"
+    tags: ["công", "thức", "m04_profit_to_cash", "đối", "chiếu", "lợi", "nhuận", "sang", "dòng", "tiền"]
+    text: |-
+      id: m04_profit_to_cash
+      name_vi: Đối chiếu lợi nhuận sang dòng tiền
+      name_en: Profit to cash reconciliation
+      expression_latex: \Delta \text{Tiền} = NI + D\&A - \Delta AR - \Delta Inv + \Delta \text{Thuế phải nộp} - CapEx
+      expression_python: ni + dep - delta_ar - delta_inv + delta_tax_payable - capex
+      excel: =LN+KhauHao-TangPhaiThu-TangTonKho+TangThuePhaiNop-CapEx
+      variables:
+      - symbol: ni
+        meaning: Lợi nhuận sau thuế
+        unit: triệu đồng
+      - symbol: dep
+        meaning: Khấu hao
+        unit: triệu đồng
+      - symbol: delta_ar
+        meaning: Tăng phải thu (giảm thì âm)
+        unit: triệu đồng
+      - symbol: delta_inv
+        meaning: Tăng tồn kho
+        unit: triệu đồng
+      - symbol: delta_tax_payable
+        meaning: Tăng thuế phải nộp (chi phí chưa chi tiền)
+        unit: triệu đồng
+      - symbol: capex
+        meaning: Chi mua TSCĐ
+        unit: triệu đồng
+      when_to_use: Kiểm tra chéo ngân sách tiền mặt với báo cáo dự kiến; giải thích vì sao lãi X nhưng tiền tăng Y.
+      why_it_works: 'Chuyển từ cơ sở dồn tích sang tiền: cộng khoản chi phí không dùng tiền, trừ khoản chi tiền chưa thành chi phí.'
+      assumptions:
+      - Không còn thay đổi nợ phải trả khác (ví dụ trả NCC ngay)
+      - Vay đầu và cuối kỳ cân
+      pitfalls:
+      - Quên thuế chưa nộp
+      - Ghi sai dấu thay đổi phải thu/tồn kho
+      interpretation: Kết quả phải bằng tiền cuối - tiền đầu; lệch là lỗi mô hình.
+      example:
+        inputs:
+          ni: 200
+          dep: 16
+          delta_ar: -4
+          delta_inv: 2.3
+          delta_tax_payable: 50
+          capex: 50
+        steps:
+        - 200 + 16 - (-4) - 2,3 + 50 - 50 = 217,7; tiền cuối 267,7 - đầu 50 = 217,7
+        result: 217,7 triệu, khớp
+  - id: "m04-formulas-6"
+    title: "Công thức: m04_flexible_budget — Ngân sách linh hoạt"
+    tags: ["công", "thức", "m04_flexible_budget", "ngân", "sách", "linh", "hoạt"]
+    text: |-
+      id: m04_flexible_budget
+      name_vi: Ngân sách linh hoạt
+      name_en: Flexible budget
+      expression_latex: \text{NS linh hoạt} = v \times Q_{TT} + FC;\quad \pi_{flex} = (P-v)\,Q_{TT} - FC
+      expression_python: var_cost_per_unit * actual_qty + fixed_cost
+      excel: =BienPhiDV*SLThucTe+DinhPhi
+      variables:
+      - symbol: var_cost_per_unit
+        meaning: Biến phí đơn vị theo ngân sách
+        unit: VNĐ/SP
+      - symbol: actual_qty
+        meaning: Sản lượng thực tế
+        unit: SP
+      - symbol: fixed_cost
+        meaning: Định phí ngân sách (giữ nguyên trong tầm hoạt động)
+        unit: VNĐ
+      when_to_use: Mọi so sánh thực tế với kế hoạch khi sản lượng khác ngân sách tĩnh.
+      why_it_works: Biến phí tỷ lệ với sản lượng nên tính lại; định phí không đổi nên giữ. Nhờ vậy so cùng mức hoạt động.
+      assumptions:
+      - Phân loại đúng biến phí/định phí
+      - Sản lượng nằm trong tầm hoạt động phù hợp
+      pitfalls:
+      - Coi chi phí bán biến đổi (điện, lương ca) là biến phí hoàn toàn
+      - Quên định phí bậc thang khi vượt công suất
+      interpretation: Lợi nhuận linh hoạt là mốc công bằng; Thực tế - Linh hoạt = chênh lệch ngân sách linh hoạt.
+      example:
+        inputs:
+          price: 50000
+          v: 20000
+          fixed_cost: 150000000
+          budget_qty: 10000
+          actual_qty: 12000
+          actual_revenue: 580000000
+          actual_vc: 260000000
+          actual_fc: 155000000
+        steps:
+        - 'Tĩnh: 10.000 x 30.000 - 150tr = 150tr. Linh hoạt: 12.000 x 30.000 - 150tr = 210tr. Thực tế: 580 - 260 - 155 = 165tr'
+        - 'So tĩnh: +15 (sai lệch); so linh hoạt: 165 - 210 = -45tr (U)'
+        result: '-45tr (U): giá bán -20, biến phí -20, định phí -5'
+  - id: "m04-formulas-7"
+    title: "Công thức: m04_volume_variance — Chênh lệch khối lượng bán"
+    tags: ["công", "thức", "m04_volume_variance", "chênh", "lệch", "khối", "lượng", "bán"]
+    text: |-
+      id: m04_volume_variance
+      name_vi: Chênh lệch khối lượng bán
+      name_en: Sales volume variance (contribution basis)
+      expression_latex: (Q_{TT}-Q_{NS})\times CM_{NS}
+      expression_python: (actual_qty - budget_qty) * cm_budget
+      excel: =(SL_TT-SL_NS)*CM_NS
+      variables:
+      - symbol: actual_qty
+        meaning: Sản lượng thực tế
+        unit: SP
+      - symbol: budget_qty
+        meaning: Sản lượng ngân sách
+        unit: SP
+      - symbol: cm_budget
+        meaning: CM đơn vị theo ngân sách (giá NS - biến phí NS)
+        unit: VNĐ/SP
+      when_to_use: 'Tầng 1: tách phần lợi nhuận lệch do bán nhiều/ít hơn kế hoạch.'
+      why_it_works: Mỗi SP bán thêm đóng góp đúng CM đơn vị ngân sách (định phí không đổi); đây là hiệu ứng thuần của sản lượng.
+      assumptions:
+      - Một sản phẩm hoặc cơ cấu không đổi (nếu đổi tách Mix theo m05)
+      - Dùng CM chuẩn (contribution)
+      pitfalls:
+      - Dùng CM thực tế thay vì CM ngân sách
+      - 'Nhầm dấu: dương là F'
+      interpretation: Dương là F. Phần này thuộc trách nhiệm kinh doanh/thị trường.
+      example:
+        inputs:
+          actual_qty: 22000
+          budget_qty: 20000
+          cm_budget: 90000
+        steps:
+        - (22.000 - 20.000) x 90.000 = 180.000.000
+        result: +180 triệu (F)
+  - id: "m04-formulas-8"
+    title: "Công thức: m04_price_variance — Chênh lệch giá bán"
+    tags: ["công", "thức", "m04_price_variance", "chênh", "lệch", "giá", "bán"]
+    text: |-
+      id: m04_price_variance
+      name_vi: Chênh lệch giá bán
+      name_en: Selling price variance
+      expression_latex: (P_{TT}-P_{NS})\times Q_{TT}
+      expression_python: (actual_price - budget_price) * actual_qty
+      excel: =(Gia_TT-Gia_NS)*SL_TT
+      variables:
+      - symbol: actual_price
+        meaning: Giá bán thực tế bình quân
+        unit: VNĐ/SP
+      - symbol: budget_price
+        meaning: Giá bán ngân sách
+        unit: VNĐ/SP
+      - symbol: actual_qty
+        meaning: Sản lượng thực tế
+        unit: SP
+      when_to_use: Đo tác động giảm giá/chiết khấu lên lợi nhuận.
+      why_it_works: Giá lệch áp lên mọi đơn vị đã bán (thực tế); 100% chênh lệch giá chảy thẳng vào lợi nhuận vì không đổi biến phí.
+      assumptions:
+      - Giá bình quân sau chiết khấu
+      pitfalls:
+      - Nhân sản lượng ngân sách
+      - Đánh giá giảm giá chỉ qua doanh số mà bỏ qua việc nó ăn CM (biên 36% thì mỗi 1% giá ăn 2,78% CM)
+      interpretation: 'Âm là U. Chênh lệch giá bán phải đối chiếu với Sales Volume F: đổi 2.000 kg lấy giảm giá cho 22.000 kg là giao dịch lỗ.'
+      example:
+        inputs:
+          actual_price: 238000
+          budget_price: 250000
+          actual_qty: 22000
+        steps:
+        - (238.000 - 250.000) x 22.000 = -264.000.000
+        result: -264 triệu (U)
+  - id: "m04-formulas-9"
+    title: "Công thức: m04_vc_variance — Chênh lệch biến phí"
+    tags: ["công", "thức", "m04_vc_variance", "chênh", "lệch", "biến", "phí"]
+    text: |-
+      id: m04_vc_variance
+      name_vi: Chênh lệch biến phí
+      name_en: Variable cost variance (flexible)
+      expression_latex: -(v_{TT}-v_{NS})\times Q_{TT}
+      expression_python: -(actual_v - budget_v) * actual_qty
+      excel: =-(BienPhi_TT-BienPhi_NS)*SL_TT
+      variables:
+      - symbol: actual_v
+        meaning: Biến phí đơn vị thực tế
+        unit: VNĐ/SP
+      - symbol: budget_v
+        meaning: Biến phí đơn vị ngân sách
+        unit: VNĐ/SP
+      - symbol: actual_qty
+        meaning: Sản lượng thực tế
+        unit: SP
+      when_to_use: 'Tầng 2: gộp giá+lượng biến phí; có thể tách từng thành phần (cà phê nhân, bao bì, nhân công, vận chuyển) hoặc tách Price/Quantity theo m05.'
+      why_it_works: Biến phí đơn vị thực tế cao hơn chuẩn thì mỗi SP làm mất đúng phần chênh x số SP thực tế.
+      assumptions:
+      - Định mức biến phí hợp lý
+      pitfalls:
+      - Nhân sản lượng ngân sách
+      - Quên đổi dấu để ra tác động lợi nhuận
+      interpretation: Âm là U. Thành phần lớn nhất cần xử lý đầu tiên (cà phê nhân -176tr).
+      example:
+        inputs:
+          actual_v: 172000
+          budget_v: 160000
+          actual_qty: 22000
+        steps:
+        - -(172.000 - 160.000) x 22.000 = -264.000.000
+        result: -264 triệu (U)
+  - id: "m04-formulas-10"
+    title: "Công thức: m04_fc_variance — Chênh lệch định phí"
+    tags: ["công", "thức", "m04_fc_variance", "chênh", "lệch", "định", "phí"]
+    text: |-
+      id: m04_fc_variance
+      name_vi: Chênh lệch định phí
+      name_en: Fixed cost variance
+      expression_latex: -(FC_{TT}-FC_{NS})
+      expression_python: -(actual_fc - budget_fc)
+      excel: =-(DinhPhi_TT-DinhPhi_NS)
+      variables:
+      - symbol: actual_fc
+        meaning: Định phí thực tế
+        unit: VNĐ
+      - symbol: budget_fc
+        meaning: Định phí ngân sách
+        unit: VNĐ
+      when_to_use: Tầng 2, phần định phí.
+      why_it_works: Định phí không đổi theo sản lượng nên chênh lệch chỉ là chi tiêu thực - kế hoạch (theo kiểu contribution).
+      assumptions:
+      - Dùng contribution costing, không có FOH Volume Variance
+      pitfalls:
+      - Phân bổ định phí theo sản lượng làm lẫn với Volume Variance
+      interpretation: Âm là U.
+      example:
+        inputs:
+          actual_fc: 1390
+          budget_fc: 1350
+        steps:
+        - -(1.390 - 1.350) = -40
+        result: -40 triệu (U)
+  - id: "m04-formulas-11"
+    title: "Công thức: m04_variance_reconciliation — Đối chiếu tổng chênh lệch lợi nhuận"
+    tags: ["công", "thức", "m04_variance_reconciliation", "đối", "chiếu", "tổng", "chênh", "lệch", "lợi", "nhuận"]
+    text: |-
+      id: m04_variance_reconciliation
+      name_vi: Đối chiếu tổng chênh lệch lợi nhuận
+      name_en: Variance reconciliation check
+      expression_latex: \pi_{TT}-\pi_{NS}=V_{vol}+V_{price}+V_{vc}+V_{fc}
+      expression_python: vol + price + vc + fc
+      excel: =KL+Gia+BienPhi+DinhPhi
+      variables:
+      - symbol: vol
+        meaning: Chênh lệch khối lượng
+        unit: VNĐ
+      - symbol: price
+        meaning: Chênh lệch giá bán
+        unit: VNĐ
+      - symbol: vc
+        meaning: Chênh lệch biến phí
+        unit: VNĐ
+      - symbol: fc
+        meaning: Chênh lệch định phí
+        unit: VNĐ
+      when_to_use: Bước kiểm chứng bắt buộc cuối mọi phân tích.
+      why_it_works: Tách tuần tự từng biến (khối lượng -> giá -> biến phí -> định phí), không thừa thiếu.
+      assumptions:
+      - Cùng bộ giá, lượng, CM cho mọi phép tính
+      pitfalls:
+      - Không khớp thường do CM thực tế lẫn với CM ngân sách hoặc sai dấu
+      interpretation: Tổng không khớp thì phân tích chưa được báo cáo.
+      example:
+        inputs:
+          vol: 180
+          price: -264
+          vc: -264
+          fc: -40
+          profit_actual: 62
+          profit_budget: 450
+        steps:
+        - 180 - 264 - 264 - 40 = -388 = 62 - 450
+        result: -388 triệu (U), khớp
+  - id: "m04-formulas-12"
+    title: "Công thức: m04_breakeven — Sản lượng và doanh thu hòa vốn"
+    tags: ["công", "thức", "m04_breakeven", "sản", "lượng", "và", "doanh", "thu", "hòa", "vốn"]
+    text: |-
+      id: m04_breakeven
+      name_vi: Sản lượng và doanh thu hòa vốn
+      name_en: Break-even quantity and revenue
+      expression_latex: Q^{*}=\frac{FC}{P-v}=\frac{FC}{CM};\quad R^{*}=\frac{FC}{CM\%}
+      expression_python: fixed_cost / (price - var_cost)
+      excel: =DinhPhi/(Gia-BienPhi); =DinhPhi/CMpercent
+      variables:
+      - symbol: fixed_cost
+        meaning: Tổng định phí (cả khấu hao) trong kỳ
+        unit: VNĐ
+      - symbol: price
+        meaning: Giá bán đơn vị
+        unit: VNĐ/SP
+      - symbol: var_cost
+        meaning: Biến phí đơn vị (kể cả bán hàng biến đổi)
+        unit: VNĐ/SP
+      when_to_use: Đặt mục tiêu bán tối thiểu; đo độ dày lớp đệm; kiểm tra lại khi giá/chi phí đổi.
+      why_it_works: Mỗi đơn vị đóng góp CM để trang trải định phí; tích lũy đủ bằng định phí là hòa vốn, phần vượt là lợi nhuận.
+      assumptions:
+      - Giá và biến phí đơn vị không đổi
+      - Một sản phẩm hoặc cơ cấu cố định
+      - Trong tầm hoạt động phù hợp
+      pitfalls:
+      - 'Dùng CM ngân sách cho thực tế (Cầu Đất Xanh: CM tụt 90.000 -> 66.000 nên hòa vốn nhảy 15.000 -> 21.061 kg)'
+      - Quên khấu hao khi hòa vốn tính trên lợi nhuận (hòa vốn tiền mặt loại khấu hao)
+      interpretation: Hòa vốn thực tế phải tính lại bằng giá và chi phí thực tế mỗi kỳ.
+      example:
+        inputs:
+          fixed_cost: 1390000000
+          price: 238000
+          var_cost: 172000
+        steps:
+        - CM = 66.000; 1.390.000.000 / 66.000 = 21.061 kg
+        result: '21.061 kg (ngân sách: 1.350tr / 90.000 = 15.000 kg)'
+  - id: "m04-formulas-13"
+    title: "Công thức: m04_margin_of_safety — Biên an toàn"
+    tags: ["công", "thức", "m04_margin_of_safety", "biên", "an", "toàn"]
+    text: |-
+      id: m04_margin_of_safety
+      name_vi: Biên an toàn
+      name_en: Margin of safety
+      expression_latex: MOS=\frac{Q-Q^{*}}{Q}
+      expression_python: (qty - breakeven_qty) / qty
+      excel: =(SL-SLHoaVon)/SL
+      variables:
+      - symbol: qty
+        meaning: Sản lượng dự kiến/thực tế
+        unit: SP
+      - symbol: breakeven_qty
+        meaning: Sản lượng hòa vốn
+        unit: SP
+      when_to_use: Chỉ báo sớm rủi ro lỗ; trong bảng 10 chỉ số cảnh báo.
+      why_it_works: Cho biết sản lượng/doanh thu có thể sụt bao nhiêu phần trăm trước khi lỗ hoạt động.
+      assumptions:
+      - Hòa vốn tính đúng với giá, chi phí hiện hành
+      pitfalls:
+      - Dùng hòa vốn cũ của ngân sách
+      interpretation: Dưới 15% là cảnh báo (ngưỡng gợi ý). Xưởng nước ép 30,3%; Cầu Đất Xanh thực tế 4,3% - một khách buôn 5% sản lượng rời đi là lỗ.
+      example:
+        inputs:
+          qty: 22000
+          breakeven_qty: 21061
+        steps:
+        - (22.000 - 21.061) / 22.000 = 4,27%
+        result: 4,3%
+  - id: "m04-formulas-14"
+    title: "Công thức: m04_moving_average — Trung bình di động"
+    tags: ["công", "thức", "m04_moving_average", "trung", "bình", "di", "động"]
+    text: |-
+      id: m04_moving_average
+      name_vi: Trung bình di động
+      name_en: Moving average (MA-n)
+      expression_latex: F_{t+1}=\frac{A_t+A_{t-1}+\dots+A_{t-n+1}}{n}
+      expression_python: sum(actuals[-n:]) / n
+      excel: =AVERAGE(B2:B4)
+      variables:
+      - symbol: actuals
+        meaning: Chuỗi thực tế theo thời gian
+        unit: triệu đồng hoặc SP
+      - symbol: n
+        meaning: Số kỳ trung bình
+        unit: kỳ
+      when_to_use: Doanh số ổn định, ít xu hướng; làm mượt nhiễu.
+      why_it_works: Nhiễu dương và âm triệt tiêu một phần, còn lại là mức nền. n lớn thì mượt nhưng chậm; n nhỏ thì nhạy nhưng nhiều nhiễu.
+      assumptions:
+      - Không xu hướng/mùa vụ mạnh
+      - Mọi kỳ trong cửa sổ trọng số bằng nhau
+      pitfalls:
+      - Luôn trễ khi dữ liệu có xu hướng (MA-3 dự báo thấp liên tục 3 kỳ)
+      interpretation: Sai số cùng chiều nhiều kỳ là dấu hiệu cần mô hình có xu hướng.
+      example:
+        inputs:
+          actuals:
+          - 100
+          - 120
+          - 110
+          - 130
+          - 125
+          - 140
+          n: 3
+        steps:
+        - T4 = 110; T5 = 120; T6 = 121,67; T7 = (130 + 125 + 140)/3 = 131,67
+        result: Dự báo T7 = 131,67
+  - id: "m04-formulas-15"
+    title: "Công thức: m04_exp_smoothing — San mũ đơn"
+    tags: ["công", "thức", "m04_exp_smoothing", "san", "mũ", "đơn"]
+    text: |-
+      id: m04_exp_smoothing
+      name_vi: San mũ đơn
+      name_en: Simple exponential smoothing
+      expression_latex: F_{t+1}=\alpha A_t+(1-\alpha)F_t=\alpha A_t+\alpha(1-\alpha)A_{t-1}+\dots
+      expression_python: alpha * actual_t + (1 - alpha) * forecast_t
+      excel: =$H$1*B3+(1-$H$1)*C3
+      variables:
+      - symbol: alpha
+        meaning: Hệ số san mũ, 0 < alpha < 1
+        unit: tỷ lệ
+      - symbol: actual_t
+        meaning: Thực tế kỳ t
+        unit: đơn vị đo
+      - symbol: forecast_t
+        meaning: Dự báo kỳ t
+        unit: đơn vị đo
+      when_to_use: Nhu cầu ổn định cần phản ứng theo dữ liệu mới; chỉ cần lưu dự báo cũ và thực tế mới.
+      why_it_works: Robert G. Brown (1950s, kiểm soát tồn kho Hải quân Mỹ), Holt mở rộng cho xu hướng (1957), Winters thêm mùa vụ (1960) (cần đối chiếu nguồn). Dữ liệu càng mới càng đáng tin; trọng số giảm theo cấp số nhân.
+      assumptions:
+      - F1 khởi tạo bằng thực tế kỳ 1
+      - Không xu hướng rõ
+      pitfalls:
+      - Alpha thấp trên chuỗi tăng gây dự báo trễ (alpha 0,3 cho 124,13 so MA-3 131,67)
+      - Chuỗi có xu hướng nên dùng Holt
+      interpretation: Alpha cao 0,6-0,9 cho thị trường biến động; thấp 0,1-0,3 cho nhu cầu bền. Chọn alpha có MAD nhỏ nhất.
+      example:
+        inputs:
+          actuals:
+          - 100
+          - 120
+          - 110
+          - 130
+          - 125
+          - 140
+          alpha: 0.3
+        steps:
+        - F2 = 100; F3 = 106; F4 = 107,2; F5 = 114,04; F6 = 117,33; F7 = 0,3 x 140 + 0,7 x 117,33 = 124,13
+        - 'MAD tháng 2-6: alpha 0,3 = 16,09; alpha 0,7 = 11,73 (kiểm bằng Python)'
+        result: F7 = 124,13 (alpha 0,3); alpha 0,7 cho F7 = 135,44 và sai số nhỏ hơn
+  - id: "m04-formulas-16"
+    title: "Công thức: m04_seasonal_index — Chỉ số mùa vụ"
+    tags: ["công", "thức", "m04_seasonal_index", "chỉ", "số", "mùa", "vụ"]
+    text: |-
+      id: m04_seasonal_index
+      name_vi: Chỉ số mùa vụ
+      name_en: Seasonal index
+      expression_latex: SI_i=\frac{\bar{A}_i}{\bar{A}};\quad F_{i}=\frac{T_{năm}}{k}\times SI_i
+      expression_python: quarter_avg / overall_avg
+      excel: =TB_quy/TB_chung
+      variables:
+      - symbol: quarter_avg
+        meaning: Trung bình các năm của quý i
+        unit: SP
+      - symbol: overall_avg
+        meaning: Trung bình chung mọi quý
+        unit: SP
+      when_to_use: F&B, bán lẻ, du lịch có doanh số lặp theo mùa; chia dự báo năm theo quý.
+      why_it_works: Dự báo bình quân đánh giá thấp mùa cao và thừa mùa thấp; chỉ số đo quý này thường cao/thấp bao nhiêu lần so với bình quân.
+      assumptions:
+      - Có ít nhất 2 năm dữ liệu
+      - Mẫu mùa vụ ổn định
+      - Tổng chỉ số bằng số kỳ
+      pitfalls:
+      - Chỉ có 1 năm dữ liệu
+      - Quên kiểm tổng chỉ số = 4
+      interpretation: Q3 = 1,415 nghĩa là cao hơn bình quân 41,5% -> cần tiền và tồn kho đón mùa.
+      example:
+        inputs:
+          y2024:
+          - 8000
+          - 12000
+          - 16500
+          - 9500
+          y2025:
+          - 9000
+          - 13500
+          - 18000
+          - 11000
+        steps:
+        - 'TB 2 năm: 8.500; 12.750; 17.250; 10.250; TB chung 12.187,5'
+        - 'Chỉ số: 0,697; 1,046; 1,415; 0,841 (tổng 4,000)'
+        - 'Tăng 2025/2024 = 1,1196; tổng 2026 = 57.658; chia mùa vụ: 10.053; 15.080; 20.402; 12.123'
+        result: Dự báo 2026 = 57.658 chai, lệch +1,2% so với ngân sách 57.000
+  - id: "m04-formulas-17"
+    title: "Công thức: m04_linear_regression — Hồi quy tuyến tính đơn"
+    tags: ["công", "thức", "m04_linear_regression", "hồi", "quy", "tuyến", "tính", "đơn"]
+    text: |-
+      id: m04_linear_regression
+      name_vi: Hồi quy tuyến tính đơn
+      name_en: Simple linear regression (OLS)
+      expression_latex: Y=a+bX;\quad b=\frac{n\sum XY-\sum X\sum Y}{n\sum X^2-(\sum X)^2};\quad a=\bar{Y}-b\bar{X}
+      expression_python: '(sy/n) - ((n*sxy - sx*sy) / (n*sxx - sx**2)) * (sx/n)  # a; slope b = (n*sxy - sx*sy) / (n*sxx - sx**2)'
+      excel: =FORECAST.LINEAR(x, Y_range, X_range); =SLOPE(Y,X); =INTERCEPT(Y,X)
+      variables:
+      - symbol: n
+        meaning: Số quan sát
+        unit: điểm
+      - symbol: sx, sy, sxy, sxx
+        meaning: Tổng X, Y, XY, X bình phương
+        unit: tùy
+      - symbol: b
+        meaning: 'Độ dốc: Y thay đổi bao nhiêu khi X tăng 1 đơn vị'
+        unit: Y/X
+      - symbol: a
+        meaning: 'Hệ số chặn: Y nền khi X = 0'
+        unit: Y
+      when_to_use: Doanh số phụ thuộc một yếu tố đo được (marketing, giá, thời tiết).
+      why_it_works: Legendre 1805 / Gauss 1809 (bình phương tối thiểu), Galton đặt tên regression (cuối thế kỷ 19). Chọn đường làm tổng bình phương khoảng cách tới các điểm nhỏ nhất; mô hình nhân quả chứ không chỉ ngoại suy thời gian.
+      assumptions:
+      - Quan hệ xấp xỉ tuyến tính
+      - Mẫu đủ lớn
+      - Dự báo trong vùng X đã quan sát
+      pitfalls:
+      - Tương quan không phải nhân quả (cùng tăng vì mùa cao điểm)
+      - Mẫu 6 điểm rất nhỏ
+      - Ngoại suy xa vùng dữ liệu, bão hòa marketing
+      - Nguồn có ghi bản cũ Y = 20 + 8,5X sai
+      interpretation: 'b = 8,15: mỗi triệu marketing gắn với 8,15tr doanh thu; R bình phương 0,997 trong mẫu.'
+      example:
+        inputs:
+          x:
+          - 20
+          - 25
+          - 30
+          - 22
+          - 35
+          - 28
+          y:
+          - 200
+          - 240
+          - 280
+          - 210
+          - 320
+          - 260
+        steps:
+        - n = 6; SX = 160; SY = 1.510; SXY = 41.500; SXX = 4.418
+        - b = (249.000 - 241.600)/(26.508 - 25.600) = 7.400/908 = 8,15
+        - a = 251,67 - 8,15 x 26,67 = 34,34; X = 40 -> 360,3
+        result: Y = 34,34 + 8,15X; X = 40 cho 360,3tr
+  - id: "m04-formulas-18"
+    title: "Công thức: m04_mad — Độ lệch tuyệt đối trung bình (MAD)"
+    tags: ["công", "thức", "m04_mad", "độ", "lệch", "tuyệt", "đối", "trung", "bình", "mad"]
+    text: |-
+      id: m04_mad
+      name_vi: Độ lệch tuyệt đối trung bình (MAD)
+      name_en: Mean Absolute Deviation
+      expression_latex: MAD=\frac{\sum |A-F|}{n}
+      expression_python: sum(abs(a - f) for a, f in zip(actual, forecast)) / len(actual)
+      excel: =SUMPRODUCT(ABS(A-F))/COUNT(A)
+      variables:
+      - symbol: actual
+        meaning: Chuỗi thực tế
+        unit: đơn vị đo
+      - symbol: forecast
+        meaning: Chuỗi dự báo
+        unit: đơn vị đo
+      when_to_use: 'Trả lời: dự báo lệch trung bình bao nhiêu đơn vị; chọn alpha, n.'
+      why_it_works: Lấy giá trị tuyệt đối để sai số dương và âm không triệt tiêu.
+      assumptions:
+      - Cùng đơn vị đo
+      pitfalls:
+      - Không phản ánh độ lớn tương đối
+      interpretation: Mô hình nào MAD nhỏ hơn trên cùng giai đoạn thì chính xác hơn.
+      example:
+        inputs:
+          actual:
+          - 100
+          - 120
+          - 110
+          - 130
+          - 125
+          forecast:
+          - 105
+          - 115
+          - 118
+          - 122
+          - 128
+        steps:
+        - Sai số -5; +5; -8; +8; -3; MAD = 29/5 = 5,8
+        result: MAD = 5,8
+  - id: "m04-formulas-19"
+    title: "Công thức: m04_mape — Sai số phần trăm tuyệt đối trung bình (MAPE)"
+    tags: ["công", "thức", "m04_mape", "sai", "số", "phần", "trăm", "tuyệt", "đối", "trung", "bình", "mape"]
+    text: |-
+      id: m04_mape
+      name_vi: Sai số phần trăm tuyệt đối trung bình (MAPE)
+      name_en: Mean Absolute Percentage Error
+      expression_latex: MAPE=\frac{1}{n}\sum \left|\frac{A-F}{A}\right|\times 100\%
+      expression_python: sum(abs((a - f) / a) for a, f in zip(actual, forecast)) / len(actual) * 100
+      excel: =SUMPRODUCT(ABS((A-F)/A))/COUNT(A)
+      variables:
+      - symbol: actual
+        meaning: Chuỗi thực tế (khác 0)
+        unit: đơn vị đo
+      - symbol: forecast
+        meaning: Chuỗi dự báo
+        unit: đơn vị đo
+      when_to_use: So sánh độ chính xác giữa các sản phẩm/quy mô khác nhau; chỉ số 10 trong bảng cảnh báo (ngưỡng gợi ý trên 15%).
+      why_it_works: Chia cho thực tế để đưa sai số về tỷ lệ phần trăm.
+      assumptions:
+      - A khác 0
+      pitfalls:
+      - Lỗi khi A = 0
+      - Phóng đại khi A nhỏ
+      interpretation: 'MA-3 10,83% so với san mũ 0,3 14,17% trong ví dụ: MA-3 chính xác hơn cho chuỗi tăng.'
+      example:
+        inputs:
+          actual:
+          - 100
+          - 120
+          - 110
+          - 130
+          - 125
+          forecast:
+          - 105
+          - 115
+          - 118
+          - 122
+          - 128
+        steps:
+        - 5,00; 4,17; 7,27; 6,15; 2,40 -> trung bình 5,0%
+        result: MAPE khoảng 5,0%
+  - id: "m04-formulas-20"
+    title: "Công thức: m04_mse — Sai số bình phương trung bình (MSE)"
+    tags: ["công", "thức", "m04_mse", "sai", "số", "bình", "phương", "trung", "mse"]
+    text: |-
+      id: m04_mse
+      name_vi: Sai số bình phương trung bình (MSE)
+      name_en: Mean Squared Error
+      expression_latex: MSE=\frac{1}{n}\sum (A-F)^2
+      expression_python: sum((a - f) ** 2 for a, f in zip(actual, forecast)) / len(actual)
+      excel: =SUMXMY2(A,F)/COUNT(A)
+      variables:
+      - symbol: actual
+        meaning: Chuỗi thực tế
+        unit: đơn vị đo
+      - symbol: forecast
+        meaning: Chuỗi dự báo
+        unit: đơn vị đo
+      when_to_use: Phát hiện sai số lớn đột xuất.
+      why_it_works: Bình phương phạt nặng sai số lớn.
+      assumptions:
+      - Cùng đơn vị
+      pitfalls:
+      - Đơn vị bình phương nên khó diễn giải trực tiếp
+      interpretation: MSE lớn nhưng MAD nhỏ nghĩa là có vài sai số rất lớn.
+      example:
+        inputs:
+          actual:
+          - 100
+          - 120
+          - 110
+          - 130
+          - 125
+          forecast:
+          - 105
+          - 115
+          - 118
+          - 122
+          - 128
+        steps:
+        - (25 + 25 + 64 + 64 + 9)/5 = 37,4
+        result: MSE = 37,4
+  - id: "m04-formulas-21"
+    title: "Công thức: m04_tracking_signal — Tín hiệu theo dõi (thiên lệch dự báo)"
+    tags: ["công", "thức", "m04_tracking_signal", "tín", "hiệu", "theo", "dõi", "thiên", "lệch", "dự", "báo"]
+    text: |-
+      id: m04_tracking_signal
+      name_vi: Tín hiệu theo dõi (thiên lệch dự báo)
+      name_en: Tracking signal
+      expression_latex: TS=\frac{\sum (A-F)}{MAD}
+      expression_python: sum(a - f for a, f in zip(actual, forecast)) / mad
+      excel: =SUM(A-F)/MAD
+      variables:
+      - symbol: actual
+        meaning: Chuỗi thực tế
+        unit: đơn vị đo
+      - symbol: forecast
+        meaning: Chuỗi dự báo
+        unit: đơn vị đo
+      - symbol: mad
+        meaning: MAD của cùng chuỗi
+        unit: đơn vị đo
+      when_to_use: Kiểm tra dự báo có lệch một chiều (bias).
+      why_it_works: MAD nhỏ vẫn có thể thiên lệch nếu mọi sai số cùng chiều; tổng sai số có dấu / MAD cho biết bao nhiêu MAD đã dồn một phía. Trigg đề xuất 1964 (cần đối chiếu nguồn).
+      assumptions:
+      - Đủ số quan sát (3 quan sát chưa đủ kết luận)
+      pitfalls:
+      - Ngưỡng ±4 là thực hành thường dùng, không phải quy luật
+      interpretation: 'Ngoài ±4: đổi mô hình. Ví dụ MA-3 và san mũ 0,3 đều TS = 3,00 (ba sai số cùng dương, đều dự báo thấp).'
+      example:
+        inputs:
+          actual:
+          - 100
+          - 120
+          - 110
+          - 130
+          - 125
+          forecast:
+          - 105
+          - 115
+          - 118
+          - 122
+          - 128
+          mad: 5.8
+        steps:
+        - Tổng sai số = -3; TS = -3/5,8 = -0,52
+        result: TS = -0,52 (trong ±4)
+  - id: "m04-formulas-22"
+    title: "Công thức: m04_zbb_ratio — Tỷ lệ lợi ích/chi phí xếp hạng gói ZBB"
+    tags: ["công", "thức", "m04_zbb_ratio", "tỷ", "lệ", "lợi", "ích", "chi", "phí", "xếp", "hạng", "gói"]
+    text: |-
+      id: m04_zbb_ratio
+      name_vi: Tỷ lệ lợi ích/chi phí xếp hạng gói ZBB
+      name_en: ZBB benefit-cost ranking
+      expression_latex: r_j=\frac{\text{Lợi nhuận gộp kỳ vọng}_j}{\text{Chi phí}_j};\ \text{duyệt theo thứ hạng giảm dần đến khi } \sum \text{Chi phí} \le \text{Trần}
+      expression_python: expected_gross_profit / cost
+      excel: =LoiNhuanGop/ChiPhi
+      variables:
+      - symbol: expected_gross_profit
+        meaning: Lợi nhuận gộp kỳ vọng của gói (doanh thu tạo thêm x biên gộp)
+        unit: triệu đồng
+      - symbol: cost
+        meaning: Chi phí gói
+        unit: triệu đồng
+      when_to_use: Phân bổ trần ngân sách (marketing, chi chung) cho nhiều gói cạnh tranh.
+      why_it_works: Buộc thảo luận trên con số biên (marginal) thay vì 'năm ngoái chi bao nhiêu'. Gói tỷ lệ gần 1 chỉ hòa vốn sau khi tính chi phí cơ hội.
+      assumptions:
+      - Ước tính lợi nhuận gộp kỳ vọng có cơ sở
+      - Các gói độc lập
+      pitfalls:
+      - Ước lợi nhuận lạc quan để gói của mình lọt
+      - 'Gói vừa vượt trần dư vài triệu: xem xét cắt mức tăng cường gói khác hoặc xin tăng trần nếu tỷ lệ lớn hơn 1'
+      - Làm ZBB cho mọi khoản (SME chỉ nên 5-7 khoản chi lớn nhất)
+      interpretation: Tỷ lệ dưới 1 là hủy giá trị; gần 1,2 như billboard thường bị loại.
+      example:
+        inputs:
+          packages:
+            A:
+            - 20
+            - 70
+            B:
+            - 35
+            - 80
+            C:
+            - 25
+            - 50
+            D:
+            - 30
+            - 45
+            E:
+            - 15
+            - 40
+            F:
+            - 10
+            - 12
+          cap: 100
+        steps:
+        - 'Tỷ lệ: A 3,50; E 2,67; B 2,29; C 2,00; D 1,50; F 1,20'
+        - Cộng dồn A 20 -> E 35 -> B 70 -> C 95; D vượt (125), F vượt (105)
+        result: Duyệt A, E, B, C = 95tr; cắt D, F; dư 5tr
+  - id: "m04-formulas-23"
+    title: "Công thức: m04_cash_13week — Tiền cuối tuần trong dòng tiền 13 tuần"
+    tags: ["công", "thức", "m04_cash_13week", "tiền", "cuối", "tuần", "trong", "dòng", "13"]
+    text: |-
+      id: m04_cash_13week
+      name_vi: Tiền cuối tuần trong dòng tiền 13 tuần
+      name_en: 13-week cash roll-forward
+      expression_latex: C_w=C_{w-1}+\text{Thu}_w-\text{Chi NCC/biến phí}_w-\text{Lương}_w-\text{Định phí}_w-\text{Trả nợ}_w-CapEx_w
+      expression_python: prev_cash + receipts - variable_payments - payroll - fixed - debt_service - capex
+      excel: =TienDau+Thu-BienPhi-Luong-DinhPhi-TraNo-CapEx
+      variables:
+      - symbol: prev_cash
+        meaning: Tiền cuối tuần trước
+        unit: triệu đồng
+      - symbol: receipts
+        meaning: Tiền thực thu trong tuần (theo kỳ hạn thu, không theo hóa đơn)
+        unit: triệu đồng
+      - symbol: variable_payments
+        meaning: Tiền trả NCC và biến phí
+        unit: triệu đồng
+      - symbol: payroll
+        meaning: Lương trả trong tuần
+        unit: triệu đồng
+      - symbol: fixed
+        meaning: Định phí bằng tiền trả trong tuần (thuê, điện...; không khấu hao)
+        unit: triệu đồng
+      - symbol: debt_service
+        meaning: Gốc và lãi vay trả
+        unit: triệu đồng
+      - symbol: capex
+        meaning: Chi mua TSCĐ
+        unit: triệu đồng
+      when_to_use: Mỗi tuần cho startup/SME; bắt buộc trước khi chi CapEx lớn hoặc trả nợ.
+      why_it_works: Lương, thuê, trả nợ dồn vào vài tuần cố định trong tháng khiến tiền thấp bất ngờ dù lợi nhuận quý dương; bảng tuần lộ ra điều đó.
+      assumptions:
+      - Tính theo tiền thực thu/thực chi
+      - Ngưỡng cảnh báo bằng số tiền chi bắt buộc 2-4 tuần tới
+      pitfalls:
+      - Dùng ngày hóa đơn thay ngày thu tiền
+      - Không cập nhật hằng tuần
+      - Không có phương án B
+      interpretation: 'Min(tiền cuối tuần) nhỏ hơn ngưỡng (vd 150tr) hoặc âm là cảnh báo. Ví dụ Cầu Đất Xanh: mua máy 300tr tuần 9 làm tiền xuống 103,9 và tuần 13 âm 15,9.'
+      example:
+        inputs:
+          week9_prev: 253.5
+          receipts: 421.1
+          variable: 270.7
+          capex: 300
+        steps:
+        - 253,5 + 421,1 - 270,7 - 300 = 103,9
+        result: 103,9tr, dưới ngưỡng 150tr -> cảnh báo
+  - id: "m04-frameworks-1"
+    title: "Frameworks: m04_budget_vs_forecast — Phân biệt Budget và Forecast"
+    tags: ["frameworks", "m04_budget_vs_forecast", "phân", "biệt", "budget", "và", "forecast"]
+    text: |-
+      id: m04_budget_vs_forecast
+      name_vi: Phân biệt Budget và Forecast
+      name_en: Budget vs Forecast
+      origin: Ngân sách DN từ ngân sách nhà nước và GE/DuPont/GM 1920s; dự báo cuốn chiếu ra đời từ thập niên 1990 vì ngân sách lỗi thời mà vẫn dùng thưởng phạt.
+      components:
+      - 'Câu hỏi: muốn/cam kết (Budget) và nhiều khả năng (Forecast)'
+      - 'Thời gian: 1 năm cố định và cuốn chiếu liên tục'
+      - 'Phê duyệt: có và không nhất thiết'
+      - 'Độ chi tiết: từng dòng và theo driver'
+      - 'Đánh giá: benchmark và không thưởng phạt'
+      when_to_use: Thiết kế hệ thống kế hoạch của SME.
+      how_to_apply:
+      - Giữ ngân sách năm làm cam kết và chuẩn variance
+      - Thêm dự báo cuốn chiếu hằng quý/tháng để quyết định
+      - Không dùng dự báo thưởng phạt để quản lý dám báo tin xấu
+      how_to_read_results: Budget cho biết mục tiêu; Forecast cho biết khả năng; khoảng cách giữa hai cái là việc cần làm.
+      pitfalls:
+      - Dùng ngân sách cũ làm dự báo
+      - Dùng dự báo làm KPI thưởng
+      example: 'Xưởng nước ép: ngân sách bán 57.000 chai; dự báo thống kê 57.658 chai lệch +1,2% -> ngân sách hợp lý.'
+  - id: "m04-frameworks-2"
+    title: "Frameworks: m04_master_budget — Master Budget 8 bước"
+    tags: ["frameworks", "m04_master_budget", "master", "budget", "bước"]
+    text: |-
+      id: m04_master_budget
+      name_vi: Master Budget 8 bước
+      name_en: Master Budget (8 steps)
+      origin: Từ GE/DuPont/GM 1920s để phối hợp bộ phận; hệ thống hóa trong giáo trình Horngren, Garrison.
+      components:
+      - 'Operating Budget: bán hàng, sản xuất, NVL, nhân công, SX chung, bán hàng và QLDN'
+      - 'Financial Budget: tiền mặt, báo cáo pro-forma'
+      - 'Capital Budget: CapEx, ngân sách dự án'
+      when_to_use: Doanh nghiệp sản xuất/phân phối cần nối chuỗi từ bán hàng đến tiền mặt và báo cáo dự kiến.
+      how_to_apply:
+      - 1 Sales Budget (nền tảng, doanh số là limiting factor)
+      - 2 Production Budget (Bán + Tồn cuối - Tồn đầu)
+      - 3 Direct Materials Budget
+      - 4 Direct Labor Budget
+      - 5 Manufacturing Overhead Budget (tách biến phí/định phí, tách khấu hao)
+      - 6 Selling & Administrative Budget
+      - 7 Cash Budget (lịch thu, lịch chi, vay/trả)
+      - 8 Pro-forma P&L, Balance Sheet và đối chiếu dòng tiền
+      how_to_read_results: Bảng cân đối phải cân; dòng tiền khớp thay đổi tiền; xem quý thiếu tiền, hòa vốn và biên an toàn.
+      pitfalls:
+      - Bắt đầu sai chỗ khi giới hạn là công suất/NVL
+      - P&L đảm phí khác báo cáo VAS (absorption) - kế toán trưởng cần điều chỉnh, cần xác nhận
+      - Quên khấu hao khi tính tiền
+      example: 'Nước Ép Xanh Việt: doanh thu 1.710, EBIT 250,5, NI 200, tiền cuối 267,7, BS cân 568,5, hòa vốn 1.191,7tr, biên an toàn 30,3%.'
+  - id: "m04-frameworks-3"
+    title: "Frameworks: m04_budget_methods — Các phương pháp lập ngân sách"
+    tags: ["frameworks", "m04_budget_methods", "các", "phương", "pháp", "lập", "ngân", "sách"]
+    text: |-
+      id: m04_budget_methods
+      name_vi: Các phương pháp lập ngân sách
+      name_en: Budgeting methods comparison
+      origin: 'Mỗi phương pháp chữa một bệnh của phương pháp trước: Incremental (nhanh) -> ZBB (loại lãng phí) -> Flexible (đánh giá công bằng) -> Rolling (hết lỗi thời) -> Beyond Budgeting (bỏ con số cứng).'
+      components:
+      - 'Incremental: năm trước +/- %'
+      - 'ZBB: bắt đầu từ 0'
+      - 'ABB: theo hoạt động'
+      - 'Flexible: theo sản lượng thực'
+      - 'Rolling: luôn 12 tháng phía trước'
+      - 'Driver-based: theo yếu tố dẫn dắt'
+      - 'Beyond Budgeting: KPI tương đối'
+      when_to_use: Chọn phương pháp theo giai đoạn và độ biến động.
+      how_to_apply:
+      - 'Ổn định, ít cạnh tranh: Incremental hoặc ngân sách tĩnh'
+      - 'Cần cắt giảm/tái cơ cấu: ZBB cho 5-7 khoản lớn'
+      - 'Sản lượng biến động: Flexible'
+      - 'Mọi DN muốn thích ứng: Rolling'
+      - 'SME có số liệu bán: Driver-based'
+      - ABB chỉ 1-2 hoạt động tốn kém
+      - Beyond Budgeting không khuyến nghị cho SME
+      how_to_read_results: 'Kết hợp: SME nhỏ dùng Driver-based + Flexible + dòng tiền 13 tuần.'
+      pitfalls:
+      - Chọn phương pháp nặng hơn dữ liệu cho phép
+      - Incremental trong môi trường disruption
+      example: Cầu Đất Xanh dựng ngân sách Q1 theo driver 150 quán x 100 kg/quý + 5.000 kg online, không lấy 2025 cộng 15%.
+  - id: "m04-frameworks-4"
+    title: "Frameworks: m04_zbb_process — Quy trình ZBB (Decision Package)"
+    tags: ["frameworks", "m04_zbb_process", "quy", "trình", "zbb", "decision", "package"]
+    text: |-
+      id: m04_zbb_process
+      name_vi: Quy trình ZBB (Decision Package)
+      name_en: Zero-Based Budgeting process
+      origin: Peter Pyhrr, Texas Instruments, cuối thập niên 1960; HBR 1970; Carter ở Georgia rồi liên bang 1977 (cần đối chiếu nguồn). Chữa phòng ban hỗ trợ phình ra theo ngân sách tăng dần.
+      components:
+      - Decision Unit
+      - 'Decision Package: mức tối thiểu, hiện tại, tăng cường'
+      - Xếp hạng theo ROI/độ cấp thiết/chiến lược
+      - Phân bổ từ trên xuống đến trần
+      when_to_use: Cần cắt giảm hoặc phân bổ lại nguồn lực; mỗi năm cho các khoản chi lớn nhất.
+      how_to_apply:
+      - Xác định đơn vị ra quyết định
+      - Lập gói với chi phí và lợi nhuận gộp kỳ vọng
+      - Tính tỷ lệ lợi ích/chi phí và xếp hạng
+      - Cộng dồn đến trần, xử lý gói vừa vượt (cắt mức tăng cường gói khác hoặc xin tăng trần)
+      how_to_read_results: Gói rank thấp bị cắt/hoãn; ZBB là phân bổ lại về nơi giá trị cao.
+      pitfalls:
+      - Biến ZBB thành cắt giảm thuần túy
+      - Chi phí phình lại sau vài năm nếu thiếu kỷ luật
+      - Tốn rất nhiều thời gian nếu làm cho mọi khoản
+      example: 'Marketing trần 150tr: duyệt MKT-1..4 (145tr), cắt TikTok Ads (25) và Billboard (50, tỷ lệ 1,2).'
+  - id: "m04-frameworks-5"
+    title: "Frameworks: m04_unilever_zbb_principles — Bốn nguyên tắc ZBB của Unilever"
+    tags: ["frameworks", "m04_unilever_zbb_principles", "bốn", "nguyên", "tắc", "zbb", "của", "unilever"]
+    text: |-
+      id: m04_unilever_zbb_principles
+      name_vi: Bốn nguyên tắc ZBB của Unilever
+      name_en: Unilever ZBB principles
+      origin: Unilever áp dụng từ khoảng 2015 (Polman, Pitkethly), sau đề nghị mua của Kraft Heinz/3G tháng 2/2017 bị từ chối (số liệu cần đối chiếu Annual Report).
+      components:
+      - 'Visibility: mọi chi phí nhìn thấy'
+      - 'Ownership: mỗi khoản một người chịu trách nhiệm'
+      - 'Benchmarking: so với best-in-class'
+      - 'Zero-base: biện minh mọi khoản'
+      when_to_use: Doanh nghiệp lớn/tăng trưởng muốn tối ưu biên lợi nhuận.
+      how_to_apply:
+      - Chia chi phí thành gói có chủ sở hữu
+      - So với benchmark thay vì năm trước
+      - Tái đầu tư tiết kiệm vào gói ROI cao
+      how_to_read_results: 'Mô phỏng: cắt 10% chi phí kiểm soát được 300 = 30, tái đầu tư 10 -> LN hoạt động 150 + 30 - 10 = 170, biên 15% -> 17%.'
+      pitfalls:
+      - Số liệu chưa kiểm chứng
+      - Quá tay làm giảm đầu tư thương hiệu dài hạn
+      example: SME học tư duy giải trình cho 5-7 khoản chi lớn nhất.
+  - id: "m04-frameworks-6"
+    title: "Frameworks: m04_rolling_forecast — Dự báo cuốn chiếu"
+    tags: ["frameworks", "m04_rolling_forecast", "dự", "báo", "cuốn", "chiếu"]
+    text: |-
+      id: m04_rolling_forecast
+      name_vi: Dự báo cuốn chiếu
+      name_en: Rolling forecast
+      origin: Thập niên 1990 vì ngân sách năm lỗi thời sau khoảng 3 tháng.
+      components:
+      - Horizon luôn 12 tháng hoặc 4-6 quý
+      - Cập nhật hằng quý/tháng
+      - Dự báo theo driver, ít dòng hơn ngân sách
+      - Không dùng thưởng phạt
+      when_to_use: Mọi DN muốn thích ứng; môi trường biến động cao thì cập nhật hằng tuần/2 tuần.
+      how_to_apply:
+      - Khép sổ kỳ vừa qua
+      - Thay dự báo kỳ đó bằng thực tế
+      - Cập nhật giả định driver
+      - Thêm kỳ mới vào cuối
+      - Ngày 11 mỗi tháng cập nhật cùng dòng tiền 13 tuần
+      how_to_read_results: Khoảng cách dự báo so với ngân sách là cảnh báo sớm (Sears không có hệ thống này).
+      pitfalls:
+      - Tốn công cập nhật
+      - Dự báo lạc quan để đẹp hồ sơ vay
+      example: 'Cầu Đất Xanh reforecast Q2: tháng 3 có đợt chốt đơn một lần nên lấy thận trọng 23.000 kg.'
+  - id: "m04-frameworks-7"
+    title: "Frameworks: m04_variance_three_tier — Khung chênh lệch 3 tầng"
+    tags: ["frameworks", "m04_variance_three_tier", "khung", "chênh", "lệch", "tầng"]
+    text: |-
+      id: m04_variance_three_tier
+      name_vi: Khung chênh lệch 3 tầng
+      name_en: Three-tier variance framework
+      origin: Standard costing đầu thế kỷ 20; kế toán trách nhiệm; nguyên tắc kiểm soát được.
+      components:
+      - Tổng chênh lệch = Thực tế - Tĩnh
+      - 'Tầng 1: Khối lượng bán = (Linh hoạt - Tĩnh)'
+      - 'Tầng 2: Ngân sách linh hoạt = (Thực tế - Linh hoạt) gồm giá bán, biến phí (tách thành phần), định phí'
+      when_to_use: Khi lợi nhuận lệch kế hoạch và cần biết ai sửa gì.
+      how_to_apply:
+      - Lập ngân sách linh hoạt tại sản lượng thực
+      - Tính 4 chênh lệch
+      - Tách biến phí theo thành phần
+      - Đối chiếu tổng
+      - Xếp hạng nguyên nhân lớn nhất
+      - Gán người chịu trách nhiệm và hành động
+      how_to_read_results: 'Cầu Đất Xanh: khối lượng +180 (F), giá -264, nhân -176, bao bì -22, nhân công -22, vận chuyển -44, định phí -40; tổng -388.'
+      pitfalls:
+      - Dùng ngân sách tĩnh để đánh giá chi phí
+      - Không đọc cặp (khối lượng F, giá U)
+      example: 'Chi tiết cặp giá/lượng NVL, giờ công, MOH, Mix: xem m05.'
+  - id: "m04-frameworks-8"
+    title: "Frameworks: m04_forecast_method_selection — Chọn phương pháp dự báo"
+    tags: ["frameworks", "m04_forecast_method_selection", "chọn", "phương", "pháp", "dự", "báo"]
+    text: |-
+      id: m04_forecast_method_selection
+      name_vi: Chọn phương pháp dự báo
+      name_en: Forecast method selection
+      origin: 'Phân loại kinh điển: định tính, chuỗi thời gian, nhân quả.'
+      components:
+      - 'Định tính: chuyên gia, Delphi, khảo sát, đội bán hàng'
+      - 'Chuỗi thời gian: MA, san mũ, xu hướng, mùa vụ'
+      - 'Nhân quả: hồi quy, tương quan, kinh tế lượng'
+      when_to_use: Mỗi lần cần dự báo doanh số/chi phí.
+      how_to_apply:
+      - 'Sản phẩm mới chưa có dữ liệu: định tính (khảo sát, Delphi, benchmark)'
+      - 'Ổn định, ít xu hướng: MA, san mũ'
+      - 'Xu hướng và mùa vụ rõ: chỉ số mùa vụ + xu hướng (Holt-Winters)'
+      - 'Có driver đo được: hồi quy'
+      - 'Dữ liệu ít, biến động bất thường: định lượng + phán đoán'
+      - Luôn đo MAD, MAPE, tracking signal và đổi mô hình khi lệch
+      how_to_read_results: Mô hình có MAD/MAPE thấp hơn và tracking signal trong ±4 thì đáng tin hơn.
+      pitfalls:
+      - Garbage in, garbage out
+      - Không dự đoán được thiên nga đen
+      - Dùng một mô hình cho mọi chuỗi
+      example: 'Chuỗi tăng: MA-3 (MAPE 10,83%) tốt hơn san mũ 0,3 (14,17%); cả hai TS = 3,00 -> thiên lệch dự báo thấp.'
+  - id: "m04-frameworks-9"
+    title: "Frameworks: m04_13week_cash — Dòng tiền 13 tuần"
+    tags: ["frameworks", "m04_13week_cash", "dòng", "tiền", "13", "tuần"]
+    text: |-
+      id: m04_13week_cash
+      name_vi: Dòng tiền 13 tuần
+      name_en: 13-week cash flow forecast
+      origin: 'Kỹ thuật tái cơ cấu (turnaround) tại Mỹ: ngân hàng đòi DN khó khăn báo cáo tiền hằng tuần (cần đối chiếu nguồn).'
+      components:
+      - Tiền đầu tuần
+      - Thu tiền thực
+      - Trả NCC/biến phí
+      - Lương
+      - Thuê và định phí tiền
+      - Trả nợ
+      - CapEx
+      - Tiền cuối tuần
+      - Ngưỡng cảnh báo
+      when_to_use: Startup (dưới 1 năm), SME biến động, trước CapEx lớn.
+      how_to_apply:
+      - Lấy tiền thực có hôm nay
+      - Lập lịch thu theo kỳ hạn thật của khách
+      - Lập lịch chi theo ngày lương, thuê, nợ
+      - Tính tiền cuối tuần và gắn cờ dưới ngưỡng
+      - Thử phương án B (hoãn CapEx, thuê tài chính, giục nợ, hạn mức vay)
+      - Mỗi thứ Hai thay dự báo tuần qua bằng thực tế, thêm tuần 14
+      how_to_read_results: Min tiền cuối tuần so với ngưỡng 2-4 tuần chi bắt buộc.
+      pitfalls:
+      - Tính theo hóa đơn
+      - Ngưỡng tùy tiện
+      - Không có phương án B
+      example: 'Cầu Đất Xanh phương án mua máy: tuần 9 còn 103,9 và tuần 13 âm 15,9; hoãn máy thì thấp nhất 253,5 (tuần 8), cuối quý 284,1.'
+  - id: "m04-frameworks-10"
+    title: "Frameworks: m04_behavioral_budgeting — Hành vi và văn hóa ngân sách"
+    tags: ["frameworks", "m04_behavioral_budgeting", "hành", "vi", "và", "văn", "hóa", "ngân", "sách"]
+    text: |-
+      id: m04_behavioral_budgeting
+      name_vi: Hành vi và văn hóa ngân sách
+      name_en: Behavioral aspects of budgeting
+      origin: Chris Argyris, Harvard, 1952.
+      components:
+      - Slack/padding
+      - Sandbagging
+      - Spend it or lose it
+      - Ratchet effect
+      - Short-termism
+      - Participative budgeting
+      when_to_use: Thiết kế quy trình lập và thưởng gắn ngân sách.
+      how_to_apply:
+      - ZBB, benchmark ngoài, thương lượng có dữ liệu để giảm slack
+      - Cho phép chuyển số dư có điều kiện
+      - Tách thưởng khỏi mốc cứng
+      - Thêm KPI dài hạn (BSC)
+      - Chủ DN kiểm chứng số của quản lý bộ phận
+      how_to_read_results: Nếu mọi bộ phận luôn đạt hoặc chi dồn cuối năm là dấu hiệu gaming.
+      pitfalls:
+      - Thưởng theo doanh số khiến giảm giá bán lỗ
+      - Không cho báo tin xấu sớm
+      example: Thưởng sales theo số dư đảm phí (tối thiểu 80.000đ CM/kg) thay vì doanh số.
+  - id: "m04-frameworks-11"
+    title: "Frameworks: m04_stage_volatility_matrix — Chọn cách làm theo giai đoạn và độ biến động"
+    tags: ["frameworks", "m04_stage_volatility_matrix", "chọn", "cách", "làm", "theo", "giai", "đoạn", "và", "độ", "biến", "động"]
+    text: |-
+      id: m04_stage_volatility_matrix
+      name_vi: Chọn cách làm theo giai đoạn và độ biến động
+      name_en: Stage and volatility selection matrix
+      origin: Thực hành FP&A.
+      components:
+      - 'Startup: dòng tiền 13 tuần + dự báo tháng'
+      - 'Early (1-3 năm): ngân sách năm đơn giản + dự báo quý'
+      - 'Growth (3-7 năm): Master + Flexible + tháng + kịch bản'
+      - 'Mature: Master đầy đủ + chu kỳ ZBB + driver-based'
+      - 'Biến động thấp: ngân sách tĩnh, cập nhật quý'
+      - 'Trung bình: linh hoạt, cuốn chiếu tháng'
+      - 'Cao: rolling hoặc Beyond Budgeting, cập nhật tuần'
+      when_to_use: Khi tư vấn mức độ phức tạp phù hợp.
+      how_to_apply:
+      - Xác định giai đoạn
+      - Xác định độ biến động
+      - Chọn tổ hợp
+      - 'Hộ KD micro dưới 5 người: Google Sheets + 13 tuần; nhỏ 5-20: ngân sách 1 trang + variance tháng + dự báo quý; vừa 20-100: Master + ZBB + BI'
+      how_to_read_results: 'Ba ngân sách sống còn của SME: Bán hàng, Chi phí, Tiền mặt.'
+      pitfalls:
+      - Làm quá phức tạp so với nhân sự/dữ liệu
+      example: 'SME 15 người: 1 trang ngân sách + variance hằng tháng + dòng tiền 13 tuần.'
+  - id: "m04-frameworks-12"
+    title: "Frameworks: m04_scenarios — Kịch bản Tốt - Cơ sở - Xấu và reforecast"
+    tags: ["frameworks", "m04_scenarios", "kịch", "bản", "tốt", "cơ", "sở", "xấu", "và", "reforecast"]
+    text: |-
+      id: m04_scenarios
+      name_vi: Kịch bản Tốt - Cơ sở - Xấu và reforecast
+      name_en: Scenario analysis and reforecast
+      origin: Thực hành lập kế hoạch; dùng sau variance.
+      components:
+      - Kịch bản Cơ sở
+      - 'Kịch bản Xấu: kiểm tra covenant, hòa vốn'
+      - Kịch bản Tốt
+      - Kịch bản hành động điều chỉnh
+      when_to_use: Sau variance lớn, trước vay vốn, trước CapEx.
+      how_to_apply:
+      - Đổi 2-3 driver chính (giá, sản lượng, biến phí)
+      - Tính lại CM, lợi nhuận, hòa vốn, biên an toàn, dòng tiền
+      - So sánh phương án hành động
+      how_to_read_results: 'Cầu Đất Xanh Q2: A giữ nguyên LN 128tr; B (giá 244.000, 22.080 kg, biến phí 166.000) LN 332,24tr, hòa vốn 17.821 kg, MOS 19,3%.'
+      pitfalls:
+      - Kịch bản lạc quan để đẹp hồ sơ vay
+      - Quên cập nhật định phí khi sản lượng đổi bậc
+      example: Xem case Cầu Đất Xanh.
+  - id: "m04-procedures-1"
+    title: "Quy trình: m04_proc_master_budget — Lập Master Budget 8 bước"
+    tags: ["quy", "trình", "m04_proc_master_budget", "lập", "master", "budget", "bước"]
+    text: |-
+      id: m04_proc_master_budget
+      name: Lập Master Budget 8 bước
+      steps:
+      - 'Hỏi đầu vào: giá bán, dự kiến bán theo quý (kèm Q1 năm sau), chính sách tồn kho TP và NVL, tồn đầu, định mức NVL/nhân công, biến phí và định phí SX chung, khấu hao, chi phí bán hàng/QLDN, chính sách thu tiền, CapEx, tiền đầu kỳ, tiền tối thiểu, lãi vay, thuế TNDN (cần xác nhận hiện hành).'
+      - 'Bước 1: Sales Budget = số lượng x giá; tính tỷ trọng mùa vụ.'
+      - 'Bước 2: Production = Bán + Tồn cuối - Tồn đầu; kiểm công suất.'
+      - 'Bước 3: NVL dùng = SX x định mức; Mua = Dùng + Tồn cuối - Tồn đầu; chi phí = lượng x giá.'
+      - 'Bước 4: Nhân công trực tiếp = SX x đơn giá.'
+      - 'Bước 5: SX chung = biến phí x SX + định phí tiền + khấu hao; tách tiền và không tiền.'
+      - 'Bước 6: Bán hàng biến đổi x lượng bán + định phí bán hàng và QLDN.'
+      - 'Bước 7: Lịch thu tiền; ngân sách tiền mặt từng quý (loại khấu hao, thêm CapEx, lãi); vay theo bội số khi dưới tối thiểu; trả khi dư.'
+      - 'Bước 8: P&L dự kiến (variable costing, ghi chú VAS dùng absorption), Bảng cân đối dự kiến, đối chiếu lợi nhuận sang dòng tiền.'
+      - 'Kiểm tra: BS cân (Tài sản = Nợ + Vốn), dòng tiền khớp thay đổi tiền, tính hòa vốn và biên an toàn; hỏi lại giả định nếu không khớp.'
+      outputs: Bộ 3 báo cáo pro-forma, lịch tiền theo quý và nhu cầu vay, hòa vốn, biên an toàn, danh sách giả định.
+  - id: "m04-procedures-2"
+    title: "Quy trình: m04_proc_sme_one_page — Ngân sách 1 trang cho SME (30-60 phút)"
+    tags: ["quy", "trình", "m04_proc_sme_one_page", "ngân", "sách", "trang", "cho", "sme", "30", "60", "phút"]
+    text: |-
+      id: m04_proc_sme_one_page
+      name: Ngân sách 1 trang cho SME (30-60 phút)
+      steps:
+      - Lấy doanh thu thực 12 tháng gần nhất theo sản phẩm/kênh.
+      - Tách chi phí biến phí/định phí (cái nào đổi cùng doanh số là biến phí).
+      - Xác định driver cho năm tới (số khách x giá trị đơn, số kg x giá).
+      - Tính doanh thu, biến phí, CM, CM%, định phí, lợi nhuận, hòa vốn.
+      - Chuyển sang lịch thu chi tiền để thấy tháng căng nhất.
+      - Thêm kịch bản Xấu.
+      outputs: 'Bảng 1 trang: Doanh thu, Biến phí, CM, Định phí, Lợi nhuận, Hòa vốn, Dòng tiền.'
+  - id: "m04-procedures-3"
+    title: "Quy trình: m04_proc_calendar — Lịch lập ngân sách và theo dõi hằng tháng"
+    tags: ["quy", "trình", "m04_proc_calendar", "lịch", "lập", "ngân", "sách", "và", "theo", "dõi", "hằng", "tháng"]
+    text: |-
+      id: m04_proc_calendar
+      name: Lịch lập ngân sách và theo dõi hằng tháng
+      steps:
+      - 'T11 tuần 1: chủ DN đặt mục tiêu tổng (doanh thu, lợi nhuận, tiền tối thiểu).'
+      - 'T11 tuần 2-3: quản lý bộ phận lập ngân sách theo driver.'
+      - 'T11 tuần 4: kế toán tổng hợp, kiểm nhất quán bán - sản xuất - tiền.'
+      - 'T12 tuần 1-2: họp rà soát, điều chỉnh, phê duyệt.'
+      - Hằng tháng ngày 1-5 khép sổ; 6-8 so thực tế với ngân sách linh hoạt và làm variance 1 trang; 9-10 họp 30-45 phút ra hành động có người phụ trách; 11 cập nhật cuốn chiếu và 13 tuần.
+      - 'Hằng tuần: cập nhật dòng tiền 13 tuần.'
+      outputs: Báo cáo variance 1 trang, danh sách hành động, dự báo cuốn chiếu mới, cảnh báo tiền.
+  - id: "m04-procedures-4"
+    title: "Quy trình: m04_proc_flexible_variance — Phân tích ngân sách linh hoạt và chênh lệch"
+    tags: ["quy", "trình", "m04_proc_flexible_variance", "phân", "tích", "ngân", "sách", "linh", "hoạt", "và", "chênh", "lệch"]
+    text: |-
+      id: m04_proc_flexible_variance
+      name: Phân tích ngân sách linh hoạt và chênh lệch
+      steps:
+      - Tính lợi nhuận tĩnh, linh hoạt (tại sản lượng thực) và thực tế.
+      - Khối lượng = (Q thực - Q NS) x CM NS.
+      - Giá bán = (P thực - P NS) x Q thực.
+      - Biến phí = -(v thực - v NS) x Q thực, tách theo thành phần.
+      - Định phí = -(FC thực - FC NS).
+      - Đối chiếu tổng bằng thực tế - tĩnh.
+      - Tính hòa vốn và biên an toàn thực tế bằng CM thực.
+      - Xếp hạng nguyên nhân, đọc cặp (giá-lượng), phân loại kiểm soát được, giao hành động có hạn.
+      outputs: Bảng 3 cột (Tĩnh, Linh hoạt, Thực tế), bảng nguyên nhân, hòa vốn mới, action plan.
+  - id: "m04-procedures-5"
+    title: "Quy trình: m04_proc_zbb — ZBB cho một khoản chi lớn"
+    tags: ["quy", "trình", "m04_proc_zbb", "zbb", "cho", "một", "khoản", "chi", "lớn"]
+    text: |-
+      id: m04_proc_zbb
+      name: ZBB cho một khoản chi lớn
+      steps:
+      - Chốt trần ngân sách và danh sách gói (chi phí, lợi nhuận gộp kỳ vọng).
+      - Tính tỷ lệ lợi ích/chi phí và xếp hạng.
+      - Cộng dồn đến khi chạm trần; đánh dấu gói vượt trần.
+      - 'Với gói vượt: cân nhắc cắt mức tăng cường của gói khác hoặc xin tăng trần.'
+      - Ghi chủ sở hữu và KPI của từng gói được duyệt.
+      outputs: Bảng gói duyệt/cắt, tổng đã duyệt, phần dư.
+  - id: "m04-procedures-6"
+    title: "Quy trình: m04_proc_forecast — Dự báo định lượng và đo sai số"
+    tags: ["quy", "trình", "m04_proc_forecast", "dự", "báo", "định", "lượng", "và", "đo", "sai", "số"]
+    text: |-
+      id: m04_proc_forecast
+      name: Dự báo định lượng và đo sai số
+      steps:
+      - 'Hỏi: có bao nhiêu kỳ dữ liệu, xu hướng, mùa vụ, driver.'
+      - Chọn phương pháp theo bảng chọn.
+      - Tính dự báo (MA/san mũ/mùa vụ/hồi quy).
+      - Tính MAD, MAPE, MSE, tracking signal trên giai đoạn kiểm thử.
+      - So nhiều mô hình/alpha; chọn mô hình có sai số nhỏ và không thiên lệch.
+      - Kết hợp phán đoán; ghi rõ hạn chế (mẫu nhỏ, không phải nhân quả).
+      outputs: Dự báo kèm sai số và cảnh báo hạn chế.
+  - id: "m04-procedures-7"
+    title: "Quy trình: m04_proc_13week — Dòng tiền 13 tuần từ đầu đến cuối"
+    tags: ["quy", "trình", "m04_proc_13week", "dòng", "tiền", "13", "tuần", "từ", "đầu", "đến", "cuối"]
+    text: |-
+      id: m04_proc_13week
+      name: Dòng tiền 13 tuần từ đầu đến cuối
+      steps:
+      - 'Câu hỏi cần hỏi: Tiền đầu kỳ thực? Doanh số tuần dự kiến? Tỷ lệ thu ngay và kỳ hạn thu của khách buôn? Doanh thu kỳ trước còn phải thu bao nhiêu và đến tuần nào? Biến phí bằng tiền/đơn vị? Ngày trả lương, thuê, điện, thuế, BHXH (cần xác nhận)? Lịch trả nợ? CapEx dự định tuần nào? Hạn mức vay? Ngưỡng cảnh báo?'
+      - 'Dựng lịch thu: thu ngay + thu chậm đúng tuần (4 tuần đầu từ doanh thu kỳ trước).'
+      - 'Dựng lịch chi: biến phí tuần, lương và định phí theo tháng (loại khấu hao), trả nợ, CapEx.'
+      - Tính tiền cuối tuần = đầu + thu - chi cho 13 tuần.
+      - Gắn cờ tuần dưới ngưỡng hoặc âm; tìm nguyên nhân (dồn lương, thu chậm, CapEx).
+      - 'Lập phương án B: hoãn/ thuê tài chính CapEx, giục thu, đàm phán kỳ hạn NCC, hạn mức vay.'
+      - Cập nhật mỗi thứ Hai.
+      outputs: Bảng 13 tuần, tuần thấp nhất, cảnh báo, khuyến nghị hành động và phương án B.
+  - id: "m04-procedures-8"
+    title: "Quy trình: m04_proc_dashboard — Bảng điều khiển 10 chỉ số cảnh báo tháng"
+    tags: ["quy", "trình", "m04_proc_dashboard", "bảng", "điều", "khiển", "10", "chỉ", "số", "cảnh", "báo", "tháng"]
+    text: |-
+      id: m04_proc_dashboard
+      name: Bảng điều khiển 10 chỉ số cảnh báo tháng
+      steps:
+      - 'Tính 10 chỉ số: DT/NS linh hoạt, CM%, chênh giá bán, chênh giá NVL, định phí/NS, biên an toàn, min tiền 13 tuần, DSO, ngày tồn kho, MAPE.'
+      - So với ngưỡng gợi ý (xem benchmarks), gắn cờ.
+      - Điều tra chỉ chỉ số vượt ngưỡng hoặc lặp 3 tháng liên tiếp.
+      outputs: Bảng dashboard 1 trang.
+  - id: "m04-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu so thực tế với kế hoạch mà sản lượng thực khác ngân sách thì phải dựng ngân sách linh hoạt trướ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "so", "thực", "tế", "với", "kế", "hoạch", "mà"]
+    text: |-
+      Nếu so thực tế với kế hoạch mà sản lượng thực khác ngân sách thì phải dựng ngân sách linh hoạt trước khi kết luận; không dùng ngân sách tĩnh để đánh giá chi phí.
+  - id: "m04-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu doanh số vượt kế hoạch nhưng lợi nhuận thấp thì kiểm tra giá bán (chiết khấu) và biến phí đơn v…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "doanh", "số", "vượt", "kế", "hoạch", "nhưng", "lợi"]
+    text: |-
+      Nếu doanh số vượt kế hoạch nhưng lợi nhuận thấp thì kiểm tra giá bán (chiết khấu) và biến phí đơn vị trước tiên; tính lại CM và hòa vốn.
+  - id: "m04-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu giảm giá để bán thêm thì so CM bán thêm với CM mất trên toàn bộ sản lượng (đổi 2.000 kg lấy giả…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giảm", "giá", "để", "bán", "thêm", "thì", "so"]
+    text: |-
+      Nếu giảm giá để bán thêm thì so CM bán thêm với CM mất trên toàn bộ sản lượng (đổi 2.000 kg lấy giảm giá 22.000 kg: +180 so -264).
+  - id: "m04-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu lợi nhuận dương mà tiền thấp thì lập ngân sách tiền mặt/dòng tiền 13 tuần, kiểm CapEx, kỳ thu n…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "lợi", "nhuận", "dương", "mà", "tiền", "thấp", "thì"]
+    text: |-
+      Nếu lợi nhuận dương mà tiền thấp thì lập ngân sách tiền mặt/dòng tiền 13 tuần, kiểm CapEx, kỳ thu nợ, dồn lương.
+  - id: "m04-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu tiền cuối tuần dưới ngưỡng cảnh báo thì hoãn CapEx/thuê tài chính, giục thu, đàm phán kỳ hạn ho…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "tiền", "cuối", "tuần", "dưới", "ngưỡng", "cảnh", "báo"]
+    text: |-
+      Nếu tiền cuối tuần dưới ngưỡng cảnh báo thì hoãn CapEx/thuê tài chính, giục thu, đàm phán kỳ hạn hoặc xin hạn mức vay trước.
+  - id: "m04-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu doanh nghiệp có mùa vụ mạnh thì dùng chỉ số mùa vụ và giữ đệm tiền cho quý đầu năm dựng tồn kho."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "doanh", "nghiệp", "có", "mùa", "vụ", "mạnh", "thì"]
+    text: |-
+      Nếu doanh nghiệp có mùa vụ mạnh thì dùng chỉ số mùa vụ và giữ đệm tiền cho quý đầu năm dựng tồn kho.
+  - id: "m04-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu chuỗi doanh thu có xu hướng tăng thì MA/san mũ alpha thấp luôn dự báo thấp; dùng alpha cao hoặc…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chuỗi", "doanh", "thu", "có", "xu", "hướng", "tăng"]
+    text: |-
+      Nếu chuỗi doanh thu có xu hướng tăng thì MA/san mũ alpha thấp luôn dự báo thấp; dùng alpha cao hoặc Holt.
+  - id: "m04-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu tracking signal vượt ±4 thì mô hình thiên lệch: đổi mô hình hoặc hiệu chỉnh tham số."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "tracking", "signal", "vượt", "thì", "mô", "hình", "thiên"]
+    text: |-
+      Nếu tracking signal vượt ±4 thì mô hình thiên lệch: đổi mô hình hoặc hiệu chỉnh tham số.
+  - id: "m04-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu MAPE dự báo doanh thu trên 15% thì xem lại driver và phương pháp."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "mape", "dự", "báo", "doanh", "thu", "trên", "15"]
+    text: |-
+      Nếu MAPE dự báo doanh thu trên 15% thì xem lại driver và phương pháp.
+  - id: "m04-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu sản phẩm mới chưa có dữ liệu thì dùng định tính (khảo sát, Delphi, benchmark), không ngoại suy."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "sản", "phẩm", "mới", "chưa", "có", "dữ", "liệu"]
+    text: |-
+      Nếu sản phẩm mới chưa có dữ liệu thì dùng định tính (khảo sát, Delphi, benchmark), không ngoại suy.
+  - id: "m04-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu biên an toàn dưới 15% thì xem là cảnh báo; tính lại hòa vốn bằng giá và chi phí thực."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "biên", "an", "toàn", "dưới", "15", "thì", "xem"]
+    text: |-
+      Nếu biên an toàn dưới 15% thì xem là cảnh báo; tính lại hòa vốn bằng giá và chi phí thực.
+  - id: "m04-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu cần cắt giảm hoặc chi phí phình thì ZBB cho 5-7 khoản chi lớn nhất; gói rank thấp hoặc tỷ lệ lợ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cần", "cắt", "giảm", "hoặc", "chi", "phí", "phình"]
+    text: |-
+      Nếu cần cắt giảm hoặc chi phí phình thì ZBB cho 5-7 khoản chi lớn nhất; gói rank thấp hoặc tỷ lệ lợi ích/chi phí gần 1 thì cắt.
+  - id: "m04-decision_rules-13"
+    title: "Quy tắc quyết định: Nếu gói ZBB vượt trần vài triệu mà tỷ lệ vẫn lớn hơn 1 thì cân nhắc xin tăng trần hoặc cắt mức tăng…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "gói", "zbb", "vượt", "trần", "vài", "triệu", "mà"]
+    text: |-
+      Nếu gói ZBB vượt trần vài triệu mà tỷ lệ vẫn lớn hơn 1 thì cân nhắc xin tăng trần hoặc cắt mức tăng cường gói khác.
+  - id: "m04-decision_rules-14"
+    title: "Quy tắc quyết định: Nếu môi trường biến động cao thì dùng rolling forecast cập nhật tháng/tuần thay vì ngân sách năm cứ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "môi", "trường", "biến", "động", "cao", "thì", "dùng"]
+    text: |-
+      Nếu môi trường biến động cao thì dùng rolling forecast cập nhật tháng/tuần thay vì ngân sách năm cứng.
+  - id: "m04-decision_rules-15"
+    title: "Quy tắc quyết định: Nếu chuẩn bị cho SME chưa có nền tảng thì đừng đề xuất Beyond Budgeting; bắt đầu với 3 ngân sách Bá…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chuẩn", "bị", "cho", "sme", "chưa", "có", "nền"]
+    text: |-
+      Nếu chuẩn bị cho SME chưa có nền tảng thì đừng đề xuất Beyond Budgeting; bắt đầu với 3 ngân sách Bán hàng - Chi phí - Tiền mặt.
+  - id: "m04-decision_rules-16"
+    title: "Quy tắc quyết định: Nếu thưởng sales theo doanh số mà CM giảm thì chuyển thưởng sang số dư đảm phí."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "thưởng", "sales", "theo", "doanh", "số", "mà", "cm"]
+    text: |-
+      Nếu thưởng sales theo doanh số mà CM giảm thì chuyển thưởng sang số dư đảm phí.
+  - id: "m04-decision_rules-17"
+    title: "Quy tắc quyết định: Nếu nhiều bộ phận luôn đạt ngân sách hoặc chi dồn cuối năm thì nghi slack/sandbagging/spend-it-or-l…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "nhiều", "bộ", "phận", "luôn", "đạt", "ngân", "sách"]
+    text: |-
+      Nếu nhiều bộ phận luôn đạt ngân sách hoặc chi dồn cuối năm thì nghi slack/sandbagging/spend-it-or-lose-it; dùng benchmark và dữ liệu.
+  - id: "m04-decision_rules-18"
+    title: "Quy tắc quyết định: Nếu variance cùng chiều 3 tháng liên tiếp thì xem lại định mức/driver; không chỉ phạt người."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "variance", "cùng", "chiều", "tháng", "liên", "tiếp", "thì"]
+    text: |-
+      Nếu variance cùng chiều 3 tháng liên tiếp thì xem lại định mức/driver; không chỉ phạt người.
+  - id: "m04-decision_rules-19"
+    title: "Quy tắc quyết định: Nếu báo cáo chính thức theo VAS thì chuyển P&L đảm phí sang absorption (tồn kho mang định phí SX ch…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "báo", "cáo", "chính", "thức", "theo", "vas", "thì"]
+    text: |-
+      Nếu báo cáo chính thức theo VAS thì chuyển P&L đảm phí sang absorption (tồn kho mang định phí SX chung); cần kế toán trưởng xác nhận.
+  - id: "m04-decision_rules-20"
+    title: "Quy tắc quyết định: Nếu dùng dự báo cho hồ sơ vay thì kiểm tra bằng kịch bản Xấu và covenant."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dùng", "dự", "báo", "cho", "hồ", "sơ", "vay"]
+    text: |-
+      Nếu dùng dự báo cho hồ sơ vay thì kiểm tra bằng kịch bản Xấu và covenant.
+  - id: "m04-benchmarks-1"
+    title: "Chuẩn so sánh: Doanh thu thực tế / ngân sách linh hoạt"
+    tags: ["chuẩn", "so", "sánh", "doanh", "thu", "thực", "tế", "ngân", "sách", "linh", "hoạt"]
+    text: |-
+      metric: Doanh thu thực tế / ngân sách linh hoạt
+      value: cảnh báo khi dưới 95% hoặc trên 110%
+      context: dashboard tháng; ngưỡng gợi ý khởi điểm, hiệu chỉnh theo ngành
+      confidence: low
+  - id: "m04-benchmarks-2"
+    title: "Chuẩn so sánh: CM% so ngân sách"
+    tags: ["chuẩn", "so", "sánh", "cm", "ngân", "sách"]
+    text: |-
+      metric: CM% so ngân sách
+      value: cảnh báo khi giảm hơn 2 điểm
+      context: dashboard tháng
+      confidence: low
+  - id: "m04-benchmarks-3"
+    title: "Chuẩn so sánh: Chênh lệch giá bán"
+    tags: ["chuẩn", "so", "sánh", "chênh", "lệch", "giá", "bán"]
+    text: |-
+      metric: Chênh lệch giá bán
+      value: cảnh báo khi âm 3 tháng liên tiếp
+      context: dashboard tháng
+      confidence: low
+  - id: "m04-benchmarks-4"
+    title: "Chuẩn so sánh: Chênh lệch giá nguyên liệu"
+    tags: ["chuẩn", "so", "sánh", "chênh", "lệch", "giá", "nguyên", "liệu"]
+    text: |-
+      metric: Chênh lệch giá nguyên liệu
+      value: cảnh báo khi trên 5%
+      context: dashboard tháng
+      confidence: low
+  - id: "m04-benchmarks-5"
+    title: "Chuẩn so sánh: Định phí thực / ngân sách"
+    tags: ["chuẩn", "so", "sánh", "định", "phí", "thực", "ngân", "sách"]
+    text: |-
+      metric: Định phí thực / ngân sách
+      value: cảnh báo khi trên 105%
+      context: dashboard tháng
+      confidence: low
+  - id: "m04-benchmarks-6"
+    title: "Chuẩn so sánh: Biên an toàn"
+    tags: ["chuẩn", "so", "sánh", "biên", "an", "toàn"]
+    text: |-
+      metric: Biên an toàn
+      value: cảnh báo khi dưới 15%
+      context: 'ngân sách: 25% (Cầu Đất Xanh), 30,3% (nước ép)'
+      confidence: low
+  - id: "m04-benchmarks-7"
+    title: "Chuẩn so sánh: Min tiền cuối tuần (13 tuần)"
+    tags: ["chuẩn", "so", "sánh", "min", "tiền", "cuối", "tuần", "13"]
+    text: |-
+      metric: Min tiền cuối tuần (13 tuần)
+      value: ngưỡng = chi bắt buộc 2-4 tuần tới (ví dụ 150tr, khoảng 1/3 định phí tiền tháng)
+      context: ví dụ minh họa; Mẫu mini 20tr
+      confidence: low
+  - id: "m04-benchmarks-8"
+    title: "Chuẩn so sánh: DSO"
+    tags: ["chuẩn", "so", "sánh", "dso"]
+    text: |-
+      metric: DSO
+      value: cảnh báo khi tăng hơn 5 ngày so với kế hoạch
+      context: dashboard tháng
+      confidence: low
+  - id: "m04-benchmarks-9"
+    title: "Chuẩn so sánh: Tồn kho (ngày)"
+    tags: ["chuẩn", "so", "sánh", "tồn", "kho", "ngày"]
+    text: |-
+      metric: Tồn kho (ngày)
+      value: cảnh báo khi trên ngân sách + 10%
+      context: dashboard tháng
+      confidence: low
+  - id: "m04-benchmarks-10"
+    title: "Chuẩn so sánh: MAPE dự báo doanh thu"
+    tags: ["chuẩn", "so", "sánh", "mape", "dự", "báo", "doanh", "thu"]
+    text: |-
+      metric: MAPE dự báo doanh thu
+      value: cảnh báo khi trên 15%
+      context: dashboard tháng
+      confidence: low
+  - id: "m04-benchmarks-11"
+    title: "Chuẩn so sánh: Tracking signal"
+    tags: ["chuẩn", "so", "sánh", "tracking", "signal"]
+    text: |-
+      metric: Tracking signal
+      value: trong khoảng ±4
+      context: thực hành thường dùng, cần đủ quan sát
+      confidence: medium
+  - id: "m04-benchmarks-12"
+    title: "Chuẩn so sánh: Thời gian lập ngân sách"
+    tags: ["chuẩn", "so", "sánh", "thời", "gian", "lập", "ngân", "sách"]
+    text: |-
+      metric: Thời gian lập ngân sách
+      value: DN lớn 3-6 tháng; SME 1-3 tuần; ngân sách 1 trang 30-60 phút
+      context: ước tính trong nguồn
+      confidence: low
+  - id: "m04-benchmarks-13"
+    title: "Chuẩn so sánh: Alpha san mũ"
+    tags: ["chuẩn", "so", "sánh", "alpha", "san", "mũ"]
+    text: |-
+      metric: Alpha san mũ
+      value: 0,6-0,9 thị trường biến động; 0,1-0,3 nhu cầu bền
+      context: hướng dẫn thực hành
+      confidence: medium
+  - id: "m04-benchmarks-14"
+    title: "Chuẩn so sánh: Thuế suất TNDN phổ thông trong ví dụ"
+    tags: ["chuẩn", "so", "sánh", "thuế", "suất", "tndn", "phổ", "thông", "trong", "ví", "dụ"]
+    text: |-
+      metric: Thuế suất TNDN phổ thông trong ví dụ
+      value: 20% (giả định)
+      context: chính sách ưu đãi có thể khác; cần xác nhận hiện hành
+      confidence: low
+  - id: "m04-pitfalls-1"
+    title: "Lỗi thường gặp: Lập ngân sách bằng 'lấy năm ngoái cộng 15%': không biết giả định nằm ở đâu; dựng theo driver."
+    tags: ["lỗi", "thường", "gặp", "lập", "ngân", "sách", "bằng", "lấy", "năm", "ngoái", "cộng", "15"]
+    text: |-
+      Lập ngân sách bằng 'lấy năm ngoái cộng 15%': không biết giả định nằm ở đâu; dựng theo driver.
+  - id: "m04-pitfalls-2"
+    title: "Lỗi thường gặp: Chỉ lập ngân sách lợi nhuận, bỏ ngân sách tiền mặt: có lãi nhưng hết tiền."
+    tags: ["lỗi", "thường", "gặp", "chỉ", "lập", "ngân", "sách", "lợi", "nhuận", "bỏ", "tiền", "mặt"]
+    text: |-
+      Chỉ lập ngân sách lợi nhuận, bỏ ngân sách tiền mặt: có lãi nhưng hết tiền.
+  - id: "m04-pitfalls-3"
+    title: "Lỗi thường gặp: So với ngân sách tĩnh khi sản lượng đã đổi: kết luận sai (cùng chiều lẫn ngược chiều)."
+    tags: ["lỗi", "thường", "gặp", "so", "với", "ngân", "sách", "tĩnh", "khi", "sản", "lượng", "đã"]
+    text: |-
+      So với ngân sách tĩnh khi sản lượng đã đổi: kết luận sai (cùng chiều lẫn ngược chiều).
+  - id: "m04-pitfalls-4"
+    title: "Lỗi thường gặp: Thưởng theo doanh số không theo CM/lợi nhuận: giảm giá bán lỗ."
+    tags: ["lỗi", "thường", "gặp", "thưởng", "theo", "doanh", "số", "không", "cm", "lợi", "nhuận", "giảm"]
+    text: |-
+      Thưởng theo doanh số không theo CM/lợi nhuận: giảm giá bán lỗ.
+  - id: "m04-pitfalls-5"
+    title: "Lỗi thường gặp: Ngân sách đóng đinh cả năm: lỗi thời sau quý 1; dùng cuốn chiếu."
+    tags: ["lỗi", "thường", "gặp", "ngân", "sách", "đóng", "đinh", "cả", "năm", "thời", "sau", "quý"]
+    text: |-
+      Ngân sách đóng đinh cả năm: lỗi thời sau quý 1; dùng cuốn chiếu.
+  - id: "m04-pitfalls-6"
+    title: "Lỗi thường gặp: Trộn chi tiêu cá nhân và công ty: ngân sách vô nghĩa, rủi ro thuế (tách tài khoản, cần xác nhận hiệ…"
+    tags: ["lỗi", "thường", "gặp", "trộn", "chi", "tiêu", "cá", "nhân", "và", "công", "ty", "ngân"]
+    text: |-
+      Trộn chi tiêu cá nhân và công ty: ngân sách vô nghĩa, rủi ro thuế (tách tài khoản, cần xác nhận hiện hành).
+  - id: "m04-pitfalls-7"
+    title: "Lỗi thường gặp: Không tính mùa vụ: hết tiền ở mùa thấp."
+    tags: ["lỗi", "thường", "gặp", "không", "tính", "mùa", "vụ", "hết", "tiền", "thấp"]
+    text: |-
+      Không tính mùa vụ: hết tiền ở mùa thấp.
+  - id: "m04-pitfalls-8"
+    title: "Lỗi thường gặp: Chỉ chủ DN lập ngân sách một mình: thiếu cam kết người thực hiện."
+    tags: ["lỗi", "thường", "gặp", "chỉ", "chủ", "dn", "lập", "ngân", "sách", "một", "mình", "thiếu"]
+    text: |-
+      Chỉ chủ DN lập ngân sách một mình: thiếu cam kết người thực hiện.
+  - id: "m04-pitfalls-9"
+    title: "Lỗi thường gặp: Dự báo mà không đo sai số: không biết mô hình có đáng tin."
+    tags: ["lỗi", "thường", "gặp", "dự", "báo", "mà", "không", "đo", "sai", "số", "biết", "mô"]
+    text: |-
+      Dự báo mà không đo sai số: không biết mô hình có đáng tin.
+  - id: "m04-pitfalls-10"
+    title: "Lỗi thường gặp: Dùng dự báo lạc quan để đẹp hồ sơ vay: vi phạm covenant."
+    tags: ["lỗi", "thường", "gặp", "dùng", "dự", "báo", "lạc", "quan", "để", "đẹp", "hồ", "sơ"]
+    text: |-
+      Dùng dự báo lạc quan để đẹp hồ sơ vay: vi phạm covenant.
+  - id: "m04-pitfalls-11"
+    title: "Lỗi thường gặp: Quên khấu hao không phải dòng tiền hoặc quên CapEx khi lập ngân sách tiền mặt."
+    tags: ["lỗi", "thường", "gặp", "quên", "khấu", "hao", "không", "phải", "dòng", "tiền", "hoặc", "capex"]
+    text: |-
+      Quên khấu hao không phải dòng tiền hoặc quên CapEx khi lập ngân sách tiền mặt.
+  - id: "m04-pitfalls-12"
+    title: "Lỗi thường gặp: Dùng đầu năm bắt đầu quên dự kiến bán Q1 năm sau nên tồn kho cuối Q4 sai."
+    tags: ["lỗi", "thường", "gặp", "dùng", "đầu", "năm", "bắt", "quên", "dự", "kiến", "bán", "q1"]
+    text: |-
+      Dùng đầu năm bắt đầu quên dự kiến bán Q1 năm sau nên tồn kho cuối Q4 sai.
+  - id: "m04-pitfalls-13"
+    title: "Lỗi thường gặp: Hồi quy: nhầm tương quan với nhân quả; mẫu nhỏ; ngoại suy xa; bão hòa."
+    tags: ["lỗi", "thường", "gặp", "hồi", "quy", "nhầm", "tương", "quan", "với", "nhân", "quả", "mẫu"]
+    text: |-
+      Hồi quy: nhầm tương quan với nhân quả; mẫu nhỏ; ngoại suy xa; bão hòa.
+  - id: "m04-pitfalls-14"
+    title: "Lỗi thường gặp: Coi ZBB là cắt giảm thuần túy hoặc làm cho mọi khoản chi."
+    tags: ["lỗi", "thường", "gặp", "coi", "zbb", "là", "cắt", "giảm", "thuần", "túy", "hoặc", "làm"]
+    text: |-
+      Coi ZBB là cắt giảm thuần túy hoặc làm cho mọi khoản chi.
+  - id: "m04-pitfalls-15"
+    title: "Lỗi thường gặp: Dùng định phí phân bổ theo sản lượng làm lẫn với Volume Variance."
+    tags: ["lỗi", "thường", "gặp", "dùng", "định", "phí", "phân", "bổ", "theo", "sản", "lượng", "làm"]
+    text: |-
+      Dùng định phí phân bổ theo sản lượng làm lẫn với Volume Variance.
+  - id: "m04-pitfalls-16"
+    title: "Lỗi thường gặp: Tính hòa vốn bằng CM ngân sách khi giá/chi phí thực đã đổi."
+    tags: ["lỗi", "thường", "gặp", "tính", "hòa", "vốn", "bằng", "cm", "ngân", "sách", "khi", "giá"]
+    text: |-
+      Tính hòa vốn bằng CM ngân sách khi giá/chi phí thực đã đổi.
+  - id: "m04-pitfalls-17"
+    title: "Lỗi thường gặp: Lỗi nguồn cần lưu ý: (1) nguồn mục II.C ghi số dương = F, âm = U (tác động lợi nhuận) khác quy ước …"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "cần", "lưu", "mục", "ii", "ghi", "số", "dương", "âm"]
+    text: |-
+      Lỗi nguồn cần lưu ý: (1) nguồn mục II.C ghi số dương = F, âm = U (tác động lợi nhuận) khác quy ước chi phí Actual - Standard của m05; (2) số liệu Unilever (biên 15% -> 19% so với 16,4% -> 19,1% -> 18,4%) không nhất quán giữa reported và underlying; (3) bản cũ có phương trình hồi quy Y = 20 + 8,5X sai, đúng là Y = 34,34 + 8,15X; (4) số liệu Sears (padding 20-30%, ngân sách đổi mới 0,5% so 12% Amazon) chưa kiểm chứng. Đã dùng giá trị đúng/đã tự tính lại.
+  - id: "m04-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Ngân sách thuộc kế toán quản trị: luật không bắt buộc DN tư nhân lập ngân sách hay có mẫu biểu cố đ…"
+    tags: ["lưu", "sme", "việt", "nam", "ngân", "sách", "thuộc", "kế", "toán", "quản", "trị", "luật"]
+    text: |-
+      Ngân sách thuộc kế toán quản trị: luật không bắt buộc DN tư nhân lập ngân sách hay có mẫu biểu cố định (Luật Kế toán 2015 cho phép tự tổ chức); chủ SME tự thiết kế - cần xác nhận hiện hành.
+  - id: "m04-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: Báo cáo tài chính chính thức theo VAS và Thông tư 200/2014/TT-BTC (DN nhỏ và vừa có thể theo TT133/…"
+    tags: ["lưu", "sme", "việt", "nam", "báo", "cáo", "tài", "chính", "thức", "theo", "vas", "và"]
+    text: |-
+      Báo cáo tài chính chính thức theo VAS và Thông tư 200/2014/TT-BTC (DN nhỏ và vừa có thể theo TT133/2016/TT-BTC): hàng tồn kho phải mang định phí SX chung (absorption); P&L đảm phí trong ngân sách nội bộ cần điều chỉnh - cần xác nhận hiện hành.
+  - id: "m04-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Khấu hao TSCĐ là chi phí hợp lý nhưng không phải dòng tiền; mức trích và thời gian tối thiểu/tối đa…"
+    tags: ["lưu", "sme", "việt", "nam", "khấu", "hao", "tscđ", "là", "chi", "phí", "hợp", "lý"]
+    text: |-
+      Khấu hao TSCĐ là chi phí hợp lý nhưng không phải dòng tiền; mức trích và thời gian tối thiểu/tối đa theo quy định - cần xác nhận hiện hành.
+  - id: "m04-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Chi phí được trừ thuế TNDN cần hóa đơn điện tử, chứng từ hợp lệ và liên quan hoạt động SXKD; thuế s…"
+    tags: ["lưu", "sme", "việt", "nam", "chi", "phí", "được", "trừ", "thuế", "tndn", "cần", "hóa"]
+    text: |-
+      Chi phí được trừ thuế TNDN cần hóa đơn điện tử, chứng từ hợp lệ và liên quan hoạt động SXKD; thuế suất 20% chỉ là giả định - cần xác nhận hiện hành.
+  - id: "m04-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: SME thiếu dữ liệu: bắt đầu bằng thu thập 12 tháng doanh thu và chi phí gần nhất; phụ thuộc ít khách…"
+    tags: ["lưu", "sme", "việt", "nam", "thiếu", "dữ", "liệu", "bắt", "đầu", "bằng", "thu", "thập"]
+    text: |-
+      SME thiếu dữ liệu: bắt đầu bằng thu thập 12 tháng doanh thu và chi phí gần nhất; phụ thuộc ít khách/sản phẩm nên cần kịch bản Xấu và dòng tiền 13 tuần.
+  - id: "m04-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: Ba ngân sách sống còn: Bán hàng - Chi phí - Tiền mặt; ưu tiên: ngân sách năm tối thiểu, dòng tiền 1…"
+    tags: ["lưu", "sme", "việt", "nam", "ba", "ngân", "sách", "sống", "còn", "bán", "hàng", "chi"]
+    text: |-
+      Ba ngân sách sống còn: Bán hàng - Chi phí - Tiền mặt; ưu tiên: ngân sách năm tối thiểu, dòng tiền 13 tuần, so sánh linh hoạt hằng tháng, rolling, kịch bản, ZBB (thứ tự ưu tiên giảm dần).
+  - id: "m04-sme_vn_guidance-7"
+    title: "Lưu ý SME Việt Nam: Lộ trình công cụ: hộ KD/micro (dưới 5 người) Google Sheets; nhỏ (5-20) Excel/Sheets + phần mềm kế t…"
+    tags: ["lưu", "sme", "việt", "nam", "lộ", "trình", "công", "cụ", "hộ", "kd", "micro", "dưới"]
+    text: |-
+      Lộ trình công cụ: hộ KD/micro (dưới 5 người) Google Sheets; nhỏ (5-20) Excel/Sheets + phần mềm kế toán; vừa (20-100) phần mềm kế toán/ERP + BI.
+  - id: "m04-sme_vn_guidance-8"
+    title: "Lưu ý SME Việt Nam: Công cụ (giá tham khảo, confidence low, cần xác nhận với nhà cung cấp): Google Sheets (miễn phí cá …"
+    tags: ["lưu", "sme", "việt", "nam", "công", "cụ", "giá", "tham", "khảo", "confidence", "low", "cần"]
+    text: |-
+      Công cụ (giá tham khảo, confidence low, cần xác nhận với nhà cung cấp): Google Sheets (miễn phí cá nhân), Microsoft 365 (vài trăm nghìn đồng/người/tháng), MISA (vài triệu đến chục triệu đồng/năm), Fast Accounting (vài triệu đến vài chục triệu đồng/năm), KiotViet/Sapo (vài trăm nghìn đồng/tháng), Looker Studio (miễn phí), Power BI Pro (khoảng 10-14 USD/người/tháng).
+  - id: "m04-sme_vn_guidance-9"
+    title: "Lưu ý SME Việt Nam: Anaplan, Adaptive Planning, Planful: giá theo báo giá, thường cao; không cần cho SME."
+    tags: ["lưu", "sme", "việt", "nam", "anaplan", "adaptive", "planning", "planful", "giá", "theo", "báo", "thường"]
+    text: |-
+      Anaplan, Adaptive Planning, Planful: giá theo báo giá, thường cao; không cần cho SME.
+  - id: "m04-sme_vn_guidance-10"
+    title: "Lưu ý SME Việt Nam: Sapo/KiotViet cho doanh số theo SP/ca/chi nhánh và tồn kho, xuất Excel đối chiếu; MISA/Fast cho côn…"
+    tags: ["lưu", "sme", "việt", "nam", "sapo", "kiotviet", "cho", "doanh", "số", "theo", "sp", "ca"]
+    text: |-
+      Sapo/KiotViet cho doanh số theo SP/ca/chi nhánh và tồn kho, xuất Excel đối chiếu; MISA/Fast cho công nợ, sổ cái làm số thực tế.
+  - id: "m04-sme_vn_guidance-11"
+    title: "Lưu ý SME Việt Nam: Tách bạch tài khoản cá nhân và công ty; lịch lương, BHXH, thuế GTGT theo hạn quy định phải đưa vào …"
+    tags: ["lưu", "sme", "việt", "nam", "tách", "bạch", "tài", "khoản", "cá", "nhân", "và", "công"]
+    text: |-
+      Tách bạch tài khoản cá nhân và công ty; lịch lương, BHXH, thuế GTGT theo hạn quy định phải đưa vào dòng tiền 13 tuần (hạn và mức cần xác nhận hiện hành).
+  - id: "m04-sme_vn_guidance-12"
+    title: "Lưu ý SME Việt Nam: Chủ SME quyết nhanh: ngân sách phải ngắn gọn đủ để chủ đọc và hành động; nhắc mục tiêu 'đủ dùng khô…"
+    tags: ["lưu", "sme", "việt", "nam", "chủ", "quyết", "nhanh", "ngân", "sách", "phải", "ngắn", "gọn"]
+    text: |-
+      Chủ SME quyết nhanh: ngân sách phải ngắn gọn đủ để chủ đọc và hành động; nhắc mục tiêu 'đủ dùng không hoàn hảo'.
+  - id: "m04-case_lessons-1"
+    title: "Bài học case: Unilever - Zero-Based Budgeting"
+    tags: ["bài", "học", "case", "unilever", "zero", "based", "budgeting"]
+    text: |-
+      name: Unilever - Zero-Based Budgeting
+      type: success
+      setup: FMCG, doanh thu khoảng 50+ tỷ euro. Áp dụng ZBB từ khoảng 2015 (Polman, Pitkethly) khi biên hoạt động thấp hơn đối thủ; đề nghị mua của Kraft Heinz/3G tháng 2/2017 bị từ chối. Chia chi phí thành gói có chủ sở hữu, benchmark best-in-class.
+      key_calculations:
+      - 'Mô phỏng DN doanh thu 1.000, LN hoạt động 150 (15%), chi phí kiểm soát được 300: cắt 10% = 30, tái đầu tư 10 -> LN 170, biên 17%.'
+      - Với doanh thu 53 tỷ euro, mỗi điểm biên khoảng 0,53 tỷ euro; 4 điểm khoảng 2,1 tỷ euro.
+      - 'Bảng tiết kiệm bản cũ: marketing 600 + chuỗi cung ứng 500 + chi chung 400 + mua hàng 500 = 2.000 triệu euro.'
+      lesson: ZBB là phân bổ lại về nơi giá trị cao, không chỉ cắt giảm. Bốn nguyên tắc Visibility, Ownership, Benchmarking, Zero-base. Chi phí có thể phình lại nếu thiếu kỷ luật; SME chỉ áp 5-7 khoản chi lớn nhất.
+      data_reliability: unverified
+  - id: "m04-case_lessons-2"
+    title: "Bài học case: Sears - Ngân sách cứng nhắc"
+    tags: ["bài", "học", "case", "sears", "ngân", "sách", "cứng", "nhắc"]
+    text: |-
+      name: Sears - Ngân sách cứng nhắc
+      type: failure
+      setup: Nhà bán lẻ lớn nhất Mỹ, sáp nhập Kmart 2005, phá sản tháng 10/2018; doanh thu khoảng 53 tỷ USD (2006) xuống khoảng 16,7 tỷ (2017). Incremental budgeting, ngân sách silo, không rolling forecast.
+      key_calculations:
+      - Doanh thu giảm 1 - 16,7/53 = 68,5% trong 11 năm; CAGR (16,7/53)^(1/11) - 1 = -10,0%/năm.
+      - 'Mô hình giả định: thị trường online 5% (2010) -> 21% (2018); đầu tư digital Sears 3% x 1,05^t: 3,00; 3,31; 3,65; 4,02; 4,43 -> khoảng cách 2,0; 5,7; 9,4; 13,0; 16,6 điểm; 4,43/21 = 21% mức thị trường.'
+      lesson: Mỗi bước tăng 5% đều hợp lý riêng nhưng cộng dồn gây khóa phân bổ (budget lock-in); sai nằm ở phương pháp không bao giờ hỏi lại tỷ trọng. Cần ZBB/driver-based, ngân sách khớp chiến lược, rolling forecast cảnh báo sớm, tách thưởng khỏi mốc cứng.
+      data_reliability: illustrative
+  - id: "m04-case_lessons-3"
+    title: "Bài học case: Cà phê rang Cầu Đất Xanh - doanh số vượt, lợi nhuận bốc hơi"
+    tags: ["bài", "học", "case", "cà", "phê", "rang", "cầu", "đất", "xanh", "doanh", "số", "vượt"]
+    text: |-
+      name: Cà phê rang Cầu Đất Xanh - doanh số vượt, lợi nhuận bốc hơi
+      type: sme
+      setup: 'Công ty rang xay Đà Lạt, bán buôn cho khoảng 150 quán, doanh thu 2025 khoảng 18-19 tỷ. Ngân sách Q1/2026 theo driver: 15.000 + 5.000 = 20.000 kg x 250.000đ; biến phí 160.000; định phí 1.350tr. Thực tế 22.000 kg, giá 238.000, biến phí 172.000, định phí 1.390tr. (Tất cả giả định minh họa.)'
+      key_calculations:
+      - 'Ngân sách: DT 5.000; biến phí 3.200; CM 1.800; LN 450; hòa vốn 15.000 kg; MOS 25%.'
+      - 'Thực tế: DT 5.236; biến phí 3.784; CM 1.452; LN 62; lệch -388 (-86%). Linh hoạt 22.000 kg: LN 630.'
+      - 'Tách: khối lượng +180; giá -264; nhân -176; bao bì -22; nhân công -22; vận chuyển -44; định phí -40; tổng -388.'
+      - CM thực 66.000; hòa vốn 21.061 kg; MOS 4,3%.
+      - 'Q2: A giữ nguyên LN 128tr; B LN 332,24tr; hòa vốn B 17.821 kg, MOS 19,3%.'
+      - '13 tuần: mua máy 300tr tuần 9 -> tiền 103,9 và tuần 13 âm 15,9; hoãn máy -> thấp nhất 253,5, cuối 284,1.'
+      lesson: 'Doanh số cao không bằng lợi nhuận cao: mất 568tr do giá, chi phí, định phí (không phải do bán ít). Biên an toàn là cảnh báo sớm; lợi nhuận khác dòng tiền; đổi thưởng sales sang CM; ngưng chiết khấu đại trà, ký hợp đồng giá nhân, hoãn CapEx.'
+      data_reliability: illustrative
+  - id: "m04-case_lessons-4"
+    title: "Bài học case: Nước Ép Xanh Việt - Master Budget xuyên suốt"
+    tags: ["bài", "học", "case", "nước", "ép", "xanh", "việt", "master", "budget", "xuyên", "suốt"]
+    text: |-
+      name: Nước Ép Xanh Việt - Master Budget xuyên suốt
+      type: sme
+      setup: Xưởng nước ép đóng chai, bán 57.000 chai x 30.000đ, mùa hè cao, Q1 yếu; mua máy 50tr Q1. (Giả định minh họa, kiểm Python.)
+      key_calculations:
+      - DT 1.710; CM 826,5 (48,3%); EBIT 250,5; NI 200; Q2+Q3 chiếm 61,4% doanh thu.
+      - Q1 tiền trước tài trợ chỉ 1tr -> vay 20tr; tiền cuối năm 267,7.
+      - BS cuối năm 568,5 = thuế 50 + vốn 518,5; dòng tiền 217,7 khớp.
+      - Hòa vốn 576 / 0,4833 = 1.191,7tr (khoảng 39.724 chai), MOS 30,3%.
+      lesson: Lãi 200 nhưng quý đầu suýt cạn tiền vì bán yếu + dựng tồn kho + mua máy; ngân sách tiền mặt lộ ra điều đó.
+      data_reliability: illustrative
+  - id: "m04-case_lessons-5"
+    title: "Bài học case: Ngân sách linh hoạt: bán nhiều hơn nhưng lãi ít hơn kế hoạch"
+    tags: ["bài", "học", "case", "ngân", "sách", "linh", "hoạt", "bán", "nhiều", "hơn", "nhưng", "lãi"]
+    text: |-
+      name: 'Ngân sách linh hoạt: bán nhiều hơn nhưng lãi ít hơn kế hoạch'
+      type: sme
+      setup: Kế hoạch 10.000 SP giá 50.000, biến phí 20.000, định phí 150tr; thực tế 12.000 SP, DT 580, biến phí 260, định phí 155.
+      key_calculations:
+      - LN tĩnh 150; linh hoạt 210; thực tế 165; so tĩnh +15 (sai), so linh hoạt -45 (đúng).
+      lesson: Ngân sách tĩnh che giấu kém hiệu quả bằng sản lượng cao.
+      data_reliability: illustrative
+  - id: "m04-worked_examples-1"
+    title: "Ví dụ có lời giải: Master Budget Nước Ép Xanh Việt: chuỗi 8 bước, BS cân, dòng tiền khớp"
+    tags: ["ví", "dụ", "có", "lời", "giải", "master", "budget", "nước", "ép", "xanh", "việt", "chuỗi"]
+    text: |-
+      name: 'Master Budget Nước Ép Xanh Việt: chuỗi 8 bước, BS cân, dòng tiền khớp'
+      inputs:
+        sales:
+        - 10000
+        - 15000
+        - 20000
+        - 12000
+        price: 30000
+        next_q1_sales: 11000
+        fg_policy: 0.2
+        fg_begin: 2000
+        fg_unit_var_cost: 11500
+        rm_use_per_unit: 0.5
+        rm_price: 10000
+        rm_policy: 0.1
+        rm_begin: 550
+        dl_per_unit: 5000
+        voh_per_unit: 1500
+        fixed_oh_cash_q: 60
+        dep_q: 4
+        selling_var: 4000
+        sga_fixed_q: 80
+        collect_now: 0.9
+        ar_begin: 40
+        capex_q1: 50
+        cash_begin: 50
+        min_cash: 20
+        interest_rate: 0.1
+        tax: 0.2
+      steps:
+      - Doanh thu 300; 450; 600; 360 = 1.710 (Q2+Q3 = 61,4%).
+      - Sản xuất 11.000; 16.000; 18.400; 11.800 = 57.200. NVL dùng 28.600 lít; mua 5.750; 8.120; 8.870; 5.860; chi 286tr.
+      - Nhân công 55; 80; 92; 59 = 286. SX chung tiền 76,5; 84; 87,6; 77,7 = 325,8; cộng khấu hao 16 = 341,8. Bán hàng biến đổi 40; 60; 80; 48 = 228; cố định 320.
+      - 'Thu tiền 310; 435; 585; 384. Tiền: Q1 pre = 1 -> vay 20 -> 21; Q2 pre = 70,3 -> trả 20 -> 50,3; Q3 207; Q4 267,7.'
+      - 'P&L: DT 1.710 - giá vốn biến đổi 655,5 - bán hàng biến đổi 228 = CM 826,5; trừ định phí SX 256 và bán hàng/QLDN 320 = EBIT 250,5; lãi 0,5 -> EBT 250; thuế 20% = 50; NI 200.'
+      - 'BS cuối năm: Tiền 267,7 + Phải thu 36 + NVL 5,5 + TP 25,3 + TSCĐ 234 = 568,5; Thuế phải nộp 50 + Vốn chủ 518,5 = 568,5 (cân). Đầu năm 318,5.'
+      - 'Đối chiếu: 200 + 16 + 4 - 2,3 + 50 - 50 = 217,7 = 267,7 - 50.'
+      - 'Hòa vốn: định phí 240 + 16 + 320 = 576; CM% 48,3%; doanh thu hòa vốn 1.191,7; MOS 30,3%.'
+      result: NI 200, tiền cuối 267,7, BS cân 568,5; Q1 phải vay 20tr; hòa vốn 1.191,7tr, MOS 30,3%.
+  - id: "m04-worked_examples-2"
+    title: "Ví dụ có lời giải: Cầu Đất Xanh: ngân sách linh hoạt, 4 chênh lệch, hòa vốn, reforecast"
+    tags: ["ví", "dụ", "có", "lời", "giải", "cầu", "đất", "xanh", "ngân", "sách", "linh", "hoạt"]
+    text: |-
+      name: 'Cầu Đất Xanh: ngân sách linh hoạt, 4 chênh lệch, hòa vốn, reforecast'
+      inputs:
+        budget_kg: 20000
+        actual_kg: 22000
+        budget_price: 250000
+        actual_price: 238000
+        budget_v: 160000
+        actual_v: 172000
+        budget_fc: 1350
+        actual_fc: 1390
+      steps:
+      - 'Tĩnh: DT 5.000; biến phí 3.200; CM 1.800; LN 450. Linh hoạt 22.000 kg: DT 5.500; biến phí 3.520; CM 1.980; LN 630. Thực tế: DT 5.236; biến phí 3.784; CM 1.452; LN 62.'
+      - Khối lượng (22.000 - 20.000) x 90.000 = +180; giá (238.000 - 250.000) x 22.000 = -264; biến phí -(172.000 - 160.000) x 22.000 = -264 (nhân -176, bao bì -22, nhân công -22, vận chuyển -44); định phí -40.
+      - 'Đối chiếu: 180 - 264 - 264 - 40 = -388 = 62 - 450. Thực tế vs linh hoạt: 62 - 630 = -568.'
+      - CM thực = 66.000; hòa vốn 1.390tr/66.000 = 21.061 kg; MOS = 4,3% (ngân sách 25%).
+      - 'Q2 A: 23.000 x 66.000 - 1.390tr = 128tr. Q2 B: CM = 244.000 - 166.000 = 78.000; 22.080 x 78.000 - 1.390tr = 332,24tr; hòa vốn 17.821 kg; MOS 19,3%.'
+      result: 'Tổng lệch -388tr (U): giảm giá và giá cà phê nhân là hai nguyên nhân lớn; biên an toàn 4,3%; kịch bản B cải thiện LN 128 -> 332,24tr.'
+  - id: "m04-worked_examples-3"
+    title: "Ví dụ có lời giải: Dự báo: MA-3, san mũ, chỉ số mùa vụ, hồi quy, đo sai số"
+    tags: ["ví", "dụ", "có", "lời", "giải", "dự", "báo", "ma", "san", "mũ", "chỉ", "số"]
+    text: |-
+      name: 'Dự báo: MA-3, san mũ, chỉ số mùa vụ, hồi quy, đo sai số'
+      inputs:
+        monthly_revenue:
+        - 100
+        - 120
+        - 110
+        - 130
+        - 125
+        - 140
+        alpha: 0.3
+        x_marketing:
+        - 20
+        - 25
+        - 30
+        - 22
+        - 35
+        - 28
+        y_revenue:
+        - 200
+        - 240
+        - 280
+        - 210
+        - 320
+        - 260
+      steps:
+      - 'MA-3: F4 = 110; F5 = 120; F6 = 121,67; F7 = 131,67. Sai số tháng 4-6: 20; 5; 18,33; MAD 14,44; MAPE 10,83%; MSE 253,7; TS 3,00.'
+      - 'San mũ alpha 0,3: F4 = 107,2; F5 = 114,04; F6 = 117,33; F7 = 124,13. Sai số 22,8; 10,96; 22,67; MAD 18,81; MAPE 14,17%; MSE 384,7; TS 3,00.'
+      - 'Kết luận: MA-3 chính xác hơn cho chuỗi tăng; cả hai đều lệch thấp; alpha 0,7 có MAD tháng 2-6 là 11,73 so 16,09 của alpha 0,3.'
+      - 'Mùa vụ: chỉ số 0,697; 1,046; 1,415; 0,841; dự báo 2026 = 57.658 chai: 10.053; 15.080; 20.402; 12.123.'
+      - 'Hồi quy: b = 7.400/908 = 8,15; a = 34,34; Y(40) = 360,3tr; R bình phương 0,997 (mẫu 6 điểm, cảnh báo nhân quả).'
+      result: F7 = 131,67 (MA-3) và 124,13 (san mũ 0,3); dự báo mùa vụ 57.658 chai; Y(40) = 360,3tr.
+  - id: "m04-worked_examples-4"
+    title: "Ví dụ có lời giải: Dòng tiền 13 tuần Cầu Đất Xanh: mua máy tuần 9 và phương án hoãn"
+    tags: ["ví", "dụ", "có", "lời", "giải", "dòng", "tiền", "13", "tuần", "cầu", "đất", "xanh"]
+    text: |-
+      name: 'Dòng tiền 13 tuần Cầu Đất Xanh: mua máy tuần 9 và phương án hoãn'
+      inputs:
+        cash_begin: 350
+        weekly_kg: 1769.23
+        price: 238000
+        collect_now: 0.4
+        weekly_receipt_first4: 410.1
+        weekly_receipt_later: 421.1
+        weekly_variable_cash: 270.7
+        payroll_wk4_8: 134.5
+        payroll_wk13: 168.1
+        fixed_cash_payment: 433.3
+        debt_wk6_12: 120
+        capex_wk9: 300
+        alert: 150
+      steps:
+      - Thu tuần 1-4 = 60% x (5.236/13 = 402,8) + 40% x 421,1 = 241,7 + 168,4 = 410,1; từ tuần 5 là 421,1. Biến phí tiền 153.000 x 1.769 kg = 270,7/tuần.
+      - 'Lương 19.000đ/kg trả tuần 4 và 8 (4 tuần: 134,5), tuần 13 (5 tuần: 168,1); định phí tiền 1.300/quý = 433,3 mỗi lần ở tuần 4, 8, 13; trả nợ 120 tuần 6 và 12.'
+      - 'Phương án 1 (mua máy tuần 9): tiền cuối 489,4; 628,8; 768,2; 339,8; 490,2; 520,6; 671,0; 253,5; 103,9; 254,3; 404,7; 435,1; -15,9.'
+      - 'Phương án 2 (hoãn): ...; 253,5 (tuần 8); 403,9; 554,3; 704,7; 735,1; 284,1.'
+      - 'Kết luận: tuần 9 dưới ngưỡng 150 và tuần 13 âm ở Phương án 1; Phương án 2 luôn trên ngưỡng.'
+      result: Min 103,9 (tuần 9) và cuối quý -15,9 nếu mua máy; hoãn máy giữ tối thiểu 253,5, cuối quý 284,1.
+  - id: "m04-worked_examples-5"
+    title: "Ví dụ có lời giải: ZBB marketing trần 150tr"
+    tags: ["ví", "dụ", "có", "lời", "giải", "zbb", "marketing", "trần", "150tr"]
+    text: |-
+      name: ZBB marketing trần 150tr
+      inputs:
+        cap: 150
+        packages:
+          MKT-1:
+          - 15
+          - 45
+          MKT-2:
+          - 40
+          - 100
+          MKT-3:
+          - 60
+          - 135
+          MKT-4:
+          - 30
+          - 60
+          MKT-5:
+          - 25
+          - 45
+          MKT-6:
+          - 50
+          - 60
+      steps:
+      - 'Tỷ lệ: 3,00; 2,50; 2,25; 2,00; 1,80; 1,20.'
+      - 'Cộng dồn: 15; 55; 115; 145; MKT-5 -> 170 (vượt); MKT-6 -> 220 (vượt).'
+      - 'Còn 5tr; MKT-5 cần 25: từ chối, hoặc cắt 1 content creator (30tr) trong MKT-3, hoặc xin tăng trần vì 1,8 lớn hơn 1.'
+      result: Duyệt MKT-1..4 = 145tr; cắt/hoãn MKT-5 và MKT-6.
+  - id: "m04-worked_examples-6"
+    title: "Ví dụ có lời giải: Ngân sách tiền mặt 3 quý: khi nào vay"
+    tags: ["ví", "dụ", "có", "lời", "giải", "ngân", "sách", "tiền", "mặt", "quý", "khi", "nào"]
+    text: |-
+      name: 'Ngân sách tiền mặt 3 quý: khi nào vay'
+      inputs:
+        revenue:
+        - 200
+        - 240
+        - 280
+        collect_now: 0.7
+        ar_begin: 60
+        opex:
+        - 150
+        - 170
+        - 190
+        fixed_cash_q: 40
+        capex_q2: 80
+        cash_begin: 30
+      steps:
+      - 'Thu: Q1 = 140 + 60 = 200; Q2 = 168 + 60 = 228; Q3 = 196 + 72 = 268.'
+      - 'Chi: Q1 = 190; Q2 = 170 + 40 + 80 = 290; Q3 = 230.'
+      - 'Tiền cuối: Q1 = 40; Q2 = 40 + 228 - 290 = -22; Q3 = -22 + 268 - 230 = 16.'
+      result: Cần vay tối thiểu 22tr trong Q2 (thực tế vay dư để có đệm).
+  - id: "m04-practice_questions-1"
+    title: "Câu hỏi luyện tập: Xưởng bánh bán 8.000; 10.000; 9.000; 7.000 chiếc Q1-Q4, Q1 năm sau 8.000; tồn cuối = 25% nhu cầu qu…"
+    tags: ["câu", "hỏi", "luyện", "tập", "xưởng", "bánh", "bán", "000", "10", "chiếc", "q1", "q4"]
+    text: |-
+      q: Xưởng bánh bán 8.000; 10.000; 9.000; 7.000 chiếc Q1-Q4, Q1 năm sau 8.000; tồn cuối = 25% nhu cầu quý sau; tồn đầu 1.500. Tính sản xuất mỗi quý.
+      a: Tồn cuối 2.500; 2.250; 1.750; 2.000. Sản xuất 9.000; 9.750; 8.500; 7.250.
+  - id: "m04-practice_questions-2"
+    title: "Câu hỏi luyện tập: Tĩnh: bán 5.000 SP, giá 80.000, biến phí 45.000, định phí 120tr. Thực tế bán 5.600, DT 436tr, biến …"
+    tags: ["câu", "hỏi", "luyện", "tập", "tĩnh", "bán", "000", "sp", "giá", "80", "biến", "phí"]
+    text: |-
+      q: 'Tĩnh: bán 5.000 SP, giá 80.000, biến phí 45.000, định phí 120tr. Thực tế bán 5.600, DT 436tr, biến phí 266tr, định phí 126tr. Phân tích chênh lệch.'
+      a: LN tĩnh 55; linh hoạt 76; thực tế 44. Khối lượng +21 (F); giá -12; biến phí -14; định phí -6; tổng -11 = 44 - 55.
+  - id: "m04-practice_questions-3"
+    title: "Câu hỏi luyện tập: Doanh thu 6 tháng: 80; 90; 85; 100; 95; 110. Dự báo tháng 7 bằng MA-3 và san mũ alpha 0,5 với F1 = …"
+    tags: ["câu", "hỏi", "luyện", "tập", "doanh", "thu", "tháng", "80", "90", "85", "100", "95"]
+    text: |-
+      q: 'Doanh thu 6 tháng: 80; 90; 85; 100; 95; 110. Dự báo tháng 7 bằng MA-3 và san mũ alpha 0,5 với F1 = 80.'
+      a: 'MA-3 = 101,67. San mũ: F2 = 80; F3 = 85; F4 = 85; F5 = 92,5; F6 = 93,75; F7 = 101,875.'
+  - id: "m04-practice_questions-4"
+    title: "Câu hỏi luyện tập: Thực tế 100; 120; 110; 130; 125, dự báo 105; 115; 118; 122; 128. Tính MAD, MAPE, MSE, TS."
+    tags: ["câu", "hỏi", "luyện", "tập", "thực", "tế", "100", "120", "110", "130", "125", "dự"]
+    text: |-
+      q: Thực tế 100; 120; 110; 130; 125, dự báo 105; 115; 118; 122; 128. Tính MAD, MAPE, MSE, TS.
+      a: Sai số -5; +5; -8; +8; -3. MAD 5,8; MAPE khoảng 5,0%; MSE 37,4; TS = -3/5,8 = -0,52 (trong ±4).
+  - id: "m04-practice_questions-5"
+    title: "Câu hỏi luyện tập: Quảng cáo X: 10; 15; 12; 20; 18. Doanh thu Y: 130; 170; 145; 215; 195. Tìm Y = a + bX và dự báo X =…"
+    tags: ["câu", "hỏi", "luyện", "tập", "quảng", "cáo", "10", "15", "12", "20", "18", "doanh"]
+    text: |-
+      q: 'Quảng cáo X: 10; 15; 12; 20; 18. Doanh thu Y: 130; 170; 145; 215; 195. Tìm Y = a + bX và dự báo X = 25.'
+      a: b = 2.875/340 = 8,456; a = 44,16; Y(25) = 255,6.
+  - id: "m04-practice_questions-6"
+    title: "Câu hỏi luyện tập: ZBB trần 100tr: A (20; 70), B (35; 80), C (25; 50), D (30; 45), E (15; 40), F (10; 12). Xếp hạng và…"
+    tags: ["câu", "hỏi", "luyện", "tập", "zbb", "trần", "100tr", "20", "70", "35", "80", "25"]
+    text: |-
+      q: 'ZBB trần 100tr: A (20; 70), B (35; 80), C (25; 50), D (30; 45), E (15; 40), F (10; 12). Xếp hạng và quyết định.'
+      a: Tỷ lệ A 3,50; E 2,67; B 2,29; C 2,00; D 1,50; F 1,20. Duyệt A, E, B, C = 95; cắt D, F; dư 5.
+  - id: "m04-practice_questions-7"
+    title: "Câu hỏi luyện tập: Doanh thu Q1-Q3: 200; 240; 280; thu 70% trong quý, 30% quý sau; phải thu đầu năm 60; chi vận hành 1…"
+    tags: ["câu", "hỏi", "luyện", "tập", "doanh", "thu", "q1", "q3", "200", "240", "280", "70"]
+    text: |-
+      q: 'Doanh thu Q1-Q3: 200; 240; 280; thu 70% trong quý, 30% quý sau; phải thu đầu năm 60; chi vận hành 150; 170; 190; định phí tiền 40/quý; máy 80 ở Q2; tiền đầu 30. Tiền cuối và cần vay?'
+      a: Thu 200; 228; 268. Chi 190; 290; 230. Tiền cuối 40; -22; 16. Vay tối thiểu 22tr ở Q2.
+  - id: "m04-practice_questions-8"
+    title: "Câu hỏi luyện tập: Vì sao lợi nhuận Cầu Đất Xanh giảm 86% khi bán tăng 10%?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "lợi", "nhuận", "cầu", "đất", "xanh", "giảm"]
+    text: |-
+      q: Vì sao lợi nhuận Cầu Đất Xanh giảm 86% khi bán tăng 10%?
+      a: 'Tách: khối lượng +180; giá -264; biến phí -264; định phí -40; tổng -388. Giảm giá 4,8% và giá nhân tăng làm CM đơn vị tụt từ 90.000 xuống 66.000; hòa vốn 15.000 -> 21.061 kg.'
+  - id: "m04-practice_questions-9"
+    title: "Câu hỏi luyện tập: Hòa vốn và biên an toàn nước ép Xanh Việt?"
+    tags: ["câu", "hỏi", "luyện", "tập", "hòa", "vốn", "và", "biên", "an", "toàn", "nước", "ép"]
+    text: |-
+      q: Hòa vốn và biên an toàn nước ép Xanh Việt?
+      a: Định phí 576tr; CM% 48,3%; doanh thu hòa vốn 1.191,7tr (khoảng 39.724 chai); MOS 30,3%.
+  - id: "m04-practice_questions-10"
+    title: "Câu hỏi luyện tập: Tại sao cần ngân sách tiền mặt khi đã có ngân sách lợi nhuận?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tại", "sao", "cần", "ngân", "sách", "tiền", "mặt", "khi"]
+    text: |-
+      q: Tại sao cần ngân sách tiền mặt khi đã có ngân sách lợi nhuận?
+      a: 'Lợi nhuận khác tiền: bán chịu, CapEx, khấu hao không chi tiền, tồn kho tăng, thuế chưa nộp. Nước ép lãi 200 nhưng Q1 chỉ còn 1tr trước khi vay.'
+  - id: "m04-checklist-1"
+    title: "Checklist: □ Có doanh thu và chi phí thực 12-24 tháng gần nhất, tách theo sản phẩm/kênh?"
+    tags: ["checklist", "có", "doanh", "thu", "và", "chi", "phí", "thực", "12", "24", "tháng", "gần"]
+    text: |-
+      □ Có doanh thu và chi phí thực 12-24 tháng gần nhất, tách theo sản phẩm/kênh?
+  - id: "m04-checklist-2"
+    title: "Checklist: □ Đã phân loại biến phí/định phí và xác định driver (số khách, kg, giờ máy, giá)?"
+    tags: ["checklist", "đã", "phân", "loại", "biến", "phí", "định", "và", "xác", "driver", "số", "khách"]
+    text: |-
+      □ Đã phân loại biến phí/định phí và xác định driver (số khách, kg, giờ máy, giá)?
+  - id: "m04-checklist-3"
+    title: "Checklist: □ Tách bạch chi tiêu cá nhân và công ty?"
+    tags: ["checklist", "tách", "bạch", "chi", "tiêu", "cá", "nhân", "và", "công", "ty"]
+    text: |-
+      □ Tách bạch chi tiêu cá nhân và công ty?
+  - id: "m04-checklist-4"
+    title: "Checklist: □ Bắt đầu từ ngân sách bán hàng (hoặc yếu tố giới hạn thực tế)?"
+    tags: ["checklist", "bắt", "đầu", "từ", "ngân", "sách", "bán", "hàng", "hoặc", "yếu", "tố", "giới"]
+    text: |-
+      □ Bắt đầu từ ngân sách bán hàng (hoặc yếu tố giới hạn thực tế)?
+  - id: "m04-checklist-5"
+    title: "Checklist: □ Ngân sách sản xuất/mua/nhân công nối đúng với bán hàng; có dự kiến bán Q1 năm sau?"
+    tags: ["checklist", "ngân", "sách", "sản", "xuất", "mua", "nhân", "công", "nối", "đúng", "với", "bán"]
+    text: |-
+      □ Ngân sách sản xuất/mua/nhân công nối đúng với bán hàng; có dự kiến bán Q1 năm sau?
+  - id: "m04-checklist-6"
+    title: "Checklist: □ Có ngân sách tiền mặt, không chỉ lợi nhuận; đã loại khấu hao và thêm CapEx, lãi, thuế?"
+    tags: ["checklist", "có", "ngân", "sách", "tiền", "mặt", "không", "chỉ", "lợi", "nhuận", "đã", "loại"]
+    text: |-
+      □ Có ngân sách tiền mặt, không chỉ lợi nhuận; đã loại khấu hao và thêm CapEx, lãi, thuế?
+  - id: "m04-checklist-7"
+    title: "Checklist: □ Bảng cân đối dự kiến cân (Tài sản = Nợ + Vốn chủ)?"
+    tags: ["checklist", "bảng", "cân", "đối", "dự", "kiến", "tài", "sản", "nợ", "vốn", "chủ"]
+    text: |-
+      □ Bảng cân đối dự kiến cân (Tài sản = Nợ + Vốn chủ)?
+  - id: "m04-checklist-8"
+    title: "Checklist: □ Dòng tiền dự kiến khớp thay đổi tiền giữa hai kỳ?"
+    tags: ["checklist", "dòng", "tiền", "dự", "kiến", "khớp", "thay", "đổi", "giữa", "hai", "kỳ"]
+    text: |-
+      □ Dòng tiền dự kiến khớp thay đổi tiền giữa hai kỳ?
+  - id: "m04-checklist-9"
+    title: "Checklist: □ Đã tính hòa vốn và biên an toàn (bằng giá và chi phí hiện hành)?"
+    tags: ["checklist", "đã", "tính", "hòa", "vốn", "và", "biên", "an", "toàn", "bằng", "giá", "chi"]
+    text: |-
+      □ Đã tính hòa vốn và biên an toàn (bằng giá và chi phí hiện hành)?
+  - id: "m04-checklist-10"
+    title: "Checklist: □ Có kịch bản Tốt - Cơ sở - Xấu?"
+    tags: ["checklist", "có", "kịch", "bản", "tốt", "cơ", "sở", "xấu"]
+    text: |-
+      □ Có kịch bản Tốt - Cơ sở - Xấu?
+  - id: "m04-checklist-11"
+    title: "Checklist: □ Hằng tháng so thực tế với ngân sách linh hoạt, tách khối lượng/giá/biến phí/định phí, tổng khớp?"
+    tags: ["checklist", "hằng", "tháng", "so", "thực", "tế", "với", "ngân", "sách", "linh", "hoạt", "tách"]
+    text: |-
+      □ Hằng tháng so thực tế với ngân sách linh hoạt, tách khối lượng/giá/biến phí/định phí, tổng khớp?
+  - id: "m04-checklist-12"
+    title: "Checklist: □ Có dự báo cuốn chiếu 12 tháng và dòng tiền 13 tuần cập nhật hằng tuần?"
+    tags: ["checklist", "có", "dự", "báo", "cuốn", "chiếu", "12", "tháng", "và", "dòng", "tiền", "13"]
+    text: |-
+      □ Có dự báo cuốn chiếu 12 tháng và dòng tiền 13 tuần cập nhật hằng tuần?
+  - id: "m04-checklist-13"
+    title: "Checklist: □ Đo sai số dự báo (MAPE, tracking signal)?"
+    tags: ["checklist", "đo", "sai", "số", "dự", "báo", "mape", "tracking", "signal"]
+    text: |-
+      □ Đo sai số dự báo (MAPE, tracking signal)?
+  - id: "m04-checklist-14"
+    title: "Checklist: □ Có ngưỡng cảnh báo tiền mặt tối thiểu và phương án B?"
+    tags: ["checklist", "có", "ngưỡng", "cảnh", "báo", "tiền", "mặt", "tối", "thiểu", "và", "phương", "án"]
+    text: |-
+      □ Có ngưỡng cảnh báo tiền mặt tối thiểu và phương án B?
+  - id: "m04-checklist-15"
+    title: "Checklist: □ Có cơ chế chống slack/sandbagging (benchmark, dữ liệu)?"
+    tags: ["checklist", "có", "cơ", "chế", "chống", "slack", "sandbagging", "benchmark", "dữ", "liệu"]
+    text: |-
+      □ Có cơ chế chống slack/sandbagging (benchmark, dữ liệu)?
+  - id: "m04-checklist-16"
+    title: "Checklist: □ Thưởng gắn với số dư đảm phí/lợi nhuận, không chỉ doanh số?"
+    tags: ["checklist", "thưởng", "gắn", "với", "số", "dư", "đảm", "phí", "lợi", "nhuận", "không", "chỉ"]
+    text: |-
+      □ Thưởng gắn với số dư đảm phí/lợi nhuận, không chỉ doanh số?
+  - id: "m04-checklist-17"
+    title: "Checklist: □ ZBB được áp cho các khoản chi lớn nhất ít nhất mỗi năm một lần?"
+    tags: ["checklist", "zbb", "được", "áp", "cho", "các", "khoản", "chi", "lớn", "nhất", "ít", "mỗi"]
+    text: |-
+      □ ZBB được áp cho các khoản chi lớn nhất ít nhất mỗi năm một lần?
+  - id: "m04-checklist-18"
+    title: "Checklist: □ Đã kiểm tra với kế toán về quy định hiện hành (VAS/TT200/TT133, thuế, hóa đơn)?"
+    tags: ["checklist", "đã", "kiểm", "tra", "với", "kế", "toán", "về", "quy", "định", "hiện", "hành"]
+    text: |-
+      □ Đã kiểm tra với kế toán về quy định hiện hành (VAS/TT200/TT133, thuế, hóa đơn)?
+  - id: "m04-checklist-19"
+    title: "Checklist: □ Giá phần mềm đã ghi là ước tính và cần xác nhận?"
+    tags: ["checklist", "giá", "phần", "mềm", "đã", "ghi", "là", "ước", "tính", "và", "cần", "xác"]
+    text: |-
+      □ Giá phần mềm đã ghi là ước tính và cần xác nhận?
+  - id: "m04-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: 5 tab: INPUTS (chỉ nhập số, màu xanh) - BÁN HÀNG & SẢN XUẤT - CHI PHÍ & P&L (hòa vốn, biên an toàn)…"
+    tags: ["mẫu", "excel", "sheets", "tab", "inputs", "chỉ", "nhập", "số", "màu", "xanh", "bán", "hàng"]
+    text: |-
+      5 tab: INPUTS (chỉ nhập số, màu xanh) - BÁN HÀNG & SẢN XUẤT - CHI PHÍ & P&L (hòa vốn, biên an toàn) - TIỀN MẶT (lịch thu/chi, 13 tuần, conditional formatting tô đỏ khi tiền cuối tuần dưới ngưỡng) - ACTUAL vs BUDGET (Tĩnh | Linh hoạt | Thực tế | chênh lệch khối lượng/giá/biến phí/định phí).
+  - id: "m04-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Hàm: AVERAGE (MA); =$H$1*B3+(1-$H$1)*C3 (san mũ, H1 = alpha); FORECAST.LINEAR, SLOPE, INTERCEPT (hồ…"
+    tags: ["mẫu", "excel", "sheets", "hàm", "average", "ma", "b3", "c3", "san", "mũ", "h1", "alpha"]
+    text: |-
+      Hàm: AVERAGE (MA); =$H$1*B3+(1-$H$1)*C3 (san mũ, H1 = alpha); FORECAST.LINEAR, SLOPE, INTERCEPT (hồi quy); =SUMPRODUCT(ABS((A-F)/A))/COUNT(A) (MAPE); =0.2*Ban_ky_sau (tồn cuối); =Dinh_phi/(Gia-Bien_phi) (hòa vốn).
+  - id: "m04-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: Ngân sách 1 trang: Doanh thu - Biến phí - CM và CM% - Định phí - Lợi nhuận - Hòa vốn - Dòng tiền."
+    tags: ["mẫu", "excel", "sheets", "ngân", "sách", "trang", "doanh", "thu", "biến", "phí", "cm", "và"]
+    text: |-
+      Ngân sách 1 trang: Doanh thu - Biến phí - CM và CM% - Định phí - Lợi nhuận - Hòa vốn - Dòng tiền.
+  - id: "m04-excel_google_sheets_templates-4"
+    title: "Mẫu Excel/Sheets: Báo cáo variance 1 trang: Khoản mục (Sản lượng, Doanh thu, Biến phí, CM, Định phí, Lợi nhuận) x (Tĩ…"
+    tags: ["mẫu", "excel", "sheets", "báo", "cáo", "variance", "trang", "khoản", "mục", "sản", "lượng", "doanh"]
+    text: |-
+      Báo cáo variance 1 trang: Khoản mục (Sản lượng, Doanh thu, Biến phí, CM, Định phí, Lợi nhuận) x (Tĩnh, Linh hoạt, Thực tế, Chênh lệch Thực tế - Linh hoạt, Nguyên nhân và hành động).
+  - id: "m04-excel_google_sheets_templates-5"
+    title: "Mẫu Excel/Sheets: Looker Studio hoặc Power BI: dashboard 10 chỉ số cảnh báo và đường dòng tiền 13 tuần."
+    tags: ["mẫu", "excel", "sheets", "looker", "studio", "hoặc", "power", "bi", "dashboard", "10", "chỉ", "số"]
+    text: |-
+      Looker Studio hoặc Power BI: dashboard 10 chỉ số cảnh báo và đường dòng tiền 13 tuần.
+  - id: "m04-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: 04-budgeting-and-forecasting.md

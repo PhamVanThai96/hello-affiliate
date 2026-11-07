@@ -1,0 +1,1534 @@
+id: marketing-m12
+title: "Marketing m12: Cẩm nang case study marketing tích hợp"
+summary: "Kết nối m01-m11 thành một hệ thống ra quyết định marketing: chiến lược (STP) -> chiến thuật (7P cho sản phẩm/dịch vụ, 4C cho môi trường số) -> chỉ số giá trị (CLV/CAC, K-factor, brand resonance, attribution). Cung cấp 12 case thành công/thất bại làm khuôn đối chiếu, ma trận kiểm…"
+agents: ["marketing_expert"]
+order: 32
+when: ["ke hoach marketing toan dien", "lap ke hoach marketing", "chien luoc marketing tong the", "marketing plan", "ke hoach marketing nam", "tu van marketing cho doanh nghiep", "bai toan tong hop", "khoi nghiep marketing", "ra mat thuong hieu moi", "da khia canh", "case study", "tinh huong", "bai hoc tu", "phan tich case", "vi du thuc te", "highlands", "the coffee house", "vinamilk", "biti's", "giai bai tap marketing", "bai tap tinh huong", "cam nang case study marketing tich hop", "comprehensive marketing case studies manual"]
+body_max: 3209
+sections:
+  - id: "m12-tong-quan"
+    title: "Tổng quan m12"
+    tags: ["m12", "cẩm", "nang", "case", "study", "marketing", "tích", "hợp", "comprehensive", "studies", "manual"]
+    text: |-
+      Cẩm nang case study marketing tích hợp (Comprehensive Marketing Case Studies Manual) — module m12
+
+      Mục đích: Kết nối m01-m11 thành một hệ thống ra quyết định marketing: chiến lược (STP) -> chiến thuật (7P cho sản phẩm/dịch vụ, 4C cho môi trường số) -> chỉ số giá trị (CLV/CAC, K-factor, brand resonance, attribution). Cung cấp 12 case thành công/thất bại làm khuôn đối chiếu, ma trận kiểm tra sức khỏe marketing 6 trụ cột, và các chuyên đề định lượng nâng cao (CLV chiết khấu, A/B test, Markov, attribution, survival, giá tối ưu, SIR).
+
+      Dùng khi:
+      - Bài toán marketing đa chiều cần đi qua nhiều module theo đúng thứ tự (ví dụ: ra mắt dịch vụ thuê bao = STP + 7P + giá + CLV/CAC + growth loop + brand).
+      - Cần khuôn case tương tự để đối chiếu: tái định vị (Biti's Hunter), phân khúc quá nhỏ (Soya Garden), 7P lệch nhau (Coffee House), churn/CLV (Spotify), CLV âm (M…
+      - Cần kiểm tra sức khỏe marketing tổng thể của doanh nghiệp bằng ma trận 6 trụ cột (Strategic, Tactics, Financials, Identity, Growth, Collaboration).
+      - Cần công thức nâng cao: CLV chiết khấu dạng đóng, CAC payback, K-factor, kiểm định A/B (Z-score, cỡ mẫu), chuỗi Markov thị phần, attribution (time-decay, Marko…
+      - Cần quy trình xử lý khủng hoảng truyền thông 6 bước hoặc bản đồ định tuyến vấn đề marketing -> module.
+
+      Nên nắm trước: - m01; - m02; - m03; - m04; - m05; - m06; - m07; - m08; - m09; - m10; - m11
+
+      Module liên quan: - 'm01 - STP: tiêu chí 5 yếu tố phân khúc (Measurable, Accessible, Substantial, Differentiable, Actionable), bản đồ nhận thức; ở m12 chỉ thêm K-Means/Silhouette và case Biti''s/Soya Garden.' - 'm02 - Marketing Mix 4P/7P: Service Blueprint, nhất quán 7P; case Starbucks và The Coffee House.' - m03 - CLV, retention, RFM, cohort; ở m12 thêm dạng đóng CLV chiết khấu, CAC payback áp vào Spotify/MoviePa…
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m12_clv_discounted_geometric: CLV theo nhóm có chiết khấu (dạng đóng)
+      - m12_cac_payback: Thời gian hoàn vốn CAC
+      - m12_k_factor: Hệ số lan truyền K và tăng trưởng viral
+      - m12_ab_test_z: Kiểm định Z cho hai tỷ lệ chuyển đổi (A/B test)
+      - m12_ab_sample_size: Cỡ mẫu A/B test cho mỗi nhóm
+      - m12_markov_market_share: Dự báo thị phần bằng chuỗi Markov
+      - m12_attribution_time_decay: Trọng số attribution suy giảm theo thời gian và tuyến tính
+      - m12_attribution_markov_removal: Attribution Markov - Hiệu ứng loại bỏ (Removal Effect)
+      - m12_survival_weibull: Hàm sống sót cohort dạng Weibull kéo giãn
+      - m12_lerner_optimal_price: Giá tối ưu theo độ co giãn (quy tắc Lerner)
+      - m12_dynamic_price: Giá động theo cung cầu và tốc độ đặt phòng
+      - m12_sir_virality: Mô hình SIR cho lan truyền phản ứng ngược trên mạng xã hội
+      - m12_contribution_margin_usage: Biên đóng góp theo mức sử dụng và điểm hòa vốn của gói thuê…
+      - m12_kmeans_silhouette: Phân cụm K-Means và hệ số Silhouette
+
+      Kho tra cứu của module: Khái niệm 10, Công thức 14, frameworks 4, Quy trình 4, Quy tắc quyết định 12, Chuẩn so sánh 11, Lỗi thường gặp 14, Lưu ý SME Việt Nam 8, Bài học case 12, Ví dụ có lời giải 5, Câu hỏi luyện tập 8, Checklist 13, Mẫu Excel/Sheets 8. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ CLV", "lỗi thường gặp định giá").
+  - id: "m12-concepts-1"
+    title: "Khái niệm: Bản đồ hệ thống marketing tích hợp"
+    tags: ["khái", "niệm", "bản", "đồ", "hệ", "thống", "marketing", "tích", "hợp"]
+    text: |-
+      term_vi: Bản đồ hệ thống marketing tích hợp
+      term_en: Integrated marketing system map
+      definition: 'Ba tầng nối tiếp. (1) Tầng chiến lược: động cơ STP chọn đúng phân khúc và vị thế. (2) Tầng chiến thuật chia hai nhánh bổ sung: 7P (Product, Price, Place, Promotion, People, Process, Physical Evidence - lấy sản phẩm/doanh nghiệp làm trung tâm) và 4C số (Co-creation, Currency, Communal Activation, Conversation - lấy cộng đồng khách hàng làm trung tâm). (3) Tầng đo lường giá trị và chuyển đổi: cohort retention, CLV/CAC, K-factor, brand resonance, multi-touch attribution.'
+      why_it_matters: Tránh coi mỗi công cụ là ốc đảo. STP sai thì 7P hoàn hảo cũng vô nghĩa (Soya Garden); 7P lệch định vị thì giá premium sụp (Coffee House); 4C bị chặn thì viral không chạy (Quibi); mô hình CLV âm thì tăng trưởng càng nhanh càng chết (MoviePass). Mọi quyết định phải truy ngược lên STP và truy xuôi xuống chỉ số giá trị.
+  - id: "m12-concepts-2"
+    title: "Khái niệm: Nhất quán hệ thống 7P với định vị"
+    tags: ["khái", "niệm", "nhất", "quán", "hệ", "thống", "7p", "với", "định", "vị"]
+    text: |-
+      term_vi: Nhất quán hệ thống 7P với định vị
+      term_en: Systemic consistency of the 7P with positioning
+      definition: Mọi P (đặc biệt Price, People, Process, Physical Evidence) phải cùng củng cố một lời hứa thương hiệu; cắt bỏ một P cốt lõi mà giữ nguyên giá premium là bất nhất.
+      why_it_matters: 'Starbucks: giá cao + không gian + barista Partners tạo bức tường chống sao chép. The Coffee House (Ten Coffee): cắt Physical Evidence (chỗ ngồi), Process và People thành giao dịch nhanh nhưng giữ giá 45.000-60.000 VNĐ -> khách thấy giá trị nhận được thấp hơn giá trả.'
+  - id: "m12-concepts-3"
+    title: "Khái niệm: Ngộ nhận quy mô phân khúc và mức sẵn lòng chi trả"
+    tags: ["khái", "niệm", "ngộ", "nhận", "quy", "mô", "phân", "khúc", "và", "mức", "sẵn", "lòng"]
+    text: |-
+      term_vi: Ngộ nhận quy mô phân khúc và mức sẵn lòng chi trả
+      term_en: Segment size and Willingness-to-Pay (WTP) fallacy
+      definition: Quan tâm (Healthy lifestyle) khác với hành vi chi trả thực tế; một phân khúc đủ lớn về số người nhưng nhỏ/phân mảnh về số người SẴN LÒNG TRẢ giá định vị sẽ không phủ nổi chi phí cố định.
+      why_it_matters: Soya Garden định giá 50.000-75.000 VNĐ cho sản phẩm vỉa hè 5.000-10.000 VNĐ (chênh khoảng 5-15 lần) -> xung đột nhận thức; 50+ cửa hàng mặt bằng vàng không đủ sản lượng.
+  - id: "m12-concepts-4"
+    title: "Khái niệm: Churn là đòn bẩy CLV rẻ nhất"
+    tags: ["khái", "niệm", "churn", "là", "đòn", "bẩy", "clv", "rẻ", "nhất"]
+    text: |-
+      term_vi: Churn là đòn bẩy CLV rẻ nhất
+      term_en: Churn reduction as the cheapest CLV lever
+      definition: Giảm tỷ lệ rời bỏ làm tăng tuổi thọ kỳ vọng và CLV mà không tăng CAC; hiệu ứng phi tuyến (churn càng thấp, mỗi điểm phần trăm giảm càng tăng CLV nhiều).
+      why_it_matters: 'Spotify giả định giảm churn 5,5% -> 3,9%/tháng: CLV tăng 32,7% với cùng CAC. Switching cost tâm lý (thuật toán Discover Weekly) và Family Plan là cơ chế giữ chân.'
+  - id: "m12-concepts-5"
+    title: "Khái niệm: Biên đóng góp âm: tăng trưởng giết chết doanh nghiệp"
+    tags: ["khái", "niệm", "biên", "đóng", "góp", "âm", "tăng", "trưởng", "giết", "chết", "doanh", "nghiệp"]
+    text: |-
+      term_vi: 'Biên đóng góp âm: tăng trưởng giết chết doanh nghiệp'
+      term_en: Negative contribution margin / unit economics trap
+      definition: Nếu biến phí mỗi khách vượt doanh thu mỗi khách thì CLV < 0 và mỗi khách mới làm lỗ thêm; CAC thấp không cứu được.
+      why_it_matters: 'MoviePass: giá $9,95/tháng nhưng trả rạp khoảng $12/vé -> lỗ ngay từ phim đầu tiên; từ 20.000 lên khoảng 3 triệu thuê bao càng nhanh càng cháy tiền.'
+  - id: "m12-concepts-6"
+    title: "Khái niệm: Tài sản thương hiệu = cảm xúc tích lũy, không chỉ hiệu năng"
+    tags: ["khái", "niệm", "tài", "sản", "thương", "hiệu", "cảm", "xúc", "tích", "lũy", "không", "chỉ"]
+    text: |-
+      term_vi: Tài sản thương hiệu = cảm xúc tích lũy, không chỉ hiệu năng
+      term_en: Brand equity is emotional heritage, not just performance
+      definition: 'Tháp CBBE (Keller): Salience -> Performance/Imagery -> Judgments/Feelings -> Resonance. Nghiên cứu mù vị giác chỉ đo tầng Performance.'
+      why_it_matters: 'New Coke thắng trắc nghiệm mù nhưng thua ở tầng Feelings/Imagery -> phản ứng dữ dội, 79 ngày sau phải khôi phục Coca-Cola Classic. Apple đạt Resonance nên ít nhạy cảm giá (xem Lerner: elasticity thấp).'
+  - id: "m12-concepts-7"
+    title: "Khái niệm: Vòng lặp lan truyền nhúng trong sản phẩm"
+    tags: ["khái", "niệm", "vòng", "lặp", "lan", "truyền", "nhúng", "trong", "sản", "phẩm"]
+    text: |-
+      term_vi: Vòng lặp lan truyền nhúng trong sản phẩm
+      term_en: Product-led viral loop and K-factor
+      definition: K = i x c (số lời mời mỗi người dùng x tỷ lệ chuyển đổi mỗi lời mời). K > 1 thì tăng trưởng tự duy trì; K < 1 thì tắt dần, cần quảng cáo trả phí.
+      why_it_matters: Dropbox thay AdWords (CAC $250-350 so với phí $99/năm) bằng referral hai chiều +500MB. Quibi chặn chụp màn hình/chia sẻ nên Conversation và Referral bằng không.
+  - id: "m12-concepts-8"
+    title: "Khái niệm: Conversation là quyền của cộng đồng, không của thương hiệu"
+    tags: ["khái", "niệm", "conversation", "là", "quyền", "của", "cộng", "đồng", "không", "thương", "hiệu"]
+    text: |-
+      term_vi: Conversation là quyền của cộng đồng, không của thương hiệu
+      term_en: Conversation in Marketing 4.0 is community-owned
+      definition: Trong khung 4C, thảo luận là hai chiều, bình đẳng; thương hiệu không kiểm soát được thông điệp sau khi phát hành. Phản ứng ngược có thể mô hình hóa như dịch bệnh SIR.
+      why_it_matters: Pepsi/Kendall Jenner (4/2017) bị gỡ sau khoảng 48 giờ vì tầm thường hóa phong trào xã hội; nhu cầu có kế hoạch khủng hoảng 6 bước sẵn sàng.
+  - id: "m12-concepts-9"
+    title: "Khái niệm: Ngạo mạn dữ liệu"
+    tags: ["khái", "niệm", "ngạo", "mạn", "dữ", "liệu"]
+    text: |-
+      term_vi: Ngạo mạn dữ liệu
+      term_en: Data hubris / math-centric bias
+      definition: Tin tuyệt đối vào một loại số liệu định lượng hẹp (blind taste test, A/B ngắn hạn, last-touch) bỏ qua bối cảnh văn hóa/cảm xúc/đa kênh.
+      why_it_matters: Kết hợp định lượng và định tính (m07); attribution last-touch thiên vị kênh hạ nguồn; A/B test cần ý nghĩa thống kê và đo hậu quả dài hạn.
+  - id: "m12-concepts-10"
+    title: "Khái niệm: Chẩn đoán lỗi sản phẩm qua hàm sống sót"
+    tags: ["khái", "niệm", "chẩn", "đoán", "lỗi", "sản", "phẩm", "qua", "hàm", "sống", "sót"]
+    text: |-
+      term_vi: Chẩn đoán lỗi sản phẩm qua hàm sống sót
+      term_en: Cohort survival diagnosis (alpha, beta)
+      definition: S(t) = S0 x exp(-alpha x t^beta). alpha cao = lỗi ở kích hoạt (Activation, Aha moment); beta > 1 = rời bỏ tăng tốc, lỗi giữ chân dài hạn (Retention); beta < 1 = khách cũ trung thành hơn.
+      why_it_matters: Giúp quyết định đầu tư vào onboarding hay vào nội dung/dịch vụ dài hạn thay vì đoán mò. Cần hồi quy phi tuyến trên log người dùng thực.
+  - id: "m12-formulas-1"
+    title: "Công thức: m12_clv_discounted_geometric — CLV theo nhóm có chiết khấu (dạng đóng)"
+    tags: ["công", "thức", "m12_clv_discounted_geometric", "clv", "theo", "nhóm", "có", "chiết", "khấu", "dạng", "đóng"]
+    text: |-
+      id: m12_clv_discounted_geometric
+      name_vi: CLV theo nhóm có chiết khấu (dạng đóng)
+      name_en: Discounted cohort CLV, closed form
+      expression_latex: CLV = \sum_{t=0}^{\infty}\frac{ARPU\cdot m\,(1-c)^t}{(1+d)^t} = \frac{ARPU\cdot m}{1-\frac{1-c}{1+d}}
+      expression_python: arpu*m/(1-(1-c)/(1+d))
+      excel: =ARPU*m/(1-(1-c)/(1+d))
+      variables:
+      - symbol: arpu
+        meaning: Doanh thu trung bình mỗi khách mỗi kỳ
+        unit: tiền/tháng
+      - symbol: m
+        meaning: Biên đóng góp (gross margin sau biến phí trực tiếp)
+        unit: tỷ lệ
+      - symbol: c
+        meaning: Churn mỗi kỳ
+        unit: tỷ lệ/tháng
+      - symbol: d
+        meaning: Tỷ suất chiết khấu mỗi kỳ
+        unit: tỷ lệ/tháng
+      when_to_use: Mô hình thuê bao/SaaS/Fintech với ARPU, biên và churn xấp xỉ không đổi; cần so sánh các kịch bản churn.
+      why_it_works: 'Mỗi tháng khách còn lại với xác suất (1-c)^t và dòng tiền được chiết khấu (1+d)^t, nên chuỗi là cấp số nhân công bội q = (1-c)/(1+d) < 1; tổng vô hạn = số hạng đầu / (1-q). Mẫu số 1-q xấp xỉ c + d nên CLV xấp xỉ ARPU x m / (c + d): churn là đòn bẩy chính, d chỉ phụ.'
+      assumptions:
+      - Số hạng đầu t=0 là tháng đầu tiên ghi đủ biên (khách trả tiền trước)
+      - ARPU và biên không đổi
+      - Churn không đổi theo thời gian (bỏ qua cohort decay thật - xem survival Weibull)
+      pitfalls:
+      - Dùng ARPU doanh thu thay vì biên đóng góp -> CLV phình to.
+      - Churn tháng đưa vào công thức năm (hoặc ngược lại) -> sai đơn vị.
+      - Chuỗi chỉ hội tụ nếu biên dương; biên âm (MoviePass) thì CLV âm và càng nhiều khách càng lỗ.
+      - Churn giả định đồng nhất; thực tế khách mới churn cao hơn khách cũ (beta < 1).
+      interpretation: CLV/CAC < 1 lỗ; 3,0 là mốc phổ biến cho tăng trưởng lành mạnh; > 5,0 có thể đang đầu tư thiếu vào tăng trưởng (ngưỡng nguồn nêu, mang tính quy ước - confidence medium).
+      example:
+        inputs:
+          arpu: 10
+          m: 0.3
+          c_old: 0.055
+          c_new: 0.039
+          d: 0.01
+          CAC: 15
+        steps:
+        - q_old = 0,945/1,01 = 0,93564; CLV_old = 3/(1-0,93564) = 3/0,06436 = 46,62 USD (nguồn ghi 46,61 do cắt số)
+        - q_new = 0,961/1,01 = 0,95149; CLV_new = 3/0,04851 = 61,84 USD (nguồn ghi 61,83)
+        - Tăng = 61,84/46,62 - 1 = 32,7%; CLV/CAC = 3,11x -> 4,12x với CAC 15
+        result: CLV 46,62 -> 61,84 USD (+32,7%); CLV/CAC 3,11 -> 4,12 (số liệu Spotify là giả định minh họa)
+  - id: "m12-formulas-2"
+    title: "Công thức: m12_cac_payback — Thời gian hoàn vốn CAC"
+    tags: ["công", "thức", "m12_cac_payback", "thời", "gian", "hoàn", "vốn", "cac"]
+    text: |-
+      id: m12_cac_payback
+      name_vi: Thời gian hoàn vốn CAC
+      name_en: CAC payback period
+      expression_latex: Payback = \frac{CAC}{ARPU\times m}
+      expression_python: cac/(arpu*m)
+      excel: =CAC/(ARPU*m)
+      variables:
+      - symbol: cac
+        meaning: Chi phí thu hút một khách mới
+        unit: tiền
+      - symbol: arpu
+        meaning: ARPU mỗi tháng
+        unit: tiền/tháng
+      - symbol: m
+        meaning: Biên đóng góp
+        unit: tỷ lệ
+      when_to_use: Đánh giá an toàn dòng tiền khi đốt tiền mua khách; bổ sung CLV/CAC (CLV/CAC cao nhưng payback dài vẫn có thể cạn tiền).
+      why_it_works: Số tháng biên đóng góp mỗi khách cần để bù chi phí đã bỏ ra; không chiết khấu, không tính churn trong thời gian hoàn vốn nên là phép kiểm tra thanh khoản thô.
+      assumptions:
+      - Khách không rời trước khi hoàn vốn (nên đối chiếu với tuổi thọ 1/c)
+      pitfalls:
+      - Dùng doanh thu thay vì biên
+      - 'Bỏ qua churn: nếu tuổi thọ kỳ vọng 1/c ngắn hơn payback thì chắc chắn lỗ'
+      interpretation: Dưới 12 tháng được coi là lành mạnh (ngưỡng nguồn nêu); Spotify minh họa 15/(10x0,30) = 5 tháng.
+      example:
+        inputs:
+          cac: 15
+          arpu: 10
+          m: 0.3
+        steps:
+        - Payback = 15/(10 x 0,30) = 15/3 = 5 tháng
+        result: 5 tháng
+  - id: "m12-formulas-3"
+    title: "Công thức: m12_k_factor — Hệ số lan truyền K và tăng trưởng viral"
+    tags: ["công", "thức", "m12_k_factor", "hệ", "số", "lan", "truyền", "và", "tăng", "trưởng", "viral"]
+    text: |-
+      id: m12_k_factor
+      name_vi: Hệ số lan truyền K và tăng trưởng viral
+      name_en: Viral K-factor
+      expression_latex: K=i\times c,\qquad N_n = N_0\sum_{k=0}^{n}K^k\ (\text{tổng người dùng sau } n \text{ vòng})
+      expression_python: K=i*c; N0*sum(K**k for k in range(n+1))
+      excel: =i*c ; tổng = N0*(K^(n+1)-1)/(K-1)
+      variables:
+      - symbol: i
+        meaning: Số lời mời trung bình mỗi người dùng gửi đi
+        unit: lời mời/người
+      - symbol: c
+        meaning: Tỷ lệ chuyển đổi mỗi lời mời thành người dùng mới
+        unit: tỷ lệ
+      - symbol: N0
+        meaning: Người dùng hạt giống
+        unit: người
+      - symbol: n
+        meaning: Số vòng lan truyền (viral cycle)
+        unit: vòng
+      when_to_use: Thiết kế/đánh giá referral program, tính CAC hữu cơ, quyết định có cần ngân sách trả phí bổ sung.
+      why_it_works: Mỗi thế hệ người dùng mới bằng K lần thế hệ trước; tổng là chuỗi hình học. K > 1 hội tụ vô hạn (tăng trưởng mũ), K < 1 tổng hữu hạn N0/(1-K) và cần quảng cáo để duy trì.
+      assumptions:
+      - i và c ổn định qua các vòng (thực tế giảm dần khi bão hòa mạng lưới)
+      - Chu kỳ viral ngắn và đo được
+      pitfalls:
+      - 'Nguồn nêu Dropbox K > 1,15 bền vững: chưa kiểm chứng; thực tế viral loops thường bão hòa, K sụt theo thời gian.'
+      - Bỏ qua chi phí phần thưởng (500MB lưu trữ tốn chi phí hạ tầng) khi nói CAC = 0.
+      - 'Gộp lời mời spam với lời mời chất lượng: đo c theo người dùng ĐÃ kích hoạt.'
+      interpretation: K = 1,15 -> mỗi vòng tăng 15%; K < 1 vẫn có giá trị (giảm CAC trộn - blended CAC) dù không tự duy trì.
+      example:
+        inputs:
+          i: 5
+          c: 0.23
+          N0: 100000
+        steps:
+        - K = 5 x 0,23 = 1,15
+        - 'Số người dùng thế hệ sau n vòng (N0 x K^n): n=3 -> 152.087; n=6 -> 231.306; n=9 -> 351.788; n=12 -> 535.025'
+        - Cần log(40)/log(1,15) = 26,4 vòng để từ 100.000 lên 4.000.000 (nếu K không đổi) - mức nguồn nêu chỉ đạt trong 15 tháng nếu chu kỳ viral ngắn (~17 ngày/vòng)
+        result: K = 1,15; cần khoảng 26 vòng cho tăng 40 lần (i, c là giả định minh họa, không phải số Dropbox thật)
+  - id: "m12-formulas-4"
+    title: "Công thức: m12_ab_test_z — Kiểm định Z cho hai tỷ lệ chuyển đổi (A/B test)"
+    tags: ["công", "thức", "m12_ab_test_z", "kiểm", "định", "cho", "hai", "tỷ", "lệ", "chuyển", "đổi", "test"]
+    text: |-
+      id: m12_ab_test_z
+      name_vi: Kiểm định Z cho hai tỷ lệ chuyển đổi (A/B test)
+      name_en: Two-proportion Z-test for A/B testing
+      expression_latex: Z=\frac{\hat p_B-\hat p_A}{\sqrt{\hat p(1-\hat p)\left(\frac{1}{n_A}+\frac{1}{n_B}\right)}},\quad \hat p=\frac{x_A+x_B}{n_A+n_B}
+      expression_python: (pb-pa)/(p*(1-p)*(1/na+1/nb))**0.5
+      excel: =(pB-pA)/SQRT(p*(1-p)*(1/nA+1/nB))
+      variables:
+      - symbol: pa, pb
+        meaning: Tỷ lệ chuyển đổi quan sát của bản A (cũ) và B (mới)
+        unit: tỷ lệ
+      - symbol: na, nb
+        meaning: Cỡ mẫu mỗi nhóm
+        unit: lượt truy cập
+      - symbol: p
+        meaning: Tỷ lệ chuyển đổi gộp hai nhóm
+        unit: tỷ lệ
+      when_to_use: Quyết định có triển khai thay đổi giao diện/CTA/giá không dựa trên dữ liệu thử nghiệm song song.
+      why_it_works: Dưới H0 (pB = pA) hiệu số hai tỷ lệ xấp xỉ chuẩn với độ lệch chuẩn dùng tỷ lệ gộp; Z đo hiệu số bằng bao nhiêu độ lệch chuẩn nhiễu. Z > 1,96 (hai phía 5%) hoặc > 1,645 (một phía 5%) thì bác bỏ H0.
+      assumptions:
+      - Phân nhóm ngẫu nhiên, chạy đồng thời
+      - Mẫu đủ lớn (n p và n (1-p) đều > 10)
+      - Không 'nhìn trộm' kết quả giữa chừng rồi dừng sớm
+      pitfalls:
+      - 'Nguồn viết Z > 1,96 cho giả thuyết một phía (H1: pB > pA): đúng ngưỡng một phía 5% là 1,645; 1,96 là hai phía. Ghi rõ lựa chọn.'
+      - 'Ý nghĩa thống kê khác ý nghĩa kinh doanh: lift nhỏ nhưng đáng kể vẫn có thể không bù chi phí triển khai.'
+      - Dừng test sớm khi thấy Z vượt ngưỡng làm tăng sai lầm loại I.
+      interpretation: 'Z = 2,42 -> p một phía khoảng 0,8%: bản B tốt hơn có ý nghĩa; Z = 1,08 -> chưa đủ bằng chứng, cần thêm mẫu.'
+      example:
+        inputs:
+          pa: 0.1
+          pb: 0.115
+          na: 5000
+          nb: 5000
+        steps:
+        - p = (0,10x5000 + 0,115x5000)/10000 = 0,1075
+        - SE = sqrt(0,1075 x 0,8925 x (1/5000 + 1/5000)) = sqrt(0,0000383) = 0,00619
+        - Z = 0,015/0,00619 = 2,42 > 1,96
+        - 'Với n = 1000/nhóm cùng pa, pb: Z = 1,08 -> không đủ kết luận'
+        result: Z = 2,42 (n=5000/nhóm) so với 1,08 (n=1000/nhóm)
+  - id: "m12-formulas-5"
+    title: "Công thức: m12_ab_sample_size — Cỡ mẫu A/B test cho mỗi nhóm"
+    tags: ["công", "thức", "m12_ab_sample_size", "cỡ", "mẫu", "test", "cho", "mỗi", "nhóm"]
+    text: |-
+      id: m12_ab_sample_size
+      name_vi: Cỡ mẫu A/B test cho mỗi nhóm
+      name_en: Sample size per arm for two-proportion test
+      expression_latex: n=\frac{\left(z_{\alpha}\sqrt{2\bar p(1-\bar p)}+z_{\beta}\sqrt{p_1(1-p_1)+p_2(1-p_2)}\right)^2}{(p_2-p_1)^2}
+      expression_python: (za*(2*pbar*(1-pbar))**0.5 + zb*(p1*(1-p1)+p2*(1-p2))**0.5)**2/(p2-p1)**2
+      excel: (công thức trực tiếp, hoặc dùng công cụ tính cỡ mẫu A/B)
+      variables:
+      - symbol: p1, p2
+        meaning: Tỷ lệ chuyển đổi nền và tỷ lệ kỳ vọng sau cải tiến
+        unit: tỷ lệ
+      - symbol: pbar
+        meaning: (p1 + p2)/2
+        unit: tỷ lệ
+      - symbol: za
+        meaning: z cho mức ý nghĩa (1,645 một phía 5%)
+        unit: '-'
+      - symbol: zb
+        meaning: z cho lực kiểm định (0,84 ứng với power 80%)
+        unit: '-'
+      when_to_use: Trước khi chạy A/B để biết cần bao nhiêu lượt truy cập, tránh kết luận khi mẫu quá nhỏ. Công thức này KHÔNG có trong nguồn - bổ sung chuẩn thống kê.
+      why_it_works: 'Để phát hiện hiệu số nhỏ giữa hai tỷ lệ với sai số loại I và II cho trước, mẫu tăng tỷ lệ nghịch bình phương hiệu số: giảm lift một nửa cần gấp bốn mẫu.'
+      assumptions:
+      - Xấp xỉ chuẩn
+      - Mức ý nghĩa và power chọn trước
+      pitfalls:
+      - Lift nhỏ trên traffic thấp của SME có thể cần hàng tuần - chọn thay đổi lớn hơn hoặc chỉ số gần hơn (click thay vì mua)
+      interpretation: Phát hiện lift 10% -> 11,5% (một phía 5%, power 80%) cần khoảng 5.266 lượt/nhóm.
+      example:
+        inputs:
+          p1: 0.1
+          p2: 0.115
+          za: 1.645
+          zb: 0.84
+        steps:
+        - pbar = 0,1075
+        - n = (1,645 x sqrt(2 x 0,1075 x 0,8925) + 0,84 x sqrt(0,09 + 0,101775))^2/(0,015)^2 = 5.265 (làm tròn lên 5.266)
+        result: khoảng 5.266 lượt/nhóm
+  - id: "m12-formulas-6"
+    title: "Công thức: m12_markov_market_share — Dự báo thị phần bằng chuỗi Markov"
+    tags: ["công", "thức", "m12_markov_market_share", "dự", "báo", "thị", "phần", "bằng", "chuỗi", "markov"]
+    text: |-
+      id: m12_markov_market_share
+      name_vi: Dự báo thị phần bằng chuỗi Markov
+      name_en: Markov chain market share forecast
+      expression_latex: '\mathbf s(t)=\mathbf s(0)P^{t},\qquad \boldsymbol\pi P=\boldsymbol\pi,\ \sum\pi_j=1;\ \text{hai thương hiệu: }\pi_A=\frac{p_{21}}{p_{12}+p_{21}}'
+      expression_python: s0 @ np.linalg.matrix_power(P, t);  pi_A = p21/(p12+p21)
+      excel: =MMULT(s0, MMULT(P, P...)) hoặc dùng MMULT lặp; thị phần cân bằng A = p21/(p12+p21)
+      variables:
+      - symbol: P
+        meaning: Ma trận xác suất chuyển đổi thương hiệu giữa hai chu kỳ (mỗi hàng cộng bằng 1)
+        unit: xác suất
+      - symbol: s0
+        meaning: Vector thị phần hiện tại
+        unit: tỷ lệ
+      - symbol: p12, p21
+        meaning: Xác suất A->B và B->A
+        unit: xác suất
+      when_to_use: Dự báo thị phần dài hạn khi biết xác suất giữ chân/chuyển đổi thương hiệu; xác định đầu tư giữ chân (tăng p11) hay giành khách (tăng p21) hiệu quả hơn.
+      why_it_works: Mỗi chu kỳ khách chuyển trạng thái chỉ phụ thuộc thương hiệu hiện tại (tính Markov); nhân ma trận liên tiếp cho phân phối tương lai; hội tụ về phân phối dừng độc lập với thị phần ban đầu.
+      assumptions:
+      - Xác suất chuyển không đổi theo thời gian
+      - Thị trường đóng, tổng khách không đổi
+      - Không phụ thuộc lịch sử xa hơn một chu kỳ
+      pitfalls:
+      - Ma trận P ước lượng từ panel mua hàng nhỏ rất nhiễu
+      - Marketing thay đổi P nên phải ước lượng lại sau chiến dịch
+      - Nguồn viết hai ký hiệu P12/p12 không nhất quán và 'Stead-state' (lỗi chính tả)
+      interpretation: Thị phần cân bằng cho biết điểm cực hạn của ngân sách giành thị phần; tăng p21 hoặc giảm p12 dịch pi_A.
+      example:
+        inputs:
+          P:
+          - - 0.8
+            - 0.2
+          - - 0.3
+            - 0.7
+          s0:
+          - 0.5
+          - 0.5
+        steps:
+        - s(1) = [0,55; 0,45]; s(2) = [0,575; 0,425]; s(5) = [0,5969; 0,4031]
+        - pi_A = 0,3/(0,2+0,3) = 0,60; pi_B = 0,40
+        result: Thị phần A hội tụ 60% (từ 50%)
+  - id: "m12-formulas-7"
+    title: "Công thức: m12_attribution_time_decay — Trọng số attribution suy giảm theo thời gian và tuyến tính"
+    tags: ["công", "thức", "m12_attribution_time_decay", "trọng", "số", "attribution", "suy", "giảm", "theo", "thời", "gian", "và"]
+    text: |-
+      id: m12_attribution_time_decay
+      name_vi: Trọng số attribution suy giảm theo thời gian và tuyến tính
+      name_en: Linear and time-decay attribution
+      expression_latex: w_i^{linear}=\frac1M,\qquad w_t=2^{-\Delta t/\lambda},\ \ \tilde w_t=\frac{w_t}{\sum_j w_j}
+      expression_python: w=[2**(-d/lam) for d in deltas]; wn=[x/sum(w) for x in w]
+      excel: =2^(-dt/lambda) rồi chuẩn hóa chia tổng
+      variables:
+      - symbol: M
+        meaning: Số điểm chạm trong hành trình
+        unit: điểm chạm
+      - symbol: dt
+        meaning: Số ngày từ điểm chạm đến lúc mua
+        unit: ngày
+      - symbol: lam
+        meaning: Chu kỳ bán rã (mặc định 7 ngày)
+        unit: ngày
+      when_to_use: Phân bổ giá trị đơn hàng cho nhiều kênh khi chưa đủ dữ liệu cho mô hình Markov.
+      why_it_works: Last-touch gán 100% cho kênh cuối nên thiên vị hạ nguồn và bỏ rơi nhận thức thương hiệu; linear công bằng nhưng dàn trải; time-decay giả định điểm chạm gần hơn ảnh hưởng nhiều hơn theo hàm mũ (nửa trọng số sau mỗi lambda ngày).
+      assumptions:
+      - Ảnh hưởng suy giảm theo thời gian là hợp lý với chu kỳ mua
+      - lambda chọn theo độ dài chu kỳ mua (hàng thiết yếu ngắn, B2B dài)
+      pitfalls:
+      - Trọng số w_t trong nguồn chưa chuẩn hóa; phải chuẩn hóa tổng = 1 trước khi chia doanh thu
+      - Mọi mô hình quy tắc đều là giả định, không phải nhân quả
+      interpretation: 'Hành trình Search (14 ngày trước), Facebook (7 ngày), Email (1 ngày), lambda=7: w = 0,25 / 0,5 / 0,906 -> chuẩn hóa 15,1% / 30,2% / 54,7%; linear 33,3% mỗi kênh; last-touch Email 100%.'
+      example:
+        inputs:
+          deltas:
+          - 14
+          - 7
+          - 1
+          lam: 7
+        steps:
+        - w = [2^-2, 2^-1, 2^(-1/7)] = [0,25; 0,5; 0,9057]; tổng 1,6557
+        - chuẩn hóa = [15,1%; 30,2%; 54,7%]
+        result: Email 54,7%, Facebook 30,2%, Search 15,1%
+  - id: "m12-formulas-8"
+    title: "Công thức: m12_attribution_markov_removal — Attribution Markov - Hiệu ứng loại bỏ (Removal Effect)"
+    tags: ["công", "thức", "m12_attribution_markov_removal", "attribution", "markov", "hiệu", "ứng", "loại", "bỏ", "removal", "effect"]
+    text: |-
+      id: m12_attribution_markov_removal
+      name_vi: Attribution Markov - Hiệu ứng loại bỏ (Removal Effect)
+      name_en: Markov chain attribution via removal effect
+      expression_latex: RE(K_i)=\frac{P(conv)-P(conv\mid K_i\ removed)}{P(conv)},\qquad Attr(K_i)=\frac{RE(K_i)}{\sum_jRE(K_j)}
+      expression_python: re=(p_all-p_without)/p_all; attr=re/sum(all_re)
+      excel: (tính xác suất hấp thụ từ ma trận chuyển; không có hàm sẵn - dùng Python/BI)
+      variables:
+      - symbol: P(conv)
+        meaning: Xác suất chuyển đổi toàn đồ thị
+        unit: tỷ lệ
+      - symbol: P(conv | K removed)
+        meaning: Xác suất chuyển đổi khi mọi đường qua kênh K bị chuyển thành 'không mua'
+        unit: tỷ lệ
+      when_to_use: Có dữ liệu hành trình đa kênh đủ lớn (chuỗi điểm chạm + kết quả); muốn phân bổ ngân sách dựa trên đóng góp biên của từng kênh.
+      why_it_works: Đo giá trị kênh bằng cái mất đi nếu bỏ kênh đó (phản thực tế) thay vì kênh nào đứng cuối; chuẩn hóa để tổng phân bổ bằng 100%.
+      assumptions:
+      - Hành trình mô hình hóa được bằng xích Markov bậc 1
+      - Dữ liệu đủ lớn, định danh người dùng xuyên thiết bị (khó ở VN do cookie/iOS)
+      pitfalls:
+      - Chỉ là tương quan, không thay thế thử nghiệm incrementality (holdout)
+      - Đồ thị thưa -> xác suất chuyển nhiễu
+      - Hiệu ứng loại bỏ không cộng đến 1 nên phải chuẩn hóa (phân bổ chuẩn hóa khác 'tác động thật')
+      interpretation: 'Ví dụ: P(conv)=0,31. Bỏ Search -> RE 83,9%; bỏ Facebook -> 35,5%; bỏ Email -> 41,9%. Chuẩn hóa: Search 52%, Email 26%, Facebook 22%.'
+      example:
+        inputs:
+          graph: Start->Search .5, FB .5; Search->Email .4, Conv .2, Null .4; FB->Search .3, Conv .1, Null .6; Email->Conv .5, Null .5
+        steps:
+        - P(conv)=0,31 (giải hệ hấp thụ)
+        - 'RE: Search 0,8387; FB 0,3548; Email 0,4194; tổng 1,6129'
+        - 'Attr = 0,52 / 0,22 / 0,26; với 1.000 đơn: 520 / 220 / 260'
+        result: Search 52%, Email 26%, Facebook 22% (đồ thị giả định minh họa)
+  - id: "m12-formulas-9"
+    title: "Công thức: m12_survival_weibull — Hàm sống sót cohort dạng Weibull kéo giãn"
+    tags: ["công", "thức", "m12_survival_weibull", "hàm", "sống", "sót", "cohort", "dạng", "weibull", "kéo", "giãn"]
+    text: |-
+      id: m12_survival_weibull
+      name_vi: Hàm sống sót cohort dạng Weibull kéo giãn
+      name_en: Stretched-exponential (Weibull) cohort survival
+      expression_latex: S(t)=S_0\,e^{-\alpha t^{\beta}}
+      expression_python: s0*math.exp(-alpha*t**beta)
+      excel: =S0*EXP(-alpha*t^beta)
+      variables:
+      - symbol: S0
+        meaning: Quy mô cohort sau kích hoạt
+        unit: người hoặc tỷ lệ
+      - symbol: alpha
+        meaning: Hệ số tốc độ rời bỏ cơ sở
+        unit: '-'
+      - symbol: beta
+        meaning: 'Hệ số gia tốc: <1 bão hòa (trung thành dần), >1 tăng tốc rời bỏ'
+        unit: '-'
+      - symbol: t
+        meaning: Thời gian kể từ kích hoạt
+        unit: tháng
+      when_to_use: Chẩn đoán đường cong giữ chân cohort thực tế; so sánh alpha, beta giữa các cohort/phiên bản sản phẩm.
+      why_it_works: Khi beta = 1 trở thành hàm mũ (churn không đổi như công thức CLV hình học). Beta khác 1 bắt được hiện tượng khách trung thành dần hoặc chán dần; hai tham số tách lỗi Activation (alpha) khỏi lỗi Retention (beta).
+      assumptions:
+      - Ước lượng bằng hồi quy phi tuyến trên log hoạt động thật
+      - Cohort đồng nhất
+      pitfalls:
+      - Không có dữ liệu thật thì không nên gán alpha, beta tùy tiện
+      - 'Công thức dùng kèm CLV: nếu churn thực không đổi thì dùng m12_clv_discounted_geometric là đủ'
+      interpretation: 'alpha=0,05: beta=0,8 -> sống sót tháng 1/6/12/24 = 95,1% / 81,1% / 69,4% / 53,0% (ổn định); beta=1,3 -> 95,1% / 59,8% / 28,2% / 4,4% (tăng tốc rời bỏ).'
+      example:
+        inputs:
+          alpha: 0.05
+          beta_a: 0.8
+          beta_b: 1.3
+          t:
+          - 1
+          - 6
+          - 12
+          - 24
+        steps:
+        - 'beta=0,8: exp(-0,05 x 12^0,8) = 0,694'
+        - 'beta=1,3: exp(-0,05 x 12^1,3) = 0,282'
+        result: Sau 12 tháng giữ 69,4% (beta 0,8) so với 28,2% (beta 1,3)
+  - id: "m12-formulas-10"
+    title: "Công thức: m12_lerner_optimal_price — Giá tối ưu theo độ co giãn (quy tắc Lerner)"
+    tags: ["công", "thức", "m12_lerner_optimal_price", "giá", "tối", "ưu", "theo", "độ", "co", "giãn", "quy", "tắc"]
+    text: |-
+      id: m12_lerner_optimal_price
+      name_vi: Giá tối ưu theo độ co giãn (quy tắc Lerner)
+      name_en: Optimal price under constant elasticity (Lerner rule)
+      expression_latex: P^*=C\,\frac{\varepsilon}{\varepsilon-1},\qquad \frac{P^*-C}{P^*}=\frac1\varepsilon
+      expression_python: C*eps/(eps-1)
+      excel: =C*eps/(eps-1)
+      variables:
+      - symbol: C
+        meaning: Chi phí biến đổi mỗi đơn vị
+        unit: tiền/đơn vị
+      - symbol: eps
+        meaning: Độ co giãn của cầu theo giá (giá trị tuyệt đối), phải > 1
+        unit: '-'
+      when_to_use: Ước lượng mức markup tối ưu theo sức mạnh thương hiệu khi cầu co giãn không đổi Q = K x P^(-eps); đối chiếu bổ sung m10.
+      why_it_works: Lợi nhuận (P-C) x K x P^(-eps). Đạo hàm theo P bằng 0 cho 1 - eps x (P-C)/P = 0, tức biên lợi nhuận gộp trên giá tối ưu bằng 1/eps (Lerner index, Abba Lerner 1934). Cầu càng ít co giãn (thương hiệu mạnh) thì markup tối ưu càng cao.
+      assumptions:
+      - Cầu co giãn không đổi
+      - Chi phí biến đổi không đổi, không có ràng buộc công suất
+      - Công ty độc quyền/cạnh tranh độc quyền định giá một sản phẩm
+      pitfalls:
+      - 'eps <= 1: công thức vô nghĩa (giá tối ưu tiến vô cùng); hãy tăng giá mà không cần công thức.'
+      - 'LỖI NGUỒN: với eps=1,25 thì P*=5C tương ứng biên gộp 1/eps = 80%, KHÔNG phải 40-50% như nguồn viết cho Apple. Biên gộp 40-50% ứng với eps khoảng 2,0-2,5 (P* = 2C đến 1,67C).'
+      - Chi phí biến đổi phần cứng chưa phản ánh R&D/CAC; biên gộp kế toán gồm cả chi phí cố định phân bổ.
+      interpretation: eps=4 -> P*=1,33C (biên 25%); eps=2 -> 2C (50%); eps=1,25 -> 5C (80%).
+      example:
+        inputs:
+          C: 20000
+          eps: 2
+        steps:
+        - P* = 20.000 x 2/1 = 40.000; biên gộp = (40.000-20.000)/40.000 = 50% = 1/eps
+        - 'Quét số học tìm tối đa của (P-C) x P^(-2) trong khoảng 21.000-100.000: tối đa tại P = 39.999,7, khớp P*'
+        result: P* = 40.000 VNĐ (markup 100%, biên 50%)
+  - id: "m12-formulas-11"
+    title: "Công thức: m12_dynamic_price — Giá động theo cung cầu và tốc độ đặt phòng"
+    tags: ["công", "thức", "m12_dynamic_price", "giá", "động", "theo", "cung", "cầu", "và", "tốc", "độ", "đặt"]
+    text: |-
+      id: m12_dynamic_price
+      name_vi: Giá động theo cung cầu và tốc độ đặt phòng
+      name_en: Dynamic price adjusted by demand-supply gap and booking speed
+      expression_latex: P(t)=P_{base}\left(1+\alpha\frac{D-S}{D+S}\right)e^{\gamma(1-\tau)}
+      expression_python: base*(1+alpha*(D-S)/(D+S))*math.exp(gamma*(1-tau))
+      excel: =Base*(1+alpha*(D-S)/(D+S))*EXP(gamma*(1-tau))
+      variables:
+      - symbol: D
+        meaning: Lượng tìm kiếm/nhu cầu trong khu vực
+        unit: lượt
+      - symbol: S
+        meaning: Số phòng trống khả dụng
+        unit: phòng
+      - symbol: alpha
+        meaning: Độ nhạy với chênh lệch cung cầu
+        unit: '-'
+      - symbol: tau
+        meaning: Tốc độ đặt phòng trung bình lịch sử (tỷ lệ so với chuẩn)
+        unit: '-'
+      - symbol: gamma
+        meaning: Hệ số gia tốc mùa vụ
+        unit: '-'
+      when_to_use: Minh họa logic giá động cho homestay/khách sạn nhỏ/co-living; làm điểm xuất phát chứ không phải thuật toán Airbnb thật.
+      why_it_works: 'Thành phần (D-S)/(D+S) nằm trong [-1, 1] là độ lệch cung cầu chuẩn hóa: dư cầu đẩy giá lên, dư cung kéo xuống; thành phần mũ tăng giá khi đặt sớm hơn thông thường (tau < 1).'
+      assumptions:
+      - Hệ số alpha, gamma cần hiệu chỉnh từ dữ liệu thực, không phải hằng số thị trường
+      pitfalls:
+      - 'Nguồn trình bày như công thức Airbnb: không có căn cứ, chỉ là mô hình minh họa'
+      - Không chặn giá trần/sàn có thể gây phản cảm (xem Conversation/Pepsi) và vi phạm quy định giá niêm yết
+      - Giá động trong nhà hàng/quán ăn cần minh bạch để tránh phản ứng tiêu cực
+      interpretation: 'Với base 500.000, alpha 0,5, D=120, S=80, gamma 0,2, tau 0,6: giá = 500.000 x 1,1 x e^0,08 = 595.808 (+19,2%).'
+      example:
+        inputs:
+          base: 500000
+          alpha: 0.5
+          D: 120
+          S: 80
+          gamma: 0.2
+          tau: 0.6
+        steps:
+        - (D-S)/(D+S) = 40/200 = 0,2
+        - 1 + 0,5 x 0,2 = 1,1; e^(0,2 x 0,4) = 1,0833
+        - P = 500.000 x 1,1 x 1,0833 = 595.808
+        result: 595.808 VNĐ
+  - id: "m12-formulas-12"
+    title: "Công thức: m12_sir_virality — Mô hình SIR cho lan truyền phản ứng ngược trên mạng xã hội"
+    tags: ["công", "thức", "m12_sir_virality", "mô", "hình", "sir", "cho", "lan", "truyền", "phản", "ứng", "ngược"]
+    text: |-
+      id: m12_sir_virality
+      name_vi: Mô hình SIR cho lan truyền phản ứng ngược trên mạng xã hội
+      name_en: SIR epidemic analogy for crisis virality, with R0
+      expression_latex: \frac{dS}{dt}=-\beta SI,\quad \frac{dI}{dt}=\beta SI-\gamma I,\quad R_0=\frac{\beta S_0}{\gamma}
+      expression_python: 'R0 = beta*S0/gamma  # I tăng nếu R0 > 1; mô phỏng Euler: S+=-beta*S*I*dt; I+=(beta*S*I-gamma*I)*dt'
+      excel: (mô phỏng bảng tính theo từng bước thời gian)
+      variables:
+      - symbol: S
+        meaning: Người chưa biết sự việc
+        unit: người
+      - symbol: I
+        meaning: Người đang bức xúc và chia sẻ
+        unit: người
+      - symbol: beta
+        meaning: Hệ số truyền nhiễm (nhờ thuật toán chia sẻ)
+        unit: 1/(người x ngày)
+      - symbol: gamma
+        meaning: Hệ số nguôi ngoai
+        unit: 1/ngày
+      when_to_use: Giải thích vì sao phản ứng ngược tăng mũ trong 24-48 giờ đầu và vì sao phải hành động cực sớm; định cỡ nguồn lực xử lý khủng hoảng.
+      why_it_works: Số người bức xúc mới tỷ lệ với số người đang lan truyền và số người chưa biết; nếu R0 = beta x S0/gamma > 1 thì I tăng mũ ban đầu cho đến khi S cạn. Mượn từ dịch tễ học (Kermack-McKendrick 1927).
+      assumptions:
+      - Quần thể đồng nhất, trộn lẫn đều
+      - Không có can thiệp của thương hiệu trong mô hình thuần
+      pitfalls:
+      - Chỉ là phép ẩn dụ định tính; beta, gamma khó ước lượng
+      - Nguồn không cho giá trị số, không có số liệu Pepsi thật
+      interpretation: 'Giá trị minh họa: S0=1.000, beta=0,0005, gamma=0,2 -> R0 = 2,5; đỉnh số người bức xúc khoảng 235 (23,5% quần thể), còn khoảng 106 người chưa bao giờ biết khi dịch tắt.'
+      example:
+        inputs:
+          S0: 999
+          I0: 1
+          beta: 0.0005
+          gamma: 0.2
+          dt: 0.1
+          steps: 2000
+        steps:
+        - R0 = 0,0005 x 1000/0,2 = 2,5
+        - 'Mô phỏng Euler 200 ngày: đỉnh I = 235,4; S còn lại = 105,9'
+        result: R0 = 2,5; đỉnh I khoảng 235 (số giả định minh họa)
+  - id: "m12-formulas-13"
+    title: "Công thức: m12_contribution_margin_usage — Biên đóng góp theo mức sử dụng và điểm hòa vốn của gói thuê bao không giới hạn"
+    tags: ["công", "thức", "m12_contribution_margin_usage", "biên", "đóng", "góp", "theo", "mức", "sử", "dụng", "và", "điểm"]
+    text: |-
+      id: m12_contribution_margin_usage
+      name_vi: Biên đóng góp theo mức sử dụng và điểm hòa vốn của gói thuê bao không giới hạn
+      name_en: Contribution margin per subscriber vs usage; usage break-even
+      expression_latex: m(q)=ARPU-q\cdot v,\qquad q^*=\frac{ARPU}{v}
+      expression_python: arpu - q*v ;  q_star = arpu/v
+      excel: =ARPU-q*v ; =ARPU/v
+      variables:
+      - symbol: arpu
+        meaning: Phí thuê bao mỗi tháng
+        unit: tiền/tháng
+      - symbol: v
+        meaning: Biến phí mỗi lần sử dụng (giá vé trả rạp, nguyên liệu mỗi ly...)
+        unit: tiền/lần
+      - symbol: q
+        meaning: Số lần dùng mỗi tháng của khách
+        unit: lần/tháng
+      when_to_use: 'Thiết kế gói thuê bao ''không giới hạn'' (Phở Pass, cà phê đồng giá, vé xem phim): kiểm tra số lần dùng hòa vốn trước khi mở bán đại trà.'
+      why_it_works: Thuê bao thu cố định nhưng chi phí biến đổi tăng theo sử dụng; nếu khách trung bình dùng nhiều hơn q* thì mỗi khách mới làm lỗ. Mô hình chỉ khả thi nếu (a) phần lớn khách dùng ít hơn q* (breakage) hoặc (b) có nguồn thu thứ hai bù.
+      assumptions:
+      - v cố định (không có chiết khấu số lượng)
+      - Phân phối sử dụng của khách đại chúng, khách dùng nhiều tự chọn gói (adverse selection)
+      pitfalls:
+      - Lấy sử dụng TRUNG BÌNH của khách ngày hôm nay làm cơ sở; khi giá hấp dẫn, khách dùng nhiều đổ vào
+      - Quên chi phí cố định và CAC
+      interpretation: 'MoviePass: q* = 9,95/12 = 0,83 phim/tháng. 1 phim -> -2,05 USD; 3 phim -> -26,05 USD.'
+      example:
+        inputs:
+          arpu: 9.95
+          v: 12.0
+        steps:
+        - q* = 9,95/12 = 0,829 phim/tháng
+        - m(1) = 9,95 - 12 = -2,05; m(3) = 9,95 - 36 = -26,05; m(30) = 9,95 - 360 = -350,05
+        result: Hòa vốn chỉ khi khách xem dưới 0,83 phim/tháng; mọi khách xem nhiều hơn đều gây lỗ
+  - id: "m12-formulas-14"
+    title: "Công thức: m12_kmeans_silhouette — Phân cụm K-Means và hệ số Silhouette"
+    tags: ["công", "thức", "m12_kmeans_silhouette", "phân", "cụm", "means", "và", "hệ", "số", "silhouette"]
+    text: |-
+      id: m12_kmeans_silhouette
+      name_vi: Phân cụm K-Means và hệ số Silhouette
+      name_en: K-Means objective and Silhouette coefficient
+      expression_latex: \arg\min_S\sum_{i=1}^{K}\sum_{x\in S_i}\lVert x-\mu_i\rVert^2,\qquad s(i)=\frac{b(i)-a(i)}{\max(a(i),b(i))}
+      expression_python: '# sklearn: KMeans(n_clusters=K).fit(X); silhouette_score(X, labels)'
+      excel: (không có hàm sẵn; dùng Python/Power BI/Tableau)
+      variables:
+      - symbol: x
+        meaning: Vector hành vi một khách (tần suất, giá trị đơn, thời gian dùng)
+        unit: '-'
+      - symbol: mu_i
+        meaning: Tâm cụm i
+        unit: '-'
+      - symbol: a(i)
+        meaning: Khoảng cách trung bình tới điểm cùng cụm
+        unit: '-'
+      - symbol: b(i)
+        meaning: Khoảng cách trung bình tới cụm gần nhất khác
+        unit: '-'
+      when_to_use: Phân khúc theo hành vi thực khi có dữ liệu giao dịch/ứng dụng (từ vài nghìn khách); bổ sung cho phân khúc nhân khẩu học ở m01.
+      why_it_works: Gom khách sao cho trong cụm giống nhau nhất; Silhouette kiểm tra cụm có tách biệt (s gần 1) hay chồng lấn (s gần 0 hoặc âm); Elbow (WCSS theo K) giúp chọn K.
+      assumptions:
+      - Biến đã chuẩn hóa
+      - Cụm có dạng gần cầu
+      - Hành vi đủ ổn định theo thời gian
+      pitfalls:
+      - Cụm toán học đẹp nhưng không hành động được (Actionable) hoặc không đủ lớn (Substantial) - vẫn phải qua 5 tiêu chí Kotler ở m01
+      - K-Means nhạy với ngoại lai và giá trị khởi tạo
+      interpretation: s trung bình > 0,5 cụm rõ; 0,25-0,5 chấp nhận được; < 0,25 cụm yếu (ngưỡng quy ước thực hành, confidence medium).
+      example:
+        inputs: {}
+        steps:
+        - 'Công thức nêu để tra cứu; nguồn không cung cấp dữ liệu số. Với SME: dùng RFM (m03) trên Excel trước khi dùng K-Means.'
+        result: không có ví dụ số trong nguồn
+  - id: "m12-frameworks-1"
+    title: "Frameworks: m12_integrated_map — Bản đồ hệ thống marketing tích hợp (STP -> 7P/4C -> Chỉ số giá trị)"
+    tags: ["frameworks", "m12_integrated_map", "bản", "đồ", "hệ", "thống", "marketing", "tích", "hợp", "stp", "7p", "4c"]
+    text: |-
+      id: m12_integrated_map
+      name_vi: Bản đồ hệ thống marketing tích hợp (STP -> 7P/4C -> Chỉ số giá trị)
+      name_en: Integrated marketing system map
+      origin: 'Tổng hợp học thuật: STP (Smith 1956, Kotler), 7P dịch vụ (Booms và Bitner 1981), 4C của Marketing 4.0 (Kotler, Kartajaya, Setiawan 2017), CBBE (Keller 1993/2001), AARRR (McClure 2007).'
+      components:
+      - 'Tầng 1 Strategic: STP Engine (m01)'
+      - 'Tầng 2a Tactical 7P: Product, Price, Place, Promotion, People, Process, Physical Evidence (m02, m10, m08)'
+      - 'Tầng 2b Digital 4C: Co-creation, Currency, Communal Activation, Conversation (m11, m05)'
+      - 'Tầng 3 Value Metrics: Cohort Retention, CLV/CAC, K-factor, Brand Resonance, Multi-touch Attribution (m03, m04, m05)'
+      when_to_use: Mở đầu mọi bài toán marketing lớn để xác định lỗi ở tầng nào, tránh sửa chiến thuật khi lỗi ở chiến lược.
+      how_to_apply:
+      - 'Hỏi từ trên xuống: phân khúc/định vị có đúng và đủ lớn không? (STP) -> 7P/4C có nhất quán với định vị không? -> chỉ số giá trị (CLV/CAC, retention, K, brand) có lành mạnh không?'
+      - 'Khi chỉ số tầng 3 xấu, truy ngược: CLV/CAC thấp do giá (m10), churn (m03/m06), hay phân khúc sai (m01)?'
+      - Chọn nhánh 7P cho dịch vụ/sản phẩm có điểm chạm vật lý, nhánh 4C khi sản phẩm dựa mạng lưới/cộng đồng; thường dùng cả hai.
+      how_to_read_results: Lỗi ở tầng càng cao (chiến lược) thì càng đắt để sửa và mọi tối ưu tầng thấp đều vô ích (Soya Garden).
+      pitfalls:
+      - Sửa Promotion khi gốc là STP
+      - Dùng 4C bỏ qua nền 7P vận hành (Airbnb vẫn cần trải nghiệm lưu trú thật)
+      example: 'Quán cà phê giá cao mất khách: kiểm 7P có nhất quán giá/không gian? (Coffee House) -> kiểm WTP phân khúc (Soya Garden) -> kiểm churn và CAC payback.'
+  - id: "m12-frameworks-2"
+    title: "Frameworks: m12_health_matrix — Ma trận kiểm tra sức khỏe marketing tích hợp (6 trụ cột)"
+    tags: ["frameworks", "m12_health_matrix", "ma", "trận", "kiểm", "tra", "sức", "khỏe", "marketing", "tích", "hợp", "trụ"]
+    text: |-
+      id: m12_health_matrix
+      name_vi: Ma trận kiểm tra sức khỏe marketing tích hợp (6 trụ cột)
+      name_en: Integrated marketing health matrix
+      origin: 'Mục VII của cẩm nang: tóm tắt công cụ, chỉ số và bài học của từng học phần, đối chiếu cặp case thành công/thất bại.'
+      components:
+      - '1 STRATEGIC - STP + K-Means. Chỉ số: quy mô phân khúc có WTP. Bài học: định vị dựa trên quy mô phân khúc thực và WTP (Biti''s vs Soya Garden).'
+      - '2 TACTICS - 7P + Service Blueprint. Chỉ số: Consistency matrix, Line of Visibility. Bài học: 7 nhân tố phải đồng bộ với định vị (Starbucks vs Coffee House).'
+      - '3 FINANCIALS - CLV/CAC, subscription economics. Chỉ số: CLV/CAC, payback. Bài học: giảm churn là đòn bẩy CLV rẻ nhất (Spotify vs MoviePass).'
+      - '4 IDENTITY - CBBE. Chỉ số: Resonance, Imagery, Emotional equity. Bài học: không bỏ di sản cảm xúc vì số đo kỹ thuật (Apple vs New Coke).'
+      - '5 GROWTH - AARRR + growth loops. Chỉ số: K-factor. Bài học: nhúng động lực lan truyền vào sản phẩm (Dropbox vs Quibi).'
+      - '6 COLLABORATION - Marketing 4.0 (4C). Chỉ số: Co-creation, Communal Activation, Conversation. Bài học: giải phóng nguồn lực nhàn rỗi bằng kết nối ngang hàng đáng tin (Airbnb vs Pepsi Jenner).'
+      when_to_use: Chẩn đoán tổng thể một doanh nghiệp/chiến dịch; lập báo cáo kiểm tra marketing định kỳ.
+      how_to_apply:
+      - Chấm 6 trụ cột theo thang 1-5 với bằng chứng số (không chấm cảm tính).
+      - Trụ cột điểm thấp nhất, nằm cao nhất trong thứ tự 1->6, là điểm sửa đầu tiên.
+      - Đối chiếu với cặp case thành công/thất bại của trụ cột đó để lấy khuôn hành động.
+      how_to_read_results: 'Điểm 1-2: khủng hoảng; 3: ổn nhưng dễ tổn thương; 4-5: lợi thế bền. Trụ cột 1-2 thấp = sửa trước dù trụ cột 5-6 hấp dẫn.'
+      pitfalls:
+      - Chấm điểm không dựa dữ liệu
+      - Chỉ xem chỉ số trụ cột 3, 5 (dễ đo) mà bỏ qua 4, 6 (khó đo)
+      example: 'Soya Garden: trụ 1 (WTP/quy mô) = 1, trụ 2 (giá vs định vị) = 2, trụ 3 (retention giảm) = 2 -> sửa trụ 1 trước (thu hẹp mạng lưới, thử giá vỉa hè-cao cấp 15.000-25.000?) trước mọi chiến dịch quảng cáo.'
+  - id: "m12-frameworks-3"
+    title: "Frameworks: m12_crisis_playbook — Kế hoạch hành động xử lý khủng hoảng 6 bước"
+    tags: ["frameworks", "m12_crisis_playbook", "kế", "hoạch", "hành", "động", "xử", "lý", "khủng", "hoảng", "bước"]
+    text: |-
+      id: m12_crisis_playbook
+      name_vi: Kế hoạch hành động xử lý khủng hoảng 6 bước
+      name_en: 6-step crisis action playbook
+      origin: Chuyên đề 6 của cẩm nang, rút từ bài học Pepsi/Kendall Jenner (2017) và Coca-Cola Classic (1985). Không phải khung học thuật chuẩn; mang tính tổng hợp thực hành.
+      components:
+      - 1 Detection and Silence - phát hiện sớm và dừng phát tán nội dung gây khủng hoảng
+      - 2 Empathy statements - tuyên bố thấu cảm chân thành, không phòng thủ
+      - 3 Control (nguồn gốc ghi 'Constitution Control') - lập nhóm điều tra nội bộ, đo chỉ số I (số người lan truyền) bằng social listening
+      - 4 Remedial action - sửa sai bằng hành động thật (bồi thường xã hội, thu hồi sản phẩm)
+      - 5 Alignment reset - khôi phục nhất quán STP và 7P
+      - 6 Longer-term auditing - đo lại cảm nhận thương hiệu (sentiment) theo thời gian
+      when_to_use: Khi nội dung/chiến dịch gây phản ứng ngược; khi quyết định thay đổi lớn bị khách hàng phản đối (New Coke).
+      how_to_apply:
+      - 'Trong 24 giờ đầu (R0 > 1 theo SIR): bước 1-2; trong 48-72 giờ: bước 3-4; trong tuần: bước 5; 3-12 tháng: bước 6.'
+      - Chuẩn bị trước người phát ngôn, ngưỡng cảnh báo sentiment, quy trình phê duyệt nội dung nhạy cảm.
+      how_to_read_results: 'Chỉ số theo dõi: số đề cập tiêu cực/giờ, tỷ lệ sentiment, lượt chia sẻ, doanh số/traffic; coi là kiểm soát được khi I giảm hai ngày liên tiếp.'
+      pitfalls:
+      - Xin lỗi kiểu phòng thủ
+      - Chỉ gỡ nội dung mà không sửa gốc (7P/STP lệch)
+      - Bỏ bước 6
+      example: Pepsi gỡ video sau khoảng 48 giờ và xin lỗi (bước 1-2); Coca-Cola phục hồi Classic sau 79 ngày (bước 4-5).
+  - id: "m12-frameworks-4"
+    title: "Frameworks: m12_4p_to_4c — Chuyển dịch 4P -> 4C (Marketing 4.0)"
+    tags: ["frameworks", "m12_4p_to_4c", "chuyển", "dịch", "4p", "4c", "marketing"]
+    text: |-
+      id: m12_4p_to_4c
+      name_vi: Chuyển dịch 4P -> 4C (Marketing 4.0)
+      name_en: 4P to 4C shift
+      origin: Kotler, Kartajaya, Setiawan (2017) Marketing 4.0; 4C gốc của Lauterborn (1990) là Consumer, Cost, Convenience, Communication - KHÁC với 4C số này (xem m11).
+      components:
+      - 'Product -> Co-creation: cộng đồng cùng thiết kế giá trị'
+      - 'Price -> Currency: giá động theo cung cầu thời gian thực'
+      - 'Place -> Communal Activation: kích hoạt tài sản nhàn rỗi qua mạng ngang hàng (P2P)'
+      - 'Promotion -> Conversation: đối thoại hai chiều minh bạch thay vì phát thanh một chiều'
+      when_to_use: Mô hình nền tảng/cộng đồng, marketplace, sản phẩm dựa UGC; khi thương hiệu muốn đối thoại với cộng đồng.
+      how_to_apply:
+      - Với mỗi P, hỏi 'cộng đồng có thể đồng làm chủ phần này không?'
+      - Thiết kế niềm tin (đánh giá hai chiều ẩn danh tính như Airbnb) trước khi mở P2P
+      how_to_read_results: Nếu không thể mở Conversation (bị cấm chia sẻ như Quibi) thì khung 4C không vận hành.
+      pitfalls:
+      - Giá động thiếu minh bạch gây phản ứng
+      - Lợi dụng biểu tượng xã hội để kể chuyện (Pepsi)
+      example: 'Airbnb: Co-creation (chủ nhà tự thiết kế), Currency (Smart Pricing), Communal Activation (phòng trống), Conversation (double-blind reviews).'
+  - id: "m12-procedures-1"
+    title: "Quy trình: m12_proc_diagnose — Quy trình chẩn đoán marketing đa chiều (từ triệu chứng đến module)"
+    tags: ["quy", "trình", "m12_proc_diagnose", "chẩn", "đoán", "marketing", "đa", "chiều", "từ", "triệu", "chứng", "đến"]
+    text: |-
+      id: m12_proc_diagnose
+      name: Quy trình chẩn đoán marketing đa chiều (từ triệu chứng đến module)
+      steps:
+      - 'Bước 1: Xác định triệu chứng (doanh số thấp, khách không quay lại, CAC tăng, bị chê trên mạng, giá bị so đo...).'
+      - 'Bước 2 (m01): Kiểm tra phân khúc/định vị - 5 tiêu chí Kotler, quy mô phân khúc CÓ WTP, bản đồ nhận thức. Nếu sai: tái định vị trước mọi thứ (Biti''s Hunter vs Soya Garden).'
+      - 'Bước 3 (m02, m10): Kiểm tra nhất quán 7P với định vị; đặc biệt Price vs Physical Evidence vs People vs Process (Starbucks vs Coffee House). Kiểm giá bằng value-based và Lerner (m12_lerner_optimal_price).'
+      - 'Bước 4 (m03): Tính CLV, CAC, CLV/CAC, payback bằng biên đóng góp. Nếu biên âm: dừng tăng trưởng, sửa mô hình (MoviePass).'
+      - 'Bước 5 (m06, m07): Đo churn/retention theo cohort; chẩn đoán alpha-beta (m12_survival_weibull) để quyết định sửa Activation hay Retention.'
+      - 'Bước 6 (m04): Kiểm tra tài sản thương hiệu ở 4 tầng CBBE trước khi thay đổi bất kỳ thuộc tính biểu tượng nào (New Coke); nghiên cứu cả định lượng lẫn định tính.'
+      - 'Bước 7 (m05, m11): Thiết kế growth loop và 4C: K-factor, cho phép Conversation/chia sẻ; thử nghiệm A/B có cỡ mẫu và Z-test.'
+      - 'Bước 8 (m05): Đo kênh bằng attribution đa điểm chạm (không chỉ last-touch); kiểm incrementality bằng holdout nếu có thể.'
+      - 'Bước 9: Chấm ma trận 6 trụ cột (m12_health_matrix), chọn việc sửa đầu tiên là trụ cột thấp nhất ở tầng cao nhất.'
+      outputs: 'Báo cáo chẩn đoán: trụ cột lỗi, số liệu then chốt (CLV/CAC, payback, churn), case khuôn mẫu tương tự, 3 hành động ưu tiên có KPI.'
+  - id: "m12-procedures-2"
+    title: "Quy trình: m12_proc_launch_subscription — Quy trình ra mắt dịch vụ thuê bao / gói cố định (F&B, app, phòng gym...)"
+    tags: ["quy", "trình", "m12_proc_launch_subscription", "ra", "mắt", "dịch", "vụ", "thuê", "bao", "gói", "cố", "định"]
+    text: |-
+      id: m12_proc_launch_subscription
+      name: Quy trình ra mắt dịch vụ thuê bao / gói cố định (F&B, app, phòng gym...)
+      steps:
+      - 'Bước 1 (m01): Chọn phân khúc có WTP đủ lớn; ước lượng số người sẵn lòng trả đúng giá định vị, không chỉ số người quan tâm.'
+      - 'Bước 2 (m10, m12_contribution_margin_usage): Với gói không giới hạn, tính q* = ARPU/biến phí mỗi lần dùng; ước lượng sử dụng thực của khách tự chọn gói (adverse selection); đặt giới hạn dùng/ngày nếu cần.'
+      - 'Bước 3 (m03, m12_clv_discounted_geometric): Tính CLV với churn kỳ vọng 3 kịch bản (thấp, cơ sở, cao) và CAC; yêu cầu CLV/CAC >= 3 và payback < 12 tháng.'
+      - 'Bước 4 (m02): Kiểm nhất quán 7P (People, Process, Physical Evidence) với lời hứa gói.'
+      - 'Bước 5 (m05, m12_k_factor): Thiết kế referral hai chiều, đo K; ngân sách trả phí chỉ để lấp phần K < 1.'
+      - 'Bước 6 (m12_ab_test_z, m12_ab_sample_size): A/B thử giá/CTA với cỡ mẫu đủ; không dừng sớm.'
+      - 'Bước 7: Theo dõi cohort S(t), churn theo tháng; ngưỡng cảnh báo khi churn vượt kịch bản cao.'
+      outputs: 'Bảng quyết định mở bán: q*, CLV/CAC 3 kịch bản, payback, K mục tiêu, kế hoạch A/B, KPI cảnh báo.'
+  - id: "m12-procedures-3"
+    title: "Quy trình: m12_proc_brand_change — Quy trình thay đổi thương hiệu / sản phẩm biểu tượng"
+    tags: ["quy", "trình", "m12_proc_brand_change", "thay", "đổi", "thương", "hiệu", "sản", "phẩm", "biểu", "tượng"]
+    text: |-
+      id: m12_proc_brand_change
+      name: Quy trình thay đổi thương hiệu / sản phẩm biểu tượng
+      steps:
+      - 'Bước 1 (m04): Lập bản đồ 4 tầng CBBE hiện tại; xác định phần thuộc Imagery/Feelings/Resonance có giá trị cảm xúc.'
+      - 'Bước 2 (m07): Nghiên cứu hỗn hợp - định lượng (thử mù, khảo sát) cộng định tính (phỏng vấn sâu, nhân học hành vi) về ý nghĩa văn hóa; câu hỏi ''sẽ ra sao nếu sản phẩm cũ biến mất''.'
+      - 'Bước 3: Ra mắt phiên bản mới SONG SONG, không thay thế phiên bản cũ (bài học New Coke - Classic).'
+      - 'Bước 4 (m12_crisis_playbook): Chuẩn bị kịch bản đảo ngược nhanh và kênh lắng nghe; đặt ngưỡng sentiment kích hoạt rollback.'
+      - 'Bước 5 (m08): Thông điệp IMC phải giữ di sản, chỉ bổ sung.'
+      outputs: Hồ sơ rủi ro thương hiệu, thiết kế thử nghiệm song song, ngưỡng rollback.
+  - id: "m12-procedures-4"
+    title: "Quy trình: m12_proc_channel_budget — Quy trình phân bổ ngân sách đa kênh"
+    tags: ["quy", "trình", "m12_proc_channel_budget", "phân", "bổ", "ngân", "sách", "đa", "kênh"]
+    text: |-
+      id: m12_proc_channel_budget
+      name: Quy trình phân bổ ngân sách đa kênh
+      steps:
+      - 'Bước 1: Thu thập hành trình (chuỗi điểm chạm + kết quả) từ GA4/CRM; chuẩn hóa định danh.'
+      - 'Bước 2: Tính attribution last-touch, linear, time-decay, Markov (m12_attribution_*) và so sánh.'
+      - 'Bước 3: Đối chiếu kênh bị last-touch đánh giá thấp nhưng Markov đánh giá cao (thượng nguồn); cân nhắc chuyển ngân sách.'
+      - 'Bước 4: Kiểm chứng bằng thử nghiệm holdout/geo-lift nhỏ trước khi chuyển lớn.'
+      - 'Bước 5: Chuyển ngân sách theo bước 10-20% và theo dõi CAC, CLV/CAC từng kênh.'
+      outputs: Bảng so sánh attribution 4 mô hình, đề xuất dịch chuyển ngân sách, kế hoạch thử nghiệm.
+  - id: "m12-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu CLV/CAC < 1 hoặc biên đóng góp mỗi khách < 0 thì DỪNG tăng trưởng trả phí, sửa mô hình giá/chi …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "clv", "cac", "hoặc", "biên", "đóng", "góp", "mỗi"]
+    text: |-
+      Nếu CLV/CAC < 1 hoặc biên đóng góp mỗi khách < 0 thì DỪNG tăng trưởng trả phí, sửa mô hình giá/chi phí trước (MoviePass).
+  - id: "m12-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu CLV/CAC từ 1 đến 3 hoặc payback > 12 tháng thì giảm CAC hoặc tăng retention trước khi mở rộng k…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "clv", "cac", "từ", "đến", "hoặc", "payback", "12"]
+    text: |-
+      Nếu CLV/CAC từ 1 đến 3 hoặc payback > 12 tháng thì giảm CAC hoặc tăng retention trước khi mở rộng kênh.
+  - id: "m12-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu CLV/CAC > 5 và payback < 6 tháng thì có thể đang đầu tư tăng trưởng thiếu; thử nghiệm tăng ngân…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "clv", "cac", "và", "payback", "tháng", "thì", "có"]
+    text: |-
+      Nếu CLV/CAC > 5 và payback < 6 tháng thì có thể đang đầu tư tăng trưởng thiếu; thử nghiệm tăng ngân sách và kiểm tra giới hạn kênh.
+  - id: "m12-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu phân khúc mục tiêu thiếu một trong 5 tiêu chí (đặc biệt Substantial với WTP) thì không mở rộng …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "phân", "khúc", "mục", "tiêu", "thiếu", "một", "trong"]
+    text: |-
+      Nếu phân khúc mục tiêu thiếu một trong 5 tiêu chí (đặc biệt Substantial với WTP) thì không mở rộng chuỗi vật lý; thử kênh nhẹ trước (Soya Garden).
+  - id: "m12-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu định vị là trải nghiệm (Experience brand) thì không giữ giá premium khi cắt Physical Evidence/P…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "vị", "là", "trải", "nghiệm", "experience", "brand", "thì"]
+    text: |-
+      Nếu định vị là trải nghiệm (Experience brand) thì không giữ giá premium khi cắt Physical Evidence/People; nếu muốn kênh tiện lợi thì tách thương hiệu/menu/giá (Coffee House).
+  - id: "m12-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu K < 1 thì referral chỉ giảm CAC trộn, vẫn cần kênh trả phí; nếu K >= 1 thì tập trung giữ chất l…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "thì", "referral", "chỉ", "giảm", "cac", "trộn", "vẫn"]
+    text: |-
+      Nếu K < 1 thì referral chỉ giảm CAC trộn, vẫn cần kênh trả phí; nếu K >= 1 thì tập trung giữ chất lượng người dùng thay vì tăng quảng cáo.
+  - id: "m12-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu sản phẩm cấm/hạn chế chia sẻ nội dung (không có Conversation) thì mong đợi K gần 0 - cho phép c…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "sản", "phẩm", "cấm", "hạn", "chế", "chia", "sẻ"]
+    text: |-
+      Nếu sản phẩm cấm/hạn chế chia sẻ nội dung (không có Conversation) thì mong đợi K gần 0 - cho phép chia sẻ có kiểm soát (clip ngắn kèm link/watermark).
+  - id: "m12-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu biến đổi thuộc tính biểu tượng của thương hiệu (vị, logo, bao bì) thì bắt buộc nghiên cứu cảm x…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "biến", "đổi", "thuộc", "tính", "biểu", "tượng", "của"]
+    text: |-
+      Nếu biến đổi thuộc tính biểu tượng của thương hiệu (vị, logo, bao bì) thì bắt buộc nghiên cứu cảm xúc/văn hóa ngoài thử mù và ra mắt song song.
+  - id: "m12-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu chi tiêu A/B nhỏ mà Z < 1,645 (một phía) thì KHÔNG kết luận B tốt hơn; tăng mẫu theo công thức …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chi", "tiêu", "nhỏ", "mà", "645", "một", "phía"]
+    text: |-
+      Nếu chi tiêu A/B nhỏ mà Z < 1,645 (một phía) thì KHÔNG kết luận B tốt hơn; tăng mẫu theo công thức cỡ mẫu rồi kiểm lại.
+  - id: "m12-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu alpha cao thì sửa Activation/onboarding (Aha moment); nếu beta > 1 thì sửa giữ chân dài hạn (nộ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "alpha", "cao", "thì", "sửa", "activation", "onboarding", "aha"]
+    text: |-
+      Nếu alpha cao thì sửa Activation/onboarding (Aha moment); nếu beta > 1 thì sửa giữ chân dài hạn (nội dung, chất lượng dịch vụ).
+  - id: "m12-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu có sự cố truyền thông và R0 (SIR) có thể > 1 thì hành động trong 24 giờ đầu: dừng phát, tuyên b…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "có", "sự", "cố", "truyền", "thông", "và", "r0"]
+    text: |-
+      Nếu có sự cố truyền thông và R0 (SIR) có thể > 1 thì hành động trong 24 giờ đầu: dừng phát, tuyên bố thấu cảm, không phòng thủ.
+  - id: "m12-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu elasticity eps <= 1 thì tăng giá (cầu không co giãn); nếu eps > 1 thì giá tối ưu có markup 1/(e…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "elasticity", "eps", "thì", "tăng", "giá", "cầu", "không"]
+    text: |-
+      Nếu elasticity eps <= 1 thì tăng giá (cầu không co giãn); nếu eps > 1 thì giá tối ưu có markup 1/(eps-1); đừng định giá premium khi thương hiệu mới ở tầng Salience (eps lớn).
+  - id: "m12-benchmarks-1"
+    title: "Chuẩn so sánh: CLV/CAC"
+    tags: ["chuẩn", "so", "sánh", "clv", "cac"]
+    text: |-
+      metric: CLV/CAC
+      value: 3,0 mức lành mạnh; < 1 thua lỗ; > 5 có thể thiếu đầu tư
+      context: Subscription/SaaS; quy ước thực hành nêu trong nguồn
+      confidence: medium
+  - id: "m12-benchmarks-2"
+    title: "Chuẩn so sánh: CAC payback"
+    tags: ["chuẩn", "so", "sánh", "cac", "payback"]
+    text: |-
+      metric: CAC payback
+      value: < 12 tháng lành mạnh
+      context: Nguồn nêu; SaaS B2B thường chấp nhận 12-18 tháng
+      confidence: medium
+  - id: "m12-benchmarks-3"
+    title: "Chuẩn so sánh: K-factor"
+    tags: ["chuẩn", "so", "sánh", "factor"]
+    text: |-
+      metric: K-factor
+      value: K > 1 tự duy trì; K < 1 tắt dần
+      context: Toán học định nghĩa (không phải ngưỡng kinh nghiệm)
+      confidence: high
+  - id: "m12-benchmarks-4"
+    title: "Chuẩn so sánh: Z-test ngưỡng"
+    tags: ["chuẩn", "so", "sánh", "test", "ngưỡng"]
+    text: |-
+      metric: Z-test ngưỡng
+      value: 1,96 hai phía 5%; 1,645 một phía 5%
+      context: Thống kê chuẩn
+      confidence: high
+  - id: "m12-benchmarks-5"
+    title: "Chuẩn so sánh: Hệ số Silhouette"
+    tags: ["chuẩn", "so", "sánh", "hệ", "số", "silhouette"]
+    text: |-
+      metric: Hệ số Silhouette
+      value: '> 0,5 cụm rõ; < 0,25 yếu'
+      context: Quy ước thực hành
+      confidence: medium
+  - id: "m12-benchmarks-6"
+    title: "Chuẩn so sánh: Biên gộp tối ưu Lerner"
+    tags: ["chuẩn", "so", "sánh", "biên", "gộp", "tối", "ưu", "lerner"]
+    text: |-
+      metric: Biên gộp tối ưu Lerner
+      value: 1/eps (eps 4 -> 25%; eps 2 -> 50%; eps 1,25 -> 80%)
+      context: Cầu co giãn không đổi
+      confidence: high
+  - id: "m12-benchmarks-7"
+    title: "Chuẩn so sánh: Spotify churn Premium giả định"
+    tags: ["chuẩn", "so", "sánh", "spotify", "churn", "premium", "giả", "định"]
+    text: |-
+      metric: Spotify churn Premium giả định
+      value: 5,5% (2016) -> 3,9% (2023)/tháng
+      context: Số minh họa trong nguồn, không phải số công bố của Spotify
+      confidence: low
+  - id: "m12-benchmarks-8"
+    title: "Chuẩn so sánh: Dropbox CAC AdWords"
+    tags: ["chuẩn", "so", "sánh", "dropbox", "cac", "adwords"]
+    text: |-
+      metric: Dropbox CAC AdWords
+      value: $250-350/khách mới so với phí $99/năm
+      context: Số thường được trích trong tài liệu growth; chưa kiểm chứng gốc
+      confidence: low
+  - id: "m12-benchmarks-9"
+    title: "Chuẩn so sánh: MoviePass chi phí vé"
+    tags: ["chuẩn", "so", "sánh", "moviepass", "chi", "phí", "vé"]
+    text: |-
+      metric: MoviePass chi phí vé
+      value: khoảng $12/vé so với phí $9,95/tháng
+      context: Nguồn nêu; giá vé trung bình thực tại Mỹ thấp hơn (khoảng $9) - cần kiểm
+      confidence: low
+  - id: "m12-benchmarks-10"
+    title: "Chuẩn so sánh: New Coke thử mù"
+    tags: ["chuẩn", "so", "sánh", "new", "coke", "thử", "mù"]
+    text: |-
+      metric: New Coke thử mù
+      value: hơn 200.000 người; 79 ngày đến khi Classic quay lại (23/4 - 11/7/1985)
+      context: Lịch sử công bố rộng rãi
+      confidence: high
+  - id: "m12-benchmarks-11"
+    title: "Chuẩn so sánh: Biti's Hunter"
+    tags: ["chuẩn", "so", "sánh", "biti", "hunter"]
+    text: |-
+      metric: Biti's Hunter
+      value: 100.000 đôi trong 1 tuần; doanh số +300% trong 3 năm; giá khoảng 650.000 VNĐ
+      context: Nguồn nêu; cần xác nhận từ báo cáo doanh nghiệp
+      confidence: low
+  - id: "m12-pitfalls-1"
+    title: "Lỗi thường gặp: LỖI NGUỒN (không sửa nguồn): ~500 dòng cuối file (khoảng dòng 767-1271) chỉ là chú thích HTML 'Acad…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "không", "sửa", "500", "dòng", "cuối", "file", "khoảng", "767"]
+    text: |-
+      LỖI NGUỒN (không sửa nguồn): ~500 dòng cuối file (khoảng dòng 767-1271) chỉ là chú thích HTML 'Academic line N padding...' không có nội dung; đừng coi là tri thức.
+  - id: "m12-pitfalls-2"
+    title: "Lỗi thường gặp: LỖI NGUỒN: Chuyên đề 8 nói Apple có eps=1,25 -> P*=5C nhưng 'biên gộp 40-50%'; thực ra P*=5C ứng bi…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "chuyên", "đề", "nói", "apple", "có", "eps", "25", "5c"]
+    text: |-
+      LỖI NGUỒN: Chuyên đề 8 nói Apple có eps=1,25 -> P*=5C nhưng 'biên gộp 40-50%'; thực ra P*=5C ứng biên gộp 80%. Biên 40-50% ứng eps khoảng 2,0-2,5.
+  - id: "m12-pitfalls-3"
+    title: "Lỗi thường gặp: LỖI NGUỒN: Airbnb 'IPO vượt định giá $100 tỷ USD' - giá IPO 12/2020 định giá khoảng $47 tỷ, vốn hóa…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "airbnb", "ipo", "vượt", "định", "giá", "100", "tỷ", "usd"]
+    text: |-
+      LỖI NGUỒN: Airbnb 'IPO vượt định giá $100 tỷ USD' - giá IPO 12/2020 định giá khoảng $47 tỷ, vốn hóa chạm khoảng $100 tỷ ngày giao dịch đầu; 'lớn hơn 5 tập đoàn khách sạn' cũng không có nguồn. Chưa kiểm chứng.
+  - id: "m12-pitfalls-4"
+    title: "Lỗi thường gặp: LỖI NGUỒN: Apple 'thương hiệu giá trị hơn $3.000 tỷ USD' thực là vốn hóa thị trường, không phải giá…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "apple", "thương", "hiệu", "giá", "trị", "hơn", "000", "tỷ"]
+    text: |-
+      LỖI NGUỒN: Apple 'thương hiệu giá trị hơn $3.000 tỷ USD' thực là vốn hóa thị trường, không phải giá trị thương hiệu.
+  - id: "m12-pitfalls-5"
+    title: "Lỗi thường gặp: LỖI NGUỒN: Dropbox 'CLV/CAC dưới 0,3x': 99/250 = 0,40; 99/350 = 0,28 -> chỉ <0,3 ở đầu cao CAC và c…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "dropbox", "clv", "cac", "dưới", "3x", "99", "250", "40"]
+    text: |-
+      LỖI NGUỒN: Dropbox 'CLV/CAC dưới 0,3x': 99/250 = 0,40; 99/350 = 0,28 -> chỉ <0,3 ở đầu cao CAC và chỉ tính doanh thu năm đầu. K > 1,15 'bền vững' chưa kiểm chứng.
+  - id: "m12-pitfalls-6"
+    title: "Lỗi thường gặp: LỖI NGUỒN: MoviePass 'phá sản năm 2019' - công ty mẹ Helios and Matheson nộp đơn tháng 1/2020; 'lỗ …"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "moviepass", "phá", "sản", "năm", "2019", "công", "ty", "mẹ"]
+    text: |-
+      LỖI NGUỒN: MoviePass 'phá sản năm 2019' - công ty mẹ Helios and Matheson nộp đơn tháng 1/2020; 'lỗ hàng trăm triệu USD' mơ hồ. Trong bản nguồn còn lẫn câu tiếng Anh (If a customer watch...).
+  - id: "m12-pitfalls-7"
+    title: "Lỗi thường gặp: LỖI NGUỒN: Z > 1,96 cho kiểm định một phía; thực ra 1,96 là hai phía, một phía là 1,645."
+    tags: ["lỗi", "thường", "gặp", "nguồn", "96", "cho", "kiểm", "định", "một", "phía", "thực", "ra"]
+    text: |-
+      LỖI NGUỒN: Z > 1,96 cho kiểm định một phía; thực ra 1,96 là hai phía, một phía là 1,645.
+  - id: "m12-pitfalls-8"
+    title: "Lỗi thường gặp: LỖI NGUỒN: nhiều lỗi chính tả/thuật ngữ ('Hế số K-Factor', 'Stead-state', 'Cohort Cohort', 'Constit…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "nhiều", "chính", "tả", "thuật", "ngữ", "hế", "số", "factor"]
+    text: |-
+      LỖI NGUỒN: nhiều lỗi chính tả/thuật ngữ ('Hế số K-Factor', 'Stead-state', 'Cohort Cohort', 'Constitution Control', 'p12' viết P12).
+  - id: "m12-pitfalls-9"
+    title: "Lỗi thường gặp: LỖI NGUỒN: CLV Spotify làm tròn 46,61 (thực 46,615 -> 46,62) và 61,83 (thực 61,837 -> 61,84). Tham …"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "clv", "spotify", "làm", "tròn", "46", "61", "thực", "615"]
+    text: |-
+      LỖI NGUỒN: CLV Spotify làm tròn 46,61 (thực 46,615 -> 46,62) và 61,83 (thực 61,837 -> 61,84). Tham số ARPU, margin 30%, CAC $15 là giả định, không phải số Spotify.
+  - id: "m12-pitfalls-10"
+    title: "Lỗi thường gặp: Công thức giá động trong Chuyên đề 2 là mô hình minh họa, không phải thuật toán Airbnb thật."
+    tags: ["lỗi", "thường", "gặp", "công", "thức", "giá", "động", "trong", "chuyên", "đề", "là", "mô"]
+    text: |-
+      Công thức giá động trong Chuyên đề 2 là mô hình minh họa, không phải thuật toán Airbnb thật.
+  - id: "m12-pitfalls-11"
+    title: "Lỗi thường gặp: Số liệu DN Việt Nam (Biti's, Soya Garden, The Coffee House, 'Ten Coffee') trong nguồn có thể không …"
+    tags: ["lỗi", "thường", "gặp", "số", "liệu", "dn", "việt", "nam", "biti", "soya", "garden", "the"]
+    text: |-
+      Số liệu DN Việt Nam (Biti's, Soya Garden, The Coffee House, 'Ten Coffee') trong nguồn có thể không khớp báo cáo công khai (tên dự án Ten Coffee, tỷ lệ đóng cửa 90%, nhà đầu tư). Khi tư vấn khách hàng, ghi chú cần xác nhận.
+  - id: "m12-pitfalls-12"
+    title: "Lỗi thường gặp: Đối chiếu case thành công không đủ: Biti's thành công vì NHẤT QUÁN 4P với định vị (nguồn nêu); sao …"
+    tags: ["lỗi", "thường", "gặp", "đối", "chiếu", "case", "thành", "công", "không", "đủ", "biti", "vì"]
+    text: |-
+      Đối chiếu case thành công không đủ: Biti's thành công vì NHẤT QUÁN 4P với định vị (nguồn nêu); sao chép MV ca nhạc mà thiếu sản phẩm phù hợp sẽ thất bại (survivorship bias).
+  - id: "m12-pitfalls-13"
+    title: "Lỗi thường gặp: Chỉ tin dữ liệu định lượng (New Coke, last-touch) hoặc chỉ định tính; cần cả hai."
+    tags: ["lỗi", "thường", "gặp", "chỉ", "tin", "dữ", "liệu", "định", "lượng", "new", "coke", "last"]
+    text: |-
+      Chỉ tin dữ liệu định lượng (New Coke, last-touch) hoặc chỉ định tính; cần cả hai.
+  - id: "m12-pitfalls-14"
+    title: "Lỗi thường gặp: Dùng ARPU doanh thu thay biên đóng góp khi tính CLV/payback; dùng churn tháng cho công thức năm."
+    tags: ["lỗi", "thường", "gặp", "dùng", "arpu", "doanh", "thu", "thay", "biên", "đóng", "góp", "khi"]
+    text: |-
+      Dùng ARPU doanh thu thay biên đóng góp khi tính CLV/payback; dùng churn tháng cho công thức năm.
+  - id: "m12-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Trước khi mở rộng chuỗi, chạy phép thử ba lớp: (1) phân khúc có WTP đủ lớn theo vùng bán kính 1-2 k…"
+    tags: ["lưu", "sme", "việt", "nam", "trước", "khi", "mở", "rộng", "chuỗi", "chạy", "phép", "thử"]
+    text: |-
+      Trước khi mở rộng chuỗi, chạy phép thử ba lớp: (1) phân khúc có WTP đủ lớn theo vùng bán kính 1-2 km, (2) CLV/CAC và payback cho một cửa hàng, (3) nhất quán 7P. Soya Garden mở 50+ điểm trước khi chứng minh retention.
+  - id: "m12-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: Gói thuê bao F&B (Phở Pass, cà phê đồng giá): bắt buộc tính q* = giá gói / biến phí mỗi ly (ví dụ g…"
+    tags: ["lưu", "sme", "việt", "nam", "gói", "thuê", "bao", "phở", "pass", "cà", "phê", "đồng"]
+    text: |-
+      Gói thuê bao F&B (Phở Pass, cà phê đồng giá): bắt buộc tính q* = giá gói / biến phí mỗi ly (ví dụ gói 450.000 VNĐ, biến phí 18.000 VNĐ/ly -> hòa vốn 25 ly/tháng, mức dùng cần giới hạn); xem worked_example.
+  - id: "m12-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Dùng công cụ sẵn có: Google Sheets/Excel cho CLV, payback, Z-test; Google Analytics 4 và Looker Stu…"
+    tags: ["lưu", "sme", "việt", "nam", "dùng", "công", "cụ", "sẵn", "có", "google", "sheets", "excel"]
+    text: |-
+      Dùng công cụ sẵn có: Google Sheets/Excel cho CLV, payback, Z-test; Google Analytics 4 và Looker Studio cho attribution cơ bản; Zalo OA/Facebook Pixel cho referral. Chi phí công cụ: cần cập nhật theo giá hiện hành (cần xác nhận).
+  - id: "m12-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Kênh referral tại VN: chia sẻ qua Zalo/Messenger với voucher hai chiều (người mời và người nhận); đ…"
+    tags: ["lưu", "sme", "việt", "nam", "kênh", "referral", "tại", "vn", "chia", "sẻ", "qua", "zalo"]
+    text: |-
+      Kênh referral tại VN: chia sẻ qua Zalo/Messenger với voucher hai chiều (người mời và người nhận); đo c = số khách mới / số lời mời, i = số lời mời mỗi khách.
+  - id: "m12-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: Giá động cho homestay/khách sạn nhỏ nên có trần-sàn và công bố minh bạch để tránh phản ứng ngược; k…"
+    tags: ["lưu", "sme", "việt", "nam", "giá", "động", "cho", "homestay", "khách", "sạn", "nhỏ", "nên"]
+    text: |-
+      Giá động cho homestay/khách sạn nhỏ nên có trần-sàn và công bố minh bạch để tránh phản ứng ngược; kiểm tra quy định niêm yết giá (cần xác nhận).
+  - id: "m12-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: Khủng hoảng truyền thông trên mạng xã hội VN lan rất nhanh (Facebook, TikTok, nhóm Facebook review)…"
+    tags: ["lưu", "sme", "việt", "nam", "khủng", "hoảng", "truyền", "thông", "trên", "mạng", "xã", "hội"]
+    text: |-
+      Khủng hoảng truyền thông trên mạng xã hội VN lan rất nhanh (Facebook, TikTok, nhóm Facebook review); thiết lập quy trình phê duyệt nội dung nhạy cảm và người trực 24/7 trong giai đoạn chiến dịch.
+  - id: "m12-sme_vn_guidance-7"
+    title: "Lưu ý SME Việt Nam: Biti's Hunter cho thấy SME lâu đời có thể tái định vị sang phân khúc trẻ nếu đồng bộ cả sản phẩm, g…"
+    tags: ["lưu", "sme", "việt", "nam", "biti", "hunter", "cho", "thấy", "lâu", "đời", "có", "thể"]
+    text: |-
+      Biti's Hunter cho thấy SME lâu đời có thể tái định vị sang phân khúc trẻ nếu đồng bộ cả sản phẩm, giá, kênh phân phối và truyền thông - không chỉ đổi quảng cáo.
+  - id: "m12-sme_vn_guidance-8"
+    title: "Lưu ý SME Việt Nam: A/B test trên website/landing của SME ít traffic: thử thay đổi lớn, đo chỉ số gần (click, đăng ký) …"
+    tags: ["lưu", "sme", "việt", "nam", "test", "trên", "website", "landing", "của", "ít", "traffic", "thử"]
+    text: |-
+      A/B test trên website/landing của SME ít traffic: thử thay đổi lớn, đo chỉ số gần (click, đăng ký) và chạy đủ thời gian; dùng công thức cỡ mẫu trước khi bắt đầu.
+  - id: "m12-case_lessons-1"
+    title: "Bài học case: Case 1 - Biti's Hunter (tái định vị STP sang giới trẻ, Việt Nam)"
+    tags: ["bài", "học", "case", "biti", "hunter", "tái", "định", "vị", "stp", "sang", "giới", "trẻ"]
+    text: |-
+      name: Case 1 - Biti's Hunter (tái định vị STP sang giới trẻ, Việt Nam)
+      type: success
+      setup: Biti's từng là giày quốc dân thập niên 90 ('Nâng niu bàn chân Việt'), bị Nike/Adidas ở trên và hàng Trung Quốc rẻ ở dưới ép; hình ảnh bền nhưng thô, già hóa. 2016 ra dòng Hunter nhắm 15-24 tuổi đô thị loại I, định vị sneaker streetwear siêu nhẹ, thông điệp 'Đi để trở về'.
+      key_calculations:
+      - 'Seg: giới trẻ 15-24, đô thị loại I, ngân sách vừa phải, nhạy mạng xã hội.'
+      - 'Positioning map hai trục (giá - phong cách): Hunter ở vùng ''accessible cool'' giữa Nike/Adidas (premium) và giày Trung Quốc đại trà (rẻ).'
+      - '4P nhất quán: Product phylon 204g siêu nhẹ; Price khoảng 650.000 VNĐ phù hợp học sinh sinh viên; Place cửa hàng Hunter Stores; Promotion MV Lạc trôi (Sơn Tùng M-TP) và Đi để trở về (Soobin Hoàng Sơn) dịp Tết dương lịch 2017.'
+      - 'Kết quả (nguồn nêu): hơn 100.000 đôi bán trong tuần đầu; doanh số tổng +300% trong 3 năm.'
+      lesson: Tái định vị thành công khi chọn phân khúc rõ, định vị mới thật khác định vị cũ, và 4P đồng bộ (sản phẩm nhẹ, giá vừa túi tiền, kênh trải nghiệm, truyền thông phong cách sống). Tái định vị cho thương hiệu lâu năm cần dám bỏ định vị cũ ('siêu bền').
+      data_reliability: unverified
+  - id: "m12-case_lessons-2"
+    title: "Bài học case: Case 2 - Soya Garden (phân khúc nhỏ và WTP bị ngộ nhận, Việt Nam)"
+    tags: ["bài", "học", "case", "soya", "garden", "phân", "khúc", "nhỏ", "và", "wtp", "bị", "ngộ"]
+    text: |-
+      name: Case 2 - Soya Garden (phân khúc nhỏ và WTP bị ngộ nhận, Việt Nam)
+      type: failure
+      setup: Thành lập 2016; gọi vốn hơn $2 triệu USD (khoảng 45 tỷ VNĐ) theo nguồn; mở hơn 50 cửa hàng vị trí vàng Hà Nội/TP.HCM; sữa đậu nành hữu cơ định giá 50.000-75.000 VNĐ so với vỉa hè 5.000-10.000 VNĐ.
+      key_calculations:
+      - 'Chênh giá: 50.000/10.000 = 5 lần đến 75.000/5.000 = 15 lần (nguồn nêu ''khoảng 7 lần'', khớp mức giữa).'
+      - 'Quy đổi vốn: $2.000.000 x 23.000 = khoảng 46 tỷ VNĐ (nguồn nêu khoảng 45 tỷ).'
+      - '5 tiêu chí phân khúc (Kotler): thất bại ở Substantial - phân khúc sẵn lòng trả giá premium quá nhỏ/phân mảnh để phủ chi phí cố định mặt bằng.'
+      - 'Hệ quả (nguồn nêu): retention rơi tự do khi hết tò mò; COVID-19 2020-2021 đóng hơn 90% cửa hàng.'
+      lesson: Quan tâm sức khỏe không bằng sẵn lòng chi trả; trước khi nhân rộng chuỗi vật lý phải chứng minh retention và WTP ở quy mô nhỏ. Khi định vị phá nhận thức cố hữu (đậu nành bình dân), cần cầu nối giá trị cảm nhận tương xứng.
+      data_reliability: unverified
+  - id: "m12-case_lessons-3"
+    title: "Bài học case: Case 3 - Starbucks (7P nhất quán, Third Place, toàn cầu)"
+    tags: ["bài", "học", "case", "starbucks", "7p", "nhất", "quán", "third", "place", "toàn", "cầu"]
+    text: |-
+      name: Case 3 - Starbucks (7P nhất quán, Third Place, toàn cầu)
+      type: success
+      setup: Howard Schultz định vị Starbucks là 'Third Place' giữa nhà và nơi làm việc; hệ 7P đồng bộ.
+      key_calculations:
+      - 'Price: định giá theo giá trị cảm nhận, cao hơn quán thường khoảng 150-200% (nguồn nêu, mơ hồ).'
+      - 'People: Baristas là Partners, cổ phiếu Bean Stock; Process: Mobile Order and Pay (nguồn nêu lấy nước dưới 2 phút); Physical Evidence: ánh sáng vàng, gỗ, nhạc jazz, mùi cà phê.'
+      - 'Service Blueprint chia 3 ranh giới: Line of Interaction, Line of Visibility, Line of Internal Support; mọi điểm tiếp xúc đo bằng giây.'
+      lesson: Giá cao chỉ bền khi People, Process, Physical Evidence cùng chứng minh; tính nhất quán hệ thống là hàng rào chống sao chép (đối thủ copy được một P nhưng khó copy cả bảy).
+      data_reliability: illustrative
+  - id: "m12-case_lessons-4"
+    title: "Bài học case: Case 4 - The Coffee House 'Ten Coffee' (bẻ gãy 7P, Việt Nam)"
+    tags: ["bài", "học", "case", "the", "coffee", "house", "ten", "bẻ", "gãy", "7p", "việt", "nam"]
+    text: |-
+      name: Case 4 - The Coffee House 'Ten Coffee' (bẻ gãy 7P, Việt Nam)
+      type: failure
+      setup: 2021 thử kiosk/xe đẩy mang đi dưới tên Ten Coffee để đối phó GrabFood/ShopeeFood; thương hiệu cốt lõi là 'Nhà Cà Phê' không gian thân thiện.
+      key_calculations:
+      - 'Cắt Physical Evidence: không chỗ ngồi; cắt People và Process: dây chuyền mang đi, nhân viên bị hối thúc.'
+      - Giữ giá khoảng 45.000-60.000 VNĐ/ly (bằng 100% giá tại quán) dù đã bỏ không gian -> chênh lệch giá trị nhận được so với giá trả.
+      - 'Kết quả: dự án bị dẹp sau chưa đầy 1 năm (nguồn nêu).'
+      lesson: Khi chuyển từ Experience brand sang Convenience brand phải đổi cả giá, tên, menu và kỳ vọng; không dùng cùng giá premium cho mô hình cắt trải nghiệm. Dùng sub-brand hoặc kênh riêng.
+      data_reliability: unverified
+  - id: "m12-case_lessons-5"
+    title: "Bài học case: Case 5 - Spotify (giảm churn nâng CLV)"
+    tags: ["bài", "học", "case", "spotify", "giảm", "churn", "nâng", "clv"]
+    text: |-
+      name: Case 5 - Spotify (giảm churn nâng CLV)
+      type: success
+      setup: 'Freemium: bản miễn phí quảng cáo + Premium thu phí; churn cao làm CAC ăn mòn tiền mặt. Công cụ: Discover Weekly (30 bài mới mỗi sáng thứ Hai) tạo switching cost tâm lý; Family Plan 6 tài khoản.'
+      key_calculations:
+      - 'Giả định: ARPU $10/tháng, margin 30%, d = 1%/tháng, CAC $15.'
+      - 'Churn 5,5%: CLV = 3/(1 - 0,945/1,01) = 3/0,06436 = 46,62 USD; CLV/CAC = 3,11.'
+      - 'Churn 3,9%: CLV = 3/(1 - 0,961/1,01) = 3/0,04851 = 61,84 USD; CLV/CAC = 4,12.'
+      - Mức tăng CLV = 32,7%; payback = 15/(10 x 0,30) = 5 tháng. Giảm churn 1,6 điểm % cho CLV +15,2 USD không tốn thêm CAC.
+      lesson: 'Churn là đòn bẩy CLV rẻ nhất: đầu tư vào cá nhân hóa, thói quen và gói gia đình làm tăng giá trị mỗi khách và cho phép trả CAC cao hơn. Số liệu Spotify là giả định minh họa.'
+      data_reliability: illustrative
+  - id: "m12-case_lessons-6"
+    title: "Bài học case: Case 6 - MoviePass (CLV âm, Mỹ)"
+    tags: ["bài", "học", "case", "moviepass", "clv", "âm", "mỹ"]
+    text: |-
+      name: Case 6 - MoviePass (CLV âm, Mỹ)
+      type: failure
+      setup: 2017 gói $9,95/tháng xem 1 phim/ngày; MoviePass trả rạp khoảng $12/vé; người dùng từ 20.000 lên khoảng 3 triệu trong 1 năm.
+      key_calculations:
+      - Margin/tháng nếu xem 1 phim = 9,95 - 12 = -2,05 USD.
+      - Xem 3 phim = 9,95 - 36 = -26,05 USD; hòa vốn q* = 9,95/12 = 0,83 phim/tháng.
+      - CLV = tổng biên âm liên tục chiết khấu -> âm (nguồn viết -vô cực); CAC thấp không cứu được.
+      - 'Hậu quả: vay nóng lãi cao, chặn ứng dụng, phá sản (nguồn nêu 2019; thực tế công ty mẹ nộp đơn 1/2020).'
+      lesson: Không trợ giá khi biên đóng góp âm trừ khi có nguồn thu thứ hai chắc chắn (hoa hồng bắp nước, dữ liệu). Tăng trưởng nhanh càng làm lỗ nhanh.
+      data_reliability: illustrative
+  - id: "m12-case_lessons-7"
+    title: "Bài học case: Case 7 - Apple (đỉnh tháp CBBE)"
+    tags: ["bài", "học", "case", "apple", "đỉnh", "tháp", "cbbe"]
+    text: |-
+      name: Case 7 - Apple (đỉnh tháp CBBE)
+      type: success
+      setup: 'Tháp 4 tầng CBBE: Salience (quả táo cắn dở), Performance/Imagery (iOS mượt, bảo mật, ''Think Different''), Judgments/Feelings (hoàn thiện, địa vị), Resonance (cộng đồng iFans, xếp hàng đêm).'
+      key_calculations:
+      - 'Elasticity thấp -> Lerner: P* = C x eps/(eps-1); eps=1,25 cho P*=5C (biên gộp lý thuyết 80%); nguồn nói biên 40-50% - mâu thuẫn, xem pitfalls.'
+      - 'So sánh: eps=4 -> P*=1,33C (biên 25%) cho thương hiệu thông thường.'
+      lesson: Đỉnh tháp Resonance làm khách ít so sánh thông số kỹ thuật và giảm độ nhạy giá (tăng được markup); xây dần từ Salience qua Feelings, không nhảy cóc. '$3.000 tỷ' trong nguồn là vốn hóa thị trường, không phải giá trị thương hiệu.
+      data_reliability: illustrative
+  - id: "m12-case_lessons-8"
+    title: "Bài học case: Case 8 - New Coke (1985)"
+    tags: ["bài", "học", "case", "new", "coke", "1985"]
+    text: |-
+      name: Case 8 - New Coke (1985)
+      type: failure
+      setup: Trước Pepsi Challenge, Coca-Cola thử mù hơn 200.000 người, New Coke thắng; 23/4/1985 ra mắt New Coke thay Coke truyền thống; phản ứng dữ dội (thư, cuộc gọi, tích trữ lon cũ).
+      key_calculations:
+      - Khoảng 79 ngày sau Coca-Cola Classic trở lại (nguồn nêu).
+      - 'Không có phép tính trong nguồn; điểm cốt lõi: thử mù đo Performance, cảm xúc/Imagery nằm ngoài phép đo.'
+      lesson: Thương hiệu được xây bằng cảm xúc tích lũy; thử mù không đo được ý nghĩa văn hóa. Thay đổi thuộc tính biểu tượng cần nghiên cứu định tính + ra mắt song song + kế hoạch rollback.
+      data_reliability: verified
+  - id: "m12-case_lessons-9"
+    title: "Bài học case: Case 9 - Dropbox (referral loop, K-factor)"
+    tags: ["bài", "học", "case", "dropbox", "referral", "loop", "factor"]
+    text: |-
+      name: Case 9 - Dropbox (referral loop, K-factor)
+      type: success
+      setup: AdWords tốn $250-350 mỗi khách mới trong khi phí cơ bản $99/năm; chuyển sang referral hai chiều +500MB, đồng bộ danh bạ Gmail 2 lần bấm.
+      key_calculations:
+      - CLV/CAC doanh thu năm đầu = 99/250 = 0,40 đến 99/350 = 0,28 (nguồn nêu dưới 0,3).
+      - Với biên 70% giả định, payback = 300/(99 x 0,7) = 4,3 năm - không sống nổi bằng quảng cáo trả phí.
+      - 'Kết quả nguồn nêu: 100.000 -> hơn 4.000.000 người dùng trong 15 tháng; K > 1,15.'
+      - 'Kiểm tra số học: K=1,15 cần log(40)/log(1,15) = 26,4 vòng để tăng 40 lần; để đạt trong 15 tháng cần chu kỳ ~17 ngày/vòng.'
+      lesson: Nhúng động lực lan truyền vào sản phẩm (phần thưởng là chính sản phẩm có chi phí biên thấp), làm đơn giản chia sẻ, đo i và c. Đừng bỏ qua chi phí lưu trữ cho phần thưởng.
+      data_reliability: unverified
+  - id: "m12-case_lessons-10"
+    title: "Bài học case: Case 10 - Quibi (chặn Conversation)"
+    tags: ["bài", "học", "case", "10", "quibi", "chặn", "conversation"]
+    text: |-
+      name: Case 10 - Quibi (chặn Conversation)
+      type: failure
+      setup: Ra mắt 2020, video ngắn dưới 10 phút định dạng dọc; huy động $1,75 tỷ USD; công nghệ chống chụp/quay màn hình nên không có meme hay clip chia sẻ.
+      key_calculations:
+      - Premium churn hơn 90% sau thử miễn phí 90 ngày (nguồn nêu).
+      - 'K gần 0: i = 0 vì tính năng chia sẻ bị khóa.'
+      - Đóng cửa sau khoảng 6 tháng, đốt gần hết $1,75 tỷ.
+      lesson: Sản phẩm bóp nghẹt chia sẻ và thảo luận không nhận được tăng trưởng hữu cơ; ngân sách lớn và nội dung tốt không bù được. Bảo vệ bản quyền nên thiết kế chia sẻ có kiểm soát thay vì chặn.
+      data_reliability: illustrative
+  - id: "m12-case_lessons-11"
+    title: "Bài học case: Case 11 - Airbnb (4C hoàn chỉnh)"
+    tags: ["bài", "học", "case", "11", "airbnb", "4c", "hoàn", "chỉnh"]
+    text: |-
+      name: Case 11 - Airbnb (4C hoàn chỉnh)
+      type: success
+      setup: Không sở hữu phòng nào; nền tảng P2P với Co-creation (chủ nhà tự thiết kế), Currency (Smart Pricing), Communal Activation (phòng trống), Conversation (đánh giá hai chiều ẩn danh).
+      key_calculations:
+      - 'Giá động minh họa: base 500.000 VNĐ, D=120, S=80, alpha 0,5, gamma 0,2, tau 0,6 -> 595.808 VNĐ (+19,2%) (công thức minh họa).'
+      - 'Nguồn nêu IPO vượt $100 tỷ USD và số phòng lớn hơn 5 tập đoàn khách sạn: chưa kiểm chứng; giá IPO 12/2020 định giá khoảng $47 tỷ.'
+      lesson: Khung 4C thay CapEx bằng tài sản cộng đồng; niềm tin giữa người lạ được kiến tạo bằng thiết kế đánh giá hai chiều. Giá động phải có minh bạch.
+      data_reliability: unverified
+  - id: "m12-case_lessons-12"
+    title: "Bài học case: Case 12 - Pepsi Kendall Jenner (Conversation phản ứng ngược)"
+    tags: ["bài", "học", "case", "12", "pepsi", "kendall", "jenner", "conversation", "phản", "ứng", "ngược"]
+    text: |-
+      name: Case 12 - Pepsi Kendall Jenner (Conversation phản ứng ngược)
+      type: failure
+      setup: 4/2017, quảng cáo diễn cảnh biểu tình hòa bình, Kendall Jenner đưa lon Pepsi cho cảnh sát; cộng đồng cho là tầm thường hóa phong trào Black Lives Matter.
+      key_calculations:
+      - Gỡ sau khoảng 48 giờ và xin lỗi; chi phí 'hàng chục triệu USD' (nguồn nêu, không kiểm chứng).
+      - 'SIR: R0 = beta x S0/gamma; minh họa R0 = 2,5 -> bức xúc tăng mũ, đỉnh I khoảng 23,5% quần thể.'
+      lesson: Conversation thuộc cộng đồng; không lợi dụng biểu tượng xã hội để đánh bóng sản phẩm. Cần kiểm duyệt đa dạng trước khi phát hành và kế hoạch khủng hoảng 6 bước.
+      data_reliability: illustrative
+  - id: "m12-worked_examples-1"
+    title: "Ví dụ có lời giải: m12_we_subscription_launch — Ví dụ tích hợp 1 - Gói cà phê thuê bao SME (STP -> giá -> q* -> CLV/CAC -> payback)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m12_we_subscription_launch", "tích", "hợp", "gói", "cà", "phê", "thuê"]
+    text: |-
+      id: m12_we_subscription_launch
+      name: Ví dụ tích hợp 1 - Gói cà phê thuê bao SME (STP -> giá -> q* -> CLV/CAC -> payback)
+      inputs:
+        arpu_vnd: 450000
+        margin: 0.55
+        d: 0.01
+        cac_vnd: 1200000
+        churn_base: 0.06
+        churn_improved: 0.04
+        variable_cost_per_cup: 18000
+      steps:
+      - 'Bước 1 (STP, m01): phân khúc dân văn phòng bán kính 1 km, uống 1 ly/ngày làm việc; WTP gói 450.000 VNĐ/tháng được khảo sát trước với mẫu >= 100 người.'
+      - 'Bước 2 (m12_contribution_margin_usage): q* = 450.000/18.000 = 25 ly/tháng. Khách dùng 22 ngày/tháng x 1 ly = 22 ly < 25 -> còn biên; khách uống 2 ly/ngày (44 ly) -> lỗ ngay. Đặt giới hạn 1 ly/ngày.'
+      - 'Bước 3 (m12_clv_discounted_geometric): margin 55% -> biên 247.500 VNĐ/tháng. Churn 6%: CLV = 247.500/(1 - 0,94/1,01) = 247.500/0,069307 = 3.571.071 VNĐ; CLV/CAC = 3.571.071/1.200.000 = 2,98.'
+      - 'Bước 4 (m12_cac_payback): 1.200.000/247.500 = 4,85 tháng.'
+      - 'Bước 5: Giảm churn 6% -> 4% (cải thiện cá nhân hóa, tích điểm): CLV = 247.500/(1 - 0,96/1,01) = 4.999.500; CLV/CAC = 4,17; tăng 40,0% (+1.428.429 VNĐ mỗi khách); với 100 khách mới = +142,8 triệu VNĐ giá trị.'
+      - 'Bước 6: CAC tối đa cho CLV/CAC = 3: 3.571.071/3 = 1.190.357 (churn 6%) hoặc 1.666.500 (churn 4%).'
+      - 'Bước 7: Churn 8% -> CLV 2.777.500; CLV/CAC = 2,32 < 3 -> cảnh báo không mở rộng.'
+      result: CLV/CAC 2,98 (churn 6%), 4,17 (churn 4%), 2,32 (churn 8%); payback 4,85 tháng; q* = 25 ly/tháng. Số liệu giả định minh họa tự nhất quán.
+  - id: "m12-worked_examples-2"
+    title: "Ví dụ có lời giải: m12_we_pricing_ab — Ví dụ tích hợp 2 - Giá tối ưu Lerner và A/B test trang đăng ký"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m12_we_pricing_ab", "tích", "hợp", "giá", "tối", "ưu", "lerner"]
+    text: |-
+      id: m12_we_pricing_ab
+      name: Ví dụ tích hợp 2 - Giá tối ưu Lerner và A/B test trang đăng ký
+      inputs:
+        C: 18000
+        eps_options:
+        - 4
+        - 2.5
+        - 1.8
+        conv_A: 216
+        conv_B: 264
+        n_each: 2400
+      steps:
+      - 'Giá tối ưu: eps=4 -> P* = 18.000 x 4/3 = 24.000 (biên 25%); eps=2,5 -> 30.000 (biên 40%); eps=1,8 -> 40.500 (biên 55,6%). Thương hiệu mạnh hơn (eps nhỏ) chịu giá cao hơn.'
+      - 'Kiểm tra tại eps=2,5: P* = 30.000; lợi nhuận tương đối nếu tăng giá thêm 20% = 0,951 lần; nếu giảm 20% = 0,873 lần -> P* là cực đại.'
+      - 'A/B trang đăng ký: pA = 216/2400 = 9,0%; pB = 264/2400 = 11,0%; p gộp = 480/4800 = 10,0%.'
+      - SE = sqrt(0,10 x 0,90 x (2/2400)) = 0,00866; Z = 0,02/0,00866 = 2,31.
+      - 'Kết luận: Z = 2,31 > 1,96 (cả hai phía) -> bác bỏ H0 ở mức 5%; triển khai B nếu chi phí thay đổi nhỏ, theo dõi churn của cohort B (lift đăng ký có thể kèm chất lượng thấp).'
+      result: P* = 30.000 VNĐ khi eps=2,5; Z = 2,31 nên chọn bản B
+  - id: "m12-worked_examples-3"
+    title: "Ví dụ có lời giải: m12_we_viral_vs_paid — Ví dụ tích hợp 3 - Referral (K-factor) so với quảng cáo trả phí"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m12_we_viral_vs_paid", "tích", "hợp", "referral", "factor", "so", "với"]
+    text: |-
+      id: m12_we_viral_vs_paid
+      name: Ví dụ tích hợp 3 - Referral (K-factor) so với quảng cáo trả phí
+      inputs:
+        N0: 100000
+        i: 5
+        c: 0.23
+        CAC_paid: 300
+        price_year: 99
+        margin: 0.7
+      steps:
+      - K = 5 x 0,23 = 1,15 > 1 -> tự duy trì lý thuyết.
+      - 'Sau 3/6/9/12 vòng: N0 x K^n = 152.087 / 231.306 / 351.788 / 535.025 (thế hệ thứ n).'
+      - 'Quảng cáo trả phí: CAC trung bình 300 USD; biên năm = 99 x 0,7 = 69,3 USD; payback = 300/69,3 = 4,33 năm (> thời gian khách ở lại điển hình) -> không bền.'
+      - 'Referral chi phí biên: giả định phần thưởng 500MB tốn 0,5 USD mỗi người -> CAC thực khoảng 1 USD (hai phía) so với 300 USD.'
+      - 'Nếu K giảm xuống 0,8 (i=4, c=0,2): tổng người dùng từ 1 hạt giống = 1/(1-0,8) = 5 -> vẫn giảm CAC trộn nhưng tắt dần; cần kênh trả phí tiếp tế.'
+      result: 'K=1,15: vòng viral; quảng cáo trả phí cho payback 4,33 năm. Tham số i, c, chi phí phần thưởng là giả định.'
+  - id: "m12-worked_examples-4"
+    title: "Ví dụ có lời giải: m12_we_attribution_budget — Ví dụ tích hợp 4 - So sánh 4 mô hình attribution cho cùng một hành trình"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m12_we_attribution_budget", "tích", "hợp", "so", "sánh", "mô", "hình"]
+    text: |-
+      id: m12_we_attribution_budget
+      name: Ví dụ tích hợp 4 - So sánh 4 mô hình attribution cho cùng một hành trình
+      inputs:
+        path: Search (14 ngày trước) -> Facebook (7 ngày) -> Email (1 ngày) -> Mua
+        lambda: 7
+        order_value_vnd: 1000000
+      steps:
+      - 'Last-touch: Email 100% = 1.000.000 VNĐ; Search, Facebook = 0.'
+      - 'Linear: mỗi kênh 33,3% = 333.333 VNĐ.'
+      - 'Time-decay lambda 7: w = 0,25 / 0,5 / 0,906; chuẩn hóa: Search 15,1% (151.000), Facebook 30,2% (302.000), Email 54,7% (547.000).'
+      - 'Markov (đồ thị giả định, 1.000 đơn): P(conv)=0,31; RE Search 83,9%, Facebook 35,5%, Email 41,9%; chuẩn hóa Search 52%, Email 26%, Facebook 22%.'
+      - 'Diễn giải: Search bị last-touch cho 0 nhưng bỏ nó thì mất 83,9% chuyển đổi -> kênh thượng nguồn thiết yếu. Quyết định: không cắt Search; kiểm lại bằng holdout trước khi chuyển ngân sách.'
+      result: 'Search nhận 0% (last-touch) so với 52% (Markov): hai mô hình dẫn đến quyết định ngân sách trái ngược'
+  - id: "m12-worked_examples-5"
+    title: "Ví dụ có lời giải: m12_we_markov_share — Ví dụ tích hợp 5 - Dự báo thị phần Markov và giá trị đầu tư giữ chân"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m12_we_markov_share", "tích", "hợp", "dự", "báo", "thị", "phần"]
+    text: |-
+      id: m12_we_markov_share
+      name: Ví dụ tích hợp 5 - Dự báo thị phần Markov và giá trị đầu tư giữ chân
+      inputs:
+        P:
+        - - 0.8
+          - 0.2
+        - - 0.3
+          - 0.7
+        s0:
+        - 0.5
+        - 0.5
+      steps:
+      - s(1) = (0,5 x 0,8 + 0,5 x 0,3; 0,5 x 0,2 + 0,5 x 0,7) = (0,55; 0,45).
+      - s(2) = (0,575; 0,425); s(5) = (0,5969; 0,4031).
+      - Cân bằng pi_A = p21/(p12 + p21) = 0,3/0,5 = 60%.
+      - 'Chiến dịch giữ chân nâng p11 từ 0,8 lên 0,85 (p12 = 0,15): pi_A = 0,3/(0,15+0,3) = 66,7% (+6,7 điểm % thị phần dài hạn).'
+      - 'Chiến dịch giành khách nâng p21 từ 0,3 lên 0,35: pi_A = 0,35/(0,2+0,35) = 63,6% (+3,6 điểm).'
+      result: Cùng mức cải thiện 5 điểm % xác suất, giữ chân (p12 giảm) cho +6,7 điểm, giành khách (p21 tăng) cho +3,6 điểm - ưu tiên giữ chân khi hai chi phí tương đương
+  - id: "m12-practice_questions-1"
+    title: "Câu hỏi luyện tập: Nguồn Câu hỏi 2: SaaS Fintech có churn tháng tăng từ 2% lên 8%. Với ARPU 10, biên 30%, d=1%, CLV gi…"
+    tags: ["câu", "hỏi", "luyện", "tập", "nguồn", "saas", "fintech", "có", "churn", "tháng", "tăng", "từ"]
+    text: |-
+      q: 'Nguồn Câu hỏi 2: SaaS Fintech có churn tháng tăng từ 2% lên 8%. Với ARPU 10, biên 30%, d=1%, CLV giảm bao nhiêu phần trăm? Giả thiết giá trị doanh nghiệp tỷ lệ thuận tổng CLV danh mục thì EV giảm thế nào?'
+      a: 'CLV(2%) = 3/(1 - 0,98/1,01) = 101,00; CLV(8%) = 3/(1 - 0,92/1,01) = 33,67; giảm 66,7%. Nếu EV tỷ lệ với tổng CLV và số khách không đổi, EV giảm cùng 66,7%. Giải pháp: onboarding/Aha moment, cá nhân hóa, gói gia đình/dài hạn, cảnh báo sớm churn theo hành vi, ưu đãi giữ chân.'
+  - id: "m12-practice_questions-2"
+    title: "Câu hỏi luyện tập: Vì sao gói 'không giới hạn' có thể giết doanh nghiệp (MoviePass), tính q* thế nào?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "gói", "không", "giới", "hạn", "có", "thể"]
+    text: |-
+      q: Vì sao gói 'không giới hạn' có thể giết doanh nghiệp (MoviePass), tính q* thế nào?
+      a: q* = ARPU/biến phí mỗi lần dùng = 9,95/12 = 0,83 phim/tháng. Khách dùng nhiều hơn q* gây lỗ; khách dùng nhiều tự chọn gói; cần giới hạn dùng hoặc nguồn thu bổ trợ.
+  - id: "m12-practice_questions-3"
+    title: "Câu hỏi luyện tập: Phân biệt Z-test một phía và hai phía; vì sao nguồn dùng 1,96 là chưa chính xác cho H1 một phía?"
+    tags: ["câu", "hỏi", "luyện", "tập", "phân", "biệt", "test", "một", "phía", "và", "hai", "vì"]
+    text: |-
+      q: Phân biệt Z-test một phía và hai phía; vì sao nguồn dùng 1,96 là chưa chính xác cho H1 một phía?
+      a: 'Hai phía 5% có ngưỡng 1,96; một phía 5% là 1,645. H1: pB > pA là một phía nên ngưỡng 1,645 (hoặc dùng 1,96 để bảo thủ, nhưng phải nêu rõ).'
+  - id: "m12-practice_questions-4"
+    title: "Câu hỏi luyện tập: Nếu eps = 1,25 thì giá tối ưu gấp mấy lần chi phí và biên gộp là bao nhiêu? Vì sao điều này mâu thu…"
+    tags: ["câu", "hỏi", "luyện", "tập", "nếu", "eps", "25", "thì", "giá", "tối", "ưu", "gấp"]
+    text: |-
+      q: Nếu eps = 1,25 thì giá tối ưu gấp mấy lần chi phí và biên gộp là bao nhiêu? Vì sao điều này mâu thuẫn với biên 40-50% của Apple trong nguồn?
+      a: P* = 5C, biên gộp 1/eps = 80%. Biên 40-50% ứng eps 2,0-2,5; hoặc biên gộp kế toán thực của Apple không phải biên đơn vị của một sản phẩm; cần ước lượng eps từ dữ liệu.
+  - id: "m12-practice_questions-5"
+    title: "Câu hỏi luyện tập: Cohort có alpha cao nhưng beta < 1 chẩn đoán gì?"
+    tags: ["câu", "hỏi", "luyện", "tập", "cohort", "có", "alpha", "cao", "nhưng", "beta", "chẩn", "đoán"]
+    text: |-
+      q: Cohort có alpha cao nhưng beta < 1 chẩn đoán gì?
+      a: Mất khách lớn ngay ban đầu (Activation yếu - chưa tới Aha moment) nhưng khách ở lại thì trung thành dần. Ưu tiên cải thiện onboarding.
+  - id: "m12-practice_questions-6"
+    title: "Câu hỏi luyện tập: Vì sao 5 mô hình attribution cho kết quả khác nhau, chọn mô hình nào?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "mô", "hình", "attribution", "cho", "kết", "quả"]
+    text: |-
+      q: Vì sao 5 mô hình attribution cho kết quả khác nhau, chọn mô hình nào?
+      a: Mỗi mô hình là giả định khác (last-touch = kênh cuối; linear = bằng nhau; time-decay = gần thì nặng; Markov = giá trị biên nếu bỏ kênh). Dùng Markov/data-driven khi đủ dữ liệu và xác nhận bằng thử nghiệm incrementality; dùng time-decay khi dữ liệu mỏng.
+  - id: "m12-practice_questions-7"
+    title: "Câu hỏi luyện tập: Phân tích Soya Garden bằng 5 tiêu chí Kotler và đề xuất cách cứu."
+    tags: ["câu", "hỏi", "luyện", "tập", "phân", "tích", "soya", "garden", "bằng", "tiêu", "chí", "kotler"]
+    text: |-
+      q: Phân tích Soya Garden bằng 5 tiêu chí Kotler và đề xuất cách cứu.
+      a: 'Thất bại ở Substantial (WTP premium quá nhỏ), kèm Actionable (chi phí cố định cao). Cứu: giảm số cửa hàng, đưa giá về gần vỉa hè cao cấp (ví dụ 15.000-25.000 VNĐ), kiot nhỏ, kênh delivery, thử menu thức ăn kèm; đo retention theo cohort trước khi mở rộng.'
+  - id: "m12-practice_questions-8"
+    title: "Câu hỏi luyện tập: Viết memo ngắn cho CEO Quibi: sửa đổi tối thiểu để mở khóa viral loop mà không vi phạm bản quyền."
+    tags: ["câu", "hỏi", "luyện", "tập", "viết", "memo", "ngắn", "cho", "ceo", "quibi", "sửa", "đổi"]
+    text: |-
+      q: 'Viết memo ngắn cho CEO Quibi: sửa đổi tối thiểu để mở khóa viral loop mà không vi phạm bản quyền.'
+      a: Cho phép chia sẻ clip 10-15 giây có watermark và link quay lại ứng dụng, cho phép chụp màn hình ảnh tĩnh có thương hiệu, deep link xem tiếp; đo K = i x c; thử nghiệm A/B trên chia sẻ; thỏa thuận với đối tác nội dung về giới hạn clip.
+  - id: "m12-checklist-1"
+    title: "Checklist: □ Đã xác định lỗi nằm ở tầng nào (STP, 7P/4C, chỉ số giá trị) trước khi đề xuất chiến thuật?"
+    tags: ["checklist", "đã", "xác", "định", "lỗi", "nằm", "tầng", "nào", "stp", "7p", "4c", "chỉ"]
+    text: |-
+      □ Đã xác định lỗi nằm ở tầng nào (STP, 7P/4C, chỉ số giá trị) trước khi đề xuất chiến thuật?
+  - id: "m12-checklist-2"
+    title: "Checklist: □ Phân khúc mục tiêu qua đủ 5 tiêu chí; đã ước lượng số người SẴN LÒNG TRẢ chứ không chỉ quan tâm?"
+    tags: ["checklist", "phân", "khúc", "mục", "tiêu", "qua", "đủ", "chí", "đã", "ước", "lượng", "số"]
+    text: |-
+      □ Phân khúc mục tiêu qua đủ 5 tiêu chí; đã ước lượng số người SẴN LÒNG TRẢ chứ không chỉ quan tâm?
+  - id: "m12-checklist-3"
+    title: "Checklist: □ 7P (đặc biệt Price, People, Process, Physical Evidence) nhất quán với định vị?"
+    tags: ["checklist", "7p", "đặc", "biệt", "price", "people", "process", "physical", "evidence", "nhất", "quán", "với"]
+    text: |-
+      □ 7P (đặc biệt Price, People, Process, Physical Evidence) nhất quán với định vị?
+  - id: "m12-checklist-4"
+    title: "Checklist: □ CLV dùng biên đóng góp (không phải doanh thu); đơn vị churn/chiết khấu nhất quán (tháng với tháng…"
+    tags: ["checklist", "clv", "dùng", "biên", "đóng", "góp", "không", "phải", "doanh", "thu", "đơn", "vị"]
+    text: |-
+      □ CLV dùng biên đóng góp (không phải doanh thu); đơn vị churn/chiết khấu nhất quán (tháng với tháng)?
+  - id: "m12-checklist-5"
+    title: "Checklist: □ CLV/CAC và payback đã tính và so với ngưỡng 3,0 / 12 tháng; đã kiểm biên đóng góp mỗi khách dương?"
+    tags: ["checklist", "clv", "cac", "và", "payback", "đã", "tính", "so", "với", "ngưỡng", "12", "tháng"]
+    text: |-
+      □ CLV/CAC và payback đã tính và so với ngưỡng 3,0 / 12 tháng; đã kiểm biên đóng góp mỗi khách dương?
+  - id: "m12-checklist-6"
+    title: "Checklist: □ Với gói không giới hạn: đã tính q* và giới hạn sử dụng?"
+    tags: ["checklist", "với", "gói", "không", "giới", "hạn", "đã", "tính", "và", "sử", "dụng"]
+    text: |-
+      □ Với gói không giới hạn: đã tính q* và giới hạn sử dụng?
+  - id: "m12-checklist-7"
+    title: "Checklist: □ Đã đo K = i x c và biết K < 1 hay > 1; phần thưởng referral đã tính chi phí?"
+    tags: ["checklist", "đã", "đo", "và", "biết", "hay", "phần", "thưởng", "referral", "tính", "chi", "phí"]
+    text: |-
+      □ Đã đo K = i x c và biết K < 1 hay > 1; phần thưởng referral đã tính chi phí?
+  - id: "m12-checklist-8"
+    title: "Checklist: □ A/B test có cỡ mẫu đủ, ngưỡng một/hai phía nêu rõ, không dừng sớm?"
+    tags: ["checklist", "test", "có", "cỡ", "mẫu", "đủ", "ngưỡng", "một", "hai", "phía", "nêu", "rõ"]
+    text: |-
+      □ A/B test có cỡ mẫu đủ, ngưỡng một/hai phía nêu rõ, không dừng sớm?
+  - id: "m12-checklist-9"
+    title: "Checklist: □ Thay đổi thuộc tính biểu tượng thương hiệu đã qua nghiên cứu định tính + ra mắt song song + kế ho…"
+    tags: ["checklist", "thay", "đổi", "thuộc", "tính", "biểu", "tượng", "thương", "hiệu", "đã", "qua", "nghiên"]
+    text: |-
+      □ Thay đổi thuộc tính biểu tượng thương hiệu đã qua nghiên cứu định tính + ra mắt song song + kế hoạch rollback?
+  - id: "m12-checklist-10"
+    title: "Checklist: □ Attribution không chỉ last-touch; đã so sánh ít nhất 2 mô hình và có kiểm chứng holdout?"
+    tags: ["checklist", "attribution", "không", "chỉ", "last", "touch", "đã", "so", "sánh", "ít", "nhất", "mô"]
+    text: |-
+      □ Attribution không chỉ last-touch; đã so sánh ít nhất 2 mô hình và có kiểm chứng holdout?
+  - id: "m12-checklist-11"
+    title: "Checklist: □ Có kế hoạch khủng hoảng 6 bước và người trực 24/7 cho chiến dịch nhạy cảm?"
+    tags: ["checklist", "có", "kế", "hoạch", "khủng", "hoảng", "bước", "và", "người", "trực", "24", "cho"]
+    text: |-
+      □ Có kế hoạch khủng hoảng 6 bước và người trực 24/7 cho chiến dịch nhạy cảm?
+  - id: "m12-checklist-12"
+    title: "Checklist: □ Mọi con số doanh nghiệp (Biti's, Spotify, Dropbox...) đã gắn nhãn data_reliability trước khi tríc…"
+    tags: ["checklist", "mọi", "con", "số", "doanh", "nghiệp", "biti", "spotify", "dropbox", "đã", "gắn", "nhãn"]
+    text: |-
+      □ Mọi con số doanh nghiệp (Biti's, Spotify, Dropbox...) đã gắn nhãn data_reliability trước khi trích trong báo cáo?
+  - id: "m12-checklist-13"
+    title: "Checklist: □ Chạy python3 kiểm tra mọi phép tính trước khi ghi báo cáo."
+    tags: ["checklist", "chạy", "python3", "kiểm", "tra", "mọi", "phép", "tính", "trước", "khi", "ghi", "báo"]
+    text: |-
+      □ Chạy python3 kiểm tra mọi phép tính trước khi ghi báo cáo.
+  - id: "m12-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Sheet 'CLV_CAC': cột ARPU, Margin, Churn, d, CLV = ARPU*Margin/(1-(1-Churn)/(1+d)), CAC, CLV/CAC, P…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "clv_cac", "cột", "arpu", "margin", "churn", "clv", "cac"]
+    text: |-
+      Sheet 'CLV_CAC': cột ARPU, Margin, Churn, d, CLV = ARPU*Margin/(1-(1-Churn)/(1+d)), CAC, CLV/CAC, Payback = CAC/(ARPU*Margin), cảnh báo màu khi < 3 hoặc payback > 12.
+  - id: "m12-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Sheet 'Subscription_q*': giá gói, biến phí/lần, q* = giá/biến phí, sử dụng dự kiến theo nhóm khách,…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "subscription_q", "giá", "gói", "biến", "phí", "lần", "sử", "dụng"]
+    text: |-
+      Sheet 'Subscription_q*': giá gói, biến phí/lần, q* = giá/biến phí, sử dụng dự kiến theo nhóm khách, biên theo nhóm, biên trung bình có trọng số.
+  - id: "m12-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: Sheet 'K_factor': cột i, c, K = i*c, tổng người dùng sau n vòng = N0*(K^(n+1)-1)/(K-1), chi phí phầ…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "k_factor", "cột", "tổng", "người", "dùng", "sau", "vòng", "n0"]
+    text: |-
+      Sheet 'K_factor': cột i, c, K = i*c, tổng người dùng sau n vòng = N0*(K^(n+1)-1)/(K-1), chi phí phần thưởng, CAC thực.
+  - id: "m12-excel_google_sheets_templates-4"
+    title: "Mẫu Excel/Sheets: Sheet 'AB_test': nA, xA, nB, xB, p gộp, Z, p-value = 1-NORM.S.DIST(Z,TRUE), kết luận; thêm cỡ mẫu."
+    tags: ["mẫu", "excel", "sheets", "sheet", "ab_test", "na", "xa", "nb", "xb", "gộp", "value", "norm"]
+    text: |-
+      Sheet 'AB_test': nA, xA, nB, xB, p gộp, Z, p-value = 1-NORM.S.DIST(Z,TRUE), kết luận; thêm cỡ mẫu.
+  - id: "m12-excel_google_sheets_templates-5"
+    title: "Mẫu Excel/Sheets: Sheet 'Markov_share': ma trận P 2x2, MMULT lặp theo chu kỳ, cân bằng pi = p21/(p12+p21), biểu đồ th…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "markov_share", "ma", "trận", "2x2", "mmult", "lặp", "theo", "chu"]
+    text: |-
+      Sheet 'Markov_share': ma trận P 2x2, MMULT lặp theo chu kỳ, cân bằng pi = p21/(p12+p21), biểu đồ thị phần theo t.
+  - id: "m12-excel_google_sheets_templates-6"
+    title: "Mẫu Excel/Sheets: Sheet 'Attribution': hành trình mỗi dòng, cột trọng số last/linear/time-decay chuẩn hóa, doanh thu …"
+    tags: ["mẫu", "excel", "sheets", "sheet", "attribution", "hành", "trình", "mỗi", "dòng", "cột", "trọng", "số"]
+    text: |-
+      Sheet 'Attribution': hành trình mỗi dòng, cột trọng số last/linear/time-decay chuẩn hóa, doanh thu phân bổ theo kênh.
+  - id: "m12-excel_google_sheets_templates-7"
+    title: "Mẫu Excel/Sheets: Sheet 'Health_matrix': 6 trụ cột, điểm 1-5, bằng chứng số, hành động; radar chart."
+    tags: ["mẫu", "excel", "sheets", "sheet", "health_matrix", "trụ", "cột", "điểm", "bằng", "chứng", "số", "hành"]
+    text: |-
+      Sheet 'Health_matrix': 6 trụ cột, điểm 1-5, bằng chứng số, hành động; radar chart.
+  - id: "m12-excel_google_sheets_templates-8"
+    title: "Mẫu Excel/Sheets: Sheet 'Lerner_price': C, eps -> P* = C*eps/(eps-1), biên = 1/eps; bảng độ nhạy lợi nhuận theo P."
+    tags: ["mẫu", "excel", "sheets", "sheet", "lerner_price", "eps", "biên", "bảng", "độ", "nhạy", "lợi", "nhuận"]
+    text: |-
+      Sheet 'Lerner_price': C, eps -> P* = C*eps/(eps-1), biên = 1/eps; bảng độ nhạy lợi nhuận theo P.
+  - id: "m12-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: 12-comprehensive-marketing-case-studies-manual.md

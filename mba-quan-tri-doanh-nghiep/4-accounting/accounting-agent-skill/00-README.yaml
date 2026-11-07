@@ -1,0 +1,67 @@
+# 00-README.yaml — ĐIỂM VÀO. Agent mới: đọc file này TRƯỚC, rồi làm theo load_order.
+skill:
+  id: accounting-agent-skill
+  version: 1.0
+  language: "vi (thuật ngữ Anh trong ngoặc)"
+  created: 2026-11-07
+  purpose: >
+    Bộ tri thức đã chắt lọc từ giáo trình "Kế toán doanh nghiệp ứng dụng" (MBA ứng dụng SME Việt Nam)
+    để một agent Kế toán (Accountant, phòng đầu tư) hướng dẫn định khoản, lập và đọc báo cáo tài chính,
+    kế toán quản trị, tính giá thành, lập ngân sách/dự báo dòng tiền, phân tích chênh lệch và chẩn đoán bằng tỷ số.
+  source_material: >
+    8 file markdown trong thư mục cha (01-financial-accounting.md ... 08-comprehensive-accounting-case-studies-manual.md).
+    Skill tự đủ (self-contained): agent không cần đọc markdown gốc để làm việc; markdown gốc chỉ để tham chiếu sâu thêm.
+  portability: >
+    Chỉ gồm YAML (+ 1 script Python tùy chọn). Copy nguyên thư mục accounting-agent-skill/ sang máy khác là dùng được.
+    Không có đường dẫn tuyệt đối, không phụ thuộc phần mềm ngoài. Script kiểm tra cần python3 và pyyaml.
+
+how_to_bootstrap:
+  step_1: Đọc toàn bộ file này.
+  step_2: Đọc 01-agent-profile.yaml (vai trò, nguyên tắc, quy trình trả lời, nhãn độ tin cậy, giới hạn pháp lý/thuế) — BẮT BUỘC tuân thủ.
+  step_3: Đọc SCHEMA.yaml để hiểu cấu trúc các module.
+  step_4: Với mỗi yêu cầu của người dùng, dùng 02-decision-router.yaml để chọn module và playbook.
+  step_5: Nạp module cần dùng trong modules/ (đọc đầy đủ), tra công thức ở 06-formulas-index.yaml, chạy playbook ở 03-playbooks.yaml.
+  step_6: Trình bày kết quả theo 04-report-templates.yaml; tra thuật ngữ ở 05-glossary.yaml.
+  step_7: Mọi nội dung liên quan thuế suất, hạn nộp, mức phạt, thông tư/chuẩn mực hiện hành phải tra web_search/web_fetch (nếu có) và ghi nguồn cùng ngày tra cứu; nếu không tra được thì gắn nhãn needs_expert.
+  note_on_context: >
+    Nếu giới hạn ngữ cảnh chặt: luôn nạp 00, 01, 02; chỉ nạp thêm module liên quan (router chỉ ra tối đa 3-4 module cho mỗi tình huống).
+
+load_order:
+  always: [00-README.yaml, 01-agent-profile.yaml, 02-decision-router.yaml]
+  on_demand: [03-playbooks.yaml, 04-report-templates.yaml, 05-glossary.yaml, 06-formulas-index.yaml, "modules/*.yaml"]
+  reference_only: [SCHEMA.yaml]
+
+file_index:
+  - {file: 00-README.yaml, role: "Điểm vào, hướng dẫn nạp skill"}
+  - {file: SCHEMA.yaml, role: "Định nghĩa cấu trúc dữ liệu"}
+  - {file: 01-agent-profile.yaml, role: "Vai trò, phạm vi, nguyên tắc, workflow, disclaimer"}
+  - {file: 02-decision-router.yaml, role: "Định tuyến câu hỏi sang module và playbook, chuỗi module cho bài toán đa chiều"}
+  - {file: 03-playbooks.yaml, role: "11 kịch bản giải quyết vấn đề end-to-end"}
+  - {file: 04-report-templates.yaml, role: "Mẫu báo cáo và bảng biểu đầu ra"}
+  - {file: 05-glossary.yaml, role: "Thuật ngữ Việt-Anh và ký hiệu"}
+  - {file: 06-formulas-index.yaml, role: "Registry mọi công thức (sinh tự động từ modules/, có biểu thức Python)"}
+  - {file: modules/m01-financial-accounting.yaml, role: "Kế toán tài chính: phương trình kế toán, định khoản, BS/IS/CFS, khấu hao, tồn kho, doanh thu"}
+  - {file: modules/m02-managerial-accounting.yaml, role: "Kế toán quản trị: CVP, hòa vốn, contribution margin, quyết định ngắn hạn"}
+  - {file: modules/m03-cost-accounting.yaml, role: "Giá thành: job costing, process costing, ABC, phân bổ chi phí chung"}
+  - {file: modules/m04-budgeting-and-forecasting.yaml, role: "Ngân sách tổng thể, linh hoạt, rolling forecast, dòng tiền 13 tuần"}
+  - {file: modules/m05-variance-analysis.yaml, role: "Phân tích chênh lệch giá/lượng/hiệu suất, flex budget"}
+  - {file: modules/m06-financial-ratios.yaml, role: "Tỷ số tài chính, DuPont, chẩn đoán"}
+  - {file: modules/m07-integrated-case-studies.yaml, role: "4 case tích hợp (Phở Việt Chain, GreenPack, Mộc Thu, TechMart)"}
+  - {file: modules/m08-comprehensive-accounting-case-studies-manual.yaml, role: "Cẩm nang 7 case toàn diện và phụ lục toán nâng cao"}
+
+maintenance:
+  validate: "python3 tools/build_and_validate.py   # kiểm tra YAML, trùng id, sinh lại 06-formulas-index.yaml"
+  update_rule: "Sửa module trong modules/, rồi chạy lại script để cập nhật 06-formulas-index.yaml."
+  data_quality_notes: >
+    Mỗi case_lessons có data_reliability (verified/illustrative/unverified). Số liệu công ty thực và thuế/pháp lý VN
+    cần đối chiếu nguồn gốc trước khi dùng cho quyết định thật. Xem known_data_caveats trong 01-agent-profile.yaml.
+
+conventions_for_calculation:
+  expression_python: >
+    Biểu thức hoặc đoạn code Python minh họa cách tính; tên biến khớp mục variables và example.inputs.
+    Công thức nhiều dòng là mã tham chiếu, không nhất thiết eval một dòng.
+  accounting_identities: >
+    Luôn kiểm tra: Tài sản = Nợ phải trả + Vốn chủ sở hữu; tổng Nợ = tổng Có trong mỗi bút toán;
+    Tiền cuối kỳ (CFS) = Tiền đầu kỳ + dòng tiền thuần; lợi nhuận giữ lại cuối = đầu + lãi ròng - cổ tức.
+  units: "Ghi rõ đơn vị (đồng, triệu đồng, tỷ đồng) và kỳ (tháng, quý, năm); làm tròn nhất quán và nêu mức làm tròn."
+  source_priority: "Khi YAML và markdown gốc mâu thuẫn số học, ưu tiên YAML đã tính lại."

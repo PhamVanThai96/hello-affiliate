@@ -49,6 +49,112 @@
       "template": "Tư vấn tài chính: [mô tả bài toán — vốn đầu tư, dòng tiền, lãi suất/WACC, số liệu có sẵn]"
     },
     {
+      "id": "stocks",
+      "name": "Phân tích chứng khoán & đầu tư",
+      "when": "phân tích cổ phiếu/doanh nghiệp niêm yết, định giá cổ phiếu, P/E, P/B, phân tích kỹ thuật, ngành, danh mục đầu tư (không khuyến nghị mua/bán)",
+      "keywords": [
+        "chung khoan",
+        "co phieu",
+        "ma co phieu",
+        "phan tich co phieu",
+        "dinh gia co phieu",
+        "vn-index",
+        "vnindex",
+        "hose",
+        "hnx",
+        "upcom",
+        "p/e",
+        "p/b",
+        "phan tich ky thuat",
+        "phan tich co ban",
+        "danh muc dau tu",
+        "ma ck",
+        "tho truong chung khoan",
+        "thi truong chung khoan"
+      ],
+      "steps": [
+        "stock_analyst",
+        "reviewer"
+      ],
+      "titles": {
+        "stock_analyst": "Phân tích chứng khoán: {c}",
+        "reviewer": "Rà soát số liệu, giả định, định giá của #stock_analyst và kiểm tra không có khuyến nghị mua/bán"
+      },
+      "template": "Phân tích chứng khoán: [mã/ngành, mục tiêu, khung thời gian, dữ liệu có sẵn]"
+    },
+    {
+      "id": "accounting",
+      "name": "Kế toán",
+      "when": "định khoản, ghi sổ, lập BCTC, kế toán quản trị, giá thành, ngân sách, phân tích chênh lệch, VAS/Thông tư 200",
+      "keywords": [
+        "ke toan",
+        "dinh khoan",
+        "ghi so",
+        "but toan",
+        "bang can doi ke toan",
+        "ket qua kinh doanh",
+        "luu chuyen tien te",
+        "gia thanh",
+        "ke toan quan tri",
+        "ngan sach",
+        "du toan",
+        "phan tich chenh lech",
+        "vas",
+        "thong tu 200",
+        "khau hao",
+        "hach toan",
+        "bao cao tai chinh"
+      ],
+      "steps": [
+        "accountant",
+        "reviewer"
+      ],
+      "titles": {
+        "accountant": "Kế toán: {c}",
+        "reviewer": "Rà soát bút toán, số liệu cân đối và các nhận định pháp lý của #accountant"
+      },
+      "template": "Kế toán: [nghiệp vụ/bài toán, số liệu, kỳ báo cáo, chuẩn mực áp dụng]"
+    },
+    {
+      "id": "strategy",
+      "name": "Tư vấn chiến lược kinh doanh",
+      "when": "PESTEL, 5 Forces, SWOT, VRIO, chuỗi giá trị, chiến lược cạnh tranh, Ansoff, BCG, Blue Ocean, Balanced Scorecard, kịch bản, hoạch định chiến lược",
+      "keywords": [
+        "chien luoc kinh doanh",
+        "hoach dinh chien luoc",
+        "phan tich chien luoc",
+        "pestel",
+        "porter",
+        "5 forces",
+        "nam luc canh tranh",
+        "swot",
+        "vrio",
+        "chuoi gia tri",
+        "value chain",
+        "loi the canh tranh",
+        "ansoff",
+        "bcg",
+        "blue ocean",
+        "dai duong xanh",
+        "errc",
+        "balanced scorecard",
+        "bsc",
+        "scenario",
+        "kich ban tuong lai",
+        "tang truong chien luoc",
+        "chien luoc canh tranh"
+      ],
+      "steps": [
+        "strategist",
+        "reviewer"
+      ],
+      "titles": {
+        "strategist": "Tư vấn chiến lược: {c}",
+        "reviewer": "Rà soát giả định, khung phân tích và kết luận của #strategist"
+      },
+      "template": "Tư vấn chiến lược: [mô tả doanh nghiệp, ngành, mục tiêu, bối cảnh thị trường, số liệu có sẵn]"
+    },
+    {
       "id": "schedule",
       "name": "Lịch & ghi chép",
       "when": "đặt lịch, nhắc việc, ghi chú, biên bản",
@@ -62,53 +168,7 @@
         "dat cuoc hop"
       ],
       "steps": [
-        "secretary"
-      ]
-    },
-    {
-      "id": "bugfix",
-      "name": "Sửa lỗi phần mềm",
-      "when": "fix bug/issue, lỗi hệ thống hoặc website, crash",
-      "keywords": [
-        "fix",
-        "bug",
-        "sua loi",
-        "bi loi",
-        "crash",
-        "exception",
-        "khong chay",
-        "issue",
-        "error"
-      ],
-      "steps": [
-        "dev",
-        "tester"
-      ],
-      "titles": {
-        "dev": "Tìm nguyên nhân và sửa lỗi: {c}",
-        "tester": "Kiểm tra lỗi đã được sửa, không phát sinh lỗi mới"
-      }
-    },
-    {
-      "id": "code",
-      "name": "Lập trình",
-      "when": "viết code, phát triển tính năng, script, API, ứng dụng, website (phần kỹ thuật)",
-      "keywords": [
-        "lap trinh",
-        "viet code",
-        "viet ham",
-        "viet script",
-        "tinh nang",
-        "phan mem",
-        "ung dung",
-        "api",
-        "refactor",
-        "deploy",
-        "code"
-      ],
-      "steps": [
-        "dev",
-        "tester"
+        "strategist"
       ]
     },
     {
@@ -160,8 +220,8 @@
     },
     {
       "id": "content",
-      "name": "Content marketing",
-      "when": "viết content/kịch bản video/bài đăng TikTok, Facebook, caption, hashtag, chiến dịch marketing",
+      "name": "Marketing & content",
+      "when": "tư vấn marketing (STP, marketing mix, định giá, thương hiệu, CLV/CAC, digital/growth), viết content/kịch bản video/bài đăng TikTok, Facebook, caption, hashtag, chiến dịch marketing",
       "keywords": [
         "content",
         "noi dung",
@@ -176,10 +236,23 @@
         "bai dang",
         "quang cao",
         "marketing",
-        "chien dich"
+        "chien dich",
+        "stp",
+        "phan khuc thi truong",
+        "marketing mix",
+        "4p",
+        "thuong hieu",
+        "brand",
+        "clv",
+        "growth hacking",
+        "hanh vi khach hang",
+        "nghien cuu thi truong",
+        "chien luoc gia",
+        "dinh gia san pham",
+        "ugc"
       ],
       "steps": [
-        "content",
+        "marketing_expert",
         {
           "agent": "designer",
           "when": [
@@ -195,8 +268,9 @@
         "reviewer"
       ],
       "titles": {
-        "content": "Viết content marketing: {c}"
-      }
+        "marketing_expert": "Marketing: {c}"
+      },
+      "template": "Marketing: [sản phẩm, khách hàng mục tiêu, mục tiêu, ngân sách, kênh — hoặc yêu cầu viết content/kịch bản]"
     },
     {
       "id": "design",

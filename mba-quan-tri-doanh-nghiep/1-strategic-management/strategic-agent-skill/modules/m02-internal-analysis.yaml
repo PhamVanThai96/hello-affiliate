@@ -1,0 +1,566 @@
+# m02 - Phân tích nội bộ: SWOT/TOWS, VRIO, Value Chain
+# Nguồn: 1-strategic-management/02-phan-tich-noi-bo.md. Số liệu doanh nghiệp lớn: xem data_reliability trong case_lessons.
+id: "m02"
+name_vi: "Phân tích nội bộ: SWOT/TOWS, VRIO và Chuỗi giá trị"
+name_en: "Internal Analysis: SWOT/TOWS, VRIO and Value Chain"
+purpose: >
+  Đánh giá năng lực nội tại của doanh nghiệp để biết (1) mình mạnh/yếu gì so với cơ hội/đe dọa bên ngoài (SWOT/TOWS),
+  (2) điểm mạnh nào thực sự tạo lợi thế cạnh tranh bền vững (VRIO), (3) lợi thế/bất lợi đó nằm ở hoạt động nào của chuỗi giá trị
+  và chi phí/giá trị phân bổ ra sao (Value Chain). Ba công cụ nối thành một chuỗi: SWOT nhận diện -> VRIO sàng lọc -> Value Chain định vị -> chiến lược.
+when_to_use:
+  - "Chủ SME hỏi: 'Doanh nghiệp tôi mạnh/yếu ở đâu? Nên làm gì tiếp?'"
+  - "Cần lọc xem điểm mạnh nào là lợi thế thật (khó bị đối thủ sao chép) để đầu tư/bảo vệ."
+  - "Cần tìm chỗ cắt chi phí hoặc chỗ đầu tư để tạo khác biệt; quyết định tự làm hay thuê ngoài (outsource)."
+  - "Chuẩn bị đầu vào cho chọn chiến lược cạnh tranh (m03) hoặc tăng trưởng (m04)."
+  - "Sau khi có kết quả PESTEL/5 Forces (m01), cần ghép với năng lực nội bộ."
+prerequisites: ["m01"]
+related_modules:
+  - "m01: cung cấp O và T (PESTEL, 5 Forces) cho SWOT/TOWS; VRIO và Value Chain chỉ nhìn bên trong nên phải ghép với m01."
+  - "m03: kết quả Value Chain (nguồn lợi thế chi phí vs khác biệt) quyết định chọn Cost Leadership/Differentiation/Focus."
+  - "m04: TOWS/VRIO cho biết hướng tăng trưởng nào (Ansoff) khả thi với nguồn lực hiện có."
+  - "m06: các hoạt động then chốt tìm được ở Value Chain/VRIO biến thành KPI trong Balanced Scorecard."
+  - "m05: ERRC của Blue Ocean thường bắt đầu từ việc biết hoạt động nào tốn chi phí mà không tạo giá trị (Value Chain)."
+
+concepts:
+  - term_vi: "Yếu tố nội bộ và bên ngoài"
+    term_en: "Internal vs External factors"
+    definition: >
+      Nội bộ (S, W) là thứ doanh nghiệp kiểm soát/thay đổi được (nhân sự, vốn, quy trình, thương hiệu). Bên ngoài (O, T) là thứ doanh nghiệp
+      không kiểm soát, chỉ thích ứng (thị trường, đối thủ, luật, công nghệ).
+    why_it_matters: "Phân loại sai (ví dụ ghi 'đối thủ mạnh' là Weakness) làm TOWS cho ra chiến lược vô nghĩa. Quy tắc thử: 'Nếu mình tự quyết định được thì là S/W; nếu không thì là O/T'."
+  - term_vi: "Quan điểm dựa trên nguồn lực"
+    term_en: "Resource-Based View (RBV)"
+    definition: "Lý thuyết cho rằng lợi thế cạnh tranh bền vững đến từ nguồn lực/năng lực bên trong có giá trị, hiếm, khó bắt chước, chứ không chỉ từ vị thế ngành."
+    why_it_matters: "Trước RBV, chiến lược chủ yếu nhìn ngành (Porter - nhìn ra ngoài). RBV (Wernerfelt 1984, Barney 1991) bổ sung góc nhìn ngược lại: vì sao hai công ty cùng ngành lại lãi khác nhau - do nguồn lực bên trong khác nhau."
+  - term_vi: "Nguồn lực và năng lực"
+    term_en: "Resources vs Capabilities"
+    definition: >
+      Nguồn lực hữu hình (tài chính, thiết bị, mặt bằng, công nghệ), vô hình (thương hiệu, văn hóa, bản quyền, kiến thức) và năng lực
+      (quy trình, kỹ năng phối hợp, khả năng đổi mới - khả năng BIẾN nguồn lực thành kết quả).
+    why_it_matters: "Nguồn lực đứng riêng hiếm khi tạo lợi thế; năng lực tổ chức khai thác nó mới tạo ra giá trị. Đây là lý do VRIO có chữ O."
+  - term_vi: "Lợi thế cạnh tranh bền vững"
+    term_en: "Sustained Competitive Advantage"
+    definition: "Lợi thế mà đối thủ không thể sao chép hoặc thay thế trong thời gian dài, giúp doanh nghiệp duy trì lợi nhuận vượt trội."
+    why_it_matters: "Mục tiêu cuối của VRIO. Phân biệt với lợi thế tạm thời (đối thủ copy được) để tránh đổ tiền vào thứ sớm bị san bằng."
+  - term_vi: "Biên lợi nhuận trong chuỗi giá trị"
+    term_en: "Margin (Value Chain)"
+    definition: "Margin = Giá trị tạo ra cho khách hàng (giá khách chịu trả) trừ tổng chi phí thực hiện các hoạt động."
+    why_it_matters: "Biến lợi nhuận thành bài toán hoạt động: muốn tăng margin chỉ có hai đường - tăng giá trị khách cảm nhận (khác biệt) hoặc giảm chi phí hoạt động (chi phí thấp)."
+  - term_vi: "Hoạt động chính và hoạt động hỗ trợ"
+    term_en: "Primary vs Support Activities"
+    definition: "Hoạt động chính trực tiếp tạo, bán, giao, phục vụ sản phẩm (5 loại); hoạt động hỗ trợ (4 loại) cung cấp đầu vào/hạ tầng cho mọi hoạt động chính."
+    why_it_matters: "Lợi thế thường nằm ở hoạt động hỗ trợ (công nghệ, nhân sự, thu mua) chứ không phải chỉ ở sản xuất; nhiều SME bỏ sót mảng này."
+  - term_vi: "Liên kết giữa các hoạt động"
+    term_en: "Linkages / system optimization"
+    definition: "Hiệu quả tổng thể đến từ cách các hoạt động phối hợp, không phải từng hoạt động riêng lẻ tốt nhất."
+    why_it_matters: "Zara không dẫn đầu từng khâu riêng lẻ nhưng tối ưu cả chuỗi để đạt tốc độ nhanh; vì liên kết khó nhìn thấy nên đối thủ khó sao chép (nguồn của tính I trong VRIO)."
+  - term_vi: "Bất lợi / Ngang bằng / Tạm thời / Chưa khai thác / Bền vững"
+    term_en: "Disadvantage / Parity / Temporary / Unused / Sustained advantage"
+    definition: "Năm kết quả của VRIO tùy nguồn lực đạt tới tiêu chí nào (xem formula m02_vrio_classify)."
+    why_it_matters: "Mỗi kết quả kéo theo hành động khác nhau (sửa/loại bỏ, duy trì tối thiểu, khai thác nhanh, tổ chức lại, bảo vệ-đầu tư)."
+
+formulas:
+  - id: "m02_swot_weighted_score"
+    name_vi: "Điểm SWOT có trọng số (cho từng nhóm S, W, O hoặc T)"
+    name_en: "Weighted SWOT group score"
+    expression_latex: "Score_{group} = \\sum_{i=1}^{n} w_i \\cdot s_i,\\quad \\sum w_i = 1,\\ s_i \\in [1,5]"
+    expression_python: "sum(w*s for w, s in zip(weights, scores))"
+    excel: "=SUMPRODUCT(weights_range, scores_range)"
+    variables:
+      - {symbol: "weights", meaning: "Trọng số quan trọng của từng yếu tố trong nhóm (tổng = 1)", unit: "tỷ lệ"}
+      - {symbol: "scores", meaning: "Điểm mức độ tác động của từng yếu tố (1 thấp - 5 cao)", unit: "điểm 1-5"}
+    when_to_use: "Khi cần ưu tiên và so sánh các nhóm S/W/O/T thay vì liệt kê ngang nhau (khắc phục nhược điểm 'không ưu tiên, không định lượng' của SWOT)."
+    why_it_works: "SWOT gốc coi mọi dòng như nhau. Trọng số buộc người phân tích tự trả lời 'yếu tố nào quan trọng hơn', điểm 1-5 buộc đánh giá mức tác động; kết quả là số so sánh được giữa các nhóm và các lần phân tích. Đây là bước 3 'Đánh giá' trong quy trình SWOT 5 bước. Chỉ là heuristic quản trị, không phải công thức khoa học."
+    assumptions: ["Trọng số và điểm do workshop đồng thuận, vẫn mang tính chủ quan", "Mỗi nhóm giữ 5-7 yếu tố, độc lập tương đối"]
+    pitfalls: ["Không chuẩn hóa trọng số về tổng 1 làm điểm không so sánh được", "Chấm điểm S theo cảm tính, không có chứng cứ/số liệu", "Điểm số cao tạo ảo giác chính xác; vẫn phải kiểm chứng bằng dữ liệu"]
+    interpretation: "Điểm nhóm gần 5 = nhóm đó chi phối bức tranh; so sánh S-W (nội bộ) và O-T (bên ngoài) để chọn quadrant TOWS trội (xem m02_swot_net_position)."
+    example:
+      inputs: {weights: [0.4, 0.35, 0.25], scores: [4, 5, 3]}
+      steps: ["0.4*4 = 1.6", "0.35*5 = 1.75", "0.25*3 = 0.75", "Tổng = 1.6+1.75+0.75 = 4.1"]
+      result: "Điểm S = 4.1"
+  - id: "m02_swot_net_position"
+    name_vi: "Vị thế ròng nội bộ và bên ngoài (định hướng quadrant TOWS)"
+    name_en: "SWOT net position"
+    expression_latex: "Net_{int} = S - W,\\quad Net_{ext} = O - T"
+    expression_python: "(S - W, O - T)"
+    excel: "=S-W ; =O-T"
+    variables:
+      - {symbol: "S", meaning: "Điểm có trọng số nhóm Strengths", unit: "điểm"}
+      - {symbol: "W", meaning: "Điểm có trọng số nhóm Weaknesses", unit: "điểm"}
+      - {symbol: "O", meaning: "Điểm có trọng số nhóm Opportunities", unit: "điểm"}
+      - {symbol: "T", meaning: "Điểm có trọng số nhóm Threats", unit: "điểm"}
+    when_to_use: "Sau khi chấm 4 nhóm, để chọn nhóm chiến lược TOWS nên ưu tiên (SO/ST/WO/WT)."
+    why_it_works: "Nội bộ mạnh hơn yếu (Net_int > 0) và môi trường thuận lợi hơn bất lợi (Net_ext > 0) -> chiến lược tấn công; các tổ hợp còn lại tương ứng ST (phòng thủ), WO (cải thiện), WT (sinh tồn). Lấy hiệu để thấy 'bên nào trội' một cách trực quan; là quy tắc tham khảo, không thay thế phán đoán."
+    assumptions: ["Hai nhóm được chấm cùng thang điểm 1-5 và chuẩn hóa trọng số"]
+    pitfalls: ["Chênh lệch rất nhỏ (|Net| < 0.3) không đủ để kết luận; xét cả 4 quadrant", "Dùng một con số duy nhất che mất yếu tố sống còn (ví dụ T là quy định cấm kinh doanh)"]
+    interpretation: "Net_int>0 & Net_ext>0 -> ưu tiên SO; Net_int>0 & Net_ext<0 -> ST; Net_int<0 & Net_ext>0 -> WO; cả hai <0 -> WT. Gần 0 -> làm cân bằng 2-3 chiến lược."
+    example:
+      inputs: {S: 4.1, W: 3.3, O: 4.3, T: 3.6}
+      steps: ["Net_int = 4.1 - 3.3 = 0.8", "Net_ext = 4.3 - 3.6 = 0.7", "Cả hai dương -> ưu tiên chiến lược SO (tấn công)"]
+      result: "(0.8, 0.7) -> SO"
+  - id: "m02_vrio_classify"
+    name_vi: "Phân loại kết quả VRIO"
+    name_en: "VRIO classification"
+    expression_latex: "result = f(V,R,I,O)\\ \\text{(kiểm tra tuần tự, dừng ở tiêu chí đầu tiên không đạt)}"
+    expression_python: "('disadvantage' if not V else 'parity' if not R else 'temporary' if not I else 'unused' if not O else 'sustained')"
+    excel: '=IF(NOT(V),"disadvantage",IF(NOT(R),"parity",IF(NOT(I),"temporary",IF(NOT(O),"unused","sustained"))))'
+    variables:
+      - {symbol: "V", meaning: "Có giá trị (True/False)", unit: "boolean"}
+      - {symbol: "R", meaning: "Hiếm (True/False)", unit: "boolean"}
+      - {symbol: "I", meaning: "Khó bắt chước (True/False)", unit: "boolean"}
+      - {symbol: "O", meaning: "Doanh nghiệp được tổ chức để khai thác (True/False)", unit: "boolean"}
+    when_to_use: "Khi phân loại từng nguồn lực/năng lực đã liệt kê (mỗi nguồn lực một dòng)."
+    why_it_works: "Bốn câu hỏi xếp thành thang cumulative: không có giá trị thì chẳng cần xét tiếp (bất lợi); có giá trị nhưng ai cũng có thì chỉ ngang bằng; hiếm nhưng copy được thì lợi thế chỉ tạm thời; hiếm + khó copy nhưng không có hệ thống khai thác thì lãng phí tiềm năng; đủ bốn mới bền vững. Tính tuần tự là lý do 'các ô sau chữ không đạt đều là dấu gạch'."
+    assumptions: ["Đánh giá V,R,I,O so với đối thủ cụ thể trong cùng thị trường, không phải so với 'trung bình chung'", "Chỉ xét một nguồn lực mỗi lần"]
+    pitfalls: ["Đánh giá R,I khi chưa liệt kê đối thủ so sánh -> chủ quan", "Gộp nhiều nguồn lực vào một dòng (ví dụ 'đội ngũ' nói chung)", "Quên rằng V thay đổi theo thời gian/công nghệ (Kodak)"]
+    interpretation: "disadvantage = sửa hoặc loại bỏ; parity = duy trì tối thiểu cần thiết, không coi là điểm mạnh; temporary = khai thác nhanh trong cửa sổ cơ hội và đầu tư để thành I; unused = tổ chức lại để khai thác (cơ hội lớn nhất, đầu tư rẻ nhất); sustained = bảo vệ và đầu tư tiếp."
+    example:
+      inputs: {V: true, R: true, I: true, O: false}
+      steps: ["V đạt, R đạt, I đạt", "O không đạt -> 'unused'"]
+      result: "unused (lợi thế chưa khai thác)"
+  - id: "m02_value_chain_margin"
+    name_vi: "Biên lợi nhuận chuỗi giá trị"
+    name_en: "Value Chain margin"
+    expression_latex: "Margin = V_{customer} - \\sum_{a} C_a,\\quad Margin\\% = Margin / V_{customer}"
+    expression_python: "price - sum(costs.values())"
+    excel: "=Price-SUM(cost_range)"
+    variables:
+      - {symbol: "price", meaning: "Giá/giá trị khách hàng sẵn sàng trả cho một đơn vị (hoặc 100 làm chuẩn)", unit: "VND hoặc chỉ số 100"}
+      - {symbol: "costs", meaning: "Chi phí của từng hoạt động chính + hỗ trợ cho cùng đơn vị đó", unit: "VND hoặc chỉ số"}
+    when_to_use: "Khi dựng bảng chi phí theo hoạt động để thấy lợi nhuận bị 'ăn' ở khâu nào."
+    why_it_works: "Porter (1985) đặt lợi nhuận là chênh lệch giữa giá trị khách nhận và chi phí tạo ra giá trị. Tách chi phí theo hoạt động (thay vì theo khoản mục kế toán) cho thấy khâu nào tạo giá trị, khâu nào chỉ tốn tiền."
+    assumptions: ["Phân bổ được chi phí chung (overhead) hợp lý cho từng hoạt động", "Giá trị khách hàng xấp xỉ giá bán thực tế/giá khách chịu trả"]
+    pitfalls: ["Phân bổ chi phí chung tùy tiện làm sai kết luận", "Bỏ sót hoạt động hỗ trợ (HR, công nghệ, hạ tầng)", "Dùng giá bán thay cho giá trị khách cảm nhận trong khi khách sẵn sàng trả cao hơn (thặng dư chưa khai thác)"]
+    interpretation: "Margin dương mới tạo lợi nhuận; so margin% với đối thủ/benchmark ngành; xem khâu nào chiếm tỷ trọng chi phí cao hơn tỷ trọng giá trị (xem m02_value_cost_ratio)."
+    example:
+      inputs: {price: 100, costs: {inbound: 12, operations: 28, outbound: 8, marketing_sales: 22, service: 6, support: 12}}
+      steps: ["Tổng chi phí = 12+28+8+22+6+12 = 88", "Margin = 100 - 88 = 12", "Margin% = 12%"]
+      result: "Margin = 12 (12%)"
+  - id: "m02_value_cost_ratio"
+    name_vi: "Tỷ số giá trị/chi phí của hoạt động"
+    name_en: "Activity value-to-cost ratio"
+    expression_latex: "R_a = \\frac{V_a / \\sum V}{C_a / \\sum C}"
+    expression_python: "(value_a / sum(values.values())) / (cost_a / sum(costs.values()))"
+    excel: "=(Va/SUM(V))/(Ca/SUM(C))"
+    variables:
+      - {symbol: "value_a", meaning: "Điểm/tỷ trọng giá trị khách hàng gán cho hoạt động a (khảo sát khách, tổng 100)", unit: "điểm"}
+      - {symbol: "cost_a", meaning: "Chi phí hoạt động a", unit: "VND hoặc chỉ số"}
+      - {symbol: "values", meaning: "Dict giá trị của mọi hoạt động", unit: "điểm"}
+      - {symbol: "costs", meaning: "Dict chi phí của mọi hoạt động", unit: "VND hoặc chỉ số"}
+    when_to_use: "Khi muốn ưu tiên cắt giảm/đầu tư: hoạt động nào khách coi trọng nhưng ta chi ít (R lớn) hoặc chi nhiều mà khách không quan tâm (R nhỏ)."
+    why_it_works: "Công cụ thực dụng (không phải công thức của Porter): so sánh 'khách coi trọng bao nhiêu' với 'ta tiêu bao nhiêu' của từng khâu. Đây là cách định lượng bước 2 của quy trình ('hoạt động nào khách sẵn sàng trả tiền?'), khắc phục nhược điểm 'khó đo giá trị'."
+    assumptions: ["Điểm giá trị lấy từ khảo sát khách (tối thiểu 20-30 khách) hoặc phỏng vấn nhân viên tiếp xúc khách", "Hoạt động độc lập tương đối"]
+    pitfalls: ["Điểm giá trị lấy từ ý kiến chủ quán thay vì khách", "Cắt khâu R nhỏ nhưng nó là điều kiện cần (hygiene factor)", "Bỏ qua liên kết giữa các hoạt động"]
+    interpretation: "R<0.8 = tiêu nhiều hơn mức khách coi trọng -> ứng viên cắt/tối ưu/thuê ngoài; R trong 0.8-1.2 = cân bằng; R>1.2 = khách coi trọng hơn ta đầu tư -> ứng viên tăng đầu tư, tiềm năng khác biệt (ngưỡng là quy tắc kinh nghiệm)."
+    example:
+      inputs: {values: {inbound: 8, operations: 30, outbound: 7, marketing_sales: 15, service: 25, support: 15}, costs: {inbound: 12, operations: 28, outbound: 8, marketing_sales: 22, service: 6, support: 12}, activity: "service"}
+      steps: ["Tổng V = 100; tổng C = 88", "Tỷ trọng giá trị của Service = 25/100 = 0.25", "Tỷ trọng chi phí của Service = 6/88 = 0.0682", "R = 0.25/0.0682 = 3.67"]
+      result: "R(service) = 3.67 -> đầu tư thêm vào dịch vụ"
+  - id: "m02_tows_priority"
+    name_vi: "Điểm ưu tiên chiến lược TOWS"
+    name_en: "TOWS action priority score"
+    expression_latex: "P = Impact \\times Feasibility"
+    expression_python: "impact * feasibility"
+    excel: "=Impact*Feasibility"
+    variables:
+      - {symbol: "impact", meaning: "Tác động kỳ vọng lên kết quả kinh doanh (1-5)", unit: "điểm"}
+      - {symbol: "feasibility", meaning: "Khả thi với nguồn lực/thời gian hiện có (1-5)", unit: "điểm"}
+    when_to_use: "Bước 5 quy trình SWOT: chọn 2-3 chiến lược khả thi nhất từ danh sách SO/ST/WO/WT."
+    why_it_works: "TOWS dễ tạo ra rất nhiều ý tưởng; nhân tác động với khả thi (như ma trận ưu tiên Impact-Effort) loại ý tưởng hay nhưng không làm nổi, tránh dàn trải. Heuristic của quản trị, không phải công thức học thuật."
+    assumptions: ["Hai điểm đánh giá độc lập, cùng thang 1-5"]
+    pitfalls: ["Dồn chiến lược vào một quadrant", "Chọn >3 chiến lược dẫn tới không làm được gì"]
+    interpretation: "P tối đa 25; chọn top 2-3, thường P >= 12; cần chủ sở hữu và hạn chót cho mỗi chiến lược."
+    example:
+      inputs: {impact: 5, feasibility: 4}
+      steps: ["P = 5*4 = 20"]
+      result: "P = 20 (ưu tiên cao)"
+
+frameworks:
+  - id: "m02_swot"
+    name_vi: "Phân tích SWOT"
+    name_en: "SWOT Analysis"
+    origin: >
+      Thường gắn với Albert Humphrey (Stanford Research Institute, thập niên 1960; nguồn gốc chính xác còn tranh cãi). Ra đời để đánh giá
+      tại sao các kế hoạch công ty lớn thất bại: người ta thiếu một cách nhìn chung nhưng cấu trúc, đặt nội lực và môi trường lên cùng bàn.
+      Trở thành công cụ chiến lược phổ biến nhất vì đơn giản, ai cũng làm được.
+    components:
+      - "Strengths (Điểm mạnh): nội bộ, tích cực - làm gì tốt hơn đối thủ? (thương hiệu, tài chính, công nghệ, nhân sự, phân phối, chi phí thấp, văn hóa, quan hệ khách hàng)"
+      - "Weaknesses (Điểm yếu): nội bộ, tiêu cực - yếu ở đâu? (thương hiệu yếu, thiếu vốn/dòng tiền, công nghệ lạc hậu, thiếu nhân sự, sản phẩm thiếu khác biệt, phụ thuộc ít khách hàng, quy trình thiếu số hóa)"
+      - "Opportunities (Cơ hội): bên ngoài, tích cực - thị trường mới, công nghệ có lợi, quy định thuận lợi, xu hướng xã hội, đối thủ suy yếu, nhu cầu mới"
+      - "Threats (Đe dọa): bên ngoài, tiêu cực - đối thủ mới, sản phẩm thay thế, quy định bất lợi, suy thoái, thị hiếu đổi, tỷ giá/lạm phát, thiên tai/dịch bệnh"
+    when_to_use: "Khởi đầu phân tích chiến lược, mọi quy mô (doanh nghiệp, dự án, sản phẩm, cá nhân); workshop 1-2 giờ; bước tổng hợp sau PESTEL/5 Forces."
+    how_to_apply:
+      - "Bước 1 Brainstorm: workshop nhóm liên chức năng; liệt kê tất cả S, W, O, T. Nguồn S/W: dữ liệu nội bộ, so với đối thủ. Nguồn O/T: kết quả PESTEL/5 Forces (m01)."
+      - "Bước 2 Sàng lọc: giữ 5-7 yếu tố quan trọng nhất mỗi mục; mỗi yếu tố viết cụ thể, kèm số liệu/chứng cứ."
+      - "Bước 3 Đánh giá: gán trọng số và điểm tác động 1-5 (m02_swot_weighted_score)."
+      - "Bước 4 TOWS: ghép cặp để tạo chiến lược SO, ST, WO, WT (framework m02_tows)."
+      - "Bước 5 Ưu tiên: chọn 2-3 chiến lược khả thi nhất (m02_tows_priority), gán chủ sở hữu, hạn chót, KPI."
+    how_to_read_results: "Không dừng ở danh sách. Bức tranh mạnh+cơ hội nhiều -> tăng trưởng; mạnh+đe dọa -> bảo vệ vị thế; yếu+cơ hội -> sửa nội lực để chớp cơ hội; yếu+đe dọa -> thu gọn/tìm ngách."
+    pitfalls:
+      - "Hời hợt: dừng ở liệt kê, mọi dòng ngang nhau, không định lượng."
+      - "Chủ quan, thiếu điểm mù khi chỉ phân tích từ góc nhìn nội bộ."
+      - "Lẫn nội bộ với bên ngoài; viết chung chung ('thương hiệu tốt') không so với đối thủ."
+      - "Không dùng TOWS nên không ra hành động."
+      - "Quá nhiều yếu tố (>7 mỗi mục) làm loãng ưu tiên."
+    example: >
+      Quán cà phê rang xay 2 chi nhánh ở Đà Nẵng: S = hạt rang riêng, khách quen cao; W = phụ thuộc 1 người rang; O = du lịch tăng; T = chuỗi lớn mở gần.
+      Sau chấm điểm xem worked example m02_we1.
+  - id: "m02_tows"
+    name_vi: "Ma trận TOWS"
+    name_en: "TOWS Matrix"
+    origin: >
+      Heinz Weihrich (1982, bài "The TOWS Matrix - A Tool for Situational Analysis"). Ra đời vì SWOT chỉ liệt kê chứ không cho ra chiến lược;
+      Weihrich đảo thành TOWS (Threats/Opportunities đứng trước) để nhấn mạnh phân tích môi trường rồi ghép với nội lực thành hành động.
+    components:
+      - "SO - Maxi-Maxi (tấn công): dùng điểm mạnh để tận dụng cơ hội"
+      - "ST - Maxi-Mini (phòng thủ): dùng điểm mạnh để giảm thiểu đe dọa"
+      - "WO - Mini-Maxi (cải thiện): khắc phục điểm yếu để tận dụng cơ hội"
+      - "WT - Mini-Mini (sinh tồn): giảm điểm yếu để né đe dọa (thu hẹp, tập trung ngách, cắt giảm)"
+    when_to_use: "Ngay sau SWOT đã chấm điểm; cần chuyển phân tích thành kế hoạch hành động."
+    how_to_apply:
+      - "Vẽ ma trận 2x2: hàng S/W, cột O/T; điền các yếu tố chính đã sàng lọc."
+      - "Với mỗi ô giao nhau, hỏi: 'Dùng yếu tố S_i để làm gì với O_j?' (SO) / 'Làm sao S_i chặn T_j?' (ST) / 'Sửa W_i thế nào để chớp O_j?' (WO) / 'Giảm W_i thế nào để né T_j?' (WT)."
+      - "Viết mỗi chiến lược thành hành động cụ thể (ai, làm gì, khi nào, kết quả đo được) - không dừng ở 'có điểm mạnh này và cơ hội này'."
+      - "Chấm Impact và Feasibility (m02_tows_priority), chọn 2-3 hành động; cân đối giữa các quadrant theo m02_swot_net_position."
+    how_to_read_results: "Quadrant có nhiều chiến lược điểm cao cho biết trạng thái chiến lược của doanh nghiệp (tấn công/phòng thủ/cải thiện/sinh tồn)."
+    pitfalls:
+      - "Chiến lược mơ hồ ('tăng marketing'); không có chủ sở hữu hay KPI."
+      - "Nhồi 15-20 chiến lược; không ưu tiên."
+      - "Chỉ làm SO (dễ chịu), né WT (khó chịu nhưng đôi khi sống còn)."
+    example: "Grab: SO = dùng dữ liệu+mạng lưới merchant cho fintech; WO = bù lỗ bằng quảng cáo (GrabAds); WT = cắt giảm chi phí/nhân sự khi lãi suất tăng. Đảnh Năm (Đà Nẵng): SO = giá rẻ + mặt bằng sở hữu để hút khách du lịch tiết kiệm qua review thật."
+  - id: "m02_vrio"
+    name_vi: "Phân tích VRIO"
+    name_en: "VRIO Framework"
+    origin: >
+      Jay Barney. Bản gốc VRIN (Valuable, Rare, Inimitable, Non-substitutable) trong bài "Firm Resources and Sustained Competitive Advantage" (1991);
+      VRIO (Value, Rarity, Imitability, Organization) hoàn thiện trong sách "Gaining and Sustaining Competitive Advantage" (1997). Dựa trên RBV (Wernerfelt 1984).
+      Ra đời vì mô hình ngành của Porter không giải thích được vì sao các công ty cùng ngành lãi khác nhau; Barney quay vào nguồn lực nội bộ. Chữ O thêm vào vì có nguồn lực tốt mà tổ chức kém vẫn lãng phí.
+    components:
+      - "V - Valuable: nguồn lực có giúp tận dụng cơ hội hoặc giảm đe dọa (tạo giá trị cho khách/giảm chi phí)?"
+      - "R - Rare: ít đối thủ hiện tại và tiềm năng sở hữu?"
+      - "I - Inimitable: đối thủ sao chép/thay thế có khó hoặc đắt không? Bốn lý do (CHIP): Causal ambiguity (mơ hồ nhân quả, vd văn hóa Southwest Airlines), Historical conditions (hoàn cảnh lịch sử, vd vị trí đất vàng), Imperfect imitability/social complexity (tích lũy lâu dài, vd Coca-Cola 130+ năm), Patents/Legal (bằng sáng chế, bản quyền)."
+      - "O - Organized: cơ cấu, quy trình, hệ thống thưởng, văn hóa có sẵn để khai thác hết nguồn lực?"
+      - "Kết quả: Bất lợi (không V) -> Ngang bằng (V không R) -> Tạm thời (V,R không I) -> Chưa khai thác (V,R,I không O) -> Bền vững (đủ 4)."
+    when_to_use: "Sau khi SWOT liệt kê điểm mạnh, để biết cái nào là lợi thế thật; khi quyết định đầu tư bảo vệ nguồn lực nào, loại bỏ nguồn lực nào."
+    how_to_apply:
+      - "Bước 1 Liệt kê nguồn lực: hữu hình (vốn, thiết bị, mặt bằng, công nghệ), vô hình (thương hiệu, văn hóa, bản quyền, dữ liệu), năng lực (quy trình, kỹ năng, đổi mới). Lấy điểm mạnh từ SWOT làm danh sách khởi đầu. Một dòng = một nguồn lực."
+      - "Bước 2 Chọn đối thủ so sánh (2-3 đối thủ chính) và hỏi lần lượt V-R-I-O kèm chứng cứ (Yes/No và vì sao)."
+      - "Bước 3 Dùng m02_vrio_classify để gán kết quả cho từng nguồn lực."
+      - "Bước 4 Chiến lược: bảo vệ và phát triển nguồn lực bền vững; khai thác nhanh nguồn lực tạm thời và đầu tư để tăng khó bắt chước; tổ chức lại để mở khóa nguồn lực 'chưa khai thác'; cải thiện hoặc loại bỏ nguồn lực không có giá trị; không coi 'ngang bằng' là điểm mạnh."
+      - "Bước 5 Đặt lịch rà soát lại (6-12 tháng) vì giá trị nguồn lực thay đổi."
+    how_to_read_results: "Chỉ nguồn lực đạt cả 4 (V,R,I,O) mới là lợi thế bền vững. Nhiều 'điểm mạnh' trong SWOT thực chất chỉ ngang bằng hoặc tạm thời."
+    pitfalls:
+      - "Chủ quan khi đánh giá hiếm/khó bắt chước, thiếu tiêu chuẩn."
+      - "Tĩnh: nguồn lực mất giá trị theo thời gian (Kodak và bằng sáng chế phim)."
+      - "Gộp nguồn lực, khó tách vì chúng liên kết."
+      - "Chỉ nhìn nội bộ; phải ghép với PESTEL/5 Forces."
+      - "Startup chưa có nhiều nguồn lực để phân tích: nên đánh giá năng lực sáng lập và tài sản vô hình tiềm năng."
+    example: "Xưởng may (m02_we2): hệ thống quản lý chất lượng riêng đạt V,R,I nhưng chưa O -> 'unused'; máy may thông dụng chỉ 'parity'."
+  - id: "m02_value_chain"
+    name_vi: "Chuỗi giá trị của Porter"
+    name_en: "Value Chain (Porter)"
+    origin: >
+      Michael Porter, sách "Competitive Advantage" (1985). Ra đời vì kế toán chi phí truyền thống tính theo khoản mục (lương, nguyên liệu) không cho biết
+      HOẠT ĐỘNG nào tạo giá trị hay tốn chi phí; Porter tách doanh nghiệp thành các hoạt động chiến lược để tìm nguồn chi phí thấp hoặc khác biệt.
+    components:
+      - "Hoạt động chính (5): Inbound Logistics (nhận, lưu trữ, kiểm tra đầu vào); Operations (chế biến, sản xuất, kiểm soát chất lượng); Outbound Logistics (lưu kho, phân phối, giao hàng); Marketing & Sales (quảng cáo, định giá, kênh bán); Service (bảo hành, hỗ trợ, hậu mãi)."
+      - "Hoạt động hỗ trợ (4): Firm Infrastructure (tài chính, kế toán, pháp lý, quản trị); Human Resource Management (tuyển dụng, đào tạo, lương thưởng, văn hóa); Technology Development (R&D, IT, tự động hóa); Procurement (đàm phán, mua nguyên liệu)."
+      - "Margin = giá trị khách hàng - chi phí thực hiện hoạt động (m02_value_chain_margin)."
+    when_to_use: "Khi cần tìm nguồn chi phí/giá trị chi tiết; so sánh từng khâu với đối thủ; quyết định tối ưu, đầu tư khác biệt hay thuê ngoài; truy lợi thế VRIO về hoạt động cụ thể."
+    how_to_apply:
+      - "Bước 1 Vẽ chuỗi giá trị của doanh nghiệp: liệt kê 5 hoạt động chính và 4 hỗ trợ, với SME dịch vụ đổi tên cho phù hợp (vd Inbound = mua nguyên liệu/nhập hàng; Operations = pha chế/chế biến/phục vụ)."
+      - "Bước 2 Gán chi phí cho từng hoạt động (tỷ lệ % trên giá bán hoặc VND/đơn vị). Phân bổ chi phí chung theo tiêu chí hợp lý (m02_value_chain_margin)."
+      - "Bước 3 Xác định hoạt động tạo giá trị: khách chịu trả tiền cho khâu nào? Khâu nào tạo khác biệt? Tính m02_value_cost_ratio nếu có dữ liệu khảo sát khách."
+      - "Bước 4 So sánh với đối thủ (benchmarking): họ mạnh/yếu ở khâu nào, ta có lợi thế chi phí ở đâu. Điền cột 'Lợi thế vs đối thủ'."
+      - "Bước 5 Tối ưu: Cost Leadership (giảm chi phí khâu giá trị thấp), Differentiation (đầu tư thêm khâu khách coi trọng), Outsource (thuê ngoài khâu không phải lõi và không tạo khác biệt)."
+      - "Bước 6 Kiểm tra liên kết giữa các hoạt động (vd mua theo lô nhỏ + sản xuất linh hoạt như Zara) trước khi cắt/đầu tư từng khâu riêng lẻ."
+    how_to_read_results: "Khâu có tỷ trọng chi phí cao nhưng giá trị thấp = ứng viên tối ưu/thuê ngoài; khâu giá trị cao + lợi thế vs đối thủ = bảo vệ và mở rộng; khâu giá trị cao + yếu hơn đối thủ = ưu tiên đầu tư."
+    pitfalls:
+      - "Cần dữ liệu chi phí chi tiết, tốn thời gian; chi phí chung phân bổ tùy tiện."
+      - "Thiên về sản xuất, khó áp dụng nguyên bản cho dịch vụ/nền tảng số (cần chỉnh tên hoạt động)."
+      - "Giả định tuyến tính; thực tế hoạt động chồng chéo."
+      - "Bỏ qua hệ sinh thái đối tác; mô hình 1985 chưa phản ánh đầy đủ digital value chain."
+      - "Chi phí dễ đo nhưng giá trị khách hàng khó đo."
+      - "Tối ưu từng khâu mà phá liên kết cả chuỗi."
+    example: "Tiệm bánh (m02_we3): Service chiếm 25% giá trị khách nhưng chỉ 6/88 chi phí -> R=3.67, tăng đầu tư chăm sóc; Marketing & Sales tốn 22 nhưng khách chỉ đánh giá 15 -> R=0.68, tối ưu kênh."
+  - id: "m02_combined_process"
+    name_vi: "Quy trình kết hợp SWOT - VRIO - Value Chain - Chiến lược"
+    name_en: "Integrated internal analysis flow"
+    origin: "Cách ghép của tài liệu nguồn: mỗi công cụ bù đắp hạn chế của công cụ trước (SWOT hời hợt -> VRIO sâu -> Value Chain chi tiết)."
+    components:
+      - "1. SWOT: nhận diện điểm mạnh/yếu nổi bật (rộng)."
+      - "2. VRIO: kiểm tra điểm mạnh nào là lợi thế BỀN VỮNG (sâu)."
+      - "3. Value Chain: lợi thế đó nằm ở hoạt động NÀO, chi phí/giá trị ra sao (chi tiết)."
+      - "4. Chiến lược: đầu tư/bảo vệ hoạt động tạo lợi thế bền vững; cải thiện hoạt động còn yếu; cắt/thuê ngoài hoạt động không giá trị."
+      - "So sánh: SWOT = tổng quan nội+ngoại, hạn chế hời hợt; VRIO = chiều sâu lợi thế, hạn chế chỉ nội bộ; Value Chain = chi phí/giá trị từng hoạt động, hạn chế phức tạp cần nhiều dữ liệu."
+    when_to_use: "Khi cần một bản phân tích nội bộ hoàn chỉnh dẫn tới quyết định chiến lược (vd chọn chiến lược cạnh tranh ở m03)."
+    how_to_apply:
+      - "Chạy theo thứ tự 1-4; chuyển điểm mạnh từ SWOT sang danh sách nguồn lực của VRIO; chuyển nguồn lực 'bền vững/chưa khai thác' sang Value Chain để định vị hoạt động."
+      - "Đối chiếu kết luận cuối với bên ngoài (m01) để tránh chỉ nhìn nội bộ."
+    how_to_read_results: "Đầu ra: danh sách <=3 lợi thế bền vững + hoạt động chứa chúng + 2-3 hành động ưu tiên."
+    pitfalls: ["Chạy riêng lẻ ba công cụ, không nối kết quả", "Bỏ qua bước đối chiếu với môi trường bên ngoài"]
+    example: "Đảnh Năm: mặt bằng sở hữu (V,R,I đạt; O chưa trọn) -> Marketing & Sales là khâu yếu cần đầu tư; xem case_lessons."
+  - id: "m02_bcg_pointer"
+    name_vi: "Ma trận BCG (tham chiếu bổ sung cho SWOT)"
+    name_en: "BCG Matrix (pointer)"
+    origin: "Bruce Henderson, Boston Consulting Group, đầu thập niên 1970, để phân bổ vốn giữa các mảng kinh doanh. Tài liệu nguồn chỉ nhắc tới như công cụ bổ sung khi SWOT không cho biết nên ưu tiên mảng nào."
+    components: ["Trục: thị phần tương đối và tốc độ tăng trưởng thị trường", "Bốn nhóm: Stars, Question Marks, Cash Cows, Dogs"]
+    when_to_use: "Doanh nghiệp đa mảng (vd Grab: gọi xe, đồ ăn, fintech) cần quyết định đầu tư/duy trì/loại bỏ."
+    how_to_apply: ["Xác định thị phần tương đối và tăng trưởng từng mảng", "Xếp vào 4 nhóm; Stars và Question Marks có triển vọng -> đầu tư, Cash Cows -> vắt dòng tiền, Dogs -> cân nhắc rút"]
+    how_to_read_results: "Chỉ định hướng phân bổ vốn; không thay SWOT/VRIO."
+    pitfalls: ["Chi tiết xem tài liệu BCG/portfolio ngoài module này (nguồn chỉ giới thiệu)"]
+    example: "Grab dùng BCG để quyết định ưu tiên giữa ride-hailing, food, fintech."
+
+procedures:
+  - id: "m02_proc_full_internal_analysis"
+    name: "Làm phân tích nội bộ đầy đủ cho một doanh nghiệp (SWOT -> VRIO -> Value Chain -> TOWS)"
+    steps:
+      - "0. Intake - hỏi chủ doanh nghiệp: ngành/mô hình, doanh thu, biên lợi nhuận, số nhân sự, 2-3 đối thủ chính, khách hàng mục tiêu, vấn đề cần giải (tăng trưởng? lỗ? định giá? mở rộng?). Nếu thiếu dữ liệu, nêu giả định rõ ràng và ghi 'illustrative'."
+      - "1. Thu thập bên ngoài: chạy hoặc lấy kết quả PESTEL/5 Forces (m01) làm đầu vào O và T."
+      - "2. SWOT: brainstorm, sàng 5-7 mục/nhóm, viết cụ thể có số liệu, chấm trọng số + điểm 1-5 (m02_swot_weighted_score), tính m02_swot_net_position."
+      - "3. VRIO: lấy điểm mạnh làm danh sách nguồn lực, thêm nguồn lực/năng lực bỏ sót (3 loại); với mỗi nguồn lực so với 2-3 đối thủ, trả lời V,R,I,O kèm chứng cứ, phân loại (m02_vrio_classify)."
+      - "4. Value Chain: dựng bảng 9 hoạt động; gán chi phí %; gán giá trị theo khách; tính margin và m02_value_cost_ratio; so sánh đối thủ; đặt các nguồn lực VRIO 'bền vững/chưa khai thác/tạm thời' vào hoạt động tương ứng."
+      - "5. TOWS: ghép SO/ST/WO/WT; mỗi chiến lược cụ thể (ai, làm gì, khi nào, KPI); chấm m02_tows_priority; chọn 2-3."
+      - "6. Rà soát chéo: lợi thế bền vững tìm được có khớp với khâu giá trị cao trong Value Chain? Có mâu thuẫn với T/O bên ngoài không? Nếu có, quay lại bước tương ứng."
+      - "7. Báo cáo: tóm tắt 1 trang + bảng chi tiết + kế hoạch 90 ngày; nêu giới hạn (chủ quan, số liệu giả định) và bước kiểm chứng tiếp theo."
+    outputs: "Báo cáo gồm: bảng SWOT có điểm; bảng VRIO có kết quả từng nguồn lực; bảng Value Chain (chi phí, giá trị, tỷ số, lợi thế vs đối thủ, hành động); ma trận TOWS với 2-3 chiến lược ưu tiên; kế hoạch hành động."
+  - id: "m02_proc_swot_tows_workshop"
+    name: "Chạy workshop SWOT + TOWS 1-2 giờ"
+    steps:
+      - "Chuẩn bị: mời 5-8 người từ các chức năng (bán hàng, vận hành, tài chính, nhân sự); gửi trước kết quả PESTEL/5 Forces và số liệu thật."
+      - "20 phút: viết ý tưởng độc lập trên giấy note (tránh bị ảnh hưởng bởi người nói trước), mỗi người 3-5 mục cho mỗi nhóm."
+      - "20 phút: gom nhóm, gộp trùng, kiểm tra lẫn nội bộ/bên ngoài, giữ 5-7 mục/nhóm."
+      - "15 phút: bỏ phiếu trọng số, chấm 1-5, tính điểm."
+      - "30 phút: ghép TOWS, mỗi cặp ghi một hành động; chấm Impact x Feasibility."
+      - "15 phút: chốt top 2-3, giao chủ sở hữu và deadline."
+    outputs: "Một trang SWOT có điểm + 2-3 hành động có chủ sở hữu và hạn chót."
+  - id: "m02_proc_vrio_assessment"
+    name: "Đánh giá VRIO cho từng nguồn lực"
+    steps:
+      - "Liệt kê 8-15 nguồn lực/năng lực (hữu hình, vô hình, năng lực); tách riêng từng cái."
+      - "Chọn đối thủ so sánh."
+      - "V: nguồn lực có tăng doanh thu/giảm chi phí hoặc giúp chớp O/giảm T không? Dẫn chứng bằng số."
+      - "R: nếu >=3 đối thủ có thì không hiếm."
+      - "I: kiểm tra 4 lý do CHIP; nếu đối thủ copy được trong <12 tháng với chi phí hợp lý thì không khó bắt chước."
+      - "O: kiểm tra có người chịu trách nhiệm, quy trình, chỉ số, thưởng, văn hóa để khai thác; nếu không -> chưa khai thác."
+      - "Phân loại bằng m02_vrio_classify, ghi hành động cho từng loại."
+    outputs: "Bảng VRIO (nguồn lực, V, R, I, O, kết quả, hành động) và danh sách <=3 lợi thế bền vững cần bảo vệ."
+  - id: "m02_proc_value_chain_analysis"
+    name: "Phân tích chuỗi giá trị và quyết định tối ưu/outsource"
+    steps:
+      - "Đặt đơn vị phân tích: một sản phẩm/dịch vụ/phân khúc (vd 1 ly cà phê, 1 đơn hàng) để chi phí cộng lại bằng giá bán."
+      - "Liệt kê 9 hoạt động và đổi tên theo ngành."
+      - "Gán chi phí trực tiếp; phân bổ chi phí chung theo tiêu chí (doanh thu, giờ công, diện tích)."
+      - "Khảo sát 20-30 khách: chia 100 điểm cho các hoạt động theo mức khách coi trọng; hoặc phỏng vấn nhân viên tiếp xúc khách."
+      - "Tính margin và m02_value_cost_ratio cho từng khâu."
+      - "Benchmark 2-3 đối thủ (bảng giá, menu, review, công khai) để điền cột lợi thế/bất lợi."
+      - "Quyết định: R<0.8 và không phải khâu lõi/không tạo khác biệt -> tối ưu hoặc thuê ngoài; R>1.2 và đối thủ yếu -> đầu tư; khâu hygiene giữ mức tối thiểu."
+      - "Kiểm tra liên kết giữa các khâu trước khi thực hiện."
+    outputs: "Bảng Value Chain đầy đủ + 3 hành động tối ưu/đầu tư kèm ước tính tiết kiệm hoặc doanh thu tăng thêm."
+
+decision_rules:
+  - "Nếu một mục SWOT không so sánh được với đối thủ hoặc không có số liệu thì viết lại cụ thể hoặc loại bỏ."
+  - "Nếu mục nằm dưới 'điểm mạnh' nhưng đối thủ cũng có thì VRIO sẽ cho 'ngang bằng' - đừng đưa nó vào định vị chiến lược."
+  - "Nếu nguồn lực không có giá trị (V=0) thì sửa hoặc loại bỏ; không đầu tư thêm."
+  - "Nếu nguồn lực V nhưng không R thì chỉ duy trì mức tối thiểu cần thiết."
+  - "Nếu V,R nhưng I=0 thì khai thác nhanh trong cửa sổ thời gian và đầu tư để thành khó bắt chước (thương hiệu, dữ liệu, tích lũy tri thức, hợp đồng độc quyền)."
+  - "Nếu V,R,I nhưng O=0 thì ưu tiên số 1: tổ chức lại (người phụ trách, quy trình, KPI, thưởng) vì đầu tư thấp mà lợi ích lớn."
+  - "Nếu đủ V,R,I,O thì bảo vệ (pháp lý, giữ chân người then chốt) và tiếp tục đầu tư, kiểm tra lại mỗi 6-12 tháng."
+  - "Nếu Net_int>0 và Net_ext>0 thì ưu tiên SO; Net_int>0 và Net_ext<0 thì ST; Net_int<0 và Net_ext>0 thì WO; cả hai <0 thì WT (tập trung ngách, cắt giảm, giữ dòng tiền)."
+  - "Nếu doanh nghiệp yếu nguồn lực (SME mới) thì chọn ngách hẹp (WT) thay vì đối đầu trực tiếp; đặt điểm mạnh vào năng lực người sáng lập và sự linh hoạt."
+  - "Nếu một hoạt động có tỷ lệ giá trị/chi phí R<0.8 và không phải lõi thì tối ưu/thuê ngoài; nếu R>1.2 thì đầu tư tăng khác biệt."
+  - "Nếu chiến lược là Cost Leadership thì tìm cắt chi phí ở mọi khâu nhưng giữ khâu hygiene; nếu Differentiation thì tập trung đầu tư vào 1-2 khâu khách coi trọng nhất."
+  - "Nếu lợi thế đến từ liên kết giữa nhiều hoạt động (Zara) thì không sao chép từng khâu riêng lẻ mà phải thiết kế lại cả chuỗi."
+  - "Nếu SWOT cho ra >3 chiến lược cùng ưu tiên thì chọn theo m02_tows_priority; không làm quá 3 việc cùng lúc."
+  - "Nếu cần quyết định phân bổ vốn giữa nhiều mảng kinh doanh thì dùng BCG bổ sung, vì SWOT không xếp hạng được mảng nào ưu tiên."
+  - "Nếu dữ liệu chủ yếu là ý kiến thì dán nhãn 'chủ quan', ưu tiên thu thập chứng cứ (khảo sát khách, benchmark) trước khi chi tiền lớn."
+  - "Nếu kết luận VRIO/Value Chain mâu thuẫn với PESTEL/5 Forces (vd lợi thế đang bị công nghệ thay thế) thì ưu tiên bên ngoài và đánh giá lại nguồn lực."
+
+benchmarks:
+  - {metric: "Số yếu tố mỗi nhóm SWOT", value: "5-7", context: "Theo tài liệu nguồn; nhiều hơn làm loãng ưu tiên", confidence: "medium"}
+  - {metric: "Số chiến lược TOWS triển khai cùng lúc", value: "2-3", context: "Theo tài liệu nguồn", confidence: "medium"}
+  - {metric: "Thời gian workshop SWOT", value: "1-2 giờ", context: "Theo tài liệu nguồn", confidence: "medium"}
+  - {metric: "Thang điểm tác động SWOT", value: "1-5", context: "Theo tài liệu nguồn; trọng số tổng = 1", confidence: "medium"}
+  - {metric: "Ngưỡng tỷ số giá trị/chi phí (R)", value: "<0.8 tối ưu; 0.8-1.2 cân bằng; >1.2 đầu tư", context: "Quy tắc kinh nghiệm của module, không phải chuẩn học thuật", confidence: "low"}
+  - {metric: "Chi phí quảng cáo trên doanh thu: Zara so với H&M", value: "0.3% so với 3-4%", context: "Số liệu trích trong tài liệu nguồn; cần kiểm chứng", confidence: "low"}
+  - {metric: "Thời gian thiết kế đến cửa hàng: Zara so với ngành", value: "2-3 tuần so với khoảng 6 tháng", context: "Phổ biến trong tài liệu về Zara; số tuần chính xác thay đổi theo nguồn", confidence: "medium"}
+  - {metric: "Số điểm tối đa của m02_tows_priority", value: "25; thường chọn P>=12", context: "Quy tắc của module", confidence: "low"}
+
+pitfalls:
+  - "Biến SWOT thành danh sách liệt kê mà không có TOWS, trọng số hay chủ sở hữu hành động."
+  - "Ghi điểm mạnh mà không so sánh với đối thủ -> VRIO sẽ cho thấy chỉ ngang bằng."
+  - "Lẫn nội bộ và bên ngoài (vd ghi 'giá nguyên liệu tăng' vào Weakness)."
+  - "Quá nhiều ý tưởng, không chọn 2-3 ưu tiên."
+  - "Coi 'điểm mạnh' = 'lợi thế cạnh tranh' mà không chạy VRIO (bài học Samsung)."
+  - "Đánh giá VRIO một lần và để đó, trong khi nguồn lực mất giá trị (Kodak)."
+  - "Phân bổ chi phí chung tùy tiện trong Value Chain; bỏ sót hoạt động hỗ trợ."
+  - "Cắt chi phí khâu 'hygiene' (vd vệ sinh, an toàn thực phẩm) vì thấy tốn mà không tạo lợi thế."
+  - "Cắt từng khâu riêng lẻ mà phá liên kết cả chuỗi."
+  - "Lấy giá trị theo cảm nhận chủ doanh nghiệp thay vì dữ liệu khách."
+  - "Chỉ làm SO và né WT dù thực tế cần thu hẹp/giảm lỗ."
+  - "Dùng số liệu doanh nghiệp lớn (Samsung, Zara, Grab) mà không kiểm chứng nguồn."
+
+sme_vn_guidance:
+  - "Làm SWOT ngay cả khi chỉ có 2-3 người: tự viết riêng rồi gộp; ưu tiên mục có số liệu (doanh thu theo kênh, tỷ lệ khách quay lại, giá vốn)."
+  - "Điểm mạnh điển hình của SME VN cần kiểm tra VRIO: mặt bằng sở hữu (thường V,R,I nhưng cần O), quan hệ nhà cung cấp lâu năm, tay nghề người sáng lập (rủi ro phụ thuộc cá nhân), công thức/món ăn gia truyền (thường dễ bắt chước nếu không có hệ thống)."
+  - "Khảo sát khách rẻ: Google Forms/Zalo OA/QR tại bàn; tối thiểu 20-30 phản hồi để tính điểm giá trị hoạt động; cần kiểm chứng chi phí công cụ hiện hành."
+  - "Benchmark đối thủ bằng menu/bảng giá công khai, Google Maps review, TikTok/Facebook; không cần mua báo cáo."
+  - "Dùng bảng tính Excel/Google Sheets với hàm SUMPRODUCT cho điểm SWOT; không cần phần mềm riêng."
+  - "SME ít nguồn lực: chọn ngách hẹp (Focus), khai thác tài sản sở hữu (đất, quan hệ), đừng dàn trải; thuê ngoài khâu phụ (kế toán, giao hàng) để giữ vốn cho khâu khác biệt."
+  - "Khâu thường yếu nhất ở SME F&B Việt Nam là Marketing & Sales (chưa có kênh số) và Service (không có chăm sóc sau bán) - nên kiểm tra đầu tiên."
+  - "Đưa kết quả thành KPI cụ thể (liên kết m06) để theo dõi hàng tháng; xem lại SWOT mỗi quý, VRIO mỗi 6-12 tháng."
+  - "Mọi số liệu giá, chi phí trong ví dụ là giả định minh họa; cần xác nhận theo thực tế từng doanh nghiệp."
+
+case_lessons:
+  - name: "Grab tại Đông Nam Á - SWOT/TOWS (2020-2024)"
+    type: "success"
+    setup: "Grab cạnh tranh Gojek/GoTo và đối thủ địa phương (Be, Xanh SM tại VN) trong khi lỗ lớn, phụ thuộc nhà đầu tư và đối mặt lãi suất tăng."
+    key_calculations:
+      - "S: thương hiệu #1 ride-hailing ĐNÁ, super app (ride/food/pay/invest), dữ liệu lớn, mạng lưới merchant, niêm yết NASDAQ qua SPAC 2021."
+      - "W: lỗ nhiều năm, phụ thuộc SoftBank, chất lượng tài xế không đều, biên mỏng, chi phí khuyến mãi."
+      - "SO: dữ liệu + merchant -> fintech (GrabPay, GrabInvest). ST: brand -> chống đối thủ địa phương (GrabUnlimited, khuyến mãi). WO: bù lỗ bằng quảng cáo (GrabAds). WT: cắt chi phí, giảm khoảng 1,000+ nhân sự năm 2023."
+    lesson: "SWOT giúp chuyển từ 'tăng trưởng bằng mọi giá' sang 'tăng trưởng có lãi'; WT đau nhưng cần. Hạn chế: SWOT không xếp hạng mảng nào ưu tiên -> cần BCG; không cho biết nguồn lực nào tạo lợi thế bền vững -> cần VRIO. Lưu ý số liệu: tài liệu nguồn đã sửa 'có lãi Q4/2023' thành Adjusted EBITDA dương từ Q2/2023; số user 300M+ và thị trường số ĐNÁ $360B (2025) cần kiểm chứng."
+    data_reliability: "unverified"
+  - name: "Samsung Electronics - VRIO"
+    type: "success"
+    setup: "Đánh giá 6 nguồn lực của Samsung bằng VRIO để phân biệt điểm mạnh với lợi thế bền vững."
+    key_calculations:
+      - "Thương hiệu, chip bán dẫn (foundry), màn hình AMOLED: V,R,I,O đều đạt -> bền vững."
+      - "Hệ sinh thái sản phẩm (TV+phone+appliance): V đạt nhưng R không (LG, Xiaomi) -> ngang bằng."
+      - "OS Tizen: V không đạt -> bất lợi (Samsung chuyển sang Wear OS cho smartwatch)."
+      - "Mạng lưới sản xuất VN: V,R đạt nhưng I không (đối thủ có thể xây tương tự) -> tạm thời."
+    lesson: "Không phải mọi điểm mạnh là lợi thế cạnh tranh; chỉ nguồn lực đạt cả 4 tiêu chí mới bền vững. Samsung tập trung bảo vệ 3 nguồn lực bền vững và bỏ nguồn lực bất lợi. Số liệu minh họa của nguồn (vd $230B R&D, 80% thị phần AMOLED) cần kiểm chứng."
+    data_reliability: "unverified"
+  - name: "Zara (Inditex) - Value Chain"
+    type: "success"
+    setup: "Zara đưa sản phẩm từ thiết kế đến cửa hàng trong 2-3 tuần (ngành khoảng 6 tháng) bằng cách tối ưu cả chuỗi giá trị."
+    key_calculations:
+      - "Inbound: khoảng 60% vải mua gần Tây Ban Nha, lô nhỏ. Operations: khoảng 60% sản xuất in-house, lô nhỏ."
+      - "Outbound: trung tâm logistics tại Arteixo, giao 2 lần/tuần đến mọi cửa hàng. Marketing: quảng cáo 0.3% doanh thu (so 3-4% của H&M), dùng vị trí cửa hàng."
+      - "Technology: RFID, dự báo xu hướng, kết nối cửa hàng-HQ; HRM: nhân viên cửa hàng báo cầu khách về HQ."
+    lesson: "Không dẫn đầu từng khâu riêng lẻ mà tối ưu cả chuỗi -> tốc độ; vertical integration là nguồn lợi thế; mô hình test-and-respond giảm rủi ro tồn kho (tài liệu nguồn nêu 85%, chưa kiểm chứng). Trade-off có chủ đích: chi phí lao động cao hơn đối thủ sản xuất châu Á."
+    data_reliability: "unverified"
+  - name: "Thế Giới Di Động - Value Chain minh họa 9 hoạt động"
+    type: "success"
+    setup: "Dùng MWG để minh họa từng hoạt động trong Value Chain (nhập hàng từ hãng, kho trung tâm, hệ thống cửa hàng, trade-in, bảo hành 1 đổi 1, ERP/POS, AI dự báo tồn kho)."
+    key_calculations:
+      - "Bảng mẫu: Inbound 15%, Operations 25%, Outbound 20%, Marketing & Sales 30%, Service 10% (minh họa kết cấu bảng, không phải số liệu MWG thật)."
+      - "Số cửa hàng 5,000+, nhân viên 60,000+ trích trong nguồn; cần kiểm chứng."
+    lesson: "Cho thấy cách điền bảng chi phí/giá trị/lợi thế vs đối thủ/hành động để từ đó chọn hành động (duy trì, mở rộng, tăng digital)."
+    data_reliability: "illustrative"
+  - name: "Nhà hàng hải sản Đảnh Năm (Thọ Quang, Đà Nẵng) - SWOT + VRIO + Value Chain"
+    type: "sme"
+    setup: "Quán bình dân 400 m2, đất sở hữu, trong hẻm nhỏ ô tô không vào được, chưa có quảng cáo, chủ yếu khách địa phương/truyền miệng; du lịch Đà Nẵng đang tăng; nhiều nhà hàng hải sản mới dọc biển và quán bình dân mặt đường cạnh tranh."
+    key_calculations:
+      - "SWOT: S = giá rẻ (vd 90k đĩa nghêu/tôm/điệp, nước đồng giá 16k) + đất sở hữu không tiền thuê; W = 1 mặt bằng, hẻm nhỏ, ít chỗ đỗ xe, không quảng cáo; O = du lịch tăng; T = nguồn cung hải sản bị nhà hàng lớn đẩy giá, review đặt hàng, quán bình dân mọc nhiều."
+      - "VRIO: giá rẻ = V đạt, mô hình bình dân dễ sao chép (R/I không); mặt bằng sở hữu = V,R,I đạt nhưng O chưa trọn (chưa khai thác khách du lịch) -> chưa khai thác."
+      - "Value Chain: Marketing & Sales yếu nhất (chưa có chiến lược), Outbound chỉ ăn tại chỗ, Service cơ bản."
+    lesson: "Lợi thế thật của quán là cấu trúc chi phí cố định thấp từ đất sở hữu; điểm yếu cần xử lý trước là Marketing & Sales và khả năng tiếp cận (hẻm, đỗ xe), không phải mở rộng sản xuất. TOWS đề xuất: dùng chi phí thấp thu hút khách du lịch tiết kiệm bằng review thật, lập kênh quảng cáo tối thiểu, giữ giá niêm yết minh bạch."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - id: "m02_we1"
+    name: "SWOT có trọng số + TOWS cho quán cà phê rang xay Đà Nẵng (giả định)"
+    inputs:
+      S: {weights: [0.4, 0.35, 0.25], scores: [4, 5, 3], items: ["Hạt rang riêng, chất lượng ổn định", "Khách quen cao (tỷ lệ quay lại 55%)", "Giá vốn thấp nhờ nhập trực tiếp từ nông hộ"]}
+      W: {weights: [0.5, 0.3, 0.2], scores: [4, 3, 2], items: ["Phụ thuộc 1 người rang", "Chưa có kênh online", "Mặt bằng thuê, hợp đồng 2 năm"]}
+      O: {weights: [0.5, 0.3, 0.2], scores: [5, 4, 3], items: ["Du lịch tăng", "Xu hướng specialty", "Giao hàng app mở rộng"]}
+      T: {weights: [0.6, 0.4], scores: [4, 3], items: ["Chuỗi lớn mở gần", "Giá hạt tăng"]}
+    steps:
+      - "S = 0.4*4 + 0.35*5 + 0.25*3 = 1.6+1.75+0.75 = 4.1"
+      - "W = 0.5*4 + 0.3*3 + 0.2*2 = 2.0+0.9+0.4 = 3.3"
+      - "O = 0.5*5 + 0.3*4 + 0.2*3 = 2.5+1.2+0.6 = 4.3"
+      - "T = 0.6*4 + 0.4*3 = 2.4+1.2 = 3.6"
+      - "Net_int = 4.1-3.3 = 0.8; Net_ext = 4.3-3.6 = 0.7 -> cả hai dương -> ưu tiên SO, nhưng W (3.3) cao -> thêm 1 hành động WO."
+      - "TOWS: SO1 'Gói quà hạt rang + tour tham quan xưởng rang cho khách du lịch' Impact 5 x Feasibility 4 = 20. SO2 'Ra thêm 2 dòng specialty' 4x4 = 16. WO1 'Đào tạo thêm 1 người rang (giảm phụ thuộc)' 4x5 = 20. ST1 'Thẻ thành viên giữ khách quen' 3x4 = 12."
+      - "Chọn top 3 (P>=16): SO1, WO1, SO2; ST1 làm sau."
+    result: "S=4.1, W=3.3, O=4.3, T=3.6; ưu tiên SO (tấn công) kèm 1 hành động WO; chọn 3 chiến lược P=20,20,16."
+    reliability: "illustrative"
+  - id: "m02_we2"
+    name: "VRIO cho xưởng may gia công 120 công nhân (giả định)"
+    inputs:
+      resources:
+        - {name: "Máy may thông dụng", V: true, R: false, I: false, O: true}
+        - {name: "Hệ thống kiểm soát chất lượng tự xây dựng (tỷ lệ lỗi 1.2% so với ngành 3%)", V: true, R: true, I: true, O: false}
+        - {name: "Đội thợ lành nghề gắn bó trên 8 năm", V: true, R: true, I: false, O: true}
+        - {name: "Quan hệ đơn hàng dài hạn với 2 nhãn hàng Nhật", V: true, R: true, I: true, O: true}
+        - {name: "Phần mềm quản lý sản xuất lỗi thời", V: false, R: false, I: false, O: false}
+    steps:
+      - "Máy may thông dụng: V đạt, R không -> parity (ngang bằng)."
+      - "Hệ thống QC: V,R,I đạt (khó sao chép vì tích lũy 6 năm), nhưng O không (chỉ 1 quản lý hiểu, chưa chuẩn hóa thành quy trình) -> unused."
+      - "Thợ lành nghề: V,R đạt; I không (thợ có thể bị chào mời chuyển xưởng) -> temporary."
+      - "Quan hệ nhãn Nhật: đủ 4 -> sustained."
+      - "Phần mềm lỗi thời: V không -> disadvantage."
+      - "Hành động: QC -> chuẩn hóa SOP, đào tạo 2 người, KPI chất lượng và thưởng (tổ chức lại để khai thác, dùng làm điểm bán với nhãn mới). Thợ -> hợp đồng giữ chân, chia sẻ lợi nhuận. Nhãn Nhật -> bảo vệ, tránh phụ thuộc hoàn toàn (giữ 60-70% công suất). Phần mềm -> thay hoặc thuê ngoài."
+    result: "1 bền vững (quan hệ nhãn Nhật), 1 chưa khai thác (QC - cơ hội lớn nhất), 1 tạm thời (thợ), 1 ngang bằng (máy), 1 bất lợi (phần mềm)."
+    reliability: "illustrative"
+  - id: "m02_we3"
+    name: "Value Chain cho tiệm bánh 'Bếp Nhà Lan' (giả định, đơn vị = 100 điểm giá bán)"
+    inputs:
+      price: 100
+      costs: {inbound: 12, operations: 28, outbound: 8, marketing_sales: 22, service: 6, support: 12}
+      values: {inbound: 8, operations: 30, outbound: 7, marketing_sales: 15, service: 25, support: 15}
+      survey: "Khảo sát 30 khách chia 100 điểm cho 6 nhóm hoạt động (trung bình)"
+    steps:
+      - "Tổng chi phí = 12+28+8+22+6+12 = 88; Margin = 100-88 = 12 (12%)."
+      - "Tỷ trọng chi phí: inbound 13.6%, operations 31.8%, outbound 9.1%, marketing 25.0%, service 6.8%, support 13.6%."
+      - "Tỷ số R = tỷ trọng giá trị / tỷ trọng chi phí: inbound 0.08/0.136 = 0.59; operations 0.30/0.318 = 0.94; outbound 0.07/0.091 = 0.77; marketing 0.15/0.25 = 0.60; service 0.25/0.068 = 3.67; support 0.15/0.136 = 1.10."
+      - "Đọc: Service R=3.67 (khách rất coi trọng, ta đầu tư rất ít) -> tăng đầu tư (tin nhắn nhắc lịch, đặt trước, bảo hành bánh). Marketing R=0.60 và Inbound R=0.59 -> tối ưu (thay quảng cáo trả phí bằng Zalo/referral; gom đơn nhập nguyên liệu)."
+      - "Giả thiết: cắt Marketing 22->17 (tiết kiệm 5), Inbound 12->10 (tiết kiệm 2), tăng Service 6->10 (thêm 4): chi phí mới = 88-5-2+4 = 85, Margin = 15 (15%)."
+    result: "Margin 12% -> 15% (giả định) nhờ chuyển chi phí từ khâu giá trị thấp sang khâu giá trị cao; Service là điểm khác biệt chính."
+    reliability: "illustrative"
+  - id: "m02_we4"
+    name: "Kết hợp SWOT-VRIO-Value Chain cho một công ty phần mềm POS cho quán cà phê (giả định)"
+    inputs: {context: "12 nhân sự, doanh thu 4.8 tỷ/năm, 300 khách; đối thủ: KiotViet, Sapo"}
+    steps:
+      - "SWOT: S = tích hợp giao hàng nội địa + hỗ trợ tại chỗ nhanh; W = ít vốn, thương hiệu yếu; O = quán cà phê chuyển số; T = đối thủ lớn giảm giá."
+      - "VRIO cho S: hỗ trợ tại chỗ nhanh (V đạt; R: ít đối thủ làm 24/7 -> đạt; I: đối thủ có thể thuê thêm nhân sự -> không) -> temporary. Dữ liệu vận hành 300 quán (V,R đạt; I đạt vì tích lũy; O chưa có đội phân tích) -> unused."
+      - "Value Chain: khâu Service là nơi tạo giá trị lớn; dữ liệu nằm ở Technology Development -> lập đội phân tích dữ liệu, tạo báo cáo benchmark cho quán."
+      - "TOWS: SO = bán gói 'báo cáo benchmark' cho quán (từ dữ liệu); ST = hợp đồng 2 năm giữ khách chống giảm giá; WO = hợp tác ngân hàng/đối tác giới thiệu để mở rộng."
+    result: "Chọn tập trung khai thác dữ liệu (nguồn lực unused) thay vì đua giảm giá; tổ chức lại tại Technology Development và Service."
+    reliability: "illustrative"
+
+practice_questions:
+  - q: "Phân biệt S/W với O/T bằng quy tắc nào? 'Giá nguyên liệu tăng 15%' nên đặt vào nhóm nào?"
+    a: "S/W là yếu tố nội bộ doanh nghiệp kiểm soát được; O/T là bên ngoài không kiểm soát. Giá nguyên liệu tăng là Threat (bên ngoài); 'chưa có hợp đồng nhập dài hạn' mới là Weakness."
+  - q: "SWOT có điểm S=3.8, W=2.5, O=3.0, T=4.2. Nên ưu tiên quadrant nào?"
+    a: "Net_int = 1.3 > 0; Net_ext = 3.0 - 4.2 = -1.2 < 0 -> ST (phòng thủ): dùng điểm mạnh để chống đe dọa, vd tăng khách trung thành, khác biệt hóa."
+  - q: "Một nguồn lực: có giá trị, hiếm, đối thủ chỉ mất 6 tháng để sao chép. Kết quả VRIO và hành động?"
+    a: "V=1, R=1, I=0 -> Lợi thế tạm thời. Khai thác nhanh trong cửa sổ thời gian, đầu tư tạo rào cản (thương hiệu, hợp đồng độc quyền, tích lũy dữ liệu)."
+  - q: "Quán có thương hiệu local nổi tiếng nhưng không có ai chịu trách nhiệm marketing/CRM. VRIO?"
+    a: "Nếu V,R,I đạt nhưng O không -> Lợi thế chưa khai thác. Hành động: giao trách nhiệm, xây CRM, KPI, ngân sách."
+  - q: "Tính margin với giá 100 và chi phí hoạt động 15, 30, 12, 20, 8, 10."
+    a: "Tổng chi phí = 95; Margin = 5 (5%). Ở biên mỏng, cần kiểm tra khâu có R<0.8 để cắt hoặc tăng giá trị khách."
+  - q: "Tính R của khâu Marketing nếu giá trị = 15 điểm trên tổng 100 và chi phí = 22 trên tổng 88."
+    a: "(15/100)/(22/88) = 0.15/0.25 = 0.60 -> khâu tiêu nhiều hơn mức khách coi trọng, ứng viên tối ưu."
+  - q: "Vì sao Zara không sao chép được bằng cách copy từng khâu?"
+    a: "Lợi thế đến từ liên kết giữa các khâu (mua vải lô nhỏ gần, sản xuất in-house, logistics 2 lần/tuần, dữ liệu cửa hàng-HQ); liên kết nhân quả mơ hồ và tích lũy lâu -> I (khó bắt chước). Copy một khâu không cho tốc độ."
+  - q: "Vì sao SWOT dễ bị chỉ trích và TOWS giải quyết gì?"
+    a: "SWOT chỉ liệt kê, không ưu tiên, không định lượng, không ra hành động. TOWS ghép S/W với O/T thành 4 loại chiến lược SO/ST/WO/WT, ưu tiên bằng Impact x Feasibility."
+  - q: "Khi nào chiến lược WT hợp lý? Ví dụ?"
+    a: "Khi nội bộ yếu và môi trường bất lợi: tập trung ngách, cắt giảm, giữ dòng tiền (Grab cắt giảm chi phí khi lãi suất tăng; quán thương hiệu yếu tập trung phân khúc nhỏ)."
+
+checklist:
+  - "□ Mỗi yếu tố SWOT cụ thể, có số liệu/chứng cứ, so với đối thủ; đúng nhóm nội bộ/bên ngoài"
+  - "□ Giữ 5-7 yếu tố mỗi nhóm; có trọng số (tổng 1) và điểm 1-5"
+  - "□ O và T lấy từ PESTEL/5 Forces (m01), không chỉ từ ý kiến nội bộ"
+  - "□ TOWS có đủ 4 quadrant; mỗi chiến lược có chủ sở hữu, hạn chót, KPI"
+  - "□ Chọn 2-3 chiến lược ưu tiên theo Impact x Feasibility"
+  - "□ VRIO: mỗi nguồn lực một dòng; đã chọn đối thủ so sánh; mỗi tiêu chí có chứng cứ"
+  - "□ Đã gán hành động theo kết quả VRIO (bảo vệ/khai thác nhanh/tổ chức lại/duy trì/sửa-loại bỏ)"
+  - "□ Value Chain: đủ 5 hoạt động chính + 4 hỗ trợ; chi phí cộng lại bằng giá; margin đã tính"
+  - "□ Có dữ liệu giá trị theo khách (khảo sát) hoặc đánh dấu là giả định"
+  - "□ Đã benchmark 2-3 đối thủ ở từng khâu"
+  - "□ Đã kiểm tra liên kết giữa các khâu trước khi cắt/đầu tư"
+  - "□ Kết luận rà soát chéo SWOT-VRIO-Value Chain và đối chiếu với môi trường bên ngoài"
+  - "□ Số liệu doanh nghiệp lớn được gắn nhãn độ tin cậy; giả định được nêu rõ"
+  - "□ Đặt lịch rà soát (SWOT mỗi quý, VRIO mỗi 6-12 tháng)"
+
+excel_google_sheets_templates:
+  - "Sheet SWOT_Score: cột Nhóm | Yếu tố | Trọng số | Điểm 1-5 | Chứng cứ; điểm nhóm =SUMPRODUCT(trọng số, điểm); kiểm tra =SUM(trọng số)=1 theo nhóm; ô Net_int =S-W, Net_ext =O-T."
+  - "Sheet TOWS: lưới 2x2 và bảng hành động (Quadrant | Chiến lược | Impact | Feasibility | P =Impact*Feasibility | Chủ sở hữu | Hạn chót | KPI)."
+  - "Sheet VRIO: Nguồn lực | Loại | V | R | I | O (TRUE/FALSE) | Kết quả =IF(NOT(V),...) | Hành động | Ngày rà soát lại."
+  - "Sheet ValueChain: Hoạt động | Chi phí | % chi phí | Điểm giá trị khách | % giá trị | R =%giá trị/%chi phí | Đối thủ | Hành động; ô Margin =Price-SUM(Chi phí)."
+  - "Sheet Survey: Google Forms phân bổ 100 điểm cho các hoạt động; tổng hợp trung bình sang sheet ValueChain."
+
+source_file: "02-phan-tich-noi-bo.md"

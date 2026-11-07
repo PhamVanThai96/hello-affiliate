@@ -1,0 +1,873 @@
+# m01 - STP: Segmentation, Targeting, Positioning (distill từ 01-stp-segmentation-targeting-positioning.md)
+id: "m01"
+name_vi: "Phân khúc - Chọn thị trường mục tiêu - Định vị (STP)"
+name_en: "STP: Segmentation, Targeting, Positioning"
+purpose: >
+  Trả lời 3 câu hỏi nền tảng của marketing chiến lược: thị trường gồm những nhóm khách hàng nào (S), nên phục vụ nhóm nào (T),
+  và muốn khách hàng mục tiêu nghĩ gì về mình so với đối thủ (P). STP là cầu nối giữa phân tích môi trường (PESTEL, 5 Forces, SWOT, VRIO)
+  và marketing mix 4P/7P: không có STP thì 4P thiếu định hướng, nguồn lực bị dàn trải.
+when_to_use:
+  - "Chủ SME/founder hỏi 'bán cho ai?', 'khách hàng mục tiêu của tôi là ai?', 'làm sao khác biệt với đối thủ?'"
+  - "Khởi nghiệp hoặc mở sản phẩm/chi nhánh mới và cần chọn phân khúc, định vị trước khi làm menu, giá, kênh, truyền thông."
+  - "Doanh số chững/giảm vì thông điệp loãng, bán cho 'tất cả mọi người' -> cần thu hẹp và tái định vị."
+  - "Cần viết Positioning Statement, vẽ Perceptual Map, xác định POD/POP."
+  - "Cần chấm điểm, so sánh các phân khúc để chọn primary/secondary target."
+  - "Cần chọn chiến lược targeting (mass, đa phân khúc, ngách, cá nhân hóa) phù hợp nguồn lực."
+  - "Đánh giá lại một brand có đang nhất quán giữa positioning và 4P không; quyết định repositioning."
+prerequisites: []
+related_modules:
+  - "m02 - Marketing mix 4P/7P: STP quyết định hướng, 4P là triển khai; 4P phải nhất quán với positioning"
+  - "m03 - Customer Lifetime Value: RFM và CLV là công cụ phân khúc theo giá trị, đánh giá phân khúc nào đáng đầu tư"
+  - "m04 - Brand management: positioning là xương sống của brand identity/brand equity"
+  - "m05 - Digital marketing & growth hacking: lookalike/custom audience, SEO/SEM, social để targeting và truyền thông định vị"
+  - "m06 - Consumer behavior: hiểu nhu cầu, động cơ, quy trình mua để phân khúc tâm lý/hành vi đúng"
+  - "m07 - Marketing research: khảo sát, focus group, cluster analysis cung cấp dữ liệu cho S và P"
+  - "m08 - IMC: truyền thông tích hợp phải lặp lại cùng một thông điệp định vị"
+  - "m10 - Pricing: giá là một tín hiệu định vị (price/quality), chọn theo phân khúc"
+  - "Strategic (1-strategic-management): PESTEL, 5 Forces, VRIO là đầu vào đánh giá hấp dẫn phân khúc và năng lực phù hợp"
+
+concepts:
+  - term_vi: "STP"
+    term_en: "Segmentation - Targeting - Positioning"
+    definition: >
+      Quy trình 3 bước tuần tự: Phân khúc thị trường (S) -> Lựa chọn thị trường mục tiêu (T) -> Định vị (P).
+      Nguồn gốc ý tưởng phân khúc: Wendell Smith (1956); khái niệm positioning: Al Ries và Jack Trout (1969/1981); Philip Kotler hệ thống hóa thành STP trong giáo trình Marketing Management.
+    why_it_matters: >
+      Nguồn lực SME luôn hữu hạn, không thể phục vụ mọi người. STP buộc chọn 'chiến trường' thuận lợi và nói đúng ngôn ngữ của một nhóm cụ thể
+      thay vì nói chung chung. Thứ tự S -> T -> P là quan trọng: biết thị trường gồm nhóm nào rồi mới chọn, chọn xong mới định vị cho đúng người.
+  - term_vi: "Phân khúc thị trường"
+    term_en: "Market Segmentation"
+    definition: "Chia thị trường tổng thể thành các nhóm khách hàng đồng nhất bên trong (nhu cầu, đặc điểm, hành vi tương đồng) và khác biệt giữa các nhóm."
+    why_it_matters: >
+      Wendell Smith (1956) chỉ ra rằng khi cầu không đồng nhất và nhà sản xuất khó cạnh tranh bằng sản phẩm đại trà, chia thị trường theo nhu cầu
+      là cách điều chỉnh sản phẩm/marketing sát nhu cầu hơn. Phân khúc tốt giúp hiểu khách sâu, thông điệp trúng đích, ROI marketing cao hơn.
+  - term_vi: "Thị trường mục tiêu"
+    term_en: "Targeting / Target Market"
+    definition: "Đánh giá sức hấp dẫn từng phân khúc và chọn một hoặc nhiều phân khúc để phục vụ; phân biệt primary target (chính) và secondary target (phụ)."
+    why_it_matters: "Không phải phân khúc lớn nhất là tốt nhất; phải xét cạnh tranh, năng lực DN, tiếp cận và lợi nhuận. Chọn là đồng thời chấp nhận bỏ một số nhóm khác."
+  - term_vi: "Định vị"
+    term_en: "Positioning"
+    definition: "Xây dựng hình ảnh/vị trí của thương hiệu trong tâm trí khách hàng mục tiêu so với đối thủ."
+    why_it_matters: >
+      Ries và Trout: 'Positioning is not what you do to a product. Positioning is what you do to the mind of the prospect.' Thị trường quá nhiều thông điệp
+      nên khách chỉ nhớ vài thương hiệu cho mỗi ý niệm; nếu không tự chọn vị trí, khách và đối thủ sẽ chọn thay.
+  - term_vi: "Điểm khác biệt / Điểm tương đồng"
+    term_en: "POD (Points of Difference) / POP (Points of Parity)"
+    definition: "POD: thuộc tính/lợi ích khách coi trọng và gắn riêng với thương hiệu, đối thủ khó sao chép. POP: thuộc tính tối thiểu phải ngang đối thủ để được cân nhắc (hạng mục 'vé vào cửa')."
+    why_it_matters: "Chỉ khác biệt mà thiếu POP (ví dụ rẻ nhưng không an toàn) thì khách không mua; chỉ có POP thì không có lý do chọn mình."
+  - term_vi: "Tiêu chí phân khúc hiệu quả"
+    term_en: "DAMAS (Differentiable, Actionable, Measurable, Accessible, Substantial)"
+    definition: "5 tiêu chí kiểm tra một phân khúc có đáng làm: khác biệt rõ, có thể thiết kế chương trình marketing riêng, đo được quy mô/sức mua, tiếp cận được qua kênh, đủ lớn và sinh lời."
+    why_it_matters: "Chia thị trường là dễ, chia sao cho hành động được và có lãi mới khó. DAMAS lọc ra các cách chia chỉ đẹp trên giấy."
+  - term_vi: "Phân khúc quá nhỏ"
+    term_en: "Over-segmentation"
+    definition: "Chia thị trường quá mịn khiến mỗi nhóm quá nhỏ, mất lợi thế quy mô (economies of scale) và chi phí phục vụ vượt lợi nhuận."
+    why_it_matters: "Là rủi ro chính của STP; cân bằng giữa độ chính xác và Substantial của DAMAS."
+  - term_vi: "Positioning Statement"
+    term_en: "Positioning Statement"
+    definition: "Câu tuyên bố nội bộ gồm 4 phần: khách hàng mục tiêu, category, điểm khác biệt (USP), lý do tin tưởng (RTB)."
+    why_it_matters: "Là kim chỉ nam cho mọi bộ phận (sản phẩm, giá, phân phối, truyền thông); không phải khẩu hiệu quảng cáo."
+  - term_vi: "Bản đồ nhận thức"
+    term_en: "Perceptual Map"
+    definition: "Biểu đồ 2 trục thể hiện vị trí các thương hiệu trong tâm trí khách theo hai thuộc tính quan trọng (vd giá và chất lượng)."
+    why_it_matters: "Biến định vị thành hình ảnh, thấy được khoảng trống (white space) chưa ai chiếm và mức độ đông đúc của từng vùng."
+  - term_vi: "Tái định vị"
+    term_en: "Repositioning"
+    definition: "Thay đổi vị trí trong tâm trí khách khi thị trường đổi, đối thủ chiếm vị trí, mở sang phân khúc mới hoặc hình ảnh tiêu cực."
+    why_it_matters: "Positioning không bất biến; phân khúc và đối thủ thay đổi theo thời gian, đặc biệt trong thời đại số."
+  - term_vi: "Phân khúc động / vi phân khúc / phân khúc một người"
+    term_en: "Dynamic Segmentation / Micro-segmentation / Segment of One"
+    definition: "Phân khúc dựa trên dữ liệu hành vi thời gian thực, nhóm rất nhỏ hoặc từng cá nhân; một người có thể thuộc nhiều phân khúc tùy thời điểm."
+    why_it_matters: "Dữ liệu số (Google Analytics, CRM, AI clustering) cho phép phân khúc theo hành vi và ý định, dự đoán thay vì chỉ mô tả quá khứ (Spotify là ví dụ)."
+
+formulas:
+  - id: "m01_weighted_segment_score"
+    name_vi: "Điểm hấp dẫn phân khúc có trọng số"
+    name_en: "Weighted Segment Attractiveness Score"
+    expression_latex: 'S_j = \sum_{i=1}^{n} w_i \cdot s_{ij}, \quad \sum_i w_i = 1'
+    expression_python: "sum(w * s for w, s in zip(weights, scores))"
+    excel: "=SUMPRODUCT(weights_range, scores_range)"
+    variables:
+      - {symbol: "w_i", meaning: "Trọng số tiêu chí i (tổng bằng 1 hay 100%)", unit: "tỷ lệ"}
+      - {symbol: "s_ij", meaning: "Điểm của phân khúc j ở tiêu chí i (thang 1-10; tiêu chí cạnh tranh chấm theo chiều 'càng ít cạnh tranh càng cao điểm')", unit: "điểm"}
+      - {symbol: "S_j", meaning: "Tổng điểm hấp dẫn của phân khúc j", unit: "điểm"}
+    when_to_use: "Bước 5 của quy trình STP: so sánh và xếp hạng nhiều phân khúc để chọn primary/secondary target."
+    why_it_works: >
+      Quyết định chọn phân khúc phải cân nhiều tiêu chí thường mâu thuẫn (lớn nhưng cạnh tranh gắt, có lãi nhưng ngoài năng lực). Mô hình cộng có trọng số
+      (multi-criteria scoring) buộc nêu rõ ưu tiên (trọng số) và bằng chứng (điểm), giúp tranh luận minh bạch và kiểm tra độ nhạy thay vì quyết định cảm tính.
+      Trọng số gợi ý của nguồn: Quy mô và tăng trưởng 25%, Sức hấp dẫn cạnh tranh 20%, Phù hợp năng lực 25%, Khả năng tiếp cận 15%, Lợi nhuận tiềm năng 15%.
+    assumptions:
+      - "Các tiêu chí độc lập tương đối và có thể cộng tuyến tính"
+      - "Điểm chấm dựa trên dữ liệu/ước tính có căn cứ, thang đo thống nhất giữa các phân khúc"
+    pitfalls:
+      - "Tổng trọng số khác 100% làm sai lệch so sánh; luôn kiểm tra sum(weights)=1"
+      - "Chấm điểm cạnh tranh ngược chiều (cạnh tranh cao mà cho điểm cao) là lỗi phổ biến"
+      - "Điểm chênh nhỏ (dưới khoảng 0,5) không đủ kết luận; cần phân tích độ nhạy bằng cách đổi trọng số"
+      - "Điểm số mang tính chủ quan; đừng coi là chính xác tuyệt đối, chỉ là công cụ có cấu trúc"
+    interpretation: "Điểm cao nhất = ứng viên primary target; điểm thứ hai gần đó = secondary. Dưới khoảng 6/10 thường cần cân nhắc bỏ hoặc hoãn (ngưỡng tham khảo, không phải chuẩn)."
+    example:
+      inputs:
+        weights: [0.25, 0.20, 0.25, 0.15, 0.15]
+        scores_vp: [8, 6, 8, 8, 8]
+      steps:
+        - "8*0.25=2.0; 6*0.20=1.2; 8*0.25=2.0; 8*0.15=1.2; 8*0.15=1.2"
+        - "Tổng = 2.0+1.2+2.0+1.2+1.2 = 7.6"
+      result: "S = 7.6 / 10 (đã verify bằng Python; nhân viên văn phòng)"
+
+  - id: "m01_segment_revenue_potential"
+    name_vi: "Doanh thu tiềm năng của phân khúc"
+    name_en: "Segment Revenue Potential"
+    expression_latex: 'R = N \times p \times f \times P'
+    expression_python: "N * p * f * P"
+    excel: "=N*p*f*P"
+    variables:
+      - {symbol: "N", meaning: "Quy mô phân khúc trong khu vực phục vụ (số người/hộ/doanh nghiệp)", unit: "người"}
+      - {symbol: "p", meaning: "Tỷ lệ có thể tiếp cận và chuyển đổi thành khách (penetration)", unit: "tỷ lệ 0-1"}
+      - {symbol: "f", meaning: "Tần suất mua trong kỳ", unit: "lần/kỳ"}
+      - {symbol: "P", meaning: "Chi tiêu trung bình mỗi lần (AOV)", unit: "VNĐ/lần"}
+    when_to_use: "Tiêu chí 'Quy mô' và 'Lợi nhuận tiềm năng' khi profile phân khúc (Substantial trong DAMAS); sizing nhanh bottom-up cho SME."
+    why_it_works: "Tách doanh thu thành bốn đòn bẩy (số người, tỷ lệ chuyển đổi, tần suất, giá trị) nên mỗi con số có thể kiểm chứng bằng khảo sát/quan sát và biết cần tác động vào đâu."
+    assumptions:
+      - "p, f, P đại diện cho cả phân khúc (cần mẫu khảo sát hoặc dữ liệu thực)"
+      - "Phân khúc không chồng lấn nhau khi cộng doanh thu các nhóm"
+    pitfalls:
+      - "Lấy toàn bộ dân số khu vực làm N mà không lọc theo DAMAS làm phóng đại thị trường"
+      - "Ước p quá lạc quan (vd 30-50%) khi đã có nhiều đối thủ"
+      - "Quên điều chỉnh f theo mùa vụ (vd sinh viên nghỉ hè)"
+    interpretation: "So sánh R giữa các phân khúc, sau đó nhân biên đóng góp để ra lợi nhuận tiềm năng; phân khúc doanh thu thấp nhưng biên cao vẫn có thể thắng."
+    example:
+      inputs: {N: 40000, p: 0.15, f: 8, P: 35000}
+      steps:
+        - "40.000 sinh viên x 15% = 6.000 khách"
+        - "6.000 x 8 lần/tháng = 48.000 lần mua"
+        - "48.000 x 35.000 = 1.680.000.000 VNĐ/tháng"
+      result: "R = 1,68 tỷ VNĐ/tháng (số liệu giả định minh họa, đã verify bằng Python)"
+
+  - id: "m01_segment_contribution"
+    name_vi: "Lợi nhuận đóng góp của phân khúc"
+    name_en: "Segment Contribution Profit"
+    expression_latex: 'C = R \times m_c'
+    expression_python: "R * mc"
+    excel: "=R*mc"
+    variables:
+      - {symbol: "R", meaning: "Doanh thu tiềm năng của phân khúc (kỳ)", unit: "VNĐ"}
+      - {symbol: "m_c", meaning: "Biên đóng góp (contribution margin) = (giá - biến phí)/giá", unit: "tỷ lệ 0-1"}
+      - {symbol: "C", meaning: "Lợi nhuận đóng góp trước chi phí cố định", unit: "VNĐ"}
+    when_to_use: "Khi hai phân khúc có doanh thu khác nhiều biên (vd sinh viên giá nhạy cảm vs nhân viên văn phòng chịu chi)."
+    why_it_works: "Doanh thu lớn không đồng nghĩa lợi nhuận lớn. Nhân với biên đóng góp cho thấy số tiền thực sự còn lại để trang trải chi phí cố định và marketing."
+    assumptions:
+      - "Biên đóng góp ổn định theo mức bán; chưa tính chi phí thu hút khách riêng từng nhóm"
+    pitfalls:
+      - "Bỏ qua chi phí tiếp cận (CAC) khác nhau giữa các phân khúc; nên trừ chi phí marketing riêng nếu có số liệu"
+      - "Dùng biên lợi nhuận ròng thay vì biên đóng góp khi so sánh phân khúc"
+    interpretation: "Chọn phân khúc có C cao nhất trên mỗi đồng vốn/chi phí cố định cần để phục vụ; xếp hạng theo C chứ không theo R."
+    example:
+      inputs: {R: 1680000000, mc: 0.55}
+      steps:
+        - "1.680.000.000 x 0,55 = 924.000.000"
+      result: "C = 924 triệu VNĐ/tháng (sinh viên); văn phòng 675 triệu x 0,60 = 405 triệu (đã verify)"
+
+  - id: "m01_segment_share"
+    name_vi: "Tỷ trọng phân khúc"
+    name_en: "Segment Share"
+    expression_latex: 'sh_j = \frac{N_j}{\sum_k N_k} \times 100\%'
+    expression_python: "n_j / sum(all_n) * 100"
+    excel: "=n_j/SUM(range)"
+    variables:
+      - {symbol: "N_j", meaning: "Quy mô (user/khách/giá trị) của phân khúc j", unit: "người hoặc VNĐ"}
+      - {symbol: "sh_j", meaning: "Tỷ trọng phân khúc j trong tổng", unit: "%"}
+    when_to_use: "Profile cơ cấu khách hàng; kiểm tra các phân khúc cộng đủ 100%; tính độ phủ của target (primary+secondary)."
+    why_it_works: "Cho biết phần thị trường được phủ khi chọn một tập phân khúc, và giúp phát hiện số liệu nhập sai khi tổng khác 100%."
+    assumptions:
+      - "Phân khúc loại trừ nhau và bao phủ đủ tập khách"
+    pitfalls:
+      - "Một người thuộc nhiều phân khúc (phân khúc động) làm tổng vượt 100%"
+    interpretation: "Spotify: Music Enthusiast 25% + Casual 40% = 65% là độ phủ primary target."
+    example:
+      inputs: {n_j: [40, 25, 15, 10, 10]}
+      steps:
+        - "Tổng = 40+25+15+10+10 = 100 (khớp)"
+        - "Primary = (40+25)/100 = 65%"
+      result: "65% (số liệu % user trong nguồn là ước tính, đã verify tổng = 100)"
+
+  - id: "m01_freemium_conversion"
+    name_vi: "Tỷ lệ chuyển đổi trả phí (freemium)"
+    name_en: "Paid Conversion Rate"
+    expression_latex: 'CR = \frac{\text{Premium}}{\text{MAU}} \times 100\%'
+    expression_python: "premium / mau * 100"
+    excel: "=premium/mau"
+    variables:
+      - {symbol: "premium", meaning: "Số thuê bao trả phí", unit: "người"}
+      - {symbol: "mau", meaning: "Số người dùng hoạt động hàng tháng (gồm free và paid)", unit: "người"}
+    when_to_use: "Đánh giá hiệu quả gói miễn phí như công cụ targeting/phễu đưa khách lên bản trả phí."
+    why_it_works: "Freemium dùng tầng miễn phí thu hút đại chúng, rồi chuyển một tỷ lệ lên trả phí; tỷ lệ này đo phễu đó."
+    assumptions:
+      - "MAU và Premium lấy cùng thời điểm/định nghĩa"
+    pitfalls:
+      - "Gộp thuê bao family/duo làm sai số người trả tiền thực"
+    interpretation: "Chỉ số tham khảo; cần so theo chi phí phục vụ gói free và ARPU."
+    example:
+      inputs: {premium: 220, mau: 615}
+      steps: ["220/615 = 0,3577"]
+      result: "~35,8% (số liệu Spotify 2024 trong nguồn, độ tin cậy trung bình; đã verify phép chia)"
+
+  - id: "m01_pct_change"
+    name_vi: "Tỷ lệ thay đổi (tăng trưởng)"
+    name_en: "Percentage Change"
+    expression_latex: '\Delta\% = \frac{V_{after} - V_{before}}{V_{before}} \times 100\%'
+    expression_python: "(after - before) / before * 100"
+    excel: "=(after-before)/before"
+    variables:
+      - {symbol: "V_before", meaning: "Giá trị trước (vd doanh số trước chiến dịch tái định vị)", unit: "bất kỳ"}
+      - {symbol: "V_after", meaning: "Giá trị sau", unit: "bất kỳ"}
+    when_to_use: "Đo hiệu quả repositioning (doanh số, nhận diện, tỷ lệ cân nhắc) trước và sau."
+    why_it_works: "Chuẩn hóa thay đổi theo mốc ban đầu để so sánh giữa quy mô khác nhau."
+    assumptions:
+      - "Không có nhiễu lớn khác (mùa vụ, khuyến mãi) trong cùng kỳ"
+    pitfalls:
+      - "Gán toàn bộ tăng trưởng cho tái định vị khi còn yếu tố khác (nhiều chiến dịch đồng thời)"
+      - "Số liệu Old Spice +125% trong nguồn chưa có kỳ đo rõ ràng"
+    interpretation: "Dương = cải thiện; luôn ghi kỳ so sánh và nguồn dữ liệu."
+    example:
+      inputs: {before: 100, after: 225}
+      steps: ["(225-100)/100 = 1,25"]
+      result: "+125%"
+
+  - id: "m01_perceptual_gap_distance"
+    name_vi: "Khoảng cách tới đối thủ gần nhất trên bản đồ nhận thức"
+    name_en: "Nearest-competitor Distance on Perceptual Map"
+    expression_latex: 'd(c) = \min_k \sqrt{(x_c - x_k)^2 + (y_c - y_k)^2}'
+    expression_python: "min(math.dist(cand, p) for p in competitors)"
+    excel: "=MIN(SQRT((xc-x_range)^2+(yc-y_range)^2)) (công thức mảng)"
+    variables:
+      - {symbol: "(x_c, y_c)", meaning: "Tọa độ vị trí ứng viên của thương hiệu trên 2 trục (thang 1-10)", unit: "điểm"}
+      - {symbol: "(x_k, y_k)", meaning: "Tọa độ đối thủ k", unit: "điểm"}
+      - {symbol: "d(c)", meaning: "Khoảng cách tới đối thủ gần nhất (càng lớn càng ít bị 'đụng')", unit: "điểm"}
+    when_to_use: "Tìm khoảng trống (white space) định lượng khi có điểm số nhận thức trung bình từ khảo sát khách."
+    why_it_works: "Vị trí xa đối thủ nhất là nơi ít bị nhầm lẫn; nhưng chỉ có ý nghĩa khi có đủ khách hàng ở vị trí đó (cầu)."
+    assumptions:
+      - "Hai trục thật sự là tiêu chí khách coi trọng; điểm số lấy từ khảo sát đủ mẫu"
+    pitfalls:
+      - "Khoảng trống lớn có thể chính là vùng không có cầu; phải kiểm tra DAMAS cho phân khúc ở vùng đó"
+      - "Chọn trục mình mạnh thay vì trục khách quan tâm"
+    interpretation: "d lớn + có cầu + hợp năng lực = ứng viên định vị. d<2 gần như trùng đối thủ."
+    example:
+      inputs: {candidate: [4, 8], competitors: "Thìn(6,2) BátĐàn(5,3) LýQuốcSư(6,4) Pho24(7,7) vỉa hè(2,2)"}
+      steps:
+        - "Khoảng cách (4,8) tới Pho24 (7,7) = sqrt(9+1)=3,16; tới Lý Quốc Sư = sqrt(4+16)=4,47 (xa hơn)"
+        - "Gần nhất = 3,16"
+      result: "d=3,16 cho (4,8); so sánh (5,6) chỉ 2,24 -> (4,8) ít đụng độ hơn (số điểm giả định, đã verify)"
+
+frameworks:
+  - id: "m01_stp_process"
+    name_vi: "Quy trình STP 10 bước"
+    name_en: "STP 10-step Process"
+    origin: >
+      Philip Kotler (Marketing Management) hệ thống hóa STP dựa trên ý tưởng phân khúc của Wendell Smith (1956) và positioning của Ries và Trout.
+      Ra đời vì marketing đại trà không còn hiệu quả khi thị trường phân mảnh và cạnh tranh tăng; cần quy trình có thứ tự biến phân tích thành quyết định.
+    components:
+      - "Segmentation (bước 1-4): thu thập dữ liệu -> chọn tiêu chí -> phân khúc -> profile"
+      - "Targeting (bước 5-7): đánh giá hấp dẫn -> chọn chiến lược targeting -> xác nhận mục tiêu"
+      - "Positioning (bước 8-10): phân tích vị trí đối thủ -> xác định POD/POP -> viết positioning statement và truyền thông"
+    when_to_use: "Khi dựng chiến lược marketing mới hoặc xem xét lại một chiến lược đang hoạt động kém."
+    how_to_apply:
+      - "B1 Thu thập dữ liệu: survey, CRM/POS, social listening, Google Analytics, phỏng vấn khách."
+      - "B2 Chọn tiêu chí phân khúc (địa lý, nhân khẩu, tâm lý, hành vi; B2B: firmographic...). Thường kết hợp, ưu tiên hành vi và lợi ích."
+      - "B3 Phân khúc: cluster analysis, RFM, dựng persona."
+      - "B4 Profile mỗi phân khúc: quy mô, tăng trưởng, nhu cầu, hành vi, kênh; kiểm tra DAMAS."
+      - "B5 Chấm điểm hấp dẫn từng phân khúc (weighted scoring: quy mô x lợi nhuận x cạnh tranh x phù hợp)."
+      - "B6 Chọn chiến lược targeting (undifferentiated/differentiated/concentrated/micro/one-to-one) theo nguồn lực."
+      - "B7 Xác nhận primary và secondary target (thường 1 primary + 1 secondary với SME)."
+      - "B8 Vẽ perceptual map với trục khách quan tâm; đặt đối thủ và chính mình."
+      - "B9 Xác định POD và POP."
+      - "B10 Viết positioning statement; chuyển thành 4P và thông điệp; đo lại."
+    how_to_read_results: "STP đạt khi: có 1 câu trả lời cụ thể cho 'bán cho ai, khác gì, vì sao tin', mỗi P trong 4P giải thích được bằng định vị đó."
+    pitfalls:
+      - "Làm S-T-P sau khi đã chọn xong sản phẩm/giá (làm ngược), dẫn tới STP chỉ để biện minh"
+      - "Làm một lần rồi cất tủ; phân khúc và đối thủ thay đổi"
+      - "Bỏ bước kiểm tra tính nhất quán positioning với 4P"
+    example: >
+      Quán cà phê Q.1 TP.HCM: S (sinh viên, nhân viên văn phòng, freelancer) -> T (chấm điểm, chọn văn phòng làm primary, sinh viên secondary)
+      -> P ('specialty cà phê dễ tiếp cận cho dân văn phòng quận 1, bởi rang tại chỗ + giá minh bạch'). Xem worked_examples.
+
+  - id: "m01_segmentation_bases_b2c"
+    name_vi: "Tiêu chí phân khúc thị trường B2C"
+    name_en: "B2C Segmentation Bases"
+    origin: "Nhóm biến chuẩn trong giáo trình marketing (Kotler và Keller); ra đời để có checklist biến số chia thị trường người tiêu dùng, từ dễ đo (địa lý, nhân khẩu) đến sâu hơn (tâm lý, hành vi)."
+    components:
+      - "Geographic (Địa lý): quốc gia, vùng miền, thành thị/nông thôn, khí hậu. VD Vinamilk: miền Bắc ưa sữa đặc, miền Nam sữa tươi (theo nguồn, mức xác thực thấp)."
+      - "Demographic (Nhân khẩu): tuổi, giới tính, thu nhập, nghề, học vấn, quy mô gia đình. VD iPhone: thu nhập trung bình-cao 25-45."
+      - "Psychographic (Tâm lý): lối sống, cá tính, giá trị, tầng lớp xã hội. VD Nike: người yêu thể thao, cá tính mạnh."
+      - "Behavioral (Hành vi): tần suất mua, mức trung thành, dịp sử dụng, lợi ích tìm kiếm. VD Grab: người đi làm hằng ngày vs thỉnh thoảng vs du khách."
+    when_to_use: "Bước 2-3 của STP với sản phẩm/dịch vụ B2C."
+    how_to_apply:
+      - "Liệt kê biến ở cả 4 nhóm có thể thu thập được."
+      - "Bắt đầu bằng biến hành vi và lợi ích tìm kiếm (dự báo mua tốt nhất), bổ sung nhân khẩu để dễ tiếp cận."
+      - "Thử 2-3 cách chia, kiểm tra DAMAS, chọn cách chia hành động được."
+    how_to_read_results: "Biến nhân khẩu dễ đo, dễ tiếp cận nhưng ít dự báo hành vi; biến tâm lý/hành vi sâu hơn nhưng khó đo hơn. Kết hợp thường tốt nhất (Spotify: hành vi + tâm lý + nhân khẩu)."
+    pitfalls:
+      - "Chỉ dùng tuổi và thu nhập, bỏ nhu cầu thực"
+      - "Giả định mọi người cùng nhóm tuổi giống nhau"
+    example: "Biti's Hunter: nhân khẩu (16-24, 25-30) + tâm lý (thích xê dịch, tự hào hàng Việt) + hành vi (hoạt động mạnh trên social và e-commerce, ngân sách dưới 1 triệu)."
+
+  - id: "m01_segmentation_bases_b2b"
+    name_vi: "Tiêu chí phân khúc thị trường B2B"
+    name_en: "B2B Segmentation Bases"
+    origin: "Mở rộng bộ biến B2C cho khách là doanh nghiệp (kiểu Bonoma và Shapiro, 1983 - nguồn không nêu; ghi nhận chưa kiểm chứng), vì quyết định mua B2B dựa trên tổ chức, quy trình và ứng dụng chứ không phải cá nhân."
+    components:
+      - "Firmographic: quy mô, ngành, doanh thu, số nhân viên (Salesforce: Enterprise >1000 NV vs SMB <100 NV)."
+      - "Operating: công nghệ đang dùng, năng lực, nhu cầu (AWS: startup vs enterprise vs government)."
+      - "Purchasing: quy trình mua, tiêu chí, mức khẩn cấp (mua ERP: rẻ vs tùy chỉnh cao vs triển khai nhanh)."
+      - "Situational: quy mô đơn hàng, ứng dụng cụ thể (Microsoft 365: giáo dục vs doanh nghiệp vs lập trình viên)."
+    when_to_use: "Bán cho doanh nghiệp: phần mềm, nguyên liệu, dịch vụ B2B, catering công ty."
+    how_to_apply:
+      - "Bắt đầu bằng firmographic (dễ lấy từ danh bạ/LinkedIn/đăng ký kinh doanh)."
+      - "Phân nhóm tiếp theo purchasing và situational để thiết kế gói và quy trình bán."
+      - "Gán đội/kênh bán phù hợp (inside sales cho SMB, account manager cho Enterprise)."
+    how_to_read_results: "Khi các nhóm có chu kỳ bán, giá trị hợp đồng và người ra quyết định khác nhau thì mới là phân khúc thật."
+    pitfalls:
+      - "Chỉ phân theo ngành mà bỏ qua cách mua"
+    example: "SME bán catering/phở cho văn phòng: phân theo số nhân viên công ty (50-200), mức ngân sách bữa trưa, vị trí trong bán kính 2 km."
+
+  - id: "m01_damas"
+    name_vi: "Tiêu chí DAMAS đánh giá phân khúc"
+    name_en: "DAMAS Criteria"
+    origin: "Tập hợp tiêu chí phân khúc hiệu quả trong giáo trình marketing (biến thể của tiêu chí Kotler: measurable, substantial, accessible, differentiable, actionable); ra đời vì không phải cách chia nào cũng dùng được trong thực tế."
+    components:
+      - "D - Differentiable: khác biệt rõ giữa các phân khúc (nhu cầu/đáp ứng khác)."
+      - "A - Actionable: DN có thể thiết kế chương trình marketing riêng."
+      - "M - Measurable: đo được quy mô, sức mua, đặc điểm."
+      - "A - Accessible: tiếp cận được qua kênh truyền thông/phân phối."
+      - "S - Substantial: đủ lớn và sinh lời."
+    when_to_use: "Sau bước chia thị trường, trước khi chấm điểm và chọn target."
+    how_to_apply:
+      - "Với mỗi phân khúc, trả lời có/không + bằng chứng cho từng chữ cái."
+      - "Loại hoặc gộp phân khúc không đạt Substantial hoặc Accessible."
+      - "Nếu hai phân khúc không Differentiable (phản ứng giống nhau), gộp lại."
+    how_to_read_results: "Phân khúc đạt đủ 5 là ứng viên targeting. Thiếu M hoặc A -> cần thêm dữ liệu/kênh; thiếu S -> bỏ hoặc gộp."
+    pitfalls:
+      - "Tick 'có' mà không có bằng chứng số liệu"
+      - "Quên Accessible: biết khách ở đâu nhưng không có kênh tiếp cận chi phí hợp lý"
+    example: "Biti's Hunter áp DAMAS cho Gen Z/Millennials: nhu cầu khác phụ huynh mua giày đi học (D), có nguồn lực làm dòng Hunter (A), đo được qua báo cáo thị trường (M), tiếp cận qua social/e-commerce (A), >20 triệu người trẻ (S; số liệu chưa kiểm chứng)."
+
+  - id: "m01_segmentation_digital"
+    name_vi: "Phân khúc thời đại số (4.0)"
+    name_en: "Digital / Dynamic Segmentation"
+    origin: "Xuất hiện cùng sự phát triển dữ liệu lớn, CRM, AI/ML (2010s); ra đời vì dữ liệu hành vi thời gian thực cho phép phân khúc chính xác hơn khảo sát mẫu và nhân khẩu học tĩnh."
+    components:
+      - "Công cụ: Google Analytics, Meta Audience Insights, CRM analytics, AI clustering, RFM, social listening."
+      - "Chuyển dịch: khảo sát offline -> data analytics/AI; demographic -> behavior/intent; phân khúc tĩnh -> động (real-time); nhóm lớn -> micro-segmentation/segment of one; post-hoc -> dự đoán (predictive)."
+    when_to_use: "Có dữ liệu khách (POS, CRM, website, app) hoặc kênh social/e-commerce; muốn cá nhân hóa."
+    how_to_apply:
+      - "Thu thập dữ liệu mua hàng và hành vi (POS/CRM/pixel)."
+      - "Phân nhóm bằng RFM (Recency, Frequency, Monetary) hoặc clustering."
+      - "Đặt tên và mô tả từng cụm thành persona; kiểm tra DAMAS."
+      - "Cập nhật định kỳ (hằng tháng/quý); cho phép một khách thuộc nhiều nhóm tùy thời điểm."
+    how_to_read_results: "Nhóm có giá trị cao và tăng trưởng -> ưu tiên; nhóm hay chuyển trạng thái -> cần chiến dịch giữ chân."
+    pitfalls:
+      - "Có công cụ nhưng không có dữ liệu sạch/đủ lớn (SME thường vậy) -> bắt đầu bằng RFM trên Excel"
+      - "Phân khúc quá mịn -> mất quy mô (over-segmentation)"
+      - "Quyền riêng tư dữ liệu cá nhân (Nghị định về bảo vệ dữ liệu cá nhân của VN - cần xác nhận)"
+    example: "Spotify gán người dùng vào nhiều phân khúc động: sáng nghe nền ở gym (Casual), chiều khám phá nhạc mới (Enthusiast)."
+
+  - id: "m01_targeting_strategies"
+    name_vi: "5 chiến lược chọn thị trường mục tiêu"
+    name_en: "Five Targeting Strategies"
+    origin: "Cách phân loại trong giáo trình marketing (Kotler): từ marketing đại trà tới tùy biến từng khách; mở rộng 3 chiến lược cổ điển (undifferentiated, differentiated, concentrated) bằng micro và one-to-one khi công nghệ cho phép cá nhân hóa."
+    components:
+      - "Undifferentiated (Mass): 1 sản phẩm cho cả thị trường; hợp commodity, ngân sách hạn chế (muối, đường, xăng)."
+      - "Differentiated (Multi-segment): nhiều sản phẩm cho nhiều phân khúc; cần nguồn lực lớn (Toyota: Yaris, Camry, Land Cruiser, Lexus; Spotify: Free, Premium, Family, Duo, Student)."
+      - "Concentrated (Niche): 1 sản phẩm cho 1 phân khúc hẹp; hợp DN nhỏ (Rolls-Royce, Lululemon)."
+      - "Micromarketing (Local/Individual): theo vùng/cá nhân; retail, e-commerce (Starbucks menu địa phương)."
+      - "Custom (One-to-One): tùy biến từng khách; luxury, B2B, digital (Netflix, Amazon recommendation)."
+    when_to_use: "Bước 6 STP, sau khi chấm điểm các phân khúc."
+    how_to_apply:
+      - "Đánh giá nguồn lực (vốn, nhân sự, năng lực sản xuất), mức độ đồng nhất của nhu cầu, quy mô phân khúc, và hành động của đối thủ."
+      - "Nguồn lực hạn chế + nhu cầu khác biệt rõ -> concentrated."
+      - "Nhiều phân khúc hấp dẫn và đủ nguồn lực -> differentiated, nhưng triển khai từng nhóm theo giai đoạn."
+      - "Có dữ liệu và công nghệ -> thêm micro/one-to-one lên nền một chiến lược chính."
+    how_to_read_results: "SME gần như luôn bắt đầu bằng concentrated rồi mở rộng sang secondary target sau khi đã vững (vd Biti's Hunter ra mắt dồn lực một dòng và một tệp khách)."
+    pitfalls:
+      - "SME chọn mass marketing vì 'ai cũng mua được'"
+      - "Differentiated khi chưa đủ nguồn lực -> mỗi nhóm đều yếu, mất quy mô"
+      - "Lẫn micromarketing và one-to-one; hai mức này chồng lấn, chọn mức khả thi với dữ liệu hiện có"
+    example: "Quán hải sản bình dân Đà Nẵng chọn concentrated: gia đình địa phương, không phải khách du lịch cao cấp."
+
+  - id: "m01_segment_evaluation"
+    name_vi: "Ma trận đánh giá sức hấp dẫn phân khúc"
+    name_en: "Segment Attractiveness Scoring Matrix"
+    origin: "Phương pháp đánh giá đa tiêu chí có trọng số trong lập kế hoạch marketing; ra đời vì cần quy trình minh bạch thay thế trực giác khi chọn giữa nhiều phân khúc. Trọng số trong nguồn là gợi ý, không phải chuẩn."
+    components:
+      - "Quy mô và tăng trưởng - 25%: đủ lớn và đang tăng?"
+      - "Sức hấp dẫn cạnh tranh - 20%: cạnh tranh khốc liệt không (5 Forces)?"
+      - "Phù hợp năng lực DN - 25%: đủ năng lực phục vụ (VRIO)?"
+      - "Khả năng tiếp cận - 15%: có kênh truyền thông/phân phối?"
+      - "Lợi nhuận tiềm năng - 15%: margin hấp dẫn?"
+    when_to_use: "Bước 5 STP; khi có từ 2 phân khúc trở lên."
+    how_to_apply:
+      - "Điều chỉnh tiêu chí và trọng số theo bối cảnh (tổng = 100%); ghi lý do."
+      - "Chấm 1-10 từng phân khúc, mỗi điểm kèm bằng chứng (số liệu, nguồn)."
+      - "Tính điểm bằng công thức m01_weighted_segment_score; xếp hạng."
+      - "Chạy độ nhạy: đổi trọng số +/-10 điểm phần trăm, xem thứ hạng có đổi không."
+      - "Kiểm tra bằng DAMAS và nguồn lực trước khi chốt."
+    how_to_read_results: "Chênh nhiều và thứ hạng bền khi đổi trọng số = quyết định chắc. Chênh nhỏ hoặc đảo thứ hạng = cần thêm dữ liệu hoặc chọn cả hai (primary + secondary)."
+    pitfalls:
+      - "Trọng số không cộng 100%"
+      - "Chấm điểm không bằng chứng (điểm 'cảm giác')"
+      - "Tiêu chí cạnh tranh chấm ngược chiều"
+    example: "Xem worked_examples we1: văn phòng 7,6 > sinh viên 6,15 > freelancer 5,7."
+
+  - id: "m01_positioning"
+    name_vi: "Định vị thương hiệu"
+    name_en: "Brand Positioning"
+    origin: >
+      Al Ries và Jack Trout giới thiệu 'positioning' (loạt bài trên Advertising Age đầu 1970s, sách 'Positioning: The Battle for Your Mind', 1981).
+      Ra đời vì thập niên 60-70 thị trường 'over-communicated', quảng cáo sáng tạo đơn thuần không còn đủ; cần chiếm một vị trí rõ ràng trong tâm trí khách.
+    components:
+      - "Khách hàng mục tiêu (từ T)"
+      - "Khung tham chiếu cạnh tranh (category, đối thủ)"
+      - "POD (khác biệt) và POP (tương đồng)"
+      - "RTB - lý do tin tưởng (bằng chứng)"
+    when_to_use: "Bước 8-10 STP, và khi repositioning."
+    how_to_apply:
+      - "Xác định khung tham chiếu: khách coi mình cạnh tranh với ai (kể cả đối thủ gián tiếp)."
+      - "Liệt kê thuộc tính/lợi ích khách quan tâm; chọn 1-2 cái mình có thể sở hữu."
+      - "Kiểm tra: khách coi trọng, mình làm tốt hơn hoặc khác, đối thủ khó sao chép, truyền thông được."
+      - "Viết positioning statement; kiểm tra credible và nhất quán với 4P."
+    how_to_read_results: "Định vị tốt: khách mục tiêu mô tả lại được trong 1 câu giống ý định; thay thế thương hiệu bằng đối thủ thì câu không còn đúng."
+    pitfalls:
+      - "Định vị nhiều thứ cùng lúc (rẻ nhất, tốt nhất, nhanh nhất)"
+      - "Định vị dựa giả định về tâm trí khách mà không kiểm chứng"
+      - "Định vị không đáng tin so với thực tế sản phẩm"
+    example: "Phở Thìn: 'phở bò truyền thống đậm đà nhất' vì 45 năm giữ công thức + nước dùng ninh 24h (số liệu minh họa trong nguồn)."
+
+  - id: "m01_positioning_statement"
+    name_vi: "Tuyên bố định vị"
+    name_en: "Positioning Statement"
+    origin: "Mẫu chuẩn trong thực hành brand strategy (phổ biến qua Kotler, Keller); ra đời để mọi bộ phận cùng hiểu một câu định vị duy nhất."
+    components:
+      - "Đối với [khách hàng mục tiêu]"
+      - "[Thương hiệu] là [category/loại sản phẩm]"
+      - "mà [điểm khác biệt/USP]"
+      - "bởi vì [lý do tin tưởng/RTB]"
+    when_to_use: "Bước 10 STP; trước khi brief agency, thiết kế menu, bao bì, website."
+    how_to_apply:
+      - "Điền từng ô bằng chi tiết cụ thể (không dùng 'chất lượng cao', 'dịch vụ tốt' chung chung)."
+      - "Mỗi ô phải có bằng chứng (số liệu, chứng nhận, quy trình)."
+      - "Rút gọn thành tagline, nhưng giữ statement dài làm tài liệu nội bộ."
+    how_to_read_results: "Nếu thay tên thương hiệu bằng đối thủ mà câu vẫn đúng thì chưa phải định vị."
+    pitfalls:
+      - "Viết như khẩu hiệu quảng cáo thay vì mô tả vị trí"
+      - "Thiếu RTB nên không đáng tin"
+    example: "Volvo: gia đình trung-thượng lưu quan tâm an toàn -> xe an toàn nhất, vì ~90 năm đổi mới an toàn (dây an toàn 3 điểm). Grab: người dùng đô thị ĐNÁ -> super app di chuyển và giao hàng thuận tiện nhất, vì mạng lưới rộng + thanh toán liền mạch."
+
+  - id: "m01_perceptual_map"
+    name_vi: "Bản đồ nhận thức"
+    name_en: "Perceptual Map"
+    origin: "Kỹ thuật nghiên cứu thị trường (đa chiều/MDS) được dùng trong marketing từ thập niên 1960-70; ra đời để biến nhận thức khách hàng thành hình ảnh so sánh được."
+    components:
+      - "Hai trục thuộc tính quan trọng (vd giá x chất lượng, giá x độ hiện đại)"
+      - "Vị trí đối thủ (từ khảo sát nhận thức), vị trí hiện tại của mình, vị trí mong muốn"
+      - "Kích thước bong bóng = doanh thu hoặc thị phần (tùy chọn)"
+    when_to_use: "Bước 8 STP; kiểm tra đối thủ và tìm khoảng trống."
+    how_to_apply:
+      - "Chọn 2 thuộc tính khách coi trọng nhất (qua phỏng vấn/khảo sát)."
+      - "Khảo sát 30+ khách mục tiêu chấm các thương hiệu trên thang 1-10."
+      - "Lấy điểm trung bình để vẽ; xác định cụm và khoảng trống."
+      - "Đánh giá cầu ở khoảng trống; tính khoảng cách d(c) nếu muốn định lượng."
+    how_to_read_results: "Cụm đông đúc = cạnh tranh gắt; khoảng trống có cầu + hợp năng lực = cơ hội; khoảng trống không có cầu = bẫy."
+    pitfalls:
+      - "Vẽ theo cảm tính của chủ DN thay vì của khách"
+      - "Chọn trục khiến mình trông tốt"
+      - "Chỉ dùng 2 trục khi quyết định phụ thuộc nhiều thuộc tính"
+    example: "Biti's Hunter: trục giá x tính thời trang; Nike/Adidas (giá cao, sành điệu), Biti's cũ (giá thấp, cổ điển), Hunter chèn vào giá tầm trung - sành điệu (600k-1 triệu)."
+
+  - id: "m01_positioning_strategies"
+    name_vi: "7 chiến lược định vị phổ biến"
+    name_en: "Seven Positioning Strategies"
+    origin: "Phân loại cách chọn 'trục' định vị trong giáo trình (Kotler, Aaker, Ries và Trout); ra đời để có menu lựa chọn khi viết positioning."
+    components:
+      - "Attribute: theo tính năng (Colgate bảo vệ 12 giờ)."
+      - "Benefit: theo lợi ích (FedEx qua đêm chắc chắn)."
+      - "Use/Application: theo dịp dùng (Gatorade cho vận động viên)."
+      - "User: theo đối tượng (Apple Think Different)."
+      - "Competitor: so sánh trực tiếp (Pepsi Challenge)."
+      - "Category: tạo/dẫn đầu category mới (Tesla xe điện)."
+      - "Price/Quality: theo giá/chất lượng (Walmart Everyday Low Price)."
+    when_to_use: "Chọn góc tiếp cận khi viết positioning statement."
+    how_to_apply:
+      - "Liệt kê cả 7 góc, chọn 1-2 phù hợp POD thật của mình."
+      - "Kiểm tra góc đó đối thủ đã chiếm chưa (perceptual map)."
+      - "Thử nghiệm thông điệp với nhóm khách nhỏ trước khi triển khai rộng."
+    how_to_read_results: "Chiến lược Benefit/Use thường dễ nhất cho SME; Category cần nguồn lực lớn và thời gian giáo dục thị trường."
+    pitfalls:
+      - "Dùng góc 'giá rẻ' làm USP duy nhất (dễ bị đối thủ lớn cạnh tranh)"
+      - "Competitor-based mà không chắc thắng khi so sánh"
+    example: "SME phở: Use/Application ('bữa trưa 15 phút cho dân văn phòng') hoặc Benefit ('nước dùng ninh 24 giờ'); không đua giá với quán vỉa hè."
+
+  - id: "m01_repositioning"
+    name_vi: "Tái định vị"
+    name_en: "Repositioning"
+    origin: "Phát triển từ lý thuyết positioning (Ries và Trout) khi nhận ra thị trường và đối thủ không đứng yên."
+    components:
+      - "Dấu hiệu cần tái định vị: thị trường đổi và khách không còn coi trọng thuộc tính cũ; đối thủ chiếm vị trí; mở sang phân khúc mới; hình ảnh tiêu cực."
+      - "Hành động: đổi thông điệp, sản phẩm, kênh, hoặc cả phân khúc mục tiêu."
+    when_to_use: "Doanh số suy giảm do hình ảnh lỗi thời hoặc muốn chuyển phân khúc."
+    how_to_apply:
+      - "Chẩn đoán: khảo sát nhận thức hiện tại (khách nghĩ gì về mình) so với mong muốn."
+      - "Xác định phân khúc mới và khoảng trống trên perceptual map."
+      - "Thay đổi bằng chứng thực (sản phẩm/dịch vụ) trước, rồi mới thay thông điệp."
+      - "Giữ phần di sản còn giá trị (Biti's giữ 'bền, Việt Nam' và thêm 'nhẹ, thời trang')."
+      - "Đo lường trước/sau (nhận biết, cân nhắc, doanh số)."
+    how_to_read_results: "Thành công khi nhận thức khách đổi theo hướng mong muốn mà không đánh mất nhóm khách cốt lõi cũ."
+    pitfalls:
+      - "Chỉ đổi quảng cáo mà không đổi sản phẩm -> thiếu credible"
+      - "Bỏ nhóm khách cũ quá nhanh"
+      - "Gán toàn bộ kết quả cho tái định vị (Old Spice +125% chưa kiểm chứng)"
+    example: "Old Spice: từ 'nước hoa của ông già' -> 'nam tính, vui, cool' (chiến dịch 'The Man Your Man Could Smell Like' 2010). Biti's -> Biti's Hunter."
+
+  - id: "m01_pod_pop"
+    name_vi: "Điểm khác biệt và Điểm tương đồng"
+    name_en: "POD and POP"
+    origin: "Khái niệm trong mô hình Customer-Based Brand Equity của Kevin Lane Keller (1990s); ra đời để nhấn mạnh thương hiệu cần cả điều khác biệt lẫn điều ngang bằng để được chọn."
+    components:
+      - "POD: thuộc tính/lợi ích khách coi trọng, thương hiệu gắn riêng, đối thủ khó sao chép."
+      - "POP: ngưỡng tối thiểu so với đối thủ (category POP và competitive POP)."
+    when_to_use: "Bước 9 STP; sau perceptual map."
+    how_to_apply:
+      - "Liệt kê thuộc tính của category; đánh dấu thuộc tính tối thiểu (POP)."
+      - "Chọn 1-2 POD khách thấy quan trọng, mình thực sự làm tốt, có bằng chứng."
+      - "Đảm bảo POD và POP không mâu thuẫn (vd rẻ nhưng vẫn an toàn)."
+    how_to_read_results: "POD mạnh = lý do chọn; POP đủ = không bị loại. Thiếu một trong hai là lỗ hổng định vị."
+    pitfalls:
+      - "Có quá nhiều POD khiến thông điệp loãng"
+      - "POD dễ sao chép (giá, khuyến mãi)"
+    example: "Spotify POD: Discover Weekly, Spotify Wrapped, freemium, social share. Biti's Hunter POD: nhẹ như bay + tự hào made in Vietnam."
+
+  - id: "m01_stp_tools_digital"
+    name_vi: "Công cụ STP truyền thống và số"
+    name_en: "STP Toolkit: Traditional vs Digital 4.0"
+    origin: "Tổng hợp công cụ cho từng bước STP khi digital marketing phát triển; ra đời để SME biết dùng công cụ nào ở bước nào."
+    components:
+      - "Segmentation: survey, focus group -> Google Analytics, Meta Audience Insights, CRM analytics, AI clustering."
+      - "Targeting: báo cáo nghiên cứu thị trường -> Lookalike Audience (Meta), Custom Audience, Programmatic advertising."
+      - "Positioning: quảng cáo in, TV, billboard -> SEO/SEM, Content marketing, Social media, Influencer marketing."
+    when_to_use: "Lập kế hoạch thực thi STP với ngân sách cụ thể."
+    how_to_apply:
+      - "SME ngân sách thấp: dùng Google Forms, Google Analytics (miễn phí), dữ liệu POS, Meta Business Suite."
+      - "Xác định kênh nơi primary target sống (Facebook/TikTok/Zalo...) và dồn ngân sách."
+      - "Đo kết quả theo phân khúc (CAC, doanh thu, retention theo nhóm)."
+    how_to_read_results: "Công cụ số giảm chi phí phân khúc nhưng không thay thế câu hỏi chiến lược (bán cho ai, khác gì)."
+    pitfalls:
+      - "Mua công cụ trước khi có câu hỏi và dữ liệu"
+      - "Targeting quá hẹp trên Meta khiến chi phí quảng cáo tăng"
+    example: "Cửa hàng online: tạo Custom Audience từ khách mua 90 ngày, Lookalike 1-3% để tìm người giống primary target."
+
+procedures:
+  - id: "m01_proc_full_stp"
+    name: "Dựng STP từ đầu cho một doanh nghiệp"
+    steps:
+      - "Intake - hỏi: ngành/sản phẩm hiện có hoặc dự kiến; khu vực phục vụ; ngân sách và nhân lực; dữ liệu khách hiện có (POS, CRM, đánh giá); đối thủ chính; khách hàng tốt nhất hiện tại là ai và vì sao mua; mục tiêu doanh thu 6-12 tháng."
+      - "Thu thập dữ liệu: POS/CRM (khách quen, giá trị đơn), khảo sát nhanh 30-50 khách (Google Forms), quan sát đối thủ, Google Maps review, social listening."
+      - "Chọn tiêu chí phân khúc: ưu tiên hành vi và lợi ích tìm kiếm + nhân khẩu để tiếp cận; B2B dùng firmographic và purchasing."
+      - "Chia 3-6 phân khúc, đặt tên, profile (quy mô, tăng trưởng, nhu cầu, hành vi, kênh, mức chi trả)."
+      - "Kiểm DAMAS từng phân khúc; gộp hoặc loại phân khúc không đạt."
+      - "Chấm điểm (weighted scoring) với bằng chứng; chạy độ nhạy trọng số; tính R và C bằng m01_segment_revenue_potential và m01_segment_contribution."
+      - "Chọn chiến lược targeting (SME thường concentrated); chốt 1 primary + tối đa 1 secondary; nêu rõ phân khúc 'không phục vụ'."
+      - "Vẽ perceptual map (trục khách quan tâm), đặt đối thủ trực tiếp và gián tiếp, tìm khoảng trống có cầu."
+      - "Xác định POD (1-2) và POP; kiểm tra credibility (RTB) và khả năng đối thủ sao chép."
+      - "Viết positioning statement, chuyển hóa sang 4P (sản phẩm, giá, kênh, truyền thông) và thông điệp cốt lõi."
+      - "Đặt KPI theo phân khúc (số khách, AOV, tần suất, CAC, retention, NPS) và lịch xem lại (quý)."
+    outputs: "Bảng profile phân khúc + bảng chấm điểm + quyết định target (primary/secondary/loại) + perceptual map + positioning statement + danh sách hành động 4P + KPI."
+
+  - id: "m01_proc_segment_profile"
+    name: "Profile và kiểm tra một phân khúc"
+    steps:
+      - "Mô tả phân khúc: ai (nhân khẩu), vì sao mua (nhu cầu/lợi ích), mua thế nào (hành vi, kênh, dịp), nơi tìm thấy."
+      - "Ước tính quy mô N, penetration p, tần suất f, chi tiêu P -> R; nhân m_c -> C."
+      - "Ghi tăng trưởng (xu hướng 2-3 năm) và tính thời vụ."
+      - "Chấm DAMAS có bằng chứng."
+      - "Ghi mức cạnh tranh (đối thủ trực tiếp, mức giá) và năng lực DN cần có."
+      - "Đặt persona (tên, tuổi, nghề, mục tiêu, nỗi đau, kênh)."
+    outputs: "Một trang profile mỗi phân khúc, con số R, C và đánh giá DAMAS."
+
+  - id: "m01_proc_target_selection"
+    name: "Chọn thị trường mục tiêu"
+    steps:
+      - "Xác định tiêu chí và trọng số (mặc định 25/20/25/15/15, điều chỉnh theo bối cảnh) và kiểm tra tổng = 100%."
+      - "Chấm điểm 1-10 mỗi phân khúc với bằng chứng; cạnh tranh: ít cạnh tranh = điểm cao."
+      - "Tính điểm; xếp hạng; chạy độ nhạy (đổi 2-3 trọng số +/-10 điểm phần trăm)."
+      - "Đối chiếu với C (lợi nhuận đóng góp) và nguồn lực (VRIO)."
+      - "Chọn chiến lược targeting theo nguồn lực, chốt primary/secondary, nêu phân khúc không phục vụ và lý do."
+    outputs: "Quyết định target kèm bảng điểm, độ nhạy và lý do."
+
+  - id: "m01_proc_positioning"
+    name: "Xây dựng định vị và positioning statement"
+    steps:
+      - "Xác định trục quan trọng với khách (hỏi 'Khi chọn X bạn quan tâm gì nhất?' và xếp hạng)."
+      - "Khảo sát điểm nhận thức các thương hiệu (30+ mẫu) -> vẽ perceptual map."
+      - "Tìm khoảng trống có cầu và hợp năng lực; có thể tính m01_perceptual_gap_distance."
+      - "Chọn góc định vị trong 7 chiến lược; xác định POD, POP và RTB."
+      - "Viết statement 4 phần; kiểm tra 'thay tên đối thủ thì còn đúng không'."
+      - "Kiểm tra nhất quán 4P: sản phẩm, giá, kênh, truyền thông có cùng nói một điều."
+      - "Test thông điệp với 10-20 khách mục tiêu; điều chỉnh."
+    outputs: "Perceptual map, POD/POP/RTB, positioning statement, thông điệp chủ đạo và checklist nhất quán 4P."
+
+  - id: "m01_proc_repositioning"
+    name: "Tái định vị thương hiệu"
+    steps:
+      - "Chẩn đoán: khách đang nghĩ gì (khảo sát, review, social listening) và vì sao doanh số giảm."
+      - "Xác định phân khúc mới/khoảng trống; đánh giá tương thích với di sản thương hiệu."
+      - "Thay đổi sản phẩm/giá/kênh để tạo bằng chứng thực trước."
+      - "Đổi thông điệp và nhận diện; truyền thông có kiểm soát (thử nghiệm nhỏ -> mở rộng)."
+      - "Đo trước/sau bằng m01_pct_change; theo dõi nhóm khách cốt lõi cũ."
+    outputs: "Kế hoạch tái định vị 3-6 tháng, KPI trước/sau, đánh giá rủi ro mất khách cũ."
+
+decision_rules:
+  - "Nếu nguồn lực (vốn, nhân sự) hạn chế và nhu cầu khác biệt rõ giữa các nhóm thì chọn Concentrated (ngách); chỉ mở sang secondary target sau khi primary đạt mục tiêu."
+  - "Nếu sản phẩm là commodity, nhu cầu đồng nhất, ngân sách hạn chế thì Undifferentiated có thể chấp nhận; nếu không, tránh mass marketing."
+  - "Nếu nhiều phân khúc hấp dẫn và DN lớn, đủ nguồn lực thì Differentiated, nhưng triển khai tuần tự từng phân khúc."
+  - "Nếu có dữ liệu khách và công nghệ (CRM/AI) thì thêm micromarketing/one-to-one trên nền một chiến lược chính."
+  - "Nếu một phân khúc không đạt Substantial hoặc Accessible (DAMAS) thì gộp hoặc bỏ, không làm."
+  - "Nếu hai phân khúc không phản ứng khác nhau với marketing (không Differentiable) thì gộp thành một."
+  - "Nếu phân khúc có điểm cao nhất nhưng ngoài năng lực (Phù hợp năng lực < 5/10) thì không chọn làm primary dù tổng điểm cao; xây năng lực trước hoặc chọn nhóm kế."
+  - "Nếu hai phân khúc chênh điểm dưới khoảng 0,5 hoặc thứ hạng đổi khi thay trọng số thì chọn một primary + một secondary và thu thập thêm dữ liệu."
+  - "Nếu doanh thu phân khúc A lớn hơn B nhưng biên đóng góp thấp hơn nhiều thì so sánh theo C = R x m_c, không theo R."
+  - "Nếu khoảng trống trên perceptual map không có khách (cầu thấp) thì không định vị ở đó."
+  - "Nếu POD dễ sao chép (giá thấp, khuyến mãi) thì đừng dùng làm lõi định vị; chọn POD dựa trên quy trình, nguồn gốc, trải nghiệm."
+  - "Nếu positioning statement vẫn đúng khi thay tên đối thủ thì viết lại, định vị chưa đủ rõ."
+  - "Nếu 4P mâu thuẫn với positioning (vd định vị cao cấp mà giá khuyến mãi liên tục) thì sửa 4P hoặc điều chỉnh positioning, không để lệch."
+  - "Nếu thị trường/hành vi khách đã đổi, đối thủ chiếm vị trí, hoặc muốn sang phân khúc mới thì làm repositioning; nếu hình ảnh cốt lõi còn giá trị, giữ làm di sản."
+  - "Nếu phân khúc có dấu hiệu quá mịn (mỗi nhóm < ngưỡng hòa vốn) thì gộp lại để giữ quy mô."
+  - "Nếu chưa có dữ liệu số thì bắt đầu bằng khảo sát 30-50 khách và RFM trên Excel, chưa cần AI."
+  - "Nếu STP xuất sắc nhưng vẫn lỗ thì kiểm tra business model và pricing (bài học Spotify: STP không đảm bảo lợi nhuận)."
+
+benchmarks:
+  - {metric: "Tổng trọng số tiêu chí chấm điểm phân khúc", value: "100% (bắt buộc)", context: "Mặc định nguồn: 25/20/25/15/15", confidence: "high"}
+  - {metric: "Trọng số gợi ý: Quy mô-Tăng trưởng / Cạnh tranh / Phù hợp năng lực / Tiếp cận / Lợi nhuận", value: "25% / 20% / 25% / 15% / 15%", context: "Gợi ý trong nguồn, điều chỉnh theo bối cảnh", confidence: "medium"}
+  - {metric: "Số phân khúc nên chọn làm mục tiêu cho SME", value: "1 primary + tối đa 1 secondary", context: "Kinh nghiệm thực hành (không phải số liệu nghiên cứu)", confidence: "medium"}
+  - {metric: "Cỡ mẫu khảo sát nhận thức tối thiểu cho perceptual map", value: "30+ khách mục tiêu", context: "Quy tắc thực hành; mẫu lớn hơn thì tin cậy hơn", confidence: "medium"}
+  - {metric: "Số phân khúc nên chia", value: "3-6", context: "Quy tắc thực hành để tránh over-segmentation", confidence: "medium"}
+  - {metric: "Spotify: tỷ lệ Premium/MAU", value: "~35,8% (220M/615M)", context: "Số liệu 2024 trong nguồn, chưa kiểm chứng độc lập", confidence: "medium"}
+  - {metric: "Spotify: thị phần streaming toàn cầu", value: "~31% (#1)", context: "Nguồn không nêu tổ chức đo", confidence: "low"}
+  - {metric: "Old Spice sau tái định vị 2010", value: "doanh số +125%", context: "Nguồn không nêu kỳ đo; số báo chí khác nhau", confidence: "low"}
+  - {metric: "Biti's Hunter: khoảng giá trống trên thị trường giày", value: "600.000 - 1.000.000 VNĐ (Hunter bán khoảng 600-900k)", context: "Theo nguồn; có chỗ nguồn ghi 700k/đôi, chưa kiểm chứng", confidence: "low"}
+  - {metric: "Biti's: quy mô giới trẻ VN và tăng trưởng chi tiêu thời trang thể thao", value: ">20 triệu người; 10-15%/năm", context: "Nguồn không trích dẫn báo cáo", confidence: "low"}
+
+pitfalls:
+  - "Bán cho 'tất cả mọi người' (mass marketing ở SME) - dàn trải ngân sách, thông điệp loãng."
+  - "Chia phân khúc chỉ theo nhân khẩu (tuổi, thu nhập) mà bỏ nhu cầu và hành vi."
+  - "Phân khúc chỉ đẹp trên giấy: không qua DAMAS (không đo được, không tiếp cận được, quá nhỏ)."
+  - "Over-segmentation: chia quá mịn -> mất economies of scale; chi phí phục vụ vượt lợi nhuận."
+  - "Phân khúc tĩnh: không cập nhật khi hành vi đổi nhanh trong thời đại số."
+  - "Bỏ sót khách tiềm năng ở các phân khúc khác khi tập trung quá hẹp; luôn xem xét secondary target."
+  - "Định vị dựa trên giả định về tâm trí khách chưa kiểm chứng; cần khảo sát thực."
+  - "Perceptual map vẽ theo ý chủ DN, chọn trục có lợi cho mình."
+  - "Positioning thiếu credible (RTB) hoặc mâu thuẫn với sản phẩm, giá, kênh, truyền thông thực tế."
+  - "Cố định vị ở thị trường crowded mà không có POD thật; khó tìm vị trí trống."
+  - "Cho rằng STP tốt đảm bảo lợi nhuận: Spotify vẫn lỗ nhiều năm vì business model và đầu tư nội dung (podcast $1B+)."
+  - "Làm STP một lần rồi bỏ; thiếu rà soát định kỳ."
+  - "Chấm điểm phân khúc: tổng trọng số khác 100%, hoặc chấm điểm cạnh tranh ngược chiều."
+  - "Lỗi/ mâu thuẫn trong nguồn cần lưu ý (xem phần dưới của sme_vn_guidance và báo cáo): trục perceptual map Volvo/Mercedes, % user Spotify là ước tính, mức giá Biti's Hunter không nhất quán."
+
+sme_vn_guidance:
+  - "Khởi động rẻ: dùng Google Forms để khảo sát 30-50 khách (miễn phí), Google Analytics/Meta Business Suite (miễn phí), Excel/Google Sheets cho RFM và bảng chấm điểm."
+  - "POS/CRM ghi nhận hành vi: KiotViet, Sapo, iPOS (gói cơ bản khoảng vài trăm nghìn đến 1-2 triệu VNĐ/tháng; mức giá thay đổi, confidence low, cần xác nhận)."
+  - "Social listening/ads: Meta Ads (Custom/Lookalike Audience), TikTok Ads, Zalo OA/ZNS; ngân sách thử nghiệm 3-5 triệu VNĐ/tháng cho SME nhỏ (confidence low, ước tính)."
+  - "Quán nhỏ: chọn concentrated; ví dụ quán hải sản bình dân Đà Nẵng nhắm gia đình địa phương thay vì du khách; ví dụ cà phê specialty Q.1 nhắm dân văn phòng."
+  - "Với SME, 1 primary + 1 secondary; viết rõ 'không phục vụ ai' để tránh bị kéo ra khỏi định vị."
+  - "Positioning SME VN hiệu quả thường dựa vào: nguồn gốc/độ tươi, công thức truyền thống, minh bạch giá, trải nghiệm không gian, dịch vụ địa phương; tránh chỉ dùng 'giá rẻ'."
+  - "Bản địa hóa thông điệp: tiếng Việt đời thường, kênh Zalo/Facebook/TikTok, KOL/KOC địa phương (nano/micro influencer) thay vì ngôi sao đắt tiền."
+  - "Tuân thủ quảng cáo và dữ liệu cá nhân: Luật Quảng cáo, Nghị định bảo vệ dữ liệu cá nhân (số hiệu/hiệu lực cần xác nhận) khi thu thập dữ liệu khách; đánh dấu cần xác nhận."
+  - "Hàng Việt: tự hào 'Made in Vietnam' là POD có thể dùng nhưng phải có bằng chứng chất lượng (bài học Biti's: giữ di sản 'bền', thêm 'nhẹ, thời trang')."
+  - "Tránh bẫy 'khách nào cũng bán': khi nhận đơn ngoài target (vd phục vụ du khách giá cao dù định vị bình dân), kiểm tra chi phí cơ hội và ảnh hưởng thương hiệu."
+  - "Rà soát STP mỗi quý bằng số liệu bán hàng theo nhóm khách (doanh thu, AOV, tần suất, tỷ lệ quay lại)."
+
+case_lessons:
+  - name: "Spotify - STP thời đại 4.0"
+    type: "success"
+    setup: >
+      Ra mắt 2008 tại Thụy Điển (nguồn), cạnh tranh Apple Music, YouTube Music, Amazon Music, Tidal. Phân khúc bằng hành vi + tâm lý + nhân khẩu, dùng AI để phân khúc động.
+      5 phân khúc (ước tính % user): Casual 40, Enthusiast 25, Podcast Lover 15, Social Sharer 10, Premium Audiophile 10.
+      Targeting Differentiated (Free, Premium, Family, Duo, Student); primary = Enthusiast + Casual (65%); growth = Podcast; premium = Audiophile (HiFi).
+    key_calculations:
+      - "Tổng % = 40+25+15+10+10 = 100 (nhất quán)"
+      - "Primary target = 40+25 = 65% user"
+      - "Premium/MAU = 220/615 = 35,8% (số 2024 trong nguồn)"
+      - "Podcast: từ 0% -> 15% trong 5 năm, đầu tư $1B+ (nguồn nêu, chưa kiểm chứng)"
+    lesson: >
+      (1) Phân khúc hành vi real-time tốt hơn phân khúc nhân khẩu tĩnh. (2) Sản phẩm là marketing: Discover Weekly, Wrapped tự lan truyền và củng cố định vị 'hiểu tôi nhất'.
+      (3) Freemium là công cụ targeting/phễu. (4) Tái phân khúc khi phát hiện nhóm tăng trưởng (podcast). (5) STP xuất sắc không đảm bảo lợi nhuận: Spotify chưa lãi bền vững tới 2023, ROI podcast ($1B+) gây tranh cãi, cá nhân hóa dễ bị copy (Apple Music).
+    data_reliability: "illustrative"
+
+  - name: "Biti's Hunter - 'Đi để trở về'"
+    type: "success"
+    setup: >
+      Biti's cũ gắn với giày bền, giá thấp, khách là phụ huynh mua giày cho con. Hunter nhắm Gen Z (16-24, primary) và Millennials (25-30, secondary), thích xê dịch, tự hào hàng Việt, ngân sách dưới 1 triệu.
+      Thị trường lúc đó: cao cấp (Nike/Adidas >2 triệu), trung cấp (Vans/Converse 1,2-2 triệu), bình dân (<500k). Khoảng trống 600k-1 triệu có biên tốt nhưng thiếu 'thủ lĩnh'.
+    key_calculations:
+      - "Khoảng trống giá: 600k-1 triệu giữa nhóm <500k và >1,2 triệu"
+      - "Giá bán: 600k-900k (nguồn cũng nêu 700k/đôi cho ví dụ chi phí; không nhất quán)"
+      - "Quy mô giới trẻ: >20 triệu; tăng trưởng chi tiêu 10-15%/năm (chưa kiểm chứng)"
+    lesson: >
+      (1) Phân khúc theo tâm lý và hành vi (xê dịch, tự hào hàng Việt, social listening). (2) Concentrated: dồn lực một dòng, một tệp khách.
+      (3) Perceptual map tìm khoảng trống giá tầm trung - sành điệu. (4) Giữ di sản 'bền' và thêm 'nhẹ, thời trang' để vẫn credible. (5) 4P nhất quán: sản phẩm (đế Phylon nhẹ, collab), giá 600-900k, kênh (Tiki, Shopee, cửa hàng Hunter), truyền thông (MV, KOL, social).
+      Kết luận: STP tốt không phải làm sản phẩm tốt nhất thế giới mà tìm đúng nhóm cần mình nhất và nói đúng ngôn ngữ của họ.
+    data_reliability: "illustrative"
+
+  - name: "Old Spice - Tái định vị"
+    type: "success"
+    setup: "Từ 'nước hoa của ông già' sang 'nam tính, vui, cool' qua chiến dịch 'The Man Your Man Could Smell Like' (2010). Nguồn nêu doanh số tăng 125%."
+    key_calculations:
+      - "(225-100)/100 = +125% (nếu lấy doanh số trước = 100)"
+    lesson: "Repositioning cần thay đổi thông điệp, hình ảnh và đôi khi phân khúc mục tiêu; số tăng trưởng cần kỳ đo rõ ràng."
+    data_reliability: "unverified"
+
+  - name: "Volvo, Grab, Phở Thìn - mẫu positioning statement"
+    type: "success"
+    setup: "Ba ví dụ statement trong nguồn: Volvo (an toàn), Grab (super app thuận tiện), Phở Thìn (phở bò truyền thống đậm đà)."
+    key_calculations: []
+    lesson: "Mỗi statement có đủ 4 phần và RTB cụ thể (90 năm đổi mới an toàn; mạng lưới + thanh toán; 45 năm giữ công thức + ninh 24h). Số năm của Phở Thìn là ví dụ minh họa, cần kiểm chứng nếu dùng thật."
+    data_reliability: "illustrative"
+
+  - name: "Phân khúc của Vinamilk, Nike, Grab, Salesforce (ví dụ phân khúc)"
+    type: "success"
+    setup: "Ví dụ minh họa từng nhóm biến: địa lý (Vinamilk), tâm lý (Nike), hành vi (Grab), firmographic (Salesforce Enterprise/SMB)."
+    key_calculations: []
+    lesson: "Chọn nhóm biến theo ngành; kết hợp nhiều nhóm; claim về Vinamilk Bắc/Nam là minh họa."
+    data_reliability: "unverified"
+
+  - name: "SME - Quán cà phê specialty Q.1 chọn phân khúc bằng chấm điểm"
+    type: "sme"
+    setup: "Xem worked_examples we1; case SME giả định để áp dụng framework cho người đọc SME VN."
+    key_calculations:
+      - "Văn phòng 7,6; sinh viên 6,15; freelancer 5,7"
+    lesson: "Chọn target bằng điểm và bằng chứng; kiểm tra độ nhạy."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - id: "we1"
+    title: "Chấm điểm 3 phân khúc cho quán cà phê specialty Q.1, TP.HCM (case SME giả định)"
+    context: >
+      Chủ quán cân nhắc 3 phân khúc: Sinh viên (SV), Nhân viên văn phòng (VP), Freelancer/làm việc từ xa (FL). Điểm 1-10 giả định cho minh họa;
+      cạnh tranh chấm theo 'càng ít cạnh tranh điểm càng cao'.
+    inputs:
+      weights: [0.25, 0.20, 0.25, 0.15, 0.15]
+      criteria: ["Quy mô-tăng trưởng", "Cạnh tranh", "Phù hợp năng lực", "Tiếp cận", "Lợi nhuận"]
+      scores: {SV: [6, 4, 7, 9, 5], VP: [8, 6, 8, 8, 8], FL: [5, 5, 6, 7, 6]}
+    steps:
+      - "Kiểm tra tổng trọng số: 0,25+0,20+0,25+0,15+0,15 = 1,00 (đạt)."
+      - "VP: 8x0,25=2,0; 6x0,20=1,2; 8x0,25=2,0; 8x0,15=1,2; 8x0,15=1,2 -> 7,6."
+      - "SV: 6x0,25=1,5; 4x0,20=0,8; 7x0,25=1,75; 9x0,15=1,35; 5x0,15=0,75 -> 6,15."
+      - "FL: 5x0,25=1,25; 5x0,20=1,0; 6x0,25=1,5; 7x0,15=1,05; 6x0,15=0,9 -> 5,7."
+      - "Độ nhạy: nếu trọng số đổi thành 15/35/20/15/15 (đề cao cạnh tranh, tổng = 100%) -> VP 7,3; SV 5,8; FL 5,65. Thứ hạng giữ nguyên (VP > SV > FL)."
+    result: >
+      Primary = Nhân viên văn phòng (7,6), secondary = Sinh viên (6,15), tạm không phục vụ Freelancer. Thứ hạng bền khi đổi trọng số.
+      Hành động: menu và giờ mở cửa cho dân văn phòng (sáng/trưa), combo mang đi, giá minh bạch; sinh viên được chương trình giá ngoài giờ cao điểm.
+      (Các phép tính đã verify bằng Python.)
+
+  - id: "we2"
+    title: "So sánh quy mô và lợi nhuận phân khúc cho quán trà sữa gần khu đại học (SME giả định)"
+    context: "Bán kính 3 km có 40.000 sinh viên và 25.000 nhân viên văn phòng; số liệu ước tính để minh họa."
+    inputs:
+      SV: {N: 40000, p: 0.15, f: 8, P: 35000, mc: 0.55}
+      VP: {N: 25000, p: 0.10, f: 6, P: 45000, mc: 0.60}
+    steps:
+      - "R_SV = 40.000 x 0,15 x 8 x 35.000 = 1.680.000.000 VNĐ/tháng."
+      - "R_VP = 25.000 x 0,10 x 6 x 45.000 = 675.000.000 VNĐ/tháng."
+      - "C_SV = 1.680.000.000 x 0,55 = 924.000.000 VNĐ."
+      - "C_VP = 675.000.000 x 0,60 = 405.000.000 VNĐ."
+      - "Tỷ lệ C_SV/C_VP = 924/405 = 2,28 lần."
+    result: >
+      Sinh viên lớn gấp ~2,3 lần về lợi nhuận đóng góp, dù biên thấp hơn -> primary = sinh viên (giá 35k, combo, khuyến mãi theo học kỳ);
+      văn phòng là secondary (giá cao hơn, giao tận nơi). Lưu ý: cần trừ CAC từng nhóm và kiểm tra thời vụ (nghỉ hè giảm f); số p=15% cần xác minh bằng thử nghiệm.
+      (Đã verify bằng Python.)
+
+  - id: "we3"
+    title: "Tìm khoảng trống định vị cho quán phở mới tại Hà Nội và viết positioning statement"
+    context: "Khảo sát giả định 30 khách; điểm trung bình trục x = giá (1 rẻ - 10 đắt), y = độ hiện đại/trải nghiệm (1 truyền thống - 10 hiện đại)."
+    inputs:
+      competitors: {PhoThin: [6, 2], PhoBatDan: [5, 3], PhoLyQuocSu: [6, 4], Pho24: [7, 7], PhoViaHe: [2, 2]}
+      candidates: [[4, 8], [4, 7], [3, 6], [5, 6], [8, 3]]
+    steps:
+      - "Khoảng cách tới đối thủ gần nhất: (4,8)=3,16; (4,7)=3,0; (3,6)=3,61; (5,6)=2,24; (8,3)=2,24."
+      - "(3,6) xa đối thủ nhất (3,61) nhưng giá thấp-trung và hiện đại vừa; cần kiểm tra cầu: khách văn phòng trẻ giá 45-55k có đông không (khảo sát)."
+      - "(4,8): giá tầm trung thấp, trải nghiệm hiện đại, cách Pho24 3,16 điểm -> cạnh tranh với chuỗi phía trên."
+      - "Giả sử cầu cao nhất ở vùng (4,7)-(4,8): chọn khoảng giá 50-60k, trải nghiệm hiện đại, nước dùng truyền thống (POP: vị phở ngon; POD: nước dùng ninh 12 giờ + không gian sạch, đặt qua app)."
+      - "Positioning statement: Đối với nhân viên văn phòng Hà Nội 25-35 tuổi muốn ăn trưa nhanh mà vẫn đúng vị phở, X là quán phở bò hiện đại giá 50-60k, nước dùng ninh 12 giờ phục vụ trong 10 phút, bởi vì có bếp trung tâm kiểm soát chất lượng và cam kết phục vụ nhanh."
+    result: >
+      Vị trí (3-4, 6-8) là khoảng trống có khoảng cách ~3 điểm tới đối thủ gần nhất; kết luận phụ thuộc cầu thực tế. Kiểm tra 4P: giá 50-60k, thực đơn gọn, đặt qua Zalo/app, bố trí cửa hàng gần cụm văn phòng.
+      (Khoảng cách đã verify bằng Python; số điểm nhận thức và USP là giả định minh họa.)
+
+  - id: "we4"
+    title: "Kiểm tra một phân khúc bằng DAMAS - nhóm 'mẹ bỉm sữa 28-38 tuổi' cho shop đồ ăn dặm online (SME giả định)"
+    context: "Shop online ở TP.HCM muốn chọn phân khúc mục tiêu."
+    inputs: {segment: "Mẹ có con 6-24 tháng, thu nhập gia đình 20-40 triệu/tháng, mua qua Facebook/Shopee/TikTok"}
+    steps:
+      - "D: nhu cầu khác (an toàn nguyên liệu, tiện lợi, kiến thức dinh dưỡng) so với khách mua hàng thực phẩm chung -> đạt."
+      - "A: có thể làm combo theo tháng tuổi, gói thử, nội dung hướng dẫn -> đạt."
+      - "M: đo được qua số đơn theo tháng tuổi, khảo sát, dữ liệu Meta Audience; cần xác nhận số liệu quy mô -> đạt có điều kiện."
+      - "A: nhóm mẹ trong Facebook Group, TikTok, KOC mẹ và bé -> tiếp cận được, CAC ước tính cần test."
+      - "S: tính R theo m01_segment_revenue_potential với N trong bán kính giao hàng; kiểm tra có lãi sau CAC."
+    result: "Đạt D, A, A; M và S cần số liệu. Hành động: chạy thử 2 tuần ngân sách nhỏ để đo p và CAC rồi tính C trước khi chọn làm primary."
+
+practice_questions:
+  - q: "Phân khúc đạt DAMAS nghĩa là gì? Viết đủ 5 chữ cái."
+    a: "Differentiable (khác biệt), Actionable (hành động được), Measurable (đo được), Accessible (tiếp cận được), Substantial (đủ lớn, sinh lời)."
+  - q: "Quán cà phê có 3 phân khúc với điểm tiêu chí [Quy mô, Cạnh tranh, Phù hợp, Tiếp cận, Lợi nhuận]: A=[7,5,8,6,7], B=[6,7,6,8,6]. Dùng trọng số 25/20/25/15/15, chọn phân khúc nào?"
+    a: "A = 7*0,25+5*0,20+8*0,25+6*0,15+7*0,15 = 1,75+1,0+2,0+0,9+1,05 = 6,7. B = 1,5+1,4+1,5+1,2+0,9 = 6,5. Chọn A nhưng chênh 0,2 < 0,5 nên cần độ nhạy hoặc chọn A primary, B secondary."
+  - q: "Vì sao tiêu chí 'cạnh tranh' phải chấm ngược (ít cạnh tranh = điểm cao)?"
+    a: "Vì thang điểm đo sức hấp dẫn của phân khúc; cạnh tranh càng gắt thì phân khúc càng kém hấp dẫn."
+  - q: "Phân khúc X: N=10.000, p=20%, f=4 lần/tháng, P=60.000 VNĐ, biên đóng góp 50%. Tính R và C mỗi tháng."
+    a: "R = 10.000*0,2*4*60.000 = 480.000.000 VNĐ; C = 480.000.000*0,5 = 240.000.000 VNĐ."
+  - q: "Khi nào chọn Concentrated thay vì Differentiated?"
+    a: "Khi nguồn lực hạn chế, nhu cầu phân khúc khác biệt rõ và có thể thống trị một ngách; Differentiated cần nguồn lực lớn để phục vụ nhiều phân khúc."
+  - q: "Viết positioning statement cho xe tải điện nhỏ chở hàng nội thành, khách là cửa hàng bán lẻ."
+    a: "Mẫu: Đối với chủ cửa hàng bán lẻ nội thành, X là xe tải điện nhỏ chở hàng tiết kiệm nhất, mà chi phí vận hành thấp hơn xe xăng khoảng Y%/km, bởi vì pin Z km/lần sạc + bảo hành W năm. (Số liệu Y, Z, W phải có bằng chứng.)"
+  - q: "Phân biệt POD và POP, cho ví dụ cho một quán phở."
+    a: "POP: ngưỡng tối thiểu so với đối thủ (nước dùng ngon, vệ sinh, giá hợp lý). POD: điều khác biệt (ninh 24 giờ, công thức 45 năm, đặt qua app)."
+  - q: "Perceptual map: khoảng trống lớn nhưng không khách nào ở đó. Có nên định vị không?"
+    a: "Không. Khoảng trống không có cầu là bẫy; cần kiểm tra cầu (DAMAS) trước."
+  - q: "Spotify: Premium 220M, MAU 615M. Tỷ lệ chuyển đổi trả phí?"
+    a: "220/615 = 35,8%."
+  - q: "Nêu 3 dấu hiệu cần tái định vị."
+    a: "Thị trường đổi và khách không còn coi trọng thuộc tính cũ; đối thủ chiếm mất vị trí; mở rộng sang phân khúc mới; image tiêu cực (chọn 3 trong 4)."
+  - q: "Ba phân khúc Spotify có % 40/25/15/10/10: primary target chiếm bao nhiêu và thuộc chiến lược targeting nào?"
+    a: "65% (Casual + Enthusiast); chiến lược tổng thể Differentiated (Free, Premium, Family, Duo, Student)."
+  - q: "Vì sao STP xuất sắc vẫn có thể thua lỗ? Ví dụ."
+    a: "Vì lợi nhuận còn phụ thuộc business model, pricing và chi phí; ví dụ Spotify chưa lãi bền vững tới 2023, đầu tư podcast $1B+ ROI chưa rõ."
+  - q: "Quán lẩu nhắm 'mọi gia đình' đang bán kém. Các bước làm lại STP?"
+    a: "Phân khúc theo dịp (gia đình cuối tuần, nhóm bạn, tiệc công ty), chấm điểm và chọn 1 primary, định vị bằng USP đo được, chuyển menu, giá, truyền thông về nhóm đó, đo KPI theo nhóm."
+
+checklist:
+  - "□ Đã xác định mục tiêu và thu thập dữ liệu đủ (POS/CRM, khảo sát, đối thủ)?"
+  - "□ Tiêu chí phân khúc phù hợp (ưu tiên hành vi, lợi ích; B2B: firmographic, purchasing)?"
+  - "□ Mỗi phân khúc đạt DAMAS có bằng chứng?"
+  - "□ Đã profile chi tiết (quy mô, tăng trưởng, nhu cầu, hành vi, kênh)?"
+  - "□ Có dùng dữ liệu số (không chỉ truyền thống)?"
+  - "□ Đã chấm điểm hấp dẫn phân khúc; tổng trọng số = 100%; cạnh tranh chấm đúng chiều; có độ nhạy?"
+  - "□ Đã tính R và C để so sánh lợi nhuận phân khúc?"
+  - "□ Phân khúc mục tiêu phù hợp năng lực DN (VRIO)?"
+  - "□ Đã chọn chiến lược targeting (undifferentiated/differentiated/concentrated...)?"
+  - "□ Primary và secondary target rõ; có ghi phân khúc không phục vụ?"
+  - "□ Đã phân tích vị trí đối thủ bằng perceptual map với trục khách quan tâm?"
+  - "□ Đã xác định POD (1-2) và POP rõ ràng?"
+  - "□ Đã viết positioning statement 4 phần, có RTB?"
+  - "□ Positioning credible với khách mục tiêu (đã test)?"
+  - "□ Toàn bộ 4P nhất quán với positioning?"
+  - "□ Đã đặt KPI theo phân khúc và lịch rà soát (hằng quý)?"
+  - "□ Đã kiểm tra nguy cơ over-segmentation?"
+
+excel_google_sheets_templates:
+  - "Sheet 'SegmentScore': hàng = phân khúc, cột = tiêu chí (1-10), hàng trọng số cố định; cột Tổng = SUMPRODUCT; ô kiểm tra =SUM(weights)=1; thêm sheet độ nhạy (đổi trọng số)."
+  - "Sheet 'SegmentSizing': cột N, p, f, P, mc; R = N*p*f*P; C = R*mc; xếp hạng bằng RANK."
+  - "Sheet 'RFM': cột khách, ngày mua gần nhất, số lần, tổng tiền; chấm R-F-M 1-5 bằng QUARTILE/PERCENTRANK; gộp nhóm (VIP, trung thành, nguy cơ rời bỏ)."
+  - "Sheet 'Perceptual': bảng điểm khảo sát (khách x thương hiệu x trục) -> AVERAGE; biểu đồ scatter; cột khoảng cách tới đối thủ gần nhất."
+  - "Sheet 'DAMAS': hàng phân khúc, cột D, A, M, A, S với Có/Không + bằng chứng; điều kiện định dạng đánh dấu thiếu."
+  - "Sheet 'PositioningStatement': 4 ô điền (target, category, USP, RTB) + ô kiểm tra 4P nhất quán."
+
+source_file: "01-stp-segmentation-targeting-positioning.md"
+
+source_notes:
+  - "Nguồn không có LaTeX công thức; các công thức m01_* là tổng hợp từ các công cụ trong nguồn (chấm điểm có trọng số) và bổ sung chuẩn sizing để agent tính được."
+  - "Lỗi/mâu thuẫn nguồn: (1) 'Volvo ... airbag phía' gõ sai; (2) perceptual map Volvo/Mercedes/BMW nhãn trục 'chất lượng cao/thấp' x 'giá thấp/cao' vẽ tay, chỉ minh họa; (3) giá Biti's Hunter: ghi 600-900k, khoảng trống 600k-1 triệu, ví dụ 700k/đôi - không nhất quán; (4) mục IX đánh số lại '## 1, 2, 3' trùng cấp với mục chính; (5) Sơn Tùng M-TP, Soobin gọi là KOL 'Indie/Underground' không chính xác (nghệ sĩ đại chúng); trình tự MV 'Lạc Trôi' và chiến dịch Đi để trở về không rõ ràng; (6) Spotify 'chưa lãi bền vững mới lãi Q3-Q4/2023', '600M+ users' vs 'MAU 615M+', % user 40/25/15/10/10 là ước tính; (7) Old Spice '+125%' không nêu kỳ; (8) '5 chiến lược targeting' gồm micromarketing và custom chồng lấn nhau; (9) nguồn viết Wendell Smith 1956 cho phân khúc và Ries-Trout 1981 cho positioning (khái niệm positioning xuất hiện từ 1969-72)."

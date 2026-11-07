@@ -1,0 +1,1708 @@
+# 06-formulas-index.yaml — SINH TỰ ĐỘNG bởi tools/build_and_validate.py từ modules/*.yaml. Không sửa tay.
+total: 142
+formulas:
+- id: m01_weighted_segment_score
+  module: m01
+  name_vi: Điểm hấp dẫn phân khúc có trọng số
+  name_en: Weighted Segment Attractiveness Score
+  expression_latex: S_j = \sum_{i=1}^{n} w_i \cdot s_{ij}, \quad \sum_i w_i = 1
+  expression_python: sum(w * s for w, s in zip(weights, scores))
+  excel: =SUMPRODUCT(weights_range, scores_range)
+  variables:
+  - w_i
+  - s_ij
+  - S_j
+  when_to_use: 'Bước 5 của quy trình STP: so sánh và xếp hạng nhiều phân khúc để chọn primary/secondary target.'
+- id: m01_segment_revenue_potential
+  module: m01
+  name_vi: Doanh thu tiềm năng của phân khúc
+  name_en: Segment Revenue Potential
+  expression_latex: R = N \times p \times f \times P
+  expression_python: N * p * f * P
+  excel: =N*p*f*P
+  variables:
+  - N
+  - p
+  - f
+  - P
+  when_to_use: Tiêu chí 'Quy mô' và 'Lợi nhuận tiềm năng' khi profile phân khúc (Substantial trong DAMAS); sizing nhanh bottom-up
+    cho SME.
+- id: m01_segment_contribution
+  module: m01
+  name_vi: Lợi nhuận đóng góp của phân khúc
+  name_en: Segment Contribution Profit
+  expression_latex: C = R \times m_c
+  expression_python: R * mc
+  excel: =R*mc
+  variables:
+  - R
+  - m_c
+  - C
+  when_to_use: Khi hai phân khúc có doanh thu khác nhiều biên (vd sinh viên giá nhạy cảm vs nhân viên văn phòng chịu chi).
+- id: m01_segment_share
+  module: m01
+  name_vi: Tỷ trọng phân khúc
+  name_en: Segment Share
+  expression_latex: sh_j = \frac{N_j}{\sum_k N_k} \times 100\%
+  expression_python: n_j / sum(all_n) * 100
+  excel: =n_j/SUM(range)
+  variables:
+  - N_j
+  - sh_j
+  when_to_use: Profile cơ cấu khách hàng; kiểm tra các phân khúc cộng đủ 100%; tính độ phủ của target (primary+secondary).
+- id: m01_freemium_conversion
+  module: m01
+  name_vi: Tỷ lệ chuyển đổi trả phí (freemium)
+  name_en: Paid Conversion Rate
+  expression_latex: CR = \frac{\text{Premium}}{\text{MAU}} \times 100\%
+  expression_python: premium / mau * 100
+  excel: =premium/mau
+  variables:
+  - premium
+  - mau
+  when_to_use: Đánh giá hiệu quả gói miễn phí như công cụ targeting/phễu đưa khách lên bản trả phí.
+- id: m01_pct_change
+  module: m01
+  name_vi: Tỷ lệ thay đổi (tăng trưởng)
+  name_en: Percentage Change
+  expression_latex: \Delta\% = \frac{V_{after} - V_{before}}{V_{before}} \times 100\%
+  expression_python: (after - before) / before * 100
+  excel: =(after-before)/before
+  variables:
+  - V_before
+  - V_after
+  when_to_use: Đo hiệu quả repositioning (doanh số, nhận diện, tỷ lệ cân nhắc) trước và sau.
+- id: m01_perceptual_gap_distance
+  module: m01
+  name_vi: Khoảng cách tới đối thủ gần nhất trên bản đồ nhận thức
+  name_en: Nearest-competitor Distance on Perceptual Map
+  expression_latex: d(c) = \min_k \sqrt{(x_c - x_k)^2 + (y_c - y_k)^2}
+  expression_python: min(math.dist(cand, p) for p in competitors)
+  excel: =MIN(SQRT((xc-x_range)^2+(yc-y_range)^2)) (công thức mảng)
+  variables:
+  - (x_c, y_c)
+  - (x_k, y_k)
+  - d(c)
+  when_to_use: Tìm khoảng trống (white space) định lượng khi có điểm số nhận thức trung bình từ khảo sát khách.
+- id: m02_markup_price
+  module: m02
+  name_vi: Giá theo chi phí cộng thêm tỷ lệ phụ giá (Cost-plus / Markup)
+  name_en: Cost-plus Markup Pricing
+  expression_latex: P = C \times (1 + k)
+  expression_python: P = C * (1 + k)
+  excel: =C*(1+k)
+  variables:
+  - P
+  - C
+  - k
+  when_to_use: Định giá nhanh theo phương pháp cost-based; làm giá sàn (floor) để kiểm tra giá value-based/competition-based
+    không lỗ.
+- id: m02_margin_price
+  module: m02
+  name_vi: Giá theo biên lợi nhuận gộp mục tiêu
+  name_en: Target Gross Margin Pricing
+  expression_latex: P = \dfrac{C}{1 - m}
+  expression_python: P = C / (1 - m)
+  excel: =C/(1-m)
+  variables:
+  - P
+  - C
+  - m
+  when_to_use: Khi chủ DN nghĩ theo margin (ví dụ F&B muốn giá vốn nguyên liệu chiếm 30%) thay vì markup.
+- id: m02_markup_margin_convert
+  module: m02
+  name_vi: Chuyển đổi Markup và Margin
+  name_en: Markup-Margin Conversion
+  expression_latex: m = \dfrac{k}{1 + k}, \quad k = \dfrac{m}{1 - m}
+  expression_python: m = k / (1 + k); k_from_m = m / (1 - m)
+  excel: =k/(1+k)
+  variables:
+  - k
+  - m
+  when_to_use: Mỗi khi trao đổi với nhà cung cấp, đối tác, nhân viên dùng hai thuật ngữ khác nhau.
+- id: m02_breakeven_units
+  module: m02
+  name_vi: Điểm hòa vốn theo sản lượng
+  name_en: Break-even Quantity
+  expression_latex: Q^{*} = \dfrac{F}{P - V}
+  expression_python: Q = F / (P - V)
+  excel: =F/(P-V)
+  variables:
+  - Q*
+  - F
+  - P
+  - V
+  when_to_use: 'Chốt giá/kênh: cần bán bao nhiêu ly/đơn/tháng để không lỗ; so sánh kênh có chi phí cố định khác nhau.'
+- id: m02_discount_breakeven_uplift
+  module: m02
+  name_vi: Mức tăng sản lượng cần có để giảm giá không lỗ
+  name_en: Break-even Volume Uplift for a Price Discount
+  expression_latex: \dfrac{\Delta Q}{Q} = \dfrac{d}{m - d}
+  expression_python: uplift = d / (m - d)
+  excel: =d/(m-d)
+  variables:
+  - d
+  - m
+  - ΔQ/Q
+  when_to_use: Đánh giá flash sale, BOGO, coupon, giảm giá tăng doanh số (Sales Promotion) có đáng làm không.
+- id: m02_price_increase_breakeven
+  module: m02
+  name_vi: Mức giảm sản lượng chịu được khi tăng giá
+  name_en: Break-even Volume Loss for a Price Increase
+  expression_latex: \dfrac{\Delta Q}{Q} = -\dfrac{p}{m + p}
+  expression_python: max_loss = p / (m + p)
+  excel: =p/(m+p)
+  variables:
+  - p
+  - m
+  when_to_use: Cân nhắc tăng giá (value-based, lạm phát chi phí) mà không giảm lợi nhuận.
+- id: m02_economic_value_price
+  module: m02
+  name_vi: Trần giá theo giá trị kinh tế cho khách (EVC)
+  name_en: Economic Value to Customer (value-based price ceiling)
+  expression_latex: EVC = V_{ref} + V_{diff}, \quad C \le P \le EVC
+  expression_python: evc = v_ref + v_diff; price_ok = (C <= P) and (P <= evc)
+  excel: =v_ref+v_diff
+  variables:
+  - V_ref
+  - V_diff
+  - C
+  when_to_use: Định giá value-based cho sản phẩm khác biệt/premium khi giá đối thủ không phản ánh giá trị thật.
+- id: m02_cpo
+  module: m02
+  name_vi: Chi phí trên mỗi đơn hàng (CPO)
+  name_en: Cost Per Order (CPO / CPA)
+  expression_latex: CPO = \dfrac{\text{Chi phí marketing}}{\text{Số đơn hàng thành công}}
+  expression_python: cpo = marketing_cost / orders
+  excel: =cost/orders
+  variables:
+  - marketing_cost
+  - orders
+  when_to_use: 'Đo hiệu quả Performance và Affiliate: trả tiền theo đơn thay vì theo hiển thị (nguồn nhấn mạnh case Vascara).'
+- id: m02_roas_breakeven
+  module: m02
+  name_vi: ROAS và ROAS hòa vốn
+  name_en: Return on Ad Spend and Break-even ROAS
+  expression_latex: ROAS = \dfrac{R}{A}, \quad ROAS_{BE} = \dfrac{1}{cm}
+  expression_python: roas = revenue / ad_spend; roas_be = 1 / cm
+  excel: =revenue/ad_spend
+  variables:
+  - R
+  - A
+  - cm
+  when_to_use: Quyết định có tăng ngân sách ads/affiliate không; mức ROAS tối thiểu để kênh có lãi.
+- id: m02_cvr
+  module: m02
+  name_vi: Tỷ lệ chuyển đổi (CVR)
+  name_en: Conversion Rate
+  expression_latex: CVR = \dfrac{\text{Số đơn (hoặc hành động mục tiêu)}}{\text{Số lượt truy cập (click/visit)}}
+  expression_python: cvr = conversions / visits
+  excel: =conversions/visits
+  variables:
+  - conversions
+  - visits
+  when_to_use: Ưu tiên luồng tracking để biết dòng tiền marketing nào sinh CVR cao nhất (nguồn nhấn mạnh sau phần Promotion
+    4.0).
+- id: m02_channel_contribution
+  module: m02
+  name_vi: Đóng góp lợi nhuận trên mỗi đơn theo kênh
+  name_en: Channel Contribution per Order
+  expression_latex: CM_{order} = P - C - \sum f_i \cdot P - r \cdot c_r - L
+  expression_python: cm = P - C - sum(f) * P - r * cr - L
+  excel: =P-C-SUM(fees)*P-r*cr-L
+  variables:
+  - P
+  - C
+  - f_i
+  - r
+  - c_r
+  - L
+  when_to_use: So sánh lợi nhuận thực của 3 kênh (offline, sàn, social) trước khi phân bổ ngân sách và tồn kho.
+- id: m02_product_mix_dimensions
+  module: m02
+  name_vi: Các chiều của danh mục sản phẩm
+  name_en: Product Mix Dimensions (width, length, depth, consistency)
+  expression_latex: width = N_{lines},\; length = \sum n_i,\; avg\ length = \dfrac{length}{width}
+  expression_python: width = len(lines); length = sum(lines); avg_length = length / width
+  excel: =COUNTA(lines)
+  variables:
+  - N_lines
+  - n_i
+  - depth
+  when_to_use: Mô tả và quyết định mở rộng/thu hẹp danh mục sản phẩm (Product Line, Product Mix).
+- id: m02_consistency_score
+  module: m02
+  name_vi: Điểm nhất quán 7P (heuristic)
+  name_en: 7P Consistency Score (heuristic, not in source)
+  expression_latex: CS = \dfrac{\sum_{i=1}^{7} s_i}{2 \times 7} \times 100\%
+  expression_python: cs = sum(s) / (2 * len(s)) * 100
+  excel: =SUM(scores)/(2*COUNT(scores))
+  variables:
+  - s_i
+  when_to_use: Biến Ma trận kiểm tra Consistency định tính của nguồn thành điểm số để theo dõi theo thời gian hoặc so phương
+    án.
+- id: m03_clv_simple
+  module: m03
+  name_vi: CLV công thức đơn giản (doanh thu)
+  name_en: Simple CLV (revenue basis)
+  expression_latex: CLV = AOV \times F \times L
+  expression_python: aov * freq * lifespan
+  excel: =B1*B2*B3
+  variables:
+  - aov
+  - freq
+  - lifespan
+  when_to_use: Ước lượng nhanh, bậc độ lớn, khi chưa có dữ liệu cohort. Muốn ra lợi nhuận phải nhân thêm biên lợi nhuận gộp
+    (xem m03_clv_margin).
+- id: m03_clv_margin
+  module: m03
+  name_vi: CLV theo lợi nhuận gộp
+  name_en: Margin-based CLV
+  expression_latex: CLV = AOV \times F \times L \times GM
+  expression_python: aov * freq * lifespan * gm
+  excel: =B1*B2*B3*B4
+  variables:
+  - aov
+  - freq
+  - lifespan
+  - gm
+  when_to_use: Khi cần so với CAC hoặc ra quyết định đầu tư; đây là dạng đúng nghĩa 'lợi nhuận ròng' của định nghĩa CLV.
+- id: m03_clv_discounted
+  module: m03
+  name_vi: CLV có chiết khấu và retention
+  name_en: Discounted CLV with retention
+  expression_latex: CLV = \sum_{t=1}^{T} \frac{(Revenue_t - Cost_t) \times Retention_t}{(1+d)^t}
+  expression_python: sum((rev_cost) * r**(t-1) / (1+d)**t for t in range(1, T+1))
+  excel: =SUMPRODUCT(margin*retention_vector/(1+d)^period_vector)
+  variables:
+  - rev_cost
+  - r
+  - d
+  - T
+  - t
+  when_to_use: Khi vòng đời dài, cần giá trị hiện tại để so với CAC trả ngay hôm nay hoặc định giá DN.
+- id: m03_clv_subscription
+  module: m03
+  name_vi: CLV mô hình thuê bao
+  name_en: Subscription CLV
+  expression_latex: CLV = \frac{ARPU \times GM}{Churn}
+  expression_python: arpu * gm / churn
+  excel: =B1*B2/B3
+  variables:
+  - arpu
+  - gm
+  - churn
+  when_to_use: 'Subscription/membership/SaaS: doanh thu lặp lại đều, churn tương đối ổn định.'
+- id: m03_cac
+  module: m03
+  name_vi: Chi phí thu hút khách hàng
+  name_en: Customer Acquisition Cost (CAC)
+  expression_latex: CAC = \frac{\text{Marketing cost} + \text{Sales cost}}{\text{New customers}}
+  expression_python: (marketing_cost + sales_cost) / new_customers
+  excel: =(B1+B2)/B3
+  variables:
+  - marketing_cost
+  - sales_cost
+  - new_customers
+  when_to_use: Mỗi kỳ (tháng/quý) và theo từng kênh để biết kênh nào mua khách rẻ.
+- id: m03_clv_cac_ratio
+  module: m03
+  name_vi: Tỷ lệ CLV:CAC
+  name_en: CLV to CAC ratio
+  expression_latex: CLV{:}CAC = \frac{CLV}{CAC}
+  expression_python: clv / cac
+  excel: =B1/B2
+  variables:
+  - clv
+  - cac
+  when_to_use: Đánh giá một kênh/phân khúc có đáng đầu tư không.
+- id: m03_cac_payback
+  module: m03
+  name_vi: Thời gian hoàn vốn CAC
+  name_en: CAC Payback Period
+  expression_latex: Payback = \frac{CAC}{\text{Monthly margin per customer}}
+  expression_python: cac / monthly_margin
+  excel: =B1/B2
+  variables:
+  - cac
+  - monthly_margin
+  when_to_use: Kiểm tra áp lực dòng tiền; SME cần payback ngắn.
+- id: m03_churn_lifespan
+  module: m03
+  name_vi: Churn, Retention và vòng đời kỳ vọng
+  name_en: Churn rate and expected lifespan
+  expression_latex: Churn = \frac{\text{Lost customers}}{\text{Customers at start}},\quad L = \frac{1}{Churn}
+  expression_python: lost / start, 1 / (lost / start)
+  excel: =B1/B2 ; =1/(B1/B2)
+  variables:
+  - lost
+  - start
+  when_to_use: Ước lượng vòng đời khi chưa có dữ liệu dài; theo dõi hàng tháng.
+- id: m03_nrr
+  module: m03
+  name_vi: Tỷ lệ giữ chân doanh thu ròng
+  name_en: Net Revenue Retention (NRR)
+  expression_latex: NRR = \frac{R_0 - \text{Churn} + \text{Expansion}}{R_0}
+  expression_python: (r0 - churn_rev + expansion) / r0
+  excel: =(B1-B2+B3)/B1
+  variables:
+  - r0
+  - churn_rev
+  - expansion
+  when_to_use: Subscription/B2B có nhiều lần bán thêm cho khách cũ.
+- id: m03_nps
+  module: m03
+  name_vi: Điểm giới thiệu ròng NPS
+  name_en: Net Promoter Score
+  expression_latex: NPS = \%Promoters - \%Detractors
+  expression_python: pct_promoters - pct_detractors
+  excel: =B1-B2
+  variables:
+  - pct_promoters
+  - pct_detractors
+  when_to_use: Đo sự hài lòng/trung thành, chỉ báo sớm của churn.
+- id: m03_prime_net_per_member
+  module: m03
+  name_vi: Lợi nhuận ròng mỗi thành viên thuê bao (kiểu Amazon Prime)
+  name_en: Net contribution per subscription member
+  expression_latex: Net = Spend \times GM + Fee + Ads - Shipping,\quad CLV = Net \times L
+  expression_python: (spend*gm + fee + ads - shipping) * lifespan
+  excel: =(B1*B2+B3+B4-B5)*B6
+  variables:
+  - spend
+  - gm
+  - fee
+  - ads
+  - shipping
+  - lifespan
+  when_to_use: Đánh giá có nên 'lỗ' một hạng mục (ship) để lấy retention/chi tiêu cao hơn.
+- id: m04_nps
+  module: m04
+  name_vi: Chỉ số khuyến nghị ròng
+  name_en: Net Promoter Score (NPS)
+  expression_latex: NPS = \%Promoters - \%Detractors
+  expression_python: (promoters - detractors) / total_respondents * 100
+  excel: =(COUNTIF(rng,">=9")-COUNTIF(rng,"<=6"))/COUNT(rng)*100
+  variables:
+  - promoters
+  - detractors
+  - total_respondents
+  when_to_use: Đo loyalty/mức sẵn sàng truyền miệng; theo dõi theo quý hoặc sau mỗi thay đổi lớn.
+- id: m04_brand_premium
+  module: m04
+  name_vi: Phần giá cao thương hiệu
+  name_en: Brand Premium (%)
+  expression_latex: Premium\% = \frac{P_{brand} - P_{generic}}{P_{generic}} \times 100
+  expression_python: (price_brand - price_generic) / price_generic * 100
+  excel: =(B2-B3)/B3*100
+  variables:
+  - price_brand
+  - price_generic
+  when_to_use: 'Lượng hóa Brand Equity theo giá: khách trả hơn bao nhiêu % vì brand; biện minh đầu tư brand.'
+- id: m04_premium_value
+  module: m04
+  name_vi: Giá trị tăng thêm hằng năm từ brand premium
+  name_en: Annual Revenue Uplift from Brand Premium
+  expression_latex: Uplift = (P_{brand} - P_{generic}) \times Q
+  expression_python: (price_brand - price_generic) * quantity
+  excel: =(B2-B3)*B4
+  variables:
+  - price_brand
+  - price_generic
+  - quantity
+  when_to_use: Quy brand equity thành tiền thô (doanh thu tăng thêm) để so với chi phí đầu tư brand.
+- id: m04_share_of_voice
+  module: m04
+  name_vi: Thị phần tiếng nói
+  name_en: Share of Voice (SOV)
+  expression_latex: SOV\% = \frac{M_{brand}}{M_{category}} \times 100
+  expression_python: brand_mentions / category_mentions * 100
+  excel: =B2/B3*100
+  variables:
+  - brand_mentions
+  - category_mentions
+  when_to_use: Đo mức hiện diện so với đối thủ; so sánh với thị phần để biết đang 'to tiếng' đủ chưa.
+- id: m04_excess_sov
+  module: m04
+  name_vi: Chênh lệch tiếng nói so với thị phần
+  name_en: Excess Share of Voice (ESOV)
+  expression_latex: ESOV = SOV\% - MarketShare\%
+  expression_python: sov_pct - market_share_pct
+  excel: =B2-B3
+  variables:
+  - sov_pct
+  - market_share_pct
+  when_to_use: Kiểm tra benchmark 'SOV > Market share' bằng một con số.
+- id: m04_sentiment
+  module: m04
+  name_vi: Tỷ lệ cảm xúc tích cực
+  name_en: Brand Sentiment (% Positive)
+  expression_latex: Sentiment\% = \frac{N_{pos}}{N_{pos}+N_{neu}+N_{neg}} \times 100
+  expression_python: positive / (positive + neutral + negative) * 100
+  excel: =B2/SUM(B2:B4)*100
+  variables:
+  - positive
+  - neutral
+  - negative
+  when_to_use: Theo dõi cảm xúc cộng đồng quanh brand, đặc biệt sau chiến dịch hoặc khủng hoảng.
+- id: m04_top_of_mind
+  module: m04
+  name_vi: Tỷ lệ nhận biết
+  name_en: Brand Awareness Rate (Top-of-mind / Aided)
+  expression_latex: Awareness\% = \frac{N_{named}}{N_{sample}} \times 100
+  expression_python: named / sample * 100
+  excel: =B2/B3*100
+  variables:
+  - named
+  - sample
+  when_to_use: 'Đo tầng Salience của CBBE/Brand Awareness của Aaker bằng khảo sát: ''Kể tên các brand trong ngành X?''.'
+- id: m04_repeat_rate
+  module: m04
+  name_vi: Tỷ lệ mua lặp lại
+  name_en: Repeat Purchase Rate
+  expression_latex: Repeat\% = \frac{N_{repeat}}{N_{customers}} \times 100
+  expression_python: repeat_customers / total_customers * 100
+  excel: =B2/B3*100
+  variables:
+  - repeat_customers
+  - total_customers
+  when_to_use: Đo loyalty hành vi (Aaker liệt kê repeat rate cùng NPS, churn).
+- id: m04_brand_search_growth
+  module: m04
+  name_vi: Tăng trưởng lượng tìm kiếm thương hiệu theo quý
+  name_en: Brand Search Volume Growth QoQ
+  expression_latex: g_{QoQ} = \frac{V_t - V_{t-1}}{V_{t-1}} \times 100
+  expression_python: (volume_now - volume_prev) / volume_prev * 100
+  excel: =(B2-B3)/B3*100
+  variables:
+  - volume_now
+  - volume_prev
+  when_to_use: 'Chỉ báo nhanh, rẻ về mức quan tâm chủ động của khách (benchmark nguồn: tăng trưởng QoQ).'
+- id: m04_relief_from_royalty
+  module: m04
+  name_vi: Định giá thương hiệu theo phương pháp tiết kiệm phí bản quyền (bổ sung)
+  name_en: Relief-from-Royalty Brand Valuation (simplified perpetuity)
+  expression_latex: V = \frac{Rev \times roy \times (1-t)}{r - g}
+  expression_python: revenue * royalty_rate * (1 - tax_rate) / (discount_rate - growth)
+  excel: =B2*B3*(1-B4)/(B5-B6)
+  variables:
+  - revenue
+  - royalty_rate
+  - tax_rate
+  - discount_rate
+  - growth
+  when_to_use: Tham khảo thêm cho góc nhìn tài chính (nguồn chỉ nói brand value của Brand Finance mà không nêu công thức).
+    Dùng cho M&A, nhượng quyền, gọi vốn.
+- id: m05_ctr
+  module: m05
+  name_vi: Tỷ lệ nhấp (CTR)
+  name_en: Click-Through Rate
+  expression_latex: CTR = \frac{\text{Clicks}}{\text{Impressions}} \times 100\%
+  expression_python: clicks / impressions * 100
+  excel: =B2/B1*100
+  variables:
+  - clicks
+  - impressions
+  when_to_use: Đánh giá mức độ hấp dẫn của creative/tiêu đề/từ khóa ở tầng đầu phễu.
+- id: m05_cpc
+  module: m05
+  name_vi: Chi phí mỗi nhấp (CPC)
+  name_en: Cost Per Click
+  expression_latex: CPC = \frac{\text{Ad spend}}{\text{Clicks}}
+  expression_python: spend / clicks
+  excel: =B1/B2
+  variables:
+  - spend
+  - clicks
+  when_to_use: Kiểm soát giá mua traffic; so với EPC (affiliate) hoặc giá trị mỗi click.
+- id: m05_cpm
+  module: m05
+  name_vi: Chi phí mỗi nghìn lần hiển thị (CPM)
+  name_en: Cost per Mille
+  expression_latex: CPM = \frac{\text{Ad spend}}{\text{Impressions}} \times 1000
+  expression_python: spend / impressions * 1000
+  excel: =B1/B2*1000
+  variables:
+  - spend
+  - impressions
+  when_to_use: Mua awareness, so sánh giá tiếp cận giữa kênh (digital vs TV/print).
+- id: m05_cvr
+  module: m05
+  name_vi: Tỷ lệ chuyển đổi (CVR)
+  name_en: Conversion Rate
+  expression_latex: CVR = \frac{\text{Conversions}}{\text{Clicks (hoặc Visits)}} \times 100\%
+  expression_python: conversions / visits * 100
+  excel: =B1/B2*100
+  variables:
+  - conversions
+  - visits
+  when_to_use: Đo chất lượng traffic và landing page/offer; chọn biến thể thắng trong A/B.
+- id: m05_cpa
+  module: m05
+  name_vi: Chi phí mỗi hành động / đơn (CPA)
+  name_en: Cost Per Acquisition/Action
+  expression_latex: CPA = \frac{\text{Tổng chi phí quảng cáo}}{\text{Số đơn hàng thành công}} = \frac{CPC}{CVR}
+  expression_python: spend / orders
+  excel: =B1/B2
+  variables:
+  - spend
+  - orders
+  when_to_use: Đo hiệu quả chiến dịch trả phí, chọn bản landing page thắng, so với giá trị mỗi khách.
+- id: m05_cpl
+  module: m05
+  name_vi: Chi phí mỗi lead (CPL)
+  name_en: Cost Per Lead
+  expression_latex: CPL = \frac{\text{Ad spend}}{\text{Leads}}
+  expression_python: spend / leads
+  excel: =B1/B2
+  variables:
+  - spend
+  - leads
+  when_to_use: Chiến dịch thu lead (ebook, báo cáo, webinar) trước khi nurture bằng email.
+- id: m05_roas
+  module: m05
+  name_vi: Lợi tức chi tiêu quảng cáo (ROAS)
+  name_en: Return on Ad Spend
+  expression_latex: ROAS = \frac{\text{Doanh thu từ quảng cáo}}{\text{Chi phí quảng cáo}}
+  expression_python: revenue / spend
+  excel: =B1/B2
+  variables:
+  - revenue
+  - spend
+  when_to_use: 'Đánh giá nhanh chiến dịch; đặt mục tiêu ROAS (PropHunter: > 200%, tức 10 triệu ads phải ra 20 triệu doanh
+    thu).'
+- id: m05_breakeven_roas
+  module: m05
+  name_vi: ROAS hòa vốn
+  name_en: Break-even ROAS
+  expression_latex: ROAS_{BE} = \frac{1}{\text{Gross margin}}
+  expression_python: 1 / gross_margin
+  excel: =1/B1
+  variables:
+  - gross_margin
+  when_to_use: 'Trước khi đặt mục tiêu ROAS: biết ngưỡng sàn.'
+- id: m05_ad_profit
+  module: m05
+  name_vi: Lợi nhuận quảng cáo / ROI ads
+  name_en: Ad ROI
+  expression_latex: ROI = \frac{\text{Revenue} \times m - \text{Spend}}{\text{Spend}}
+  expression_python: (revenue * gross_margin - spend) / spend
+  excel: =(B1*B2-B3)/B3
+  variables:
+  - revenue
+  - gross_margin
+  - spend
+  when_to_use: Cần đo lợi nhuận thật của chiến dịch thay vì doanh thu.
+- id: m05_epc
+  module: m05
+  name_vi: Thu nhập mỗi click (EPC)
+  name_en: Earnings Per Click
+  expression_latex: EPC = \frac{\text{Tổng hoa hồng}}{\text{Tổng số click chuyển sang Merchant}}
+  expression_python: commission / merchant_clicks
+  excel: =B1/B2
+  variables:
+  - commission
+  - merchant_clicks
+  when_to_use: 'Affiliate: đánh giá chất lượng click và so với CPC (hoặc chi phí mỗi click sang merchant).'
+- id: m05_epv
+  module: m05
+  name_vi: Thu nhập mỗi lượt truy cập (EPV)
+  name_en: Earnings Per Visit
+  expression_latex: EPV = \frac{\text{Tổng hoa hồng}}{\text{Số lượt vào landing}} = EPC \times \frac{\text{Click sang merchant}}{\text{Visits}}
+  expression_python: commission / visits
+  excel: =B1/B2
+  variables:
+  - commission
+  - visits
+  when_to_use: Thay cho EPC khi so sánh phương án có pre-landing với đổ thẳng, vì cả hai nhận cùng lượng traffic trả phí.
+- id: m05_cac
+  module: m05
+  name_vi: Chi phí thu hút một khách hàng (CAC)
+  name_en: Customer Acquisition Cost
+  expression_latex: CAC = \frac{\text{Chi phí marketing + sales trong kỳ}}{\text{Số khách hàng mới trong kỳ}}
+  expression_python: (marketing_cost + sales_cost) / new_customers
+  excel: =(B1+B2)/B3
+  variables:
+  - marketing_cost
+  - sales_cost
+  - new_customers
+  when_to_use: Đánh giá kênh/chiến dịch về chi phí khách thật; chia theo kênh (paid CAC) và tổng (blended CAC).
+- id: m05_ltv
+  module: m05
+  name_vi: Giá trị vòng đời khách hàng (LTV, dạng giản lược)
+  name_en: Customer Lifetime Value (simple)
+  expression_latex: LTV = \frac{ARPU \times m}{\text{churn}}
+  expression_python: arpu * gross_margin / churn
+  excel: =B1*B2/B3
+  variables:
+  - arpu
+  - gross_margin
+  - churn
+  when_to_use: Mô hình thuê bao/mua lặp để định ngưỡng CAC tối đa (chi tiết ở m03).
+- id: m05_ltv_cac
+  module: m05
+  name_vi: Tỷ lệ LTV:CAC
+  name_en: LTV to CAC ratio
+  expression_latex: LTV{:}CAC = \frac{LTV}{CAC}
+  expression_python: ltv / cac
+  excel: =B1/B2
+  variables:
+  - ltv
+  - cac
+  when_to_use: Quyết định tăng/giảm ngân sách kênh.
+- id: m05_cac_payback
+  module: m05
+  name_vi: Thời gian hoàn vốn CAC
+  name_en: CAC Payback Period
+  expression_latex: Payback = \frac{CAC}{ARPU \times m}
+  expression_python: cac / (arpu * gross_margin)
+  excel: =B1/(B2*B3)
+  variables:
+  - cac
+  - arpu
+  - gross_margin
+  when_to_use: Đánh giá áp lực dòng tiền khi đốt ads.
+- id: m05_funnel
+  module: m05
+  name_vi: Chuyển đổi toàn phễu
+  name_en: End-to-end funnel conversion
+  expression_latex: CR_{total} = \prod_i cr_i
+  expression_python: math.prod(rates)
+  excel: =PRODUCT(B1:B4)
+  variables:
+  - rates
+  when_to_use: Tìm bottleneck và tính ngược lượng traffic cần có.
+- id: m05_required_clicks
+  module: m05
+  name_vi: Traffic cần thiết (tính ngược phễu)
+  name_en: Required traffic (reverse funnel)
+  expression_latex: Clicks = \frac{\text{Khách mục tiêu}}{CR_{total}}
+  expression_python: target_customers / overall_cr
+  excel: =B1/B2
+  variables:
+  - target_customers
+  - overall_cr
+  when_to_use: Lập ngân sách ads từ mục tiêu doanh thu.
+- id: m05_viral_k
+  module: m05
+  name_vi: Hệ số lan truyền (K-factor)
+  name_en: Viral coefficient
+  expression_latex: K = i \times c
+  expression_python: invites_per_user * conversion
+  excel: =B1*B2
+  variables:
+  - invites_per_user
+  - conversion
+  when_to_use: Thiết kế/đo referral, share-to-unlock, watermark, duet.
+- id: m05_viral_total
+  module: m05
+  name_vi: Tổng người dùng sau n vòng lan truyền
+  name_en: Total users after n viral cycles
+  expression_latex: N_{total} = N_0 \frac{1-K^{n+1}}{1-K}
+  expression_python: n0 * (1 - k ** (cycles + 1)) / (1 - k)
+  excel: =B1*(1-B2^(B3+1))/(1-B2)
+  variables:
+  - n0
+  - k
+  - cycles
+  when_to_use: Ước lượng tổng user và hệ số khuếch đại.
+- id: m05_effective_cac
+  module: m05
+  name_vi: CAC hiệu dụng khi có lan truyền
+  name_en: Effective CAC with virality
+  expression_latex: CAC_{eff} = CAC_{paid} \times (1-K), \quad K<1
+  expression_python: paid_cac * (1 - k)
+  excel: =B1*(1-B2)
+  variables:
+  - paid_cac
+  - k
+  when_to_use: Tính xem viral loop tiết kiệm bao nhiêu so với chạy ads thuần.
+- id: m05_referral_cac
+  module: m05
+  name_vi: CAC của chương trình giới thiệu
+  name_en: Referral CAC
+  expression_latex: CAC_{ref} = \frac{\text{Chi phí thưởng 2 phía}}{\text{Khách mới nhờ giới thiệu}}
+  expression_python: reward_cost_total / new_users
+  excel: =B1/B2
+  variables:
+  - reward_cost_total
+  - new_users
+  when_to_use: 'Chứng minh referral rẻ hơn ads (Dropbox: thưởng 500MB cả hai phía, chi phí server vài cent so với CPA 288-300
+    USD).'
+- id: m05_ice
+  module: m05
+  name_vi: Điểm ưu tiên ICE
+  name_en: ICE Score
+  expression_latex: ICE = \frac{I + C + E}{3}
+  expression_python: (impact + confidence + ease) / 3
+  excel: =AVERAGE(B1:B3)
+  variables:
+  - impact
+  - confidence
+  - ease
+  when_to_use: Xếp thứ tự backlog ý tưởng growth.
+- id: m05_retention
+  module: m05
+  name_vi: Tỷ lệ giữ chân / rời bỏ
+  name_en: Retention and Churn rate
+  expression_latex: Retention = \frac{E - N}{S}, \quad Churn = 1 - Retention
+  expression_python: (end_customers - new_customers) / start_customers
+  excel: =(B1-B2)/B3
+  variables:
+  - end_customers
+  - new_customers
+  - start_customers
+  when_to_use: Tầng Retention của AARRR; tính churn cho LTV.
+- id: m05_dau_mau
+  module: m05
+  name_vi: Tỷ lệ DAU/MAU (độ gắn bó)
+  name_en: DAU/MAU stickiness
+  expression_latex: Stickiness = \frac{DAU}{MAU}
+  expression_python: dau / mau
+  excel: =B1/B2
+  variables:
+  - dau
+  - mau
+  when_to_use: Đo độ gắn bó của sản phẩm/app (retention tầng sử dụng).
+- id: m05_pmf
+  module: m05
+  name_vi: Điểm PMF (Sean Ellis test)
+  name_en: PMF survey score
+  expression_latex: PMF = \frac{\text{Số trả lời Rất thất vọng}}{\text{Tổng số trả lời}}
+  expression_python: very_disappointed / respondents
+  excel: =B1/B2
+  variables:
+  - very_disappointed
+  - respondents
+  when_to_use: Cổng kiểm tra trước khi đẩy growth.
+- id: m05_ab_z
+  module: m05
+  name_vi: Kiểm định A/B (z-test hai tỷ lệ)
+  name_en: A/B test two-proportion z-score
+  expression_latex: z = \frac{p_B - p_A}{\sqrt{\hat p(1-\hat p)(1/n_A+1/n_B)}}
+  expression_python: (c2/n2 - c1/n1) / math.sqrt(((c1+c2)/(n1+n2)) * (1 - (c1+c2)/(n1+n2)) * (1/n1 + 1/n2))
+  excel: =(C2/N2-C1/N1)/SQRT(((C1+C2)/(N1+N2))*(1-(C1+C2)/(N1+N2))*(1/N1+1/N2))
+  variables:
+  - c1
+  - n1
+  - c2
+  - n2
+  when_to_use: Quyết định bản thắng thay vì cảm tính.
+- id: m05_ab_sample
+  module: m05
+  name_vi: Cỡ mẫu mỗi biến thể cho A/B test
+  name_en: A/B sample size per variant
+  expression_latex: n = \frac{\left(z_{\alpha/2}\sqrt{2\bar p(1-\bar p)} + z_{\beta}\sqrt{p_1(1-p_1)+p_2(1-p_2)}\right)^2}{(p_2-p_1)^2}
+  expression_python: ((1.96*math.sqrt(2*((p1+p2)/2)*(1-(p1+p2)/2)) + 0.84*math.sqrt(p1*(1-p1)+p2*(1-p2)))**2) / (p2-p1)**2
+  excel: (tính bằng công thức; hoặc dùng công cụ A/B sample size calculator)
+  variables:
+  - p1
+  - p2
+  when_to_use: Trước khi chạy test, để biết cần bao nhiêu traffic và chạy bao lâu.
+- id: m05_growth_pct
+  module: m05
+  name_vi: Tỷ lệ tăng trưởng phần trăm
+  name_en: Percent change
+  expression_latex: g = \frac{V_1 - V_0}{V_0} \times 100\%
+  expression_python: (v1 - v0) / v0 * 100
+  excel: =(B2-B1)/B1*100
+  variables:
+  - v1
+  - v0
+  when_to_use: Đọc các bảng tăng trưởng (TikTok MAU 271M -> 1.5B...).
+- id: m06_stage_conversion
+  module: m06
+  name_vi: Tỷ lệ chuyển đổi giữa các giai đoạn hành trình
+  name_en: Stage-to-stage Conversion Rate
+  expression_latex: CR_{i \to i+1} = \frac{N_{i+1}}{N_i}
+  expression_python: n_next / n_cur
+  excel: =C3/C2
+  variables:
+  - n_cur
+  - n_next
+  when_to_use: 'Bổ sung của agent (không có trong nguồn): định lượng khâu rò rỉ của phễu 5A hoặc 5 giai đoạn mua.'
+- id: m06_par
+  module: m06
+  name_vi: Tỷ lệ hành động mua (PAR)
+  name_en: Purchase Action Ratio
+  expression_latex: PAR = \frac{N_{Act}}{N_{Aware}}
+  expression_python: n_act / n_aware
+  excel: =Act/Aware
+  variables:
+  - n_act
+  - n_aware
+  when_to_use: 'Chỉ số bổ sung (Marketing 4.0, Kotler et al. 2016, không có trong nguồn): đo hiệu quả chuyển từ biết đến mua.'
+- id: m06_bar
+  module: m06
+  name_vi: Tỷ lệ ủng hộ thương hiệu (BAR)
+  name_en: Brand Advocacy Ratio
+  expression_latex: BAR = \frac{N_{Advocate}}{N_{Aware}}
+  expression_python: n_advocate / n_aware
+  excel: =Advocate/Aware
+  variables:
+  - n_advocate
+  - n_aware
+  when_to_use: 'Chỉ số bổ sung (Marketing 4.0): đo sức mạnh truyền miệng/advocacy trên tổng người biết đến.'
+- id: m06_displayed_discount
+  module: m06
+  name_vi: Mức giảm giá hiển thị (neo giá)
+  name_en: Displayed Discount from Anchor
+  expression_latex: d = \frac{P_{anchor} - P_{sale}}{P_{anchor}}
+  expression_python: (p_anchor - p_sale) / p_anchor
+  excel: =(Anchor-Sale)/Anchor
+  variables:
+  - p_anchor
+  - p_sale
+  when_to_use: Đánh giá độ mạnh hiệu ứng neo giá (Anchoring) và kiểm tra tính trung thực của giá gạch.
+- id: m06_breakeven_uplift
+  module: m06
+  name_vi: Mức tăng sản lượng cần để hòa vốn khuyến mãi
+  name_en: Break-even Volume Uplift for a Discount
+  expression_latex: U = \frac{d}{m - d}
+  expression_python: d / (m - d)
+  excel: =d/(m-d)
+  variables:
+  - d
+  - m
+  when_to_use: 'Bổ sung của agent: kiểm tra flash sale/voucher/scarcity có sinh lời không, liên hệ rủi ro ''nghiện khuyến
+    mãi'' của case Shopee.'
+- id: m07_sample_size_cochran
+  module: m07
+  name_vi: Cỡ mẫu khảo sát tỷ lệ (Cochran)
+  name_en: Sample size for a proportion (Cochran)
+  expression_latex: n_0 = \dfrac{Z^2 \, p(1-p)}{e^2}
+  expression_python: 'n0 = z**2 * p * (1 - p) / e**2  # làm tròn lên: math.ceil(n0)'
+  excel: =ROUNDUP(z^2*p*(1-p)/e^2,0)
+  variables:
+  - z
+  - p
+  - e
+  when_to_use: Thiết kế khảo sát định lượng với mẫu ngẫu nhiên đơn giản, biến chính là tỷ lệ (% hài lòng, % sẽ mua), quần
+    thể lớn.
+- id: m07_sample_size_fpc
+  module: m07
+  name_vi: Hiệu chỉnh cỡ mẫu cho quần thể hữu hạn
+  name_en: Finite population correction (FPC)
+  expression_latex: n = \dfrac{n_0}{1 + \dfrac{n_0 - 1}{N}}
+  expression_python: n = n0 / (1 + (n0 - 1) / N)
+  excel: =n0/(1+(n0-1)/N)
+  variables:
+  - n0
+  - N
+  when_to_use: 'Quần thể nhỏ (vài trăm đến vài nghìn: khách thành viên của một quán, nhân viên, khách B2B) khi n0 chiếm hơn
+    khoảng 5% N.'
+- id: m07_margin_of_error
+  module: m07
+  name_vi: Sai số biên và khoảng tin cậy của tỷ lệ
+  name_en: Margin of error / confidence interval for a proportion
+  expression_latex: e = Z \sqrt{\dfrac{\hat{p}(1-\hat{p})}{n}}, \quad CI = \hat{p} \pm e
+  expression_python: e = z * (p_hat * (1 - p_hat) / n) ** 0.5
+  excel: =NORM.S.INV(0.975)*SQRT(p_hat*(1-p_hat)/n)
+  variables:
+  - p_hat
+  - n
+  - z
+  when_to_use: Sau khi có dữ liệu khảo sát, báo cáo kết quả kèm khoảng tin cậy; hoặc kiểm tra nhanh 'kết quả 60% có chắc không'.
+- id: m07_invites_needed
+  module: m07
+  name_vi: Số người cần mời khảo sát theo tỷ lệ phản hồi
+  name_en: Invitations required given response rate
+  expression_latex: N_{invite} = \dfrac{n}{r}
+  expression_python: n_invite = n / r
+  excel: =ROUNDUP(n/r,0)
+  variables:
+  - n
+  - r
+  when_to_use: Lập kế hoạch phát khảo sát, quyết định cần mời bao nhiêu người hoặc cần chạy quảng cáo kéo bao nhiêu lượt vào
+    form.
+- id: m07_nps
+  module: m07
+  name_vi: Chỉ số NPS (Net Promoter Score)
+  name_en: Net Promoter Score
+  expression_latex: NPS = \%Promoters - \%Detractors
+  expression_python: nps = (promoters - detractors) / total * 100
+  excel: =(COUNTIF(range,">=9")-COUNTIF(range,"<=6"))/COUNT(range)*100
+  variables:
+  - promoters
+  - detractors
+  - total
+  when_to_use: Đo lòng trung thành/khả năng truyền miệng của khách qua một câu hỏi, theo dõi theo thời gian hoặc so giữa chi
+    nhánh.
+- id: m07_ctr
+  module: m07
+  name_vi: Tỷ lệ nhấp (CTR) và tỷ lệ chuyển đổi
+  name_en: Click-through rate / Conversion rate
+  expression_latex: CTR = \dfrac{Clicks}{Impressions}, \quad CR = \dfrac{Conversions}{Visitors}
+  expression_python: ctr = clicks / impressions
+  excel: =clicks/impressions
+  variables:
+  - clicks
+  - impressions
+  when_to_use: Chỉ số kết quả chính trong A/B test thumbnail, tiêu đề, quảng cáo, landing page (Netflix tối ưu CTR cho từng
+    title).
+- id: m07_ab_sample_size
+  module: m07
+  name_vi: Cỡ mẫu mỗi nhóm cho A/B test (hai tỷ lệ)
+  name_en: A/B test sample size per group (two proportions)
+  expression_latex: n = \dfrac{(Z_{\alpha/2} + Z_{\beta})^2 \, [p_1(1-p_1) + p_2(1-p_2)]}{(p_2 - p_1)^2}
+  expression_python: n = (z_alpha + z_beta) ** 2 * (p1 * (1 - p1) + p2 * (1 - p2)) / (p2 - p1) ** 2
+  excel: =((z_alpha+z_beta)^2*(p1*(1-p1)+p2*(1-p2)))/(p2-p1)^2
+  variables:
+  - p1
+  - p2
+  - z_alpha
+  - z_beta
+  when_to_use: 'Trước khi chạy thí nghiệm giá, quảng cáo, landing page, email subject: để biết có đủ lưu lượng hay không.'
+- id: m07_two_prop_ztest
+  module: m07
+  name_vi: Kiểm định z hai tỷ lệ (đọc kết quả A/B)
+  name_en: Two-proportion z-test
+  expression_latex: z = \dfrac{\hat{p}_B - \hat{p}_A}{\sqrt{\hat{p}(1-\hat{p})\left(\frac{1}{n_A}+\frac{1}{n_B}\right)}},
+    \quad \hat{p} = \dfrac{x_A + x_B}{n_A + n_B}
+  expression_python: p = (xa + xb) / (na + nb); se = (p * (1 - p) * (1 / na + 1 / nb)) ** 0.5; z = (xb / nb - xa / na) / se
+  excel: =(xb/nb-xa/na)/SQRT(p*(1-p)*(1/na+1/nb))
+  variables:
+  - xa, xb
+  - na, nb
+  when_to_use: Sau khi A/B test kết thúc, kết luận biến thể B có thật sự hơn A không.
+- id: m08_budget_pct_revenue
+  module: m08
+  name_vi: Ngân sách truyền thông theo % doanh thu
+  name_en: Percentage-of-Revenue Budget
+  expression_latex: B = r \times R
+  expression_python: B = r * R
+  excel: =R*r
+  variables:
+  - B
+  - r
+  - R
+  when_to_use: Ước lượng nhanh ngân sách tham chiếu cho DN ổn định, so benchmark ngành.
+- id: m08_objective_task_budget
+  module: m08
+  name_vi: Ngân sách theo Mục tiêu - Nhiệm vụ
+  name_en: Objective-and-Task Budget
+  expression_latex: B = \sum_{i=1}^{n} q_i \times c_i
+  expression_python: B = sum(q * c for q, c in tasks)
+  excel: =SUMPRODUCT(q_range, c_range)
+  variables:
+  - tasks
+  - q_i
+  - c_i
+  when_to_use: Ngân sách chính thức cho chiến dịch; nguồn khuyến nghị là phương pháp chiến lược nhất.
+- id: m08_cpm
+  module: m08
+  name_vi: Chi phí trên một nghìn lượt hiển thị
+  name_en: CPM (Cost Per Mille)
+  expression_latex: \text{CPM} = \frac{\text{Cost}}{\text{Impressions}} \times 1000
+  expression_python: CPM = cost / impressions * 1000
+  excel: =cost/impressions*1000
+  variables:
+  - cost
+  - impressions
+  when_to_use: So sánh giá các kênh paid để xây dựng ngân sách Objective-Task.
+- id: m08_grp_reach_frequency
+  module: m08
+  name_vi: 'Điểm tiếp cận tổng hợp: Reach, Frequency, GRP'
+  name_en: Reach x Frequency = GRP; Impressions
+  expression_latex: \text{GRP} = \text{Reach\%} \times \bar{f}, \quad \text{Impressions} = P \times \text{Reach\%} \times
+    \bar{f}
+  expression_python: GRP = reach_pct * f; impressions = P * reach_pct / 100 * f
+  excel: =reach_pct*f ; =P*reach_pct/100*f
+  variables:
+  - reach_pct
+  - f
+  - P
+  when_to_use: Đặt mục tiêu Awareness và quy đổi sang số impression cần mua.
+- id: m08_funnel_cost
+  module: m08
+  name_vi: Chi phí trên mỗi hành động theo phễu
+  name_en: Funnel Conversion and Cost per Action (CTR, CPC, CPA)
+  expression_latex: \text{Clicks} = I \times \text{CTR},\; \text{Actions} = \text{Clicks} \times \text{CVR},\; \text{CPA}
+    = \frac{\text{Cost}}{\text{Actions}}
+  expression_python: clicks = impressions * ctr; actions = clicks * cvr; cpa = cost / actions
+  excel: =cost/(impressions*ctr*cvr)
+  variables:
+  - impressions
+  - ctr
+  - cvr
+  - cost
+  when_to_use: Quy đổi mục tiêu hành động (Action trong DAGMAR) sang impression cần mua và ngược lại; so sánh kênh bằng CPA.
+- id: m08_roas_roi
+  module: m08
+  name_vi: ROAS và ROI chiến dịch truyền thông
+  name_en: ROAS and Campaign ROI
+  expression_latex: \text{ROAS} = \frac{\text{Revenue}_{inc}}{\text{Cost}}, \quad \text{ROI} = \frac{\text{Revenue}_{inc}\times
+    GM - \text{Cost}}{\text{Cost}}
+  expression_python: roas = rev_inc / cost; roi = (rev_inc * gm - cost) / cost
+  excel: =rev_inc/cost ; =(rev_inc*gm-cost)/cost
+  variables:
+  - rev_inc
+  - gm
+  - cost
+  when_to_use: Đánh giá hiệu quả sau chiến dịch; so sánh ROI giữa kênh.
+- id: m08_share_of_voice
+  module: m08
+  name_vi: Thị phần tiếng nói
+  name_en: Share of Voice (SOV)
+  expression_latex: \text{SOV} = \frac{S_{brand}}{\sum S_{category}}
+  expression_python: sov = s_brand / s_category_total
+  excel: =s_brand/s_category_total
+  variables:
+  - s_brand
+  - s_category_total
+  when_to_use: Kiểm tra chéo ngân sách theo Competitive Parity; theo dõi cạnh tranh về mức độ hiện diện.
+- id: m08_media_value_ratio
+  module: m08
+  name_vi: Tỷ lệ giá trị truyền thông kiếm được trên chi phí
+  name_en: Earned Media Value Ratio (EMV ratio)
+  expression_latex: \text{EMV ratio} = \frac{\text{EMV}}{\text{Cost}}
+  expression_python: emv_ratio = emv / cost
+  excel: =emv/cost
+  variables:
+  - emv
+  - cost
+  when_to_use: Mô tả tỷ lệ earned/paid khi báo cáo PR; không dùng làm thước đo lợi nhuận.
+- id: m09_growth_rate
+  module: m09
+  name_vi: Tốc độ tăng trưởng doanh thu/doanh số (Sales growth)
+  name_en: Sales growth rate
+  expression_latex: g = \frac{S_t - S_{t-1}}{S_{t-1}} \times 100\%
+  expression_python: (s_t - s_prev) / s_prev * 100
+  excel: =(B3-B2)/B2
+  variables:
+  - s_t
+  - s_prev
+  when_to_use: 'Chỉ số đầu tiên để định vị giai đoạn PLC: <10% gợi Introduction, >20% Growth, 0-5% Maturity, âm Decline (ngưỡng
+    tham chiếu của nguồn).'
+- id: m09_cagr
+  module: m09
+  name_vi: Tốc độ tăng trưởng kép hằng năm (CAGR)
+  name_en: Compound Annual Growth Rate
+  expression_latex: CAGR = \left(\frac{S_{end}}{S_{start}}\right)^{1/n} - 1
+  expression_python: ((s_end / s_start) ** (1 / n) - 1) * 100
+  excel: =(B_end/B_start)^(1/n)-1
+  variables:
+  - s_end
+  - s_start
+  - n
+  when_to_use: Đánh giá tốc độ tăng trưởng bình quân nhiều năm của sản phẩm/ngành để phân biệt Growth dài hạn với đợt tăng
+    một lần. (Bổ sung ngoài nguồn, dùng chung với growth_rate.)
+- id: m09_market_share
+  module: m09
+  name_vi: Thị phần
+  name_en: Market share
+  expression_latex: MS = \frac{S_{firm}}{S_{market}} \times 100\%
+  expression_python: s_firm / s_market * 100
+  excel: =B2/B3
+  variables:
+  - s_firm
+  - s_market
+  when_to_use: 'Chỉ số định vị PLC: <5% gợi Introduction, tăng nhanh gợi Growth, ổn định Maturity, giảm Decline; cũng là mục
+    tiêu chính ở Growth.'
+- id: m09_asp
+  module: m09
+  name_vi: Giá bán trung bình (ASP)
+  name_en: Average Selling Price
+  expression_latex: ASP = \frac{\text{Tổng doanh thu sản phẩm}}{\text{Tổng số lượng bán}}
+  expression_python: revenue / units
+  excel: =SUM(Doanh_thu)/SUM(So_luong)
+  variables:
+  - revenue
+  - units
+  when_to_use: Giải thích vì sao doanh thu tăng dù số lượng giảm (premiumization/upsell) ở Maturity; theo dõi hiệu quả line
+    extension, bundle.
+- id: m09_revenue_decomposition
+  module: m09
+  name_vi: Phân rã thay đổi doanh thu thành lượng và giá (volume vs ASP)
+  name_en: Revenue growth decomposition
+  expression_latex: 1 + g_R = (1 + g_Q)(1 + g_{ASP})
+  expression_python: ((1 + g_q) * (1 + g_asp) - 1) * 100
+  excel: =(1+gQ)*(1+gASP)-1
+  variables:
+  - g_q
+  - g_asp
+  when_to_use: 'Chẩn đoán doanh thu: tăng do lượng hay do giá; quyết định kéo dài Maturity bằng premiumization.'
+- id: m09_adopter_cumulative
+  module: m09
+  name_vi: Số khách tiềm năng theo nhóm chấp nhận Rogers
+  name_en: Rogers adopter group size / cumulative adoption
+  expression_latex: N_{nhóm} = p_{nhóm} \times N_{thị trường};\quad \text{Chasm tại } 2.5\% + 13.5\% = 16\%
+  expression_python: p_nhom / 100 * n_market
+  excel: =p*N
+  variables:
+  - p_nhom
+  - n_market
+  when_to_use: Ước lượng độ lớn từng nhóm và điểm Chasm (tích lũy 16%) khi hoạch định số khách cần vượt qua mới chạm đại chúng.
+- id: m09_stage_classifier
+  module: m09
+  name_vi: Quy tắc phân loại giai đoạn PLC theo chỉ số
+  name_en: Heuristic PLC stage classifier
+  expression_latex: \text{Stage} = f(g, \text{margin}, \text{share trend}, \#\text{competitors})
+  expression_python: ('Decline' if g < 0 else 'Growth' if g > 20 else 'Maturity' if g <= 5 and margin > 0 else 'Introduction'
+    if g < 10 and margin < 0 else 'Transition (xem thêm thị phần, đối thủ, loại khách)')
+  excel: =IF(g<0,"Decline",IF(g>20,"Growth",IF(AND(g<=5,margin>0),"Maturity",IF(AND(g<10,margin<0),"Introduction","Transition"))))
+  variables:
+  - g
+  - margin
+  when_to_use: Bước sàng lọc đầu để gán nhãn giai đoạn, sau đó xác nhận bằng các chỉ số định tính (số đối thủ, loại khách,
+    xu hướng thị phần).
+- id: m09_relative_market_share
+  module: m09
+  name_vi: Thị phần tương đối (liên kết BCG, ngoài nguồn)
+  name_en: Relative market share
+  expression_latex: RMS = \frac{MS_{firm}}{MS_{\text{đối thủ lớn nhất}}}
+  expression_python: ms_firm / ms_top_rival
+  excel: =MS_firm/MS_rival
+  variables:
+  - ms_firm
+  - ms_top_rival
+  when_to_use: 'Gắn PLC với portfolio (nguồn nhắc Cash Cow/Star/Question Mark): trục ngang BCG là thị phần tương đối, trục
+    dọc là tăng trưởng thị trường (proxy cho giai đoạn PLC).'
+- id: m09_harvest_contribution
+  module: m09
+  name_vi: Đóng góp lợi nhuận khi thu hoạch (Harvest) sản phẩm suy thoái
+  name_en: Harvest contribution comparison
+  expression_latex: C = R \times cm - M - F
+  expression_python: r * cm - m - f
+  excel: =R*cm-M-F
+  variables:
+  - r
+  - cm
+  - m
+  - f
+  when_to_use: So sánh Maintain (giữ nguyên) với Harvest (cắt marketing, giữ khách trung thành) cho sản phẩm Decline. (Công
+    thức đơn giản hóa bổ sung ngoài nguồn.)
+- id: m10_markup_price
+  module: m10
+  name_vi: Giá bán theo markup (cost-plus)
+  name_en: Cost-plus price from markup
+  expression_latex: P = C \times (1 + m)
+  expression_python: cost * (1 + markup)
+  excel: =Cost*(1+Markup)
+  variables:
+  - cost
+  - markup
+  when_to_use: 'Định giá nhanh cho hàng bán lại, in ấn, dịch vụ theo giờ; xác định SÀN giá (ngoài nguồn: nguồn chỉ nói ''giá
+    >= chi phí'').'
+- id: m10_margin_price
+  module: m10
+  name_vi: Giá bán theo biên lợi nhuận gộp mục tiêu
+  name_en: Price from target gross margin
+  expression_latex: P = \dfrac{C}{1 - g}
+  expression_python: cost / (1 - margin)
+  excel: =Cost/(1-Margin)
+  variables:
+  - cost
+  - margin
+  when_to_use: Khi SME quản lý theo biên gộp (F&B, retail); chuyển markup <-> margin; kiểm tra giá có đạt biên mục tiêu.
+- id: m10_markup_to_margin
+  module: m10
+  name_vi: Đổi markup sang margin
+  name_en: Markup to margin conversion
+  expression_latex: g = \dfrac{m}{1+m}, \quad m = \dfrac{g}{1-g}
+  expression_python: markup / (1 + markup)
+  excel: =Markup/(1+Markup)
+  variables:
+  - markup
+  when_to_use: Khi nhân viên/nhà cung cấp nói markup còn báo cáo dùng margin.
+- id: m10_unit_contribution
+  module: m10
+  name_vi: Lãi góp đơn vị và tỷ lệ lãi góp
+  name_en: Unit contribution margin and CM ratio
+  expression_latex: CM = P - VC, \qquad CM\% = \dfrac{P - VC}{P}
+  expression_python: (price - vc) / price
+  excel: =(Price-VC)/Price
+  variables:
+  - price
+  - vc
+  when_to_use: Đầu vào cho hòa vốn, khối lượng cần bù khi giảm giá, so sánh món/gói.
+- id: m10_breakeven_units
+  module: m10
+  name_vi: Sản lượng hòa vốn
+  name_en: Break-even quantity
+  expression_latex: Q_{BE} = \dfrac{FC}{P - VC}
+  expression_python: fixed / (price - vc)
+  excel: =Fixed/(Price-VC)
+  variables:
+  - fixed
+  - price
+  - vc
+  when_to_use: 'Bước 3 quy trình định giá: biết cần bán tối thiểu bao nhiêu ở mức giá đề xuất; so với sức bán thực tế.'
+- id: m10_breakeven_revenue
+  module: m10
+  name_vi: Doanh thu hòa vốn
+  name_en: Break-even revenue
+  expression_latex: R_{BE} = \dfrac{FC}{CM\%}
+  expression_python: fixed / ((price - vc) / price)
+  excel: =Fixed/((Price-VC)/Price)
+  variables:
+  - fixed
+  - price
+  - vc
+  when_to_use: 'Khi có nhiều món/SKU: dùng CM% bình quân gia quyền để ra doanh thu hòa vốn cả cửa hàng.'
+- id: m10_target_profit_units
+  module: m10
+  name_vi: Sản lượng đạt lợi nhuận mục tiêu
+  name_en: Target-profit quantity
+  expression_latex: Q = \dfrac{FC + \pi^*}{P - VC}
+  expression_python: (fixed + target_profit) / (price - vc)
+  excel: =(Fixed+TargetProfit)/(Price-VC)
+  variables:
+  - fixed
+  - target_profit
+  - price
+  - vc
+  when_to_use: 'Chốt giá khi chủ muốn lợi nhuận X/tháng: so sánh Q yêu cầu giữa nhiều mức giá.'
+- id: m10_elasticity_point
+  module: m10
+  name_vi: Độ co giãn của cầu theo giá (điểm, quan sát được)
+  name_en: Price elasticity of demand (point, from two observations)
+  expression_latex: E_p = \dfrac{(Q_1 - Q_0)/Q_0}{(P_1 - P_0)/P_0}
+  expression_python: ((q1 - q0) / q0) / ((p1 - p0) / p0)
+  excel: =((Q1-Q0)/Q0)/((P1-P0)/P0)
+  variables:
+  - p0
+  - p1
+  - q0
+  - q1
+  when_to_use: Sau một thử nghiệm giá/A-B test hoặc thay đổi giá; để quyết định tăng/giảm giá tiếp.
+- id: m10_elasticity_midpoint
+  module: m10
+  name_vi: Độ co giãn điểm giữa (cung)
+  name_en: Arc (midpoint) elasticity
+  expression_latex: E_p = \dfrac{(Q_1 - Q_0)/\frac{Q_0+Q_1}{2}}{(P_1 - P_0)/\frac{P_0+P_1}{2}}
+  expression_python: ((q1 - q0) / ((q0 + q1) / 2)) / ((p1 - p0) / ((p0 + p1) / 2))
+  excel: =((Q1-Q0)/AVERAGE(Q0,Q1))/((P1-P0)/AVERAGE(P0,P1))
+  variables:
+  - p0
+  - p1
+  - q0
+  - q1
+  when_to_use: Khi thay đổi giá lớn (>10%) và muốn kết quả không phụ thuộc chiều tăng/giảm (ngoài nguồn).
+- id: m10_optimal_price_elasticity
+  module: m10
+  name_vi: Giá tối đa hóa lợi nhuận theo độ co giãn
+  name_en: Profit-maximizing price from elasticity (inverse elasticity rule)
+  expression_latex: P^* = VC \times \dfrac{E_p}{1 + E_p}, \quad E_p < -1
+  expression_python: vc * ep / (1 + ep)
+  excel: =VC*Ep/(1+Ep)
+  variables:
+  - vc
+  - ep
+  when_to_use: Ước lượng nhanh điểm giá tối ưu nếu cầu có độ co giãn xấp xỉ hằng số (ngoài nguồn; mô hình lý thuyết).
+- id: m10_required_volume_change
+  module: m10
+  name_vi: Mức tăng/giảm lượng bán cần thiết để bù thay đổi giá
+  name_en: Break-even volume change for a price change
+  expression_latex: \Delta Q\% = \dfrac{-\Delta P\%}{CM\% + \Delta P\%}
+  expression_python: -dp / (cm_pct + dp)
+  excel: =-dP/(CM+dP)
+  variables:
+  - dp
+  - cm_pct
+  when_to_use: 'TRƯỚC mọi chương trình khuyến mãi/giảm giá hoặc khi cân nhắc tăng giá: cần bán thêm bao nhiêu % để lợi nhuận
+    không giảm (ngoài nguồn, công thức chuẩn Nagle).'
+- id: m10_profit_leverage
+  module: m10
+  name_vi: Đòn bẩy lợi nhuận khi đổi giá (lượng không đổi)
+  name_en: Profit leverage of a price change
+  expression_latex: \Delta \pi\% = \dfrac{\Delta P\% \times R}{\pi}
+  expression_python: dp * revenue / operating_profit
+  excel: =dP*Revenue/OperatingProfit
+  variables:
+  - dp
+  - revenue
+  - operating_profit
+  when_to_use: Giải thích 'tăng giá 1% tăng lợi nhuận 8-11%' bằng số của chính DN (kiểm chứng claim McKinsey gắn nguồn).
+- id: m10_evc
+  module: m10
+  name_vi: Giá trị kinh tế cho khách (EVC)
+  name_en: Economic Value to Customer (EVC)
+  expression_latex: EVC = P_{ref} + V_{diff}^{+} - V_{diff}^{-}, \quad P \in [VC, EVC]
+  expression_python: ref_price + positive_diff_value - negative_diff_value
+  excel: =RefPrice+PositiveDiff-NegativeDiff
+  variables:
+  - ref_price
+  - positive_diff_value
+  - negative_diff_value
+  when_to_use: 'Value-Based Pricing B2B/B2C có lợi ích định lượng được (ngoài nguồn: khái niệm EVC của Nagle; nguồn chỉ nêu
+    ''Economic Value'').'
+- id: m10_premium_pct
+  module: m10
+  name_vi: Chênh lệch giá so với đối thủ (price premium)
+  name_en: Price premium vs competitor
+  expression_latex: \text{Premium}\% = \dfrac{P - P_{comp}}{P_{comp}}
+  expression_python: (price - comp_price) / comp_price
+  excel: =(Price-CompPrice)/CompPrice
+  variables:
+  - price
+  - comp_price
+  when_to_use: Bảng so sánh competitive pricing, đo mức premium/discount định vị; kiểm tra case Apple.
+- id: m10_discount_pct
+  module: m10
+  name_vi: Tỷ lệ giảm giá và giá trị cảm nhận của ưu đãi
+  name_en: Discount percentage / savings
+  expression_latex: d = \dfrac{P_{orig} - P_{sale}}{P_{orig}}
+  expression_python: (orig_price - sale_price) / orig_price
+  excel: =(Orig-Sale)/Orig
+  variables:
+  - orig_price
+  - sale_price
+  when_to_use: Kiểm tra tuyên bố 'giảm X%' của gói năm, combo, flash sale; trình bày ưu đãi theo Rule of 100.
+- id: m10_upgrade_increment
+  module: m10
+  name_vi: Mức chênh lên bậc (hiệu ứng chim mồi)
+  name_en: Upgrade increment ratio (decoy check)
+  expression_latex: r = \dfrac{P_{high} - P_{mid}}{P_{mid}}
+  expression_python: (p_high - p_mid) / p_mid
+  excel: =(PHigh-PMid)/PMid
+  variables:
+  - p_high
+  - p_mid
+  when_to_use: 'Thiết kế decoy/GBB: bậc cao chỉ đắt hơn bậc giữa rất ít thì khách nhảy lên bậc cao.'
+- id: m10_menu_price_foodcost
+  module: m10
+  name_vi: Giá món theo food cost mục tiêu
+  name_en: Menu price from target food cost %
+  expression_latex: P = \dfrac{C_{ingredients}}{FC\%}
+  expression_python: ingredient_cost / target_cost_pct
+  excel: =IngredientCost/TargetCostPct
+  variables:
+  - ingredient_cost
+  - target_cost_pct
+  when_to_use: Định giá từng món menu F&B (ngoài nguồn; tương đương margin_price nhưng theo cách nói ngành F&B).
+- id: m10_arpu_mix
+  module: m10
+  name_vi: ARPU/doanh thu bình quân theo cơ cấu tầng GBB
+  name_en: Blended ARPU of tiered price architecture
+  expression_latex: ARPU = \sum_i s_i \times P_i
+  expression_python: sum(s * p for s, p in zip(shares, prices))
+  excel: =SUMPRODUCT(Shares,Prices)
+  variables:
+  - shares
+  - prices
+  when_to_use: 'Đánh giá kiến trúc giá: thêm tầng Best/VVIP làm anchor có tăng doanh thu bình quân/khách không.'
+- id: m10_subscription_unit_economics
+  module: m10
+  name_vi: LTV thuê bao, LTV:CAC và thời gian hoàn vốn CAC
+  name_en: Subscription LTV, LTV:CAC, CAC payback
+  expression_latex: LTV = \dfrac{ARPU \times GM}{c}, \quad \text{Payback} = \dfrac{CAC}{ARPU \times GM}
+  expression_python: arpu * gm / churn
+  excel: =ARPU*GM/Churn
+  variables:
+  - arpu
+  - gm
+  - churn
+  when_to_use: Quyết định giá thuê bao, so sánh gói tháng và gói năm, xác định CAC tối đa (ngoài nguồn; nguồn chỉ nêu MRR/CAC/Churn,
+    chi tiết LTV xem m03).
+- id: m10_freemium_economics
+  module: m10
+  name_vi: Kinh tế học Freemium
+  name_en: Freemium economics (monthly)
+  expression_latex: N_{paid} = N \times c_{conv}; \quad \text{Net} = N_{paid} \times (ARPU - VC_p) - (N - N_{paid}) \times
+    VC_f
+  expression_python: n_users * conv * (arpu - vc_paid) - n_users * (1 - conv) * vc_free
+  excel: =N*Conv*(ARPU-VCpaid)-N*(1-Conv)*VCfree
+  variables:
+  - n_users
+  - conv
+  - arpu
+  - vc_paid
+  - vc_free
+  when_to_use: 'Kiểm tra freemium có bền: lãi từ nhóm trả phí phải bù chi phí nuôi nhóm miễn phí (ngoài nguồn).'
+- id: m11_ugc_engagement_rate
+  module: m11
+  name_vi: Tỷ lệ tương tác của nội dung UGC
+  name_en: UGC Engagement Rate (by reach)
+  expression_latex: ER = \frac{likes + comments + shares + saves}{reach} \times 100
+  expression_python: (likes + comments + shares + saves) / reach * 100
+  excel: =(B2+B3+B4+B5)/B6*100
+  variables:
+  - likes
+  - comments
+  - shares
+  - saves
+  - reach
+  when_to_use: Đánh giá chất lượng tương tác của bài UGC/hashtag; so sánh giữa các loại nội dung hoặc creator.
+- id: m11_ugc_participation_rate
+  module: m11
+  name_vi: Tỷ lệ khách tham gia tạo UGC
+  name_en: UGC Participation Rate
+  expression_latex: PR = \frac{ugc\_posts}{customers\_invited} \times 100
+  expression_python: ugc_posts / customers_invited * 100
+  excel: =B2/B3*100
+  variables:
+  - ugc_posts
+  - customers_invited
+  when_to_use: 'Đo hiệu quả lời kêu gọi/quà tặng/cơ chế: bao nhiêu % khách thực sự tạo nội dung.'
+- id: m11_ugc_cost_per_asset
+  module: m11
+  name_vi: Chi phí trên mỗi nội dung UGC dùng được
+  name_en: Cost per Usable UGC Asset
+  expression_latex: CPA_{ugc} = \frac{prize\_cost + team\_cost + boost\_cost}{usable\_assets}
+  expression_python: (prize_cost + team_cost + boost_cost) / usable_assets
+  excel: =(B2+B3+B4)/B5
+  variables:
+  - prize_cost
+  - team_cost
+  - boost_cost
+  - usable_assets
+  when_to_use: So sánh chi phí UGC với thuê ekip quay (production cost per asset) hoặc với Influencer.
+- id: m11_ugc_conversion_uplift
+  module: m11
+  name_vi: Mức tăng chuyển đổi nhờ UGC
+  name_en: Conversion Uplift from UGC
+  expression_latex: Uplift = \frac{CR_{with} - CR_{without}}{CR_{without}} \times 100
+  expression_python: (cr_with - cr_without) / cr_without * 100
+  excel: =(B2-B3)/B3*100
+  variables:
+  - cr_with
+  - cr_without
+  when_to_use: Kiểm chứng giả thuyết 'UGC làm tăng chốt đơn' bằng A/B test.
+- id: m11_cac
+  module: m11
+  name_vi: Chi phí thu hút khách hàng (CAC)
+  name_en: Customer Acquisition Cost
+  expression_latex: CAC = \frac{total\_marketing\_spend}{new\_customers}
+  expression_python: total_spend / new_customers
+  excel: =B2/B3
+  variables:
+  - total_spend
+  - new_customers
+  when_to_use: Kiểm chứng luận điểm 'Communal Activation/Conversation giảm CAC'; so sánh trước/sau.
+- id: m11_ugc_roi
+  module: m11
+  name_vi: ROI chiến dịch UGC
+  name_en: UGC Campaign ROI
+  expression_latex: ROI = \frac{orders \times AOV \times GM - cost}{cost} \times 100
+  expression_python: (incremental_orders * aov * gross_margin - cost) / cost * 100
+  excel: =(B2*B3*B4-B5)/B5*100
+  variables:
+  - incremental_orders
+  - aov
+  - gross_margin
+  - cost
+  when_to_use: Đánh giá có nên tiếp tục/nhân rộng chiến dịch UGC.
+- id: m11_creator_royalty
+  module: m11
+  name_vi: Hoa hồng chia sẻ cho người đồng sáng tạo
+  name_en: Co-creator Royalty
+  expression_latex: Royalty = Net\ Revenue \times rate
+  expression_python: net_revenue * rate
+  excel: =B2*B3
+  variables:
+  - net_revenue
+  - rate
+  when_to_use: Thiết kế cơ chế thưởng cho khách đề xuất ý tưởng được sản xuất.
+- id: m11_breakeven_units
+  module: m11
+  name_vi: Điểm hòa vốn cho sản phẩm đồng kiến tạo
+  name_en: Break-even Units for a Co-created Product
+  expression_latex: Q_{BE} = \lceil \frac{F}{P - V} \rceil
+  expression_python: math.ceil(fixed_cost / (price - var_cost))
+  excel: =ROUNDUP(B2/(B3-B4),0)
+  variables:
+  - fixed_cost
+  - price
+  - var_cost
+  when_to_use: Cổng khả thi trước khi sản xuất ý tưởng thắng vote (bài học Quirky).
+- id: m11_dynamic_price_capped
+  module: m11
+  name_vi: Giá động có trần và kill switch
+  name_en: Capped Dynamic Price with Kill Switch
+  expression_latex: P = P_{base} \times \max(floor, \min(cap, D/S))
+  expression_python: base_price * (1.0 if kill_switch else max(floor, min(cap, demand / supply)))
+  excel: =B2*IF(B6,1,MAX(B5,MIN(B4,B7/B8)))
+  variables:
+  - base_price
+  - demand
+  - supply
+  - cap
+  - floor
+  - kill_switch
+  when_to_use: Mô phỏng và kiểm soát chính sách giá động theo cung-cầu một cách minh bạch.
+- id: m12_clv_discounted_geometric
+  module: m12
+  name_vi: CLV theo nhóm có chiết khấu (dạng đóng)
+  name_en: Discounted cohort CLV, closed form
+  expression_latex: CLV = \sum_{t=0}^{\infty}\frac{ARPU\cdot m\,(1-c)^t}{(1+d)^t} = \frac{ARPU\cdot m}{1-\frac{1-c}{1+d}}
+  expression_python: arpu*m/(1-(1-c)/(1+d))
+  excel: =ARPU*m/(1-(1-c)/(1+d))
+  variables:
+  - arpu
+  - m
+  - c
+  - d
+  when_to_use: Mô hình thuê bao/SaaS/Fintech với ARPU, biên và churn xấp xỉ không đổi; cần so sánh các kịch bản churn.
+- id: m12_cac_payback
+  module: m12
+  name_vi: Thời gian hoàn vốn CAC
+  name_en: CAC payback period
+  expression_latex: Payback = \frac{CAC}{ARPU\times m}
+  expression_python: cac/(arpu*m)
+  excel: =CAC/(ARPU*m)
+  variables:
+  - cac
+  - arpu
+  - m
+  when_to_use: Đánh giá an toàn dòng tiền khi đốt tiền mua khách; bổ sung CLV/CAC (CLV/CAC cao nhưng payback dài vẫn có thể
+    cạn tiền).
+- id: m12_k_factor
+  module: m12
+  name_vi: Hệ số lan truyền K và tăng trưởng viral
+  name_en: Viral K-factor
+  expression_latex: K=i\times c,\qquad N_n = N_0\sum_{k=0}^{n}K^k\ (\text{tổng người dùng sau } n \text{ vòng})
+  expression_python: K=i*c; N0*sum(K**k for k in range(n+1))
+  excel: =i*c ; tổng = N0*(K^(n+1)-1)/(K-1)
+  variables:
+  - i
+  - c
+  - N0
+  - n
+  when_to_use: Thiết kế/đánh giá referral program, tính CAC hữu cơ, quyết định có cần ngân sách trả phí bổ sung.
+- id: m12_ab_test_z
+  module: m12
+  name_vi: Kiểm định Z cho hai tỷ lệ chuyển đổi (A/B test)
+  name_en: Two-proportion Z-test for A/B testing
+  expression_latex: Z=\frac{\hat p_B-\hat p_A}{\sqrt{\hat p(1-\hat p)\left(\frac{1}{n_A}+\frac{1}{n_B}\right)}},\quad \hat
+    p=\frac{x_A+x_B}{n_A+n_B}
+  expression_python: (pb-pa)/(p*(1-p)*(1/na+1/nb))**0.5
+  excel: =(pB-pA)/SQRT(p*(1-p)*(1/nA+1/nB))
+  variables:
+  - pa, pb
+  - na, nb
+  - p
+  when_to_use: Quyết định có triển khai thay đổi giao diện/CTA/giá không dựa trên dữ liệu thử nghiệm song song.
+- id: m12_ab_sample_size
+  module: m12
+  name_vi: Cỡ mẫu A/B test cho mỗi nhóm
+  name_en: Sample size per arm for two-proportion test
+  expression_latex: n=\frac{\left(z_{\alpha}\sqrt{2\bar p(1-\bar p)}+z_{\beta}\sqrt{p_1(1-p_1)+p_2(1-p_2)}\right)^2}{(p_2-p_1)^2}
+  expression_python: (za*(2*pbar*(1-pbar))**0.5 + zb*(p1*(1-p1)+p2*(1-p2))**0.5)**2/(p2-p1)**2
+  excel: (công thức trực tiếp, hoặc dùng công cụ tính cỡ mẫu A/B)
+  variables:
+  - p1, p2
+  - pbar
+  - za
+  - zb
+  when_to_use: Trước khi chạy A/B để biết cần bao nhiêu lượt truy cập, tránh kết luận khi mẫu quá nhỏ. Công thức này KHÔNG
+    có trong nguồn - bổ sung chuẩn thống kê.
+- id: m12_markov_market_share
+  module: m12
+  name_vi: Dự báo thị phần bằng chuỗi Markov
+  name_en: Markov chain market share forecast
+  expression_latex: '\mathbf s(t)=\mathbf s(0)P^{t},\qquad \boldsymbol\pi P=\boldsymbol\pi,\ \sum\pi_j=1;\ \text{hai thương
+    hiệu: }\pi_A=\frac{p_{21}}{p_{12}+p_{21}}'
+  expression_python: s0 @ np.linalg.matrix_power(P, t);  pi_A = p21/(p12+p21)
+  excel: =MMULT(s0, MMULT(P, P...)) hoặc dùng MMULT lặp; thị phần cân bằng A = p21/(p12+p21)
+  variables:
+  - P
+  - s0
+  - p12, p21
+  when_to_use: Dự báo thị phần dài hạn khi biết xác suất giữ chân/chuyển đổi thương hiệu; xác định đầu tư giữ chân (tăng p11)
+    hay giành khách (tăng p21) hiệu quả hơn.
+- id: m12_attribution_time_decay
+  module: m12
+  name_vi: Trọng số attribution suy giảm theo thời gian và tuyến tính
+  name_en: Linear and time-decay attribution
+  expression_latex: w_i^{linear}=\frac1M,\qquad w_t=2^{-\Delta t/\lambda},\ \ \tilde w_t=\frac{w_t}{\sum_j w_j}
+  expression_python: w=[2**(-d/lam) for d in deltas]; wn=[x/sum(w) for x in w]
+  excel: =2^(-dt/lambda) rồi chuẩn hóa chia tổng
+  variables:
+  - M
+  - dt
+  - lam
+  when_to_use: Phân bổ giá trị đơn hàng cho nhiều kênh khi chưa đủ dữ liệu cho mô hình Markov.
+- id: m12_attribution_markov_removal
+  module: m12
+  name_vi: Attribution Markov - Hiệu ứng loại bỏ (Removal Effect)
+  name_en: Markov chain attribution via removal effect
+  expression_latex: RE(K_i)=\frac{P(conv)-P(conv\mid K_i\ removed)}{P(conv)},\qquad Attr(K_i)=\frac{RE(K_i)}{\sum_jRE(K_j)}
+  expression_python: re=(p_all-p_without)/p_all; attr=re/sum(all_re)
+  excel: (tính xác suất hấp thụ từ ma trận chuyển; không có hàm sẵn - dùng Python/BI)
+  variables:
+  - P(conv)
+  - P(conv | K removed)
+  when_to_use: Có dữ liệu hành trình đa kênh đủ lớn (chuỗi điểm chạm + kết quả); muốn phân bổ ngân sách dựa trên đóng góp
+    biên của từng kênh.
+- id: m12_survival_weibull
+  module: m12
+  name_vi: Hàm sống sót cohort dạng Weibull kéo giãn
+  name_en: Stretched-exponential (Weibull) cohort survival
+  expression_latex: S(t)=S_0\,e^{-\alpha t^{\beta}}
+  expression_python: s0*math.exp(-alpha*t**beta)
+  excel: =S0*EXP(-alpha*t^beta)
+  variables:
+  - S0
+  - alpha
+  - beta
+  - t
+  when_to_use: Chẩn đoán đường cong giữ chân cohort thực tế; so sánh alpha, beta giữa các cohort/phiên bản sản phẩm.
+- id: m12_lerner_optimal_price
+  module: m12
+  name_vi: Giá tối ưu theo độ co giãn (quy tắc Lerner)
+  name_en: Optimal price under constant elasticity (Lerner rule)
+  expression_latex: P^*=C\,\frac{\varepsilon}{\varepsilon-1},\qquad \frac{P^*-C}{P^*}=\frac1\varepsilon
+  expression_python: C*eps/(eps-1)
+  excel: =C*eps/(eps-1)
+  variables:
+  - C
+  - eps
+  when_to_use: Ước lượng mức markup tối ưu theo sức mạnh thương hiệu khi cầu co giãn không đổi Q = K x P^(-eps); đối chiếu
+    bổ sung m10.
+- id: m12_dynamic_price
+  module: m12
+  name_vi: Giá động theo cung cầu và tốc độ đặt phòng
+  name_en: Dynamic price adjusted by demand-supply gap and booking speed
+  expression_latex: P(t)=P_{base}\left(1+\alpha\frac{D-S}{D+S}\right)e^{\gamma(1-\tau)}
+  expression_python: base*(1+alpha*(D-S)/(D+S))*math.exp(gamma*(1-tau))
+  excel: =Base*(1+alpha*(D-S)/(D+S))*EXP(gamma*(1-tau))
+  variables:
+  - D
+  - S
+  - alpha
+  - tau
+  - gamma
+  when_to_use: Minh họa logic giá động cho homestay/khách sạn nhỏ/co-living; làm điểm xuất phát chứ không phải thuật toán
+    Airbnb thật.
+- id: m12_sir_virality
+  module: m12
+  name_vi: Mô hình SIR cho lan truyền phản ứng ngược trên mạng xã hội
+  name_en: SIR epidemic analogy for crisis virality, with R0
+  expression_latex: \frac{dS}{dt}=-\beta SI,\quad \frac{dI}{dt}=\beta SI-\gamma I,\quad R_0=\frac{\beta S_0}{\gamma}
+  expression_python: 'R0 = beta*S0/gamma  # I tăng nếu R0 > 1; mô phỏng Euler: S+=-beta*S*I*dt; I+=(beta*S*I-gamma*I)*dt'
+  excel: (mô phỏng bảng tính theo từng bước thời gian)
+  variables:
+  - S
+  - I
+  - beta
+  - gamma
+  when_to_use: Giải thích vì sao phản ứng ngược tăng mũ trong 24-48 giờ đầu và vì sao phải hành động cực sớm; định cỡ nguồn
+    lực xử lý khủng hoảng.
+- id: m12_contribution_margin_usage
+  module: m12
+  name_vi: Biên đóng góp theo mức sử dụng và điểm hòa vốn của gói thuê bao không giới hạn
+  name_en: Contribution margin per subscriber vs usage; usage break-even
+  expression_latex: m(q)=ARPU-q\cdot v,\qquad q^*=\frac{ARPU}{v}
+  expression_python: arpu - q*v ;  q_star = arpu/v
+  excel: =ARPU-q*v ; =ARPU/v
+  variables:
+  - arpu
+  - v
+  - q
+  when_to_use: 'Thiết kế gói thuê bao ''không giới hạn'' (Phở Pass, cà phê đồng giá, vé xem phim): kiểm tra số lần dùng hòa
+    vốn trước khi mở bán đại trà.'
+- id: m12_kmeans_silhouette
+  module: m12
+  name_vi: Phân cụm K-Means và hệ số Silhouette
+  name_en: K-Means objective and Silhouette coefficient
+  expression_latex: \arg\min_S\sum_{i=1}^{K}\sum_{x\in S_i}\lVert x-\mu_i\rVert^2,\qquad s(i)=\frac{b(i)-a(i)}{\max(a(i),b(i))}
+  expression_python: '# sklearn: KMeans(n_clusters=K).fit(X); silhouette_score(X, labels)'
+  excel: (không có hàm sẵn; dùng Python/Power BI/Tableau)
+  variables:
+  - x
+  - mu_i
+  - a(i)
+  - b(i)
+  when_to_use: Phân khúc theo hành vi thực khi có dữ liệu giao dịch/ứng dụng (từ vài nghìn khách); bổ sung cho phân khúc nhân
+    khẩu học ở m01.

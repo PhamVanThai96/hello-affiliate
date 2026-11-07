@@ -1,0 +1,316 @@
+id: accounting-playbooks
+title: "Kế toán — playbook (quy trình giải quyết từng loại vấn đề)"
+summary: "Các playbook pb_* theo bộ định tuyến."
+agents: ["accountant"]
+order: 60
+when: ["__chi_tra_cuu_bang_skill_search__"]
+sections:
+  - id: "pb-pb_journal_entry"
+    title: "Playbook pb_journal_entry — Định khoản kép và ghi sổ cho nghiệp vụ phát sinh; xử lý bút toán điều chỉnh cuối kỳ"
+    tags: ["pb_journal_entry", "định", "khoản", "kép", "và", "ghi", "sổ", "cho", "nghiệp", "vụ", "phát", "sinh"]
+    text: |-
+      goal: Định khoản kép và ghi sổ cho nghiệp vụ phát sinh; xử lý bút toán điều chỉnh cuối kỳ
+      modules:
+      - m01
+      intake:
+      - mô tả nghiệp vụ và chứng từ
+      - ngày
+      - số tiền (có/không VAT)
+      - chế độ kế toán TT200 hoặc TT133
+      - phương pháp tính giá tồn kho và khấu hao
+      - đối tượng liên quan
+      steps:
+      - Xác định bản chất kinh tế nghiệp vụ (tài sản, nợ, vốn chủ, doanh thu hoặc chi phí thay đổi thế nào)
+      - Xác định tài khoản bị ảnh hưởng và bên Nợ/Có theo quy tắc tăng giảm của từng loại tài khoản
+      - 'Lập bút toán dạng bảng: Diễn giải, TK Nợ, TK Có, Số tiền; tách riêng VAT đầu vào/đầu ra'
+      - Kiểm tra tổng Nợ = tổng Có; ghi vào sổ cái và tính số dư
+      - 'Cuối kỳ: bút toán điều chỉnh (trích trước, phân bổ chi phí trả trước, khấu hao, dự phòng, ghi nhận doanh thu chưa thực hiện) và kết chuyển'
+      - 'Nếu có thuế/hóa đơn/mức phạt: tra web_search hoặc web_fetch, ghi nguồn và ngày, nhắc xác nhận kế toán thuế'
+      sanity:
+      - tổng Nợ bằng tổng Có
+      - số dư tài khoản đúng chiều tự nhiên
+      - bản chất nghiệp vụ phù hợp chuẩn mực
+      - không ghi nhận sai kỳ
+      output: Bảng bút toán (rpt_journal_entries) + ghi chú pháp lý cần xác nhận
+  - id: "pb-pb_financial_statements"
+    title: "Playbook pb_financial_statements — Lập và đọc BCTC (BS, IS, CFS) từ bảng cân đối thử hoặc bút toán"
+    tags: ["pb_financial_statements", "lập", "và", "đọc", "bctc", "bs", "is", "cfs", "từ", "bảng", "cân", "đối"]
+    text: |-
+      goal: Lập và đọc BCTC (BS, IS, CFS) từ bảng cân đối thử hoặc bút toán
+      modules:
+      - m01
+      - m06
+      intake:
+      - bảng cân đối thử cuối kỳ
+      - số dư đầu kỳ
+      - doanh thu và chi phí kỳ
+      - khấu hao
+      - thuế TNDN
+      - cổ tức
+      - giao dịch đầu tư và tài trợ
+      steps:
+      - 'Lập IS: doanh thu thuần, giá vốn, lợi nhuận gộp, chi phí hoạt động, EBIT, lãi vay, EBT, thuế, lợi nhuận ròng'
+      - 'Lập BS: tài sản ngắn hạn/dài hạn, nợ ngắn hạn/dài hạn, vốn chủ (lợi nhuận giữ lại = đầu kỳ + lợi nhuận ròng - cổ tức)'
+      - 'Lập CFS gián tiếp: lợi nhuận ròng điều chỉnh khấu hao và thay đổi vốn lưu động, rồi dòng tiền đầu tư và tài trợ'
+      - Đối chiếu tiền cuối kỳ trên CFS với tiền trên BS
+      - 'Đọc nhanh: common-size, tăng trưởng ngang/dọc, nêu 3 điểm bất thường'
+      sanity:
+      - tài sản bằng nợ cộng vốn chủ
+      - tiền CFS khớp BS
+      - lợi nhuận ròng IS khớp lợi nhuận giữ lại
+      - tổng các dòng CFS bằng thay đổi tiền
+      output: Bộ 3 báo cáo (rpt_financial_statements) + nhận xét + khuyến nghị
+  - id: "pb-pb_cvp_analysis"
+    title: "Playbook pb_cvp_analysis — Phân tích chi phí-khối lượng-lợi nhuận, điểm hòa vốn và quyết định ngắn hạn"
+    tags: ["pb_cvp_analysis", "phân", "tích", "chi", "phí", "khối", "lượng", "lợi", "nhuận", "điểm", "hòa", "vốn"]
+    text: |-
+      goal: Phân tích chi phí-khối lượng-lợi nhuận, điểm hòa vốn và quyết định ngắn hạn
+      modules:
+      - m02
+      - m03
+      intake:
+      - giá bán
+      - biến phí đơn vị
+      - định phí kỳ
+      - công suất
+      - sản lượng hiện tại
+      - lợi nhuận mục tiêu
+      - phương án cần so sánh
+      steps:
+      - Phân loại chi phí biến phí, định phí, hỗn hợp (tách bằng high-low hoặc hồi quy nếu cần)
+      - Tính contribution margin đơn vị và tỷ lệ CM
+      - Tính sản lượng và doanh thu hòa vốn; sản lượng đạt lợi nhuận mục tiêu
+      - Tính biên an toàn và đòn bẩy hoạt động (DOL)
+      - 'Với đa sản phẩm: dùng CM bình quân theo cơ cấu bán; kiểm tra thay đổi cơ cấu'
+      - 'Quyết định ngắn hạn (nhận đơn đặc biệt, làm hay mua, bỏ sản phẩm): so sánh chi phí liên quan, bỏ chi phí chìm'
+      - 'Độ nhạy: giá, biến phí, định phí thay đổi ±10%, ±20%'
+      sanity:
+      - doanh thu hòa vốn bằng tổng chi phí tại điểm đó
+      - CM dương
+      - định phí không đổi trong phạm vi liên quan
+      decision: Nhận đơn hoặc giữ sản phẩm nếu CM tăng thêm dương và còn công suất, không làm xung đột kênh giá
+      output: Bảng CVP + đồ thị hòa vốn + độ nhạy + khuyến nghị
+  - id: "pb-pb_job_costing"
+    title: "Playbook pb_job_costing — Tính giá thành đơn hàng hoặc sản phẩm để báo giá và kiểm soát lợi nhuận"
+    tags: ["pb_job_costing", "tính", "giá", "thành", "đơn", "hàng", "hoặc", "sản", "phẩm", "để", "báo", "và"]
+    text: |-
+      goal: Tính giá thành đơn hàng hoặc sản phẩm để báo giá và kiểm soát lợi nhuận
+      modules:
+      - m03
+      - m02
+      intake:
+      - nguyên vật liệu trực tiếp
+      - nhân công trực tiếp (giờ
+      - đơn giá)
+      - chi phí sản xuất chung dự toán
+      - cơ sở phân bổ dự toán
+      - số lượng
+      - sản phẩm dở dang (nếu process)
+      steps:
+      - Tính tỷ lệ phân bổ chi phí chung dự toán = chi phí chung dự toán / cơ sở phân bổ dự toán
+      - Gom chi phí trực tiếp theo đơn hàng; phân bổ chi phí chung theo tỷ lệ
+      - Giá thành đơn hàng và giá thành đơn vị; cộng biên lợi nhuận mục tiêu để ra giá chào
+      - 'Cuối kỳ: so chi phí chung phân bổ và thực tế, xử lý chênh lệch (over/under applied)'
+      - 'Process costing: quy đổi sản lượng tương đương, tính giá thành đơn vị công đoạn'
+      sanity:
+      - tổng chi phí phân bổ bằng tổng chi phí chung thực tế sau điều chỉnh
+      - giá thành đơn vị nhân số lượng bằng tổng giá thành
+      output: Bảng giá thành (rpt_costing) + báo giá đề xuất
+  - id: "pb-pb_abc_costing"
+    title: "Playbook pb_abc_costing — Phân bổ chi phí chung theo hoạt động để thấy lợi nhuận thực từng sản phẩm hoặc khách hàng"
+    tags: ["pb_abc_costing", "phân", "bổ", "chi", "phí", "chung", "theo", "hoạt", "động", "để", "thấy", "lợi"]
+    text: |-
+      goal: Phân bổ chi phí chung theo hoạt động để thấy lợi nhuận thực từng sản phẩm hoặc khách hàng
+      modules:
+      - m03
+      - m02
+      intake:
+      - danh sách hoạt động và chi phí từng hoạt động
+      - cost driver và khối lượng driver
+      - sản phẩm/khách hàng và mức tiêu thụ hoạt động
+      - doanh thu và chi phí trực tiếp
+      steps:
+      - Lập cost pool theo hoạt động và chọn cost driver có quan hệ nhân quả
+      - Tính tỷ lệ driver = chi phí pool / tổng khối lượng driver
+      - Phân bổ chi phí cho từng sản phẩm hoặc khách hàng theo mức dùng driver
+      - So sánh lợi nhuận ABC với phân bổ truyền thống; chỉ ra sản phẩm lỗ ẩn hoặc lãi ảo
+      - 'Đề xuất: điều chỉnh giá, đổi cơ cấu, giảm hoạt động không tạo giá trị, loại bỏ khách hàng lỗ'
+      sanity:
+      - tổng chi phí phân bổ ABC bằng tổng chi phí chung
+      - tổng lợi nhuận hai phương pháp bằng nhau
+      output: Bảng ABC + so sánh với phương pháp truyền thống + hành động
+  - id: "pb-pb_budget_master"
+    title: "Playbook pb_budget_master — Lập ngân sách tổng thể liên kết và dự phóng BCTC cho năm tới"
+    tags: ["pb_budget_master", "lập", "ngân", "sách", "tổng", "thể", "liên", "kết", "và", "dự", "phóng", "bctc"]
+    text: |-
+      goal: Lập ngân sách tổng thể liên kết và dự phóng BCTC cho năm tới
+      modules:
+      - m04
+      - m02
+      - m01
+      intake:
+      - dự báo doanh thu theo tháng/sản phẩm
+      - chính sách tồn kho
+      - định mức nguyên vật liệu và nhân công
+      - chi phí cố định
+      - đầu tư TSCĐ
+      - chính sách thu chi
+      - vay và cổ tức
+      - số dư đầu kỳ
+      steps:
+      - Ngân sách bán hàng (số lượng x giá), từ đó ngân sách sản xuất theo tồn kho mục tiêu
+      - Ngân sách nguyên vật liệu, nhân công, chi phí sản xuất chung, chi phí bán hàng và quản lý
+      - Ngân sách đầu tư TSCĐ và khấu hao
+      - 'Ngân sách tiền: thu từ doanh thu theo chính sách thu, chi theo chính sách trả, vay và trả nợ, kiểm tra số dư tối thiểu'
+      - Dự phóng IS, BS, CFS và kiểm tra cân đối
+      - Kịch bản xấu/cơ sở/tốt; thiết lập ngân sách linh hoạt cho kỳ kiểm soát
+      sanity:
+      - BS dự phóng cân đối
+      - tiền cuối kỳ khớp ngân sách tiền
+      - tồn kho cuối khớp ngân sách sản xuất
+      - không tháng nào tiền âm mà không có phương án bù
+      output: Bộ ngân sách (rpt_budget) + dự phóng BCTC + kịch bản
+  - id: "pb-pb_cash_flow_13week"
+    title: "Playbook pb_cash_flow_13week — Dự báo dòng tiền 13 tuần để phát hiện thiếu hụt sớm và ra quyết định thu chi"
+    tags: ["pb_cash_flow_13week", "dự", "báo", "dòng", "tiền", "13", "tuần", "để", "phát", "hiện", "thiếu", "hụt"]
+    text: |-
+      goal: Dự báo dòng tiền 13 tuần để phát hiện thiếu hụt sớm và ra quyết định thu chi
+      modules:
+      - m04
+      - m06
+      - m01
+      intake:
+      - tiền đầu kỳ
+      - công nợ phải thu theo tuổi nợ và lịch thu
+      - công nợ phải trả và lịch trả
+      - lương
+      - thuế
+      - thuê mặt bằng
+      - trả nợ vay
+      - dự kiến doanh số theo tuần
+      - chi đầu tư
+      steps:
+      - Lập lưới 13 tuần với dòng thu, dòng chi, dòng tiền thuần, tiền đầu và cuối tuần
+      - Dự báo thu theo tuổi nợ phải thu và xác suất thu; dự báo chi theo hợp đồng và lịch đến hạn
+      - Xác định tuần thấp nhất của số dư tiền và khoảng thiếu hụt
+      - 'Phương án bù: đẩy nhanh thu, giãn lịch trả, đàm phán điều khoản, hạn mức vay, hoãn chi đầu tư'
+      - Cập nhật hàng tuần (rolling), so sánh thực tế với dự báo và hiệu chỉnh giả định
+      sanity:
+      - tiền cuối tuần này bằng tiền đầu tuần sau
+      - tổng dòng tiền thuần bằng thay đổi tiền
+      - mọi khoản đến hạn đã được đưa vào
+      output: Lưới 13 tuần (rpt_budget) + cảnh báo thanh khoản + hành động
+  - id: "pb-pb_variance_analysis"
+    title: "Playbook pb_variance_analysis — Giải thích chênh lệch giữa thực tế và ngân sách/định mức và chỉ ra hành động khắc phục"
+    tags: ["pb_variance_analysis", "giải", "thích", "chênh", "lệch", "giữa", "thực", "tế", "và", "ngân", "sách", "định"]
+    text: |-
+      goal: Giải thích chênh lệch giữa thực tế và ngân sách/định mức và chỉ ra hành động khắc phục
+      modules:
+      - m05
+      - m04
+      - m03
+      intake:
+      - ngân sách tĩnh
+      - thực tế
+      - định mức giá và lượng
+      - sản lượng thực tế
+      - số liệu theo bộ phận
+      steps:
+      - Lập ngân sách linh hoạt theo sản lượng thực tế
+      - Tách chênh lệch doanh thu thành giá bán và khối lượng
+      - Tách chênh lệch nguyên vật liệu và nhân công thành giá (rate) và lượng (usage/efficiency)
+      - Chênh lệch chi phí chung biến đổi và cố định (chi tiêu, hiệu suất, công suất)
+      - Gắn dấu F hoặc U; xác định chênh lệch trọng yếu (ngưỡng % hoặc số tiền, ví dụ 5-10%)
+      - Tìm nguyên nhân gốc (mua, sản xuất, bán hàng) và người chịu trách nhiệm; đề xuất hành động
+      sanity:
+      - tổng các chênh lệch thành phần bằng chênh lệch tổng
+      - định mức hợp lý và cập nhật
+      output: Bảng chênh lệch (rpt_variance) + nguyên nhân + hành động
+  - id: "pb-pb_ratio_diagnosis"
+    title: "Playbook pb_ratio_diagnosis — Chẩn đoán sức khỏe tài chính bằng tỷ số, DuPont và xu hướng"
+    tags: ["pb_ratio_diagnosis", "chẩn", "đoán", "sức", "khỏe", "tài", "chính", "bằng", "tỷ", "số", "dupont", "và"]
+    text: |-
+      goal: Chẩn đoán sức khỏe tài chính bằng tỷ số, DuPont và xu hướng
+      modules:
+      - m06
+      - m01
+      - m05
+      intake:
+      - BCTC 2-3 kỳ
+      - số liệu ngành để so sánh
+      - mục tiêu phân tích (vay
+      - đầu tư
+      - gọi vốn)
+      steps:
+      - Làm sạch số liệu (khoản bất thường, phân loại lại, điều chỉnh EBITDA nếu cần)
+      - 'Tính nhóm tỷ số: thanh khoản, hoạt động, đòn bẩy, sinh lời, dòng tiền'
+      - 'DuPont: tách ROE thành biên lợi nhuận, vòng quay tài sản, đòn bẩy tài chính'
+      - So sánh xu hướng nhiều kỳ và benchmark ngành (ghi độ tin cậy)
+      - Xác định điểm mạnh, điểm yếu, nguyên nhân gốc
+      - Khuyến nghị theo mức ưu tiên; chuyển financial_expert hoặc stock_analyst nếu cần định giá
+      sanity:
+      - công thức dùng số bình quân hay cuối kỳ nhất quán
+      - ROE DuPont bằng ROE trực tiếp
+      - chia cho mẫu số khác 0
+      output: Báo cáo chẩn đoán (rpt_ratio_diagnosis) + bảng ưu tiên hành động
+  - id: "pb-pb_inventory_depreciation"
+    title: "Playbook pb_inventory_depreciation — Tính giá vốn tồn kho, khấu hao tài sản cố định, ghi nhận doanh thu đúng kỳ"
+    tags: ["pb_inventory_depreciation", "tính", "giá", "vốn", "tồn", "kho", "khấu", "hao", "tài", "sản", "cố", "định"]
+    text: |-
+      goal: Tính giá vốn tồn kho, khấu hao tài sản cố định, ghi nhận doanh thu đúng kỳ
+      modules:
+      - m01
+      - m03
+      intake:
+      - nhập xuất tồn theo lô
+      - phương pháp tính giá
+      - nguyên giá TSCĐ
+      - thời gian sử dụng
+      - giá trị thanh lý ước tính
+      - sản lượng ước tính
+      - điều kiện hợp đồng doanh thu
+      steps:
+      - Tính giá xuất kho theo FIFO hoặc bình quân gia quyền; lập thẻ kho
+      - Giá vốn = tồn đầu + nhập - tồn cuối; kiểm tra bằng tổng xuất
+      - Khấu hao theo đường thẳng, số dư giảm dần hoặc sản lượng; lập bảng khấu hao
+      - Đánh giá giảm giá tồn kho (giá thấp hơn giữa giá gốc và giá trị thuần thực hiện) và lập dự phòng ở mức nguyên tắc
+      - Ghi nhận doanh thu khi chuyển giao quyền kiểm soát/nghĩa vụ thực hiện; xử lý doanh thu chưa thực hiện
+      - Nhắc xác nhận quy định hiện hành về thời gian khấu hao tối thiểu/tối đa và chi phí được trừ
+      sanity:
+      - tồn đầu cộng nhập trừ xuất bằng tồn cuối
+      - khấu hao lũy kế không vượt nguyên giá trừ giá trị thanh lý
+      - tổng khấu hao các kỳ bằng giá trị khấu hao được
+      output: Thẻ kho, bảng khấu hao, bút toán điều chỉnh
+  - id: "pb-pb_integrated_review"
+    title: "Playbook pb_integrated_review — Rà soát tích hợp: kế toán tài chính, quản trị, giá thành, ngân sách, chênh lệch, tỷ số cho một doan…"
+    tags: ["pb_integrated_review", "rà", "soát", "tích", "hợp", "kế", "toán", "tài", "chính", "quản", "trị", "giá"]
+    text: |-
+      goal: 'Rà soát tích hợp: kế toán tài chính, quản trị, giá thành, ngân sách, chênh lệch, tỷ số cho một doanh nghiệp hoặc case'
+      modules:
+      - m07
+      - m08
+      - m01
+      - m02
+      - m03
+      - m04
+      - m05
+      - m06
+      intake:
+      - mô tả doanh nghiệp và mục tiêu
+      - BCTC
+      - cấu trúc chi phí
+      - kế hoạch
+      - thực tế
+      - vấn đề đang gặp
+      steps:
+      - Đọc BCTC (m01, m06) để xác định vấn đề trọng tâm
+      - Phân tích cấu trúc chi phí và hòa vốn (m02), kiểm tra giá thành và lợi nhuận theo sản phẩm (m03)
+      - Đối chiếu kế hoạch và thực tế (m04, m05) và tìm nguyên nhân
+      - Lập kế hoạch hành động và ngân sách phục hồi, dự phóng 12 tháng (m04)
+      - Tham chiếu case tương tự trong m07/m08 để rút bài học; nêu rõ phần là số minh họa
+      - Tổng hợp theo lộ trình ưu tiên 30-60-90 ngày; chuyển financial_expert nếu cần định giá/gọi vốn
+      sanity:
+      - các báo cáo khớp nhau
+      - giả định nhất quán giữa các bước
+      - số liệu giả định được gắn nhãn
+      output: Báo cáo tổng hợp (rpt_integrated_review)

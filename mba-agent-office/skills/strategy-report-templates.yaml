@@ -1,0 +1,341 @@
+id: strategy-report-templates
+title: "Chiến lược — mẫu báo cáo/bảng biểu"
+summary: "Cấu trúc chung và các mẫu báo cáo chiến lược kinh doanh."
+agents: ["strategist"]
+order: 61
+when: ["__chi_tra_cuu_bang_skill_search__"]
+sections:
+  - id: "tpl-cau-truc-chung"
+    title: "Mẫu báo cáo — cấu trúc chung"
+    tags: ["mẫu", "báo", "cáo", "cấu", "trúc"]
+    text: |-
+      - 1. Tóm tắt điều hành (kết luận + phát hiện chính + khuyến nghị trong 3-5 dòng)
+      - 2. Bối cảnh và dữ liệu đầu vào (kèm nhãn VERIFIED/GIẢ ĐỊNH/CHƯA KIỂM CHỨNG)
+      - 3. Framework sử dụng và lý do chọn (kèm giới hạn)
+      - '4. Phân tích từng bước (bảng chấm điểm: tiêu chí, trọng số, điểm, bằng chứng)'
+      - 5. Phân tích độ nhạy / kịch bản
+      - 6. Diễn giải ý nghĩa kinh doanh và so sánh benchmark
+      - 7. Lựa chọn chiến lược và khuyến nghị (ưu/nhược, điều kiện thay đổi khuyến nghị)
+      - 8. Rủi ro, giả định, giới hạn và disclaimer
+      - 9. KPI theo dõi và bước hành động tiếp theo (người phụ trách, hạn)
+  - id: "tpl-rpt_strategic_overview"
+    title: "Mẫu báo cáo rpt_strategic_overview — Báo cáo chiến lược tổng thể"
+    tags: ["rpt_strategic_overview", "báo", "cáo", "chiến", "lược", "tổng", "thể", "mẫu"]
+    text: |-
+      title: Báo cáo chiến lược tổng thể
+      tables:
+      - name: Tóm tắt điều hành
+        columns:
+        - Hạng mục
+        - Kết luận chính
+        - Bằng chứng
+        - Độ tin cậy
+      - name: Tổng hợp framework
+        columns:
+        - Framework
+        - Phát hiện chính
+        - Hàm ý chiến lược
+        - Độ tin cậy
+      - name: Lựa chọn chiến lược
+        columns:
+        - Phương án
+        - Mô tả
+        - Điểm có trọng số
+        - Ưu điểm
+        - Nhược điểm
+        - Rủi ro
+        - Khuyến nghị
+      - name: Lộ trình hành động
+        columns:
+        - Giai đoạn
+        - Hành động
+        - Người phụ trách
+        - Hạn
+        - Nguồn lực
+        - KPI
+      - name: Rủi ro chính
+        columns:
+        - Rủi ro
+        - Xác suất
+        - Tác động
+        - Biện pháp giảm thiểu
+        - Tín hiệu cảnh báo
+  - id: "tpl-rpt_pestel_five_forces"
+    title: "Mẫu báo cáo rpt_pestel_five_forces — Báo cáo phân tích môi trường bên ngoài (PESTEL và Năm lực lượng)"
+    tags: ["rpt_pestel_five_forces", "báo", "cáo", "phân", "tích", "môi", "trường", "bên", "ngoài", "pestel", "và", "năm"]
+    text: |-
+      title: Báo cáo phân tích môi trường bên ngoài (PESTEL và Năm lực lượng)
+      tables:
+      - name: PESTEL
+        columns:
+        - Nhóm
+        - Yếu tố
+        - Cơ hội hay Đe dọa
+        - Mức tác động 1-5
+        - Xác suất
+        - Thời điểm
+        - Bằng chứng
+        - Độ tin cậy
+      - name: Năm lực lượng
+        columns:
+        - Lực lượng
+        - Tiêu chí đánh giá
+        - Điểm 1-5
+        - Trọng số
+        - Điểm có trọng số
+        - Bằng chứng
+      - name: Mức hấp dẫn ngành
+        columns:
+        - Chỉ số
+        - Giá trị
+        - Kết luận
+      - name: Cơ hội và đe dọa rút ra
+        columns:
+        - Loại
+        - Mô tả
+        - Ưu tiên
+        - Hành động ứng phó
+  - id: "tpl-rpt_swot_vrio"
+    title: "Mẫu báo cáo rpt_swot_vrio — Báo cáo phân tích nội bộ (SWOT/TOWS, VRIO, Chuỗi giá trị)"
+    tags: ["rpt_swot_vrio", "báo", "cáo", "phân", "tích", "nội", "bộ", "swot", "tows", "vrio", "chuỗi", "giá"]
+    text: |-
+      title: Báo cáo phân tích nội bộ (SWOT/TOWS, VRIO, Chuỗi giá trị)
+      tables:
+      - name: Chuỗi giá trị
+        columns:
+        - Hoạt động
+        - Chính hay hỗ trợ
+        - Chi phí
+        - Giá trị tạo ra
+        - So với đối thủ
+        - Đánh giá
+      - name: VRIO
+        columns:
+        - Nguồn lực/Năng lực
+        - Giá trị
+        - Hiếm
+        - Khó bắt chước
+        - Tổ chức khai thác
+        - Kết luận lợi thế
+      - name: SWOT
+        columns:
+        - Điểm mạnh
+        - Điểm yếu
+        - Cơ hội
+        - Đe dọa
+      - name: TOWS
+        columns:
+        - Nhóm chiến lược
+        - Mô tả
+        - Tác động
+        - Tính khả thi
+        - Ưu tiên
+  - id: "tpl-rpt_competitive_strategy"
+    title: "Mẫu báo cáo rpt_competitive_strategy — Báo cáo lựa chọn chiến lược cạnh tranh"
+    tags: ["rpt_competitive_strategy", "báo", "cáo", "lựa", "chọn", "chiến", "lược", "cạnh", "tranh", "mẫu"]
+    text: |-
+      title: Báo cáo lựa chọn chiến lược cạnh tranh
+      tables:
+      - name: Chấm điểm chiến lược
+        columns:
+        - Chiến lược
+        - Tiêu chí
+        - Trọng số
+        - Điểm 1-5
+        - Điểm có trọng số
+        - Bằng chứng
+      - name: Điều kiện cần và rủi ro kẹt giữa
+        columns:
+        - Chiến lược
+        - Điều kiện cần
+        - Doanh nghiệp đáp ứng
+        - Khoảng cách
+        - Rủi ro
+      - name: Điều KHÔNG làm
+        columns:
+        - Hành động
+        - Lý do loại bỏ
+        - Đánh đổi chấp nhận
+  - id: "tpl-rpt_growth_portfolio"
+    title: "Mẫu báo cáo rpt_growth_portfolio — Báo cáo hướng tăng trưởng và danh mục (Ansoff, BCG)"
+    tags: ["rpt_growth_portfolio", "báo", "cáo", "hướng", "tăng", "trưởng", "và", "danh", "mục", "ansoff", "bcg", "mẫu"]
+    text: |-
+      title: Báo cáo hướng tăng trưởng và danh mục (Ansoff, BCG)
+      tables:
+      - name: Ma trận Ansoff
+        columns:
+        - Hướng
+        - Ý tưởng
+        - Hấp dẫn
+        - Rủi ro
+        - Nguồn lực cần
+        - Thời gian
+        - Điểm có trọng số
+      - name: BCG
+        columns:
+        - Sản phẩm/Đơn vị
+        - Doanh thu
+        - Thị phần tương đối
+        - Tăng trưởng thị trường
+        - Phân loại
+        - Hành động
+      - name: Thứ tự ưu tiên và gate
+        columns:
+        - Ưu tiên
+        - Hướng
+        - Điểm kiểm tra
+        - Tiêu chí dừng
+        - Ngân sách thử nghiệm
+  - id: "tpl-rpt_strategy_canvas_errc"
+    title: "Mẫu báo cáo rpt_strategy_canvas_errc — Báo cáo Đại dương xanh (Strategy Canvas và ERRC)"
+    tags: ["rpt_strategy_canvas_errc", "báo", "cáo", "đại", "dương", "xanh", "strategy", "canvas", "và", "errc", "mẫu"]
+    text: |-
+      title: Báo cáo Đại dương xanh (Strategy Canvas và ERRC)
+      tables:
+      - name: Strategy Canvas
+        columns:
+        - Yếu tố cạnh tranh
+        - Đối thủ A
+        - Đối thủ B
+        - Hiện tại
+        - Đề xuất mới
+      - name: Lưới ERRC
+        columns:
+        - Loại bỏ
+        - Giảm
+        - Tăng
+        - Tạo mới
+      - name: Không-khách-hàng
+        columns:
+        - Nhóm
+        - Đặc điểm
+        - Rào cản
+        - Giá trị đề xuất
+      - name: Kế hoạch thử nghiệm
+        columns:
+        - Giả thuyết
+        - Cách kiểm chứng
+        - Chỉ số thành công
+        - Ngân sách
+        - Hạn
+  - id: "tpl-rpt_bsc"
+    title: "Mẫu báo cáo rpt_bsc — Thẻ điểm cân bằng (BSC)"
+    tags: ["rpt_bsc", "thẻ", "điểm", "cân", "bằng", "bsc", "mẫu", "báo", "cáo"]
+    text: |-
+      title: Thẻ điểm cân bằng (BSC)
+      tables:
+      - name: Bảng BSC
+        columns:
+        - Góc nhìn
+        - Mục tiêu
+        - KPI
+        - Công thức
+        - Nguồn dữ liệu
+        - Tần suất
+        - Chỉ tiêu
+        - Ngưỡng cảnh báo
+        - Sáng kiến
+        - Người phụ trách
+      - name: Quan hệ nhân quả (bản đồ chiến lược)
+        columns:
+        - Mục tiêu nguồn
+        - Mục tiêu đích
+        - Giả thuyết nhân quả
+        - Cách kiểm chứng
+      - name: Theo dõi kỳ
+        columns:
+        - KPI
+        - Thực tế
+        - Chỉ tiêu
+        - Chênh lệch
+        - Trạng thái xanh vàng đỏ
+        - Hành động
+  - id: "tpl-rpt_scenario_plan"
+    title: "Mẫu báo cáo rpt_scenario_plan — Báo cáo lập kế hoạch kịch bản"
+    tags: ["rpt_scenario_plan", "báo", "cáo", "lập", "kế", "hoạch", "kịch", "bản", "mẫu"]
+    text: |-
+      title: Báo cáo lập kế hoạch kịch bản
+      tables:
+      - name: Động lực thay đổi
+        columns:
+        - Động lực
+        - Chắc chắn hay bất định
+        - Tác động
+        - Mức bất định
+      - name: Kịch bản 2x2
+        columns:
+        - Kịch bản
+        - Trục 1
+        - Trục 2
+        - Mô tả
+        - Xác suất
+      - name: Ứng phó theo kịch bản
+        columns:
+        - Kịch bản
+        - Tác động lên doanh nghiệp
+        - Chiến lược ứng phó
+        - Nguồn lực
+        - Hành động không hối tiếc
+      - name: Tín hiệu cảnh báo
+        columns:
+        - Tín hiệu
+        - Chỉ số theo dõi
+        - Ngưỡng kích hoạt
+        - Hành động
+        - Người phụ trách
+  - id: "tpl-rpt_case_analysis"
+    title: "Mẫu báo cáo rpt_case_analysis — Báo cáo phân tích case study"
+    tags: ["rpt_case_analysis", "báo", "cáo", "phân", "tích", "case", "study", "mẫu"]
+    text: |-
+      title: Báo cáo phân tích case study
+      tables:
+      - name: Timeline
+        columns:
+        - Mốc thời gian
+        - Sự kiện
+        - Quyết định
+        - Kết quả
+        - Độ tin cậy dữ kiện
+      - name: Áp dụng framework
+        columns:
+        - Framework
+        - Phát hiện
+        - Giải thích kết quả
+      - name: Nguyên nhân và bài học
+        columns:
+        - Nguyên nhân
+        - Kiểm soát được hay không
+        - Bài học
+        - Áp dụng cho SME
+  - id: "tpl-rpt_meeting_minutes"
+    title: "Mẫu báo cáo rpt_meeting_minutes — Biên bản họp chiến lược và nhắc việc"
+    tags: ["rpt_meeting_minutes", "biên", "bản", "họp", "chiến", "lược", "và", "nhắc", "việc", "mẫu", "báo", "cáo"]
+    text: |-
+      title: Biên bản họp chiến lược và nhắc việc
+      tables:
+      - name: Thông tin cuộc họp
+        columns:
+        - Ngày
+        - Thành viên
+        - Mục tiêu
+        - Tài liệu liên quan
+      - name: Quyết định
+        columns:
+        - Quyết định
+        - Lý do
+        - Phương án đã loại
+        - Rủi ro
+        - Điều kiện xem lại
+      - name: Hành động
+        columns:
+        - Hành động
+        - Người phụ trách
+        - Hạn
+        - Trạng thái
+        - KPI liên quan
+      - name: Vấn đề còn mở
+        columns:
+        - Vấn đề
+        - Còn thiếu gì
+        - Người xử lý
+        - Hạn

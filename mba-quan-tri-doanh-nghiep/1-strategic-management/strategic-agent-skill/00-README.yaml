@@ -1,0 +1,73 @@
+# 00-README.yaml — ĐIỂM VÀO. Agent mới: đọc file này TRƯỚC, rồi làm theo load_order.
+skill:
+  id: strategic-agent-skill
+  version: 1.0
+  language: "vi (thuật ngữ Anh trong ngoặc)"
+  created: 2026-11-07
+  purpose: >
+    Bộ tri thức đã chắt lọc từ giáo trình "Quản trị chiến lược doanh nghiệp" (MBA ứng dụng SME Việt Nam)
+    để một agent Strategist tư vấn, giải đáp, phân tích, lập bảng biểu/báo cáo và đề xuất phương án
+    cho mọi vấn đề chiến lược kinh doanh: phân tích môi trường ngoài, năng lực nội bộ, chiến lược cạnh tranh,
+    hướng tăng trưởng, đại dương xanh, thẻ điểm cân bằng, lập kế hoạch kịch bản và phân tích case study.
+  source_material: >
+    Các file markdown trong thư mục cha 1-strategic-management (01-phan-tich-moi-truong-ben-ngoai.md ...
+    08-CASE-STUDY-The-Coffee-House.md và các case tích hợp). Skill này tự đủ (self-contained):
+    agent không cần đọc file markdown gốc để làm việc; markdown gốc chỉ để tham chiếu sâu thêm nếu có.
+  portability: >
+    Chỉ gồm YAML (+ 1 script Python tùy chọn). Copy nguyên thư mục strategic-agent-skill/ sang máy khác là dùng được.
+    Không có đường dẫn tuyệt đối, không phụ thuộc phần mềm ngoài. Script kiểm tra cần python3 + pyyaml.
+
+how_to_bootstrap:    # dành cho agent mới hoàn toàn
+  step_1: Đọc toàn bộ file này.
+  step_2: Đọc 01-agent-profile.yaml (vai trò Strategist, nguyên tắc, quy trình trả lời, nhãn độ tin cậy) — BẮT BUỘC tuân thủ.
+  step_3: Đọc SCHEMA.yaml để hiểu cấu trúc các module (khóa frameworks, formulas, case_lessons...).
+  step_4: Với mỗi yêu cầu của người dùng, dùng 02-decision-router.yaml để chọn module + playbook.
+  step_5: Nạp module cần dùng trong modules/ (đọc đầy đủ), tra công thức/thang điểm ở 06-formulas-index.yaml, chạy playbook ở 03-playbooks.yaml.
+  step_6: Trình bày kết quả theo 04-report-templates.yaml; tra thuật ngữ ở 05-glossary.yaml.
+  note_on_context: >
+    Nếu giới hạn ngữ cảnh chặt: luôn nạp 00, 01, 02; chỉ nạp thêm module liên quan (router chỉ ra tối đa 3-4 module cho mỗi tình huống).
+    Yêu cầu mơ hồ thì dùng pb_clarify_request trước khi nạp module.
+
+load_order:
+  always: [00-README.yaml, 01-agent-profile.yaml, 02-decision-router.yaml]
+  on_demand: [03-playbooks.yaml, 04-report-templates.yaml, 05-glossary.yaml, 06-formulas-index.yaml, "modules/*.yaml"]
+  reference_only: [SCHEMA.yaml]
+
+file_index:
+  - {file: 00-README.yaml, role: "Điểm vào, hướng dẫn nạp skill"}
+  - {file: SCHEMA.yaml, role: "Định nghĩa cấu trúc dữ liệu"}
+  - {file: 01-agent-profile.yaml, role: "Vai trò Strategist, phạm vi, nguyên tắc, workflow, disclaimer"}
+  - {file: 02-decision-router.yaml, role: "Định tuyến câu hỏi sang module và playbook, chuỗi module cho bài toán đa chiều"}
+  - {file: 03-playbooks.yaml, role: "10 kịch bản giải quyết vấn đề chiến lược end-to-end"}
+  - {file: 04-report-templates.yaml, role: "Mẫu báo cáo/bảng biểu đầu ra"}
+  - {file: 05-glossary.yaml, role: "Thuật ngữ Việt-Anh và ký hiệu"}
+  - {file: 06-formulas-index.yaml, role: "Registry công thức và thang điểm (sinh tự động từ modules)"}
+  - {file: modules/m01-external-environment.yaml, role: "PESTEL và Năm lực lượng Porter"}
+  - {file: modules/m02-internal-analysis.yaml, role: "SWOT/TOWS, VRIO, Chuỗi giá trị"}
+  - {file: modules/m03-competitive-strategy.yaml, role: "Chiến lược cạnh tranh chung Porter (chi phí thấp, khác biệt hóa, tập trung)"}
+  - {file: modules/m04-growth-strategy.yaml, role: "Ansoff, BCG, GE-McKinsey, hướng tăng trưởng"}
+  - {file: modules/m05-blue-ocean-strategy.yaml, role: "Đại dương xanh: Strategy Canvas, ERRC, Four Actions"}
+  - {file: modules/m06-balanced-scorecard.yaml, role: "Thẻ điểm cân bằng, bản đồ chiến lược, KPI"}
+  - {file: modules/m07-scenario-planning.yaml, role: "Lập kế hoạch theo kịch bản, bất định then chốt"}
+  - {file: modules/m08-case-the-coffee-house.yaml, role: "Case The Coffee House tích hợp nhiều framework"}
+  - {file: modules/m09-strategic-case-studies-part1.yaml, role: "Cẩm nang case chiến lược tích hợp phần 1"}
+  - {file: modules/m10-strategic-case-studies-part2.yaml, role: "Cẩm nang case chiến lược tích hợp phần 2"}
+
+maintenance:
+  validate: "python3 tools/build_and_validate.py   # kiểm tra YAML, trùng id, sinh lại 06-formulas-index.yaml"
+  update_rule: "Sửa module trong modules/, rồi chạy lại script để cập nhật 06-formulas-index.yaml."
+  data_quality_notes: >
+    Mỗi case_lessons có data_reliability (verified/illustrative/unverified). Số liệu công ty thật (doanh thu, thị phần, số cửa hàng)
+    và dữ kiện pháp lý/chính sách VN cần đối chiếu nguồn gốc trước khi dùng cho quyết định thật.
+    Xem known_data_caveats trong 01-agent-profile.yaml.
+
+conventions_for_calculation:
+  expression_python: >
+    Chiến lược ít công thức hơn tài chính; các công thức chính là thang chấm điểm có trọng số (weighted score),
+    HHI/CR4, xác suất kịch bản, chỉ số BCG (thị phần tương đối), ma trận Ansoff/GE. expression_python dùng tên biến khớp mục variables;
+    là mã tham chiếu, không nhất thiết eval một dòng.
+  scoring_rule: >
+    Mọi bảng chấm điểm framework phải hiển thị tiêu chí, thang điểm, trọng số (tổng trọng số = 100% hoặc 1,0) và phép nhân trọng số x điểm.
+    Điểm là phán đoán có cơ sở, không phải số đo khách quan — luôn ghi nguồn bằng chứng và độ tin cậy.
+  source_errors_note: >
+    Khi hai nguồn mâu thuẫn, ưu tiên YAML (đã kiểm tính) hơn markdown gốc.

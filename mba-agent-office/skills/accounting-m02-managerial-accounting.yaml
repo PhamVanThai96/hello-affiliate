@@ -1,0 +1,1684 @@
+id: accounting-m02
+title: "Kế toán m02: Kế toán quản trị"
+summary: "Dùng cùng một dữ liệu kế toán để trả lời câu hỏi nội bộ \"nên làm gì tiếp theo\": phân loại chi phí theo hành vi/truy nguyên/mục đích ra quyết định, phân tích Chi phí - Khối lượng - Lợi nhuận (CVP, hòa vốn, biên an toàn, đòn bẩy hoạt động), so sánh tính giá toàn bộ với tính giá tr…"
+agents: ["accountant"]
+order: 22
+when: ["ke toan quan tri", "cvp", "hoa von", "break-even", "contribution margin", "so du dam phi", "dinh phi", "bien phi", "don bay hoat dong", "margin of safety", "bien an toan", "lam hay mua", "nhan don hang dac biet", "bo day chuyen", "gia ban toi thieu", "managerial accounting"]
+body_max: 2909
+sections:
+  - id: "m02-tong-quan"
+    title: "Tổng quan m02"
+    tags: ["m02", "kế", "toán", "quản", "trị", "managerial", "accounting"]
+    text: |-
+      Kế toán quản trị (Managerial Accounting) — module m02
+
+      Mục đích: Dùng cùng một dữ liệu kế toán để trả lời câu hỏi nội bộ "nên làm gì tiếp theo": phân loại chi phí theo hành vi/truy nguyên/mục đích ra quyết định, phân tích Chi phí - Khối lượng - Lợi nhuận (CVP, hòa vốn, biên an toàn, đòn bẩy hoạt động), so sánh tính giá toàn bộ với tính giá trực tiếp, và ra quyết định ngắn hạn (tự làm/mua ngoài, đơn hàng đặc biệt, giữ/dừng sản phẩm) dựa trên chi phí thích hợp.
+
+      Dùng khi:
+      - Chủ SME hỏi 'bán bao nhiêu thì hòa vốn / muốn lãi X thì phải bán bao nhiêu / giảm giá 10% thì sao?'.
+      - Cần tách chi phí hỗn hợp (điện, internet, bảo trì) thành định phí + biến phí (High-Low hoặc hồi quy).
+      - Sản phẩm nào đó 'lỗ sau phân bổ' và chủ đang định dừng; cần xét segment margin và định phí tránh được.
+      - Nhận đơn hàng giá thấp (đơn đặc biệt) hoặc cân nhắc tự sản xuất vs gia công/mua ngoài.
+      - Lợi nhuận theo kế toán tài chính khác lợi nhuận theo báo cáo CM (absorption vs variable costing); thưởng quản đốc theo lợi nhuận.
+      - Cần lập P&L theo sản phẩm/chi nhánh/kênh, unit economics theo đơn hàng, tính DOL/biên an toàn.
+      - Cần đánh giá tính trung thực của chỉ tiêu quản trị tự tạo (kiểu Community Adjusted EBITDA).
+
+      Nên nắm trước: - m01 - Kế toán tài chính (BCTC, nguyên tắc phù hợp, giá vốn, tồn kho)
+
+      Module liên quan: - 'm01 - Financial Accounting: quản trị phải đối chiếu (reconcile) được với lợi nhuận kế toán tài chính; absorption costing là chuẩn VAS/IFRS' - 'm03 - Cost Accounting: giá thành, phân bổ MOH, ABC giải quyết vấn đề phân bổ tùy tiện nêu ở đây' - 'm04 - Budgeting and Forecasting: ngân sách dựa trên CVP và hành vi chi phí' - 'm05 - Variance Analysis: so Budget vs Actual hàng tháng' - 'm06 - Financia…
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m02_cm_unit: Số dư đảm phí đơn vị và tỷ lệ CM
+      - m02_bep_units: Điểm hòa vốn theo sản lượng
+      - m02_bep_sales: Điểm hòa vốn theo doanh thu
+      - m02_target_units: Sản lượng đạt lợi nhuận mục tiêu
+      - m02_profit_cvp: Lợi nhuận theo CVP
+      - m02_mos: Biên an toàn
+      - m02_dol: Đòn bẩy hoạt động
+      - m02_high_low: Tách chi phí hỗn hợp điểm cao - điểm thấp
+      - m02_product_cost: Prime cost, Conversion cost, Giá thành sản phẩm
+      - m02_weighted_cm_bep: Hòa vốn đa sản phẩm
+      - m02_segment_margin: Số dư bộ phận và quy tắc giữ/dừng
+      - m02_make_or_buy: Tự làm hay mua ngoài
+      - m02_special_order: Đơn hàng đặc biệt
+      - m02_absorption_vs_variable: Chênh lệch lợi nhuận giữa tính giá toàn bộ và tính giá trực…
+      - m02_overhead_alloc_revenue: Phân bổ định phí chung theo doanh thu
+
+      Kho tra cứu của module: Khái niệm 25, Công thức 15, frameworks 7, Quy trình 5, Quy tắc quyết định 15, Chuẩn so sánh 6, Lỗi thường gặp 17, Lưu ý SME Việt Nam 9, Bài học case 3, Ví dụ có lời giải 7, Câu hỏi luyện tập 10, Checklist 17, Mẫu Excel/Sheets 6. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ định khoản", "lỗi thường gặp khấu hao").
+  - id: "m02-concepts-1"
+    title: "Khái niệm: Kế toán quản trị"
+    tags: ["khái", "niệm", "kế", "toán", "quản", "trị"]
+    text: |-
+      term_vi: Kế toán quản trị
+      term_en: Managerial Accounting
+      definition: |
+        Quá trình nhận diện, đo lường, tích lũy, phân tích, soạn lập, diễn giải và truyền đạt thông tin tài chính và phi tài chính để nhà quản lý nội bộ lập kế hoạch (Planning), kiểm soát (Controlling), ra quyết định (Decision Making) và đánh giá hiệu suất (Performance Evaluation). Định nghĩa của IMA.
+      why_it_matters: |
+        Kế toán tài chính phục vụ người ngoài (nhà đầu tư, ngân hàng, thuế), theo chuẩn mực, nhìn quá khứ, toàn doanh nghiệp, nên không trả lời được "ly nào lãi nhất, bán bao nhiêu thì hòa vốn". Kế toán quản trị hình thành trong cách mạng công nghiệp thế kỷ 19 (nhà máy dệt Lowell, đường sắt, Carnegie Steel) để đo hiệu quả từng phân xưởng; đầu thế kỷ 20 DuPont và GM bổ sung ROI và ngân sách linh hoạt; năm 1987 Kaplan và Johnson (Relevance Lost) phê phán kế toán quản trị bị kế toán tài chính nuốt chửng, dẫn tới ABC và Balanced Scorecard. Bản chất là cách nhìn lại cùng dữ liệu để quyết định hành động.
+  - id: "m02-concepts-2"
+    title: "Khái niệm: So sánh kế toán quản trị và kế toán tài chính"
+    tags: ["khái", "niệm", "so", "sánh", "kế", "toán", "quản", "trị", "và", "tài", "chính"]
+    text: |-
+      term_vi: So sánh kế toán quản trị và kế toán tài chính
+      term_en: Managerial vs Financial Accounting
+      definition: |
+        Tài chính: người dùng bên ngoài, bắt buộc theo luật (VAS/IFRS), quá khứ định kỳ, đơn vị là toàn doanh nghiệp, đo bằng tiền, phải chính xác và kiểm toán được. Quản trị: người dùng nội bộ, không bắt buộc hình thức, quá khứ cộng tương lai, đơn vị là sản phẩm/khách/kênh/chi nhánh, đo cả tiền và phi tiền tệ (giờ máy, số khách, tỷ lệ lỗi), ưu tiên đúng tương đối và kịp thời.
+      why_it_matters: |
+        Quản trị được phép phân loại khác (biến phí/định phí) nhưng tổng lợi nhuận cuối kỳ phải đối chiếu được với kế toán tài chính; chênh lệch (vd định phí nằm trong tồn kho) phải giải thích được. Vì không bị chuẩn mực ràng buộc nên dễ bị làm đẹp (case WeWork).
+  - id: "m02-concepts-3"
+    title: "Khái niệm: Biến phí"
+    tags: ["khái", "niệm", "biến", "phí"]
+    text: |-
+      term_vi: Biến phí
+      term_en: Variable Cost
+      definition: Tổng chi phí thay đổi tỷ lệ với mức hoạt động/sản lượng; biến phí đơn vị không đổi trong phạm vi thích hợp (nguyên liệu, hoa hồng, phí giao hàng).
+      why_it_matters: Là cơ sở tính CM; cho biết mỗi đơn vị bán thêm tốn thêm bao nhiêu.
+  - id: "m02-concepts-4"
+    title: "Khái niệm: Định phí"
+    tags: ["khái", "niệm", "định", "phí"]
+    text: |-
+      term_vi: Định phí
+      term_en: Fixed Cost
+      definition: Tổng chi phí không đổi khi sản lượng thay đổi trong phạm vi thích hợp (thuê mặt bằng, lương quản lý, bảo hiểm); định phí đơn vị giảm khi sản lượng tăng.
+      why_it_matters: Là 'điểm tựa' của đòn bẩy hoạt động; quyết định điểm hòa vốn.
+  - id: "m02-concepts-5"
+    title: "Khái niệm: Chi phí hỗn hợp (bán biến phí)"
+    tags: ["khái", "niệm", "chi", "phí", "hỗn", "hợp", "bán", "biến"]
+    text: |-
+      term_vi: Chi phí hỗn hợp (bán biến phí)
+      term_en: Mixed / Semi-variable Cost
+      definition: 'Chi phí có cả phần cố định và phần theo mức hoạt động, dạng Y = a + bX (điện: phí cố định + phí theo kWh, điện thoại).'
+      why_it_matters: Phải tách ra (High-Low hoặc hồi quy) trước khi làm CVP, nếu không BEP sai.
+  - id: "m02-concepts-6"
+    title: "Khái niệm: Chi phí bậc thang"
+    tags: ["khái", "niệm", "chi", "phí", "bậc", "thang"]
+    text: |-
+      term_vi: Chi phí bậc thang
+      term_en: Step Cost
+      definition: Cố định trong một khoảng sản lượng rồi nhảy bậc khi vượt công suất (thuê thêm quản lý khi quy mô tăng).
+      why_it_matters: Cảnh báo CVP chỉ đúng trong phạm vi thích hợp; vượt khoảng đó phải dựng lại cấu trúc chi phí.
+  - id: "m02-concepts-7"
+    title: "Khái niệm: Phạm vi thích hợp"
+    tags: ["khái", "niệm", "phạm", "vi", "thích", "hợp"]
+    text: |-
+      term_vi: Phạm vi thích hợp
+      term_en: Relevant Range
+      definition: Khoảng sản lượng mà định phí còn cố định và biến phí đơn vị còn không đổi.
+      why_it_matters: Quán 3.000 ly và 30.000 ly/tháng không thể dùng chung mặt bằng và nhân sự; mọi kết quả CVP chỉ đáng tin trong khoảng này.
+  - id: "m02-concepts-8"
+    title: "Khái niệm: Chi phí trực tiếp / gián tiếp"
+    tags: ["khái", "niệm", "chi", "phí", "trực", "tiếp", "gián"]
+    text: |-
+      term_vi: Chi phí trực tiếp / gián tiếp
+      term_en: Direct / Indirect Cost (Overhead)
+      definition: 'Trực tiếp: truy nguyên thẳng đến đối tượng chi phí (bột mì vào Bánh A). Gián tiếp: không truy nguyên được, phải phân bổ theo tiêu thức (thuê xưởng, lương quản đốc, điện).'
+      why_it_matters: Phân bổ càng tùy tiện, lợi nhuận từng sản phẩm càng sai; nguồn gốc ra đời của ABC (m03).
+  - id: "m02-concepts-9"
+    title: "Khái niệm: Chi phí thích hợp"
+    tags: ["khái", "niệm", "chi", "phí", "thích", "hợp"]
+    text: |-
+      term_vi: Chi phí thích hợp
+      term_en: Relevant Cost
+      definition: Chi phí (và doanh thu) thuộc về tương lai và khác nhau giữa các phương án. Chỉ chúng được đưa vào phân tích quyết định ngắn hạn.
+      why_it_matters: 'Loại nhiễu: chi phí chìm và phần phân bổ không đổi dù chọn phương án nào. Tránh ngụy biện chi phí chìm.'
+  - id: "m02-concepts-10"
+    title: "Khái niệm: Chi phí chìm"
+    tags: ["khái", "niệm", "chi", "phí", "chìm"]
+    text: |-
+      term_vi: Chi phí chìm
+      term_en: Sunk Cost
+      definition: Đã phát sinh, không thu hồi được; không thích hợp cho quyết định (vd tiền R&D đã chi cho sản phẩm thất bại).
+      why_it_matters: Tiếp tục đầu tư vì 'đã bỏ ra quá nhiều' là sai lầm kinh điển (WeWork mở thêm địa điểm dù các điểm cũ chưa lãi).
+  - id: "m02-concepts-11"
+    title: "Khái niệm: Chi phí cơ hội"
+    tags: ["khái", "niệm", "chi", "phí", "cơ", "hội"]
+    text: |-
+      term_vi: Chi phí cơ hội
+      term_en: Opportunity Cost
+      definition: Giá trị bị mất khi chọn phương án này thay vì phương án tốt nhất còn lại (không cho thuê mặt bằng để tự kinh doanh; công suất dùng cho đơn đặc biệt thay đơn thường).
+      why_it_matters: Không xuất hiện trong sổ sách nhưng quyết định kết quả khi hết công suất.
+  - id: "m02-concepts-12"
+    title: "Khái niệm: Chi phí tăng thêm"
+    tags: ["khái", "niệm", "chi", "phí", "tăng", "thêm"]
+    text: |-
+      term_vi: Chi phí tăng thêm
+      term_en: Incremental (Differential) Cost
+      definition: Chi phí phát sinh thêm khi thay đổi quyết định (chi phí sản xuất thêm 100 sản phẩm).
+      why_it_matters: Cơ sở so sánh dòng tiền tăng thêm giữa phương án.
+  - id: "m02-concepts-13"
+    title: "Khái niệm: Chi phí tránh được"
+    tags: ["khái", "niệm", "chi", "phí", "tránh", "được"]
+    text: |-
+      term_vi: Chi phí tránh được
+      term_en: Avoidable Cost
+      definition: Chi phí sẽ mất đi nếu dừng sản phẩm/bộ phận (lương nhân viên chuyên trách một dòng sản phẩm).
+      why_it_matters: Quyết định dừng/giữ so CM với định phí tránh được, không so với định phí phân bổ.
+  - id: "m02-concepts-14"
+    title: "Khái niệm: Chi phí kiểm soát được"
+    tags: ["khái", "niệm", "chi", "phí", "kiểm", "soát", "được"]
+    text: |-
+      term_vi: Chi phí kiểm soát được
+      term_en: Controllable Cost
+      definition: Chi phí mà một nhà quản lý cụ thể có quyền quyết định (chi phí quảng cáo thuộc Marketing Manager).
+      why_it_matters: Đánh giá hiệu suất bộ phận chỉ công bằng khi dựa trên khoản kiểm soát được.
+  - id: "m02-concepts-15"
+    title: "Khái niệm: Chi phí sản phẩm và chi phí thời kỳ"
+    tags: ["khái", "niệm", "chi", "phí", "sản", "phẩm", "và", "thời", "kỳ"]
+    text: |-
+      term_vi: Chi phí sản phẩm và chi phí thời kỳ
+      term_en: Product Cost vs Period Cost
+      definition: |
+        Chi phí sản phẩm (NVL trực tiếp + NC trực tiếp + chi phí sản xuất chung) được cộng vào giá trị tồn kho và chỉ thành giá vốn khi bán. Chi phí thời kỳ (bán hàng, quản lý) ghi nhận ngay trong kỳ phát sinh.
+      why_it_matters: Theo nguyên tắc phù hợp (Matching), ảnh hưởng đến giá thành, tồn kho và lợi nhuận kỳ.
+  - id: "m02-concepts-16"
+    title: "Khái niệm: Chi phí cơ bản và chi phí chuyển đổi"
+    tags: ["khái", "niệm", "chi", "phí", "cơ", "bản", "và", "chuyển", "đổi"]
+    text: |-
+      term_vi: Chi phí cơ bản và chi phí chuyển đổi
+      term_en: Prime Cost / Conversion Cost
+      definition: Prime = NVL trực tiếp + NC trực tiếp (phần chạm tay vào sản phẩm). Conversion = NC trực tiếp + chi phí sản xuất chung (chi phí biến nguyên liệu thành thành phẩm).
+      why_it_matters: Hai khái niệm dùng nhiều trong giá thành (m03).
+  - id: "m02-concepts-17"
+    title: "Khái niệm: Số dư đảm phí"
+    tags: ["khái", "niệm", "số", "dư", "đảm", "phí"]
+    text: |-
+      term_vi: Số dư đảm phí
+      term_en: Contribution Margin (CM)
+      definition: Giá bán trừ biến phí; phần đóng góp trước hết để trả định phí, sau khi đủ định phí phần dư mới thành lợi nhuận.
+      why_it_matters: Hòa vốn chính là sản lượng mà tổng CM vừa bằng tổng định phí; CM là ngôn ngữ chung của CVP, đòn bẩy và quyết định.
+  - id: "m02-concepts-18"
+    title: "Khái niệm: Điểm hòa vốn"
+    tags: ["khái", "niệm", "điểm", "hòa", "vốn"]
+    text: |-
+      term_vi: Điểm hòa vốn
+      term_en: Break-Even Point (BEP)
+      definition: Mức sản lượng/doanh thu mà tổng CM bằng tổng định phí (lợi nhuận bằng 0).
+      why_it_matters: Khái niệm hình thành những năm 1920-1930 tại nhà máy Mỹ (đồ thị hòa vốn của Walter Rautenstrauch, 1922) để giám đốc thấy bằng mắt điểm doanh thu vừa đủ trang trải mọi chi phí.
+  - id: "m02-concepts-19"
+    title: "Khái niệm: Biên an toàn"
+    tags: ["khái", "niệm", "biên", "an", "toàn"]
+    text: |-
+      term_vi: Biên an toàn
+      term_en: Margin of Safety (MoS)
+      definition: Phần trăm doanh thu thực tế có thể sụt trước khi bắt đầu lỗ.
+      why_it_matters: Đo rủi ro dưới ngưỡng hòa vốn; nghịch đảo của DOL.
+  - id: "m02-concepts-20"
+    title: "Khái niệm: Đòn bẩy hoạt động"
+    tags: ["khái", "niệm", "đòn", "bẩy", "hoạt", "động"]
+    text: |-
+      term_vi: Đòn bẩy hoạt động
+      term_en: Operating Leverage (DOL)
+      definition: 'Độ nhạy của lợi nhuận hoạt động với doanh thu: %ΔLợi nhuận = DOL x %ΔDoanh thu, tại mức doanh thu đang xét và biến động nhỏ.'
+      why_it_matters: Định phí lớn, biến phí nhỏ (nhà máy, phần mềm, thuê dài hạn) làm lãi vọt khi bán tăng nhưng lỗ sâu khi bán giảm; DOL tự thay đổi khi doanh thu thay đổi lớn.
+  - id: "m02-concepts-21"
+    title: "Khái niệm: Cơ cấu bán hàng"
+    tags: ["khái", "niệm", "cơ", "cấu", "bán", "hàng"]
+    text: |-
+      term_vi: Cơ cấu bán hàng
+      term_en: Sales Mix
+      definition: Tỷ trọng doanh thu (hoặc sản lượng) giữa các sản phẩm.
+      why_it_matters: CVP đa sản phẩm chỉ đúng khi mix không đổi; mix dịch sang sản phẩm CM thấp làm BEP thực tế cao hơn tính toán.
+  - id: "m02-concepts-22"
+    title: "Khái niệm: Tính giá toàn bộ"
+    tags: ["khái", "niệm", "tính", "giá", "toàn", "bộ"]
+    text: |-
+      term_vi: Tính giá toàn bộ
+      term_en: Absorption Costing
+      definition: Định phí sản xuất chung được phân bổ vào giá thành sản phẩm, nằm trong tồn kho đến khi bán. Chuẩn của VAS/IFRS.
+      why_it_matters: Sản xuất dư vẫn làm lợi nhuận 'tăng' vì định phí bị chôn vào tồn kho; có thể bị lợi dụng để làm đẹp số.
+  - id: "m02-concepts-23"
+    title: "Khái niệm: Tính giá trực tiếp"
+    tags: ["khái", "niệm", "tính", "giá", "trực", "tiếp"]
+    text: |-
+      term_vi: Tính giá trực tiếp
+      term_en: Variable (Direct) Costing
+      definition: Chỉ biến phí sản xuất vào giá thành; toàn bộ định phí sản xuất tính vào chi phí kỳ. Cơ sở của báo cáo CM.
+      why_it_matters: Lợi nhuận phản ánh sức bán, không bị tồn kho làm méo; dùng cho CVP và đánh giá quản đốc.
+  - id: "m02-concepts-24"
+    title: "Khái niệm: Số dư bộ phận"
+    tags: ["khái", "niệm", "số", "dư", "bộ", "phận"]
+    text: |-
+      term_vi: Số dư bộ phận
+      term_en: Segment Margin
+      definition: CM của sản phẩm/bộ phận trừ định phí trực tiếp (tránh được) của chính nó, chưa trừ định phí chung.
+      why_it_matters: Thước đo đúng để giữ hay dừng một dòng sản phẩm; tránh bẫy 'lỗ sau phân bổ'.
+  - id: "m02-concepts-25"
+    title: "Khái niệm: Kinh tế đơn vị"
+    tags: ["khái", "niệm", "kinh", "tế", "đơn", "vị"]
+    text: |-
+      term_vi: Kinh tế đơn vị
+      term_en: Unit Economics
+      definition: Doanh thu trừ mọi biến phí trên một đơn vị (đơn hàng/khách/ly) gồm fulfillment, vận chuyển, hoàn trả, phí sàn, chiết khấu; là CM trên mỗi đơn.
+      why_it_matters: Nếu CM/đơn dương và cải thiện thì tăng quy mô sẽ pha loãng định phí (Amazon); nếu bỏ sót chi phí thì unit economics ảo (WeWork).
+  - id: "m02-formulas-1"
+    title: "Công thức: m02_cm_unit — Số dư đảm phí đơn vị và tỷ lệ CM"
+    tags: ["công", "thức", "m02_cm_unit", "số", "dư", "đảm", "phí", "đơn", "vị", "và", "tỷ", "lệ"]
+    text: |-
+      id: m02_cm_unit
+      name_vi: Số dư đảm phí đơn vị và tỷ lệ CM
+      name_en: Contribution Margin per Unit and CM Ratio
+      expression_latex: \text{CM}=P-V,\quad \text{CM Ratio}=\frac{P-V}{P}
+      expression_python: (P - V, (P - V) / P)
+      excel: =P-V ; =(P-V)/P
+      variables:
+      - symbol: P
+        meaning: Giá bán đơn vị
+        unit: VNĐ/đơn vị
+      - symbol: V
+        meaning: Biến phí đơn vị (nguyên liệu, bao bì, ship, hoa hồng, phí sàn)
+        unit: VNĐ/đơn vị
+      when_to_use: Bước đầu của mọi phân tích CVP, định giá, so sánh sản phẩm.
+      why_it_works: |
+        Mỗi đơn vị bán ra đóng góp P-V, khoản này trước hết đi trả định phí. CM Ratio cho biết mỗi 100đ doanh thu để lại bao nhiêu sau biến phí, nên so sánh được các sản phẩm khác giá.
+      assumptions:
+      - P và V không đổi trong phạm vi thích hợp.
+      pitfalls:
+      - Bỏ sót biến phí ẩn (phí sàn, ship, hoàn trả, chiết khấu, hoa hồng) làm CM ảo.
+      - Nhầm lãi gộp (sau COGS) với CM (sau toàn bộ biến phí, gồm biến phí bán hàng).
+      interpretation: 'CM ratio cao (quán cà phê 70%) thì định phí chiếm phần lớn cấu trúc; thấp (trading 20%) thì rủi ro biến phí. Ví dụ P=50.000, V=15.000: CM 35.000, ratio 70%.'
+      example:
+        inputs:
+          P: 50000
+          V: 15000
+        steps:
+        - CM = 50.000 - 15.000 = 35.000
+        - CM Ratio = 35.000 / 50.000 = 0,70
+        result: CM = 35.000đ/ly; CM Ratio = 70%
+  - id: "m02-formulas-2"
+    title: "Công thức: m02_bep_units — Điểm hòa vốn theo sản lượng"
+    tags: ["công", "thức", "m02_bep_units", "điểm", "hòa", "vốn", "theo", "sản", "lượng"]
+    text: |-
+      id: m02_bep_units
+      name_vi: Điểm hòa vốn theo sản lượng
+      name_en: Break-Even Point (units)
+      expression_latex: \text{BEP}_{units}=\frac{FC}{P-V}
+      expression_python: FC / (P - V)
+      excel: =FC/(P-V)
+      variables:
+      - symbol: FC
+        meaning: Tổng định phí kỳ
+        unit: VNĐ/kỳ
+      - symbol: P
+        meaning: Giá bán đơn vị
+        unit: VNĐ
+      - symbol: V
+        meaning: Biến phí đơn vị
+        unit: VNĐ
+      when_to_use: Một sản phẩm (hoặc sản phẩm bình quân) và cần biết phải bán bao nhiêu đơn vị để lợi nhuận bằng 0.
+      why_it_works: Lợi nhuận = n x CM - FC. Đặt bằng 0 suy ra n = FC / CM. Hòa vốn là lúc tổng đóng góp vừa đủ trả định phí.
+      assumptions:
+      - Giá, biến phí đơn vị không đổi; định phí cố định trong phạm vi thích hợp; sản xuất bằng bán; sales mix không đổi.
+      pitfalls:
+      - Dùng định phí cũ khi mặt bằng/lương đã đổi.
+      - Quên làm tròn lên (không thể bán 1.999,3 ly) và quên đổi ra ngày để chủ dễ hình dung.
+      - Dùng khi sản lượng ngoài phạm vi thích hợp.
+      interpretation: So sánh BEP với công suất và doanh số hiện có; BEP càng gần công suất tối đa thì mô hình càng kém khả thi.
+      example:
+        inputs:
+          FC: 70000000
+          P: 50000
+          V: 15000
+        steps:
+        - CM = 35.000
+        - BEP = 70.000.000 / 35.000 = 2.000 ly/tháng
+        - Mỗi ngày (30 ngày) = 66,7 ly
+        result: 2.000 ly/tháng
+  - id: "m02-formulas-3"
+    title: "Công thức: m02_bep_sales — Điểm hòa vốn theo doanh thu"
+    tags: ["công", "thức", "m02_bep_sales", "điểm", "hòa", "vốn", "theo", "doanh", "thu"]
+    text: |-
+      id: m02_bep_sales
+      name_vi: Điểm hòa vốn theo doanh thu
+      name_en: Break-Even Point (sales value)
+      expression_latex: \text{BEP}_{VND}=\frac{FC}{\text{CM Ratio}}
+      expression_python: FC / cm_ratio
+      excel: =FC/CMratio
+      variables:
+      - symbol: FC
+        meaning: Tổng định phí kỳ
+        unit: VNĐ
+      - symbol: cm_ratio
+        meaning: Tỷ lệ CM (0-1) của sản phẩm hoặc bình quân gia quyền
+        unit: tỷ lệ
+      when_to_use: Nhiều sản phẩm khác giá hoặc chỉ biết doanh thu, không biết sản lượng.
+      why_it_works: 'Chia cả hai vế của điều kiện CM x n = FC cho giá: doanh thu hòa vốn x CM ratio = FC.'
+      assumptions:
+      - Cơ cấu bán hàng không đổi nếu là ratio bình quân.
+      pitfalls:
+      - Dùng CM ratio của một sản phẩm cho cả công ty.
+      interpretation: Doanh thu tối thiểu để không lỗ; so với doanh thu thực tế để ra MoS.
+      example:
+        inputs:
+          FC: 70000000
+          cm_ratio: 0.7
+        steps:
+        - BEP = 70.000.000 / 0,7 = 100.000.000 (= 2.000 ly x 50.000)
+        result: 100 triệu doanh thu/tháng
+  - id: "m02-formulas-4"
+    title: "Công thức: m02_target_units — Sản lượng đạt lợi nhuận mục tiêu"
+    tags: ["công", "thức", "m02_target_units", "sản", "lượng", "đạt", "lợi", "nhuận", "mục", "tiêu"]
+    text: |-
+      id: m02_target_units
+      name_vi: Sản lượng đạt lợi nhuận mục tiêu
+      name_en: Target Profit Volume
+      expression_latex: \text{Units}=\frac{FC+\pi^{*}}{P-V}
+      expression_python: (FC + target_profit) / (P - V)
+      excel: =(FC+LNmt)/(P-V)
+      variables:
+      - symbol: FC
+        meaning: Tổng định phí
+        unit: VNĐ
+      - symbol: target_profit
+        meaning: Lợi nhuận mục tiêu trước thuế (quản trị)
+        unit: VNĐ
+      - symbol: P
+        meaning: Giá bán
+        unit: VNĐ
+      - symbol: V
+        meaning: Biến phí đơn vị
+        unit: VNĐ
+      when_to_use: Đặt chỉ tiêu bán hàng để đạt lãi mong muốn.
+      why_it_works: Coi lợi nhuận mục tiêu như một định phí phải trả thêm; công thức hòa vốn với FC mới.
+      assumptions:
+      - 'Như BEP; lợi nhuận mục tiêu là trước thuế. Nếu mục tiêu sau thuế: chia cho (1 - thuế suất).'
+      pitfalls:
+      - Nhầm lợi nhuận sau thuế với trước thuế.
+      interpretation: Quy ra số ly/ngày để so với công suất và lịch bán.
+      example:
+        inputs:
+          FC: 70000000
+          target_profit: 30000000
+          P: 50000
+          V: 15000
+        steps:
+        - (70.000.000 + 30.000.000) / 35.000 = 2.857,1 ly/tháng
+        - Mỗi ngày = 95,2 ly
+        result: khoảng 2.857 ly/tháng (95 ly/ngày)
+  - id: "m02-formulas-5"
+    title: "Công thức: m02_profit_cvp — Lợi nhuận theo CVP"
+    tags: ["công", "thức", "m02_profit_cvp", "lợi", "nhuận", "theo", "cvp"]
+    text: |-
+      id: m02_profit_cvp
+      name_vi: Lợi nhuận theo CVP
+      name_en: CVP Operating Profit
+      expression_latex: \pi=n\,(P-V)-FC
+      expression_python: n * (P - V) - FC
+      excel: =n*(P-V)-FC
+      variables:
+      - symbol: n
+        meaning: Số đơn vị bán
+        unit: đơn vị
+      - symbol: P
+        meaning: Giá bán
+        unit: VNĐ
+      - symbol: V
+        meaning: Biến phí đơn vị
+        unit: VNĐ
+      - symbol: FC
+        meaning: Định phí
+        unit: VNĐ
+      when_to_use: Dự báo lợi nhuận theo kịch bản sản lượng/giá.
+      why_it_works: Lợi nhuận = tổng CM - định phí, vì biến phí tăng theo n còn định phí đứng yên.
+      assumptions:
+      - Như BEP.
+      pitfalls:
+      - Dùng cho sản lượng ngoài phạm vi thích hợp.
+      interpretation: Dương là lãi; so với BEP để biết đang ở đâu.
+      example:
+        inputs:
+          n: 3000
+          P: 50000
+          V: 15000
+          FC: 70000000
+        steps:
+        - 3.000 x 35.000 = 105.000.000
+        - 105.000.000 - 70.000.000 = 35.000.000
+        result: 35 triệu/tháng
+  - id: "m02-formulas-6"
+    title: "Công thức: m02_mos — Biên an toàn"
+    tags: ["công", "thức", "m02_mos", "biên", "an", "toàn"]
+    text: |-
+      id: m02_mos
+      name_vi: Biên an toàn
+      name_en: Margin of Safety
+      expression_latex: \text{MoS}=\frac{S_{actual}-S_{BEP}}{S_{actual}}\times 100\%
+      expression_python: (S_actual - S_bep) / S_actual * 100
+      excel: =(Ssales-Sbep)/Ssales
+      variables:
+      - symbol: S_actual
+        meaning: Doanh thu (hoặc sản lượng) thực tế
+        unit: VNĐ hoặc đơn vị
+      - symbol: S_bep
+        meaning: Doanh thu (hoặc sản lượng) hòa vốn
+        unit: cùng đơn vị
+      when_to_use: Đánh giá mức an toàn trước rủi ro doanh thu sụt.
+      why_it_works: Phần doanh thu vượt BEP chính là vùng có lãi; chia cho doanh thu thực tế ra % sụt tối đa chịu được.
+      assumptions:
+      - BEP tính đúng với định phí hiện hành.
+      pitfalls:
+      - Đơn vị S_actual và S_bep phải cùng loại (cùng doanh thu hoặc cùng sản lượng).
+      interpretation: 'Checklist nguồn: MoS từ 20-30% trở lên là chấp nhận được; 33% (quán cà phê) tương đối an toàn; 45% (Hương Quê) khá an toàn.'
+      example:
+        inputs:
+          S_actual: 3000
+          S_bep: 2000
+        steps:
+        - (3.000 - 2.000) / 3.000 = 33,3%
+        result: 33,3%
+  - id: "m02-formulas-7"
+    title: "Công thức: m02_dol — Đòn bẩy hoạt động"
+    tags: ["công", "thức", "m02_dol", "đòn", "bẩy", "hoạt", "động"]
+    text: |-
+      id: m02_dol
+      name_vi: Đòn bẩy hoạt động
+      name_en: Degree of Operating Leverage
+      expression_latex: \text{DOL}=\frac{CM}{OI}=1+\frac{FC}{OI}=\frac{1}{\text{MoS}},\qquad \%\Delta OI=\text{DOL}\times\%\Delta S
+      expression_python: CM_total / OI
+      excel: =CMtotal/OI
+      variables:
+      - symbol: CM_total
+        meaning: Tổng số dư đảm phí tại mức doanh thu đang xét
+        unit: VNĐ
+      - symbol: OI
+        meaning: Lợi nhuận hoạt động tại mức đó (CM_total - FC)
+        unit: VNĐ
+      when_to_use: Đo độ nhạy lợi nhuận với doanh thu; so sánh rủi ro giữa mô hình định phí cao và biến phí cao.
+      why_it_works: |
+        Lợi nhuận = CM - FC; khi doanh thu đổi x%, CM đổi x% còn FC đứng yên, nên lợi nhuận đổi x% x CM/OI. Định phí lớn so với lợi nhuận thì DOL lớn. Hai dạng tương đương: 1 + FC/OI (vì CM = OI + FC), và 1/MoS khi MoS tính trên doanh thu.
+      assumptions:
+      - Chỉ đúng tại mức doanh thu đang xét và biến động nhỏ; DOL đổi khi doanh thu đổi nhiều.
+      - OI phải dương.
+      pitfalls:
+      - 'So DOL ở sản lượng cố định: DOL còn phụ thuộc khoảng cách tới hòa vốn, nên mô hình biến phí cao nhưng gần hòa vốn có thể có DOL cao hơn (cùng 4.000 SP: A=2,67; B=4,0). So công bằng ở CÙNG mức lợi nhuận.'
+      - OI gần 0 thì DOL tiến tới vô hạn, vô nghĩa để ngoại suy.
+      interpretation: 'DOL 3: bán +10% thì lợi nhuận +30% (và ngược lại). Khoảng 1,5 thường gặp ở bán lẻ biến phí cao; 3 trở lên ở mô hình định phí cao.'
+      example:
+        inputs:
+          CM_total: 105000000
+          OI: 35000000
+        steps:
+        - DOL = 105/35 = 3,0
+        - 'Kiểm: 1 + 70/35 = 3,0; 1/MoS = 1/0,333 = 3,0'
+        - 'Bán 3.300 ly: lợi nhuận = 3.300 x 35.000 - 70 triệu = 45,5 triệu = +30%'
+        result: DOL = 3,0
+  - id: "m02-formulas-8"
+    title: "Công thức: m02_high_low — Tách chi phí hỗn hợp điểm cao - điểm thấp"
+    tags: ["công", "thức", "m02_high_low", "tách", "chi", "phí", "hỗn", "hợp", "điểm", "cao", "thấp"]
+    text: |-
+      id: m02_high_low
+      name_vi: Tách chi phí hỗn hợp điểm cao - điểm thấp
+      name_en: High-Low Method
+      expression_latex: b=\frac{Y_{high}-Y_{low}}{X_{high}-X_{low}},\quad a=Y_{high}-b\,X_{high}
+      expression_python: ((Y_high - Y_low) / (X_high - X_low), Y_high - (Y_high - Y_low) / (X_high - X_low) * X_high)
+      excel: =SLOPE(Y,X) ; =INTERCEPT(Y,X) (khi có đủ dữ liệu)
+      variables:
+      - symbol: Y_high
+        meaning: Chi phí hỗn hợp ở kỳ hoạt động cao nhất
+        unit: VNĐ
+      - symbol: Y_low
+        meaning: Chi phí hỗn hợp ở kỳ hoạt động thấp nhất
+        unit: VNĐ
+      - symbol: X_high
+        meaning: Mức hoạt động cao nhất (ly, giờ máy...)
+        unit: đơn vị hoạt động
+      - symbol: X_low
+        meaning: Mức hoạt động thấp nhất
+        unit: đơn vị hoạt động
+      when_to_use: Chi phí hỗn hợp Y = a + bX (điện, internet, bảo trì) chỉ có hóa đơn từng tháng.
+      why_it_works: 'Hai điểm xác định một đường thẳng: độ dốc b là biến phí đơn vị, hệ số tự do a là phần cố định. Lấy hai tháng cực trị để dải đo rộng nhất.'
+      assumptions:
+      - Quan hệ tuyến tính; hai điểm cực trị đại diện được.
+      pitfalls:
+      - Nhạy với điểm ngoại lai (tháng bất thường); khi có đủ dữ liệu nên dùng hồi quy (SLOPE, INTERCEPT).
+      - Chọn kỳ theo chi phí cao nhất thay vì theo mức hoạt động cao nhất.
+      - Sau khi tách phải cộng a vào định phí và b vào biến phí/đơn vị.
+      interpretation: 'Kiểm tra lại tại điểm thấp: a + b x X_low phải bằng Y_low.'
+      example:
+        inputs:
+          Y_high: 5900000
+          Y_low: 4300000
+          X_high: 3600
+          X_low: 2000
+        steps:
+        - b = 1.600.000 / 1.600 = 1.000 đ/ly
+        - a = 5.900.000 - 1.000 x 3.600 = 2.300.000
+        - 'Kiểm: 2.300.000 + 1.000 x 2.000 = 4.300.000'
+        result: Điện = 2,3 triệu cố định + 1.000đ/ly
+  - id: "m02-formulas-9"
+    title: "Công thức: m02_product_cost — Prime cost, Conversion cost, Giá thành sản phẩm"
+    tags: ["công", "thức", "m02_product_cost", "prime", "cost", "conversion", "giá", "thành", "sản", "phẩm"]
+    text: |-
+      id: m02_product_cost
+      name_vi: Prime cost, Conversion cost, Giá thành sản phẩm
+      name_en: Prime, Conversion and Total Product Cost
+      expression_latex: \text{Prime}=DM+DL,\ \text{Conversion}=DL+MOH,\ \text{Product Cost}=DM+DL+MOH,\ \text{Total}=\text{Product}+\text{Period}
+      expression_python: (DM + DL, DL + MOH, DM + DL + MOH)
+      excel: =DM+DL ; =DL+MOH ; =DM+DL+MOH
+      variables:
+      - symbol: DM
+        meaning: NVL trực tiếp
+        unit: VNĐ
+      - symbol: DL
+        meaning: Nhân công trực tiếp
+        unit: VNĐ
+      - symbol: MOH
+        meaning: Chi phí sản xuất chung
+        unit: VNĐ
+      when_to_use: Xây dựng giá thành, phân biệt chi phí sản phẩm (vào tồn kho) và chi phí thời kỳ.
+      why_it_works: 'Nguyên tắc Matching: chi phí tạo ra sản phẩm gắn với sản phẩm cho đến khi bán; chi phí bán hàng và quản lý ghi nhận ngay.'
+      assumptions:
+      - MOH đã được phân bổ hợp lý (chi tiết ở m03).
+      pitfalls:
+      - Đưa chi phí bán hàng/quản lý vào giá thành sản phẩm (sai nguyên tắc).
+      interpretation: Prime là phần chạm sản phẩm; conversion là phần biến nguyên liệu thành thành phẩm.
+      example:
+        inputs:
+          DM: 200000
+          DL: 100000
+          MOH: 130000
+        steps:
+        - Prime = 300.000
+        - Conversion = 230.000
+        - Product cost = 430.000
+        result: 'Ghế: MOH = 50.000 biến + 80.000 định phí phân bổ = 130.000; giá thành đầy đủ 430.000'
+  - id: "m02-formulas-10"
+    title: "Công thức: m02_weighted_cm_bep — Hòa vốn đa sản phẩm"
+    tags: ["công", "thức", "m02_weighted_cm_bep", "hòa", "vốn", "đa", "sản", "phẩm"]
+    text: |-
+      id: m02_weighted_cm_bep
+      name_vi: Hòa vốn đa sản phẩm
+      name_en: Multi-product Break-Even (weighted CM ratio)
+      expression_latex: \text{CM Ratio}_{avg}=\frac{\sum CM_i}{\sum Rev_i},\quad \text{BEP}_{VND}=\frac{FC_{total}}{\text{CM Ratio}_{avg}}
+      expression_python: FC_total / (sum(CM_list) / sum(Rev_list))
+      excel: =FC/(SUM(CM)/SUM(Rev))
+      variables:
+      - symbol: CM_list
+        meaning: Danh sách tổng CM từng sản phẩm
+        unit: VNĐ
+      - symbol: Rev_list
+        meaning: Danh sách doanh thu từng sản phẩm
+        unit: VNĐ
+      - symbol: FC_total
+        meaning: Tổng định phí (trực tiếp + chung)
+        unit: VNĐ
+      when_to_use: Quán/xưởng bán nhiều sản phẩm có CM khác nhau, không có 'CM/đơn vị' chung.
+      why_it_works: 'Gộp theo doanh thu: mỗi đồng doanh thu của cả công ty để lại CM ratio bình quân; trả định phí cần FC / ratio doanh thu. Phân bổ BEP về từng sản phẩm theo tỷ trọng doanh thu hiện tại.'
+      assumptions:
+      - Sales mix không đổi.
+      pitfalls:
+      - Mix dịch sang sản phẩm CM thấp (vd bánh C 12,5%) thì BEP thực tế cao hơn tính toán, phải theo dõi mix hàng tháng.
+      - Quên cộng định phí trực tiếp vào tổng định phí khi hòa vốn cả công ty.
+      interpretation: Sau đó tính MoS = (Doanh thu - BEP) / Doanh thu; mục tiêu nâng ratio bình quân (vd từ 27,96% lên 30% trở lên).
+      example:
+        inputs:
+          CM_list:
+          - 72
+          - 45
+          - 20
+          Rev_list:
+          - 180
+          - 150
+          - 160
+          FC_total: 75
+        steps:
+        - Ratio = 137/490 = 27,96%
+        - BEP = 75/0,2796 = 268,2 triệu
+        - MoS = (490-268,2)/490 = 45,3%
+        - 'Lợi nhuận mục tiêu 80: (75+80)/0,2796 = 554,4 triệu'
+        result: BEP doanh thu 268,2 triệu/tháng
+  - id: "m02-formulas-11"
+    title: "Công thức: m02_segment_margin — Số dư bộ phận và quy tắc giữ/dừng"
+    tags: ["công", "thức", "m02_segment_margin", "số", "dư", "bộ", "phận", "và", "quy", "tắc", "giữ", "dừng"]
+    text: |-
+      id: m02_segment_margin
+      name_vi: Số dư bộ phận và quy tắc giữ/dừng
+      name_en: Segment Margin and Discontinue Rule
+      expression_latex: \text{SM}=CM-FC_{direct},\qquad \text{Dừng nếu } CM<FC_{avoidable}
+      expression_python: (CM - FC_direct, CM < FC_avoidable)
+      excel: =CM-FCtt ; =IF(CM<FCtranh,"Dung","Giu")
+      variables:
+      - symbol: CM
+        meaning: Tổng CM của sản phẩm/bộ phận
+        unit: VNĐ
+      - symbol: FC_direct
+        meaning: Định phí trực tiếp của sản phẩm
+        unit: VNĐ
+      - symbol: FC_avoidable
+        meaning: Định phí sẽ mất khi dừng sản phẩm (đã trừ phần không tránh được)
+        unit: VNĐ
+      when_to_use: Quyết định giữ hay dừng sản phẩm, chi nhánh, kênh.
+      why_it_works: |
+        Định phí chung không biến mất khi dừng nên phần phân bổ của sản phẩm bị dừng sẽ dồn sang sản phẩm còn lại; thay đổi thật của lợi nhuận là -CM + định phí tránh được. Vì vậy chỉ so CM với định phí tránh được.
+      assumptions:
+      - Xác định đúng khoản nào tránh được; không có tác động chéo; công suất giải phóng không có việc tốt hơn.
+      pitfalls:
+      - Dựa vào lợi nhuận sau phân bổ (đặc biệt phân bổ theo doanh thu) để dừng.
+      - Bỏ qua tác động chéo (khách mua C cũng mua A) và chi phí cơ hội của công suất.
+      interpretation: Dừng nếu CM < định phí tránh được VÀ không có cách dùng công suất sinh lợi hơn; ngược lại giữ (hoặc tăng giá/giảm biến phí).
+      example:
+        inputs:
+          CM: 50
+          FC_direct: 0
+          FC_avoidable: 0
+        steps:
+        - 'SP C: CM 50, định phí chung phân bổ 80 không tránh được: dừng thì lợi nhuận = 420-50-330 = 40 < 90'
+        - 'Nếu 80 hoàn toàn tránh được: lợi nhuận = 370-250 = 120 > 90, nên dừng'
+        result: Kịch bản 1 giữ C (giảm 50 nếu dừng); kịch bản 2 dừng C (tăng 30)
+  - id: "m02-formulas-12"
+    title: "Công thức: m02_make_or_buy — Tự làm hay mua ngoài"
+    tags: ["công", "thức", "m02_make_or_buy", "tự", "làm", "hay", "mua", "ngoài"]
+    text: |-
+      id: m02_make_or_buy
+      name_vi: Tự làm hay mua ngoài
+      name_en: Make or Buy
+      expression_latex: \text{Make nếu } V+\frac{FC_{av}}{Q}<P_{buy}\iff Q>Q^{*}=\frac{FC_{av}}{P_{buy}-V}
+      expression_python: FC_av / (P_buy - V)
+      excel: =FCtranh/(Pmua-V)
+      variables:
+      - symbol: FC_av
+        meaning: Định phí tránh được của việc tự làm (máy, nhân công chuyên trách)
+        unit: VNĐ/kỳ
+      - symbol: P_buy
+        meaning: Giá mua ngoài/đơn vị
+        unit: VNĐ
+      - symbol: V
+        meaning: Biến phí tự làm/đơn vị
+        unit: VNĐ
+      when_to_use: So sánh gia công/mua ngoài với tự sản xuất.
+      why_it_works: 'Chỉ so phần chi phí tránh được: định phí không tránh được (khấu hao máy sẽ vẫn tồn tại, quản đốc chung) không đổi dù chọn phương án nào nên là nhiễu. Q* là sản lượng khiến hai phương án bằng nhau.'
+      assumptions:
+      - Giá mua ổn định; chất lượng tương đương; công suất giải phóng không dùng được việc khác.
+      pitfalls:
+      - So giá mua với giá thành đầy đủ (gồm định phí phân bổ không tránh được) rồi kết luận mua ngoài là sai.
+      - Bỏ qua yếu tố phi tài chính (chất lượng, bí mật, rủi ro phụ thuộc nhà cung cấp) và chi phí cơ hội công suất.
+      interpretation: Sản lượng thực tế > Q* thì tự làm; dưới Q* thì mua. Cần theo dõi vì sản lượng dao động.
+      example:
+        inputs:
+          FC_av: 4000000
+          P_buy: 3800
+          V: 3200
+        steps:
+        - Q* = 4.000.000 / (3.800-3.200) = 6.667 hộp
+        - 'Ở 10.000 hộp: tự làm 3.200+400 = 3.600 < 3.800, tiết kiệm 2 triệu/tháng'
+        result: Q* = 6.667 hộp/tháng
+  - id: "m02-formulas-13"
+    title: "Công thức: m02_special_order — Đơn hàng đặc biệt"
+    tags: ["công", "thức", "m02_special_order", "đơn", "hàng", "đặc", "biệt"]
+    text: |-
+      id: m02_special_order
+      name_vi: Đơn hàng đặc biệt
+      name_en: Special Order Decision
+      expression_latex: \Delta\pi=q\,(P_{sp}-V_{inc})-q_{displaced}\,CM_{regular}
+      expression_python: q * (P_sp - V_inc) - q_displaced * CM_regular
+      excel: =q*(Psp-Vinc)-qdisp*CMthuong
+      variables:
+      - symbol: q
+        meaning: Số lượng đơn đặc biệt
+        unit: đơn vị
+      - symbol: P_sp
+        meaning: Giá của đơn đặc biệt
+        unit: VNĐ
+      - symbol: V_inc
+        meaning: Biến phí tăng thêm/đơn vị (gồm bao bì in logo, chi phí riêng của đơn)
+        unit: VNĐ
+      - symbol: q_displaced
+        meaning: Số đơn vị bán thường phải bỏ nếu thiếu công suất (0 nếu còn công suất nhàn rỗi)
+        unit: đơn vị
+      - symbol: CM_regular
+        meaning: CM đơn vị của hàng bán thường bị mất
+        unit: VNĐ
+      when_to_use: Có công suất nhàn rỗi và khách đề nghị mua giá thấp hơn giá thường.
+      why_it_works: Định phí đã trả rồi, chỉ cần đơn trang trải biến phí tăng thêm; khi hết công suất, mỗi đơn vị đặc biệt chiếm chỗ đơn thường nên phải trừ chi phí cơ hội.
+      assumptions:
+      - Không làm xói mòn giá/khách hàng hiện hữu; định phí không tăng.
+      pitfalls:
+      - Giá thấp hơn biến phí thì từ chối ngay (320k < 350k).
+      - 'Không tính giới hạn công suất: nhận hết thì lỗ ròng, nhận một phần (đúng công suất dư) thì có lợi.'
+      - Đơn đặc biệt thành 'giá chuẩn' trong mắt khách thường.
+      interpretation: Delta dương và điều kiện định tính thỏa thì nhận; kiểm tra thêm rủi ro giá.
+      example:
+        inputs:
+          q: 3000
+          P_sp: 75000
+          V_inc: 65000
+          q_displaced: 1000
+          CM_regular: 38000
+        steps:
+        - CM đơn = 75.000-62.000-3.000 = 10.000/SP
+        - 'Nhận 3.000: 30 triệu - 38 triệu = -8 triệu'
+        - 'Nhận 2.000 (đúng công suất dư): +20 triệu'
+        result: -8.000.000 nếu nhận 3.000 SP; +20.000.000 nếu nhận 2.000 SP
+  - id: "m02-formulas-14"
+    title: "Công thức: m02_absorption_vs_variable — Chênh lệch lợi nhuận giữa tính giá toàn bộ và tính giá trực tiếp"
+    tags: ["công", "thức", "m02_absorption_vs_variable", "chênh", "lệch", "lợi", "nhuận", "giữa", "tính", "giá", "toàn", "bộ"]
+    text: |-
+      id: m02_absorption_vs_variable
+      name_vi: Chênh lệch lợi nhuận giữa tính giá toàn bộ và tính giá trực tiếp
+      name_en: Absorption vs Variable Costing Income Difference
+      expression_latex: \pi_{abs}-\pi_{var}=(Q_{prod}-Q_{sold})\times\frac{FOH}{Q_{prod}}
+      expression_python: (Q_prod - Q_sold) * FOH / Q_prod
+      excel: =(Qsx-Qban)*FOH/Qsx
+      variables:
+      - symbol: Q_prod
+        meaning: Sản lượng sản xuất
+        unit: đơn vị
+      - symbol: Q_sold
+        meaning: Sản lượng bán
+        unit: đơn vị
+      - symbol: FOH
+        meaning: Tổng định phí sản xuất chung của kỳ
+        unit: VNĐ
+      when_to_use: Giải thích vì sao lợi nhuận quản trị (variable) khác báo cáo tài chính (absorption); đánh giá thưởng quản đốc.
+      why_it_works: Absorption phân bổ FOH/Q_prod vào mỗi sản phẩm làm ra; phần của hàng tồn kho tăng thêm chưa thành giá vốn nên chưa trừ khỏi lợi nhuận, còn variable trừ hết FOH kỳ này. Tồn kho tăng thì absorption cao hơn.
+      assumptions:
+      - Đơn giá FOH không đổi; không có tồn đầu kỳ (hoặc tồn đầu cùng đơn giá).
+      pitfalls:
+      - Sản xuất dư để 'đẹp số' lợi nhuận kế toán; thưởng theo lợi nhuận absorption khuyến khích điều này.
+      - Tồn kho giảm thì absorption thấp hơn variable (chiều ngược lại).
+      interpretation: Chênh lệch bằng thay đổi tồn kho nhân định phí đơn vị; đây là mục đối chiếu (reconcile) giữa báo cáo quản trị và tài chính.
+      example:
+        inputs:
+          Q_prod: 10000
+          Q_sold: 8000
+          FOH: 200000000
+        steps:
+        - 'Absorption: 800 - 8.000x(60.000+20.000)=640 -> lãi gộp 160, trừ 50 = 110 triệu'
+        - 'Variable: CM = 800-480 = 320; trừ 200 và 50 = 70 triệu'
+        - Chênh = 2.000 x 20.000 = 40 triệu
+        result: Absorption 110, Variable 70, chênh 40 triệu
+  - id: "m02-formulas-15"
+    title: "Công thức: m02_overhead_alloc_revenue — Phân bổ định phí chung theo doanh thu"
+    tags: ["công", "thức", "m02_overhead_alloc_revenue", "phân", "bổ", "định", "phí", "chung", "theo", "doanh", "thu"]
+    text: |-
+      id: m02_overhead_alloc_revenue
+      name_vi: Phân bổ định phí chung theo doanh thu
+      name_en: Common Fixed Cost Allocation by Revenue
+      expression_latex: A_i=FC_{common}\times\frac{Rev_i}{\sum Rev}
+      expression_python: FC_common * Rev_i / Rev_total
+      excel: =FCchung*Rev_i/SUM(Rev)
+      variables:
+      - symbol: FC_common
+        meaning: Định phí chung cần phân bổ
+        unit: VNĐ
+      - symbol: Rev_i
+        meaning: Doanh thu sản phẩm i
+        unit: VNĐ
+      - symbol: Rev_total
+        meaning: Tổng doanh thu
+        unit: VNĐ
+      when_to_use: Chỉ để HIỂU vì sao báo cáo kế toán thấy một sản phẩm 'lỗ'; dùng báo cáo phân bổ khi cần đủ chi phí, không dùng để dừng sản phẩm.
+      why_it_works: Phân bổ tỷ lệ với doanh thu là quy ước dễ làm nhưng không phản ánh nguồn lực thực tế sản phẩm dùng; sản phẩm doanh thu cao nhưng CM thấp bị gánh nhiều.
+      assumptions:
+      - Doanh thu là tiêu thức phân bổ (tùy tiện).
+      pitfalls:
+      - Dùng kết quả phân bổ để dừng sản phẩm, trong khi định phí chung không biến mất.
+      interpretation: Phân bổ A = 40 x 180/490 = 14,69; B = 12,24; C = 13,06 triệu. C có segment margin +8 nhưng sau phân bổ -5,06.
+      example:
+        inputs:
+          FC_common: 40
+          Rev_i: 160
+          Rev_total: 490
+        steps:
+        - 40 x 160/490 = 13,06 triệu cho C
+        - 8 - 13,06 = -5,06 triệu
+        result: C 'lỗ' 5,06 triệu chỉ do phân bổ
+  - id: "m02-frameworks-1"
+    title: "Frameworks: m02_cost_classification — Phân loại chi phí 4 lăng kính"
+    tags: ["frameworks", "m02_cost_classification", "phân", "loại", "chi", "phí", "lăng", "kính"]
+    text: |-
+      id: m02_cost_classification
+      name_vi: Phân loại chi phí 4 lăng kính
+      name_en: Cost Classification Framework
+      origin: |
+        Kế toán quản trị thế kỷ 19-20 (nhà máy Mỹ, DuPont, GM) rồi Kaplan và Johnson (Relevance Lost, 1987). Ra đời vì báo cáo theo chức năng (giá vốn, bán hàng, quản lý) không cho biết khoản nào đổi theo sản lượng, khoản nào gắn với sản phẩm, khoản nào ảnh hưởng quyết định.
+      components:
+      - 'Theo hành vi: biến phí, định phí, hỗn hợp, bậc thang (trong phạm vi thích hợp).'
+      - 'Theo truy nguyên: trực tiếp vs gián tiếp (overhead, cần phân bổ).'
+      - 'Theo mục đích ra quyết định: relevant, sunk, opportunity, incremental, avoidable, controllable.'
+      - 'Theo chức năng/sản phẩm: chi phí sản phẩm (DM, DL, MOH) vs chi phí thời kỳ (bán hàng, quản lý).'
+      when_to_use: 'Bước 0 của mọi bài toán quản trị: không phân loại thì không làm được CVP, giá thành, quyết định.'
+      how_to_apply:
+      - Liệt kê mọi khoản chi 12 tháng (sổ cái, sao kê, hóa đơn); gán nhãn 4 lăng kính vào bảng (Sheet 1).
+      - 'Chi phí hỗn hợp: tách bằng High-Low hoặc hồi quy; cộng phần cố định vào định phí, phần biến vào biến phí đơn vị.'
+      - 'Định phí chia hai: trực tiếp/tránh được cho từng sản phẩm và chung (không tránh được).'
+      - Ghi phạm vi thích hợp (khoảng sản lượng) mà phân loại còn đúng; cập nhật hàng quý.
+      how_to_read_results: Cột 'Tránh được khi dừng?' quyết định mọi bài giữ/dừng; cột Biến/Định quyết định CVP.
+      pitfalls:
+      - Nhầm chi phí thuê hiện hữu là chi phí tránh được khi dừng sản phẩm nhưng hợp đồng thuê không hủy được.
+      - Phân loại một lần rồi không cập nhật khi giá điện, lương, thuê đổi.
+      example: 'Điện quán cà phê = 2,3 triệu cố định + 1.000đ/ly: 1.000đ cộng vào biến phí/ly (15.000 thành 16.000 nếu chưa gồm), 2,3 triệu cộng vào định phí.'
+  - id: "m02-frameworks-2"
+    title: "Frameworks: m02_relevant_cost_decision — Khung ra quyết định 5 bước theo chi phí thích hợp"
+    tags: ["frameworks", "m02_relevant_cost_decision", "khung", "ra", "quyết", "định", "bước", "theo", "chi", "phí", "thích", "hợp"]
+    text: |-
+      id: m02_relevant_cost_decision
+      name_vi: Khung ra quyết định 5 bước theo chi phí thích hợp
+      name_en: Relevant Cost Decision Framework
+      origin: |
+        Từ kinh tế học biên (marginal analysis) và giáo trình Garrison/Noreen, Horngren. Ra đời để tránh sai lầm chi phí chìm và phân bổ khi so sánh phương án tương lai.
+      components:
+      - 'Bước 1: xác định các phương án.'
+      - 'Bước 2: xác định relevant costs và revenues (loại chi phí chìm, loại phần phân bổ không đổi).'
+      - 'Bước 3: so sánh dòng tiền tăng thêm (incremental).'
+      - 'Bước 4: xét yếu tố định tính (chất lượng, uy tín, quan hệ khách, rủi ro, dài hạn).'
+      - 'Bước 5: ra quyết định.'
+      when_to_use: 'Mọi quyết định ngắn hạn: make/buy, special order, continue/discontinue, đẩy mạnh sản phẩm, xử lý hàng tồn.'
+      how_to_apply:
+      - Lập bảng 2 cột phương án, chỉ liệt kê khoản khác nhau giữa hai cột.
+      - 'Với mỗi khoản hỏi: thuộc tương lai không? Có khác giữa các phương án không? Nếu không thì gạch.'
+      - Thêm chi phí cơ hội nếu công suất/nguồn lực bị hạn chế.
+      - Cộng các yếu tố định tính; ghi giả định và ngưỡng đảo kết quả.
+      how_to_read_results: Phương án có lợi nhuận tăng thêm cao hơn (đã tính chi phí cơ hội) và không vi phạm định tính.
+      pitfalls:
+      - Ngụy biện chi phí chìm.
+      - Dùng giá thành đầy đủ để so với giá thị trường.
+      - Bỏ qua yếu tố phi tài chính.
+      example: 'Ghế: giá thành đầy đủ 430k (200+100+50+80) so với mua ngoài 380k cho kết luận sai ''mua''; relevant cost tự làm = 350k (80k định phí không tránh được bị loại) < 380k nên tự làm, tiết kiệm 30k/ghế.'
+  - id: "m02-frameworks-3"
+    title: "Frameworks: m02_cvp_analysis — Phân tích Chi phí - Khối lượng - Lợi nhuận"
+    tags: ["frameworks", "m02_cvp_analysis", "phân", "tích", "chi", "phí", "khối", "lượng", "lợi", "nhuận"]
+    text: |-
+      id: m02_cvp_analysis
+      name_vi: Phân tích Chi phí - Khối lượng - Lợi nhuận
+      name_en: Cost-Volume-Profit (CVP) Analysis
+      origin: |
+        Hình thành những năm 1920-1930 tại nhà máy Mỹ; đồ thị hòa vốn của Walter Rautenstrauch (1922) giúp giám đốc thấy điểm doanh thu vừa đủ trang trải mọi chi phí. Ra đời để trả lời: bán bao nhiêu thì hòa vốn, muốn lãi X thì bán bao nhiêu, đổi giá thì sao.
+      components:
+      - 'Mô hình tuyến tính: doanh thu = P x n; biến phí = V x n; định phí đứng yên.'
+      - CM và CM ratio, BEP (đơn vị, doanh thu), target profit, MoS, DOL.
+      - Phân tích độ nhạy (giá, biến phí, định phí) và CVP đa sản phẩm.
+      - 'Giả định: P, V không đổi; FC cố định trong phạm vi thích hợp; sales mix không đổi; sản xuất = bán.'
+      when_to_use: Đặt giá, đặt chỉ tiêu bán, chấp nhận khuyến mãi, mở thêm chi nhánh, đánh giá rủi ro.
+      how_to_apply:
+      - Phân loại chi phí; tính P, V, FC.
+      - Tính CM, ratio, BEP, target volume, MoS, DOL.
+      - Chạy bảng độ nhạy từng yếu tố +/-10% giữ yếu tố khác.
+      - 'Nhiều sản phẩm: tính ratio bình quân theo doanh thu và theo dõi mix.'
+      - Quy kết quả ra số/ngày và so với công suất.
+      how_to_read_results: |
+        Hòa vốn tăng 12,5% khi tăng giá 10% nhưng +16,7% khi giảm giá 10%: giảm giá nguy hiểm hơn tăng giá cùng tỷ lệ vì cắt thẳng vào CM mỗi sản phẩm; muốn bù giảm giá 10% phải bán nhiều hơn khoảng 16,7% chỉ để huề vốn.
+      pitfalls:
+      - Dùng ngoài phạm vi thích hợp.
+      - Khuyến mãi mà không tính lại BEP.
+      - Quên mix; coi giá, biến phí cố định khi mua số lượng lớn.
+      example: 'Quán cà phê: P 50.000, V 15.000, FC 70 triệu. BEP 2.000 ly (67 ly/ngày); lãi 30 triệu cần 2.857 ly; bán 3.000 ly lãi 35 triệu, MoS 33,3%, DOL 3,0.'
+  - id: "m02-frameworks-4"
+    title: "Frameworks: m02_operating_leverage — Đòn bẩy hoạt động và so sánh mô hình kinh doanh"
+    tags: ["frameworks", "m02_operating_leverage", "đòn", "bẩy", "hoạt", "động", "và", "so", "sánh", "mô", "hình", "kinh"]
+    text: |-
+      id: m02_operating_leverage
+      name_vi: Đòn bẩy hoạt động và so sánh mô hình kinh doanh
+      name_en: Operating Leverage Framework
+      origin: Khái niệm tài chính-quản trị kinh điển (đòn bẩy cố định); ra đời để đo độ khuếch đại của biến động doanh thu lên lợi nhuận do định phí.
+      components:
+      - Định phí là điểm tựa, doanh thu là lực tác động, lợi nhuận là độ dịch chuyển.
+      - DOL = CM / OI = 1 + FC/OI = 1/MoS.
+      - So mô hình ở CÙNG mức lợi nhuận.
+      when_to_use: Cân nhắc thuê dài hạn, đầu tư máy, chọn giữa sản xuất (FC cao) và trading (VC cao).
+      how_to_apply:
+      - Tính DOL hiện tại; mô phỏng doanh thu +/-10%/20%.
+      - 'So hai mô hình ở cùng lợi nhuận mục tiêu (vd 20 triệu): A cần 3.000 SP, CM 120, DOL 6,0; B cần 5.000 SP, CM 50, DOL 2,5.'
+      - 'Với mô hình DOL cao: dự phòng tiền, đàm phán hợp đồng thuê linh hoạt, biến định phí thành biến phí khi có thể.'
+      how_to_read_results: 'DOL cao: lãi nhanh khi tăng, lỗ nhanh khi giảm (A khuếch đại biến động gấp khoảng 2,4 lần B ở cùng mức lợi nhuận).'
+      pitfalls:
+      - Kết luận DOL theo ngành mà không xét khoảng cách tới hòa vốn.
+      - Cam kết thuê dài hạn làm DOL tăng vọt trong khi doanh thu ngắn hạn (WeWork).
+      example: 'Mô hình A: FC 100 triệu, V 10.000, P 50.000 (CM ratio 80%, BEP 2.500). Mô hình B: FC 30 triệu, V 40.000 (ratio 20%, BEP 3.000).'
+  - id: "m02-frameworks-5"
+    title: "Frameworks: m02_absorption_variable_framework — Báo cáo CM (variable costing) đối chiếu absorption"
+    tags: ["frameworks", "m02_absorption_variable_framework", "báo", "cáo", "cm", "variable", "costing", "đối", "chiếu", "absorption"]
+    text: |-
+      id: m02_absorption_variable_framework
+      name_vi: Báo cáo CM (variable costing) đối chiếu absorption
+      name_en: Variable vs Absorption Income Statement
+      origin: |
+        Absorption là chuẩn của kế toán tài chính (VAS/IFRS). Variable costing là công cụ quản trị (cơ sở báo cáo CM trong CVP) ra đời vì absorption làm lợi nhuận phụ thuộc cả sản xuất lẫn bán.
+      components:
+      - 'Absorption: Doanh thu - Giá vốn (gồm định phí SX phân bổ) = Lãi gộp - CP bán hàng & quản lý.'
+      - 'Variable: Doanh thu - Biến phí = CM - Định phí SX - Định phí bán hàng/quản lý.'
+      when_to_use: Lập báo cáo quản trị song song với báo cáo tài chính; đánh giá hiệu suất quản đốc.
+      how_to_apply:
+      - Dựng hai báo cáo từ cùng dữ liệu.
+      - Tính chênh lệch = thay đổi tồn kho x định phí SX/đơn vị.
+      - Giải trình reconcile trong báo cáo hàng tháng.
+      how_to_read_results: Tồn kho tăng thì absorption > variable; nếu thưởng theo lợi nhuận absorption có nguy cơ sản xuất dư.
+      pitfalls:
+      - Thưởng quản đốc theo lợi nhuận kế toán tài chính.
+      - Không giải trình chênh lệch.
+      example: 'Sản xuất 10.000, bán 8.000: Absorption 110 triệu, Variable 70 triệu, chênh 40 triệu.'
+  - id: "m02-frameworks-6"
+    title: "Frameworks: m02_segment_reporting — Báo cáo theo bộ phận và quyết định giữ/dừng"
+    tags: ["frameworks", "m02_segment_reporting", "báo", "cáo", "theo", "bộ", "phận", "và", "quyết", "định", "giữ", "dừng"]
+    text: |-
+      id: m02_segment_reporting
+      name_vi: Báo cáo theo bộ phận và quyết định giữ/dừng
+      name_en: Segment P&L and Continue/Discontinue Analysis
+      origin: Từ kế toán trách nhiệm và báo cáo phân đoạn; Amazon dùng P&L riêng cho Retail, AWS, Ads, Prime để thấy mảng nào đáng đầu tư mà lãi ròng toàn công ty che lấp.
+      components:
+      - Doanh thu - Biến phí = CM; trừ định phí trực tiếp = Segment margin; trừ định phí chung = lợi nhuận hoạt động.
+      - 'Quy tắc: dừng nếu CM < định phí tránh được (và công suất không có chỗ dùng tốt hơn).'
+      when_to_use: Có nhiều sản phẩm/chi nhánh/kênh và có 'sản phẩm lỗ'.
+      how_to_apply:
+      - Tách định phí thành trực tiếp (tránh được) và chung.
+      - Lập báo cáo CM theo sản phẩm; tính segment margin.
+      - Tính lợi nhuận tổng nếu dừng = LN hiện tại - segment margin (khi toàn bộ trực tiếp tránh được).
+      - Xét tác động chéo và chi phí cơ hội công suất; thử tăng giá/giảm biến phí trước khi dừng.
+      how_to_read_results: Segment margin dương nghĩa là sản phẩm vẫn đóng góp vào định phí chung; dừng chỉ khi giải phóng nguồn lực dùng tốt hơn.
+      pitfalls:
+      - Phân bổ định phí chung rồi dừng sản phẩm 'lỗ'.
+      - Dừng xong định phí chung dồn sang sản phẩm còn lại.
+      example: 'Hương Quê: C lỗ 5,06 triệu sau phân bổ, nhưng segment margin +8 triệu; dừng C làm lợi nhuận từ 62 xuống 54 triệu.'
+  - id: "m02-frameworks-7"
+    title: "Frameworks: m02_unit_economics_pnl — Unit economics và P&L theo sản phẩm/kênh"
+    tags: ["frameworks", "m02_unit_economics_pnl", "unit", "economics", "và", "theo", "sản", "phẩm", "kênh"]
+    text: |-
+      id: m02_unit_economics_pnl
+      name_vi: Unit economics và P&L theo sản phẩm/kênh
+      name_en: Unit Economics and Product P&L
+      origin: 'Dùng trong thương mại điện tử/startup (Amazon: chi phí/đơn gồm fulfillment, shipping, returns) như phiên bản CM trên mỗi đơn hàng.'
+      components:
+      - Doanh thu/đơn trừ MỌI biến phí/đơn.
+      - 'P&L theo sản phẩm: doanh thu, COGS, biến phí khác (marketing, ship), CM, định phí phân bổ, lợi nhuận hoạt động.'
+      when_to_use: Shop online, quán, chuỗi, SaaS, mọi nơi cần biết lãi/lỗ trên mỗi đơn, sản phẩm, kênh.
+      how_to_apply:
+      - Liệt kê biến phí/đơn gồm phí sàn, ship, hoàn, chiết khấu, bao bì.
+      - Tính CM/đơn cho từng kênh; cập nhật hàng quý.
+      - Đối chiếu tổng với kế toán tài chính.
+      how_to_read_results: CM/đơn dương và tăng thì tăng quy mô pha loãng định phí; âm thì càng bán càng lỗ.
+      pitfalls:
+      - Bỏ chi phí ramp-up và chi phí chung khi tuyên bố 'mỗi địa điểm có lãi' (WeWork).
+      - Quên phí sàn, hoàn hàng.
+      example: 'Template: A 500/250/GM 50%, CM 210 (42%); B 300/180, CM 92 (30,7%); C 200/150, CM 30 (15%); tổng CM 332 (33,2%), định phí 220, lợi nhuận 112 (11,2%). A: scale; C: tăng giá hoặc giảm biến phí.'
+  - id: "m02-procedures-1"
+    title: "Quy trình: m02_proc_cvp_breakeven — Lập phân tích hòa vốn và lợi nhuận mục tiêu cho SME"
+    tags: ["quy", "trình", "m02_proc_cvp_breakeven", "lập", "phân", "tích", "hòa", "vốn", "và", "lợi", "nhuận", "mục"]
+    text: |-
+      id: m02_proc_cvp_breakeven
+      name: Lập phân tích hòa vốn và lợi nhuận mục tiêu cho SME
+      steps:
+      - 'Hỏi: sản phẩm gì, giá bán, kỳ phân tích (tháng), có tính thuế không (mặc định lợi nhuận trước thuế).'
+      - Hỏi/ lấy chi phí 3-12 tháng; phân loại biến phí/định phí/hỗn hợp; tách hỗn hợp bằng High-Low hoặc SLOPE/INTERCEPT.
+      - 'Gồm biến phí ẩn: nguyên liệu, bao bì, ship, phí sàn/thanh toán, hoa hồng, hoàn hàng.'
+      - Tính CM, CM ratio, BEP (đơn vị, doanh thu, ngày), target volume cho lợi nhuận mục tiêu.
+      - Tính MoS và DOL theo doanh số thực tế.
+      - Chạy độ nhạy giá/biến phí/định phí +/-10% (bảng 5 kịch bản).
+      - Kiểm phạm vi thích hợp và công suất tối đa; kết luận kèm khuyến nghị hành động.
+      outputs: Bảng CM, BEP (3 dạng), mức bán mục tiêu/ngày, MoS, DOL, bảng độ nhạy, khuyến nghị (giá, kiểm soát định phí, mục tiêu bán).
+  - id: "m02-procedures-2"
+    title: "Quy trình: m02_proc_segment_decision — Quyết định giữ hay dừng sản phẩm/bộ phận"
+    tags: ["quy", "trình", "m02_proc_segment_decision", "quyết", "định", "giữ", "hay", "dừng", "sản", "phẩm", "bộ", "phận"]
+    text: |-
+      id: m02_proc_segment_decision
+      name: Quyết định giữ hay dừng sản phẩm/bộ phận
+      steps:
+      - 'Hỏi: sản phẩm nào, số liệu doanh thu, biến phí, định phí trực tiếp, định phí chung; khoản nào có thể cắt thật.'
+      - Lập báo cáo CM theo sản phẩm; tính segment margin.
+      - 'Phân loại định phí: tránh được vs không tránh được (hỏi: nếu dừng, khoản này có biến mất không? hợp đồng thuê có hủy được không?).'
+      - 'Tính lợi nhuận tổng nếu dừng: LN hiện tại - CM + định phí tránh được.'
+      - Kiểm chi phí cơ hội công suất (dùng cho sản phẩm khác, cho thuê) và tác động chéo lên khách mua kèm.
+      - 'Thử phương án thay thế: tăng giá, giảm biến phí, đổi mix, rồi mới nghĩ dừng.'
+      - 'Kết luận kèm số: dừng/giữ/điều chỉnh.'
+      outputs: Bảng so sánh lợi nhuận trước/sau dừng, kết luận, rủi ro định tính, hành động thay thế.
+  - id: "m02-procedures-3"
+    title: "Quy trình: m02_proc_make_buy_special — Make-or-Buy và đơn hàng đặc biệt"
+    tags: ["quy", "trình", "m02_proc_make_buy_special", "make", "or", "buy", "và", "đơn", "hàng", "đặc", "biệt"]
+    text: |-
+      id: m02_proc_make_buy_special
+      name: Make-or-Buy và đơn hàng đặc biệt
+      steps:
+      - 'Make or Buy: lấy giá mua, biến phí tự làm/đơn vị, định phí tránh được (không lấy định phí phân bổ).'
+      - Tính Q* = FC_av / (P_buy - V); so với sản lượng thực tế và độ dao động; lập bảng chi phí/đơn vị theo mức sản lượng.
+      - 'Xét định tính: chất lượng, bí mật, rủi ro nhà cung cấp, chi phí cơ hội công suất.'
+      - 'Đơn đặc biệt: lấy giá chào, biến phí tăng thêm (cả bao bì/riêng), công suất còn dư.'
+      - Nếu giá chào <= biến phí tăng thêm thì từ chối. Nếu số lượng > công suất dư, tính chi phí cơ hội (đơn thường bị bỏ x CM thường) và chọn nhận phần vừa công suất.
+      - Kiểm tra ảnh hưởng giá thị trường/khách hiện hữu; ghi điều kiện chấp nhận (không phải giá chuẩn).
+      outputs: Q*, bảng chi phí, quyết định Make/Buy; lợi nhuận tăng thêm của đơn, số lượng nên nhận, điều kiện đi kèm.
+  - id: "m02-procedures-4"
+    title: "Quy trình: m02_proc_absorption_reconcile — Đối chiếu lợi nhuận quản trị và kế toán tài chính, kèm bút toán giá thành"
+    tags: ["quy", "trình", "m02_proc_absorption_reconcile", "đối", "chiếu", "lợi", "nhuận", "quản", "trị", "và", "kế", "toán"]
+    text: |-
+      id: m02_proc_absorption_reconcile
+      name: Đối chiếu lợi nhuận quản trị và kế toán tài chính, kèm bút toán giá thành
+      steps:
+      - Lấy sản lượng sản xuất, bán, tồn đầu/cuối, biến phí SX/đơn vị, định phí SX, chi phí bán hàng và quản lý.
+      - Lập báo cáo absorption (như VAS) và báo cáo variable (CM).
+      - Tính chênh lệch = thay đổi tồn kho x định phí SX/đơn vị; giải trình.
+      - 'Bút toán chuẩn tham chiếu (cần xác nhận hiện hành, TT200): tập hợp chi phí SX Nợ 154 / Có 621, 622, 627; nhập kho Nợ 155 / Có 154; ghi nhận giá vốn khi bán Nợ 632 / Có 155; chi phí bán hàng Nợ 641, quản lý Nợ 642.'
+      - 'Nếu DN dùng TT133: danh mục TK có khác biệt nhỏ, cần xác nhận.'
+      - Cảnh báo nếu tồn kho tăng bất thường mà lợi nhuận tài chính tăng (nguy cơ sản xuất dư).
+      outputs: Hai báo cáo lợi nhuận, bảng reconcile, ghi chú bút toán, cảnh báo quản trị.
+  - id: "m02-procedures-5"
+    title: "Quy trình: m02_proc_monthly_routine — Quy trình kế toán quản trị hàng tháng cho SME"
+    tags: ["quy", "trình", "m02_proc_monthly_routine", "kế", "toán", "quản", "trị", "hàng", "tháng", "cho", "sme"]
+    text: |-
+      id: m02_proc_monthly_routine
+      name: Quy trình kế toán quản trị hàng tháng cho SME
+      steps:
+      - Đóng sổ tháng; đối chiếu doanh thu, chi phí với kế toán tài chính.
+      - Cập nhật phân loại chi phí; tính CM top 5 sản phẩm.
+      - So BEP với doanh thu thực tế; tính MoS, DOL; xem cơ cấu bán hàng.
+      - So Budget vs Actual (variance, m05); phân tích top 10 khoản chi lớn nhất; tính CAC.
+      - 'Hàng quý: unit economics theo kênh, rà soát Make-or-Buy, full product profitability.'
+      - 'Báo cáo 1 trang cho chủ DN: số chính, cảnh báo, hành động tháng sau.'
+      outputs: Dashboard một trang + danh sách hành động.
+  - id: "m02-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu cần quyết định ngắn hạn thì chỉ dùng chi phí thích hợp (tương lai, khác giữa phương án); loại c…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cần", "ngắn", "hạn", "thì", "chỉ", "dùng", "chi"]
+    text: |-
+      Nếu cần quyết định ngắn hạn thì chỉ dùng chi phí thích hợp (tương lai, khác giữa phương án); loại chi phí chìm và phần phân bổ không đổi.
+  - id: "m02-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu sản phẩm 'lỗ sau phân bổ' thì KHÔNG dừng ngay; so CM với định phí tránh được; dừng chỉ khi CM <…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "sản", "phẩm", "lỗ", "sau", "phân", "bổ", "thì"]
+    text: |-
+      Nếu sản phẩm 'lỗ sau phân bổ' thì KHÔNG dừng ngay; so CM với định phí tránh được; dừng chỉ khi CM < định phí tránh được và công suất không có cách dùng tốt hơn.
+  - id: "m02-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu giá chào đơn đặc biệt <= biến phí tăng thêm thì từ chối; nếu > biến phí tăng thêm, còn công suấ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "chào", "đơn", "đặc", "biệt", "biến", "phí"]
+    text: |-
+      Nếu giá chào đơn đặc biệt <= biến phí tăng thêm thì từ chối; nếu > biến phí tăng thêm, còn công suất dư thật, và không ảnh hưởng giá thị trường thì nhận.
+  - id: "m02-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu đơn đặc biệt vượt công suất dư thì cộng chi phí cơ hội (CM thường bị mất) và nhận phần vừa công…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "đơn", "đặc", "biệt", "vượt", "công", "suất", "dư"]
+    text: |-
+      Nếu đơn đặc biệt vượt công suất dư thì cộng chi phí cơ hội (CM thường bị mất) và nhận phần vừa công suất dư.
+  - id: "m02-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu sản lượng thực tế > Q* = FC_av/(P_buy - V) thì tự làm; dưới Q* thì mua ngoài (xét thêm định tín…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "sản", "lượng", "thực", "tế", "fc_av", "p_buy", "thì"]
+    text: |-
+      Nếu sản lượng thực tế > Q* = FC_av/(P_buy - V) thì tự làm; dưới Q* thì mua ngoài (xét thêm định tính).
+  - id: "m02-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu so giá thành đầy đủ với giá mua ngoài thì cảnh báo: phải loại định phí không tránh được."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "so", "giá", "thành", "đầy", "đủ", "với", "mua"]
+    text: |-
+      Nếu so giá thành đầy đủ với giá mua ngoài thì cảnh báo: phải loại định phí không tránh được.
+  - id: "m02-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu cân nhắc giảm giá x% thì tính lại BEP trước: giảm giá 10% làm BEP tăng 16,7% (50k thành 45k) so…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cân", "nhắc", "giảm", "giá", "thì", "tính", "lại"]
+    text: |-
+      Nếu cân nhắc giảm giá x% thì tính lại BEP trước: giảm giá 10% làm BEP tăng 16,7% (50k thành 45k) so tăng giá 10% giảm 12,5%.
+  - id: "m02-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu MoS < 20% thì cảnh báo rủi ro cao; 20-30% trở lên chấp nhận được; DOL > 3 thì cần dự phòng tiền…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "mos", "20", "thì", "cảnh", "báo", "rủi", "ro"]
+    text: |-
+      Nếu MoS < 20% thì cảnh báo rủi ro cao; 20-30% trở lên chấp nhận được; DOL > 3 thì cần dự phòng tiền, tránh thêm định phí cứng.
+  - id: "m02-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu DOL cao do thuê dài hạn thì ưu tiên hợp đồng linh hoạt, tiền thuê biến đổi theo doanh thu."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dol", "cao", "do", "thuê", "dài", "hạn", "thì"]
+    text: |-
+      Nếu DOL cao do thuê dài hạn thì ưu tiên hợp đồng linh hoạt, tiền thuê biến đổi theo doanh thu.
+  - id: "m02-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu bán nhiều sản phẩm thì dùng CM ratio bình quân theo doanh thu; theo dõi mix hàng tháng; mix dịc…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "bán", "nhiều", "sản", "phẩm", "thì", "dùng", "cm"]
+    text: |-
+      Nếu bán nhiều sản phẩm thì dùng CM ratio bình quân theo doanh thu; theo dõi mix hàng tháng; mix dịch sang sản phẩm CM thấp thì cảnh báo BEP tăng.
+  - id: "m02-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu chi phí là hỗn hợp thì tách bằng High-Low (ít dữ liệu) hoặc hồi quy (đủ dữ liệu) trước khi làm …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chi", "phí", "là", "hỗn", "hợp", "thì", "tách"]
+    text: |-
+      Nếu chi phí là hỗn hợp thì tách bằng High-Low (ít dữ liệu) hoặc hồi quy (đủ dữ liệu) trước khi làm CVP.
+  - id: "m02-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu lợi nhuận absorption khác variable thì giải trình bằng thay đổi tồn kho x định phí SX/đơn vị; đ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "lợi", "nhuận", "absorption", "khác", "variable", "thì", "giải"]
+    text: |-
+      Nếu lợi nhuận absorption khác variable thì giải trình bằng thay đổi tồn kho x định phí SX/đơn vị; đừng thưởng theo lợi nhuận absorption.
+  - id: "m02-decision_rules-13"
+    title: "Quy tắc quyết định: Nếu doanh nghiệp công bố chỉ tiêu non-GAAP loại bỏ chi phí thật (marketing, G&A, khấu hao, thuê) th…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "doanh", "nghiệp", "công", "bố", "chỉ", "tiêu", "non"]
+    text: |-
+      Nếu doanh nghiệp công bố chỉ tiêu non-GAAP loại bỏ chi phí thật (marketing, G&A, khấu hao, thuê) thì coi là cảnh báo; yêu cầu đối chiếu với kế toán tài chính và dòng tiền.
+  - id: "m02-decision_rules-14"
+    title: "Quy tắc quyết định: Nếu sản lượng ra ngoài phạm vi thích hợp thì dựng lại cấu trúc chi phí (bậc thang) trước khi dùng C…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "sản", "lượng", "ra", "ngoài", "phạm", "vi", "thích"]
+    text: |-
+      Nếu sản lượng ra ngoài phạm vi thích hợp thì dựng lại cấu trúc chi phí (bậc thang) trước khi dùng CVP.
+  - id: "m02-decision_rules-15"
+    title: "Quy tắc quyết định: Nếu cần quyết định chi phí thuế (được trừ) thì dùng quy định thuế, không dùng phân loại quản trị (c…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cần", "chi", "phí", "thuế", "được", "trừ", "thì"]
+    text: |-
+      Nếu cần quyết định chi phí thuế (được trừ) thì dùng quy định thuế, không dùng phân loại quản trị (cần xác nhận hiện hành).
+  - id: "m02-benchmarks-1"
+    title: "Chuẩn so sánh: Biên an toàn (MoS) tối thiểu"
+    tags: ["chuẩn", "so", "sánh", "biên", "an", "toàn", "mos", "tối", "thiểu"]
+    text: |-
+      metric: Biên an toàn (MoS) tối thiểu
+      value: 20-30% trở lên
+      context: Checklist nguồn; dưới mức này là rủi ro doanh thu sụt
+      confidence: medium
+  - id: "m02-benchmarks-2"
+    title: "Chuẩn so sánh: CM ratio quán cà phê (ví dụ)"
+    tags: ["chuẩn", "so", "sánh", "cm", "ratio", "quán", "cà", "phê", "ví", "dụ"]
+    text: |-
+      metric: CM ratio quán cà phê (ví dụ)
+      value: 70%
+      context: 'Giả định minh họa: giá 50k, biến phí 15k'
+      confidence: low
+  - id: "m02-benchmarks-3"
+    title: "Chuẩn so sánh: DOL tham khảo"
+    tags: ["chuẩn", "so", "sánh", "dol", "tham", "khảo"]
+    text: |-
+      metric: DOL tham khảo
+      value: khoảng 1,5 (bán lẻ biến phí cao) đến 3 (định phí cao như công nghệ)
+      context: Minh họa trong nguồn, không phải số thống kê
+      confidence: low
+  - id: "m02-benchmarks-4"
+    title: "Chuẩn so sánh: Biên lợi nhuận hoạt động SP mẫu"
+    tags: ["chuẩn", "so", "sánh", "biên", "lợi", "nhuận", "hoạt", "động", "sp", "mẫu"]
+    text: |-
+      metric: Biên lợi nhuận hoạt động SP mẫu
+      value: 11,2%
+      context: Template P&L theo sản phẩm giả định
+      confidence: low
+  - id: "m02-benchmarks-5"
+    title: "Chuẩn so sánh: CM ratio bình quân xưởng bánh Hương Quê"
+    tags: ["chuẩn", "so", "sánh", "cm", "ratio", "bình", "quân", "xưởng", "bánh", "hương", "quê"]
+    text: |-
+      metric: CM ratio bình quân xưởng bánh Hương Quê
+      value: 27,96% (mục tiêu >= 30%)
+      context: Case giả định
+      confidence: low
+  - id: "m02-benchmarks-6"
+    title: "Chuẩn so sánh: Gross margin F&B (tham chiếu cross-module)"
+    tags: ["chuẩn", "so", "sánh", "gross", "margin", "tham", "chiếu", "cross", "module"]
+    text: |-
+      metric: Gross margin F&B (tham chiếu cross-module)
+      value: 40-70%
+      context: Khoảng sanity check trong CLAUDE.md của knowledge base, không phải từ file nguồn
+      confidence: low
+  - id: "m02-pitfalls-1"
+    title: "Lỗi thường gặp: Chia định phí chung theo doanh thu rồi dừng sản phẩm 'lỗ': phần phân bổ không biến mất, tổng lợi nh…"
+    tags: ["lỗi", "thường", "gặp", "chia", "định", "phí", "chung", "theo", "doanh", "thu", "rồi", "dừng"]
+    text: |-
+      Chia định phí chung theo doanh thu rồi dừng sản phẩm 'lỗ': phần phân bổ không biến mất, tổng lợi nhuận giảm.
+  - id: "m02-pitfalls-2"
+    title: "Lỗi thường gặp: Không tách biến phí/định phí thì không tính được hòa vốn; định giá cảm tính."
+    tags: ["lỗi", "thường", "gặp", "không", "tách", "biến", "phí", "định", "thì", "tính", "được", "hòa"]
+    text: |-
+      Không tách biến phí/định phí thì không tính được hòa vốn; định giá cảm tính.
+  - id: "m02-pitfalls-3"
+    title: "Lỗi thường gặp: Định giá = giá vốn + % cảm tính, quên chi phí ẩn (ship, hoàn hàng, phí sàn, chiết khấu)."
+    tags: ["lỗi", "thường", "gặp", "định", "giá", "vốn", "cảm", "tính", "quên", "chi", "phí", "ẩn"]
+    text: |-
+      Định giá = giá vốn + % cảm tính, quên chi phí ẩn (ship, hoàn hàng, phí sàn, chiết khấu).
+  - id: "m02-pitfalls-4"
+    title: "Lỗi thường gặp: Giảm giá kéo khách mà không tính BEP mới: giảm 10% giá thì BEP +16,7%."
+    tags: ["lỗi", "thường", "gặp", "giảm", "giá", "kéo", "khách", "mà", "không", "tính", "bep", "mới"]
+    text: |-
+      Giảm giá kéo khách mà không tính BEP mới: giảm 10% giá thì BEP +16,7%.
+  - id: "m02-pitfalls-5"
+    title: "Lỗi thường gặp: Bỏ qua cơ cấu bán hàng: BEP thực tế cao hơn tính toán."
+    tags: ["lỗi", "thường", "gặp", "bỏ", "qua", "cơ", "cấu", "bán", "hàng", "bep", "thực", "tế"]
+    text: |-
+      Bỏ qua cơ cấu bán hàng: BEP thực tế cao hơn tính toán.
+  - id: "m02-pitfalls-6"
+    title: "Lỗi thường gặp: Trộn tiền cá nhân của chủ với tiền công ty; chủ nên nhận lương như một chi phí."
+    tags: ["lỗi", "thường", "gặp", "trộn", "tiền", "cá", "nhân", "của", "chủ", "với", "công", "ty"]
+    text: |-
+      Trộn tiền cá nhân của chủ với tiền công ty; chủ nên nhận lương như một chi phí.
+  - id: "m02-pitfalls-7"
+    title: "Lỗi thường gặp: Số liệu quản trị không đối chiếu với sổ kế toán/lợi nhuận tài chính: mất niềm tin."
+    tags: ["lỗi", "thường", "gặp", "số", "liệu", "quản", "trị", "không", "đối", "chiếu", "với", "sổ"]
+    text: |-
+      Số liệu quản trị không đối chiếu với sổ kế toán/lợi nhuận tài chính: mất niềm tin.
+  - id: "m02-pitfalls-8"
+    title: "Lỗi thường gặp: Dùng giá thành đầy đủ để quyết định make/buy hoặc nhận đơn đặc biệt."
+    tags: ["lỗi", "thường", "gặp", "dùng", "giá", "thành", "đầy", "đủ", "để", "quyết", "định", "make"]
+    text: |-
+      Dùng giá thành đầy đủ để quyết định make/buy hoặc nhận đơn đặc biệt.
+  - id: "m02-pitfalls-9"
+    title: "Lỗi thường gặp: Ngụy biện chi phí chìm: tiếp tục dự án vì đã đầu tư nhiều."
+    tags: ["lỗi", "thường", "gặp", "ngụy", "biện", "chi", "phí", "chìm", "tiếp", "tục", "dự", "án"]
+    text: |-
+      Ngụy biện chi phí chìm: tiếp tục dự án vì đã đầu tư nhiều.
+  - id: "m02-pitfalls-10"
+    title: "Lỗi thường gặp: Quên chi phí cơ hội công suất khi hết công suất."
+    tags: ["lỗi", "thường", "gặp", "quên", "chi", "phí", "cơ", "hội", "công", "suất", "khi", "hết"]
+    text: |-
+      Quên chi phí cơ hội công suất khi hết công suất.
+  - id: "m02-pitfalls-11"
+    title: "Lỗi thường gặp: Tự tạo chỉ tiêu quản trị đẹp (Community Adjusted EBITDA) bỏ qua chi phí thật; non-GAAP phải có ý ng…"
+    tags: ["lỗi", "thường", "gặp", "tự", "tạo", "chỉ", "tiêu", "quản", "trị", "đẹp", "community", "adjusted"]
+    text: |-
+      Tự tạo chỉ tiêu quản trị đẹp (Community Adjusted EBITDA) bỏ qua chi phí thật; non-GAAP phải có ý nghĩa kinh tế.
+  - id: "m02-pitfalls-12"
+    title: "Lỗi thường gặp: Nguồn - xung đột số định phí: ví dụ SP A/B/C (mục II.8.4) có tổng định phí phân bổ 330, còn templat…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "xung", "đột", "số", "định", "phí", "ví", "dụ", "sp"]
+    text: |-
+      Nguồn - xung đột số định phí: ví dụ SP A/B/C (mục II.8.4) có tổng định phí phân bổ 330, còn template P&L (IV.2) cùng doanh thu 1.000 và COGS 580 dùng 220. Đây là hai ví dụ độc lập (template còn trừ marketing, shipping), không dùng chung số.
+  - id: "m02-pitfalls-13"
+    title: "Lỗi thường gặp: Nguồn - đã sửa lỗi: bản cũ ghi lợi nhuận khi dừng C (kịch bản 1) là 70 do cộng hai lần phần lỗ; đáp…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "đã", "sửa", "bản", "cũ", "ghi", "lợi", "nhuận", "khi"]
+    text: |-
+      Nguồn - đã sửa lỗi: bản cũ ghi lợi nhuận khi dừng C (kịch bản 1) là 70 do cộng hai lần phần lỗ; đáp số đúng là 40 (420-50-330).
+  - id: "m02-pitfalls-14"
+    title: "Lỗi thường gặp: Nguồn - cách so DOL hai mô hình ở cùng sản lượng 4.000 SP cho kết quả ngược trực giác (A=2,67; B=4,…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "cách", "so", "dol", "hai", "mô", "hình", "cùng", "sản"]
+    text: |-
+      Nguồn - cách so DOL hai mô hình ở cùng sản lượng 4.000 SP cho kết quả ngược trực giác (A=2,67; B=4,0); so ở cùng lợi nhuận 20 triệu mới đúng (A=6,0; B=2,5).
+  - id: "m02-pitfalls-15"
+    title: "Lỗi thường gặp: Nguồn - ghi chú công thức DOL = 1/MoS chỉ đúng khi MoS tính trên doanh thu và cùng mức doanh thu."
+    tags: ["lỗi", "thường", "gặp", "nguồn", "ghi", "chú", "công", "thức", "dol", "mos", "chỉ", "đúng"]
+    text: |-
+      Nguồn - ghi chú công thức DOL = 1/MoS chỉ đúng khi MoS tính trên doanh thu và cùng mức doanh thu.
+  - id: "m02-pitfalls-16"
+    title: "Lỗi thường gặp: Nguồn - số liệu Amazon (giảm chi phí/đơn, Prime chi tiêu) chưa kiểm chứng; số WeWork (47 tỷ USD, 8 …"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "số", "liệu", "amazon", "giảm", "chi", "phí", "đơn", "prime"]
+    text: |-
+      Nguồn - số liệu Amazon (giảm chi phí/đơn, Prime chi tiêu) chưa kiểm chứng; số WeWork (47 tỷ USD, 8 tỷ, lỗ 1,9 tỷ) làm tròn, cần đối chiếu S-1 và 10-K trước khi trích.
+  - id: "m02-pitfalls-17"
+    title: "Lỗi thường gặp: Nguồn - case Hương Quê bước 3 ghi 'tiết kiệm định phí trực tiếp 12 nếu tránh được' nhưng tính 62-8=…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "case", "hương", "quê", "bước", "ghi", "tiết", "kiệm", "định"]
+    text: |-
+      Nguồn - case Hương Quê bước 3 ghi 'tiết kiệm định phí trực tiếp 12 nếu tránh được' nhưng tính 62-8=54, tức đã bao gồm phần 12 trong segment margin; giả định công suất 2.000 bánh C = 700 bánh A là giả định không có dữ liệu.
+  - id: "m02-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Bắt đầu bằng Google Sheets/Excel (miễn phí đến khoảng 3-4 triệu/năm cho Microsoft 365, confidence l…"
+    tags: ["lưu", "sme", "việt", "nam", "bắt", "đầu", "bằng", "google", "sheets", "excel", "miễn", "phí"]
+    text: |-
+      Bắt đầu bằng Google Sheets/Excel (miễn phí đến khoảng 3-4 triệu/năm cho Microsoft 365, confidence low): 5 sheet gồm Phân loại chi phí, CM theo sản phẩm, Hòa vốn, Độ nhạy, Báo cáo tháng. Quan trọng là phân loại đúng và làm đều hàng tháng.
+  - id: "m02-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: Phần mềm tham khảo (giá ước tính, confidence low, cần xác nhận với nhà cung cấp): MISA SME/AMIS Kế …"
+    tags: ["lưu", "sme", "việt", "nam", "phần", "mềm", "tham", "khảo", "giá", "ước", "tính", "confidence"]
+    text: |-
+      Phần mềm tham khảo (giá ước tính, confidence low, cần xác nhận với nhà cung cấp): MISA SME/AMIS Kế toán vài triệu đến khoảng 10 triệu/năm; FAST Accounting từ vài chục triệu mua bản quyền (DN sản xuất vừa); KiotViet/Sapo khoảng 200-400k/tháng (báo cáo lợi nhuận theo mặt hàng, tồn kho); Base.vn/MISA AMIS vài triệu/tháng theo user; Looker Studio miễn phí, Power BI Pro khoảng 10 USD/user/tháng.
+  - id: "m02-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Pháp lý (cần xác nhận hiện hành): kế toán tài chính theo Luật Kế toán, VAS, TT200/2014/TT-BTC (DN v…"
+    tags: ["lưu", "sme", "việt", "nam", "pháp", "lý", "cần", "xác", "nhận", "hiện", "hành", "kế"]
+    text: |-
+      Pháp lý (cần xác nhận hiện hành): kế toán tài chính theo Luật Kế toán, VAS, TT200/2014/TT-BTC (DN vừa và lớn) hoặc TT133/2016/TT-BTC (DN nhỏ và vừa); một số DN lập IFRS cho nhà đầu tư/công ty mẹ. Kế toán quản trị có TT53/2006/TT-BTC hướng dẫn, mang tính hướng dẫn, không bắt buộc mẫu biểu, có thể đã bị thay thế.
+  - id: "m02-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Thuế: chi phí được trừ khi tính thuế TNDN theo quy định thuế, không theo phân loại quản trị (cần xá…"
+    tags: ["lưu", "sme", "việt", "nam", "thuế", "chi", "phí", "được", "trừ", "khi", "tính", "tndn"]
+    text: |-
+      Thuế: chi phí được trừ khi tính thuế TNDN theo quy định thuế, không theo phân loại quản trị (cần xác nhận hiện hành với kế toán/thuế).
+  - id: "m02-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: Bút toán/mã TK chỉ tham chiếu VAS/TT200 (154, 155, 621, 622, 627, 632, 641, 642, 511, 131, 3331); l…"
+    tags: ["lưu", "sme", "việt", "nam", "bút", "toán", "mã", "tk", "chỉ", "tham", "chiếu", "vas"]
+    text: |-
+      Bút toán/mã TK chỉ tham chiếu VAS/TT200 (154, 155, 621, 622, 627, 632, 641, 642, 511, 131, 3331); luôn nhắc người dùng xác nhận với kế toán trưởng hoặc dịch vụ kế toán.
+  - id: "m02-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: Số liệu quản trị phải đối chiếu (reconcile) lợi nhuận tháng với kế toán tài chính và giải thích chê…"
+    tags: ["lưu", "sme", "việt", "nam", "số", "liệu", "quản", "trị", "phải", "đối", "chiếu", "reconcile"]
+    text: |-
+      Số liệu quản trị phải đối chiếu (reconcile) lợi nhuận tháng với kế toán tài chính và giải thích chênh lệch.
+  - id: "m02-sme_vn_guidance-7"
+    title: "Lưu ý SME Việt Nam: Tách tài khoản chủ - công ty; trả lương cho chủ như chi phí để số liệu quản trị đúng."
+    tags: ["lưu", "sme", "việt", "nam", "tách", "tài", "khoản", "chủ", "công", "ty", "trả", "lương"]
+    text: |-
+      Tách tài khoản chủ - công ty; trả lương cho chủ như chi phí để số liệu quản trị đúng.
+  - id: "m02-sme_vn_guidance-8"
+    title: "Lưu ý SME Việt Nam: Trước mọi khuyến mãi/giảm giá tính lại BEP; tính unit economics cho từng kênh (sàn TMĐT, website, o…"
+    tags: ["lưu", "sme", "việt", "nam", "trước", "mọi", "khuyến", "mãi", "giảm", "giá", "tính", "lại"]
+    text: |-
+      Trước mọi khuyến mãi/giảm giá tính lại BEP; tính unit economics cho từng kênh (sàn TMĐT, website, offline) gồm phí sàn, ship, hoàn.
+  - id: "m02-sme_vn_guidance-9"
+    title: "Lưu ý SME Việt Nam: Checklist hàng tháng: CM top 5 SP, BEP vs thực tế, Budget vs Actual, top 10 chi phí, CAC; hàng quý:…"
+    tags: ["lưu", "sme", "việt", "nam", "checklist", "hàng", "tháng", "cm", "top", "sp", "bep", "vs"]
+    text: |-
+      Checklist hàng tháng: CM top 5 SP, BEP vs thực tế, Budget vs Actual, top 10 chi phí, CAC; hàng quý: unit economics theo kênh, make-or-buy, product profitability.
+  - id: "m02-case_lessons-1"
+    title: "Bài học case: Amazon - kế toán quản trị hỗ trợ quyết định chiến lược"
+    tags: ["bài", "học", "case", "amazon", "kế", "toán", "quản", "trị", "hỗ", "trợ", "quyết", "định"]
+    text: |-
+      name: Amazon - kế toán quản trị hỗ trợ quyết định chiến lược
+      type: success
+      setup: |
+        Amazon thập niên 1990-2000 chấp nhận lãi mỏng/lỗ để tăng trưởng; nhìn BCTC thì kém nhưng ban lãnh đạo dùng unit economics, segment P&L, LTV khách Prime, phân tích incremental khi vào cloud (AWS), transfer pricing nội bộ, và nhấn mạnh Free Cash Flow trên mỗi cổ phiếu thay vì EPS (thư cổ đông của Bezos).
+      key_calculations:
+      - 'Unit economics = doanh thu/đơn trừ mọi biến phí/đơn (fulfillment, ship, returns): dương và cải thiện thì quy mô pha loãng định phí.'
+      - 'Segment P&L: AWS biên cao bị che lấp trong lãi ròng toàn công ty nếu không tách.'
+      lesson: 'Doanh nghiệp có thể lỗ theo BCTC nhưng đang xây nền tảng lãi lớn nếu unit economics đúng hướng. SME: nhìn lãi/lỗ trên mỗi đơn, sản phẩm, kênh, không chỉ cuối tháng.'
+      data_reliability: unverified
+  - id: "m02-case_lessons-2"
+    title: "Bài học case: WeWork - kế toán quản trị bị méo mó"
+    tags: ["bài", "học", "case", "wework", "kế", "toán", "quản", "trị", "bị", "méo", "mó"]
+    text: |-
+      name: WeWork - kế toán quản trị bị méo mó
+      type: failure
+      setup: |
+        Startup coworking định giá khoảng 47 tỷ USD (2019), IPO thất bại sau S-1; dùng "Community Adjusted EBITDA" loại marketing, G&A, khấu hao, cổ phiếu thưởng nên che mức lỗ (khoảng 1,9 tỷ USD/năm); cam kết thuê nhiều năm bị trình bày như đầu tư tăng trưởng; unit economics tuyên bố mỗi địa điểm có lãi nhưng bỏ ramp-up và chi phí chung.
+      key_calculations:
+      - Định giá giảm khoảng 47 tỷ xuống khoảng 8 tỷ USD (mất khoảng 83%).
+      - 'Thuê 10-15 năm là định phí cứng, doanh thu ngắn hạn, DOL cực cao: doanh thu -20-30% (COVID) khiến lợi nhuận sụt nhiều lần.'
+      - Nộp Chapter 11 năm 2023.
+      lesson: |
+        Chỉ tiêu phi chuẩn mực phải có ý nghĩa kinh tế và tính đủ chi phí; unit economics phải thật (gồm overhead, chi phí vốn); cẩn trọng định phí dài hạn (DOL tăng vọt); kế toán quản trị phải trung thực, đối chiếu với kế toán tài chính và dòng tiền; tránh ngụy biện chi phí chìm.
+      data_reliability: unverified
+  - id: "m02-case_lessons-3"
+    title: "Bài học case: Xưởng bánh Hương Quê - Đà Nẵng (giữ hay dừng dòng bánh C, hòa vốn đa sản phẩm)"
+    tags: ["bài", "học", "case", "xưởng", "bánh", "hương", "quê", "đà", "nẵng", "giữ", "hay", "dừng"]
+    text: |-
+      name: Xưởng bánh Hương Quê - Đà Nẵng (giữ hay dừng dòng bánh C, hòa vốn đa sản phẩm)
+      type: sme
+      setup: |
+        Công ty TNHH 12 nhân sự, 3 dòng: A bông lan trứng muối (3.000 cái, 60k, biến phí 36k, FC trực tiếp 15 triệu), B bánh mì ngọt (5.000, 30k, 21k, 8 triệu), C bánh sinh nhật (2.000, 80k, 70k, 12 triệu); định phí chung 40 triệu/tháng phân bổ theo doanh thu; kế toán thấy C lỗ.
+      key_calculations:
+      - 'CM: A 72, B 45, C 20 triệu (tổng 137); CM ratio 40%, 30%, 12,5%, bình quân 27,96%.'
+      - 'Segment margin: 57, 37, 8 (tổng 102); lợi nhuận hoạt động = 102 - 40 = 62 triệu.'
+      - 'Phân bổ chung theo doanh thu: 14,69; 12,24; 13,06 -> C = 8 - 13,06 = -5,06 triệu (chỉ do phân bổ).'
+      - 'Dừng C: lợi nhuận 62 - 8 = 54 triệu (giảm 8). Chuyển công suất sang A: 700 x 24.000 = 16,8 triệu > 8 triệu (giả định). Tăng giá C lên 88.000: segment margin 24 triệu.'
+      - BEP = 75/0,2796 = 268,2 triệu; MoS 45,3%; target 80 triệu cần 554,4 triệu; DOL = 137/62 = 2,21.
+      - 'Đơn đặc biệt 1.000 bánh B giá 24k, biến phí 22k: +2 triệu. Hộp giấy: mua 3.800 vs tự làm 3.200 + 4 triệu/tháng; Q* = 6.667 hộp.'
+      lesson: Không dừng C chỉ vì lỗ sau phân bổ; tăng giá hoặc chuyển công suất; theo dõi mix hàng tháng; nhận đơn đặc biệt chỉ khi công suất dư; tự làm hộp khi >6.667 hộp/tháng.
+      data_reliability: illustrative
+  - id: "m02-worked_examples-1"
+    title: "Ví dụ có lời giải: m02_we_cafe_cvp — Quán cà phê: CVP, độ nhạy, MoS, DOL"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m02_we_cafe_cvp", "quán", "cà", "phê", "cvp", "độ", "nhạy"]
+    text: |-
+      id: m02_we_cafe_cvp
+      name: 'Quán cà phê: CVP, độ nhạy, MoS, DOL'
+      inputs:
+        P: 50000
+        V: 15000
+        FC: 70000000
+        actual_units: 3000
+      steps:
+      - CM = 35.000; CM ratio = 70%.
+      - BEP = 2.000 ly (66,7/ngày); BEP doanh thu = 100 triệu.
+      - 'Muốn lãi 30 triệu: (70+30) triệu / 35.000 = 2.857 ly (95/ngày).'
+      - 'Bán 3.000 ly: lợi nhuận 35 triệu; MoS 33,3%; DOL = 105/35 = 3,0.'
+      - 'Độ nhạy BEP: V 18k -> 2.188; FC 85 triệu -> 2.429; giá 45k -> 2.333; giá 55k -> 1.750.'
+      - 'Bán +10% (3.300 ly): lợi nhuận 45,5 triệu (+30%).'
+      result: BEP 2.000 ly; lợi nhuận 35 triệu; MoS 33,3%; DOL 3,0; giảm giá 10% làm BEP +16,7%, tăng giá 10% làm BEP -12,5%.
+  - id: "m02-worked_examples-2"
+    title: "Ví dụ có lời giải: m02_we_high_low — Tách chi phí điện hỗn hợp và đưa vào CVP"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m02_we_high_low", "tách", "chi", "phí", "điện", "hỗn", "hợp"]
+    text: |-
+      id: m02_we_high_low
+      name: Tách chi phí điện hỗn hợp và đưa vào CVP
+      inputs:
+        Y_high: 5900000
+        X_high: 3600
+        Y_low: 4300000
+        X_low: 2000
+      steps:
+      - b = (5,9-4,3 triệu)/(3.600-2.000) = 1.000đ/ly.
+      - a = 5.900.000 - 3.600.000 = 2.300.000/tháng.
+      - 'Kiểm tra: 2.300.000 + 2.000.000 = 4.300.000 (khớp).'
+      - 'Cập nhật: biến phí/ly +1.000; định phí/tháng +2,3 triệu rồi tính lại BEP.'
+      result: Điện = 2,3 triệu + 1.000đ/ly
+  - id: "m02-worked_examples-3"
+    title: "Ví dụ có lời giải: m02_we_absorption_variable — Absorption vs Variable costing kèm bút toán"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m02_we_absorption_variable", "absorption", "vs", "variable", "costing", "kèm", "bút"]
+    text: |-
+      id: m02_we_absorption_variable
+      name: Absorption vs Variable costing kèm bút toán
+      inputs:
+        Q_prod: 10000
+        Q_sold: 8000
+        P: 100000
+        V: 60000
+        FOH: 200000000
+        SGA_fixed: 50000000
+      steps:
+      - 'Absorption: Doanh thu 800; giá vốn = 8.000 x (60.000+20.000) = 640; lãi gộp 160; trừ 50 = 110 triệu.'
+      - 'Variable: CM = 800 - 480 = 320; trừ FOH 200 và SGA 50 = 70 triệu.'
+      - Chênh 40 = 2.000 x 20.000 (định phí nằm trong tồn kho).
+      - 'Bút toán tham chiếu TT200 (cần xác nhận hiện hành): Nợ 154 / Có 621, 622, 627 (tập hợp chi phí SX kỳ: 600 triệu biến phí + 200 triệu FOH = 800 triệu); Nợ 155 / Có 154 (nhập kho 10.000 SP giá thành đơn vị 80.000); Nợ 632 / Có 155 (xuất bán 8.000 SP x 80.000 = 640 triệu); Nợ 131 hoặc 111/112 / Có 511 (doanh thu 800 triệu) và thuế GTGT đầu ra (Có 3331) theo quy định thuế; chi phí bán hàng/quản lý Nợ 641/642 / Có 111/112/334.'
+      - Tồn kho cuối kỳ = 2.000 x 80.000 = 160 triệu (gồm 40 triệu định phí SX).
+      result: Absorption 110 triệu, Variable 70 triệu, chênh 40 triệu = định phí SX trong tồn kho 2.000 SP
+  - id: "m02-worked_examples-4"
+    title: "Ví dụ có lời giải: m02_we_huong_que_segment — Hương Quê: segment margin, phân bổ, BEP đa sản phẩm, DOL"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m02_we_huong_que_segment", "hương", "quê", "segment", "margin", "phân", "bổ"]
+    text: |-
+      id: m02_we_huong_que_segment
+      name: 'Hương Quê: segment margin, phân bổ, BEP đa sản phẩm, DOL'
+      inputs:
+        rev:
+        - 180
+        - 150
+        - 160
+        cm:
+        - 72
+        - 45
+        - 20
+        fc_direct:
+        - 15
+        - 8
+        - 12
+        fc_common: 40
+      steps:
+      - Tổng CM 137; ratio 27,96%; segment margin 57/37/8; tổng 102; LN hoạt động 62.
+      - 'Phân bổ chung theo doanh thu: 14,69/12,24/13,06; lợi nhuận sau phân bổ 42,31/24,76/-5,06.'
+      - 'Dừng C: LN = 62 - 8 = 54 triệu < 62 nên không dừng; tăng giá C 10% lên 88.000: segment margin 24 triệu.'
+      - FC tổng = 35 + 40 = 75; BEP = 268,2 triệu; MoS 45,3%; target 80 -> 554,4 triệu.
+      - 'DOL = 137/62 = 2,21; doanh thu +10%: LN = 150,7 - 75 = 75,7 triệu (+22,1%); -10%: 48,3 triệu.'
+      result: Giữ C; BEP 268,2 triệu/tháng; MoS 45,3%; DOL 2,21
+  - id: "m02-worked_examples-5"
+    title: "Ví dụ có lời giải: m02_we_make_buy_box — Tự làm hộp hay mua ngoài"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m02_we_make_buy_box", "tự", "làm", "hộp", "hay", "mua", "ngoài"]
+    text: |-
+      id: m02_we_make_buy_box
+      name: Tự làm hộp hay mua ngoài
+      inputs:
+        P_buy: 3800
+        V: 3200
+        FC_av: 4000000
+        volume: 10000
+      steps:
+      - Q* = 4.000.000 / 600 = 6.667 hộp.
+      - 'Bảng: 6.000 hộp -> 3.867 (mua rẻ hơn); 8.000 -> 3.700; 10.000 -> 3.600 (tự làm).'
+      - Ở 10.000 hộp tiết kiệm (3.800-3.600) x 10.000 = 2 triệu/tháng; nếu <6.667 thì chuyển sang mua.
+      result: Tự làm nếu >6.667 hộp/tháng
+  - id: "m02-worked_examples-6"
+    title: "Ví dụ có lời giải: m02_we_special_order_capacity — Đơn đặc biệt có giới hạn công suất"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m02_we_special_order_capacity", "đơn", "đặc", "biệt", "giới", "hạn", "công"]
+    text: |-
+      id: m02_we_special_order_capacity
+      name: Đơn đặc biệt có giới hạn công suất
+      inputs:
+        capacity: 10000
+        sold: 8000
+        P: 100000
+        V: 62000
+        q: 3000
+        P_sp: 75000
+        pack: 3000
+      steps:
+      - CM thường = 38.000; CM đơn đặc biệt = 75.000 - 62.000 - 3.000 = 10.000.
+      - 'Công suất dư 2.000; nhận 3.000 phải bỏ 1.000 bán thường: lợi 30 triệu - mất 38 triệu = -8 triệu.'
+      - 'Nhận 2.000: +20 triệu.'
+      - 'Bút toán bán đơn: Nợ 131 / Có 511, Có 3331; giá vốn Nợ 632 / Có 155 (TT200, cần xác nhận hiện hành).'
+      result: Chỉ nhận 2.000 SP (+20 triệu)
+  - id: "m02-worked_examples-7"
+    title: "Ví dụ có lời giải: m02_we_discontinue_two_scenarios — Chuỗi 3 sản phẩm: dừng SP C theo hai kịch bản"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m02_we_discontinue_two_scenarios", "chuỗi", "sản", "phẩm", "dừng", "sp", "theo"]
+    text: |-
+      id: m02_we_discontinue_two_scenarios
+      name: 'Chuỗi 3 sản phẩm: dừng SP C theo hai kịch bản'
+      inputs:
+        rev:
+        - 500
+        - 300
+        - 200
+        vc:
+        - 250
+        - 180
+        - 150
+        fc_alloc:
+        - 150
+        - 100
+        - 80
+      steps:
+      - 'CM: 250/120/50 = 420; lợi nhuận sau phân bổ: 100/20/-30 = 90.'
+      - 'Kịch bản 1 (định phí C không tránh được): LN = 420-50-330 = 40 < 90, giữ C.'
+      - 'Kịch bản 2 (80 tránh được): LN = 370 - 250 = 120 > 90, dừng C.'
+      result: 'Quy tắc: dừng khi CM_C (50) < định phí tránh được (80)'
+  - id: "m02-practice_questions-1"
+    title: "Câu hỏi luyện tập: Trà sữa: giá 40.000, biến phí 14.000, định phí 52 triệu. Tính CM, ratio, BEP, số ly để lãi 20 triệu."
+    tags: ["câu", "hỏi", "luyện", "tập", "trà", "sữa", "giá", "40", "000", "biến", "phí", "14"]
+    text: |-
+      q: 'Trà sữa: giá 40.000, biến phí 14.000, định phí 52 triệu. Tính CM, ratio, BEP, số ly để lãi 20 triệu.'
+      a: 'CM = 26.000, ratio 65%; BEP = 2.000 ly = 80 triệu; để lãi 20 triệu: 72.000.000/26.000 = 2.769 ly.'
+  - id: "m02-practice_questions-2"
+    title: "Câu hỏi luyện tập: Doanh thu 800 triệu, biến phí 480 triệu, định phí 240 triệu. Tính CM, lợi nhuận, DOL; doanh thu +15…"
+    tags: ["câu", "hỏi", "luyện", "tập", "doanh", "thu", "800", "triệu", "biến", "phí", "480", "định"]
+    text: |-
+      q: Doanh thu 800 triệu, biến phí 480 triệu, định phí 240 triệu. Tính CM, lợi nhuận, DOL; doanh thu +15% thì lợi nhuận +%?
+      a: CM 320, lợi nhuận 80, DOL 4,0; +15% doanh thu thì lợi nhuận = 320x1,15-240 = 128 (+60%).
+  - id: "m02-practice_questions-3"
+    title: "Câu hỏi luyện tập: SP X: DT 400, VC 240, FC trực tiếp 60, chung phân bổ 50. Y: 300, 270, 20, 40. Z: 200, 90, 30, 30. T…"
+    tags: ["câu", "hỏi", "luyện", "tập", "sp", "dt", "400", "vc", "240", "fc", "trực", "tiếp"]
+    text: |-
+      q: 'SP X: DT 400, VC 240, FC trực tiếp 60, chung phân bổ 50. Y: 300, 270, 20, 40. Z: 200, 90, 30, 30. Tính CM, segment margin, lợi nhuận sau phân bổ; nên dừng Y không (trực tiếp tránh được, chung không)?'
+      a: 'CM 160/30/110; segment margin 100/10/80; LN sau phân bổ 50/-30/50 (tổng 70). Dừng Y: LN = 70 - 10 = 60 < 70, không dừng trừ khi công suất tạo hơn 10 triệu CM chỗ khác.'
+  - id: "m02-practice_questions-4"
+    title: "Câu hỏi luyện tập: Công suất 10.000 SP, bán 8.000 giá 100.000, biến phí 62.000. Khách đề nghị 3.000 SP giá 75.000, thê…"
+    tags: ["câu", "hỏi", "luyện", "tập", "công", "suất", "10", "000", "sp", "bán", "giá", "100"]
+    text: |-
+      q: Công suất 10.000 SP, bán 8.000 giá 100.000, biến phí 62.000. Khách đề nghị 3.000 SP giá 75.000, thêm bao bì 3.000. Nhận hết hay một phần?
+      a: CM đơn = 10.000/SP; nhận 3.000 phải bỏ 1.000 SP thường (mất 38 triệu) nên lợi 30 - 38 = -8 triệu. Nhận 2.000 (+20 triệu).
+  - id: "m02-practice_questions-5"
+    title: "Câu hỏi luyện tập: Chi tiết mua 27.000/cái; tự làm biến phí 24.000 + định phí tránh được 18 triệu/tháng. Q* và quyết đ…"
+    tags: ["câu", "hỏi", "luyện", "tập", "chi", "tiết", "mua", "27", "000", "cái", "tự", "làm"]
+    text: |-
+      q: Chi tiết mua 27.000/cái; tự làm biến phí 24.000 + định phí tránh được 18 triệu/tháng. Q* và quyết định ở 4.000, 6.000, 8.000 cái?
+      a: 'Q* = 18 triệu/3.000 = 6.000. Chi phí tự làm/cái: 28.500 (mua), 27.000 (hòa), 26.250 (tự làm).'
+  - id: "m02-practice_questions-6"
+    title: "Câu hỏi luyện tập: Sản xuất 10.000, bán 8.000, giá 100.000, biến phí 60.000, định phí SX 200 triệu, bán hàng và quản l…"
+    tags: ["câu", "hỏi", "luyện", "tập", "sản", "xuất", "10", "000", "bán", "giá", "100", "biến"]
+    text: |-
+      q: Sản xuất 10.000, bán 8.000, giá 100.000, biến phí 60.000, định phí SX 200 triệu, bán hàng và quản lý cố định 50 triệu. Lợi nhuận theo hai phương pháp?
+      a: Absorption 110 triệu; Variable 70 triệu; chênh 40 triệu = 2.000 SP tồn kho tăng x 20.000đ.
+  - id: "m02-practice_questions-7"
+    title: "Câu hỏi luyện tập: Mô hình A (FC 100 triệu, V 10k) vs B (FC 30 triệu, V 40k), giá 50k. Ở lợi nhuận 20 triệu, DOL mỗi m…"
+    tags: ["câu", "hỏi", "luyện", "tập", "mô", "hình", "fc", "100", "triệu", "10k", "vs", "30"]
+    text: |-
+      q: Mô hình A (FC 100 triệu, V 10k) vs B (FC 30 triệu, V 40k), giá 50k. Ở lợi nhuận 20 triệu, DOL mỗi mô hình?
+      a: 'A: 3.000 SP, CM 120, DOL 6,0. B: 5.000 SP, CM 50, DOL 2,5.'
+  - id: "m02-practice_questions-8"
+    title: "Câu hỏi luyện tập: Tại sao tăng giá 10% giảm BEP ít hơn mức giảm giá 10% làm tăng BEP?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tại", "sao", "tăng", "giá", "10", "giảm", "bep", "ít"]
+    text: |-
+      q: Tại sao tăng giá 10% giảm BEP ít hơn mức giảm giá 10% làm tăng BEP?
+      a: BEP = FC/CM; giá 55k tăng CM từ 35k lên 40k (BEP -12,5%), giá 45k giảm CM xuống 30k (BEP +16,7%); mẫu số nhỏ lại thì tăng tỷ lệ mạnh hơn (hàm nghịch đảo).
+  - id: "m02-practice_questions-9"
+    title: "Câu hỏi luyện tập: Hóa đơn điện: tháng cao 3.600 ly 5,9 triệu, tháng thấp 2.000 ly 4,3 triệu. Tách a và b?"
+    tags: ["câu", "hỏi", "luyện", "tập", "hóa", "đơn", "điện", "tháng", "cao", "600", "ly", "triệu"]
+    text: |-
+      q: 'Hóa đơn điện: tháng cao 3.600 ly 5,9 triệu, tháng thấp 2.000 ly 4,3 triệu. Tách a và b?'
+      a: b = 1.000đ/ly; a = 2,3 triệu.
+  - id: "m02-practice_questions-10"
+    title: "Câu hỏi luyện tập: Vì sao case WeWork cho thấy hậu quả của DOL cao?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "case", "wework", "cho", "thấy", "hậu", "quả"]
+    text: |-
+      q: Vì sao case WeWork cho thấy hậu quả của DOL cao?
+      a: Thuê dài hạn 10-15 năm là định phí cứng, doanh thu ngắn hạn dễ hủy; doanh thu giảm 20-30% làm lợi nhuận giảm nhiều lần; cộng với chỉ tiêu Community Adjusted EBITDA bỏ định phí che rủi ro.
+  - id: "m02-checklist-1"
+    title: "Checklist: Đã tách biến phí / định phí / hỗn hợp (High-Low hoặc hồi quy)?"
+    tags: ["checklist", "đã", "tách", "biến", "phí", "định", "hỗn", "hợp", "high", "low", "hoặc", "hồi"]
+    text: |-
+      Đã tách biến phí / định phí / hỗn hợp (High-Low hoặc hồi quy)?
+  - id: "m02-checklist-2"
+    title: "Checklist: Đã tách định phí trực tiếp (tránh được) và định phí chung?"
+    tags: ["checklist", "đã", "tách", "định", "phí", "trực", "tiếp", "tránh", "được", "và", "chung"]
+    text: |-
+      Đã tách định phí trực tiếp (tránh được) và định phí chung?
+  - id: "m02-checklist-3"
+    title: "Checklist: Đã xác định phạm vi thích hợp của định phí?"
+    tags: ["checklist", "đã", "xác", "định", "phạm", "vi", "thích", "hợp", "của", "phí"]
+    text: |-
+      Đã xác định phạm vi thích hợp của định phí?
+  - id: "m02-checklist-4"
+    title: "Checklist: Đã tính CM/đơn vị và CM ratio từng sản phẩm?"
+    tags: ["checklist", "đã", "tính", "cm", "đơn", "vị", "và", "ratio", "từng", "sản", "phẩm"]
+    text: |-
+      Đã tính CM/đơn vị và CM ratio từng sản phẩm?
+  - id: "m02-checklist-5"
+    title: "Checklist: BEP (số lượng và doanh thu) đã cập nhật theo giá/chi phí hiện tại?"
+    tags: ["checklist", "bep", "số", "lượng", "và", "doanh", "thu", "đã", "cập", "nhật", "theo", "giá"]
+    text: |-
+      BEP (số lượng và doanh thu) đã cập nhật theo giá/chi phí hiện tại?
+  - id: "m02-checklist-6"
+    title: "Checklist: Đã tính BEP đa sản phẩm theo cơ cấu doanh thu thực tế?"
+    tags: ["checklist", "đã", "tính", "bep", "đa", "sản", "phẩm", "theo", "cơ", "cấu", "doanh", "thu"]
+    text: |-
+      Đã tính BEP đa sản phẩm theo cơ cấu doanh thu thực tế?
+  - id: "m02-checklist-7"
+    title: "Checklist: MoS >= 20-30%? DOL chấp nhận được?"
+    tags: ["checklist", "mos", "20", "30", "dol", "chấp", "nhận", "được"]
+    text: |-
+      MoS >= 20-30%? DOL chấp nhận được?
+  - id: "m02-checklist-8"
+    title: "Checklist: Đã chạy độ nhạy giá/biến phí/định phí +/-10%?"
+    tags: ["checklist", "đã", "chạy", "độ", "nhạy", "giá", "biến", "phí", "định", "10"]
+    text: |-
+      Đã chạy độ nhạy giá/biến phí/định phí +/-10%?
+  - id: "m02-checklist-9"
+    title: "Checklist: Chỉ dùng relevant cost (loại chi phí chìm, loại phần phân bổ không đổi)?"
+    tags: ["checklist", "chỉ", "dùng", "relevant", "cost", "loại", "chi", "phí", "chìm", "phần", "phân", "bổ"]
+    text: |-
+      Chỉ dùng relevant cost (loại chi phí chìm, loại phần phân bổ không đổi)?
+  - id: "m02-checklist-10"
+    title: "Checklist: Dừng sản phẩm: đã so CM với định phí tránh được và chi phí cơ hội công suất?"
+    tags: ["checklist", "dừng", "sản", "phẩm", "đã", "so", "cm", "với", "định", "phí", "tránh", "được"]
+    text: |-
+      Dừng sản phẩm: đã so CM với định phí tránh được và chi phí cơ hội công suất?
+  - id: "m02-checklist-11"
+    title: "Checklist: Đơn đặc biệt: còn công suất dư thật không? Có ảnh hưởng giá thị trường?"
+    tags: ["checklist", "đơn", "đặc", "biệt", "còn", "công", "suất", "dư", "thật", "không", "có", "ảnh"]
+    text: |-
+      Đơn đặc biệt: còn công suất dư thật không? Có ảnh hưởng giá thị trường?
+  - id: "m02-checklist-12"
+    title: "Checklist: Make-or-Buy: đã tính sản lượng hòa và yếu tố phi tài chính?"
+    tags: ["checklist", "make", "or", "buy", "đã", "tính", "sản", "lượng", "hòa", "và", "yếu", "tố"]
+    text: |-
+      Make-or-Buy: đã tính sản lượng hòa và yếu tố phi tài chính?
+  - id: "m02-checklist-13"
+    title: "Checklist: Lợi nhuận quản trị đã đối chiếu với kế toán tài chính (VAS/TT200 hoặc TT133)?"
+    tags: ["checklist", "lợi", "nhuận", "quản", "trị", "đã", "đối", "chiếu", "với", "kế", "toán", "tài"]
+    text: |-
+      Lợi nhuận quản trị đã đối chiếu với kế toán tài chính (VAS/TT200 hoặc TT133)?
+  - id: "m02-checklist-14"
+    title: "Checklist: Chỉ tiêu tự tạo (non-GAAP) có ý nghĩa kinh tế, tính đủ chi phí?"
+    tags: ["checklist", "chỉ", "tiêu", "tự", "tạo", "non", "gaap", "có", "nghĩa", "kinh", "tế", "tính"]
+    text: |-
+      Chỉ tiêu tự tạo (non-GAAP) có ý nghĩa kinh tế, tính đủ chi phí?
+  - id: "m02-checklist-15"
+    title: "Checklist: Hàng tháng: CM top 5 SP, BEP vs thực tế, Budget vs Actual, top 10 chi phí, CAC?"
+    tags: ["checklist", "hàng", "tháng", "cm", "top", "sp", "bep", "vs", "thực", "tế", "budget", "actual"]
+    text: |-
+      Hàng tháng: CM top 5 SP, BEP vs thực tế, Budget vs Actual, top 10 chi phí, CAC?
+  - id: "m02-checklist-16"
+    title: "Checklist: Hàng quý: unit economics theo kênh, Make-or-Buy, product profitability?"
+    tags: ["checklist", "hàng", "quý", "unit", "economics", "theo", "kênh", "make", "or", "buy", "product", "profitability"]
+    text: |-
+      Hàng quý: unit economics theo kênh, Make-or-Buy, product profitability?
+  - id: "m02-checklist-17"
+    title: "Checklist: Bút toán/mã TK đã gắn 'cần xác nhận hiện hành' và báo người dùng xác nhận với kế toán?"
+    tags: ["checklist", "bút", "toán", "mã", "tk", "đã", "gắn", "cần", "xác", "nhận", "hiện", "hành"]
+    text: |-
+      Bút toán/mã TK đã gắn 'cần xác nhận hiện hành' và báo người dùng xác nhận với kế toán?
+  - id: "m02-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Sheet 1 Phân loại chi phí: Tên chi phí | Loại (Biến/Định/Hỗn hợp) | Trực tiếp hay chung | Tránh đượ…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "phân", "loại", "chi", "phí", "tên", "biến", "định", "hỗn"]
+    text: |-
+      Sheet 1 Phân loại chi phí: Tên chi phí | Loại (Biến/Định/Hỗn hợp) | Trực tiếp hay chung | Tránh được khi dừng SP? (Có/Không).
+  - id: "m02-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Sheet 2 CM theo sản phẩm: CM/đv = Giá - Biến phí; CM% = CM/Giá; Segment Margin = CM tổng - Định phí…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "cm", "theo", "sản", "phẩm", "đv", "giá", "biến", "phí"]
+    text: |-
+      Sheet 2 CM theo sản phẩm: CM/đv = Giá - Biến phí; CM% = CM/Giá; Segment Margin = CM tổng - Định phí trực tiếp.
+  - id: "m02-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: Sheet 3 Hòa vốn: BEP số lượng =FC/(P-V); BEP doanh thu =FC/CM%; sản lượng mục tiêu =(FC+LNmt)/CM."
+    tags: ["mẫu", "excel", "sheets", "sheet", "hòa", "vốn", "bep", "số", "lượng", "fc", "doanh", "thu"]
+    text: |-
+      Sheet 3 Hòa vốn: BEP số lượng =FC/(P-V); BEP doanh thu =FC/CM%; sản lượng mục tiêu =(FC+LNmt)/CM.
+  - id: "m02-excel_google_sheets_templates-4"
+    title: "Mẫu Excel/Sheets: Sheet 4 Độ nhạy: bảng thay giá/biến phí/định phí +/-10% (Data Table hoặc công thức trực tiếp)."
+    tags: ["mẫu", "excel", "sheets", "sheet", "độ", "nhạy", "bảng", "thay", "giá", "biến", "phí", "định"]
+    text: |-
+      Sheet 4 Độ nhạy: bảng thay giá/biến phí/định phí +/-10% (Data Table hoặc công thức trực tiếp).
+  - id: "m02-excel_google_sheets_templates-5"
+    title: "Mẫu Excel/Sheets: Sheet 5 Báo cáo hàng tháng: Budget vs Actual, MoS, DOL, cơ cấu bán hàng."
+    tags: ["mẫu", "excel", "sheets", "sheet", "báo", "cáo", "hàng", "tháng", "budget", "vs", "actual", "mos"]
+    text: |-
+      Sheet 5 Báo cáo hàng tháng: Budget vs Actual, MoS, DOL, cơ cấu bán hàng.
+  - id: "m02-excel_google_sheets_templates-6"
+    title: "Mẫu Excel/Sheets: Tách chi phí hỗn hợp: =SLOPE(Y,X) và =INTERCEPT(Y,X) khi có >= 6-12 kỳ dữ liệu."
+    tags: ["mẫu", "excel", "sheets", "tách", "chi", "phí", "hỗn", "hợp", "slope", "và", "intercept", "khi"]
+    text: |-
+      Tách chi phí hỗn hợp: =SLOPE(Y,X) và =INTERCEPT(Y,X) khi có >= 6-12 kỳ dữ liệu.
+  - id: "m02-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: 02-managerial-accounting.md

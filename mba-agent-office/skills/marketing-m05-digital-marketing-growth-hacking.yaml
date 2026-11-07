@@ -1,0 +1,2275 @@
+id: marketing-m05
+title: "Marketing m05: Digital Marketing và Growth Hacking"
+summary: "Chọn kênh, đo phễu và tối ưu chi phí thu hút khách bằng dữ liệu: dùng Digital Marketing (RACE, funnel, các kênh SEO/SEM/Social/Email/Influencer/Affiliate...) để tiếp cận - chuyển đổi - giữ chân khách, và Growth Hacking (AARRR, ICE, vòng lặp thử nghiệm, viral loop, referral) để t…"
+agents: ["marketing_expert"]
+order: 25
+when: ["digital marketing", "seo", "sem", "quang cao facebook", "google ads", "tiktok ads", "growth hacking", "aarrr", "pheu ban hang", "funnel", "roas", "cpa", "cpl", "ty le chuyen doi", "a/b test", "email marketing", "toi uu chuyen doi", "cro", "tang truong nhanh", "digital marketing va growth hacking", "digital marketing & growth hacking"]
+body_max: 3489
+sections:
+  - id: "m05-tong-quan"
+    title: "Tổng quan m05"
+    tags: ["m05", "digital", "marketing", "và", "growth", "hacking"]
+    text: |-
+      Digital Marketing và Growth Hacking (Digital Marketing & Growth Hacking) — module m05
+
+      Mục đích: Chọn kênh, đo phễu và tối ưu chi phí thu hút khách bằng dữ liệu: dùng Digital Marketing (RACE, funnel, các kênh SEO/SEM/Social/Email/Influencer/Affiliate...) để tiếp cận - chuyển đổi - giữ chân khách, và Growth Hacking (AARRR, ICE, vòng lặp thử nghiệm, viral loop, referral) để tìm điểm nghẽn rồi tăng trưởng nhanh với chi phí thấp. Agent phải làm được từ kế hoạch kênh, thiết lập tracking, tính CAC/ROAS/EPC/K-factor đến chấm điểm và đọc kết quả A/B test.
+
+      Dùng khi:
+      - Chủ SME hỏi 'nên chạy kênh nào, chia ngân sách thế nào?', 'quảng cáo có lời không?', 'ROAS bao nhiêu là ổn?'
+      - Cần lập kế hoạch kênh digital + lịch content (content calendar) + tracking (GA4, pixel, UTM).
+      - Cần map phễu AARRR/funnel, tìm bottleneck, ưu tiên ý tưởng bằng ICE, thiết kế thí nghiệm A/B.
+      - Tính các KPI: CTR, CPC, CPM, CVR, CPA, CPL, ROAS, CAC, LTV, LTV:CAC, payback, EPC (affiliate), K-factor, retention, DAU/MAU.
+      - Thiết kế referral, viral loop, share-to-unlock, pre-landing page lọc click cho affiliate, SEO parasite.
+      - Đánh giá một 'growth hack' có đáng làm không (bền vững, đạo đức, PMF đã có chưa).
+      - Phân tích case Airbnb, Dropbox, Hotmail, TikTok hoặc ví dụ PropHunter để rút bài học.
+
+      Nên nắm trước: - 'm01 - STP: phải biết khách mục tiêu trước khi chọn kênh'; - 'm03 - CLV: LTV và retention là mẫu số của mọi quyết định CAC'
+
+      Module liên quan: - 'm02 - Marketing Mix: Promotion/Place digital là phần thực thi của 4P/7P' - 'm03 - Customer Lifetime Value: LTV, churn, cohort, retention để định ngưỡng CAC cho phép' - 'm04 - Brand Management: cân bằng conversion ngắn hạn với xây thương hiệu (tránh short-term focus)' - 'm06 - Consumer Behavior: hành trình mua, Aha moment, tâm lý chia sẻ' - 'm07 - Marketing Research: khảo sát PMF, thiết kế thí …
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m05_ctr: Tỷ lệ nhấp (CTR)
+      - m05_cpc: Chi phí mỗi nhấp (CPC)
+      - m05_cpm: Chi phí mỗi nghìn lần hiển thị (CPM)
+      - m05_cvr: Tỷ lệ chuyển đổi (CVR)
+      - m05_cpa: Chi phí mỗi hành động / đơn (CPA)
+      - m05_cpl: Chi phí mỗi lead (CPL)
+      - m05_roas: Lợi tức chi tiêu quảng cáo (ROAS)
+      - m05_breakeven_roas: ROAS hòa vốn
+      - m05_ad_profit: Lợi nhuận quảng cáo / ROI ads
+      - m05_epc: Thu nhập mỗi click (EPC)
+      - m05_epv: Thu nhập mỗi lượt truy cập (EPV)
+      - m05_cac: Chi phí thu hút một khách hàng (CAC)
+      - m05_ltv: Giá trị vòng đời khách hàng (LTV, dạng giản lược)
+      - m05_ltv_cac: Tỷ lệ LTV:CAC
+      - m05_cac_payback: Thời gian hoàn vốn CAC
+      - m05_funnel: Chuyển đổi toàn phễu
+      - m05_required_clicks: Traffic cần thiết (tính ngược phễu)
+      - m05_viral_k: Hệ số lan truyền (K-factor)
+      - m05_viral_total: Tổng người dùng sau n vòng lan truyền
+      - m05_effective_cac: CAC hiệu dụng khi có lan truyền
+      - m05_referral_cac: CAC của chương trình giới thiệu
+      - m05_ice: Điểm ưu tiên ICE
+      - m05_retention: Tỷ lệ giữ chân / rời bỏ
+      - m05_dau_mau: Tỷ lệ DAU/MAU (độ gắn bó)
+      - m05_pmf: Điểm PMF (Sean Ellis test)
+      - m05_ab_z: Kiểm định A/B (z-test hai tỷ lệ)
+      - m05_ab_sample: Cỡ mẫu mỗi biến thể cho A/B test
+      - m05_growth_pct: Tỷ lệ tăng trưởng phần trăm
+
+      Kho tra cứu của module: Khái niệm 10, Công thức 28, frameworks 15, Quy trình 7, Quy tắc quyết định 16, Chuẩn so sánh 13, Lỗi thường gặp 16, Lưu ý SME Việt Nam 11, Bài học case 6, Ví dụ có lời giải 7, Câu hỏi luyện tập 12, Checklist 19, Mẫu Excel/Sheets 8. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ CLV", "lỗi thường gặp định giá").
+  - id: "m05-concepts-1"
+    title: "Khái niệm: Tiếp thị số"
+    tags: ["khái", "niệm", "tiếp", "thị", "số"]
+    text: |-
+      term_vi: Tiếp thị số
+      term_en: Digital Marketing
+      definition: Mọi hoạt động marketing qua kênh kỹ thuật số (internet, mobile, social, search, email...) để tiếp cận, thu hút, chuyển đổi và giữ chân khách.
+      why_it_matters: 'Ưu điểm cốt lõi là đo lường được từng bước (measurable), nhắm đúng đối tượng (targeted), tối ưu thời gian thực, CPM thấp hơn TV/print, hai chiều. Nhược điểm: ad fatigue/ad blocker, quy định quyền riêng tư (GDPR, iOS 14.5 ATT), quá nhiều kênh/công cụ, số liệu giả (bot, fake follower, click fraud), phụ thuộc thuật toán, dễ chỉ nhìn conversion ngắn hạn quên xây thương hiệu. Đối phó: đa dạng kênh, ưu tiên owned media (email, website), xây cộng đồng.'
+  - id: "m05-concepts-2"
+    title: "Khái niệm: Tăng trưởng thần tốc"
+    tags: ["khái", "niệm", "tăng", "trưởng", "thần", "tốc"]
+    text: |-
+      term_vi: Tăng trưởng thần tốc
+      term_en: Growth Hacking
+      definition: 'Phương pháp tập trung tăng trưởng nhanh bằng cách kết hợp marketing + product + data + thử nghiệm (experimentation). Thuật ngữ do Sean Ellis đặt năm 2010 (khi làm ở Dropbox, LogMeIn). Giao thoa của 3 yếu tố: Marketing, Engineering, Data Analytics.'
+      why_it_matters: 'Marketer truyền thống hỏi ''tiêu ngân sách này sao cho nhiều traffic nhất?''; growth hacker hỏi ''làm sao nhúng marketing vào chính sản phẩm để sản phẩm tự sinh người dùng mới với chi phí gần 0?''. Đây là mindset + phương pháp luận, KHÔNG phải một công cụ hay một kênh. Growth hacking không có nghĩa là miễn phí: TikTok chi hàng tỷ USD cho quảng cáo, nghĩa là ''tăng trưởng thông minh''.'
+  - id: "m05-concepts-3"
+    title: "Khái niệm: Phù hợp sản phẩm - thị trường"
+    tags: ["khái", "niệm", "phù", "hợp", "sản", "phẩm", "thị", "trường"]
+    text: |-
+      term_vi: Phù hợp sản phẩm - thị trường
+      term_en: Product-Market Fit (PMF)
+      definition: 'Sản phẩm giải quyết đúng nhu cầu có thật, thị trường chấp nhận. Phép thử Sean Ellis: hỏi người dùng ''bạn sẽ thất vọng thế nào nếu không còn dùng sản phẩm?''; tỷ lệ trả lời ''Rất thất vọng'' đạt khoảng 40% trở lên được xem là dấu hiệu PMF (ngưỡng 40% là quy ước phổ biến, nguồn không nêu).'
+      why_it_matters: 'Điều kiện tiên quyết của growth hacking: growth hack là ''đổ xăng cho xe đã chạy'', không phải ''lắp động cơ cho xe chưa chạy''. Hack cho 0 đến 100K user khác hack cho 1M đến 10M user.'
+  - id: "m05-concepts-4"
+    title: "Khái niệm: Chỉ số Bắc Đẩu"
+    tags: ["khái", "niệm", "chỉ", "số", "bắc", "đẩu"]
+    text: |-
+      term_vi: Chỉ số Bắc Đẩu
+      term_en: North Star Metric
+      definition: 'Một chỉ số duy nhất phản ánh giá trị cốt lõi sản phẩm mang lại cho khách (không phải lượt tải hay doanh thu thô). VD PropHunter: số cảnh báo đất ngộp được người dùng mở xem chi tiết mỗi tuần.'
+      why_it_matters: Căn chỉnh cả team vào giá trị khách nhận được; nếu chỉ số này tăng thì doanh thu theo sau. Chọn sai (vanity metric như lượt tải) thì tối ưu sai hướng.
+  - id: "m05-concepts-5"
+    title: "Khái niệm: Khoảnh khắc 'À ha'"
+    tags: ["khái", "niệm", "khoảnh", "khắc", "ha"]
+    text: |-
+      term_vi: Khoảnh khắc 'À ha'
+      term_en: Aha moment
+      definition: 'Thời điểm khách lần đầu cảm nhận giá trị sản phẩm. TikTok: lướt và cười trong khoảng 10 giây đầu, không cần đăng ký. PropHunter: thiết lập xong khu vực theo dõi.'
+      why_it_matters: 'Activation là mắt xích hay nghẽn nhất: rút ngắn time-to-value (giảm bước, điền sẵn, một-click) thường hiệu quả hơn mua thêm traffic.'
+  - id: "m05-concepts-6"
+    title: "Khái niệm: Vòng lặp lan truyền"
+    tags: ["khái", "niệm", "vòng", "lặp", "lan", "truyền"]
+    text: |-
+      term_vi: Vòng lặp lan truyền
+      term_en: Viral Loop
+      definition: Cơ chế trong đó mỗi người dùng/đơn hàng tự kéo thêm người dùng mới (Hotmail footer; Dropbox mời bạn cùng nhận dung lượng; Instagram cross-share; TikTok watermark, Duet; PropHunter PDF watermark; share-to-unlock).
+      why_it_matters: Biến chi phí cố định nhỏ (server, mã giảm giá) thành kênh thu hút khách thay chi phí quảng cáo lớn. Hiệu quả đo bằng hệ số lan truyền K.
+  - id: "m05-concepts-7"
+    title: "Khái niệm: Phương tiện sở hữu / thuê / trả tiền"
+    tags: ["khái", "niệm", "phương", "tiện", "sở", "hữu", "thuê", "trả", "tiền"]
+    text: |-
+      term_vi: Phương tiện sở hữu / thuê / trả tiền
+      term_en: Owned / Earned / Paid media
+      definition: 'Owned: website, email list, app, group do mình kiểm soát. Earned: PR, review, UGC, chia sẻ tự nhiên. Paid: quảng cáo trả tiền.'
+      why_it_matters: 'Nguồn gốc lời khuyên chống phụ thuộc thuật toán: thuật toán FB/Google đổi là traffic mất, owned media (email, website, cộng đồng) mới là tài sản bền vững (creator không sở hữu audience trên TikTok).'
+  - id: "m05-concepts-8"
+    title: "Khái niệm: Thương mại khám phá"
+    tags: ["khái", "niệm", "thương", "mại", "khám", "phá"]
+    text: |-
+      term_vi: Thương mại khám phá
+      term_en: Discovery commerce vs search commerce
+      definition: Khách khám phá sản phẩm qua nội dung giải trí (TikTok Shop) thay vì chủ động tìm kiếm (Google).
+      why_it_matters: 'Quyết định kênh: sản phẩm có sẵn nhu cầu tìm kiếm thì SEO/SEM; sản phẩm tạo nhu cầu bằng cảm hứng thì video ngắn/social commerce.'
+  - id: "m05-concepts-9"
+    title: "Khái niệm: Affiliate: EPC và CPA"
+    tags: ["khái", "niệm", "affiliate", "epc", "và", "cpa"]
+    text: |-
+      term_vi: 'Affiliate: EPC và CPA'
+      term_en: Affiliate Marketing, EPC, CPA
+      definition: 'Affiliate: đối tác bán hộ hưởng hoa hồng (chi phí theo hiệu quả). Với publisher chạy ads: lời khi EPC (thu nhập mỗi click sang merchant) lớn hơn chi phí mỗi click. Hai đòn bẩy: giảm CPA (kéo traffic rẻ/tự động) và tăng EPC (lọc chất lượng click).'
+      why_it_matters: Đổ traffic thô thẳng vào link merchant sinh click rác, kéo EPC tụt; do đó phải đo cả hai phía chứ không chỉ chạy ads.
+  - id: "m05-concepts-10"
+    title: "Khái niệm: Thiên lệch người sống sót"
+    tags: ["khái", "niệm", "thiên", "lệch", "người", "sống", "sót"]
+    text: |-
+      term_vi: Thiên lệch người sống sót
+      term_en: Survivorship bias
+      definition: Chỉ nghe các growth hack thành công, bỏ qua hàng nghìn thử nghiệm thất bại.
+      why_it_matters: Nhắc agent không khuyên 'làm y như Airbnb/Dropbox' mà phải thử nghiệm có kiểm soát và chấp nhận phần lớn thí nghiệm thất bại.
+  - id: "m05-formulas-1"
+    title: "Công thức: m05_ctr — Tỷ lệ nhấp (CTR)"
+    tags: ["công", "thức", "m05_ctr", "tỷ", "lệ", "nhấp", "ctr"]
+    text: |-
+      id: m05_ctr
+      name_vi: Tỷ lệ nhấp (CTR)
+      name_en: Click-Through Rate
+      expression_latex: CTR = \frac{\text{Clicks}}{\text{Impressions}} \times 100\%
+      expression_python: clicks / impressions * 100
+      excel: =B2/B1*100
+      variables:
+      - symbol: clicks
+        meaning: Số lượt nhấp
+        unit: lượt
+      - symbol: impressions
+        meaning: Số lượt hiển thị
+        unit: lượt
+      when_to_use: Đánh giá mức độ hấp dẫn của creative/tiêu đề/từ khóa ở tầng đầu phễu.
+      why_it_works: Đo phần trăm người thấy quảng cáo đủ quan tâm để nhấp; CTR thấp thường là lỗi thông điệp/hình ảnh/target, không phải lỗi landing page.
+      assumptions:
+      - Impressions đếm đúng (không bot)
+      pitfalls:
+      - CTR cao nhưng CVR thấp = tiêu đề giật gân, kéo click rác
+      - Không so CTR giữa định dạng khác nhau (search vs display)
+      interpretation: So với baseline của chính tài khoản/ngành; dùng để chọn creative thắng trong A/B. Ngưỡng tuyệt đối thay đổi theo kênh nên chỉ so tương đối.
+      example:
+        inputs:
+          clicks: 250
+          impressions: 20000
+        steps:
+        - 250 / 20000 * 100 = 1.25
+        result: CTR = 1.25%
+  - id: "m05-formulas-2"
+    title: "Công thức: m05_cpc — Chi phí mỗi nhấp (CPC)"
+    tags: ["công", "thức", "m05_cpc", "chi", "phí", "mỗi", "nhấp", "cpc"]
+    text: |-
+      id: m05_cpc
+      name_vi: Chi phí mỗi nhấp (CPC)
+      name_en: Cost Per Click
+      expression_latex: CPC = \frac{\text{Ad spend}}{\text{Clicks}}
+      expression_python: spend / clicks
+      excel: =B1/B2
+      variables:
+      - symbol: spend
+        meaning: Chi phí quảng cáo
+        unit: VNĐ
+      - symbol: clicks
+        meaning: Số lượt nhấp
+        unit: lượt
+      when_to_use: Kiểm soát giá mua traffic; so với EPC (affiliate) hoặc giá trị mỗi click.
+      why_it_works: Giá thầu và điểm chất lượng quyết định CPC; là chi phí đầu vào của phễu.
+      assumptions: []
+      pitfalls:
+      - CPC thấp chưa tốt nếu click kém chất lượng
+      - 'Affiliate: nếu EPC thấp hơn CPC thì đang lỗ trên mỗi click, tắt chiến dịch'
+      interpretation: 'Luôn đọc cùng CVR: chi phí thực = CPC / CVR.'
+      example:
+        inputs:
+          spend: 10000000
+          clicks: 1250
+        steps:
+        - 10,000,000 / 1,250 = 8,000
+        result: CPC = 8,000 VNĐ
+  - id: "m05-formulas-3"
+    title: "Công thức: m05_cpm — Chi phí mỗi nghìn lần hiển thị (CPM)"
+    tags: ["công", "thức", "m05_cpm", "chi", "phí", "mỗi", "nghìn", "lần", "hiển", "thị", "cpm"]
+    text: |-
+      id: m05_cpm
+      name_vi: Chi phí mỗi nghìn lần hiển thị (CPM)
+      name_en: Cost per Mille
+      expression_latex: CPM = \frac{\text{Ad spend}}{\text{Impressions}} \times 1000
+      expression_python: spend / impressions * 1000
+      excel: =B1/B2*1000
+      variables:
+      - symbol: spend
+        meaning: Chi phí quảng cáo
+        unit: VNĐ
+      - symbol: impressions
+        meaning: Số lượt hiển thị
+        unit: lượt
+      when_to_use: Mua awareness, so sánh giá tiếp cận giữa kênh (digital vs TV/print).
+      why_it_works: Chuẩn hóa chi phí theo 1000 lần hiển thị để so các kênh có quy mô khác nhau.
+      assumptions: []
+      pitfalls:
+      - CPM thấp chưa chắc tiếp cận đúng người
+      - Viewability thấp làm CPM thực cao hơn
+      interpretation: Dùng cho tầng Awareness; tầng chuyển đổi dùng CPA/ROAS.
+      example:
+        inputs:
+          spend: 5000000
+          impressions: 250000
+        steps:
+        - 5,000,000 / 250,000 * 1000 = 20,000
+        result: CPM = 20,000 VNĐ/1000 hiển thị
+  - id: "m05-formulas-4"
+    title: "Công thức: m05_cvr — Tỷ lệ chuyển đổi (CVR)"
+    tags: ["công", "thức", "m05_cvr", "tỷ", "lệ", "chuyển", "đổi", "cvr"]
+    text: |-
+      id: m05_cvr
+      name_vi: Tỷ lệ chuyển đổi (CVR)
+      name_en: Conversion Rate
+      expression_latex: CVR = \frac{\text{Conversions}}{\text{Clicks (hoặc Visits)}} \times 100\%
+      expression_python: conversions / visits * 100
+      excel: =B1/B2*100
+      variables:
+      - symbol: conversions
+        meaning: Số hành động mục tiêu (đơn, đăng ký, lead)
+        unit: lượt
+      - symbol: visits
+        meaning: Số click hoặc lượt truy cập (mẫu số)
+        unit: lượt
+      when_to_use: Đo chất lượng traffic và landing page/offer; chọn biến thể thắng trong A/B.
+      why_it_works: 'CVR nằm ở mẫu số của CPA = CPC / CVR nên là đòn bẩy lớn: tăng gấp đôi CVR = giảm một nửa CPA.'
+      assumptions:
+      - Xác định rõ mẫu số (click hay visit) và nhất quán
+      pitfalls:
+      - Trộn conversion mức micro (đăng ký) với macro (mua) khi so sánh
+      - Mẫu nhỏ gây nhiễu
+      interpretation: Ngưỡng phụ thuộc ngành và loại hành động; so với chính mình theo thời gian.
+      example:
+        inputs:
+          conversions: 120
+          visits: 4000
+        steps:
+        - 120 / 4000 * 100 = 3.0
+        result: CVR = 3.0%
+  - id: "m05-formulas-5"
+    title: "Công thức: m05_cpa — Chi phí mỗi hành động / đơn (CPA)"
+    tags: ["công", "thức", "m05_cpa", "chi", "phí", "mỗi", "hành", "động", "đơn", "cpa"]
+    text: |-
+      id: m05_cpa
+      name_vi: Chi phí mỗi hành động / đơn (CPA)
+      name_en: Cost Per Acquisition/Action
+      expression_latex: CPA = \frac{\text{Tổng chi phí quảng cáo}}{\text{Số đơn hàng thành công}} = \frac{CPC}{CVR}
+      expression_python: spend / orders
+      excel: =B1/B2
+      variables:
+      - symbol: spend
+        meaning: Tổng chi phí quảng cáo
+        unit: VNĐ
+      - symbol: orders
+        meaning: Số đơn/hành động thành công
+        unit: đơn
+      when_to_use: Đo hiệu quả chiến dịch trả phí, chọn bản landing page thắng, so với giá trị mỗi khách.
+      why_it_works: 'Quy toàn bộ chi phí về một đơn vị kết quả. Case Dropbox: CPA qua Google Ads 288-300 USD trong khi giá sản phẩm 99 USD/năm, nên mô hình đốt tiền và đổi sang referral.'
+      assumptions:
+      - Định nghĩa 'hành động' rõ (lead khác khách trả tiền)
+      pitfalls:
+      - Nhầm CPA lead với CAC khách trả tiền
+      - CPA của một chiến dịch bỏ qua chi phí sales/nhân sự (khác CAC)
+      interpretation: CPA phải thấp hơn giá trị mỗi khách (LTV x biên) để có lời; đối chiếu bằng LTV:CAC.
+      example:
+        inputs:
+          spend: 20000000
+          orders: 160
+        steps:
+        - 20,000,000 / 160 = 125,000
+        result: CPA = 125,000 VNĐ
+  - id: "m05-formulas-6"
+    title: "Công thức: m05_cpl — Chi phí mỗi lead (CPL)"
+    tags: ["công", "thức", "m05_cpl", "chi", "phí", "mỗi", "lead", "cpl"]
+    text: |-
+      id: m05_cpl
+      name_vi: Chi phí mỗi lead (CPL)
+      name_en: Cost Per Lead
+      expression_latex: CPL = \frac{\text{Ad spend}}{\text{Leads}}
+      expression_python: spend / leads
+      excel: =B1/B2
+      variables:
+      - symbol: spend
+        meaning: Chi phí quảng cáo
+        unit: VNĐ
+      - symbol: leads
+        meaning: Số lead (email, SĐT)
+        unit: lead
+      when_to_use: Chiến dịch thu lead (ebook, báo cáo, webinar) trước khi nurture bằng email.
+      why_it_works: Lead là chặng giữa; CPL kết hợp tỷ lệ lead->khách cho ra CAC.
+      assumptions: []
+      pitfalls:
+      - CPL rẻ nhưng lead rác làm CAC thật cao
+      interpretation: CAC = CPL / tỷ lệ lead chốt đơn (nếu chỉ tính chi phí ads).
+      example:
+        inputs:
+          spend: 6000000
+          leads: 300
+        steps:
+        - 6,000,000 / 300 = 20,000
+        result: CPL = 20,000 VNĐ
+  - id: "m05-formulas-7"
+    title: "Công thức: m05_roas — Lợi tức chi tiêu quảng cáo (ROAS)"
+    tags: ["công", "thức", "m05_roas", "lợi", "tức", "chi", "tiêu", "quảng", "cáo", "roas"]
+    text: |-
+      id: m05_roas
+      name_vi: Lợi tức chi tiêu quảng cáo (ROAS)
+      name_en: Return on Ad Spend
+      expression_latex: ROAS = \frac{\text{Doanh thu từ quảng cáo}}{\text{Chi phí quảng cáo}}
+      expression_python: revenue / spend
+      excel: =B1/B2
+      variables:
+      - symbol: revenue
+        meaning: Doanh thu quy cho quảng cáo
+        unit: VNĐ
+      - symbol: spend
+        meaning: Chi phí quảng cáo
+        unit: VNĐ
+      when_to_use: 'Đánh giá nhanh chiến dịch; đặt mục tiêu ROAS (PropHunter: > 200%, tức 10 triệu ads phải ra 20 triệu doanh thu).'
+      why_it_works: Là doanh thu trên mỗi đồng ads, rất dễ đọc theo thời gian thực; nhưng là DOANH THU chứ không phải lợi nhuận.
+      assumptions:
+      - Attribution đúng (iOS ATT, cookie, đa chạm có thể làm lệch)
+      pitfalls:
+      - 'Nguồn gốc ghi ''lợi nhuận trên chi phí quảng cáo'' là sai về bản chất: ROAS dùng doanh thu, chưa trừ giá vốn'
+      - 'ROAS đẹp vẫn lỗ nếu biên gộp thấp: phải so với ROAS hòa vốn = 1/biên gộp'
+      - Chỉ nhìn đơn đầu, bỏ LTV
+      interpretation: ROAS 2.0 (200%) nghĩa là 1 đồng ads ra 2 đồng doanh thu. Cần ROAS > ROAS hòa vốn mới có lời.
+      example:
+        inputs:
+          revenue: 20000000
+          spend: 10000000
+        steps:
+        - 20,000,000 / 10,000,000 = 2.0
+        result: ROAS = 2.0 = 200%
+  - id: "m05-formulas-8"
+    title: "Công thức: m05_breakeven_roas — ROAS hòa vốn"
+    tags: ["công", "thức", "m05_breakeven_roas", "roas", "hòa", "vốn"]
+    text: |-
+      id: m05_breakeven_roas
+      name_vi: ROAS hòa vốn
+      name_en: Break-even ROAS
+      expression_latex: ROAS_{BE} = \frac{1}{\text{Gross margin}}
+      expression_python: 1 / gross_margin
+      excel: =1/B1
+      variables:
+      - symbol: gross_margin
+        meaning: Biên lợi nhuận gộp (0-1) sau giá vốn/phí biến đổi
+        unit: tỷ lệ
+      when_to_use: 'Trước khi đặt mục tiêu ROAS: biết ngưỡng sàn.'
+      why_it_works: 'Doanh thu R, biên m: lợi nhuận gộp = R*m; hòa vốn khi R*m = chi phí ads, nên R/ads = 1/m.'
+      assumptions:
+      - Biên gộp ổn định; bỏ qua chi phí cố định
+      pitfalls:
+      - Quên phí sàn/ship/hoàn trả làm biên thật thấp hơn
+      interpretation: Biên 40% thì cần ROAS > 2.5 mới không lỗ trên đơn đầu; mục tiêu lợi nhuận phải cao hơn.
+      example:
+        inputs:
+          gross_margin: 0.4
+        steps:
+        - 1 / 0.4 = 2.5
+        result: ROAS hòa vốn = 2.5
+  - id: "m05-formulas-9"
+    title: "Công thức: m05_ad_profit — Lợi nhuận quảng cáo / ROI ads"
+    tags: ["công", "thức", "m05_ad_profit", "lợi", "nhuận", "quảng", "cáo", "roi", "ads"]
+    text: |-
+      id: m05_ad_profit
+      name_vi: Lợi nhuận quảng cáo / ROI ads
+      name_en: Ad ROI
+      expression_latex: ROI = \frac{\text{Revenue} \times m - \text{Spend}}{\text{Spend}}
+      expression_python: (revenue * gross_margin - spend) / spend
+      excel: =(B1*B2-B3)/B3
+      variables:
+      - symbol: revenue
+        meaning: Doanh thu
+        unit: VNĐ
+      - symbol: gross_margin
+        meaning: Biên gộp
+        unit: tỷ lệ
+      - symbol: spend
+        meaning: Chi phí ads
+        unit: VNĐ
+      when_to_use: Cần đo lợi nhuận thật của chiến dịch thay vì doanh thu.
+      why_it_works: Trừ giá vốn trước khi so với ads, tránh đánh giá cao ROAS.
+      assumptions: []
+      pitfalls:
+      - Chưa tính chi phí sáng tạo, công cụ, nhân sự
+      interpretation: '> 0 là có lời trên đơn đầu.'
+      example:
+        inputs:
+          revenue: 20000000
+          gross_margin: 0.85
+          spend: 10000000
+        steps:
+        - (20,000,000 x 0.85 - 10,000,000) / 10,000,000 = 0.7
+        result: ROI = 70%
+  - id: "m05-formulas-10"
+    title: "Công thức: m05_epc — Thu nhập mỗi click (EPC)"
+    tags: ["công", "thức", "m05_epc", "thu", "nhập", "mỗi", "click", "epc"]
+    text: |-
+      id: m05_epc
+      name_vi: Thu nhập mỗi click (EPC)
+      name_en: Earnings Per Click
+      expression_latex: EPC = \frac{\text{Tổng hoa hồng}}{\text{Tổng số click chuyển sang Merchant}}
+      expression_python: commission / merchant_clicks
+      excel: =B1/B2
+      variables:
+      - symbol: commission
+        meaning: Tổng hoa hồng affiliate
+        unit: VNĐ
+      - symbol: merchant_clicks
+        meaning: Số click sang merchant
+        unit: click
+      when_to_use: 'Affiliate: đánh giá chất lượng click và so với CPC (hoặc chi phí mỗi click sang merchant).'
+      why_it_works: EPC = CVR_merchant x hoa hồng mỗi đơn. Tăng EPC bằng lọc click (chỉ người có nhu cầu mới được đưa sang merchant) hoặc chọn merchant có hoa hồng/CVR cao.
+      assumptions:
+      - Click sang merchant tracking chính xác
+      pitfalls:
+      - EPC tính trên click đã lọc nên có thể tăng 3-5 lần mà TỔNG hoa hồng mỗi lượt truy cập chỉ tăng ít (xem m05_epv)
+      - Nhầm EPC theo click sang merchant với theo lượt vào landing
+      interpretation: 'EPC phải lớn hơn chi phí để có mỗi click sang merchant. Nguồn: lọc click làm EPC tăng 3-5 lần (ước lượng, chưa kiểm chứng).'
+      example:
+        inputs:
+          commission: 8000000
+          merchant_clicks: 10000
+        steps:
+        - 8,000,000 / 10,000 = 800
+        result: EPC = 800 VNĐ/click
+  - id: "m05-formulas-11"
+    title: "Công thức: m05_epv — Thu nhập mỗi lượt truy cập (EPV)"
+    tags: ["công", "thức", "m05_epv", "thu", "nhập", "mỗi", "lượt", "truy", "cập", "epv"]
+    text: |-
+      id: m05_epv
+      name_vi: Thu nhập mỗi lượt truy cập (EPV)
+      name_en: Earnings Per Visit
+      expression_latex: EPV = \frac{\text{Tổng hoa hồng}}{\text{Số lượt vào landing}} = EPC \times \frac{\text{Click sang merchant}}{\text{Visits}}
+      expression_python: commission / visits
+      excel: =B1/B2
+      variables:
+      - symbol: commission
+        meaning: Tổng hoa hồng
+        unit: VNĐ
+      - symbol: visits
+        meaning: Số lượt vào landing do ads kéo về
+        unit: lượt
+      when_to_use: Thay cho EPC khi so sánh phương án có pre-landing với đổ thẳng, vì cả hai nhận cùng lượng traffic trả phí.
+      why_it_works: Mẫu số là thứ mình trả tiền (visits) nên so được công bằng; EPC bị mẫu số 'click sang merchant' thay đổi do lọc.
+      assumptions: []
+      pitfalls:
+      - Chỉ khoe EPC mà quên số click sang merchant bị cắt giảm
+      interpretation: 'So EPV với CPC (chi phí mỗi visit mua về): EPV - CPC là lãi mỗi visit.'
+      example:
+        inputs:
+          commission: 9600000
+          visits: 10000
+        steps:
+        - 9,600,000 / 10,000 = 960
+        result: EPV = 960 VNĐ/visit
+  - id: "m05-formulas-12"
+    title: "Công thức: m05_cac — Chi phí thu hút một khách hàng (CAC)"
+    tags: ["công", "thức", "m05_cac", "chi", "phí", "thu", "hút", "một", "khách", "hàng", "cac"]
+    text: |-
+      id: m05_cac
+      name_vi: Chi phí thu hút một khách hàng (CAC)
+      name_en: Customer Acquisition Cost
+      expression_latex: CAC = \frac{\text{Chi phí marketing + sales trong kỳ}}{\text{Số khách hàng mới trong kỳ}}
+      expression_python: (marketing_cost + sales_cost) / new_customers
+      excel: =(B1+B2)/B3
+      variables:
+      - symbol: marketing_cost
+        meaning: Chi phí marketing (ads, content, công cụ, nhân sự)
+        unit: VNĐ
+      - symbol: sales_cost
+        meaning: Chi phí sales liên quan
+        unit: VNĐ
+      - symbol: new_customers
+        meaning: Khách trả tiền mới
+        unit: khách
+      when_to_use: Đánh giá kênh/chiến dịch về chi phí khách thật; chia theo kênh (paid CAC) và tổng (blended CAC).
+      why_it_works: Đặt chi phí cạnh giá trị mỗi khách (LTV) để biết mở rộng quy mô có lời hay không.
+      assumptions:
+      - Kỳ chi phí khớp kỳ khách (có độ trễ chốt đơn)
+      pitfalls:
+      - Chỉ tính ads, bỏ lương/công cụ
+      - Blended CAC che giấu kênh xấu
+      interpretation: So với LTV (LTV:CAC > 3 thường là tham chiếu) và payback.
+      example:
+        inputs:
+          marketing_cost: 30000000
+          sales_cost: 10000000
+          new_customers: 100
+        steps:
+        - (30,000,000 + 10,000,000) / 100 = 400,000
+        result: CAC = 400,000 VNĐ
+  - id: "m05-formulas-13"
+    title: "Công thức: m05_ltv — Giá trị vòng đời khách hàng (LTV, dạng giản lược)"
+    tags: ["công", "thức", "m05_ltv", "giá", "trị", "vòng", "đời", "khách", "hàng", "ltv", "dạng", "giản"]
+    text: |-
+      id: m05_ltv
+      name_vi: Giá trị vòng đời khách hàng (LTV, dạng giản lược)
+      name_en: Customer Lifetime Value (simple)
+      expression_latex: LTV = \frac{ARPU \times m}{\text{churn}}
+      expression_python: arpu * gross_margin / churn
+      excel: =B1*B2/B3
+      variables:
+      - symbol: arpu
+        meaning: Doanh thu mỗi khách mỗi kỳ
+        unit: VNĐ/kỳ
+      - symbol: gross_margin
+        meaning: Biên gộp
+        unit: tỷ lệ
+      - symbol: churn
+        meaning: Tỷ lệ rời bỏ mỗi kỳ (cùng đơn vị kỳ với ARPU)
+        unit: tỷ lệ/kỳ
+      when_to_use: Mô hình thuê bao/mua lặp để định ngưỡng CAC tối đa (chi tiết ở m03).
+      why_it_works: Tuổi thọ kỳ vọng = 1/churn; nhân lợi nhuận gộp mỗi kỳ ra giá trị vòng đời.
+      assumptions:
+      - Churn ổn định
+      - Bỏ qua chiết khấu
+      pitfalls:
+      - Churn tháng đầu thường cao hơn nên đừng áp churn trung bình cho cohort mới
+      interpretation: 'Dùng với CAC: LTV:CAC.'
+      example:
+        inputs:
+          arpu: 299000
+          gross_margin: 0.85
+          churn: 0.05
+        steps:
+        - 299,000 x 0.85 / 0.05 = 5,083,000
+        result: LTV = 5,083,000 VNĐ
+  - id: "m05-formulas-14"
+    title: "Công thức: m05_ltv_cac — Tỷ lệ LTV:CAC"
+    tags: ["công", "thức", "m05_ltv_cac", "tỷ", "lệ", "ltv", "cac"]
+    text: |-
+      id: m05_ltv_cac
+      name_vi: Tỷ lệ LTV:CAC
+      name_en: LTV to CAC ratio
+      expression_latex: LTV{:}CAC = \frac{LTV}{CAC}
+      expression_python: ltv / cac
+      excel: =B1/B2
+      variables:
+      - symbol: ltv
+        meaning: Giá trị vòng đời
+        unit: VNĐ
+      - symbol: cac
+        meaning: Chi phí thu hút khách
+        unit: VNĐ
+      when_to_use: Quyết định tăng/giảm ngân sách kênh.
+      why_it_works: Tỷ số giá trị nhận được trên chi phí bỏ ra để có khách.
+      assumptions: []
+      pitfalls:
+      - LTV ước lượng lạc quan; dùng cohort thật
+      - Case Phở Ơi (CLAUDE.md) 1.4 -> 13.1 là ví dụ minh họa
+      interpretation: 'Tham chiếu phổ biến: < 1 đốt tiền; 3 trở lên khỏe (độ tin cậy trung bình, phụ thuộc ngành và dòng tiền). Quá cao (> 5) có thể là đang đầu tư thiếu vào tăng trưởng.'
+      example:
+        inputs:
+          ltv: 5083000
+          cac: 400000
+        steps:
+        - 5,083,000 / 400,000 = 12.7075
+        result: LTV:CAC = 12.7
+  - id: "m05-formulas-15"
+    title: "Công thức: m05_cac_payback — Thời gian hoàn vốn CAC"
+    tags: ["công", "thức", "m05_cac_payback", "thời", "gian", "hoàn", "vốn", "cac"]
+    text: |-
+      id: m05_cac_payback
+      name_vi: Thời gian hoàn vốn CAC
+      name_en: CAC Payback Period
+      expression_latex: Payback = \frac{CAC}{ARPU \times m}
+      expression_python: cac / (arpu * gross_margin)
+      excel: =B1/(B2*B3)
+      variables:
+      - symbol: cac
+        meaning: Chi phí thu hút khách
+        unit: VNĐ
+      - symbol: arpu
+        meaning: Doanh thu mỗi khách mỗi kỳ
+        unit: VNĐ/kỳ
+      - symbol: gross_margin
+        meaning: Biên gộp
+        unit: tỷ lệ
+      when_to_use: Đánh giá áp lực dòng tiền khi đốt ads.
+      why_it_works: Số kỳ cần để lợi nhuận gộp của một khách bù chi phí thu hút nó.
+      assumptions:
+      - Khách không rời trong thời gian hoàn vốn
+      pitfalls:
+      - 'Dropbox: CAC 288 USD so với 99 USD/năm nghĩa là cần gần 3 năm doanh thu mới hòa vốn, chưa tính biên'
+      interpretation: Càng ngắn càng tốt; SME ít vốn nên giữ payback ngắn (thường dưới 12 tháng, tham chiếu trung bình).
+      example:
+        inputs:
+          cac: 288
+          arpu: 99
+          gross_margin: 1.0
+        steps:
+        - 288 / (99 x 1.0) = 2.909 (năm)
+        result: Payback ~ 2.9 năm
+  - id: "m05-formulas-16"
+    title: "Công thức: m05_funnel — Chuyển đổi toàn phễu"
+    tags: ["công", "thức", "m05_funnel", "chuyển", "đổi", "toàn", "phễu"]
+    text: |-
+      id: m05_funnel
+      name_vi: Chuyển đổi toàn phễu
+      name_en: End-to-end funnel conversion
+      expression_latex: CR_{total} = \prod_i cr_i
+      expression_python: math.prod(rates)
+      excel: =PRODUCT(B1:B4)
+      variables:
+      - symbol: rates
+        meaning: Danh sách tỷ lệ chuyển đổi từng bước (0-1)
+        unit: list
+      when_to_use: Tìm bottleneck và tính ngược lượng traffic cần có.
+      why_it_works: Các bước nối tiếp nên tỷ lệ nhân với nhau; bước thấp nhất (so với benchmark) là nơi cải thiện có đòn bẩy lớn nhất.
+      assumptions:
+      - Các bước độc lập, đo cùng cohort
+      pitfalls:
+      - Cải thiện bước đã cao thì lợi ích nhỏ
+      interpretation: 'Mô hình hóa: tăng bước activation từ 20% lên 45% làm toàn phễu tăng 2.25 lần.'
+      example:
+        inputs:
+          rates:
+          - 0.04
+          - 0.2
+          - 0.1
+        steps:
+        - 0.04 x 0.20 x 0.10 = 0.0008
+        result: 0.08% từ click đến khách trả tiền
+  - id: "m05-formulas-17"
+    title: "Công thức: m05_required_clicks — Traffic cần thiết (tính ngược phễu)"
+    tags: ["công", "thức", "m05_required_clicks", "traffic", "cần", "thiết", "tính", "ngược", "phễu"]
+    text: |-
+      id: m05_required_clicks
+      name_vi: Traffic cần thiết (tính ngược phễu)
+      name_en: Required traffic (reverse funnel)
+      expression_latex: Clicks = \frac{\text{Khách mục tiêu}}{CR_{total}}
+      expression_python: target_customers / overall_cr
+      excel: =B1/B2
+      variables:
+      - symbol: target_customers
+        meaning: Số khách trả tiền mục tiêu
+        unit: khách
+      - symbol: overall_cr
+        meaning: Tỷ lệ chuyển đổi toàn phễu
+        unit: tỷ lệ
+      when_to_use: Lập ngân sách ads từ mục tiêu doanh thu.
+      why_it_works: 'Đảo ngược phễu: ngân sách = clicks x CPC.'
+      assumptions:
+      - Tỷ lệ giữ nguyên khi tăng traffic (thường giảm khi mở rộng)
+      pitfalls:
+      - Mở rộng audience làm CVR giảm
+      interpretation: Nếu ngân sách cần quá lớn so với LTV thì sửa phễu trước khi mua traffic.
+      example:
+        inputs:
+          target_customers: 10
+          overall_cr: 0.0008
+        steps:
+        - 10 / 0.0008 = 12,500 click
+        result: Cần 12,500 click; với CPC 8,000 là 100,000,000 VNĐ
+  - id: "m05-formulas-18"
+    title: "Công thức: m05_viral_k — Hệ số lan truyền (K-factor)"
+    tags: ["công", "thức", "m05_viral_k", "hệ", "số", "lan", "truyền", "factor"]
+    text: |-
+      id: m05_viral_k
+      name_vi: Hệ số lan truyền (K-factor)
+      name_en: Viral coefficient
+      expression_latex: K = i \times c
+      expression_python: invites_per_user * conversion
+      excel: =B1*B2
+      variables:
+      - symbol: invites_per_user
+        meaning: Số người được tiếp cận/mời trung bình do mỗi user
+        unit: người/user
+      - symbol: conversion
+        meaning: Tỷ lệ người được mời trở thành user
+        unit: tỷ lệ
+      when_to_use: Thiết kế/đo referral, share-to-unlock, watermark, duet.
+      why_it_works: Mỗi user sinh K user mới. K>1 tăng trưởng tự duy trì (hiếm); K<1 vẫn khuếch đại kênh trả phí 1/(1-K) lần.
+      assumptions:
+      - Các vòng độc lập, không bão hòa
+      pitfalls:
+      - 'Nhầm ''chia sẻ cho 3 người'' (i=3) với K=3: còn nhân với conversion nhỏ'
+      - Gói dễ bão hòa theo thời gian
+      interpretation: K ~ 0.1-0.3 là thực tế và vẫn đáng làm vì giảm CAC; K>1 là trường hợp đặc biệt (Hotmail, Dropbox giai đoạn đầu).
+      example:
+        inputs:
+          invites_per_user: 12
+          conversion: 0.01
+        steps:
+        - i = 0.4 chia sẻ x 3 group x 10 người xem = 12 (giả định)
+        - K = 12 x 0.01 = 0.12
+        result: K = 0.12
+  - id: "m05-formulas-19"
+    title: "Công thức: m05_viral_total — Tổng người dùng sau n vòng lan truyền"
+    tags: ["công", "thức", "m05_viral_total", "tổng", "người", "dùng", "sau", "vòng", "lan", "truyền"]
+    text: |-
+      id: m05_viral_total
+      name_vi: Tổng người dùng sau n vòng lan truyền
+      name_en: Total users after n viral cycles
+      expression_latex: N_{total} = N_0 \frac{1-K^{n+1}}{1-K}
+      expression_python: n0 * (1 - k ** (cycles + 1)) / (1 - k)
+      excel: =B1*(1-B2^(B3+1))/(1-B2)
+      variables:
+      - symbol: n0
+        meaning: Số user ban đầu (trả phí)
+        unit: user
+      - symbol: k
+        meaning: K-factor (khác 1)
+        unit: tỷ lệ
+      - symbol: cycles
+        meaning: Số vòng lan truyền
+        unit: vòng
+      when_to_use: Ước lượng tổng user và hệ số khuếch đại.
+      why_it_works: Chuỗi hình học N0(1+K+K^2+...); khi K<1, tổng vô hạn = N0/(1-K).
+      assumptions:
+      - K không đổi
+      - K khác 1
+      pitfalls:
+      - Không áp dụng khi K=1 (dùng n0*(cycles+1))
+      interpretation: K=0.5 nhân khách trả phí lên 2 lần.
+      example:
+        inputs:
+          n0: 1000
+          k: 0.5
+          cycles: 3
+        steps:
+        - 1000 x (1 - 0.5^4) / 0.5 = 1875
+        result: 1,875 user sau 3 vòng (tiệm cận 2,000)
+  - id: "m05-formulas-20"
+    title: "Công thức: m05_effective_cac — CAC hiệu dụng khi có lan truyền"
+    tags: ["công", "thức", "m05_effective_cac", "cac", "hiệu", "dụng", "khi", "có", "lan", "truyền"]
+    text: |-
+      id: m05_effective_cac
+      name_vi: CAC hiệu dụng khi có lan truyền
+      name_en: Effective CAC with virality
+      expression_latex: CAC_{eff} = CAC_{paid} \times (1-K), \quad K<1
+      expression_python: paid_cac * (1 - k)
+      excel: =B1*(1-B2)
+      variables:
+      - symbol: paid_cac
+        meaning: CAC của kênh trả phí
+        unit: VNĐ
+      - symbol: k
+        meaning: K-factor (< 1)
+        unit: tỷ lệ
+      when_to_use: Tính xem viral loop tiết kiệm bao nhiêu so với chạy ads thuần.
+      why_it_works: Mỗi user trả phí sinh tổng 1/(1-K) user; chia chi phí cho số user thực thu được.
+      assumptions:
+      - K<1, không tính chi phí phần thưởng
+      pitfalls:
+      - Quên cộng chi phí thưởng (voucher, dung lượng)
+      interpretation: Muốn giảm CAC một phần ba cần K khoảng 0.33.
+      example:
+        inputs:
+          paid_cac: 200000
+          k: 0.12
+        steps:
+        - 200,000 x (1 - 0.12) = 176,000
+        result: CAC hiệu dụng = 176,000 VNĐ (giảm 12%)
+  - id: "m05-formulas-21"
+    title: "Công thức: m05_referral_cac — CAC của chương trình giới thiệu"
+    tags: ["công", "thức", "m05_referral_cac", "cac", "của", "chương", "trình", "giới", "thiệu"]
+    text: |-
+      id: m05_referral_cac
+      name_vi: CAC của chương trình giới thiệu
+      name_en: Referral CAC
+      expression_latex: CAC_{ref} = \frac{\text{Chi phí thưởng 2 phía}}{\text{Khách mới nhờ giới thiệu}}
+      expression_python: reward_cost_total / new_users
+      excel: =B1/B2
+      variables:
+      - symbol: reward_cost_total
+        meaning: Tổng chi phí phần thưởng (COGS của phần thưởng)
+        unit: VNĐ hoặc USD
+      - symbol: new_users
+        meaning: Số user mới nhờ giới thiệu
+        unit: user
+      when_to_use: 'Chứng minh referral rẻ hơn ads (Dropbox: thưởng 500MB cả hai phía, chi phí server vài cent so với CPA 288-300 USD).'
+      why_it_works: Đổi chi phí biên rất thấp của sản phẩm số lấy khách mới thay vì trả tiền quảng cáo.
+      assumptions:
+      - Phần thưởng có giá vốn thấp
+      pitfalls:
+      - Phần thưởng có giá vốn cao (voucher) có thể đắt hơn ads
+      - Lạm dụng, tài khoản ảo
+      interpretation: So CAC_ref với CAC kênh trả phí.
+      example:
+        inputs:
+          reward_cost_total: 0.5
+          new_users: 1
+        steps:
+        - Giả định chi phí lưu trữ 1GB (2 x 500MB) là 0.5 USD/năm
+        - 0.5 / 1 = 0.5 USD so với 288 USD
+        result: ~ 0.5 USD/khách, rẻ hơn khoảng 576 lần (số giả định minh họa)
+  - id: "m05-formulas-22"
+    title: "Công thức: m05_ice — Điểm ưu tiên ICE"
+    tags: ["công", "thức", "m05_ice", "điểm", "ưu", "tiên", "ice"]
+    text: |-
+      id: m05_ice
+      name_vi: Điểm ưu tiên ICE
+      name_en: ICE Score
+      expression_latex: ICE = \frac{I + C + E}{3}
+      expression_python: (impact + confidence + ease) / 3
+      excel: =AVERAGE(B1:B3)
+      variables:
+      - symbol: impact
+        meaning: Tác động nếu thành công (1-10)
+        unit: điểm
+      - symbol: confidence
+        meaning: Độ tin cậy sẽ thành công (1-10)
+        unit: điểm
+      - symbol: ease
+        meaning: Độ dễ triển khai (1-10)
+        unit: điểm
+      when_to_use: Xếp thứ tự backlog ý tưởng growth.
+      why_it_works: Cân bằng giá trị kỳ vọng (I x C) với chi phí (E), tránh làm ý tưởng to mà khó hoặc dễ mà vô nghĩa.
+      assumptions:
+      - Điểm do team chấm cùng chuẩn
+      pitfalls:
+      - Nguồn định nghĩa là trung bình (chia 3) nhưng ví dụ PropHunter dùng tổng (17, 24); xếp hạng không đổi, chỉ khác tỷ lệ
+      - Chấm cảm tính, thiên vị ý tưởng quen
+      - Confidence cao khi chưa có dữ liệu
+      interpretation: 'Chọn ý tưởng điểm cao nhất; dùng cùng thang cho mọi ý tưởng. Ví dụ PropHunter: ý tưởng 1 (4,5,8) = 5.67; ý tưởng 2 (9,8,7) = 8.0.'
+      example:
+        inputs:
+          impact: 9
+          confidence: 8
+          ease: 7
+        steps:
+        - (9 + 8 + 7) / 3 = 8.0 (tổng = 24)
+        result: ICE = 8.0
+  - id: "m05-formulas-23"
+    title: "Công thức: m05_retention — Tỷ lệ giữ chân / rời bỏ"
+    tags: ["công", "thức", "m05_retention", "tỷ", "lệ", "giữ", "chân", "rời", "bỏ"]
+    text: |-
+      id: m05_retention
+      name_vi: Tỷ lệ giữ chân / rời bỏ
+      name_en: Retention and Churn rate
+      expression_latex: Retention = \frac{E - N}{S}, \quad Churn = 1 - Retention
+      expression_python: (end_customers - new_customers) / start_customers
+      excel: =(B1-B2)/B3
+      variables:
+      - symbol: end_customers
+        meaning: Số khách cuối kỳ
+        unit: khách
+      - symbol: new_customers
+        meaning: Khách mới trong kỳ
+        unit: khách
+      - symbol: start_customers
+        meaning: Khách đầu kỳ
+        unit: khách
+      when_to_use: Tầng Retention của AARRR; tính churn cho LTV.
+      why_it_works: Loại khách mới khỏi cuối kỳ để chỉ còn khách cũ giữ lại.
+      assumptions:
+      - Định nghĩa 'active' rõ
+      pitfalls:
+      - Trộn cohort mới và cũ
+      - Chỉ đo theo kỳ trung bình, bỏ qua đường cong cohort
+      interpretation: PropHunter có retention tháng đầu 65%, tức churn 35%.
+      example:
+        inputs:
+          end_customers: 700
+          new_customers: 100
+          start_customers: 800
+        steps:
+        - (700 - 100) / 800 = 0.75
+        result: Retention = 75%, churn = 25%
+  - id: "m05-formulas-24"
+    title: "Công thức: m05_dau_mau — Tỷ lệ DAU/MAU (độ gắn bó)"
+    tags: ["công", "thức", "m05_dau_mau", "tỷ", "lệ", "dau", "mau", "độ", "gắn", "bó"]
+    text: |-
+      id: m05_dau_mau
+      name_vi: Tỷ lệ DAU/MAU (độ gắn bó)
+      name_en: DAU/MAU stickiness
+      expression_latex: Stickiness = \frac{DAU}{MAU}
+      expression_python: dau / mau
+      excel: =B1/B2
+      variables:
+      - symbol: dau
+        meaning: Người dùng hoạt động hằng ngày
+        unit: user
+      - symbol: mau
+        meaning: Người dùng hoạt động hằng tháng
+        unit: user
+      when_to_use: Đo độ gắn bó của sản phẩm/app (retention tầng sử dụng).
+      why_it_works: Cho biết bình quân mỗi người dùng tháng vào bao nhiêu ngày trong tháng.
+      assumptions: []
+      pitfalls:
+      - Nguồn nêu TikTok DAU/MAU 60-70% nhưng số này chưa kiểm chứng; trong khi bảng kết quả (DAU 1B+/MAU 1.5B+) cho tỷ lệ khoảng 67%
+      interpretation: Càng gần 1 càng gắn bó.
+      example:
+        inputs:
+          dau: 1000000000
+          mau: 1500000000
+        steps:
+        - 1B / 1.5B = 0.667
+        result: ~ 66.7% (số nguồn, chưa kiểm chứng)
+  - id: "m05-formulas-25"
+    title: "Công thức: m05_pmf — Điểm PMF (Sean Ellis test)"
+    tags: ["công", "thức", "m05_pmf", "điểm", "pmf", "sean", "ellis", "test"]
+    text: |-
+      id: m05_pmf
+      name_vi: Điểm PMF (Sean Ellis test)
+      name_en: PMF survey score
+      expression_latex: PMF = \frac{\text{Số trả lời Rất thất vọng}}{\text{Tổng số trả lời}}
+      expression_python: very_disappointed / respondents
+      excel: =B1/B2
+      variables:
+      - symbol: very_disappointed
+        meaning: Số người trả lời Rất thất vọng nếu mất sản phẩm
+        unit: người
+      - symbol: respondents
+        meaning: Tổng số người trả lời khảo sát
+        unit: người
+      when_to_use: Cổng kiểm tra trước khi đẩy growth.
+      why_it_works: Đo gián tiếp việc sản phẩm có thật sự cần thiết cho nhóm người dùng đang dùng.
+      assumptions:
+      - Khảo sát người dùng đã trải nghiệm thật, mẫu đủ lớn
+      pitfalls:
+      - Ngưỡng 40% là quy ước, nguồn không nêu
+      - Mẫu nhỏ, thiên lệch
+      interpretation: 'PropHunter: 45% (> 40%) cộng retention tháng đầu 65% được xem là đạt PMF.'
+      example:
+        inputs:
+          very_disappointed: 45
+          respondents: 100
+        steps:
+        - 45 / 100 = 0.45
+        result: PMF score = 45%
+  - id: "m05-formulas-26"
+    title: "Công thức: m05_ab_z — Kiểm định A/B (z-test hai tỷ lệ)"
+    tags: ["công", "thức", "m05_ab_z", "kiểm", "định", "test", "hai", "tỷ", "lệ"]
+    text: |-
+      id: m05_ab_z
+      name_vi: Kiểm định A/B (z-test hai tỷ lệ)
+      name_en: A/B test two-proportion z-score
+      expression_latex: z = \frac{p_B - p_A}{\sqrt{\hat p(1-\hat p)(1/n_A+1/n_B)}}
+      expression_python: (c2/n2 - c1/n1) / math.sqrt(((c1+c2)/(n1+n2)) * (1 - (c1+c2)/(n1+n2)) * (1/n1 + 1/n2))
+      excel: =(C2/N2-C1/N1)/SQRT(((C1+C2)/(N1+N2))*(1-(C1+C2)/(N1+N2))*(1/N1+1/N2))
+      variables:
+      - symbol: c1
+        meaning: Số chuyển đổi bản A
+        unit: lượt
+      - symbol: n1
+        meaning: Số visit bản A
+        unit: lượt
+      - symbol: c2
+        meaning: Số chuyển đổi bản B
+        unit: lượt
+      - symbol: n2
+        meaning: Số visit bản B
+        unit: lượt
+      when_to_use: Quyết định bản thắng thay vì cảm tính.
+      why_it_works: 'Kiểm tra chênh lệch CVR có vượt nhiễu ngẫu nhiên không: |z| > 1.96 tương ứng khoảng 95% (hai phía).'
+      assumptions:
+      - Chia ngẫu nhiên đồng thời
+      - Mẫu đủ lớn
+      - Một chỉ số quyết định đặt trước
+      pitfalls:
+      - Dừng sớm khi thấy thắng (peeking)
+      - Chạy nhiều biến thể cùng lúc mà không hiệu chỉnh
+      - Đổi nhiều thứ một lúc
+      interpretation: '|z| >= 1.96 thì chênh lệch có ý nghĩa thống kê 5%.'
+      example:
+        inputs:
+          c1: 120
+          n1: 4000
+          c2: 160
+          n2: 4000
+        steps:
+        - pA = 3.0%, pB = 4.0%
+        - p gộp = 280/8000 = 3.5%
+        - z = 0.01 / sqrt(0.035 x 0.965 x 0.0005) = 2.43
+        result: 'z = 2.43 > 1.96: bản B thắng (p ~ 0.015)'
+  - id: "m05-formulas-27"
+    title: "Công thức: m05_ab_sample — Cỡ mẫu mỗi biến thể cho A/B test"
+    tags: ["công", "thức", "m05_ab_sample", "cỡ", "mẫu", "mỗi", "biến", "thể", "cho", "test"]
+    text: |-
+      id: m05_ab_sample
+      name_vi: Cỡ mẫu mỗi biến thể cho A/B test
+      name_en: A/B sample size per variant
+      expression_latex: n = \frac{\left(z_{\alpha/2}\sqrt{2\bar p(1-\bar p)} + z_{\beta}\sqrt{p_1(1-p_1)+p_2(1-p_2)}\right)^2}{(p_2-p_1)^2}
+      expression_python: ((1.96*math.sqrt(2*((p1+p2)/2)*(1-(p1+p2)/2)) + 0.84*math.sqrt(p1*(1-p1)+p2*(1-p2)))**2) / (p2-p1)**2
+      excel: (tính bằng công thức; hoặc dùng công cụ A/B sample size calculator)
+      variables:
+      - symbol: p1
+        meaning: CVR hiện tại
+        unit: tỷ lệ
+      - symbol: p2
+        meaning: CVR mục tiêu (mức cải thiện nhỏ nhất đáng phát hiện)
+        unit: tỷ lệ
+      when_to_use: Trước khi chạy test, để biết cần bao nhiêu traffic và chạy bao lâu.
+      why_it_works: Alpha 5% (z=1.96), power 80% (z=0.84); chênh càng nhỏ thì mẫu càng lớn (tỷ lệ nghịch bình phương).
+      assumptions:
+      - Hai phía, alpha 5%, power 80%
+      pitfalls:
+      - Traffic ít (SME) không đủ cỡ mẫu cho chênh nhỏ, chọn thay đổi lớn hơn
+      interpretation: Nguồn chỉ nói chạy A/B 1-2 tuần; cần kiểm tra thời gian đủ cỡ mẫu.
+      example:
+        inputs:
+          p1: 0.03
+          p2: 0.04
+        steps:
+        - Tính theo công thức
+        result: ~ 5,295 visit mỗi biến thể (test 4,000/biến thể ở ví dụ A/B là thiếu power dù z đã vượt 1.96)
+  - id: "m05-formulas-28"
+    title: "Công thức: m05_growth_pct — Tỷ lệ tăng trưởng phần trăm"
+    tags: ["công", "thức", "m05_growth_pct", "tỷ", "lệ", "tăng", "trưởng", "phần", "trăm"]
+    text: |-
+      id: m05_growth_pct
+      name_vi: Tỷ lệ tăng trưởng phần trăm
+      name_en: Percent change
+      expression_latex: g = \frac{V_1 - V_0}{V_0} \times 100\%
+      expression_python: (v1 - v0) / v0 * 100
+      excel: =(B2-B1)/B1*100
+      variables:
+      - symbol: v1
+        meaning: Giá trị cuối
+        unit: đơn vị
+      - symbol: v0
+        meaning: Giá trị đầu
+        unit: đơn vị
+      when_to_use: Đọc các bảng tăng trưởng (TikTok MAU 271M -> 1.5B...).
+      why_it_works: Chuẩn hóa mức tăng theo đáy ban đầu.
+      assumptions: []
+      pitfalls:
+      - Tăng % khổng lồ trên nền nhỏ không có nghĩa bền vững
+      interpretation: 'Kiểm tra: MAU +453.5% (nguồn ghi +454%); DAU +900%; thời gian dùng 42 -> 95 phút +126%; doanh thu 0.2B -> 20B +9,900%; Dropbox 100K -> 4M = +3,900%.'
+      example:
+        inputs:
+          v1: 1500
+          v0: 271
+        steps:
+        - (1500 - 271) / 271 x 100 = 453.5
+        result: +453.5%
+  - id: "m05-frameworks-1"
+    title: "Frameworks: m05_race — Mô hình RACE"
+    tags: ["frameworks", "m05_race", "mô", "hình", "race"]
+    text: |-
+      id: m05_race
+      name_vi: Mô hình RACE
+      name_en: RACE Framework (Smart Insights)
+      origin: Smart Insights (Dave Chaffey) đưa ra để tổ chức digital marketing theo hành trình khách thay vì theo từng kênh rời rạc, giúp gắn kênh với mục tiêu và KPI của từng giai đoạn.
+      components:
+      - 'Reach (Tiếp cận): SEO, Social, Ads, PR'
+      - 'Act (Tương tác): website, content, UX'
+      - 'Convert (Chuyển đổi): CRO, sales, e-commerce, leads'
+      - 'Engage (Gắn kết dài hạn): email, loyalty, referral, CRM'
+      when_to_use: Lập kế hoạch digital tổng thể và gán KPI theo từng giai đoạn.
+      how_to_apply:
+      - Liệt kê kênh hiện có và xếp vào từng chữ R-A-C-E.
+      - 'Mỗi giai đoạn chọn 1-2 KPI (Reach: traffic/impressions; Act: time on page, bounce; Convert: CVR, CPA; Engage: open rate, repeat purchase).'
+      - Tìm giai đoạn yếu nhất (thường Convert hoặc Engage) và dồn nguồn lực.
+      how_to_read_results: Giai đoạn có tỷ lệ rớt lớn nhất là nơi cần ưu tiên; đừng tăng Reach khi Convert đang rò rỉ.
+      pitfalls:
+      - Chỉ đầu tư Reach (traffic) mà bỏ Convert/Engage
+      - Không có KPI riêng từng giai đoạn
+      example: 'Quán cà phê: Reach = TikTok/Google Maps, Act = fanpage + menu online, Convert = đặt trước/QR, Engage = tích điểm Zalo OA.'
+  - id: "m05-frameworks-2"
+    title: "Frameworks: m05_funnel_framework — Phễu digital marketing 5 tầng"
+    tags: ["frameworks", "m05_funnel_framework", "phễu", "digital", "marketing", "tầng"]
+    text: |-
+      id: m05_funnel_framework
+      name_vi: Phễu digital marketing 5 tầng
+      name_en: Digital Marketing Funnel
+      origin: Dạng mở rộng của phễu bán hàng AIDA kinh điển, thêm Retention và Advocacy để phản ánh kinh tế khách hàng lặp lại trong thời đại digital.
+      components:
+      - 'Awareness (Biết đến): SEO, Social, Display, Content, Influencer, PR'
+      - 'Consideration (Cân nhắc): blog, video, webinar, email nurture, retargeting'
+      - 'Conversion (Quyết định mua): landing page, CTA, CRO, promo code, free trial'
+      - 'Retention (Mua lại): email automation, CRM, loyalty'
+      - 'Advocacy (Giới thiệu): referral, review, UGC, community'
+      when_to_use: Gán nội dung và kênh cho từng giai đoạn hành trình, thiết kế remarketing.
+      how_to_apply:
+      - Với mỗi tầng xác định câu hỏi của khách và nội dung phù hợp.
+      - Đặt tracking (UTM, pixel, GA4 events) ở mỗi chuyển tầng.
+      - Tính tỷ lệ qua từng tầng, tìm tầng rò rỉ nhất.
+      how_to_read_results: Tầng có tỷ lệ chuyển đổi thấp nhất so với chuẩn của chính mình cần ưu tiên.
+      pitfalls:
+      - Phễu tuyến tính trong khi hành trình thật nhiều chạm
+      - Bỏ qua tầng sau mua
+      example: 'PropHunter: Awareness (Google Search + Facebook video) -> Consideration (báo cáo thị trường + chuỗi email) -> Conversion (dùng thử 14 ngày) -> Retention (cảnh báo hằng ngày) -> Advocacy (referral cộng 15 ngày Pro).'
+  - id: "m05-frameworks-3"
+    title: "Frameworks: m05_channels — Bản đồ kênh digital marketing"
+    tags: ["frameworks", "m05_channels", "bản", "đồ", "kênh", "digital", "marketing"]
+    text: |-
+      id: m05_channels
+      name_vi: Bản đồ kênh digital marketing
+      name_en: Digital Channel Map
+      origin: Tổng hợp thực tiễn ngành; không có tác giả đơn lẻ.
+      components:
+      - 'SEO: organic traffic, ranking, domain authority; chi phí thấp-trung bình (thời gian + content)'
+      - 'SEM/PPC (Google Ads): CPC, CTR, CVR, ROAS; chi phí trung bình-cao'
+      - 'Social Media (organic + paid trên FB, IG, TikTok, LinkedIn): engagement, reach, followers, conversions'
+      - 'Content Marketing (blog, video, podcast, infographic, ebook): traffic, time on page, leads, shares'
+      - 'Email Marketing: open rate, CTR, conversion, unsubscribe; chi phí rất thấp'
+      - 'Influencer (KOL/KOC): reach, engagement, conversions, CPE; chi phí từ trung bình đến rất cao'
+      - 'Affiliate: revenue, conversion, ROI; trả theo hiệu quả (performance-based)'
+      - 'Video (YouTube, TikTok, Reels, Live): views, watch time, subscribers, revenue'
+      - 'Programmatic Ads (RTB/DSP): impressions, CPM, viewability, conversions'
+      when_to_use: Chọn channel mix phù hợp khách mục tiêu và ngân sách.
+      how_to_apply:
+      - 'Xác định khách mục tiêu dùng nền tảng nào (PropHunter: nhà đầu tư 30-50 tuổi -> Google Search, Facebook video, Zalo ZNS).'
+      - Chọn 2-3 kênh chính, không rải đều; gán KPI từng kênh.
+      - Khởi chạy nhỏ, đo CAC theo kênh, tăng ngân sách kênh có LTV:CAC tốt.
+      how_to_read_results: Kênh tốt khi CAC kênh thấp hơn nhiều so với LTV và có thể scale; SEO/email/owned thường rẻ nhưng chậm.
+      pitfalls:
+      - Rải mỏng ngân sách khắp nơi
+      - Phụ thuộc một kênh/thuật toán
+      - Tin số liệu bot, follower ảo
+      example: 'Quán ăn địa phương: Google Maps + TikTok video + Zalo OA; không cần programmatic.'
+  - id: "m05-frameworks-4"
+    title: "Frameworks: m05_growth_vs_traditional — Growth Hacking so với marketing truyền thống"
+    tags: ["frameworks", "m05_growth_vs_traditional", "growth", "hacking", "so", "với", "marketing", "truyền", "thống"]
+    text: |-
+      id: m05_growth_vs_traditional
+      name_vi: Growth Hacking so với marketing truyền thống
+      name_en: Growth Hacking vs Traditional Marketing
+      origin: Sean Ellis (2010) đặt tên 'growth hacker' cho người có 'north star' là tăng trưởng, vì startup không có ngân sách lớn nhưng có sản phẩm số, dữ liệu và code để thử nghiệm nhanh.
+      components:
+      - 'Mục tiêu: truyền thống = awareness/thị phần; growth = tăng user/doanh thu nhanh'
+      - 'Phương pháp: campaign/sáng tạo vs thí nghiệm/dữ liệu'
+      - 'Tốc độ: quý/năm vs sprint tuần'
+      - 'Ngân sách: lớn vs nhỏ-trung bình'
+      - 'Mindset: lên kế hoạch hoàn hảo rồi triển khai vs test nhanh, fail nhanh, học nhanh'
+      - 'Kỹ năng: marketing/creative vs marketing + coding + data + product'
+      - 'Phù hợp: DN lớn, brand trưởng thành vs startup, scale-up, digital business'
+      when_to_use: Chọn cách tiếp cận theo giai đoạn và loại hình DN.
+      how_to_apply:
+      - Nếu chưa có PMF thì tập trung sản phẩm, chưa chạy growth.
+      - Nếu đã có PMF và có kênh số/sản phẩm số, lập team nhỏ chạy thí nghiệm hằng tuần.
+      - 'Giữ cân bằng: brand building dài hạn song song conversion ngắn hạn.'
+      how_to_read_results: Kết quả đo bằng uplift trên chỉ số phễu (activation, K, CAC), không bằng lượt xem.
+      pitfalls:
+      - Hack ngắn hạn không bền vững
+      - Dark pattern/spam (cào dữ liệu, ép chia sẻ) gây rủi ro đạo đức và pháp lý
+      - Hack 0 đến 100K khác 1M đến 10M
+      - Survivorship bias
+      example: 'Nhà hàng/cửa hàng offline: dùng tư duy thí nghiệm (A/B ưu đãi, đo tỷ lệ quay lại) nhưng giữ brand.'
+  - id: "m05-frameworks-5"
+    title: "Frameworks: m05_aarrr — AARRR (Pirate Metrics)"
+    tags: ["frameworks", "m05_aarrr", "aarrr", "pirate", "metrics"]
+    text: |-
+      id: m05_aarrr
+      name_vi: AARRR (Pirate Metrics)
+      name_en: AARRR Framework
+      origin: 'Dave McClure (500 Startups) đưa ra năm 2007 trong bài ''Startup Metrics for Pirates'' (năm 2007 là kiến thức ngoài nguồn, độ tin cậy trung bình): thay vì một con số tổng, nhà sáng lập cần các chỉ số theo từng bước hành trình để biết chỗ nào đang nghẽn.'
+      components:
+      - 'Acquisition (Thu hút): khách đến từ đâu? KPI: traffic, signups, CAC, channel mix'
+      - 'Activation (Kích hoạt): khách có trải nghiệm Aha moment không? KPI: onboarding completion, time-to-value'
+      - 'Retention (Giữ chân): khách quay lại không? KPI: DAU/MAU, retention rate, churn'
+      - 'Referral (Giới thiệu): khách giới thiệu bạn bè không? KPI: viral coefficient, referral rate'
+      - 'Revenue (Doanh thu): khách có trả tiền không? KPI: ARPU, CLV, MRR'
+      when_to_use: Chẩn đoán bottleneck của sản phẩm số/dịch vụ; đặt thứ tự ưu tiên thí nghiệm.
+      how_to_apply:
+      - Đặt tracking cho mỗi chặng (sự kiện, UTM, cohort).
+      - 'Lập bảng 5 hàng: hành động cụ thể ở mỗi giai đoạn, số liệu hiện tại, đánh giá so với benchmark/nội bộ.'
+      - Chọn MỘT bottleneck lớn nhất (thường Activation hoặc Retention) và chỉ tập trung nó trong sprint.
+      - Quy bottleneck thành giả thuyết và đưa vào backlog ICE.
+      how_to_read_results: Nút nghẽn là chặng có tỷ lệ thấp nhất quyết định kết quả toàn phễu. Đừng đổ tiền vào Acquisition khi Activation/Retention rò rỉ (bơm nước vào xô thủng).
+      pitfalls:
+      - Chọn vanity metric
+      - Sửa nhiều chặng cùng lúc
+      - Bỏ qua Referral vì tưởng khó
+      example: 'PropHunter: Acquisition tốt (1,000 user/tháng), Activation chỉ 20% (setup khu vực theo dõi) là bottleneck, Retention tốt, Referral kém, Revenue ổn định.'
+  - id: "m05-frameworks-6"
+    title: "Frameworks: m05_growth_loop — Vòng lặp Growth Hacking (4 bước)"
+    tags: ["frameworks", "m05_growth_loop", "vòng", "lặp", "growth", "hacking", "bước"]
+    text: |-
+      id: m05_growth_loop
+      name_vi: Vòng lặp Growth Hacking (4 bước)
+      name_en: 'Growth Hacking Loop: Analyze - Ideate - Prioritize - Test - Learn'
+      origin: Phương pháp từ Sean Ellis và Morgan Brown (Hacking Growth, 2017), biến tăng trưởng thành quy trình thí nghiệm lặp thay vì dự án một lần.
+      components:
+      - 'Analyze: dữ liệu phễu, cohort, tìm bottleneck'
+      - 'Ideate: brainstorm giữa marketing và dev'
+      - 'Prioritize: chấm ICE'
+      - 'Test: A/B hoặc MVP trong 1-2 tuần'
+      - 'Learn: thành công thì tích hợp vào tính năng cốt lõi và nhân rộng; thất bại thì học và bỏ'
+      when_to_use: Vận hành sprint tăng trưởng hằng tuần.
+      how_to_apply:
+      - Chọn bottleneck (AARRR) và đặt north star.
+      - Tạo backlog giả thuyết dạng 'Nếu làm X thì chỉ số Y tăng Z% vì...'.
+      - Chấm ICE, chọn top 1-2 ý tưởng/tuần (mục tiêu >= 2 experiments/tuần).
+      - Chạy A/B đủ cỡ mẫu, ghi kết quả vào nhật ký thí nghiệm.
+      - 'Quyết định: scale, lặp lại biến thể hoặc bỏ.'
+      how_to_read_results: Tỷ lệ thành công của thí nghiệm thường thấp; giá trị nằm ở tốc độ học và tích lũy.
+      pitfalls:
+      - Test khi chưa đủ traffic
+      - Không lưu bài học
+      - Test thay đổi quá nhỏ (đổi màu nút) mà bỏ vấn đề lớn
+      example: PropHunter chọn nút 'Tự động thiết lập cảnh báo Golden Hills chỉ với 1 click' (ICE 8.0) thay vì video hướng dẫn 5 phút (ICE 5.67).
+  - id: "m05-frameworks-7"
+    title: "Frameworks: m05_ice — Khung chấm điểm ICE"
+    tags: ["frameworks", "m05_ice", "khung", "chấm", "điểm", "ice"]
+    text: |-
+      id: m05_ice
+      name_vi: Khung chấm điểm ICE
+      name_en: ICE Scoring
+      origin: Do Sean Ellis phổ biến trong quy trình growth (năm không nêu trong nguồn); ra đời vì backlog ý tưởng thường quá dài và team chọn theo cảm tính, cần cách xếp hạng nhanh.
+      components:
+      - Impact (1-10)
+      - Confidence (1-10)
+      - Ease (1-10)
+      - ICE = (I+C+E)/3
+      when_to_use: Mỗi lần chọn thí nghiệm.
+      how_to_apply:
+      - Liệt kê ý tưởng nhắm cùng một bottleneck.
+      - Mỗi người chấm độc lập, lấy trung bình.
+      - Tính ICE, chọn cao nhất; ghi lý do chấm Confidence (dựa trên dữ liệu gì).
+      how_to_read_results: Điểm cao = ưu tiên làm trước; chênh nhỏ giữa các ý tưởng thì chọn cái dễ hơn.
+      pitfalls:
+      - Thang không nhất quán (tổng vs trung bình)
+      - Chấm Confidence không có bằng chứng
+      example: Ý tưởng 1 (4,5,8) = 5.67; ý tưởng 2 (9,8,7) = 8.0; chọn ý tưởng 2.
+  - id: "m05-frameworks-8"
+    title: "Frameworks: m05_viral_loops — Các growth hack kinh điển và viral loop"
+    tags: ["frameworks", "m05_viral_loops", "các", "growth", "hack", "kinh", "điển", "và", "viral", "loop"]
+    text: |-
+      id: m05_viral_loops
+      name_vi: Các growth hack kinh điển và viral loop
+      name_en: Classic Growth Hacks
+      origin: Tập hợp các trường hợp tăng trưởng nổi tiếng minh họa cơ chế lan truyền.
+      components:
+      - 'Hotmail (1996): chèn ''Get your free email at Hotmail'' vào cuối mỗi email, 12M user trong 18 tháng'
+      - 'Dropbox (2008): mời bạn cùng nhận +500MB, tăng 3,900% user, 35% đăng ký từ referral'
+      - 'Airbnb (2009): đăng chéo listing lên Craigslist'
+      - 'Instagram (2010): chia sẻ chéo lên Facebook/Twitter, 25M user trong 1 năm'
+      - 'Slack (2013): bottom-up, 1 thành viên mời cả team, 0 USD marketing cho 500K user đầu'
+      when_to_use: Gợi ý thiết kế cơ chế tăng trưởng gắn vào sản phẩm.
+      how_to_apply:
+      - Xác định khoảnh khắc người dùng chia sẻ/giao tiếp với người khác trong sản phẩm.
+      - Gắn lời mời/branding vào đó với lợi ích rõ ràng cho cả hai phía.
+      - Đo K, chi phí thưởng, tỷ lệ chuyển đổi.
+      how_to_read_results: Cơ chế hiệu quả khi chi phí thưởng thấp hơn nhiều CAC kênh trả phí và K đo được.
+      pitfalls:
+      - Sao chép nguyên văn, bỏ qua bối cảnh và survivorship bias
+      - Một số số liệu nguồn chưa kiểm chứng
+      example: 'PropHunter: watermark trong PDF phân tích gửi qua Zalo.'
+  - id: "m05-frameworks-9"
+    title: "Frameworks: m05_airbnb_craigslist — Hack nền tảng bằng kỹ thuật (Airbnb x Craigslist)"
+    tags: ["frameworks", "m05_airbnb_craigslist", "hack", "nền", "tảng", "bằng", "kỹ", "thuật", "airbnb", "craigslist"]
+    text: |-
+      id: m05_airbnb_craigslist
+      name_vi: Hack nền tảng bằng kỹ thuật (Airbnb x Craigslist)
+      name_en: Platform leverage via engineering
+      origin: 'Airbnb ~2010: thiếu cả cung lẫn cầu và không có ngân sách ads; Craigslist có hàng chục triệu người tìm chỗ ở nhưng không có API mở.'
+      components:
+      - 'Tính năng cross-post: gợi ý chủ nhà đăng bài lên Craigslist'
+      - Bot tự điền form, copy ảnh, đăng bài như người thật
+      - Chèn link kéo traffic về Airbnb
+      when_to_use: Khi thiếu ngân sách và có sẵn nền tảng lớn chứa khách mục tiêu.
+      how_to_apply:
+      - Tìm nền tảng chứa khách mục tiêu.
+      - Tạo giá trị cho người dùng khi đăng chéo (thêm khách cho chủ nhà).
+      - Chèn đường dẫn/branding về sản phẩm mình.
+      how_to_read_results: Đo số lượt về từ nguồn kéo và tỷ lệ chuyển đổi.
+      pitfalls:
+      - Vi phạm điều khoản nền tảng, rủi ro pháp lý (dark pattern, spam)
+      - Nền tảng có thể chặn
+      - Câu chuyện Airbnb x Craigslist có nhiều phiên bản; cần xác minh chi tiết trước khi trích dẫn
+      example: 'SME Việt Nam: đăng chéo sản phẩm lên các sàn/group lớn một cách hợp lệ (đúng chính sách) và dẫn khách về kênh sở hữu như Zalo OA.'
+  - id: "m05-frameworks-10"
+    title: "Frameworks: m05_dropbox_referral — Referral hai chiều (Dropbox)"
+    tags: ["frameworks", "m05_dropbox_referral", "referral", "hai", "chiều", "dropbox"]
+    text: |-
+      id: m05_dropbox_referral
+      name_vi: Referral hai chiều (Dropbox)
+      name_en: Two-sided referral program
+      origin: 'Dropbox 2008: CPA qua Google Ads 288-300 USD trong khi giá 99 USD/năm nên mô hình lỗ; họ chuyển sang biến sản phẩm thành kênh marketing.'
+      components:
+      - 'Cơ chế: cả người mời và người được mời nhận +500MB vĩnh viễn (tối đa 16GB)'
+      - 'Game hóa: thanh tiến trình dung lượng trong app'
+      - 'Kinh tế: chi phí lưu trữ vài cent thay cho 300 USD'
+      when_to_use: Sản phẩm số có chi phí biên thấp và có giá trị chia sẻ.
+      how_to_apply:
+      - Chọn phần thưởng có giá trị với khách nhưng giá vốn thấp.
+      - Thưởng cả hai phía.
+      - Hiển thị tiến độ và làm việc chia sẻ chỉ một bước.
+      - Đo K, CAC_ref, gian lận.
+      how_to_read_results: 'Nguồn: 15 tháng từ 100,000 đến 4 triệu user (+3,900%), đăng ký tăng 60%, có tháng 2.8 triệu lời mời.'
+      pitfalls:
+      - Phần thưởng giá vốn cao
+      - Không đo chất lượng user giới thiệu
+      - Lạm dụng
+      example: 'PropHunter: mời 1 bạn, cả hai cộng 15 ngày gói Pro.'
+  - id: "m05-frameworks-11"
+    title: "Frameworks: m05_click_qualification — Lọc click bằng pre-landing + công cụ tương tác"
+    tags: ["frameworks", "m05_click_qualification", "lọc", "click", "bằng", "pre", "landing", "công", "cụ", "tương", "tác"]
+    text: |-
+      id: m05_click_qualification
+      name_vi: Lọc click bằng pre-landing + công cụ tương tác
+      name_en: Click Qualification Loop
+      origin: 'Kỹ thuật affiliate: đổ traffic thô vào link merchant sinh click rác làm EPC tụt, nên chèn một lớp công cụ lọc ở giữa.'
+      components:
+      - Pre-landing page với widget (quiz, máy tính dòng tiền, so sánh giá)
+      - Chỉ hiển thị nút nhận mã giảm giá/xem sản phẩm (link affiliate có UTM/srsltid) khi người dùng hoàn thành và có nhu cầu mua
+      when_to_use: Affiliate/lead-gen với traffic trả phí hoặc traffic lẫn người tò mò.
+      how_to_apply:
+      - Chọn widget phù hợp ngách (tính biên lợi nhuận, quiz chọn sản phẩm).
+      - Định nghĩa điều kiện 'có nhu cầu mua' (hoàn thành, chọn mức ngân sách).
+      - Chỉ khi đủ điều kiện mới cho link merchant, gắn UTM/subid để đo.
+      - So EPV (không chỉ EPC) trước và sau.
+      how_to_read_results: 'Nguồn: EPC tăng 3-5 lần (chưa kiểm chứng). Cần tính EPV: nếu số click sang merchant giảm nhiều hơn mức CVR tăng thì tổng hoa hồng giảm.'
+      pitfalls:
+      - Chỉ nhìn EPC
+      - Widget quá dài khiến bỏ cuộc
+      - Che thông tin affiliate gây vấn đề minh bạch/quy định quảng cáo
+      example: 'Xem worked example 3 (10,000 visit: EPC 800 -> 3,200, EPV 800 -> 960).'
+  - id: "m05-frameworks-12"
+    title: "Frameworks: m05_share_to_unlock — Share-to-Unlock"
+    tags: ["frameworks", "m05_share_to_unlock", "share", "to", "unlock"]
+    text: |-
+      id: m05_share_to_unlock
+      name_vi: Share-to-Unlock
+      name_en: Share-to-Unlock Viral Loop
+      origin: Cơ chế khóa nội dung/giá trị cho đến khi chia sẻ, nhằm biến mỗi khách trả phí thành nguồn traffic không tốn tiền.
+      components:
+      - 'Kích hoạt sau mua/tải: yêu cầu chia sẻ cho 3 người/nhóm Zalo để nhận mã giảm 50% hoặc công cụ'
+      - Link chia sẻ chứa UTM giới thiệu
+      - Người mới click là traffic CPA ~ 0 (chưa tính chi phí phần thưởng)
+      when_to_use: Có tài nguyên có giá trị cao nhưng chi phí biên thấp (file Excel, script, tool, mã giảm).
+      how_to_apply:
+      - Tạo tài nguyên đáng chia sẻ (Excel tính biên lợi nhuận đầu tư).
+      - Đặt cổng chia sẻ với ma sát thấp.
+      - Tracking nguồn bằng UTM, tính K.
+      - Nếu K quá thấp, nâng giá trị phần thưởng hoặc giảm ma sát.
+      how_to_read_results: 'Chia sẻ 3 nhóm không có nghĩa 3 khách mới: K = chia sẻ x tiếp cận x chuyển đổi. K=0.12 vẫn giảm CAC 12%.'
+      pitfalls:
+      - Ép chia sẻ gây khó chịu, tổn hại thương hiệu
+      - Spam nhóm Zalo/Facebook vi phạm quy định nền tảng
+      - Kỳ vọng K quá cao
+      example: Worked example 5.
+  - id: "m05-frameworks-13"
+    title: "Frameworks: m05_seo_parasite — SEO ký sinh và tự động hóa nội dung"
+    tags: ["frameworks", "m05_seo_parasite", "seo", "ký", "sinh", "và", "tự", "động", "hóa", "nội", "dung"]
+    text: |-
+      id: m05_seo_parasite
+      name_vi: SEO ký sinh và tự động hóa nội dung
+      name_en: SEO Parasite & Programmatic Content
+      origin: Kỹ thuật tận dụng domain authority (DR/UR) cao của nền tảng lớn để lên top nhanh thay vì mất khoảng 6 tháng xây site riêng.
+      components:
+      - 'Nền tảng ký sinh: Medium, LinkedIn Newsletter, Dev.to, diễn đàn lớn'
+      - 'Tự động hóa dữ liệu: script crawl sản phẩm giảm giá sâu/lô đất cắt lỗ theo thời gian thực'
+      - 'Xuất bản hàng loạt: bài mẫu tối ưu on-page với từ khóa ý định mua cao'
+      when_to_use: Ngách có nhu cầu tìm kiếm ý định mua rõ, cần traffic nhanh với CPA rất thấp.
+      how_to_apply:
+      - Nghiên cứu từ khóa ý định mua (đánh giá, so sánh, mã giảm giá theo tháng).
+      - Chọn nền tảng cho phép link và đọc kỹ chính sách.
+      - Tạo mẫu bài + dữ liệu thật, cần giá trị cho người đọc.
+      - Theo dõi thứ hạng, traffic, hoa hồng.
+      how_to_read_results: 'Nguồn: lọt top trong khoảng 24 giờ (chưa kiểm chứng).'
+      pitfalls:
+      - Thuật toán Google chống spam/nội dung mỏng/bulk có thể phạt
+      - Nền tảng gỡ bài, khóa tài khoản
+      - Phụ thuộc tài sản không sở hữu
+      - Chất lượng nội dung thấp gây hại thương hiệu
+      example: Bài 'Đánh giá mã giảm giá [Brand] tháng 6/2026' dựng bằng dữ liệu cào được.
+  - id: "m05-frameworks-14"
+    title: "Frameworks: m05_pmf_gate — Cổng PMF trước growth"
+    tags: ["frameworks", "m05_pmf_gate", "cổng", "pmf", "trước", "growth"]
+    text: |-
+      id: m05_pmf_gate
+      name_vi: Cổng PMF trước growth
+      name_en: PMF Gate
+      origin: 'Từ nguyên tắc: growth hack giúp tăng tốc nhưng không tạo ra nhu cầu.'
+      components:
+      - Khảo sát Sean Ellis (>= 40% rất thất vọng)
+      - Retention tháng đầu
+      - Giải quyết đúng nỗi đau
+      when_to_use: Trước khi đầu tư ngân sách/thí nghiệm tăng trưởng.
+      how_to_apply:
+      - Khảo sát người dùng thật sự.
+      - Đo retention theo cohort.
+      - Nếu chưa đạt thì sửa sản phẩm, chưa chạy growth.
+      how_to_read_results: 'PropHunter: 45% rất thất vọng và retention tháng 1 là 65% nên đạt.'
+      pitfalls:
+      - Khảo sát người dùng chưa trải nghiệm
+      - Nhầm tăng trưởng nhờ khuyến mãi với PMF
+      example: 'Quán mới mở có 80% khách không quay lại: chưa PMF, đừng đốt ads.'
+  - id: "m05-frameworks-15"
+    title: "Frameworks: m05_tiktok_aarrr — Phân tích AARRR của TikTok"
+    tags: ["frameworks", "m05_tiktok_aarrr", "phân", "tích", "aarrr", "của", "tiktok"]
+    text: |-
+      id: m05_tiktok_aarrr
+      name_vi: Phân tích AARRR của TikTok
+      name_en: TikTok AARRR case framework
+      origin: TikTok (Douyin) ra quốc tế 2017 bởi ByteDance, cạnh tranh Instagram, YouTube, Snapchat.
+      components:
+      - 'Acquisition: mua Musical.ly (nguồn: 1 tỷ USD, 2017) -> sẵn khoảng 100M user; quảng cáo trên nền tảng đối thủ (nguồn: 1 tỷ USD/năm); influencer seeding'
+      - 'Activation: vào xem video ngay dưới 30 giây, không cần đăng ký; AI đề xuất từ video đầu'
+      - 'Retention: thuật toán For You, endless scroll, autoplay, push thông minh'
+      - 'Referral: Duet, Stitch, Hashtag Challenge, chia sẻ sang IG Stories/WhatsApp, watermark'
+      - 'Revenue: Ads (In-Feed, TopView, Branded Hashtag), TikTok Shop, Creator Fund, LIVE gifts'
+      when_to_use: Học cách phân tích sản phẩm theo AARRR; chọn bài học cho kênh video ngắn.
+      how_to_apply:
+      - Lập bảng AARRR cho sản phẩm của mình theo mẫu này
+      - Rút bài học theo từng chặng
+      how_to_read_results: Product = marketing; AI là động cơ tăng trưởng; giảm rào cản sáng tạo; Acquisition không miễn phí; social commerce là tương lai.
+      pitfalls:
+      - Số liệu TikTok trong nguồn chưa kiểm chứng
+      - 'Rủi ro: quyền riêng tư (bị cấm ở Ấn Độ 2020, dọa cấm ở Mỹ 2024), thiết kế gây nghiện, creator burnout, phụ thuộc thuật toán'
+      example: 'SME: ưu tiên quay video ngắn thật, đo view -> tin nhắn -> đơn.'
+  - id: "m05-procedures-1"
+    title: "Quy trình: m05_proc_channel_plan — Lập kế hoạch kênh digital (channel mix) end-to-end"
+    tags: ["quy", "trình", "m05_proc_channel_plan", "lập", "kế", "hoạch", "kênh", "digital", "channel", "mix", "end", "to"]
+    text: |-
+      id: m05_proc_channel_plan
+      name: Lập kế hoạch kênh digital (channel mix) end-to-end
+      steps:
+      - 'Hỏi đầu vào: sản phẩm/dịch vụ, giá, biên gộp, khách mục tiêu (tuổi, nơi ở, nền tảng dùng), mục tiêu 3 tháng (doanh thu/đơn/lead), ngân sách tháng, nguồn lực (người làm content, dev), đã có website/fanpage/OA chưa, dữ liệu quá khứ (nếu có).'
+      - 'Kiểm tra PMF/offer: sản phẩm có người mua lặp lại không? Nếu chưa thì đề xuất sửa sản phẩm trước.'
+      - 'Tính ngưỡng kinh tế: biên gộp -> ROAS hòa vốn = 1/m; LTV (nếu có) -> CAC tối đa = LTV/3.'
+      - Chọn 2-3 kênh theo nơi khách ở và loại nhu cầu (có sẵn nhu cầu tìm kiếm thì Google/SEO; nhu cầu cảm hứng thì TikTok/Facebook video; B2B thì LinkedIn/email).
+      - Gán vai trò theo RACE/funnel (kênh nào Reach, kênh nào Convert, kênh nào Engage) và owned media (email/Zalo OA/website).
+      - 'Tính ngược phễu: khách mục tiêu / tỷ lệ phễu = traffic cần; x CPC = ngân sách ads; so với ngân sách có.'
+      - 'Thiết lập tracking: GA4, pixel, UTM chuẩn (utm_source, utm_medium, utm_campaign), sự kiện chuyển đổi.'
+      - Lập content calendar theo tuần (ví dụ T2 bản tin thị trường, T4 phân tích một case thật, T6 mẹo dùng sản phẩm).
+      - 'Phân bổ ngân sách: phần lớn cho kênh có kỳ vọng cao nhất, 10-20% cho thử nghiệm kênh mới.'
+      - 'Đặt KPI và nhịp review (hàng tuần: CPA/CVR/ROAS; hàng tháng: CAC, LTV:CAC, cohort); quy tắc dừng/tăng.'
+      outputs: Bảng kênh (vai trò, KPI, ngân sách, CAC mục tiêu), content calendar, tracking plan, quy tắc quyết định.
+  - id: "m05-procedures-2"
+    title: "Quy trình: m05_proc_funnel_diagnosis — Đo phễu AARRR và tìm bottleneck"
+    tags: ["quy", "trình", "m05_proc_funnel_diagnosis", "đo", "phễu", "aarrr", "và", "tìm", "bottleneck"]
+    text: |-
+      id: m05_proc_funnel_diagnosis
+      name_vi: Đo phễu AARRR và tìm bottleneck
+      name: Đo phễu AARRR và tìm bottleneck
+      steps:
+      - 'Hỏi: sản phẩm/dịch vụ là gì, ''Aha moment'' là gì, dữ liệu theo bước nào có sẵn (GA4, CRM, POS).'
+      - Định nghĩa sự kiện từng chặng (signup, setup xong, quay lại lần 2, mời bạn, thanh toán).
+      - 'Lấy số liệu 1 cohort (tháng gần nhất): số người ở mỗi chặng.'
+      - Tính tỷ lệ chuyển giữa các chặng và tỷ lệ toàn phễu (m05_funnel).
+      - So với benchmark nội bộ/ngành; chọn chặng thấp nhất làm bottleneck.
+      - 'Phân tích nguyên nhân: xem session, phỏng vấn người rời, rà bước ma sát.'
+      - Chọn north star metric.
+      - Chuyển sang quy trình thí nghiệm (m05_proc_experiment).
+      outputs: Bảng AARRR với số hiện tại, bottleneck, north star và danh sách giả thuyết.
+  - id: "m05-procedures-3"
+    title: "Quy trình: m05_proc_experiment — Thiết kế và chạy thí nghiệm growth (ICE + A/B)"
+    tags: ["quy", "trình", "m05_proc_experiment", "thiết", "kế", "và", "chạy", "thí", "nghiệm", "growth", "ice"]
+    text: |-
+      id: m05_proc_experiment
+      name: Thiết kế và chạy thí nghiệm growth (ICE + A/B)
+      steps:
+      - 'Viết giả thuyết: Nếu làm X cho nhóm Y thì chỉ số Z tăng bao nhiêu vì lý do gì.'
+      - Brainstorm với marketing + dev; liệt kê ít nhất 5-10 ý tưởng cho bottleneck.
+      - Chấm ICE (cùng thang), chọn 1-2 ý tưởng.
+      - Xác định chỉ số quyết định duy nhất, mức cải thiện tối thiểu, cỡ mẫu (m05_ab_sample) và thời gian (thường 1-2 tuần).
+      - Chia ngẫu nhiên A/B đồng thời, chỉ đổi một yếu tố chính.
+      - Không dừng sớm; hết kỳ tính z (m05_ab_z) và uplift.
+      - 'Quyết định: thắng thì triển khai thành tính năng cốt lõi, hòa/thua thì ghi lại bài học.'
+      - Cập nhật nhật ký thí nghiệm và backlog.
+      outputs: Backlog đã chấm ICE, báo cáo thí nghiệm (giả thuyết, cỡ mẫu, kết quả, quyết định).
+  - id: "m05-procedures-4"
+    title: "Quy trình: m05_proc_ads_review — Đánh giá và tối ưu chiến dịch quảng cáo trả phí"
+    tags: ["quy", "trình", "m05_proc_ads_review", "đánh", "giá", "và", "tối", "ưu", "chiến", "dịch", "quảng", "cáo"]
+    text: |-
+      id: m05_proc_ads_review
+      name: Đánh giá và tối ưu chiến dịch quảng cáo trả phí
+      steps:
+      - Lấy spend, impressions, clicks, conversions, doanh thu theo chiến dịch/kênh.
+      - Tính CTR, CPC, CVR, CPA, ROAS; so với ROAS hòa vốn (1/biên gộp).
+      - 'Chẩn đoán: CTR thấp -> sửa creative/target; CTR ổn nhưng CVR thấp -> sửa landing/offer; CPC cao -> chất lượng quảng cáo/từ khóa; ROAS thấp dù CVR ổn -> giá/biên/AOV.'
+      - 'Với affiliate: so EPC (hoặc EPV) với CPC; EPC < CPC thì tắt hoặc thêm lọc click.'
+      - Đối chiếu CAC với LTV.
+      - 'Quyết định: tăng ngân sách (ROAS > mục tiêu ổn định), giữ và tối ưu, hoặc dừng.'
+      outputs: Bảng KPI chiến dịch, chẩn đoán và hành động.
+  - id: "m05-procedures-5"
+    title: "Quy trình: m05_proc_viral_design — Thiết kế referral / viral loop"
+    tags: ["quy", "trình", "m05_proc_viral_design", "thiết", "kế", "referral", "viral", "loop"]
+    text: |-
+      id: m05_proc_viral_design
+      name: Thiết kế referral / viral loop
+      steps:
+      - 'Hỏi: sản phẩm có khoảnh khắc chia sẻ tự nhiên không, ai là người nhận, phần thưởng có thể tặng với giá vốn thấp là gì.'
+      - 'Chọn cơ chế: watermark/footer, referral hai chiều, share-to-unlock, challenge/duet.'
+      - Đặt phần thưởng cho cả hai phía, tính chi phí thưởng/khách.
+      - Giả định i và c, tính K và CAC hiệu dụng; đặt mục tiêu K.
+      - Giảm ma sát một chạm, thêm tiến trình (gamification), gắn UTM/mã giới thiệu.
+      - Chạy thử nhỏ, đo K thật; chống gian lận.
+      - 'Quyết định: tiếp tục nếu CAC_ref thấp hơn CAC kênh trả phí và chất lượng user giới thiệu ổn.'
+      outputs: Thiết kế vòng lặp, K mục tiêu, ngân sách thưởng, kế hoạch đo.
+  - id: "m05-procedures-6"
+    title: "Quy trình: m05_proc_affiliate_growth — Tối ưu affiliate: giảm CPA, tăng EPC"
+    tags: ["quy", "trình", "m05_proc_affiliate_growth", "tối", "ưu", "affiliate", "giảm", "cpa", "tăng", "epc"]
+    text: |-
+      id: m05_proc_affiliate_growth
+      name: 'Tối ưu affiliate: giảm CPA, tăng EPC'
+      steps:
+      - 'Hỏi: merchant/hoa hồng, nguồn traffic và CPC, CVR hiện tại, đã có tracking subid/UTM chưa.'
+      - Tính EPC, EPV, CPC hiện tại.
+      - 'Nếu traffic thô: dựng pre-landing với widget; chỉ cho link merchant khi đủ điều kiện.'
+      - Thêm share-to-unlock cho tài nguyên giá trị để kéo traffic miễn phí.
+      - Cân nhắc SEO parasite có kiểm soát nội dung thật và tuân thủ chính sách.
+      - So EPV trước/sau và lợi nhuận mỗi visit = EPV - CPC.
+      - Duy trì và dừng nguồn lỗ.
+      outputs: Sơ đồ funnel affiliate, chỉ số EPC/EPV/CPA trước-sau, quyết định giữ/tắt.
+  - id: "m05-procedures-7"
+    title: "Quy trình: m05_proc_content_calendar — Lập lịch content (content calendar) và kịch bản content"
+    tags: ["quy", "trình", "m05_proc_content_calendar", "lập", "lịch", "content", "calendar", "và", "kịch", "bản"]
+    text: |-
+      id: m05_proc_content_calendar
+      name: Lập lịch content (content calendar) và kịch bản content
+      steps:
+      - Xác định 3-4 trụ cột nội dung (giáo dục, case thật, dữ liệu/thị trường, chương trình/sản phẩm).
+      - 'Gán trụ cột vào các tầng funnel (Awareness: giáo dục/giải trí; Consideration: case/so sánh; Conversion: ưu đãi/dùng thử).'
+      - 'Xếp theo tuần: tần suất theo nguồn lực, ví dụ T2 bản tin, T4 phân tích thực tế, T6 mẹo sản phẩm.'
+      - Mỗi nội dung có CTA, UTM, KPI (view, lead, đơn).
+      - Review hằng tuần, nhân bản nội dung hiệu quả, bỏ nội dung kém.
+      outputs: Lịch 4-8 tuần với trụ cột, kênh, CTA, KPI.
+  - id: "m05-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu chưa đạt PMF (dưới khoảng 40% rất thất vọng, retention thấp) thì sửa sản phẩm trước, không đẩy …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chưa", "đạt", "pmf", "dưới", "khoảng", "40", "rất"]
+    text: |-
+      Nếu chưa đạt PMF (dưới khoảng 40% rất thất vọng, retention thấp) thì sửa sản phẩm trước, không đẩy growth/ads.
+  - id: "m05-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu CAC > LTV hoặc LTV:CAC < 1 thì dừng mở rộng ads; sửa phễu/giá hoặc chuyển sang referral/organic."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cac", "ltv", "hoặc", "thì", "dừng", "mở", "rộng"]
+    text: |-
+      Nếu CAC > LTV hoặc LTV:CAC < 1 thì dừng mở rộng ads; sửa phễu/giá hoặc chuyển sang referral/organic.
+  - id: "m05-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu ROAS thấp hơn 1/biên gộp thì chiến dịch đang lỗ trên đơn đầu dù ROAS nhìn đẹp."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "roas", "thấp", "hơn", "biên", "gộp", "thì", "chiến"]
+    text: |-
+      Nếu ROAS thấp hơn 1/biên gộp thì chiến dịch đang lỗ trên đơn đầu dù ROAS nhìn đẹp.
+  - id: "m05-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu CTR thấp thì sửa creative/target; nếu CTR ổn mà CVR thấp thì sửa landing page/offer."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "ctr", "thấp", "thì", "sửa", "creative", "target", "ổn"]
+    text: |-
+      Nếu CTR thấp thì sửa creative/target; nếu CTR ổn mà CVR thấp thì sửa landing page/offer.
+  - id: "m05-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu một chặng AARRR thấp bất thường thì tập trung chặng đó trước khi tăng Acquisition."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "một", "chặng", "aarrr", "thấp", "bất", "thường", "thì"]
+    text: |-
+      Nếu một chặng AARRR thấp bất thường thì tập trung chặng đó trước khi tăng Acquisition.
+  - id: "m05-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu Activation thấp thì rút ngắn time-to-value (một-click, điền sẵn) trước khi mua thêm traffic."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "activation", "thấp", "thì", "rút", "ngắn", "time", "to"]
+    text: |-
+      Nếu Activation thấp thì rút ngắn time-to-value (một-click, điền sẵn) trước khi mua thêm traffic.
+  - id: "m05-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu EPC < CPC thì tắt hoặc thêm lớp lọc click; nếu EPC tăng nhưng EPV không tăng thì lọc chưa tạo g…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "epc", "cpc", "thì", "tắt", "hoặc", "thêm", "lớp"]
+    text: |-
+      Nếu EPC < CPC thì tắt hoặc thêm lớp lọc click; nếu EPC tăng nhưng EPV không tăng thì lọc chưa tạo giá trị ròng.
+  - id: "m05-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu cần so hai phương án traffic cùng ngân sách thì so EPV, không so EPC."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cần", "so", "hai", "phương", "án", "traffic", "cùng"]
+    text: |-
+      Nếu cần so hai phương án traffic cùng ngân sách thì so EPV, không so EPC.
+  - id: "m05-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu K < 1 thì viral loop vẫn giảm CAC theo (1-K); chỉ kỳ vọng tự tăng trưởng khi K > 1."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "thì", "viral", "loop", "vẫn", "giảm", "cac", "theo"]
+    text: |-
+      Nếu K < 1 thì viral loop vẫn giảm CAC theo (1-K); chỉ kỳ vọng tự tăng trưởng khi K > 1.
+  - id: "m05-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu phần thưởng referral có giá vốn cao hơn CAC ads thì không dùng referral."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "phần", "thưởng", "referral", "có", "giá", "vốn", "cao"]
+    text: |-
+      Nếu phần thưởng referral có giá vốn cao hơn CAC ads thì không dùng referral.
+  - id: "m05-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu ít traffic thì thử thay đổi lớn (offer/layout) thay vì đổi màu nút; không kết luận A/B sớm."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "ít", "traffic", "thì", "thử", "thay", "đổi", "lớn"]
+    text: |-
+      Nếu ít traffic thì thử thay đổi lớn (offer/layout) thay vì đổi màu nút; không kết luận A/B sớm.
+  - id: "m05-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu |z| < 1.96 thì chưa kết luận bản nào thắng; kéo dài test."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "96", "thì", "chưa", "kết", "luận", "bản", "nào"]
+    text: |-
+      Nếu |z| < 1.96 thì chưa kết luận bản nào thắng; kéo dài test.
+  - id: "m05-decision_rules-13"
+    title: "Quy tắc quyết định: Nếu phụ thuộc một kênh/thuật toán thì xây owned media (email, Zalo OA, website, cộng đồng)."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "phụ", "thuộc", "một", "kênh", "thuật", "toán", "thì"]
+    text: |-
+      Nếu phụ thuộc một kênh/thuật toán thì xây owned media (email, Zalo OA, website, cộng đồng).
+  - id: "m05-decision_rules-14"
+    title: "Quy tắc quyết định: Nếu hack vi phạm điều khoản nền tảng/tạo trải nghiệm xấu thì cảnh báo rủi ro, ưu tiên cách hợp lệ."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "hack", "vi", "phạm", "điều", "khoản", "nền", "tảng"]
+    text: |-
+      Nếu hack vi phạm điều khoản nền tảng/tạo trải nghiệm xấu thì cảnh báo rủi ro, ưu tiên cách hợp lệ.
+  - id: "m05-decision_rules-15"
+    title: "Quy tắc quyết định: Nếu sản phẩm có nhu cầu tìm kiếm sẵn thì SEO/SEM; nếu nhu cầu cần khơi gợi thì video/social commerc…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "sản", "phẩm", "có", "nhu", "cầu", "tìm", "kiếm"]
+    text: |-
+      Nếu sản phẩm có nhu cầu tìm kiếm sẵn thì SEO/SEM; nếu nhu cầu cần khơi gợi thì video/social commerce.
+  - id: "m05-decision_rules-16"
+    title: "Quy tắc quyết định: Nếu mục tiêu là quyết định chiến lược dài hạn thì cân bằng brand building với conversion ngắn hạn."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "mục", "tiêu", "là", "chiến", "lược", "dài", "hạn"]
+    text: |-
+      Nếu mục tiêu là quyết định chiến lược dài hạn thì cân bằng brand building với conversion ngắn hạn.
+  - id: "m05-benchmarks-1"
+    title: "Chuẩn so sánh: PMF (Sean Ellis)"
+    tags: ["chuẩn", "so", "sánh", "pmf", "sean", "ellis"]
+    text: |-
+      metric: PMF (Sean Ellis)
+      value: 40% hoặc hơn trả lời Rất thất vọng
+      context: Ngưỡng quy ước phổ biến; nguồn dùng 45% làm ví dụ đạt
+      confidence: medium
+  - id: "m05-benchmarks-2"
+    title: "Chuẩn so sánh: LTV:CAC"
+    tags: ["chuẩn", "so", "sánh", "ltv", "cac"]
+    text: |-
+      metric: LTV:CAC
+      value: 3 hoặc hơn là khỏe; dưới 1 đốt tiền
+      context: Tham chiếu phổ biến; tùy ngành và dòng tiền
+      confidence: medium
+  - id: "m05-benchmarks-3"
+    title: "Chuẩn so sánh: ROAS mục tiêu PropHunter"
+    tags: ["chuẩn", "so", "sánh", "roas", "mục", "tiêu", "prophunter"]
+    text: |-
+      metric: ROAS mục tiêu PropHunter
+      value: '> 200%'
+      context: Ví dụ giả định; phải so ROAS hòa vốn = 1/biên
+      confidence: low
+  - id: "m05-benchmarks-4"
+    title: "Chuẩn so sánh: Retention tháng đầu PropHunter"
+    tags: ["chuẩn", "so", "sánh", "retention", "tháng", "đầu", "prophunter"]
+    text: |-
+      metric: Retention tháng đầu PropHunter
+      value: 65%
+      context: Ví dụ giả định, SaaS
+      confidence: low
+  - id: "m05-benchmarks-5"
+    title: "Chuẩn so sánh: EPC tăng nhờ lọc click"
+    tags: ["chuẩn", "so", "sánh", "epc", "tăng", "nhờ", "lọc", "click"]
+    text: |-
+      metric: EPC tăng nhờ lọc click
+      value: 3-5 lần
+      context: Khẳng định trong nguồn, chưa kiểm chứng; đo EPV để xác nhận
+      confidence: low
+  - id: "m05-benchmarks-6"
+    title: "Chuẩn so sánh: Dropbox CPA qua Google Ads"
+    tags: ["chuẩn", "so", "sánh", "dropbox", "cpa", "qua", "google", "ads"]
+    text: |-
+      metric: Dropbox CPA qua Google Ads
+      value: 288-300 USD vs giá 99 USD/năm
+      context: Số nguồn nêu, cần xác minh
+      confidence: low
+  - id: "m05-benchmarks-7"
+    title: "Chuẩn so sánh: Dropbox referral"
+    tags: ["chuẩn", "so", "sánh", "dropbox", "referral"]
+    text: |-
+      metric: Dropbox referral
+      value: 100,000 -> 4 triệu user trong 15 tháng; 35% đăng ký từ referral
+      context: Số nguồn nêu; phổ biến trong sách growth
+      confidence: medium
+  - id: "m05-benchmarks-8"
+    title: "Chuẩn so sánh: TikTok MAU 2018 -> 2023"
+    tags: ["chuẩn", "so", "sánh", "tiktok", "mau", "2018", "2023"]
+    text: |-
+      metric: TikTok MAU 2018 -> 2023
+      value: 271M -> 1.5B+ (+454%)
+      context: Số nguồn, chưa kiểm chứng; phép tính % đúng
+      confidence: low
+  - id: "m05-benchmarks-9"
+    title: "Chuẩn so sánh: TikTok doanh thu"
+    tags: ["chuẩn", "so", "sánh", "tiktok", "doanh", "thu"]
+    text: |-
+      metric: TikTok doanh thu
+      value: ~200M USD (2018) -> ~20B USD (2023 est.)
+      context: Số ước tính; nguồn lẫn lộn doanh thu Ads và GMV
+      confidence: low
+  - id: "m05-benchmarks-10"
+    title: "Chuẩn so sánh: Thời gian vào app TikTok/ngày"
+    tags: ["chuẩn", "so", "sánh", "thời", "gian", "vào", "app", "tiktok", "ngày"]
+    text: |-
+      metric: Thời gian vào app TikTok/ngày
+      value: 42 -> 95 phút
+      context: Nguồn nêu
+      confidence: low
+  - id: "m05-benchmarks-11"
+    title: "Chuẩn so sánh: Hotmail"
+    tags: ["chuẩn", "so", "sánh", "hotmail"]
+    text: |-
+      metric: Hotmail
+      value: 12M user trong 18 tháng
+      context: Số nguồn nêu (1996)
+      confidence: medium
+  - id: "m05-benchmarks-12"
+    title: "Chuẩn so sánh: Số thí nghiệm growth"
+    tags: ["chuẩn", "so", "sánh", "số", "thí", "nghiệm", "growth"]
+    text: |-
+      metric: Số thí nghiệm growth
+      value: '>= 2 mỗi tuần'
+      context: Nguồn khuyến nghị checklist
+      confidence: medium
+  - id: "m05-benchmarks-13"
+    title: "Chuẩn so sánh: Thời gian A/B"
+    tags: ["chuẩn", "so", "sánh", "thời", "gian"]
+    text: |-
+      metric: Thời gian A/B
+      value: 1-2 tuần
+      context: Nguồn khuyến nghị; cần đạt cỡ mẫu
+      confidence: medium
+  - id: "m05-pitfalls-1"
+    title: "Lỗi thường gặp: Chạy ads khi chưa có PMF hoặc phễu rò rỉ ở Activation/Retention."
+    tags: ["lỗi", "thường", "gặp", "chạy", "ads", "khi", "chưa", "có", "pmf", "hoặc", "phễu", "rò"]
+    text: |-
+      Chạy ads khi chưa có PMF hoặc phễu rò rỉ ở Activation/Retention.
+  - id: "m05-pitfalls-2"
+    title: "Lỗi thường gặp: Nhầm ROAS (doanh thu/chi phí ads) với lợi nhuận; không so với ROAS hòa vốn."
+    tags: ["lỗi", "thường", "gặp", "nhầm", "roas", "doanh", "thu", "chi", "phí", "ads", "với", "lợi"]
+    text: |-
+      Nhầm ROAS (doanh thu/chi phí ads) với lợi nhuận; không so với ROAS hòa vốn.
+  - id: "m05-pitfalls-3"
+    title: "Lỗi thường gặp: Nhầm CPA/CPL với CAC (chưa gồm chi phí sales/nhân sự/công cụ)."
+    tags: ["lỗi", "thường", "gặp", "nhầm", "cpa", "cpl", "với", "cac", "chưa", "gồm", "chi", "phí"]
+    text: |-
+      Nhầm CPA/CPL với CAC (chưa gồm chi phí sales/nhân sự/công cụ).
+  - id: "m05-pitfalls-4"
+    title: "Lỗi thường gặp: Chạy 'mù', không có UTM/pixel/GA4 nên không biết nguồn nào ra khách."
+    tags: ["lỗi", "thường", "gặp", "chạy", "mù", "không", "có", "utm", "pixel", "ga4", "nên", "biết"]
+    text: |-
+      Chạy 'mù', không có UTM/pixel/GA4 nên không biết nguồn nào ra khách.
+  - id: "m05-pitfalls-5"
+    title: "Lỗi thường gặp: Rải ngân sách khắp kênh thay vì chọn 2-3 kênh chính."
+    tags: ["lỗi", "thường", "gặp", "rải", "ngân", "sách", "khắp", "kênh", "thay", "vì", "chọn", "chính"]
+    text: |-
+      Rải ngân sách khắp kênh thay vì chọn 2-3 kênh chính.
+  - id: "m05-pitfalls-6"
+    title: "Lỗi thường gặp: Chỉ nhìn EPC trên click đã lọc mà không so EPV/tổng hoa hồng."
+    tags: ["lỗi", "thường", "gặp", "chỉ", "nhìn", "epc", "trên", "click", "đã", "lọc", "mà", "không"]
+    text: |-
+      Chỉ nhìn EPC trên click đã lọc mà không so EPV/tổng hoa hồng.
+  - id: "m05-pitfalls-7"
+    title: "Lỗi thường gặp: Nhầm 'chia sẻ cho 3 người' với 3 khách mới (K = i x c)."
+    tags: ["lỗi", "thường", "gặp", "nhầm", "chia", "sẻ", "cho", "người", "với", "khách", "mới"]
+    text: |-
+      Nhầm 'chia sẻ cho 3 người' với 3 khách mới (K = i x c).
+  - id: "m05-pitfalls-8"
+    title: "Lỗi thường gặp: Dừng A/B sớm, chạy nhiều biến thể, mẫu quá nhỏ."
+    tags: ["lỗi", "thường", "gặp", "dừng", "sớm", "chạy", "nhiều", "biến", "thể", "mẫu", "quá", "nhỏ"]
+    text: |-
+      Dừng A/B sớm, chạy nhiều biến thể, mẫu quá nhỏ.
+  - id: "m05-pitfalls-9"
+    title: "Lỗi thường gặp: Copy growth hack của Airbnb/Dropbox/TikTok mà bỏ qua bối cảnh (survivorship bias)."
+    tags: ["lỗi", "thường", "gặp", "copy", "growth", "hack", "của", "airbnb", "dropbox", "tiktok", "mà", "bỏ"]
+    text: |-
+      Copy growth hack của Airbnb/Dropbox/TikTok mà bỏ qua bối cảnh (survivorship bias).
+  - id: "m05-pitfalls-10"
+    title: "Lỗi thường gặp: Phụ thuộc thuật toán/nền tảng không sở hữu; không xây email/website/cộng đồng."
+    tags: ["lỗi", "thường", "gặp", "phụ", "thuộc", "thuật", "toán", "nền", "tảng", "không", "sở", "hữu"]
+    text: |-
+      Phụ thuộc thuật toán/nền tảng không sở hữu; không xây email/website/cộng đồng.
+  - id: "m05-pitfalls-11"
+    title: "Lỗi thường gặp: Ham conversion ngắn hạn, bỏ brand building."
+    tags: ["lỗi", "thường", "gặp", "ham", "conversion", "ngắn", "hạn", "bỏ", "brand", "building"]
+    text: |-
+      Ham conversion ngắn hạn, bỏ brand building.
+  - id: "m05-pitfalls-12"
+    title: "Lỗi thường gặp: Dùng dark pattern, spam, cào dữ liệu vi phạm điều khoản hay pháp luật."
+    tags: ["lỗi", "thường", "gặp", "dùng", "dark", "pattern", "spam", "cào", "dữ", "liệu", "vi", "phạm"]
+    text: |-
+      Dùng dark pattern, spam, cào dữ liệu vi phạm điều khoản hay pháp luật.
+  - id: "m05-pitfalls-13"
+    title: "Lỗi thường gặp: Tin số liệu bot, follower ảo, click fraud."
+    tags: ["lỗi", "thường", "gặp", "tin", "số", "liệu", "bot", "follower", "ảo", "click", "fraud"]
+    text: |-
+      Tin số liệu bot, follower ảo, click fraud.
+  - id: "m05-pitfalls-14"
+    title: "Lỗi thường gặp: Chấm ICE cảm tính; thang không nhất quán (nguồn dùng tổng cho ví dụ nhưng công thức nói trung bình)."
+    tags: ["lỗi", "thường", "gặp", "chấm", "ice", "cảm", "tính", "thang", "không", "nhất", "quán", "nguồn"]
+    text: |-
+      Chấm ICE cảm tính; thang không nhất quán (nguồn dùng tổng cho ví dụ nhưng công thức nói trung bình).
+  - id: "m05-pitfalls-15"
+    title: "Lỗi thường gặp: Số liệu trong nguồn (TikTok, Dropbox, Airbnb) chưa kiểm chứng; không trích như sự thật chắc chắn."
+    tags: ["lỗi", "thường", "gặp", "số", "liệu", "trong", "nguồn", "tiktok", "dropbox", "airbnb", "chưa", "kiểm"]
+    text: |-
+      Số liệu trong nguồn (TikTok, Dropbox, Airbnb) chưa kiểm chứng; không trích như sự thật chắc chắn.
+  - id: "m05-pitfalls-16"
+    title: "Lỗi thường gặp: Nguồn lẫn mục: có hai mục đánh số IV và hai bản checklist (một bản ký hiệu, một bản kèm case PropHu…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "lẫn", "mục", "có", "hai", "đánh", "số", "iv", "và"]
+    text: |-
+      Nguồn lẫn mục: có hai mục đánh số IV và hai bản checklist (một bản ký hiệu, một bản kèm case PropHunter); cần hiểu là một checklist.
+  - id: "m05-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Công cụ đo: Google Analytics 4 (miễn phí), Google Tag Manager (miễn phí), Meta Pixel (miễn phí), Go…"
+    tags: ["lưu", "sme", "việt", "nam", "công", "cụ", "đo", "google", "analytics", "miễn", "phí", "tag"]
+    text: |-
+      Công cụ đo: Google Analytics 4 (miễn phí), Google Tag Manager (miễn phí), Meta Pixel (miễn phí), Google Search Console (miễn phí), UTM builder (miễn phí). Độ tin cậy cao về việc có bản miễn phí; cần xác nhận hiện hành.
+  - id: "m05-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: Kênh phù hợp VN: Zalo OA/ZNS (tiếp cận nhà đầu tư và khách Việt), Facebook/Instagram Ads, TikTok Ad…"
+    tags: ["lưu", "sme", "việt", "nam", "kênh", "phù", "hợp", "vn", "zalo", "oa", "zns", "tiếp"]
+    text: |-
+      Kênh phù hợp VN: Zalo OA/ZNS (tiếp cận nhà đầu tư và khách Việt), Facebook/Instagram Ads, TikTok Ads/TikTok Shop, Google Search/Maps, Shopee/Lazada affiliate, Facebook Group cộng đồng. Chi phí: ZNS tính theo tin; giá thay đổi nên xác nhận với nhà cung cấp (confidence low).
+  - id: "m05-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Email/CRM: Mailchimp, Brevo (Sendinblue), MISA AMIS/Haravan/Sapo có chức năng email/SMS; nhiều gói …"
+    tags: ["lưu", "sme", "việt", "nam", "email", "crm", "mailchimp", "brevo", "sendinblue", "misa", "amis", "haravan"]
+    text: |-
+      Email/CRM: Mailchimp, Brevo (Sendinblue), MISA AMIS/Haravan/Sapo có chức năng email/SMS; nhiều gói có bậc miễn phí/giá thấp (confidence low, cần xác nhận). Zalo OA có gói miễn phí và có phí.
+  - id: "m05-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Công cụ thí nghiệm: Google Optimize đã ngừng; có thể dùng VWO, Hotjar, Microsoft Clarity (miễn phí)…"
+    tags: ["lưu", "sme", "việt", "nam", "công", "cụ", "thí", "nghiệm", "google", "optimize", "đã", "ngừng"]
+    text: |-
+      Công cụ thí nghiệm: Google Optimize đã ngừng; có thể dùng VWO, Hotjar, Microsoft Clarity (miễn phí) cho heatmap; A/B có thể làm thủ công bằng 2 landing + chia traffic (confidence low về giá).
+  - id: "m05-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: Ngân sách khởi đầu tham khảo: SME nhỏ nên bắt đầu 5-15 triệu VNĐ/tháng cho ads thử nghiệm và tăng k…"
+    tags: ["lưu", "sme", "việt", "nam", "ngân", "sách", "khởi", "đầu", "tham", "khảo", "nhỏ", "nên"]
+    text: |-
+      Ngân sách khởi đầu tham khảo: SME nhỏ nên bắt đầu 5-15 triệu VNĐ/tháng cho ads thử nghiệm và tăng khi LTV:CAC > 3 (gợi ý thận trọng, confidence low).
+  - id: "m05-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: Mua traffic: CPC thị trường VN thay đổi mạnh theo ngành (bất động sản, tài chính thường cao); luôn …"
+    tags: ["lưu", "sme", "việt", "nam", "mua", "traffic", "cpc", "thị", "trường", "vn", "thay", "đổi"]
+    text: |-
+      Mua traffic: CPC thị trường VN thay đổi mạnh theo ngành (bất động sản, tài chính thường cao); luôn đo thực tế và so EPC/giá trị khách, không dùng số trung bình ngành (confidence low).
+  - id: "m05-sme_vn_guidance-7"
+    title: "Lưu ý SME Việt Nam: Affiliate VN: AccessTrade, Ecomobi, các chương trình Shopee/TikTok Shop Affiliate; hoa hồng và cook…"
+    tags: ["lưu", "sme", "việt", "nam", "affiliate", "vn", "accesstrade", "ecomobi", "các", "chương", "trình", "shopee"]
+    text: |-
+      Affiliate VN: AccessTrade, Ecomobi, các chương trình Shopee/TikTok Shop Affiliate; hoa hồng và cookie window thay đổi, cần đọc điều khoản (confidence low).
+  - id: "m05-sme_vn_guidance-8"
+    title: "Lưu ý SME Việt Nam: Pháp lý: tuân thủ Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân khi thu email/SĐT; quy định quả…"
+    tags: ["lưu", "sme", "việt", "nam", "pháp", "lý", "tuân", "thủ", "nghị", "định", "13", "2023"]
+    text: |-
+      Pháp lý: tuân thủ Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân khi thu email/SĐT; quy định quảng cáo (Luật Quảng cáo) và chính sách nền tảng; gắn nhãn quảng cáo/affiliate minh bạch; cần xác nhận với luật sư.
+  - id: "m05-sme_vn_guidance-9"
+    title: "Lưu ý SME Việt Nam: Tránh: cào dữ liệu vi phạm điều khoản, spam hàng loạt vào group/Zalo, ép chia sẻ, bài SEO hàng loạt…"
+    tags: ["lưu", "sme", "việt", "nam", "tránh", "cào", "dữ", "liệu", "vi", "phạm", "điều", "khoản"]
+    text: |-
+      Tránh: cào dữ liệu vi phạm điều khoản, spam hàng loạt vào group/Zalo, ép chia sẻ, bài SEO hàng loạt chất lượng thấp, vì rủi ro bị khóa tài khoản.
+  - id: "m05-sme_vn_guidance-10"
+    title: "Lưu ý SME Việt Nam: Bắt đầu rẻ nhất: owned media (Zalo OA, fanpage, email), content thật, referral/review, rồi mới ads;…"
+    tags: ["lưu", "sme", "việt", "nam", "bắt", "đầu", "rẻ", "nhất", "owned", "media", "zalo", "oa"]
+    text: |-
+      Bắt đầu rẻ nhất: owned media (Zalo OA, fanpage, email), content thật, referral/review, rồi mới ads; đo CAC theo kênh bằng bảng Google Sheets hằng tuần.
+  - id: "m05-sme_vn_guidance-11"
+    title: "Lưu ý SME Việt Nam: SME offline (quán ăn, spa): dùng Google Maps + TikTok video + Zalo tích điểm; tư duy A/B áp dụng ch…"
+    tags: ["lưu", "sme", "việt", "nam", "offline", "quán", "ăn", "spa", "dùng", "google", "maps", "tiktok"]
+    text: |-
+      SME offline (quán ăn, spa): dùng Google Maps + TikTok video + Zalo tích điểm; tư duy A/B áp dụng cho ưu đãi, thực đơn và đo tỷ lệ quay lại.
+  - id: "m05-case_lessons-1"
+    title: "Bài học case: Airbnb x Craigslist (hack nền tảng bằng kỹ thuật)"
+    tags: ["bài", "học", "case", "airbnb", "craigslist", "hack", "nền", "tảng", "bằng", "kỹ", "thuật"]
+    text: |-
+      name: Airbnb x Craigslist (hack nền tảng bằng kỹ thuật)
+      type: success
+      setup: Airbnb ~2010 thiếu cả cung và cầu, không có ngân sách ads. Craigslist có hàng chục triệu người tìm chỗ ở nhưng không có API; Airbnb dựng tính năng đăng chéo, dùng bot điền form và chèn link kéo khách về.
+      key_calculations:
+      - 'Chi phí ads cho nguồn này: gần 0 (nguồn nêu)'
+      - Số liệu 'hàng triệu người dùng' trong nguồn không có phép tính kèm
+      lesson: Tận dụng nền tảng có sẵn khách mục tiêu để giải bài toán cold start; nhưng ranh giới đạo đức/pháp lý (spam, vi phạm điều khoản) và tính xác thực của câu chuyện cần cảnh giác.
+      data_reliability: unverified
+  - id: "m05-case_lessons-2"
+    title: "Bài học case: Dropbox referral (từ CPA 288-300 USD xuống chi phí lưu trữ vài cent)"
+    tags: ["bài", "học", "case", "dropbox", "referral", "từ", "cpa", "288", "300", "usd", "xuống", "chi"]
+    text: |-
+      name: Dropbox referral (từ CPA 288-300 USD xuống chi phí lưu trữ vài cent)
+      type: success
+      setup: 2008, CPA qua Google Ads 288-300 USD trong khi giá 99 USD/năm. Chuyển sang referral hai chiều +500MB (tối đa 16GB), game hóa thanh tiến trình.
+      key_calculations:
+      - Doanh thu năm đầu / CAC = 99 / 288 = 0.34 (chưa tính biên); payback ~ 2.9 năm
+      - 100,000 -> 4,000,000 user trong 15 tháng = +3,900% (đúng)
+      - CAC referral giả định 0.5 USD so với 288 USD (giả định minh họa)
+      lesson: Khi CAC ads vượt giá trị khách, đổi sang cơ chế gắn trong sản phẩm có chi phí biên thấp, thưởng cả hai phía, đo K và CAC_ref.
+      data_reliability: unverified
+  - id: "m05-case_lessons-3"
+    title: "Bài học case: TikTok (digital marketing và growth hacking phân tích theo AARRR)"
+    tags: ["bài", "học", "case", "tiktok", "digital", "marketing", "và", "growth", "hacking", "phân", "tích", "theo"]
+    text: |-
+      name: TikTok (digital marketing và growth hacking phân tích theo AARRR)
+      type: success
+      setup: TikTok ra quốc tế 2017; mua Musical.ly, quảng cáo trên nền tảng đối thủ, onboarding dưới 30 giây, thuật toán For You, Duet/Stitch/Hashtag Challenge, TikTok Shop.
+      key_calculations:
+      - 'MAU 271M -> 1.5B: (1500-271)/271 = +453.5% (nguồn +454%)'
+      - 'DAU 100M -> 1B: +900%; thời gian dùng 42 -> 95 phút: +126%; doanh thu 200M -> 20B USD: +9,900%'
+      - DAU/MAU = 1B/1.5B = 66.7%, khớp khoảng 60-70% của nguồn
+      - 'Ocean Spray #DreamsChallenge: 10B view, doanh số +25% (số nguồn)'
+      lesson: 'Product = marketing; AI là động cơ tăng trưởng; giảm rào cản sáng tạo; growth hacking không miễn phí (chi 1 tỷ USD/năm quảng cáo trên đối thủ); social commerce là xu hướng. Rủi ro: quyền riêng tư, thiết kế gây nghiện, phụ thuộc thuật toán.'
+      data_reliability: unverified
+  - id: "m05-case_lessons-4"
+    title: "Bài học case: Hotmail, Instagram, Slack (viral loop kinh điển)"
+    tags: ["bài", "học", "case", "hotmail", "instagram", "slack", "viral", "loop", "kinh", "điển"]
+    text: |-
+      name: Hotmail, Instagram, Slack (viral loop kinh điển)
+      type: success
+      setup: Footer quảng cáo trong mỗi email (Hotmail 1996); cross-share (Instagram 2010); bottom-up team invite (Slack 2013).
+      key_calculations:
+      - 'Hotmail: 12M user trong 18 tháng (nguồn)'
+      - 'Instagram: 25M user trong 1 năm (nguồn)'
+      - 'Slack: 500K user đầu với 0 USD marketing (nguồn)'
+      lesson: Gắn lời mời vào hành vi dùng sản phẩm; lợi ích rõ ràng cho cả hai phía; nhưng đây là cherry-pick từ người sống sót.
+      data_reliability: unverified
+  - id: "m05-case_lessons-5"
+    title: "Bài học case: PropHunter (SaaS cảnh báo đất ngộp - case giả định của nguồn)"
+    tags: ["bài", "học", "case", "prophunter", "saas", "cảnh", "báo", "đất", "ngộp", "giả", "định", "của"]
+    text: |-
+      name: PropHunter (SaaS cảnh báo đất ngộp - case giả định của nguồn)
+      type: sme
+      setup: SaaS cảnh báo bất động sản theo thời gian thực (Golden Hills, Hòa Liên, Đà Nẵng). Nhà đầu tư 30-50 tuổi; kênh Google Search, Facebook Ads, Zalo ZNS; UTM + Meta Pixel + GA4; blog/backlink; chuỗi email ngày 1-3-7; A/B landing (tính năng vs nỗi đau); Facebook Group; ROAS mục tiêu > 200%.
+      key_calculations:
+      - 'PMF: 45% rất thất vọng, retention tháng 1 là 65%, đạt'
+      - 'AARRR: 1,000 user/tháng, Activation 20% là bottleneck'
+      - 'ICE: ý tưởng 1 (4,5,8) = 17 (5.67); ý tưởng 2 (9,8,7) = 24 (8.0); chọn ý tưởng 2'
+      - 'ROAS: 10 triệu ads cần >= 20 triệu doanh thu'
+      - 'Viral: watermark PDF gửi qua Zalo; referral +15 ngày Pro'
+      - 'North star: số cảnh báo được mở xem chi tiết mỗi tuần'
+      lesson: 'Thứ tự đúng: PMF -> đo AARRR -> chọn bottleneck -> ICE -> thử nghiệm -> viral loop/referral -> north star. Đo bằng dữ liệu, không bằng cảm tính.'
+      data_reliability: illustrative
+  - id: "m05-case_lessons-6"
+    title: "Bài học case: Growth Hacking với Affiliate (pre-landing, share-to-unlock, SEO parasite)"
+    tags: ["bài", "học", "case", "growth", "hacking", "với", "affiliate", "pre", "landing", "share", "to", "unlock"]
+    text: |-
+      name: Growth Hacking với Affiliate (pre-landing, share-to-unlock, SEO parasite)
+      type: sme
+      setup: 'Hướng dẫn 3 chiến lược: lọc click để tăng EPC, share-to-unlock để giảm CPA, SEO ký sinh với dữ liệu cào để CPA tối ưu.'
+      key_calculations:
+      - EPC = hoa hồng / click sang merchant; CPA = chi phí ads / đơn
+      - 'Ví dụ tính (worked example 3): EPC 800 -> 3,200 (4 lần) nhưng EPV 800 -> 960 (+20%)'
+      lesson: Đòn bẩy là công nghệ để lọc và giá trị để người dùng tự quảng bá; nhưng phải đo EPV và tuân thủ chính sách nền tảng.
+      data_reliability: illustrative
+  - id: "m05-worked_examples-1"
+    title: "Ví dụ có lời giải: m05_we_funnel_prophunter — Đo phễu AARRR của PropHunter và tác động sửa Activation"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m05_we_funnel_prophunter", "đo", "phễu", "aarrr", "của", "prophunter", "và"]
+    text: |-
+      id: m05_we_funnel_prophunter
+      title: Đo phễu AARRR của PropHunter và tác động sửa Activation
+      inputs:
+        signups: 1000
+        activation_before: 0.2
+        activation_after: 0.45
+        paid_conversion: 0.1
+        price_month_vnd: 299000
+      steps:
+      - 'Giả định (illustrative): giá gói Pro 299,000 VNĐ/tháng, 10% người đã kích hoạt nâng cấp trả phí (số do tư vấn đặt ra, không có trong nguồn).'
+      - 'Trước: Activated = 1,000 x 0.20 = 200; Paid = 200 x 0.10 = 20; MRR = 20 x 299,000 = 5,980,000.'
+      - 'Sau khi làm nút một-click (ICE 8.0): Activation 45% -> Activated = 450; Paid = 45; MRR = 45 x 299,000 = 13,455,000.'
+      - Toàn phễu tăng gấp 0.45/0.20 = 2.25 lần.
+      - 'Quyết định: sửa Activation trước khi mua thêm traffic.'
+      result: MRR tăng từ 5.98 triệu lên 13.455 triệu (+125%) nếu giả định đúng; bottleneck là Activation.
+  - id: "m05-worked_examples-2"
+    title: "Ví dụ có lời giải: m05_we_ads_reverse — Tính ngược phễu và ROAS cho chiến dịch Google Ads của SaaS"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m05_we_ads_reverse", "tính", "ngược", "phễu", "và", "roas", "cho"]
+    text: |-
+      id: m05_we_ads_reverse
+      title: Tính ngược phễu và ROAS cho chiến dịch Google Ads của SaaS
+      inputs:
+        spend: 10000000
+        cpc: 8000
+        cvr_signup: 0.04
+        activation: 0.2
+        paid_conversion: 0.1
+        price_year: 2990000
+        gross_margin: 0.85
+      steps:
+      - Clicks = 10,000,000 / 8,000 = 1,250.
+      - Signups = 1,250 x 0.04 = 50; Activated = 50 x 0.20 = 10; Paid = 10 x 0.10 = 1 khách.
+      - Doanh thu = 1 x 2,990,000 = 2,990,000; ROAS = 2.99/10 = 0.299.
+      - ROAS hòa vốn = 1/0.85 = 1.176; mục tiêu 2.0 cần doanh thu 20,000,000, tức 20,000,000/2,990,000 = 6.69 khách.
+      - CR toàn phễu hiện tại = 0.04 x 0.2 x 0.1 = 0.08%; cần 6.69/1,250 = 0.535% (gấp 6.7 lần).
+      - 'Nếu Activation lên 45%: Paid = 2.25 khách, ROAS 0.67, vẫn dưới 1.176.'
+      result: Chưa nên mở rộng ads; trước hết cải thiện chuyển đổi (activation, paid conversion) và dùng kênh nhẹ chi phí như email/referral. Số liệu giả định minh họa.
+  - id: "m05-worked_examples-3"
+    title: "Ví dụ có lời giải: m05_we_affiliate_epc — Lọc click: EPC tăng 4 lần nhưng EPV chỉ tăng 20%"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m05_we_affiliate_epc", "lọc", "click", "epc", "tăng", "lần", "nhưng"]
+    text: |-
+      id: m05_we_affiliate_epc
+      title: 'Lọc click: EPC tăng 4 lần nhưng EPV chỉ tăng 20%'
+      inputs:
+        visits: 10000
+        cpc: 500
+        commission_per_order: 80000
+        direct_cvr: 0.01
+        pass_filter: 0.3
+        merchant_cvr_filtered: 0.04
+      steps:
+      - Chi phí ads = 10,000 x 500 = 5,000,000.
+      - 'Đổ thẳng: click 10,000, đơn = 100, hoa hồng = 8,000,000; EPC = 800 (> CPC 500); lãi = 3,000,000; CPA = 5,000,000/100 = 50,000.'
+      - 'Pre-landing: 30% qua lọc = 3,000 click; CVR 4% -> 120 đơn; hoa hồng = 9,600,000; EPC = 3,200 (4 lần); EPV = 960; lãi = 4,600,000; CPA = 41,667.'
+      - Số click sang merchant giảm 70% nhưng EPV chỉ tăng 20%.
+      result: Pre-landing có lợi (+1.6 triệu lãi), nhưng chuyển động thực là +20% EPV, không phải 4 lần. Giả định minh họa; kiểm chứng bằng A/B.
+  - id: "m05-worked_examples-4"
+    title: "Ví dụ có lời giải: m05_we_ab_test — Đọc kết quả A/B landing page và CPA"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m05_we_ab_test", "đọc", "kết", "quả", "landing", "page", "và"]
+    text: |-
+      id: m05_we_ab_test
+      title: Đọc kết quả A/B landing page và CPA
+      inputs:
+        visits_A: 4000
+        conv_A: 120
+        visits_B: 4000
+        conv_B: 160
+        spend_each: 20000000
+      steps:
+      - CVR A = 3.0%; CVR B = 4.0%.
+      - CPA A = 20,000,000/120 = 166,667; CPA B = 20,000,000/160 = 125,000 (giảm 25%).
+      - 'z = 2.43 (> 1.96), p khoảng 0.015: khác biệt có ý nghĩa 5%.'
+      - Cỡ mẫu cần để phát hiện 3% -> 4% với power 80% là khoảng 5,295 visit/biến thể; test hiện tại 4,000 là thiếu power, nên khuyến nghị kéo dài trước khi scale hoàn toàn.
+      result: Bản B (đánh vào nỗi đau) thắng, CPA giảm 25%; nên xác nhận thêm vì mẫu dưới cỡ mẫu tính trước.
+  - id: "m05-worked_examples-5"
+    title: "Ví dụ có lời giải: m05_we_viral_k — K-factor của share-to-unlock và CAC hiệu dụng"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m05_we_viral_k", "factor", "của", "share", "to", "unlock", "và"]
+    text: |-
+      id: m05_we_viral_k
+      title: K-factor của share-to-unlock và CAC hiệu dụng
+      inputs:
+        paid_users: 500
+        paid_cac: 200000
+        share_rate: 0.4
+        groups: 3
+        reach_per_group: 10
+        view_to_signup: 0.01
+      steps:
+      - i = 0.40 x 3 x 10 = 12 người được tiếp cận trên mỗi user; K = 12 x 0.01 = 0.12.
+      - Tổng user khuếch đại = 500/(1 - 0.12) = 568 (tiệm cận); CAC hiệu dụng = 200,000 x 0.88 = 176,000.
+      - 'Muốn giảm CAC 1/3 cần K = 0.33: ví dụ conversion 2.75% hoặc reach 33 người/user.'
+      - Cộng chi phí phần thưởng (mã giảm/file) vào CAC để có kết quả ròng.
+      result: 'K = 0.12: giảm CAC 12%, không phải ''1 khách mang 3 khách miễn phí''. Giả định minh họa.'
+  - id: "m05-worked_examples-6"
+    title: "Ví dụ có lời giải: m05_we_dropbox_econ — Kinh tế đơn vị Dropbox: ads vs referral"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m05_we_dropbox_econ", "kinh", "tế", "đơn", "vị", "dropbox", "ads"]
+    text: |-
+      id: m05_we_dropbox_econ
+      title: 'Kinh tế đơn vị Dropbox: ads vs referral'
+      inputs:
+        cac_ads: 288
+        price_year: 99
+        storage_cost_per_ref: 0.5
+      steps:
+      - Doanh thu năm / CAC ads = 99/288 = 0.34; payback ~ 2.9 năm.
+      - 'CAC referral giả định 0.5 USD (chi phí lưu trữ 1GB/năm - số giả định) so với 288 USD: rẻ khoảng 576 lần.'
+      - 'Kết luận: referral là lựa chọn duy nhất khả thi về kinh tế.'
+      result: Giả định chi phí lưu trữ là minh họa; điểm cốt lõi là thay chi phí biên thấp cho chi phí ads.
+  - id: "m05-worked_examples-7"
+    title: "Ví dụ có lời giải: m05_we_ice — Chấm ICE backlog Activation"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m05_we_ice", "chấm", "ice", "backlog", "activation"]
+    text: |-
+      id: m05_we_ice
+      title: Chấm ICE backlog Activation
+      inputs:
+        idea1:
+        - 4
+        - 5
+        - 8
+        idea2:
+        - 9
+        - 8
+        - 7
+      steps:
+      - 'Ý tưởng 1 (video 5 phút): tổng 17; trung bình 5.67.'
+      - 'Ý tưởng 2 (nút một-click): tổng 24; trung bình 8.0.'
+      result: Chọn ý tưởng 2; xếp hạng không phụ thuộc dùng tổng hay trung bình, nhưng phải nhất quán.
+  - id: "m05-practice_questions-1"
+    title: "Câu hỏi luyện tập: Quảng cáo chi 10 triệu cho ra 20 triệu doanh thu, biên gộp 40%. Có lời không?"
+    tags: ["câu", "hỏi", "luyện", "tập", "quảng", "cáo", "chi", "10", "triệu", "cho", "ra", "20"]
+    text: |-
+      q: Quảng cáo chi 10 triệu cho ra 20 triệu doanh thu, biên gộp 40%. Có lời không?
+      a: ROAS = 2.0 nhưng ROAS hòa vốn = 1/0.4 = 2.5, nên lỗ trên đơn đầu. Lợi nhuận gộp = 20 x 0.4 = 8 triệu, trừ ads 10 triệu = -2 triệu (ROI ads -20%). Cần cải thiện biên/AOV/CVR hoặc dựa vào LTV khách quay lại.
+  - id: "m05-practice_questions-2"
+    title: "Câu hỏi luyện tập: 10,000 click, 250 đơn, chi phí ads 12.5 triệu. Tính CVR và CPA."
+    tags: ["câu", "hỏi", "luyện", "tập", "10", "000", "click", "250", "đơn", "chi", "phí", "ads"]
+    text: |-
+      q: 10,000 click, 250 đơn, chi phí ads 12.5 triệu. Tính CVR và CPA.
+      a: CVR = 2.5%; CPA = 12,500,000/250 = 50,000 VNĐ.
+  - id: "m05-practice_questions-3"
+    title: "Câu hỏi luyện tập: Affiliate: EPC 600 VNĐ nhưng CPC 800 VNĐ. Nên làm gì?"
+    tags: ["câu", "hỏi", "luyện", "tập", "affiliate", "epc", "600", "vnđ", "nhưng", "cpc", "800", "nên"]
+    text: |-
+      q: 'Affiliate: EPC 600 VNĐ nhưng CPC 800 VNĐ. Nên làm gì?'
+      a: Mỗi click lỗ 200 VNĐ. Tắt hoặc thêm lớp lọc click (pre-landing) và kiểm tra EPV; nếu EPV vẫn dưới CPC thì đổi nguồn traffic hoặc merchant.
+  - id: "m05-practice_questions-4"
+    title: "Câu hỏi luyện tập: Phân biệt ROAS, ROI và CAC."
+    tags: ["câu", "hỏi", "luyện", "tập", "phân", "biệt", "roas", "roi", "và", "cac"]
+    text: |-
+      q: Phân biệt ROAS, ROI và CAC.
+      a: ROAS = doanh thu/chi phí ads; ROI ads = (doanh thu x biên - chi phí)/chi phí; CAC = tổng chi phí marketing và sales/số khách mới. ROAS không tính biên; CAC tính theo khách chứ không theo đơn.
+  - id: "m05-practice_questions-5"
+    title: "Câu hỏi luyện tập: Mỗi user mời 5 người, 8% đăng ký. K bằng bao nhiêu? Có tự tăng trưởng không?"
+    tags: ["câu", "hỏi", "luyện", "tập", "mỗi", "user", "mời", "người", "đăng", "ký", "bằng", "bao"]
+    text: |-
+      q: Mỗi user mời 5 người, 8% đăng ký. K bằng bao nhiêu? Có tự tăng trưởng không?
+      a: K = 5 x 0.08 = 0.4 < 1, không tự duy trì nhưng khuếch đại kênh trả phí 1/(1-0.4) = 1.67 lần; CAC hiệu dụng = CAC x 0.6.
+  - id: "m05-practice_questions-6"
+    title: "Câu hỏi luyện tập: ICE: A (I8, C6, E5), B (I6, C8, E9). Chọn cái nào?"
+    tags: ["câu", "hỏi", "luyện", "tập", "ice", "i8", "c6", "e5", "i6", "c8", "e9", "chọn"]
+    text: |-
+      q: 'ICE: A (I8, C6, E5), B (I6, C8, E9). Chọn cái nào?'
+      a: A = 19/3 = 6.33; B = 23/3 = 7.67; chọn B.
+  - id: "m05-practice_questions-7"
+    title: "Câu hỏi luyện tập: Tại sao không nên đẩy growth khi chưa đạt PMF?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tại", "sao", "không", "nên", "đẩy", "growth", "khi", "chưa"]
+    text: |-
+      q: Tại sao không nên đẩy growth khi chưa đạt PMF?
+      a: Growth hack khuếch đại cái đã có; nếu khách không cần sản phẩm thì mua được khách nhưng retention thấp, CAC không hoàn vốn.
+  - id: "m05-practice_questions-8"
+    title: "Câu hỏi luyện tập: A/B: A 50/2,000, B 70/2,000. Kết luận thế nào?"
+    tags: ["câu", "hỏi", "luyện", "tập", "50", "000", "70", "kết", "luận", "thế", "nào"]
+    text: |-
+      q: 'A/B: A 50/2,000, B 70/2,000. Kết luận thế nào?'
+      a: pA 2.5%, pB 3.5%; p gộp 3%; z = 0.01/sqrt(0.03 x 0.97 x 0.001) = 1.85 < 1.96, chưa đủ ý nghĩa; cần thêm mẫu (cỡ mẫu 2.5% -> 3.5% khoảng 4,000 mỗi biến thể).
+  - id: "m05-practice_questions-9"
+    title: "Câu hỏi luyện tập: TikTok MAU tăng từ 271M lên 1.5B. Tính %."
+    tags: ["câu", "hỏi", "luyện", "tập", "tiktok", "mau", "tăng", "từ", "271m", "lên", "5b", "tính"]
+    text: |-
+      q: TikTok MAU tăng từ 271M lên 1.5B. Tính %.
+      a: (1,500 - 271)/271 = 453.5% (nguồn ghi 454%).
+  - id: "m05-practice_questions-10"
+    title: "Câu hỏi luyện tập: Dropbox: CAC 288 USD, giá 99 USD/năm, biên 80%, churn 20%/năm. LTV:CAC?"
+    tags: ["câu", "hỏi", "luyện", "tập", "dropbox", "cac", "288", "usd", "giá", "99", "năm", "biên"]
+    text: |-
+      q: 'Dropbox: CAC 288 USD, giá 99 USD/năm, biên 80%, churn 20%/năm. LTV:CAC?'
+      a: LTV = 99 x 0.8/0.2 = 396; LTV:CAC = 1.375 < 3, vẫn chưa khỏe; cần giảm CAC (referral) hoặc tăng giữ chân.
+  - id: "m05-practice_questions-11"
+    title: "Câu hỏi luyện tập: Vì sao pre-landing có thể tăng EPC 4 lần mà lợi nhuận chỉ tăng ít?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "pre", "landing", "có", "thể", "tăng", "epc"]
+    text: |-
+      q: Vì sao pre-landing có thể tăng EPC 4 lần mà lợi nhuận chỉ tăng ít?
+      a: EPC có mẫu số là click sang merchant bị cắt giảm do lọc; tổng hoa hồng mỗi visit (EPV) mới phản ánh giá trị ròng.
+  - id: "m05-practice_questions-12"
+    title: "Câu hỏi luyện tập: Hãy chọn kênh cho tiệm bánh nhỏ ở Hà Nội, ngân sách 5 triệu/tháng."
+    tags: ["câu", "hỏi", "luyện", "tập", "hãy", "chọn", "kênh", "cho", "tiệm", "bánh", "nhỏ", "hà"]
+    text: |-
+      q: Hãy chọn kênh cho tiệm bánh nhỏ ở Hà Nội, ngân sách 5 triệu/tháng.
+      a: Google Maps/Business Profile (miễn phí), TikTok/Reels video ngắn, Zalo OA tích điểm, 1-2 triệu ads thử nghiệm; đo đơn qua mã/QR/UTM; tăng ngân sách khi CAC < 1/3 giá trị khách.
+  - id: "m05-checklist-1"
+    title: "Checklist: [ ] Đã xác định channel mix 2-3 kênh theo khách mục tiêu và ngân sách?"
+    tags: ["checklist", "đã", "xác", "định", "channel", "mix", "kênh", "theo", "khách", "mục", "tiêu", "và"]
+    text: |-
+      [ ] Đã xác định channel mix 2-3 kênh theo khách mục tiêu và ngân sách?
+  - id: "m05-checklist-2"
+    title: "Checklist: [ ] Đã setup tracking (GA4, pixel, UTM) và định nghĩa sự kiện chuyển đổi?"
+    tags: ["checklist", "đã", "setup", "tracking", "ga4", "pixel", "utm", "và", "định", "nghĩa", "sự", "kiện"]
+    text: |-
+      [ ] Đã setup tracking (GA4, pixel, UTM) và định nghĩa sự kiện chuyển đổi?
+  - id: "m05-checklist-3"
+    title: "Checklist: [ ] Đã có content calendar với trụ cột, CTA, KPI?"
+    tags: ["checklist", "đã", "có", "content", "calendar", "với", "trụ", "cột", "cta", "kpi"]
+    text: |-
+      [ ] Đã có content calendar với trụ cột, CTA, KPI?
+  - id: "m05-checklist-4"
+    title: "Checklist: [ ] SEO on-page/off-page đang triển khai?"
+    tags: ["checklist", "seo", "on", "page", "off", "đang", "triển", "khai"]
+    text: |-
+      [ ] SEO on-page/off-page đang triển khai?
+  - id: "m05-checklist-5"
+    title: "Checklist: [ ] Email marketing automation đang chạy (chuỗi ngày 1-3-7)?"
+    tags: ["checklist", "email", "marketing", "automation", "đang", "chạy", "chuỗi", "ngày"]
+    text: |-
+      [ ] Email marketing automation đang chạy (chuỗi ngày 1-3-7)?
+  - id: "m05-checklist-6"
+    title: "Checklist: [ ] Đang A/B test landing page với cỡ mẫu đủ?"
+    tags: ["checklist", "đang", "test", "landing", "page", "với", "cỡ", "mẫu", "đủ"]
+    text: |-
+      [ ] Đang A/B test landing page với cỡ mẫu đủ?
+  - id: "m05-checklist-7"
+    title: "Checklist: [ ] Có chiến lược social/cộng đồng (group, UGC)?"
+    tags: ["checklist", "có", "chiến", "lược", "social", "cộng", "đồng", "group", "ugc"]
+    text: |-
+      [ ] Có chiến lược social/cộng đồng (group, UGC)?
+  - id: "m05-checklist-8"
+    title: "Checklist: [ ] ROAS thực tế > ROAS hòa vốn (1/biên) và > mục tiêu?"
+    tags: ["checklist", "roas", "thực", "tế", "hòa", "vốn", "biên", "và", "mục", "tiêu"]
+    text: |-
+      [ ] ROAS thực tế > ROAS hòa vốn (1/biên) và > mục tiêu?
+  - id: "m05-checklist-9"
+    title: "Checklist: [ ] Product-Market Fit đã đạt (Sean Ellis >= 40%, retention ổn)?"
+    tags: ["checklist", "product", "market", "fit", "đã", "đạt", "sean", "ellis", "40", "retention", "ổn"]
+    text: |-
+      [ ] Product-Market Fit đã đạt (Sean Ellis >= 40%, retention ổn)?
+  - id: "m05-checklist-10"
+    title: "Checklist: [ ] Đã map AARRR và xác định bottleneck?"
+    tags: ["checklist", "đã", "map", "aarrr", "và", "xác", "định", "bottleneck"]
+    text: |-
+      [ ] Đã map AARRR và xác định bottleneck?
+  - id: "m05-checklist-11"
+    title: "Checklist: [ ] Có backlog ý tưởng growth đã chấm ICE (thang nhất quán)?"
+    tags: ["checklist", "có", "backlog", "tưởng", "growth", "đã", "chấm", "ice", "thang", "nhất", "quán"]
+    text: |-
+      [ ] Có backlog ý tưởng growth đã chấm ICE (thang nhất quán)?
+  - id: "m05-checklist-12"
+    title: "Checklist: [ ] Chạy >= 2 thí nghiệm/tuần, có nhật ký?"
+    tags: ["checklist", "chạy", "thí", "nghiệm", "tuần", "có", "nhật", "ký"]
+    text: |-
+      [ ] Chạy >= 2 thí nghiệm/tuần, có nhật ký?
+  - id: "m05-checklist-13"
+    title: "Checklist: [ ] Có viral loop trong sản phẩm (watermark, share, referral) và đo K?"
+    tags: ["checklist", "có", "viral", "loop", "trong", "sản", "phẩm", "watermark", "share", "referral", "và", "đo"]
+    text: |-
+      [ ] Có viral loop trong sản phẩm (watermark, share, referral) và đo K?
+  - id: "m05-checklist-14"
+    title: "Checklist: [ ] Referral program đang active, phần thưởng giá vốn thấp?"
+    tags: ["checklist", "referral", "program", "đang", "active", "phần", "thưởng", "giá", "vốn", "thấp"]
+    text: |-
+      [ ] Referral program đang active, phần thưởng giá vốn thấp?
+  - id: "m05-checklist-15"
+    title: "Checklist: [ ] Đã chọn north star metric?"
+    tags: ["checklist", "đã", "chọn", "north", "star", "metric"]
+    text: |-
+      [ ] Đã chọn north star metric?
+  - id: "m05-checklist-16"
+    title: "Checklist: [ ] Tính CAC, LTV:CAC, payback theo kênh?"
+    tags: ["checklist", "tính", "cac", "ltv", "payback", "theo", "kênh"]
+    text: |-
+      [ ] Tính CAC, LTV:CAC, payback theo kênh?
+  - id: "m05-checklist-17"
+    title: "Checklist: [ ] Affiliate: so EPC và EPV với CPC?"
+    tags: ["checklist", "affiliate", "so", "epc", "và", "epv", "với", "cpc"]
+    text: |-
+      [ ] Affiliate: so EPC và EPV với CPC?
+  - id: "m05-checklist-18"
+    title: "Checklist: [ ] Tuân thủ pháp lý (dữ liệu cá nhân, quảng cáo) và chính sách nền tảng?"
+    tags: ["checklist", "tuân", "thủ", "pháp", "lý", "dữ", "liệu", "cá", "nhân", "quảng", "cáo", "và"]
+    text: |-
+      [ ] Tuân thủ pháp lý (dữ liệu cá nhân, quảng cáo) và chính sách nền tảng?
+  - id: "m05-checklist-19"
+    title: "Checklist: [ ] Có owned media để không phụ thuộc thuật toán?"
+    tags: ["checklist", "có", "owned", "media", "để", "không", "phụ", "thuộc", "thuật", "toán"]
+    text: |-
+      [ ] Có owned media để không phụ thuộc thuật toán?
+  - id: "m05-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Bảng KPI kênh hằng tuần: cột kênh, spend, impressions, clicks, conversions, doanh thu; công thức CT…"
+    tags: ["mẫu", "excel", "sheets", "bảng", "kpi", "kênh", "hằng", "tuần", "cột", "spend", "impressions", "clicks"]
+    text: |-
+      Bảng KPI kênh hằng tuần: cột kênh, spend, impressions, clicks, conversions, doanh thu; công thức CTR/CPC/CVR/CPA/ROAS và cột ROAS hòa vốn.
+  - id: "m05-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Bảng phễu AARRR: mỗi chặng số người, tỷ lệ chuyển, toàn phễu; tô đỏ chặng thấp nhất."
+    tags: ["mẫu", "excel", "sheets", "bảng", "phễu", "aarrr", "mỗi", "chặng", "số", "người", "tỷ", "lệ"]
+    text: |-
+      Bảng phễu AARRR: mỗi chặng số người, tỷ lệ chuyển, toàn phễu; tô đỏ chặng thấp nhất.
+  - id: "m05-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: Bảng backlog ICE: ý tưởng, I, C, E, ICE = AVERAGE, trạng thái, kết quả."
+    tags: ["mẫu", "excel", "sheets", "bảng", "backlog", "ice", "tưởng", "average", "trạng", "thái", "kết", "quả"]
+    text: |-
+      Bảng backlog ICE: ý tưởng, I, C, E, ICE = AVERAGE, trạng thái, kết quả.
+  - id: "m05-excel_google_sheets_templates-4"
+    title: "Mẫu Excel/Sheets: Máy tính K-factor và CAC hiệu dụng (i, c, K, 1/(1-K), CAC x (1-K))."
+    tags: ["mẫu", "excel", "sheets", "máy", "tính", "factor", "và", "cac", "hiệu", "dụng"]
+    text: |-
+      Máy tính K-factor và CAC hiệu dụng (i, c, K, 1/(1-K), CAC x (1-K)).
+  - id: "m05-excel_google_sheets_templates-5"
+    title: "Mẫu Excel/Sheets: Bảng A/B test: A, B visits/conv, CVR, z-score, cỡ mẫu."
+    tags: ["mẫu", "excel", "sheets", "bảng", "test", "visits", "conv", "cvr", "score", "cỡ"]
+    text: |-
+      Bảng A/B test: A, B visits/conv, CVR, z-score, cỡ mẫu.
+  - id: "m05-excel_google_sheets_templates-6"
+    title: "Mẫu Excel/Sheets: Bảng CAC-LTV theo kênh/cohort: CAC, ARPU, biên, churn, LTV, LTV:CAC, payback."
+    tags: ["mẫu", "excel", "sheets", "bảng", "cac", "ltv", "theo", "kênh", "cohort", "arpu", "biên", "churn"]
+    text: |-
+      Bảng CAC-LTV theo kênh/cohort: CAC, ARPU, biên, churn, LTV, LTV:CAC, payback.
+  - id: "m05-excel_google_sheets_templates-7"
+    title: "Mẫu Excel/Sheets: Content calendar 4-8 tuần: ngày, kênh, trụ cột, tầng funnel, CTA, UTM, KPI."
+    tags: ["mẫu", "excel", "sheets", "content", "calendar", "tuần", "ngày", "kênh", "trụ", "cột", "tầng", "funnel"]
+    text: |-
+      Content calendar 4-8 tuần: ngày, kênh, trụ cột, tầng funnel, CTA, UTM, KPI.
+  - id: "m05-excel_google_sheets_templates-8"
+    title: "Mẫu Excel/Sheets: Bảng affiliate: visits, click sang merchant, đơn, hoa hồng, EPC, EPV, CPC, lãi mỗi visit."
+    tags: ["mẫu", "excel", "sheets", "bảng", "affiliate", "visits", "click", "sang", "merchant", "đơn", "hoa", "hồng"]
+    text: |-
+      Bảng affiliate: visits, click sang merchant, đơn, hoa hồng, EPC, EPV, CPC, lãi mỗi visit.
+  - id: "m05-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: 05-digital-marketing-growth-hacking.md

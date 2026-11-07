@@ -1,0 +1,86 @@
+# 04-report-templates.yaml — Mẫu báo cáo/bảng biểu đầu ra chuẩn
+common_structure:
+  - "1. Tóm tắt điều hành (kết luận + con số chính + khuyến nghị trong 3-5 dòng)"
+  - "2. Bối cảnh và dữ liệu đầu vào (kèm nhãn VERIFIED/GIẢ ĐỊNH/CHƯA KIỂM CHỨNG)"
+  - "3. Phương pháp, chế độ kế toán và công thức sử dụng (và vì sao chọn)"
+  - "4. Tính toán/bút toán từng bước (bảng)"
+  - "5. Kiểm tra cân đối (Nợ = Có, A = L + E, CFS khớp tiền) và phân tích độ nhạy/kịch bản"
+  - "6. Diễn giải ý nghĩa kinh doanh và so sánh benchmark"
+  - "7. Phương án và khuyến nghị (ưu/nhược, điều kiện thay đổi khuyến nghị)"
+  - "8. Rủi ro, giả định, giới hạn; nhắc xác nhận văn bản hiện hành và kế toán thuế; nguồn và ngày tra cứu"
+  - "9. Bước hành động tiếp theo"
+
+templates:
+  rpt_journal_entries:
+    title: Báo cáo bút toán và sổ cái
+    tables:
+      - name: Bút toán nhật ký
+        columns: [Ngày, Diễn giải, TK Nợ, TK Có, Số tiền, Chứng từ]
+      - name: Sổ cái tài khoản
+        columns: [Ngày, Diễn giải, Nợ, Có, Số dư]
+      - name: Bút toán điều chỉnh cuối kỳ
+        columns: [Loại điều chỉnh, TK Nợ, TK Có, Số tiền, Căn cứ tính]
+      - name: Kiểm tra
+        columns: [Tổng Nợ, Tổng Có, Chênh lệch, Kết luận]
+  rpt_financial_statements:
+    title: Bộ báo cáo tài chính
+    tables:
+      - name: Báo cáo kết quả kinh doanh
+        columns: [Chỉ tiêu, Kỳ này, Kỳ trước, Chênh lệch, Tỷ lệ trên doanh thu]
+      - name: Bảng cân đối kế toán
+        columns: [Chỉ tiêu, Cuối kỳ, Đầu kỳ, Chênh lệch, Tỷ trọng]
+      - name: Báo cáo lưu chuyển tiền tệ
+        columns: [Chỉ tiêu, Số tiền, Ghi chú]
+      - name: Đối chiếu cân đối
+        columns: [Kiểm tra, Giá trị vế 1, Giá trị vế 2, Kết quả]
+  rpt_costing:
+    title: Báo cáo chi phí và giá thành
+    tables:
+      - name: Phiếu giá thành đơn hàng
+        columns: [Khoản mục, NVL trực tiếp, Nhân công trực tiếp, Chi phí chung phân bổ, Tổng, Đơn giá]
+      - name: Phân bổ ABC
+        columns: [Hoạt động, Chi phí pool, Cost driver, Khối lượng driver, Tỷ lệ driver]
+      - name: Lợi nhuận theo sản phẩm/khách hàng
+        columns: [Đối tượng, Doanh thu, Chi phí trực tiếp, Chi phí ABC, Lợi nhuận, Biên lợi nhuận]
+      - name: CVP và hòa vốn
+        columns: [Giá bán, Biến phí đơn vị, CM đơn vị, Định phí, Sản lượng hòa vốn, Doanh thu hòa vốn, Biên an toàn, DOL]
+  rpt_budget:
+    title: Báo cáo ngân sách và dòng tiền
+    tables:
+      - name: Ngân sách bán hàng và sản xuất
+        columns: [Kỳ, Sản lượng bán, Giá, Doanh thu, Tồn cuối mục tiêu, Sản lượng sản xuất]
+      - name: Ngân sách tiền
+        columns: [Kỳ, Tiền đầu kỳ, Thu từ khách hàng, Chi nhà cung cấp, Chi lương, Chi khác, Vay/Trả nợ, Tiền cuối kỳ]
+      - name: Dòng tiền 13 tuần
+        columns: [Tuần, Tiền đầu tuần, Tổng thu, Tổng chi, Dòng tiền thuần, Tiền cuối tuần, Cảnh báo]
+      - name: Kịch bản
+        columns: [Kịch bản, Giả định, Doanh thu, Lợi nhuận, Tiền thấp nhất, Hành động]
+  rpt_variance:
+    title: Báo cáo phân tích chênh lệch
+    tables:
+      - name: Ngân sách linh hoạt so với thực tế
+        columns: [Khoản mục, Ngân sách tĩnh, Ngân sách linh hoạt, Thực tế, Chênh lệch, F/U]
+      - name: Phân rã chênh lệch
+        columns: [Loại chênh lệch, Công thức, Giá trị, F/U, Nguyên nhân gốc, Người chịu trách nhiệm]
+      - name: Kế hoạch hành động
+        columns: [Vấn đề, Hành động, Người phụ trách, Hạn, Chỉ số theo dõi]
+  rpt_ratio_diagnosis:
+    title: Báo cáo chẩn đoán tỷ số tài chính
+    tables:
+      - name: Bảng tỷ số theo nhóm
+        columns: [Nhóm, Tỷ số, Công thức, Kỳ n-2, Kỳ n-1, Kỳ n, Benchmark ngành, Đánh giá]
+      - name: DuPont
+        columns: [Kỳ, Biên lợi nhuận ròng, Vòng quay tài sản, Đòn bẩy tài chính, ROE]
+      - name: Ưu tiên hành động
+        columns: [Vấn đề, Nguyên nhân gốc, Hành động, Tác động kỳ vọng, Mức ưu tiên]
+  rpt_integrated_review:
+    title: Báo cáo tổng hợp kế toán tích hợp
+    tables:
+      - name: Dashboard chỉ số chính
+        columns: [Chỉ số, Hiện tại, Mục tiêu, Trạng thái, Nguồn module]
+      - name: Phát hiện chính
+        columns: [Lĩnh vực, Phát hiện, Mức độ, Bằng chứng số liệu]
+      - name: Lộ trình 30-60-90 ngày
+        columns: [Giai đoạn, Hành động, Người phụ trách, Kết quả đo lường]
+      - name: Chuyển giao agent
+        columns: [Phần việc, Agent nhận, Dữ liệu bàn giao]

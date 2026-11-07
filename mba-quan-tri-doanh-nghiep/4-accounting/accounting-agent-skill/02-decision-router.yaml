@@ -1,0 +1,86 @@
+# 02-decision-router.yaml — Định tuyến: câu hỏi/tình huống -> module + playbook
+# Cách dùng: khớp từ khóa/ý định của người dùng với `triggers`, nạp các `modules` liệt kê, chạy `playbook` trong 03-playbooks.yaml.
+routes:
+  - id: r_financial_statements
+    triggers: [báo cáo tài chính, BCTC, bảng cân đối kế toán, báo cáo kết quả kinh doanh, lưu chuyển tiền tệ, balance sheet, income statement, cash flow statement, lập báo cáo, phương trình kế toán, tài sản nợ vốn chủ, lợi nhuận giữ lại, kỳ kế toán]
+    modules: [m01, m06]
+    playbook: pb_financial_statements
+  - id: r_journal_entry
+    triggers: [định khoản, bút toán, hạch toán, ghi sổ, nợ có, tài khoản kế toán, sổ cái, sổ nhật ký, bút toán điều chỉnh, kết chuyển, trích trước, chi phí trả trước, doanh thu chưa thực hiện, dự phòng]
+    modules: [m01]
+    playbook: pb_journal_entry
+  - id: r_managerial_cvp
+    triggers: [kế toán quản trị, CVP, hòa vốn, break-even, contribution margin, số dư đảm phí, định phí, biến phí, đòn bẩy hoạt động, margin of safety, biên an toàn, làm hay mua, nhận đơn hàng đặc biệt, bỏ dây chuyền, giá bán tối thiểu]
+    modules: [m02, m03]
+    playbook: pb_cvp_analysis
+  - id: r_job_costing
+    triggers: [giá thành đơn hàng, job costing, giá thành sản phẩm, chi phí nguyên vật liệu trực tiếp, nhân công trực tiếp, chi phí sản xuất chung, tỷ lệ phân bổ chi phí chung, báo giá, giá thành theo công đoạn, process costing, sản phẩm dở dang]
+    modules: [m03, m02]
+    playbook: pb_job_costing
+  - id: r_abc_costing
+    triggers: [ABC, activity-based costing, chi phí theo hoạt động, cost driver, phân bổ chi phí chung, sản phẩm lỗ ẩn, lợi nhuận theo sản phẩm, lợi nhuận theo khách hàng, trung tâm chi phí, phân bổ bộ phận hỗ trợ]
+    modules: [m03, m02]
+    playbook: pb_abc_costing
+  - id: r_budget_forecast
+    triggers: [ngân sách, budget, master budget, ngân sách tổng thể, ngân sách linh hoạt, zero-based, rolling forecast, dự báo, lập kế hoạch tài chính năm, ngân sách bán hàng, ngân sách mua hàng, ngân sách tiền, dự phóng BCTC]
+    modules: [m04, m02, m01]
+    playbook: pb_budget_master
+  - id: r_cash_flow_forecast
+    triggers: [dòng tiền, cash flow, dòng tiền 13 tuần, thiếu tiền, hết tiền, runway, tiền mặt, lãi nhưng không có tiền, thu chi, kế hoạch tiền mặt, cash conversion, vốn lưu động]
+    modules: [m04, m01, m06]
+    playbook: pb_cash_flow_13week
+  - id: r_variance
+    triggers: [chênh lệch, variance, thực tế so với ngân sách, chênh lệch giá, chênh lệch lượng, chênh lệch hiệu suất, flex budget, vượt ngân sách, chi phí tăng bất thường, tại sao lợi nhuận thấp hơn kế hoạch, favorable, unfavorable, standard costing, chi phí tiêu chuẩn]
+    modules: [m05, m04, m03]
+    playbook: pb_variance_analysis
+  - id: r_ratio_diagnosis
+    triggers: [tỷ số tài chính, ratio, thanh khoản, current ratio, quick ratio, ROE, ROA, biên lợi nhuận, DuPont, vòng quay hàng tồn kho, DSO, DPO, đòn bẩy, nợ trên vốn, khả năng thanh toán lãi vay, chẩn đoán, sức khỏe tài chính, lỗ, doanh thu giảm, so sánh ngành]
+    modules: [m06, m01, m05]
+    playbook: pb_ratio_diagnosis
+  - id: r_inventory_depreciation
+    triggers: [khấu hao, depreciation, đường thẳng, số dư giảm dần, theo sản lượng, tồn kho, FIFO, bình quân gia quyền, giá vốn hàng bán, COGS, ghi nhận doanh thu, hoàn nhập dự phòng, giảm giá hàng tồn kho, tài sản cố định, thanh lý tài sản, thuê tài chính]
+    modules: [m01, m03]
+    playbook: pb_inventory_depreciation
+  - id: r_integrated_case
+    triggers: [case tích hợp, bài toán tổng hợp, kế hoạch kế toán toàn diện, phở việt chain, greenpack, mộc thu, techmart, s-tech, núi lửa, gọi vốn series A, phân tích toàn diện, kết hợp các phương pháp, bài tập nhiều phần]
+    modules: [m07, m08, m01, m02, m03, m04, m05, m06]
+    playbook: pb_integrated_review
+  - id: r_tax_legal
+    triggers: [thuế, thuế GTGT, VAT, thuế TNDN, thuế TNCN, hóa đơn điện tử, quyết toán thuế, hạn nộp, mức phạt, bảo hiểm xã hội, Thông tư 200, Thông tư 133, VAS, IFRS, chuẩn mực kế toán, chế độ kế toán, hộ kinh doanh, kê khai, chi phí được trừ]
+    modules: [m01]
+    playbook: pb_journal_entry
+    note: "Chỉ nêu nguyên tắc. BẮT BUỘC tra web_search/web_fetch cho thuế suất, hạn nộp, mức phạt, ghi nguồn và ngày; nhắc xác nhận văn bản hiện hành và kế toán thuế; gắn nhãn needs_expert. Từ chối mọi yêu cầu trốn thuế hoặc làm sai lệch sổ sách."
+  - id: r_investment_valuation_handoff
+    triggers: [NPV, IRR, WACC, định giá doanh nghiệp, thẩm định dự án, cổ phiếu, mã chứng khoán, P/E, EV/EBITDA, DCF]
+    modules: [m06, m04]
+    playbook: pb_ratio_diagnosis
+    note: "Kế toán chuẩn bị BCTC làm sạch, dòng tiền và tỷ số; sau đó chuyển phần NPV/WACC/định giá cho financial_expert, cổ phiếu cho stock_analyst."
+  - id: r_concept_qa
+    triggers: [là gì, giải thích, tại sao, khác nhau, lịch sử, ai tạo ra, kế toán tài chính khác kế toán quản trị]
+    modules: []
+    playbook: null
+    note: "Chọn module theo chủ đề; dùng trường why_it_matters của concepts trong module liên quan."
+
+chaining_rules:
+  - when: "Doanh nghiệp có lãi nhưng thiếu tiền mặt"
+    chain: [m01 đọc 3 báo cáo và đối chiếu lợi nhuận với dòng tiền, m06 DSO/DIO/DPO và vốn lưu động, m04 dòng tiền 13 tuần và kịch bản, m05 tìm chênh lệch bất thường]
+  - when: "Lập kế hoạch tài chính năm cho SME"
+    chain: [m02 CVP và hòa vốn, m03 giá thành đơn vị, m04 master budget và dự phóng BCTC, m01 kiểm tra cân đối, m06 tỷ số mục tiêu]
+  - when: "Lợi nhuận thực tế thấp hơn kế hoạch"
+    chain: [m04 flex budget, m05 chênh lệch giá/lượng/hiệu suất, m03 kiểm tra định mức giá thành, m02 tác động contribution margin, m06 tỷ số sau điều chỉnh]
+  - when: "Định giá sản phẩm hoặc quyết định nhận đơn hàng"
+    chain: [m03 giá thành job/ABC, m02 contribution margin và quyết định ngắn hạn, m04 tác động ngân sách]
+  - when: "Chuẩn bị hồ sơ cho phòng đầu tư hoặc gọi vốn"
+    chain: [m01 BCTC cân đối, m06 tỷ số và DuPont, m04 dự phóng 3 năm, m07 hoặc m08 tham chiếu case; sau đó chuyển financial_expert định giá]
+  - when: "Chẩn đoán cửa hàng hoặc chuỗi đang lỗ"
+    chain: [m06 chẩn đoán tỷ số, m02 hòa vốn và đòn bẩy hoạt động, m03 ABC tìm sản phẩm lỗ ẩn, m05 chênh lệch, m04 kế hoạch phục hồi]
+  - when: "Câu hỏi thuế hoặc chuẩn mực"
+    chain: [m01 nguyên tắc hạch toán, web_search/web_fetch tra văn bản và ghi nguồn cùng ngày, nhắc xác nhận kế toán thuế]
+
+clarifying_questions_default:
+  - "Doanh nghiệp áp dụng chế độ kế toán nào (Thông tư 200 hay 133), loại hình (hộ kinh doanh, TNHH, cổ phần) và ngành?"
+  - "Kỳ báo cáo và đơn vị tiền (tháng/quý/năm; đồng/triệu)?"
+  - "Có số dư đầu kỳ, bảng cân đối thử (trial balance) hoặc BCTC 2-3 kỳ gần nhất không?"
+  - "Phương pháp đang dùng (tính giá tồn kho, khấu hao, phân bổ chi phí chung)?"
+  - "Mục tiêu là gì (lập sổ, ra quyết định giá, lập ngân sách, chuẩn bị gọi vốn, chẩn đoán lỗ)?"
+  - "Dữ liệu là thực hay giả định minh họa?"

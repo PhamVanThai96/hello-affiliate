@@ -189,6 +189,23 @@ Dạng bảng của Four Actions Framework:
 - **Tạo mới**: Pizza Monday, Tootsie Roll Tuesday, $10/tháng membership
 - **Kết quả**: 18 triệu thành viên, lớn nhất nước Mỹ (nhiều hơn bất kỳ chuỗi gym nào)
 
+### Công cụ bổ sung: Buyer Utility Map, Pioneer-Migrator-Settler, 3 tiêu chí value curve, BOS Sequence
+
+**1. Buyer Utility Map (Bản đồ tiện ích người mua)** – Kim & Mauborgne (2005). Ra đời vì DN thường chỉ cải tiến sản phẩm mà không hỏi *người mua gặp khó ở đâu trong cả vòng đời sử dụng*. Ma trận 6 giai đoạn x 6 đòn bẩy tiện ích:
+- 6 giai đoạn chu trình trải nghiệm: Mua sắm (Purchase) -> Giao hàng (Delivery) -> Sử dụng (Use) -> Bổ sung/phụ kiện (Supplements) -> Bảo trì (Maintenance) -> Thanh lý (Disposal).
+- 6 đòn bẩy: Năng suất khách hàng (Customer productivity), Đơn giản (Simplicity), Tiện lợi (Convenience), Giảm rủi ro (Risk), Vui thích/hình ảnh (Fun & image), Thân thiện môi trường (Environmental friendliness).
+- Cách làm: điền 36 ô, đánh dấu ô nào đối thủ đã phục vụ; ô TRỐNG (nhiều khách hàng đau nhưng ngành chưa giải) là cơ hội. Ví dụ: Ford/CarMax cải thiện ô "Mua sắm x Giảm rủi ro" (giá niêm yết, bảo hành).
+
+**2. Pioneer-Migrator-Settler (PMS) Map** – Bản đồ phân loại danh mục sản phẩm/dịch vụ theo mức độ tạo giá trị: *Pioneer* (người tiên phong, đổi mới giá trị đột phá, tạo thị trường mới), *Migrator* (giá trị cao hơn đối thủ nhưng vẫn cùng khuôn), *Settler* (bắt chước, cạnh tranh ở đại dương đỏ). Mục đích: kiểm tra danh mục hiện tại; DN lành mạnh cần có tỷ trọng Pioneer đủ lớn vì Pioneer tạo phần lớn tăng trưởng lợi nhuận (nghiên cứu của tác giả: ~14% mở thêm đại dương xanh nhưng đem lại ~38% doanh thu và ~61% lợi nhuận – số liệu của tác giả, cần kiểm chứng độc lập).
+
+**3. Ba tiêu chí của value curve tốt**: Tập trung (Focus), Phân kỳ (Divergence), Khẩu hiệu hấp dẫn (Compelling tagline). Value curve giống hệt đối thủ = đại dương đỏ.
+
+**4. BOS Sequence (Trình tự chiến lược)** – 4 cổng theo thứ tự: (1) Tiện ích người mua có đủ hấp dẫn? (2) Giá có chiến lược, mass market mua được? (3) Chi phí đạt target cost để còn lãi? (4) Rào cản áp dụng (đối tác, nhân viên, pháp lý) đã giải? Trượt cổng nào thì quay lại cổng đó, không đi tiếp. Target cost = Giá chiến lược - Lợi nhuận mục tiêu.
+
+**5. Blue Ocean Shift (2017)** – cùng tác giả, bổ sung quy trình thực hành 5 bước: Bắt đầu (chọn đúng nhóm, mục tiêu) -> Hiểu rõ hiện trạng (Bad Profit Curve: vẽ canvas hiện tại, "Bus tour" thực địa) -> Hình dung tương lai (Eliminate-Reduce-Raise-Create, "Sketch" canvas tương lai) -> Tìm giải pháp (Blue Ocean Fair, phản hồi khách hàng) -> Thực hiện (thí điểm, Fair process: Engagement - Explanation - Expectation clarity).
+
+**6. Tipping point leadership & Fair process (nguyên tắc 5-6)**: vượt rào cản tổ chức bằng cách tập trung nguồn lực vào các "điểm tới hạn" (nhận thức, nguồn lực, động lực, chính trị) và dùng quy trình công bằng (tham gia, giải thích, kỳ vọng rõ ràng) để nhân viên cam kết thực thi.
+
 ---
 
 ## IV. ƯU ĐIỂM VÀ NHƯỢC ĐIỂM
@@ -283,7 +300,7 @@ Dạng bảng của Four Actions Framework:
 
 | **LOẠI BỎ** | **TĂNG** |
 |---|---|
-| Phụ thuộc xăng dầu | Mạng lưới sạc (3,000+ trạm tại VN) |
+| Phụ thuộc xăng dầu | Mạng lưới sạc (hàng nghìn trạm; số liệu cần xác nhận lại theo năm) |
 | Chi phí bảo dưỡng phức tạp | Dịch vụ hậu mãi qua app |
 | | Brand "made in Vietnam" tự hào |
 | **GIẢM** | **TẠO MỚI** |
@@ -332,7 +349,7 @@ Dạng bảng của Four Actions Framework:
 
 ---
 
-# V. Ưu và nhược điểm của Blue Ocean Strategy
+# VII. Mở rộng: Ưu/nhược điểm và ứng dụng cho F&B
 
 Chiến lược **Đại dương xanh (Blue Ocean Strategy)** là việc tạo ra một khoảng trống thị trường không có cạnh tranh, nơi doanh nghiệp tự đặt ra luật chơi thay vì phải "đấu đá" trong một thị trường đã quá chật chội (Đại dương đỏ).
 
@@ -395,7 +412,7 @@ Nếu bạn định mở một quán tại những khu đô thị mới đang ph
 
 Nếu bạn làm tốt hơn, bạn vẫn ở trong Đại dương đỏ. Nếu bạn làm khác đi và giải quyết được một nhu cầu chưa được đáp ứng (như quán cafe tích hợp trạm quan sát bất động sản, hay cafe làm việc 24/7 có cabin ngủ cho dân tech), bạn đã bắt đầu tiến vào Đại dương xanh.
 
-# VI. Câu chuyện về McDonald's - thông trị Đại dương đỏ
+# VIII. Câu chuyện về McDonald's - thống trị Đại dương đỏ
 
 **McDonald's chính là "kẻ khai sinh" ra một Đại dương xanh trong quá khứ**, sau đó họ đã biến chính đại dương đó thành Đại dương đỏ bằng sự thành công rực rỡ của mình.
 
@@ -460,7 +477,5 @@ Thay vì thay đổi hoàn toàn mô hình, McDonald's chọn cách **cải ti�
 > **Bài học rút ra:** Đôi khi, bạn không cần phải tìm một đại dương mới. Nếu bạn có thể xây dựng một hệ thống vận hành xuất sắc và kiểm soát được các nguồn lực then chốt (như bất động sản và chuỗi cung ứng), bạn có thể "nhuộm xanh" một phần đại dương đỏ và thu lợi nhuận bền vững tại đó.
 
 Bạn thấy đấy, dù là một lập trình viên hay một nhà điều hành chuỗi, việc **tối ưu hóa hệ thống** thường mang lại sức mạnh phòng thủ lớn hơn nhiều so với việc chỉ chạy theo những ý tưởng mới mẻ nhưng thiếu nền tảng.
-
-Bạn có nghĩ rằng việc McDonald's nắm giữ bất động sản là yếu tố quan trọng nhất giúp họ vượt qua các cuộc khủng hoảng tài chính không? Hay yếu tố "thương hiệu" mới là thứ cốt lõi?
 
 *Tài liệu tham khảo: W. Chan Kim & Renée Mauborgne (2005) "Blue Ocean Strategy"; W. Chan Kim & Renée Mauborgne (2017) "Blue Ocean Shift"*

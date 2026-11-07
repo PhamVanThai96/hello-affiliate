@@ -1,0 +1,281 @@
+# 03-playbooks.yaml — Kịch bản giải quyết vấn đề end-to-end
+# Mỗi playbook: intake (dữ liệu cần) -> steps -> sanity checks -> output -> khuyến nghị.
+playbooks:
+  pb_stp_design:
+    goal: "Phân khúc thị trường, chọn khách hàng mục tiêu và xây dựng định vị (STP)"
+    modules: [m01, m06, m07]
+    intake:
+      - "Sản phẩm, giá, điểm mạnh hiện có"
+      - "Dữ liệu khách hiện tại (nhân khẩu, hành vi mua, kênh)"
+      - "Đối thủ chính và định vị của họ"
+      - "Nguồn lực (ngân sách, nhân sự)"
+    steps:
+      - "Chọn tiêu chí phân khúc (nhân khẩu, địa lý, tâm lý, hành vi) có thể đo lường và tiếp cận được"
+      - "Lập 3-5 phân khúc, ước lượng quy mô, tăng trưởng, mức cạnh tranh, độ phù hợp nguồn lực"
+      - "Chấm điểm hấp dẫn của từng phân khúc theo ma trận có trọng số và chọn 1-2 phân khúc mục tiêu (SME ưu tiên hẹp)"
+      - "Mô tả chân dung khách hàng (persona) gồm nhu cầu, nỗi đau, hành vi mua, kênh tiếp cận"
+      - "Vẽ bản đồ định vị theo 2 trục thuộc tính quan trọng với khách, đặt đối thủ và vị trí mong muốn"
+      - "Viết tuyên bố định vị (dành cho, khác với, vì) kèm 3 bằng chứng và USP"
+      - "Chuyển định vị thành gợi ý marketing mix và KPI kiểm chứng"
+    sanity:
+      - "Phân khúc đủ lớn để có lợi nhuận và đủ khác biệt để phục vụ riêng"
+      - "Định vị khác biệt thật so với đối thủ và có bằng chứng"
+      - "Mục tiêu khớp nguồn lực"
+    output: "Báo cáo STP gồm bảng phân khúc, điểm số, persona, bản đồ định vị, tuyên bố định vị (rpt_stp_report)"
+
+  pb_marketing_mix_plan:
+    goal: "Xây dựng marketing mix 4P hoặc 7P (4C khi tiếp cận theo khách hàng) nhất quán với STP"
+    modules: [m02, m11, m01, m10]
+    intake:
+      - "Kết quả STP hoặc khách mục tiêu"
+      - "Danh mục sản phẩm và giá hiện tại"
+      - "Kênh phân phối hiện có"
+      - "Ngân sách"
+      - "Loại hình (sản phẩm hay dịch vụ)"
+    steps:
+      - "Xác nhận định vị và khách mục tiêu làm điểm xuất phát"
+      - "Product: thiết kế lợi ích cốt lõi, tính năng, bao bì, thương hiệu, danh mục"
+      - "Price: chọn phương pháp định giá và mức giá (phối hợp pb_pricing_decision)"
+      - "Place: chọn kênh phân phối và độ phủ"
+      - "Promotion: chọn công cụ truyền thông (phối hợp pb_imc_plan)"
+      - "Nếu là dịch vụ thêm People, Process, Physical evidence (7P)"
+      - "Đối chiếu 4C (Customer value, Cost, Convenience, Communication) để kiểm tra góc nhìn khách hàng"
+      - "Phân bổ ngân sách theo P và đặt KPI, lịch triển khai 90 ngày"
+    sanity:
+      - "Các P nhất quán với định vị (ví dụ định vị cao cấp thì giá và kênh không rẻ tiền)"
+      - "Tổng ngân sách các P khớp ngân sách tổng"
+      - "Mỗi hạng mục có KPI"
+    output: "Kế hoạch marketing mix (rpt_marketing_plan) với bảng 4P/7P, ngân sách, KPI, lộ trình"
+
+  pb_clv_cac_analysis:
+    goal: "Tính và tối ưu CLV, CAC, LTV:CAC, retention và chọn đòn bẩy giữ chân"
+    modules: [m03, m05, m10]
+    intake:
+      - "Doanh thu trung bình mỗi đơn (AOV)"
+      - "Tần suất mua"
+      - "Biên lợi nhuận gộp"
+      - "Tỷ lệ rời bỏ (churn) hoặc retention theo cohort"
+      - "Tổng chi phí marketing và bán hàng theo kỳ"
+      - "Số khách mới theo kỳ"
+    steps:
+      - "Thống nhất kỳ tính và đơn vị tiền, nêu rõ CAC blended hay theo kênh"
+      - "Tính CAC bằng tổng chi phí marketing và bán hàng chia cho số khách mới cùng kỳ"
+      - "Tính CLV theo biên gộp, tuổi thọ khách = 1 / churn, có thể chiết khấu"
+      - "Tính LTV:CAC và thời gian hoàn vốn CAC"
+      - "Phân khúc khách theo RFM hoặc cohort để tìm nhóm giá trị cao"
+      - "Mô phỏng 3 đòn bẩy (tăng retention, tăng AOV, giảm CAC) và so sánh tác động lên CLV"
+      - "Chọn hành động ưu tiên theo tác động và chi phí"
+    sanity:
+      - "LTV dùng biên gộp, không dùng doanh thu"
+      - "Churn lớn hơn 0 và tuổi thọ hợp lý"
+      - "LTV:CAC mục tiêu từ 3 trở lên và hoàn vốn CAC dưới 12 tháng (benchmark tham khảo, gắn nhãn độ tin cậy)"
+    decision: "Nếu LTV:CAC dưới 3 thì ưu tiên tăng retention hoặc giảm CAC trước khi tăng ngân sách quảng cáo"
+    output: "Báo cáo CLV/CAC (rpt_clv_cac) với công thức, phép tính, độ nhạy và khuyến nghị"
+
+  pb_brand_building:
+    goal: "Xây dựng hoặc tái định vị thương hiệu (bản sắc, thông điệp, tài sản thương hiệu)"
+    modules: [m04, m01, m08]
+    intake:
+      - "Tầm nhìn, sứ mệnh, giá trị cốt lõi"
+      - "Khách mục tiêu và định vị"
+      - "Nhận thức hiện tại về thương hiệu"
+      - "Đối thủ"
+      - "Ngân sách"
+    steps:
+      - "Đánh giá hiện trạng thương hiệu (nhận biết, liên tưởng, chất lượng cảm nhận, trung thành)"
+      - "Xác định bản sắc thương hiệu (cốt lõi, mở rộng, tính cách, giá trị)"
+      - "Dùng khung CBBE của Keller theo 4 tầng: nhận diện, ý nghĩa, phản ứng, cộng hưởng"
+      - "Thiết kế hệ thống nhận diện: tên, logo, màu, giọng điệu, câu chuyện thương hiệu"
+      - "Lập kế hoạch chạm điểm thương hiệu nhất quán (brief cho #designer khi cần hình ảnh)"
+      - "Đặt chỉ số đo sức khỏe thương hiệu và lịch rà soát"
+    sanity:
+      - "Bản sắc nhất quán giữa các kênh"
+      - "Không hứa quá năng lực thực tế"
+      - "Có chỉ số đo được cho mỗi tầng"
+    output: "Tài liệu định hướng thương hiệu (rpt_brand_plan) gồm bản sắc, thông điệp, kế hoạch chạm điểm, KPI"
+
+  pb_digital_growth_plan:
+    goal: "Lập kế hoạch digital marketing và growth theo phễu AARRR"
+    modules: [m05, m03, m08]
+    intake:
+      - "Mục tiêu doanh số hoặc khách hàng"
+      - "Ngân sách"
+      - "Kênh hiện có và số liệu phễu (traffic, chuyển đổi, retention)"
+      - "Biên gộp"
+      - "Năng lực nội dung và đội ngũ"
+    steps:
+      - "Đo hiện trạng từng tầng AARRR (Acquisition, Activation, Retention, Referral, Revenue) và tìm điểm nghẽn lớn nhất"
+      - "Chọn kênh phù hợp khách mục tiêu (SEO, SEM, social, email, marketplace) và vai trò từng kênh trong phễu"
+      - "Tính ROAS hòa vốn = 1 / biên gộp, đặt CPA và CAC mục tiêu"
+      - "Lập danh sách thử nghiệm tăng trưởng, chấm điểm theo ICE (tác động, tự tin, dễ làm)"
+      - "Thiết kế A/B test: giả thuyết, chỉ số, cỡ mẫu và thời gian chạy"
+      - "Phân bổ ngân sách giữa kênh đã chứng minh và kênh thử nghiệm, đặt ngưỡng dừng hoặc tăng"
+      - "Lập dashboard KPI hàng tuần và nhịp rà soát"
+    sanity:
+      - "ROAS mục tiêu cao hơn ROAS hòa vốn"
+      - "Tổng ngân sách các kênh khớp ngân sách tổng"
+      - "Mỗi thử nghiệm có chỉ số thành công và thời gian rõ ràng"
+    output: "Kế hoạch digital và growth (rpt_digital_growth_plan) với phễu, kênh, ngân sách, thử nghiệm, KPI"
+
+  pb_consumer_insight:
+    goal: "Hiểu hành vi, động cơ và hành trình quyết định mua để tìm insight hành động"
+    modules: [m06, m07, m01]
+    intake:
+      - "Nhóm khách quan tâm"
+      - "Sản phẩm và mức độ gắn kết khi mua (mua nhanh hay cân nhắc lâu)"
+      - "Dữ liệu hiện có (khảo sát, đánh giá, dữ liệu bán hàng)"
+      - "Vấn đề đang gặp (ví dụ bỏ giỏ hàng, mua một lần)"
+    steps:
+      - "Xác định loại quyết định mua (thói quen, cân nhắc hạn chế, cân nhắc mở rộng)"
+      - "Lập hành trình khách hàng theo 5 giai đoạn: nhận biết nhu cầu, tìm kiếm, đánh giá, mua, sau mua"
+      - "Xác định các yếu tố ảnh hưởng: văn hóa, xã hội, cá nhân, tâm lý"
+      - "Liên hệ động cơ với tháp nhu cầu Maslow để biết nhu cầu nào đang được thỏa mãn"
+      - "Tìm điểm ma sát và khoảnh khắc quyết định ở từng giai đoạn"
+      - "Phát biểu insight theo dạng quan sát, nguyên nhân sâu, cơ hội, rồi chuyển thành hành động marketing cụ thể"
+      - "Đề xuất cách kiểm chứng insight (phối hợp pb_market_research)"
+    sanity:
+      - "Insight dựa trên dữ liệu hoặc quan sát có thể kiểm chứng, không suy diễn"
+      - "Mỗi insight gắn với một hành động và một chỉ số đo"
+    output: "Báo cáo insight hành vi (rpt_consumer_insight) gồm hành trình, ma sát, insight và hành động"
+
+  pb_market_research:
+    goal: "Thiết kế và đọc kết quả nghiên cứu thị trường"
+    modules: [m07, m06, m01]
+    intake:
+      - "Câu hỏi quyết định cần trả lời"
+      - "Đối tượng nghiên cứu"
+      - "Ngân sách và thời gian"
+      - "Dữ liệu thứ cấp sẵn có"
+    steps:
+      - "Phát biểu vấn đề nghiên cứu và giả thuyết gắn với quyết định kinh doanh"
+      - "Rà soát dữ liệu thứ cấp trước để tiết kiệm chi phí"
+      - "Chọn phương pháp sơ cấp: định tính (phỏng vấn sâu, nhóm tập trung) hoặc định lượng (khảo sát), hoặc kết hợp"
+      - "Thiết kế bảng câu hỏi: câu hỏi sàng lọc, thang đo, tránh câu dẫn dắt, thử nghiệm thí điểm"
+      - "Tính cỡ mẫu theo sai số và độ tin cậy, mô tả cách chọn mẫu"
+      - "Lập kế hoạch thu thập, làm sạch và phân tích (thống kê mô tả, so sánh nhóm)"
+      - "Đọc kết quả, nêu giới hạn và đưa khuyến nghị gắn với quyết định ban đầu"
+    sanity:
+      - "Cỡ mẫu và sai số được nêu rõ"
+      - "Mẫu đại diện cho đối tượng mục tiêu"
+      - "Không kết luận vượt quá dữ liệu"
+    output: "Kế hoạch nghiên cứu và báo cáo kết quả (rpt_market_research)"
+
+  pb_imc_plan:
+    goal: "Lập kế hoạch truyền thông marketing tích hợp (IMC) với thông điệp nhất quán"
+    modules: [m08, m05, m04]
+    intake:
+      - "Mục tiêu truyền thông (nhận biết, quan tâm, hành động)"
+      - "Khách mục tiêu và hành trình"
+      - "Ngân sách"
+      - "Định vị và thông điệp chính"
+      - "Kênh hiện có"
+    steps:
+      - "Đặt mục tiêu truyền thông đo được theo mô hình AIDA hoặc phễu"
+      - "Chốt một thông điệp trung tâm (big idea) và biến thể theo kênh"
+      - "Chọn tổ hợp công cụ: quảng cáo, PR, khuyến mãi, bán hàng trực tiếp, digital, sự kiện"
+      - "Phân bổ ngân sách theo phương pháp phù hợp (tỷ lệ doanh thu, mục tiêu và nhiệm vụ, cạnh tranh)"
+      - "Lập lịch phối hợp các kênh theo giai đoạn chiến dịch để củng cố nhau"
+      - "Đặt KPI từng kênh và cách đo hiệu quả chung (hiệu ứng tích hợp)"
+      - "Lập danh sách kiểm tra nhất quán thông điệp và hình ảnh"
+    sanity:
+      - "Thông điệp nhất quán giữa các kênh"
+      - "Ngân sách khớp tổng"
+      - "Mỗi kênh có mục tiêu và KPI"
+    output: "Kế hoạch IMC (rpt_imc_plan) với thông điệp, tổ hợp kênh, lịch, ngân sách, KPI"
+
+  pb_plc_strategy:
+    goal: "Chọn chiến lược marketing theo giai đoạn vòng đời sản phẩm"
+    modules: [m09, m02, m10]
+    intake:
+      - "Chuỗi doanh thu và lợi nhuận theo thời gian"
+      - "Tốc độ tăng trưởng thị trường"
+      - "Số đối thủ"
+      - "Thị phần"
+      - "Danh mục sản phẩm"
+    steps:
+      - "Xác định giai đoạn hiện tại: giới thiệu, tăng trưởng, bão hòa, suy thoái, dựa trên tăng trưởng doanh thu và lợi nhuận"
+      - "Chọn mục tiêu chính của giai đoạn (xây nhận biết, mở rộng thị phần, bảo vệ và tối đa dòng tiền, thu hoạch hoặc loại bỏ)"
+      - "Điều chỉnh từng P theo giai đoạn (giá, kênh, truyền thông, cải tiến sản phẩm)"
+      - "Với giai đoạn bão hòa, xem xét các lựa chọn kéo dài vòng đời: thị trường mới, công dụng mới, cải tiến"
+      - "Với giai đoạn suy thoái, so sánh duy trì, thu hoạch và loại bỏ theo dòng tiền"
+      - "Cân đối danh mục sản phẩm (ví dụ ma trận BCG) để tài trợ sản phẩm mới bằng sản phẩm đang sinh tiền"
+      - "Đặt KPI và tín hiệu cảnh báo chuyển giai đoạn"
+    sanity:
+      - "Giai đoạn xác định bằng dữ liệu nhiều kỳ, không chỉ một kỳ"
+      - "Chiến lược khớp mục tiêu giai đoạn"
+    output: "Chiến lược theo vòng đời (rpt_plc_strategy) với chẩn đoán giai đoạn và kế hoạch hành động"
+
+  pb_pricing_decision:
+    goal: "Ra quyết định giá hoặc khuyến mãi dựa trên chi phí, giá trị và cạnh tranh"
+    modules: [m10, m02, m03]
+    intake:
+      - "Giá vốn, chi phí cố định và biến đổi"
+      - "Giá hiện tại và sản lượng"
+      - "Giá đối thủ"
+      - "Khách mục tiêu và mức sẵn lòng trả"
+      - "Mục tiêu giá (lợi nhuận, thị phần, thâm nhập)"
+    steps:
+      - "Tính sàn giá từ chi phí: điểm hòa vốn và markup mục tiêu"
+      - "Ước lượng trần giá theo giá trị khách hàng cảm nhận và mức sẵn lòng trả"
+      - "Quan sát giá đối thủ để xác định vùng giá cạnh tranh"
+      - "Chọn chiến lược giá phù hợp giai đoạn và định vị (hớt váng, thâm nhập, theo giá trị, gói, tâm lý)"
+      - "Ước tính độ co giãn của cầu và tính sản lượng cần thiết để giữ lợi nhuận khi giảm giá X phần trăm"
+      - "So sánh 2-3 phương án giá bằng bảng lợi nhuận kỳ vọng và kịch bản xấu, cơ sở, tốt"
+      - "Kiểm tra tác động lên LTV, thương hiệu và kênh bán"
+      - "Lập kế hoạch thử nghiệm giá và chỉ số theo dõi"
+    sanity:
+      - "Giá nằm giữa sàn chi phí và trần giá trị"
+      - "Giảm giá phải kèm tính sản lượng cần tăng để hòa vốn lợi nhuận"
+      - "Biên gộp lớn hơn 0 ở mọi phương án"
+    output: "Báo cáo quyết định giá (rpt_pricing_decision) với sàn, trần, phương án và khuyến nghị"
+
+  pb_content_ugc_campaign:
+    goal: "Lập kế hoạch nội dung và chiến dịch UGC, soạn bài hoặc kịch bản theo chiến lược"
+    modules: [m11, m05, m08]
+    intake:
+      - "Mục tiêu (nhận biết, chuyển đổi, giữ chân)"
+      - "Persona và giọng điệu thương hiệu"
+      - "Kênh"
+      - "Sản phẩm, giá, ưu đãi (nếu thiếu thì dùng placeholder)"
+      - "Nguồn lực sản xuất"
+    steps:
+      - "Chốt mục tiêu, thông điệp chính một ý, giọng điệu và CTA"
+      - "Xây 3-5 trụ cột nội dung (content pillar) gắn với nỗi đau và lợi ích của persona"
+      - "Lập lịch nội dung theo tuần với định dạng, kênh, chủ đề, CTA, KPI"
+      - "Soạn nội dung mẫu theo quy ước trong 01-agent-profile.yaml (kịch bản video dạng bảng cảnh, bài Facebook có hook và CTA, email)"
+      - "Thiết kế chiến dịch UGC: hashtag, cơ chế khuyến khích, brief cho creator hoặc KOC, quy tắc sử dụng nội dung và quyền hình ảnh"
+      - "Nhờ #designer làm hình ảnh bằng brief khi cần"
+      - "Đặt KPI (tiếp cận, tương tác, số UGC, chuyển đổi) và quy trình kiểm duyệt, phản hồi bình luận"
+    sanity:
+      - "Không bịa giá, ưu đãi hoặc số liệu, dùng placeholder"
+      - "Không tuyên bố y tế hoặc so sánh tuyệt đối"
+      - "Gắn nhãn quảng cáo và hợp tác khi có trả phí"
+      - "Không tạo review hoặc UGC giả"
+    output: "Kế hoạch nội dung và UGC (rpt_content_plan) cùng bản nháp nội dung theo yêu cầu"
+
+  pb_integrated_marketing_plan:
+    goal: "Lập kế hoạch marketing toàn diện từ phân tích đến triển khai và đo lường"
+    modules: [m12, m01, m02, m03, m04, m05, m08, m10]
+    intake:
+      - "Tổng quan doanh nghiệp, sản phẩm, thị trường"
+      - "Mục tiêu kinh doanh và thời hạn"
+      - "Ngân sách"
+      - "Số liệu hiện tại"
+      - "Đối thủ"
+      - "Nguồn lực"
+    steps:
+      - "Phân tích tình huống: thị trường, khách hàng, đối thủ, năng lực nội bộ (SWOT), phối hợp pb_market_research nếu thiếu dữ liệu"
+      - "Đặt mục tiêu SMART và chỉ số then chốt"
+      - "STP (pb_stp_design)"
+      - "Marketing mix và giá (pb_marketing_mix_plan, pb_pricing_decision)"
+      - "Thương hiệu và IMC (pb_brand_building, pb_imc_plan)"
+      - "Kênh digital và growth (pb_digital_growth_plan) cùng kế hoạch nội dung (pb_content_ugc_campaign)"
+      - "Kiểm tra kinh tế đơn vị: CAC, LTV, LTV:CAC (pb_clv_cac_analysis)"
+      - "Lập ngân sách tổng, lộ trình 12 tháng, KPI, rủi ro và phương án dự phòng"
+      - "Tham khảo case trong m12 để đối chiếu bài học và sai lầm thường gặp"
+      - "Với khoản đầu tư lớn, bàn giao #financial_expert tính NPV và IRR"
+    sanity:
+      - "Mục tiêu, chiến lược, chiến thuật, ngân sách và KPI khớp nhau"
+      - "Tổng ngân sách khớp"
+      - "Dự phóng doanh thu có giả định rõ ràng và có kịch bản xấu"
+    output: "Kế hoạch marketing tổng thể (rpt_marketing_plan) kèm tóm tắt điều hành"

@@ -1,0 +1,385 @@
+id: marketing-report-templates
+title: "Marketing — mẫu báo cáo/bảng biểu"
+summary: "Cấu trúc chung và các mẫu báo cáo marketing."
+agents: ["marketing_expert"]
+order: 61
+when: ["__chi_tra_cuu_bang_skill_search__"]
+sections:
+  - id: "tpl-cau-truc-chung"
+    title: "Mẫu báo cáo — cấu trúc chung"
+    tags: ["mẫu", "báo", "cáo", "cấu", "trúc"]
+    text: |-
+      - 1. Tóm tắt điều hành (kết luận, con số chính, khuyến nghị trong 3-5 dòng)
+      - 2. Bối cảnh và dữ liệu đầu vào (kèm nhãn VERIFIED, GIẢ ĐỊNH, CHƯA KIỂM CHỨNG)
+      - 3. Khung phân tích và công thức sử dụng (và vì sao chọn)
+      - 4. Phân tích và tính toán từng bước (bảng)
+      - 5. Phân tích độ nhạy hoặc kịch bản xấu, cơ sở, tốt
+      - 6. Diễn giải ý nghĩa kinh doanh và so sánh benchmark (ghi độ tin cậy)
+      - 7. Phương án và khuyến nghị (ưu, nhược, điều kiện làm thay đổi khuyến nghị)
+      - 8. Ngân sách, KPI và lộ trình hành động
+      - 9. Rủi ro, giả định, giới hạn, lưu ý đạo đức và pháp lý quảng cáo
+      - 10. Việc cần bàn giao agent khác và bước tiếp theo
+  - id: "tpl-rpt_marketing_plan"
+    title: "Mẫu báo cáo rpt_marketing_plan — Kế hoạch marketing tổng thể"
+    tags: ["rpt_marketing_plan", "kế", "hoạch", "marketing", "tổng", "thể", "mẫu", "báo", "cáo"]
+    text: |-
+      title: Kế hoạch marketing tổng thể
+      tables:
+      - name: Mục tiêu và KPI
+        columns:
+        - Mục tiêu
+        - Chỉ số
+        - Hiện tại
+        - Mục tiêu
+        - Thời hạn
+        - Người phụ trách
+      - name: Marketing mix 4P/7P
+        columns:
+        - Yếu tố
+        - Quyết định
+        - Lý do
+        - Chi phí ước tính
+        - KPI
+      - name: Ngân sách theo kênh
+        columns:
+        - Kênh
+        - Vai trò trong phễu
+        - Ngân sách
+        - Tỷ trọng
+        - KPI chính
+      - name: Lộ trình 12 tháng
+        columns:
+        - Giai đoạn
+        - Hoạt động chính
+        - Mốc
+        - Ngân sách
+        - Rủi ro
+      - name: Kịch bản dự phóng
+        columns:
+        - Kịch bản
+        - Giả định chính
+        - Doanh thu
+        - Chi phí marketing
+        - Lợi nhuận gộp
+  - id: "tpl-rpt_stp_report"
+    title: "Mẫu báo cáo rpt_stp_report — Báo cáo phân khúc, mục tiêu, định vị (STP)"
+    tags: ["rpt_stp_report", "báo", "cáo", "phân", "khúc", "mục", "tiêu", "định", "vị", "stp", "mẫu"]
+    text: |-
+      title: Báo cáo phân khúc, mục tiêu, định vị (STP)
+      tables:
+      - name: Phân khúc thị trường
+        columns:
+        - Phân khúc
+        - Tiêu chí
+        - Quy mô
+        - Tăng trưởng
+        - Cạnh tranh
+        - Phù hợp nguồn lực
+        - Điểm
+      - name: Chân dung khách hàng (persona)
+        columns:
+        - Thuộc tính
+        - Mô tả
+        - Nỗi đau
+        - Hành vi mua
+        - Kênh tiếp cận
+      - name: Bản đồ định vị
+        columns:
+        - Thương hiệu
+        - Trục 1
+        - Trục 2
+        - Ghi chú
+      - name: Tuyên bố định vị
+        columns:
+        - Dành cho
+        - Khác với
+        - Lợi ích khác biệt
+        - Bằng chứng
+  - id: "tpl-rpt_clv_cac"
+    title: "Mẫu báo cáo rpt_clv_cac — Báo cáo CLV, CAC và kinh tế đơn vị"
+    tags: ["rpt_clv_cac", "báo", "cáo", "clv", "cac", "và", "kinh", "tế", "đơn", "vị", "mẫu"]
+    text: |-
+      title: Báo cáo CLV, CAC và kinh tế đơn vị
+      tables:
+      - name: Dữ liệu đầu vào
+        columns:
+        - Chỉ số
+        - Giá trị
+        - Đơn vị
+        - Nguồn
+        - Nhãn độ tin cậy
+      - name: Tính CAC
+        columns:
+        - Kênh
+        - Chi phí
+        - Khách mới
+        - CAC
+      - name: Tính CLV
+        columns:
+        - AOV
+        - Tần suất
+        - Biên gộp
+        - Churn
+        - Tuổi thọ
+        - CLV
+      - name: Chỉ số quyết định
+        columns:
+        - LTV:CAC
+        - Hoàn vốn CAC (tháng)
+        - Đánh giá
+      - name: Mô phỏng đòn bẩy
+        columns:
+        - Đòn bẩy
+        - Thay đổi
+        - CLV mới
+        - LTV:CAC mới
+        - Chi phí thực hiện
+  - id: "tpl-rpt_brand_plan"
+    title: "Mẫu báo cáo rpt_brand_plan — Định hướng và kế hoạch xây dựng thương hiệu"
+    tags: ["rpt_brand_plan", "định", "hướng", "và", "kế", "hoạch", "xây", "dựng", "thương", "hiệu", "mẫu", "báo"]
+    text: |-
+      title: Định hướng và kế hoạch xây dựng thương hiệu
+      tables:
+      - name: Bản sắc thương hiệu
+        columns:
+        - Thành phần
+        - Nội dung
+        - Bằng chứng
+      - name: Khung CBBE
+        columns:
+        - Tầng
+        - Câu hỏi
+        - Hiện trạng
+        - Hành động
+        - Chỉ số
+      - name: Điểm chạm thương hiệu
+        columns:
+        - Điểm chạm
+        - Thông điệp
+        - Hình ảnh
+        - Người phụ trách
+  - id: "tpl-rpt_digital_growth_plan"
+    title: "Mẫu báo cáo rpt_digital_growth_plan — Kế hoạch digital marketing và growth"
+    tags: ["rpt_digital_growth_plan", "kế", "hoạch", "digital", "marketing", "và", "growth", "mẫu", "báo", "cáo"]
+    text: |-
+      title: Kế hoạch digital marketing và growth
+      tables:
+      - name: Phễu AARRR
+        columns:
+        - Giai đoạn
+        - Chỉ số
+        - Hiện tại
+        - Mục tiêu
+        - Điểm nghẽn
+      - name: Kênh và ngân sách
+        columns:
+        - Kênh
+        - Mục tiêu
+        - Ngân sách
+        - CPA mục tiêu
+        - ROAS mục tiêu
+        - ROAS hòa vốn
+      - name: Danh sách thử nghiệm tăng trưởng
+        columns:
+        - Giả thuyết
+        - Chỉ số
+        - Tác động
+        - Tự tin
+        - Dễ làm
+        - Điểm ICE
+        - Thời gian
+  - id: "tpl-rpt_consumer_insight"
+    title: "Mẫu báo cáo rpt_consumer_insight — Báo cáo insight hành vi khách hàng"
+    tags: ["rpt_consumer_insight", "báo", "cáo", "insight", "hành", "vi", "khách", "hàng", "mẫu"]
+    text: |-
+      title: Báo cáo insight hành vi khách hàng
+      tables:
+      - name: Hành trình khách hàng
+        columns:
+        - Giai đoạn
+        - Hành vi
+        - Cảm xúc
+        - Điểm ma sát
+        - Cơ hội
+      - name: Insight và hành động
+        columns:
+        - Quan sát
+        - Nguyên nhân sâu
+        - Insight
+        - Hành động
+        - Chỉ số đo
+  - id: "tpl-rpt_market_research"
+    title: "Mẫu báo cáo rpt_market_research — Kế hoạch và báo cáo nghiên cứu thị trường"
+    tags: ["rpt_market_research", "kế", "hoạch", "và", "báo", "cáo", "nghiên", "cứu", "thị", "trường", "mẫu"]
+    text: |-
+      title: Kế hoạch và báo cáo nghiên cứu thị trường
+      tables:
+      - name: Thiết kế nghiên cứu
+        columns:
+        - Câu hỏi nghiên cứu
+        - Giả thuyết
+        - Phương pháp
+        - Đối tượng
+        - Cỡ mẫu
+        - Sai số
+      - name: Kết quả chính
+        columns:
+        - Chỉ số
+        - Kết quả
+        - Nhóm so sánh
+        - Ý nghĩa
+        - Giới hạn
+      - name: Khuyến nghị
+        columns:
+        - Phát hiện
+        - Quyết định liên quan
+        - Hành động
+        - Ưu tiên
+  - id: "tpl-rpt_imc_plan"
+    title: "Mẫu báo cáo rpt_imc_plan — Kế hoạch truyền thông marketing tích hợp (IMC)"
+    tags: ["rpt_imc_plan", "kế", "hoạch", "truyền", "thông", "marketing", "tích", "hợp", "imc", "mẫu", "báo", "cáo"]
+    text: |-
+      title: Kế hoạch truyền thông marketing tích hợp (IMC)
+      tables:
+      - name: Thông điệp
+        columns:
+        - Thông điệp trung tâm
+        - Biến thể theo kênh
+        - Bằng chứng
+        - CTA
+      - name: Tổ hợp kênh
+        columns:
+        - Công cụ
+        - Kênh
+        - Mục tiêu AIDA
+        - Ngân sách
+        - KPI
+      - name: Lịch chiến dịch
+        columns:
+        - Tuần
+        - Giai đoạn
+        - Hoạt động
+        - Kênh
+        - Người phụ trách
+  - id: "tpl-rpt_plc_strategy"
+    title: "Mẫu báo cáo rpt_plc_strategy — Chiến lược theo vòng đời sản phẩm"
+    tags: ["rpt_plc_strategy", "chiến", "lược", "theo", "vòng", "đời", "sản", "phẩm", "mẫu", "báo", "cáo"]
+    text: |-
+      title: Chiến lược theo vòng đời sản phẩm
+      tables:
+      - name: Chẩn đoán giai đoạn
+        columns:
+        - Chỉ số
+        - Kỳ 1
+        - Kỳ 2
+        - Kỳ 3
+        - Xu hướng
+        - Giai đoạn kết luận
+      - name: Chiến lược theo P
+        columns:
+        - Yếu tố
+        - Hành động hiện tại
+        - Điều chỉnh đề xuất
+        - KPI
+      - name: Danh mục sản phẩm
+        columns:
+        - Sản phẩm
+        - Giai đoạn
+        - Thị phần
+        - Tăng trưởng
+        - Vai trò
+        - Quyết định
+  - id: "tpl-rpt_pricing_decision"
+    title: "Mẫu báo cáo rpt_pricing_decision — Báo cáo quyết định giá"
+    tags: ["rpt_pricing_decision", "báo", "cáo", "quyết", "định", "giá", "mẫu"]
+    text: |-
+      title: Báo cáo quyết định giá
+      tables:
+      - name: Sàn và trần giá
+        columns:
+        - Chỉ số
+        - Công thức
+        - Giá trị
+      - name: So sánh phương án giá
+        columns:
+        - Phương án
+        - Giá
+        - Sản lượng kỳ vọng
+        - Doanh thu
+        - Biên gộp
+        - Lợi nhuận gộp
+      - name: Giảm giá và sản lượng hòa vốn
+        columns:
+        - Mức giảm
+        - Biên gộp mới
+        - Sản lượng cần tăng
+        - Rủi ro
+      - name: Kịch bản
+        columns:
+        - Kịch bản
+        - Giả định độ co giãn
+        - Lợi nhuận
+  - id: "tpl-rpt_content_plan"
+    title: "Mẫu báo cáo rpt_content_plan — Kế hoạch nội dung và chiến dịch UGC"
+    tags: ["rpt_content_plan", "kế", "hoạch", "nội", "dung", "và", "chiến", "dịch", "ugc", "mẫu", "báo", "cáo"]
+    text: |-
+      title: Kế hoạch nội dung và chiến dịch UGC
+      tables:
+      - name: Trụ cột nội dung
+        columns:
+        - Trụ cột
+        - Mục tiêu
+        - Nỗi đau hoặc lợi ích
+        - Định dạng
+        - Tần suất
+      - name: Lịch nội dung
+        columns:
+        - Ngày
+        - Kênh
+        - Trụ cột
+        - Định dạng
+        - Chủ đề
+        - CTA
+        - KPI
+        - Người phụ trách
+      - name: Kịch bản video
+        columns:
+        - Cảnh
+        - Thời lượng (giây)
+        - Hình ảnh hoặc hành động
+        - Lời thoại
+        - Text overlay
+        - Âm thanh
+        - Ghi chú sản xuất
+      - name: Brief UGC
+        columns:
+        - Hạng mục
+        - Nội dung
+      - name: Đo lường chiến dịch
+        columns:
+        - Chỉ số
+        - Mục tiêu
+        - Thực tế
+        - Ghi chú
+  - id: "tpl-rpt_case_analysis"
+    title: "Mẫu báo cáo rpt_case_analysis — Phân tích case study marketing"
+    tags: ["rpt_case_analysis", "phân", "tích", "case", "study", "marketing", "mẫu", "báo", "cáo"]
+    text: |-
+      title: Phân tích case study marketing
+      tables:
+      - name: Tóm tắt case
+        columns:
+        - Bối cảnh
+        - Vấn đề
+        - Hành động
+        - Kết quả
+      - name: Khung phân tích
+        columns:
+        - Framework
+        - Áp dụng
+        - Phát hiện
+      - name: Bài học
+        columns:
+        - Bài học
+        - Nguyên nhân
+        - Cách áp dụng cho SME

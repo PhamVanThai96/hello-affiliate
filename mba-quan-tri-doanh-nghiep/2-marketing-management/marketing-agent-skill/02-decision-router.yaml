@@ -1,0 +1,108 @@
+# 02-decision-router.yaml — Định tuyến: câu hỏi/tình huống -> module + playbook
+# Cách dùng: khớp từ khóa/ý định của người dùng với `triggers`, nạp các `modules` liệt kê, chạy `playbook` (nếu có) trong 03-playbooks.yaml.
+routes:
+  - id: r_stp
+    triggers: [phân khúc, phân khúc thị trường, khách hàng mục tiêu, chọn thị trường mục tiêu, định vị, positioning, STP, segmentation, targeting, chân dung khách hàng, persona, bản đồ định vị, USP, khác biệt hóa]
+    modules: [m01, m06, m07]
+    playbook: pb_stp_design
+  - id: r_marketing_mix
+    triggers: [marketing mix, 4P, 7P, sản phẩm giá phân phối xúc tiến, kênh phân phối, people process physical evidence, dịch vụ, chiến lược sản phẩm, kế hoạch marketing, 4C, kế hoạch marketing tổng thể]
+    modules: [m02, m11, m01, m10]
+    playbook: pb_marketing_mix_plan
+  - id: r_clv_cac
+    triggers: [CLV, LTV, CAC, LTV:CAC, giá trị vòng đời khách hàng, chi phí thu hút khách, giữ chân khách, retention, churn, RFM, cohort, khách hàng trung thành, loyalty, tái mua, tỷ lệ rời bỏ, unit economics, thời gian hoàn vốn CAC]
+    modules: [m03, m05, m10]
+    playbook: pb_clv_cac_analysis
+  - id: r_brand
+    triggers: [thương hiệu, xây dựng thương hiệu, brand, brand equity, nhận diện thương hiệu, brand identity, Keller, CBBE, tên thương hiệu, slogan, brand story, tái định vị thương hiệu, rebranding, brand personality, tài sản thương hiệu]
+    modules: [m04, m01, m08]
+    playbook: pb_brand_building
+  - id: r_digital_growth
+    triggers: [digital marketing, SEO, SEM, quảng cáo Facebook, Google Ads, TikTok Ads, growth hacking, AARRR, phễu bán hàng, funnel, ROAS, CPA, CPL, tỷ lệ chuyển đổi, A/B test, email marketing, tối ưu chuyển đổi, CRO, tăng trưởng nhanh]
+    modules: [m05, m03, m08]
+    playbook: pb_digital_growth_plan
+  - id: r_consumer
+    triggers: [hành vi khách hàng, hành vi người tiêu dùng, insight khách hàng, quá trình ra quyết định mua, hành trình khách hàng, customer journey, Maslow, động cơ mua, yếu tố ảnh hưởng quyết định mua, tâm lý khách hàng, vì sao khách không mua, bỏ giỏ hàng]
+    modules: [m06, m07, m01]
+    playbook: pb_consumer_insight
+  - id: r_research
+    triggers: [nghiên cứu thị trường, khảo sát, bảng câu hỏi, cỡ mẫu, phỏng vấn sâu, focus group, dữ liệu sơ cấp, dữ liệu thứ cấp, phân tích đối thủ, đo lường mức độ hài lòng, NPS, thử nghiệm sản phẩm, đánh giá nhu cầu thị trường, sai số mẫu]
+    modules: [m07, m06, m01]
+    playbook: pb_market_research
+  - id: r_imc
+    triggers: [IMC, truyền thông tích hợp, truyền thông marketing, thông điệp nhất quán, quảng cáo, PR, quan hệ công chúng, khuyến mãi, truyền thông đa kênh, ngân sách truyền thông, AIDA, phối hợp kênh, media plan, ngân sách quảng cáo]
+    modules: [m08, m05, m04]
+    playbook: pb_imc_plan
+  - id: r_plc
+    triggers: [vòng đời sản phẩm, PLC, giai đoạn giới thiệu, giai đoạn tăng trưởng, giai đoạn bão hòa, giai đoạn suy thoái, sản phẩm mới, ra mắt sản phẩm, kéo dài vòng đời, loại bỏ sản phẩm, danh mục sản phẩm, BCG, doanh thu sản phẩm giảm dần]
+    modules: [m09, m02, m10]
+    playbook: pb_plc_strategy
+  - id: r_pricing
+    triggers: [định giá, chiến lược giá, tăng giá, giảm giá, khuyến mãi giá, giá hớt váng, skimming, giá thâm nhập, penetration, độ co giãn của cầu, điểm hòa vốn, markup, biên lợi nhuận, giá theo giá trị, willingness to pay, gói giá, combo, gói thuê bao]
+    modules: [m10, m02, m03]
+    playbook: pb_pricing_decision
+  - id: r_content_ugc
+    triggers: [UGC, nội dung do người dùng tạo, viết bài Facebook, kịch bản video, TikTok, Reels, content calendar, lịch nội dung, content pillar, caption, brief creator, KOC, KOL, influencer, review khách hàng, viết content, ý tưởng nội dung, script bán hàng, email marketing nội dung]
+    modules: [m11, m05, m08]
+    playbook: pb_content_ugc_campaign
+  - id: r_integrated
+    triggers: [kế hoạch marketing toàn diện, lập kế hoạch marketing, chiến lược marketing tổng thể, marketing plan, kế hoạch marketing năm, tư vấn marketing cho doanh nghiệp, bài toán tổng hợp, khởi nghiệp marketing, ra mắt thương hiệu mới, đa khía cạnh]
+    modules: [m12, m01, m02, m03, m04, m05, m08, m10]
+    playbook: pb_integrated_marketing_plan
+  - id: r_case_study
+    triggers: [case study, tình huống, bài học từ, phân tích case, ví dụ thực tế, Highlands, The Coffee House, Vinamilk, Biti's, giải bài tập marketing, bài tập tình huống]
+    modules: [m12]
+    playbook: null
+  - id: r_concept_qa
+    triggers: [là gì, giải thích, tại sao, khác nhau, lịch sử, ai tạo ra, so sánh khái niệm]
+    modules: []   # chọn theo chủ đề; xem trường why_it_matters của concepts trong module liên quan
+    playbook: null
+
+chaining_rules:   # bài toán đa chiều: thứ tự gọi module
+  - when: "Ra mắt sản phẩm/thương hiệu mới"
+    chain:
+      - "m07 nghiên cứu nhu cầu và đối thủ"
+      - "m01 STP chọn khách mục tiêu và định vị"
+      - "m02 marketing mix và m10 định giá"
+      - "m04 bản sắc thương hiệu"
+      - "m08 và m05 truyền thông tích hợp và kênh digital"
+      - "m03 kiểm tra CAC và LTV có khả thi"
+  - when: "Doanh thu giảm hoặc CAC tăng"
+    chain:
+      - "m03 chẩn đoán CAC, LTV, retention"
+      - "m05 xem lại phễu AARRR và kênh"
+      - "m06 tìm nguyên nhân hành vi khách"
+      - "m09 xác định giai đoạn vòng đời"
+      - "m10 xem lại giá"
+  - when: "Quyết định giá hoặc khuyến mãi"
+    chain:
+      - "m10 điểm hòa vốn và độ co giãn"
+      - "m03 tác động lên LTV và retention"
+      - "m01 phân khúc nhạy giá"
+      - "m09 giai đoạn vòng đời để chọn chiến lược giá"
+  - when: "Xây thương hiệu cho SME ngân sách nhỏ"
+    chain:
+      - "m01 định vị hẹp"
+      - "m04 bản sắc và câu chuyện thương hiệu"
+      - "m11 UGC và nội dung"
+      - "m08 phối hợp thông điệp nhất quán"
+      - "m03 giữ chân khách"
+  - when: "Lập kế hoạch nội dung và chiến dịch UGC"
+    chain:
+      - "m01 persona và định vị"
+      - "m06 insight hành vi"
+      - "m11 content pillar và brief UGC"
+      - "m05 phân phối và đo lường"
+      - "m08 đồng bộ thông điệp"
+  - when: "Cần NPV hoặc IRR cho khoản đầu tư marketing lớn"
+    chain:
+      - "m03 ước tính dòng tiền từ khách hàng mới"
+      - "bàn giao #financial_expert để tính NPV và IRR"
+
+clarifying_questions_default:   # hỏi khi thiếu
+  - "Sản phẩm hoặc dịch vụ là gì, giá bán và biên lợi nhuận gộp bao nhiêu?"
+  - "Khách hàng mục tiêu hiện tại là ai, đang mua qua kênh nào?"
+  - "Mục tiêu marketing là gì (nhận biết, doanh số, giữ chân) và thời hạn?"
+  - "Ngân sách marketing mỗi tháng hoặc mỗi quý là bao nhiêu?"
+  - "Có số liệu hiện tại không (doanh thu, số khách, CAC, tỷ lệ mua lại, báo cáo ads)?"
+  - "Đối thủ chính là ai và bạn khác họ ở điểm nào?"

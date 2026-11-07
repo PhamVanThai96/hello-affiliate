@@ -1,0 +1,1513 @@
+# m01 - Kế toán tài chính (distill từ 01-financial-accounting.md)
+id: "m01"
+name_vi: "Kế toán tài chính"
+name_en: "Financial Accounting (IFRS/VAS)"
+purpose: >
+  Hiểu bản chất hệ thống kế toán tài chính (vì sao tồn tại, vì sao báo cáo lập theo cách đó), ghi sổ kép (định khoản Nợ/Có),
+  đi hết chu trình kế toán, tự lập và đọc bốn báo cáo cốt lõi (Bảng cân đối, Kết quả kinh doanh, Lưu chuyển tiền tệ, Thuyết minh),
+  áp dụng các nguyên tắc ghi nhận (dồn tích, doanh thu, tồn kho, khấu hao) và phân biệt IFRS - VAS - chế độ kế toán TT200/133/132.
+  Trả lời: doanh nghiệp (đặc biệt SME Việt Nam) 'lãi mà không có tiền' vì đâu, sổ sách có tin được không, báo cáo có cân và khớp nhau không.
+when_to_use:
+  - "Cần định khoản (Nợ/Có) một nghiệp vụ: góp vốn, vay, mua hàng chịu, bán hàng, ghi giá vốn, khấu hao, nhận tiền trước, chia cổ tức, nộp thuế."
+  - "Cần lập Bảng cân đối, Báo cáo kết quả kinh doanh, Báo cáo lưu chuyển tiền tệ (gián tiếp và trực tiếp) từ số liệu SME và kiểm tra chéo ba báo cáo."
+  - "Chủ SME hỏi 'sao báo cáo lãi mà tài khoản không còn tiền?' (cầu nối lợi nhuận - dòng tiền, phải thu, tồn kho, phải trả)."
+  - "Chọn phương pháp tính giá xuất kho (FIFO, bình quân gia quyền, vì sao LIFO bị cấm) hoặc so sánh lợi nhuận khi giá tăng/giảm."
+  - "Chọn phương pháp khấu hao (đường thẳng, số dư giảm dần, sản lượng) và hiểu ảnh hưởng lên lợi nhuận, thuế, dòng tiền."
+  - "Ghi nhận doanh thu theo IFRS 15 (5 bước, phân bổ theo giá bán độc lập tương đối) hoặc doanh thu nhận trước (học phí, thuê bao, license + support)."
+  - "So sánh IFRS - VAS - US GAAP, chọn chế độ kế toán theo quy mô (hộ kinh doanh, siêu nhỏ TT132, DNNVV TT133, DN lớn TT200, niêm yết, FDI)."
+  - "Đọc báo cáo tài chính của đối tác/ngân hàng/nhà đầu tư và nhận diện cờ đỏ kiểu Enron (SPE, mark-to-market, round-trip, vốn hóa chi phí, lợi nhuận tăng mà CFO không tăng)."
+  - "Thiết lập nền tảng kế toán SME: tách tài khoản DN - cá nhân, phần mềm kế toán, hóa đơn điện tử, khóa sổ hàng tháng, lộ trình 4 giai đoạn."
+  - "Hỏi về phân biệt lợi nhuận kế toán - thu nhập tính thuế - dòng tiền thuần."
+prerequisites: []
+related_modules:
+  - "m02 - Kế toán quản trị: cùng số liệu nhưng phục vụ nội bộ, CVP và absorption vs variable costing"
+  - "m03 - Kế toán giá thành: giá thành sản xuất, TK 154/621/622/627, VAS 02 hàng tồn kho"
+  - "m04 - Ngân sách và dự báo: lập BCTC dự phóng 3 báo cáo từ cùng cấu trúc BS - P&L - CF"
+  - "m05 - Phân tích chênh lệch: Actual lấy từ sổ kế toán tài chính (TK 621, 622, 627, 632)"
+  - "m06 - Tỷ số tài chính: đào sâu các tỷ số thanh khoản, hoạt động, sinh lời, đòn bẩy (module này chỉ giới thiệu các tỷ số dùng trong case)"
+  - "m07 - Case tích hợp, m08 - Sổ tay case kế toán: ghép bút toán và báo cáo vào bài toán tổng hợp"
+
+concepts:
+  - term_vi: "Kế toán tài chính"
+    term_en: "Financial Accounting"
+    definition: "Hệ thống ghi chép, phân loại, tổng hợp, báo cáo giao dịch tài chính của doanh nghiệp cho đối tượng BÊN NGOÀI (nhà đầu tư, ngân hàng, cơ quan thuế, cổ đông, nhà cung cấp, đối tác), tuân theo chuẩn mực kế toán. Warren Buffett nói 'Accounting is the language of business'."
+    why_it_matters: "Tồn tại để giải bài toán bất cân xứng thông tin (information asymmetry): người ngoài không ngồi trong công ty được, chỉ dựa vào báo cáo do chính công ty cung cấp. Nếu mỗi công ty tự chọn cách ghi (người tính doanh thu khi ký hợp đồng, người khi nhận tiền) thì không so sánh được và dễ bị đánh lừa. Giải pháp xã hội dựa trên ba trụ cột: ngôn ngữ chung (chuẩn mực), xác minh độc lập (kiểm toán, cơ quan thuế), trách nhiệm giải trình (stewardship) của người quản lý với chủ sở hữu."
+  - term_vi: "Bất cân xứng thông tin"
+    term_en: "Information asymmetry"
+    definition: "Người quản lý biết rõ doanh nghiệp, người ngoài (chủ nợ, nhà đầu tư) biết ít."
+    why_it_matters: "Ví dụ ngân hàng được hai công ty xin vay 5 tỷ: chỉ có báo cáo đáng tin và so sánh được mới giúp quyết định cho vay đúng. Đây là lý do gốc của chuẩn mực và kiểm toán."
+  - term_vi: "Kế toán tài chính vs Kế toán quản trị"
+    term_en: "Financial vs Managerial Accounting"
+    definition: "Tài chính - đối tượng bên ngoài, chuẩn mực bắt buộc (IFRS/VAS/US GAAP), hướng quá khứ, định kỳ (quý, năm), toàn doanh nghiệp, có thể phải kiểm toán độc lập, định dạng chuẩn hóa. Quản trị - nội bộ, không bắt buộc chuẩn mực, quá khứ + tương lai, bất kỳ lúc nào, theo bộ phận/sản phẩm/dự án, không kiểm toán, tùy chỉnh."
+    why_it_matters: "SME hay nhầm 'báo cáo thuế' với 'báo cáo quản trị'; hai loại phục vụ hai mục đích khác nhau nên cần làm thêm báo cáo quản trị đơn giản hằng tháng (P&L + dòng tiền)."
+  - term_vi: "Phương trình kế toán"
+    term_en: "Accounting equation (A = L + E)"
+    definition: "Tài sản (Assets) = Nợ phải trả (Liabilities) + Vốn chủ sở hữu (Equity). Mở rộng Equity = Contributed Capital + Retained Earnings; RE cuối = RE đầu + Net Income - Dividends. Vốn chủ là phần dư (residual) E = A - L."
+    why_it_matters: "Mỗi đồng tài sản phải có nguồn gốc: vay của người khác (nợ) hoặc tiền của chủ (vốn góp + lợi nhuận giữ lại); không có đồng nào từ trên trời rơi xuống. Do đó 'đang có gì' luôn bằng 'tiền từ đâu mà có'. Đây là ĐỊNH NGHĨA chứ không phải định lý, và kế toán kép được thiết kế để nó không bao giờ bị phá vỡ. Lợi nhuận giữ lại là cầu nối giữa Kết quả kinh doanh và Bảng cân đối."
+  - term_vi: "Kế toán kép, Nợ - Có"
+    term_en: "Double-entry bookkeeping, Debit / Credit"
+    definition: "Mỗi giao dịch ghi hai lần (một bên Nợ, một bên Có) với tổng bằng nhau. Nợ/Có chỉ là hai cột của sổ cái, không có nghĩa 'nợ tiền' hay 'có tiền'. Quy ước: Tài sản và Chi phí tăng ghi Nợ, giảm ghi Có; Nợ phải trả, Vốn chủ sở hữu và Doanh thu tăng ghi Có, giảm ghi Nợ."
+    why_it_matters: "Nguồn gốc: Luca Pacioli hệ thống hóa trong 'Summa de Arithmetica' (1494), vốn đã được thương nhân Venice dùng. Nếu chỉ ghi thu - chi (kế toán đơn) thì khoản bị bỏ sót không để lại dấu vết; kế toán kép buộc cuối kỳ tổng Nợ = tổng Có, lệch tức là chắc chắn có lỗi. Cơ chế tự kiểm tra này giúp hệ thống tồn tại hơn 500 năm."
+  - term_vi: "Chu trình kế toán"
+    term_en: "Accounting cycle"
+    definition: "Chứng từ gốc -> Ghi sổ nhật ký (bút toán Nợ - Có) -> Chuyển sổ cái -> Bảng cân đối số phát sinh (kiểm tra tổng Nợ = tổng Có) -> Bút toán điều chỉnh cuối kỳ (khấu hao, chi phí trả trước, dự phòng...) -> Lập BCTC -> Kết chuyển -> Mở sổ kỳ mới."
+    why_it_matters: "Thứ tự cố định giúp mọi số liệu truy vết được về chứng từ gốc và bắt lỗi sớm ở bước bảng cân đối số phát sinh trước khi lập báo cáo."
+  - term_vi: "Chuẩn mực kế toán và khuôn khổ khái niệm"
+    term_en: "Accounting standards, IFRS Conceptual Framework"
+    definition: "Chuẩn mực là bộ quy tắc ghi nhận - đo lường - trình bày. Khuôn khổ khái niệm IFRS: thông tin hữu ích khi (1) Thích hợp (Relevance: giá trị dự đoán + xác nhận), (2) Trình bày trung thực (Faithful representation: đầy đủ, trung lập, không sai sót); được nâng cấp nếu so sánh được, kiểm chứng được, kịp thời, dễ hiểu."
+    why_it_matters: "Khi vốn chảy xuyên biên giới, cùng một công ty lập theo quy tắc nước A thì lãi, theo nước B lại lỗ, chi phí 'dịch' báo cáo rất lớn; từ đó có nỗ lực hội tụ chuẩn mực (convergence). IFRS (IASB, thành lập 2001) là nỗ lực thống nhất toàn cầu; US GAAP (FASB, thành lập 1973) song song ở Mỹ; VAS là bộ quốc gia dựa trên IAS/IFRS nhưng 'đóng băng' ở trạng thái đầu những năm 2000."
+  - term_vi: "IFRS"
+    term_en: "International Financial Reporting Standards"
+    definition: "Bộ chuẩn mực quốc tế do IASB ban hành, áp dụng tại 140+ quốc gia (con số tham khảo, cần đối chiếu ifrs.org). Chuẩn quan trọng: IFRS 1 (áp dụng lần đầu), IFRS 9 (công cụ tài chính), IFRS 15 (doanh thu 5 bước), IFRS 16 (thuê tài sản trên BS), IAS 1 (trình bày BCTC), IAS 2 (hàng tồn kho), IAS 7 (lưu chuyển tiền tệ), IAS 16 (TSCĐ hữu hình), IAS 36 (suy giảm giá trị), IAS 38 (tài sản vô hình)."
+    why_it_matters: "SME chỉ cần VAS/chế độ trong nước, nhưng khi gọi vốn từ quỹ nước ngoài, bán cho tập đoàn đa quốc gia hoặc niêm yết thì phải chuyển đổi sang IFRS; chi phí chuyển đổi thấp hơn nhiều nếu sổ sách ngay từ đầu đã sạch và nhất quán."
+  - term_vi: "VAS và chế độ kế toán"
+    term_en: "Vietnamese Accounting Standards (VAS) and accounting regime"
+    definition: "VAS gồm 26 chuẩn mực ban hành 5 đợt (2001-2005). VAS 01 chuẩn mực chung; VAS 02 hàng tồn kho (~IAS 2); VAS 03 TSCĐ hữu hình (~IAS 16); VAS 14 doanh thu và thu nhập khác (~IAS 18 cũ, đã bị IFRS 15 thay); VAS 21 trình bày BCTC (~IAS 1); VAS 24 lưu chuyển tiền tệ (~IAS 7); VAS 25 BCTC hợp nhất. Chế độ kế toán (Thông tư) nằm trên VAS: quy định hệ thống tài khoản, mẫu sổ, mẫu báo cáo - TT200/2014/TT-BTC (DN, thường DN lớn), TT133/2016/TT-BTC (DNNVV), TT132/2018/TT-BTC (DN siêu nhỏ). Tất cả cần xác nhận hiện hành."
+    why_it_matters: "Phải phân biệt hai lớp: chuẩn mực (nguyên tắc) và chế độ kế toán (áp dụng cụ thể: tài khoản, mẫu biểu). Chọn nhầm thông tư thì hệ thống tài khoản và báo cáo sai khuôn."
+  - term_vi: "Bảng cân đối kế toán"
+    term_en: "Balance Sheet / Statement of Financial Position"
+    definition: "Bức ảnh chụp (snapshot) tại MỘT THỜI ĐIỂM: DN có gì, nợ gì, vốn chủ bao nhiêu. Tài sản xếp theo độ dễ chuyển thành tiền (tiền -> phải thu -> tồn kho -> TSCĐ), nợ xếp theo độ sớm đến hạn. Tài sản ghi theo giá gốc (VAS) trừ hao mòn lũy kế; NBV = nguyên giá - khấu hao lũy kế."
+    why_it_matters: "Chia ngắn hạn - dài hạn vì chủ nợ muốn biết DN có đủ tài sản chuyển thành tiền trong 12 tháng để trả nợ đến hạn trong 12 tháng không (bài toán thanh khoản - liquidity)."
+  - term_vi: "Báo cáo kết quả kinh doanh"
+    term_en: "Income Statement / P&L"
+    definition: "Đoạn phim (film) trong MỘT KỲ: Doanh thu thuần - Giá vốn = Lợi nhuận gộp; - CP bán hàng - CP quản lý = EBIT; + Doanh thu tài chính - Chi phí tài chính = EBT; - Thuế TNDN = Lợi nhuận sau thuế."
+    why_it_matters: "Xếp bậc thang vì mỗi dòng trả lời một câu hỏi khác nhau: Lợi nhuận gộp - sản phẩm có đáng bán không (chủ DN); EBIT - hoạt động cốt lõi có hiệu quả bất kể vay nhiều hay ít (nhà đầu tư, định giá); EBT - sau chi phí vay còn bao nhiêu (thuế, ngân hàng); LNST - cổ đông cuối cùng được bao nhiêu. Dùng tỷ lệ % thay số tuyệt đối để so sánh DN khác quy mô: DN doanh thu 5 tỷ lãi 400 triệu (8%) hiệu quả hơn DN 50 tỷ lãi 2 tỷ (4%) dù lãi tuyệt đối ít hơn."
+  - term_vi: "Báo cáo lưu chuyển tiền tệ"
+    term_en: "Cash Flow Statement"
+    definition: "Sao kê ngân hàng của DN: tiền thật vào - ra theo ba nhóm hoạt động - kinh doanh (CFO), đầu tư (CFI), tài chính (CFF). Tiền cuối kỳ = Tiền đầu kỳ + CFO + CFI + CFF và phải bằng 'Tiền và tương đương tiền' trên Bảng cân đối."
+    why_it_matters: "Do cơ sở dồn tích, lợi nhuận kế toán khác tiền mặt (doanh thu ghi khi giao hàng dù chưa thu tiền; khấu hao là chi phí không ra tiền). Báo cáo này 'dịch' lợi nhuận sang tiền mặt. Ngạn ngữ: 'Profit is an opinion, cash is a fact'. DN có thể lãi trên P&L nhưng cạn tiền (hàng nghìn SME 'lãi giấy' phá sản), hoặc lỗ nhưng nhiều tiền (vừa vay/bán tài sản); chỉ đọc cả ba báo cáo mới có bức tranh thật."
+  - term_vi: "Thuyết minh báo cáo tài chính"
+    term_en: "Notes to Financial Statements"
+    definition: "Giải thích con số từ đâu ra: chính sách kế toán (giá xuất kho, khấu hao, ghi nhận doanh thu), chi tiết khoản mục (phải thu theo tuổi nợ, TSCĐ theo nhóm), cam kết và nợ tiềm tàng, giao dịch bên liên quan, sự kiện sau ngày lập BCĐKT."
+    why_it_matters: "Nơi 'giấu' nhiều thông tin quan trọng: thay đổi chính sách, vay có thế chấp, giao dịch công ty liên quan (dấu hiệu rủi ro như Enron). Nhà đầu tư giỏi đọc thuyết minh trước. Ngoài ra theo IFRS còn Báo cáo biến động vốn chủ sở hữu (Statement of Changes in Equity). Bốn báo cáo kiểu VN: B01-DN, B02-DN, B03-DN, B09-DN (mã mẫu cần xác nhận hiện hành)."
+  - term_vi: "Cơ sở dồn tích vs cơ sở tiền"
+    term_en: "Accrual basis vs Cash basis"
+    definition: "Dồn tích: ghi doanh thu khi chuyển giao hàng/dịch vụ, ghi chi phí khi phát sinh nghĩa vụ/tiêu dùng nguồn lực, bất kể thời điểm thu - chi tiền. Cơ sở tiền: ghi khi thu/chi tiền."
+    why_it_matters: "Dồn tích đo đúng hiệu quả từng kỳ; cơ sở tiền gây lỗ nặng/lãi đột biến giả (xưởng in giao 200 triệu ngày 28/12, thu 10/01: cash basis tháng 12 lỗ 140, tháng 1 lãi 200; dồn tích tháng 12 lãi 60, tháng 1 là 0). Tổng hai tháng như nhau, chỉ khác thời điểm. Khoản chưa thu nằm ở Phải thu khách hàng."
+  - term_vi: "Mười nguyên tắc kế toán cơ bản"
+    term_en: "Ten basic accounting principles"
+    definition: "(1) Hoạt động liên tục (Going Concern); (2) Cơ sở dồn tích (Accrual); (3) Nhất quán (Consistency); (4) Trọng yếu (Materiality); (5) Thận trọng (Prudence); (6) Phù hợp (Matching); (7) Giá gốc (Historical Cost); (8) Thực chất hơn hình thức (Substance over Form); (9) Kỳ kế toán (Periodicity); (10) Đơn vị tiền tệ (Monetary Unit)."
+    why_it_matters: "Mỗi nguyên tắc giải một vấn đề cụ thể (xem framework m01_ten_principles). Phân tầng: nền tảng (Going Concern, Accrual) -> ràng buộc (Consistency, Materiality) -> đo lường và ghi nhận (Historical Cost, Matching) -> chất lượng (Prudence, Substance over Form)."
+  - term_vi: "Ghi nhận doanh thu"
+    term_en: "Revenue Recognition (IFRS 15 / VAS 14)"
+    definition: "Doanh thu chỉ ghi nhận khi DN đã CHUYỂN GIAO hàng hóa/dịch vụ (quyền kiểm soát) cho khách và có quyền nhận tiền, không phải khi ký hợp đồng hay nhận tiền. IFRS 15: 5 bước. VAS 14: chuyển giao phần lớn rủi ro và lợi ích gắn với quyền sở hữu, doanh thu xác định tương đối chắc chắn, đã/sẽ thu được lợi ích kinh tế, xác định được chi phí liên quan (chi tiết cần xác nhận hiện hành)."
+    why_it_matters: "Doanh thu là dòng đầu P&L, thời điểm ghi nhận quyết định lợi nhuận kỳ nên là nơi dễ gian lận nhất (ghi sớm, ghi khống). Trước IFRS 15 mỗi ngành (phần mềm, xây dựng, viễn thông) một quy tắc nên cùng giao dịch ghi khác nhau; IFRS 15 (và ASC 606 của Mỹ) dùng một mô hình dựa trên 'chuyển giao quyền kiểm soát'."
+  - term_vi: "Doanh thu chưa thực hiện"
+    term_en: "Unearned / Deferred revenue"
+    definition: "Tiền nhận trước chưa ghi nhận thành doanh thu; nằm trên BS dưới dạng nợ phải trả (Người mua trả tiền trước / Doanh thu chưa thực hiện)."
+    why_it_matters: "Tiền nhận 1 lần nhưng doanh thu rải nhiều kỳ; lợi nhuận kỳ nhỏ hơn tiền thu, và DN còn nghĩa vụ phục vụ."
+  - term_vi: "Hàng tồn kho và các phương pháp tính giá xuất"
+    term_en: "Inventory valuation: FIFO, Weighted Average, LIFO"
+    definition: "FIFO nhập trước xuất trước; Bình quân gia quyền (Weighted Average); LIFO nhập sau xuất trước (IFRS cấm; không thuộc phương pháp VAS 02 chấp nhận - cần xác nhận hiện hành). Tồn kho ghi theo giá thấp hơn giữa giá gốc và giá trị thuần có thể thực hiện được (NRV); hàng hư hỏng, lỗi mốt phải trích lập dự phòng giảm giá."
+    why_it_matters: "Khi giá mua thay đổi, phải chọn 'lô nào đang bán'. Lựa chọn KHÔNG đổi tiền thực tế (đã chi rồi) mà chỉ chia lại tổng chi phí giữa giá vốn (P&L) và tồn kho cuối kỳ (BS), nên đổi lợi nhuận. Giá tăng thì FIFO cho lợi nhuận cao hơn (và thuế cao hơn); giá giảm thì ngược lại. So sánh DN dùng phương pháp khác nhau phải cẩn trọng."
+  - term_vi: "Khấu hao"
+    term_en: "Depreciation"
+    definition: "Phân bổ giá trị tài sản cố định vào chi phí suốt thời gian sử dụng (nguyên tắc phù hợp). Khấu hao KHÔNG phải khoản chi tiền: tiền đã chi lúc mua (CFI), các năm sau chỉ là bút toán phân bổ, cộng lại khi lập CFO gián tiếp."
+    why_it_matters: "Máy 500 triệu dùng 5 năm không phải chi phí của năm mua; ghi hết vào năm 1 thì năm 1 lỗ nặng, 4 năm sau lãi ảo. Không trích khấu hao là lợi nhuận ảo và thuế sai."
+  - term_vi: "Lợi nhuận kế toán - Thu nhập tính thuế - Dòng tiền thuần"
+    term_en: "Accounting profit vs Taxable income vs Net cash flow"
+    definition: "Lợi nhuận kế toán dựa trên chuẩn mực, dồn tích (khác do ước tính khấu hao, dự phòng); thu nhập tính thuế dựa trên luật thuế TNDN (khác do chi phí không được trừ, khung khấu hao, chuyển lỗ); dòng tiền thuần là thu - chi thực tế (khác do phải thu, tồn kho, phải trả, đầu tư TSCĐ)."
+    why_it_matters: "Ba con số thường khác nhau. SME cần hiểu để không nhầm báo cáo thuế với báo cáo quản trị; chênh lệch điều chỉnh khi quyết toán thuế TNDN (cần xác nhận hiện hành). Khấu hao tính vào chi phí được trừ thuế phải theo khung thời gian và phương pháp luật thuế quy định, không tự do chọn để 'tối ưu thuế'."
+  - term_vi: "Đo lường và hạn chế của kế toán tài chính"
+    term_en: "Limitations of financial accounting"
+    definition: "Ưu điểm: minh bạch, đáng tin cậy (kiểm toán), hỗ trợ ra quyết định, tuân thủ pháp luật, chuẩn quốc tế. Hạn chế: hướng quá khứ; giá gốc không phản ánh giá thực (đất mua 2010 giá 1 tỷ nay 20 tỷ vẫn ghi 1 tỷ); ước tính chủ quan (dự phòng nợ khó đòi 10% hay 50%); có thể làm đẹp số liệu (earnings management); không đo tài sản vô hình tự tạo (thương hiệu, nhân tài); chi phí tuân thủ cao với SME."
+    why_it_matters: "Biết giới hạn để dùng kèm báo cáo quản trị, định giá thị trường và phân tích phi tài chính, không coi BCTC là toàn bộ sự thật."
+  - term_vi: "Special Purpose Entity, Mark-to-Market, Round-trip, Vốn hóa chi phí"
+    term_en: "SPE, Mark-to-Market abuse, Round-trip trading, Capitalizing expenses"
+    definition: "Bốn thủ thuật gian lận của Enron (2001): SPE giấu nợ ngoài bảng; Mark-to-Market lạm dụng ghi doanh thu tương lai ngay; Round-trip bán rồi mua lại làm phình doanh thu; vốn hóa chi phí ghi chi phí thành tài sản."
+    why_it_matters: "Mỗi thủ thuật vi phạm một nguyên tắc (thực chất hơn hình thức, thận trọng, phù hợp). Cờ đỏ kinh điển: lợi nhuận tăng mà CFO không tăng. Sau Enron có Sarbanes-Oxley Act 2002 (CEO/CFO ký xác nhận BCTC, tăng kiểm soát nội bộ và kiểm toán, hạn chế kiểm toán viên vừa kiểm toán vừa tư vấn, hình sự hóa gian lận)."
+  - term_vi: "Mốc lịch sử kế toán"
+    term_en: "Historical milestones"
+    definition: "1494 Pacioli (Summa de Arithmetica) hệ thống hóa kế toán kép; thập niên 1930 SEC (Mỹ) yêu cầu báo cáo chuẩn hóa sau khủng hoảng 1929; 1973 thành lập FASB; 2001 thành lập IASB; 2001-2005 Việt Nam ban hành 26 VAS theo 5 đợt; 2014/2016 TT200 và TT133; 2020s lộ trình áp dụng IFRS tại Việt Nam (mốc cần xác nhận hiện hành)."
+    why_it_matters: "Hiểu bối cảnh giải thích tại sao VAS cũ hơn IFRS và vì sao Việt Nam đang chuyển dần sang IFRS."
+
+formulas:
+  - id: "m01_accounting_equation"
+    name_vi: "Phương trình kế toán và kiểm tra cân đối"
+    name_en: "Accounting equation check"
+    expression_latex: 'A = L + E;\quad \text{Check} = A - (L + E) = 0'
+    expression_python: 'assets - (liabilities + equity)'
+    excel: "=TongTaiSan-(NoPhaiTra+VonCSH)"
+    variables:
+      - {symbol: "assets", meaning: "Tổng tài sản", unit: "triệu VNĐ"}
+      - {symbol: "liabilities", meaning: "Tổng nợ phải trả", unit: "triệu VNĐ"}
+      - {symbol: "equity", meaning: "Vốn chủ sở hữu (vốn góp + lợi nhuận giữ lại)", unit: "triệu VNĐ"}
+    when_to_use: "Mọi lần lập Bảng cân đối, sau mỗi bút toán, và là kiểm tra chéo số 1 trước khi tin báo cáo."
+    why_it_works: "Mỗi đồng tài sản có nguồn gốc là nợ hoặc vốn chủ; kế toán kép ghi hai vế bằng nhau nên chênh lệch bằng 0. Chênh lệch khác 0 nghĩa là có lỗi ghi sổ (thiếu một vế, ghi sai số, quên bút toán kết chuyển lợi nhuận)."
+    assumptions: ["Mọi bút toán đều Nợ = Có", "Đã đưa lợi nhuận kỳ vào lợi nhuận chưa phân phối trước khi cân"]
+    pitfalls:
+      - "Đưa tiền vào BS từ CFS nhưng quên cộng lợi nhuận kỳ vào vốn chủ nên lệch đúng bằng lợi nhuận."
+      - "Cân đối được không chứng minh số liệu đúng: có thể lỗi bù trừ (sai hai bên cùng số tiền)."
+    interpretation: "Bằng 0 là cân. Lệch: tìm khoản có số tiền bằng chênh lệch (hoặc bằng một nửa chênh lệch nếu đảo bên Nợ/Có)."
+    example:
+      inputs: {assets: 1672, liabilities: 740, equity: 932}
+      steps: ["Tài sản 382 + 260 + 480 + 550 = 1.672", "Nợ 300 + 200 + 240 = 740; vốn chủ 500 + 432 = 932", "1.672 - (740 + 932) = 0"]
+      result: "0 (cân) - Nắng Mai cuối năm N"
+  - id: "m01_retained_earnings"
+    name_vi: "Lợi nhuận giữ lại (chưa phân phối) cuối kỳ"
+    name_en: "Retained earnings roll-forward"
+    expression_latex: '\text{RE}_{end} = \text{RE}_{begin} + NI - \text{Dividends}'
+    expression_python: 're_begin + net_income - dividends'
+    excel: "=LNCPPDauKy+LNST-CoTuc"
+    variables:
+      - {symbol: "re_begin", meaning: "Lợi nhuận chưa phân phối đầu kỳ", unit: "triệu VNĐ"}
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế kỳ này", unit: "triệu VNĐ"}
+      - {symbol: "dividends", meaning: "Cổ tức/lợi nhuận đã chia", unit: "triệu VNĐ"}
+    when_to_use: "Nối P&L với Bảng cân đối; tìm lợi nhuận sau thuế khi biết hai số dư RE (Bài 4)."
+    why_it_works: "Lợi nhuận không biến mất mà cộng vào vốn chủ; phần chia cho chủ sở hữu thì rời DN nên trừ ra."
+    assumptions: ["Không có điều chỉnh hồi tố, trích lập quỹ nào khác", "Cổ tức chia bằng tiền được trừ ngay trong kỳ"]
+    pitfalls: ["Quên trừ cổ tức", "Quên rằng cổ tức chi tiền thuộc CFF, không phải chi phí trong P&L"]
+    interpretation: "Dùng để đối chiếu: LNST trên P&L phải khớp thay đổi lợi nhuận chưa phân phối cộng cổ tức."
+    example:
+      inputs: {re_begin: 150, net_income: 432, dividends: 150}
+      steps: ["150 + 432 - 150 = 432"]
+      result: "432 triệu (khớp BS Nắng Mai)"
+  - id: "m01_net_revenue"
+    name_vi: "Doanh thu thuần"
+    name_en: "Net revenue"
+    expression_latex: '\text{Net Revenue} = \text{Gross Revenue} - \text{Returns} - \text{Allowances} - \text{Discounts}'
+    expression_python: 'gross_revenue - returns - allowances - discounts'
+    excel: "=DoanhThuGop-HangBanTraLai-GiamGia-ChietKhau"
+    variables:
+      - {symbol: "gross_revenue", meaning: "Doanh thu bán hàng gộp", unit: "VNĐ"}
+      - {symbol: "returns", meaning: "Hàng bán bị trả lại", unit: "VNĐ"}
+      - {symbol: "allowances", meaning: "Giảm giá hàng bán", unit: "VNĐ"}
+      - {symbol: "discounts", meaning: "Chiết khấu thương mại", unit: "VNĐ"}
+    when_to_use: "Dòng đầu P&L; biên lợi nhuận phải dùng doanh thu thuần làm mẫu số."
+    why_it_works: "Doanh thu bị khách trả lại hoặc giảm giá không phải thu nhập thực của DN."
+    assumptions: ["Các khoản giảm trừ được ghi nhận đúng kỳ (TK 521 theo TT200, cần xác nhận hiện hành)"]
+    pitfalls: ["Dùng doanh thu gộp để tính biên", "Nhầm doanh thu có VAT với doanh thu chưa VAT (VAT không phải doanh thu)"]
+    interpretation: "Tỷ lệ giảm trừ cao so với doanh thu gộp là cờ đỏ chính sách bán/chất lượng."
+    example:
+      inputs: {gross_revenue: 5100, returns: 50, allowances: 30, discounts: 20}
+      steps: ["5.100 - 50 - 30 - 20 = 5.000 (giả định minh họa để dẫn tới doanh thu thuần 5.000 của Nắng Mai)"]
+      result: "5.000 triệu"
+  - id: "m01_cogs_periodic"
+    name_vi: "Giá vốn hàng bán (kiểm kê định kỳ)"
+    name_en: "Cost of goods sold"
+    expression_latex: '\text{COGS} = \text{Beginning Inv} + \text{Purchases} - \text{Ending Inv}'
+    expression_python: 'begin_inv + purchases - end_inv'
+    excel: "=TonDau+Mua-TonCuoi"
+    variables:
+      - {symbol: "begin_inv", meaning: "Tồn kho đầu kỳ", unit: "triệu VNĐ"}
+      - {symbol: "purchases", meaning: "Mua hàng trong kỳ", unit: "triệu VNĐ"}
+      - {symbol: "end_inv", meaning: "Tồn kho cuối kỳ", unit: "triệu VNĐ"}
+    when_to_use: "Suy ra giá vốn khi chỉ biết tồn đầu, tồn cuối, mua vào; hoặc suy mua hàng = COGS + tồn cuối - tồn đầu."
+    why_it_works: "Hàng sẵn sàng bán (tồn đầu + mua) hoặc đã bán (COGS) hoặc còn trong kho (tồn cuối). Phù hợp nguyên tắc matching: giá vốn ghi khi bán, không phải khi mua."
+    assumptions: ["Kiểm kê tồn cuối chính xác", "Không hao hụt chưa ghi nhận"]
+    pitfalls: ["Tồn kho cuối sai (kiểm kê bỏ sót) kéo giá vốn và lợi nhuận sai trực tiếp", "Quên rằng phương pháp tính giá xuất chỉ chia lại tổng, không đổi tổng"]
+    interpretation: "COGS + Tồn cuối = Tồn đầu + Mua (đẳng thức kiểm tra)."
+    example:
+      inputs: {begin_inv: 400, purchases: 3580, end_inv: 480}
+      steps: ["Mua hàng Nắng Mai = giá vốn 3.500 + tồn tăng 80 = 3.580", "400 + 3.580 - 480 = 3.500"]
+      result: "3.500 triệu"
+  - id: "m01_pl_ladder"
+    name_vi: "Bậc thang lợi nhuận (Lợi nhuận gộp, EBIT, EBT, LNST)"
+    name_en: "Income statement ladder"
+    expression_latex: 'GP = Rev - COGS;\ EBIT = GP - SellExp - G\&A;\ EBT = EBIT - Interest;\ NI = EBT\,(1-t)'
+    expression_python: '((revenue - cogs - selling - admin) - interest) * (1 - tax_rate)'
+    excel: "=((DT-GV-CPBH-CPQL)-LaiVay)*(1-ThueSuat)"
+    variables:
+      - {symbol: "revenue", meaning: "Doanh thu thuần", unit: "triệu VNĐ"}
+      - {symbol: "cogs", meaning: "Giá vốn hàng bán", unit: "triệu VNĐ"}
+      - {symbol: "selling", meaning: "Chi phí bán hàng", unit: "triệu VNĐ"}
+      - {symbol: "admin", meaning: "Chi phí quản lý doanh nghiệp (gồm khấu hao)", unit: "triệu VNĐ"}
+      - {symbol: "interest", meaning: "Chi phí lãi vay (ròng thu nhập tài chính nếu có)", unit: "triệu VNĐ"}
+      - {symbol: "tax_rate", meaning: "Thuế suất TNDN giả định (cần xác nhận hiện hành)", unit: "tỷ lệ"}
+    when_to_use: "Lập P&L từ số liệu thô; tính lợi nhuận sau thuế để nối vào RE và CFO."
+    why_it_works: "Mỗi bậc tách một lớp chi phí để trả lời câu hỏi quản trị riêng (xem concept P&L); thuế tính trên EBT không phải trên doanh thu."
+    assumptions: ["Thuế = thuế suất x EBT (bỏ qua chênh lệch thuế hoãn lại, chi phí không được trừ)", "Không có doanh thu tài chính, thu nhập khác"]
+    pitfalls: ["Trừ khấu hao hai lần (đã nằm trong chi phí quản lý)", "Tính thuế trên EBIT", "Gộp lãi vay vào chi phí quản lý nên EBIT sai"]
+    interpretation: "EBIT so sánh được giữa DN vay khác nhau; LNST là phần dành cho chủ."
+    example:
+      inputs: {revenue: 5000, cogs: 3500, selling: 500, admin: 400, interest: 60, tax_rate: 0.2}
+      steps: ["GP = 1.500; EBIT = 1.500 - 500 - 400 = 600", "EBT = 600 - 60 = 540", "Thuế = 540 x 20% = 108; NI = 432"]
+      result: "432 triệu"
+  - id: "m01_margins"
+    name_vi: "Biên lợi nhuận gộp, hoạt động, ròng"
+    name_en: "Gross / Operating / Net margin"
+    expression_latex: '\text{GM}=\frac{GP}{Rev},\ \text{OM}=\frac{EBIT}{Rev},\ \text{NM}=\frac{NI}{Rev}'
+    expression_python: '(gross_profit / revenue, ebit / revenue, net_income / revenue)'
+    excel: "=LNGop/DT ; =EBIT/DT ; =LNST/DT"
+    variables:
+      - {symbol: "gross_profit", meaning: "Lợi nhuận gộp", unit: "triệu VNĐ"}
+      - {symbol: "ebit", meaning: "Lợi nhuận từ hoạt động kinh doanh", unit: "triệu VNĐ"}
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế", unit: "triệu VNĐ"}
+      - {symbol: "revenue", meaning: "Doanh thu thuần", unit: "triệu VNĐ"}
+    when_to_use: "So sánh hiệu quả giữa DN khác quy mô hoặc cùng DN qua các kỳ."
+    why_it_works: "Tỷ lệ loại ảnh hưởng quy mô: cứ 100 đồng bán còn bao nhiêu sau mỗi lớp chi phí."
+    assumptions: ["Cùng chính sách kế toán giữa các kỳ/DN so sánh"]
+    pitfalls: ["So biên giữa DN dùng FIFO và bình quân mà không điều chỉnh", "Dùng doanh thu gộp làm mẫu số"]
+    interpretation: "Nắng Mai: 30% / 12% / 8,64%. Theo dõi chi phí bán + quản lý/doanh thu (18%) hằng tháng. Ngưỡng ngành: cần đối chiếu theo ngành."
+    example:
+      inputs: {gross_profit: 1500, ebit: 600, net_income: 432, revenue: 5000}
+      steps: ["1.500/5.000 = 30%", "600/5.000 = 12%", "432/5.000 = 8,64%"]
+      result: "(0,30; 0,12; 0,0864)"
+  - id: "m01_fifo_cogs"
+    name_vi: "Giá vốn theo FIFO (hai lô)"
+    name_en: "COGS under FIFO (two lots)"
+    expression_latex: '\text{COGS}_{FIFO}=\min(q_s,q_1)\,p_1+\max(q_s-q_1,0)\,p_2'
+    expression_python: 'min(q_sold, q1) * p1 + max(q_sold - q1, 0) * p2'
+    excel: "=MIN(SLBan;SL1)*G1+MAX(SLBan-SL1;0)*G2"
+    variables:
+      - {symbol: "q_sold", meaning: "Số lượng bán", unit: "đơn vị"}
+      - {symbol: "q1", meaning: "Số lượng lô nhập trước", unit: "đơn vị"}
+      - {symbol: "p1", meaning: "Đơn giá lô 1", unit: "VNĐ/đơn vị"}
+      - {symbol: "p2", meaning: "Đơn giá lô 2 (nhập sau)", unit: "VNĐ/đơn vị"}
+    when_to_use: "Giá nhập đổi theo lô và cần tính giá vốn khi bán; mở rộng nhiều lô bằng cách trừ dần lô cũ nhất."
+    why_it_works: "Giả định hàng nhập trước bán trước nên giá vốn lấy giá cũ nhất, tồn cuối mang giá gần nhất."
+    assumptions: ["Giá tăng/giảm tùy kỳ", "Không có hàng trả lại, hao hụt", "Mở rộng được cho n lô"]
+    pitfalls: ["Giá tăng thì COGS thấp, lợi nhuận và thuế cao hơn, dễ tưởng lãi thật cao", "Không phải lô thực sự bán ra mà là quy ước tính giá"]
+    interpretation: "Tồn cuối = tổng mua - COGS; kiểm tra COGS + tồn cuối = tổng chi phí mua."
+    example:
+      inputs: {q_sold: 150, q1: 100, p1: 50000, p2: 60000}
+      steps: ["100 x 50.000 + 50 x 60.000 = 5.000.000 + 3.000.000 = 8.000.000", "Tồn cuối = 50 x 60.000 = 3.000.000; tổng 11.000.000 = tổng mua"]
+      result: "8.000.000 đ"
+  - id: "m01_weighted_avg_cogs"
+    name_vi: "Giá vốn theo bình quân gia quyền (hai lô)"
+    name_en: "COGS under Weighted Average (two lots)"
+    expression_latex: '\bar p=\frac{q_1p_1+q_2p_2}{q_1+q_2};\ \text{COGS}=q_s\,\bar p'
+    expression_python: 'q_sold * (q1 * p1 + q2 * p2) / (q1 + q2)'
+    excel: "=SLBan*(SL1*G1+SL2*G2)/(SL1+SL2)"
+    variables:
+      - {symbol: "q_sold", meaning: "Số lượng bán", unit: "đơn vị"}
+      - {symbol: "q1", meaning: "Số lượng lô 1", unit: "đơn vị"}
+      - {symbol: "p1", meaning: "Đơn giá lô 1", unit: "VNĐ/đơn vị"}
+      - {symbol: "q2", meaning: "Số lượng lô 2", unit: "đơn vị"}
+      - {symbol: "p2", meaning: "Đơn giá lô 2", unit: "VNĐ/đơn vị"}
+    when_to_use: "Muốn san bằng biến động giá, đơn giản; phổ biến ở SME và phần mềm kế toán."
+    why_it_works: "Mọi đơn vị trong kho dùng chung một giá trung bình tạo bởi tổng giá trị chia tổng số lượng."
+    assumptions: ["Bình quân cuối kỳ hoặc sau mỗi lần nhập (bình quân di động) cho kết quả khác nhau khi bán xen kẽ"]
+    pitfalls: ["Không phản ánh giá thực từng lô", "Trộn bình quân cuối kỳ với bình quân di động giữa các kỳ làm mất nhất quán"]
+    interpretation: "Giá tăng thì COGS cao hơn FIFO, lợi nhuận thấp hơn; tổng COGS + tồn cuối không đổi."
+    example:
+      inputs: {q_sold: 150, q1: 100, p1: 50000, q2: 100, p2: 60000}
+      steps: ["Giá bình quân (5.000.000 + 6.000.000)/200 = 55.000", "COGS = 150 x 55.000 = 8.250.000; tồn = 50 x 55.000 = 2.750.000; tổng 11.000.000"]
+      result: "8.250.000 đ"
+  - id: "m01_nrv_lower_of_cost"
+    name_vi: "Tồn kho theo giá thấp hơn giữa giá gốc và NRV"
+    name_en: "Lower of cost and net realizable value"
+    expression_latex: '\text{Inventory carrying}=\min(\text{Cost},\ \text{NRV})\times Q;\ \text{NRV}=P_{sell}-C_{sell}'
+    expression_python: 'min(cost_unit, sell_price - sell_cost) * qty'
+    excel: "=MIN(GiaGoc;GiaBan-CPBan)*SL"
+    variables:
+      - {symbol: "cost_unit", meaning: "Giá gốc một đơn vị", unit: "VNĐ"}
+      - {symbol: "sell_price", meaning: "Giá bán ước tính", unit: "VNĐ"}
+      - {symbol: "sell_cost", meaning: "Chi phí bán ước tính", unit: "VNĐ"}
+      - {symbol: "qty", meaning: "Số lượng tồn", unit: "đơn vị"}
+    when_to_use: "Cuối kỳ khi hàng hư hỏng, lỗi mốt, giảm giá bán mạnh để trích lập dự phòng giảm giá hàng tồn kho."
+    why_it_works: "Nguyên tắc thận trọng: tài sản không được ghi cao hơn số tiền thu được; thua lỗ ghi nhận sớm."
+    assumptions: ["Ước tính giá bán hợp lý", "Cách trích lập cụ thể theo VAS 02/chế độ (cần xác nhận hiện hành)"]
+    pitfalls: ["Chỉ trích lập khi bán lỗ thực rồi mới ghi nhận", "Ước tính giá bán lạc quan"]
+    interpretation: "Phần chênh lệch giữa giá gốc và NRV là dự phòng cần trích (chi phí giá vốn)."
+    example:
+      inputs: {cost_unit: 50000, sell_price: 52000, sell_cost: 6000, qty: 100}
+      steps: ["NRV = 52.000 - 6.000 = 46.000 < giá gốc 50.000", "Giá trị ghi sổ = 46.000 x 100 = 4.600.000; dự phòng 400.000 (giả định minh họa)"]
+      result: "4.600.000 đ"
+  - id: "m01_dep_straight_line"
+    name_vi: "Khấu hao đường thẳng"
+    name_en: "Straight-line depreciation"
+    expression_latex: '\text{Dep}=\frac{\text{Cost}-\text{Salvage}}{\text{Useful life}}'
+    expression_python: '(cost - salvage) / life'
+    excel: "=SLN(cost, salvage, life)"
+    variables:
+      - {symbol: "cost", meaning: "Nguyên giá", unit: "triệu VNĐ"}
+      - {symbol: "salvage", meaning: "Giá trị thu hồi ước tính", unit: "triệu VNĐ"}
+      - {symbol: "life", meaning: "Thời gian sử dụng", unit: "năm"}
+    when_to_use: "Mặc định cho phần lớn TSCĐ có lợi ích đều theo thời gian; dễ giải trình thuế."
+    why_it_works: "Giả định tài sản đóng góp doanh thu đều mỗi năm nên chi phí phân bổ đều (matching)."
+    assumptions: ["Giá trị thu hồi, tuổi thọ ước tính đúng", "Khung thời gian trích khấu hao tính thuế theo quy định (cần xác nhận hiện hành)"]
+    pitfalls: ["Quên khấu hao nên lợi nhuận ảo", "Khấu hao quá mức không còn giá trị thu hồi", "Khấu hao theo tháng khi mua giữa năm"]
+    interpretation: "Mỗi năm giảm NBV cùng một mức; tổng khấu hao bằng nguyên giá - GTTH."
+    example:
+      inputs: {cost: 500, salvage: 50, life: 5}
+      steps: ["(500 - 50)/5 = 90 triệu/năm; 5 năm tổng 450"]
+      result: "90 triệu/năm"
+  - id: "m01_dep_declining_balance"
+    name_vi: "Khấu hao số dư giảm dần (một năm)"
+    name_en: "Declining balance depreciation (one year)"
+    expression_latex: '\text{Dep}_t=\min\big(NBV_{t-1}\cdot r,\ NBV_{t-1}-\text{Salvage}\big)'
+    expression_python: 'min(nbv_begin * rate, nbv_begin - salvage)'
+    excel: "=DDB(cost, salvage, life, period, factor)  (DB() dùng tỷ lệ tự tính, không cho nhập 40%)"
+    variables:
+      - {symbol: "nbv_begin", meaning: "Giá trị còn lại đầu năm", unit: "triệu VNĐ"}
+      - {symbol: "rate", meaning: "Tỷ lệ khấu hao trên giá trị còn lại", unit: "tỷ lệ/năm"}
+      - {symbol: "salvage", meaning: "Giá trị thu hồi", unit: "triệu VNĐ"}
+    when_to_use: "Tài sản hao mòn nhanh lúc đầu (thiết bị công nghệ); cần hiểu chênh lệch thời điểm so với đường thẳng."
+    why_it_works: "Khấu hao nhiều đầu kỳ vì tài sản mới sinh lợi và mất giá nhanh; tổng vẫn bằng nguyên giá - GTTH nên chỉ đổi thời điểm."
+    assumptions: ["Giới hạn khấu hao không làm NBV thấp hơn GTTH", "Luật thuế có thể không cho phép phương pháp này (cần xác nhận hiện hành)"]
+    pitfalls: ["Quên giới hạn năm cuối (năm 5 chỉ 14,8 chứ không phải 25,92)", "Tối ưu thuế không theo khung quy định", "Dùng Excel DB() với kỳ vọng 40%: DB tính tỷ lệ riêng nên khác; dùng DDB (factor 2 trên life 5 = 40%)"]
+    interpretation: "Lợi nhuận thấp hơn các năm đầu, cao hơn các năm cuối so với đường thẳng; tổng bằng nhau."
+    example:
+      inputs: {nbv_begin: 64.8, rate: 0.4, salvage: 50}
+      steps: ["Năm 5: min(64,8 x 0,4 = 25,92 ; 64,8 - 50 = 14,8) = 14,8", "Chuỗi 200; 120; 72; 43,2; 14,8 tổng 450"]
+      result: "14,8 triệu (năm 5)"
+  - id: "m01_dep_units_of_production"
+    name_vi: "Khấu hao theo sản lượng"
+    name_en: "Units-of-production depreciation"
+    expression_latex: '\text{Dep}=\frac{\text{Cost}-\text{Salvage}}{\text{Total units}}\times \text{Actual units}'
+    expression_python: '(cost - salvage) / total_units * units_actual'
+    excel: "=(cost-salvage)/TongSL*SLThucTe"
+    variables:
+      - {symbol: "cost", meaning: "Nguyên giá", unit: "triệu VNĐ"}
+      - {symbol: "salvage", meaning: "Giá trị thu hồi", unit: "triệu VNĐ"}
+      - {symbol: "total_units", meaning: "Tổng sản lượng dự kiến cả vòng đời", unit: "sản phẩm"}
+      - {symbol: "units_actual", meaning: "Sản lượng thực tế kỳ này", unit: "sản phẩm"}
+    when_to_use: "Máy móc hao mòn theo công suất (máy đóng gói, máy in)."
+    why_it_works: "Chi phí gắn với mức dùng thật nên matching sát nhất với doanh thu từ sản lượng."
+    assumptions: ["Tổng sản lượng ước tính đúng", "Khấu hao không vượt nguyên giá - GTTH"]
+    pitfalls: ["Ước tính tổng sản lượng sai", "Không hợp thuế nếu không đúng quy định (cần xác nhận hiện hành)"]
+    interpretation: "Tháng ít sản xuất thì khấu hao thấp; chi phí đơn vị cố định (210 triệu/1.000.000 = 210 đ/sp)."
+    example:
+      inputs: {cost: 240, salvage: 30, total_units: 1000000, units_actual: 180000}
+      steps: ["(240 - 30)/1.000.000 = 0,00021 triệu/sp", "x 180.000 = 37,8 triệu"]
+      result: "37,8 triệu"
+  - id: "m01_net_book_value"
+    name_vi: "Giá trị còn lại (NBV)"
+    name_en: "Net book value"
+    expression_latex: 'NBV=\text{Cost}-\text{Accumulated depreciation}'
+    expression_python: 'cost - accumulated_dep'
+    excel: "=NguyenGia-HaoMonLuyKe"
+    variables:
+      - {symbol: "cost", meaning: "Nguyên giá", unit: "triệu VNĐ"}
+      - {symbol: "accumulated_dep", meaning: "Hao mòn lũy kế", unit: "triệu VNĐ"}
+    when_to_use: "Trình bày TSCĐ trên BS; roll-forward TSCĐ = NBV đầu + mua mới - khấu hao."
+    why_it_works: "Tài sản ghi giá gốc trừ phần đã phân bổ vào chi phí."
+    assumptions: ["Không có đánh giá lại hay suy giảm (IAS 36) trong ví dụ"]
+    pitfalls: ["Hiểu NBV là giá thị trường"]
+    interpretation: "NBV Nắng Mai cuối năm: 500 + 150 - 100 = 550."
+    example:
+      inputs: {cost: 800, accumulated_dep: 300}
+      steps: ["800 - 300 = 500 (đầu năm N)", "Cuối năm: 500 + 150 - 100 = 550"]
+      result: "500 triệu"
+  - id: "m01_cfo_indirect"
+    name_vi: "Lưu chuyển tiền từ HĐKD - phương pháp gián tiếp"
+    name_en: "Cash flow from operations (indirect)"
+    expression_latex: 'CFO=NI+\text{Dep}-\Delta AR-\Delta Inv+\Delta AP'
+    expression_python: 'ni + dep - d_ar - d_inv + d_ap'
+    excel: "=LNST+KhauHao-DeltaPhaiThu-DeltaTonKho+DeltaPhaiTra"
+    variables:
+      - {symbol: "ni", meaning: "Lợi nhuận sau thuế", unit: "triệu VNĐ"}
+      - {symbol: "dep", meaning: "Khấu hao (và các chi phí không ra tiền)", unit: "triệu VNĐ"}
+      - {symbol: "d_ar", meaning: "Tăng (giảm là âm) phải thu khách hàng", unit: "triệu VNĐ"}
+      - {symbol: "d_inv", meaning: "Tăng (giảm là âm) hàng tồn kho", unit: "triệu VNĐ"}
+      - {symbol: "d_ap", meaning: "Tăng (giảm là âm) phải trả người bán", unit: "triệu VNĐ"}
+    when_to_use: "Lập CFS từ BS hai kỳ + P&L; giải thích vì sao lãi mà thiếu tiền."
+    why_it_works: "Xuất phát từ lợi nhuận dồn tích rồi gỡ yếu tố không phải tiền: khấu hao (cộng lại); tăng tài sản lưu động không phải tiền (phải thu: tiền nằm ở túi khách; tồn kho: tiền chôn trong kho) thì trừ; tăng nợ hoạt động (đã nhận hàng chưa trả) thì cộng. Giảm thì ngược lại."
+    assumptions: ["Lãi vay và thuế đã trả bằng tiền trong kỳ", "Chỉ ba khoản vốn lưu động thay đổi (mở rộng thêm: chi phí trả trước, thuế phải nộp, lương phải trả...)"]
+    pitfalls: ["Đảo dấu thay đổi vốn lưu động", "Quên cộng lại khấu hao", "Lãi/lỗ bán TSCĐ phải loại khỏi CFO và đưa vào CFI", "Lãi vay chưa trả (dư chi phí phải trả) cần điều chỉnh thêm"]
+    interpretation: "CFO < LNST: tiền đang kẹt ở phải thu/tồn kho. CFO lặp lại thấp hơn LNST nhiều kỳ là cờ đỏ (Enron)."
+    example:
+      inputs: {ni: 432, dep: 100, d_ar: 60, d_inv: 80, d_ap: 50}
+      steps: ["432 + 100 - 60 - 80 + 50 = 442", "Nếu không có +50 từ nhà cung cấp: 392, thấp hơn lợi nhuận 40"]
+      result: "442 triệu"
+  - id: "m01_ending_cash"
+    name_vi: "Tiền cuối kỳ"
+    name_en: "Ending cash"
+    expression_latex: '\text{Cash}_{end}=\text{Cash}_{begin}+CFO+CFI+CFF'
+    expression_python: 'cash_begin + cfo + cfi + cff'
+    excel: "=TienDau+CFO+CFI+CFF"
+    variables:
+      - {symbol: "cash_begin", meaning: "Tiền và tương đương tiền đầu kỳ", unit: "triệu VNĐ"}
+      - {symbol: "cfo", meaning: "Dòng tiền hoạt động kinh doanh", unit: "triệu VNĐ"}
+      - {symbol: "cfi", meaning: "Dòng tiền đầu tư (chi mua TSCĐ là âm)", unit: "triệu VNĐ"}
+      - {symbol: "cff", meaning: "Dòng tiền tài chính (vay là dương; trả nợ, cổ tức là âm)", unit: "triệu VNĐ"}
+    when_to_use: "Kiểm tra chéo CFS với Bảng cân đối: tiền cuối kỳ CFS phải bằng dòng Tiền trên BS."
+    why_it_works: "Mọi thay đổi tiền thuộc đúng một trong ba nhóm hoạt động."
+    assumptions: ["Không có chênh lệch tỷ giá hay tiền bị hạn chế sử dụng"]
+    pitfalls: ["Đưa cổ tức vào CFO hoặc chi phí", "Đưa lãi vay vào sai nhóm khi chưa thống nhất chính sách (VAS cho phép lựa chọn, cần xác nhận hiện hành)"]
+    interpretation: "Khớp BS là điều kiện bắt buộc; không khớp thì sổ có lỗi."
+    example:
+      inputs: {cash_begin: 300, cfo: 442, cfi: -150, cff: -210}
+      steps: ["CFF = -60 (trả nợ dài hạn) - 150 (cổ tức) = -210", "300 + 442 - 150 - 210 = 382"]
+      result: "382 triệu"
+  - id: "m01_cfo_direct_components"
+    name_vi: "Thu từ khách hàng và chi trả nhà cung cấp (phương pháp trực tiếp)"
+    name_en: "Direct method components"
+    expression_latex: '\text{Collections}=Rev-\Delta AR;\ \text{Supplier payments}=COGS+\Delta Inv-\Delta AP'
+    expression_python: '(revenue - d_ar, cogs + d_inv - d_ap)'
+    excel: "=DT-DeltaPhaiThu ; =GV+DeltaTonKho-DeltaPhaiTra"
+    variables:
+      - {symbol: "revenue", meaning: "Doanh thu thuần", unit: "triệu VNĐ"}
+      - {symbol: "cogs", meaning: "Giá vốn", unit: "triệu VNĐ"}
+      - {symbol: "d_ar", meaning: "Tăng phải thu", unit: "triệu VNĐ"}
+      - {symbol: "d_inv", meaning: "Tăng tồn kho", unit: "triệu VNĐ"}
+      - {symbol: "d_ap", meaning: "Tăng phải trả người bán", unit: "triệu VNĐ"}
+    when_to_use: "Đối chiếu CFO gián tiếp bằng cách tính trực tiếp, hoặc khi chủ muốn nhìn thu - chi tiền rõ ràng."
+    why_it_works: "Doanh thu chưa thu thì nằm lại phải thu; mua hàng = giá vốn + tồn kho tăng; chưa trả thì nằm ở phải trả."
+    assumptions: ["Toàn bộ doanh thu và mua hàng qua phải thu/phải trả", "CP tiền = CP bán + quản lý - khấu hao"]
+    pitfalls: ["Quên trừ khấu hao khỏi chi phí tiền", "Quên lãi và thuế"]
+    interpretation: "CFO trực tiếp = thu KH - chi NCC - chi phí tiền - lãi - thuế; phải bằng CFO gián tiếp."
+    example:
+      inputs: {revenue: 5000, cogs: 3500, d_ar: 60, d_inv: 80, d_ap: 50}
+      steps: ["Thu KH = 5.000 - 60 = 4.940", "Chi NCC = 3.500 + 80 - 50 = 3.530", "CFO = 4.940 - 3.530 - 800 - 60 - 108 = 442"]
+      result: "(4.940; 3.530)"
+  - id: "m01_free_cash_flow_simple"
+    name_vi: "Dòng tiền tự do đơn giản"
+    name_en: "Simple free cash flow"
+    expression_latex: 'FCF=CFO-\text{CapEx}'
+    expression_python: 'cfo - capex'
+    excel: "=CFO-ChiMuaTSCD"
+    variables:
+      - {symbol: "cfo", meaning: "Dòng tiền hoạt động", unit: "triệu VNĐ"}
+      - {symbol: "capex", meaning: "Chi đầu tư TSCĐ", unit: "triệu VNĐ"}
+    when_to_use: "Đánh giá khả năng trả nợ gốc, chia cổ tức mà không cần vay thêm."
+    why_it_works: "Tiền hoạt động còn lại sau khi giữ năng lực sản xuất."
+    assumptions: ["Chi đầu tư là duy trì + mở rộng không tách bạch"]
+    pitfalls: ["Hiểu FCF là lợi nhuận dành cho chủ trước khi trả nợ (còn lãi vay, nợ gốc, cổ tức)"]
+    interpretation: "Nắng Mai: 292; chia cổ tức 150 và trả gốc 60 còn dư 82."
+    example:
+      inputs: {cfo: 442, capex: 150}
+      steps: ["442 - 150 = 292", "292 - 60 - 150 = 82 = thay đổi tiền"]
+      result: "292 triệu"
+  - id: "m01_payout_ratio"
+    name_vi: "Tỷ lệ chi trả cổ tức"
+    name_en: "Dividend payout ratio"
+    expression_latex: '\text{Payout}=\frac{\text{Dividends}}{NI}'
+    expression_python: 'dividends / net_income'
+    excel: "=CoTuc/LNST"
+    variables:
+      - {symbol: "dividends", meaning: "Cổ tức chia", unit: "triệu VNĐ"}
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế", unit: "triệu VNĐ"}
+    when_to_use: "Đánh giá chính sách chia lợi nhuận của chủ DN so với lợi nhuận và dòng tiền."
+    why_it_works: "Phần lợi nhuận bị rút ra so với phần giữ lại tái đầu tư."
+    assumptions: ["Cổ tức tiền mặt trong kỳ"]
+    pitfalls: ["Chia vượt dòng tiền dù payout thấp so với lợi nhuận kế toán"]
+    interpretation: "Nắng Mai 34,7%: hợp lý vì còn giữ lại phần lớn; luôn so với FCF."
+    example:
+      inputs: {dividends: 150, net_income: 432}
+      steps: ["150/432 = 34,7%"]
+      result: "0,347"
+  - id: "m01_working_capital"
+    name_vi: "Vốn lưu động ròng"
+    name_en: "Net working capital"
+    expression_latex: 'WC=CA-CL'
+    expression_python: 'current_assets - current_liabilities'
+    excel: "=TSNH-NoNH"
+    variables:
+      - {symbol: "current_assets", meaning: "Tài sản ngắn hạn", unit: "triệu VNĐ"}
+      - {symbol: "current_liabilities", meaning: "Nợ ngắn hạn", unit: "triệu VNĐ"}
+    when_to_use: "Đánh giá an toàn thanh khoản ngắn hạn."
+    why_it_works: "Phần tài sản có thể thành tiền trong 12 tháng vượt nợ đến hạn trong 12 tháng."
+    assumptions: ["Phân loại ngắn hạn/dài hạn đúng 12 tháng"]
+    pitfalls: ["VLĐ dương nhưng nằm hết trong tồn kho chậm bán"]
+    interpretation: "Nắng Mai: 1.122 - 500 = 622."
+    example:
+      inputs: {current_assets: 1122, current_liabilities: 500}
+      steps: ["TSNH = 382 + 260 + 480 = 1.122; Nợ NH = 300 + 200 = 500", "1.122 - 500 = 622"]
+      result: "622 triệu"
+  - id: "m01_current_ratio"
+    name_vi: "Hệ số thanh toán hiện hành"
+    name_en: "Current ratio"
+    expression_latex: '\text{Current}=\frac{CA}{CL}'
+    expression_python: 'current_assets / current_liabilities'
+    excel: "=TSNH/NoNH"
+    variables:
+      - {symbol: "current_assets", meaning: "Tài sản ngắn hạn", unit: "triệu VNĐ"}
+      - {symbol: "current_liabilities", meaning: "Nợ ngắn hạn", unit: "triệu VNĐ"}
+    when_to_use: "Kiểm tra khả năng trả nợ ngắn hạn toàn diện."
+    why_it_works: "Mỗi đồng nợ ngắn hạn có bao nhiêu đồng tài sản ngắn hạn bảo đảm."
+    assumptions: ["Tồn kho và phải thu thu hồi được theo sổ"]
+    pitfalls: ["Tồn kho lỗi thời và phải thu khó đòi làm hệ số ảo"]
+    interpretation: "Nắng Mai 2,24 (cao, an toàn); ngưỡng 1,5-2 thường coi lành mạnh (tham khảo, confidence medium; cần theo ngành)."
+    example:
+      inputs: {current_assets: 1122, current_liabilities: 500}
+      steps: ["1.122/500 = 2,244"]
+      result: "2,24"
+  - id: "m01_quick_ratio"
+    name_vi: "Hệ số thanh toán nhanh"
+    name_en: "Quick ratio"
+    expression_latex: '\text{Quick}=\frac{\text{Cash}+AR}{CL}'
+    expression_python: '(cash + ar) / current_liabilities'
+    excel: "=(Tien+PhaiThu)/NoNH"
+    variables:
+      - {symbol: "cash", meaning: "Tiền và tương đương tiền", unit: "triệu VNĐ"}
+      - {symbol: "ar", meaning: "Phải thu khách hàng", unit: "triệu VNĐ"}
+      - {symbol: "current_liabilities", meaning: "Nợ ngắn hạn", unit: "triệu VNĐ"}
+    when_to_use: "Khi muốn kiểm tra thanh khoản khắt khe, không tính tồn kho."
+    why_it_works: "Loại tồn kho khỏi tài sản ngắn hạn vì tồn kho khó chuyển thành tiền nhanh và có thể phải giảm giá khi thanh lý gấp."
+    assumptions: ["Phải thu thu hồi được"]
+    pitfalls: ["Phải thu quá hạn vẫn được tính", "Dùng cho DN có tồn kho là tài sản bán nhanh (siêu thị) cần điều chỉnh"]
+    interpretation: "Nắng Mai 1,28."
+    example:
+      inputs: {cash: 382, ar: 260, current_liabilities: 500}
+      steps: ["(382 + 260)/500 = 1,284"]
+      result: "1,28"
+  - id: "m01_dso"
+    name_vi: "Kỳ thu tiền bình quân (DSO)"
+    name_en: "Days sales outstanding"
+    expression_latex: 'DSO=\frac{AR}{Rev}\times 365'
+    expression_python: 'ar / revenue * 365'
+    excel: "=PhaiThu/DT*365"
+    variables:
+      - {symbol: "ar", meaning: "Phải thu khách hàng", unit: "triệu VNĐ"}
+      - {symbol: "revenue", meaning: "Doanh thu thuần", unit: "triệu VNĐ"}
+    when_to_use: "Đo tốc độ thu tiền."
+    why_it_works: "Phải thu / doanh thu mỗi ngày = số ngày doanh thu đang nằm ở túi khách."
+    assumptions: ["Doanh thu phân bố đều; dùng số cuối kỳ cho đơn giản, thực tế dùng số bình quân"]
+    pitfalls: ["Doanh thu có tính thời vụ", "Doanh thu tiền mặt làm DSO nhỏ giả"]
+    interpretation: "Nắng Mai ~19 ngày; mục tiêu giữ dưới 20 ngày."
+    example:
+      inputs: {ar: 260, revenue: 5000}
+      steps: ["260/5.000 x 365 = 18,98"]
+      result: "~19 ngày"
+  - id: "m01_dio"
+    name_vi: "Số ngày tồn kho (DIO)"
+    name_en: "Days inventory outstanding"
+    expression_latex: 'DIO=\frac{Inv}{COGS}\times 365'
+    expression_python: 'inventory / cogs * 365'
+    excel: "=TonKho/GiaVon*365"
+    variables:
+      - {symbol: "inventory", meaning: "Hàng tồn kho", unit: "triệu VNĐ"}
+      - {symbol: "cogs", meaning: "Giá vốn hàng bán", unit: "triệu VNĐ"}
+    when_to_use: "Đo vòng quay kho."
+    why_it_works: "Tồn kho tính theo giá vốn nên chia cho giá vốn, không chia cho doanh thu."
+    assumptions: ["Giá vốn đều trong năm"]
+    pitfalls: ["Chia cho doanh thu làm DIO thấp giả"]
+    interpretation: "Nắng Mai ~50 ngày."
+    example:
+      inputs: {inventory: 480, cogs: 3500}
+      steps: ["480/3.500 x 365 = 50,06"]
+      result: "~50 ngày"
+  - id: "m01_dpo"
+    name_vi: "Số ngày trả nhà cung cấp (DPO)"
+    name_en: "Days payables outstanding"
+    expression_latex: 'DPO=\frac{AP}{COGS}\times 365'
+    expression_python: 'ap / cogs * 365'
+    excel: "=PhaiTra/GiaVon*365"
+    variables:
+      - {symbol: "ap", meaning: "Phải trả người bán", unit: "triệu VNĐ"}
+      - {symbol: "cogs", meaning: "Giá vốn hàng bán", unit: "triệu VNĐ"}
+    when_to_use: "Đo thời gian nợ nhà cung cấp."
+    why_it_works: "Số ngày giá vốn đang được nhà cung cấp tài trợ."
+    assumptions: ["Giá vốn xấp xỉ mua hàng"]
+    pitfalls: ["Kéo dài DPO quá mức làm mất uy tín và chiết khấu"]
+    interpretation: "Nắng Mai ~31 ngày."
+    example:
+      inputs: {ap: 300, cogs: 3500}
+      steps: ["300/3.500 x 365 = 31,29"]
+      result: "~31 ngày"
+  - id: "m01_ccc"
+    name_vi: "Vòng quay tiền (CCC)"
+    name_en: "Cash conversion cycle"
+    expression_latex: 'CCC=DIO+DSO-DPO'
+    expression_python: 'dio + dso - dpo'
+    excel: "=DIO+DSO-DPO"
+    variables:
+      - {symbol: "dio", meaning: "Số ngày tồn kho", unit: "ngày"}
+      - {symbol: "dso", meaning: "Kỳ thu tiền", unit: "ngày"}
+      - {symbol: "dpo", meaning: "Số ngày trả NCC", unit: "ngày"}
+    when_to_use: "Đo số ngày một đồng mua hàng bị đóng băng trước khi quay lại thành tiền."
+    why_it_works: "Thời gian nằm kho + thời gian chờ thu - thời gian được nhà cung cấp tài trợ."
+    assumptions: ["Dùng cùng căn cứ 365 ngày"]
+    pitfalls: ["Làm tròn từng thành phần"]
+    interpretation: "Nắng Mai ~38 ngày (19 + 50 - 31). Chi tiết ở m06 và quản trị vốn lưu động."
+    example:
+      inputs: {dio: 50, dso: 19, dpo: 31}
+      steps: ["19 + 50 - 31 = 38"]
+      result: "38 ngày"
+  - id: "m01_cash_release_from_dio"
+    name_vi: "Tiền giải phóng khi giảm tồn kho"
+    name_en: "Cash released by shortening DIO"
+    expression_latex: '\text{Released}=\frac{COGS}{365}\times \Delta DIO'
+    expression_python: 'cogs / 365 * days_reduced'
+    excel: "=GiaVon/365*SoNgayGiam"
+    variables:
+      - {symbol: "cogs", meaning: "Giá vốn năm", unit: "triệu VNĐ"}
+      - {symbol: "days_reduced", meaning: "Số ngày tồn kho giảm", unit: "ngày"}
+    when_to_use: "Định lượng lợi ích giải phóng tiền mà không cần vay."
+    why_it_works: "Mỗi ngày tồn kho tương ứng giá vốn bình quân một ngày."
+    assumptions: ["Doanh số không đổi", "Không gây thiếu hàng"]
+    pitfalls: ["Giảm tồn kho quá tay gây hết hàng mất doanh thu"]
+    interpretation: "Nắng Mai giảm 5 ngày giải phóng ~48 triệu."
+    example:
+      inputs: {cogs: 3500, days_reduced: 5}
+      steps: ["3.500/365 x 5 = 47,95"]
+      result: "~48 triệu"
+  - id: "m01_roe"
+    name_vi: "Tỷ suất sinh lời trên vốn chủ (ROE)"
+    name_en: "Return on equity"
+    expression_latex: 'ROE=\frac{NI}{E}'
+    expression_python: 'net_income / equity'
+    excel: "=LNST/VonCSH"
+    variables:
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế", unit: "triệu VNĐ"}
+      - {symbol: "equity", meaning: "Vốn chủ sở hữu (cuối kỳ, hoặc bình quân đầu - cuối)", unit: "triệu VNĐ"}
+    when_to_use: "Đánh giá chủ sở hữu kiếm được bao nhiêu trên mỗi đồng vốn của mình."
+    why_it_works: "Lợi nhuận dành cho chủ trên vốn của chủ."
+    assumptions: ["Dùng số cuối kỳ cho đơn giản; thực tế dùng bình quân"]
+    pitfalls: ["ROE cao do vốn chủ nhỏ vì chia cổ tức nhiều, không phải do kinh doanh tốt", "Cần xem cùng đòn bẩy (DuPont ở m06)"]
+    interpretation: "Nắng Mai 46,4% (rất cao; vốn chủ nhỏ, đòn bẩy 0,79)."
+    example:
+      inputs: {net_income: 432, equity: 932}
+      steps: ["432/932 = 46,35%"]
+      result: "0,4635"
+  - id: "m01_debt_to_equity"
+    name_vi: "Nợ trên vốn chủ"
+    name_en: "Debt-to-equity"
+    expression_latex: 'D/E=\frac{L}{E}'
+    expression_python: 'liabilities / equity'
+    excel: "=NoPhaiTra/VonCSH"
+    variables:
+      - {symbol: "liabilities", meaning: "Tổng nợ phải trả (kể cả nợ ngoài bảng nếu có)", unit: "triệu VNĐ"}
+      - {symbol: "equity", meaning: "Vốn chủ sở hữu", unit: "triệu VNĐ"}
+    when_to_use: "Đánh giá đòn bẩy, rủi ro tài chính; kiểm tra bằng cách cộng nợ giấu qua SPE."
+    why_it_works: "Bao nhiêu đồng nợ trên một đồng vốn của chủ."
+    assumptions: ["Nợ ghi nhận đầy đủ và trung thực"]
+    pitfalls: ["Nợ ngoài bảng (SPE) làm tỷ số đẹp giả: 400/600 = 0,67 thay vì 700/600 = 1,17"]
+    interpretation: "Nắng Mai 0,79. Đẹp giả 43% khi giấu 300 nợ."
+    example:
+      inputs: {liabilities: 740, equity: 932}
+      steps: ["740/932 = 0,794", "Enron minh họa: (400 + 300)/600 = 1,17 so với 400/600 = 0,67 (thấp hơn 42,9%)"]
+      result: "0,79"
+  - id: "m01_cash_conversion_ratio"
+    name_vi: "Tỷ số chất lượng lợi nhuận (CFO / Lợi nhuận sau thuế)"
+    name_en: "Cash conversion of earnings (CFO/NI)"
+    expression_latex: '\text{CFO/NI}=\frac{CFO}{NI}'
+    expression_python: 'cfo / net_income'
+    excel: "=CFO/LNST"
+    variables:
+      - {symbol: "cfo", meaning: "Dòng tiền hoạt động", unit: "triệu VNĐ"}
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế", unit: "triệu VNĐ"}
+    when_to_use: "Sàng lọc chất lượng lợi nhuận; cờ đỏ kiểu Enron (lợi nhuận tăng mà CFO không tăng). Chỉ số tổng hợp từ bài học trong nguồn, không phải chuẩn mực."
+    why_it_works: "Lợi nhuận dồn tích chứa ước tính và thời điểm; CFO là tiền thật. Lệch kéo dài là dấu hiệu doanh thu ảo, phải thu phình, vốn hóa chi phí."
+    assumptions: ["So sánh nhiều kỳ, không dựa vào một kỳ", "Khấu hao lớn làm CFO > NI một cách hợp lý"]
+    pitfalls: ["Một kỳ đầu tư mạnh vào kho cũng làm tỷ số thấp bình thường"]
+    interpretation: "Nắng Mai 1,02. Giảm liên tục dưới 0,8 (confidence low) cần tìm nguyên nhân: phải thu, tồn kho."
+    example:
+      inputs: {cfo: 442, net_income: 432}
+      steps: ["442/432 = 1,023"]
+      result: "1,02"
+  - id: "m01_gordon"
+    name_vi: "Mô hình Gordon (giá cổ phiếu và chi phí vốn)"
+    name_en: "Gordon growth model"
+    expression_latex: 'P_0=\frac{D_1}{k_e-g}'
+    expression_python: 'd1 / (ke - g)'
+    excel: "=D1/(ke-g)"
+    variables:
+      - {symbol: "d1", meaning: "Cổ tức kỳ vọng năm tới", unit: "VNĐ/cổ phiếu"}
+      - {symbol: "ke", meaning: "Tỷ suất sinh lời đòi hỏi của nhà đầu tư", unit: "tỷ lệ"}
+      - {symbol: "g", meaning: "Tăng trưởng cổ tức dài hạn", unit: "tỷ lệ"}
+    when_to_use: "Giải thích vì sao minh bạch kế toán làm tăng giá trị: giảm phần bù rủi ro thông tin làm giảm ke."
+    why_it_works: "Giá = giá trị hiện tại dòng cổ tức tăng đều; ke giảm 1 điểm làm mẫu số nhỏ hơn rõ rệt."
+    assumptions: ["Cổ tức tăng đều vĩnh viễn", "ke > g"]
+    pitfalls: ["Mức giảm ke 1 điểm chỉ là giả định minh họa, không phải số đo của Vinamilk", "Nhạy cảm cao khi ke gần g"]
+    interpretation: "ke 14% -> 11.111; ke 13% -> 12.500 (+12,5%) với D1 = 1.000, g = 5%. Chi tiết ở module tài chính."
+    example:
+      inputs: {d1: 1000, ke: 0.13, g: 0.05}
+      steps: ["1.000/(0,13 - 0,05) = 12.500", "ke 14%: 1.000/0,09 = 11.111", "12.500/11.111 - 1 = 12,5%"]
+      result: "12.500 đồng"
+  - id: "m01_pv_annuity_mtm"
+    name_vi: "Giá trị hiện tại của dòng lãi kỳ vọng (minh họa mark-to-market)"
+    name_en: "PV of annuity (mark-to-market illustration)"
+    expression_latex: 'PV=\sum_{t=1}^{n}\frac{CF}{(1+r)^t}=CF\cdot\frac{1-(1+r)^{-n}}{r}'
+    expression_python: 'cf * (1 - (1 + r) ** (-n)) / r'
+    excel: "=PV(r, n, -cf)"
+    variables:
+      - {symbol: "cf", meaning: "Lãi kỳ vọng mỗi năm", unit: "triệu USD"}
+      - {symbol: "r", meaning: "Tỷ lệ chiết khấu", unit: "tỷ lệ"}
+      - {symbol: "n", meaning: "Số năm hợp đồng", unit: "năm"}
+    when_to_use: "Hiểu vì sao Mark-to-Market lạm dụng tạo lợi nhuận kế toán lớn ngay mà tiền thực nhận bằng 0."
+    why_it_works: "Ghi nhận ngay giá trị hiện tại dòng lãi tương lai theo mô hình tự xây dựng; chỉ cần giả định sai là lợi nhuận ảo."
+    assumptions: ["Lãi kỳ vọng và lãi suất chiết khấu đúng (khó kiểm chứng từ bên ngoài)"]
+    pitfalls: ["Lợi nhuận kế toán tăng vọt nhưng CFO không tăng - cờ đỏ", "Công thức hợp pháp khi dùng đúng chuẩn (IFRS 9, fair value), gian lận khi giả định bị thao túng"]
+    interpretation: "10 triệu USD/năm x 10 năm, 10% -> 61,45 ghi ngay."
+    example:
+      inputs: {cf: 10, r: 0.10, n: 10}
+      steps: ["10 x (1 - 1,1^-10)/0,1 = 61,45"]
+      result: "61,45 triệu USD"
+  - id: "m01_ssp_allocation"
+    name_vi: "Phân bổ giá giao dịch theo giá bán độc lập tương đối"
+    name_en: "Relative standalone selling price allocation (IFRS 15 step 4)"
+    expression_latex: '\text{Alloc}_i=\text{Price}\times\frac{SSP_i}{\sum_j SSP_j}'
+    expression_python: 'price * ssp_i / sum(ssp_all)'
+    excel: "=GiaHD*SSPi/SUM(SSP)"
+    variables:
+      - {symbol: "price", meaning: "Giá giao dịch cả gói", unit: "triệu VNĐ"}
+      - {symbol: "ssp_i", meaning: "Giá bán lẻ độc lập của nghĩa vụ i", unit: "triệu VNĐ"}
+      - {symbol: "ssp_all", meaning: "Danh sách giá bán độc lập của mọi nghĩa vụ", unit: "danh sách triệu VNĐ"}
+    when_to_use: "Hợp đồng gói nhiều nghĩa vụ (license, triển khai, support) với giá gói được giảm."
+    why_it_works: "Chiết khấu gói được chia theo tỷ lệ giá trị tương đối để mỗi nghĩa vụ mang phần giảm giá công bằng; doanh thu mỗi nghĩa vụ ghi theo thời điểm hoàn thành riêng."
+    assumptions: ["SSP quan sát/ước tính được", "Nghĩa vụ phân biệt được"]
+    pitfalls: ["Phân bổ cứng 40/30/30 chỉ hợp lệ nếu phản ánh đúng giá trị tương đối", "Làm tròn tổng phải bằng giá hợp đồng"]
+    interpretation: "License 41,67; triển khai 29,17; support 29,17 (nguồn ghi 29,16 để tổng đúng 100)."
+    example:
+      inputs: {price: 100, ssp_i: 50, ssp_all: [50, 35, 35]}
+      steps: ["100 x 50/120 = 41,67", "35/120 -> 29,17 (hai khoản)", "Support 29,16/12 = 2,43 triệu/tháng"]
+      result: "41,67 triệu (license)"
+  - id: "m01_deferred_revenue_straight_line"
+    name_vi: "Doanh thu ghi nhận và doanh thu chưa thực hiện theo thời gian"
+    name_en: "Straight-line revenue recognition / unearned revenue"
+    expression_latex: '\text{Recognized}=\frac{Fee}{N}\times m;\quad \text{Unearned}=Fee-\text{Recognized}'
+    expression_python: '(fee / total_months * months_elapsed, fee - fee / total_months * months_elapsed)'
+    excel: "=Phi/TongThang*SoThang ; =Phi-DaGhiNhan"
+    variables:
+      - {symbol: "fee", meaning: "Phí thu trước", unit: "triệu VNĐ"}
+      - {symbol: "total_months", meaning: "Tổng thời gian dịch vụ", unit: "tháng"}
+      - {symbol: "months_elapsed", meaning: "Số tháng đã cung cấp trong kỳ kế toán", unit: "tháng"}
+    when_to_use: "Học phí trọn khóa, thuê bao năm, bảo trì/support, vé trả trước."
+    why_it_works: "Doanh thu ghi khi cung cấp dịch vụ (nghĩa vụ thực hiện dần theo thời gian), phần chưa cung cấp vẫn là nghĩa vụ nợ khách."
+    assumptions: ["Dịch vụ cung cấp đều theo thời gian"]
+    pitfalls: ["Ghi toàn bộ vào doanh thu ngày thu tiền", "Quên hoàn tiền/khách bỏ học"]
+    interpretation: "Tiền thu lớn hơn doanh thu một khoản đúng bằng doanh thu chưa thực hiện."
+    example:
+      inputs: {fee: 36, total_months: 12, months_elapsed: 3}
+      steps: ["36/12 = 3 triệu/tháng", "3 tháng = 9 triệu; còn lại 27 triệu"]
+      result: "(9; 27) triệu/học viên"
+  - id: "m01_capitalization_overstatement"
+    name_vi: "Lợi nhuận bị thổi phồng khi vốn hóa chi phí"
+    name_en: "Profit overstatement from capitalizing expenses"
+    expression_latex: '\text{Overstatement}=X-\frac{X}{n}'
+    expression_python: 'x - x / n'
+    excel: "=X-X/n"
+    variables:
+      - {symbol: "x", meaning: "Chi phí lẽ ra ghi ngay", unit: "triệu"}
+      - {symbol: "n", meaning: "Số năm phân bổ dần sau khi vốn hóa", unit: "năm"}
+    when_to_use: "Giải thích thủ thuật Enron và kiểm tra khi chi phí bất thường bị chuyển thành tài sản."
+    why_it_works: "Chi phí 50 ghi thành tài sản và khấu hao 5 năm chỉ trừ 10 vào lợi nhuận năm đầu."
+    assumptions: ["Ví dụ giả định minh họa"]
+    pitfalls: ["Vốn hóa hợp pháp (chi phí phát triển đủ điều kiện) khác với vốn hóa sai bản chất"]
+    interpretation: "Lợi nhuận kỳ đầu bị thổi phồng 40."
+    example:
+      inputs: {x: 50, n: 5}
+      steps: ["50 - 50/5 = 40"]
+      result: "40"
+
+frameworks:
+  - id: "m01_double_entry_rules"
+    name_vi: "Kế toán kép: quy tắc Nợ - Có và danh mục bút toán mẫu"
+    name_en: "Double-entry rules and journal entry catalog"
+    origin: "Pacioli, Summa de Arithmetica (1494) hệ thống hóa phương pháp thương nhân Venice dùng. Ra đời để bắt lỗi: mỗi giao dịch ghi hai lần với tổng Nợ = tổng Có."
+    components:
+      - "Tài sản và Chi phí: tăng ghi Nợ, giảm ghi Có"
+      - "Nợ phải trả, Vốn chủ sở hữu, Doanh thu: tăng ghi Có, giảm ghi Nợ"
+      - "Mẹo nhớ: bên Nợ là bên tài sản/chi phí tăng; bên Có là bên nguồn vốn/doanh thu tăng. Tổng Nợ = tổng Có"
+      - "Góp vốn bằng tiền gửi - Nợ 112 / Có 411"
+      - "Vay ngân hàng - Nợ 112 / Có 341"
+      - "Mua hàng chưa trả tiền - Nợ 156 / Có 331 (nếu có VAT đầu vào: Nợ 133 thêm, Có 331 tăng tương ứng)"
+      - "Bán hàng thu tiền ngay - Nợ 111 / Có 511 (VAT đầu ra Có 3331, không phải doanh thu)"
+      - "Bán chịu - Nợ 131 / Có 511; thu nợ - Nợ 111 hoặc 112 / Có 131"
+      - "Ghi giá vốn hàng bán - Nợ 632 / Có 156"
+      - "Trả nhà cung cấp - Nợ 331 / Có 111 hoặc 112"
+      - "Chi phí bán hàng bằng tiền - Nợ 641 / Có 111 hoặc 112; chi phí quản lý - Nợ 642 / Có 111 hoặc 112"
+      - "Mua TSCĐ bằng tiền - Nợ 211 / Có 112 (khấu hao không ghi lúc mua)"
+      - "Trích khấu hao - Nợ 642 (hoặc 641/627 theo bộ phận sử dụng) / Có 214"
+      - "Chi phí lãi vay - Nợ 635 / Có 111 hoặc 112 (hoặc Có 335/3388 nếu trích trước, chưa trả)"
+      - "Trả nợ gốc vay - Nợ 341 / Có 112"
+      - "Nhận tiền học phí trả trước - Nợ 112 (hoặc 111) / Có 3387 (doanh thu chưa thực hiện) hoặc 131 dư Có (người mua trả tiền trước) tùy chế độ"
+      - "Phân bổ doanh thu chưa thực hiện hằng kỳ - Nợ 3387 / Có 511"
+      - "Chi phí trả trước dài kỳ - Nợ 242 / Có 111 hoặc 112; phân bổ - Nợ 641/642 / Có 242"
+      - "Tuyên bố chia cổ tức/lợi nhuận - Nợ 421 / Có 3388 (hoặc 338); chi trả - Nợ 3388 / Có 112"
+      - "Chi phí thuế TNDN - Nợ 821 / Có 3334; nộp thuế - Nợ 3334 / Có 112"
+      - "Trích lập dự phòng giảm giá hàng tồn kho - Nợ 632 / Có 229 (cần xác nhận hiện hành)"
+      - "Kết chuyển cuối kỳ - Nợ 511 / Có 911; Nợ 911 / Có 632, 641, 642, 635, 821; lãi: Nợ 911 / Có 421; lỗ ngược lại"
+    when_to_use: "Mọi lần định khoản nghiệp vụ; tham chiếu số hiệu theo TT200/2014/TT-BTC, DNNVV theo TT133/2016/TT-BTC (danh mục rút gọn, đôi chỗ khác tên/số) - tất cả cần xác nhận hiện hành trước khi ghi sổ thật."
+    how_to_apply:
+      - "Xác định các tài khoản bị ảnh hưởng (tối thiểu hai) và loại của từng tài khoản (tài sản, nợ, vốn, doanh thu, chi phí)."
+      - "Với mỗi tài khoản, hỏi tăng hay giảm rồi áp bảng quy tắc để chọn bên Nợ/Có."
+      - "Kiểm tra tổng Nợ = tổng Có và phương trình A = L + E không bị phá."
+      - "Gắn chứng từ gốc, chọn tài khoản chi tiết (khách hàng, nhà cung cấp, kho)."
+    how_to_read_results: "Mỗi bút toán thay đổi đúng hai (hoặc nhiều) vế mà tổng vẫn cân. Bút toán doanh thu và giá vốn là hai bút toán độc lập (nhớ ghi cả giá vốn khi bán)."
+    pitfalls:
+      - "Hiểu Nợ = 'nợ tiền', Có = 'có tiền'."
+      - "Quên bút toán giá vốn khi ghi doanh thu nên lãi gộp ảo."
+      - "Ghi cổ tức vào chi phí P&L (phải trừ vào lợi nhuận chưa phân phối)."
+      - "Ghi mua TSCĐ vào chi phí hoặc ghi khấu hao vào tiền chi."
+      - "Mã tài khoản TT200 và TT133 không trùng hoàn toàn."
+    example: "Cửa hàng mới: (1) Nợ 112 / Có 411: 300; (2) Nợ 112 / Có 341: 100; (3) Nợ 156 / Có 331: 80; (4) Nợ 111 / Có 511: 150; (5) Nợ 632 / Có 156: 60 -> tài sản 570 = nợ 180 + vốn chủ 390."
+  - id: "m01_accounting_cycle"
+    name_vi: "Chu trình kế toán"
+    name_en: "Accounting cycle"
+    origin: "Quy trình chuẩn nối từ kế toán kép (Pacioli) tới sổ sách hiện đại; mục đích truy vết mọi số liệu về chứng từ gốc."
+    components:
+      - "1. Chứng từ gốc (hóa đơn, phiếu thu/chi, hợp đồng)"
+      - "2. Ghi sổ nhật ký (bút toán Nợ - Có)"
+      - "3. Chuyển sổ cái (tổng hợp theo từng tài khoản)"
+      - "4. Bảng cân đối số phát sinh (kiểm tra tổng Nợ = tổng Có)"
+      - "5. Bút toán điều chỉnh cuối kỳ (khấu hao, chi phí trả trước, dự phòng, dồn tích doanh thu/chi phí chưa có hóa đơn)"
+      - "6. Lập báo cáo tài chính"
+      - "7. Kết chuyển (đóng sổ tài khoản doanh thu/chi phí vào 911 rồi vào lợi nhuận chưa phân phối) và mở sổ kỳ mới"
+    when_to_use: "Mỗi tháng/quý/năm khi khóa sổ."
+    how_to_apply:
+      - "Nhập chứng từ đúng kỳ; không để chứng từ cuối tháng rơi sang tháng sau."
+      - "Chạy bảng cân đối số phát sinh trước khi điều chỉnh; lệch thì dò lại bút toán."
+      - "Làm bút toán điều chỉnh theo checklist đóng sổ (khấu hao, phân bổ trả trước, dồn tích)."
+      - "Lập BS - P&L - CF - Thuyết minh; chạy các kiểm tra chéo."
+      - "Kết chuyển và khóa sổ kỳ."
+    how_to_read_results: "Báo cáo chỉ đáng tin sau khi bảng cân đối số phát sinh cân và các đối chiếu (ngân hàng, công nợ, kho) khớp."
+    pitfalls: ["Lập báo cáo trước khi điều chỉnh khấu hao/dồn tích", "Không khóa sổ đúng kỳ nên số liệu các tháng không so sánh được"]
+    example: "Nắng Mai: bút toán điều chỉnh khấu hao 100 (Nợ 642 / Có 214) trước khi lập P&L; kết chuyển 911 ra 432 vào 421."
+  - id: "m01_four_statements"
+    name_vi: "Bốn báo cáo tài chính và mối liên hệ"
+    name_en: "Four financial statements and their linkages"
+    origin: "Cấu trúc chuẩn theo IAS 1/VAS 21 (BS), IAS 7/VAS 24 (CFS); mã mẫu VN B01-DN, B02-DN, B03-DN, B09-DN (cần xác nhận hiện hành)."
+    components:
+      - "Bảng cân đối kế toán - tại một thời điểm, A = L + E (ảnh chụp)"
+      - "Báo cáo kết quả kinh doanh - trong một kỳ, lãi/lỗ (đoạn phim)"
+      - "Báo cáo lưu chuyển tiền tệ - tiền thật vào ra theo CFO/CFI/CFF (sao kê)"
+      - "Thuyết minh - chính sách, chi tiết, cam kết, bên liên quan (chú thích)"
+      - "Báo cáo biến động vốn chủ (theo IFRS)"
+      - "Liên kết 1: LNST (P&L) cộng vào lợi nhuận chưa phân phối (BS) sau khi trừ cổ tức"
+      - "Liên kết 2: Tiền cuối kỳ (CFS) = Tiền trên BS"
+      - "Liên kết 3: Thay đổi phải thu, tồn kho, phải trả (BS hai kỳ) đi vào CFO"
+      - "Liên kết 4: Khấu hao trên P&L cộng lại trong CFO; mua TSCĐ ở CFI; NBV trên BS = đầu kỳ + mua - khấu hao"
+    when_to_use: "Mỗi khi lập hoặc đọc bộ báo cáo; cần cả ba báo cáo số liệu vì mỗi cái bổ sung nhau (lãi nhưng cạn tiền, hoặc lỗ nhưng nhiều tiền)."
+    how_to_apply:
+      - "Lập P&L trước để có lợi nhuận sau thuế."
+      - "Lập BS cuối kỳ: số dư các khoản mục, TSCĐ NBV, RE cuối kỳ."
+      - "Lập CFS gián tiếp từ P&L + chênh lệch BS hai kỳ; tiền cuối kỳ CFS là số tiền đưa vào BS (hoặc ngược lại kiểm tra)."
+      - "Chạy ba kiểm tra chéo: A = L + E; RE khớp; tiền CFS = tiền BS."
+      - "Đọc thuyết minh để hiểu chính sách và rủi ro ẩn."
+    how_to_read_results: "Cân và khớp là điều kiện cần. Rồi đọc: lãi (P&L) -> tiền (CFO) -> sức khỏe (BS). Phải thu và tồn kho tăng nhanh hơn doanh thu, CFO < LNST kéo dài là cảnh báo."
+    pitfalls:
+      - "Chỉ nhìn lãi mà bỏ CFS."
+      - "Tin cân đối của BS là đã đúng (có thể lỗi bù trừ)."
+      - "Bỏ qua thuyết minh."
+      - "Nhầm 'ba báo cáo' và 'bốn báo cáo' trong tài liệu gốc: bài nói '4 báo cáo' nhưng một số chỗ viết 'cả ba báo cáo' để chỉ ba báo cáo số liệu."
+    example: "Nắng Mai: LNST 432, RE 432, tiền CFS 382 = tiền BS 382."
+  - id: "m01_conceptual_framework"
+    name_vi: "Khuôn khổ khái niệm IFRS: đặc tính chất lượng thông tin"
+    name_en: "IFRS Conceptual Framework - qualitative characteristics"
+    origin: "IASB (thành lập 2001), hội tụ cùng FASB nhằm thông tin kế toán dùng được xuyên quốc gia."
+    components:
+      - "Thích hợp (Relevance): giá trị dự đoán (predictive) và xác nhận (confirmatory)"
+      - "Trình bày trung thực (Faithful representation): đầy đủ, trung lập, không sai sót"
+      - "Nâng cao: so sánh được (comparability), kiểm chứng được (verifiability), kịp thời (timeliness), dễ hiểu (understandability)"
+    when_to_use: "Khi cần lập luận chính sách kế toán nào tốt hơn, hoặc đánh giá chất lượng báo cáo."
+    how_to_apply:
+      - "Thông tin có giúp người dùng dự đoán hoặc xác nhận điều gì để ra quyết định không?"
+      - "Có phản ánh đúng bản chất, đầy đủ, trung lập, không sai sót không?"
+      - "Có so sánh được qua kỳ và giữa các DN, kiểm chứng được, kịp thời, dễ hiểu không?"
+    how_to_read_results: "Hai đặc tính cơ bản là điều kiện; bốn đặc tính nâng cao làm tăng giá trị."
+    pitfalls: ["Học thuộc không hiểu bản chất", "Nhầm Relevance với Faithful"]
+    example: "Đổi FIFO sang bình quân không thuyết minh vi phạm so sánh được và nhất quán."
+  - id: "m01_ten_principles"
+    name_vi: "Mười nguyên tắc kế toán cơ bản"
+    name_en: "Ten basic accounting principles"
+    origin: "Nguyên tắc được tổng hợp trong VAS 01 và Conceptual Framework; mỗi nguyên tắc ra đời để chặn một dạng sai lệch cụ thể."
+    components:
+      - "Hoạt động liên tục (Going Concern): nếu sắp giải thể thì ghi giá thanh lý; giả định tiếp tục cho phép giá gốc và phân bổ dần. VD ghi máy móc giá gốc rồi khấu hao dần."
+      - "Cơ sở dồn tích (Accrual): báo cáo đúng kỳ. VD giao hàng tháng 12, thu tiền tháng 1 ghi doanh thu tháng 12."
+      - "Nhất quán (Consistency): chặn đổi chính sách để làm đẹp. VD dùng FIFO thì giữ FIFO, đổi phải thuyết minh."
+      - "Trọng yếu (Materiality): không lãng phí vào khoản nhỏ. VD bút bi 50k ghi chi phí ngay, không ghi TSCĐ."
+      - "Thận trọng (Prudence): ghi ngay khi có khả năng lỗ, chỉ ghi lãi khi chắc chắn. VD dự phòng nợ khó đòi."
+      - "Phù hợp (Matching): doanh thu và chi phí tạo ra nó cùng kỳ. VD COGS ghi khi bán, không phải khi mua."
+      - "Giá gốc (Historical Cost): con số kiểm chứng được. VD đất mua 2010 giá 1 tỷ vẫn ghi 1 tỷ (VAS)."
+      - "Thực chất hơn hình thức (Substance over Form): chặn đóng gói giao dịch để né quy định. VD thuê tài chính ghi như mua."
+      - "Kỳ kế toán (Periodicity): thông tin định kỳ (năm tài chính, quý, tháng)."
+      - "Đơn vị tiền tệ (Monetary Unit): chỉ ghi những gì đo bằng tiền khách quan, không ghi 'tinh thần nhân viên cao'."
+    when_to_use: "Giải thích vì sao ghi theo cách đó; tranh luận cách ghi nhận khi nghiệp vụ lạ."
+    how_to_apply:
+      - "Nhận diện nguyên tắc nào chi phối nghiệp vụ (kỳ nào? giá nào? có trọng yếu không?)."
+      - "Nếu hai nguyên tắc xung đột (thận trọng vs dồn tích), ưu tiên thận trọng cho lỗ, nhưng không cố ý đánh giá thấp tài sản."
+      - "Ghi lại chính sách và thuyết minh."
+    how_to_read_results: "Ba nguyên tắc nền tảng (Going Concern, Accrual, Consistency) vi phạm thì toàn bộ báo cáo mất độ tin cậy."
+    pitfalls: ["Lạm dụng Prudence để tạo quỹ ngầm (earnings management ngược chiều)", "Dùng Materiality để bỏ qua nhiều khoản nhỏ cộng lại thành lớn"]
+    example: "Xưởng in: cơ sở tiền cho tháng 12 lỗ -140 và tháng 1 lãi 200; dồn tích cho tháng 12 lãi +60, tháng 1 là 0."
+  - id: "m01_accrual_vs_cash"
+    name_vi: "Cơ sở dồn tích so với cơ sở tiền"
+    name_en: "Accrual vs cash basis comparison"
+    origin: "Dồn tích là nền tảng của chuẩn mực hiện đại; cơ sở tiền vẫn dùng ở hộ kinh doanh nhỏ."
+    components:
+      - "Doanh thu: dồn tích khi giao hàng/hoàn thành; cash khi nhận tiền"
+      - "Chi phí: dồn tích khi tiêu dùng/nghĩa vụ phát sinh; cash khi chi tiền"
+      - "Khoản chênh lệch nằm trên BS: Phải thu, Phải trả, Trả trước, Doanh thu chưa thực hiện"
+    when_to_use: "SME ghi sổ theo tiền mặt cần chuyển sang dồn tích."
+    how_to_apply:
+      - "Liệt kê nghiệp vụ có thời điểm giao hàng khác thời điểm thu/chi tiền."
+      - "Ghi nhận vào đúng kỳ phát sinh bằng 131/331/242/3387/335."
+      - "Đối chiếu lại với tiền thực để lập CFS."
+    how_to_read_results: "Tổng nhiều kỳ giống nhau; khác là thời điểm. Dồn tích đo đúng hoạt động từng kỳ."
+    pitfalls: ["Ghi sổ theo tiền mặt gây doanh thu/chi phí sai kỳ", "Cho rằng lợi nhuận dồn tích = tiền"]
+    example: "Xưởng in giao 200 triệu ngày 28/12, chi phí 140 đã trả tháng 12, thu 10/01: tháng 12 dồn tích +60 (cash -140); tháng 1 dồn tích 0 (cash +200); tổng hai tháng đều 60."
+  - id: "m01_ifrs15_five_steps"
+    name_vi: "Mô hình ghi nhận doanh thu 5 bước IFRS 15 (và so sánh VAS 14)"
+    name_en: "IFRS 15 five-step revenue model"
+    origin: "IASB/FASB (IFRS 15, ASC 606) thay các quy tắc theo ngành (phần mềm, xây dựng, viễn thông) bằng một mô hình dựa trên chuyển giao quyền kiểm soát."
+    components:
+      - "Bước 1: Xác định hợp đồng với khách hàng"
+      - "Bước 2: Xác định các nghĩa vụ thực hiện (performance obligations)"
+      - "Bước 3: Xác định giá giao dịch"
+      - "Bước 4: Phân bổ giá cho nghĩa vụ theo giá bán độc lập tương đối"
+      - "Bước 5: Ghi nhận doanh thu khi (hoặc khi dần) hoàn thành từng nghĩa vụ"
+      - "VAS 14: nguyên tắc đơn giản hơn (chuyển giao rủi ro/lợi ích, xác định được doanh thu và chi phí, thu được lợi ích kinh tế; cần xác nhận hiện hành)"
+    when_to_use: "Hợp đồng gói, nhiều nghĩa vụ, thu tiền trước. SME theo VAS 14/TT133 thường dùng mức đơn giản hơn."
+    how_to_apply:
+      - "Có hợp đồng, quyền và nghĩa vụ rõ ràng; xác định các nghĩa vụ riêng biệt."
+      - "Giá giao dịch = giá hợp đồng (trừ giảm giá, hoàn trả)."
+      - "Phân bổ theo SSP tương đối (công thức m01_ssp_allocation)."
+      - "Ghi nhận license khi giao; triển khai theo tiến độ; support đều theo thời gian."
+      - "Phần tiền nhận trước chưa thành doanh thu nằm ở nợ phải trả (doanh thu chưa thực hiện)."
+    how_to_read_results: "Tiền nhận 1 lần nhưng doanh thu rải nhiều kỳ; doanh thu kỳ nhỏ hơn tiền thu."
+    pitfalls: ["Ghi toàn bộ khi ký hợp đồng hoặc khi nhận tiền", "Phân bổ cứng không theo giá trị tương đối", "Sai số làm tròn khiến tổng không bằng giá hợp đồng"]
+    example: "Hợp đồng 100 triệu: license 41,67 (khi giao), triển khai 29,17 (2 tháng), support 29,16 (12 tháng, 2,43/tháng)."
+  - id: "m01_inventory_methods"
+    name_vi: "Phương pháp tính giá xuất kho: FIFO - Bình quân - LIFO"
+    name_en: "Inventory costing methods"
+    origin: "Phát triển khi giá mua biến động (lạm phát). LIFO dùng ở Mỹ để giảm thuế khi giá tăng, nhưng IFRS cấm."
+    components:
+      - "FIFO: nhập trước xuất trước; tồn kho gần giá mới nhất; giá tăng thì COGS thấp, lợi nhuận cao"
+      - "Bình quân gia quyền: giá trung bình, đơn giản, san bằng biến động"
+      - "LIFO: nhập sau xuất trước; COGS sát giá thị trường; tồn kho lỗi thời; IFRS cấm; VAS 02 không chấp nhận (cần xác nhận hiện hành)"
+      - "Lower of cost and NRV: tồn kho ghi theo giá thấp hơn giữa giá gốc và NRV"
+    when_to_use: "Chọn chính sách giá xuất kho; so sánh báo cáo giữa DN dùng khác phương pháp."
+    how_to_apply:
+      - "Liệt kê các lô nhập (số lượng, giá)."
+      - "Tính COGS theo FIFO: lấy từ lô cũ nhất trước."
+      - "Tính COGS theo bình quân: (tổng giá trị)/(tổng số lượng) x số bán."
+      - "Tồn cuối = tổng giá trị mua - COGS; kiểm tra COGS + tồn = tổng chi phí mua."
+      - "So sánh lợi nhuận gộp; cuối kỳ so với NRV để trích dự phòng."
+    how_to_read_results: "Phương pháp chỉ chia lại tổng chi phí giữa COGS (P&L) và tồn kho (BS), không đổi tiền thực. Giá tăng: FIFO lợi nhuận cao, thuế cao hơn; giá giảm: ngược lại."
+    pitfalls: ["Đổi phương pháp tùy ý (vi phạm nhất quán)", "Quên NRV nên tồn kho phình", "Nhầm giá xuất kho với tiền thực đã chi"]
+    example: "Mua 100 x 50k rồi 100 x 60k, bán 150 giá 80k: FIFO COGS 8,00 triệu, lãi gộp 4,00; Bình quân COGS 8,25, lãi gộp 3,75; tồn cuối 3,00 và 2,75; tổng 11,00 triệu."
+  - id: "m01_depreciation_methods"
+    name_vi: "Phương pháp khấu hao: đường thẳng - số dư giảm dần - sản lượng"
+    name_en: "Depreciation methods"
+    origin: "Áp dụng nguyên tắc phù hợp (matching) cho tài sản dùng nhiều kỳ; luật thuế quy định khung khấu hao được trừ khi tính thuế TNDN (cần xác nhận hiện hành)."
+    components:
+      - "Đường thẳng (Straight-line): (Nguyên giá - GTTH)/Thời gian; đều, phổ biến nhất"
+      - "Số dư giảm dần (Declining Balance): NBV x tỷ lệ; nhiều đầu kỳ; giới hạn không dưới GTTH"
+      - "Sản lượng (Units of Production): (Nguyên giá - GTTH)/Tổng SL x SL thực tế"
+    when_to_use: "Lập bảng khấu hao, bút toán điều chỉnh cuối kỳ, so sánh tác động lợi nhuận."
+    how_to_apply:
+      - "Xác định nguyên giá, GTTH, thời gian, tổng sản lượng."
+      - "Chọn phương pháp theo hình thái hao mòn (đều, nhanh đầu kỳ, theo công suất) và theo khung thuế."
+      - "Lập bảng khấu hao từng năm: đầu năm, khấu hao, cuối năm (giới hạn năm cuối bằng NBV - GTTH)."
+      - "Ghi bút toán: Nợ 641/642/627 / Có 214. Cộng lại khấu hao ở CFO gián tiếp."
+    how_to_read_results: "Cùng tổng khấu hao (450) nhưng khác thời điểm: số dư giảm dần làm lợi nhuận thấp hơn các năm đầu. Khấu hao không phải chi tiền."
+    pitfalls: ["Chọn phương pháp chỉ để tối ưu thuế", "Không trích khấu hao nên lợi nhuận ảo", "Năm cuối làm NBV thấp hơn GTTH", "Dùng DB() Excel thay vì DDB() cho tỷ lệ 40%"]
+    example: "Máy 500, GTTH 50, 5 năm: đường thẳng 90/năm; DB 40%: 200 / 120 / 72 / 43,2 / 14,8; cả hai tổng 450."
+  - id: "m01_cash_flow_methods"
+    name_vi: "Báo cáo lưu chuyển tiền tệ: ba nhóm và hai phương pháp"
+    name_en: "Cash flow statement - activities and methods"
+    origin: "IAS 7/VAS 24; phát sinh vì lợi nhuận dồn tích không phải tiền mặt."
+    components:
+      - "CFO - hoạt động kinh doanh (thu bán hàng, trả nhà cung cấp, lương, lãi, thuế theo cách phân loại)"
+      - "CFI - hoạt động đầu tư (mua/bán TSCĐ, đầu tư dài hạn)"
+      - "CFF - hoạt động tài chính (vay/trả nợ, phát hành/mua lại CP, chia cổ tức)"
+      - "Phương pháp trực tiếp: liệt kê thu/chi tiền thực tế (dễ hiểu)"
+      - "Phương pháp gián tiếp: từ LNST điều chỉnh khấu hao, lãi/lỗ phi tiền và thay đổi vốn lưu động (phổ biến, lập từ BS + P&L)"
+    when_to_use: "Lập CFS hàng quý/năm; giải thích vì sao lãi mà thiếu tiền."
+    how_to_apply:
+      - "Lập bảng thay đổi BS hai kỳ (tăng/giảm từng khoản)."
+      - "CFO gián tiếp: LNST + khấu hao - tăng phải thu - tăng tồn kho + tăng phải trả."
+      - "CFI: dòng tiền mua/bán TSCĐ (mua ghi âm)."
+      - "CFF: vay (+), trả gốc (-), cổ tức (-), vốn góp (+)."
+      - "Tiền cuối = đầu + CFO + CFI + CFF; đối chiếu BS."
+      - "Kiểm tra bằng phương pháp trực tiếp (thu KH, chi NCC, chi phí tiền, lãi, thuế)."
+    how_to_read_results: "CFO dương bền vững là nguồn trả nợ và đầu tư. CFO < LNST: tiền kẹt ở phải thu và tồn kho. CFO > LNST: nhờ khấu hao và tín dụng nhà cung cấp, kiểm tra tính bền vững."
+    pitfalls: ["Đảo dấu thay đổi vốn lưu động", "Quên loại lãi/lỗ bán TSCĐ khỏi CFO", "Phân loại lãi vay không nhất quán"]
+    example: "Nắng Mai: CFO 442, CFI -150, CFF -210, thay đổi +82, tiền 300 -> 382."
+  - id: "m01_profit_tax_cash"
+    name_vi: "Ba góc nhìn: lợi nhuận kế toán - thu nhập tính thuế - dòng tiền"
+    name_en: "Accounting profit vs taxable income vs cash flow"
+    origin: "Chuẩn mực kế toán phục vụ nhà đầu tư; luật thuế phục vụ ngân sách; dòng tiền phục vụ thanh khoản."
+    components:
+      - "Lợi nhuận kế toán: chuẩn mực + dồn tích; khác do ước tính"
+      - "Thu nhập tính thuế: luật thuế TNDN; khác do chi phí không được trừ, khung khấu hao, chuyển lỗ"
+      - "Dòng tiền thuần: thu - chi thực; khác do phải thu, tồn kho, phải trả, đầu tư TSCĐ"
+    when_to_use: "Khi giải thích vì sao báo cáo thuế khác BCTC khác báo cáo quản trị; chuẩn bị bảng đối chiếu cho quyết toán thuế."
+    how_to_apply:
+      - "Lập BCTC theo chuẩn mực; lập bảng điều chỉnh sang thu nhập tính thuế."
+      - "Ghi chênh lệch tạm thời (khấu hao) và vĩnh viễn (chi phí không hợp lệ)."
+      - "Lập CFS để có số dòng tiền."
+    how_to_read_results: "Ba con số thường khác nhau; cần có bảng đối chiếu giải thích được cho thanh tra thuế."
+    pitfalls: ["Nhầm báo cáo thuế với báo cáo quản trị", "Không có bảng đối chiếu nên rủi ro thanh kiểm tra"]
+    example: "Khấu hao nhanh theo kế toán nhưng thuế chỉ cho khung chuẩn: chi phí tính thuế khác chi phí kế toán; điều chỉnh khi quyết toán TNDN (cần xác nhận hiện hành)."
+  - id: "m01_ifrs_vs_vas"
+    name_vi: "So sánh IFRS - VAS - US GAAP và chế độ kế toán theo quy mô"
+    name_en: "IFRS vs VAS vs US GAAP; accounting regime by size"
+    origin: "IFRS (IASB 2001), US GAAP (FASB 1973), VAS (26 chuẩn mực 2001-2005 dựa trên IAS, chưa cập nhật nhiều); Việt Nam có lộ trình IFRS (chuẩn bị - tự nguyện - bắt buộc, mốc cần xác nhận hiện hành)."
+    components:
+      - "Fair value: IFRS dùng rộng rãi; VAS chủ yếu giá gốc"
+      - "Thuê tài sản: IFRS 16 ghi nhận trên BS (tài sản quyền sử dụng + nợ thuê); VAS 06 phân biệt thuê tài chính/thuê hoạt động"
+      - "Doanh thu: IFRS 15 mô hình 5 bước; VAS 14 đơn giản hơn"
+      - "Công cụ tài chính: IFRS 9 chi tiết; VAS chưa có chuẩn tương đương đầy đủ (cần xác nhận hiện hành)"
+      - "Goodwill: IFRS không khấu hao, kiểm tra suy giảm hằng năm; VAS phân bổ dần (thường tối đa 10 năm, cần xác nhận hiện hành)"
+      - "Đơn vị tiền tệ: IFRS functional currency; VAS mặc định VNĐ có điều kiện cho dùng ngoại tệ (cần xác nhận hiện hành)"
+      - "Hộ kinh doanh: sổ sách đơn giản, không bắt buộc BCTC và kiểm toán"
+      - "DN siêu nhỏ: TT132/2018, BCTC thu gọn, không bắt buộc kiểm toán"
+      - "DNNVV: TT133/2016 (thay QĐ 48), BCTC đầy đủ nhưng đơn giản, kiểm toán không bắt buộc (trừ quy định riêng)"
+      - "DN lớn: TT200/2014, BCTC đầy đủ; kiểm toán bắt buộc với một số nhóm (niêm yết, có vốn nước ngoài - cần xác nhận hiện hành)"
+      - "DN niêm yết: TT200 + quy định UBCKNN, BCTC bán niên + năm, kiểm toán bắt buộc"
+      - "DN FDI/đa quốc gia: IFRS hoặc cả VAS + IFRS"
+    when_to_use: "Chọn chế độ kế toán, lập kế hoạch gọi vốn/M&A, chuyển đổi IFRS."
+    how_to_apply:
+      - "Xác định quy mô theo tiêu chí DNNVV (lao động, doanh thu/tổng nguồn vốn, thay đổi theo thời kỳ, cần xác nhận hiện hành)."
+      - "Chọn TT132/133/200 tương ứng."
+      - "Nếu có kế hoạch gọi vốn ngoại/M&A/niêm yết, giữ sổ sạch nhất quán để giảm chi phí chuyển IFRS."
+    how_to_read_results: "VAS thường ra lợi nhuận/tài sản/nợ khác IFRS (thuê tài sản, fair value, goodwill). Hầu hết SME chỉ cần VAS."
+    pitfalls: ["Hiểu 'VAS = IFRS'", "Áp thông tư sai quy mô", "Giả định ngưỡng DNNVV đứng yên theo thời gian"]
+    example: "Công ty thuê mặt bằng nhiều năm: IFRS 16 thêm tài sản quyền sử dụng và nợ thuê lên BS, VAS ghi chi phí thuê theo kỳ (nếu thuê hoạt động)."
+  - id: "m01_enron_red_flags"
+    name_vi: "Cờ đỏ gian lận kế toán (bài học Enron 2001)"
+    name_en: "Accounting fraud red flags (Enron)"
+    origin: "Enron, công ty năng lượng Mỹ, doanh thu khoảng 101 tỷ USD (2000), phá sản cuối 2001 với tài sản khoảng 63,4 tỷ USD (số liệu cần đối chiếu nguồn); sau đó có Sarbanes-Oxley Act 2002."
+    components:
+      - "SPE giấu nợ: chuyển nợ sang công ty rỗng không hợp nhất -> vi phạm thực chất hơn hình thức"
+      - "Mark-to-Market lạm dụng: ghi ngay PV lãi tương lai bằng mô hình tự xây dựng"
+      - "Round-trip trading: bán rồi mua lại cùng lượng/giá làm phình doanh thu, lợi nhuận bằng 0"
+      - "Vốn hóa chi phí: chi phí thành tài sản rồi khấu hao dần"
+      - "Cờ đỏ: lợi nhuận tăng mà CFO không tăng; 'quá tốt để là thật'; kiểm toán viên vừa kiểm toán vừa tư vấn; HĐQT chấp thuận mà không hỏi"
+      - "Cải cách SOX 2002: CEO/CFO ký xác nhận, kiểm soát nội bộ, hạn chế kiểm toán viên tư vấn đồng thời, hình sự hóa gian lận"
+    when_to_use: "Thẩm định BCTC của đối tác/nhà cung cấp/doanh nghiệp đầu tư; thiết kế kiểm soát nội bộ SME."
+    how_to_apply:
+      - "Cộng lại nợ ngoài bảng và tính lại D/E."
+      - "So sánh LNST với CFO nhiều kỳ."
+      - "So sánh tăng trưởng doanh thu với phải thu, tồn kho."
+      - "Đọc thuyết minh: bên liên quan, nợ tiềm tàng, thay đổi chính sách."
+      - "Tách vốn hóa chi phí hợp lệ ra khỏi chi phí bị chuyển thành tài sản."
+    how_to_read_results: "Một cờ đỏ chưa kết luận gian lận nhưng cần hỏi sâu; nhiều cờ đỏ cùng lúc là báo động."
+    pitfalls: ["Bỏ qua thuyết minh", "Tin kiểm toán tuyệt đối khi có xung đột lợi ích", "Số liệu Enron trong nguồn chỉ là tham khảo, cần đối chiếu"]
+    example: "Giả định minh họa: Nợ 400 + 300 giấu qua SPE: D/E 0,67 thay vì 1,17; vốn hóa 50 khấu hao 5 năm thổi phồng lợi nhuận kỳ đầu 40."
+  - id: "m01_transparency_cost_of_capital"
+    name_vi: "Minh bạch kế toán làm giảm chi phí vốn (bài học Vinamilk)"
+    name_en: "Transparency lowers cost of equity"
+    origin: "Gordon growth model; Vinamilk (VNM) thường được nhắc là ví dụ minh bạch (thông tin cần đối chiếu báo cáo thường niên và BCTC kiểm toán chính thức)."
+    components:
+      - "Chuẩn mực: BCTC theo VAS kèm công bố bổ sung dễ đọc"
+      - "Kiểm toán: công ty kiểm toán uy tín"
+      - "Công bố: BCTC quý, bán niên, năm đúng hạn"
+      - "IR: họp nhà đầu tư, roadshow"
+      - "Cổ tức tiền mặt đều"
+      - "Cơ chế: minh bạch giảm phần bù rủi ro thông tin, giảm ke, tăng giá"
+    when_to_use: "Thuyết phục chủ SME đầu tư vào sổ sách chuẩn trước khi gọi vốn."
+    how_to_apply:
+      - "Giữ sổ sạch nhất quán; chuẩn bị BCTC có kiểm toán khi gọi vốn."
+      - "Công bố định kỳ; xây dựng quan hệ nhà đầu tư."
+      - "Dùng công thức Gordon để minh họa tác động của ke."
+    how_to_read_results: "ke giảm 1 điểm % (giả định) làm giá tăng 12,5% mà dòng tiền không đổi."
+    pitfalls: ["Hiểu 1 điểm % là số đo thực của Vinamilk", "Chờ đến khi gọi vốn mới sửa sổ (rất tốn kém, dễ bị trừ điểm khi due diligence)"]
+    example: "D1 = 1.000, g = 5%: ke 14% giá 11.111; ke 13% giá 12.500."
+  - id: "m01_month_end_close"
+    name_vi: "Checklist đóng sổ cuối kỳ"
+    name_en: "Month-end close checklist"
+    origin: "Thực hành chuẩn của kế toán SME để chặn lỗi sai kỳ và số dư không đối chiếu."
+    components:
+      - "1. Đối chiếu sổ quỹ tiền mặt với kiểm kê (thủ quỹ + kế toán)"
+      - "2. Đối chiếu sổ phụ ngân hàng (kế toán)"
+      - "3. Đối chiếu công nợ phải thu/phải trả (kế toán)"
+      - "4. Kiểm kê kho, điều chỉnh chênh lệch (thủ kho + kế toán)"
+      - "5. Trích khấu hao, phân bổ chi phí trả trước (kế toán)"
+      - "6. Ghi nhận dồn tích chi phí/doanh thu chưa có hóa đơn (kế toán)"
+      - "7. Lập bảng cân đối số phát sinh, kiểm tra Nợ = Có (kế toán)"
+      - "8. Lập BCTC, chủ DN soát xét (kế toán trưởng + chủ DN)"
+    when_to_use: "Mỗi tháng/quý/năm."
+    how_to_apply:
+      - "Đặt hạn đóng sổ (vd ngày 5 tháng sau)."
+      - "Giao người phụ trách từng bước; ký xác nhận."
+      - "Không cho phép nhập chứng từ kỳ cũ sau khi khóa."
+    how_to_read_results: "Mọi bước xong thì mới lập báo cáo quản trị tin cậy."
+    pitfalls: ["Làm bước 8 trước các bước 1-7", "Một người vừa giữ tiền vừa ghi sổ"]
+    example: "Tách người giữ tiền và người ghi sổ; chủ DN duyệt chi."
+  - id: "m01_sme_foundation_roadmap"
+    name_vi: "Lộ trình nền tảng kế toán cho SME (4 giai đoạn)"
+    name_en: "SME accounting foundation roadmap"
+    origin: "Đúc kết thực hành trong nguồn (gợi ý, không phải quy định)."
+    components:
+      - "Giai đoạn 1 (Tháng 0-1) - Nền tảng: tách tài khoản DN - cá nhân, chọn chế độ kế toán, chọn phần mềm và kế toán"
+      - "Giai đoạn 2 (Tháng 1-3) - Vận hành: nhập chứng từ hằng ngày, đối chiếu ngân hàng và công nợ hằng tháng"
+      - "Giai đoạn 3 (Quý 1-2) - Kiểm soát: kiểm kê kho, bảng khấu hao, báo cáo quản trị hằng tháng (P&L + dòng tiền)"
+      - "Giai đoạn 4 (Năm) - Chuẩn hóa: BCTC năm, quyết toán thuế, cân nhắc kiểm toán nếu cần vay/gọi vốn"
+    when_to_use: "Doanh nghiệp mới thành lập hoặc sổ sách còn lộn xộn."
+    how_to_apply:
+      - "Đi lần lượt từng giai đoạn; mỗi giai đoạn có đầu ra cụ thể."
+      - "Ghi lại quy trình và người phụ trách."
+    how_to_read_results: "Sau giai đoạn 3 chủ DN có P&L và dòng tiền hằng tháng tin cậy."
+    pitfalls: ["Nhảy cóc sang kiểm toán khi sổ chưa sạch"]
+    example: "Nắng Mai lập báo cáo hằng quý thay vì chờ cuối năm."
+  - id: "m01_software_selection"
+    name_vi: "Tiêu chí chọn phần mềm kế toán"
+    name_en: "Accounting software selection criteria"
+    origin: "Thực hành SME Việt Nam (giá chỉ ước tính, cần xác nhận với nhà cung cấp)."
+    components:
+      - "1. Phù hợp thông tư DN đang áp dụng (TT132/133/200)"
+      - "2. Tích hợp hóa đơn điện tử và ngân hàng"
+      - "3. Kết nối POS/bán hàng"
+      - "4. Xuất được dữ liệu"
+      - "5. Hỗ trợ và đào tạo"
+      - "6. Chi phí tổng thể (bản quyền + nâng cấp + hỗ trợ)"
+    when_to_use: "Lần đầu mua hoặc đổi phần mềm."
+    how_to_apply:
+      - "Liệt kê nghiệp vụ chính (bán lẻ, sản xuất, dịch vụ), số hóa đơn, số người dùng."
+      - "Xin báo giá nhiều nhà cung cấp, dùng thử."
+      - "Kiểm tra xuất dữ liệu và tích hợp POS/hóa đơn điện tử."
+    how_to_read_results: "Chọn theo tổng chi phí sở hữu và khả năng xuất dữ liệu, không chỉ giá năm đầu."
+    pitfalls: ["Chọn phần mềm không đúng thông tư", "Bị khóa dữ liệu"]
+    example: "Cửa hàng nhỏ dùng MISA bản đám mây + KiotViet/Sapo (giá cần xác nhận)."
+
+procedures:
+  - id: "m01_proc_journal_entry"
+    name: "Định khoản một nghiệp vụ (từ chứng từ đến bút toán)"
+    steps:
+      - "Đọc chứng từ gốc: bản chất nghiệp vụ, ngày, số tiền, đối tượng (khách hàng, nhà cung cấp), có VAT không."
+      - "Xác định các tài khoản bị ảnh hưởng và loại của chúng (tài sản, nợ phải trả, vốn chủ, doanh thu, chi phí)."
+      - "Với từng tài khoản hỏi tăng hay giảm; áp quy tắc: tài sản/chi phí tăng = Nợ; nợ/vốn/doanh thu tăng = Có (giảm thì ngược lại)."
+      - "Lập bút toán: Nợ ... / Có ... số tiền; tổng Nợ = tổng Có."
+      - "Nếu bán hàng: ghi thêm bút toán giá vốn (Nợ 632 / Có 156)."
+      - "Nếu tiền học phí/thuê bao thu trước: ghi vào doanh thu chưa thực hiện, không ghi doanh thu ngay."
+      - "Kiểm tra phương trình A = L + E sau bút toán; ghi tài khoản chi tiết."
+      - "Ghi chú số hiệu tài khoản theo TT200/TT133 là tham chiếu, cần xác nhận hiện hành trước khi ghi sổ thật."
+    outputs: "Bút toán Nợ/Có cân, có chứng từ gốc và tài khoản chi tiết."
+  - id: "m01_proc_trial_balance_to_fs"
+    name: "Từ sổ cái đến bộ báo cáo tài chính (chu trình khóa sổ)"
+    steps:
+      - "Cộng số phát sinh từng tài khoản; lập bảng cân đối số phát sinh; kiểm tra tổng số dư Nợ = tổng số dư Có (chưa cân thì dò lại)."
+      - "Bút toán điều chỉnh: khấu hao (Nợ 642/641/627 / Có 214); phân bổ chi phí trả trước (Nợ 641/642 / Có 242); dồn tích chi phí chưa có hóa đơn (Nợ chi phí / Có 331 hoặc 335); doanh thu chưa thực hiện chuyển sang doanh thu (Nợ 3387 / Có 511); dự phòng (nợ khó đòi, giảm giá hàng tồn kho)."
+      - "Chạy lại bảng cân đối số phát sinh sau điều chỉnh."
+      - "Kết chuyển: Nợ 511 / Có 911; Nợ 911 / Có 632, 641, 642, 635, 821 (doanh thu tài chính 515 và thu nhập khác 711 vào Có 911, chi phí khác 811 vào Nợ 911)."
+      - "Chuyển lãi/lỗ: lãi Nợ 911 / Có 421; lỗ Nợ 421 / Có 911. Trừ cổ tức đã chia (Nợ 421)."
+      - "Lập P&L: Doanh thu thuần - giá vốn = lợi nhuận gộp; trừ CP bán, CP quản lý = EBIT; trừ CP tài chính = EBT; trừ thuế = LNST."
+      - "Lập BS: tài sản (ngắn hạn: tiền, phải thu, tồn kho; dài hạn: TSCĐ NBV), nợ (ngắn hạn, dài hạn), vốn chủ (vốn góp + LNCPP)."
+      - "Lập CFS gián tiếp; đối chiếu tiền cuối kỳ với BS."
+      - "Chạy ba kiểm tra chéo: A = L + E; LNST khớp thay đổi LNCPP; tiền CFS = tiền BS."
+      - "Viết thuyết minh: chính sách kế toán, chi tiết khoản mục, bên liên quan, nợ tiềm tàng."
+    outputs: "Bốn báo cáo (BS, P&L, CFS, Thuyết minh) khớp nhau, kèm bảng kiểm tra chéo."
+  - id: "m01_proc_build_cfs"
+    name: "Lập Báo cáo lưu chuyển tiền tệ gián tiếp từ BS hai kỳ và P&L"
+    steps:
+      - "Lập bảng thay đổi BS: AR, tồn kho, AP, TSCĐ NBV, vay, vốn góp, LNCPP."
+      - "CFO = LNST + khấu hao - tăng AR - tăng tồn kho + tăng AP (tăng nợ hoạt động khác cộng; giảm thì ngược lại)."
+      - "CFI: -(mua TSCĐ) + (thu thanh lý TSCĐ). Mua TSCĐ = NBV cuối - NBV đầu + khấu hao."
+      - "CFF: + vay mới - trả gốc - cổ tức + vốn góp mới. Cổ tức = LNCPP đầu + LNST - LNCPP cuối."
+      - "Tổng thay đổi tiền = CFO + CFI + CFF; tiền cuối = tiền đầu + thay đổi."
+      - "Đối chiếu tiền cuối với BS. Lệch thì kiểm tra khoản mục BS chưa đưa vào."
+      - "Tùy chọn: lập CFO trực tiếp (thu KH = DT - tăng AR; chi NCC = GV + tăng tồn - tăng AP; chi phí tiền = CP bán + quản lý - khấu hao; trừ lãi, thuế) để đối chiếu."
+    outputs: "CFS ba nhóm + đối chiếu CFO hai phương pháp."
+  - id: "m01_proc_inventory_costing"
+    name: "Tính giá vốn và tồn kho cuối kỳ (FIFO / Bình quân)"
+    steps:
+      - "Liệt kê các lô nhập: số lượng, đơn giá, thứ tự; tồn đầu kỳ."
+      - "FIFO: lấy số lượng bán từ lô cũ nhất, chuyển sang lô sau khi hết; cộng giá trị."
+      - "Bình quân: giá bình quân = tổng giá trị / tổng số lượng (hoặc di động sau mỗi nhập); COGS = số bán x giá."
+      - "Tồn cuối = số lượng còn lại x giá tương ứng (FIFO: giá lô gần nhất; bình quân: giá bình quân)."
+      - "Kiểm tra: COGS + tồn cuối = tổng giá trị mua (tồn đầu + mua)."
+      - "Tính lợi nhuận gộp = doanh thu - COGS và so sánh hai phương pháp."
+      - "Cuối kỳ so giá gốc với NRV; trích dự phòng nếu NRV thấp hơn."
+      - "Ghi bút toán: Nợ 632 / Có 156 (COGS)."
+    outputs: "COGS, tồn cuối, lợi nhuận gộp theo từng phương pháp; kiểm tra đẳng thức."
+  - id: "m01_proc_depreciation_schedule"
+    name: "Lập bảng khấu hao TSCĐ"
+    steps:
+      - "Ghi nhận nguyên giá (giá mua + chi phí đưa vào sử dụng), GTTH, thời gian sử dụng, tổng sản lượng nếu có."
+      - "Chọn phương pháp (đường thẳng mặc định; DB nếu hao mòn nhanh; sản lượng nếu theo công suất) và kiểm tra khung thuế."
+      - "Tính khấu hao từng năm (hoặc tháng); với DB giới hạn năm cuối để NBV không thấp hơn GTTH."
+      - "Ghi bút toán hằng kỳ: Nợ 641/642/627 / Có 214."
+      - "Kiểm tra tổng khấu hao = nguyên giá - GTTH."
+      - "Cộng khấu hao ở CFO gián tiếp; mua TSCĐ ở CFI; NBV = đầu + mua - khấu hao."
+    outputs: "Bảng khấu hao theo năm, bút toán, NBV từng năm."
+  - id: "m01_proc_revenue_recognition"
+    name: "Ghi nhận doanh thu hợp đồng nhiều nghĩa vụ hoặc thu trước"
+    steps:
+      - "Xác định hợp đồng và các nghĩa vụ riêng biệt (license, triển khai, support, học phí)."
+      - "Xác định giá giao dịch (trừ giảm giá, hoàn trả)."
+      - "Phân bổ theo SSP tương đối: giá nghĩa vụ = giá HĐ x SSP / tổng SSP."
+      - "Xác định thời điểm: giao tại một thời điểm hoặc rải đều theo thời gian/tiến độ."
+      - "Khi nhận tiền: Nợ 112 / Có 3387 (hoặc 131 dư Có tùy chế độ); hằng kỳ: Nợ 3387 / Có 511."
+      - "Cuối kỳ: số dư 3387 là nợ phải trả (doanh thu chưa thực hiện) trên BS."
+      - "Khớp: doanh thu đã ghi + doanh thu chưa thực hiện = tổng tiền thu."
+    outputs: "Bảng doanh thu theo nghĩa vụ và theo kỳ, số dư doanh thu chưa thực hiện."
+  - id: "m01_proc_read_fs"
+    name: "Đọc bộ báo cáo tài chính của bên thứ ba (đối tác, ngân hàng, nhà đầu tư)"
+    steps:
+      - "Kiểm tra cân và khớp: A = L + E; LNST khớp LNCPP; tiền CFS = BS."
+      - "P&L: biên gộp, biên hoạt động, biên ròng; chi phí bán + quản lý/doanh thu."
+      - "Lợi nhuận có đi cùng CFO không (CFO/NI)? Nếu lợi nhuận tăng mà CFO giảm, tìm lý do."
+      - "Phải thu và tồn kho có tăng nhanh hơn doanh thu không? DSO, DIO."
+      - "Thanh khoản: current ratio, quick ratio, vốn lưu động ròng."
+      - "Đòn bẩy: D/E (cộng nợ ngoài bảng nếu thuyết minh có)."
+      - "Chính sách kế toán có nhất quán với kỳ trước (giá xuất, khấu hao, ghi nhận doanh thu)?"
+      - "Đọc thuyết minh: bên liên quan, nợ tiềm tàng, tài sản thế chấp; ý kiến kiểm toán (toàn phần hay ngoại trừ)."
+      - "Kết luận kèm cờ đỏ và câu hỏi cần xác minh."
+    outputs: "Nhận định chất lượng báo cáo, các tỷ số, cờ đỏ, câu hỏi tiếp theo."
+  - id: "m01_proc_sme_setup"
+    name: "Thiết lập kế toán SME từ đầu"
+    steps:
+      - "Mở tài khoản ngân hàng riêng cho DN; không trộn tiền cá nhân."
+      - "Chọn chế độ kế toán theo quy mô (TT132/133/200), cần xác nhận hiện hành."
+      - "Chọn phần mềm kế toán và hóa đơn điện tử (xem tiêu chí), thuê kế toán hoặc dịch vụ kế toán."
+      - "Thiết lập hệ thống tài khoản theo danh mục thông tư."
+      - "Quy trình: nhập chứng từ hằng ngày; đối chiếu ngân hàng và công nợ hằng tháng; kiểm kê kho; khấu hao."
+      - "Lập báo cáo quản trị hằng tháng (P&L + dòng tiền) và họp rà soát với chủ DN."
+      - "Lưu chứng từ theo quy định (thường 5-10 năm trở lên, cần xác nhận hiện hành)."
+      - "Kiểm soát: tách người giữ tiền và người ghi sổ; chủ DN duyệt chi."
+    outputs: "Hạ tầng kế toán tuân thủ và báo cáo quản trị định kỳ."
+
+decision_rules:
+  - "Nếu bảng cân đối không cân thì dò: lợi nhuận kỳ chưa kết chuyển vào LNCPP, bút toán thiếu một vế, tiền BS chưa lấy từ CFS, nhập sai dấu."
+  - "Nếu lợi nhuận dương nhưng tiền giảm thì xem CFO: tăng phải thu, tồn kho, trả nợ, chi đầu tư, chia cổ tức; xử lý bằng thu hồi công nợ, giảm DIO, đàm phán điều khoản."
+  - "Nếu lợi nhuận tăng nhiều kỳ mà CFO không tăng thì coi là cờ đỏ (Enron); soát doanh thu ghi sớm, phải thu phình, vốn hóa chi phí, giao dịch bên liên quan."
+  - "Nếu giá mua tăng thì FIFO cho COGS thấp hơn, lợi nhuận và thuế cao hơn bình quân; nếu giá giảm thì ngược lại; tiền thực không đổi."
+  - "Nếu đổi phương pháp tính giá xuất hoặc khấu hao thì phải thuyết minh và nêu ảnh hưởng (nhất quán); không đổi chỉ để làm đẹp kỳ."
+  - "Nếu phải chọn phương pháp tính giá xuất kho cho SME VN thì dùng FIFO hoặc bình quân gia quyền; không dùng LIFO (IFRS cấm; VAS 02 không chấp nhận - cần xác nhận hiện hành)."
+  - "Nếu tài sản dùng nhiều kỳ và giá trị lớn hơn ngưỡng trọng yếu thì ghi TSCĐ và khấu hao; nếu quá nhỏ thì ghi chi phí ngay (Materiality, ngưỡng theo thông tư, cần xác nhận hiện hành)."
+  - "Nếu tiền thu trước cho dịch vụ nhiều kỳ thì ghi doanh thu chưa thực hiện, rải doanh thu theo thời gian."
+  - "Nếu hợp đồng gói nhiều nghĩa vụ giá được giảm thì phân bổ theo SSP tương đối, không phân bổ cứng."
+  - "Nếu DN là hộ kinh doanh thì sổ sách đơn giản; DN siêu nhỏ TT132; DNNVV TT133; DN lớn/niêm yết TT200; cần xác nhận hiện hành."
+  - "Nếu có kế hoạch gọi vốn ngoại, bán cho tập đoàn đa quốc gia hoặc niêm yết thì giữ sổ sạch nhất quán từ sớm và chuẩn bị chuyển đổi IFRS."
+  - "Nếu tồn kho hư hỏng, lỗi mốt, hoặc NRV thấp hơn giá gốc thì trích lập dự phòng (thận trọng)."
+  - "Nếu kế toán chỉ ghi theo tiền mặt thì chuyển sang dồn tích: ghi doanh thu/chi phí đúng kỳ bằng phải thu, phải trả, chi phí trả trước, doanh thu chưa thực hiện."
+  - "Nếu chủ DN dùng tiền DN cho cá nhân thì tách tài khoản, trả lương/rút lợi nhuận theo quy định; báo cáo méo và khó vay."
+  - "Nếu báo cáo thuế khác BCTC thì lập bảng đối chiếu chênh lệch giải thích được."
+  - "Nếu cần quyết định có kiểm toán hay không thì xem đối tượng bắt buộc (niêm yết, vốn nước ngoài...) hoặc nhu cầu vay/gọi vốn; cần xác nhận hiện hành."
+  - "Nếu tính DSO, DIO, DPO thì dùng doanh thu cho DSO và giá vốn cho DIO, DPO."
+  - "Nếu mọi số liệu trong ví dụ là giả định thì ghi 'giả định minh họa'; số liệu công ty thật cần đối chiếu nguồn."
+
+benchmarks:
+  - {metric: "Biên lợi nhuận gộp Nắng Mai", value: "30% (giả định minh họa)", context: "Đồ gia dụng bán lẻ + online, không phải chuẩn ngành", confidence: "low"}
+  - {metric: "Biên hoạt động / ròng Nắng Mai", value: "12% / 8,64% (giả định)", context: "Ví dụ giảng dạy", confidence: "low"}
+  - {metric: "Chi phí bán hàng + quản lý trên doanh thu", value: "18% (Nắng Mai)", context: "Theo dõi theo tháng", confidence: "low"}
+  - {metric: "Hệ số thanh toán hiện hành", value: "2,24 (Nắng Mai); 1,5-2 thường coi lành mạnh", context: "Ngưỡng tham khảo, cần so ngành", confidence: "medium"}
+  - {metric: "Hệ số thanh toán nhanh", value: "1,28 (Nắng Mai); ≥1 thường an toàn", context: "Tham khảo", confidence: "medium"}
+  - {metric: "DSO / DIO / DPO / CCC", value: "19 / 50 / 31 / 38 ngày (Nắng Mai, giả định)", context: "Mục tiêu DSO dưới 20, giảm DIO 5 ngày", confidence: "low"}
+  - {metric: "ROE / D/E", value: "46,4% / 0,79 (Nắng Mai)", context: "Dùng vốn chủ cuối kỳ cho đơn giản", confidence: "low"}
+  - {metric: "Payout ratio", value: "34,7% (Nắng Mai)", context: "Hợp lý khi còn FCF dương", confidence: "low"}
+  - {metric: "Thuế suất TNDN giả định trong ví dụ", value: "20%", context: "Cần xác nhận hiện hành với văn bản thuế", confidence: "low"}
+  - {metric: "Tổng khấu hao phương pháp DB vs đường thẳng", value: "bằng nhau (450 trong ví dụ)", context: "Chỉ khác thời điểm", confidence: "high"}
+  - {metric: "Số quốc gia dùng IFRS", value: "140+ (nguồn gốc)", context: "Con số tham khảo, đối chiếu ifrs.org", confidence: "low"}
+  - {metric: "Số chuẩn mực VAS", value: "26 chuẩn mực, 5 đợt, 2001-2005", context: "Theo nguồn; cần xác nhận hiện hành", confidence: "medium"}
+  - {metric: "Thời hạn lưu trữ chứng từ", value: "thường 5-10 năm trở lên", context: "Cần xác nhận hiện hành", confidence: "low"}
+
+pitfalls:
+  - "Hiểu Nợ = 'nợ tiền', Có = 'có tiền'; quên quy tắc tăng/giảm theo loại tài khoản."
+  - "Nhầm lợi nhuận với tiền; chủ DN 'lãi mà không có tiền' vì phải thu và tồn kho."
+  - "Ghi sổ theo tiền mặt thay vì dồn tích nên doanh thu/chi phí sai kỳ."
+  - "Quên bút toán giá vốn hoặc khấu hao nên lợi nhuận ảo."
+  - "Hiểu khấu hao là chi tiền (quên cộng lại ở CFO, hoặc ghi vào CFI nhiều lần)."
+  - "Đảo dấu thay đổi vốn lưu động trong CFO gián tiếp (tăng phải thu là trừ)."
+  - "Tin rằng FIFO hay bình quân làm đổi tiền thực; thực tế chỉ chia lại tổng chi phí giữa COGS và tồn kho."
+  - "Dùng LIFO (IFRS cấm; VAS 02 không chấp nhận, cần xác nhận hiện hành)."
+  - "Đổi phương pháp tùy ý (mất nhất quán) hoặc chọn phương pháp khấu hao chỉ để tối ưu thuế."
+  - "Tính DSO, DIO, DPO với mẫu số sai (DIO/DPO phải chia giá vốn, DSO chia doanh thu)."
+  - "Dùng Excel DB() cho tỷ lệ 40% (DB tự tính tỷ lệ); phải dùng DDB."
+  - "Nhập sai thời điểm ghi nhận doanh thu (ghi khi ký hợp đồng hoặc khi nhận tiền) thay vì khi chuyển giao."
+  - "Trộn tiền cá nhân - DN; không lưu chứng từ; không khóa sổ đúng kỳ; không kiểm kê kho."
+  - "Báo cáo thuế khác BCTC mà không có bảng đối chiếu."
+  - "Không đối chiếu công nợ định kỳ nên phải thu khó đòi, sai số dư."
+  - "Bỏ qua thuyết minh: chỗ giấu bên liên quan, nợ tiềm tàng, thay đổi chính sách."
+  - "Coi VAS = IFRS hoặc áp nhầm thông tư theo quy mô; coi ngưỡng DNNVV là cố định."
+  - "Đưa số liệu minh họa của công ty thật (Vinamilk, Enron) thành sự thật mà không đối chiếu nguồn."
+  - "Lỗi nguồn: bài ghi 'bốn báo cáo' nhưng có chỗ viết 'cả ba báo cáo' (chỉ ba báo cáo số liệu); bảng 'Hai khái niệm cần phân biệt' thực ra liệt kê ba khái niệm; 'gần 11% CFO' đúng là 50/442 = 11,3% (hơn 11%); Excel DB() không nhận tỷ lệ 40% (dùng DDB). Giá trị đúng đã dùng trong module."
+
+sme_vn_guidance:
+  - "Chế độ kế toán theo quy mô: hộ kinh doanh sổ đơn giản; DN siêu nhỏ TT132/2018; DNNVV TT133/2016; DN lớn TT200/2014 (cần xác nhận hiện hành). Tiêu chí phân loại DNNVV thay đổi theo thời kỳ."
+  - "Phần mềm kế toán (giá ước tính, confidence low, cần xác nhận nhà cung cấp): MISA SME/AMIS Kế toán khoảng vài triệu đến hơn chục triệu đồng/năm; Fast Accounting bản quyền khoảng chục triệu trở lên; Bravo báo giá theo dự án; KiotViet/Sapo POS khoảng vài trăm nghìn đến vài triệu đồng/tháng; hóa đơn điện tử (MISA meInvoice, Viettel S-Invoice, VNPT) theo gói số hóa đơn; Excel/Google Sheets miễn phí hoặc chi phí Google Workspace."
+  - "Hóa đơn điện tử: bắt buộc theo lộ trình (cần xác nhận hiện hành)."
+  - "Lưu trữ chứng từ: thường 5-10 năm trở lên tùy loại (cần xác nhận hiện hành)."
+  - "Kiểm toán: không bắt buộc với DNNVV trừ trường hợp quy định riêng; bắt buộc với niêm yết, DN có vốn nước ngoài (cần xác nhận hiện hành); cân nhắc kiểm toán khi vay/gọi vốn."
+  - "Kiểm soát nội bộ tối thiểu: tách người giữ tiền và người ghi sổ, chủ DN duyệt chi, tài khoản riêng."
+  - "Hằng tháng làm báo cáo quản trị đơn giản (P&L + dòng tiền) ngoài báo cáo thuế."
+  - "Kê khai thuế đúng hạn (thời hạn và quy định cần xác nhận hiện hành); thuế suất TNDN 20% trong ví dụ chỉ là giả định."
+  - "Kỷ luật vốn lưu động: giữ DSO dưới 20 ngày, giảm DIO 5 ngày giải phóng ~48 triệu (Nắng Mai); theo dõi rủi ro phụ thuộc tín dụng nhà cung cấp."
+  - "Chuẩn bị IFRS chỉ khi có kế hoạch gọi vốn ngoại, M&A; ưu tiên thấp-trung bình."
+  - "Mọi giá phần mềm, thuế, pháp lý trong module là tham khảo; xác nhận với kế toán trưởng/đơn vị dịch vụ/văn bản hiện hành trước khi áp dụng."
+
+case_lessons:
+  - name: "Vinamilk - minh bạch tài chính làm giảm chi phí vốn"
+    type: "success"
+    setup: "Vinamilk (VNM) thường được nhắc là ví dụ minh bạch: BCTC theo VAS kèm công bố bổ sung, kiểm toán quốc tế uy tín, công bố đúng hạn, IR quốc tế, cổ tức tiền mặt đều. Thông tin định tính cần đối chiếu báo cáo thường niên và BCTC kiểm toán chính thức."
+    key_calculations:
+      - "Gordon P0 = D1/(ke - g) với D1 = 1.000, g = 5%."
+      - "Kém minh bạch ke = 14%: 1.000/0,09 = 11.111 đồng."
+      - "Minh bạch ke = 13%: 1.000/0,08 = 12.500 đồng; 12.500/11.111 - 1 = 12,5%."
+    lesson: "Minh bạch làm giảm phần bù rủi ro thông tin nên giảm chi phí vốn, tăng giá trị mà dòng tiền hoạt động không đổi. SME xây hệ thống kế toán chuẩn từ sớm, không đợi gọi vốn (sửa sổ lúc đó tốn kém và bị trừ điểm khi due diligence). Mức giảm 1 điểm % chỉ là giả định minh họa, không phải số đo thực của Vinamilk."
+    data_reliability: "illustrative"
+  - name: "Enron (2001) - gian lận kế toán lớn nhất lịch sử"
+    type: "failure"
+    setup: "Công ty năng lượng Mỹ doanh thu khoảng 101 tỷ USD (2000), phá sản cuối 2001 với tài sản khoảng 63,4 tỷ USD; Arthur Andersen vừa kiểm toán vừa tư vấn; CFO Fastow và CEO Skilling bị kết án. Số liệu lịch sử cần đối chiếu hồ sơ tòa án và SEC."
+    key_calculations:
+      - "SPE (giả định): tài sản 1.000, nợ 400, vốn 600; giấu 300 nợ: D/E 400/600 = 0,67 thay vì 700/600 = 1,17 (thấp hơn 42,9%)."
+      - "Mark-to-Market (giả định): 10 triệu USD/năm x 10 năm, 10%: PV = 61,45 ghi ngay trong khi tiền thực nhận = 0."
+      - "Round-trip: bán 100 rồi mua lại 100 -> lợi nhuận 0 nhưng doanh thu +100."
+      - "Vốn hóa chi phí 50 khấu hao 5 năm: lợi nhuận kỳ đầu chỉ giảm 10 thay vì 50, thổi phồng 40."
+    lesson: "Năm bài học: kiểm toán phải độc lập; soi giao dịch ngoài bảng và bên liên quan; lợi nhuận tăng mà CFO không tăng là cờ đỏ; 'quá tốt để là thật' thường không thật; quản trị yếu là thảm họa. Hệ quả: SOX 2002."
+    data_reliability: "unverified"
+  - name: "Nắng Mai - lập và đọc bộ báo cáo từng bước (SME VN)"
+    type: "sme"
+    setup: "Công ty TNHH bán đồ gia dụng, chủ Lan 'lãi mà không có tiền'. BS đầu năm cân 1.400. Năm N: doanh thu 5.000, giá vốn 3.500, CP bán 500, CP quản lý 400 (khấu hao 100), lãi vay 60, thuế 20%, mua TSCĐ 150, trả nợ DH 60, cổ tức 150. Giả định minh họa, đã verify bằng sổ cái giả lập."
+    key_calculations:
+      - "P&L: GP 1.500; EBIT 600; EBT 540; thuế 108; NI 432; biên 30% / 12% / 8,64%."
+      - "BS cuối năm: tài sản 382 + 260 + 480 + 550 = 1.672; nợ 300 + 200 + 240 = 740; vốn 500 + 432 = 932; cân."
+      - "CFO gián tiếp 432 + 100 - 60 - 80 + 50 = 442; CFI -150; CFF -210; thay đổi +82; tiền 300 -> 382."
+      - "Trực tiếp: 4.940 - 3.530 - 800 - 60 - 108 = 442 (khớp)."
+      - "140 (60 + 80) nằm trong phải thu và tồn kho; nếu NCC không cho nợ thêm 50 thì CFO 392 (< lợi nhuận 40)."
+      - "FCF 292; payout 34,7%; current 2,24; quick 1,28; DSO 19; DIO 50; DPO 31; CCC 38; ROE 46,4%; D/E 0,79."
+      - "Giảm DIO 50 -> 45 ngày: 3.500/365 x 5 ≈ 48 triệu."
+    lesson: "Ba báo cáo phải khớp. Chủ DN không chỉ nhìn lãi: giải phóng tiền bằng thu hồi công nợ và giảm tồn kho; theo dõi phụ thuộc tín dụng nhà cung cấp (50 ≈ 11,3% CFO); lập báo cáo hằng quý."
+    data_reliability: "illustrative"
+  - name: "Xưởng in - cơ sở tiền vs dồn tích"
+    type: "sme"
+    setup: "Xưởng in giao lô hàng 200 triệu ngày 28/12, khách trả 10/01; chi phí 140 đã trả tháng 12. Giả định minh họa."
+    key_calculations:
+      - "Cash: tháng 12 = 0 - 140 = -140; tháng 1 = +200."
+      - "Accrual: tháng 12 = 200 - 140 = +60; tháng 1 = 0."
+      - "Tổng hai tháng đều 60."
+    lesson: "Cơ sở tiền làm chủ DN đánh giá sai hiệu quả từng tháng; dồn tích phản ánh đúng, khoản chưa thu nằm ở Phải thu khách hàng."
+    data_reliability: "illustrative"
+  - name: "Công ty phần mềm - hợp đồng 100 triệu ba nghĩa vụ"
+    type: "sme"
+    setup: "License + triển khai 2 tháng + support 12 tháng, giá 100; giá bán độc lập 50 / 35 / 35 (tổng 120). Giả định minh họa."
+    key_calculations:
+      - "License 100 x 50/120 = 41,67; triển khai 29,17; support 29,16."
+      - "Support rải đều 29,16/12 = 2,43 triệu/tháng."
+    lesson: "Tiền nhận 1 lần nhưng doanh thu rải nhiều kỳ; phần chưa ghi nhận nằm trên BS là doanh thu chưa thực hiện."
+    data_reliability: "illustrative"
+  - name: "Trung tâm tiếng Anh - học phí trọn khóa"
+    type: "sme"
+    setup: "Học phí 36 triệu/học viên/12 tháng thu ngày 01/10; kỳ kế toán năm dương lịch; 50 học viên. Giả định minh họa."
+    key_calculations:
+      - "3 triệu/tháng x 3 tháng = 9 triệu doanh thu/học viên; 27 triệu doanh thu chưa thực hiện."
+      - "50 học viên: doanh thu 450; tiền thu 1.800; doanh thu chưa thực hiện 1.350; 450 + 1.350 = 1.800."
+    lesson: "Tiền thu lớn hơn doanh thu vì nhận trước khi cung cấp dịch vụ; doanh thu chưa thực hiện là nghĩa vụ phải phục vụ (và hoàn tiền nếu khách bỏ học)."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "1. Cửa hàng mới: 5 bút toán, tổng tài sản = nợ + vốn chủ (triệu VNĐ, giả định minh họa)"
+    inputs: {gop_von: 300, vay: 100, mua_chiu: 80, ban_thu_tien: 150, gia_von: 60}
+    steps:
+      - "Bút toán 1: Nợ 112 / Có 411 = 300 (chủ góp vốn)."
+      - "Bút toán 2: Nợ 112 / Có 341 = 100 (vay ngân hàng)."
+      - "Bút toán 3: Nợ 156 / Có 331 = 80 (mua hàng chưa trả)."
+      - "Bút toán 4: Nợ 111 / Có 511 = 150 (bán thu tiền ngay)."
+      - "Bút toán 5: Nợ 632 / Có 156 = 60 (ghi giá vốn)."
+      - "Tiền = 300 + 100 + 150 = 550; Hàng hóa = 80 - 60 = 20; Tổng tài sản = 570."
+      - "Nợ phải trả = vay 100 + phải trả người bán 80 = 180."
+      - "Vốn chủ = vốn góp 300 + lợi nhuận (150 - 60 = 90) = 390."
+      - "Kiểm tra: 180 + 390 = 570 = tổng tài sản. Tổng số bên Nợ = tổng bên Có = 300 + 100 + 80 + 150 + 60 = 690."
+    result: "Tài sản 570 = Nợ 180 + Vốn chủ 390 (cân)."
+  - name: "2. Nắng Mai: lập P&L, BS, CFS và các kiểm tra chéo (triệu VNĐ, giả định minh họa, thuế 20%)"
+    inputs: {bs_dau_nam: {tien: 300, phai_thu: 200, ton_kho: 400, tscd_nbv: 500, phai_tra: 250, vay_ngan_han: 200, vay_dai_han: 300, von_gop: 500, lncpp: 150}, trong_nam: {doanh_thu: 5000, gia_von: 3500, cp_ban: 500, cp_quan_ly: 400, khau_hao_trong_cp_quan_ly: 100, lai_vay: 60, mua_tscd: 150, tra_no_dai_han: 60, co_tuc: 150}, cuoi_nam: {phai_thu: 260, ton_kho: 480, phai_tra: 300}}
+    steps:
+      - "Kiểm tra BS đầu năm: 300 + 200 + 400 + 500 = 1.400; 250 + 200 + 300 + 500 + 150 = 1.400 (cân)."
+      - "P&L: GP = 5.000 - 3.500 = 1.500; EBIT = 1.500 - 500 - 400 = 600; EBT = 600 - 60 = 540; thuế 20% = 108; NI = 432."
+      - "Biên: 30% / 12% / 8,64%; CP bán + quản lý = 900/5.000 = 18%."
+      - "BS cuối năm: TSCĐ NBV = 500 + 150 - 100 = 550; vay dài hạn = 300 - 60 = 240; vay ngắn hạn 200; LNCPP = 150 + 432 - 150 = 432."
+      - "CFO gián tiếp = 432 + 100 - (260 - 200) - (480 - 400) + (300 - 250) = 442."
+      - "CFI = -150. CFF = -60 - 150 = -210. Thay đổi tiền = 442 - 150 - 210 = +82; tiền cuối = 300 + 82 = 382."
+      - "BS cuối năm: tài sản 382 + 260 + 480 + 550 = 1.672; nợ 300 + 200 + 240 = 740; vốn chủ 500 + 432 = 932; 740 + 932 = 1.672 (cân)."
+      - "Đối chiếu trực tiếp: thu KH 5.000 - 60 = 4.940; mua hàng = 3.500 + 80 = 3.580, chi NCC = 3.580 - 50 = 3.530; chi phí tiền = 500 + 400 - 100 = 800; lãi 60; thuế 108; CFO = 4.940 - 3.530 - 800 - 60 - 108 = 442 (khớp)."
+      - "Bút toán điều chỉnh/kết chuyển: Nợ 642 / Có 214 = 100; Nợ 911 / Có 632, 641, 642, 635, 821; Nợ 511 / Có 911 = 5.000; Nợ 911 / Có 421 = 432 (lãi); cổ tức Nợ 421 / Có 112 = 150 (qua 3388 nếu tuyên bố trước)."
+      - "Mô phỏng sổ cái đầy đủ cho số dư cuối: tiền 382, phải thu 260, tồn kho 480, TSCĐ gốc 950 - hao mòn 400 = 550, phải trả 300, vay 440, vốn 500, LNCPP 432; tổng Nợ = tổng Có."
+      - "Phân tích: lợi nhuận 432 nhưng 140 (60 + 80) kẹt ở phải thu và tồn kho; CFO 442 chỉ nhờ khấu hao 100 và NCC cho nợ thêm 50; không có 50 đó CFO chỉ còn 392."
+      - "Tỷ số: FCF 442 - 150 = 292; payout 150/432 = 34,7%; current 1.122/500 = 2,24; quick 642/500 = 1,28; DSO 19; DIO 50; DPO 31; CCC 38; ROE 432/932 = 46,4%; D/E 740/932 = 0,79."
+      - "Khuyến nghị: giảm DIO còn 45 ngày giải phóng 3.500/365 x 5 ≈ 48 triệu; giữ DSO dưới 20 ngày; lập báo cáo hằng quý."
+    result: "NI 432; CFO 442; tiền cuối năm 382; BS cân 1.672; ba báo cáo khớp."
+  - name: "3. FIFO và bình quân gia quyền: hai bài (VNĐ, giả định minh họa)"
+    inputs: {bai_a: {lo1: "100 x 50.000", lo2: "100 x 60.000", ban: "150 x 80.000"}, bai_b: {lo1: "200 x 30.000", lo2: "300 x 36.000", ban: "350 x 50.000"}}
+    steps:
+      - "Bài A - FIFO: COGS = 100 x 50.000 + 50 x 60.000 = 8.000.000; tồn cuối 50 x 60.000 = 3.000.000; doanh thu 12.000.000; lãi gộp 4.000.000."
+      - "Bài A - Bình quân: (5.000.000 + 6.000.000)/200 = 55.000; COGS 150 x 55.000 = 8.250.000; tồn 2.750.000; lãi gộp 3.750.000."
+      - "Bài A - kiểm tra: COGS + tồn = 11.000.000 cho cả hai phương pháp (= tổng mua 5 + 6 triệu)."
+      - "Bài B - doanh thu = 350 x 50.000 = 17.500.000."
+      - "Bài B - FIFO: COGS = 200 x 30.000 + 150 x 36.000 = 6.000.000 + 5.400.000 = 11.400.000; tồn 150 x 36.000 = 5.400.000; lãi gộp 6.100.000."
+      - "Bài B - Bình quân: (6.000.000 + 10.800.000)/500 = 33.600; COGS 350 x 33.600 = 11.760.000; tồn 150 x 33.600 = 5.040.000; lãi gộp 5.740.000."
+      - "Bài B - kiểm tra: mỗi phương pháp COGS + tồn = 16.800.000 (tổng chi phí mua)."
+      - "Bút toán COGS: Nợ 632 / Có 156 theo số tính được."
+    result: "Giá tăng nên FIFO có lãi gộp cao hơn (4,00 vs 3,75 triệu; 6,10 vs 5,74 triệu) nhưng tiền thực không đổi."
+  - name: "4. Khấu hao: ba phương pháp (triệu VNĐ, giả định minh họa)"
+    inputs: {may_a: {nguyen_gia: 500, gtth: 50, nam: 5, ty_le_db: 0.4}, may_dong_goi: {nguyen_gia: 240, gtth: 30, nam: 5, tong_san_luong: 1000000, san_luong_nam_1: 180000, ty_le_db: 0.4}}
+    steps:
+      - "Máy A đường thẳng: (500 - 50)/5 = 90 triệu/năm, 5 năm tổng 450."
+      - "Máy A số dư giảm dần 40%: năm 1: 500 x 40% = 200 (còn 300); năm 2: 120 (180); năm 3: 72 (108); năm 4: 43,2 (64,8); năm 5: min(25,92 ; 64,8 - 50) = 14,8 (50). Tổng 450."
+      - "So sánh: DB làm khấu hao năm 1 là 200 so với 90 nên lợi nhuận năm 1 thấp hơn 110; tổng như nhau; thuế chỉ chấp nhận theo khung quy định (cần xác nhận hiện hành)."
+      - "Máy đóng gói đường thẳng: (240 - 30)/5 = 42 triệu/năm."
+      - "Máy đóng gói theo sản lượng năm 1: 210/1.000.000 x 180.000 = 37,8 triệu."
+      - "Máy đóng gói DB 40%: năm 1 = 240 x 40% = 96 (còn 144); năm 2 = 144 x 40% = 57,6 (bỏ qua giới hạn GTTH)."
+      - "Bút toán hằng năm: Nợ 642 / Có 214 theo số khấu hao; CFO gián tiếp cộng lại số này."
+    result: "Máy A: SL 90/năm; DB 200-120-72-43,2-14,8; Máy đóng gói: 42; 37,8; 96 và 57,6."
+  - name: "5. Ghi nhận doanh thu: gói phần mềm và học phí trọn khóa (triệu VNĐ, giả định minh họa)"
+    inputs: {phan_mem: {gia_hd: 100, ssp: {license: 50, trien_khai: 35, support: 35}}, hoc_phi: {phi: 36, thang: 12, ngay_thu: "01/10", hoc_vien: 50}}
+    steps:
+      - "Phần mềm: tổng SSP = 120; license 100 x 50/120 = 41,67; triển khai 29,17; support 29,16 (tổng 100)."
+      - "Ghi nhận: license khi giao 41,67; triển khai theo tiến độ 2 tháng 29,17; support 29,16/12 = 2,43 triệu/tháng."
+      - "Bút toán khi nhận 100 tiền: Nợ 112 = 100 / Có 3387 (hoặc 131 dư Có) = 100; sau đó chuyển dần sang Có 511 khi thực hiện nghĩa vụ."
+      - "Học phí: 36/12 = 3 triệu/tháng; từ 01/10 đến 31/12 là 3 tháng -> doanh thu 9 triệu/học viên."
+      - "Bút toán 01/10: Nợ 112 = 36 / Có 3387 = 36; cuối mỗi tháng Nợ 3387 / Có 511 = 3; đến 31/12 doanh thu 9, 3387 còn 27."
+      - "50 học viên: doanh thu năm 450; tiền thu 1.800; doanh thu chưa thực hiện 1.350; kiểm tra 450 + 1.350 = 1.800."
+    result: "Phần mềm 41,67 / 29,17 / 29,16 triệu; học phí doanh thu 450, chưa thực hiện 1.350 triệu."
+  - name: "6. Bảng cân đối tìm LNCPP và LNST; lưu chuyển tiền gián tiếp nhanh (triệu VNĐ, giả định minh họa)"
+    inputs: {bai_4: {tien: 120, phai_thu: 80, ton_kho: 150, tscd: 400, phai_tra: 130, vay: 250, von_gop: 200, lncpp_nam_truoc: 100, co_tuc: 40}, bai_5: {lnst: 300, khau_hao: 60, tang_phai_thu: 40, giam_ton_kho: 30, tang_phai_tra: 20, mua_tscd: 200, vay_them: 100, tien_dau: 50}}
+    steps:
+      - "Bài 4: tổng tài sản = 120 + 80 + 150 + 400 = 750; nợ + vốn góp = 130 + 250 + 200 = 580; LNCPP = 750 - 580 = 170."
+      - "170 = 100 + NI - 40 nên NI = 110."
+      - "Bài 5: CFO = 300 + 60 - 40 + 30 + 20 = 370 (tồn kho giảm thì cộng)."
+      - "Thay đổi tiền = 370 - 200 + 100 = 270; tiền cuối = 50 + 270 = 320."
+    result: "LNCPP 170; NI 110; CFO 370; tiền cuối kỳ 320 triệu."
+  - name: "7. Cơ sở tiền vs dồn tích: xưởng in (triệu VNĐ, giả định minh họa)"
+    inputs: {doanh_thu: 200, chi_phi: 140, ngay_giao: "28/12", ngay_thu: "10/01"}
+    steps:
+      - "Dồn tích tháng 12: Nợ 131 / Có 511 = 200; chi phí 140 đã trả; lợi nhuận +60."
+      - "Cash basis tháng 12: doanh thu 0, chi phí 140, lợi nhuận -140."
+      - "Tháng 1: dồn tích thu nợ Nợ 112 / Có 131 = 200, lợi nhuận 0; cash basis +200."
+      - "Tổng hai tháng: dồn tích 60 + 0 = 60; cash -140 + 200 = 60."
+    result: "Dồn tích: +60 tháng 12 và 0 tháng 1; cash: -140 và +200; tổng bằng nhau 60."
+  - name: "8. Mini-case Enron: bốn thủ thuật bằng số (giả định minh họa)"
+    inputs: {spe: {tai_san: 1000, no: 400, von: 600, no_giau: 300}, mtm: {lai_moi_nam: 10, r: 0.10, nam: 10}, round_trip: 100, von_hoa: {chi_phi: 50, nam: 5}}
+    steps:
+      - "SPE: D/E trung thực (400 + 300)/600 = 1,17; giấu 400/600 = 0,67; thấp hơn 42,9%."
+      - "Mark-to-Market: PV = 10 x (1 - 1,1^-10)/0,1 = 61,45 ghi ngay trong khi tiền thực nhận 0."
+      - "Round-trip: doanh thu +100, giá vốn +100, lợi nhuận 0 nhưng doanh thu phình 100."
+      - "Vốn hóa chi phí 50 khấu hao 5 năm: giảm lợi nhuận kỳ đầu chỉ 10; thổi phồng 40."
+      - "Cờ đỏ chung: lợi nhuận tăng mà CFO không tăng."
+    result: "D/E 0,67 vs 1,17; lợi nhuận ảo 61,45; doanh thu ảo 100; lợi nhuận thổi phồng 40."
+
+practice_questions:
+  - q: "Cửa hàng mới (triệu): góp vốn 300 qua ngân hàng, vay 100, mua hàng chịu 80, bán thu tiền 150, giá vốn 60. Ghi bút toán và tính tài sản, nợ, vốn chủ (bỏ qua thuế)."
+    a: "Nợ 112/Có 411: 300; Nợ 112/Có 341: 100; Nợ 156/Có 331: 80; Nợ 111/Có 511: 150; Nợ 632/Có 156: 60. Tiền 550 + hàng 20 = 570; nợ 100 + 80 = 180; vốn chủ 300 + 90 = 390; 180 + 390 = 570."
+  - q: "Mua 200 sp giá 30.000, sau đó 300 sp giá 36.000; bán 350 sp giá 50.000. Tính COGS, tồn cuối, lợi nhuận gộp theo FIFO và bình quân."
+    a: "FIFO: COGS 11.400.000; tồn 5.400.000; lãi gộp 6.100.000. Bình quân 33.600: COGS 11.760.000; tồn 5.040.000; lãi gộp 5.740.000. COGS + tồn = 16.800.000 cho cả hai."
+  - q: "Máy 240 triệu, GTTH 30, 5 năm, tổng 1.000.000 sp. (a) đường thẳng; (b) sản lượng năm 1 với 180.000 sp; (c) DB 40% năm 1 và 2."
+    a: "(a) 42 triệu/năm; (b) 37,8 triệu; (c) năm 1 = 96 (còn 144); năm 2 = 57,6 (bỏ qua giới hạn GTTH)."
+  - q: "Tiền 120, phải thu 80, tồn kho 150, TSCĐ 400; phải trả 130, vay 250, vốn góp 200. Tìm LNCPP; nếu LNCPP năm trước 100, cổ tức 40 thì NI?"
+    a: "Tài sản 750; nợ + vốn góp 580; LNCPP 170; 170 = 100 + NI - 40 nên NI = 110."
+  - q: "LNST 300; khấu hao 60; phải thu tăng 40; tồn kho giảm 30; phải trả tăng 20. Tính CFO. Chi mua TSCĐ 200, vay thêm 100, tiền đầu 50, tiền cuối?"
+    a: "CFO = 300 + 60 - 40 + 30 + 20 = 370. Thay đổi tiền = 370 - 200 + 100 = 270; tiền cuối 320."
+  - q: "Học phí 36 triệu/12 tháng thu 01/10, năm dương lịch. (a) doanh thu năm; (b) doanh thu chưa thực hiện 31/12; (c) 50 học viên."
+    a: "3 triệu/tháng. (a) 9 triệu/học viên; (b) 27 triệu; (c) doanh thu 450, tiền thu 1.800, chưa thực hiện 1.350 (450 + 1.350 = 1.800). Tiền thu lớn hơn doanh thu vì nhận trước khi phục vụ."
+  - q: "Vì sao hai DN cùng giá nhập, cùng bán nhưng dùng FIFO và bình quân báo lợi nhuận khác nhau? Tiền thực có khác không?"
+    a: "Phương pháp chia lại tổng chi phí giữa COGS và tồn cuối kỳ; COGS + tồn = tổng mua nên tiền thực không khác. Giá tăng thì FIFO COGS thấp hơn nên lợi nhuận và thuế cao hơn."
+  - q: "Lợi nhuận tăng mà CFO giảm nhiều kỳ cho thấy điều gì? Liên hệ Enron."
+    a: "Tiền không theo lợi nhuận: doanh thu ghi sớm/ảo, phải thu phình, tồn kho tăng, vốn hóa chi phí hoặc Mark-to-Market. Enron ghi lợi nhuận ảo (PV 61,45 trong ví dụ) trong khi tiền thực bằng 0; đây là cờ đỏ kinh điển."
+  - q: "SME 15 nhân viên nên chọn chế độ kế toán và phần mềm nào?"
+    a: "Thường DNNVV áp TT133/2016 (cần xác nhận hiện hành) và phần mềm đám mây tích hợp hóa đơn điện tử, ngân hàng, POS (MISA/Fast...). Tiêu chí: phù hợp thông tư, tích hợp, xuất dữ liệu, hỗ trợ, tổng chi phí. Giá cần báo cụ thể."
+  - q: "Nắng Mai: vì sao lợi nhuận 432 nhưng tiền chỉ tăng 82?"
+    a: "CFO 442 nhưng chi đầu tư 150, trả nợ gốc 60, cổ tức 150: 442 - 150 - 60 - 150 = 82. Trong lợi nhuận, 140 kẹt ở phải thu (60) và tồn kho (80) được bù một phần bởi khấu hao 100 và NCC cho nợ thêm 50."
+  - q: "Vì sao quick ratio loại tồn kho?"
+    a: "Tồn kho khó và chậm chuyển thành tiền, có thể phải giảm giá khi thanh lý nên coi thanh khoản thấp; quick ratio chỉ tính tiền và phải thu."
+  - q: "Giả sử Nắng Mai có thêm nợ ngoài bảng 300 (SPE). D/E đúng là bao nhiêu và đẹp giả bao nhiêu %?"
+    a: "Đúng (740 + 300)/932 = 1,12; báo cáo 740/932 = 0,79; thấp hơn khoảng 29%. (Tính mở rộng từ số liệu Nắng Mai, không có trong nguồn.)"
+  - q: "Doanh thu giao 28/12, thu 10/01, chi phí 140 đã trả. Lợi nhuận tháng 12 theo cash và dồn tích?"
+    a: "Cash -140; dồn tích +60; tháng 1: cash +200, dồn tích 0; tổng hai tháng 60."
+
+checklist:
+  - "Bảng cân đối cân (A = L + E)? Bảng cân đối số phát sinh Nợ = Có?"
+  - "LNST trên P&L khớp thay đổi lợi nhuận chưa phân phối (đã trừ cổ tức)?"
+  - "Tiền cuối kỳ trên CFS bằng tiền trên BS?"
+  - "Lợi nhuận đi cùng CFO không? Nếu lợi nhuận tăng mà CFO giảm đã tìm lý do?"
+  - "Phải thu và tồn kho có tăng nhanh hơn doanh thu không?"
+  - "Chính sách kế toán (giá xuất kho, khấu hao, ghi nhận doanh thu) nhất quán với kỳ trước? Có thuyết minh khi đổi?"
+  - "Đã đọc thuyết minh: bên liên quan, nợ tiềm tàng, tài sản thế chấp? Ý kiến kiểm toán (toàn phần/ngoại trừ)?"
+  - "Bút toán bán hàng có kèm bút toán giá vốn? Có trích khấu hao và phân bổ chi phí trả trước?"
+  - "Doanh thu nhận trước đã vào doanh thu chưa thực hiện, phân bổ đúng kỳ?"
+  - "Đã ghi dồn tích doanh thu/chi phí đúng kỳ?"
+  - "Tách bạch tài khoản DN và cá nhân; chứng từ đầy đủ, hóa đơn điện tử trong kỳ?"
+  - "Đã đối chiếu sổ phụ ngân hàng, sổ quỹ, công nợ, kiểm kê kho?"
+  - "Báo cáo quản trị hằng tháng (P&L + dòng tiền) đã lập và họp rà soát?"
+  - "Kê khai thuế đúng hạn; có bảng đối chiếu BCTC với báo cáo thuế (cần xác nhận hiện hành)?"
+  - "Số hiệu tài khoản, thông tư, thuế suất, hóa đơn, lưu trữ: đã đánh dấu cần xác nhận hiện hành?"
+  - "Số liệu ví dụ ghi 'giả định minh họa'; số liệu công ty thật đã đối chiếu nguồn?"
+  - "Phần mềm và giá: đã ghi là ước tính, cần xác nhận với nhà cung cấp?"
+
+excel_google_sheets_templates:
+  - "Sheet Input: số dư đầu kỳ, giao dịch tháng (ô nhập tô màu xanh)."
+  - "Sheet P&L: =DoanhThu-GiaVon; các dòng biên: =LNGop/DoanhThu, =EBIT/DoanhThu, =LNST/DoanhThu."
+  - "Sheet BS: Tài sản =SUM(...); ô kiểm tra =Tài sản-(Nợ+Vốn) phải bằng 0."
+  - "Sheet CF: =LNST+KhauHao-ΔPhaiThu-ΔTonKho+ΔPhaiTra; CFI, CFF; tiền cuối = tiền đầu + CFO + CFI + CFF."
+  - "Sheet Check: tiền cuối kỳ CF = tiền BS; LNST P&L khớp thay đổi LNCPP + cổ tức."
+  - "Sheet Dep: =SLN(cost, salvage, life) cho đường thẳng; =DDB(cost, salvage, life, period, factor) hoặc công thức MIN(NBV*rate, NBV-GTTH); khấu hao theo sản lượng =(NG-GTTH)/TongSL*SLThucTe."
+  - "Sheet Inventory: bảng lô nhập, FIFO (trừ dần lô cũ) và bình quân; kiểm tra COGS + tồn = tổng mua."
+  - "Sheet Revenue: bảng nghĩa vụ, SSP, phân bổ =GiaHD*SSPi/SUM(SSP), lịch ghi nhận theo tháng, số dư doanh thu chưa thực hiện."
+  - "Hàm hữu ích: =SUMIFS(...) tổng hợp theo tài khoản; =IF(ABS(kiem_tra)<0.5,\"OK\",\"Lệch\")."
+  - "Mẫu bảng đối chiếu cuối kỳ: 8 bước đóng sổ với cột Người phụ trách và ô tick."
+
+source_file: "01-financial-accounting.md"

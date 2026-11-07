@@ -1,4 +1,4 @@
-### 01 - CASE STUDY: The Coffee House – "Người tiên phong" đang gặp khủng hoảng
+# 08 - CASE STUDY: The Coffee House – "Người tiên phong" đang gặp khủng hoảng
 
 Để phân tích The Coffee House (TCH) – "người tiên phong" thay đổi văn hóa cà phê tại Việt Nam – chúng ta cần nhìn nhận họ dưới lăng kính VRIO để thấy rõ sự chuyển dịch từ một thương hiệu "thời thượng" sang giai đoạn đầy thách thức hiện nay.
 
@@ -11,7 +11,8 @@
 | **Nền tảng công nghệ (App & CRM)** | Có | Có | Có | Có | Lợi thế cạnh tranh bền vững |
 | **Đội ngũ nhân sự (Nhân viên trẻ)** | Có | Không | Không | Không | Cạnh tranh ngang bằng |
 
-* **Vị thế trong quá khứ:** TCH từng sở hữu lợi thế cực lớn về **V** (Giá trị không gian "nhà"), **R** (Sự hiếm có về phong cách phục vụ hiện đại), **I** (Khó bắt chước nhờ văn hóa nhân viên nhiệt huyết), và **O** (Tổ chức thông minh với App TCH).
+* **Vị thế trong quá khứ:** TCH từng sở hữu lợi thế cực lớn về **V** (Giá trị không gian "nhà"), **R** (Sự hiếm có về phong cách phục vụ hiện đại), **I** (Khó bắt chước nhờ văn hóa nhân viên nhiệt huyết thời kỳ đầu), và **O** (Tổ chức thông minh với App TCH). Lưu ý: bảng VRIO trên phản ánh trạng thái *hiện tại* (nhân sự chỉ còn ngang bằng vì văn hóa đã bị pha loãng), còn đoạn này mô tả trạng thái *quá khứ*.
+* **Lưu ý độ tin cậy:** file này là phân tích định tính; các đánh giá V/R/I/O là nhận định của người phân tích, chưa có số liệu tài chính kiểm chứng của TCH.
 * **Thực trạng hiện tại:** Các nguồn lực này đang bị "pha loãng". Đối thủ (Highlands, Phúc Long, các chuỗi Kiosk, và hàng nghìn quán Specialty nhỏ) đã bắt chước thành công mô hình không gian và trải nghiệm này.
 
 ---
@@ -71,7 +72,7 @@ Dưới đây là phần đánh giá, bổ sung và điều chỉnh để chiế
 Dù giải pháp của bạn rất ổn về mặt quản trị và marketing, nhưng để TCH thực sự bứt phá, bạn nên xem xét thêm 3 yếu tố sau:
 
 #### A. Tận dụng tối đa "Vũ khí dữ liệu" (The App)
-TCH có một thứ mà Cộng hay các quán nhỏ không có: **Hệ thống dữ liệu khách hàng (CRM) qua App cực kỳ mạnh.**
+TCH có một thứ mà Cộng Cà Phê hay các quán nhỏ không có: **Hệ thống dữ liệu khách hàng (CRM) qua App cực kỳ mạnh.**
 *   **Giải pháp:** Thay vì chỉ quảng cáo chung chung trên TikTok, hãy dùng dữ liệu để "cá nhân hóa" ưu đãi. Ví dụ: Tặng voucher món mới đúng vào khung giờ khách thường đặt hàng. Đây là cách tăng doanh thu mà không tốn chi phí mặt bằng.
 
 #### B. Chuyển dịch sang mô hình O2O (Online-to-Offline) mạnh mẽ hơn
@@ -115,7 +116,7 @@ Dưới đây là cách triển khai cụ thể để biến tệp khách hàng 
 
 ---
 
-### 1. Phân mảnh tệp khách hàng (Segmentation) bằng mô hình RFM
+#### 4.5.1. Phân mảnh tệp khách hàng (Segmentation) bằng mô hình RFM
 Bạn không nên gửi cùng một thông điệp cho tất cả mọi người. Hãy chia tệp khách hàng trên App dựa trên mô hình **RFM** (Recency - Gần đây, Frequency - Tần suất, Monetary - Chi tiêu):
 
 *   **Nhóm "Loyalists" (Khách quen):** Những người vẫn đang uống hàng ngày.
@@ -127,7 +128,7 @@ Bạn không nên gửi cùng một thông điệp cho tất cả mọi người
 
 ---
 
-### 2. Tạo cơ chế "Lan tỏa ngược" từ App lên TikTok (UGC Campaign)
+#### 4.5.2. Tạo cơ chế "Lan tỏa ngược" từ App lên TikTok (UGC Campaign)
 Đừng chỉ chạy quảng cáo TikTok, hãy dùng App để yêu cầu khách hàng tạo nội dung cho bạn.
 
 *   **Thử thách "Review Nhà mới":** Trên App, xuất hiện một nhiệm vụ (Mission). Nếu khách hàng đến quán, quay video menu/concept mới và đăng lên TikTok kèm hashtag của chiến dịch, họ sẽ nhận được "Hạt" (điểm thưởng) hoặc một món quà độc quyền ngay lập tức.
@@ -135,7 +136,7 @@ Bạn không nên gửi cùng một thông điệp cho tất cả mọi người
 
 ---
 
-### 3. Cá nhân hóa trải nghiệm (Hyper-Personalization)
+#### 4.5.3. Cá nhân hóa trải nghiệm (Hyper-Personalization)
 Sử dụng dữ liệu lịch sử mua hàng để "nhử" khách thử menu mới:
 
 *   **Gợi ý món dựa trên khẩu vị:** Nếu hệ thống ghi nhận khách thường xuyên đặt trà đào, hãy gửi thông báo: *"Bạn thích Trà đào? Bạn chắc chắn sẽ mê món [Tên món đặc sản mới] của Nhà"*.
@@ -143,7 +144,7 @@ Sử dụng dữ liệu lịch sử mua hàng để "nhử" khách thử menu m�
 
 ---
 
-### 4. Tận dụng "Custom Audiences" cho quảng cáo trả phí
+#### 4.5.4. Tận dụng "Custom Audiences" cho quảng cáo trả phí
 Nếu bạn quyết định chạy quảng cáo TikTok/Facebook, tệp số điện thoại/Email từ App là tài sản vô giá:
 
 *   **Lookalike Audiences:** Tải tệp khách hàng trung thành lên trình quản lý quảng cáo để hệ thống tìm kiếm những người có hành vi tương tự trên TikTok. Điều này giúp quảng cáo trúng mục tiêu hơn và giảm lãng phí ngân sách.
@@ -151,7 +152,7 @@ Nếu bạn quyết định chạy quảng cáo TikTok/Facebook, tệp số đi�
 
 ---
 
-### 5. Kết hợp Gamification (Trò chơi hóa)
+#### 4.5.5. Kết hợp Gamification (Trò chơi hóa)
 Biến việc trải nghiệm concept mới thành một trò chơi trên App:
 
 *   **Sưu tập huy hiệu:** Mỗi khi khách thử một món trong menu đặc sản mới hoặc check-in tại một cửa hàng concept mới, họ nhận được một huy hiệu điện tử. Thu thập đủ bộ sẽ nhận được quà tặng vật lý (ly sứ, túi vải thiết kế riêng).
@@ -159,7 +160,7 @@ Biến việc trải nghiệm concept mới thành một trò chơi trên App:
 
 ---
 
-### Tóm tắt quy trình vận hành (Workflow)
+#### 4.5.6. Tóm tắt quy trình vận hành (Workflow)
 
 | Bước | Hành động | Mục tiêu |
 | :--- | :--- | :--- |

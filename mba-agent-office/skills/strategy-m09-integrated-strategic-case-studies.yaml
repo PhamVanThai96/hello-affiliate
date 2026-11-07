@@ -1,0 +1,921 @@
+id: strategy-m09
+title: "Chiến lược m09: Cẩm nang case study chiến lược tích hợp (phần 1)"
+summary: "Cho Strategist một thư viện case mẫu và quy trình tích hợp: bài toán chiến lược thực tế luôn đa chiều (môi trường vĩ mô -> ngành -> nguồn lực nội bộ -> chiến lược cạnh tranh -> tăng trưởng/danh mục), nên cần biết đi qua framework nào, theo thứ tự nào, và rút bài học từ case (Vin…"
+agents: ["strategist"]
+order: 29
+when: ["cam nang case study chien luoc tich hop (phan 1)", "integrated strategic case studies manual (part 1)"]
+body_max: 2192
+sections:
+  - id: "m09-tong-quan"
+    title: "Tổng quan m09"
+    tags: ["m09", "cẩm", "nang", "case", "study", "chiến", "lược", "tích", "hợp", "phần", "integrated", "strategic"]
+    text: |-
+      Cẩm nang case study chiến lược tích hợp (phần 1) (Integrated Strategic Case Studies Manual (Part 1)) — module m09
+
+      Mục đích: Cho Strategist một thư viện case mẫu và quy trình tích hợp: bài toán chiến lược thực tế luôn đa chiều (môi trường vĩ mô -> ngành -> nguồn lực nội bộ -> chiến lược cạnh tranh -> tăng trưởng/danh mục), nên cần biết đi qua framework nào, theo thứ tự nào, và rút bài học từ case (VinFast, Grab, Vinamilk, Samsung, Zara, Vietjet, Apple/Xiaomi/Nokia, Rolls-Royce, Vingroup, cà phê VN). Cũng cung cấp SWOT/TOWS, BCG, hai trường phái I/O và RBV mà m01-m07 chưa có hoặc chưa tích hợp.
+
+      Dùng khi:
+      - Bài toán chiến lược cần nhiều framework cùng lúc (vd: có nên vào thị trường mới, định vị thế nào, tăng trưởng ra sao) - cần chuỗi framework và thứ tự.
+      - Cần SWOT có chấm điểm và chuyển thành chiến lược hành động bằng TOWS.
+      - Cần phân bổ nguồn lực giữa nhiều sản phẩm/đơn vị kinh doanh (BCG).
+      - Người dùng hỏi 'công ty X đã làm gì và vì sao thành/bại' - dùng case_lessons làm khuôn so sánh (nhớ cờ data_reliability).
+      - Cần giải thích Outside-In (I/O) vs Inside-Out (RBV) hoặc 'Stuck in the Middle' và các ngoại lệ Hybrid.
+
+      Nên nắm trước: - m01; - m02; - m03; - m04
+
+      Module liên quan: - m01 - PESTEL và 5 Forces đầy đủ (quy trình, thang điểm); m09 chỉ dùng lại trong case VinFast và cà phê VN. - m02 - Value Chain, VRIO, năng lực cốt lõi đầy đủ; m09 có thêm CHIP (4 lý do khó bắt chước) và bảng VRIO case. - m03 - Generic Strategies đầy đủ; m09 thêm Hybrid, Stuck in the Middle với case Apple/Xiaomi/Nokia. - m04 - Ansoff đầy đủ; m09 có case Vingroup đối chiếu Ansoff và BCG. - 'm05, …
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m09_swot_weighted: Điểm SWOT có trọng số theo từng góc
+      - m09_tows_priority: Điểm ưu tiên cặp TOWS
+      - m09_relative_share: Thị phần tương đối (BCG)
+
+      Kho tra cứu của module: Khái niệm 7, Công thức 3, frameworks 4, Quy trình 3, Quy tắc quyết định 11, Chuẩn so sánh 8, Lỗi thường gặp 16, Lưu ý SME Việt Nam 5, Bài học case 11, Ví dụ có lời giải 5, Câu hỏi luyện tập 10, Checklist 11, Mẫu Excel/Sheets 3. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ SWOT", "lỗi thường gặp BSC").
+  - id: "m09-concepts-1"
+    title: "Khái niệm: Trường phái Tổ chức Ngành"
+    tags: ["khái", "niệm", "trường", "phái", "tổ", "chức", "ngành"]
+    text: |-
+      term_vi: Trường phái Tổ chức Ngành
+      term_en: Industrial Organization school (I/O, Outside-In)
+      definition: 'Quan điểm cho rằng cấu trúc ngành quyết định lợi nhuận; doanh nghiệp thành công nhờ chọn ngành hấp dẫn và định vị phòng thủ tốt. Giả định nguồn lực trong ngành tương đối đồng nhất và dịch chuyển tự do. Gắn với Mason, Bain, Michael Porter. Công cụ: PESTEL, 5 Forces, Generic Strategies.'
+      why_it_matters: 'Trả lời câu hỏi ''chơi ở đâu'' trước khi ''chơi thế nào''. Một doanh nghiệp giỏi đến mấy trong ngành kém hấp dẫn vẫn bị bào mòn lợi nhuận. Điểm yếu: bỏ qua sự khác biệt nội tại giữa các công ty cùng ngành.'
+  - id: "m09-concepts-2"
+    title: "Khái niệm: Trường phái Nguồn lực"
+    tags: ["khái", "niệm", "trường", "phái", "nguồn", "lực"]
+    text: |-
+      term_vi: Trường phái Nguồn lực
+      term_en: Resource-Based View (RBV, Inside-Out)
+      definition: 'Quan điểm cho rằng doanh nghiệp là tập hợp nguồn lực dị biệt, khó dịch chuyển; lợi thế đến từ nguồn lực/năng lực độc đáo và tốc độ đối thủ sao chép. Gắn với Penrose, Wernerfelt, Jay Barney (1991, VRIO). Công cụ: VRIO, Value Chain, Core Competencies.'
+      why_it_matters: 'Giải thích vì sao hai công ty cùng ngành lại lãi khác nhau (vd Vinamilk so với các hãng sữa khác): khác ở nguồn lực khó copy. Điểm yếu: có thể mải xây năng lực mà quên ngành đang thoái trào.'
+  - id: "m09-concepts-3"
+    title: "Khái niệm: Tích hợp I/O và RBV"
+    tags: ["khái", "niệm", "tích", "hợp", "và", "rbv"]
+    text: |-
+      term_vi: Tích hợp I/O và RBV
+      term_en: Integrated outside-in and inside-out view
+      definition: Dùng năng lực nội tại độc đáo (RBV) để chống đỡ và khai thác áp lực môi trường ngoài (I/O). Hai trường phái là hai mặt của một đồng xu.
+      why_it_matters: 'Là nguyên tắc dựng thứ tự quy trình tích hợp: phân tích ngoài (PESTEL, 5 Forces) -> trong (SWOT, VRIO, Value Chain) -> chọn chiến lược -> đo và phòng thủ. Chiến lược không phải kế hoạch tĩnh mà là sự dung hòa liên tục hai chiều.'
+  - id: "m09-concepts-4"
+    title: "Khái niệm: Kẹt ở giữa"
+    tags: ["khái", "niệm", "kẹt", "giữa"]
+    text: |-
+      term_vi: Kẹt ở giữa
+      term_en: Stuck in the Middle
+      definition: 'Cảnh báo của Porter (1980): theo đuổi đồng thời chi phí thấp và khác biệt hóa trên thị trường rộng mà không giỏi cái nào thì lợi nhuận kém. Ngoại lệ có thật (Toyota, IKEA, Uniqlo, Xiaomi) nhờ một năng lực tạo cả hai (lean, thiết kế để sản xuất, R&D vải, hệ sinh thái).'
+      why_it_matters: 'Nokia, BlackBerry là minh họa kinh điển (theo nguồn): không đủ rẻ như Android, không đủ trải nghiệm như iPhone. Với SME, nguyên tắc vẫn đúng: bắt đầu bằng Focus.'
+  - id: "m09-concepts-5"
+    title: "Khái niệm: Nguồn gốc khó bắt chước (CHIP)"
+    tags: ["khái", "niệm", "nguồn", "gốc", "khó", "bắt", "chước", "chip"]
+    text: |-
+      term_vi: Nguồn gốc khó bắt chước (CHIP)
+      term_en: Sources of inimitability (Causal ambiguity, Historical conditions, Imperfect imitability, Patents)
+      definition: '4 lý do một nguồn lực khó copy: C - Mơ hồ nhân quả (đối thủ không biết tại sao nó hiệu quả, vd văn hóa Southwest); H - Hoàn cảnh lịch sử (vd vị trí đất vàng); I - Không thể sao chép hoàn hảo/cần thời gian dài (vd thương hiệu 130+ năm); P - Bằng sáng chế/pháp lý. (Ghi chú: nguồn dùng chữ I cho ''Imperfect imitability''; trong lý thuyết Barney thường là ''social complexity'' - dùng như nguồn trình bày.)'
+      why_it_matters: Giúp trả lời câu 'I' của VRIO bằng lý do cụ thể thay vì cảm tính, và chọn nguồn lực nào đáng bảo vệ.
+  - id: "m09-concepts-6"
+    title: "Khái niệm: Thị phần tương đối"
+    tags: ["khái", "niệm", "thị", "phần", "tương", "đối"]
+    text: |-
+      term_vi: Thị phần tương đối
+      term_en: Relative market share
+      definition: Thị phần của đơn vị chia cho thị phần của đối thủ lớn nhất trong cùng thị trường. Trên 1.0 nghĩa là đang dẫn đầu.
+      why_it_matters: 'Henderson (BCG, 1970) dựa trên đường cong kinh nghiệm: thị phần tương đối cao thì khối lượng tích lũy lớn, chi phí đơn vị thấp, sinh dòng tiền nhiều hơn. Vì thế trục ngang BCG là thị phần tương đối chứ không phải thị phần tuyệt đối.'
+  - id: "m09-concepts-7"
+    title: "Khái niệm: Chiến lược lai"
+    tags: ["khái", "niệm", "chiến", "lược", "lai"]
+    text: |-
+      term_vi: Chiến lược lai
+      term_en: Hybrid / integrated cost-differentiation strategy
+      definition: 'Kết hợp chi phí thấp và khác biệt hóa nhờ một động cơ vận hành chung (IKEA: thiết kế để rẻ; Toyota: TPS + chất lượng; Uniqlo: R&D vải + quy mô; Xiaomi: bán online + hệ sinh thái IoT).'
+      why_it_matters: 'Là ngoại lệ có điều kiện của Stuck in the Middle: chỉ khả thi khi có quy mô và một năng lực tạo ra cả hai lợi thế; không dành cho doanh nghiệp nhỏ chưa có nền.'
+  - id: "m09-formulas-1"
+    title: "Công thức: m09_swot_weighted — Điểm SWOT có trọng số theo từng góc"
+    tags: ["công", "thức", "m09_swot_weighted", "điểm", "swot", "có", "trọng", "số", "theo", "từng", "góc"]
+    text: |-
+      id: m09_swot_weighted
+      name_vi: Điểm SWOT có trọng số theo từng góc
+      name_en: Weighted SWOT quadrant score
+      expression_latex: Q = \sum_{i} w_i s_i,\ \sum_i w_i = 1
+      expression_python: 'sum(w*s for w, s in items)  # items=[(trọng số, điểm 1-5)], tổng trọng số trong góc = 1'
+      excel: =SUMPRODUCT(w_range, s_range)
+      variables:
+      - symbol: w_i
+        meaning: trọng số quan trọng của yếu tố i trong góc (S/W/O/T)
+        unit: tỷ lệ, tổng góc = 1
+      - symbol: s_i
+        meaning: điểm tác động/mức độ của yếu tố i
+        unit: thang 1-5
+      when_to_use: Khắc phục chỉ trích 'SWOT chỉ liệt kê, mọi yếu tố ngang nhau, không định lượng'.
+      why_it_works: Bước 3 của quy trình nguồn là 'cho điểm mức tác động 1-5'. Thêm trọng số buộc người phân tích chọn cái nào quan trọng hơn thay vì liệt kê ngang nhau, và cho phép so sánh góc với góc.
+      assumptions:
+      - Thang điểm 1-5 chủ quan, nên lấy đồng thuận nhóm
+      - Giữ 5-7 yếu tố mỗi góc (nguồn)
+      pitfalls:
+      - Trọng số không cộng đến 1 làm điểm các góc không so sánh được
+      - Chấm điểm một mình = chủ quan, nên workshop nhóm
+      interpretation: 'Điểm cao ở S/O với W/T thấp: nghiêng chiến lược SO (tấn công); W và T cao: nghiêng WT (sinh tồn/co cụm). Đây là gợi ý, không phải quy tắc cứng.'
+      example:
+        inputs:
+          S: '[(0.4,5),(0.35,4),(0.25,4)]'
+          W: '[(0.5,5),(0.2,3),(0.3,4)]'
+        steps:
+        - S = 0.4*5 + 0.35*4 + 0.25*4 = 2.0 + 1.4 + 1.0 = 4.4
+        - W = 0.5*5 + 0.2*3 + 0.3*4 = 2.5 + 0.6 + 1.2 = 4.3
+        result: S = 4.4; W = 4.3
+  - id: "m09-formulas-2"
+    title: "Công thức: m09_tows_priority — Điểm ưu tiên cặp TOWS"
+    tags: ["công", "thức", "m09_tows_priority", "điểm", "ưu", "tiên", "cặp", "tows"]
+    text: |-
+      id: m09_tows_priority
+      name_vi: Điểm ưu tiên cặp TOWS
+      name_en: TOWS pair priority
+      expression_latex: P_{ij} = (w_i s_i)(w_j s_j)
+      expression_python: (wi*si)*(wj*sj)
+      excel: =(w_i*s_i)*(w_j*s_j)
+      variables:
+      - symbol: w_i s_i
+        meaning: đóng góp có trọng số của yếu tố nội bộ (S hoặc W)
+        unit: điểm
+      - symbol: w_j s_j
+        meaning: đóng góp có trọng số của yếu tố ngoại cảnh (O hoặc T)
+        unit: điểm
+      when_to_use: Xếp hạng nhiều chiến lược SO/ST/WO/WT để chọn 2-3 chiến lược khả thi nhất (bước 5 nguồn).
+      why_it_works: Một chiến lược TOWS chỉ mạnh khi cả hai yếu tố ghép đều quan trọng; tích hai đóng góp phạt cặp có một vế yếu. Đây là quy ước đề xuất của skill, KHÔNG phải công thức chuẩn trong nguồn.
+      assumptions:
+      - Dùng cùng thang điểm trọng số cho mọi yếu tố
+      pitfalls:
+      - Điểm so được trong cùng một lần phân tích, không so xuyên công ty
+      - Điểm cao chưa chứng minh khả thi về nguồn lực/vốn
+      interpretation: Xếp giảm dần; chọn top 2-3; kiểm tra thêm khả thi và rủi ro bằng định tính.
+      example:
+        inputs:
+          S3: (0.35,4)
+          O1: (0.5,5)
+        steps:
+        - P(S3,O1) = (0.35*4)*(0.5*5) = 1.4*2.5 = 3.5
+        result: '3.5'
+  - id: "m09-formulas-3"
+    title: "Công thức: m09_relative_share — Thị phần tương đối (BCG)"
+    tags: ["công", "thức", "m09_relative_share", "thị", "phần", "tương", "đối", "bcg"]
+    text: |-
+      id: m09_relative_share
+      name_vi: Thị phần tương đối (BCG)
+      name_en: Relative market share
+      expression_latex: RMS = \frac{MS_{own}}{MS_{largest\ competitor}}
+      expression_python: own_share / top_competitor_share
+      excel: =own/competitor
+      variables:
+      - symbol: own_share
+        meaning: thị phần của đơn vị/sản phẩm đang xét
+        unit: '%'
+      - symbol: top_competitor_share
+        meaning: thị phần của đối thủ lớn nhất
+        unit: '%'
+      when_to_use: Xếp từng SBU/sản phẩm vào ô BCG.
+      why_it_works: 'Đường cong kinh nghiệm: ai tích lũy khối lượng nhiều nhất thì chi phí thấp nhất; so với đối thủ số 1 mới biết có đang dẫn đầu chi phí không.'
+      assumptions:
+      - Ngưỡng cao/thấp thường lấy 1.0 trên trục ngang (quy ước thông dụng); ngưỡng tăng trưởng thường 10% (nguồn đồ họa không nêu số, ghi 'cao/thấp' - cần chọn ngưỡng và nói rõ)
+      pitfalls:
+      - Định nghĩa thị trường quá hẹp làm thị phần tương đối ảo
+      - Khi chính mình là số 1 thì mẫu số là đối thủ số 2 và RMS > 1
+      interpretation: 'RMS >= 1: dẫn đầu (Star hoặc Cash Cow tùy tăng trưởng); RMS < 1: theo sau (Question Mark hoặc Dog).'
+      example:
+        inputs:
+          own: 30
+          top_competitor: 12
+        steps:
+        - 30/12 = 2.5
+        result: RMS = 2.5 (dẫn đầu)
+  - id: "m09-frameworks-1"
+    title: "Frameworks: m09_swot — Phân tích SWOT"
+    tags: ["frameworks", "m09_swot", "phân", "tích", "swot"]
+    text: |-
+      id: m09_swot
+      name_vi: Phân tích SWOT
+      name_en: SWOT Analysis
+      origin: 'Nguồn ghi: Albert Humphrey, Stanford Research Institute, thập niên 1960 (xuất xứ này còn tranh cãi trong giới học thuật - tạm ghi theo nguồn, độ tin cậy trung bình). Ra đời để gom cả nội bộ và bên ngoài vào một khung đơn giản cho workshop.'
+      components:
+      - 'S - Strengths (nội bộ, tích cực): làm gì tốt hơn đối thủ'
+      - W - Weaknesses (nội bộ, tiêu cực)
+      - O - Opportunities (ngoại cảnh, tích cực)
+      - T - Threats (ngoại cảnh, tiêu cực)
+      when_to_use: Khởi động mọi phân tích chiến lược trong 1-2 giờ workshop; sau PESTEL/5 Forces (cho O, T) và trước VRIO (kiểm chứng S).
+      how_to_apply:
+      - 'Bước 1 Brainstorm: liệt kê hết S, W, O, T. S/W lấy từ nội bộ, O/T lấy từ kết quả PESTEL và 5 Forces (không bịa lại).'
+      - 'Bước 2 Sàng lọc: giữ 5-7 yếu tố quan trọng nhất mỗi góc.'
+      - 'Bước 3 Đánh giá: cho trọng số và điểm tác động 1-5 (xem m09_swot_weighted).'
+      - 'Bước 4 TOWS: ghép S/W với O/T thành chiến lược SO, ST, WO, WT.'
+      - 'Bước 5 Ưu tiên: chọn 2-3 chiến lược khả thi nhất (xem m09_tows_priority) rồi chuyển cho BSC/kế hoạch hành động.'
+      how_to_read_results: 'Hai trục: nội bộ/ngoại cảnh và tích cực/tiêu cực. Phân biệt nội bộ (kiểm soát được) với ngoại cảnh (chỉ thích ứng được) là điểm hay bị lẫn.'
+      pitfalls:
+      - Chỉ liệt kê, không ưu tiên, không định lượng, chủ quan, bỏ sót điểm mù - đây là 6 nhược điểm nêu trong nguồn.
+      - Bỏ qua TOWS thì SWOT không ra hành động.
+      - Đưa yếu tố ngoại cảnh vào S/W hoặc ngược lại.
+      example: 'Grab (xem case_lessons): SWOT giúp nhận ra phải chuyển từ ''tăng trưởng bằng mọi giá'' sang ''tăng trưởng có lãi''.'
+  - id: "m09-frameworks-2"
+    title: "Frameworks: m09_tows — Ma trận TOWS"
+    tags: ["frameworks", "m09_tows", "ma", "trận", "tows"]
+    text: |-
+      id: m09_tows
+      name_vi: Ma trận TOWS
+      name_en: TOWS Matrix
+      origin: Heinz Weihrich (1982), 'The TOWS Matrix'. Ra đời vì SWOT chỉ liệt kê mà không dẫn tới hành động.
+      components:
+      - 'SO (Maxi-Maxi): dùng điểm mạnh để tận dụng cơ hội - chiến lược tấn công'
+      - 'ST (Maxi-Mini): dùng điểm mạnh để giảm đe dọa - phòng thủ'
+      - 'WO (Mini-Maxi): khắc phục điểm yếu để nắm cơ hội - cải thiện'
+      - 'WT (Mini-Mini): giảm thiểu điểm yếu để né đe dọa - sinh tồn'
+      when_to_use: Ngay sau khi có SWOT đã chấm điểm.
+      how_to_apply:
+      - Lập lưới 2x2, mỗi ô ghép từng cặp yếu tố cụ thể (S3+O1 chứ không ghép chung chung).
+      - Mỗi cặp viết một câu hành động cụ thể có chủ thể, hành động, chỉ số.
+      - Xếp hạng bằng điểm cặp; chọn 2-3.
+      how_to_read_results: Nếu phần lớn điểm cao nằm ở WT, doanh nghiệp đang ở thế sinh tồn - ưu tiên dòng tiền hơn tăng trưởng (như Grab 2023).
+      pitfalls:
+      - Ghép mơ hồ, không chỉ tên yếu tố
+      - Chọn quá nhiều chiến lược (>3) làm phân tán nguồn lực
+      example: 'Grab: SO = dữ liệu 300M+ user + mạng merchant -> fintech; WT = giảm phụ thuộc nhà đầu tư trước lãi suất tăng -> cắt giảm chi phí, sa thải 1,000+ nhân sự (2023).'
+  - id: "m09-frameworks-3"
+    title: "Frameworks: m09_bcg — Ma trận BCG"
+    tags: ["frameworks", "m09_bcg", "ma", "trận", "bcg"]
+    text: |-
+      id: m09_bcg
+      name_vi: Ma trận BCG
+      name_en: BCG Growth-Share Matrix
+      origin: Bruce Henderson, Boston Consulting Group, 1970. Dựa trên đường cong kinh nghiệm; ra đời để công ty đa ngành biết bơm tiền cho đơn vị nào và rút tiền từ đơn vị nào.
+      components:
+      - 'Trục ngang: thị phần tương đối. Trục dọc: tốc độ tăng trưởng thị trường.'
+      - 'Star (thị phần cao, tăng trưởng cao): đầu tư mạnh để giữ/tăng vị thế; dòng tiền xấp xỉ 0; sẽ thành Cash Cow khi thị trường chậm lại. Ví dụ nguồn: iPhone 2010-2015.'
+      - 'Cash Cow (cao, thấp): thu hoạch dòng tiền dư để nuôi Star và Question Mark. Ví dụ: Microsoft Office/Windows, Coca-Cola Classic.'
+      - 'Question Mark (thấp, cao): tiêu thụ nhiều tiền; đầu tư chọn lọc đơn vị triển vọng nhất, loại phần còn lại. Ví dụ: Google Cloud 2020.'
+      - 'Dog (thấp, thấp): dòng tiền xấp xỉ 0; cân nhắc thu hẹp/thoái vốn (nguồn đoạn Dog nằm sau dòng 1500; nguyên tắc chuẩn của BCG).'
+      when_to_use: Doanh nghiệp có từ 2 sản phẩm/SBU trở lên cần phân bổ vốn; bổ sung cho SWOT (SWOT không nói ưu tiên thị trường nào - nguồn ghi ở case Grab).
+      how_to_apply:
+      - Xác định đơn vị phân tích (SBU/sản phẩm) và định nghĩa thị trường đúng.
+      - Tính thị phần tương đối (m09_relative_share) và tăng trưởng thị trường.
+      - Chọn ngưỡng (RMS = 1.0; tăng trưởng 10% là quy ước, nói rõ khi báo cáo) và xếp vào ô.
+      - 'Gán chiến lược: Star = đầu tư, Cash Cow = thu hoạch, Question Mark = chọn lọc, Dog = thu hẹp/thoái.'
+      - 'Kiểm tra vòng đời lý tưởng: Question Mark -> Star -> Cash Cow; danh mục cần cân bằng.'
+      how_to_read_results: Danh mục toàn Question Mark thì sắp cạn tiền; toàn Cash Cow thì tương lai khô cạn. Cần Cash Cow đủ nuôi Question Mark triển vọng.
+      pitfalls:
+      - Dùng thị phần tuyệt đối thay vì tương đối.
+      - Chỉ dùng 2 trục, bỏ qua hiệp lực giữa các đơn vị và khả năng tiếp cận vốn bên ngoài.
+      - Phần còn lại của mục BCG và GE-McKinsey nằm ở m10.
+      example: 'Vingroup (case_lessons): VinFast kiểu Question Mark tiêu tiền lớn, Vinhomes kiểu Cash Cow - nhưng phân loại này là suy luận của skill, nguồn chưa xếp.'
+  - id: "m09-frameworks-4"
+    title: "Frameworks: m09_hybrid_strategy — Chiến lược lai chi phí - khác biệt"
+    tags: ["frameworks", "m09_hybrid_strategy", "chiến", "lược", "lai", "chi", "phí", "khác", "biệt"]
+    text: |-
+      id: m09_hybrid_strategy
+      name_vi: Chiến lược lai chi phí - khác biệt
+      name_en: Hybrid cost/differentiation strategy
+      origin: Phản biện hiện đại với 'Stuck in the Middle' của Porter, dựa trên IKEA, Toyota, Uniqlo, Xiaomi.
+      components:
+      - 'IKEA: flat-pack, tự lắp ráp (rẻ) + thiết kế Scandinavian'
+      - 'Toyota: Toyota Production System (chi phí) + TQM, Kaizen (chất lượng)'
+      - 'Uniqlo: quy mô (giá phải chăng) + HEATTECH, AIRism (vải công nghệ)'
+      - 'Xiaomi: bán online, biên lợi nhuận bị ''chặn'' ~5% + hệ sinh thái IoT'
+      when_to_use: Doanh nghiệp lớn có quy mô và một năng lực lõi vừa giảm chi phí vừa nâng chất lượng.
+      how_to_apply:
+      - Xác định 'động cơ chung' tạo cả hai lợi thế (lean, thiết kế để sản xuất, R&D vải, bán trực tiếp + ecosystem).
+      - Kiểm tra bằng VRIO rằng động cơ đó khó bắt chước.
+      - 'Nếu không có quy mô: quay về Focus.'
+      how_to_read_results: Hybrid hợp lệ khi giá thấp hơn mà vẫn có đặc điểm khác biệt đo được; nếu chỉ nói 'vừa rẻ vừa tốt' mà không có cơ chế, đó là Stuck in the Middle.
+      pitfalls:
+      - Dùng Hybrid làm lý do để dàn trải
+      - Chưa đủ quy mô
+      example: 'Bài học VN theo nguồn: DN nhỏ -> Focus; DN vừa -> Focus rồi Differentiation; DN lớn -> Cost Leadership hoặc Hybrid; startup -> Focus + Differentiation.'
+  - id: "m09-procedures-1"
+    title: "Quy trình: m09_proc_integrated_flow — Quy trình tích hợp: bài toán chiến lược đa chiều đi qua framework nào, theo thứ tự nào"
+    tags: ["quy", "trình", "m09_proc_integrated_flow", "tích", "hợp", "bài", "toán", "chiến", "lược", "đa", "chiều", "đi"]
+    text: |-
+      id: m09_proc_integrated_flow
+      name: 'Quy trình tích hợp: bài toán chiến lược đa chiều đi qua framework nào, theo thứ tự nào'
+      steps:
+      - 'Bước 0 - Chọn lăng kính: xác định có đang ở khâu ''chọn ngành/thị trường'' (I/O: ưu tiên bước 1-2) hay ''vì sao hơn đối thủ'' (RBV: ưu tiên bước 3-4). Thường cần cả hai.'
+      - 'Bước 1 - Vĩ mô: PESTEL (m01). Mỗi yếu tố ghi cấp độ tác động (cực cao/cao/trung bình) và hành động ứng phó cụ thể. Tránh đánh giá quá lạc quan yếu tố Xã hội/thương hiệu (bài học VinFast).'
+      - 'Bước 2 - Ngành: 5 Forces (m01). Kết luận hấp dẫn hay kém hấp dẫn, lực nào đe dọa nhất; dự báo xu hướng thủ công vì mô hình không tự bắt được xu hướng mới (Katinat take-away).'
+      - 'Bước 3 - Doanh nghiệp: SWOT (m09) với O, T lấy từ bước 1-2; chấm điểm có trọng số.'
+      - 'Bước 4 - Kiểm chứng điểm mạnh: VRIO (m02) cho từng S. Chỉ nguồn lực đạt V-R-I-O mới bảo vệ lâu dài; dùng CHIP để lý giải ''I''.'
+      - 'Bước 5 - Nguồn gốc lợi thế: Value Chain (m02) chỉ ra hoạt động nào tạo ra lợi thế (Zara: tối ưu cả chuỗi, không từng khâu).'
+      - 'Bước 6 - Chọn chiến lược cạnh tranh: Generic (m03) / Hybrid; dùng checklist 3 câu (quy mô-chi phí? độc đáo? hiểu sâu phân khúc?). Chạy kiểm tra Stuck in the Middle.'
+      - 'Bước 7 - Tăng trưởng và danh mục: Ansoff (m04) rồi BCG (m09) để chọn hướng tăng trưởng và phân bổ vốn. Diversification không liên quan = rủi ro cao nhất.'
+      - 'Bước 8 - Chuyển sang thực thi/phòng thủ: Blue Ocean (m05) nếu muốn thoát cạnh tranh, BSC (m06) để đo, Scenario (m07) cho bất định.'
+      - 'Bước 9 - Tổng hợp: viết 1 trang kết luận, mỗi framework 1-2 dòng, nêu khuyến nghị, rủi ro lớn nhất, chỉ số theo dõi.'
+      outputs: Bản tổng hợp chiến lược 1 trang kèm bảng điểm SWOT/TOWS, kết quả VRIO, lựa chọn Generic/Ansoff, khuyến nghị và rủi ro.
+  - id: "m09-procedures-2"
+    title: "Quy trình: m09_proc_swot_tows — SWOT có chấm điểm sang TOWS ưu tiên"
+    tags: ["quy", "trình", "m09_proc_swot_tows", "swot", "có", "chấm", "điểm", "sang", "tows", "ưu", "tiên"]
+    text: |-
+      id: m09_proc_swot_tows
+      name: SWOT có chấm điểm sang TOWS ưu tiên
+      steps:
+      - Lấy O/T từ PESTEL/5 Forces; S/W từ phân tích nội bộ.
+      - Giữ 3-7 yếu tố mỗi góc; gán trọng số (tổng mỗi góc = 1) và điểm 1-5.
+      - Tính điểm 4 góc (m09_swot_weighted) để biết thế chiến lược.
+      - Ghép cặp SO/ST/WO/WT, tính điểm cặp (m09_tows_priority), xếp hạng.
+      - Chọn 2-3 cặp điểm cao, viết hành động cụ thể (ai, làm gì, KPI), đối chiếu khả thi nguồn lực.
+      outputs: Bảng xếp hạng chiến lược và 2-3 hành động ưu tiên.
+  - id: "m09-procedures-3"
+    title: "Quy trình: m09_proc_case_analysis — Phân tích một case theo chuỗi 'tại sao thành/bại'"
+    tags: ["quy", "trình", "m09_proc_case_analysis", "phân", "tích", "một", "case", "theo", "chuỗi", "tại", "sao", "thành"]
+    text: |-
+      id: m09_proc_case_analysis
+      name: Phân tích một case theo chuỗi 'tại sao thành/bại'
+      steps:
+      - Tóm tắt bối cảnh (ngành, thời điểm, quy mô) và gắn cờ độ tin cậy số liệu.
+      - Chạy chuỗi framework phù hợp, ghi mỗi framework dẫn tới quyết định gì.
+      - Tách nhân tố cấu trúc (ngành/vĩ mô) khỏi nhân tố nội bộ (nguồn lực/năng lực).
+      - Nêu bài học có thể chuyển cho SME và điều kiện áp dụng; ghi hạn chế của framework.
+      outputs: Bảng 'framework - phát hiện - quyết định' và 3 bài học.
+  - id: "m09-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu 5 Forces cho thấy ngành kém hấp dẫn (cạnh tranh cao, người mua mạnh) thì người mới nên chọn Dif…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "forces", "cho", "thấy", "ngành", "kém", "hấp", "dẫn"]
+    text: |-
+      Nếu 5 Forces cho thấy ngành kém hấp dẫn (cạnh tranh cao, người mua mạnh) thì người mới nên chọn Differentiation/Focus mạnh hoặc tìm ngách, thay vì cạnh tranh giá trực diện (case cà phê VN, VinFast vs Tesla).
+  - id: "m09-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu một điểm mạnh trong SWOT không đạt đủ V-R-I-O thì không coi là lợi thế bền vững; không dồn nguồ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "một", "điểm", "mạnh", "trong", "swot", "không", "đạt"]
+    text: |-
+      Nếu một điểm mạnh trong SWOT không đạt đủ V-R-I-O thì không coi là lợi thế bền vững; không dồn nguồn lực bảo vệ nó.
+  - id: "m09-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu nguồn lực V và R nhưng không I thì chỉ là lợi thế tạm thời: khai thác nhanh và liên tục đổi mới…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "nguồn", "lực", "và", "nhưng", "không", "thì", "chỉ"]
+    text: |-
+      Nếu nguồn lực V và R nhưng không I thì chỉ là lợi thế tạm thời: khai thác nhanh và liên tục đổi mới; nếu V nhưng không R thì chỉ là ngang bằng (Competitive Parity), như thiết bị mua được từ GEA/Tetra Pak.
+  - id: "m09-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu V-R-I nhưng chưa O thì lợi thế chưa khai thác: sửa tổ chức/quy trình trước khi đầu tư thêm."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "nhưng", "chưa", "thì", "lợi", "thế", "khai", "thác"]
+    text: |-
+      Nếu V-R-I nhưng chưa O thì lợi thế chưa khai thác: sửa tổ chức/quy trình trước khi đầu tư thêm.
+  - id: "m09-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu doanh nghiệp nhỏ thì bắt đầu bằng Focus; chỉ cân nhắc Cost Leadership khi có economies of scale…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "doanh", "nghiệp", "nhỏ", "thì", "bắt", "đầu", "bằng"]
+    text: |-
+      Nếu doanh nghiệp nhỏ thì bắt đầu bằng Focus; chỉ cân nhắc Cost Leadership khi có economies of scale; chỉ cân nhắc Hybrid khi có một năng lực chung tạo cả hai lợi thế.
+  - id: "m09-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu đang theo đuổi cả rẻ lẫn cao cấp mà không có cơ chế thì dừng lại: nguy cơ Stuck in the Middle (…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "đang", "theo", "đuổi", "cả", "rẻ", "lẫn", "cao"]
+    text: |-
+      Nếu đang theo đuổi cả rẻ lẫn cao cấp mà không có cơ chế thì dừng lại: nguy cơ Stuck in the Middle (Nokia, BlackBerry).
+  - id: "m09-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu đa dạng hóa không liên quan đến năng lực cốt lõi (BĐS -> smartphone) thì xếp rủi ro CAO NHẤT tr…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "đa", "dạng", "hóa", "không", "liên", "quan", "đến"]
+    text: |-
+      Nếu đa dạng hóa không liên quan đến năng lực cốt lõi (BĐS -> smartphone) thì xếp rủi ro CAO NHẤT trong Ansoff; nếu có related synergy (VinSchool/VinMec với hệ sinh thái Vinhomes) thì rủi ro thấp hơn.
+  - id: "m09-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu thị phần tương đối >= 1 và thị trường tăng trưởng cao thì Star: đầu tư mạnh; nếu thị phần tương…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "thị", "phần", "tương", "đối", "và", "trường", "tăng"]
+    text: |-
+      Nếu thị phần tương đối >= 1 và thị trường tăng trưởng cao thì Star: đầu tư mạnh; nếu thị phần tương đối < 1 và tăng trưởng cao thì Question Mark: chọn lọc, đừng rải đều.
+  - id: "m09-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu SWOT cho nhiều điểm cao ở góc W và T thì ưu tiên chiến lược sinh tồn (WT): cắt chi phí, giữ dòn…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "swot", "cho", "nhiều", "điểm", "cao", "góc", "và"]
+    text: |-
+      Nếu SWOT cho nhiều điểm cao ở góc W và T thì ưu tiên chiến lược sinh tồn (WT): cắt chi phí, giữ dòng tiền (Grab 2023).
+  - id: "m09-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu điều kiện chính sách là động lực đầu tư (IRA với VinFast) thì phải kiểm tra điều kiện hưởng lợi…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "điều", "kiện", "chính", "sách", "là", "động", "lực"]
+    text: |-
+      Nếu điều kiện chính sách là động lực đầu tư (IRA với VinFast) thì phải kiểm tra điều kiện hưởng lợi có còn đúng khi chính sách đổi (nội địa hóa, xuất xứ pin).
+  - id: "m09-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu PESTEL cho điểm lạc quan ở yếu tố Xã hội/thương hiệu thì cần dữ liệu hành vi khách hàng thật tr…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "pestel", "cho", "điểm", "lạc", "quan", "yếu", "tố"]
+    text: |-
+      Nếu PESTEL cho điểm lạc quan ở yếu tố Xã hội/thương hiệu thì cần dữ liệu hành vi khách hàng thật trước khi quyết định vốn lớn.
+  - id: "m09-benchmarks-1"
+    title: "Chuẩn so sánh: Vietjet: giá vé thấp hơn Vietnam Airlines"
+    tags: ["chuẩn", "so", "sánh", "vietjet", "giá", "vé", "thấp", "hơn", "vietnam", "airlines"]
+    text: |-
+      metric: 'Vietjet: giá vé thấp hơn Vietnam Airlines'
+      value: 30-50% (theo nguồn)
+      context: Cost Leadership hàng không nội địa
+      confidence: low
+  - id: "m09-benchmarks-2"
+    title: "Chuẩn so sánh: Vietjet: thời gian quay đầu / giờ bay mỗi ngày"
+    tags: ["chuẩn", "so", "sánh", "vietjet", "thời", "gian", "quay", "đầu", "giờ", "bay", "mỗi", "ngày"]
+    text: |-
+      metric: 'Vietjet: thời gian quay đầu / giờ bay mỗi ngày'
+      value: 25 phút so 45-60 phút; 13-14 giờ so 10-11 giờ (theo nguồn)
+      context: Lean operations
+      confidence: low
+  - id: "m09-benchmarks-3"
+    title: "Chuẩn so sánh: Vietjet: ancillary / tổng doanh thu"
+    tags: ["chuẩn", "so", "sánh", "vietjet", "ancillary", "tổng", "doanh", "thu"]
+    text: |-
+      metric: 'Vietjet: ancillary / tổng doanh thu'
+      value: 25-30% (theo nguồn)
+      context: Bù giá vé thấp
+      confidence: low
+  - id: "m09-benchmarks-4"
+    title: "Chuẩn so sánh: Zara: chi quảng cáo / doanh thu"
+    tags: ["chuẩn", "so", "sánh", "zara", "chi", "quảng", "cáo", "doanh", "thu"]
+    text: |-
+      metric: 'Zara: chi quảng cáo / doanh thu'
+      value: ~0.3% so với H&M 3-4% (theo nguồn)
+      context: Marketing bằng vị trí cửa hàng
+      confidence: low
+  - id: "m09-benchmarks-5"
+    title: "Chuẩn so sánh: Zara: thời gian thiết kế đến cửa hàng"
+    tags: ["chuẩn", "so", "sánh", "zara", "thời", "gian", "thiết", "kế", "đến", "cửa", "hàng"]
+    text: |-
+      metric: 'Zara: thời gian thiết kế đến cửa hàng'
+      value: 2-3 tuần so 6 tháng (theo nguồn)
+      context: Fast fashion
+      confidence: medium
+  - id: "m09-benchmarks-6"
+    title: "Chuẩn so sánh: Biên lợi nhuận gộp phần cứng: Apple và Xiaomi"
+    tags: ["chuẩn", "so", "sánh", "biên", "lợi", "nhuận", "gộp", "phần", "cứng", "apple", "và", "xiaomi"]
+    text: |-
+      metric: 'Biên lợi nhuận gộp phần cứng: Apple và Xiaomi'
+      value: Apple 60-65%, Xiaomi 5-8% (theo nguồn)
+      context: Differentiation và Cost Leadership; số này có nhiều khả năng bị nhầm giữa biên gộp toàn công ty và biên phần cứng
+      confidence: low
+  - id: "m09-benchmarks-7"
+    title: "Chuẩn so sánh: Rolls-Royce: sản lượng / giá"
+    tags: ["chuẩn", "so", "sánh", "rolls", "royce", "sản", "lượng", "giá"]
+    text: |-
+      metric: 'Rolls-Royce: sản lượng / giá'
+      value: ~6,000 xe/năm; từ $350,000 (theo nguồn)
+      context: Differentiation Focus
+      confidence: medium
+  - id: "m09-benchmarks-8"
+    title: "Chuẩn so sánh: Thang điểm SWOT"
+    tags: ["chuẩn", "so", "sánh", "thang", "điểm", "swot"]
+    text: |-
+      metric: Thang điểm SWOT
+      value: Điểm 1-5; giữ 5-7 yếu tố mỗi góc
+      context: Nguồn mục SWOT bước 2-3
+      confidence: high
+  - id: "m09-pitfalls-1"
+    title: "Lỗi thường gặp: Coi mọi 'điểm mạnh' là lợi thế cạnh tranh: chỉ nguồn lực đạt V-R-I-O mới bền vững (bài học Samsung)."
+    tags: ["lỗi", "thường", "gặp", "coi", "mọi", "điểm", "mạnh", "là", "lợi", "thế", "cạnh", "tranh"]
+    text: |-
+      Coi mọi 'điểm mạnh' là lợi thế cạnh tranh: chỉ nguồn lực đạt V-R-I-O mới bền vững (bài học Samsung).
+  - id: "m09-pitfalls-2"
+    title: "Lỗi thường gặp: Tin PESTEL là điểm kết thúc: PESTEL chỉ là điểm khởi đầu; phải kết hợp 5 Forces, SWOT và dữ liệu hà…"
+    tags: ["lỗi", "thường", "gặp", "tin", "pestel", "là", "điểm", "kết", "thúc", "chỉ", "khởi", "đầu"]
+    text: |-
+      Tin PESTEL là điểm kết thúc: PESTEL chỉ là điểm khởi đầu; phải kết hợp 5 Forces, SWOT và dữ liệu hành vi khách hàng (bài học VinFast).
+  - id: "m09-pitfalls-3"
+    title: "Lỗi thường gặp: Đánh giá quá lạc quan yếu tố Xã hội/nhận diện thương hiệu khi vào thị trường mới."
+    tags: ["lỗi", "thường", "gặp", "đánh", "giá", "quá", "lạc", "quan", "yếu", "tố", "xã", "hội"]
+    text: |-
+      Đánh giá quá lạc quan yếu tố Xã hội/nhận diện thương hiệu khi vào thị trường mới.
+  - id: "m09-pitfalls-4"
+    title: "Lỗi thường gặp: Dùng một framework độc lập mà không ghép chuỗi (SWOT không cho biết ưu tiên thị trường nào - cần BC…"
+    tags: ["lỗi", "thường", "gặp", "dùng", "một", "framework", "độc", "lập", "mà", "không", "ghép", "chuỗi"]
+    text: |-
+      Dùng một framework độc lập mà không ghép chuỗi (SWOT không cho biết ưu tiên thị trường nào - cần BCG).
+  - id: "m09-pitfalls-5"
+    title: "Lỗi thường gặp: Nhầm Cost Leadership là 'rẻ tiền': Vietjet vẫn giữ an toàn bay; mô hình doanh thu phụ trợ bù giá vé…"
+    tags: ["lỗi", "thường", "gặp", "nhầm", "cost", "leadership", "là", "rẻ", "tiền", "vietjet", "vẫn", "giữ"]
+    text: |-
+      Nhầm Cost Leadership là 'rẻ tiền': Vietjet vẫn giữ an toàn bay; mô hình doanh thu phụ trợ bù giá vé thấp.
+  - id: "m09-pitfalls-6"
+    title: "Lỗi thường gặp: Khi dùng số liệu trong case nguồn, quên rằng nhiều số là minh họa hoặc chưa kiểm chứng (xem lỗi ngu…"
+    tags: ["lỗi", "thường", "gặp", "khi", "dùng", "số", "liệu", "trong", "case", "nguồn", "quên", "rằng"]
+    text: |-
+      Khi dùng số liệu trong case nguồn, quên rằng nhiều số là minh họa hoặc chưa kiểm chứng (xem lỗi nguồn bên dưới).
+  - id: "m09-pitfalls-7"
+    title: "Lỗi thường gặp: LỖI NGUỒN 1 (không sửa): Module 1 trình bày VinFast/PESTEL hai lần với số liệu khác nhau (đoạn cũ: …"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "không", "sửa", "module", "trình", "bày", "vinfast", "pestel", "hai"]
+    text: |-
+      LỖI NGUỒN 1 (không sửa): Module 1 trình bày VinFast/PESTEL hai lần với số liệu khác nhau (đoạn cũ: 'thị trường xe điện Mỹ tăng 65% 2022'; đoạn mới: IRA siết điều kiện, lãi suất FED 5.25-5.5%). Hai đoạn không mâu thuẫn trực tiếp nhưng lặp; cẩm nang cũng đánh số 'Case Study 1' cho đoạn thứ hai và không cho đoạn đầu.
+  - id: "m09-pitfalls-8"
+    title: "Lỗi thường gặp: LỖI NGUỒN 2: Tiêu đề file ghi 'CẨM NĂNG' (có lẽ là 'CẨM NANG'); câu 'Thực Thực Chiến Lược' ở mục lụ…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "tiêu", "đề", "file", "ghi", "cẩm", "năng", "có", "lẽ"]
+    text: |-
+      LỖI NGUỒN 2: Tiêu đề file ghi 'CẨM NĂNG' (có lẽ là 'CẨM NANG'); câu 'Thực Thực Chiến Lược' ở mục lục Module 6; 'thuẩ suất' ở Grab T5; 'Trùng khơi định vị' ở tiêu đề case 3 (có lẽ 'Tương phản/Đối đầu').
+  - id: "m09-pitfalls-9"
+    title: "Lỗi thường gặp: LỖI NGUỒN 3: Tiêu đề mục 'Mục tiêu' và cấu trúc lặp lại ở đầu mỗi module (khối '> Mục tiêu' xuất hi…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "tiêu", "đề", "mục", "và", "cấu", "trúc", "lặp", "lại"]
+    text: |-
+      LỖI NGUỒN 3: Tiêu đề mục 'Mục tiêu' và cấu trúc lặp lại ở đầu mỗi module (khối '> Mục tiêu' xuất hiện không có heading), và mã 'Case Study 1/2/3' trùng với các mục '### 5/6 Case Study' của bản cũ (có 2 bộ case cho PESTEL/VRIO/Generic: bản cũ + bản 'THẢO LUẬN CHUYÊN SÂU').
+  - id: "m09-pitfalls-10"
+    title: "Lỗi thường gặp: LỖI NGUỒN 4: Số 'Xiaomi biên lợi nhuận gộp 5-8%' trong bảng case 3 không khớp với phần Hybrid ('Xia…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "số", "xiaomi", "biên", "lợi", "nhuận", "gộp", "trong", "bảng"]
+    text: |-
+      LỖI NGUỒN 4: Số 'Xiaomi biên lợi nhuận gộp 5-8%' trong bảng case 3 không khớp với phần Hybrid ('Xiaomi margin capped 5%'): cam kết 5% của Xiaomi là về lợi nhuận ròng phần cứng, không phải biên gộp. Cần xác minh trước khi dùng.
+  - id: "m09-pitfalls-11"
+    title: "Lỗi thường gặp: LỖI NGUỒN 5: 'Samsung đầu tư R&D $230B trong 20 năm' và 'Samsung chiếm 80% thị phần AMOLED', 'chỉ 3…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "samsung", "đầu", "tư", "230b", "trong", "20", "năm", "và"]
+    text: |-
+      LỖI NGUỒN 5: 'Samsung đầu tư R&D $230B trong 20 năm' và 'Samsung chiếm 80% thị phần AMOLED', 'chỉ 3 công ty làm được dưới 5nm' là số khó kiểm chứng/đã cũ; 'Apple chiếm 85%+ lợi nhuận ngành smartphone', '92% user iPhone trung thành' cũng là ước tính, không nêu nguồn.
+  - id: "m09-pitfalls-12"
+    title: "Lỗi thường gặp: LỖI NGUỒN 6: Case Vinamilk nêu '14 siêu trang trại', '13 nhà máy', '200,000 điểm bán', 'trang trại …"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "case", "vinamilk", "nêu", "14", "siêu", "trang", "trại", "13"]
+    text: |-
+      LỖI NGUỒN 6: Case Vinamilk nêu '14 siêu trang trại', '13 nhà máy', '200,000 điểm bán', 'trang trại hữu cơ lớn nhất châu Á' - mỗi con số chưa có nguồn trong file; không dùng làm số thật.
+  - id: "m09-pitfalls-13"
+    title: "Lỗi thường gặp: LỖI NGUỒN 7: Bảng Vingroup phân loại 'BĐS cao cấp Hà Nội/HCM 2004-2010' là Market Penetration và 'H…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "bảng", "vingroup", "phân", "loại", "bđs", "cao", "cấp", "hà"]
+    text: |-
+      LỖI NGUỒN 7: Bảng Vingroup phân loại 'BĐS cao cấp Hà Nội/HCM 2004-2010' là Market Penetration và 'Hàng không (VinPearl Air)' là Related Diversification: phân loại Ansoff gượng (khởi nghiệp Vinhomes là bắt đầu thị trường, không hẳn thâm nhập thị trường hiện có); 'VinPearl Air' và 'Hủy kế hoạch' cần xác minh. Cũng ghi 'Related Diversification' nhưng bảng nhóm sau đó giải thích VinSchool/VinMec là 'Unrelated' ở bảng và 'related synergy' ở lời bài học - mâu thuẫn nhãn.
+  - id: "m09-pitfalls-14"
+    title: "Lỗi thường gặp: LỖI NGUỒN 8: Case VinFast nói sẽ 'cho thuê pin' như khuyến nghị 'Niche Differentiation' nhưng thực …"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "case", "vinfast", "nói", "sẽ", "cho", "thuê", "pin", "như"]
+    text: |-
+      LỖI NGUỒN 8: Case VinFast nói sẽ 'cho thuê pin' như khuyến nghị 'Niche Differentiation' nhưng thực tế cũng như điều kiện IRA nêu trong cẩm nang (hơn 4 tỷ USD nhà máy North Carolina) là kế hoạch/đã điều chỉnh nhiều lần; coi là minh họa, không phải hiện trạng. Mục 'Cạnh tranh trong 5 Forces: sức mạnh nhà cung cấp pin' dùng CATL, Panasonic nhưng khẳng định 'giá bán sỉ' chưa kiểm chứng.
+  - id: "m09-pitfalls-15"
+    title: "Lỗi thường gặp: LỖI NGUỒN 9: Case Nokia/BlackBerry mô tả BlackBerry là 'bán tống bộ phận di động' và Nokia 'bán thá…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "case", "nokia", "blackberry", "mô", "tả", "là", "bán", "tống"]
+    text: |-
+      LỖI NGUỒN 9: Case Nokia/BlackBerry mô tả BlackBerry là 'bán tống bộ phận di động' và Nokia 'bán tháo' - đơn giản hóa; Nokia bán mảng thiết bị cho Microsoft 2013-2014, BlackBerry chuyển sang phần mềm/bảo mật và licensing. Dùng làm minh họa, không dùng làm sự kiện chi tiết.
+  - id: "m09-pitfalls-16"
+    title: "Lỗi thường gặp: LỖI NGUỒN 10: Phần Grab ghi 'Lên sàn NASDAQ (SPAC merger 2021)' và 'Q4/2023 lần đầu có lãi' - độ ch…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "10", "phần", "grab", "ghi", "lên", "sàn", "nasdaq", "spac"]
+    text: |-
+      LỖI NGUỒN 10: Phần Grab ghi 'Lên sàn NASDAQ (SPAC merger 2021)' và 'Q4/2023 lần đầu có lãi' - độ chính xác cần xác minh (Grab công bố điều chỉnh EBITDA dương từ 2023; lãi ròng GAAP chưa chắc). Ghi 'sa thải 1,000+ NV (2023)' theo nguồn (thực tế ~1,000 là con số công bố 2023).
+  - id: "m09-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Quy trình tích hợp rút gọn cho SME (1-2 buổi): PESTEL 6 dòng -> 5 Forces chấm 1-5 -> SWOT 4x5 yếu t…"
+    tags: ["lưu", "sme", "việt", "nam", "quy", "trình", "tích", "hợp", "rút", "gọn", "cho", "buổi"]
+    text: |-
+      Quy trình tích hợp rút gọn cho SME (1-2 buổi): PESTEL 6 dòng -> 5 Forces chấm 1-5 -> SWOT 4x5 yếu tố -> VRIO cho 3 điểm mạnh nhất -> chọn Focus hay Differentiation -> 3 hành động TOWS ưu tiên -> 3 KPI theo dõi.
+  - id: "m09-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: SME mới vào ngành cà phê/F&B: ngành kém hấp dẫn theo 5 Forces nên bắt buộc phải có khác biệt rõ (tr…"
+    tags: ["lưu", "sme", "việt", "nam", "mới", "vào", "ngành", "cà", "phê", "kém", "hấp", "dẫn"]
+    text: |-
+      SME mới vào ngành cà phê/F&B: ngành kém hấp dẫn theo 5 Forces nên bắt buộc phải có khác biệt rõ (trải nghiệm, không gian, sản phẩm); kênh phân phối/hệ sinh thái (Phúc Long - Masan/WinMart) và thương hiệu mạnh (Highlands 700+ cửa hàng) là lý do thắng của chuỗi lớn.
+  - id: "m09-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: SME có nhiều sản phẩm nên chạy BCG đơn giản bằng Google Sheets: thị phần tương đối (so đối thủ lớn …"
+    tags: ["lưu", "sme", "việt", "nam", "có", "nhiều", "sản", "phẩm", "nên", "chạy", "bcg", "đơn"]
+    text: |-
+      SME có nhiều sản phẩm nên chạy BCG đơn giản bằng Google Sheets: thị phần tương đối (so đối thủ lớn nhất trong khu vực) và tăng trưởng doanh số ngành; dùng để chọn cắt giảm hoặc dồn vốn.
+  - id: "m09-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Phân khúc tập trung (Focus) cho SME VN: ví dụ trong nguồn Phở Thìn, L'angfarm Đà Lạt; chi phí công …"
+    tags: ["lưu", "sme", "việt", "nam", "phân", "khúc", "tập", "trung", "focus", "cho", "vn", "ví"]
+    text: |-
+      Phân khúc tập trung (Focus) cho SME VN: ví dụ trong nguồn Phở Thìn, L'angfarm Đà Lạt; chi phí công cụ/phần mềm không có trong phần này nên không nêu giá.
+  - id: "m09-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: Mọi nhận định pháp lý/thuế khi áp dụng cho SME VN trong bài này cần xác nhận với chuyên gia hiện hà…"
+    tags: ["lưu", "sme", "việt", "nam", "mọi", "nhận", "định", "pháp", "lý", "thuế", "khi", "áp"]
+    text: |-
+      Mọi nhận định pháp lý/thuế khi áp dụng cho SME VN trong bài này cần xác nhận với chuyên gia hiện hành.
+  - id: "m09-case_lessons-1"
+    title: "Bài học case: VinFast thâm nhập thị trường Mỹ (PESTEL + 5 Forces)"
+    tags: ["bài", "học", "case", "vinfast", "thâm", "nhập", "thị", "trường", "mỹ", "pestel", "forces"]
+    text: |-
+      name: VinFast thâm nhập thị trường Mỹ (PESTEL + 5 Forces)
+      type: failure
+      setup: 'VinFast (Vingroup) xây nhà máy xe điện ở North Carolina (quyết định 2022) để hưởng IRA; vào thị trường có Tesla, Ford, GM, Toyota, đối thủ Trung Quốc. Cẩm nang có hai lớp: bản PESTEL đơn giản (6 dòng) và bản ''động'' kèm 5 Forces chấm mức.'
+      key_calculations:
+      - 'IRA: xe điện không lắp ráp nội địa Bắc Mỹ mất trợ cấp thuế $7,500/xe -> giá tương đối cao hơn $7,500 so với xe lắp ráp tại Mỹ. Giải pháp: nhà máy North Carolina (nguồn nêu >4 tỷ USD).'
+      - 'Lãi suất FED 5.25-5.5%, lãi vay mua xe 7-9% -> người mua trì hoãn; giải pháp: leasing giảm chi phí ban đầu.'
+      - 'Bảo hành đề xuất: 10 năm hoặc 125,000 dặm so với mặt bằng 3-5 năm của đối thủ -> bù rào cản lòng tin thương hiệu mới.'
+      - '5 Forces: Rivalry cực khốc liệt; Buyers cực cao; Suppliers trung bình-cao; Substitutes trung bình; New Entrants trung bình. Không có điểm số trong nguồn nên chấm lại bằng m01 nếu cần.'
+      lesson: 'PESTEL tìm ra cơ hội chính sách (IRA) -> quyết định xây nhà máy tại Mỹ; nhưng doanh số thấp hơn kỳ vọng vì đánh giá quá lạc quan yếu tố Xã hội/nhận diện thương hiệu. Kết luận: người đi sau ở thế yếu không nên chơi trò chi phí với Tesla mà cần ngách khác biệt (cho thuê pin, dịch vụ hậu mãi). PESTEL là điểm khởi đầu, phải ghép với 5 Forces, SWOT và dữ liệu hành vi khách hàng.'
+      data_reliability: unverified
+  - id: "m09-case_lessons-2"
+    title: "Bài học case: Ngành cà phê Việt Nam (5 Forces)"
+    tags: ["bài", "học", "case", "ngành", "cà", "phê", "việt", "nam", "forces"]
+    text: |-
+      name: Ngành cà phê Việt Nam (5 Forces)
+      type: sme
+      setup: 'Chuỗi cà phê VN giai đoạn 2023-2025: Highlands, Phúc Long, The Coffee House, Trung Nguyên E-Coffee, Starbucks và hàng nghìn quán độc lập.'
+      key_calculations:
+      - 'Rivalry: Rất cao; Customers: Cao (chi phí chuyển đổi = 0, đánh giá online); Entrants: Trung bình (vốn 500 triệu-2 tỷ/cửa hàng nhưng vị trí đắc địa khan); Suppliers: Thấp (VN xuất khẩu cà phê lớn thứ 2 thế giới); Substitutes: Trung bình (trà sữa, nước ép).'
+      - 'Chấm lại bằng worked example m09_we_5forces: điểm đe dọa có trọng số 3.7/5 -> mức hấp dẫn ngành 2.3/5 (kém hấp dẫn).'
+      lesson: 'Ngành kém hấp dẫn cho người mới; cần Differentiation mạnh. Người thắng là có hệ sinh thái (Phúc Long - Masan, bán trong cửa hàng WinMart) hoặc thương hiệu mạnh (Highlands 700+ cửa hàng). Hạn chế của 5 Forces: không dự báo được bùng nổ cà phê mang đi (Katinat) nên phải bổ sung phân tích xu hướng.'
+      data_reliability: illustrative
+  - id: "m09-case_lessons-3"
+    title: "Bài học case: Grab tại Đông Nam Á (SWOT + TOWS)"
+    tags: ["bài", "học", "case", "grab", "tại", "đông", "nam", "swot", "tows"]
+    text: |-
+      name: Grab tại Đông Nam Á (SWOT + TOWS)
+      type: success
+      setup: Grab cạnh tranh với Gojek và đối thủ địa phương (2020-2024); bảng SWOT 5x4 yếu tố được nêu trong cẩm nang.
+      key_calculations:
+      - 'SO: dữ liệu 300M+ user (S3) + mạng merchant (S4) -> Fintech (O1: GrabPay, GrabInvest).'
+      - 'ST: thương hiệu #1 (S1) chống đối thủ địa phương (T3) -> GrabUnlimited.'
+      - 'WO: lỗ (W1) -> quảng cáo (O5) -> GrabAds.'
+      - 'WT: phụ thuộc nhà đầu tư (W2) trước lãi suất tăng (T4) -> cắt chi phí, sa thải 1,000+ nhân sự (2023).'
+      - Chấm điểm minh họa lại ở worked example m09_we_swot_tows (trọng số/điểm là giả định của skill, không có trong nguồn).
+      lesson: 'SWOT giúp chuyển từ tăng trưởng bằng mọi giá sang tăng trưởng có lãi. Chiến lược WT đau nhưng cần thiết. Hạn chế: SWOT không cho biết ưu tiên thị trường nào -> bổ sung BCG.'
+      data_reliability: unverified
+  - id: "m09-case_lessons-4"
+    title: "Bài học case: Vinamilk - chuỗi giá trị khép kín và VRIO"
+    tags: ["bài", "học", "case", "vinamilk", "chuỗi", "giá", "trị", "khép", "kín", "và", "vrio"]
+    text: |-
+      name: Vinamilk - chuỗi giá trị khép kín và VRIO
+      type: success
+      setup: Vinamilk dẫn đầu sữa VN; cẩm nang kiểm định VRIO cho 4 nguồn lực, SWOT mở rộng và Value Chain khép kín từ trang trại đến kệ hàng.
+      key_calculations:
+      - 'VRIO: trang trại (V,R,I,O đều Có) -> Bền vững; mạng lưới 200,000 điểm bán GT (đều Có) -> Bền vững; thương hiệu 45+ năm (V Có, R Có, I ''Khó'', O Có) -> Bền vững; dây chuyền tiệt trùng (V Có, R Không, I Không) -> Ngang bằng.'
+      - 'Value Chain: Inbound (sữa tươi bảo ôn 4 độ C ngay tại vòi vắt), Operations (13 nhà máy), Outbound (xe lạnh có GPS), Marketing (200,000 điểm bán, ''Giấc mơ sữa Việt''), Service (xử lý khiếu nại trong 24 giờ).'
+      - 'SWOT: S = phân phối + thương hiệu + trang trại + R&D; W = nhập sữa bột + chi phí chuỗi lạnh + bộ máy cồng kềnh; O = sữa hữu cơ/sữa hạt, xuất khẩu qua FTA, ERP Cloud; T = giá và hàng ngoại, biến đổi khí hậu, luật quảng cáo sữa.'
+      lesson: Lợi thế bền vững đến từ nguồn lực đạt V-R-I-O, khó copy vì cần quỹ đất sạch hơn 10 năm và độ phủ thói quen. Công nghệ mua được bằng tiền (Tetra Pak/GEA) chỉ là Competitive Parity - đừng đặt cược vào đó.
+      data_reliability: unverified
+  - id: "m09-case_lessons-5"
+    title: "Bài học case: Samsung Electronics - VRIO"
+    tags: ["bài", "học", "case", "samsung", "electronics", "vrio"]
+    text: |-
+      name: Samsung Electronics - VRIO
+      type: success
+      setup: 'Cẩm nang kiểm định 6 nguồn lực: thương hiệu, chip foundry, AMOLED, hệ sinh thái, OS Tizen, mạng lưới sản xuất VN.'
+      key_calculations:
+      - 'Thương hiệu, foundry chip, AMOLED: V,R,I,O đều Có -> Bền vững (3 nguồn lực).'
+      - 'Hệ sinh thái sản phẩm: V có, R không (LG, Xiaomi cũng có) -> Ngang bằng.'
+      - 'Tizen: V không -> Bất lợi cạnh tranh -> bỏ, chuyển sang Wear OS cho smartwatch.'
+      - 'Mạng lưới sản xuất VN: V,R có, I không (đối thủ có thể xây tương tự) -> Tạm thời.'
+      lesson: Không phải mọi điểm mạnh là lợi thế; Samsung tập trung bảo vệ 3 nguồn lực bền vững và bỏ nguồn lực bất lợi. Phân loại theo thứ tự kiểm tra V -> R -> I -> O dừng ở tiêu chí đầu tiên không đạt.
+      data_reliability: unverified
+  - id: "m09-case_lessons-6"
+    title: "Bài học case: Zara (Inditex) - Value Chain"
+    tags: ["bài", "học", "case", "zara", "inditex", "value", "chain"]
+    text: |-
+      name: Zara (Inditex) - Value Chain
+      type: success
+      setup: 'Fast fashion đưa sản phẩm từ thiết kế tới cửa hàng trong 2-3 tuần (ngành: 6 tháng).'
+      key_calculations:
+      - 'Inbound: 60% vải mua gần Tây Ban Nha, nhập lô nhỏ liên tục.'
+      - 'Operations: 60% sản xuất in-house, lot nhỏ.'
+      - 'Outbound: trung tâm Arteixo, giao 2 lần/tuần tới mọi cửa hàng toàn cầu.'
+      - 'Marketing: chi ~0.3% doanh thu quảng cáo so với H&M 3-4%.'
+      - Mô hình test-and-respond thay plan-and-push; giảm 85% rủi ro tồn kho (theo nguồn).
+      lesson: 'Lợi thế đến từ tối ưu CẢ chuỗi chứ không từng khâu; tích hợp dọc là gốc. Trade-off có chủ đích: lao động gần Tây Ban Nha đắt hơn châu Á, đổi lấy tốc độ.'
+      data_reliability: unverified
+  - id: "m09-case_lessons-7"
+    title: "Bài học case: Vietjet Air - Cost Leadership"
+    tags: ["bài", "học", "case", "vietjet", "air", "cost", "leadership"]
+    text: |-
+      name: Vietjet Air - Cost Leadership
+      type: success
+      setup: Gia nhập 2011 khi Vietnam Airlines gần như độc quyền.
+      key_calculations:
+      - Đội bay đồng nhất Airbus A320/A321 -> giảm ~30% chi phí bảo trì/đào tạo.
+      - Utilization 13-14 giờ/ngày so 10-11 giờ; quay đầu 25 phút so 45-60 phút.
+      - 70%+ bán trực tiếp website/app; tuổi máy bay 3-5 năm.
+      - Giá vé thấp hơn VNA 30-50%; thị phần nội địa ~45% (2023); ancillary 25-30% doanh thu.
+      lesson: 'Cost Leadership không đồng nghĩa rẻ tiền; mô hình doanh thu phụ trợ bù vé rẻ. Rủi ro: đối thủ low-cost khác (AirAsia, Lion Air) khiến phải đổi mới liên tục.'
+      data_reliability: unverified
+  - id: "m09-case_lessons-8"
+    title: "Bài học case: Apple - Differentiation"
+    tags: ["bài", "học", "case", "apple", "differentiation"]
+    text: |-
+      name: Apple - Differentiation
+      type: success
+      setup: Cạnh tranh smartphone với Samsung, Xiaomi, Huawei.
+      key_calculations:
+      - 'Nguồn khác biệt: hệ sinh thái, thiết kế, iOS, privacy, Apple Store, thương hiệu, chip tự phát triển.'
+      - iPhone 15 Pro Max $1,199 so với Samsung S24 Ultra $1,299; iPhone chiếm 85%+ lợi nhuận ngành; 92% user tiếp tục dùng iPhone (đều theo nguồn).
+      lesson: 'Khác biệt nằm ở hệ sinh thái tạo switching cost cao, không ở từng sản phẩm. Premium bền vững chỉ khi khách hàng thật sự cảm nhận giá trị. Rủi ro: thị trường bão hòa.'
+      data_reliability: unverified
+  - id: "m09-case_lessons-9"
+    title: "Bài học case: Rolls-Royce - Differentiation Focus"
+    tags: ["bài", "học", "case", "rolls", "royce", "differentiation", "focus"]
+    text: |-
+      name: Rolls-Royce - Differentiation Focus
+      type: success
+      setup: Phân khúc siêu sang; khách UHNWI tài sản ròng trên $30M.
+      key_calculations:
+      - Sản lượng ~6,000 xe/năm (BMW 2.5 triệu); doanh số kỷ lục 6,032 xe (2023).
+      - Giá từ $350,000 đến $28 triệu (Boat Tail); gần 100% xe bespoke; sản xuất thủ công 6+ tháng.
+      - Biên lợi nhuận ước tính 25-30% (2-3 lần xe thường); backlog 1-2 năm -> không giảm giá.
+      lesson: 'Focus thành công khi hiểu sâu khách mục tiêu; đối thủ thực sự là chi tiêu xa xỉ (du thuyền, nghệ thuật, BĐS) chứ không phải BMW/Mercedes. Rủi ro: chuyển sang xe điện (Spectre 2023).'
+      data_reliability: unverified
+  - id: "m09-case_lessons-10"
+    title: "Bài học case: Apple vs Xiaomi vs Nokia và BlackBerry (Generic Strategies, Stuck in the Middle)"
+    tags: ["bài", "học", "case", "apple", "vs", "xiaomi", "nokia", "và", "blackberry", "generic", "strategies", "stuck"]
+    text: |-
+      name: Apple vs Xiaomi vs Nokia và BlackBerry (Generic Strategies, Stuck in the Middle)
+      type: failure
+      setup: Hai cực định vị (Apple khác biệt hóa cao cấp; Xiaomi dẫn đầu chi phí) và hai thương hiệu kẹt ở giữa.
+      key_calculations:
+      - 'Apple: ASP 1,000-1,600 USD, biên gộp phần cứng 60-65% (theo nguồn).'
+      - 'Xiaomi: ASP 150-300 USD, biên gộp 5-8% (theo nguồn).'
+      - 'Chấm lại lãi gộp trên một máy ở m09_we_apple_xiaomi: Apple 1,200*62.5% = 750 USD; Xiaomi 225*6.5% = 14.625 USD; một máy Apple tương đương ~51.3 máy Xiaomi về lãi gộp (giả định giữa dải).'
+      - 'Nokia: Symbian/MeeGo lạc hậu, không hạ giá về mức Android, không đủ trải nghiệm iPhone. BlackBerry: kẹt bàn phím QWERTY và bảo mật B2B.'
+      lesson: Hai cực đều lợi nhuận được bằng cơ chế khác nhau (biên cao x lượng vừa, biên thấp x lượng cực lớn); kẹt ở giữa thì R&D phân mảnh và mất thị phần. Hybrid (Xiaomi hệ sinh thái IoT) là ngoại lệ có cơ chế.
+      data_reliability: illustrative
+  - id: "m09-case_lessons-11"
+    title: "Bài học case: Vingroup - Diversification (Ansoff) và BCG"
+    tags: ["bài", "học", "case", "vingroup", "diversification", "ansoff", "và", "bcg"]
+    text: |-
+      name: Vingroup - Diversification (Ansoff) và BCG
+      type: failure
+      setup: Tập đoàn tư nhân lớn nhất VN đa dạng hóa mạnh; bảng 6 giai đoạn 2004 đến nay.
+      key_calculations:
+      - '2004-2010 Market Penetration: BĐS cao cấp (Vinhomes) -> thành công.'
+      - '2010-2015 Product Development: bán lẻ VinMart, resort Vinpearl -> VinMart lớn nhất VN cho đến khi bán cho Masan.'
+      - '2017-2019 Unrelated Diversification: VinFast (thách thức lớn), Vsmart (đóng cửa 2021).'
+      - '2018-2020: VinSchool, VinMec (đang phát triển, có related synergy với hệ sinh thái Vinhomes). 2020-2021: hàng không bị hủy. 2021 trở đi: bán VinMart, đóng Vsmart, tập trung VinFast và Vinhomes.'
+      - 'Đối chiếu BCG (suy luận của skill, nguồn chưa xếp): Vinhomes giống Cash Cow nuôi VinFast (Question Mark tiêu tiền lớn).'
+      lesson: Ansoff đúng khi cảnh báo Diversification không liên quan rủi ro nhất; dù vốn lớn, thiếu năng lực lõi công nghệ phần mềm thì Vsmart thất bại; ô tô cần 10-20 năm xây thương hiệu và mạng đại lý. Diversification liên quan (VinSchool, VinMec) thành công hơn.
+      data_reliability: unverified
+  - id: "m09-worked_examples-1"
+    title: "Ví dụ có lời giải: m09_we_swot_tows — SWOT có trọng số và xếp hạng TOWS (giả định minh họa dựa trên case Grab)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m09_we_swot_tows", "swot", "trọng", "số", "và", "xếp", "hạng"]
+    text: |-
+      id: m09_we_swot_tows
+      title: SWOT có trọng số và xếp hạng TOWS (giả định minh họa dựa trên case Grab)
+      inputs:
+        S: S1 thương hiệu (w=0.40, s=5); S3 dữ liệu (0.35, 4); S4 merchant (0.25, 4)
+        W: W1 lỗ (0.50, 5); W2 phụ thuộc nhà đầu tư (0.20, 3); W5 chi phí khuyến mãi (0.30, 4)
+        O: O1 fintech (0.50, 5); O5 quảng cáo (0.30, 4); O4 grocery (0.20, 3)
+        T: T1 Gojek-Tokopedia (0.40, 4); T3 đối thủ địa phương (0.30, 3); T4 lãi suất (0.30, 4)
+      steps:
+      - S = 0.40*5 + 0.35*4 + 0.25*4 = 2.0 + 1.4 + 1.0 = 4.4
+      - W = 0.50*5 + 0.20*3 + 0.30*4 = 2.5 + 0.6 + 1.2 = 4.3
+      - O = 0.50*5 + 0.30*4 + 0.20*3 = 2.5 + 1.2 + 0.6 = 4.3
+      - T = 0.40*4 + 0.30*3 + 0.30*4 = 1.6 + 0.9 + 1.2 = 3.7
+      - 'Điểm cặp P = (w*s nội bộ)*(w*s ngoại cảnh): S1xO1 = (0.4*5)*(0.5*5) = 2.0*2.5 = 5.0; S3xO1 = 1.4*2.5 = 3.5; WxO: W1xO5 = (0.5*5)*(0.3*4) = 2.5*1.2 = 3.0; S1xT3 = 2.0*0.9 = 1.8; W2xT4 = (0.2*3)*(0.3*4) = 0.6*1.2 = 0.72'
+      - 'Xếp hạng: S1xO1 (5.0) > S3xO1 (3.5) > W1xO5 (3.0) > S1xT3 (1.8) > W2xT4 (0.72)'
+      result: 'Nội bộ mạnh (S 4.4) nhưng yếu tố W cũng lớn (4.3), cơ hội cao (4.3): ưu tiên SO (fintech từ thương hiệu/dữ liệu), kế đó WO (quảng cáo để vá lỗ). WT điểm thấp nhưng vẫn cần làm (cắt chi phí) vì ảnh hưởng dòng tiền - điểm thấp không có nghĩa bỏ qua rủi ro sinh tồn. Trọng số/điểm là giả định của skill.'
+  - id: "m09-worked_examples-2"
+    title: "Ví dụ có lời giải: m09_we_vrio — Phân loại VRIO cho 4 nguồn lực Vinamilk"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m09_we_vrio", "phân", "loại", "vrio", "cho", "nguồn", "lực"]
+    text: |-
+      id: m09_we_vrio
+      title: Phân loại VRIO cho 4 nguồn lực Vinamilk
+      inputs:
+        vinamilk_resources: trang trại (1,1,1,1); phân phối GT (1,1,1,1); thương hiệu (1,1,1,1, 'Khó'); dây chuyền tiệt trùng (1,0,0,1)
+        rule: Kiểm tra theo thứ tự V->R->I->O, dừng ở tiêu chí đầu tiên Không đạt
+      steps:
+      - 'def vrio(v,r,i,o): V=0 -> disadvantage; R=0 -> parity; I=0 -> temporary; O=0 -> unused; còn lại -> sustained'
+      - vrio(1,1,1,1) = sustained (trang trại, phân phối, thương hiệu)
+      - 'vrio(1,0,0,1) = parity (dây chuyền): dừng ở R=0, bất kể I'
+      - 'Ví dụ thêm: vrio(1,1,0,1) = temporary (mạng lưới sản xuất VN của Samsung); vrio(1,1,1,0) = unused; vrio(0,0,0,0) = disadvantage (Tizen)'
+      result: 3 nguồn lực bền vững, 1 ngang bằng. Bảo vệ 3 nguồn lực đầu bằng đầu tư dài hạn; dây chuyền tiệt trùng chỉ cần duy trì ngang chuẩn.
+  - id: "m09-worked_examples-3"
+    title: "Ví dụ có lời giải: m09_we_5forces — Chấm điểm hấp dẫn ngành cà phê VN bằng 5 Forces có trọng số (giả định của skill)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m09_we_5forces", "chấm", "điểm", "hấp", "dẫn", "ngành", "cà"]
+    text: |-
+      id: m09_we_5forces
+      title: Chấm điểm hấp dẫn ngành cà phê VN bằng 5 Forces có trọng số (giả định của skill)
+      inputs:
+        forces: Rivalry (w=0.30, đe dọa 5); Entrants (0.15, 3); Suppliers (0.15, 2); Buyers (0.25, 4); Substitutes (0.15, 3)
+        mapping_from_source: Rất cao=5; Cao=4; Trung bình=3; Thấp=2
+      steps:
+      - Tổng trọng số = 0.30+0.15+0.15+0.25+0.15 = 1.00
+      - Điểm đe dọa = 0.30*5 + 0.15*3 + 0.15*2 + 0.25*4 + 0.15*3 = 1.5 + 0.45 + 0.30 + 1.0 + 0.45 = 3.70
+      - Mức hấp dẫn = 6 - 3.70 = 2.30 (thang đảo 1-5, 5 là hấp dẫn nhất)
+      result: 'Hấp dẫn 2.3/5 -> ngành kém hấp dẫn cho người mới, khớp kết luận của nguồn. Khuyến nghị: Differentiation/Focus rõ rệt hoặc tận dụng hệ sinh thái. Trọng số là giả định.'
+  - id: "m09-worked_examples-4"
+    title: "Ví dụ có lời giải: m09_we_apple_xiaomi — Cơ chế lợi nhuận của hai cực Generic: Apple và Xiaomi"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m09_we_apple_xiaomi", "cơ", "chế", "lợi", "nhuận", "của", "hai"]
+    text: |-
+      id: m09_we_apple_xiaomi
+      title: 'Cơ chế lợi nhuận của hai cực Generic: Apple và Xiaomi'
+      inputs:
+        apple: ASP 1,200 USD (giữa dải 1,000-1,600 chọn tròn); biên gộp 62.5% (giữa 60-65%)
+        xiaomi: ASP 225 USD (giữa 150-300); biên gộp 6.5% (giữa 5-8%)
+      steps:
+      - Lãi gộp Apple / máy = 1,200 * 0.625 = 750 USD
+      - Lãi gộp Xiaomi / máy = 225 * 0.065 = 14.625 USD
+      - Tỷ lệ = 750 / 14.625 = 51.28 máy Xiaomi bù 1 máy Apple về lãi gộp
+      - Ví dụ 100 triệu máy Apple -> lãi gộp 75 tỷ USD; để bằng, Xiaomi cần 75e9/14.625 = 5,128 triệu máy (~5.1 tỷ), vượt xa quy mô thị trường
+      result: Cost Leadership cần khối lượng và chi phí cực thấp, phần cứng chỉ là cửa ngõ (lợi nhuận bù bằng hệ sinh thái/dịch vụ - Hybrid). Differentiation sống bằng biên cao. Số liệu là giả định ở giữa dải từ nguồn chưa kiểm chứng; dùng để minh họa logic, không để kết luận về công ty thật.
+  - id: "m09-worked_examples-5"
+    title: "Ví dụ có lời giải: m09_we_bcg — Xếp danh mục 5 sản phẩm vào ma trận BCG (giả định minh họa)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m09_we_bcg", "xếp", "danh", "mục", "sản", "phẩm", "vào"]
+    text: |-
+      id: m09_we_bcg
+      title: Xếp danh mục 5 sản phẩm vào ma trận BCG (giả định minh họa)
+      inputs:
+        products: A (thị phần 30%, đối thủ lớn nhất 12%, tăng trưởng 15%); B (20%, 40%, 12%); C (5%, 25%, 14%); D (3%, 18%, 2%); E (25%, 10%, 3%)
+        thresholds: RMS = 1.0; tăng trưởng thị trường 10% (quy ước chọn, cần nêu rõ)
+      steps:
+      - RMS_A = 30/12 = 2.50; tăng trưởng 15% -> cao -> Star
+      - RMS_B = 20/40 = 0.50; 12% -> cao -> Question Mark
+      - RMS_C = 5/25 = 0.20; 14% -> cao -> Question Mark
+      - RMS_D = 3/18 = 0.17; 2% -> thấp -> Dog
+      - RMS_E = 25/10 = 2.50; 3% -> thấp -> Cash Cow
+      result: 'A = Star (đầu tư), E = Cash Cow (thu hoạch nuôi A và Question Mark), D = Dog (thu hẹp/thoái), B và C = Question Mark: B (RMS 0.50) triển vọng hơn C (0.20) nên đầu tư chọn lọc B, cân nhắc rút C. Kiểm tra sau: nếu B vẫn không nâng RMS, hạ xuống Dog.'
+  - id: "m09-practice_questions-1"
+    title: "Câu hỏi luyện tập: Phân biệt I/O và RBV; khi nào ưu tiên cái nào?"
+    tags: ["câu", "hỏi", "luyện", "tập", "phân", "biệt", "và", "rbv", "khi", "nào", "ưu", "tiên"]
+    text: |-
+      q: Phân biệt I/O và RBV; khi nào ưu tiên cái nào?
+      a: 'I/O là Outside-In (ngành quyết định lợi nhuận, công cụ PESTEL/5 Forces/Generic); RBV là Inside-Out (nguồn lực độc đáo, công cụ VRIO/Value Chain). Chọn thị trường mới -> bắt đầu I/O; giải thích vì sao ta hơn đối thủ -> RBV. Thực hành: dùng cả hai theo chuỗi tích hợp.'
+  - id: "m09-practice_questions-2"
+    title: "Câu hỏi luyện tập: Một nguồn lực V=Có, R=Có, I=Không, O=Có thì kết quả VRIO là gì và hành động gì?"
+    tags: ["câu", "hỏi", "luyện", "tập", "một", "nguồn", "lực", "có", "không", "thì", "kết", "quả"]
+    text: |-
+      q: Một nguồn lực V=Có, R=Có, I=Không, O=Có thì kết quả VRIO là gì và hành động gì?
+      a: Lợi thế tạm thời (Temporary Advantage). Khai thác nhanh, tái đầu tư đổi mới, và tìm cách nâng khả năng khó bắt chước (CHIP) hoặc chuyển sang nguồn lực khác.
+  - id: "m09-practice_questions-3"
+    title: "Câu hỏi luyện tập: Vì sao SWOT cần TOWS?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "swot", "cần", "tows"]
+    text: |-
+      q: Vì sao SWOT cần TOWS?
+      a: SWOT chỉ liệt kê, không ưu tiên, không dẫn tới hành động. TOWS (Weihrich 1982) ghép S/W với O/T thành 4 loại chiến lược SO, ST, WO, WT để chọn 2-3 hành động cụ thể.
+  - id: "m09-practice_questions-4"
+    title: "Câu hỏi luyện tập: Tính thị phần tương đối và ô BCG: thị phần 8%, đối thủ lớn nhất 24%, thị trường tăng 18%."
+    tags: ["câu", "hỏi", "luyện", "tập", "tính", "thị", "phần", "tương", "đối", "và", "bcg", "thủ"]
+    text: |-
+      q: 'Tính thị phần tương đối và ô BCG: thị phần 8%, đối thủ lớn nhất 24%, thị trường tăng 18%.'
+      a: 'RMS = 8/24 = 0.33 (<1), tăng trưởng 18% cao -> Question Mark: chọn lọc đầu tư nếu có lợi thế đặc thù, nếu không thì rút.'
+  - id: "m09-practice_questions-5"
+    title: "Câu hỏi luyện tập: Vì sao Nokia/BlackBerry bị coi là Stuck in the Middle theo nguồn?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "nokia", "blackberry", "bị", "coi", "là", "stuck"]
+    text: |-
+      q: Vì sao Nokia/BlackBerry bị coi là Stuck in the Middle theo nguồn?
+      a: 'Không rẻ được như Android (Cost) và không tạo trải nghiệm cao cấp như iPhone (Differentiation); R&D phân mảnh; BlackBerry giữ định vị thiết bị công sở B2B trong khi thị trường chuyển sang giải trí tiêu dùng. Lưu ý: chi tiết sự kiện là minh họa.'
+  - id: "m09-practice_questions-6"
+    title: "Câu hỏi luyện tập: Vì sao Vsmart thất bại còn VinSchool/VinMec tương đối ổn theo cẩm nang?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "vsmart", "thất", "bại", "còn", "vinschool", "vinmec"]
+    text: |-
+      q: Vì sao Vsmart thất bại còn VinSchool/VinMec tương đối ổn theo cẩm nang?
+      a: 'Vsmart: Diversification không liên quan (BĐS -> smartphone), thiếu năng lực công nghệ lõi. VinSchool/VinMec: có related synergy với hệ sinh thái Vinhomes/smart city. Theo Ansoff, rủi ro Diversification cao nhất và giảm khi liên quan đến năng lực hiện có.'
+  - id: "m09-practice_questions-7"
+    title: "Câu hỏi luyện tập: Chấm Điểm: weights (0.6, 0.4), scores (5, 3) -> điểm góc?"
+    tags: ["câu", "hỏi", "luyện", "tập", "chấm", "điểm", "weights", "scores", "góc"]
+    text: |-
+      q: 'Chấm Điểm: weights (0.6, 0.4), scores (5, 3) -> điểm góc?'
+      a: 0.6*5 + 0.4*3 = 3.0 + 1.2 = 4.2.
+  - id: "m09-practice_questions-8"
+    title: "Câu hỏi luyện tập: Vì sao PESTEL của VinFast tại Mỹ lạc quan nhưng kết quả thực tế yếu?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "pestel", "của", "vinfast", "tại", "mỹ", "lạc"]
+    text: |-
+      q: Vì sao PESTEL của VinFast tại Mỹ lạc quan nhưng kết quả thực tế yếu?
+      a: Đánh giá quá lạc quan yếu tố Xã hội/nhận diện thương hiệu; ngoài ra điều kiện IRA cần nội địa hóa. PESTEL phải kết hợp 5 Forces, SWOT, dữ liệu hành vi khách hàng.
+  - id: "m09-practice_questions-9"
+    title: "Câu hỏi luyện tập: Hybrid khác Stuck in the Middle ở đâu?"
+    tags: ["câu", "hỏi", "luyện", "tập", "hybrid", "khác", "stuck", "in", "the", "middle", "đâu"]
+    text: |-
+      q: Hybrid khác Stuck in the Middle ở đâu?
+      a: Hybrid có một cơ chế chung tạo cả hai lợi thế (TPS cho Toyota, thiết kế flat-pack cho IKEA); Stuck in the Middle thì không có cơ chế, chỉ mong muốn cả hai, nên R&D và chi phí phân mảnh.
+  - id: "m09-practice_questions-10"
+    title: "Câu hỏi luyện tập: SME 5 nhân sự bán đồ ăn vặt online nên theo Generic nào?"
+    tags: ["câu", "hỏi", "luyện", "tập", "sme", "nhân", "sự", "bán", "đồ", "ăn", "vặt", "online"]
+    text: |-
+      q: SME 5 nhân sự bán đồ ăn vặt online nên theo Generic nào?
+      a: 'Focus (nguồn: DN nhỏ bắt đầu bằng Focus). Chọn một nhóm khách cụ thể, hiểu sâu, rồi mới mở rộng sang Differentiation khi đủ năng lực.'
+  - id: "m09-checklist-1"
+    title: "Checklist: [ ] Đã xác định bài toán thuộc 'chọn chơi ở đâu' (I/O) hay 'vì sao hơn đối thủ' (RBV), và dùng cả h…"
+    tags: ["checklist", "đã", "xác", "định", "bài", "toán", "thuộc", "chọn", "chơi", "đâu", "hay", "vì"]
+    text: |-
+      [ ] Đã xác định bài toán thuộc 'chọn chơi ở đâu' (I/O) hay 'vì sao hơn đối thủ' (RBV), và dùng cả hai?
+  - id: "m09-checklist-2"
+    title: "Checklist: [ ] PESTEL: mỗi yếu tố có cấp độ tác động và hành động ứng phó; yếu tố Xã hội/thương hiệu có dữ liệ…"
+    tags: ["checklist", "pestel", "mỗi", "yếu", "tố", "có", "cấp", "độ", "tác", "động", "và", "hành"]
+    text: |-
+      [ ] PESTEL: mỗi yếu tố có cấp độ tác động và hành động ứng phó; yếu tố Xã hội/thương hiệu có dữ liệu khách hàng thật?
+  - id: "m09-checklist-3"
+    title: "Checklist: [ ] 5 Forces: có kết luận hấp dẫn/kém hấp dẫn và lực đe dọa nhất; đã bổ sung xu hướng mà mô hình kh…"
+    tags: ["checklist", "forces", "có", "kết", "luận", "hấp", "dẫn", "kém", "và", "lực", "đe", "dọa"]
+    text: |-
+      [ ] 5 Forces: có kết luận hấp dẫn/kém hấp dẫn và lực đe dọa nhất; đã bổ sung xu hướng mà mô hình không tự bắt được?
+  - id: "m09-checklist-4"
+    title: "Checklist: [ ] SWOT: 5-7 yếu tố mỗi góc, có trọng số tổng = 1, có điểm 1-5, O/T lấy từ PESTEL/5 Forces?"
+    tags: ["checklist", "swot", "yếu", "tố", "mỗi", "góc", "có", "trọng", "số", "tổng", "điểm", "lấy"]
+    text: |-
+      [ ] SWOT: 5-7 yếu tố mỗi góc, có trọng số tổng = 1, có điểm 1-5, O/T lấy từ PESTEL/5 Forces?
+  - id: "m09-checklist-5"
+    title: "Checklist: [ ] TOWS: chọn tối đa 2-3 chiến lược, hành động cụ thể?"
+    tags: ["checklist", "tows", "chọn", "tối", "đa", "chiến", "lược", "hành", "động", "cụ", "thể"]
+    text: |-
+      [ ] TOWS: chọn tối đa 2-3 chiến lược, hành động cụ thể?
+  - id: "m09-checklist-6"
+    title: "Checklist: [ ] VRIO: mỗi điểm mạnh kiểm theo V->R->I->O, lý giải I bằng CHIP?"
+    tags: ["checklist", "vrio", "mỗi", "điểm", "mạnh", "kiểm", "theo", "lý", "giải", "bằng", "chip"]
+    text: |-
+      [ ] VRIO: mỗi điểm mạnh kiểm theo V->R->I->O, lý giải I bằng CHIP?
+  - id: "m09-checklist-7"
+    title: "Checklist: [ ] Value Chain: biết lợi thế đến từ hoạt động nào?"
+    tags: ["checklist", "value", "chain", "biết", "lợi", "thế", "đến", "từ", "hoạt", "động", "nào"]
+    text: |-
+      [ ] Value Chain: biết lợi thế đến từ hoạt động nào?
+  - id: "m09-checklist-8"
+    title: "Checklist: [ ] Generic: kiểm tra Stuck in the Middle; nếu Hybrid, nêu cơ chế chung?"
+    tags: ["checklist", "generic", "kiểm", "tra", "stuck", "in", "the", "middle", "nếu", "hybrid", "nêu", "cơ"]
+    text: |-
+      [ ] Generic: kiểm tra Stuck in the Middle; nếu Hybrid, nêu cơ chế chung?
+  - id: "m09-checklist-9"
+    title: "Checklist: [ ] Ansoff/BCG: hướng tăng trưởng và phân bổ vốn; Diversification không liên quan có lý do thật mạn…"
+    tags: ["checklist", "ansoff", "bcg", "hướng", "tăng", "trưởng", "và", "phân", "bổ", "vốn", "diversification", "không"]
+    text: |-
+      [ ] Ansoff/BCG: hướng tăng trưởng và phân bổ vốn; Diversification không liên quan có lý do thật mạnh?
+  - id: "m09-checklist-10"
+    title: "Checklist: [ ] Số liệu case: gắn cờ độ tin cậy (verified/illustrative/unverified), không nói như sự thật?"
+    tags: ["checklist", "số", "liệu", "case", "gắn", "cờ", "độ", "tin", "cậy", "verified", "illustrative", "unverified"]
+    text: |-
+      [ ] Số liệu case: gắn cờ độ tin cậy (verified/illustrative/unverified), không nói như sự thật?
+  - id: "m09-checklist-11"
+    title: "Checklist: [ ] Có bước chuyển sang đo lường (BSC), đổi mới (Blue Ocean), kịch bản (Scenario) nếu cần?"
+    tags: ["checklist", "có", "bước", "chuyển", "sang", "đo", "lường", "bsc", "đổi", "mới", "blue", "ocean"]
+    text: |-
+      [ ] Có bước chuyển sang đo lường (BSC), đổi mới (Blue Ocean), kịch bản (Scenario) nếu cần?
+  - id: "m09-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: SWOT chấm điểm + TOWS"
+    tags: ["mẫu", "excel", "sheets", "swot", "chấm", "điểm", "tows"]
+    text: |-
+      name: SWOT chấm điểm + TOWS
+      layout: 'Sheet 1: 4 bảng S/W/O/T (yếu tố, trọng số, điểm 1-5, =SUMPRODUCT). Sheet 2: lưới ghép cặp, ô điểm = (w_i*s_i)*(w_j*s_j), xếp hạng bằng =RANK().'
+  - id: "m09-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: BCG danh mục"
+    tags: ["mẫu", "excel", "sheets", "bcg", "danh", "mục"]
+    text: |-
+      name: BCG danh mục
+      layout: 'Cột: sản phẩm, doanh số, thị phần, thị phần đối thủ lớn nhất, RMS = thị phần / đối thủ, tăng trưởng thị trường, ô BCG = IF(AND(RMS>=1,g>=10%),"Star",...). Biểu đồ bong bóng với kích thước = doanh số.'
+  - id: "m09-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: VRIO tracker"
+    tags: ["mẫu", "excel", "sheets", "vrio", "tracker"]
+    text: |-
+      name: VRIO tracker
+      layout: 'Cột: nguồn lực, V, R, I (lý do CHIP), O, kết quả = IF(V=0,"Bất lợi",IF(R=0,"Ngang bằng",IF(I=0,"Tạm thời",IF(O=0,"Chưa khai thác","Bền vững")))).'
+  - id: "m09-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: 09-comprehensive-strategic-case-studies-manual.md (dòng 1-1500)

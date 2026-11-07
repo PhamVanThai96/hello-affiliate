@@ -1,0 +1,1179 @@
+# m10 - Chiến lược giá (distill từ 10-pricing-strategies.md)
+# Ghi chú nguồn: file gốc chỉ nêu định tính các chiến lược + Price Elasticity + GBB + 1 case Apple + 2 case khóa học. Các công thức nền (markup/margin, hòa vốn,
+# độ co giãn điểm/điểm giữa, quy tắc giá tối ưu theo co giãn, khối lượng hòa vốn khi đổi giá, EVC, Van Westendorp, unit economics thuê bao) được BỔ SUNG từ
+# kiến thức chuẩn (Nagle & Müller, Simon, Kotler) để module đủ dùng; mỗi mục bổ sung ghi rõ "ngoài nguồn".
+id: "m10"
+name_vi: "Chiến lược giá"
+name_en: "Pricing Strategies"
+purpose: >
+  Giúp chọn chiến lược và mức giá cụ thể cho sản phẩm/dịch vụ/menu/khóa học: kẹp giá giữa sàn chi phí (floor) và trần giá trị cảm nhận (ceiling),
+  tham chiếu đối thủ, rồi chọn chiến lược (skimming, penetration, competitive, psychological, reference, value-based, freemium, dynamic, subscription, PWYW),
+  thiết kế kiến trúc giá (Good-Better-Best), tính hòa vốn/độ co giãn/tác động lợi nhuận, kiểm thử và bảo vệ giá (chống price war, tránh nghiện giảm giá).
+when_to_use:
+  - "Định giá sản phẩm mới / ra mắt (skimming hay penetration?), định giá menu quán cà phê/nhà hàng, shop online, khóa học, SaaS/app."
+  - "Chủ SME hỏi 'nên tăng giá không?', 'giảm giá 10% có lời không?', 'đối thủ hạ giá thì có theo không?'."
+  - "Cần thiết kế gói Basic/Standard/Premium (GBB), combo, bundle, subscription, freemium, giá sinh viên/early bird."
+  - "Cần chọn kỹ thuật giá tâm lý (charm/prestige/anchoring/decoy/rule of 100/reference price) cho banner, menu, trang bán hàng."
+  - "Cần tính giá bán từ chi phí (markup/margin/food cost %), điểm hòa vốn, độ co giãn, khối lượng cần tăng để bù khuyến mãi."
+  - "Cần ước lượng willingness-to-pay (Van Westendorp, Gabor-Granger, A/B test giá) trước khi chốt giá."
+  - "Phân tích case định giá của doanh nghiệp (Apple, Spotify, Grab, Netflix...) để rút bài học."
+prerequisites: []
+related_modules:
+  - "m02 - Marketing Mix 4P/7P: Price là 1 trong 4P, phải nhất quán với Product/Place/Promotion"
+  - "m01 - STP: giá phải khớp phân khúc mục tiêu và định vị (premium/mid/budget)"
+  - "m03 - Customer Lifetime Value: giá thuê bao, churn, LTV:CAC quyết định giá chấp nhận được; hy sinh margin đầu để mua LTV"
+  - "m04 - Brand Management: giá là tín hiệu thương hiệu; chiết khấu liên tục làm xói mòn brand equity"
+  - "m06 - Consumer Behavior: loss aversion, anchoring, price-quality heuristic, ảo tưởng giá lẻ"
+  - "m07 - Marketing Research: khảo sát WTP, Van Westendorp, conjoint, A/B test"
+  - "m09 - Product Life Cycle: skimming ở Introduction, giảm giá ở Maturity/Decline"
+  - "m05 - Digital Marketing: A/B test giá, dynamic pricing, funnel freemium"
+  - "m11 - Marketing Mix 4C: Cost-to-customer (C thay cho Price) nhìn giá từ phía khách hàng"
+
+concepts:
+  - term_vi: "Chiến lược giá"
+    term_en: "Pricing Strategy"
+    definition: "Phương pháp DN dùng để xác định mức giá nhằm tối đa hóa lợi nhuận, đạt mục tiêu thị phần hoặc mục tiêu chiến lược khác."
+    why_it_matters: "Giá là P duy nhất tạo doanh thu (Product, Place, Promotion đều là chi phí); tác động lợi nhuận tức thì; khó sửa nhất vì khách phản ứng mạnh khi tăng giá; đồng thời là tín hiệu định vị thương hiệu."
+  - term_vi: "Đòn bẩy lợi nhuận của giá"
+    term_en: "Profit leverage of price"
+    definition: "Tăng giá 1% (giữ nguyên lượng bán) tăng lợi nhuận hoạt động khoảng 8-11% theo nguồn (gán McKinsey)."
+    why_it_matters: >
+      Vì tăng giá không làm tăng chi phí nên toàn bộ phần tăng rơi thẳng vào lợi nhuận; con số 8-11% phụ thuộc biên lợi nhuận: nếu lợi nhuận hoạt động chỉ bằng 10% doanh thu thì 1% giá = 10% lợi nhuận
+      (công thức m10_profit_leverage). Cảnh báo: giả định lượng bán không đổi, không đúng khi cầu co giãn; con số là minh họa theo biên trung bình, không phải hằng số.
+  - term_vi: "Ba trụ cột định giá: Chi phí - Giá trị - Cạnh tranh"
+    term_en: "Cost / Value / Competition (3Cs of pricing)"
+    definition: "Chi phí đặt sàn giá (price floor), giá trị khách hàng cảm nhận đặt trần giá (price ceiling), giá đối thủ là mốc tham chiếu (reference) ở giữa."
+    why_it_matters: "Nguyên tắc: Giá >= Chi phí (không thì lỗ) VÀ Giá <= Giá trị cảm nhận (không thì khách không mua). Khoảng giữa là vùng chiến lược; chọn điểm trong khoảng đó phụ thuộc mục tiêu, cạnh tranh và độ co giãn."
+  - term_vi: "Giá trị cảm nhận"
+    term_en: "Perceived Value / Willingness-to-Pay (WTP)"
+    definition: "Mức tiền tối đa khách sẵn sàng trả vì lợi ích họ nhận (kinh tế, chức năng, cảm xúc/biểu tượng)."
+    why_it_matters: "Khách trả tiền cho VALUE chứ không cho COST: Apple chi phí linh kiện ~400-500 USD, bán 999-1.199 USD vì hệ sinh thái + thương hiệu + trải nghiệm. Là cơ sở của Value-Based Pricing."
+  - term_vi: "Độ co giãn của cầu theo giá"
+    term_en: "Price Elasticity of Demand (Ep)"
+    definition: "Ep = %thay đổi lượng cầu / %thay đổi giá. |Ep|>1 co giãn (nhạy giá), |Ep|<1 không co giãn, |Ep|=1 đơn vị."
+    why_it_matters: "Trả lời câu hỏi cốt lõi: tăng/giảm giá thì doanh thu và lợi nhuận đổi thế nào. Cầu không co giãn (xăng, thuốc, iPhone) thì tăng giá lời; cầu co giãn (vé máy bay, thời trang) thì tăng giá mất nhiều khách. Doanh thu chỉ tăng khi giảm giá nếu |Ep|>1 NHƯNG lợi nhuận còn phụ thuộc biên (xem ví dụ shop áo thun)."
+  - term_vi: "Mục tiêu định giá"
+    term_en: "Pricing objective"
+    definition: "Một trong: tối đa lợi nhuận, tối đa thị phần, sống sót (survival), hình ảnh cao cấp, hoặc bán hết công suất."
+    why_it_matters: "Cùng sản phẩm, mục tiêu khác thì chiến lược khác (thị phần thì penetration, lợi nhuận/hình ảnh thì skimming/value-based). Bước 1 của quy trình định giá."
+  - term_vi: "Tín hiệu giá - chất lượng"
+    term_en: "Price-quality heuristic"
+    definition: "Khách suy ra chất lượng từ giá khi thiếu thông tin: giá cao = tốt, giá quá thấp = nghi ngờ."
+    why_it_matters: "Giải thích vì sao penetration có rủi ro bị định vị 'hàng rẻ, kém chất lượng', vì sao luxury dùng số tròn, vì sao giảm giá liên tục làm hỏng brand."
+  - term_vi: "Giá tham chiếu"
+    term_en: "Internal / External Reference Price"
+    definition: "Nội tại (internal): mức giá nằm trong trí nhớ khách từ kinh nghiệm mua. Bên ngoài (external): mức giá DN chủ động hiển thị bên cạnh (giá gạch, MSRP, giá thị trường, sản phẩm đắt đặt cạnh)."
+    why_it_matters: "Khách không biết giá trị thật nên đánh giá đắt/rẻ bằng so sánh với một mốc. Quản được mốc thì quản được cảm nhận. Rủi ro: khuyến mãi liên tục biến giá KM thành giá tham chiếu mới, giá gốc không ai mua nữa."
+  - term_vi: "Chi phí cận biên"
+    term_en: "Marginal Cost"
+    definition: "Chi phí biến đổi để phục vụ thêm một khách hàng."
+    why_it_matters: "Quyết định mô hình khả thi: marginal cost ~0 (app, phần mềm, video) thì freemium/subscription/PWYW khả thi; hàng vật lý (đồ ăn, quần áo) phải tính biên gộp rất kỹ."
+  - term_vi: "Chiến tranh giá"
+    term_en: "Price War"
+    definition: "Các đối thủ liên tục hạ giá qua lại để giành khách/thị phần; hệ quả cực đoan của competitive pricing."
+    why_it_matters: "Thường cả hai bên đều thua; DN nhỏ gần như không có lợi thế vì cạn dòng tiền trước. Ví dụ nguồn: Grab vs Uber ĐNÁ 2015-2018 (cả hai đốt tiền, Uber rút lui)."
+  - term_vi: "Thương hiệu chiến đấu"
+    term_en: "Fighting Brand"
+    definition: "Thương hiệu con giá rẻ riêng để đối đầu đối thủ giá thấp, giữ nguyên thương hiệu chính ở phân khúc cao."
+    why_it_matters: "Cho phép phản ứng cạnh tranh giá mà không phá vỡ cấu trúc giá và định vị của brand chính."
+  - term_vi: "Phân biệt giá"
+    term_en: "Price Discrimination / Segmented pricing"
+    definition: "Bán cùng/na ná sản phẩm với giá khác nhau cho nhóm khác nhau (sinh viên, early bird, học bổng, cá nhân hóa...)."
+    why_it_matters: "Thu thêm giá trị từ nhóm WTP cao mà vẫn phục vụ nhóm WTP thấp; phải có hàng rào (thẻ sinh viên, thời điểm, bài nộp) để nhóm WTP cao không 'tụt' xuống nhóm giá thấp."
+  - term_vi: "Doanh thu định kỳ"
+    term_en: "MRR / ARR / Churn / CAC"
+    definition: "MRR/ARR: doanh thu định kỳ tháng/năm; Churn: tỷ lệ khách hủy trong kỳ; CAC: chi phí có 1 khách mới."
+    why_it_matters: "Ba chỉ số bắt buộc theo dõi khi chạy thuê bao: doanh thu dự đoán được nhưng CAC cao thu hồi lâu và churn bào mòn LTV (liên hệ m03)."
+  - term_vi: "Ác cảm mất mát"
+    term_en: "Loss aversion"
+    definition: "Khách phản ứng với tăng giá mạnh hơn mức hưởng lợi cùng độ lớn khi giảm giá."
+    why_it_matters: "Lý do tăng giá khó hơn giảm giá; nên tăng giá nhỏ, kèm lý do/giá trị tăng thêm, hoặc đổi cấu hình (giảm size, tách add-on) thay vì tăng công khai."
+  - term_vi: "Nghiện giảm giá"
+    term_en: "Discount addiction"
+    definition: "Khuyến mãi nhiều khiến khách chỉ mua khi có giảm giá, chờ sale."
+    why_it_matters: "Phá giá tham chiếu và biên lợi nhuận; Apple chọn 'không giảm giá' để khách không chờ sale, giữ resale value và chu kỳ mua ổn định."
+  - term_vi: "Giá trị bán lại như công cụ định giá"
+    term_en: "Resale value as pricing tool"
+    definition: "Sản phẩm giữ giá lâu (iPhone giữ khoảng 60-70% giá, Samsung 30-40% theo nguồn, chưa kiểm chứng) khiến khách coi mua hàng là 'đầu tư' thay vì 'chi tiêu'."
+    why_it_matters: "Tăng willingness-to-pay vì chi phí sở hữu thực (giá mua trừ giá bán lại) thấp hơn giá niêm yết; tạo vòng tròn tốt (virtuous cycle)."
+
+formulas:
+  - id: "m10_markup_price"
+    name_vi: "Giá bán theo markup (cost-plus)"
+    name_en: "Cost-plus price from markup"
+    expression_latex: 'P = C \times (1 + m)'
+    expression_python: 'cost * (1 + markup)'
+    excel: "=Cost*(1+Markup)"
+    variables:
+      - {symbol: "cost", meaning: "Giá vốn/đơn vị (đã gồm chi phí biến đổi, có thể phân bổ cố định)", unit: "VNĐ"}
+      - {symbol: "markup", meaning: "Tỷ lệ cộng thêm trên giá vốn (0.5 = 50%)", unit: "tỷ lệ"}
+    when_to_use: "Định giá nhanh cho hàng bán lại, in ấn, dịch vụ theo giờ; xác định SÀN giá (ngoài nguồn: nguồn chỉ nói 'giá >= chi phí')."
+    why_it_works: "Bảo đảm mỗi đơn vị bán ra thu hồi chi phí cộng phần lời cố định; đơn giản, không cần dữ liệu khách. Nhược điểm: bỏ qua giá trị cảm nhận và đối thủ nên thường để lại tiền trên bàn hoặc đặt quá cao."
+    assumptions: ["Chi phí đơn vị ổn định, đã biết", "Khách chấp nhận mức giá kết quả"]
+    pitfalls:
+      - "Nhầm markup (trên giá vốn) với margin (trên giá bán): markup 50% = margin 33,3%, không phải 50%."
+      - "Dùng cost-plus làm giá cuối thay vì làm sàn; không kiểm tra với WTP và đối thủ."
+    interpretation: "Là giá sàn tham chiếu. So với giá thị trường: nếu cost-plus > giá thị trường nhiều thì phải giảm chi phí hoặc tăng giá trị cảm nhận; nếu thấp hơn nhiều thì có dư địa tăng giá."
+    example:
+      inputs: {cost: 14000, markup: 2.0}
+      steps: ["14.000 x (1 + 2,0) = 42.000"]
+      result: "42.000 VNĐ"
+  - id: "m10_margin_price"
+    name_vi: "Giá bán theo biên lợi nhuận gộp mục tiêu"
+    name_en: "Price from target gross margin"
+    expression_latex: 'P = \dfrac{C}{1 - g}'
+    expression_python: 'cost / (1 - margin)'
+    excel: "=Cost/(1-Margin)"
+    variables:
+      - {symbol: "cost", meaning: "Giá vốn/đơn vị", unit: "VNĐ"}
+      - {symbol: "margin", meaning: "Biên lợi nhuận gộp mục tiêu trên giá bán (0.6 = 60%)", unit: "tỷ lệ"}
+    when_to_use: "Khi SME quản lý theo biên gộp (F&B, retail); chuyển markup <-> margin; kiểm tra giá có đạt biên mục tiêu."
+    why_it_works: "Biên tính trên giá bán nên P - C = g x P, suy ra P = C/(1-g). Nhà quản lý và báo cáo tài chính nói bằng margin trên doanh thu, nên cần công thức này để khỏi nhầm với markup."
+    assumptions: ["margin < 1"]
+    pitfalls: ["Đặt margin 100% hoặc gần 100% thì giá tiến vô hạn", "Quên cộng thuế VAT/phí sàn vào giá niêm yết"]
+    interpretation: "F&B thường nhắm food cost 28-35% tức margin NVL 65-72% (benchmark ngoài nguồn, confidence medium)."
+    example:
+      inputs: {cost: 14000, margin: 0.7}
+      steps: ["14.000 / (1 - 0,7) = 46.666,7"]
+      result: "46.667 VNĐ (làm tròn charm xuống 45.000 hoặc 49.000 tùy chiến lược)"
+  - id: "m10_markup_to_margin"
+    name_vi: "Đổi markup sang margin"
+    name_en: "Markup to margin conversion"
+    expression_latex: 'g = \dfrac{m}{1+m}, \quad m = \dfrac{g}{1-g}'
+    expression_python: 'markup / (1 + markup)'
+    excel: "=Markup/(1+Markup)"
+    variables:
+      - {symbol: "markup", meaning: "Tỷ lệ markup trên giá vốn", unit: "tỷ lệ"}
+    when_to_use: "Khi nhân viên/nhà cung cấp nói markup còn báo cáo dùng margin."
+    why_it_works: "g = (P-C)/P = mC/((1+m)C) = m/(1+m). Mẫu số khác nhau (giá vốn vs giá bán) nên markup luôn lớn hơn margin."
+    assumptions: ["Cùng một sản phẩm, cùng một giá"]
+    pitfalls: ["Cộng/trừ trực tiếp hai tỷ lệ này như thể cùng cơ sở"]
+    interpretation: "Markup 100% = margin 50%; markup 200% = margin 66,7%."
+    example:
+      inputs: {markup: 2.0}
+      steps: ["2,0 / (1 + 2,0) = 0,6667"]
+      result: "66,7% margin"
+  - id: "m10_unit_contribution"
+    name_vi: "Lãi góp đơn vị và tỷ lệ lãi góp"
+    name_en: "Unit contribution margin and CM ratio"
+    expression_latex: 'CM = P - VC, \qquad CM\% = \dfrac{P - VC}{P}'
+    expression_python: '(price - vc) / price'
+    excel: "=(Price-VC)/Price"
+    variables:
+      - {symbol: "price", meaning: "Giá bán/đơn vị", unit: "VNĐ"}
+      - {symbol: "vc", meaning: "Chi phí biến đổi/đơn vị (NVL, bao bì, hoa hồng sàn, phí thanh toán)", unit: "VNĐ"}
+    when_to_use: "Đầu vào cho hòa vốn, khối lượng cần bù khi giảm giá, so sánh món/gói."
+    why_it_works: "Phần mỗi đơn vị đóng góp để trả chi phí cố định rồi mới ra lợi nhuận; quyết định giá nên dựa trên lãi góp chứ không phải lợi nhuận kế toán đã phân bổ cố định."
+    assumptions: ["vc tuyến tính theo sản lượng"]
+    pitfalls: ["Quên tính hoa hồng sàn TMĐT/GrabFood vào vc", "Dùng giá vốn đã phân bổ chi phí cố định như vc"]
+    interpretation: "CM% càng thấp thì khuyến mãi càng nguy hiểm (xem m10_required_volume_change)."
+    example:
+      inputs: {price: 49000, vc: 14000}
+      steps: ["(49.000 - 14.000) / 49.000 = 0,7143"]
+      result: "CM% = 71,4%; lãi góp 35.000 VNĐ/ly"
+  - id: "m10_breakeven_units"
+    name_vi: "Sản lượng hòa vốn"
+    name_en: "Break-even quantity"
+    expression_latex: 'Q_{BE} = \dfrac{FC}{P - VC}'
+    expression_python: 'fixed / (price - vc)'
+    excel: "=Fixed/(Price-VC)"
+    variables:
+      - {symbol: "fixed", meaning: "Tổng chi phí cố định cùng kỳ (mặt bằng, lương cố định, khấu hao...)", unit: "VNĐ"}
+      - {symbol: "price", meaning: "Giá bán/đơn vị", unit: "VNĐ"}
+      - {symbol: "vc", meaning: "Chi phí biến đổi/đơn vị", unit: "VNĐ"}
+    when_to_use: "Bước 3 quy trình định giá: biết cần bán tối thiểu bao nhiêu ở mức giá đề xuất; so với sức bán thực tế."
+    why_it_works: "Lãi góp tích lũy phải bằng chi phí cố định: Q x (P-VC) = FC. Giá thấp hơn thì lãi góp nhỏ hơn nên phải bán nhiều hơn mới hòa vốn."
+    assumptions: ["Giá và vc không đổi theo sản lượng", "Một sản phẩm đại diện (hoặc dùng giá/vc bình quân gia quyền)"]
+    pitfalls: ["Bỏ qua mix sản phẩm", "Không so Q_BE với công suất tối đa (có thể không thể đạt)"]
+    interpretation: "Nếu Q_BE vượt công suất/nhu cầu hợp lý của khu vực thì phải tăng giá, giảm chi phí cố định hoặc đổi mô hình."
+    example:
+      inputs: {fixed: 60000000, price: 49000, vc: 14000}
+      steps: ["60.000.000 / (49.000 - 14.000) = 1.714,3", "làm tròn lên 1.715 ly/tháng, tức 57 ly/ngày (30 ngày)"]
+      result: "1.715 ly/tháng"
+  - id: "m10_breakeven_revenue"
+    name_vi: "Doanh thu hòa vốn"
+    name_en: "Break-even revenue"
+    expression_latex: 'R_{BE} = \dfrac{FC}{CM\%}'
+    expression_python: 'fixed / ((price - vc) / price)'
+    excel: "=Fixed/((Price-VC)/Price)"
+    variables:
+      - {symbol: "fixed", meaning: "Chi phí cố định cùng kỳ", unit: "VNĐ"}
+      - {symbol: "price", meaning: "Giá bán/đơn vị (hoặc bình quân)", unit: "VNĐ"}
+      - {symbol: "vc", meaning: "Chi phí biến đổi/đơn vị (hoặc bình quân)", unit: "VNĐ"}
+    when_to_use: "Khi có nhiều món/SKU: dùng CM% bình quân gia quyền để ra doanh thu hòa vốn cả cửa hàng."
+    why_it_works: "Mỗi 1 đồng doanh thu đóng góp CM% đồng vào chi phí cố định, nên cần FC/CM% đồng doanh thu."
+    assumptions: ["CM% ổn định"]
+    pitfalls: ["Dùng CM% của món lời nhất làm đại diện cả menu"]
+    interpretation: "So với doanh thu thực tế/tháng để biết biên an toàn: (doanh thu - R_BE)/doanh thu."
+    example:
+      inputs: {fixed: 60000000, price: 49000, vc: 14000}
+      steps: ["CM% = 35.000/49.000 = 0,7143", "60.000.000 / 0,7143 = 84.000.000"]
+      result: "84 triệu VNĐ/tháng"
+  - id: "m10_target_profit_units"
+    name_vi: "Sản lượng đạt lợi nhuận mục tiêu"
+    name_en: "Target-profit quantity"
+    expression_latex: 'Q = \dfrac{FC + \pi^*}{P - VC}'
+    expression_python: '(fixed + target_profit) / (price - vc)'
+    excel: "=(Fixed+TargetProfit)/(Price-VC)"
+    variables:
+      - {symbol: "fixed", meaning: "Chi phí cố định", unit: "VNĐ"}
+      - {symbol: "target_profit", meaning: "Lợi nhuận trước thuế mục tiêu cùng kỳ", unit: "VNĐ"}
+      - {symbol: "price", meaning: "Giá bán/đơn vị", unit: "VNĐ"}
+      - {symbol: "vc", meaning: "Chi phí biến đổi/đơn vị", unit: "VNĐ"}
+    when_to_use: "Chốt giá khi chủ muốn lợi nhuận X/tháng: so sánh Q yêu cầu giữa nhiều mức giá."
+    why_it_works: "Mở rộng hòa vốn: cần thêm lãi góp bằng đúng lợi nhuận mục tiêu."
+    assumptions: ["Như hòa vốn"]
+    pitfalls: ["Bỏ qua thuế TNDN và lương chủ"]
+    interpretation: "Q yêu cầu / công suất = mức sử dụng cần thiết; > 85-90% thường không bền."
+    example:
+      inputs: {fixed: 60000000, target_profit: 20000000, price: 49000, vc: 14000}
+      steps: ["(60.000.000 + 20.000.000) / 35.000 = 2.285,7"]
+      result: "2.286 ly/tháng"
+  - id: "m10_elasticity_point"
+    name_vi: "Độ co giãn của cầu theo giá (điểm, quan sát được)"
+    name_en: "Price elasticity of demand (point, from two observations)"
+    expression_latex: 'E_p = \dfrac{(Q_1 - Q_0)/Q_0}{(P_1 - P_0)/P_0}'
+    expression_python: '((q1 - q0) / q0) / ((p1 - p0) / p0)'
+    excel: "=((Q1-Q0)/Q0)/((P1-P0)/P0)"
+    variables:
+      - {symbol: "p0", meaning: "Giá trước", unit: "VNĐ"}
+      - {symbol: "p1", meaning: "Giá sau", unit: "VNĐ"}
+      - {symbol: "q0", meaning: "Lượng bán trước", unit: "đơn vị"}
+      - {symbol: "q1", meaning: "Lượng bán sau (đã loại nhiễu mùa vụ/khuyến mãi khác)", unit: "đơn vị"}
+    when_to_use: "Sau một thử nghiệm giá/A-B test hoặc thay đổi giá; để quyết định tăng/giảm giá tiếp."
+    why_it_works: "Dùng % thay vì số tuyệt đối để so sánh được giữa sản phẩm, đơn vị tiền tệ khác nhau; tỷ số = bao nhiêu % lượng đổi cho mỗi 1% giá đổi. Ep thường âm (luật cầu); đọc theo |Ep|."
+    assumptions: ["Các yếu tố khác không đổi (ceteris paribus)", "Hai quan sát cùng điều kiện"]
+    pitfalls:
+      - "Bảng nguồn bị vỡ định dạng (các hàng |Ep| tách rời); đọc đúng: |Ep|>1 co giãn (vé máy bay, thời trang), <1 không co giãn (xăng, thuốc, iPhone), =1 đơn vị."
+      - "Kết quả khác nhau theo chiều tính (tăng hay giảm giá); dùng m10_elasticity_midpoint để đối xứng."
+      - "Co giãn thay đổi dọc đường cầu, không phải hằng số."
+    interpretation: "|Ep|>1: giảm giá làm tăng doanh thu, tăng giá làm giảm doanh thu. |Ep|<1: ngược lại (tăng giá làm tăng doanh thu). Lợi nhuận còn phụ thuộc biên (xem m10_required_volume_change)."
+    example:
+      inputs: {p0: 200000, p1: 180000, q0: 500, q1: 600}
+      steps: ["%dQ = (600-500)/500 = +0,20", "%dP = (180.000-200.000)/200.000 = -0,10", "Ep = 0,20 / (-0,10) = -2,0"]
+      result: "Ep = -2,0 (co giãn); doanh thu 100 triệu -> 108 triệu"
+  - id: "m10_elasticity_midpoint"
+    name_vi: "Độ co giãn điểm giữa (cung)"
+    name_en: "Arc (midpoint) elasticity"
+    expression_latex: 'E_p = \dfrac{(Q_1 - Q_0)/\frac{Q_0+Q_1}{2}}{(P_1 - P_0)/\frac{P_0+P_1}{2}}'
+    expression_python: '((q1 - q0) / ((q0 + q1) / 2)) / ((p1 - p0) / ((p0 + p1) / 2))'
+    excel: "=((Q1-Q0)/AVERAGE(Q0,Q1))/((P1-P0)/AVERAGE(P0,P1))"
+    variables:
+      - {symbol: "p0", meaning: "Giá trước", unit: "VNĐ"}
+      - {symbol: "p1", meaning: "Giá sau", unit: "VNĐ"}
+      - {symbol: "q0", meaning: "Lượng trước", unit: "đơn vị"}
+      - {symbol: "q1", meaning: "Lượng sau", unit: "đơn vị"}
+    when_to_use: "Khi thay đổi giá lớn (>10%) và muốn kết quả không phụ thuộc chiều tăng/giảm (ngoài nguồn)."
+    why_it_works: "Chia cho giá trị trung bình của hai điểm nên đối xứng."
+    assumptions: ["Như điểm"]
+    pitfalls: ["Báo cáo lẫn lộn hai phương pháp"]
+    interpretation: "Đọc như Ep thường: ở ví dụ shop áo thun cho -1,73 so với -2,0 của phương pháp điểm; cùng kết luận co giãn."
+    example:
+      inputs: {p0: 200000, p1: 180000, q0: 500, q1: 600}
+      steps: ["%dQ = 100/550 = 0,1818", "%dP = -20.000/190.000 = -0,1053", "Ep = -1,727"]
+      result: "Ep = -1,73"
+  - id: "m10_optimal_price_elasticity"
+    name_vi: "Giá tối đa hóa lợi nhuận theo độ co giãn"
+    name_en: "Profit-maximizing price from elasticity (inverse elasticity rule)"
+    expression_latex: 'P^* = VC \times \dfrac{E_p}{1 + E_p}, \quad E_p < -1'
+    expression_python: 'vc * ep / (1 + ep)'
+    excel: "=VC*Ep/(1+Ep)"
+    variables:
+      - {symbol: "vc", meaning: "Chi phí biên/đơn vị", unit: "VNĐ"}
+      - {symbol: "ep", meaning: "Độ co giãn (số âm, < -1)", unit: "tỷ lệ"}
+    when_to_use: "Ước lượng nhanh điểm giá tối ưu nếu cầu có độ co giãn xấp xỉ hằng số (ngoài nguồn; mô hình lý thuyết)."
+    why_it_works: "Điều kiện bậc nhất tối đa lợi nhuận: doanh thu biên = chi phí biên. Với co giãn không đổi, MR = P x (1 + 1/Ep) = VC nên P = VC x Ep/(1+Ep); markup tối ưu = -1/(1+Ep)... giá càng cao khi |Ep| càng gần 1."
+    assumptions: ["Co giãn hằng số quanh điểm tối ưu", "Chi phí biên hằng số"]
+    pitfalls: ["Áp dụng khi |Ep| <= 1 (công thức vô nghĩa, tăng giá luôn tăng lợi nhuận đến khi cầu thành co giãn)", "Bỏ qua phản ứng đối thủ và tác động thương hiệu"]
+    interpretation: "So P* với giá hiện tại: giá hiện tại < P* nghĩa là còn dư địa tăng giá."
+    example:
+      inputs: {vc: 100000, ep: -2.0}
+      steps: ["100.000 x (-2) / (1 - 2) = 200.000"]
+      result: "P* = 200.000 (trùng giá cũ của shop áo thun; hạ giá xuống 180k làm lợi nhuận giảm)"
+  - id: "m10_required_volume_change"
+    name_vi: "Mức tăng/giảm lượng bán cần thiết để bù thay đổi giá"
+    name_en: "Break-even volume change for a price change"
+    expression_latex: '\Delta Q\% = \dfrac{-\Delta P\%}{CM\% + \Delta P\%}'
+    expression_python: '-dp / (cm_pct + dp)'
+    excel: "=-dP/(CM+dP)"
+    variables:
+      - {symbol: "dp", meaning: "% thay đổi giá dạng số thập phân (giảm 10% = -0.10)", unit: "tỷ lệ"}
+      - {symbol: "cm_pct", meaning: "Tỷ lệ lãi góp hiện tại = (P-VC)/P", unit: "tỷ lệ"}
+    when_to_use: "TRƯỚC mọi chương trình khuyến mãi/giảm giá hoặc khi cân nhắc tăng giá: cần bán thêm bao nhiêu % để lợi nhuận không giảm (ngoài nguồn, công thức chuẩn Nagle)."
+    why_it_works: "Lợi nhuận cũ = Q x P x CM%. Lợi nhuận mới = Q(1+dQ) x P(CM% + dP) (VC không đổi). Cho hai vế bằng nhau, giải dQ. Giá trị dương = lượng phải tăng thêm; âm = lượng được phép mất."
+    assumptions: ["VC/đơn vị không đổi", "Không có chi phí cố định mới cho chiến dịch"]
+    pitfalls: ["Khi CM% thấp (ví dụ 20%) giảm 10% giá cần tăng gấp đôi lượng bán (+100%)", "Quên chi phí chạy KM"]
+    interpretation: "Nếu mức tăng lượng cần thiết lớn hơn khả năng thực tế (so với Ep ước lượng), không giảm giá. Với tăng giá dp>0, kết quả âm = lượng bán được phép giảm tối đa."
+    example:
+      inputs: {dp: -0.10, cm_pct: 0.40}
+      steps: ["0,10 / (0,40 - 0,10) = 0,3333"]
+      result: "Giảm 10% giá khi CM 40% cần bán thêm tối thiểu 33,3%"
+  - id: "m10_profit_leverage"
+    name_vi: "Đòn bẩy lợi nhuận khi đổi giá (lượng không đổi)"
+    name_en: "Profit leverage of a price change"
+    expression_latex: '\Delta \pi\% = \dfrac{\Delta P\% \times R}{\pi}'
+    expression_python: 'dp * revenue / operating_profit'
+    excel: "=dP*Revenue/OperatingProfit"
+    variables:
+      - {symbol: "dp", meaning: "% thay đổi giá (thập phân)", unit: "tỷ lệ"}
+      - {symbol: "revenue", meaning: "Doanh thu", unit: "VNĐ"}
+      - {symbol: "operating_profit", meaning: "Lợi nhuận hoạt động", unit: "VNĐ"}
+    when_to_use: "Giải thích 'tăng giá 1% tăng lợi nhuận 8-11%' bằng số của chính DN (kiểm chứng claim McKinsey gắn nguồn)."
+    why_it_works: "Tăng giá khi lượng không đổi làm doanh thu tăng đúng dp x R, không thêm chi phí nên toàn bộ vào lợi nhuận."
+    assumptions: ["Lượng bán không đổi (chỉ đúng với cầu rất kém co giãn hoặc tăng giá rất nhỏ)"]
+    pitfalls: ["Dùng như dự báo mà quên ảnh hưởng mất khách", "Hiểu 8-11% là hằng số; thực ra = 1/biên lợi nhuận hoạt động"]
+    interpretation: "Biên hoạt động 10% thì 1% giá = 10% lợi nhuận; biên 5% thì = 20%. F&B VN biên mỏng nên đòn bẩy giá rất lớn nhưng rủi ro mất khách cũng lớn."
+    example:
+      inputs: {dp: 0.01, revenue: 1000000000, operating_profit: 100000000}
+      steps: ["0,01 x 1.000.000.000 / 100.000.000 = 0,10"]
+      result: "+10% lợi nhuận hoạt động"
+  - id: "m10_evc"
+    name_vi: "Giá trị kinh tế cho khách (EVC)"
+    name_en: "Economic Value to Customer (EVC)"
+    expression_latex: 'EVC = P_{ref} + V_{diff}^{+} - V_{diff}^{-}, \quad P \in [VC, EVC]'
+    expression_python: 'ref_price + positive_diff_value - negative_diff_value'
+    excel: "=RefPrice+PositiveDiff-NegativeDiff"
+    variables:
+      - {symbol: "ref_price", meaning: "Giá giải pháp thay thế tốt nhất khách đang dùng", unit: "VNĐ"}
+      - {symbol: "positive_diff_value", meaning: "Giá trị khác biệt cộng thêm (tiết kiệm/doanh thu thêm quy ra tiền)", unit: "VNĐ"}
+      - {symbol: "negative_diff_value", meaning: "Giá trị khác biệt bị trừ (điểm yếu so với thay thế)", unit: "VNĐ"}
+    when_to_use: "Value-Based Pricing B2B/B2C có lợi ích định lượng được (ngoài nguồn: khái niệm EVC của Nagle; nguồn chỉ nêu 'Economic Value')."
+    why_it_works: "Khách chỉ trả tối đa bằng giá trị so với phương án thay thế tốt nhất cộng phần khác biệt. Giá nên nằm giữa chi phí (sàn) và EVC (trần); chia sẻ giá trị để khách vẫn có lợi mới mua."
+    assumptions: ["Lợi ích quy ra tiền được và khách tin"]
+    pitfalls: ["Đưa giá = EVC thì khách không có lý do đổi (không có surplus)", "Tính lợi ích quá lạc quan"]
+    interpretation: "Giá đề xuất thường lấy 30-70% khoảng chênh (EVC - ref_price) tùy sức mạnh thương hiệu (khuyến nghị ngoài nguồn, confidence low)."
+    example:
+      inputs: {ref_price: 0, positive_diff_value: 10000000, negative_diff_value: 0}
+      steps: ["Khóa học chiến lược giúp tiết kiệm 10 triệu/tháng tiền Agency; kỳ vọng hoàn vốn trong 1 tháng", "EVC (giá trị 1 tháng) = 10.000.000; giá 3.999.000 = 40% EVC, khách giữ 60% surplus"]
+      result: "EVC = 10.000.000; giá 3.999.000 hợp lý (40% giá trị)"
+  - id: "m10_premium_pct"
+    name_vi: "Chênh lệch giá so với đối thủ (price premium)"
+    name_en: "Price premium vs competitor"
+    expression_latex: '\text{Premium}\% = \dfrac{P - P_{comp}}{P_{comp}}'
+    expression_python: '(price - comp_price) / comp_price'
+    excel: "=(Price-CompPrice)/CompPrice"
+    variables:
+      - {symbol: "price", meaning: "Giá của mình", unit: "VNĐ hoặc USD"}
+      - {symbol: "comp_price", meaning: "Giá đối thủ tương đương", unit: "cùng đơn vị"}
+    when_to_use: "Bảng so sánh competitive pricing, đo mức premium/discount định vị; kiểm tra case Apple."
+    why_it_works: "Chuẩn hóa chênh lệch về % để so các sản phẩm khác giá."
+    assumptions: ["So sánh sản phẩm tương đương thật sự"]
+    pitfalls: ["So sánh khác phân khúc/cấu hình"]
+    interpretation: "Dương = premium, âm = discount. Premium chỉ bền khi có lý do giá trị (ecosystem, chất lượng, thương hiệu)."
+    example:
+      inputs: {price: 799, comp_price: 329}
+      steps: ["(799 - 329)/329 = 1,4286"]
+      result: "Apple Watch Ultra 2 cao hơn Galaxy Watch 6 +142,9% (nguồn ghi 143%)"
+  - id: "m10_discount_pct"
+    name_vi: "Tỷ lệ giảm giá và giá trị cảm nhận của ưu đãi"
+    name_en: "Discount percentage / savings"
+    expression_latex: 'd = \dfrac{P_{orig} - P_{sale}}{P_{orig}}'
+    expression_python: '(orig_price - sale_price) / orig_price'
+    excel: "=(Orig-Sale)/Orig"
+    variables:
+      - {symbol: "orig_price", meaning: "Giá gốc/giá tham chiếu", unit: "VNĐ"}
+      - {symbol: "sale_price", meaning: "Giá bán thực", unit: "VNĐ"}
+    when_to_use: "Kiểm tra tuyên bố 'giảm X%' của gói năm, combo, flash sale; trình bày ưu đãi theo Rule of 100."
+    why_it_works: "Quy về cùng thang để so sánh và để kiểm tra tính trung thực của giá tham chiếu."
+    assumptions: ["Giá gốc là giá đã bán thật"]
+    pitfalls: ["Nâng giá gốc ảo (fake original price) rồi giảm: bị cấm ở nhiều quốc gia và mất tin cậy"]
+    interpretation: "Combo Big Mac 89K vs lẻ 120K = giảm 25,8%."
+    example:
+      inputs: {orig_price: 120000, sale_price: 89000}
+      steps: ["(120.000-89.000)/120.000 = 0,2583"]
+      result: "25,8%"
+  - id: "m10_upgrade_increment"
+    name_vi: "Mức chênh lên bậc (hiệu ứng chim mồi)"
+    name_en: "Upgrade increment ratio (decoy check)"
+    expression_latex: 'r = \dfrac{P_{high} - P_{mid}}{P_{mid}}'
+    expression_python: '(p_high - p_mid) / p_mid'
+    excel: "=(PHigh-PMid)/PMid"
+    variables:
+      - {symbol: "p_high", meaning: "Giá bậc cao", unit: "VNĐ"}
+      - {symbol: "p_mid", meaning: "Giá bậc giữa (chim mồi)", unit: "VNĐ"}
+    when_to_use: "Thiết kế decoy/GBB: bậc cao chỉ đắt hơn bậc giữa rất ít thì khách nhảy lên bậc cao."
+    why_it_works: "Khách so sánh tương đối (không biết giá trị tuyệt đối): chênh nhỏ nhưng nhận thêm nhiều lợi ích thì bậc cao 'quá hời'."
+    assumptions: ["Giá trị bậc cao rõ ràng lớn hơn", "Chi phí biên bậc cao không tăng tương ứng"]
+    pitfalls: ["Chi phí biên bậc cao lớn (ví dụ thêm 1 buổi coaching) làm decoy ăn mất biên", "Decoy quá lộ thì khách thấy bị thao túng"]
+    interpretation: "Bắp rang: size lớn chỉ hơn size vừa 9,1% giá nhưng nhiều hơn rõ ràng. Gói 12 tháng chỉ đắt hơn gói 6 tháng 13,3% nhưng gấp đôi thời gian."
+    example:
+      inputs: {p_high: 60000, p_mid: 55000}
+      steps: ["(60.000-55.000)/55.000 = 0,0909"]
+      result: "9,1% (cỡ lớn so với cỡ vừa)"
+  - id: "m10_menu_price_foodcost"
+    name_vi: "Giá món theo food cost mục tiêu"
+    name_en: "Menu price from target food cost %"
+    expression_latex: 'P = \dfrac{C_{ingredients}}{FC\%}'
+    expression_python: 'ingredient_cost / target_cost_pct'
+    excel: "=IngredientCost/TargetCostPct"
+    variables:
+      - {symbol: "ingredient_cost", meaning: "Chi phí nguyên vật liệu + bao bì/phần (đã tính hao hụt)", unit: "VNĐ"}
+      - {symbol: "target_cost_pct", meaning: "Tỷ lệ food cost mục tiêu (0.30 = 30%)", unit: "tỷ lệ"}
+    when_to_use: "Định giá từng món menu F&B (ngoài nguồn; tương đương margin_price nhưng theo cách nói ngành F&B)."
+    why_it_works: "Food cost % = giá vốn / giá bán, nên P = giá vốn / %; ngành F&B quản lý theo % này để đảm bảo còn đủ biên trả mặt bằng, nhân công."
+    assumptions: ["Giá vốn gồm hao hụt/waste", "Chưa gồm VAT, phí giao hàng"]
+    pitfalls: ["Quên bao bì, đá, đường, hao hụt", "Đặt cùng % cho mọi món bỏ qua vai trò món 'hút khách' và món 'sinh lời'"]
+    interpretation: "Kết quả là giá chưa làm tròn; sau đó áp dụng charm/prestige để chọn price point cuối rồi tính lại food cost % thực (ví dụ 49.000 cho food cost 28,6%)."
+    example:
+      inputs: {ingredient_cost: 14000, target_cost_pct: 0.30}
+      steps: ["14.000 / 0,30 = 46.666,7", "Chọn price point 49.000 -> food cost 14.000/49.000 = 28,6%"]
+      result: "46.667 -> làm tròn 49.000"
+  - id: "m10_arpu_mix"
+    name_vi: "ARPU/doanh thu bình quân theo cơ cấu tầng GBB"
+    name_en: "Blended ARPU of tiered price architecture"
+    expression_latex: 'ARPU = \sum_i s_i \times P_i'
+    expression_python: 'sum(s * p for s, p in zip(shares, prices))'
+    excel: "=SUMPRODUCT(Shares,Prices)"
+    variables:
+      - {symbol: "shares", meaning: "Tỷ trọng khách chọn mỗi tầng (tổng = 1)", unit: "tỷ lệ"}
+      - {symbol: "prices", meaning: "Giá mỗi tầng", unit: "VNĐ"}
+    when_to_use: "Đánh giá kiến trúc giá: thêm tầng Best/VVIP làm anchor có tăng doanh thu bình quân/khách không."
+    why_it_works: "Doanh thu/khách = trung bình có trọng số; tầng đắt chỉ cần vài % khách là đã kéo ARPU và đồng thời neo giá cho tầng giữa."
+    assumptions: ["Tỷ trọng ổn định, không đổi theo thay đổi giá (cần A/B test)"]
+    pitfalls: ["Giả định tỷ trọng cho tầng mới mà không thử nghiệm", "Bỏ qua chi phí phục vụ tầng cao"]
+    interpretation: "Benchmark nguồn GBB: Good 20-30% / Better 60-70% / Best 10-20% khách (minh họa, confidence low)."
+    example:
+      inputs: {shares: [0.25, 0.60, 0.15], prices: [2999000, 4499000, 8999000]}
+      steps: ["0,25x2.999.000 = 749.750", "0,60x4.499.000 = 2.699.400", "0,15x8.999.000 = 1.349.850", "Tổng = 4.799.000"]
+      result: "ARPU = 4.799.000 VNĐ/học viên"
+  - id: "m10_subscription_unit_economics"
+    name_vi: "LTV thuê bao, LTV:CAC và thời gian hoàn vốn CAC"
+    name_en: "Subscription LTV, LTV:CAC, CAC payback"
+    expression_latex: 'LTV = \dfrac{ARPU \times GM}{c}, \quad \text{Payback} = \dfrac{CAC}{ARPU \times GM}'
+    expression_python: 'arpu * gm / churn'
+    excel: "=ARPU*GM/Churn"
+    variables:
+      - {symbol: "arpu", meaning: "Doanh thu bình quân/tháng/khách", unit: "VNĐ"}
+      - {symbol: "gm", meaning: "Biên lợi nhuận gộp trên doanh thu thuê bao", unit: "tỷ lệ"}
+      - {symbol: "churn", meaning: "Tỷ lệ hủy hàng tháng", unit: "tỷ lệ/tháng"}
+    when_to_use: "Quyết định giá thuê bao, so sánh gói tháng và gói năm, xác định CAC tối đa (ngoài nguồn; nguồn chỉ nêu MRR/CAC/Churn, chi tiết LTV xem m03)."
+    why_it_works: "Tuổi thọ kỳ vọng = 1/churn tháng; LTV = lãi gộp/tháng x tuổi thọ. Churn nhỏ đi một nửa thì LTV gấp đôi, nên giữ chân quan trọng hơn kéo khách."
+    assumptions: ["Churn không đổi theo thời gian", "Không chiết khấu"]
+    pitfalls: ["Churn thực tế cao ở tháng đầu, giảm sau (mô hình đơn giản đánh giá sai)", "Không phân biệt churn gói tháng và gói năm"]
+    interpretation: "Quy tắc SaaS tham chiếu: LTV:CAC >= 3 và payback < 12 tháng (benchmark ngoài nguồn, confidence medium)."
+    example:
+      inputs: {arpu: 199000, gm: 0.8, churn: 0.08}
+      steps: ["LTV = 199.000 x 0,8 / 0,08 = 1.990.000", "LTV:CAC = 1.990.000 / 300.000 = 6,63", "Payback = 300.000 / (199.000 x 0,8) = 1,88 tháng"]
+      result: "LTV 1,99 triệu; LTV:CAC 6,6 (tốt); hoàn vốn CAC ~1,9 tháng"
+  - id: "m10_freemium_economics"
+    name_vi: "Kinh tế học Freemium"
+    name_en: "Freemium economics (monthly)"
+    expression_latex: 'N_{paid} = N \times c_{conv}; \quad \text{Net} = N_{paid} \times (ARPU - VC_p) - (N - N_{paid}) \times VC_f'
+    expression_python: 'n_users * conv * (arpu - vc_paid) - n_users * (1 - conv) * vc_free'
+    excel: "=N*Conv*(ARPU-VCpaid)-N*(1-Conv)*VCfree"
+    variables:
+      - {symbol: "n_users", meaning: "Tổng người dùng (miễn phí + trả phí)", unit: "người"}
+      - {symbol: "conv", meaning: "Tỷ lệ chuyển đổi free -> paid (nguồn: 2-5%)", unit: "tỷ lệ"}
+      - {symbol: "arpu", meaning: "Giá gói trả phí/tháng", unit: "VNĐ"}
+      - {symbol: "vc_paid", meaning: "Chi phí phục vụ/người trả phí/tháng", unit: "VNĐ"}
+      - {symbol: "vc_free", meaning: "Chi phí phục vụ/người miễn phí/tháng", unit: "VNĐ"}
+    when_to_use: "Kiểm tra freemium có bền: lãi từ nhóm trả phí phải bù chi phí nuôi nhóm miễn phí (ngoài nguồn)."
+    why_it_works: "Đa số user không bao giờ trả tiền (nguồn) nên chi phí cận biên của free quyết định khả thi; chỉ sống được khi vc_free gần 0."
+    assumptions: ["Conv ổn định", "Không có CAC trả phí cho free user (nếu có phải trừ)"]
+    pitfalls: ["Bản free quá tốt thì conv thấp", "Dịch vụ có người thật (live class) thì vc_free lớn, freemium không hợp"]
+    interpretation: "Net < 0 nghĩa là phải giảm tính năng free, tăng conv, hoặc chuyển sang free trial có thời hạn."
+    example:
+      inputs: {n_users: 10000, conv: 0.03, arpu: 199000, vc_paid: 20000, vc_free: 5000}
+      steps: ["Paid = 300; lãi paid = 300 x 179.000 = 53.700.000", "Free = 9.700; chi phí = 9.700 x 5.000 = 48.500.000", "Net = 5.200.000"]
+      result: "Net +5,2 triệu/tháng; chỉ hơi dương, nhạy với vc_free và conv"
+
+frameworks:
+  - id: "m10_three_pillars"
+    name_vi: "Ba trụ cột định giá: Chi phí - Giá trị - Cạnh tranh"
+    name_en: "Cost, Value, Competition pillars (price floor/ceiling)"
+    origin: "Khung chung của giáo trình marketing (Kotler & Keller; Nagle & Müller) để tránh định giá chỉ theo một góc nhìn; ra đời vì định giá chỉ theo chi phí bỏ lỡ lợi nhuận, chỉ theo đối thủ bị động, chỉ theo giá trị thiếu kỷ luật chi phí."
+    components:
+      - "Chi phí (Cost): sàn giá (floor); fixed + variable, hòa vốn."
+      - "Giá trị cảm nhận (Value): trần giá (ceiling); WTP, EVC."
+      - "Cạnh tranh (Competition): mốc tham chiếu; giá đối thủ, định vị."
+    when_to_use: "Khung nền cho mọi bài toán định giá; bước 2-4 của quy trình."
+    how_to_apply:
+      - "Tính sàn: chi phí biến đổi + phân bổ cố định, hòa vốn."
+      - "Ước trần: WTP khách (khảo sát, Van Westendorp, EVC, A/B test)."
+      - "Lập bảng 3-5 đối thủ trực tiếp/gián tiếp: giá, giá trị cung cấp, định vị."
+      - "Chọn điểm giữa sàn và trần theo mục tiêu và vị thế so với đối thủ."
+    how_to_read_results: "Nếu sàn > trần: sản phẩm không khả thi, phải đổi mô hình chi phí hoặc tăng giá trị. Khoảng sàn-trần rộng: dư địa lợi nhuận, quyết định bằng định vị và co giãn."
+    pitfalls: ["Chỉ dùng một trụ", "Dùng giá đối thủ làm giá trị khách"]
+    example: "Latte: sàn ~14.000 (NVL) + cố định; trần theo khảo sát khách Q.1 khoảng 55-60k (illustrative); đối thủ 55-65k -> chọn 49k để định vị accessible."
+  - id: "m10_pricing_process"
+    name_vi: "Quy trình định giá 7 bước"
+    name_en: "7-step pricing process"
+    origin: "Quy trình trong giáo trình (Kotler/Nagle), tổng hợp trong nguồn: Mục tiêu -> Demand -> Cost -> Competition -> Strategy -> Price point -> Test."
+    components:
+      - "1 Mục tiêu (profit, share, survival, premium image)"
+      - "2 Phân tích Demand (elasticity, WTP, demand curve)"
+      - "3 Phân tích Cost (fixed + variable, hòa vốn)"
+      - "4 Phân tích Competition"
+      - "5 Chọn chiến lược"
+      - "6 Chốt price point (tâm lý + price architecture)"
+      - "7 Test và tối ưu (A/B, theo dõi conversion, điều chỉnh)"
+    when_to_use: "Mọi lần định giá hoặc tái định giá."
+    how_to_apply:
+      - "Viết ra mục tiêu duy nhất ưu tiên số 1 và ràng buộc (biên tối thiểu, thị phần tối thiểu)."
+      - "Thu thập dữ liệu cầu (khảo sát/lịch sử) + chi phí + đối thủ."
+      - "Dùng cây quyết định chọn chiến lược (xem decision_rules)."
+      - "Chọn price point + kiến trúc giá + điều kiện khuyến mãi."
+      - "Thiết kế thử nghiệm: nhóm đối chứng, thời gian tối thiểu 2-4 tuần, KPI (conversion, AOV, lợi nhuận/khách)."
+    how_to_read_results: "Quy trình khép kín: kết quả test quay lại bước 2-5."
+    pitfalls: ["Nhảy thẳng sang bước 6", "Test không đủ lâu hoặc nhiễu mùa vụ"]
+    example: "Xem procedure m10_proc_set_price."
+  - id: "m10_skimming"
+    name_vi: "Định giá hớt váng"
+    name_en: "Price Skimming"
+    origin: "Thuật ngữ do Joel Dean (1950) đặt cho chiến lược đặt giá cao ban đầu rồi giảm dần (ngoài nguồn; nguồn không nêu tác giả). Ra đời để thu hồi R&D nhanh từ nhóm sẵn sàng trả nhiều."
+    components:
+      - "Giai đoạn 1: giá cao kỷ lục, nhắm early adopters ít nhạy giá."
+      - "Giai đoạn 2: hạ nhẹ để với nhóm tiếp theo nhạy giá hơn."
+      - "Giai đoạn 3: hạ sâu khi lỗi thời hoặc đối thủ xuất hiện."
+    when_to_use: "Sản phẩm đột phá, công nghệ độc quyền, thương hiệu uy tín, ít đối thủ, KH ít nhạy giá."
+    how_to_apply:
+      - "Xác nhận có nhóm early adopters đủ lớn và WTP cao."
+      - "Có rào cản sao chép (patent, thương hiệu, hệ sinh thái) trong 6-18 tháng."
+      - "Lập lịch giảm giá theo mốc (ra mẫu mới, đối thủ gia nhập, tồn kho)."
+      - "Đo tỷ lệ khách chờ giảm giá; điều chỉnh bằng khan hiếm (số lượng giới hạn, preorder)."
+    how_to_read_results: "Lợi nhuận cao ở đỉnh, doanh số thấp ban đầu là bình thường. Nếu đối thủ vào sớm hơn dự kiến thì rút lịch giảm giá."
+    pitfalls:
+      - "Biên cao thu hút đối thủ."
+      - "Khách học cách chờ giảm giá (strategic waiting)."
+      - "Giảm quá nhanh làm phật lòng khách cũ."
+      - "Nhầm với Dynamic Pricing: skimming đi một chiều từ cao xuống thấp theo vòng đời; dynamic lên xuống như sóng theo cung-cầu real-time."
+    example: "iPhone mới ra giá cao, 1-2 năm sau hạ đời cũ; PS5 rồi bản Slim giá mềm hơn. SME VN: máy pha cà phê/thiết bị mới, khóa học cohort đầu giá cao rồi giảm."
+  - id: "m10_penetration"
+    name_vi: "Định giá thâm nhập"
+    name_en: "Penetration Pricing"
+    origin: "Chiến lược đối ngẫu của skimming, dùng khi cầu rất nhạy giá và có lợi thế quy mô: giá thấp để chiếm thị phần nhanh, tận dụng đường kinh nghiệm (BCG)."
+    components:
+      - "Giá thấp, có thể lỗ/hòa vốn để lấy khách."
+      - "Đạt thị phần và thói quen sử dụng."
+      - "Tăng giá dần hoặc bán thêm dịch vụ."
+    when_to_use: "Thị trường lớn, nhạy giá, có tiềm lực tài chính bù lỗ, kinh tế quy mô, hiệu ứng mạng."
+    how_to_apply:
+      - "Tính ngân sách bù lỗ tối đa và mốc thị phần cần đạt."
+      - "Chọn khuyến mãi có thời hạn, cap số lượng, có điều kiện (tránh quen giá thấp)."
+      - "Xây lock-in (dữ liệu, thói quen, tích điểm) trước khi tăng giá."
+      - "Tăng giá nhỏ theo bậc kèm giá trị gia tăng."
+    how_to_read_results: "Theo dõi churn khi tăng giá và tỷ lệ khách quay lại không khuyến mãi. Nếu khách rời ngay khi hết KM thì giá thấp mua được người săn deal, không phải lòng trung thành."
+    pitfalls:
+      - "Khó tăng giá sau; khách kỳ vọng giá thấp mãi."
+      - "Bị định vị hàng rẻ, kém chất lượng (price-quality heuristic)."
+      - "DN nhỏ không đủ vốn dễ chết trước khi đạt quy mô."
+    example: "Grab/Gojek/Xanh SM tung mã giảm, cuốc 0đ; Netflix/Spotify dùng thử miễn phí rồi tăng giá. SME: quán mới khai trương chỉ nên KM có thời hạn 2-4 tuần."
+  - id: "m10_competitive_pricing"
+    name_vi: "Định giá cạnh tranh"
+    name_en: "Competitive Pricing (Price matching / Premium / Undercutting)"
+    origin: "Định giá theo thị trường (going-rate pricing) trong Kotler; dùng khi sản phẩm đại trà, khách so sánh giá."
+    components:
+      - "Bằng giá (matching): cạnh tranh bằng chất lượng/dịch vụ."
+      - "Cao hơn (premium): nhỉnh hơn một chút kèm tính năng/hậu mãi tốt hơn."
+      - "Thấp hơn (undercutting): rẻ hơn chút để lôi khách tiết kiệm."
+    when_to_use: "Hàng đại trà ít khác biệt (nước suối, gạo, xăng, tivi, tủ lạnh), thị trường định hình, DN có chi phí vận hành tối ưu."
+    how_to_apply:
+      - "Lập bảng giá 3-5 đối thủ (cùng cấu hình, cùng kênh)."
+      - "Chọn vị trí: match, premium hay undercut, dựa trên lợi thế chi phí/giá trị của mình."
+      - "Quy định ngưỡng tối thiểu (floor) không bao giờ giảm dưới đó."
+      - "Theo dõi giá định kỳ (hàng tuần), phản ứng theo quy tắc."
+    how_to_read_results: "Nếu phải undercut >10% mới bán được thì thiếu khác biệt; cân nhắc differentiation."
+    pitfalls:
+      - "Bị động, bị cuốn vào price war."
+      - "Không bản sắc, bị xem hàng đại trà."
+      - "Không biết chi phí của đối thủ."
+    example: "Thế Giới Di Động và FPT Shop chênh giá iPhone rất ít, theo dõi giá nhau; Vietjet và Bamboo bám giá sát trên chặng HAN-SGN."
+  - id: "m10_price_war"
+    name_vi: "Chiến tranh giá và cách phòng thủ"
+    name_en: "Price War and defenses"
+    origin: "Hệ quả cực đoan của competitive pricing: tình huống game-theory (prisoner's dilemma) trong đó mỗi bên giảm giá và cả hai cùng thua."
+    components:
+      - "Tăng giá trị trải nghiệm (value-add) thay vì giảm giá: bảo hành, CSKH 24/7, miễn phí giao."
+      - "Khác biệt hóa tính năng để không thể thay thế bằng giá."
+      - "Thương hiệu chiến đấu (Fighting Brand) giá rẻ riêng."
+    when_to_use: "Khi đối thủ hạ giá hoặc DN lo bị cuốn vào cuộc đua giá."
+    how_to_apply:
+      - "Phân tích ai bị ảnh hưởng: chỉ nhóm nhạy giá hay cả nhóm cốt lõi."
+      - "Tính khối lượng cần bù (m10_required_volume_change) nếu theo giá."
+      - "Chọn phản ứng: giữ giá + thêm giá trị / đặt combo, bundle / ra fighting brand / giảm có chọn lọc (SKU, khung giờ)."
+      - "Đặt trần tổn thất và thời hạn."
+    how_to_read_results: "DN nhỏ gần như không thắng trong price war; chỉ đối đầu nếu có lợi thế chi phí chắc chắn hoặc vốn sâu hơn."
+    pitfalls: ["Giảm giá theo phản xạ", "Cắt chất lượng để bù biên làm mất khách trung thành"]
+    example: "Grab vs Uber ĐNÁ 2015-2018, cả hai đốt tiền, Uber rút lui. Quán nhỏ bị quán cạnh bán rẻ 10k: giữ giá, thêm hạng mục (topping miễn phí, wifi, thẻ tích điểm)."
+  - id: "m10_psychological"
+    name_vi: "Định giá tâm lý (bộ kỹ thuật)"
+    name_en: "Psychological Pricing"
+    origin: "Dựa trên kinh tế học hành vi: heuristic và thiên kiến nhận thức (anchoring - Tversky & Kahneman 1974; decoy/asymmetric dominance - Huber, Payne & Puto 1982). Ra đời vì khách không quyết định thuần lý trí theo chi phí."
+    components:
+      - "Charm Pricing: kết thúc 9/99/95 (99.000 thay vì 100.000) vì não đọc trái sang phải, neo vào chữ số đầu."
+      - "Prestige Pricing: số tròn (2.000 USD) cho hàng xa xỉ, tạo cảm giác sang, minh bạch."
+      - "Anchoring: đặt giá cao cạnh giá thấp (VIP 2.000K cạnh Standard 500K)."
+      - "Decoy Effect: thêm lựa chọn 'mồi' để đẩy khách tới lựa chọn đắt hơn (The Economist: Print 125, Digital 59, Print+Digital 125; bắp rang 30/55/60k)."
+      - "Price Bundling: gói combo rẻ hơn mua lẻ (Big Mac combo 89K vs lẻ 120K)."
+      - "Odd-Even: số lẻ = rẻ (Walmart 4,97 USD); số chẵn = chất lượng (Rolex)."
+      - "Rule of 100: giá < 100 (đơn vị chuẩn) thì nêu % giảm; giá > 100 thì nêu số tiền giảm."
+      - "Price Font & Size: chữ giá nhỏ, bỏ ký hiệu tiền tệ trên menu để giảm cảm giác 'xót tiền'."
+    when_to_use: "Chốt price point cuối cùng (bước 6), thiết kế menu, trang sản phẩm, banner KM."
+    how_to_apply:
+      - "Chọn kỹ thuật theo định vị: mass/budget dùng charm, premium dùng prestige/số tròn."
+      - "Với 3 tầng: đặt bậc giữa/mồi khiến bậc mục tiêu 'hời' (kiểm tra bằng m10_upgrade_increment)."
+      - "Rule of 100 (lưu ý: ngưỡng 100 áp dụng theo đơn vị tiền chuẩn 100 USD; với VND dùng ngưỡng tương đương, ví dụ ~ 2-2,5 triệu, hoặc kiểm thử A/B)."
+      - "Đặt combo thấp hơn tổng lẻ 15-30% và kiểm tra biên combo vẫn dương."
+      - "A/B test cặp giá (49k vs 50k)."
+    how_to_read_results: "Theo dõi conversion, AOV, tỷ lệ chọn mỗi tầng, biên theo tầng; hiệu quả giảm khi khách nhận ra thao túng."
+    pitfalls:
+      - "Lạm dụng .99 làm brand bị định vị bình dân."
+      - "Decoy lộ liễu mất tin cậy."
+      - "Charm với hàng luxury phản tác dụng."
+      - "Rule of 100 có tính kinh nghiệm, cần kiểm thử bản địa."
+    example: "Bắp rang: nhỏ 30k, vừa 55k, lớn 60k: cỡ vừa là mồi, cỡ lớn chỉ hơn 5k. Khóa học: 1 tháng 299k, 6 tháng 1.499k, 12 tháng 1.699k (chỉ hơn 200k)."
+  - id: "m10_reference_pricing"
+    name_vi: "Định giá tham chiếu"
+    name_en: "Reference Pricing"
+    origin: "Lý thuyết adaptation-level (Helson 1964) và prospect theory (Kahneman & Tversky 1979): giá được đánh giá theo mốc tham chiếu chứ không tuyệt đối."
+    components:
+      - "Giá tham chiếu nội tại (internal): trong trí nhớ khách."
+      - "Giá tham chiếu bên ngoài (external): giá gốc gạch, MSRP, giá thị trường, sản phẩm cao cấp đặt cạnh."
+    when_to_use: "Sàn TMĐT, flash sale, clearance; bán gói nhiều tầng (gói đắt làm mốc cho gói giữa)."
+    how_to_apply:
+      - "Xác định giá nội tại của nhóm mục tiêu (hỏi khảo sát)."
+      - "Chọn mốc ngoài trung thực: giá niêm yết thật đã bán ít nhất vài tuần, giá thị trường, hoặc gói cao cấp."
+      - "Giới hạn thời gian/số lượng khuyến mãi để không biến thành giá gốc mới."
+      - "Lưu bằng chứng giá gốc (lịch sử giá) để tuân thủ quy định."
+    how_to_read_results: "Nếu bán được chỉ khi có gạch giá, giá gốc đã mất hiệu lực (bị 'bình thường hóa' giá KM)."
+    pitfalls:
+      - "KM liên tục khiến giá KM thành giá tham chiếu mới."
+      - "Nâng giá gốc ảo rồi hạ xuống: mất tin, vi phạm quy định (nhiều quốc gia cấm)."
+    example: "Gạch 599.000 còn 299.000 (-50%). Gói VVIP 8.999.000 làm mốc cho VIP 4.499.000."
+  - id: "m10_value_based"
+    name_vi: "Định giá dựa trên giá trị"
+    name_en: "Value-Based Pricing"
+    origin: "Phổ biến trong Nagle & Müller 'The Strategy and Tactics of Pricing' và Hermann Simon; đảo thứ tự cost-plus: Khách hàng -> giá trị cảm nhận -> giá -> chi phí -> sản phẩm (thay vì Sản phẩm -> chi phí -> giá)."
+    components:
+      - "Giá trị kinh tế (Economic Value): tiết kiệm/kiếm thêm bao nhiêu (B2B)."
+      - "Giá trị chức năng (Functional): tính năng độc đáo, nhanh hơn, tiện hơn."
+      - "Giá trị cảm xúc/biểu tượng (Emotional/Social): tự hào, đẳng cấp, an tâm."
+    when_to_use: "Sản phẩm khác biệt rõ, khách hiểu giá trị, brand mạnh; B2B có lợi ích định lượng được; dịch vụ/khóa học giải quyết nỗi đau lớn."
+    how_to_apply:
+      - "Phỏng vấn khách xác định lợi ích và giá trị quy ra tiền (tiết kiệm nhân sự, doanh thu thêm)."
+      - "Xác định phương án thay thế tốt nhất và tính EVC (m10_evc)."
+      - "Đóng gói/định vị thông điệp theo kết quả, không theo tính năng (bán 'tiết kiệm 10 triệu/tháng' chứ không bán '8 buổi học')."
+      - "Đặt giá bằng một phần giá trị (thường 30-70%), giữ surplus cho khách."
+      - "Dùng GBB để bắt từng nhóm WTP và kiểm tra lại bằng A/B."
+    how_to_read_results: "Nếu khách không phản đối giá và chốt rất nhanh, có thể đang thấp quá; nếu khách đòi chiết khấu nhiều, giá trị truyền đạt chưa đủ."
+    pitfalls:
+      - "Khó đo perceived value, cần thời gian nghiên cứu."
+      - "Không phù hợp hàng đại trà dễ thay thế."
+      - "Giá trị cảm nhận đổi theo xu hướng/cảm xúc."
+      - "Cần brand mạnh và đổi mới liên tục (Apple Tax)."
+    example: "Apple: chi phí 400-500 USD, bán 999-1.199 USD. Starbucks: ly cà phê chi phí ~0,5 USD bán 5-7 USD vì trải nghiệm. Khóa chiến lược cho chủ shop: 3.999.000 dựa trên tiết kiệm 10 triệu/tháng."
+  - id: "m10_freemium"
+    name_vi: "Định giá Freemium"
+    name_en: "Freemium Pricing"
+    origin: "Thuật ngữ do Fred Wilson (VC) gợi ý 2006 và Jarid Lukin đặt tên (ngoài nguồn); phổ biến với phần mềm/dịch vụ số vì chi phí cận biên ~0."
+    components:
+      - "Feature-limited, Storage-limited, Ad-supported, User-limited (giới hạn tính năng, dung lượng, quảng cáo, quy mô)."
+      - "Tỷ lệ chuyển đổi free -> paid thường 2-5% (Spotify ~4%, Dropbox ~4% theo nguồn, chưa kiểm chứng)."
+    when_to_use: "Sản phẩm số marginal cost ~0, hiệu ứng mạng/truyền miệng, cần thu thập dữ liệu và phễu."
+    how_to_apply:
+      - "Chọn rào cản nâng cấp hợp lý (giá trị ngay ở free, nhưng tính năng 'gây nghiện' khóa ở paid)."
+      - "Tính kinh tế (m10_freemium_economics)."
+      - "Tối ưu phễu: kích hoạt (activation) -> thời điểm gặp rào cản -> upsell."
+      - "Đo conv, churn, vc_free."
+    how_to_read_results: "Conv <2% hoặc vc_free cao: thay bằng free trial có thời hạn hoặc giới hạn chặt hơn."
+    pitfalls:
+      - "Đa số user không bao giờ trả."
+      - "Chi phí hạ tầng cho user free."
+      - "Bản free quá tốt thì không ai nâng cấp."
+      - "Không áp dụng cho dịch vụ có chi phí cận biên cao (live class)."
+    example: "Spotify Free (ads) -> Premium. Zoom free 40 phút. Canva Free -> Pro. SME: mini-course miễn phí 2-3 bài đầu để lấy email, webinar miễn phí 2 giờ rồi chốt khóa phí."
+  - id: "m10_dynamic_pricing"
+    name_vi: "Định giá động"
+    name_en: "Dynamic Pricing"
+    origin: "Revenue management của hàng không Mỹ sau 1978 (Airline Deregulation Act); American Airlines SABRE những năm 1980; mở rộng sang ride-hailing/thương mại điện tử nhờ dữ liệu real-time và AI/ML (ngoài nguồn)."
+    components:
+      - "Nhu cầu (demand): giờ cao điểm, lễ hội, thời tiết."
+      - "Nguồn cung (supply): ghế/phòng/hàng còn lại."
+      - "Hành vi cá nhân: lịch sử tìm kiếm, thiết bị, vị trí (personalization)."
+      - "Thời gian: giờ trong ngày, số ngày còn lại trước sự kiện."
+    when_to_use: "Công suất cố định, hàng hết hạn, cầu biến thiên mạnh (vé, phòng, ride-hailing, quán ăn có giờ vắng/đông)."
+    how_to_apply:
+      - "Xác định biến thiên cầu theo giờ/ngày từ dữ liệu POS/booking."
+      - "Thiết lập khung giá (floor/cap) và quy tắc tăng/giảm."
+      - "Bắt đầu thủ công: happy hour/giờ thấp điểm giảm 10-20%, đặt sớm giảm, đặt gấp tăng; sau đó tự động."
+      - "Giao tiếp minh bạch lý do (peak surcharge) để tránh phản ứng 'unfair'."
+    how_to_read_results: "Theo dõi tỷ lệ lấp đầy giờ thấp điểm, doanh thu/giờ, khiếu nại, churn."
+    pitfalls:
+      - "Khách phẫn nộ, cảm giác phân biệt đối xử; rủi ro quy định/đạo đức (đặc biệt personalized pricing)."
+      - "Khó dự báo doanh thu dài hạn."
+      - "Hệ thống phức tạp, tốn chi phí."
+      - "Nhầm với skimming (skimming chỉ giảm một chiều theo vòng đời; dynamic lên xuống như sóng)."
+    example: "Grab/Xanh SM surge giờ cao điểm hoặc mưa; Vietnam Airlines và Vietjet đổi giá theo ghế trống; Amazon đổi giá hàng triệu SP nhiều lần/ngày (claim 2,5 triệu lần/ngày chưa kiểm chứng)."
+  - id: "m10_subscription"
+    name_vi: "Định giá thuê bao"
+    name_en: "Subscription Pricing"
+    origin: "Mô hình báo chí/tạp chí hàng trăm năm; bùng nổ với SaaS và streaming; chuyển khách từ 'sở hữu' sang 'sử dụng'."
+    components:
+      - "Flat-rate: một giá dùng không giới hạn (Netflix flat-rate truyền thống)."
+      - "Tiered: nhiều gói tăng dần (Spotify, SaaS)."
+      - "Box/Product: nhận sản phẩm vật lý định kỳ (sữa, cà phê, mỹ phẩm)."
+      - "Chỉ số: MRR/ARR, CAC, Churn."
+    when_to_use: "Giá trị được tiêu dùng liên tục, cần doanh thu dự báo được, muốn tăng LTV, giảm rào cản trả trước."
+    how_to_apply:
+      - "Chọn dạng thuê bao hợp với hành vi tiêu dùng."
+      - "Thiết kế gói tháng/năm (gói năm khuyến khích bằng giảm giá, giảm churn)."
+      - "Tính LTV, CAC, payback (m10_subscription_unit_economics)."
+      - "Tối ưu onboarding và giữ chân (nội dung, cập nhật, ưu đãi)."
+    how_to_read_results: "LTV:CAC >= 3, payback < 12 tháng, churn tháng < 5-7% cho SME B2C (benchmark ngoài nguồn, confidence low)."
+    pitfalls:
+      - "CAC cao, thu hồi chậm."
+      - "Churn nếu không cải tiến."
+      - "Subscription fatigue."
+      - "Để biên mỗi lượt dùng âm với nhóm dùng nhiều (unlimited quá hào phóng)."
+    example: "Microsoft 365, Adobe CC; Apple One 19,95 USD/tháng; VinFast thuê pin; Tesla FSD. Phở/quán cà phê có thể bán 'thẻ tháng' (xem case Phở Pass ở case study 02, ngoài file này)."
+  - id: "m10_pwyw"
+    name_vi: "Định giá tùy tâm"
+    name_en: "Pay-What-You-Want (PWYW)"
+    origin: "Thử nghiệm marketing nổi bật Radiohead 'In Rainbows' (2007) và Humble Bundle (2010); dựa trên chuẩn mực công bằng và lòng biết ơn."
+    components:
+      - "Động lực: tránh cảm giác tội lỗi, lòng biết ơn, tự hình ảnh."
+      - "Phòng thủ: giá gợi ý (suggested price), giá sàn (floor), gắn từ thiện."
+    when_to_use: "Hàng số (marginal cost ~0), tạo tiếng vang, charity, cộng đồng nhỏ có quan hệ."
+    how_to_apply:
+      - "Đặt giá gợi ý cao hơn giá kỳ vọng để neo."
+      - "Đặt sàn đủ trả vc."
+      - "Gắn mục đích đóng góp rõ ràng, minh bạch."
+      - "Chạy thí điểm ngắn, thu dữ liệu giá trung bình."
+    how_to_read_results: "Giá trung bình thực tế thấp hơn giá gợi ý; nếu < vc thì không bền."
+    pitfalls:
+      - "Doanh thu bấp bênh, khó lập kế hoạch."
+      - "Bị khai thác bởi nhóm thực dụng."
+      - "Không bền với chi phí cố định cao."
+      - "Số liệu Radiohead trong nguồn (trung bình 6 USD, 3 triệu download, doanh thu hơn mọi album trước cộng lại) chưa kiểm chứng; ước tính độc lập thường thấp hơn nhiều."
+    example: "Radiohead 2007; Humble Bundle (người mua chia % cho nhà phát triển/từ thiện/Humble); nhà hàng Lentil as Anything (Úc) không niêm yết giá."
+  - id: "m10_gbb"
+    name_vi: "Kiến trúc giá Tốt - Khá - Tốt nhất"
+    name_en: "Good-Better-Best (GBB) price architecture"
+    origin: "Phương pháp phân tầng sản phẩm tiêu chuẩn của retail/B2B/SaaS; cho phép phục vụ nhóm WTP khác nhau và tận dụng aversion to extremes (khách tránh lựa chọn rẻ nhất/đắt nhất, chọn giữa)."
+    components:
+      - "Good (Basic): tính năng cơ bản, cửa vào phễu, 20-30% khách."
+      - "Better (Standard): lõi + extras, bán chạy nhất, 60-70% khách, target chính."
+      - "Best (Pro/VIP): premium, hỗ trợ ưu tiên, 10-20% khách, margin cao nhất."
+    when_to_use: "Có nhiều nhóm khách với WTP khác nhau; muốn tăng doanh thu/khách (upgrade path)."
+    how_to_apply:
+      - "Xác định 2-3 nhóm khách và tính năng họ ưu tiên."
+      - "Chọn tầng giữa là tầng muốn bán nhiều nhất; tầng cao làm anchor và margin."
+      - "Khoảng cách giá giữa các tầng: tầng giữa/tầng thấp +40-50% (ví dụ 2.999.000 -> 4.499.000), tầng cao gấp ~2 tầng giữa để làm mốc tham chiếu."
+      - "Tính ARPU (m10_arpu_mix) và chi phí phục vụ từng tầng."
+      - "A/B test cơ cấu và tên gói."
+    how_to_read_results: "Nếu >50% chọn tầng thấp: tầng giữa chưa đủ khác biệt hoặc quá đắt. Nếu tầng cao <5%: vẫn có thể giữ như anchor nếu tầng giữa tăng."
+    pitfalls: ["Quá nhiều tầng gây tê liệt lựa chọn", "Khác biệt tầng không rõ", "Tầng cao có chi phí phục vụ lớn"]
+    example: "Apple iPhone 15 (799) / Plus (899) / Pro (999) / Pro Max (1.199). Spotify Free/Individual 10,99/Duo 14,99/Family 16,99/Student 5,99 (USD/tháng, giá US theo nguồn, có thể đã đổi)."
+  - id: "m10_van_westendorp"
+    name_vi: "Thang đo độ nhạy giá Van Westendorp"
+    name_en: "Van Westendorp Price Sensitivity Meter (PSM)"
+    origin: "Peter van Westendorp, nhà kinh tế học Hà Lan, đề xuất 1976 (ngoài nguồn). Ra đời vì cần vùng giá chấp nhận được từ khảo sát nhanh, không cần biết cầu hay co giãn."
+    components:
+      - "4 câu hỏi: giá nào quá rẻ (nghi chất lượng), rẻ (hời), đắt (còn cân nhắc), quá đắt (không mua)."
+      - "4 điểm giao: PMC (Point of Marginal Cheapness) = too cheap cắt not cheap; PME (Point of Marginal Expensiveness) = too expensive cắt not expensive; OPP (Optimal Price Point) = too cheap cắt too expensive; IPP (Indifference Price Point) = cheap cắt expensive."
+      - "Vùng giá chấp nhận được = [PMC, PME]; vùng tối ưu = [OPP, IPP]."
+    when_to_use: "Sản phẩm mới chưa có dữ liệu bán, cần khung giá nhanh với n>=100 khảo sát."
+    how_to_apply:
+      - "Thiết kế bảng hỏi 4 câu bằng văn bản mô tả sản phẩm và khách mục tiêu."
+      - "Thu >= 100-200 mẫu (tối thiểu 30-50 cho sơ bộ)."
+      - "Tính % tích lũy theo mỗi mức giá (too cheap, cheap tính giảm dần; expensive, too expensive tính tăng dần); 'not cheap' = 100 - cheap, 'not expensive' = 100 - expensive."
+      - "Tìm giao điểm bằng nội suy tuyến tính (xem worked_example)."
+      - "Chọn giá trong [OPP, IPP], đối chiếu với chi phí sàn và đối thủ."
+    how_to_read_results: "Khoảng [PMC, PME] là vùng chấp nhận; giá ngoài vùng bị coi quá rẻ hoặc quá đắt. OPP và IPP gần nhau nghĩa là đồng thuận cao về giá."
+    pitfalls:
+      - "Khách khai giá ngoài thực tế (stated vs revealed)."
+      - "Không cho biết lượng cầu hay doanh thu."
+      - "Không tính đối thủ."
+      - "Kết quả nhạy với cách mô tả sản phẩm."
+    example: "Latte khảo sát 150 khách Q.1: PMC 26,6k, PME 45k, OPP 36,25k, IPP 36k (số minh họa)."
+  - id: "m10_wtp_methods"
+    name_vi: "Phương pháp đo willingness-to-pay"
+    name_en: "WTP research methods (Gabor-Granger, conjoint, A/B)"
+    origin: "Gabor & Granger 1966 (hỏi mua/không mua theo các mức giá); conjoint analysis (Green & Rao 1971); A/B test từ digital 4.0 (ngoài nguồn, nguồn chỉ nhắc A/B testing và WTP)."
+    components:
+      - "Gabor-Granger: hỏi 'có mua ở mức giá X?', tăng/giảm dần để vẽ đường cầu."
+      - "Conjoint: khách chọn giữa các gói thuộc tính-giá để tách giá trị từng thuộc tính."
+      - "A/B test: giá khác nhau cho nhóm ngẫu nhiên, đo conversion và lợi nhuận."
+      - "Quan sát thực địa: thử giá menu/ngày/ca khác nhau."
+    when_to_use: "Cần dữ liệu cầu trước khi chốt giá hoặc tăng giá."
+    how_to_apply:
+      - "Chọn phương pháp theo ngân sách: A/B test (rẻ nhất cho digital), Gabor-Granger (khảo sát nhanh), conjoint (đắt)."
+      - "Chọn ít nhất 3 mức giá, đủ mẫu và thời gian."
+      - "Tính Ep và doanh thu/lợi nhuận kỳ vọng ở mỗi mức."
+    how_to_read_results: "Chọn mức tối đa hóa lợi nhuận (không phải conversion cao nhất)."
+    pitfalls: ["Chênh lệch tuyên bố và hành vi", "Kết quả mùa vụ, kênh", "Test giá gây phản ứng công bằng nếu khách thấy giá khác nhau"]
+    example: "Shop online chạy giá 180k/200k/220k cho 3 nhóm quảng cáo 2 tuần, chọn mức lợi nhuận/khách cao nhất."
+  - id: "m10_price_discrimination_education"
+    name_vi: "Phân biệt giá cho sinh viên / học bổng / early bird"
+    name_en: "Segmented pricing with fences (student, scholarship, early bird)"
+    origin: "Phân biệt giá cấp 3 theo kinh tế học (Pigou); áp dụng trong nguồn cho khóa học: chia nhóm WTP và dùng hàng rào."
+    components:
+      - "Giá sinh viên giảm 30-50% cho gói năm khi có thẻ sinh viên."
+      - "Học bổng 50% ẩn: không giảm công khai; chọn lọc bằng bài phân tích case study."
+      - "Early bird: đăng ký trước khai giảng 2 tuần được giá thấp, tạo khan hiếm và dòng tiền sớm."
+      - "Webinar miễn phí 2 giờ (70% giá trị, 30% cuối chốt sale)."
+    when_to_use: "Khóa học, workshop, sản phẩm có nhóm WTP chênh lệch lớn và có thể xác minh nhóm."
+    how_to_apply:
+      - "Xác định hàng rào xác minh được (thẻ SV, bài nộp, ngày đăng ký)."
+      - "Giới hạn số suất; không công bố giảm giá công khai trên kênh đại trà."
+      - "Kiểm tra cannibalization: giá early bird không được thấp đến mức kéo người chịu trả giá đầy đủ."
+      - "Biến nhóm giảm giá thành tài sản (review, case study, đại sứ)."
+    how_to_read_results: "Tỷ lệ chọn giá ưu đãi so với tổng; nếu >50% đăng ký đều dùng early bird thì giá đầy đủ chỉ là giá giả."
+    pitfalls:
+      - "Early bird của VIP 3.499.000 chỉ cao hơn Standard 2.999.000 khoảng 16,7% làm VIP early bird cannibalize Standard."
+      - "Lộ giảm giá công khai làm hỏng giá tham chiếu."
+    example: "Khóa live 30 chỗ: Standard 2.999k, VIP 4.499k, VVIP 8.999k, early bird VIP 3.499k, 5 suất học bổng 50% cho sinh viên."
+  - id: "m10_apple_playbook"
+    name_vi: "Bộ chiến lược giá Apple (case khung)"
+    name_en: "Apple value-based pricing playbook"
+    origin: "Tổng hợp trong nguồn từ cách Apple kết hợp nhiều chiến lược giá."
+    components:
+      - "Skimming theo vòng đời, GBB 4 tầng, Anchoring (Pro Max làm 'trần' cho iPhone 15), Trade-in (giảm nhạy giá, lock-in), Subscription (Apple One), No Discounts (bảo vệ premium)."
+    when_to_use: "Tham khảo thiết kế hybrid pricing cho thương hiệu mạnh."
+    how_to_apply:
+      - "Học tư duy: giá trị, không phải chi phí."
+      - "Bảo vệ giá tham chiếu bằng cách giữ kỷ luật không giảm tùy tiện."
+      - "Dùng GBB tạo upgrade path."
+      - "Thêm dòng doanh thu định kỳ."
+    how_to_read_results: "DN nhỏ không thể copy 'never discount' nếu thiếu brand; thay bằng chương trình có điều kiện (combo, thẻ thành viên)."
+    pitfalls: ["Copy máy móc Apple khi thiếu thương hiệu", "Apple Tax khi đổi mới chậm"]
+    example: "iPhone chi phí ~400-500 USD, bán 999-1.199 USD; Apple Watch Ultra 2 799 USD vs Galaxy Watch 6 329 USD (+143%)."
+
+procedures:
+  - id: "m10_proc_set_price"
+    name: "Định giá một sản phẩm/dịch vụ/menu từ đầu đến cuối (SME)"
+    steps:
+      - "Bước 0 - Hỏi người dùng: (a) sản phẩm/dịch vụ, khách mục tiêu, định vị mong muốn (premium/mid/budget)? (b) mục tiêu giá: lợi nhuận, thị phần, sống sót, hình ảnh? (c) chi phí biến đổi/đơn vị và chi phí cố định/tháng? (d) giá 3-5 đối thủ gần nhất, cùng kênh? (e) khách trả bằng nào (một lần/thuê bao), có nhóm khách WTP khác nhau? (f) công suất tối đa, mùa vụ, giờ cao/thấp điểm? (g) mức giá hiện tại và doanh số nếu đang bán?"
+      - "Bước 1 - Chốt mục tiêu và ràng buộc (biên gộp tối thiểu, thị phần tối thiểu)."
+      - "Bước 2 - Phân tích cầu: ước WTP (Van Westendorp/A-B/Gabor-Granger hoặc EVC), nếu có dữ liệu bán ước Ep (m10_elasticity_point)."
+      - "Bước 3 - Phân tích chi phí: tính CM, CM%, hòa vốn (m10_breakeven_units) và sàn giá (m10_markup_price/margin_price)."
+      - "Bước 4 - Phân tích đối thủ: bảng giá, giá trị, định vị; xác định vị trí giá."
+      - "Bước 5 - Chọn chiến lược theo cây quyết định (decision_rules); nên dùng hybrid: ví dụ value-based cho lõi + tâm lý + subscription/combo."
+      - "Bước 6 - Chốt price point: tính giá lý thuyết, làm tròn bằng charm/prestige, thiết kế kiến trúc GBB (m10_arpu_mix) hoặc combo (kiểm tra biên combo), quy tắc khuyến mãi (Rule of 100, tính m10_required_volume_change)."
+      - "Bước 7 - Test và theo dõi: A/B hoặc chia ca/chi nhánh, 2-4 tuần, KPI (conversion, AOV, biên gộp, lợi nhuận/khách, churn nếu thuê bao); kế hoạch đảo ngược nếu xấu."
+      - "Bước 8 - Kiểm tra checklist cuối: giá >= sàn, <= trần, nhất quán định vị, có kế hoạch phản ứng đối thủ, tuân thủ pháp lý (niêm yết giá, giá gốc thật, VAT)."
+    outputs: "Bảng quyết định giá: sàn, trần, giá đề xuất, chiến lược, price point, ARPU/biên kỳ vọng, hòa vốn, kế hoạch test, rủi ro và ngưỡng điều chỉnh."
+  - id: "m10_proc_menu_pricing"
+    name: "Định giá menu quán cà phê/nhà hàng"
+    steps:
+      - "Liệt kê từng món: chi phí NVL (gồm hao hụt, bao bì), thời gian chế biến, phân loại vai trò (món hút khách, món sinh lời, món mồi)."
+      - "Đặt food cost % mục tiêu theo nhóm (ví dụ đồ uống 20-28%, món chính 30-35%; benchmark ngoài nguồn, confidence low) và tính giá lý thuyết (m10_menu_price_foodcost)."
+      - "So với giá đối thủ ở khu vực và WTP khách; điều chỉnh món hút khách xuống gần thị trường, món sinh lời lên theo giá trị."
+      - "Làm tròn tâm lý: giá 'giá trị' dùng 9/5; menu cao cấp dùng số tròn, bỏ ký hiệu đ; đặt món mồi cạnh món mục tiêu."
+      - "Thiết kế size/combo: giá lớn chỉ hơn vừa ~10% (decoy), combo giảm 15-25% so với lẻ nhưng biên gộp combo vẫn >= biên mục tiêu."
+      - "Tính hòa vốn tổng quan theo biên gộp bình quân gia quyền (m10_breakeven_revenue)."
+      - "Thêm giá động mềm: happy hour giờ vắng, set lunch, thẻ tháng (subscription) cho khách lặp lại."
+      - "Test 2-4 tuần, theo dõi mix món, AOV, food cost thực, rồi hiệu chỉnh."
+    outputs: "Menu có giá từng món, food cost %, margin, chiến lược combo/size, dự báo hòa vốn và kế hoạch test."
+  - id: "m10_proc_promo_check"
+    name: "Kiểm tra trước khi giảm giá/khuyến mãi hoặc tăng giá"
+    steps:
+      - "Lấy giá hiện tại, vc, tính CM% (m10_unit_contribution)."
+      - "Tính khối lượng cần bù (m10_required_volume_change) với mức giảm đề xuất."
+      - "So với kỳ vọng tăng lượng thực tế (từ Ep hoặc dữ liệu KM trước); nếu thiếu thì không chạy."
+      - "Tính chi phí chạy KM (quảng cáo, voucher) và hiệu ứng ăn thịt (cannibalization) khách sẽ mua giá đầy đủ."
+      - "Đặt thời hạn, số lượng, điều kiện (khung giờ, SKU, hạng khách), lịch kết thúc rõ để tránh biến thành giá tham chiếu mới."
+      - "Đo sau KM: lượng, lợi nhuận, % khách mới, % khách quay lại với giá thường."
+      - "Khi tăng giá: tăng nhỏ 3-8%, kèm giá trị tăng thêm hoặc đổi cấu hình, tính lượng mất tối đa chấp nhận được (dp>0 dùng cùng công thức)."
+    outputs: "Quyết định chạy/không chạy KM hoặc tăng giá, kèm ngưỡng lượng bán cần đạt và quy tắc dừng."
+  - id: "m10_proc_tier_design"
+    name: "Thiết kế gói Good-Better-Best / khóa học / subscription"
+    steps:
+      - "Phân khúc theo WTP và nhu cầu (ví dụ sinh viên vs người tự kinh doanh)."
+      - "Xác định gói muốn bán nhiều nhất (Better) và giá trị khách nhận."
+      - "Thêm gói Best làm anchor và margin, gói Good làm cửa vào/freemium."
+      - "Đặt giá: bậc giữa +40-50% so với thấp, bậc cao gấp ~2 bậc giữa; kiểm tra decoy (m10_upgrade_increment)."
+      - "Thêm gói năm (giảm có tính toán, tránh claim sai) và kiểm tra LTV, payback."
+      - "Hàng rào phân biệt giá (thẻ SV, early bird, học bổng)."
+      - "Ước ARPU (m10_arpu_mix) và chi phí phục vụ; thử với 10-20 khách đầu và điều chỉnh."
+    outputs: "Bảng gói (tên, tính năng, giá, mục tiêu tỷ trọng), ARPU kỳ vọng, quy tắc ưu đãi."
+  - id: "m10_proc_competitor_price_drop"
+    name: "Phản ứng khi đối thủ hạ giá"
+    steps:
+      - "Xác định bản chất: khuyến mãi tạm thời hay thay đổi cấu trúc; nhóm khách của bạn bị ảnh hưởng bao nhiêu %."
+      - "Tính chi phí theo giá (m10_required_volume_change) so với chi phí mất khách."
+      - "Chọn phản ứng: giữ giá + tăng giá trị / combo / thương hiệu chiến đấu / giảm có chọn lọc."
+      - "Truyền thông tập trung vào khác biệt, không đua giá."
+      - "Đặt thời hạn xem lại 2-4 tuần."
+    outputs: "Quyết định phản ứng, ngân sách tối đa và tiêu chí kết thúc."
+
+decision_rules:
+  - "Nếu giá dự kiến < chi phí (sàn) thì không bán ở mức đó, trừ khi là loss-leader có tính toán, thời hạn và có sản phẩm lời đi kèm."
+  - "Nếu giá dự kiến > giá trị cảm nhận/WTP thì khách không mua: giảm giá hoặc tăng giá trị truyền đạt."
+  - "Nếu sản phẩm đột phá, độc quyền, thương hiệu mạnh, khách ít nhạy giá thì dùng Skimming/Value-Based."
+  - "Nếu thị trường rất nhạy giá, có quy mô kinh tế và vốn bù lỗ thì cân nhắc Penetration; nếu là SME ít vốn thì chỉ dùng KM có thời hạn, không giảm vĩnh viễn."
+  - "Nếu hàng đại trà ít khác biệt, khách hay so sánh giá, thì dùng Competitive Pricing và cạnh tranh bằng chi phí/dịch vụ."
+  - "Nếu |Ep| > 1 thì giảm giá làm tăng doanh thu, nhưng phải kiểm tra lợi nhuận bằng CM% (có thể giảm); nếu |Ep| < 1 thì tăng giá làm tăng doanh thu và lợi nhuận."
+  - "Nếu CM% thấp (<30%) thì khuyến mãi sâu cực rủi ro: giảm 10% cần bán thêm >50%."
+  - "Nếu marginal cost ~0 (số) và cần tăng trưởng nhanh thì xét Freemium; nếu có người thật phục vụ (live class, tư vấn) thì không freemium mà dùng free webinar giới hạn."
+  - "Nếu giá trị dùng liên tục và cần doanh thu dự báo thì dùng Subscription; nếu LTV:CAC < 3 hoặc churn cao thì sửa sản phẩm/giá trước khi đẩy marketing."
+  - "Nếu giá cầu biến thiên theo giờ/ngày mà công suất cố định thì dùng giá động (happy hour, đặt sớm, phụ thu cao điểm) với trần và minh bạch."
+  - "Nếu khách đang tránh lựa chọn đắt nhất thì thêm tầng cao làm anchor và đặt tầng giữa là mục tiêu; nếu không ai chọn tầng giữa thì giảm khoảng cách hoặc thêm lợi ích."
+  - "Nếu hàng cao cấp/luxury thì dùng giá tròn (prestige), tránh .99; nếu mass/budget thì dùng charm."
+  - "Nếu giá sản phẩm < ngưỡng 100 đơn vị chuẩn thì nêu giảm theo %; nếu > 100 thì nêu số tiền giảm (Rule of 100, kiểm thử với VND)."
+  - "Nếu đối thủ hạ giá và bạn là SME thì không đua giá: tăng giá trị, combo, hoặc fighting brand; chỉ giảm có chọn lọc."
+  - "Nếu khuyến mãi liên tục >30% thời gian thì khách coi giá KM là giá thật: dừng, khôi phục kỷ luật giá."
+  - "Nếu hiển thị giá gốc gạch thì phải là giá đã bán thật gần đây; tuyệt đối không nâng giá gốc ảo."
+  - "Nếu muốn tăng giá thì tăng nhỏ, kèm lý do/giá trị mới, thông báo trước cho khách cũ, giữ giá cho khách trung thành hoặc theo đợt."
+  - "Nếu có hai nhóm khách WTP khác nhau và có hàng rào xác minh thì dùng giá phân biệt (sinh viên, early bird, học bổng) nhưng không công khai giảm trên kênh đại trà."
+  - "Nếu PWYW thì luôn có giá gợi ý + sàn; chỉ cho hàng số hoặc chiến dịch ngắn."
+  - "Nếu thương hiệu yếu thì không áp dụng 'never discount' kiểu Apple; dùng KM có điều kiện."
+  - "Nếu kết quả A/B cho thấy giá cao hơn không làm giảm đáng kể conversion thì tăng giá; quyết định theo lợi nhuận/khách, không theo conversion."
+
+benchmarks:
+  - {metric: "Đòn bẩy lợi nhuận khi tăng giá 1%", value: "8-11% tăng lợi nhuận hoạt động (lượng giữ nguyên); thực chất = 1/biên hoạt động", context: "Nguồn gán McKinsey; minh họa", confidence: "medium"}
+  - {metric: "Tỷ lệ chuyển đổi Freemium free -> paid", value: "2-5% (Spotify ~4%, Dropbox ~4% theo nguồn)", context: "Số liệu nguồn chưa kiểm chứng; con số thực tế khác nhau theo sản phẩm", confidence: "low"}
+  - {metric: "Cơ cấu khách GBB", value: "Good 20-30%, Better 60-70%, Best 10-20%", context: "Minh họa trong nguồn", confidence: "low"}
+  - {metric: "Mức giá khóa học live chiến lược cho người tự kinh doanh", value: "3,5 - 6 triệu VNĐ/khóa", context: "Gợi ý trong nguồn; thị trường VN thay đổi", confidence: "low"}
+  - {metric: "Giá thuê bao khóa học quay sẵn", value: "Cơ bản 199k/tháng hoặc 1.499k/năm; Pro 499-799k/tháng", context: "Gợi ý trong nguồn", confidence: "low"}
+  - {metric: "Resale value iPhone vs Samsung", value: "60-70% vs 30-40%", context: "Nguồn không dẫn chứng; minh họa", confidence: "low"}
+  - {metric: "Chi phí iPhone / giá bán", value: "~400-500 USD / 999-1.199 USD", context: "Nguồn, chưa kiểm chứng chính xác từng đời", confidence: "low"}
+  - {metric: "Apple Services revenue", value: "~85 tỷ USD (FY2023)", context: "Nguồn; khớp công bố của Apple theo hiểu biết chung", confidence: "medium"}
+  - {metric: "Food cost % F&B", value: "28-35% (đồ uống thường thấp hơn)", context: "Ngoài nguồn, thực hành ngành", confidence: "low"}
+  - {metric: "LTV:CAC / payback", value: ">=3 / <12 tháng", context: "Ngoài nguồn, quy tắc SaaS", confidence: "medium"}
+  - {metric: "Giá Spotify (USD/tháng, US)", value: "Individual 10,99; Duo 14,99; Family 16,99; Student 5,99", context: "Giá nguồn, đã có thể đổi", confidence: "low"}
+
+pitfalls:
+  - "Định giá chỉ theo chi phí (cost-plus) mà bỏ qua WTP và đối thủ, bỏ lỡ lợi nhuận hoặc đặt giá không bán được."
+  - "Nhầm markup với margin (markup 50% thành margin 33,3%)."
+  - "Giảm giá mà không tính khối lượng bù (m10_required_volume_change); doanh thu tăng nhưng lợi nhuận giảm."
+  - "Khuyến mãi liên tục biến giá KM thành giá tham chiếu mới, nghiện giảm giá, hỏng brand."
+  - "Đua giá (price war) khi là SME ít vốn."
+  - "Skimming lẫn với dynamic pricing; hoặc skimming khi đối thủ dễ sao chép."
+  - "Penetration không có kế hoạch tăng giá và lock-in; khách bỏ đi khi hết KM."
+  - "Dùng giá gốc ảo để gạch giá: mất tin, vi phạm quy định."
+  - "Freemium cho dịch vụ có chi phí cận biên cao (live class)."
+  - "Subscription mà không theo dõi churn và CAC; unlimited quá hào phóng."
+  - "Thiếu hàng rào cho giá phân biệt, nhóm WTP cao tụt xuống giá thấp."
+  - "Early bird quá sát giá tầng dưới, ăn thịt (cannibalize) tầng dưới."
+  - "Copy 'never discount' của Apple khi chưa có thương hiệu."
+  - "Lạm dụng giá lẻ .99 cho hàng cao cấp."
+  - "Áp Rule of 100 cho VND mà không điều chỉnh ngưỡng/không test."
+  - "Tin số liệu nguồn chưa kiểm chứng (Radiohead, resale value, 85% lợi nhuận ngành, tỷ lệ conversion) như sự thật; cần xác thực trước khi đưa vào báo cáo."
+  - "Bỏ phí sàn TMĐT, hoa hồng giao đồ ăn, VAT khi tính biên."
+  - "Test giá quá ngắn hoặc nhiễu mùa vụ; chọn theo conversion thay vì lợi nhuận."
+  - "Dynamic/personalized pricing thiếu minh bạch gây phản ứng đạo đức/pháp lý."
+
+sme_vn_guidance:
+  - "Định giá đồ uống/món: dùng food cost % (m10_menu_price_foodcost), làm tròn charm cho quán bình dân (49k, 59k), số tròn cho quán cao cấp (60k); đối thủ trong bán kính 1 km là tham chiếu chính."
+  - "Giá niêm yết với người tiêu dùng VN thường đã gồm VAT; xác nhận quy định hiện hành với kế toán/thuế (cần xác nhận)."
+  - "Khuyến mãi: quy định về khuyến mại (Luật Thương mại, Nghị định hướng dẫn) có giới hạn mức giảm và thủ tục đăng ký theo hình thức; cần kiểm tra quy định hiện hành (cần xác nhận). Tránh 'giá gốc ảo' vì rủi ro bị phạt vi phạm quảng cáo/niêm yết giá."
+  - "Công cụ POS có sẵn báo cáo doanh thu theo món, giờ, nhóm khách để phân tích menu engineering và giá động: KiotViet, Sapo, iPOS (chi phí tham khảo vài trăm nghìn đến ~1-2 triệu VNĐ/tháng; giá thay đổi, confidence low). Chi tiết xem cong-cu-quan-tri-doanh-nghiep-sme.md."
+  - "Phí sàn TMĐT (Shopee, TikTok Shop, Lazada) và hoa hồng GrabFood/ShopeeFood thường 15-30% tổng cộng; phải đưa vào vc khi tính giá bán trên kênh này (confidence low, kiểm tra biểu phí hiện hành)."
+  - "Excel/Google Sheets đủ dùng: bảng giá vốn từng món, bảng đối thủ, hòa vốn, ARPU tầng, mô phỏng KM; dùng Google Forms cho Van Westendorp; Zalo/Facebook ads split-test cho A/B giá online."
+  - "Thanh toán thuê bao tự động ở VN còn hạn chế (thẻ nội địa); gói năm thu một lần qua chuyển khoản/QR/MoMo/VNPay là thực tế; gói tháng thường thu thủ công nên churn cao (nhận định thực hành, confidence low)."
+  - "Khóa học: Hotmart, Kajabi/Teachable hoặc LMS nội địa; phí nền tảng 5-30% (confidence low). Live class: Zoom/Google Meet; giới hạn 20-30 chỗ như nguồn để giữ chất lượng."
+  - "Mùa vụ VN (Tết, 8/3, 20/10, Black Friday, 11.11, 12.12): lịch KM và biên độ giảm nên chuẩn bị trước; tránh giảm quanh năm."
+  - "Giá tâm lý ở VN: 49k/99k/199k phổ biến trên Shopee/Lazada; khách quen so sánh giá nhanh qua app nên giá chênh bất hợp lý bị lộ ngay."
+  - "SME dùng chiến lược lai: value-based cho sản phẩm lõi + combo/bundle + thẻ thành viên (subscription mini) + happy hour giờ vắng thay vì giảm giá đại trà."
+  - "Mức giá khóa học, phí nền tảng, chi phí công cụ trong module này là tham khảo; xác nhận giá thị trường thời điểm hiện tại."
+
+case_lessons:
+  - name: "Apple - bậc thầy Value-Based Pricing"
+    type: success
+    setup: "Apple định giá cao hơn đối thủ ở nhiều dòng (Watch Ultra 2 +143%) nhưng vẫn dẫn đầu; áp dụng skimming, GBB, anchoring, trade-in, subscription, no-discount."
+    key_calculations:
+      - "Chênh lệch giá: iPhone 15 Pro Max 1.199 vs S24 Ultra 1.299 = -7,7%; MacBook Air M3 1.099 vs XPS 13 999 = +10,0%; AirPods Pro 2 249 vs Sony 279 = -10,8%; Watch Ultra 2 799 vs Galaxy Watch 6 329 = +142,9%"
+      - "Biên gộp iPhone ước (1.199-450)/1.199 = 62% (với chi phí 450 USD giả định giữa 400-500)"
+      - "Resale 60-70% (Apple) vs 30-40% (Samsung): chi phí sở hữu thực iPhone 999 -> bán lại 65% còn ~350 USD"
+    lesson: "Khách trả cho ecosystem, brand, trải nghiệm chứ không cho chi phí. Không giảm giá giữ giá tham chiếu và resale value, tạo vòng tròn tốt. GBB tạo đường nâng cấp. Subscription biến một lần mua thành doanh thu định kỳ. Hạn chế: chỉ hiệu quả khi brand thật mạnh, ở thị trường nhạy giá (VN, Ấn Độ) Apple vẫn cần model giá thấp (SE) để thâm nhập; 'Apple Tax' có thể giảm perceived value nếu đổi mới chậm."
+    data_reliability: "illustrative"
+  - name: "Grab vs Uber ĐNÁ (2015-2018) và chiến tranh giá"
+    type: failure
+    setup: "Hai bên đốt tiền khuyến mãi để chiếm thị phần; Uber rút lui khỏi ĐNÁ, bán lại cho Grab."
+    key_calculations:
+      - "Không có số trong nguồn; kiểm tra logic: nếu CM% = 30% và giảm 15% giá thì cần bán thêm 15/(30-15) = 100% mới hòa lợi nhuận"
+    lesson: "Price war gây thiệt cho mọi bên, chỉ bên có vốn sâu hơn/hiệu ứng mạng thắng; DN nhỏ không nên theo. Penetration chỉ hợp khi có tiền, kinh tế quy mô và hiệu ứng mạng."
+    data_reliability: "unverified"
+  - name: "Spotify, Zoom, Canva - Freemium và GBB"
+    type: success
+    setup: "Free tier thu hút người dùng, chuyển 2-5% sang trả phí; Spotify có 5 tầng giá (Free/Individual/Duo/Family/Student)."
+    key_calculations:
+      - "Freemium economics: 10.000 user, conv 3%, 199k, vc_free 5k -> net +5,2 triệu/tháng (ví dụ mô phỏng)"
+      - "Chi phí free user 5.000 x 9.700 = 48,5 triệu hầu như xóa hết lãi 53,7 triệu từ nhóm paid"
+    lesson: "Freemium chỉ hiệu quả khi chi phí cận biên ~0; tỷ lệ chuyển đổi thấp nên quy mô lớn mới bù. Nhiều tầng phục vụ nhiều nhóm WTP (sinh viên giá rẻ, gia đình)."
+    data_reliability: "illustrative"
+  - name: "Radiohead In Rainbows (2007), Humble Bundle, Lentil as Anything - PWYW"
+    type: success
+    setup: "Cho khách trả tùy ý; Radiohead (nguồn: trung bình 6 USD, 3 triệu download, tổng doanh thu online hơn mọi album trước cộng lại)."
+    key_calculations:
+      - "Nguồn: 6 USD x 3.000.000 = 18 triệu USD (số nguồn chưa kiểm chứng; báo cáo độc lập cho trung bình thấp hơn nhiều)"
+    lesson: "PWYW hợp hàng số, thương hiệu lớn sẵn fan, chiến dịch ngắn; cần giá gợi ý + sàn + mục đích đóng góp. Không bền với chi phí cố định cao."
+    data_reliability: "unverified"
+  - name: "Khóa học chiến lược marketing - Hybrid Pricing (case hướng dẫn)"
+    type: sme
+    setup: "Khóa học nhắm người tự kinh doanh (ngân sách vừa, cần kết quả) và sinh viên marketing (ngân sách thấp). Hai kịch bản: (A) quay sẵn: Freemium + subscription phân tầng; (B) live-class: Value-Based + Tiered 3 hạng + học bổng + early bird."
+    key_calculations:
+      - "Kịch bản A: Cơ bản 199k/tháng hoặc 1.499k/năm; 199k x 12 = 2.388k nên 1.499k giảm 37,2% (nguồn ghi 40%, làm tròn lệch)"
+      - "Decoy gói thời hạn: 1 tháng 299k, 6 tháng 1.499k, 1 năm 1.699k: 12 tháng chỉ hơn 6 tháng 200k (+13,3%) nhưng gấp đôi thời gian; 1.699k so với 12 x 299k = 3.588k giảm 52,6%"
+      - "Kịch bản B: Standard 2.999k, VIP 4.499k (= +50,0% so với Standard), VVIP 8.999k (gấp 2,0 lần VIP, mốc tham chiếu)"
+      - "ARPU mix 25%/60%/15% = 4.799k"
+      - "Doanh thu 30 chỗ (7 Standard, 18 VIP, 5 VVIP) = 146.970k = 146,97 triệu"
+      - "Early bird VIP 3.499k so với Standard 2.999k chỉ +16,7%"
+    lesson: "Sản phẩm số quay sẵn: marginal cost ~0 nên hợp freemium + subscription; sản phẩm live (thời gian giảng viên hữu hạn): bán theo giá trị (outcome), High ASP, tầng thấp làm cửa vào, tầng VVIP làm anchor. Dùng hàng rào để phân biệt giá cho sinh viên mà không hạ giá công khai. Cảnh báo early bird không được đẩy VIP xuống quá gần Standard."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - id: "m10_we_menu_latte"
+    title: "Định giá ly latte quán cà phê specialty Q.1 và kiểm tra hòa vốn"
+    scenario: "Quán nhỏ Q.1 HCMC, giá vốn latte 14.000đ (cà phê 6k, sữa 5k, ly nắp 3k), chi phí cố định 60 triệu/tháng (mặt bằng, lương, điện nước, khấu hao), đối thủ cùng khu bán 55-65k, mục tiêu food cost 30%, positioning accessible specialty."
+    inputs: {ingredient_cost: 14000, target_cost_pct: 0.30, fixed: 60000000, vc: 14000, candidate_price: 49000}
+    steps:
+      - "Giá lý thuyết = 14.000/0,30 = 46.667đ."
+      - "Làm tròn charm: 49.000 (food cost 14.000/49.000 = 28,6%; margin NVL 71,4%); so với 55-65k của đối thủ thấp hơn 11-25% hợp định vị accessible."
+      - "Lãi góp/ly = 49.000 - 14.000 = 35.000; CM% = 71,4%."
+      - "Hòa vốn: 60.000.000/35.000 = 1.714,3 ly/tháng, làm tròn 1.715 ly/tháng, tức 57,2 ly/ngày."
+      - "Doanh thu hòa vốn = 60.000.000/0,7143 = 84 triệu/tháng."
+      - "Lợi nhuận mục tiêu 20 triệu: (60M+20M)/35.000 = 2.286 ly/tháng, tức 76 ly/ngày."
+      - "Kiểm tra với sức bán: nếu quán thực tế bán được ~40 ly/ngày cho mọi món, đây là mức quá cao; cần tăng giá trung bình, giảm cố định hoặc tăng mix món lợi cao."
+    result: "Giá 49.000đ; food cost 28,6%; hòa vốn 1.715 ly/tháng (57 ly/ngày); muốn lời 20 triệu cần 76 ly/ngày."
+    insight: "Giá đủ biên NVL chưa chắc hòa vốn: chi phí cố định cao ở Q.1 là điểm quyết định, phải so Q_BE với lưu lượng khách thực tế."
+  - id: "m10_we_discount"
+    title: "Có nên giảm giá 10% để kích cầu?"
+    scenario: "Quán trà sữa bán 50.000đ/ly, vc 30.000đ (CM = 20.000, CM% = 40%), hiện 3.000 ly/tháng. Chủ muốn chạy KM giảm 10% (còn 45.000đ) và kỳ vọng bán thêm 20%."
+    inputs: {price: 50000, vc: 30000, dp: -0.10, expected_lift: 0.20, q0: 3000}
+    steps:
+      - "CM% = (50.000-30.000)/50.000 = 0,40."
+      - "Lượng cần bù = 0,10/(0,40-0,10) = 0,3333 = +33,3%, tức tối thiểu 4.000 ly."
+      - "Kiểm chứng: lợi nhuận cũ = 3.000 x 20.000 = 60.000.000. Mới tối thiểu = 4.000 x (45.000-30.000) = 4.000 x 15.000 = 60.000.000 (hòa)."
+      - "Với kỳ vọng +20% = 3.600 ly: 3.600 x 15.000 = 54.000.000, thấp hơn 6.000.000 (-10%)."
+      - "Chưa kể chi phí chạy KM (voucher, quảng cáo) và việc khách cũ mua giá thấp."
+    result: "Cần +33,3% lượng bán để hòa lợi nhuận; kỳ vọng +20% khiến lợi nhuận giảm 10% (-6 triệu/tháng) nên không nên giảm 10% đại trà."
+    insight: "Khi CM% chỉ 40%, giảm 10% giá phải bán thêm 1/3. Giải pháp: combo/mua 2 tặng topping có chi phí thấp hoặc giảm có chọn lọc giờ vắng."
+  - id: "m10_we_elasticity"
+    title: "Shop áo thun online: co giãn và giá tối ưu"
+    scenario: "Shop áo thun bán 200.000đ, vc 100.000đ, bán 500 áo/tháng. Thử giá 180.000đ trong 2 tuần quy đổi tháng bán 600 áo (đã loại nhiễu mùa vụ)."
+    inputs: {p0: 200000, p1: 180000, q0: 500, q1: 600, vc: 100000}
+    steps:
+      - "Ep điểm = (100/500)/(-20.000/200.000) = 0,20/(-0,10) = -2,0 (co giãn)."
+      - "Doanh thu: 200k x 500 = 100 triệu; 180k x 600 = 108 triệu (tăng 8%)."
+      - "Lợi nhuận gộp: (200k-100k) x 500 = 50 triệu; (180k-100k) x 600 = 48 triệu (giảm 4%)."
+      - "Giá tối ưu theo co giãn không đổi: P* = 100.000 x (-2)/(1-2) = 200.000 nghĩa là giá cũ đã tối ưu."
+      - "Đối chiếu m10_required_volume_change: CM% = 50%, dp = -10% -> cần +25% = 625 áo; 600 chưa đủ."
+    result: "Ep = -2,0; doanh thu +8% nhưng lợi nhuận -4%; giữ 200.000đ."
+    insight: "Co giãn cao khiến doanh thu tăng khi giảm giá nhưng lợi nhuận phụ thuộc biên: lãi góp cao không có nghĩa nên hạ giá. Phải xét lợi nhuận, không chỉ doanh thu."
+  - id: "m10_we_course_tier"
+    title: "Định giá khóa học live 30 chỗ bằng Tiered + anchor"
+    scenario: "Khóa lập kế hoạch marketing live 8 buổi, tối đa 30 học viên. Standard 2.999k (xem live + record), VIP 4.499k (thêm sửa kế hoạch + template), VVIP 8.999k (thêm 1-1 2 giờ). Dự kiến cơ cấu: 7 Standard, 18 VIP, 5 VVIP."
+    inputs: {shares: [0.25, 0.60, 0.15], prices: [2999000, 4499000, 8999000], seats: 30, counts: [7, 18, 5]}
+    steps:
+      - "VIP/Standard = 4.499/2.999 = 1,50 (+50,0%); VVIP/VIP = 8.999/4.499 = 2,00."
+      - "Doanh thu 30 chỗ = 7x2.999 + 18x4.499 + 5x8.999 = 20.993 + 80.982 + 44.995 = 146.970k = 146,97 triệu."
+      - "ARPU mix 25/60/15 = 4.799k (xem công thức m10_arpu_mix)."
+      - "So với kịch bản chỉ có Standard + VIP (không VVIP): 30 chỗ chia 8 Standard + 22 VIP = 8x2.999 + 22x4.499 = 23.992 + 98.978 = 122.970k = 122,97 triệu; kịch bản có VVIP hơn 24,0 triệu NẾU 5 người chọn VVIP và không lấy khách khỏi VIP (giả định)."
+      - "Early bird VIP 3.499k: chỉ hơn Standard 16,7% nên khách chọn VIP early bird nhiều, kiểm tra cannibalization; thay vào đó cho early bird bằng quà (template) thay vì giảm giá."
+      - "Học bổng: 5 suất 50% = giảm 2.249,5k/suất VIP (nếu VIP) => chi phí cơ hội 11,2 triệu nếu 5 người đó lẽ ra trả đủ; chỉ chấp nhận nếu họ tạo review/case."
+    result: "Doanh thu kỳ vọng 146,97 triệu; ARPU 4,8 triệu; VIP là gói chủ lực; VVIP chủ yếu là anchor."
+    insight: "Gói VVIP dù bán ít vẫn có giá trị kép: doanh thu biên cao và làm giá tham chiếu khiến VIP 'mềm'. Cần kiểm tra chi phí phục vụ 1-1 (thời gian giảng viên) so với giá 8.999k."
+  - id: "m10_we_subscription"
+    title: "Thuê bao khóa học quay sẵn: LTV:CAC và kiểm tra claim giảm 40%"
+    scenario: "Gói Học Viên 199k/tháng hoặc 1.499k/năm, gross margin 80%, churn 8%/tháng, CAC 300k."
+    inputs: {arpu: 199000, gm: 0.8, churn: 0.08, cac: 300000, annual_price: 1499000}
+    steps:
+      - "LTV = 199.000 x 0,8/0,08 = 1.990.000đ."
+      - "LTV:CAC = 1.990.000/300.000 = 6,63 (>= 3: tốt)."
+      - "Payback = 300.000/(199.000x0,8) = 1,88 tháng."
+      - "Tuổi thọ kỳ vọng = 1/0,08 = 12,5 tháng."
+      - "Gói năm 1.499k so với 12 x 199k = 2.388k: giảm 1 - 1.499/2.388 = 37,2% (không phải 40% như nguồn). Để đúng 40% cần giá năm 1.433k."
+      - "Gói năm thu trước 1.499k nên dòng tiền tốt hơn; khách trả năm gần như churn 0 trong 12 tháng."
+    result: "LTV 1,99 triệu; LTV:CAC 6,6; payback 1,9 tháng; giảm gói năm thực 37,2%."
+    insight: "Churn mới là đòn bẩy chính: churn 8% -> 4% làm LTV gấp đôi (3,98 triệu). Nội dung luôn cập nhật quyết định churn."
+  - id: "m10_we_van_westendorp"
+    title: "Van Westendorp cho ly latte (dữ liệu giả định 150 khách)"
+    scenario: "Khảo sát 150 khách tiềm năng Q.1 với 4 câu hỏi; bảng % tích lũy (nghìn đồng): giá 20/25/30/35/40/45/50/55/60."
+    inputs:
+      price: [20, 25, 30, 35, 40, 45, 50, 55, 60]
+      too_cheap: [60, 42, 25, 12, 6, 3, 2, 1, 0]
+      cheap: [85, 70, 50, 32, 18, 9, 4, 2, 1]
+      expensive: [2, 5, 12, 25, 45, 65, 82, 92, 97]
+      too_expensive: [0, 1, 3, 8, 18, 35, 58, 78, 92]
+    steps:
+      - "not cheap = 100 - cheap; not expensive = 100 - expensive."
+      - "PMC = too cheap cắt not cheap ~ 26,6k."
+      - "PME = too expensive cắt not expensive = 45k."
+      - "OPP = too cheap cắt too expensive ~ 36,25k."
+      - "IPP = cheap cắt expensive ~ 36,0k."
+      - "Vùng chấp nhận được [26,6k - 45k]; vùng tối ưu [36,0k - 36,25k]."
+    result: "Giá khách chấp nhận 26,6-45k, tối ưu quanh 36k."
+    insight: "Giá 49k (từ ví dụ menu) nằm ngoài vùng chấp nhận của dữ liệu giả định này: nếu khảo sát thực tế tương tự thì phải giảm giá hoặc tăng giá trị cảm nhận (specialty, câu chuyện, trải nghiệm). Đây là ví dụ minh họa phương pháp; số thực phải khảo sát."
+  - id: "m10_we_freemium"
+    title: "Kiểm tra mô hình freemium cho app quản lý quán"
+    scenario: "App có 10.000 user, 3% trả phí 199k/tháng, chi phí phục vụ paid 20k/tháng, free 5k/tháng."
+    inputs: {n_users: 10000, conv: 0.03, arpu: 199000, vc_paid: 20000, vc_free: 5000}
+    steps:
+      - "Paid = 300; lãi từ paid = 300 x (199.000-20.000) = 53,7 triệu."
+      - "Free = 9.700; chi phí = 9.700 x 5.000 = 48,5 triệu."
+      - "Net = 5,2 triệu/tháng (hầu hết lãi bị chi phí free ăn hết)."
+      - "Nhạy cảm: vc_free 7k -> net = 53,7 - 67,9 = -14,2 triệu; hoặc conv 5% -> 500 paid -> lãi paid 89,5 triệu - free 9.500x5.000=47,5 triệu = +42 triệu."
+    result: "Net +5,2 triệu/tháng; rất nhạy với conv và vc_free."
+    insight: "Freemium sống bằng quy mô và chi phí free gần 0; tăng conv từ 3% lên 5% quan trọng hơn thêm user. Nếu vc_free vượt ~lãi/user free thì mô hình lỗ."
+
+practice_questions:
+  - q: "Giá vốn một phần cơm gà là 22.000đ. Muốn food cost 32%, giá lý thuyết là bao nhiêu và làm tròn thế nào?"
+    a: "22.000/0,32 = 68.750đ. Làm tròn: 69.000 hoặc 65.000 (charm: 69.000 -> food cost 31,9%; 65.000 -> 33,8%). Chọn theo định vị và giá đối thủ."
+  - q: "Markup 80% tương ứng margin bao nhiêu?"
+    a: "0,8/1,8 = 44,4%."
+  - q: "Sản phẩm giá 120.000, vc 72.000. Giảm 15% giá thì cần bán thêm bao nhiêu % để giữ lợi nhuận?"
+    a: "CM% = 48/120 = 0,40. dQ = 0,15/(0,40-0,15) = 60%."
+  - q: "Giá tăng từ 50.000 lên 55.000, lượng bán giảm từ 1.000 xuống 920. Tính Ep và tác động doanh thu/lợi nhuận (vc 30.000)."
+    a: "%dP = +10%, %dQ = -8% -> Ep = -0,8 (không co giãn). Doanh thu 50M -> 50,6M. Lợi nhuận gộp 20M -> 25.000 x 920 = 23M. Tăng giá có lợi."
+  - q: "Quán có chi phí cố định 45 triệu/tháng, bán trung bình 60.000đ/phần, vc 24.000đ. Hòa vốn bao nhiêu phần/tháng và doanh thu hòa vốn?"
+    a: "45.000.000/36.000 = 1.250 phần; doanh thu hòa vốn = 75 triệu (CM% = 60%)."
+  - q: "Phân biệt Skimming và Dynamic Pricing."
+    a: "Skimming: giá giảm một chiều từ cao xuống thấp theo vòng đời sản phẩm. Dynamic: giá lên xuống liên tục real-time theo cung-cầu, thời gian, hành vi."
+  - q: "Nêu 3 điều kiện để Freemium thành công."
+    a: "Chi phí cận biên của user free ~0; bản free tạo giá trị ngay nhưng giữ tính năng 'gây nghiện' cho bản trả phí; quy mô đủ lớn để conv 2-5% bù chi phí free."
+  - q: "Gói combo: lẻ 45.000 + 30.000 + 15.000 = 90.000đ, combo bán 75.000đ. Giảm bao nhiêu %? Cần kiểm tra điều gì?"
+    a: "(90-75)/90 = 16,7%. Kiểm tra biên gộp combo (vc tổng) còn >= biên mục tiêu và combo không ăn thịt món lẻ lời cao."
+  - q: "Bắp rang 30k / 55k / 60k: vì sao 55k là decoy? Mức chênh lên bậc lớn là bao nhiêu?"
+    a: "Chênh 60k so với 55k chỉ +9,1% nhưng nhiều hơn rõ ràng, khiến cỡ lớn 'hời' và đẩy khách chọn cỡ lớn; cỡ vừa là mồi."
+  - q: "Shop khuyến mãi giá 299k (gạch 599k) liên tục 10 tháng/năm. Vấn đề gì?"
+    a: "Giá 299k trở thành giá tham chiếu mới; giá gốc 599k mất hiệu lực, rủi ro bị xem 'giá gốc ảo' vi phạm pháp lý và mất tin cậy. Phải chuyển sang giá thật hợp lý, khuyến mãi có thời hạn thật."
+  - q: "Tăng giá 1% khi biên hoạt động 8% thì lợi nhuận tăng bao nhiêu (lượng không đổi)?"
+    a: "1/8% = 12,5% (dp x R/π = 0,01/0,08)."
+  - q: "Gói thuê bao 149k/tháng, gm 70%, churn 5%/tháng, CAC 400k. Tính LTV, LTV:CAC, payback."
+    a: "LTV = 149.000x0,7/0,05 = 2.086.000; LTV:CAC = 5,2; payback = 400.000/104.300 = 3,8 tháng."
+  - q: "Vì sao Apple không giảm giá, và SME có nên làm như vậy?"
+    a: "Để bảo vệ giá tham chiếu, resale value và premium image; khách không chờ sale. SME thiếu brand mạnh nên không copy; dùng KM có điều kiện, combo, thành viên."
+
+checklist:
+  - "□ Đã tính cấu trúc chi phí (fixed, variable), CM%, hòa vốn?"
+  - "□ Đã xác định mục tiêu định giá (lợi nhuận, thị phần, sống sót, hình ảnh)?"
+  - "□ Đã nghiên cứu độ co giãn và/hoặc WTP (khảo sát, Van Westendorp, A/B, EVC)?"
+  - "□ Đã phân tích giá đối thủ cùng kênh và định vị (premium/mid/budget)?"
+  - "□ Giá nằm giữa sàn (chi phí) và trần (giá trị cảm nhận)?"
+  - "□ Chiến lược phù hợp (skimming, penetration, competitive, value-based, freemium, subscription, dynamic)?"
+  - "□ Có kiến trúc giá Good-Better-Best hoặc combo/size hợp lý, tầng giữa là mục tiêu?"
+  - "□ Giá nhất quán với định vị và thương hiệu?"
+  - "□ Đã chọn price point tâm lý phù hợp (charm cho mass, prestige cho luxury)?"
+  - "□ Đã tính khối lượng cần bù trước khi khuyến mãi/giảm giá?"
+  - "□ Khuyến mãi có thời hạn, điều kiện; không biến thành giá tham chiếu mới?"
+  - "□ Giá gốc gạch là giá thật, có lịch sử giá chứng minh?"
+  - "□ Có kế hoạch cho thay đổi giá (tăng/giảm) và phản ứng đối thủ, policy chống price war?"
+  - "□ Đã tính CLV, churn, CAC khi thuê bao/freemium?"
+  - "□ Có A/B test giá hoặc thử nghiệm theo ca/chi nhánh; chọn theo lợi nhuận?"
+  - "□ Đã cân nhắc ethical với dynamic/personalized pricing?"
+  - "□ Đã tính phí sàn, hoa hồng, VAT trên từng kênh?"
+  - "□ Đã xác nhận quy định khuyến mại, niêm yết giá hiện hành?"
+
+excel_google_sheets_templates:
+  - "Sheet 'Menu_Costing': cột Món, NVL (VNĐ), hao hụt %, Giá vốn, Food cost % mục tiêu, Giá lý thuyết (=Giá vốn/%), Giá niêm yết, Food cost % thực, Margin, Vai trò món."
+  - "Sheet 'BreakEven': Fixed, Price, VC; Q_BE (=Fixed/(Price-VC)), R_BE, biên an toàn; bảng nhạy 3 mức giá."
+  - "Sheet 'Promo_Check': Price, VC, CM%, % giảm, ΔQ cần thiết (=-dp/(CM+dp)), lượng kỳ vọng, lợi nhuận mới so với cũ."
+  - "Sheet 'Elasticity': Kỳ, giá, lượng, Ep; doanh thu và lợi nhuận mỗi mức giá; chọn mức lợi nhuận cao nhất."
+  - "Sheet 'Tier_ARPU': Tầng, giá, tỷ trọng, chi phí phục vụ; ARPU (=SUMPRODUCT), biên."
+  - "Sheet 'Subscription': ARPU, GM, churn, CAC; LTV, LTV:CAC, payback; MRR/ARR theo tháng."
+  - "Sheet 'VanWestendorp': % tích lũy 4 đường theo mức giá; nội suy PMC/PME/OPP/IPP; biểu đồ 4 đường."
+  - "Sheet 'Competitor_Prices': SKU, đối thủ A-E, giá, kênh, ngày thu thập; premium % (m10_premium_pct)."
+
+source_file: "10-pricing-strategies.md"
+source_issues_noted:
+  - "Bảng Price Elasticity bị vỡ định dạng (3 hàng tách thành 3 bảng riêng, có ký tự '|' trong |Ep|); nội dung đúng: |Ep|>1 co giãn, <1 không co giãn, =1 đơn vị."
+  - "Case khóa học: 'tiết kiệm 40%' của 1.499k/năm so với 199k/tháng sai; tính lại 37,2% (199k x 12 = 2.388k)."
+  - "Case khóa học: dùng 199k/tháng ở mục 2.1 nhưng 299k/tháng ở ví dụ decoy 2.3; không nhất quán giữa hai kịch bản (là hai ví dụ độc lập)."
+  - "Mục 5 (Apple): câu 'Apple KHÔNG BẰNG định giá theo chi phí' là lỗi viết (nên là 'KHÔNG định giá theo chi phí'). Claim '85%+ lợi nhuận toàn ngành smartphone' và resale 60-70% vs 30-40%, Radiohead (6 USD/3 triệu download), conversion Spotify/Dropbox ~4%, Amazon 2,5 triệu lần/ngày là chưa kiểm chứng."
+  - "'Rule of 100' trong nguồn ví dụ 80.000đ gọi là 'dưới 100'; quy tắc gốc theo USD (ngưỡng 100 USD), áp dụng cho VND không nên dùng ngưỡng 100 mà phải điều chỉnh/kiểm thử."
+  - "Mục 'Quy trình định giá' trong nguồn lặp 2 lần (7 bước ở III và 4 bước ở VI) và có đoạn văn nói với chủ sở hữu ('Tôi đã chuẩn bị...') không phải nội dung kiến thức; module gộp thành quy trình chuẩn."
+  - "Early bird trong khóa live: VIP early bird 3.499k chỉ cao hơn Standard 2.999k +16,7%, rủi ro cannibalization (nguồn không cảnh báo)."
+  - "Một số trích dẫn kiểu [1, 2, 3] và liên kết Markdown lẫn trong mục Skimming (lỗi sao chép), không ảnh hưởng nội dung."
+  - "Zoom Pro ghi 13,33 USD/tháng, Spotify Individual 10,99, Netflix 15,49: giá US có thể đã thay đổi; confidence low."

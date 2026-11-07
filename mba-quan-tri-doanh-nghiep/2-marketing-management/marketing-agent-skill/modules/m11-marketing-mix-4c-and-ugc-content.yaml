@@ -1,0 +1,726 @@
+# m11 - Marketing 4C thời đại số & UGC Content
+# (distill từ 11-marketing-mix-4c-digital-era.md và ugc-content.md)
+# Lưu ý: nguồn chỉ có ít số liệu định lượng; các công thức KPI UGC/giá động bên dưới là công thức chuẩn ngành do người distill bổ sung
+# (đánh dấu derived_from_source: false trong phần mô tả) để agent tính toán được. Mọi ví dụ số đã verify bằng python3.
+id: "m11"
+name_vi: "Marketing 4C thời đại số & UGC Content"
+name_en: "Digital-Era Marketing Mix (4C) and User-Generated Content"
+purpose: >
+  Giúp agent chuyển Marketing Mix từ góc nhìn người bán (4P/7P) sang góc nhìn cộng đồng của Marketing 4.0
+  (Co-creation, Currency, Communal Activation, Conversation - Kotler 2017), và thiết kế, đo lường chiến dịch UGC
+  (nội dung do khách hàng tạo) để tăng niềm tin, chuyển đổi và giảm chi phí thu hút khách (CAC), kèm kiểm soát rủi ro
+  (mất kiểm soát truyền thông, đạo đức giá động, bản quyền nội dung).
+when_to_use:
+  - "Chủ SME hỏi 'làm sao để khách hàng tự quảng bá/review/đăng ảnh về quán, shop của tôi?' hoặc 'UGC là gì, làm thế nào?'"
+  - "Muốn nâng cấp chiến lược 4P/7P hiện có cho thời đại số: 'chuyển 4P sang 4C cho doanh nghiệp X'."
+  - "Cân nhắc lấy ý kiến khách hàng để ra sản phẩm/món mới (co-creation, bình chọn, beta test, pre-order)."
+  - "Cân nhắc giá linh hoạt: giờ thấp điểm/cao điểm, khuyến mãi theo nhu cầu, subscription, pay-as-you-go."
+  - "Hỏi khác biệt UGC Creator và Influencer/KOL/KOC; chọn hình thức hợp tác cho ngân sách nhỏ."
+  - "Cần xây quy trình lắng nghe mạng xã hội (social listening), xử lý khủng hoảng truyền thông do cộng đồng."
+  - "Cần đo hiệu quả UGC: engagement rate, participation rate, cost per asset, conversion uplift, ROI, CAC."
+  - "Cần xin phép, ghi nguồn, quản lý bản quyền khi dùng lại nội dung của khách."
+prerequisites:
+  - "m02"
+related_modules:
+  - "m02 - Marketing Mix 4P/7P: nền tảng gốc; 4C là tầng nâng cấp chứ không thay thế (cần giữ People/Process/Physical Evidence)"
+  - "m05 - Digital Marketing & Growth Hacking: kênh, SEO, referral, AARRR để khuếch đại UGC"
+  - "m03 - Customer Lifetime Value: đo giá trị dài hạn của khách tham gia cộng đồng, LTV:CAC"
+  - "m04 - Brand Management: UGC là bằng chứng brand equity/identity; rủi ro lệch thông điệp"
+  - "m06 - Consumer Behavior: social proof, độ tin cậy lời truyền miệng, hành vi review"
+  - "m08 - IMC: UGC và Conversation là một lớp trong truyền thông tích hợp (earned/owned/paid)"
+  - "m10 - Pricing Strategies: Currency (giá động) cần nền tảng định giá, độ co giãn, price fairness"
+  - "m07 - Marketing Research: co-creation là hình thức nghiên cứu thị trường mở (bình chọn, beta)"
+
+concepts:
+  - term_vi: "Marketing 4.0"
+    term_en: "Marketing 4.0"
+    definition: "Giai đoạn marketing do Philip Kotler, Hermawan Kartajaya, Iwan Setiawan hệ thống hóa trong sách 'Marketing 4.0: Moving from Traditional to Digital' (2017): kết hợp online với offline, kết nối vạn vật, AI, mạng xã hội; khách hàng chuyển từ người tiêu thụ thụ động sang đối tác chủ động của thương hiệu."
+    why_it_matters: "Giải thích vì sao 4P (doanh nghiệp kiểm soát một chiều) không còn đủ: quyền lực chuyển sang cộng đồng, khách tin bạn bè/đánh giá hơn quảng cáo. Là bối cảnh để chọn công cụ 4C."
+  - term_vi: "Bốn C truyền thống của Lauterborn"
+    term_en: "Lauterborn's 4C (Customer Solution, Customer Cost, Convenience, Communication)"
+    definition: "Robert F. Lauterborn (1990, bài 'New Marketing Litany: Four P's Passé: C-Words Take Over') đề xuất đổi góc nhìn 4P người bán sang góc nhìn người mua: Product -> Customer solution, Price -> Customer cost, Place -> Convenience, Promotion -> Communication."
+    why_it_matters: "Đây là bộ 4C đời đầu (đặt khách hàng làm trung tâm). KHÔNG nhầm với 4C của Kotler (Marketing 4.0). Agent phải hỏi/nêu rõ đang dùng bộ 4C nào để tránh lẫn lộn."
+  - term_vi: "Bốn C kỹ thuật số của Marketing 4.0"
+    term_en: "Kotler's digital 4C (Co-creation, Currency, Communal Activation, Conversation)"
+    definition: "Product -> Co-creation (đồng kiến tạo); Price -> Currency (giá linh hoạt như đơn vị tiền tệ giao dịch); Place -> Communal Activation (kích hoạt cộng đồng/phân phối ngang hàng P2P); Promotion -> Conversation (trò chuyện hai chiều/đa chiều)."
+    why_it_matters: "Chuyển nỗ lực từ 'đơn phương kiểm soát' sang 'quan hệ cộng tác ngang hàng'. Nguyên tắc: 4C nâng cấp trên nền 4P/7P (giữ People, Process, Physical Evidence), không triệt tiêu."
+  - term_vi: "Prosumer"
+    term_en: "Prosumer (producer + consumer)"
+    definition: "Khách hàng vừa tiêu dùng vừa đóng góp vào sản xuất/thiết kế (bình chọn ý tưởng, thử nghiệm, tùy biến, tạo nội dung)."
+    why_it_matters: "Cốt lõi của Co-creation: thành công sản phẩm phản ánh mong muốn thật của người dùng thay vì phán đoán cảm tính của doanh nghiệp; tạo cảm giác 'đồng sở hữu' nên tăng trung thành."
+  - term_vi: "Đồng kiến tạo"
+    term_en: "Co-creation"
+    definition: "Thu hút khách hàng vào ý tưởng, thiết kế, thử nghiệm, cá nhân hóa sản phẩm từ giai đoạn sơ khai. Công cụ: crowdsourcing, public beta test, nền tảng thiết kế mở, chọn module tùy chỉnh."
+    why_it_matters: "Giảm rủi ro ra sản phẩm sai nhu cầu và chi phí R&D/marketing; nhưng nếu giao 100% quyền quyết định cho đám đông thì có thể ra sản phẩm 'vui lạ' nhưng không có lãi (Quirky)."
+  - term_vi: "Giá linh hoạt"
+    term_en: "Currency (dynamic pricing)"
+    definition: "Giá biến thiên theo cầu thời gian thực, cung, thời điểm, hồ sơ và vị trí khách. Biểu diễn: Price = f(Demand, Supply, Time, User Profile). Ví dụ: Grab/Uber surge, vé máy bay/khách sạn, SaaS pay-as-you-go."
+    why_it_matters: "Tối ưu lợi nhuận lúc cầu cao và lấp công suất/tồn kho lúc cầu thấp. Nhưng rủi ro đạo đức: bị coi là trục lợi/phân biệt đối xử nếu thiếu minh bạch và không có 'kill switch' (Uber)."
+  - term_vi: "Kích hoạt cộng đồng"
+    term_en: "Communal Activation (peer-to-peer distribution)"
+    definition: "Phân phối ngang hàng qua nền tảng kết nối trực tiếp người mua và người bán/chủ nguồn lực nhàn rỗi: kinh tế chia sẻ (Airbnb, Grab), social commerce, DeFi."
+    why_it_matters: "Giảm chi phí và quãng đường phân phối vật lý, tận dụng nguồn lực nhàn rỗi, giúp khách tiếp cận mọi lúc mọi nơi; đòi hỏi nền tảng công nghệ."
+  - term_vi: "Trò chuyện"
+    term_en: "Conversation"
+    definition: "Truyền thông hai chiều/đa chiều giữa doanh nghiệp-khách và khách-khách, thay cho quảng cáo một chiều. Công cụ: Facebook Groups, Reddit, UGC, review chấm sao, KOL/KOC."
+    why_it_matters: "Khách thế hệ số mất niềm tin vào quảng cáo thổi phồng, tin gia đình/cộng đồng/review thực tế. Doanh nghiệp đóng vai người khơi gợi và điều phối để lời truyền miệng (WOM) tự lan."
+  - term_vi: "Nội dung do người dùng tạo"
+    term_en: "UGC (User-Generated Content)"
+    definition: "Bất kỳ nội dung (văn bản, video, hình ảnh, đánh giá...) do chính người tiêu dùng/khách hàng tạo ra thay vì thương hiệu sản xuất. Ví dụ: ảnh ly cà phê đăng Instagram kèm tên quán."
+    why_it_matters: "Điểm tựa niềm tin giữa thời quảng cáo trả phí dày đặc: xác thực, tăng chuyển đổi, chi phí thấp, tốt cho SEO."
+  - term_vi: "Các loại UGC phổ biến"
+    term_en: "Types of UGC"
+    definition: "(1) Review/nhận xét: Google Maps, Shopee, hội nhóm Facebook. (2) Ảnh/video thực tế: unboxing, ảnh mặc đồ đi chơi, video hướng dẫn TikTok. (3) Bài blog/diễn đàn: phân tích trải nghiệm, so sánh sản phẩm. (4) Podcast/livestream tự phát về thương hiệu."
+    why_it_matters: "Mỗi loại phục vụ giai đoạn khác nhau của hành trình mua (review = cân nhắc/quyết định; video thực tế = nhận biết/cân nhắc; blog/diễn đàn = SEO/tìm hiểu). Chọn loại phù hợp mục tiêu."
+  - term_vi: "Bằng chứng xã hội"
+    term_en: "Social Proof"
+    definition: "Hiện tượng người ta tin và làm theo khi thấy người khác đã dùng thành công. Triển khai: hiển thị bài đăng khách hàng ngay dưới trang sản phẩm."
+    why_it_matters: "Giảm rủi ro cảm nhận của người mua mới, nên tỷ lệ chốt đơn cao hơn (nguồn gốc khái niệm: Robert Cialdini, 'Influence', 1984 - bổ sung ngoài nguồn)."
+  - term_vi: "UGC Creator và Influencer"
+    term_en: "UGC Creator vs Influencer"
+    definition: "Influencer: mục tiêu dùng sự nổi tiếng để quảng bá, đăng trên kênh cá nhân, giá trị cốt lõi là độ phủ (Reach) và lượng fan. UGC Creator: tạo nội dung trông như người dùng thật, gửi video cho thương hiệu đăng trên kênh của thương hiệu (và chạy ads), giá trị là kỹ năng quay chụp và tính thực tế."
+    why_it_matters: "UGC Creator cho SME một nguồn nội dung 'chân thực' chi phí thấp không cần fan lớn; Influencer mua độ phủ. Chọn theo mục tiêu (nội dung/chuyển đổi vs nhận biết)."
+  - term_vi: "Lắng nghe mạng xã hội"
+    term_en: "Social Listening"
+    definition: "Theo dõi thời gian thực các cuộc thảo luận tự nhiên quanh thương hiệu để can thiệp kịp thời bằng đối thoại chân thành trước khi vấn đề nhỏ bùng thành khủng hoảng."
+    why_it_matters: "Là đối trọng của rủi ro 'mất kiểm soát truyền thông' khi mở Conversation/Co-creation."
+  - term_vi: "Hiệu ứng mạng lưới"
+    term_en: "Network Effects"
+    definition: "Giá trị tăng khi có thêm người tham gia; Communal Activation và Conversation giúp lan tỏa tự nhiên, giảm CAC."
+    why_it_matters: "Lý do kinh tế khiến 4C giảm chi phí marketing trả phí (Xiaomi, LEGO Ideas)."
+
+frameworks:
+  - id: "m11_4c_digital"
+    name_vi: "Mô hình 4C kỹ thuật số của Marketing 4.0"
+    name_en: "Kotler's Digital 4C (Co-creation, Currency, Communal Activation, Conversation)"
+    origin: >
+      Philip Kotler, Hermawan Kartajaya, Iwan Setiawan, 'Marketing 4.0: Moving from Traditional to Digital' (2017).
+      Ra đời vì kết nối số, mạng xã hội và AI làm mờ ranh giới online/offline; khách hàng không còn nhận thông điệp một chiều
+      mà tham gia ngang hàng, nên Marketing Mix 4P (góc nhìn người bán, McCarthy 1960) và 4C đời đầu của Lauterborn (1990)
+      cần được tái định nghĩa theo hướng cộng tác.
+    components:
+      - "Co-creation (thay Product): đồng kiến tạo sản phẩm với khách hàng. Cơ chế: khách là Prosumer. Công cụ số: crowdsourcing, public beta test, nền tảng thiết kế mở, chọn module tùy chỉnh."
+      - "Currency (thay Price): giá linh hoạt Price = f(Demand, Supply, Time, User Profile), dùng AI/Big Data. Ví dụ: giá cước giờ cao điểm/thấp điểm Grab-Uber, vé máy bay/khách sạn đổi theo giây, SaaS pay-as-you-go."
+      - "Communal Activation (thay Place): phân phối ngang hàng P2P qua nền tảng; Airbnb, Grab, social commerce, DeFi; tận dụng nguồn lực nhàn rỗi để giảm chi phí và quãng đường phân phối."
+      - "Conversation (thay Promotion): thảo luận hai chiều/đa chiều; Facebook Groups, Reddit, UGC, review chấm sao trên sàn TMĐT và bản đồ, KOL/KOC; doanh nghiệp khơi gợi và điều phối chủ đề để WOM tự lan."
+    when_to_use: >
+      Khi doanh nghiệp có (hoặc có thể xây) cộng đồng khách hàng, kênh số và dữ liệu; khi quảng cáo một chiều ngày càng đắt/kém hiệu quả;
+      khi muốn giảm CAC và tăng lòng trung thành. Không dùng như bản thay thế hoàn toàn 4P - luôn dùng như lớp nâng cấp.
+    how_to_apply:
+      - "Bước 1 - Lập bảng 4P/7P hiện tại của doanh nghiệp (sản phẩm, giá, kênh, xúc tiến + People, Process, Physical Evidence) làm baseline."
+      - "Bước 2 - Với mỗi P hỏi câu chuyển đổi: Product -> khách có thể cùng quyết định/thiết kế phần nào? Price -> giá có thể linh hoạt theo thời điểm/nhu cầu/hành vi một cách minh bạch không? Place -> ai trong cộng đồng có thể bán/giới thiệu/chia sẻ nguồn lực hộ? Promotion -> chủ đề nào để khách nói với nhau thay vì mình nói với khách?"
+      - "Bước 3 - Chọn 1-2 C ưu tiên (SME thường bắt đầu từ Conversation/UGC và Co-creation nhẹ; Currency ở dạng giờ thấp điểm/combo; Communal Activation qua social commerce, cộng tác viên, referral)."
+      - "Bước 4 - Thiết kế cơ chế khuyến khích (quyền lợi, vinh danh, doanh thu chia sẻ, quà) và ranh giới kiểm soát (thương hiệu, an toàn, chất lượng, sở hữu trí tuệ)."
+      - "Bước 5 - Thiết lập công cụ: nền tảng cộng đồng (Facebook Group, Zalo, fanpage), form bình chọn, social listening, dashboard KPI."
+      - "Bước 6 - Chạy thử quy mô nhỏ (pilot 4-8 tuần), đo KPI (engagement rate, participation rate, CAC, uplift), chuẩn bị kill switch cho giá và quy trình xử lý khủng hoảng."
+      - "Bước 7 - Giữ nguyên các giá trị 4P/7P vật lý (nhân viên, quy trình, không gian) và tích hợp omnichannel: online cộng tác, offline trải nghiệm."
+    how_to_read_results: >
+      Thành công khi: CAC giảm, tỷ lệ khách tham gia (participation) ổn định hoặc tăng, tỷ lệ chuyển đổi trang có UGC cao hơn trang không có,
+      LTV khách trong cộng đồng cao hơn khách ngoài cộng đồng, sentiment tích cực. Cảnh báo: nhiều tương tác nhưng không ra đơn (vanity),
+      sản phẩm đồng kiến tạo bán chậm/lỗ, giá bị phàn nàn là 'chặt chém', nội dung lệch thương hiệu.
+    pitfalls:
+      - "Coi 4C thay thế hoàn toàn 4P/7P (sai: 4C là tầng nâng cấp, vẫn cần People/Process/Physical Evidence)."
+      - "Mất kiểm soát truyền thông: thông điệp trong cộng đồng mở có thể bị lan truyền thành khủng hoảng."
+      - "Độ phức tạp vận hành cao: giá động và P2P cần API thời gian thực, khoa học dữ liệu; vốn hạ tầng lớn - SME không nên tự xây nền tảng."
+      - "Rủi ro đạo đức/quyền riêng tư: định giá động theo dữ liệu cá nhân bị xem là chèn ép/phân biệt đối xử."
+      - "Nhầm 4C Lauterborn (Customer Solution, Customer Cost, Convenience, Communication) với 4C Kotler (Co-creation, Currency, Communal Activation, Conversation)."
+    example: >
+      Quán cà phê specialty Q.1: Product -> Co-creation (khách bình chọn hương vị blend giới hạn mỗi tháng); Price -> Currency (giá giảm
+      15% khung 14h-16h vắng khách, niêm yết công khai, không tăng giá giờ cao điểm); Place -> Communal Activation (cộng tác viên
+      giới thiệu bán hạt rang qua Zalo/Facebook Group, nhóm cộng đồng tự tổ chức cupping); Promotion -> Conversation (hashtag thương hiệu,
+      chia sẻ ảnh được lên fanpage). Giữ nguyên P7 (nhân viên pha chế được đào tạo, quy trình phục vụ, không gian).
+  - id: "m11_lauterborn_4c"
+    name_vi: "4C của Lauterborn (khách hàng làm trung tâm)"
+    name_en: "Lauterborn's 4C"
+    origin: >
+      Robert F. Lauterborn (1990), 'New Marketing Litany: Four P's Passé: C-Words Take Over', Advertising Age. Ra đời vì 4P phản ánh góc nhìn
+      nội bộ của người bán; Lauterborn đảo thành góc nhìn của người mua để marketing bắt đầu từ nhu cầu khách.
+    components:
+      - "Customer Solution (thay Product): sản phẩm phải giải quyết vấn đề của khách."
+      - "Customer Cost (thay Price): tổng chi phí khách chịu (tiền, thời gian, công sức, rủi ro), không chỉ giá niêm yết."
+      - "Convenience (thay Place): mua dễ, nhận dễ."
+      - "Communication (thay Promotion): giao tiếp hai chiều thay vì chỉ quảng bá."
+    when_to_use: "Làm lăng kính kiểm tra nhanh (sanity check) kế hoạch 4P có thực sự đứng từ góc nhìn khách hay không, trước khi nâng cấp lên 4C số."
+    how_to_apply:
+      - "Với mỗi P, viết lại câu mô tả bằng góc nhìn khách: 'khách giải quyết vấn đề gì', 'khách thực sự tốn bao nhiêu (tiền+thời gian+công sức)', 'khách mua ở đâu thuận tiện nhất', 'khách muốn nghe/nói gì với mình'."
+      - "Đối chiếu với kế hoạch hiện tại, tìm chỗ lệch."
+    how_to_read_results: "Chỗ nào khó viết lại bằng góc nhìn khách = điểm mù của kế hoạch hiện tại."
+    pitfalls:
+      - "Chỉ đổi tên mà không đổi hành động (4C chỉ là khẩu hiệu)."
+      - "Bỏ qua Customer Cost phi tiền tệ (thời gian chờ, công sức đặt hàng)."
+    example: "Quán phở: khách tốn 45k + 15 phút xếp hàng giờ trưa = Customer Cost cao; giải pháp: đặt trước qua Zalo (Convenience), giảm Customer Cost thời gian."
+  - id: "m11_cocreation_playbook"
+    name_vi: "Cơ chế Co-creation kiểu LEGO Ideas (ý tưởng -> bình chọn -> duyệt -> sản xuất -> chia sẻ lợi ích)"
+    name_en: "Co-creation pipeline (LEGO Ideas model)"
+    origin: >
+      LEGO gặp khó khăn tài chính đầu những năm 2000 và nhận ra cộng đồng người hâm mộ là chìa khóa phục sinh; nền tảng LEGO Ideas cho
+      fan gửi thiết kế, cộng đồng bình chọn. Dùng làm mẫu vì giải quyết tốt bài toán 'đám đông chọn gì thì bán được' bằng cổng chuyên môn nội bộ.
+    components:
+      - "Nộp ý tưởng (fan gửi bản thiết kế kỹ thuật số)."
+      - "Ngưỡng bình chọn (đạt trên 10.000 phiếu tán thành từ cộng đồng)."
+      - "Cổng duyệt chuyên môn (nhóm thiết kế LEGO kiểm tra thực nghiệm, duyệt thiết kế)."
+      - "Sản xuất hàng loạt và phân phối kênh bán toàn cầu."
+      - "Chia sẻ lợi ích (người sáng tạo gốc nhận 1% doanh thu thực tế và được ghi tên trên vỏ hộp)."
+    when_to_use: "Khi muốn ra sản phẩm/món/phiên bản mới có cộng đồng sẵn, và muốn giảm rủi ro nhu cầu mà vẫn kiểm soát chất lượng."
+    how_to_apply:
+      - "Xác định phạm vi mở (cho khách đề xuất điều gì: hương vị, màu, tên, bao bì; điều gì cố định: công thức an toàn, thương hiệu)."
+      - "Đặt ngưỡng nhu cầu tối thiểu (số phiếu bình chọn, số đặt trước/pre-order) trước khi sản xuất."
+      - "Đặt cổng khả thi nội bộ: chi phí, giá bán mục tiêu, biên lợi nhuận, năng lực sản xuất, tính hợp pháp/an toàn thực phẩm (xem công thức hòa vốn m11_breakeven_units)."
+      - "Công bố quy tắc chia sẻ lợi ích (hoa hồng %, voucher, vinh danh) và điều khoản quyền sở hữu trí tuệ."
+      - "Sản xuất lô nhỏ/giới hạn, đo bán thực tế, công bố kết quả cho cộng đồng để duy trì Conversation."
+    how_to_read_results: "Tỷ lệ ý tưởng vượt ngưỡng phiếu nhưng không vượt cổng khả thi càng cao thì tiêu chí bình chọn càng cần siết (hoặc thêm pre-order thay vì chỉ 'like')."
+    pitfalls:
+      - "Giao 100% quyền quyết định cho đám đông (Quirky) -> sản phẩm 'vui lạ' nhưng chi phí gia công cao, thị trường nhỏ."
+      - "Bình chọn miễn phí không phản ánh ý định mua (cần pre-order/đặt cọc)."
+      - "Quên điều khoản IP: ý tưởng của khách thuộc về ai."
+    example: "Shop trà bánh: cho khách đề xuất 5 vị bánh, vote 2 tuần, vị nào đạt 300 vote và 80 pre-order mới sản xuất lô 200 hộp; người đề xuất nhận voucher 1 triệu và tên trên tem."
+  - id: "m11_dynamic_pricing_governance"
+    name_vi: "Quản trị giá động có đạo đức (Currency + kill switch)"
+    name_en: "Ethical dynamic pricing governance"
+    origin: >
+      Rút từ sự cố Uber surge pricing (bão tuyết New York 2013, vụ bắt giữ con tin Sydney 2014): thuật toán tăng giá cước gấp 4-8 lần
+      khi nhu cầu đột biến, bị cáo buộc trục lợi trên tính mạng. Hậu quả dẫn đến nguyên tắc minh bạch + kill switch + trần giá.
+    components:
+      - "Hàm giá: Price = f(Demand, Supply, Time, User Profile)."
+      - "Trần giá (price cap) và sàn giá (floor)."
+      - "Kill switch: tự động/ thủ công tắt giá động khi thiên tai, hỏa hoạn, biến cố an ninh."
+      - "Giải thích công khai tiêu chí điều chỉnh (vd 'tự động tăng phí do trời mưa lớn để hỗ trợ bồi dưỡng tài xế')."
+      - "Bảo vệ dữ liệu cá nhân và tuân thủ luật bảo mật (nguồn nêu GDPR; ở VN cần đối chiếu Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân - cần xác nhận)."
+    when_to_use: "Mọi lúc cân nhắc giá thay đổi theo thời điểm, nhu cầu, hồ sơ khách."
+    how_to_apply:
+      - "Chọn biến điều khiển (giờ, tồn kho/công suất, mùa, kênh) - ưu tiên biến không dùng dữ liệu cá nhân nhạy cảm."
+      - "Ưu tiên giảm giá lúc thấp điểm (happy hour, off-peak) hơn là tăng giá lúc cao điểm: dễ chấp nhận hơn, vẫn lấp công suất."
+      - "Đặt trần/sàn và quy tắc ngoại lệ (kill switch) cho tình huống khẩn cấp."
+      - "Niêm yết quy tắc công khai trước (bảng giá khung giờ), không đổi theo từng khách cá nhân."
+      - "Giám sát phản ứng (review, comment, tỷ lệ hủy đơn) bằng social listening; có kịch bản xin lỗi/hoàn tiền."
+    how_to_read_results: "Doanh thu/giờ thấp điểm tăng mà tỷ lệ phàn nàn giá không tăng là đạt; nếu phàn nàn 'chặt chém' tăng thì hạ trần hoặc giải thích rõ hơn."
+    pitfalls:
+      - "Thuật toán vô tri, không có kill switch (Uber)."
+      - "Cá nhân hóa giá theo hồ sơ khách mà không minh bạch -> bị coi phân biệt đối xử."
+      - "Giá động nhưng khách không hiểu quy tắc."
+    example: "Quán phở: 14h-16h giảm 20% (36k thay vì 45k), niêm yết công khai trên menu; giờ trưa giữ nguyên 45k, không tăng."
+  - id: "m11_ugc_value_levers"
+    name_vi: "Bốn đòn bẩy giá trị của UGC"
+    name_en: "UGC value levers (Authenticity, Conversion, Cost, SEO)"
+    origin: "Tổng hợp từ ugc-content.md: lý do UGC là 'vũ khí tối thượng' khi quảng cáo trả phí dày đặc làm giảm niềm tin."
+    components:
+      - "Tính xác thực (Authenticity): 'người thật việc thật' thuyết phục hơn lời quảng cáo bóng bẩy; ảnh điện thoại không chỉnh sửa thường thuyết phục hơn ảnh studio."
+      - "Thúc đẩy tỷ lệ chuyển đổi: trang tích hợp nội dung khách hàng (vd mục 'Khách hàng của chúng tôi đã mặc gì') chốt đơn cao hơn; người mua an tâm khi thấy sản phẩm đã có người dùng thành công."
+      - "Chi phí thấp, hiệu quả cao: khuyến khích khách tự tạo qua contest/hashtag thay cho thuê ekip quay."
+      - "Tốt cho SEO: review và thảo luận tạo lượng từ khóa tự nhiên."
+    when_to_use: "Khi cần biện luận hoặc ưu tiên UGC so với quảng cáo trả phí; khi lập business case UGC."
+    how_to_apply:
+      - "Chọn đòn bẩy mục tiêu (niềm tin, chuyển đổi, chi phí, SEO) trước khi chọn hình thức UGC."
+      - "Gắn mỗi đòn bẩy với KPI (xem formulas: engagement rate, conversion uplift, cost per asset, ROI)."
+    how_to_read_results: "Mỗi đòn bẩy phải ra con số: nếu chỉ có 'like' mà conversion uplift ~0 thì UGC chưa được đặt đúng chỗ (vd chưa gắn vào trang sản phẩm)."
+    pitfalls:
+      - "Nguồn nói 'tỷ lệ chốt đơn cao hơn hẳn' nhưng không nêu số; agent không được bịa con số này - phải đo bằng A/B của chính doanh nghiệp."
+      - "Tin rằng UGC miễn phí hoàn toàn: vẫn tốn quà tặng, nhân sự kiểm duyệt, boost bài."
+    example: "Shop thời trang thêm mục 'Khách mặc thật' dưới trang sản phẩm; so conversion rate 2 nhóm trang trong 4 tuần."
+  - id: "m11_ugc_creator_vs_influencer"
+    name_vi: "Khung chọn UGC Creator vs Influencer"
+    name_en: "UGC Creator vs Influencer selection"
+    origin: "Tổng hợp từ ugc-content.md (bảng so sánh 3 tiêu chí). Khái niệm UGC Creator nổi lên gần đây (khoảng 2020 trở đi, bổ sung ngoài nguồn)."
+    components:
+      - "Mục tiêu: Influencer dùng sự nổi tiếng để quảng bá; UGC Creator tạo nội dung trông như người dùng thật."
+      - "Kênh đăng: Influencer đăng trên kênh cá nhân; UGC Creator gửi video cho thương hiệu đăng trên kênh thương hiệu."
+      - "Giá trị cốt lõi: Influencer = Reach và lượng fan; UGC Creator = kỹ năng quay chụp và tính thực tế."
+    when_to_use: "Khi chọn hình thức hợp tác nội dung và phân bổ ngân sách."
+    how_to_apply:
+      - "Cần độ phủ/nhận biết nhanh -> Influencer/KOL (đo bằng Reach, CPM)."
+      - "Cần kho nội dung chân thực để chạy ads và đăng kênh chính, ngân sách nhỏ -> UGC Creator (đo bằng cost per asset, conversion)."
+      - "Cần lời giới thiệu từ người dùng thật quy mô nhỏ nhưng tin cậy -> KOC/khách hàng thật."
+      - "Có thể kết hợp: Influencer tạo buzz, UGC Creator cung cấp nhiều biến thể nội dung để test."
+    how_to_read_results: "So cost per asset và conversion uplift của hai nhóm; Influencer đắt/asset nhưng có Reach; UGC Creator rẻ/asset và thường hợp chạy ads."
+    pitfalls:
+      - "Dùng chỉ số Reach để đánh giá UGC Creator (sai tiêu chí)."
+      - "Không ghi rõ quyền sử dụng nội dung (thời hạn, kênh, chạy ads) trong hợp đồng."
+    example: "Shop mỹ phẩm 20 triệu/tháng: 5 triệu thuê 5 UGC Creator quay 5 video ngắn (1 triệu/video) chạy ads; 15 triệu còn lại cho 3 KOC đăng kênh cá nhân."
+  - id: "m11_social_listening"
+    name_vi: "Lắng nghe mạng xã hội để phòng khủng hoảng"
+    name_en: "Social Listening and Crisis Intervention"
+    origin: "Khuyến nghị chiến lược số 4 trong nguồn: phòng ngừa khủng hoảng bằng công cụ lắng nghe thời gian thực khi mở Conversation."
+    components:
+      - "Từ khóa theo dõi: tên thương hiệu, sản phẩm, hashtag, tên đối thủ, từ khóa tiêu cực (dở, lừa đảo, ngộ độc, chặt chém)."
+      - "Nguồn: Facebook, TikTok, Google Maps, Shopee, hội nhóm."
+      - "Ngưỡng cảnh báo và người trực."
+      - "Kịch bản phản hồi."
+    when_to_use: "Mọi lúc có Conversation/UGC/giá động."
+    how_to_apply:
+      - "Lập danh sách từ khóa và nguồn; dùng công cụ (vd Google Alerts miễn phí, các công cụ social listening trong nước như Reputa, Buzzmetrics - cần xác nhận giá và tính năng hiện hành)."
+      - "Phân loại mức độ: tích cực / trung tính / tiêu cực nhẹ / nguy cơ khủng hoảng."
+      - "Phản hồi công khai chân thành, nhanh (trong 1-2 giờ giờ làm việc), đưa cuộc thảo luận vào kênh riêng nếu có dữ liệu cá nhân."
+      - "Ghi lại bài học và cập nhật quy trình."
+    how_to_read_results: "Tăng đột biến số đề cập tiêu cực trong 24h = kích hoạt quy trình khủng hoảng."
+    pitfalls:
+      - "Xóa bình luận tiêu cực -> làm tình hình tệ hơn (hiệu ứng Streisand)."
+      - "Phản hồi máy móc, mẫu câu rập khuôn."
+    example: "Quán nhận 3 review 1 sao trong một ngày về 'phục vụ chậm': chủ phản hồi công khai xin lỗi, tặng voucher, điều chỉnh ca làm."
+
+formulas:
+  - id: "m11_ugc_engagement_rate"
+    name_vi: "Tỷ lệ tương tác của nội dung UGC"
+    name_en: "UGC Engagement Rate (by reach)"
+    expression_latex: "ER = \\frac{likes + comments + shares + saves}{reach} \\times 100"
+    expression_python: "(likes + comments + shares + saves) / reach * 100"
+    excel: "=(B2+B3+B4+B5)/B6*100"
+    variables:
+      - {symbol: "likes", meaning: "Số lượt thích", unit: "lượt"}
+      - {symbol: "comments", meaning: "Số bình luận", unit: "lượt"}
+      - {symbol: "shares", meaning: "Số chia sẻ", unit: "lượt"}
+      - {symbol: "saves", meaning: "Số lượt lưu", unit: "lượt"}
+      - {symbol: "reach", meaning: "Số người tiếp cận (unique) của bài", unit: "người"}
+    when_to_use: "Đánh giá chất lượng tương tác của bài UGC/hashtag; so sánh giữa các loại nội dung hoặc creator."
+    why_it_works: "Chia tương tác cho số người thấy bài để loại ảnh hưởng của quy mô: bài có reach nhỏ nhưng ER cao nghĩa là nội dung đúng người. (Công thức chuẩn ngành, không có trong nguồn.)"
+    assumptions:
+      - "Dùng cùng mẫu số reach cho tất cả bài so sánh (hoặc cùng dùng followers)."
+    pitfalls:
+      - "Trộn ER theo followers và theo reach."
+      - "Tương tác cao nhưng không ra đơn (vanity metric)."
+    interpretation: "Mức tham chiếu thay đổi theo nền tảng và ngành; dùng trung bình lịch sử của chính kênh làm chuẩn (độ tin cậy benchmark chung: thấp)."
+    example:
+      inputs: {likes: 320, comments: 45, shares: 60, saves: 75, reach: 12500}
+      steps:
+        - "Tổng tương tác = 320 + 45 + 60 + 75 = 500"
+        - "ER = 500 / 12500 * 100 = 4.0%"
+      result: "ER = 4.0%"
+  - id: "m11_ugc_participation_rate"
+    name_vi: "Tỷ lệ khách tham gia tạo UGC"
+    name_en: "UGC Participation Rate"
+    expression_latex: "PR = \\frac{ugc\\_posts}{customers\\_invited} \\times 100"
+    expression_python: "ugc_posts / customers_invited * 100"
+    excel: "=B2/B3*100"
+    variables:
+      - {symbol: "ugc_posts", meaning: "Số bài UGC hợp lệ nhận được trong chiến dịch", unit: "bài"}
+      - {symbol: "customers_invited", meaning: "Số khách được mời/tiếp cận bởi lời kêu gọi", unit: "khách"}
+    when_to_use: "Đo hiệu quả lời kêu gọi/quà tặng/cơ chế: bao nhiêu % khách thực sự tạo nội dung."
+    why_it_works: "Trong Co-creation/UGC, thành công phụ thuộc số người chịu bỏ công; tỷ lệ này chỉ ra cơ chế khuyến khích có đủ hấp dẫn và đủ dễ không."
+    assumptions:
+      - "Chỉ tính bài hợp lệ (đúng hashtag/tag, đúng điều kiện)."
+    pitfalls:
+      - "Mẫu số quá rộng (toàn bộ follower) làm tỷ lệ trông thấp."
+    interpretation: "Tham chiếu: thường chỉ vài % số khách được mời (độ tin cậy: thấp, tự đo là chính). Nếu <2% thì giảm rào cản (đơn giản hóa bước đăng, tăng quà) trước khi tăng ngân sách."
+    example:
+      inputs: {ugc_posts: 90, customers_invited: 1500}
+      steps: ["PR = 90 / 1500 * 100 = 6.0%"]
+      result: "PR = 6.0%"
+  - id: "m11_ugc_cost_per_asset"
+    name_vi: "Chi phí trên mỗi nội dung UGC dùng được"
+    name_en: "Cost per Usable UGC Asset"
+    expression_latex: "CPA_{ugc} = \\frac{prize\\_cost + team\\_cost + boost\\_cost}{usable\\_assets}"
+    expression_python: "(prize_cost + team_cost + boost_cost) / usable_assets"
+    excel: "=(B2+B3+B4)/B5"
+    variables:
+      - {symbol: "prize_cost", meaning: "Chi phí quà/voucher/giải thưởng", unit: "VND"}
+      - {symbol: "team_cost", meaning: "Chi phí nhân sự quản lý, kiểm duyệt, xin phép", unit: "VND"}
+      - {symbol: "boost_cost", meaning: "Chi phí boost/chạy ads cho nội dung UGC", unit: "VND"}
+      - {symbol: "usable_assets", meaning: "Số nội dung đủ chất lượng và được phép tái sử dụng", unit: "nội dung"}
+    when_to_use: "So sánh chi phí UGC với thuê ekip quay (production cost per asset) hoặc với Influencer."
+    why_it_works: "Nguồn nói UGC rẻ hơn thuê ekip; công thức biến lời khẳng định thành con số, tính cả chi phí ẩn (nhân sự, boost) và chỉ tính nội dung dùng được (đã xin phép)."
+    assumptions:
+      - "usable_assets chỉ gồm nội dung đã được khách đồng ý cho dùng lại."
+    pitfalls:
+      - "Chia cho tổng số bài thay vì số bài dùng được."
+      - "Quên chi phí nhân sự."
+    interpretation: "So với chi phí sản xuất 1 video/ảnh chuyên nghiệp của doanh nghiệp; UGC có lợi nếu thấp hơn đáng kể mà chuyển đổi không kém."
+    example:
+      inputs: {prize_cost: 6000000, team_cost: 2000000, boost_cost: 0, usable_assets: 40}
+      steps: ["Tổng chi phí = 6,000,000 + 2,000,000 + 0 = 8,000,000", "CPA = 8,000,000 / 40 = 200,000 VND/nội dung"]
+      result: "200,000 VND mỗi nội dung dùng được"
+  - id: "m11_ugc_conversion_uplift"
+    name_vi: "Mức tăng chuyển đổi nhờ UGC"
+    name_en: "Conversion Uplift from UGC"
+    expression_latex: "Uplift = \\frac{CR_{with} - CR_{without}}{CR_{without}} \\times 100"
+    expression_python: "(cr_with - cr_without) / cr_without * 100"
+    excel: "=(B2-B3)/B3*100"
+    variables:
+      - {symbol: "cr_with", meaning: "Tỷ lệ chuyển đổi nhóm trang/khách có thấy UGC", unit: "% (cùng đơn vị với cr_without)"}
+      - {symbol: "cr_without", meaning: "Tỷ lệ chuyển đổi nhóm đối chứng không thấy UGC", unit: "% (cùng đơn vị)"}
+    when_to_use: "Kiểm chứng giả thuyết 'UGC làm tăng chốt đơn' bằng A/B test."
+    why_it_works: "Nguồn khẳng định UGC tăng chuyển đổi nhưng không có số; công thức uplift tương đối cho phép agent đo bằng nhóm đối chứng thay vì tin truyền miệng."
+    assumptions:
+      - "Hai nhóm tương đương (cùng nguồn traffic, cùng thời gian)."
+      - "Đủ mẫu (vài trăm lượt truy cập/nhóm trở lên) để có ý nghĩa."
+    pitfalls:
+      - "So sánh trước/sau mà bỏ qua mùa vụ."
+      - "Mẫu quá nhỏ."
+    interpretation: "Uplift dương và lặp lại qua nhiều sản phẩm = UGC có hiệu quả; ~0 = UGC đặt sai vị trí hoặc chất lượng kém."
+    example:
+      inputs: {cr_with: 3.6, cr_without: 2.4}
+      steps: ["Uplift = (3.6 - 2.4) / 2.4 * 100 = 50.0%"]
+      result: "Uplift = 50.0% (số minh họa)"
+  - id: "m11_cac"
+    name_vi: "Chi phí thu hút khách hàng (CAC)"
+    name_en: "Customer Acquisition Cost"
+    expression_latex: "CAC = \\frac{total\\_marketing\\_spend}{new\\_customers}"
+    expression_python: "total_spend / new_customers"
+    excel: "=B2/B3"
+    variables:
+      - {symbol: "total_spend", meaning: "Tổng chi phí marketing và bán hàng trong kỳ (gồm quà UGC, nhân sự)", unit: "VND"}
+      - {symbol: "new_customers", meaning: "Số khách hàng mới trong kỳ", unit: "khách"}
+    when_to_use: "Kiểm chứng luận điểm 'Communal Activation/Conversation giảm CAC'; so sánh trước/sau."
+    why_it_works: "Nguồn nêu hiệu ứng mạng lưới giảm CAC; CAC đo trực tiếp chi phí cho mỗi khách mới."
+    assumptions:
+      - "Phân bổ chi phí đúng kỳ; không tính khách cũ quay lại."
+    pitfalls:
+      - "Chỉ tính chi phí quảng cáo mà quên chi phí vận hành UGC/cộng đồng."
+    interpretation: "CAC giảm trong khi chất lượng khách (LTV) không giảm là dấu hiệu 4C hiệu quả; xem LTV:CAC ở m03."
+    example:
+      inputs: {total_spend: 30000000, new_customers: 100}
+      steps:
+        - "CAC trước 4C = 30,000,000 / 100 = 300,000"
+        - "Sau 4C (cùng chi 30tr, 150 khách mới): 30,000,000 / 150 = 200,000"
+        - "Thay đổi = (200,000 - 300,000) / 300,000 = -33.33%"
+      result: "CAC giảm từ 300,000 xuống 200,000 (-33.33%), số minh họa"
+  - id: "m11_ugc_roi"
+    name_vi: "ROI chiến dịch UGC"
+    name_en: "UGC Campaign ROI"
+    expression_latex: "ROI = \\frac{orders \\times AOV \\times GM - cost}{cost} \\times 100"
+    expression_python: "(incremental_orders * aov * gross_margin - cost) / cost * 100"
+    excel: "=(B2*B3*B4-B5)/B5*100"
+    variables:
+      - {symbol: "incremental_orders", meaning: "Số đơn tăng thêm nhờ chiến dịch (so với đối chứng/baseline)", unit: "đơn"}
+      - {symbol: "aov", meaning: "Giá trị đơn trung bình", unit: "VND"}
+      - {symbol: "gross_margin", meaning: "Biên lợi nhuận gộp", unit: "tỷ lệ (0-1)"}
+      - {symbol: "cost", meaning: "Tổng chi phí chiến dịch (quà + nhân sự + boost)", unit: "VND"}
+    when_to_use: "Đánh giá có nên tiếp tục/nhân rộng chiến dịch UGC."
+    why_it_works: "Tính lợi nhuận gộp tăng thêm trừ chi phí thay vì chỉ doanh thu, vì quà tặng và biên lợi nhuận quyết định có lãi hay không."
+    assumptions:
+      - "Đơn tăng thêm được xác định bằng nhóm đối chứng hoặc mã/UTM riêng, không tính toàn bộ doanh thu."
+    pitfalls:
+      - "Gán toàn bộ doanh thu cho UGC."
+      - "Bỏ qua giá trị dài hạn (LTV) và giá trị tài sản nội dung tái sử dụng."
+    interpretation: "ROI > 0 là có lãi gộp; so với kênh quảng cáo trả phí cùng kỳ."
+    example:
+      inputs: {incremental_orders: 120, aov: 250000, gross_margin: 0.45, cost: 8000000}
+      steps:
+        - "Lợi nhuận gộp tăng thêm = 120 x 250,000 x 0.45 = 13,500,000"
+        - "ROI = (13,500,000 - 8,000,000) / 8,000,000 x 100 = 68.75%"
+      result: "ROI = 68.75% (số minh họa)"
+  - id: "m11_creator_royalty"
+    name_vi: "Hoa hồng chia sẻ cho người đồng sáng tạo"
+    name_en: "Co-creator Royalty"
+    expression_latex: "Royalty = Net\\ Revenue \\times rate"
+    expression_python: "net_revenue * rate"
+    excel: "=B2*B3"
+    variables:
+      - {symbol: "net_revenue", meaning: "Doanh thu thực tế (net) của sản phẩm đồng kiến tạo", unit: "VND"}
+      - {symbol: "rate", meaning: "Tỷ lệ chia sẻ (LEGO Ideas: 1% = 0.01)", unit: "tỷ lệ"}
+    when_to_use: "Thiết kế cơ chế thưởng cho khách đề xuất ý tưởng được sản xuất."
+    why_it_works: "Gắn thưởng với doanh thu thực tế khuyến khích ý tưởng bán được, không chỉ ý tưởng được vote nhiều; nguồn: LEGO trả 1% doanh thu và ghi tên trên vỏ hộp."
+    assumptions:
+      - "Định nghĩa doanh thu (net sau chiết khấu/trả hàng) nêu rõ trong điều khoản."
+    pitfalls:
+      - "Không có trần/điều khoản IP dẫn đến tranh chấp."
+    interpretation: "Tỷ lệ thấp (~1%) vẫn có sức hút nếu có vinh danh; SME có thể kết hợp voucher cố định."
+    example:
+      inputs: {net_revenue: 800000000, rate: 0.01}
+      steps: ["Royalty = 800,000,000 x 0.01 = 8,000,000"]
+      result: "8,000,000 VND (số minh họa SME)"
+  - id: "m11_breakeven_units"
+    name_vi: "Điểm hòa vốn cho sản phẩm đồng kiến tạo"
+    name_en: "Break-even Units for a Co-created Product"
+    expression_latex: "Q_{BE} = \\lceil \\frac{F}{P - V} \\rceil"
+    expression_python: "math.ceil(fixed_cost / (price - var_cost))"
+    excel: "=ROUNDUP(B2/(B3-B4),0)"
+    variables:
+      - {symbol: "fixed_cost", meaning: "Chi phí cố định riêng cho sản phẩm (R&D, khuôn, bao bì, thiết kế, marketing)", unit: "VND"}
+      - {symbol: "price", meaning: "Giá bán trên đơn vị", unit: "VND"}
+      - {symbol: "var_cost", meaning: "Chi phí biến đổi trên đơn vị", unit: "VND"}
+    when_to_use: "Cổng khả thi trước khi sản xuất ý tưởng thắng vote (bài học Quirky)."
+    why_it_works: "Ý tưởng được vote nhiều có thể có chi phí gia công cao và thị trường nhỏ; hòa vốn cho biết cần bán tối thiểu bao nhiêu để hòa, rồi so với số pre-order/quy mô thị trường."
+    assumptions:
+      - "price > var_cost; chi phí cố định không đổi theo sản lượng trong khoảng xét."
+    pitfalls:
+      - "Quên chi phí cố định (khuôn, tem, đăng ký, thử nghiệm an toàn)."
+      - "Không so với nhu cầu thực (pre-order)."
+    interpretation: "Nếu Q_BE lớn hơn nhiều so với pre-order/nhu cầu ước tính thì hoãn hoặc sửa thiết kế/giá; nếu nhỏ thì sản xuất lô nhỏ."
+    example:
+      inputs: {fixed_cost: 6000000, price: 65000, var_cost: 38000}
+      steps: ["Biên đóng góp = 65,000 - 38,000 = 27,000", "Q = 6,000,000 / 27,000 = 222.2 -> làm tròn lên 223"]
+      result: "Cần bán tối thiểu 223 phần để hòa vốn"
+  - id: "m11_dynamic_price_capped"
+    name_vi: "Giá động có trần và kill switch"
+    name_en: "Capped Dynamic Price with Kill Switch"
+    expression_latex: "P = P_{base} \\times \\max(floor, \\min(cap, D/S))"
+    expression_python: "base_price * (1.0 if kill_switch else max(floor, min(cap, demand / supply)))"
+    excel: "=B2*IF(B6,1,MAX(B5,MIN(B4,B7/B8)))"
+    variables:
+      - {symbol: "base_price", meaning: "Giá cơ sở", unit: "VND"}
+      - {symbol: "demand", meaning: "Cầu hiện tại (số yêu cầu/lượt khách)", unit: "đơn vị cầu"}
+      - {symbol: "supply", meaning: "Cung/công suất hiện tại", unit: "đơn vị cung (cùng đơn vị với demand)"}
+      - {symbol: "cap", meaning: "Trần hệ số giá (vd 1.5)", unit: "hệ số"}
+      - {symbol: "floor", meaning: "Sàn hệ số giá (vd 0.8 cho giờ thấp điểm)", unit: "hệ số"}
+      - {symbol: "kill_switch", meaning: "True khi có thiên tai/khủng hoảng -> giá về mức cơ sở", unit: "boolean"}
+    when_to_use: "Mô phỏng và kiểm soát chính sách giá động theo cung-cầu một cách minh bạch."
+    why_it_works: "Hiện thực hóa Price = f(Demand, Supply, ...) kèm rào chắn đạo đức: tỷ lệ cầu/cung quyết định hệ số, trần chặn trục lợi, kill switch chặn thảm họa kiểu Uber. (Công thức dạng đơn giản do người distill xây dựng, không có trong nguồn.)"
+    assumptions:
+      - "Cung-cầu đo được theo thời gian thực."
+      - "cap >= 1 >= floor."
+    pitfalls:
+      - "Bỏ trần (surge 4-8 lần như Uber 2013/2014)."
+      - "Quên hiển thị lý do tăng/giảm giá cho khách."
+    interpretation: "Hệ số = 1 là giá cơ sở; <1 giảm giá thấp điểm; >1 phụ phí (có trần)."
+    example:
+      inputs: {base_price: 25000, demand: 90, supply: 45, cap: 1.5, floor: 0.8, kill_switch: false}
+      steps: ["D/S = 90/45 = 2.0", "min(1.5, 2.0) = 1.5; max(0.8, 1.5) = 1.5", "Giá = 25,000 x 1.5 = 37,500; nếu kill_switch=True thì 25,000"]
+      result: "37,500 VND (có trần 1.5); 25,000 khi bật kill switch"
+
+procedures:
+  - id: "m11_proc_4p_to_4c"
+    name: "Chuyển 4P/7P sang 4C cho một doanh nghiệp (đầu-cuối)"
+    steps:
+      - "A. Câu hỏi intake: Ngành/sản phẩm? Khách mục tiêu và kênh họ dùng (Zalo, Facebook, TikTok, Google Maps, Shopee)? Có cộng đồng/nhóm khách chưa? Có dữ liệu khách (CRM, SĐT, lịch sử mua)? Ngân sách và nhân sự marketing? Giờ cao điểm/thấp điểm? Sản phẩm có thể tùy biến/cho bình chọn không? Rủi ro lớn nhất (an toàn thực phẩm, thương hiệu, pháp lý)?"
+      - "B. Lập baseline 4P/7P hiện tại (bảng 7 dòng) và các KPI nền: CAC, doanh thu giờ thấp điểm, số review, tỷ lệ khách quay lại."
+      - "C. Soát bằng 4C Lauterborn (góc nhìn khách): giải pháp, chi phí thực khách chịu, tiện lợi, giao tiếp."
+      - "D. Chuyển từng P sang C: Product->Co-creation (khách tham gia phần nào, ngưỡng vote/pre-order); Price->Currency (khung giờ/combo/subscription, trần giá, kill switch); Place->Communal Activation (cộng tác viên, social commerce, referral, tận dụng nguồn lực nhàn rỗi); Promotion->Conversation (UGC, hashtag, nhóm cộng đồng, review, KOC)."
+      - "E. Chấm điểm ưu tiên mỗi C (tác động x dễ làm x rủi ro) và chọn 1-2 C cho pilot."
+      - "F. Định ranh giới kiểm soát (Openness vs Control): điều gì mở cho khách, điều gì cố định (thương hiệu, an toàn, chất lượng, IP)."
+      - "G. Thiết lập công cụ: social listening, form bình chọn, bảng KPI, quy trình khủng hoảng, điều khoản sử dụng nội dung."
+      - "H. Pilot 4-8 tuần, đo KPI (engagement, participation, CAC, uplift, ROI), điều chỉnh."
+      - "I. Tích hợp omnichannel: online cộng tác + offline trải nghiệm (People, Process, Physical Evidence giữ nguyên)."
+    outputs: "Bảng 4P/7P -> 4C (cột hiện tại / hành động 4C / công cụ / KPI / rủi ro), danh sách ưu tiên, kế hoạch pilot 8 tuần, quy tắc kiểm soát và kill switch."
+  - id: "m11_proc_ugc_campaign"
+    name: "Xây chiến dịch UGC / khuyến khích khách tạo nội dung (đầu-cuối)"
+    steps:
+      - "Bước 1 - Intake: Mục tiêu chính (niềm tin, chuyển đổi, nội dung chạy ads, SEO, CAC)? Khách đang ở đâu (Instagram, TikTok, Facebook, Google Maps, Shopee)? Điểm chạm có tự nhiên để chụp/quay không (ly cà phê, món ăn, unboxing)? Ngân sách quà? Ai kiểm duyệt? Giờ cao điểm cần nhắc?"
+      - "Bước 2 - Chọn loại UGC phù hợp mục tiêu: review (Google Maps/Shopee) cho niềm tin; ảnh/video (unboxing, outfit, hướng dẫn) cho nhận biết và chạy ads; blog/diễn đàn cho SEO; podcast/livestream cho cộng đồng."
+      - "Bước 3 - Tạo hashtag thương hiệu ngắn, duy nhất, dễ gõ (vd #TenQuanMoment); khuyến khích gắn thẻ để có cơ hội 'lên sóng' fanpage chính thức."
+      - "Bước 4 - Thiết kế cơ chế khuyến khích: quà/voucher nhỏ cho bài chất lượng nhất, contest hàng tháng, vinh danh, hạng 'khách thân thiết'; nêu rõ tiêu chí chấm (hình thật, đúng hashtag, nội dung tích cực nhưng không bắt buộc khen)."
+      - "Bước 5 - Giảm rào cản: bảng QR tại bàn/hộp, thẻ nhắc trong gói hàng, nhân viên nhắc đúng lúc (sau khi khách hài lòng), khung chụp đẹp sẵn, ánh sáng bàn chụp."
+      - "Bước 6 - Soạn điều khoản: thể lệ, quyền sử dụng nội dung, xin phép và ghi nguồn khi dùng lại (kênh, thời hạn, chạy ads), xóa theo yêu cầu, bảo vệ hình ảnh trẻ em/người khác trong ảnh."
+      - "Bước 7 - Phân phối và tích hợp: đăng lại có ghi nguồn, đưa lên trang sản phẩm website (Social Proof), thêm vào Google Business Profile, dùng làm tư liệu cho ads, cho SEO (alt text, review schema)."
+      - "Bước 8 - Kiểm duyệt và phản hồi: phản hồi mọi bài trong 24h, xử lý bài tiêu cực công khai, không xóa review thật; dùng social listening."
+      - "Bước 9 - Đo lường: participation rate, engagement rate, cost per asset, conversion uplift (A/B trang có/không UGC), CAC, ROI; báo cáo tuần/tháng."
+      - "Bước 10 - Lặp: giữ kiểu nội dung hiệu quả, loại cơ chế kém, nâng quà cho top creator, chuyển creator tốt sang cộng tác dài hạn."
+    outputs: "Brief chiến dịch UGC (mục tiêu, kênh, hashtag, cơ chế thưởng, thể lệ + điều khoản sử dụng), lịch đăng, bảng KPI, mẫu tin nhắn mời, mẫu xin phép, kịch bản content gợi ý."
+  - id: "m11_proc_ugc_content_scripts"
+    name: "Kịch bản content gợi ý để khơi UGC (copy dùng được)"
+    steps:
+      - "Kịch bản 1 - Bảng QR tại bàn quán (ngắn): 'Ly này đẹp chứ? Chụp một tấm, gắn @tenquan #TenQuanMoment, mỗi tháng quán tặng voucher 100k cho ảnh đẹp nhất.'"
+      - "Kịch bản 2 - Thẻ trong gói hàng shop online: 'Cảm ơn bạn đã chọn [Shop]! Quay video unboxing 15 giây hoặc ảnh mặc thật, gắn #[ShopOOTD] để nhận mã giảm 10% cho đơn sau và cơ hội được lên fanpage.'"
+      - "Kịch bản 3 - Tin nhắn Zalo/Inbox sau mua 2-3 ngày: 'Chào [Tên], bạn dùng [SP] thế nào rồi? Nếu thấy hài lòng, bạn gửi giúp ảnh/đánh giá thật nhé. Bên mình tặng [quà] cho 20 bài đầu tiên. Bạn có đồng ý cho shop đăng lại ảnh (có ghi tên bạn) không ạ?'"
+      - "Kịch bản 4 - Caption đăng lại UGC: 'Khách xinh [Tên khách / @handle] mặc/dùng [SP] cực chất! Cảm ơn bạn đã chia sẻ. Bạn cũng muốn lên sóng? Gắn #[hashtag] nhé.'"
+      - "Kịch bản 5 - Brief UGC Creator (video 15-30s): hook 3 giây đầu ('Mình đã thử ... trong 7 ngày'), cảnh dùng thật (quay dọc, ánh sáng tự nhiên, không script cứng), 1 lợi ích chính + 1 điểm chưa hoàn hảo trung thực, CTA nhẹ; giao 3 biến thể hook; quyền sử dụng: kênh thương hiệu + ads 90 ngày."
+      - "Kịch bản 6 - Contest tháng: 'Thử thách 7 ngày #[Hashtag]': đăng ảnh/video theo chủ đề tuần, giải nhất voucher 1 triệu, 10 giải khuyến khích; thể lệ nêu rõ quyền sử dụng nội dung."
+      - "Kịch bản 7 - Xin review Google Maps (offline): nhân viên nói sau thanh toán 'Nếu hài lòng, anh/chị quét mã này đánh giá giúp quán 30 giây ạ'; không đổi quà lấy review 5 sao (xem pitfalls)."
+      - "Kịch bản 8 - Phản hồi review tiêu cực: 'Quán xin lỗi anh/chị về [vấn đề]. Quán đã [hành động khắc phục]. Mong được mời anh/chị trải nghiệm lại, nhắn quán qua [kênh] nhé.'"
+    outputs: "Bộ copy sẵn dùng cho bảng QR, thẻ gói hàng, tin nhắn, caption, brief creator, thể lệ contest, mẫu phản hồi review."
+  - id: "m11_proc_cocreation_launch"
+    name: "Ra sản phẩm/món mới bằng đồng kiến tạo (bình chọn -> cổng khả thi -> pre-order -> sản xuất)"
+    steps:
+      - "1. Xác định phạm vi mở và phạm vi cố định (công thức an toàn, thương hiệu)."
+      - "2. Thu ý tưởng (form, comment, nhóm cộng đồng) trong 1-2 tuần."
+      - "3. Sàng lọc sơ bộ nội bộ, chọn shortlist 3-5."
+      - "4. Bình chọn công khai + pre-order/đặt cọc nhỏ để đo ý định mua thật."
+      - "5. Cổng khả thi: tính hòa vốn (m11_breakeven_units), biên lợi nhuận mục tiêu, năng lực sản xuất, quy định an toàn."
+      - "6. Công bố người thắng, chia sẻ lợi ích (vinh danh/voucher/royalty)."
+      - "7. Sản xuất lô giới hạn, thu phản hồi (beta), cải tiến."
+      - "8. Công bố kết quả bán, tiếp tục vòng sau."
+    outputs: "Quy trình co-creation có ngưỡng vote, pre-order, cổng khả thi, cơ chế chia sẻ lợi ích."
+  - id: "m11_proc_use_ugc_legally"
+    name: "Quy trình xin phép, ghi nguồn và quản lý quyền sử dụng UGC"
+    steps:
+      - "1. Trước khi đăng lại, nhắn xin phép bằng văn bản (inbox/email) nêu rõ kênh, mục đích (organic hay chạy ads), thời hạn."
+      - "2. Lưu bằng chứng đồng ý (ảnh chụp tin nhắn, form)."
+      - "3. Ghi nguồn (tên/handle) hoặc credit theo thỏa thuận."
+      - "4. Nếu chạy ads dùng nội dung/khuôn mặt khách: cần đồng ý riêng, và thỏa thuận thù lao nếu có."
+      - "5. Có quy trình gỡ khi người tạo yêu cầu."
+      - "6. Với review có quà tặng: ghi nhãn minh bạch (quảng cáo/hợp tác) theo quy định hiện hành - cần xác nhận quy định VN (Luật Quảng cáo, Nghị định 38/2021/NĐ-CP)."
+    outputs: "Mẫu xin phép, sổ theo dõi quyền sử dụng UGC (người, nội dung, kênh, thời hạn, bằng chứng)."
+
+decision_rules:
+  - "Nếu doanh nghiệp chưa có cộng đồng/khách quen thì bắt đầu bằng Conversation/UGC nhẹ (hashtag, review) và referral, chưa vội xây nền tảng P2P hay giá động bằng thuật toán."
+  - "Nếu ngân sách marketing nhỏ (<10-20 triệu/tháng) thì ưu tiên UGC (quà nhỏ, contest) + 3-5 UGC Creator/KOC hơn thuê KOL lớn hoặc ekip quay."
+  - "Nếu mục tiêu là nhận biết thương hiệu nhanh thì dùng Influencer/KOL (Reach); nếu mục tiêu là kho nội dung chân thực để chạy ads/đăng kênh chính thì dùng UGC Creator."
+  - "Nếu muốn co-creation sản phẩm thì phải có cổng khả thi nội bộ (hòa vốn, biên lợi nhuận, năng lực sản xuất, an toàn) và đo ý định mua thật (pre-order), không chỉ lấy số vote (bài học Quirky)."
+  - "Nếu cân nhắc giá linh hoạt thì ưu tiên giảm giá giờ thấp điểm/combo công khai hơn tăng giá giờ cao điểm; luôn có trần giá và kill switch."
+  - "Nếu có thiên tai, sự cố an ninh, hoặc nhu cầu tăng vọt do khẩn cấp thì tắt giá động ngay (kill switch) và giữ giá cơ sở."
+  - "Nếu định giá khác nhau theo hồ sơ khách thì phải minh bạch tiêu chí và tuân thủ luật bảo vệ dữ liệu cá nhân; nếu không minh bạch được thì không làm."
+  - "Nếu muốn dùng lại nội dung của khách thì luôn xin phép và ghi nguồn; chạy ads cần đồng ý riêng."
+  - "Nếu UGC có engagement cao nhưng conversion uplift ~0 thì chuyển UGC lên trang sản phẩm/checkout, thay vì chỉ đăng mạng xã hội."
+  - "Nếu participation rate < 2% thì giảm rào cản (QR, ít bước, quà rõ ràng, nhắc đúng lúc) trước khi tăng ngân sách."
+  - "Nếu xuất hiện đợt tăng bình luận tiêu cực trong 24h thì kích hoạt quy trình khủng hoảng: phản hồi công khai chân thành, điều tra, khắc phục; không xóa bình luận thật."
+  - "Nếu doanh nghiệp truyền thống nhiều điểm chạm vật lý thì giữ People/Process/Physical Evidence và dùng 4C để khuếch đại omnichannel, không thay thế."
+  - "Nếu muốn dựng nền tảng P2P/giá động bằng thuật toán riêng thì cân nhắc vốn và năng lực dữ liệu; SME nên dùng nền tảng sẵn có (Shopee, TikTok Shop, Grab/Be, Zalo, Facebook Group)."
+  - "Nếu người dùng nhầm '4C' thì hỏi rõ: Lauterborn (Customer Solution, Cost, Convenience, Communication) hay Kotler (Co-creation, Currency, Communal Activation, Conversation)."
+  - "Nếu được hỏi con số 'UGC tăng chuyển đổi X%' thì không bịa; chỉ nói theo hướng định tính và hướng dẫn A/B test, hoặc dùng số minh họa có gắn nhãn."
+
+benchmarks:
+  - {metric: "LEGO Ideas ngưỡng bình chọn", value: "10.000 phiếu", context: "Ý tưởng cần vượt ngưỡng này để được xét duyệt sản xuất (nguồn: 11-marketing-mix-4c-digital-era.md)", confidence: "medium"}
+  - {metric: "LEGO Ideas hoa hồng người sáng tạo", value: "1% doanh thu thực tế + ghi tên trên vỏ hộp", context: "Cơ chế chia sẻ lợi ích đồng kiến tạo", confidence: "medium"}
+  - {metric: "Uber surge trong sự cố", value: "gấp 4-8 lần giá thường", context: "Bão tuyết New York 2013, bắt con tin Sydney 2014 (theo nguồn; con số cụ thể từng vụ khác nhau)", confidence: "medium"}
+  - {metric: "Xiaomi bán trực tuyến", value: "2,1 triệu máy trong 24 giờ (theo nguồn, kỷ lục Guinness)", context: "Flash sale không dùng đại lý trung gian; chưa kiểm chứng độc lập mốc thời gian/kỷ lục chính xác", confidence: "low"}
+  - {metric: "Quirky phá sản", value: "năm 2015", context: "Co-creation cực đoan thiếu kiểm soát chất lượng/khả thi", confidence: "high"}
+  - {metric: "Tỷ lệ chuyển đổi tăng nhờ UGC", value: "Nguồn không nêu số", context: "Chỉ nói định tính 'cao hơn hẳn'; agent phải đo A/B của chính doanh nghiệp", confidence: "low"}
+  - {metric: "Participation rate UGC", value: "thường vài % khách được mời; <2% nên giảm rào cản", context: "Quy tắc kinh nghiệm do người distill, không từ nguồn", confidence: "low"}
+  - {metric: "Thời gian phản hồi review/bình luận tiêu cực", value: "trong 24h (lý tưởng 1-2 giờ giờ làm việc)", context: "Thực hành khuyến nghị, không từ nguồn", confidence: "low"}
+
+pitfalls:
+  - "Coi 4C thay thế 4P/7P; bỏ qua People/Process/Physical Evidence."
+  - "Nhầm 4C Lauterborn với 4C Kotler (Marketing 4.0)."
+  - "Mất kiểm soát truyền thông: mở Conversation/Co-creation mà không có luật chơi, social listening và quy trình khủng hoảng."
+  - "Co-creation giao toàn quyền cho đám đông, bỏ cổng khả thi (Quirky) hoặc chỉ đo vote mà không đo pre-order."
+  - "Giá động thiếu nhân văn/minh bạch, không trần giá, không kill switch (Uber)."
+  - "Cá nhân hóa giá theo dữ liệu cá nhân mà vi phạm quyền riêng tư."
+  - "Đầu tư nền tảng/công nghệ nặng cho quy mô SME (nguồn đã cảnh báo vốn hạ tầng lớn)."
+  - "Dùng lại nội dung khách không xin phép hoặc không ghi nguồn (bản quyền, tôn trọng cộng đồng)."
+  - "Mua/thao túng review (đổi quà lấy 5 sao, review ảo) - rủi ro pháp lý và mất niềm tin; cần xác nhận quy định hiện hành."
+  - "Xóa review thật/tiêu cực thay vì phản hồi."
+  - "Đo bằng vanity metrics (like) mà không đo conversion, CAC, ROI."
+  - "Bịa số liệu 'UGC tăng chuyển đổi bao nhiêu %' khi nguồn không có."
+  - "Nhầm UGC Creator với Influencer và đo sai tiêu chí (Reach thay vì chất lượng nội dung và chuyển đổi)."
+  - "LỖI NGUỒN 1 (11-marketing-mix-4c-digital-era.md): nhiều lỗi chính tả/dịch máy - 'thực tống' (thực tế), 'Trảo đổi thương thảo' (trao đổi/thảo luận), 'bão tuyết hoành hoành' (hoành hành), 'cập nhật cập nhật' (lặp), 'Guiness' (Guinness), 'Mi Fans' cần đối chiếu."
+  - "LỖI NGUỒN 2: liên kết nội bộ dạng 'R-Estate/DOC/MBA/2-marketing/02-marketing-mix-4p-7p.md' là đường dẫn máy khác, không dùng được; file thực tế nằm ở 2-marketing-management/02-marketing-mix-4p-7p.md."
+  - "LỖI NGUỒN 3 (ugc-content.md): kết thúc bằng câu hỏi hướng đến người đọc ('Bạn đã từng nghĩ đến việc tích hợp...') là dấu vết hội thoại chatbot, không thuộc nội dung tri thức; file không có tiêu đề H1, không có case study/công thức/mục IV-VI theo chuẩn CLAUDE.md."
+  - "LỖI NGUỒN 4: khẳng định 'số liệu thực tế cho thấy... tỷ lệ chốt đơn cao hơn hẳn' nhưng không nêu số, không có nguồn; Xiaomi '2,1 triệu máy trong 24 giờ' và Uber 'gấp 4-8 lần' nên kiểm chứng; không có case study SME VN."
+  - "LỖI NGUỒN 5: mô tả Currency nhấn mạnh 'Price = f(Demand, Supply, Time, User Profile)' nhưng không có công thức/chỉ số định lượng; mục tiêu mô tả 'thực tống' và phần 'Nhược điểm' nêu vốn đầu tư lớn nhưng không có số."
+
+sme_vn_guidance:
+  - "UGC là khoản đầu tư rẻ nhất cho SME: bắt đầu bằng hashtag thương hiệu, QR đánh giá Google Maps tại bàn/quầy, thẻ nhắc trong gói hàng Shopee/TikTok Shop, contest nhỏ hàng tháng (voucher 100k-1 triệu)."
+  - "Chuỗi kênh VN ưu tiên: Google Maps (review quán), Facebook/Zalo (nhóm cộng đồng, OA), TikTok (video thật), Shopee/Lazada/TikTok Shop (review kèm ảnh/video có thưởng xu). Chi phí và tính năng nền tảng thay đổi - cần xác nhận."
+  - "UGC Creator/KOC: giá 300k-1 triệu/video ngắn là mức tham khảo thị trường (cần xác nhận, độ tin cậy thấp); chốt rõ quyền sử dụng (kênh thương hiệu, chạy ads, thời hạn) trong tin nhắn/hợp đồng."
+  - "Currency phù hợp SME: happy hour, giá combo theo khung giờ, subscription/gói tháng, giá theo mùa; niêm yết công khai, không tăng giá cao điểm quá mức; tránh thuật toán giá cá nhân hóa."
+  - "Communal Activation phù hợp SME: cộng tác viên/affiliate, mô hình mini-ambassador, bán qua nhóm Facebook/Zalo, social commerce (livestream TikTok Shop), nhờ giao hàng nền tảng (Grab, Be, Ahamove) - không tự xây nền tảng."
+  - "Co-creation phù hợp SME: bình chọn vị mới, đặt tên món, thiết kế tem/bao bì, thử món (beta tasting) có pre-order lô nhỏ; luôn có cổng hòa vốn và an toàn thực phẩm."
+  - "Tuân thủ VN (cần xác nhận với luật sư/cơ quan có thẩm quyền): Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân (xin đồng ý khi lưu/dùng thông tin khách), Luật Quảng cáo và các nghị định xử phạt (nhãn quảng cáo, nội dung so sánh), Luật Sở hữu trí tuệ (bản quyền ảnh/video), Luật Bảo vệ quyền lợi người tiêu dùng (không review ảo)."
+  - "Khung tối thiểu cho quán 20-50 triệu/tháng: 1 hashtag, 1 bảng QR, 1 contest tháng, 1 quy trình phản hồi review trong 24h, 1 sổ quyền sử dụng UGC, 1 khung giờ thấp điểm giảm giá."
+  - "Công cụ gợi ý chi phí thấp: Google Business Profile (miễn phí), Google Alerts (miễn phí), Meta Business Suite (miễn phí), Canva (gói miễn phí/trả phí), Google Sheets cho sổ UGC và KPI; công cụ social listening trong nước có phí - cần xác nhận."
+
+case_lessons:
+  - name: "LEGO Ideas (Co-creation + Conversation)"
+    type: "success"
+    setup: "LEGO gặp khó khăn tài chính đầu những năm 2000 và dựa vào cộng đồng fan để phục sinh. Nền tảng LEGO Ideas cho fan gửi thiết kế; đạt trên 10.000 phiếu thì nhóm thiết kế LEGO kiểm tra thực nghiệm, duyệt và sản xuất hàng loạt. Người sáng tạo nhận 1% doanh thu và được ghi tên trên vỏ hộp."
+    key_calculations:
+      - "Ngưỡng nhu cầu: 10.000 phiếu bình chọn."
+      - "Chia sẻ lợi ích: royalty = net_revenue x 1% (m11_creator_royalty)."
+      - "Ví dụ SME tương tự: doanh thu 800 triệu x 1% = 8 triệu cho người đề xuất."
+    lesson: "Co-creation hiệu quả khi kết hợp ngưỡng nhu cầu do cộng đồng + cổng duyệt chuyên môn nội bộ + chia sẻ lợi ích minh bạch; cộng đồng vừa là R&D vừa là marketing miễn phí."
+    data_reliability: "unverified"
+  - name: "Xiaomi (Communal Activation + Conversation)"
+    type: "success"
+    setup: "Xiaomi đối đầu Samsung/Apple với ngân sách nhỏ hơn: nuôi cộng đồng Mi Fans qua diễn đàn MIUI, cập nhật hàng tuần theo phản hồi người dùng, bán flash sale trực tuyến số lượng có hạn, không qua đại lý bán lẻ. Theo nguồn: kỷ lục Guinness 2,1 triệu máy bán online trong 24 giờ, không tốn marketing đại chúng."
+    key_calculations:
+      - "2,1 triệu máy / 24 giờ = 87.500 máy/giờ (theo nguồn, số trung bình)."
+    lesson: "Cộng đồng và kênh trực tiếp thay thế quảng cáo đại chúng và đại lý; cập nhật nhanh theo góp ý khiến khách thấy mình là người đồng xây dựng sản phẩm. Số liệu kỷ lục cần kiểm chứng."
+    data_reliability: "unverified"
+  - name: "Quirky (Co-creation cực đoan)"
+    type: "failure"
+    setup: "Startup phần cứng New York cho cộng đồng đề xuất, thảo luận, chấm điểm ý tưởng rồi Quirky sản xuất vật lý. Phá sản năm 2015."
+    key_calculations:
+      - "Nguyên nhân (theo nguồn): đám đông chọn sản phẩm vui lạ nhưng chi phí gia công cao, thị trường nhỏ -> kho bãi quá tải, không có dòng tiền bù đắp."
+      - "Kiểm tra bằng hòa vốn: nếu fixed 6 triệu, giá 65k, biến phí 38k thì cần 223 sản phẩm; nếu nhu cầu thật < 223 thì không sản xuất (m11_breakeven_units)."
+    lesson: "Đồng kiến tạo phải đi kèm sàng lọc chất lượng, đánh giá khả thi thương mại và năng lực sản xuất; không giao 100% quyền định đoạt cho đám đông."
+    data_reliability: "unverified"
+  - name: "Uber surge pricing trong khủng hoảng (Currency thiếu nhân văn)"
+    type: "failure"
+    setup: "Hệ thống giá động của Uber tăng giá cước gấp 4-8 lần trong bão tuyết New York 2013 và vụ bắt con tin Sydney 2014 khi người dân hoảng loạn đặt xe; khách phẫn nộ, bị cáo buộc trục lợi."
+    key_calculations:
+      - "Giá 25,000 x 1.5 (trần) = 37,500 so với x4-x8 = 100,000-200,000 (minh họa chênh lệch khi có/không trần)."
+      - "Kill switch: hệ số về 1 khi có khủng hoảng (m11_dynamic_price_capped)."
+    lesson: "Giá động phải có trần, kill switch, minh bạch tiêu chí và thấu cảm; thuật toán không được thay thế phán đoán đạo đức."
+    data_reliability: "unverified"
+  - name: "Shop thời trang online 'Mộc Phục' - chiến dịch #MocOOTD"
+    type: "sme"
+    setup: "Shop thời trang nữ ở Hà Nội, doanh thu 800 triệu/quý, AOV 250k, biên lợi nhuận gộp 45%; mời 1.500 khách trong 4 tuần, thưởng voucher và giải contest; số liệu hoàn toàn minh họa (tự thiết kế)."
+    key_calculations:
+      - "Participation rate = 90 / 1500 = 6.0%"
+      - "Cost per asset = 8,000,000 / 40 = 200,000"
+      - "Conversion uplift trang có UGC: (3.6 - 2.4) / 2.4 = 50%"
+      - "ROI = (120 x 250,000 x 0.45 - 8,000,000) / 8,000,000 = 68.75%"
+    lesson: "UGC chỉ sinh lời khi được gắn vào trang sản phẩm, đo bằng nhóm đối chứng, và chỉ tính nội dung đã xin phép."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Chuyển 4P sang 4C cho quán cà phê specialty 80m2 Q.1 (SME VN, minh họa)"
+    inputs: {product: "cà phê specialty rang tại chỗ", price_avg: 65000, off_peak_hours: "14h-16h", customers_per_day: 180, ugc_reviews_google: 85}
+    steps:
+      - "Baseline 4P: Product=menu specialty; Price=65k niêm yết; Place=quán + GrabFood; Promotion=Facebook/Instagram ads 15 triệu/tháng; + People pha chế được đào tạo; Process phục vụ <8 phút; Physical Evidence không gian 80m2."
+      - "Soát 4C Lauterborn: Customer Cost gồm 65k + 10 phút chờ giờ cao điểm -> giải pháp đặt trước qua Zalo (Convenience)."
+      - "Co-creation (Product): mỗi tháng khách bình chọn 1 blend giới hạn qua story; ngưỡng 300 vote + 80 pre-order mới rang lô 25kg; người đề xuất nhận voucher 500k và tên trên tem. Cổng hòa vốn: fixed 6,000,000 (thiết kế bao bì + thử mẫu), giá 65,000, biến phí 38,000 -> Q = ceil(6,000,000/27,000) = 223 phần."
+      - "Currency (Price): 14h-16h giảm 20% -> giá = 65,000 x 0.8 = 52,000; giờ cao điểm giữ 65,000 (không surge); niêm yết công khai; kill switch không áp dụng (giá cố định theo khung)."
+      - "Communal Activation (Place): 10 cộng tác viên bán hạt rang qua nhóm Facebook, hoa hồng 10%; nhóm cộng đồng 'The Roastery Club' tổ chức cupping hàng tháng."
+      - "Conversation (Promotion): hashtag #TheRoasteryMoment, bảng QR tại bàn, contest tháng voucher 500k, phản hồi mọi review Google Maps trong 24h."
+      - "KPI sau 8 tuần: participation, engagement, CAC, doanh thu 14h-16h so tháng trước."
+    result: "Bảng 4P -> 4C đầy đủ, 1 ngưỡng hòa vốn co-creation (223 phần), mức giá giờ thấp điểm 52,000, và kế hoạch pilot 8 tuần; số liệu minh họa."
+  - name: "Chiến dịch UGC #MocOOTD cho shop thời trang online (SME VN)"
+    inputs: {customers_invited: 1500, ugc_posts: 90, usable_assets: 40, prize_cost: 6000000, team_cost: 2000000, boost_cost: 0, cr_with: 3.6, cr_without: 2.4, incremental_orders: 120, aov: 250000, gross_margin: 0.45, likes: 320, comments: 45, shares: 60, saves: 75, reach: 12500}
+    steps:
+      - "Participation rate = 90 / 1500 x 100 = 6.0%."
+      - "Engagement rate bài tiêu biểu = (320+45+60+75) / 12500 x 100 = 500/12500 = 4.0%."
+      - "Chi phí: 6,000,000 + 2,000,000 + 0 = 8,000,000; usable 40 -> cost per asset 200,000 (rẻ hơn mức thuê ekip chuyên nghiệp là giả định, cần so với báo giá thực)."
+      - "A/B trang sản phẩm: conversion với UGC 3.6% vs không 2.4% -> uplift 50%."
+      - "Đơn tăng thêm 120 x 250,000 x 0.45 = 13,500,000 lợi nhuận gộp; ROI = (13,500,000 - 8,000,000) / 8,000,000 = 68.75%."
+      - "CAC: chi marketing cũ 30 triệu cho 100 khách mới (300k); sau chiến dịch chi vẫn 30 triệu nhưng 150 khách (200k): giảm 33.33%."
+    result: "Participation 6.0%, ER 4.0%, cost/asset 200,000, uplift 50%, ROI 68.75%, CAC giảm 33.33% (số minh họa)."
+  - name: "Quán phở 45k: giá linh hoạt Currency có trần/sàn và kill switch + co-creation món (SME VN)"
+    inputs: {base_price: 45000, off_peak_discount: 0.20, peak_surcharge: 0, demand: 90, supply: 45, cap: 1.5, floor: 0.8, fixed_cost: 6000000, price_new: 65000, var_cost: 38000}
+    steps:
+      - "Off-peak: giá = 45,000 x (1 - 0.20) = 36,000 (floor = 0.8 khớp)."
+      - "Giờ cao điểm: giữ 45,000 (không phụ thu) để tránh 'chặt chém'."
+      - "Mô phỏng nếu có phụ thu có trần cho đặt mang về giờ cao điểm: D/S = 90/45 = 2.0; hệ số = min(1.5, 2.0) = 1.5; giá = 45,000 x 1.5 = 67,500; nhưng quán chọn không áp dụng và niêm yết 45,000."
+      - "Co-creation món 'phở bò sốt vang' (giá 65k, biến phí 38k, fixed 6,000,000): Q = ceil(6,000,000 / 27,000) = 223 bát; chỉ làm khi pre-order >= 223 trong 2 tuần."
+      - "Kill switch: ngày bão lũ/mất điện toàn khu thì tắt mọi giảm/tăng giá theo khung giờ về giá cơ sở."
+    result: "Giá off-peak 36,000; bảng giá niêm yết công khai; ngưỡng hòa vốn món mới 223 bát (số minh họa)."
+  - name: "Chọn UGC Creator hay Influencer cho shop mỹ phẩm ngân sách 20 triệu/tháng (SME VN)"
+    inputs: {budget: 20000000, ugc_creator_cost_per_video: 1000000, koc_cost_each: 5000000, influencer_cost: 15000000}
+    steps:
+      - "Phương án A: 20 UGC Creator x 1,000,000 = 20,000,000 -> 20 video ngắn chạy ads (cost/asset = 1,000,000)."
+      - "Phương án B: 1 Influencer 15,000,000 + 5,000,000 còn lại -> 1 bài Reach lớn."
+      - "Phương án C (khuyến nghị lai): 5 UGC Creator 5,000,000 (5 video) + 3 KOC x 5,000,000 = 15,000,000 (bài đăng kênh KOC) = 20,000,000 tổng."
+      - "Đo: cost per asset (A, C), Reach và CPM (B, KOC), conversion uplift từng nhóm; giữ phương án có CAC thấp nhất sau 4 tuần."
+    result: "Chọn phương án C làm pilot (cân bằng nội dung chân thực và độ phủ); số phí là giả định tham khảo cần xác nhận."
+
+practice_questions:
+  - q: "Phân biệt 4C của Lauterborn (1990) và 4C của Kotler (Marketing 4.0, 2017)?"
+    a: "Lauterborn: Customer Solution, Customer Cost, Convenience, Communication - đổi góc nhìn từ người bán sang người mua. Kotler: Co-creation, Currency, Communal Activation, Conversation - tái định nghĩa 4P cho kỷ nguyên số, quan hệ cộng tác ngang hàng."
+  - q: "Vì sao 4C không thay thế 4P/7P?"
+    a: "Vì 4C là tầng nâng cấp thích ứng môi trường số; doanh nghiệp vẫn cần People, Process, Physical Evidence (dịch vụ và con người xuất sắc ở cửa hàng) bổ trợ trải nghiệm omnichannel."
+  - q: "Nêu 4 lý do UGC hiệu quả theo nguồn."
+    a: "Tính xác thực; thúc đẩy tỷ lệ chuyển đổi (social proof); chi phí thấp, hiệu quả cao (contest, hashtag thay ekip); tốt cho SEO (từ khóa tự nhiên)."
+  - q: "Phân biệt UGC Creator và Influencer ở 3 tiêu chí."
+    a: "Mục tiêu (nổi tiếng quảng bá vs nội dung như người dùng thật); kênh đăng (kênh cá nhân vs kênh thương hiệu); giá trị cốt lõi (Reach, fan vs kỹ năng quay chụp, tính thực tế)."
+  - q: "Quán có 1.500 khách được mời, 90 bài UGC hợp lệ. Participation rate là bao nhiêu?"
+    a: "90/1500 x 100 = 6.0%."
+  - q: "Chi 6 triệu quà + 2 triệu nhân sự, nhận 40 nội dung dùng được. Cost per asset?"
+    a: "8,000,000/40 = 200,000 VND."
+  - q: "Conversion trang có UGC 3.6%, không có 2.4%. Uplift?"
+    a: "(3.6-2.4)/2.4 x 100 = 50%."
+  - q: "Tại sao Quirky thất bại và rút ra bài học gì?"
+    a: "Giao quyền bình chọn quá mức cho đám đông, bỏ kiểm soát chất lượng và khả thi; đám đông chọn sản phẩm vui lạ nhưng chi phí gia công cao, thị trường nhỏ -> hết vốn, phá sản 2015. Bài học: co-creation cần cổng khả thi/ hòa vốn và năng lực sản xuất."
+  - q: "Cơ chế LEGO Ideas hoạt động ra sao?"
+    a: "Fan gửi thiết kế; đủ trên 10.000 phiếu thì LEGO kiểm tra và duyệt; sản xuất hàng loạt; người sáng tạo nhận 1% doanh thu thực tế và được ghi tên trên hộp."
+  - q: "Giá cơ sở 25,000, cầu 90, cung 45, trần 1.5, không bật kill switch. Giá?"
+    a: "D/S = 2.0, min(1.5, 2.0) = 1.5 -> 37,500. Nếu bật kill switch: 25,000."
+  - q: "Bài học từ Uber về Currency?"
+    a: "Giá động cần nhân văn, minh bạch, có trần và kill switch khi khủng hoảng (thiên tai, an ninh); không để thuật toán trục lợi."
+  - q: "Fixed 6 triệu, giá 65k, biến phí 38k. Cần bán bao nhiêu để hòa vốn?"
+    a: "6,000,000/27,000 = 222.2 -> 223."
+  - q: "Khi nào nên dùng lại ảnh của khách và cần lưu ý gì?"
+    a: "Luôn xin phép và ghi nguồn; lưu bằng chứng đồng ý; chạy ads cần đồng ý riêng; có quy trình gỡ khi khách yêu cầu."
+  - q: "Điểm yếu (lỗi) của nguồn khi trả lời câu 'UGC tăng chuyển đổi bao nhiêu %'?"
+    a: "Nguồn không nêu số cụ thể; agent không được bịa mà phải hướng dẫn đo bằng A/B và dùng công thức uplift."
+
+checklist:
+  - "Đã xác định đang dùng 4C nào (Lauterborn hay Kotler)?"
+  - "Đã lập baseline 4P/7P và KPI nền (CAC, review, doanh thu giờ thấp điểm, tỷ lệ quay lại)?"
+  - "Đã chọn 1-2 C ưu tiên và pilot 4-8 tuần?"
+  - "Đã đặt ranh giới Openness vs Control (thương hiệu, an toàn, chất lượng, IP)?"
+  - "Co-creation có ngưỡng bình chọn + pre-order + cổng khả thi + tính hòa vốn?"
+  - "Giá động có niêm yết công khai, trần/sàn, kill switch và tuân thủ bảo vệ dữ liệu?"
+  - "Có hashtag, cơ chế thưởng, thể lệ và điều khoản sử dụng nội dung?"
+  - "Có giảm rào cản tạo UGC (QR, nhắc đúng lúc, ít bước)?"
+  - "Đã có quy trình xin phép/ghi nguồn và sổ quyền sử dụng UGC?"
+  - "Có social listening, quy trình phản hồi review trong 24h và kịch bản khủng hoảng?"
+  - "Đã đo participation, engagement, cost per asset, uplift (A/B), CAC, ROI?"
+  - "Đã giữ People/Process/Physical Evidence và omnichannel?"
+  - "Không bịa số liệu UGC; số minh họa đã gắn nhãn?"
+  - "Pháp lý VN (dữ liệu cá nhân, quảng cáo, sở hữu trí tuệ, người tiêu dùng) đã đánh dấu cần xác nhận?"
+
+excel_google_sheets_templates:
+  - "Sheet '4P_to_4C': cột P hiện tại | C tương ứng | hành động | công cụ | KPI | rủi ro | chủ trì | deadline."
+  - "Sheet 'UGC_Log': ngày | người tạo/handle | kênh | link | loại | điều kiện hợp lệ | trạng thái xin phép | phạm vi sử dụng (organic/ads) | thời hạn | bằng chứng | đã trao quà."
+  - "Sheet 'UGC_KPI': khách được mời | bài hợp lệ | participation rate | reach | tương tác | ER | usable_assets | chi phí quà | chi phí nhân sự | cost per asset | CR có/không UGC | uplift | đơn tăng thêm | ROI | CAC."
+  - "Sheet 'CoCreation_Gate': ý tưởng | vote | pre-order | fixed cost | giá | biến phí | Q_BE (=ROUNDUP(F/(P-V),0)) | pre-order >= Q_BE? | quyết định."
+  - "Sheet 'Pricing_Rules': khung giờ | hệ số | trần | sàn | lý do niêm yết | kill switch (Y/N)."
+source_file: "11-marketing-mix-4c-digital-era.md; ugc-content.md"

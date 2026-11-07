@@ -129,7 +129,7 @@ G   │            │  TRUNG BÌNH  │  CAO ⬆️      │
 
 **BCG Matrix** (Boston Consulting Group Matrix) được phát triển bởi **Bruce Henderson** năm 1970. Đây là công cụ quản lý danh mục đầu tư (Portfolio Management) giúp DN quyết định **phân bổ nguồn lực** giữa các đơn vị kinh doanh (SBU – Strategic Business Unit) hoặc sản phẩm.
 
-Ma trận dựa trên 2 trục:
+Ma trận dựa trên 2 trục (ngưỡng thường dùng: thị phần tương đối RMS = 1,0 tức ngang đối thủ lớn nhất; tăng trưởng thị trường ~10%/năm, hoặc lấy tăng trưởng GDP/ngành trung bình làm mốc). **Thị phần tương đối** = thị phần của mình ÷ thị phần của đối thủ lớn nhất (VD 30% ÷ 25% = 1,2). Lý do dùng thị phần *tương đối*: Henderson dựa trên đường kinh nghiệm (experience curve) – người có khối lượng tích lũy lớn nhất có chi phí đơn vị thấp nhất, nên chỉ so với số 1 mới phản ánh lợi thế chi phí.
 - **Trục ngang**: Thị phần tương đối (so với đối thủ lớn nhất)
 - **Trục dọc**: Tốc độ tăng trưởng thị trường
 
@@ -383,14 +383,14 @@ Bước 8: Phân bổ nguồn lực theo chiến lược
 3. GE-McKinsey → Đánh giá chi tiết và quyết định đầu tư chính xác
 ```
 
-### CASE STUDY - VinFast - GE-McKinsey Analysis
+### Case Study: VinFast – GE-McKinsey Analysis
 Đối với VinFast, chúng ta sẽ tập trung phân tích SBU trọng điểm hiện nay: **Xe ô tô điện (EV)** trên phạm vi toàn cầu.
 
 Ma trận này đánh giá dựa trên hai trục: **Sức hấp dẫn của ngành** (Industry Attractiveness) và **Vị thế cạnh tranh** (Business Unit Strength).
 
 ---
 
-### 1. Phân tích Sức hấp dẫn của ngành (Industry Attractiveness)
+#### 1. Phân tích Sức hấp dẫn của ngành (Industry Attractiveness)
 
 Yếu tố này đánh giá các tác động bên ngoài mà VinFast không thể kiểm soát nhưng ảnh hưởng trực tiếp đến tiềm năng lợi nhuận.
 
@@ -404,11 +404,11 @@ Yếu tố này đánh giá các tác động bên ngoài mà VinFast không th�
 | **Cường độ cạnh tranh** | 0.20 | 2 | Rất khốc liệt. VinFast phải đối đầu với các "gã khổng lồ" như Tesla, BYD và các hãng xe truyền thống (Toyota, VW) đang chuyển mình. |
 | **Tính bền vững của lợi nhuận** | 0.15 | 3 | Tiềm năng dài hạn cao nhưng ngắn hạn rủi ro do chi phí pin và nguyên liệu thô biến động. |
 
-**=> Tổng kết Sức hấp dẫn ngành: Cao (4.2/5)**
+**=> Tổng kết Sức hấp dẫn ngành: Cao (4.1/5)** (= 0.30×5 + 0.15×5 + 0.20×5 + 0.20×2 + 0.15×3 = 1.50 + 0.75 + 1.00 + 0.40 + 0.45)
 
 ---
 
-### 2. Phân tích Vị thế cạnh tranh của VinFast (Business Unit Strength)
+#### 2. Phân tích Vị thế cạnh tranh của VinFast (Business Unit Strength)
 
 Yếu tố này đánh giá nội lực và lợi thế của VinFast so với các đối thủ trong ngành.
 
@@ -420,11 +420,11 @@ Yếu tố này đánh giá nội lực và lợi thế của VinFast so với c
 | **Giá trị thương hiệu** | 0.15 | 3 | Là "niềm tự hào quốc gia" tại VN, nhưng là thương hiệu mới (Newcomer) cần thời gian để xây dựng lòng tin tại Mỹ và EU. |
 | **Chuỗi cung ứng & Sản xuất** | 0.20 | 4 | Sở hữu nhà máy hiện đại bậc nhất tại Hải Phòng với tỷ lệ tự động hóa cao và đang mở rộng nhà máy tại Mỹ/Ấn Độ. |
 
-**=> Tổng kết Vị thế cạnh tranh: Trung bình khá (3.2/5)**
+**=> Tổng kết Vị thế cạnh tranh: Trung bình khá (3.25/5)** (= 0.20×2 + 0.25×4 + 0.20×3 + 0.15×3 + 0.20×4 = 0.40 + 1.00 + 0.60 + 0.45 + 0.80)
 
 ---
 
-### 3. Vị trí của VinFast trên Ma trận GE-McKinsey
+#### 3. Vị trí của VinFast trên Ma trận GE-McKinsey
 
 Dựa trên điểm số trên, VinFast nằm ở ô **"Đầu tư / Phát triển" (Grow / Invest)** nhưng ở mức độ **Cẩn trọng/Chọn lọc**.
 
@@ -435,31 +435,28 @@ Dựa trên điểm số trên, VinFast nằm ở ô **"Đầu tư / Phát tri�
 
 ---
 
-### 4. Chiến lược hành động dựa trên ma trận
+#### 4. Chiến lược hành động dựa trên ma trận
 
 Với vị trí này, VinFast nên áp dụng chiến lược **"Tấn công có chọn lọc"**:
 
-#### A. Củng cố vị thế tại thị trường lõi (Việt Nam)
+##### A. Củng cố vị thế tại thị trường lõi (Việt Nam)
 *   Sử dụng lợi thế về hệ sinh thái (Vinhomes, Vinmec, Vinpearl) để tạo đặc quyền cho người dùng xe điện.
 *   Phủ kín trạm sạc để tạo rào cản phòng thủ trước các hãng xe Trung Quốc sắp tràn vào.
 
-#### B. Thâm nhập thị trường quốc tế theo kiểu "Vết dầu loang"
+##### B. Thâm nhập thị trường quốc tế theo kiểu "Vết dầu loang"
 *   Thay vì dàn trải, nên tập trung nguồn lực vào các khu vực có chính sách trợ giá tốt nhất (như một số bang tại Mỹ hoặc các nước Bắc Âu).
 *   Tập trung vào dịch vụ hậu mãi (After-sales) khác biệt để xóa tan định kiến về "xe mới".
 
-#### C. Tối ưu hóa cấu trúc chi phí
-*   Dựa trên thế mạnh của một lập trình viên/người làm hệ thống, VinFast cần tối ưu hóa phần mềm điều khiển (OS) của xe để tạo trải nghiệm người dùng khác biệt, đồng thời giảm phụ thuộc vào các module phần cứng đắt đỏ từ bên thứ ba.
+##### C. Tối ưu hóa cấu trúc chi phí
+*   VinFast cần tối ưu hóa phần mềm điều khiển (OS) của xe để tạo trải nghiệm người dùng khác biệt, đồng thời giảm phụ thuộc vào các module phần cứng đắt đỏ từ bên thứ ba.
 *   Đẩy mạnh chiến lược thuê pin để giảm giá thành tiếp cận ban đầu cho khách hàng.
 
 ---
 
-### Bổ sung góc nhìn chiến lược
+#### Bổ sung góc nhìn chiến lược
 Một điểm yếu chí mạng mà VinFast cần khắc phục để dịch chuyển sang cột **"Vị thế mạnh"** là **độ tin cậy của sản phẩm (Quality Perception)**. Trong ngành ô tô, một lỗi phần mềm có thể gây ảnh hưởng nghiêm trọng đến hình ảnh thương hiệu hơn nhiều so với các ngành công nghiệp khác.
 
-Việc tận dụng dữ liệu người dùng từ App VinFast để thực hiện **"Hyper-Personalization"** (như cách chúng ta đã thảo luận về The Coffee House) cũng là một hướng đi mà VinFast đang làm rất tốt để duy trì lòng trung thành của khách hàng.
-
-Bạn có muốn đi sâu vào phân tích một yếu tố cụ thể nào trong ma trận này, ví dụ như rủi ro từ các đối thủ Trung Quốc (BYD, Xiaomi) đối với VinFast không?
-
+Việc tận dụng dữ liệu người dùng từ App VinFast để cá nhân hóa trải nghiệm (Hyper-Personalization) cũng là hướng đi giúp duy trì lòng trung thành của khách hàng.
 
 ---
 

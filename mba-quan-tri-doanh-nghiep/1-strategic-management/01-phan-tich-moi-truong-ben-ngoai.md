@@ -1,7 +1,5 @@
 # Phân Tích Môi Trường Bên Ngoài: PESTEL & Porter's 5 Forces
 
-## 26 April 2026 - starting
-
 > **Mục tiêu**: Hiểu rõ các yếu tố vĩ mô và vi mô ảnh hưởng đến doanh nghiệp, từ đó xây dựng chiến lược phù hợp.
 
 ---
@@ -143,7 +141,7 @@ Bước 5: Tích hợp vào chiến lược kinh doanh
 
 | Yếu tố | Phân tích | Quyết định chiến lược |
 |---------|-----------|----------------------|
-| **Political** | Chính sách Inflation Reduction Act (IRA) của Mỹ hỗ trợ xe điện sản xuất nội địa, giảm thuế $7,500/xe | Xây nhà máy tại Mỹ thay vì chỉ xuất khẩu |
+| **Political** | Chính sách Inflation Reduction Act (IRA) của Mỹ hỗ trợ xe điện sản xuất nội địa, ưu đãi thuế tới $7,500/xe cho xe đủ điều kiện nội địa hóa (VinFast cần đáp ứng điều kiện sản xuất/linh kiện mới hưởng được) | Xây nhà máy tại Mỹ thay vì chỉ xuất khẩu |
 | **Economic** | Thị trường xe điện Mỹ tăng trưởng 65% (2022), tầng lớp trung lưu lớn | Định vị phân khúc giá cạnh tranh |
 | **Social** | Người Mỹ ngày càng quan tâm môi trường, thế hệ Gen Z ưa chuộng xe điện | Marketing nhấn mạnh "green mobility" |
 | **Technological** | Công nghệ pin lithium-ion phát triển, hạ tầng sạc mở rộng | Đầu tư R&D pin và hệ sinh thái sạc |
@@ -226,11 +224,11 @@ Bước 5: Tích hợp vào chiến lược kinh doanh
 **Định nghĩa**: Khả năng nhà cung cấp gây áp lực lên DN (tăng giá, giảm chất lượng).
 
 **Nhà cung cấp có quyền lực CAO khi**:
-- Ít nhà cung cấp, tập trung cao - ví dụ ngành máy bay độc quyền bởi boeing, air bus
-- Sản phẩm cung cấp là duy nhất, khó thay thế - sản phẩm máy bay thân rộng của boeing là duy nhất, it lựa chọn
-- Chi phí chuyển đổi nhà cung cấp cao - chi phí chuyển đổi dòng máy bay hãng bay cao do phải đào tạo nhân lực, mua máy bay, hạ tầng bảo dưỡng bảo trì lớn, nhà cung cấp phụ tùng thay thế ít
-- Nhà cung cấp có thể tích hợp xuôi (forward integration) - nhà cung cấp boeing cung cấp giải pháp tích hợp đồng bộ từ đào tạo, bảo trì bảo dưỡng và cho thuê tàu bay
-- Ngành mua hàng không phải khách hàng quan trọng của nhà cung cấp - nhu cầu đặt hàng về boeing đang ở mức cao toàn cầu
+- Ít nhà cung cấp, tập trung cao - ví dụ máy bay thân rộng gần như chỉ có Boeing, Airbus
+- Sản phẩm cung cấp là duy nhất, khó thay thế - ít lựa chọn tương đương
+- Chi phí chuyển đổi nhà cung cấp cao - đổi dòng máy bay phải đào tạo lại nhân lực, xây lại hạ tầng bảo dưỡng
+- Nhà cung cấp có thể tích hợp xuôi (forward integration) - ví dụ Boeing cung cấp trọn gói đào tạo, bảo trì, cho thuê tàu bay
+- Ngành mua hàng không phải khách hàng quan trọng của nhà cung cấp - Boeing có đơn hàng tồn đọng lớn nên không phụ thuộc vào một hãng bay nhỏ
 
 **Ví dụ**: Apple phụ thuộc vào TSMC cho chip A-series → TSMC có quyền thương lượng cao vì là nhà sản xuất chip tiên tiến nhất thế giới.
 
@@ -239,12 +237,12 @@ Bước 5: Tích hợp vào chiến lược kinh doanh
 **Định nghĩa**: Khả năng khách hàng gây áp lực lên DN (đòi giảm giá, tăng chất lượng).
 
 **Khách hàng có quyền lực CAO khi**:
-- Ít người mua, mua số lượng lớn - nguồn cung ứng trái cây hoa quả sạch hữu cơ kén khách hàng tập trung ở phân khúc cao
-- Sản phẩm chuẩn hóa, dễ tìm thay thế - cạnh trang người bán lớn vì ngày càng nhiều thương hiệu qua quả sạch đa dạng từ nội địa tới nhập khẩu, nhiều thương hiệu quản lí tốt và dễ dang truy rõ nguồn gốc xuất xứ, kiểm định an toàn đầy đủ
-- Chi phí chuyển đổi thấp - nhiều mặt hàng thay thế từ chợ bình dân tới siêu thị
-- Khách hàng có đủ thông tin về giá/chất lượng - giá cả thị trường được niêm yết rõ ràng và dễ kiểm tra online
-- Khách hàng có thể tự sản xuất (backward integration) - rau cù quả và trái cây từ chợ dân sinh, tự phát
-- Sản phẩm chiếm tỷ trọng lớn trong chi phí khách hàng - các siêu thị thực phẩm sạch kén nguồn cung muốn thương lượng giảm chi phí
+- Ít người mua, mua số lượng lớn - ví dụ vài siêu thị chiếm phần lớn đầu ra của nhà cung cấp trái cây sạch
+- Sản phẩm chuẩn hóa, dễ tìm thay thế - trái cây sạch có nhiều thương hiệu nội địa và nhập khẩu, dễ truy xuất nguồn gốc
+- Chi phí chuyển đổi thấp - dễ chuyển từ chợ sang siêu thị
+- Khách hàng có đủ thông tin về giá/chất lượng - giá niêm yết, dễ kiểm tra online
+- Khách hàng có thể tự sản xuất/tự tích hợp ngược (backward integration) - ví dụ siêu thị tự lập vùng trồng
+- Sản phẩm chiếm tỷ trọng lớn trong chi phí khách hàng - khách nhạy giá, ép giảm chi phí
 
 **Ví dụ**: Các siêu thị lớn (Big C, Co.opmart) có quyền thương lượng rất cao với nhà cung cấp FMCG vì mua số lượng lớn và có nhiều lựa chọn thay thế.
 
@@ -253,10 +251,10 @@ Bước 5: Tích hợp vào chiến lược kinh doanh
 **Định nghĩa**: Sản phẩm/dịch vụ khác có thể đáp ứng cùng nhu cầu khách hàng.
 
 **Đe dọa CAO khi**:
-- Sản phẩm thay thế có giá/hiệu suất tốt hơn - áo dài cách tân có thể được thay thế bởi áo thời trang hiện đại như váy boutiqe, váy dạ tiệc
-- Chi phí chuyển đổi cho khách hàng thấp - khách hàng dễ dàng chọn giải pháp thay thế cho các buổi lễ long trọng, tràn lan nhãn hàng thiết kế
-- Khách hàng sẵn sàng thay đổi - khách hàng trung thành với áo dài cách tân có thể thay đổi qua mẫu mới hơn, đường lối thiết kế khác
-- Nhiều sản phẩm thay thế có sẵn - tràn lan mẫu bắt mắt trên sàn thương mại điện tử, dễ tìm kiếm và so sánh giá, áp mã giảm giá
+- Sản phẩm thay thế có giá/hiệu suất tốt hơn - áo dài cách tân có thể bị thay bằng váy boutique, váy dạ tiệc
+- Chi phí chuyển đổi cho khách hàng thấp - dễ chọn phương án khác cho các dịp lễ
+- Khách hàng sẵn sàng thay đổi - sẵn sàng đổi sang kiểu mới, phong cách thiết kế khác
+- Nhiều sản phẩm thay thế có sẵn - tràn lan trên sàn TMĐT, dễ so sánh giá, áp mã giảm giá
 
 **Ví dụ**: 
 - Grab/Uber thay thế taxi truyền thống
@@ -288,6 +286,12 @@ Bước 5: Xây dựng chiến lược ứng phó
 | Nhà cung cấp             | Trung bình   | Nhiều lựa chọn nhưng chất lượng khác nhau | Đa dạng hóa nguồn cung |
 | Khách hàng               | Cao          | Nhiều lựa chọn, thông tin minh bạch  | Tăng switching cost, loyalty program |
 | Sản phẩm thay thế        | Trung bình   | Có nhưng chưa hoàn toàn tương đương  | R&D, cải tiến liên tục |
+
+#### Thang điểm định lượng (bổ sung để giảm tính chủ quan):
+
+- **Chấm điểm lực lượng** từng lực 1 (áp lực rất thấp) đến 5 (rất cao). Điểm trung bình lực = trung bình 5 lực (hoặc có trọng số, tổng trọng số = 1). **Chỉ số hấp dẫn ngành = 6 - điểm trung bình** (cao = ngành dễ sinh lời; <2.5 = kém hấp dẫn, >3.5 = hấp dẫn).
+- **CR4** = tổng thị phần 4 DN lớn nhất (%); **HHI** = tổng bình phương thị phần (%) của mọi DN (0-10,000). HHI < 1,500 ngành phân tán; 1,500-2,500 tập trung vừa; > 2,500 tập trung cao (ngưỡng cũ của DOJ Mỹ; hướng dẫn 2023 dùng 1,000/1,800).
+- **Ví dụ**: quán cà phê specialty Q.1 chấm Rivalry 5, New Entrants 4, Supplier 2, Buyer 4, Substitutes 3 → trung bình 3.6 → hấp dẫn = 2.4 (kém hấp dẫn, cần khác biệt hóa mạnh).
 
 ### 5. Ưu điểm và Nhược điểm
 

@@ -1,0 +1,278 @@
+id: strategy-playbooks
+title: "Chiến lược — playbook (quy trình giải quyết từng loại vấn đề)"
+summary: "Các playbook pb_* theo bộ định tuyến."
+agents: ["strategist"]
+order: 60
+when: ["__chi_tra_cuu_bang_skill_search__"]
+sections:
+  - id: "pb-pb_external_analysis"
+    title: "Playbook pb_external_analysis — Đánh giá môi trường vĩ mô và mức hấp dẫn của ngành để nhận diện cơ hội và đe dọa"
+    tags: ["pb_external_analysis", "đánh", "giá", "môi", "trường", "vĩ", "mô", "và", "mức", "hấp", "dẫn", "của"]
+    text: |-
+      goal: Đánh giá môi trường vĩ mô và mức hấp dẫn của ngành để nhận diện cơ hội và đe dọa
+      modules:
+      - m01
+      - m07
+      intake:
+      - ngành và địa bàn
+      - đối tượng khách hàng
+      - danh sách đối thủ chính
+      - các thay đổi chính sách/công nghệ/xu hướng gần đây
+      - khung thời gian phân tích
+      steps:
+      - Xác định phạm vi ngành, thị trường địa lý và khung thời gian phân tích
+      - 'PESTEL: liệt kê yếu tố Chính trị-pháp lý, Kinh tế, Xã hội, Công nghệ, Môi trường, Pháp lý; mỗi yếu tố ghi tác động (cơ hội hay đe dọa), mức độ 1-5, xác suất/thời điểm, bằng chứng'
+      - Chọn 3-5 yếu tố tác động lớn và bất định cao để chuyển sang pb_scenario_plan nếu cần
+      - 'Five Forces: chấm từng lực (đối thủ hiện tại, người mới gia nhập, sản phẩm thay thế, quyền lực nhà cung cấp, quyền lực khách hàng) theo tiêu chí hiển thị; có thể tính HHI/CR4 nếu có thị phần'
+      - Tổng hợp mức hấp dẫn ngành (cao, trung bình, thấp) và nơi lợi nhuận bị bào mòn
+      - Rút cơ hội và đe dọa chính cho SWOT; đề xuất hành động ứng phó
+      sanity:
+      - mỗi nhận định có bằng chứng hoặc nhãn GIẢ ĐỊNH
+      - thang điểm nhất quán chiều cao = đe dọa
+      - không trộn yếu tố nội bộ vào PESTEL
+      - trọng số cộng 100%
+      output: Bảng PESTEL có điểm + bảng 5 Forces có điểm + kết luận hấp dẫn ngành + danh sách cơ hội/đe dọa + hành động
+  - id: "pb-pb_internal_analysis"
+    title: "Playbook pb_internal_analysis — Xác định điểm mạnh yếu, nguồn lực quý hiếm và nguồn gốc lợi thế cạnh tranh bền vững"
+    tags: ["pb_internal_analysis", "xác", "định", "điểm", "mạnh", "yếu", "nguồn", "lực", "quý", "hiếm", "và", "gốc"]
+    text: |-
+      goal: Xác định điểm mạnh yếu, nguồn lực quý hiếm và nguồn gốc lợi thế cạnh tranh bền vững
+      modules:
+      - m02
+      - m01
+      - m03
+      intake:
+      - danh sách nguồn lực và năng lực chính
+      - hoạt động trong chuỗi giá trị
+      - so sánh với đối thủ
+      - kết quả phân tích bên ngoài (cơ hội/đe dọa)
+      - dữ liệu kết quả kinh doanh
+      steps:
+      - 'Vẽ Chuỗi giá trị: hoạt động chính (đầu vào, vận hành, đầu ra, marketing-bán hàng, dịch vụ) và hoạt động hỗ trợ; đánh giá chi phí và giá trị tạo ra từng khâu'
+      - Liệt kê nguồn lực và năng lực hữu hình, vô hình, nhân lực
+      - 'VRIO: với mỗi nguồn lực hỏi Giá trị (Valuable)? Hiếm (Rare)? Khó bắt chước (Inimitable)? Tổ chức khai thác được (Organized)? và kết luận mức lợi thế'
+      - 'SWOT: tổng hợp điểm mạnh/yếu (từ nội bộ) và cơ hội/đe dọa (từ pb_external_analysis)'
+      - 'TOWS: kết hợp thành chiến lược SO, WO, ST, WT; xếp hạng ưu tiên theo tác động và tính khả thi'
+      sanity:
+      - VRIO chỉ kết luận lợi thế bền vững khi đủ 4 điều kiện
+      - điểm mạnh phải có bằng chứng so với đối thủ chứ không so với kỳ vọng
+      - SWOT không trộn yếu tố nội bộ và bên ngoài
+      output: Bảng chuỗi giá trị + bảng VRIO + ma trận SWOT/TOWS + 3-5 chiến lược ưu tiên
+  - id: "pb-pb_competitive_strategy_choice"
+    title: "Playbook pb_competitive_strategy_choice — Chọn chiến lược cạnh tranh phù hợp (chi phí thấp, khác biệt hóa, tập trung) và tránh kẹt giữa"
+    tags: ["pb_competitive_strategy_choice", "chọn", "chiến", "lược", "cạnh", "tranh", "phù", "hợp", "chi", "phí", "thấp", "khác"]
+    text: |-
+      goal: Chọn chiến lược cạnh tranh phù hợp (chi phí thấp, khác biệt hóa, tập trung) và tránh kẹt giữa
+      modules:
+      - m03
+      - m02
+      - m01
+      intake:
+      - đối thủ và định vị hiện tại
+      - cấu trúc chi phí
+      - năng lực khác biệt
+      - phân khúc khách hàng nhạy giá hay nhạy giá trị
+      - quy mô
+      - kết quả 5 Forces và VRIO
+      steps:
+      - 'Xác định lợi thế khả dĩ: chi phí (quy mô, hiệu quả vận hành) hay khác biệt (thương hiệu, trải nghiệm, công nghệ)'
+      - 'Xác định phạm vi cạnh tranh: toàn thị trường hay phân khúc hẹp (focus chi phí hoặc focus khác biệt)'
+      - 'Chấm điểm 3-4 chiến lược bằng tiêu chí có trọng số: phù hợp nguồn lực (VRIO), phù hợp áp lực ngành (5 Forces), bền vững, khả năng đo lường'
+      - Kiểm tra rủi ro kẹt giữa và điều kiện cần của từng chiến lược
+      - Chọn chiến lược; nêu rõ điều gì sẽ KHÔNG làm; chuyển KPI sang pb_bsc_build
+      sanity:
+      - chiến lược chọn khớp ít nhất một lợi thế VRIO có giá trị và hiếm
+      - trọng số cộng 100%
+      - có nêu điều KHÔNG làm
+      decision: Chọn chiến lược có điểm cao nhất VÀ khả thi với nguồn lực; nếu hai chiến lược cùng điểm thì chọn chiến lược ít rủi ro kẹt giữa hơn
+      output: Bảng chấm điểm chiến lược + chiến lược chọn + điều KHÔNG làm + KPI + rủi ro
+  - id: "pb-pb_growth_direction"
+    title: "Playbook pb_growth_direction — Chọn hướng tăng trưởng (thâm nhập, mở rộng thị trường, phát triển sản phẩm, đa dạng hóa) và phân bổ…"
+    tags: ["pb_growth_direction", "chọn", "hướng", "tăng", "trưởng", "thâm", "nhập", "mở", "rộng", "thị", "trường", "phát"]
+    text: |-
+      goal: Chọn hướng tăng trưởng (thâm nhập, mở rộng thị trường, phát triển sản phẩm, đa dạng hóa) và phân bổ nguồn lực danh mục
+      modules:
+      - m04
+      - m02
+      - m01
+      intake:
+      - doanh thu và thị phần hiện tại
+      - tăng trưởng thị trường
+      - danh mục sản phẩm/đơn vị kinh doanh
+      - nguồn lực khả dụng
+      - khẩu vị rủi ro
+      - mục tiêu tăng trưởng
+      steps:
+      - Đánh giá dư địa của thị trường hiện tại (thâm nhập sâu hơn) trước khi tìm hướng mới
+      - 'Ansoff: liệt kê ý tưởng theo 4 ô; đánh giá hấp dẫn, rủi ro, nguồn lực cần, thời gian'
+      - 'Nếu nhiều dòng sản phẩm: BCG (thị phần tương đối, tăng trưởng thị trường) xếp Stars, Cash Cows, Question Marks, Dogs; GE-McKinsey nếu cần nhiều tiêu chí'
+      - Chấm điểm có trọng số các hướng; đề xuất thứ tự ưu tiên và phân bổ nguồn lực
+      - 'Xác định điểm kiểm tra (gate) và tiêu chí dừng; chuyển phần khả thi tài chính cho #financial_expert'
+      sanity:
+      - thị phần tương đối tính đúng (thị phần mình chia thị phần đối thủ lớn nhất)
+      - tổng thị phần không vượt 100%
+      - hướng rủi ro cao có điều kiện kiểm chứng nhỏ trước
+      decision: Ưu tiên hướng rủi ro thấp (thâm nhập, mở rộng) khi nguồn lực hạn chế; đa dạng hóa chỉ khi có năng lực liên quan hoặc cơ sở tài chính vững
+      output: Ma trận Ansoff có điểm + (BCG) + thứ tự ưu tiên + lộ trình + gate
+  - id: "pb-pb_blue_ocean_design"
+    title: "Playbook pb_blue_ocean_design — Thiết kế đề xuất giá trị khác biệt, thoát cạnh tranh đại dương đỏ"
+    tags: ["pb_blue_ocean_design", "thiết", "kế", "đề", "xuất", "giá", "trị", "khác", "biệt", "thoát", "cạnh", "tranh"]
+    text: |-
+      goal: Thiết kế đề xuất giá trị khác biệt, thoát cạnh tranh đại dương đỏ
+      modules:
+      - m05
+      - m03
+      - m01
+      intake:
+      - ngành
+      - các yếu tố cạnh tranh hiện nay
+      - nhóm khách hàng hiện tại và không-khách-hàng
+      - chi phí cấu trúc
+      - ràng buộc
+      steps:
+      - 'Vẽ Strategy Canvas: các yếu tố cạnh tranh trên trục ngang, mức đầu tư/cung cấp trên trục dọc, đường giá trị của ta và 2-3 đối thủ'
+      - Xác định ba nhóm không-khách-hàng và nỗi đau của họ
+      - 'Áp dụng Four Actions: Loại bỏ (Eliminate), Giảm (Reduce), Tăng (Raise), Tạo mới (Create) và lập lưới ERRC'
+      - 'Vẽ đường giá trị mới; kiểm tra tiêu chí: tập trung, khác biệt, thông điệp hấp dẫn'
+      - 'Kiểm tra hợp lý chiến lược: tiện ích, giá, chi phí, chấp nhận; thử nghiệm quy mô nhỏ'
+      sanity:
+      - đường giá trị mới khác rõ đối thủ
+      - ERRC có cả giảm chi phí và tăng giá trị
+      - đề xuất không phải chỉ thêm tính năng
+      - có cách kiểm chứng nhanh
+      output: Strategy Canvas trước-sau + lưới ERRC + đề xuất giá trị + kế hoạch thử nghiệm + rủi ro bị bắt chước
+  - id: "pb-pb_bsc_build"
+    title: "Playbook pb_bsc_build — Chuyển chiến lược thành mục tiêu, KPI, chỉ tiêu và sáng kiến theo bốn góc nhìn"
+    tags: ["pb_bsc_build", "chuyển", "chiến", "lược", "thành", "mục", "tiêu", "kpi", "chỉ", "và", "sáng", "kiến"]
+    text: |-
+      goal: Chuyển chiến lược thành mục tiêu, KPI, chỉ tiêu và sáng kiến theo bốn góc nhìn
+      modules:
+      - m06
+      - m02
+      intake:
+      - chiến lược đã chọn
+      - tầm nhìn và sứ mệnh
+      - KPI hiện có
+      - nguồn dữ liệu
+      - chu kỳ báo cáo
+      - người chịu trách nhiệm
+      steps:
+      - Làm rõ tuyên bố chiến lược (3-5 ưu tiên) và nền tảng tầm nhìn
+      - 'Thiết lập mục tiêu cho 4 góc nhìn: Tài chính, Khách hàng, Quy trình nội bộ, Học hỏi và phát triển'
+      - Vẽ bản đồ chiến lược (quan hệ nhân quả từ học hỏi đến quy trình đến khách hàng đến tài chính)
+      - 'Chọn KPI cho từng mục tiêu: dẫn dắt (leading) và kết quả (lagging); ghi công thức, nguồn, tần suất'
+      - Đặt chỉ tiêu (target), ngưỡng cảnh báo (xanh/vàng/đỏ), sáng kiến và người chịu trách nhiệm
+      - Thiết lập nhịp rà soát (tuần/tháng/quý) và quy tắc điều chỉnh
+      sanity:
+      - mỗi mục tiêu có đúng 1-2 KPI đo được
+      - có cả KPI dẫn dắt và kết quả
+      - tổng số KPI vừa phải (khoảng 15-25 cho SME là tối đa)
+      - mọi KPI bám mục tiêu chiến lược
+      output: Bản đồ chiến lược + bảng BSC (mục tiêu, KPI, chỉ tiêu, sáng kiến, người phụ trách) + lịch rà soát
+  - id: "pb-pb_scenario_plan"
+    title: "Playbook pb_scenario_plan — Chuẩn bị cho tương lai bất định bằng các kịch bản và kế hoạch dự phòng"
+    tags: ["pb_scenario_plan", "chuẩn", "bị", "cho", "tương", "lai", "bất", "định", "bằng", "các", "kịch", "bản"]
+    text: |-
+      goal: Chuẩn bị cho tương lai bất định bằng các kịch bản và kế hoạch dự phòng
+      modules:
+      - m07
+      - m01
+      intake:
+      - câu hỏi chiến lược cần trả lời
+      - khung thời gian
+      - yếu tố vĩ mô quan trọng (từ PESTEL)
+      - các giả định hiện tại của ban lãnh đạo
+      steps:
+      - Xác định câu hỏi trọng tâm và khung thời gian
+      - Liệt kê động lực thay đổi; phân loại thành chắc chắn (xu hướng) và bất định
+      - Chọn 2 bất định then chốt (tác động lớn, bất định cao) làm trục ma trận 2x2
+      - Mô tả 3-4 kịch bản, đặt tên và kể câu chuyện nhất quán; ước lượng xác suất định tính (cộng 100% nếu gán xác suất)
+      - 'Với mỗi kịch bản: hệ quả với doanh nghiệp và chiến lược ứng phó; tìm quyết định bền vững (robust) trong mọi kịch bản'
+      - Xác định tín hiệu cảnh báo sớm, ngưỡng kích hoạt và kế hoạch dự phòng; cập nhật định kỳ
+      sanity:
+      - hai trục độc lập
+      - kịch bản khác nhau về cấu trúc không chỉ mức độ
+      - tổng xác suất = 100%
+      - mỗi kịch bản có hành động và tín hiệu
+      output: Ma trận 2x2 + mô tả kịch bản + bảng ứng phó + tín hiệu cảnh báo + quyết định robust
+  - id: "pb-pb_full_strategy_review"
+    title: "Playbook pb_full_strategy_review — Rà soát hoặc xây dựng chiến lược toàn diện từ môi trường đến thực thi"
+    tags: ["pb_full_strategy_review", "rà", "soát", "hoặc", "xây", "dựng", "chiến", "lược", "toàn", "diện", "từ", "môi"]
+    text: |-
+      goal: Rà soát hoặc xây dựng chiến lược toàn diện từ môi trường đến thực thi
+      modules:
+      - m01
+      - m02
+      - m03
+      - m04
+      - m06
+      - m07
+      intake:
+      - thông tin doanh nghiệp (ngành
+      - quy mô
+      - mô hình)
+      - dữ liệu kết quả 2-3 năm
+      - đối thủ và khách hàng
+      - nguồn lực
+      - tầm nhìn và mục tiêu 3 năm
+      steps:
+      - Làm rõ mục tiêu và phạm vi (dùng pb_clarify_request nếu mơ hồ)
+      - 'Môi trường ngoài: chạy pb_external_analysis (PESTEL và 5 Forces)'
+      - 'Nội bộ: chạy pb_internal_analysis (Chuỗi giá trị, VRIO, SWOT/TOWS)'
+      - 'Chọn chiến lược cạnh tranh: pb_competitive_strategy_choice (và pb_blue_ocean_design nếu đại dương đỏ quá khốc liệt)'
+      - 'Chọn hướng tăng trưởng: pb_growth_direction (Ansoff, BCG)'
+      - Kiểm tra độ vững bằng pb_scenario_plan
+      - 'Chuyển thành KPI: pb_bsc_build; chuyển phần khả thi tài chính cho #financial_expert'
+      - Tổng hợp lộ trình 12-36 tháng, rủi ro, KPI theo dõi, người phụ trách
+      sanity:
+      - các framework nhất quán với nhau
+      - chiến lược bám nguồn lực VRIO
+      - kịch bản xấu không làm sụp đổ kế hoạch
+      - có điều KHÔNG làm
+      output: Báo cáo chiến lược tổng thể (rpt_strategic_overview) kèm phụ lục các bảng framework
+  - id: "pb-pb_case_analysis"
+    title: "Playbook pb_case_analysis — Phân tích case study, rút bài học và áp dụng cho SME Việt Nam"
+    tags: ["pb_case_analysis", "phân", "tích", "case", "study", "rút", "bài", "học", "và", "áp", "dụng", "cho"]
+    text: |-
+      goal: Phân tích case study, rút bài học và áp dụng cho SME Việt Nam
+      modules:
+      - m08
+      - m09
+      - m10
+      intake:
+      - tên case hoặc nội dung case
+      - câu hỏi cần trả lời
+      - framework muốn dùng (nếu có)
+      - bối cảnh SME muốn áp dụng
+      steps:
+      - Tóm tắt bối cảnh, mốc thời gian và quyết định then chốt
+      - Áp dụng các framework phù hợp (môi trường ngoài, nội bộ, chiến lược cạnh tranh, tăng trưởng, BSC...) lên các giai đoạn
+      - Phân tích nguyên nhân thành công/thất bại theo chuỗi nhân quả; tách yếu tố kiểm soát được và không
+      - Đối chiếu số liệu; gắn nhãn độ tin cậy (verified, illustrative, unverified)
+      - Rút bài học, so sánh với trường hợp tương tự và khuyến nghị áp dụng cho SME
+      sanity:
+      - không bịa số liệu case
+      - tách sự kiện và nhận định
+      - bài học có điều kiện áp dụng rõ
+      output: Báo cáo phân tích case (rpt_case_analysis) có timeline, framework, bài học và khuyến nghị
+  - id: "pb-pb_clarify_request"
+    title: "Playbook pb_clarify_request — Biến yêu cầu mơ hồ thành đề bài rõ ràng và ghi biên bản/nhắc việc cho quyết định chiến lược"
+    tags: ["pb_clarify_request", "biến", "yêu", "cầu", "mơ", "hồ", "thành", "đề", "bài", "rõ", "ràng", "và"]
+    text: |-
+      goal: Biến yêu cầu mơ hồ thành đề bài rõ ràng và ghi biên bản/nhắc việc cho quyết định chiến lược
+      modules: []
+      intake:
+      - lời nhắn gốc của người dùng
+      - ngữ cảnh doanh nghiệp
+      - ghi chú cuộc họp nếu có
+      steps:
+      - 'Tóm tắt yêu cầu thành JSON {"muc_tieu": "", "pham_vi": "", "dau_ra": "", "con_thieu": []}'
+      - Hỏi tối đa 3 câu quan trọng nhất cho phần con_thieu (dùng clarifying_questions_default)
+      - Đề xuất playbook và module phù hợp từ 02-decision-router.yaml
+      - 'Nếu là biên bản họp: ghi bối cảnh, quyết định, lý do, phương án đã loại, rủi ro, hành động (người phụ trách, hạn)'
+      - Đặt nhắc việc và mốc rà soát cho KPI/tín hiệu cảnh báo
+      sanity:
+      - con_thieu không trống nếu còn thiếu dữ liệu then chốt
+      - mỗi hành động có người phụ trách và hạn
+      - không tự điền thông tin chưa được xác nhận
+      output: JSON tóm tắt yêu cầu hoặc biên bản họp chiến lược (rpt_meeting_minutes)

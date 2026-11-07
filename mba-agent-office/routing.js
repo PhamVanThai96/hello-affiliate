@@ -24,13 +24,13 @@ export function classify(command) {
 }
 
 const TITLES = {
-  secretary: 'Ghi nhận yêu cầu: {c}',
+  strategist: 'Tư vấn chiến lược / ghi nhận yêu cầu: {c}',
   rag: 'Tra cứu và xếp hạng nguồn cho: {c}',
   analyst: 'Phân tích dữ liệu: {c}',
   designer: 'Thiết kế hình ảnh/giao diện: {c}',
-  content: 'Viết content marketing: {c}',
-  dev: 'Lập trình: {c}',
-  tester: 'Kiểm thử sản phẩm của #dev',
+  marketing_expert: 'Tư vấn marketing / viết content: {c}',
+  stock_analyst: 'Phân tích chứng khoán: {c}',
+  accountant: 'Kế toán: {c}',
   reviewer: 'Rà soát và duyệt kết quả',
 };
 const short = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);

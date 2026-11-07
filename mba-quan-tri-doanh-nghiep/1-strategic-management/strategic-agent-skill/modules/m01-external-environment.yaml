@@ -1,0 +1,434 @@
+# m01 - Phân tích môi trường bên ngoài (distill từ 01-phan-tich-moi-truong-ben-ngoai.md)
+id: "m01"
+name_vi: "Phân tích môi trường bên ngoài: PESTEL và Năm lực lượng cạnh tranh của Porter"
+name_en: "External Environment Analysis: PESTEL and Porter's Five Forces"
+purpose: >
+  Giúp nhận diện cơ hội và đe dọa từ bên ngoài doanh nghiệp ở hai tầng: vĩ mô (PESTEL: thế giới bên ngoài đang thay đổi thế nào)
+  và ngành (Porter's 5 Forces: cuộc chơi trong ngành khốc liệt đến đâu, ngành có đáng vào/ở lại không), rồi chuyển thành chiến lược ứng phó.
+  Đây là bước đầu của chuỗi PESTEL -> 5 Forces -> SWOT -> chiến lược.
+when_to_use:
+  - "Chủ SME/founder hỏi 'có nên mở quán/kinh doanh ngành X không?', 'ngành này còn hấp dẫn không?'"
+  - "Thâm nhập thị trường mới (vùng mới, nước mới), lập kế hoạch dài hạn, xin vốn/lập business plan (phần Market Analysis)."
+  - "Doanh thu/biên lợi nhuận giảm mà không rõ nguyên nhân bên ngoài (lãi suất, luật mới, đối thủ, nền tảng mới)."
+  - "Cần chọn chiến lược cạnh tranh (xem m03) hoặc tăng trưởng (m04) - cần biết sức ép ngành trước."
+  - "So sánh sức hấp dẫn hai ngành/hai mô hình; đo mức tập trung thị trường (CR4, HHI)."
+  - "Cần chuẩn bị đầu vào cho SWOT, kịch bản tương lai (m07) hoặc Blue Ocean (m05)."
+prerequisites: []
+related_modules:
+  - "m02 - Phân tích nội bộ (Value Chain, VRIO): ghép với m01 thành SWOT (bên ngoài = O/T, bên trong = S/W)"
+  - "m03 - Chiến lược cạnh tranh: kết quả 5 Forces quyết định chọn Cost Leadership, Differentiation hay Focus"
+  - "m04 - Chiến lược tăng trưởng (Ansoff): PESTEL cho thấy thị trường mới nào mở ra"
+  - "m05 - Blue Ocean: thoát khỏi ngành có 5 Forces khắc nghiệt bằng cách tạo thị trường mới"
+  - "m07 - Scenario Planning: biến các yếu tố PESTEL bất định cao thành kịch bản"
+  - "m08 - Case The Coffee House: ứng dụng tích hợp trong ngành cà phê Việt Nam"
+
+concepts:
+  - term_vi: "Môi trường vĩ mô"
+    term_en: "Macro-environment"
+    definition: "Các lực lượng bên ngoài ảnh hưởng đến mọi doanh nghiệp trong nền kinh tế (chính sách, kinh tế, dân số, công nghệ, môi trường, luật), DN gần như không kiểm soát được."
+    why_it_matters: "DN chỉ có thể thích ứng, không thể thay đổi. Cú sốc vĩ mô (thuế, gián đoạn nguồn cung, tỷ giá, lãi suất) có thể đánh gục DN dù vận hành tốt, nên phải nhìn trước."
+  - term_vi: "Môi trường ngành (vi mô)"
+    term_en: "Industry / micro-environment"
+    definition: "Nhóm DN cùng phục vụ một nhu cầu và các bên tương tác trực tiếp (nhà cung cấp, khách hàng, đối thủ, sản phẩm thay thế, đối thủ tiềm năng)."
+    why_it_matters: "Lợi nhuận bình quân của ngành do cấu trúc ngành quyết định trước khi tính đến năng lực từng DN: ngành xấu thì DN giỏi cũng chỉ lãi vừa."
+  - term_vi: "Cơ hội và đe dọa"
+    term_en: "Opportunity and Threat (O/T of SWOT)"
+    definition: "Đầu ra của phân tích bên ngoài: yếu tố bên ngoài có lợi (O) hoặc có hại (T) cho DN. Cùng một yếu tố có thể là O với DN này và T với DN khác."
+    why_it_matters: "PESTEL/5 Forces chỉ có giá trị khi chuyển thành O/T gắn với DN cụ thể và hành động đáp ứng; liệt kê dữ kiện thuần túy là lỗi phổ biến."
+  - term_vi: "Rào cản gia nhập và rào cản rời ngành"
+    term_en: "Entry barriers / Exit barriers"
+    definition: "Rào cản gia nhập: kinh tế quy mô, vốn, chi phí chuyển đổi, kênh phân phối, lợi thế chi phí độc lập (bằng sáng chế, vị trí), chính sách nhà nước. Rào cản rời ngành: tài sản chuyên dụng khó bán, chi phí sa thải, ràng buộc hợp đồng thuê, gắn bó cảm xúc."
+    why_it_matters: "Rào cản gia nhập cao bảo vệ lợi nhuận người trong cuộc; rào cản rời ngành cao giữ DN yếu ở lại nên cạnh tranh gay gắt hơn."
+  - term_vi: "Chi phí chuyển đổi"
+    term_en: "Switching costs"
+    definition: "Chi phí (tiền, thời gian, rủi ro, công sức học) để khách hàng/DN đổi sang nhà cung cấp hoặc sản phẩm khác."
+    why_it_matters: "Xuất hiện ở 4 lực: thấp ở phía khách hàng -> Buyer Power và Substitutes cao; thấp ở khách hàng của đối thủ mới -> dễ gia nhập; cao ở phía DN đổi nhà cung cấp -> Supplier Power cao. Đòn bẩy chủ động: tăng switching cost bằng loyalty/dữ liệu/hợp đồng."
+  - term_vi: "Mức hấp dẫn của ngành"
+    term_en: "Industry attractiveness"
+    definition: "Khả năng ngành tạo lợi nhuận dài hạn vượt chi phí vốn; thấp khi cả 5 lực đều mạnh, cao khi các lực yếu."
+    why_it_matters: "Là cơ sở quyết định 'có nên vào/ở lại ngành'. Porter (1979): cạnh tranh không chỉ giữa các đối thủ mà là cuộc cạnh tranh 'mở rộng' của 5 lực tranh phần giá trị."
+  - term_vi: "Tập trung thị trường"
+    term_en: "Market concentration (CR4, HHI)"
+    definition: "Mức độ thị phần dồn vào vài DN lớn. CR4 = tổng thị phần 4 DN đầu; HHI = tổng bình phương thị phần."
+    why_it_matters: "Là cách định lượng 'số đối thủ và quy mô tương đương' trong lực Rivalry (phân tán -> khó phối hợp, cạnh tranh giá cao), cũng dùng để xét ngành bị chi phối."
+  - term_vi: "Chu kỳ kinh tế"
+    term_en: "Business cycle"
+    definition: "Bốn pha: mở rộng (expansion), đỉnh (peak), suy thoái (recession), đáy (trough)."
+    why_it_matters: "Xác định yếu tố Economic: pha nào thì nhu cầu, lãi suất, giá thuê, sức mua đổi theo; SME cần biết đang ở pha nào để quyết định đầu tư/giữ tiền mặt."
+  - term_vi: "Tích hợp xuôi/ngược"
+    term_en: "Forward / Backward integration"
+    definition: "Forward: nhà cung cấp tự làm khâu bán cho khách của DN (ví dụ Boeing đào tạo, bảo trì, cho thuê tàu bay). Backward: khách hàng tự sản xuất đầu vào (siêu thị lập vùng trồng)."
+    why_it_matters: "Là vũ khí đe dọa tăng quyền thương lượng của nhà cung cấp hoặc khách hàng."
+  - term_vi: "Bên bổ trợ"
+    term_en: "Complementors"
+    definition: "Bên bán sản phẩm làm tăng giá trị sản phẩm của bạn (App Store với iPhone; thương hiệu trà sữa bán cùng đồ ăn vặt)."
+    why_it_matters: "Điểm mù thứ sáu của mô hình Porter gốc; nên ghi chú trong phân tích hệ sinh thái/digital."
+
+formulas:
+  - id: "m01_force_score_mean"
+    name_vi: "Điểm cường độ trung bình và Chỉ số hấp dẫn ngành (5 Forces)"
+    name_en: "Mean force score and Industry Attractiveness Index"
+    expression_latex: "\\bar{F}=\\frac{1}{5}\\sum_{i=1}^{5}F_i,\\quad A = 6-\\bar{F}"
+    expression_python: "A = 6 - sum(F)/len(F)"
+    excel: "=6-AVERAGE(B2:B6)"
+    variables:
+      - {symbol: "F", meaning: "Danh sách 5 điểm cường độ lực (Rivalry, Entrants, Supplier, Buyer, Substitutes), mỗi điểm 1 (rất thấp) đến 5 (rất cao)", unit: "điểm 1-5"}
+      - {symbol: "A", meaning: "Chỉ số hấp dẫn ngành (cao = ngành dễ sinh lời)", unit: "điểm 1-5"}
+    when_to_use: "Chuyển đánh giá Cao/Trung bình/Thấp thành điểm để so sánh hai ngành hoặc theo dõi theo thời gian; nên dùng song song giải thích định tính."
+    why_it_works: "Mỗi lực là sức ép làm mất phần lợi nhuận của ngành; áp lực càng cao thì lợi nhuận còn lại càng thấp, nên đảo thang (6 - điểm trung bình) để điểm cao = hấp dẫn. Đây là công cụ bổ sung của kho kiến thức (Porter gốc không có điểm số)."
+    assumptions: ["Năm lực quan trọng ngang nhau (nếu không, dùng trọng số)", "Điểm do người đánh giá chấm có căn cứ dữ liệu, không cảm tính"]
+    pitfalls:
+      - "Trung bình có thể che giấu một lực cực đoan (ví dụ Supplier = 5 là đủ giết ngành); luôn xem lực max."
+      - "Điểm số tạo cảm giác chính xác giả; ghi lý do và nguồn cho mỗi điểm."
+    interpretation: "A < 2.5: kém hấp dẫn (cần khác biệt hóa mạnh hoặc không vào); 2.5-3.5: trung bình; > 3.5: hấp dẫn. Ngưỡng là quy ước của kho kiến thức, không phải chuẩn học thuật."
+    example:
+      inputs: {F: [5, 4, 2, 4, 3]}
+      steps: ["mean = (5+4+2+4+3)/5 = 3.6", "A = 6 - 3.6 = 2.4"]
+      result: "A = 2.4: quán cà phê specialty Q.1 là ngành kém hấp dẫn"
+  - id: "m01_force_score_weighted"
+    name_vi: "Chỉ số hấp dẫn ngành có trọng số"
+    name_en: "Weighted Industry Attractiveness Index"
+    expression_latex: "A_w = 6 - \\sum_{i=1}^{5} w_i F_i,\\quad \\sum w_i = 1"
+    expression_python: "A = 6 - sum(w*f for w,f in zip(W,F))"
+    excel: "=6-SUMPRODUCT(B2:B6,C2:C6)"
+    variables:
+      - {symbol: "W", meaning: "Trọng số từng lực, tổng bằng 1", unit: "tỷ lệ"}
+      - {symbol: "F", meaning: "Điểm lực 1-5", unit: "điểm"}
+    when_to_use: "Khi một lực rõ ràng quan trọng hơn trong ngành cụ thể (F&B: Rivalry và Buyer; sản xuất: Supplier)."
+    why_it_works: "Các lực không đồng đều giữa các ngành; trọng số phản ánh nguồn gốc chính của sức ép lợi nhuận."
+    assumptions: ["Trọng số được chốt TRƯỚC khi chấm điểm, ghi lý do"]
+    pitfalls: ["Chỉnh trọng số cho khớp kết luận mong muốn (confirmation bias)"]
+    interpretation: "Đọc như m01_force_score_mean."
+    example:
+      inputs: {F: [5, 4, 2, 4, 3], W: [0.3, 0.15, 0.1, 0.3, 0.15]}
+      steps: ["sum wF = 1.5+0.6+0.2+1.2+0.45 = 3.95", "A = 6 - 3.95 = 2.05"]
+      result: "A = 2.05, thấp hơn bản không trọng số (2.4) vì Rivalry và Buyer nặng ký"
+  - id: "m01_cr4"
+    name_vi: "Tỷ lệ tập trung 4 DN lớn nhất"
+    name_en: "Four-firm Concentration Ratio (CR4)"
+    expression_latex: "CR_4=\\sum_{i=1}^{4}s_{(i)}"
+    expression_python: "CR4 = sum(sorted(shares)[-4:])"
+    excel: "=SUM(LARGE(B2:B11,{1,2,3,4}))"
+    variables:
+      - {symbol: "shares", meaning: "Thị phần từng DN trong ngành", unit: "%"}
+    when_to_use: "Nhanh chóng ước lượng ngành phân tán hay tập trung khi chỉ biết thị phần top đầu."
+    why_it_works: "Nếu 4 DN dẫn đầu nắm phần lớn thị trường thì họ dễ ngầm phối hợp/định giá; ngược lại ngành phân tán cạnh tranh gay."
+    assumptions: ["Thị phần đo theo cùng một tiêu chí (doanh thu hoặc sản lượng) và cùng phạm vi địa lý"]
+    pitfalls: ["Bỏ qua phân bố trong top 4 (HHI nhạy hơn)", "Định nghĩa thị trường quá rộng/hẹp làm sai kết quả"]
+    interpretation: "Quy ước tham khảo: CR4 < 40% phân tán; 40-60% tập trung vừa; > 60% tập trung cao (medium confidence)."
+    example:
+      inputs: {shares: [22, 18, 12, 10, 8, 7, 6, 5, 5, 7]}
+      steps: ["sắp giảm dần top4 = 22, 18, 12, 10", "CR4 = 62"]
+      result: "CR4 = 62%: tập trung cao"
+  - id: "m01_hhi"
+    name_vi: "Chỉ số Herfindahl-Hirschman"
+    name_en: "Herfindahl-Hirschman Index (HHI)"
+    expression_latex: "HHI=\\sum_{i=1}^{n}s_i^2"
+    expression_python: "HHI = sum(s*s for s in shares)"
+    excel: "=SUMSQ(B2:B11)"
+    variables:
+      - {symbol: "shares", meaning: "Thị phần mọi DN (tính bằng %, tổng 100)", unit: "%"}
+    when_to_use: "Đo tập trung chính xác hơn CR4 khi có đủ dữ liệu thị phần; nghiên cứu chống độc quyền (Luật cạnh tranh)."
+    why_it_works: "Bình phương làm DN lớn nặng hơn hẳn DN nhỏ: 1 DN 50% (2,500) nặng hơn 10 DN 5% (250). Chỉ số 10,000 = độc quyền, ~0 = cạnh tranh hoàn hảo."
+    assumptions: ["Đủ DN trong ngành, tổng thị phần = 100%"]
+    pitfalls: ["Thiếu DN nhỏ nhưng ngành phân tán không ảnh hưởng nhiều", "Tính theo % thì thang 0-10,000; theo phân số thì 0-1 (đừng trộn)"]
+    interpretation: "Ngưỡng cũ DOJ: < 1,500 phân tán; 1,500-2,500 tập trung vừa; > 2,500 tập trung cao. Hướng dẫn sáp nhập 2023 dùng 1,000/1,800 (medium confidence, cần xác nhận khi dùng pháp lý)."
+    example:
+      inputs: {shares: [22, 18, 12, 10, 8, 7, 6, 5, 5, 7]}
+      steps: ["22^2=484, 18^2=324, 12^2=144, 10^2=100, 8^2=64, 7^2=49, 6^2=36, 5^2=25, 5^2=25, 7^2=49", "tổng = 1,300"]
+      result: "HHI = 1,300: phân tán theo ngưỡng cũ, nhưng vượt 1,000 theo ngưỡng 2023 (tập trung vừa)"
+  - id: "m01_pestel_priority"
+    name_vi: "Điểm ưu tiên yếu tố PESTEL (tác động x xác suất)"
+    name_en: "PESTEL factor priority score (Impact x Likelihood)"
+    expression_latex: "P_j = I_j \\times L_j"
+    expression_python: "P = [i*l for i,l in zip(I,L)]"
+    excel: "=B2*C2"
+    variables:
+      - {symbol: "I", meaning: "Mức tác động lên DN", unit: "điểm 1-5"}
+      - {symbol: "L", meaning: "Khả năng xảy ra/mức chắc chắn", unit: "điểm 1-5"}
+    when_to_use: "Chọn 3-5 yếu tố PESTEL đáng chú ý nhất trong danh sách dài để tránh analysis paralysis."
+    why_it_works: "Giống ma trận rủi ro: yếu tố tác động lớn nhưng hầu như không xảy ra thì không ưu tiên bằng yếu tố tác động vừa nhưng chắc chắn."
+    assumptions: ["Điểm có nguồn dữ liệu/ý kiến chuyên gia", "Đánh giá cho cùng một mốc thời gian (12-36 tháng)"]
+    pitfalls: ["Quên xác định hướng (cơ hội hay đe dọa) song song điểm", "Yếu tố có tác động cao nhưng bất định cao nên đưa vào scenario (m07) thay vì chỉ nhân điểm"]
+    interpretation: "P >= 16: ưu tiên cao (hành động ngay); 9-15: theo dõi và có phương án; <= 8: ghi nhận."
+    example:
+      inputs: {I: [4, 3, 5, 3, 2, 4], L: [5, 3, 5, 4, 3, 4]}
+      steps: ["thuế TMĐT 4x5=20; lãi suất 3x3=9; Gen Z TikTok 5x5=25; AI 3x4=12; bao bì 2x3=6; luật NTD 4x4=16"]
+      result: "Ưu tiên: Gen Z TikTok (25), thuế TMĐT (20), luật NTD (16)"
+  - id: "m01_pestel_net_impact"
+    name_vi: "Chỉ số tác động ròng PESTEL có trọng số"
+    name_en: "Weighted net PESTEL impact"
+    expression_latex: "N=\\sum_j w_j I_j d_j,\\quad d_j\\in\\{+1,-1\\}"
+    expression_python: "N = sum(w*i*d for w,i,d in zip(W,I,D))"
+    excel: "=SUMPRODUCT(B2:B7,C2:C7,D2:D7)"
+    variables:
+      - {symbol: "w", meaning: "Trọng số yếu tố, tổng bằng 1", unit: "tỷ lệ"}
+      - {symbol: "I", meaning: "Tác động 1-5", unit: "điểm"}
+      - {symbol: "d", meaning: "+1 cơ hội, -1 đe dọa", unit: "dấu"}
+    when_to_use: "Tổng hợp một nhận định 'môi trường vĩ mô nhìn chung thuận hay nghịch' để đưa vào quyết định vào/ở/dừng."
+    why_it_works: "Cộng gộp cơ hội trừ đe dọa theo mức quan trọng, tương tự chấm điểm ma trận EFE (External Factor Evaluation) trong quản trị chiến lược."
+    assumptions: ["Trọng số do người đánh giá chọn, ghi lý do"]
+    pitfalls: ["Chỉ số dương nhỏ vẫn có thể che đe dọa chí tử; luôn liệt kê riêng đe dọa lớn nhất"]
+    interpretation: "N > 0 thuận lợi ròng, N < 0 bất lợi ròng; |N| nhỏ (< 1) là môi trường trung tính. Ngưỡng là quy ước."
+    example:
+      inputs: {W: [0.25, 0.2, 0.25, 0.1, 0.1, 0.1], I: [4, 3, 5, 3, 2, 4], D: [1, -1, 1, 1, -1, -1]}
+      steps: ["+1.00 -0.60 +1.25 +0.30 -0.20 -0.40"]
+      result: "N = +1.35 (thuận lợi nhẹ)"
+
+frameworks:
+  - id: "m01_pestel"
+    name_vi: "Phân tích PESTEL (PESTLE)"
+    name_en: "PESTEL Analysis"
+    origin: >
+      Gốc là khung ETPS (Economic, Technical, Political, Social) do Francis Aguilar đề xuất năm 1967 (sách Scanning the Business Environment) để quét môi trường bên ngoài;
+      về sau mở rộng thành PEST rồi PESTEL/PESTLE khi thêm Environmental và Legal (medium confidence về chi tiết lịch sử).
+      Ra đời vì DN cần danh sách kiểm có hệ thống để không bỏ sót các thay đổi bên ngoài mà mình không kiểm soát được.
+    components:
+      - "P - Political: ổn định chính trị, thuế (TNDN, nhập khẩu, VAT), chính sách thương mại, quy định FDI, quan hệ ngoại giao, hỗ trợ DN. VD: chiến tranh thương mại Mỹ-Trung 2018-2020 chuyển chuỗi cung ứng sang Việt Nam."
+      - "E - Economic: GDP, lạm phát, lãi suất, tỷ giá, thất nghiệp, thu nhập bình quân, chu kỳ kinh tế. VD: lạm phát và lãi suất 2023-2024 kìm sức mua BĐS."
+      - "S - Social: cơ cấu dân số, đô thị hóa, lối sống, giáo dục, thái độ sức khỏe/môi trường, xu hướng tiêu dùng, văn hóa. VD: sống xanh tại đô thị lớn."
+      - "T - Technological: tốc độ đổi mới, R&D ngành, tự động hóa, chuyển đổi số, AI/IoT/Blockchain, bảo mật. VD: PropTech (tour 3D, AI định giá)."
+      - "E - Environmental: biến đổi khí hậu, chất thải, tiêu chuẩn xanh (LEED), năng lượng tái tạo, quy định môi trường, ESG. VD: EU yêu cầu carbon footprint với hàng xuất khẩu."
+      - "L - Legal: luật lao động, bảo vệ người tiêu dùng, sở hữu trí tuệ, cạnh tranh, quy định ngành, luật dữ liệu cá nhân (GDPR, PDPA). VD: Luật Kinh doanh BĐS sửa đổi 2024."
+      - "Bảng mẫu: Yếu tố | Mô tả | Tác động | Mức độ (Cao/TB/Thấp) | Cơ hội/Đe dọa"
+    when_to_use: "Thâm nhập thị trường mới, lập kế hoạch dài hạn, đầu năm lập kế hoạch, hoặc khi có cú sốc chính sách; đứng ở vị trí đầu chuỗi PESTEL -> 5 Forces -> SWOT."
+    how_to_apply:
+      - "Bước 1: Xác định phạm vi - ngành nào, thị trường/địa bàn nào, mốc thời gian (12-36 tháng)."
+      - "Bước 2: Thu thập dữ liệu cho từng chữ cái từ nguồn thứ cấp (TCTK/GSO, NHNN, Bộ Tài chính, báo cáo ngành, thư viện pháp luật, tin tức), chuyên gia, hiệp hội."
+      - "Bước 3: Đánh giá mức tác động (Cao/TB/Thấp hoặc điểm 1-5) và khả năng xảy ra (xem công thức m01_pestel_priority)."
+      - "Bước 4: Phân loại Cơ hội (O) hay Đe dọa (T) đối với DN cụ thể; ghi hạn thời gian ảnh hưởng."
+      - "Bước 5: Chọn 3-5 yếu tố tác động lớn nhất và biến thành hành động (chiến lược, phương án dự phòng); đưa các yếu tố bất định cao vào Scenario Planning (m07)."
+    how_to_read_results: "Danh sách dài không có giá trị; đọc ra 3-5 yếu tố then chốt, nêu rõ hướng (O/T), mức, thời hạn, hành động. Yếu tố ảnh hưởng chéo (lãi suất tăng + luật mới) nên được xem là tổ hợp."
+    pitfalls:
+      - "Dữ liệu quá tải (analysis paralysis): liệt kê hàng chục dòng mà không ưu tiên."
+      - "Chủ quan: mức tác động phụ thuộc người phân tích; cần nguồn và ý kiến độc lập."
+      - "Tĩnh: là ảnh chụp tại một thời điểm; cần cập nhật hàng quý/năm."
+      - "Không định lượng và không đưa giải pháp: phải thêm điểm số và bước hành động."
+      - "Thiếu chiều sâu: cần kết hợp 5 Forces, SWOT, scenario."
+      - "VinFast tại Mỹ: đánh giá Social (nhận diện thương hiệu) quá lạc quan; PESTEL không thay nghiên cứu hành vi khách hàng."
+    example: >
+      Shop thời trang online bán trên TikTok Shop: P (thuế/hóa đơn điện tử cho TMĐT, ưu đãi thuế cho DN nhỏ), E (lãi suất, sức mua),
+      S (Gen Z mua qua livestream), T (AI chụp ảnh/video, thuật toán nền tảng), E (bao bì nhựa), L (đổi trả theo luật bảo vệ người tiêu dùng).
+      Chấm tác động x khả năng ra Gen Z (25), thuế TMĐT (20), luật NTD (16) là ba yếu tố ưu tiên (xem worked_examples).
+  - id: "m01_five_forces"
+    name_vi: "Năm lực lượng cạnh tranh của Porter"
+    name_en: "Porter's Five Forces"
+    origin: >
+      Michael Porter (Harvard Business School) công bố năm 1979 trong bài 'How Competitive Forces Shape Strategy' (Harvard Business Review),
+      sau đó phát triển trong sách Competitive Strategy (1980). Ra đời để thay SWOT mơ hồ bằng công cụ có gốc kinh tế học tổ chức ngành (IO economics),
+      giải thích vì sao lợi nhuận bình quân khác nhau giữa các ngành: do cấu trúc 5 lực chứ không chỉ do năng lực DN.
+    components:
+      - "Industry Rivalry (trung tâm): cạnh tranh CAO khi nhiều đối thủ quy mô tương đương; ngành tăng trưởng thấp; chi phí cố định cao; sản phẩm ít khác biệt (commoditized); rào cản rời ngành cao; dư thừa công suất."
+      - "Threat of New Entrants: rào cản gia nhập gồm kinh tế quy mô, vốn đầu tư ban đầu, chi phí chuyển đổi, kênh phân phối, lợi thế chi phí độc lập (bằng sáng chế, bí quyết, vị trí), chính sách chính phủ (giấy phép). VD: ngân hàng VN vốn tối thiểu 3,000 tỷ + giấy phép NHNN -> đe dọa thấp."
+      - "Supplier Power: CAO khi ít nhà cung cấp tập trung; sản phẩm duy nhất khó thay; chi phí chuyển đổi nhà cung cấp cao; nhà cung cấp có thể tích hợp xuôi; ngành mua không phải khách hàng quan trọng của họ. VD: Apple phụ thuộc TSMC chip A-series; hãng bay phụ thuộc Boeing/Airbus."
+      - "Buyer Power: CAO khi ít người mua mua lượng lớn; sản phẩm chuẩn hóa; chi phí chuyển đổi thấp; khách có thông tin về giá/chất lượng; khách có thể tự sản xuất (tích hợp ngược); sản phẩm chiếm tỷ trọng lớn trong chi phí của khách. VD: Big C, Co.opmart với nhà cung cấp FMCG."
+      - "Threat of Substitutes: CAO khi thay thế có giá/hiệu suất tốt hơn; chi phí chuyển đổi thấp; khách sẵn sàng đổi; nhiều lựa chọn thay thế. VD: Grab thay taxi, Netflix thay truyền hình cáp, Zoom/Teams thay đi công tác."
+      - "Bảng đánh giá mẫu: Lực | Cường độ | Lý do | Chiến lược ứng phó."
+    when_to_use: "Đánh giá ngành có đáng đầu tư, chọn vị thế cạnh tranh, soát lại ngành đang kinh doanh khi lợi nhuận bị bào mòn."
+    how_to_apply:
+      - "Bước 1: Xác định ranh giới ngành (sản phẩm + địa lý + phân khúc); ví dụ 'chuỗi cà phê bán lẻ đô thị VN', không phải 'đồ uống'."
+      - "Bước 2: Thu thập dữ liệu từng lực: số đối thủ và thị phần (CR4/HHI), tốc độ tăng trưởng, chi phí cố định, vốn mở một điểm, số nhà cung cấp và mức thay thế, mức tập trung và hành vi khách, các lựa chọn thay thế."
+      - "Bước 3: Chấm cường độ từng lực (Cao/TB/Thấp hoặc điểm 1-5) kèm lý do và nguồn."
+      - "Bước 4: Tính chỉ số hấp dẫn ngành (m01_force_score_mean hoặc có trọng số) và nhận diện lực đe dọa nhất."
+      - "Bước 5: Xây chiến lược ứng phó từng lực (differentiation, tăng switching cost/loyalty, đa dạng hóa nguồn cung, tạo rào cản, liên kết hệ sinh thái) và nối sang m03."
+    how_to_read_results: "Nhiều lực Cao = ngành kém hấp dẫn, lợi nhuận bị bào mòn; chỉ cần một lực cực đoan (ví dụ nhà cung cấp độc quyền) cũng đủ. Kết quả là vị thế chọn lực để phòng thủ hoặc lợi dụng, không phải để từ bỏ tự động."
+    pitfalls:
+      - "Tĩnh: không bắt kịp ngành đổi nhanh (digital economy), ví dụ bùng nổ take-away như Katinat."
+      - "Bỏ sót bên bổ trợ (complementors)."
+      - "Giả định ranh giới ngành rõ; thực tế mờ (Apple Pay)."
+      - "Chỉ nhìn cạnh tranh, bỏ qua hợp tác/hệ sinh thái/win-win."
+      - "Khó định lượng, 'Cao/TB/Thấp' chủ quan -> dùng điểm và dữ liệu."
+      - "Phân tích ngành quá rộng khiến các lực trộn lẫn nhau."
+    example: >
+      Chuỗi cà phê Việt Nam 2023-2025: Rivalry Rất cao; Entrants Trung bình (500tr-2 tỷ/cửa hàng, nhưng mặt bằng đắc địa khó); Supplier Thấp
+      (VN là nước xuất khẩu cà phê lớn thứ 2 thế giới, nhưng specialty ít nguồn); Buyer Cao (switching cost = 0, Gen Z dễ đổi, đánh giá online);
+      Substitutes Trung bình (trà sữa, nước ép). Kết luận: ngành kém hấp dẫn cho người mới, cần khác biệt hóa mạnh; thắng thuộc hệ sinh thái (Phúc Long-Masan, bán trong WinMart) hoặc brand lớn (Highlands 700+ cửa hàng).
+  - id: "m01_pestel_5forces_combo"
+    name_vi: "Chuỗi kết hợp PESTEL - 5 Forces - SWOT"
+    name_en: "PESTEL -> Five Forces -> SWOT -> Strategy chain"
+    origin: "Thực hành chuẩn trong giáo trình quản trị chiến lược (Johnson, Whittington & Scholes - Exploring Strategy): đi từ ngoài vào trong, từ vĩ mô đến vi mô đến DN."
+    components:
+      - "PESTEL (vĩ mô): trả lời 'thế giới bên ngoài đang thay đổi thế nào'; kết quả là danh sách yếu tố tác động; dùng khi thâm nhập thị trường mới và lập kế hoạch dài hạn."
+      - "5 Forces (ngành): trả lời 'ngành cạnh tranh ra sao'; kết quả là chiến lược cạnh tranh; dùng khi đánh giá ngành và quyết định đầu tư."
+      - "SWOT (doanh nghiệp): ghép O/T từ hai bước trên với S/W nội bộ (m02)."
+    when_to_use: "Khi cần bức tranh hoàn chỉnh trước khi xây chiến lược."
+    how_to_apply:
+      - "Bước 1: Chạy PESTEL để lọc 3-5 yếu tố vĩ mô then chốt."
+      - "Bước 2: Dùng các yếu tố đó như 'đầu vào' cho 5 Forces (ví dụ lãi suất tăng làm vốn đầu tư rào cản gia nhập tăng; luật mới tăng rào cản; hàng nhập khẩu tăng thay thế)."
+      - "Bước 3: Gộp O/T vào SWOT cùng điểm mạnh/yếu từ m02, rồi tạo chiến lược SO/ST/WO/WT."
+      - "Bước 4: Với yếu tố bất định cao đưa sang Scenario Planning (m07)."
+    how_to_read_results: "Cú sốc vĩ mô (thuế DN cao, gián đoạn nguồn cung, xuất khẩu) có thể đánh gục DN dù ngành hấp dẫn; PESTEL bắt cú sốc, 5 Forces bắt cấu trúc."
+    pitfalls: ["Làm hai phân tích tách rời không nối với nhau", "Dừng ở mô tả, không ra quyết định"]
+    example: "Mở quán cà phê Q.1: PESTEL chỉ ra sức mua và xu hướng; 5 Forces cho điểm hấp dẫn 2.4 -> chọn khác biệt hóa thay vì đua giá."
+
+procedures:
+  - id: "m01_proc_pestel"
+    name: "Dựng PESTEL cho một ngành/thị trường từ đầu đến cuối"
+    steps:
+      - "Hỏi bối cảnh: (1) ngành/sản phẩm chính? (2) địa bàn (thành phố, cả nước, xuất khẩu)? (3) mốc thời gian quyết định (12-36 tháng)? (4) quy mô vốn và loại hình DN? (5) quyết định cụ thể sắp đưa ra (mở mới, mở rộng, vay vốn)?"
+      - "Lập khung 6 dòng P-E-S-T-E-L; với mỗi chữ cái tối thiểu 3 câu hỏi gợi ý (xem components) và nguồn dữ liệu."
+      - "Thu thập 2-4 yếu tố/chữ cái từ nguồn đáng tin cậy; ghi nguồn và năm; đánh dấu số liệu cần xác nhận."
+      - "Chấm mỗi yếu tố: tác động (1-5), khả năng (1-5), hướng (+1 O / -1 T), khung thời gian."
+      - "Tính P = I x L (m01_pestel_priority); chọn 3-5 yếu tố điểm cao nhất; tính N (m01_pestel_net_impact) nếu cần kết luận tổng."
+      - "Gán hành động cho mỗi yếu tố ưu tiên (tận dụng nếu O, giảm thiểu/dự phòng nếu T); nêu chỉ báo theo dõi và ngày soát lại."
+      - "Đánh dấu yếu tố bất định cao để chuyển sang m07; chuyển O/T sang SWOT."
+    outputs: "Bảng PESTEL có điểm, 3-5 yếu tố ưu tiên, hành động và chỉ báo theo dõi, O/T cho SWOT."
+  - id: "m01_proc_five_forces"
+    name: "Dựng Porter's 5 Forces cho một ngành từ đầu đến cuối"
+    steps:
+      - "Hỏi bối cảnh: ngành nào, phân khúc/địa bàn nào, vị thế DN (đang ở hay định vào), vốn dự kiến, mục tiêu."
+      - "Xác định ranh giới ngành và liệt kê: đối thủ chính + thị phần, nhà cung cấp chính, nhóm khách hàng chính, sản phẩm thay thế, đối thủ tiềm năng."
+      - "Tính CR4 và HHI nếu có thị phần (m01_cr4, m01_hhi)."
+      - "Với mỗi lực, đi qua danh sách điều kiện 'CAO khi...' và đếm số điều kiện thỏa; chấm 1-5 kèm lý do và dữ liệu."
+      - "Tính chỉ số hấp dẫn A (m01_force_score_mean/weighted) và chỉ ra lực cao nhất; đối chiếu ngưỡng."
+      - "Soạn chiến lược ứng phó cho mỗi lực (bảng Lực | Cường độ | Lý do | Ứng phó) và chuyển sang chọn chiến lược cạnh tranh (m03)."
+      - "Kiểm tra điểm mù: complementors, ranh giới mờ, xu hướng làm đổi các lực (PESTEL), điều chỉnh."
+    outputs: "Bảng 5 lực có điểm, A, lực đe dọa nhất, chiến lược ứng phó, khuyến nghị vào/ở/rút."
+  - id: "m01_proc_integrated"
+    name: "Phân tích môi trường bên ngoài tích hợp trước khi đầu tư/mở rộng"
+    steps:
+      - "Chạy m01_proc_pestel và lấy 3-5 yếu tố then chốt."
+      - "Chạy m01_proc_five_forces; ghi rõ yếu tố PESTEL nào làm thay đổi lực nào."
+      - "Tổng hợp O/T thành bảng và ghép với S/W (m02) thành SWOT."
+      - "Đưa quyết định: Go / Go with conditions / No-go cùng 3 điều kiện kiểm chứng."
+      - "Lập kế hoạch giám sát: chỉ báo, tần suất soát (hàng quý), ngưỡng kích hoạt đổi chiến lược."
+    outputs: "Báo cáo ngắn 1-2 trang: kết luận ngành, 3-5 yếu tố vĩ mô, bảng 5 lực, O/T, quyết định, chỉ báo theo dõi."
+
+decision_rules:
+  - "Nếu chỉ số hấp dẫn A < 2.5 thì không đua cạnh tranh trực diện về giá; chọn khác biệt hóa/ngách (m03, m05) hoặc không vào ngành."
+  - "Nếu một lực đạt 5/5 (ví dụ nhà cung cấp độc quyền) thì coi là rủi ro chí tử dù trung bình tốt; phải có phương án giảm phụ thuộc trước khi cam kết vốn."
+  - "Nếu Rivalry cao và Buyer cao (switching cost thấp) thì đầu tư vào loyalty, dữ liệu khách hàng và trải nghiệm để nâng switching cost."
+  - "Nếu Entrants thấp nhưng Rivalry cao do rào cản rời ngành thì cẩn trọng với tài sản chuyên dụng; ưu tiên thuê/linh hoạt."
+  - "Nếu Supplier cao thì đa dạng hóa nguồn cung, ký hợp đồng dài hạn, hoặc tích hợp ngược một phần."
+  - "Nếu Substitutes cao thì theo dõi sản phẩm thay thế, cải tiến liên tục, mở rộng danh mục hoặc định vị khác biệt."
+  - "Nếu HHI < 1,500 (hoặc CR4 < 40%) thì ngành phân tán: cạnh tranh giá mạnh, cơ hội cho ngách; nếu CR4 > 60% thì coi chừng bị chi phối bởi leader."
+  - "Nếu yếu tố PESTEL có P = I x L >= 16 thì lập hành động ngay; nếu tác động cao nhưng bất định lớn thì đưa vào kịch bản (m07)."
+  - "Nếu ngành thay đổi nhanh (digital, nền tảng) thì cập nhật phân tích mỗi 3-6 tháng và thêm complementors."
+  - "Nếu cú sốc vĩ mô liên quan thuế/nguồn cung/tỷ giá có khả năng cao thì giữ đệm tiền mặt và có nhà cung cấp dự phòng."
+  - "Nếu chỉ chạy được một công cụ: thâm nhập thị trường/quốc gia mới -> PESTEL trước; đánh giá ngành/đầu tư -> 5 Forces trước."
+
+benchmarks:
+  - {metric: "Ngưỡng hấp dẫn ngành A", value: "<2.5 kém; 2.5-3.5 trung bình; >3.5 hấp dẫn", context: "Quy ước của kho kiến thức (thang 1-5), không phải chuẩn học thuật", confidence: "low"}
+  - {metric: "HHI", value: "<1,500 phân tán; 1,500-2,500 vừa; >2,500 cao (DOJ cũ). Guideline 2023: 1,000 và 1,800", context: "Chống độc quyền Mỹ; cần xác nhận khi dùng pháp lý", confidence: "medium"}
+  - {metric: "CR4", value: "<40% phân tán; 40-60% vừa; >60% cao", context: "Quy ước kinh tế học ngành", confidence: "medium"}
+  - {metric: "Vốn mở một cửa hàng cà phê chuỗi VN", value: "khoảng 500 triệu - 2 tỷ VNĐ", context: "Theo file gốc; thay đổi theo vị trí và mô hình", confidence: "low"}
+  - {metric: "Vốn tối thiểu ngân hàng VN", value: "3,000 tỷ VNĐ", context: "Theo file gốc; xác nhận quy định hiện hành NHNN", confidence: "medium"}
+  - {metric: "Số ưu tiên PESTEL", value: "3-5 yếu tố then chốt", context: "Thực hành tránh analysis paralysis", confidence: "medium"}
+
+pitfalls:
+  - "Liệt kê dữ kiện mà không chuyển thành O/T và hành động."
+  - "Phân tích 'cả thế giới' thay vì giới hạn theo ngành, địa bàn, mốc thời gian."
+  - "Dùng PESTEL mà bỏ qua 5 Forces (hoặc ngược lại), chỉ nhìn một tầng."
+  - "Cho điểm cảm tính không nguồn; chỉnh điểm cho khớp kết luận định sẵn."
+  - "Ranh giới ngành quá rộng/hẹp khiến các lực lẫn lộn."
+  - "Coi phân tích là tĩnh, không cập nhật khi thị trường đổi (take-away, nền tảng số)."
+  - "Quá lạc quan về yếu tố Social/thương hiệu như VinFast tại Mỹ."
+  - "Bỏ sót complementors và hệ sinh thái; chỉ coi cạnh tranh là đối đầu."
+  - "Nhầm cạnh tranh với đối thủ trực tiếp: sản phẩm thay thế (trà sữa với cà phê) cũng là đối thủ."
+
+sme_vn_guidance:
+  - "PESTEL chỉ cần 1 trang cho SME: 3 câu hỏi mỗi chữ cái, chọn 5 yếu tố ưu tiên, soát lại mỗi quý. Nguồn miễn phí: Tổng cục Thống kê (GSO), NHNN, Bộ Tài chính, thuvienphapluat.vn, báo ngành, Google Trends, hiệp hội ngành."
+  - "Yếu tố VN cần xem: lãi suất cho vay SME, thuế (TNDN, GTGT, hộ kinh doanh chuyển sang kê khai, hóa đơn điện tử), quy định TMĐT/livestream, giá thuê mặt bằng, lương tối thiểu vùng, giấy phép ngành F&B (vệ sinh ATTP) - cần xác nhận quy định hiện hành khi dùng."
+  - "5 Forces cho SME làm theo từng quận/phường (quán ăn, cà phê, shop): đếm đối thủ trong bán kính 500m-1km, xem nền tảng giao đồ ăn (GrabFood, ShopeeFood) như kênh làm tăng Buyer Power."
+  - "Khảo sát nhanh miễn phí: Google Maps, review, Facebook Groups, Google Trends để xếp hạng đối thủ và nhu cầu."
+  - "Với SME nhỏ, chiến lược ứng phó thực tế: ngách địa phương, quan hệ trực tiếp nhà cung cấp, loyalty thủ công (sổ khách quen, Zalo OA), chia sẻ chi phí mặt bằng."
+  - "Trước khi ký thuê mặt bằng dài hạn: chạy 5 Forces + PESTEL nhanh và ghi 3 điều kiện kiểm chứng (giá thuê tăng, đối thủ mới, thay đổi thuế/luật)."
+
+case_lessons:
+  - name: "VinFast áp dụng PESTEL khi xây nhà máy tại North Carolina (2022)"
+    type: "failure"
+    setup: "VinFast ra quyết định đầu tư nhà máy tại Mỹ dựa trên cơ hội từ chính sách IRA, tăng trưởng thị trường xe điện Mỹ, xu hướng xanh Gen Z, hạ tầng sạc và công nghệ pin."
+    key_calculations:
+      - "Thị trường xe điện Mỹ tăng khoảng 65% (2022) theo file gốc."
+      - "IRA: ưu đãi thuế tới 7,500 USD/xe đủ điều kiện nội địa hóa (xe VinFast cần đáp ứng điều kiện mới hưởng)."
+    lesson: "PESTEL đúng khi chỉ ra cơ hội chính sách (Political) nhưng đánh giá quá lạc quan yếu tố Social (nhận diện thương hiệu) -> doanh số thấp hơn kỳ vọng. PESTEL là điểm khởi đầu, phải ghép nghiên cứu hành vi khách hàng, 5 Forces, SWOT."
+    data_reliability: "unverified"
+  - name: "Ngành cà phê Việt Nam 2023-2025 (Phúc Long, Highlands, Cộng Cà Phê)"
+    type: "success"
+    setup: "Thị trường chuỗi cà phê: Highlands, Phúc Long, The Coffee House, Trung Nguyên E-Coffee, Starbucks, Katinat, hàng nghìn quán độc lập."
+    key_calculations:
+      - "Điểm 5 lực mẫu (Rivalry 5, Entrants 3, Supplier 1-2, Buyer 4, Substitutes 3) cho A khoảng 2.6-3.0: ngành kém tới trung bình hấp dẫn cho người mới."
+      - "Phúc Long bán trong WinMart (kênh phân phối) nên giảm Rivalry hiệu dụng nhờ hệ sinh thái Masan."
+    lesson: "5 Forces giải thích vì sao nhiều chuỗi nhỏ đóng cửa; người thắng có hệ sinh thái hoặc brand mạnh. Cộng Cà Phê có không gian và sản phẩm độc đáo (cà phê cốt dừa) nhưng bị đẩy lùi bởi quy mô vốn, phủ sóng và take-away; phải xoay sang cà phê đóng gói và xuất khẩu. Mô hình không dự báo được bùng nổ take-away -> cần kết hợp phân tích xu hướng."
+    data_reliability: "illustrative"
+  - name: "Ngành hàng không Việt Nam: cạnh tranh giá khốc liệt"
+    type: "success"
+    setup: "Vietnam Airlines, Vietjet, Bamboo Airways cạnh tranh về giá nội địa; đối thủ mới bị chặn bởi vốn và giấy phép; nhà cung cấp máy bay tập trung (Boeing, Airbus)."
+    key_calculations: ["Rivalry cao do chi phí cố định cao, sản phẩm ít khác biệt, rào cản rời ngành cao", "Supplier cao do 2 nhà cung cấp thân rộng, chi phí chuyển đổi dòng máy bay lớn"]
+    lesson: "Ngành có Rivalry và Supplier cao đồng thời thì lợi nhuận mong manh; Bamboo Airways thu hẹp mạnh về sau (cần xác nhận)."
+    data_reliability: "unverified"
+  - name: "Quán cà phê specialty Q.1 TP.HCM (SME, tự thiết kế)"
+    type: "sme"
+    setup: "Founder muốn mở quán specialty 1.2 tỷ tại Q.1, 50+ quán trong 1 km."
+    key_calculations: ["Điểm lực 5-4-2-4-3, trung bình 3.6, A = 2.4", "Có trọng số 30/15/10/30/15: A = 2.05"]
+    lesson: "Ngành kém hấp dẫn nên vào được chỉ khi khác biệt hóa rõ (rang tại chỗ, minh bạch giá, ngách Gen Z). Xem case-studies/01."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "5 Forces và chỉ số hấp dẫn - quán cà phê specialty Q.1"
+    inputs: {F: [5, 4, 2, 4, 3], W: [0.3, 0.15, 0.1, 0.3, 0.15]}
+    steps:
+      - "Rivalry 5: 50+ quán/km, sản phẩm ít khác biệt, tăng trưởng chậm."
+      - "Entrants 4: vốn vừa phải, ít rào cản, khó nhất là mặt bằng (chấm 4 vì dễ gia nhập)."
+      - "Supplier 2: nhiều nguồn cà phê VN (specialty hơi ít)."
+      - "Buyer 4: chi phí chuyển đổi = 0, review online."
+      - "Substitutes 3: trà sữa, nước ép."
+      - "Trung bình = (5+4+2+4+3)/5 = 3.6; A = 6 - 3.6 = 2.4"
+      - "Có trọng số (30/15/10/30/15): sum = 3.95, A = 2.05"
+    result: "Ngành kém hấp dẫn (A 2.05-2.4): chọn khác biệt hóa/ngách và kiểm soát chi phí mặt bằng; không đua giá."
+  - name: "CR4 và HHI - 10 quán trà sữa trong một quận"
+    inputs: {shares: [22, 18, 12, 10, 8, 7, 6, 5, 5, 7]}
+    steps:
+      - "Tổng thị phần = 100."
+      - "CR4 = 22+18+12+10 = 62."
+      - "HHI = 484+324+144+100+64+49+36+25+25+49 = 1,300."
+    result: "CR4 = 62% (cao) nhưng HHI = 1,300 (phân tán theo ngưỡng cũ 1,500; vượt 1,000 theo ngưỡng 2023): 4 leader quan trọng nhưng còn nhiều đối thủ nhỏ -> cạnh tranh giá vẫn mạnh."
+  - name: "PESTEL ưu tiên - shop thời trang online bán qua TikTok Shop"
+    inputs:
+      factors: "thuế/hóa đơn TMĐT (I4,L5), lãi suất (3,3), Gen Z TikTok (5,5), AI chụp ảnh (3,4), bao bì nhựa (2,3), luật NTD đổi trả (4,4)"
+    steps:
+      - "P = I x L: 20, 9, 25, 12, 6, 16."
+      - "Ưu tiên: Gen Z TikTok (25, cơ hội), thuế TMĐT (20, đe dọa), luật NTD (16, đe dọa)."
+      - "Tác động ròng với trọng số 0.25/0.2/0.25/0.1/0.1/0.1 và hướng +/-/+/+/-/-: N = 1.00-0.60+1.25+0.30-0.20-0.40 = 1.35."
+    result: "Môi trường thuận lợi nhẹ (N = +1.35); hành động: đầu tư nội dung video/livestream, chuẩn hóa hóa đơn kế toán, chính sách đổi trả rõ."
+  - name: "So sánh hai ngành bằng điểm 5 Forces"
+    inputs: {ngan_hang_nho: [1, 2, 3, 3, 2], ca_phe: [5, 4, 2, 4, 3]}
+    steps:
+      - "Ngân hàng nhỏ (ví dụ vốn 3,000 tỷ và giấy phép): trung bình = 2.2 -> A = 3.8."
+      - "Cà phê: trung bình 3.6 -> A = 2.4."
+    result: "Ngành có rào cản cao hấp dẫn hơn (3.8 so với 2.4); cho thấy tại sao vốn và giấy phép bảo vệ lợi nhuận. Điểm ngân hàng là minh họa."
+
+practice_questions:
+  - q: "Một ngành có 5 lực chấm lần lượt 4, 2, 3, 5, 1. Tính chỉ số hấp dẫn ngành."
+    a: "Trung bình = (4+2+3+5+1)/5 = 3.0 -> A = 6 - 3.0 = 3.0 (trung bình)."
+  - q: "Ngành có thị phần 40, 30, 20, 10. Tính CR4 và HHI."
+    a: "CR4 = 100%. HHI = 1600+900+400+100 = 3,000 (tập trung cao)."
+  - q: "Tại sao Switching Cost xuất hiện ở nhiều lực của 5 Forces? Cho ví dụ."
+    a: "Switching cost thấp của khách làm Buyer Power và Substitutes cao (đổi quán cà phê miễn phí); chi phí chuyển đổi nhà cung cấp cao làm Supplier Power cao (đổi dòng máy bay)."
+  - q: "Phân loại: (a) lãi suất tăng từ 8% lên 12%; (b) dân số trẻ 60% dưới 35 tuổi; (c) luật BĐS mới thay điều kiện kinh doanh. Thuộc chữ cái nào và O/T?"
+    a: "(a) Economic, Threat; (b) Social, Opportunity; (c) Legal, Threat (rào cản gia nhập tăng)."
+  - q: "Yếu tố có I=5, L=2 và yếu tố I=3, L=4. Ưu tiên cái nào?"
+    a: "5x2=10, 3x4=12 -> ưu tiên yếu tố thứ hai, nhưng yếu tố thứ nhất nên cho vào scenario/dự phòng vì tác động lớn."
+  - q: "Khi nào dùng PESTEL, khi nào dùng 5 Forces?"
+    a: "PESTEL cho thâm nhập thị trường mới và kế hoạch dài hạn (vĩ mô); 5 Forces để đánh giá sức hấp dẫn ngành và quyết định đầu tư (vi mô); nên kết hợp theo chuỗi PESTEL -> 5 Forces -> SWOT."
+  - q: "Hãy nêu 2 hạn chế lớn của 5 Forces trong kinh tế số."
+    a: "Tĩnh/không bắt kịp thay đổi nhanh; bỏ sót complementors và ranh giới ngành mờ (Apple Pay, hệ sinh thái)."
+
+checklist:
+  - "Đã xác định phạm vi: ngành, địa bàn, mốc thời gian, quyết định cần đưa ra?"
+  - "PESTEL: đủ 6 chữ cái, mỗi yếu tố có dữ liệu, nguồn và năm?"
+  - "Đã chấm tác động và khả năng, tính P = I x L, chọn 3-5 yếu tố then chốt?"
+  - "Đã phân loại Cơ hội/Đe dọa và gán hành động?"
+  - "5 Forces: đủ 5 lực, mỗi lực có điểm, lý do, dữ liệu?"
+  - "Đã tính CR4/HHI nếu có thị phần, và chỉ số hấp dẫn A; xem lực cao nhất?"
+  - "Đã đề xuất chiến lược ứng phó từng lực và nối sang m03?"
+  - "Đã kiểm tra complementors, ranh giới ngành mờ, thay đổi nhanh?"
+  - "Đã đưa yếu tố bất định cao sang Scenario Planning (m07) và O/T sang SWOT (m02)?"
+  - "Đã đặt chỉ báo theo dõi và ngày soát lại (hàng quý)?"
+
+excel_google_sheets_templates:
+  - "Sheet PESTEL: cột Chữ cái | Yếu tố | Mô tả | Nguồn | I (1-5) | L (1-5) | P = I*L | Hướng (+1/-1) | Hành động | Ngày soát. Tổng ròng: =SUMPRODUCT(Trọng số, I, Hướng)."
+  - "Sheet 5 Forces: cột Lực | Điểm 1-5 | Trọng số | Lý do | Nguồn | Ứng phó; A = 6 - SUMPRODUCT(điểm, trọng số)."
+  - "Sheet Thị phần: cột DN | Thị phần %; CR4 = SUM(LARGE(range,{1,2,3,4})); HHI = SUMSQ(range)."
+
+source_file: "01-phan-tich-moi-truong-ben-ngoai.md"

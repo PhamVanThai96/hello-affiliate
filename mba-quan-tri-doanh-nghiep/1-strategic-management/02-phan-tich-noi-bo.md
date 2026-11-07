@@ -10,7 +10,7 @@
 
 ### 1. SWOT là gì?
 
-**SWOT** là framework phân tích chiến lược kết hợp cả yếu tố **nội bộ** và **bên ngoài** của doanh nghiệp. Được phát triển bởi Albert Humphrey tại Stanford Research Institute vào thập niên 1960, SWOT là một trong những công cụ chiến lược phổ biến nhất thế giới.
+**SWOT** là framework phân tích chiến lược kết hợp cả yếu tố **nội bộ** và **bên ngoài** của doanh nghiệp. Được phát triển bởi Albert Humphrey tại Stanford Research Institute vào thập niên 1960 (nguồn gốc chính xác còn tranh cãi trong giới học thuật), SWOT là một trong những công cụ chiến lược phổ biến nhất thế giới.
 
 SWOT là viết tắt của:
 
@@ -103,8 +103,8 @@ Bước 5: Ưu tiên → Chọn 2-3 chiến lược khả thi nhất để tri�
 - SWOT nên được thực hiện trong một workshop nhóm để có nhiều góc nhìn khác nhau. Phân tích thực trạng để có cái nhìn củ thể, tổng quát về tình hình nội bộ doanh nghiệp và môi trường kinh doanh bên ngoài - "chúng ta có điểm mạnh này, điểm yếu này, cơ hội này, đe dọa này".
 - Kết hợp với các công cụ khác (PESTEL, Porter’s 5 Forces) để có cái nhìn toàn diện hơn về môi trường kinh doanh
 
-- TWOS giúp chuyển từ phân tích sang hành động, nhưng cần đảm bảo chiến lược được cụ thể hóa thành kế hoạch triển khai rõ ràng - "chúng ta nên làm gì với điểm mạnh này để tận dụng cơ hội này?" thay vì chỉ dừng ở mức "chúng ta có điểm mạnh này và có cơ hội này".
-- TWOS vận hành kết hợp 4 chiến lược:
+- TOWS giúp chuyển từ phân tích sang hành động, nhưng cần đảm bảo chiến lược được cụ thể hóa thành kế hoạch triển khai rõ ràng - "chúng ta nên làm gì với điểm mạnh này để tận dụng cơ hội này?" thay vì chỉ dừng ở mức "chúng ta có điểm mạnh này và có cơ hội này".
+- TOWS vận hành kết hợp 4 chiến lược:
    - SO: Tấn công, tận dụng điểm mạnh để khai thác cơ hội - tôi giỏi lập trình, trong khi thị trường bất động sản đang cần một ứng dụng theo dỗi giá nhà → tôi phát triển app bất động sản
    - ST: Phòng thủ, dùng điểm mạnh để chống lại đe dọa - tôi có thương hiệu mạnh, nên khi đối thủ mới gia nhập, tôi tung ra chiến dịch quảng cáo để giữ chân khách hàng. Hoặc tôi có công nghệ độc quyền, nên khi có sản phẩm thay thế, tôi nhấn mạnh tính năng độc quyền của mình. Hoặc tôi có mạng lưới phân phối rộng, nên khi có đối thủ mới, tôi tăng cường phân phối để chiếm thị phần.
    - WO: Cải thiện, khắc phục điểm yếu để tận dụng cơ hội - tôi có điểm yếu là thiếu vốn, nhưng có cơ hội khi thị trường bất động sản khu vực đang trong quá trình phát triển, chuyển dịch sang xu hướng số hoá thông tin bất động sản → tôi tìm kiếm nhà đầu tư để huy động vốn phát triển app bất động sản.
@@ -155,7 +155,7 @@ Bước 5: Ưu tiên → Chọn 2-3 chiến lược khả thi nhất để tri�
 
 **Bài học thực tế**: 
 - SWOT giúp Grab nhận ra phải chuyển từ "growth at all costs" sang "profitable growth"
-- Chiến lược WT (cắt giảm) tuy đau đớn nhưng cần thiết → Grab lần đầu có lãi Q4/2023
+- Chiến lược WT (cắt giảm) tuy đau đớn nhưng cần thiết → Grab lần đầu đạt Adjusted EBITDA dương từ Q2/2023 (chưa phải lãi ròng; lãi ròng theo quý đến sau đó, cần kiểm chứng số liệu mới nhất)
 - **Hạn chế**: SWOT không cho Grab biết nên ưu tiên thị trường nào → cần BCG Matrix bổ sung - BCG Matrix là công cụ giúp đánh giá danh mục sản phẩm/dịch vụ dựa trên thị phần và tốc độ tăng trưởng thị trường, từ đó quyết định đầu tư, duy trì hay loại bỏ. Grab có thể dùng BCG để xác định nên tập trung vào dịch vụ nào (ride-hailing, food delivery, fintech) dựa trên vị trí của chúng trong ma trận BCG (Stars, Question Marks, Dogs, Cash Cows).
 - **Hạn chế**: SWOT không phân tích sâu về nguồn lực nào tạo lợi thế cạnh tranh bền vững → cần VRIO bổ sung
 
@@ -165,7 +165,7 @@ Bước 5: Ưu tiên → Chọn 2-3 chiến lược khả thi nhất để tri�
 
 ### 1. VRIO là gì?
 
-**VRIO** là framework do **Jay Barney** (1991) phát triển, dựa trên **Resource-Based View (RBV)** – quan điểm dựa trên nguồn lực. VRIO giúp đánh giá liệu nguồn lực/năng lực của doanh nghiệp có tạo ra **lợi thế cạnh tranh bền vững** (Sustained Competitive Advantage) hay không.
+**VRIO** là framework do **Jay Barney** phát triển (bản gốc VRIN năm 1991 trong bài "Firm Resources and Sustained Competitive Advantage"; bản VRIO với chữ O - Organization - được hoàn thiện ở sách "Gaining and Sustaining Competitive Advantage", 1997), dựa trên **Resource-Based View (RBV)** – quan điểm dựa trên nguồn lực. VRIO giúp đánh giá liệu nguồn lực/năng lực của doanh nghiệp có tạo ra **lợi thế cạnh tranh bền vững** (Sustained Competitive Advantage) hay không.
 
 VRIO là viết tắt của 4 câu hỏi:
 
@@ -203,7 +203,7 @@ VRIO là viết tắt của 4 câu hỏi:
 
 ### 3. Tại sao nguồn lực khó bắt chước (Inimitable)?
 
-4 lý do chính (gọi tắt CHIP):
+4 lý do chính (gọi tắt CHIP - cách gom nhóm của tài liệu này; Barney gốc nêu 3 nhóm: điều kiện lịch sử, mơ hồ nhân quả, phức tạp xã hội; bằng sáng chế là rào cản pháp lý bổ sung):
 1. **C – Causal Ambiguity** (Mơ hồ nhân quả): Đối thủ không hiểu tại sao nguồn lực tạo ra giá trị (VD: văn hóa Southwest Airlines)
 2. **H – Historical Conditions**: Do lịch sử/hoàn cảnh đặc biệt (VD: vị trí đất vàng của Highlands Coffee tại các ngã tư)
 3. **I – Imperfect Imitability**: Phát triển qua thời gian dài, không thể copy nhanh (VD: thương hiệu Coca-Cola xây dựng 130+ năm)
@@ -418,12 +418,12 @@ Bước 4: Xây dựng chiến lược
 4. Chiến lược → Đầu tư/bảo vệ hoạt động tạo lợi thế bền vững
 ```
 
-### Ví dụ về mô hình nhà hàng hải sản Năm Đảnh tại Đà Nẵng áp dụng phân tích SWOT - VRIO - Value Chain
+### Ví dụ về mô hình nhà hàng hải sản Đảnh Năm (Thọ Quang) tại Đà Nẵng áp dụng phân tích SWOT - VRIO - Value Chain
 #### 1. SWOT
 - Strength: Hải sản giá rẻ bình dân với giá cả dao động 90,000 vnd/đĩa nghêu - tôm - chíp - điệp - hàu - ếch - bò - bạch tuộc. Món gà 140,000 vnd/đĩa nửa con hoặc 250,000/đĩa cả con. Nước uống đồng giá 16,000 cho cola, trà, cam ép. Món mực cơm 120,000 vnd/đĩa, mực nái 270,000 vnd/đĩa. Cơm chiên hải sản - mì hải snar giá 80,000 vnd/đĩa. Lẩu cá, lẩu hải sản, lẩu thập cẩm giá khoảng 150,000 - 250,000 vnd/đĩa. Mặt bằng cửa hàng chính là đất sở hữu, không tốn tiền thuê mặt bằng hàng tháng.
 - Weakness: Chỉ có 1 mặt bằng cửa hàng duy nhất rộng 400 m2 nhưng lại ở trong hẻm nhỏ xe oto không thể đi vào, chỗ đỗ xe hạn chế. Chưa có kênh quảng cáo cho cửa hàng, chủ yếu biết đến bởi dân địa phương hoặc truyền miệng.
-- Opportunites: Thị trường du lịch tại Đà Nẵng đang ngày càng sôi động, lượng du khách quốc tế lẫn nội địa đang gia tăng từng năng bởi chính quyền Đà Nẵng đang tích cực quảng bá và xúc tiến du lịch địa phương như là một điểm đến an toàn, đáng tin cậy, đa dạng hoạt động tham quan và giải trí, chi phí phải chăng và chất lượng dịch vụ ngày càng tăng.
-- Threads: Các nhà hàng hải sản chất lượng cao đang mọc lên ngày càng nhiều dọc bãi biển khiến nguồn cung không còn dồi dào như trước và giá cả có thể biến động lớn do nhu cầu của các nhà hàng lớn. Cạnh tranh về chất lượng dịch vụ. Tràn lan các video review theo đơn đặt hàng của các nhà hàng lớn làm lu mờ hình ảnh của các nhà hàng bình dân. Trong cùng phân khúc bình dân thì các nhà hàng bình dân tự phát mọc lên ngày càng nhiều ở các mặt đường thuận lợi di chuyển hơn.
+- Opportunities: Thị trường du lịch tại Đà Nẵng đang ngày càng sôi động, lượng du khách quốc tế lẫn nội địa đang gia tăng từng năng bởi chính quyền Đà Nẵng đang tích cực quảng bá và xúc tiến du lịch địa phương như là một điểm đến an toàn, đáng tin cậy, đa dạng hoạt động tham quan và giải trí, chi phí phải chăng và chất lượng dịch vụ ngày càng tăng.
+- Threats: Các nhà hàng hải sản chất lượng cao đang mọc lên ngày càng nhiều dọc bãi biển khiến nguồn cung không còn dồi dào như trước và giá cả có thể biến động lớn do nhu cầu của các nhà hàng lớn. Cạnh tranh về chất lượng dịch vụ. Tràn lan các video review theo đơn đặt hàng của các nhà hàng lớn làm lu mờ hình ảnh của các nhà hàng bình dân. Trong cùng phân khúc bình dân thì các nhà hàng bình dân tự phát mọc lên ngày càng nhiều ở các mặt đường thuận lợi di chuyển hơn.
 
 #### 2. VRIO
 - Valuable: Có lợi thế về giá cả rẻ hơn so với các nhà hàng hải sản khác, phù hợp với phân khúc khách hàng bình dân. Mặt bằng sở hữu giúp giảm chi phí cố định.
@@ -437,6 +437,11 @@ Bước 4: Xây dựng chiến lược
 - Outbound Logistics: Cửa hàng chỉ phục vụ tại chỗ, không có dịch vụ giao hàng hoặc mang đi, hạn chế khả năng tiếp cận khách hàng.
 - Marketing & Sales: Chưa có chiến lược marketing rõ ràng, chủ yếu dựa vào truyền miệng và khách hàng địa phương, chưa tận dụng được cơ hội từ thị trường du lịch đang phát triển.
 - Service: Dịch vụ cơ bản, chưa có điểm khác biệt về trải nghiệm khách hàng, chưa có chương trình khuyến mãi hoặc chăm sóc khách hàng để tăng sự trung thành.
+
+#### 4. Kết luận chiến lược (kết hợp SWOT → VRIO → Value Chain → TOWS)
+- **VRIO tổng hợp**: Mặt bằng sở hữu = V✅ R✅ I✅ nhưng O chưa trọn vẹn (chưa khai thác khách du lịch) → "Lợi thế chưa khai thác"; mô hình bình dân giá rẻ = V✅ R❌ → chỉ Ngang bằng.
+- **TOWS gợi ý**: SO – dùng chi phí cố định thấp (S) để giữ giá rẻ và thu hút khách du lịch tiết kiệm (O) qua Google Maps/TikTok review thật; WO – lập kênh quảng cáo tối thiểu (W→O); ST – giữ giá niêm yết minh bạch chống review mua chuộc (T); WT – bổ sung bãi giữ xe/hướng dẫn đường để giảm điểm yếu hẻm nhỏ.
+- **Ưu tiên**: khâu yếu nhất của Value Chain là Marketing & Sales (chưa có chiến lược) → đầu tư trước ở đây thay vì mở rộng Operations.
 
 
 

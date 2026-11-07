@@ -1,0 +1,96 @@
+# SCHEMA.yaml — Quy ước cấu trúc của bộ skill "strategic-agent-skill" (Strategist)
+# Mọi file trong bộ skill phải tuân theo schema này. Ngôn ngữ nội dung: tiếng Việt, thuật ngữ Anh trong ngoặc.
+# Khóa (key) và id: tiếng Anh, snake_case, không dấu. Tất cả file là YAML thuần (UTF-8), không phụ thuộc đường dẫn tuyệt đối.
+# Cấu trúc GIỐNG bộ finance-agent-skill (3-financial-management) để dùng chung script nạp vào mba-agent-office; thêm khóa `frameworks`.
+
+version: 1.0
+skill_id: strategic-agent-skill
+module_ids:
+  m01: external_environment_pestel_porter
+  m02: internal_analysis_value_chain_vrio
+  m03: competitive_strategy
+  m04: growth_strategy_ansoff
+  m05: blue_ocean_strategy
+  m06: balanced_scorecard
+  m07: scenario_planning
+  m08: case_the_coffee_house
+  m09: strategic_case_studies_part1
+  m10: strategic_case_studies_part2
+# ---------- Schema file modules/mNN-<name>.yaml ----------
+module_schema:
+  id: "m01"                      # khớp module_ids
+  name_vi: ""
+  name_en: ""
+  purpose: ""                    # 1-3 câu: module giải quyết bài toán kinh doanh nào
+  when_to_use: []                # danh sách tình huống/câu hỏi điển hình kích hoạt module
+  prerequisites: []              # id module nên nắm trước
+  related_modules: []            # id module liên quan + lý do ngắn
+  concepts:                      # khái niệm cốt lõi
+    - term_vi: ""
+      term_en: ""
+      definition: ""
+      why_it_matters: ""         # TẠI SAO: vấn đề giải quyết, logic, nguồn gốc lịch sử (ai, năm nào) nếu có
+  formulas:                      # Công thức/chỉ số/thang điểm định lượng (HHI, CR4, scoring, xác suất kịch bản...) kèm biểu thức Python; để [] nếu topic không có
+    - id: "m01_npv"              # <module id>_<ten_ngan>, duy nhất toàn skill
+      name_vi: ""
+      name_en: ""
+      expression_latex: ""
+      expression_python: ""      # biểu thức/hàm Python chạy được, dùng đúng tên biến trong variables
+      excel: ""                  # hàm Excel tương ứng nếu có
+      variables:
+        - {symbol: "", meaning: "", unit: ""}
+      when_to_use: ""
+      why_it_works: ""           # logic đằng sau công thức, cho người mới
+      assumptions: []
+      pitfalls: []
+      interpretation: ""         # cách đọc kết quả, ngưỡng tham chiếu
+      example:                   # ví dụ số đã verify bằng Python
+        inputs: {}
+        steps: []
+        result: ""
+  frameworks:                    # (MỚI) mỗi framework/mô hình/ma trận/công cụ của topic (vd PESTEL, 5 Forces, STP, BSC...)
+    - id: "m01_pestel"
+      name_vi: ""
+      name_en: ""
+      origin: ""                 # ai tạo ra, năm nào, bối cảnh (TẠI SAO ra đời)
+      components: []             # các thành phần/trục/bước của framework
+      when_to_use: ""
+      how_to_apply: []           # các bước áp dụng cụ thể
+      how_to_read_results: ""
+      pitfalls: []
+      example: ""                # ví dụ áp dụng ngắn (VN/SME nếu có)
+  procedures:                    # quy trình từng bước (how-to) để giải bài toán
+    - id: ""
+      name: ""
+      steps: []
+      outputs: ""
+  decision_rules: []             # quy tắc ra quyết định dạng "Nếu ... thì ..."
+  benchmarks:                    # ngưỡng/khoảng tham chiếu (ghi rõ nguồn/độ tin cậy)
+    - {metric: "", value: "", context: "", confidence: "high|medium|low"}
+  pitfalls: []                   # sai lầm thường gặp
+  sme_vn_guidance: []            # áp dụng cho SME Việt Nam (tool, giá, pháp lý/thuế -> đánh dấu cần xác nhận)
+  case_lessons:                  # chắt lọc từ case study; KHÔNG chép cả case
+    - name: ""
+      type: "success|failure|sme"
+      setup: ""
+      key_calculations: []       # các phép tính then chốt kèm số
+      lesson: ""
+      data_reliability: "verified|illustrative|unverified"
+  worked_examples: []            # ví dụ tính toán mẫu đầy đủ (inputs, steps, result) để agent bắt chước
+  practice_questions:            # câu hỏi + đáp số/gợi ý
+    - {q: "", a: ""}
+  checklist: []                  # checklist rà soát trước khi áp dụng/báo cáo
+  excel_google_sheets_templates: []
+  source_file: ""                # tên file markdown gốc (tham khảo nguồn, vd 01-time-value-of-money.md)
+
+# ---------- Các file cấp skill ----------
+files:
+  00-README.yaml:            "Điểm vào cho agent mới: mục đích, cách nạp, thứ tự đọc, mục lục file"
+  SCHEMA.yaml:               "File này"
+  01-agent-profile.yaml:     "Vai trò, phạm vi, nguyên tắc hành xử, quy trình trả lời, kỷ luật tính toán, giới hạn/disclaimer"
+  02-decision-router.yaml:   "Bảng định tuyến: loại câu hỏi/tình huống -> module, công thức, playbook cần dùng"
+  03-playbooks.yaml:         "Kịch bản giải quyết vấn đề end-to-end (intake -> tính -> diễn giải -> khuyến nghị)"
+  04-report-templates.yaml:  "Mẫu báo cáo/bảng biểu đầu ra chuẩn"
+  05-glossary.yaml:          "Từ điển thuật ngữ Việt-Anh + ký hiệu"
+  06-formulas-index.yaml:    "Registry mọi công thức (sinh tự động từ modules/)"
+  modules/:                  "11 file tri thức theo chủ đề"

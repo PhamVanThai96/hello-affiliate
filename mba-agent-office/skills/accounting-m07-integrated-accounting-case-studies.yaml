@@ -1,0 +1,1286 @@
+id: accounting-m07
+title: "Kế toán m07: Case study kế toán tích hợp"
+summary: "Kết nối sáu mảng kế toán (Financial, Managerial, Cost, Budgeting, Variance, Ratios) thành một hệ thống ra quyết định theo vòng PDCA. Dùng khi một bài toán SME đa chiều (F&B, sản xuất, e-commerce, bán lẻ) cần chọn đúng chuỗi module, đúng thứ tự tính, và khi cần khuôn case để bắt …"
+agents: ["accountant"]
+order: 27
+when: ["case tich hop", "bai toan tong hop", "ke hoach ke toan toan dien", "pho viet chain", "greenpack", "moc thu", "techmart", "s-tech", "nui lua", "goi von series a", "phan tich toan dien", "ket hop cac phuong phap", "bai tap nhieu phan", "case study ke toan tich hop", "integrated accounting case studies"]
+body_max: 2757
+sections:
+  - id: "m07-tong-quan"
+    title: "Tổng quan m07"
+    tags: ["m07", "case", "study", "kế", "toán", "tích", "hợp", "integrated", "accounting", "studies"]
+    text: |-
+      Case study kế toán tích hợp (Integrated Accounting Case Studies) — module m07
+
+      Mục đích: Kết nối sáu mảng kế toán (Financial, Managerial, Cost, Budgeting, Variance, Ratios) thành một hệ thống ra quyết định theo vòng PDCA. Dùng khi một bài toán SME đa chiều (F&B, sản xuất, e-commerce, bán lẻ) cần chọn đúng chuỗi module, đúng thứ tự tính, và khi cần khuôn case để bắt chước (khởi nghiệp, mở chuỗi, gọi vốn, lãi nhưng thiếu tiền, phát hiện suy thoái sớm).
+
+      Dùng khi:
+      - Một quyết định đồng thời đụng nhiều mảng kế toán (ví dụ mở chi nhánh = CVP + ngân sách kịch bản + NPV + theo dõi variance + ratios).
+      - Chủ SME hỏi 'lãi mà sao thiếu tiền' (cần ba báo cáo tài chính khớp nhau + CCC + variance biên).
+      - Cần biết sản phẩm/món/dòng hàng nào lãi thật (ABC + Menu Engineering + CM tuyệt đối).
+      - Chuẩn bị gọi vốn/thẩm định (điều chỉnh VAS sang IFRS, pro-forma FCF, định giá TV, pitch bằng sáu công cụ).
+      - Cần phát hiện sớm suy thoái hoặc dựng hệ thống cảnh báo (cờ đỏ ratios, DuPont, ngưỡng kích hoạt hành động).
+      - Cần ma trận chọn công cụ, checklist tổng hợp hoặc kiểm tra tính nhất quán số liệu trước khi trình bày.
+
+      Nên nắm trước: - m01; - m02; - m03; - m04; - m05; - m06
+
+      Module liên quan: - m01 - BCTC, doanh thu ghi nhận, dự phòng, khấu hao, báo cáo lưu chuyển tiền tệ gián tiếp, VAS/IFRS. - m02 - CVP, BEP, biên an toàn, DOL, quyết định cắt/giữ, segment margin. - m03 - ABC, cost driver rate, Job costing, idle capacity. - m04 - ngân sách, rolling forecast, ZBB, kịch bản, pro-forma, dự báo dòng tiền 13 tuần. - m05 - variance NVL giá/lượng, ngân sách linh hoạt, variance khối lượng/biê…
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m07_adjusted_earnings_bridge: Cầu nối điều chỉnh lợi nhuận (VAS sang chuẩn nhà đầu tư)
+      - m07_menu_engineering: Phân loại Menu Engineering (Star/Plowhorse/Puzzle/Dog)
+      - m07_price_rise_breakeven_volume: Sản lượng sụt tối đa khi tăng giá mà lợi nhuận không giảm
+      - m07_scenario_expected_npv: NPV kịch bản và NPV kỳ vọng cho chi nhánh mới
+      - m07_lease_adjusted_de: D/E điều chỉnh nghĩa vụ thuê (kiểu IFRS 16)
+      - m07_gp_volume_margin_variance: Tách variance lợi nhuận gộp: khối lượng và biên
+      - m07_inventory_cash_release: Tiền mặt giải phóng khi giảm DIO
+      - m07_terminal_value_share: Pro-forma FCF, giá trị cuối kỳ và tỷ trọng TV
+      - m07_flexible_branch_decomp: Phân rã lệch lợi nhuận chi nhánh bằng ngân sách linh hoạt
+
+      Kho tra cứu của module: Khái niệm 6, Công thức 9, frameworks 2, Quy trình 4, Quy tắc quyết định 15, Chuẩn so sánh 11, Lỗi thường gặp 15, Lưu ý SME Việt Nam 7, Bài học case 4, Ví dụ có lời giải 5, Câu hỏi luyện tập 10, Checklist 15, Mẫu Excel/Sheets 6. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ định khoản", "lỗi thường gặp khấu hao").
+  - id: "m07-concepts-1"
+    title: "Khái niệm: Vòng PDCA kế toán"
+    tags: ["khái", "niệm", "vòng", "pdca", "kế", "toán"]
+    text: |-
+      term_vi: Vòng PDCA kế toán
+      term_en: Plan-Do-Check-Act accounting loop
+      definition: Plan = Budget/Forecast; Do = vận hành và ghi sổ (Financial Accounting); Check = Variance + Ratios; Act = điều chỉnh bằng CVP/ABC/quyết định, rồi quay lại Plan. Mỗi công cụ trả lời một câu hỏi khác nhau và có điểm mù riêng nên phải dùng kết hợp.
+      why_it_matters: Chỉ dùng một công cụ giống chẩn đoán bệnh bằng một loại xét nghiệm. Ratios chỉ là triệu chứng; variance chỉ ra lệch ở đâu; ABC/CVP cho nguyên nhân và hướng xử lý; budget đặt mốc để so sánh. Thiếu mắt xích Act thì cả vòng vô nghĩa (bài học TechMart).
+  - id: "m07-concepts-2"
+    title: "Khái niệm: Lãi kế toán khác tiền mặt"
+    tags: ["khái", "niệm", "lãi", "kế", "toán", "khác", "tiền", "mặt"]
+    text: |-
+      term_vi: Lãi kế toán khác tiền mặt
+      term_en: Profit vs cash
+      definition: LNST theo dồn tích (accrual) khác dòng tiền thực. Tăng tài sản không phải tiền (phải thu, tồn kho) giữ tiền lại; tăng nợ phải trả giải phóng tiền.
+      why_it_matters: Giải thích hiện tượng SME tăng trưởng nhanh vẫn thiếu tiền (overtrading). Mộc Thu lãi 960 nhưng tiền chỉ tăng 180 vì tồn kho và phải thu nuốt 450.
+  - id: "m07-concepts-3"
+    title: "Khái niệm: Lãi ảo do phân bổ chi phí"
+    tags: ["khái", "niệm", "lãi", "ảo", "do", "phân", "bổ", "chi", "phí"]
+    text: |-
+      term_vi: Lãi ảo do phân bổ chi phí
+      term_en: Cost distortion / cross-subsidy
+      definition: Phân bổ chi phí chung đều (hoặc theo doanh thu) làm sản phẩm phức tạp trông lãi hơn thực tế và sản phẩm đơn giản trông lãi ít hơn.
+      why_it_matters: Phở Việt (bún bò Huế 48,6% -> 31,5%), GreenPack (Hộp B 37,0% -> 13,7%), TechMart (điện thoại biên 3% bị logistics 4% làm lỗ) đều bị bóp méo. Quyết định đẩy/cắt dựa trên số phân bổ sai sẽ làm giảm lợi nhuận thật.
+  - id: "m07-concepts-4"
+    title: "Khái niệm: Số tuyệt đối và số phần trăm cho kết luận khác nhau"
+    tags: ["khái", "niệm", "số", "tuyệt", "đối", "và", "phần", "trăm", "cho", "kết", "luận", "khác"]
+    text: |-
+      term_vi: Số tuyệt đối và số phần trăm cho kết luận khác nhau
+      term_en: Absolute contribution vs percentage margin
+      definition: Khi chọn món/sản phẩm để đẩy, so sánh số dư đảm phí tuyệt đối trên mỗi đơn vị (đồng) chứ không chỉ biên phần trăm.
+      why_it_matters: Phở Wagyu biên 31,7% (thấp) nhưng CM 47,5k/món (cao nhất). Tiền thuê và lương trả bằng đồng, không bằng phần trăm.
+  - id: "m07-concepts-5"
+    title: "Khái niệm: Ngưỡng kích hoạt hành động"
+    tags: ["khái", "niệm", "ngưỡng", "kích", "hoạt", "hành", "động"]
+    text: |-
+      term_vi: Ngưỡng kích hoạt hành động
+      term_en: Action trigger
+      definition: Quy tắc định trước, ví dụ lệch trên 10% ba tháng liên tiếp thì họp khẩn, có người chịu trách nhiệm và hạn xử lý.
+      why_it_matters: TechMart có đủ dữ liệu nhưng không hành động vì không có trigger, không có owner, và bị recency bias (so với tháng trước thay vì với kế hoạch/cùng kỳ).
+  - id: "m07-concepts-6"
+    title: "Khái niệm: Điều chỉnh báo cáo khi thẩm định"
+    tags: ["khái", "niệm", "điều", "chỉnh", "báo", "cáo", "khi", "thẩm", "định"]
+    text: |-
+      term_vi: Điều chỉnh báo cáo khi thẩm định
+      term_en: Due diligence normalization (VAS to IFRS bridge)
+      definition: Nhà đầu tư điều chỉnh BCTC VAS về một chuẩn thống nhất (cut-off doanh thu, thuê tài sản IFRS 16, impairment) trước khi định giá; phân biệt khoản một lần (non-recurring) và lợi nhuận bền vững.
+      why_it_matters: Che giấu sẽ bị phát hiện khi thẩm định và mất uy tín. Lợi nhuận hiển thị giảm 34% nhưng lợi nhuận bền vững chỉ giảm khoảng 6,3% (GreenPack).
+  - id: "m07-formulas-1"
+    title: "Công thức: m07_adjusted_earnings_bridge — Cầu nối điều chỉnh lợi nhuận (VAS sang chuẩn nhà đầu tư)"
+    tags: ["công", "thức", "m07_adjusted_earnings_bridge", "cầu", "nối", "điều", "chỉnh", "lợi", "nhuận", "vas", "sang", "chuẩn"]
+    text: |-
+      id: m07_adjusted_earnings_bridge
+      name_vi: Cầu nối điều chỉnh lợi nhuận (VAS sang chuẩn nhà đầu tư)
+      name_en: Earnings normalization bridge
+      expression_latex: EBT_{adj} = EBT_{VAS} + \sum \Delta_i ; \; NI_{adj} = EBT_{adj}(1-t)
+      expression_python: ebt_adj = ebt_vas + sum(adjustments); ni_adj = ebt_adj*(1-t); ni_recurring = (ebt_vas + sum(recurring_adj))*(1-t)
+      excel: =EBT + SUM(dieu_chinh)  ;  =EBT_dc*(1-thue)
+      variables:
+      - symbol: ebt_vas
+        meaning: Lợi nhuận trước thuế theo VAS
+        unit: tr VNĐ
+      - symbol: adjustments
+        meaning: 'Các điều chỉnh (âm = giảm lợi nhuận): cut-off, IFRS 16, impairment, dự phòng, khấu hao'
+        unit: tr VNĐ
+      - symbol: t
+        meaning: Thuế suất (giản lược)
+        unit: tỷ lệ
+      when_to_use: Gọi vốn, M&A, vay lớn, hoặc tự rà soát BCTC trước khi ra quyết định đầu tư/vay.
+      why_it_works: Nhà đầu tư định giá dựa trên lợi nhuận bền vững và tài sản thật. Ghi doanh thu sớm hoặc giữ tài sản phồng khiến họ trả giá cao hơn thực tế, nên họ tự điều chỉnh. Tách khoản một lần để thấy sức sinh lời lặp lại.
+      assumptions:
+      - Thuế suất áp dụng phẳng cho mọi điều chỉnh (thực tế tùy quy định thuế VN, cần xác nhận).
+      pitfalls:
+      - Không tách khoản một lần (impairment) khỏi lợi nhuận chạy đều, dẫn đến kết luận quá bi quan.
+      - Bỏ qua tác động thuế hoãn lại thực tế của từng điều chỉnh.
+      interpretation: 'GreenPack: EBT 1.440 -> 950 (LNST 1.152 -> 760, -34%); chạy đều (bỏ impairment) 1.080, thấp hơn VAS 6,3%.'
+      example:
+        inputs:
+          ebt_vas: 1440
+          adjustments:
+          - -60
+          - -30
+          - -400
+          t: 0.2
+        steps:
+        - EBT_adj = 1440 - 490 = 950
+        - NI_adj = 950*0.8 = 760
+        - NI_chay_deu = (1440-90)*0.8 = 1080
+        result: 760 (-34,0% so với 1.152); bền vững 1.080 (-6,25%)
+  - id: "m07-formulas-2"
+    title: "Công thức: m07_menu_engineering — Phân loại Menu Engineering (Star/Plowhorse/Puzzle/Dog)"
+    tags: ["công", "thức", "m07_menu_engineering", "phân", "loại", "menu", "engineering", "star", "plowhorse", "puzzle", "dog"]
+    text: |-
+      id: m07_menu_engineering
+      name_vi: Phân loại Menu Engineering (Star/Plowhorse/Puzzle/Dog)
+      name_en: Menu engineering classification
+      expression_latex: CM_i = P_i - FC_i - C^{ABC}_i ; \; \overline{CM} = \sum w_i CM_i ; \; pop\_threshold = 70\% \times \frac{1}{n}
+      expression_python: cm_i = price - food_cost - prep_min*rate_per_min; cm_avg = sum(w*cm for w,cm in zip(weights,cms)); pop_thr = 0.7/n
+      excel: =SUMPRODUCT(ty_trong; CM)  ;  =0.7/COUNTA(mon)
+      variables:
+      - symbol: price
+        meaning: Giá bán
+        unit: k VNĐ/món
+      - symbol: food_cost
+        meaning: Chi phí nguyên liệu
+        unit: k VNĐ/món
+      - symbol: prep_min
+        meaning: Phút chuẩn bị (cost driver ABC)
+        unit: phút
+      - symbol: rate_per_min
+        meaning: Chi phí bếp chung trên mỗi phút
+        unit: k VNĐ/phút
+      - symbol: weights
+        meaning: Tỷ trọng số lượng bán (popularity)
+        unit: tỷ lệ
+      - symbol: n
+        meaning: Số món
+        unit: món
+      when_to_use: Tối ưu menu nhà hàng/quán cà phê, danh mục SKU bán lẻ; kết hợp ABC để CM phản ánh đúng công sức bếp.
+      why_it_works: 'Kasavana và Smith (1982) kết hợp hai trục: độ phổ biến (khách có chọn không) và lợi nhuận tuyệt đối (mỗi món góp bao nhiêu đồng). Món phổ biến + CM cao = Star; phổ biến + CM thấp = Plowhorse; ít phổ biến + CM cao = Puzzle; ít phổ biến + CM thấp = Dog. Dùng CM tuyệt đối vì chi phí cố định trả bằng đồng.'
+      assumptions:
+      - Tỷ trọng số lượng suy ra từ tỷ trọng doanh thu chia giá rồi chuẩn hóa tổng 100%.
+      - Một cost driver (phút bếp) đại diện cho chi phí bếp chung.
+      pitfalls:
+      - Dùng biên % thay CM tuyệt đối (Wagyu bị loại nhầm).
+      - Dùng food cost thuần mà không trừ công sức bếp (bún bò Huế lãi ảo).
+      - Bỏ món Dog mà không xét vai trò kéo khách/đi kèm (halo).
+      interpretation: 'Phở Việt: CM bình quân gia quyền 28,6k; ngưỡng phổ biến 14%. Star = phở bò TT, phở gà; Puzzle = Wagyu; Plowhorse = bún bò Huế, đồ uống; không có Dog.'
+      example:
+        inputs:
+          price:
+          - 70
+          - 150
+          - 65
+          - 60
+          - 30
+          fc_pct:
+          - 0.35
+          - 0.55
+          - 0.3
+          - 0.25
+          - 0.15
+          prep:
+          - 15
+          - 20
+          - 25
+          - 10
+          - 3
+          rev_share:
+          - 0.4
+          - 0.15
+          - 0.2
+          - 0.15
+          - 0.1
+          rate: 1.0
+        steps:
+        - 'CM: 30,5; 47,5; 20,5; 35,0; 22,5'
+        - 'Popularity: 36,6%; 6,4%; 19,7%; 16,0%; 21,3%'
+        - CM_avg = 28,63k
+        result: 'Star: phở bò TT, phở gà; Puzzle: Wagyu; Plowhorse: bún bò, đồ uống'
+  - id: "m07-formulas-3"
+    title: "Công thức: m07_price_rise_breakeven_volume — Sản lượng sụt tối đa khi tăng giá mà lợi nhuận không giảm"
+    tags: ["công", "thức", "m07_price_rise_breakeven_volume", "sản", "lượng", "sụt", "tối", "đa", "khi", "tăng", "giá", "mà"]
+    text: |-
+      id: m07_price_rise_breakeven_volume
+      name_vi: Sản lượng sụt tối đa khi tăng giá mà lợi nhuận không giảm
+      name_en: Break-even volume loss on price increase
+      expression_latex: L_{max} = 1 - \frac{CM_{old}}{CM_{new}}
+      expression_python: l_max = 1 - cm_old/cm_new
+      excel: =1-CM_cu/CM_moi
+      variables:
+      - symbol: cm_old
+        meaning: CM/đơn vị hiện tại
+        unit: VNĐ
+      - symbol: cm_new
+        meaning: CM/đơn vị sau tăng giá (biến phí không đổi)
+        unit: VNĐ
+      when_to_use: Đánh giá tăng giá món Puzzle, hoặc tăng giá sản phẩm biên thấp.
+      why_it_works: Tổng CM = CM/đv x Q. Lợi nhuận giữ nguyên khi CM_old x Q0 = CM_new x Q1, suy ra Q1/Q0 = CM_old/CM_new.
+      assumptions:
+      - Biến phí/đv không đổi; định phí không đổi; không xét hiệu ứng thay thế sang món khác.
+      pitfalls:
+      - Quên rằng tăng giá có thể kéo giảm lượng các món đi kèm.
+      interpretation: 'Càng thấp CM_old/CM_new càng an toàn. Wagyu 150k -> 180k: chịu được sụt lượng đến 38,7%.'
+      example:
+        inputs:
+          cm_old: 47.5
+          cm_new: 77.5
+        steps:
+        - CM_new = 180 - 82,5 - 20 = 77,5
+        - L = 1 - 47,5/77,5 = 0,387
+        result: 38,7%
+  - id: "m07-formulas-4"
+    title: "Công thức: m07_scenario_expected_npv — NPV kịch bản và NPV kỳ vọng cho chi nhánh mới"
+    tags: ["công", "thức", "m07_scenario_expected_npv", "npv", "kịch", "bản", "và", "kỳ", "vọng", "cho", "chi", "nhánh"]
+    text: |-
+      id: m07_scenario_expected_npv
+      name_vi: NPV kịch bản và NPV kỳ vọng cho chi nhánh mới
+      name_en: Scenario NPV and expected NPV
+      expression_latex: NPV_s = -I_0 + \sum_{t=1}^{5}\frac{CF_t}{(1+r)^t} ; \; E[NPV]=\sum p_s NPV_s
+      expression_python: npv_s = -i0 + sum(cf/(1+r)**(t+1) for t,cf in enumerate(cfs)); e_npv = sum(p*n for p,n in zip(probs,npvs))
+      excel: =NPV(r; CF1:CF5) - I0  ;  =SUMPRODUCT(xac_suat; NPV)
+      variables:
+      - symbol: i0
+        meaning: Vốn đầu tư ban đầu
+        unit: tr VNĐ
+      - symbol: cfs
+        meaning: Dòng tiền năm 1-5 (năm 1 bằng 80% mức ổn định do giai đoạn khởi động)
+        unit: tr VNĐ
+      - symbol: r
+        meaning: Tỷ suất chiết khấu (giả định 15%)
+        unit: tỷ lệ
+      - symbol: probs
+        meaning: Xác suất kịch bản
+        unit: tỷ lệ
+      when_to_use: Quyết định đầu tư lớn khó đảo ngược (chi nhánh, nhà máy) cần nhìn thấy mức mất ở kịch bản xấu.
+      why_it_works: Một con số dự báo tạo ảo giác chắc chắn; ba kịch bản buộc hỏi 'nếu sai thì mất bao nhiêu' trước khi ký hợp đồng thuê.
+      assumptions:
+      - Không tính giá trị thanh lý.
+      - Dòng tiền = lợi nhuận hoạt động (xấp xỉ), chưa tách thuế/khấu hao.
+      pitfalls:
+      - 'Chỉ nhìn NPV kỳ vọng dương mà bỏ qua tổn thất kịch bản xấu so với vốn đầu tư (Phở Việt: -1.234 = 77% vốn).'
+      interpretation: 'Phở Việt: Bull +2.061, Base +414, Bear -1.234, kỳ vọng 25/50/25 = +413,75. Mở có điều kiện (địa điểm kiểm chứng, đàm phán thuê, ngưỡng cắt lỗ).'
+      example:
+        inputs:
+          i0: 1600
+          tpd:
+          - 150
+          - 120
+          - 90
+          cm_per_bowl: 48000
+          fixed_m: 120
+        steps:
+        - LN/tháng = tô*30*48k - 120 -> 96,0; 52,8; 9,6
+        - 'CF năm 1 = 80% x 12 tháng: 922; 507; 92'
+        - 'NPV: +2.061; +414; -1.234'
+        result: E[NPV] = 413,75 tr; hoàn vốn base khoảng 2,7 năm
+  - id: "m07-formulas-5"
+    title: "Công thức: m07_lease_adjusted_de — D/E điều chỉnh nghĩa vụ thuê (kiểu IFRS 16)"
+    tags: ["công", "thức", "m07_lease_adjusted_de", "điều", "chỉnh", "nghĩa", "vụ", "thuê", "kiểu", "ifrs", "16"]
+    text: |-
+      id: m07_lease_adjusted_de
+      name_vi: D/E điều chỉnh nghĩa vụ thuê (kiểu IFRS 16)
+      name_en: Lease-adjusted leverage
+      expression_latex: PV_{lease} = L\,\frac{1-(1+r)^{-n}}{r} ; \; \frac{D}{E}_{adj} = \frac{D + PV_{lease}}{E}
+      expression_python: pv_lease = rent*(1-(1+r)**-n)/r; de_adj = (debt + pv_lease)/equity
+      excel: =PV(r; n; -rent)  ;  =(Nợ+PV)/Vốn chủ
+      variables:
+      - symbol: rent
+        meaning: Tiền thuê hằng năm
+        unit: tỷ VNĐ
+      - symbol: n
+        meaning: Số năm còn lại của hợp đồng
+        unit: năm
+      - symbol: r
+        meaning: Lãi suất vay tăng thêm để chiết khấu
+        unit: tỷ lệ
+      - symbol: debt
+        meaning: Nợ vay ghi trên bảng cân đối
+        unit: tỷ VNĐ
+      - symbol: equity
+        meaning: Vốn chủ sở hữu
+        unit: tỷ VNĐ
+      when_to_use: Chuỗi bán lẻ/F&B thuê nhiều mặt bằng dài hạn; phân tích đòn bẩy thực.
+      why_it_works: Tiền thuê dài hạn bắt buộc phải trả giống nợ vay. Theo VAS thuê hoạt động thường ngoài bảng, IFRS 16 buộc ghi nhận; ban lãnh đạo cần nhìn nó như nợ cố định khi đánh giá đòn bẩy.
+      assumptions:
+      - Tiền thuê đều hằng năm, không gia hạn, không có điều khoản chấm dứt sớm.
+      pitfalls:
+      - Tưởng 'ngoài bảng' là 'không phải nợ'.
+      - Cần xác nhận quy định VAS hiện hành về ghi nhận thuê.
+      interpretation: 'TechMart: PV thuê 87,6 tỷ; D/E từ 1,0 lên 1,88.'
+      example:
+        inputs:
+          rent: 18
+          n: 7
+          r: 0.1
+          debt: 100
+          equity: 100
+        steps:
+        - Annuity factor = (1-1,1^-7)/0,1 = 4,868
+        - PV = 18*4,868 = 87,63
+        - D/E_adj = 187,63/100
+        result: PV 87,6 tỷ; D/E_adj 1,88
+  - id: "m07-formulas-6"
+    title: "Công thức: m07_gp_volume_margin_variance — Tách variance lợi nhuận gộp: khối lượng và biên"
+    tags: ["công", "thức", "m07_gp_volume_margin_variance", "tách", "variance", "lợi", "nhuận", "gộp", "khối", "lượng", "và", "biên"]
+    text: |-
+      id: m07_gp_volume_margin_variance
+      name_vi: 'Tách variance lợi nhuận gộp: khối lượng và biên'
+      name_en: Gross profit volume vs margin variance
+      expression_latex: V_{vol} = (Rev_a - Rev_b)\,m_b ; \; V_{mar} = (m_a - m_b)\,Rev_a
+      expression_python: v_vol = (rev_a-rev_b)*m_b; v_mar = (m_a-m_b)*rev_a; assert abs((v_vol+v_mar)-(rev_a*m_a-rev_b*m_b))<1e-9
+      excel: =(DT_TT-DT_NS)*Bien_NS  ;  =(Bien_TT-Bien_NS)*DT_TT
+      variables:
+      - symbol: rev_a, rev_b
+        meaning: Doanh thu thực tế và ngân sách
+        unit: tr VNĐ
+      - symbol: m_a, m_b
+        meaning: Biên gộp thực tế và ngân sách
+        unit: tỷ lệ
+      when_to_use: Doanh thu vượt kế hoạch nhưng nghi ngờ bán rẻ xả hàng.
+      why_it_works: Tổng lệch lợi nhuận gộp che lấp hai lực ngược chiều; tách ra để thấy lượng bán thêm (tốt) và giảm giá (xấu).
+      assumptions:
+      - Biên ngân sách áp cho phần doanh thu tăng thêm.
+      pitfalls:
+      - Chỉ nhìn tổng +180 mà không thấy -240 do giảm giá.
+      interpretation: 'Mộc Thu: +420 (F) khối lượng, -240 (U) biên, tổng +180 (F). Đối chiếu m05_sales_volume để mở rộng sang mix/quantity.'
+      example:
+        inputs:
+          rev_a: 12000
+          rev_b: 11000
+          m_a: 0.4
+          m_b: 0.42
+        steps:
+        - V_vol = 1000*0,42 = 420
+        - V_mar = -0,02*12000 = -240
+        - Tổng = 180 = 4.800 - 4.620
+        result: +420 (F), -240 (U), +180 (F)
+  - id: "m07-formulas-7"
+    title: "Công thức: m07_inventory_cash_release — Tiền mặt giải phóng khi giảm DIO"
+    tags: ["công", "thức", "m07_inventory_cash_release", "tiền", "mặt", "giải", "phóng", "khi", "giảm", "dio"]
+    text: |-
+      id: m07_inventory_cash_release
+      name_vi: Tiền mặt giải phóng khi giảm DIO
+      name_en: Cash released by lower DIO
+      expression_latex: Cash = \frac{COGS}{365}(DIO_{old}-DIO_{new})
+      expression_python: cash = cogs/365*(dio_old-dio_new)
+      excel: =GiaVon/365*(DIO_cu-DIO_moi)
+      variables:
+      - symbol: cogs
+        meaning: Giá vốn hàng bán năm
+        unit: tr VNĐ
+      - symbol: dio_old, dio_new
+        meaning: Số ngày tồn kho hiện tại và mục tiêu
+        unit: ngày
+      when_to_use: Cần tiền nhập hàng mùa cao điểm mà chưa muốn vay.
+      why_it_works: Giá vốn bình quân mỗi ngày nhân số ngày tồn kho được rút ngắn chính là lượng vốn không còn nằm trong kho.
+      assumptions:
+      - Giá vốn ổn định; rút ngắn DIO không làm mất doanh thu (hết hàng).
+      pitfalls:
+      - Giảm tồn quá tay gây out-of-stock.
+      interpretation: 'Mộc Thu: DIO 83,6 -> 60 ngày giải phóng khoảng 465 tr.'
+      example:
+        inputs:
+          cogs: 7200
+          dio_old: 83.6
+          dio_new: 60
+        steps:
+        - 7200/365 = 19,73 tr/ngày
+        - x 23,6 ngày = 465,5
+        result: 465,5 tr
+  - id: "m07-formulas-8"
+    title: "Công thức: m07_terminal_value_share — Pro-forma FCF, giá trị cuối kỳ và tỷ trọng TV"
+    tags: ["công", "thức", "m07_terminal_value_share", "pro", "forma", "fcf", "giá", "trị", "cuối", "kỳ", "và", "tỷ"]
+    text: |-
+      id: m07_terminal_value_share
+      name_vi: Pro-forma FCF, giá trị cuối kỳ và tỷ trọng TV
+      name_en: FCF pro-forma and terminal value share
+      expression_latex: FCF = EBIT(1-t)+D\&A-CapEx-\Delta NWC ; \; TV_n=\frac{FCF_n(1+g)}{r-g} ; \; share=\frac{PV(TV)}{PV_{FCF}+PV(TV)}
+      expression_python: fcf = ebit*(1-t)+da-capex-dnwc; tv = fcf_n*(1+g)/(r-g); pv_tv = tv/(1+r)**n; share = pv_tv/(pv_fcf+pv_tv)
+      excel: =EBIT*(1-t)+KH-CapEx-dNWC  ;  =FCF*(1+g)/(r-g)
+      variables:
+      - symbol: t
+        meaning: Thuế suất
+        unit: tỷ lệ
+      - symbol: g
+        meaning: Tăng trưởng dài hạn (3%)
+        unit: tỷ lệ
+      - symbol: r
+        meaning: Tỷ suất chiết khấu (15%)
+        unit: tỷ lệ
+      when_to_use: Chuẩn bị gọi vốn; kiểm tra độ nhạy của định giá.
+      why_it_works: Nhà đầu tư mua dòng tiền tự do chứ không mua lợi nhuận kế toán vì chỉ FCF dùng để hoàn vốn và chia cổ tức.
+      assumptions:
+      - Giả định minh họa; TV Gordon nhạy với r và g.
+      pitfalls:
+      - TV chiếm trên 80% giá trị nên sai nhẹ g/r làm lệch lớn; luôn chuẩn bị kịch bản doanh thu chậm 30%.
+      interpretation: 'GreenPack: PV(FCF 1-5) 10,75; TV 106,09; PV(TV) 52,75; giá trị 63,49 tỷ; TV 83,1%; FCF lũy kế dương năm 3.'
+      example:
+        inputs:
+          fcf:
+          - -6.19
+          - 1.5
+          - 5.84
+          - 8.76
+          - 12.36
+          r: 0.15
+          g: 0.03
+        steps:
+        - PV(FCF) = 10,75
+        - TV = 12,36*1,03/0,12 = 106,09
+        - PV(TV) = 52,75
+        result: Giá trị 63,49 tỷ; TV 83%
+  - id: "m07-formulas-9"
+    title: "Công thức: m07_flexible_branch_decomp — Phân rã lệch lợi nhuận chi nhánh bằng ngân sách linh hoạt"
+    tags: ["công", "thức", "m07_flexible_branch_decomp", "phân", "rã", "lệch", "lợi", "nhuận", "chi", "nhánh", "bằng", "ngân"]
+    text: |-
+      id: m07_flexible_branch_decomp
+      name_vi: Phân rã lệch lợi nhuận chi nhánh bằng ngân sách linh hoạt
+      name_en: Branch profit variance decomposition
+      expression_latex: V_{vol}=-(\Delta Rev)(1-fc\%_{std}) ; \; V_{fc}=FC_a - fc\%_{std}Rev_a ; \; V_{labor}=Lab_a-Lab_b
+      expression_python: v_vol = (rev_a-rev_b)*(1-fc_std); v_fc = -(fc_a - fc_std*rev_a); v_lab = -(lab_a-lab_b); total = v_vol+v_fc+v_lab
+      excel: =(DT_TT-DT_NS)*(1-fc_chuan)
+      variables:
+      - symbol: fc_std
+        meaning: Food cost chuẩn % doanh thu
+        unit: tỷ lệ
+      - symbol: fc_a
+        meaning: Food cost thực tế
+        unit: tr VNĐ
+      - symbol: lab_a, lab_b
+        meaning: Nhân công thực tế và ngân sách
+        unit: tr VNĐ
+      when_to_use: Chi nhánh 'đỏ' cần biết bao nhiêu lệch là ngoại cảnh, bao nhiêu là vận hành sửa được.
+      why_it_works: Bán ít thì food cost tuyệt đối đương nhiên giảm; phải điều chỉnh ngân sách theo doanh thu thực rồi mới so để tách thiệt hại do vận hành khỏi thiệt hại do khối lượng.
+      assumptions:
+      - Food cost là biến phí thuần; thuê và chi phí khác là định phí không lệch.
+      pitfalls:
+      - So với ngân sách tĩnh sẽ đổ hết cho 'khu vực xấu'.
+      interpretation: 'Thủ Đức: lệch -41,2 tr = -17,4 (khối lượng, 42%) -11,8 (food cost) -12,0 (nhân công); 58% sửa được.'
+      example:
+        inputs:
+          rev_b: 320
+          rev_a: 294.4
+          fc_std: 0.32
+          fc_a: 106.0
+          lab_b: 80
+          lab_a: 92
+        steps:
+        - V_vol = -25,6*0,68 = -17,41
+        - V_fc = -(106,0 - 94,21) = -11,79
+        - V_lab = -12
+        - Tổng = -41,2 = -3,6 - 37,6
+        result: -41,2 tr; 58% sửa được
+  - id: "m07-frameworks-1"
+    title: "Frameworks: m07_tool_selection_matrix — Ma trận chọn công cụ theo tình huống"
+    tags: ["frameworks", "m07_tool_selection_matrix", "ma", "trận", "chọn", "công", "cụ", "theo", "tình", "huống"]
+    text: |-
+      id: m07_tool_selection_matrix
+      name_vi: Ma trận chọn công cụ theo tình huống
+      name_en: Tool selection matrix
+      origin: Tổng hợp từ 4 case của nguồn; nền là vòng PDCA.
+      components:
+      - Mở quán/sản phẩm mới -> CVP (m02) + NPV kịch bản (m04); Case 1.
+      - Sản phẩm nào thật sự lãi -> ABC (m03) + Menu Engineering; Case 1, 2.
+      - Lãi nhưng thiếu tiền -> báo cáo lưu chuyển tiền gián tiếp (m01) + CCC (m06); Case 3.
+      - Chi nhánh/bộ phận kém -> ngân sách linh hoạt + variance (m05); Case 1, 3.
+      - Gọi vốn/thẩm định -> Financial Accounting + FCF + DuPont; Case 2.
+      - Phát hiện sớm suy thoái -> ratios + DuPont + trigger (m06, m05); Case 4.
+      when_to_use: Mọi lần nhận bài toán SME đa chiều, trước khi bắt đầu tính.
+      how_to_apply:
+      - Xác định câu hỏi cốt lõi (khả thi, lãi thật, thiếu tiền, ai kém, gọi vốn, cảnh báo).
+      - Chọn công cụ chính từ ma trận, rồi công cụ bổ trợ để che điểm mù.
+      - 'Chạy theo thứ tự nguồn dữ liệu: Financial -> Cost/Managerial -> Budget -> Variance -> Ratios.'
+      how_to_read_results: Kết luận chỉ chấp nhận khi ít nhất hai công cụ độc lập cùng chỉ một hướng, hoặc mâu thuẫn được giải thích.
+      pitfalls:
+      - Chỉ dùng ratios (triệu chứng) mà không xuống tận nguyên nhân bằng ABC/variance.
+      example: 'Mộc Thu: Current 1,95 đẹp -> Quick 0,79 xấu -> CFS chỉ ra tồn kho nuốt tiền -> variance chỉ ra bán rẻ xả hàng -> hành động giảm DIO.'
+  - id: "m07-frameworks-2"
+    title: "Frameworks: m07_pdca_chain — Chuỗi thất bại và chuỗi cảnh báo (TechMart)"
+    tags: ["frameworks", "m07_pdca_chain", "chuỗi", "thất", "bại", "và", "cảnh", "báo", "techmart"]
+    text: |-
+      id: m07_pdca_chain
+      name_vi: Chuỗi thất bại và chuỗi cảnh báo (TechMart)
+      name_en: Failure chain
+      origin: Case 4 nguồn.
+      components:
+      - BCTC gây hiểu lầm (doanh thu sớm, tồn kho phồng, khấu hao sai).
+      - Cost accounting không có (không P&L cửa hàng/nhóm hàng).
+      - Ngân sách lạc quan, không kịch bản.
+      - Variance phát hiện nhưng không hành động.
+      - Ratios cờ đỏ 2+ năm bị bỏ qua.
+      when_to_use: Thiết kế hệ thống kiểm soát hoặc rà soát DN đang suy giảm.
+      how_to_apply:
+      - Kiểm tra từng mắt xích có tồn tại và có owner không.
+      - Đặt trigger số hóa trước (lệch >10% ba tháng liên tiếp).
+      - Gắn mỗi cờ đỏ ratios với hành động cụ thể.
+      how_to_read_results: Mỗi mắt xích hỏng khuếch đại mắt xích sau; sửa từ gốc (số liệu) trước.
+      pitfalls:
+      - Optimism bias; recency bias; đổ lỗi ngoại cảnh (COVID).
+      example: 'TechMart: ROE +15% -> -48% do margin 3% -> -12%, turnover 2,5 -> 0,8, EM 2,0 -> 5,0.'
+  - id: "m07-procedures-1"
+    title: "Quy trình: m07_proc_multi_dim_router — Định tuyến bài toán đa chiều theo loại hình"
+    tags: ["quy", "trình", "m07_proc_multi_dim_router", "định", "tuyến", "bài", "toán", "đa", "chiều", "theo", "loại", "hình"]
+    text: |-
+      id: m07_proc_multi_dim_router
+      name: Định tuyến bài toán đa chiều theo loại hình
+      steps:
+      - 'F&B (quán/chuỗi): m02 CVP/BEP + biên an toàn -> m03 ABC theo phút bếp -> Menu Engineering (m07) -> m04 NPV kịch bản chi nhánh -> m05 ngân sách linh hoạt từng chi nhánh -> m06 ratios + DuPont để Go/No-go.'
+      - 'Sản xuất (SME): m01 điều chỉnh BCTC -> m03 ABC/Job costing -> m02 quyết định giá/sản lượng tối thiểu -> m04 pro-forma FCF + ZBB -> m05 NVL giá/lượng -> m06 ratios -> pitch.'
+      - 'E-commerce/online: m01 3 BCTC khớp (IS, BS, CFS) -> m06 Current/Quick/CCC/DuPont -> m02 CVP (CM thấp) -> m05 variance khối lượng/biên -> m04 dòng tiền 13 tuần.'
+      - 'Bán lẻ nhiều cửa hàng: m01 điều chỉnh lợi nhuận và nợ thuê -> m03 P&L theo cửa hàng/nhóm hàng (ABC logistics) -> m04 rolling forecast + kịch bản xấu + ZBB -> m05 trigger -> m06 cờ đỏ + DuPont.'
+      - Luôn kết thúc bằng bước kiểm tra nhất quán (BS cân, CFS khớp, tổng ABC = quỹ gốc) bằng python3.
+      outputs: Chuỗi module có thứ tự, bảng số liệu từng bước, khuyến nghị có điều kiện và ngưỡng hành động.
+  - id: "m07-procedures-2"
+    title: "Quy trình: m07_proc_profit_vs_cash — Chẩn đoán 'lãi mà thiếu tiền'"
+    tags: ["quy", "trình", "m07_proc_profit_vs_cash", "chẩn", "đoán", "lãi", "mà", "thiếu", "tiền"]
+    text: |-
+      id: m07_proc_profit_vs_cash
+      name: Chẩn đoán 'lãi mà thiếu tiền'
+      steps:
+      - Dựng IS, BS hai kỳ; kiểm tra BS cân và lợi nhuận giữ lại = đầu kỳ + LNST - cổ tức.
+      - 'Lập CFS gián tiếp: LNST + khấu hao - tăng phải thu - tăng tồn kho + tăng phải trả NCC + tăng chi phí phải trả; CFO, CFI, CFF; khớp tiền cuối kỳ.'
+      - Tính Current, Quick, DIO/DSO/DPO bình quân, CCC, Interest Coverage.
+      - DuPont (dùng tài sản và vốn chủ bình quân) để thấy ROE cao nhờ vòng quay hay đòn bẩy.
+      - CVP để biết biên an toàn; variance khối lượng/biên để biết có bán rẻ xả hàng không.
+      - 'Khuyến nghị: giảm DIO (tính tiền giải phóng), dự báo tiền 13 tuần, cắt cổ tức vượt dòng tiền, theo dõi 4 chỉ số hằng tháng.'
+      outputs: Bảng CFS, CCC, tiền giải phóng, kế hoạch hành động.
+  - id: "m07-procedures-3"
+    title: "Quy trình: m07_proc_investor_ready — Chuẩn bị hồ sơ gọi vốn"
+    tags: ["quy", "trình", "m07_proc_investor_ready", "chuẩn", "bị", "hồ", "sơ", "gọi", "vốn"]
+    text: |-
+      id: m07_proc_investor_ready
+      name: Chuẩn bị hồ sơ gọi vốn
+      steps:
+      - Điều chỉnh BCTC (cut-off, IFRS 16, impairment) và tách khoản một lần.
+      - ABC giá thành từng dòng sản phẩm, lộ trình nâng biên sản phẩm kém.
+      - Pro-forma 5 năm, FCF, TV, ba kịch bản; nêu tỷ trọng TV.
+      - ZBB cho OpEx năm 1 xếp hạng gói chi phí.
+      - Bảng điểm variance hằng tháng + ratios + DuPont.
+      - Kiểm tra nhất quán số trước khi đưa vào pitch.
+      outputs: Bộ slide sáu công cụ và bảng đối chiếu điều chỉnh.
+  - id: "m07-procedures-4"
+    title: "Quy trình: m07_proc_early_warning — Thiết lập hệ thống cảnh báo sớm"
+    tags: ["quy", "trình", "m07_proc_early_warning", "thiết", "lập", "hệ", "thống", "cảnh", "báo", "sớm"]
+    text: |-
+      id: m07_proc_early_warning
+      name: Thiết lập hệ thống cảnh báo sớm
+      steps:
+      - 'Chọn 8 chỉ số: Inventory Turnover/DIO, biên gộp, Current, D/E, Interest Coverage, ROE, CCC, variance doanh thu so kế hoạch.'
+      - Đặt ngưỡng định lượng và quy tắc 2 kỳ liên tiếp xấu đi.
+      - Gắn owner và hạn xử lý; nêu trước ngưỡng cắt lỗ (3 tháng dưới BEP).
+      - So với kế hoạch và cùng kỳ, không chỉ với tháng trước.
+      outputs: Dashboard đèn tín hiệu, biên bản họp khẩn khi vượt trigger.
+  - id: "m07-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu quyết định đầu tư lớn khó đảo ngược thì bắt buộc 3 kịch bản và nêu mức lỗ kịch bản xấu so với v…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "đầu", "tư", "lớn", "khó", "đảo", "ngược", "thì"]
+    text: |-
+      Nếu quyết định đầu tư lớn khó đảo ngược thì bắt buộc 3 kịch bản và nêu mức lỗ kịch bản xấu so với vốn; nếu lỗ xấu >50% vốn thì cần điều kiện giảm rủi ro trước khi ký.
+  - id: "m07-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu biên an toàn <10% (Phở Việt quán đầu: ~7%) thì theo dõi khách/ngày hằng ngày từ tháng đầu."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "biên", "an", "toàn", "10", "phở", "việt", "quán"]
+    text: |-
+      Nếu biên an toàn <10% (Phở Việt quán đầu: ~7%) thì theo dõi khách/ngày hằng ngày từ tháng đầu.
+  - id: "m07-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu chọn món/sản phẩm để đẩy thì so CM tuyệt đối sau ABC, không chỉ biên %."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chọn", "món", "sản", "phẩm", "để", "đẩy", "thì"]
+    text: |-
+      Nếu chọn món/sản phẩm để đẩy thì so CM tuyệt đối sau ABC, không chỉ biên %.
+  - id: "m07-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu Plowhorse thì giảm độ phức tạp chế biến hoặc bán combo; Puzzle thì đẩy bán hoặc thử tăng giá sa…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "plowhorse", "thì", "giảm", "độ", "phức", "tạp", "chế"]
+    text: |-
+      Nếu Plowhorse thì giảm độ phức tạp chế biến hoặc bán combo; Puzzle thì đẩy bán hoặc thử tăng giá sau khi tính sản lượng sụt tối đa; Dog mới xét cắt.
+  - id: "m07-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu Quick Ratio <1 trong khi Current Ratio đẹp và tồn kho >50% tài sản ngắn hạn thì ưu tiên giảm DI…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "quick", "ratio", "trong", "khi", "current", "đẹp", "và"]
+    text: |-
+      Nếu Quick Ratio <1 trong khi Current Ratio đẹp và tồn kho >50% tài sản ngắn hạn thì ưu tiên giảm DIO và lập dự báo tiền 13 tuần.
+  - id: "m07-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu cổ tức vượt mức tăng tiền ròng thì giữ lại làm vốn lưu động cho đến khi CCC cải thiện."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cổ", "tức", "vượt", "mức", "tăng", "tiền", "ròng"]
+    text: |-
+      Nếu cổ tức vượt mức tăng tiền ròng thì giữ lại làm vốn lưu động cho đến khi CCC cải thiện.
+  - id: "m07-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu doanh thu vượt kế hoạch nhưng biên gộp thấp hơn kế hoạch thì tách variance khối lượng/biên trướ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "doanh", "thu", "vượt", "kế", "hoạch", "nhưng", "biên"]
+    text: |-
+      Nếu doanh thu vượt kế hoạch nhưng biên gộp thấp hơn kế hoạch thì tách variance khối lượng/biên trước khi ăn mừng.
+  - id: "m07-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu chi nhánh đỏ thì dựng ngân sách linh hoạt tách khối lượng, food cost, nhân công; chỉ 42% là ngo…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chi", "nhánh", "đỏ", "thì", "dựng", "ngân", "sách"]
+    text: |-
+      Nếu chi nhánh đỏ thì dựng ngân sách linh hoạt tách khối lượng, food cost, nhân công; chỉ 42% là ngoại cảnh còn lại sửa được.
+  - id: "m07-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu chi nhánh vẫn lỗ sau 3 tháng hành động khắc phục thì xem xét đóng/chuyển địa điểm."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chi", "nhánh", "vẫn", "lỗ", "sau", "tháng", "hành"]
+    text: |-
+      Nếu chi nhánh vẫn lỗ sau 3 tháng hành động khắc phục thì xem xét đóng/chuyển địa điểm.
+  - id: "m07-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu variance cùng chiều bất lợi lệch >10% ba tháng liên tiếp thì họp khẩn có owner và hạn."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "variance", "cùng", "chiều", "bất", "lợi", "lệch", "10"]
+    text: |-
+      Nếu variance cùng chiều bất lợi lệch >10% ba tháng liên tiếp thì họp khẩn có owner và hạn.
+  - id: "m07-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu ROE cao nhưng nhờ equity multiplier thì coi là mong manh; DuPont trước khi kết luận."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "roe", "cao", "nhưng", "nhờ", "equity", "multiplier", "thì"]
+    text: |-
+      Nếu ROE cao nhưng nhờ equity multiplier thì coi là mong manh; DuPont trước khi kết luận.
+  - id: "m07-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu chuỗi có 3/8 chi nhánh đỏ thì sửa trước rồi mới mở rộng; không mở quá 3 chi nhánh/năm đầu; nhượ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chuỗi", "có", "chi", "nhánh", "đỏ", "thì", "sửa"]
+    text: |-
+      Nếu chuỗi có 3/8 chi nhánh đỏ thì sửa trước rồi mới mở rộng; không mở quá 3 chi nhánh/năm đầu; nhượng quyền chỉ khi quy trình định lượng chuẩn hóa.
+  - id: "m07-decision_rules-13"
+    title: "Quy tắc quyết định: Nếu nhà đầu tư thẩm định thì đưa bảng điều chỉnh VAS -> IFRS chủ động, tách khoản một lần."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "nhà", "đầu", "tư", "thẩm", "thì", "đưa", "bảng"]
+    text: |-
+      Nếu nhà đầu tư thẩm định thì đưa bảng điều chỉnh VAS -> IFRS chủ động, tách khoản một lần.
+  - id: "m07-decision_rules-14"
+    title: "Quy tắc quyết định: Nếu có nhiều mặt bằng thuê dài hạn thì tính D/E điều chỉnh nghĩa vụ thuê."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "có", "nhiều", "mặt", "bằng", "thuê", "dài", "hạn"]
+    text: |-
+      Nếu có nhiều mặt bằng thuê dài hạn thì tính D/E điều chỉnh nghĩa vụ thuê.
+  - id: "m07-decision_rules-15"
+    title: "Quy tắc quyết định: Nếu giá trị dự án có TV >80% thì bắt buộc kịch bản doanh thu chậm và ma trận độ nhạy r-g."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "trị", "dự", "án", "có", "tv", "80"]
+    text: |-
+      Nếu giá trị dự án có TV >80% thì bắt buộc kịch bản doanh thu chậm và ma trận độ nhạy r-g.
+  - id: "m07-benchmarks-1"
+    title: "Chuẩn so sánh: Gross margin F&B"
+    tags: ["chuẩn", "so", "sánh", "gross", "margin"]
+    text: |-
+      metric: Gross margin F&B
+      value: 60-70%
+      context: Chuỗi phở; tham khảo nguồn, cần đối chiếu
+      confidence: low
+  - id: "m07-benchmarks-2"
+    title: "Chuẩn so sánh: Operating margin / Net margin F&B"
+    tags: ["chuẩn", "so", "sánh", "operating", "margin", "net"]
+    text: |-
+      metric: Operating margin / Net margin F&B
+      value: 8-15% / 5-10%
+      context: Tham khảo nguồn
+      confidence: low
+  - id: "m07-benchmarks-3"
+    title: "Chuẩn so sánh: Current / Quick Ratio"
+    tags: ["chuẩn", "so", "sánh", "current", "quick", "ratio"]
+    text: |-
+      metric: Current / Quick Ratio
+      value: 1,0-1,5 / >1,0
+      context: F&B; dưới 1 báo động
+      confidence: medium
+  - id: "m07-benchmarks-4"
+    title: "Chuẩn so sánh: D/E (tổng nợ/vốn chủ)"
+    tags: ["chuẩn", "so", "sánh", "tổng", "nợ", "vốn", "chủ"]
+    text: |-
+      metric: D/E (tổng nợ/vốn chủ)
+      value: 1,0-2,0
+      context: F&B tham khảo
+      confidence: low
+  - id: "m07-benchmarks-5"
+    title: "Chuẩn so sánh: Interest Coverage"
+    tags: ["chuẩn", "so", "sánh", "interest", "coverage"]
+    text: |-
+      metric: Interest Coverage
+      value: '>3x an toàn'
+      context: Quy tắc chung
+      confidence: medium
+  - id: "m07-benchmarks-6"
+    title: "Chuẩn so sánh: ROE / ROA F&B"
+    tags: ["chuẩn", "so", "sánh", "roe", "roa"]
+    text: |-
+      metric: ROE / ROA F&B
+      value: 15-25% / 8-12%
+      context: Tham khảo nguồn
+      confidence: low
+  - id: "m07-benchmarks-7"
+    title: "Chuẩn so sánh: Inventory Turnover F&B hàng tươi"
+    tags: ["chuẩn", "so", "sánh", "inventory", "turnover", "hàng", "tươi"]
+    text: |-
+      metric: Inventory Turnover F&B hàng tươi
+      value: 30-60x
+      context: DIO khoảng 6-12 ngày
+      confidence: low
+  - id: "m07-benchmarks-8"
+    title: "Chuẩn so sánh: CCC F&B"
+    tags: ["chuẩn", "so", "sánh", "ccc"]
+    text: |-
+      metric: CCC F&B
+      value: 0-15 ngày; âm là xuất sắc
+      context: Khách trả trước NCC
+      confidence: low
+  - id: "m07-benchmarks-9"
+    title: "Chuẩn so sánh: Biên gộp ABC bao bì"
+    tags: ["chuẩn", "so", "sánh", "biên", "gộp", "abc", "bao", "bì"]
+    text: |-
+      metric: Biên gộp ABC bao bì
+      value: Hộp A 46,1%, Hộp B 13,7%, Túi C 19,3%
+      context: Giả định minh họa GreenPack
+      confidence: low
+  - id: "m07-benchmarks-10"
+    title: "Chuẩn so sánh: Ngưỡng popularity menu"
+    tags: ["chuẩn", "so", "sánh", "ngưỡng", "popularity", "menu"]
+    text: |-
+      metric: Ngưỡng popularity menu
+      value: 70% x 1/n
+      context: Kasavana và Smith
+      confidence: medium
+  - id: "m07-benchmarks-11"
+    title: "Chuẩn so sánh: Ngưỡng kích hoạt"
+    tags: ["chuẩn", "so", "sánh", "ngưỡng", "kích", "hoạt"]
+    text: |-
+      metric: Ngưỡng kích hoạt
+      value: lệch >10% ba tháng liên tiếp
+      context: Ví dụ trong nguồn
+      confidence: low
+  - id: "m07-pitfalls-1"
+    title: "Lỗi thường gặp: Dùng một công cụ duy nhất; mỗi công cụ có điểm mù riêng."
+    tags: ["lỗi", "thường", "gặp", "dùng", "một", "công", "cụ", "duy", "nhất", "mỗi", "có", "điểm"]
+    text: |-
+      Dùng một công cụ duy nhất; mỗi công cụ có điểm mù riêng.
+  - id: "m07-pitfalls-2"
+    title: "Lỗi thường gặp: Nhầm lợi nhuận kế toán với tiền mặt (Mộc Thu)."
+    tags: ["lỗi", "thường", "gặp", "nhầm", "lợi", "nhuận", "kế", "toán", "với", "tiền", "mặt", "mộc"]
+    text: |-
+      Nhầm lợi nhuận kế toán với tiền mặt (Mộc Thu).
+  - id: "m07-pitfalls-3"
+    title: "Lỗi thường gặp: Phân bổ chi phí đều khiến lãi ảo (bún bò Huế, Hộp B, điện thoại TechMart)."
+    tags: ["lỗi", "thường", "gặp", "phân", "bổ", "chi", "phí", "đều", "khiến", "lãi", "ảo", "bún"]
+    text: |-
+      Phân bổ chi phí đều khiến lãi ảo (bún bò Huế, Hộp B, điện thoại TechMart).
+  - id: "m07-pitfalls-4"
+    title: "Lỗi thường gặp: So biên % thay vì CM tuyệt đối khi chọn món đẩy."
+    tags: ["lỗi", "thường", "gặp", "so", "biên", "thay", "vì", "cm", "tuyệt", "đối", "khi", "chọn"]
+    text: |-
+      So biên % thay vì CM tuyệt đối khi chọn món đẩy.
+  - id: "m07-pitfalls-5"
+    title: "Lỗi thường gặp: So thực tế với ngân sách tĩnh khi khối lượng đổi; bỏ qua ngân sách linh hoạt."
+    tags: ["lỗi", "thường", "gặp", "so", "thực", "tế", "với", "ngân", "sách", "tĩnh", "khi", "khối"]
+    text: |-
+      So thực tế với ngân sách tĩnh khi khối lượng đổi; bỏ qua ngân sách linh hoạt.
+  - id: "m07-pitfalls-6"
+    title: "Lỗi thường gặp: Biết variance nhưng không hành động; so với tháng trước thay vì kế hoạch/cùng kỳ (recency bias)."
+    tags: ["lỗi", "thường", "gặp", "biết", "variance", "nhưng", "không", "hành", "động", "so", "với", "tháng"]
+    text: |-
+      Biết variance nhưng không hành động; so với tháng trước thay vì kế hoạch/cùng kỳ (recency bias).
+  - id: "m07-pitfalls-7"
+    title: "Lỗi thường gặp: Optimism bias trong ngân sách; không kịch bản xấu; ngân sách tăng dần theo đỉnh cũ."
+    tags: ["lỗi", "thường", "gặp", "optimism", "bias", "trong", "ngân", "sách", "không", "kịch", "bản", "xấu"]
+    text: |-
+      Optimism bias trong ngân sách; không kịch bản xấu; ngân sách tăng dần theo đỉnh cũ.
+  - id: "m07-pitfalls-8"
+    title: "Lỗi thường gặp: Hiểu sai 'ngoài bảng' là không nợ; thuê hoạt động VAS khác IFRS 16."
+    tags: ["lỗi", "thường", "gặp", "hiểu", "sai", "ngoài", "bảng", "là", "không", "nợ", "thuê", "hoạt"]
+    text: |-
+      Hiểu sai 'ngoài bảng' là không nợ; thuê hoạt động VAS khác IFRS 16.
+  - id: "m07-pitfalls-9"
+    title: "Lỗi thường gặp: Che giấu khi thẩm định; không tách khoản một lần."
+    tags: ["lỗi", "thường", "gặp", "che", "giấu", "khi", "thẩm", "định", "không", "tách", "khoản", "một"]
+    text: |-
+      Che giấu khi thẩm định; không tách khoản một lần.
+  - id: "m07-pitfalls-10"
+    title: "Lỗi thường gặp: ROE cao do đòn bẩy bị đánh giá là bền; EM khuếch đại cả lãi lẫn lỗ."
+    tags: ["lỗi", "thường", "gặp", "roe", "cao", "do", "đòn", "bẩy", "bị", "đánh", "giá", "là"]
+    text: |-
+      ROE cao do đòn bẩy bị đánh giá là bền; EM khuếch đại cả lãi lẫn lỗ.
+  - id: "m07-pitfalls-11"
+    title: "Lỗi thường gặp: Lỗi nguồn: biên an toàn quán đầu ghi 7,8% nhưng tính từ BEP 83,33 tô/ngày là 7,4% (nguồn làm tròn B…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "biên", "an", "toàn", "quán", "đầu", "ghi", "nhưng", "tính"]
+    text: |-
+      Lỗi nguồn: biên an toàn quán đầu ghi 7,8% nhưng tính từ BEP 83,33 tô/ngày là 7,4% (nguồn làm tròn BEP 83).
+  - id: "m07-pitfalls-12"
+    title: "Lỗi thường gặp: Lỗi nguồn (nhất quán nội bộ): Thủ Đức ghi 'hao hụt 18% vs chuẩn 8%' nhưng số tính food cost là 36% …"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "nhất", "quán", "nội", "bộ", "thủ", "đức", "ghi", "hao"]
+    text: |-
+      Lỗi nguồn (nhất quán nội bộ): Thủ Đức ghi 'hao hụt 18% vs chuẩn 8%' nhưng số tính food cost là 36% vs 32% doanh thu; không dùng 18%/8% để tính.
+  - id: "m07-pitfalls-13"
+    title: "Lỗi thường gặp: Nguồn ghi LNST Phở Việt 2.400 từ EBT 3.200 với 'thuế và điều chỉnh 800' (25%); các case khác dùng 2…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "ghi", "lnst", "phở", "việt", "400", "từ", "ebt", "200"]
+    text: |-
+      Nguồn ghi LNST Phở Việt 2.400 từ EBT 3.200 với 'thuế và điều chỉnh 800' (25%); các case khác dùng 20% - lưu ý khác thuế suất giữa case.
+  - id: "m07-pitfalls-14"
+    title: "Lỗi thường gặp: Chênh lệch nhỏ do làm tròn: tổng lợi nhuận gộp ABC GreenPack 4.637,5 vs 4.640 trong bridge VAS (do …"
+    tags: ["lỗi", "thường", "gặp", "chênh", "lệch", "nhỏ", "do", "làm", "tròn", "tổng", "lợi", "nhuận"]
+    text: |-
+      Chênh lệch nhỏ do làm tròn: tổng lợi nhuận gộp ABC GreenPack 4.637,5 vs 4.640 trong bridge VAS (do DT 14.950 vs 15.000 danh nghĩa).
+  - id: "m07-pitfalls-15"
+    title: "Lỗi thường gặp: Mục tài liệu tham khảo trong nguồn (Kaplan-Norton BSC, McKinsey Valuation...) chỉ mang tính tham kh…"
+    tags: ["lỗi", "thường", "gặp", "mục", "tài", "liệu", "tham", "khảo", "trong", "nguồn", "kaplan", "norton"]
+    text: |-
+      Mục tài liệu tham khảo trong nguồn (Kaplan-Norton BSC, McKinsey Valuation...) chỉ mang tính tham khảo chung, không phải nguồn số liệu của các case.
+  - id: "m07-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Mọi tên DN và số liệu trong 4 case là giả định minh họa; không dùng như benchmark thật, đối chiếu n…"
+    tags: ["lưu", "sme", "việt", "nam", "mọi", "tên", "dn", "và", "số", "liệu", "trong", "case"]
+    text: |-
+      Mọi tên DN và số liệu trong 4 case là giả định minh họa; không dùng như benchmark thật, đối chiếu nguồn ngành trước khi áp dụng.
+  - id: "m07-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: VAS (Thông tư 200/2014/TT-BTC hoặc thông tư dành cho DN nhỏ và vừa) vs IFRS: cần xác nhận quy định …"
+    tags: ["lưu", "sme", "việt", "nam", "vas", "thông", "tư", "200", "2014", "tt", "btc", "hoặc"]
+    text: |-
+      VAS (Thông tư 200/2014/TT-BTC hoặc thông tư dành cho DN nhỏ và vừa) vs IFRS: cần xác nhận quy định hiện hành với kế toán/kiểm toán; IFRS tự nguyện/lộ trình.
+  - id: "m07-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Thuế TNDN 20% là giả định giản lược; tác động thuế thực tế của từng điều chỉnh cần xác nhận với chu…"
+    tags: ["lưu", "sme", "việt", "nam", "thuế", "tndn", "20", "là", "giả", "định", "giản", "lược"]
+    text: |-
+      Thuế TNDN 20% là giả định giản lược; tác động thuế thực tế của từng điều chỉnh cần xác nhận với chuyên gia thuế.
+  - id: "m07-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Công cụ gợi ý: Excel/Google Sheets cho mô hình ba báo cáo và ABC; phần mềm kế toán (MISA, Fast) cho…"
+    tags: ["lưu", "sme", "việt", "nam", "công", "cụ", "gợi", "excel", "google", "sheets", "cho", "mô"]
+    text: |-
+      Công cụ gợi ý: Excel/Google Sheets cho mô hình ba báo cáo và ABC; phần mềm kế toán (MISA, Fast) cho sổ sách; POS (KiotViet, Sapo) cho dữ liệu món/SKU; giá cần xác nhận hiện hành.
+  - id: "m07-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: SME bán online: đối soát công nợ sàn (Shopee, TikTok Shop), tách phí sàn/vận chuyển/hoàn trả theo k…"
+    tags: ["lưu", "sme", "việt", "nam", "bán", "online", "đối", "soát", "công", "nợ", "sàn", "shopee"]
+    text: |-
+      SME bán online: đối soát công nợ sàn (Shopee, TikTok Shop), tách phí sàn/vận chuyển/hoàn trả theo kênh khi tính CM.
+  - id: "m07-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: F&B: ghi hao hụt và định lượng (portioning) hằng ngày; có P&L theo chi nhánh."
+    tags: ["lưu", "sme", "việt", "nam", "ghi", "hao", "hụt", "và", "định", "lượng", "portioning", "hằng"]
+    text: |-
+      F&B: ghi hao hụt và định lượng (portioning) hằng ngày; có P&L theo chi nhánh.
+  - id: "m07-sme_vn_guidance-7"
+    title: "Lưu ý SME Việt Nam: Hợp đồng thuê mặt bằng: đàm phán miễn thuê tháng đầu, giảm đặt cọc, điều khoản thoát sớm để hạ vốn …"
+    tags: ["lưu", "sme", "việt", "nam", "hợp", "đồng", "thuê", "mặt", "bằng", "đàm", "phán", "miễn"]
+    text: |-
+      Hợp đồng thuê mặt bằng: đàm phán miễn thuê tháng đầu, giảm đặt cọc, điều khoản thoát sớm để hạ vốn đầu tư và định phí.
+  - id: "m07-case_lessons-1"
+    title: "Bài học case: Phở Việt Chain (thành công, F&B SME)"
+    tags: ["bài", "học", "case", "phở", "việt", "chain", "thành", "công", "sme"]
+    text: |-
+      name: Phở Việt Chain (thành công, F&B SME)
+      type: success
+      setup: 'Chuỗi phở 8 chi nhánh, DT 30 tỷ/năm (2024), cân nhắc mở thêm 5 chi nhánh và nhượng quyền. Đi qua 5 giai đoạn: CVP, ABC + Menu Engineering, Budget + Scenario, Variance, Ratios + DuPont.'
+      key_calculations:
+      - 'CVP quán đầu: CM = 80.000-32.000 = 48.000 (60%); BEP = 120 tr/48k = 2.500 tô/tháng = 83 tô/ngày = 46% công suất 180; MOS khoảng 7,4% (nguồn ghi 7,8%).'
+      - 'ABC phút bếp 1.000 VNĐ/phút: bún bò Huế biên 48,6% -> 31,5%; đồ uống 38,6% -> 75,0%; phở gà 51,8% -> 58,3%.'
+      - 'Menu Engineering: CM bình quân 28,6k; Wagyu Puzzle CM 47,5k; tăng giá 180k chịu sụt lượng tối đa 38,7%.'
+      - 'Chi nhánh mới: đầu tư 1.600 tr; NPV 5 năm Bull +2.061, Base +414, Bear -1.234; E[NPV] +413,75; hoàn vốn base 2,7 năm.'
+      - 'Thủ Đức: LN kế hoạch 37,6, thực tế -3,6, lệch -41,2 = -17,4 khối lượng, -11,8 food cost, -12,0 nhân công (58% sửa được).'
+      - 'Ratios 2024: Gross 62%, Net 8%, Current 1,4, Quick 1,15, D/E 1,0, ICR 9x, ROE 30% = 8% x 1,875 x 2,0, CCC -5,8 ngày.'
+      lesson: 'Dùng đúng công cụ cho đúng câu hỏi ở từng giai đoạn. Mở rộng có điều kiện: sửa 3 chi nhánh đỏ trước, tối đa 3 chi nhánh mới năm đầu, nhượng quyền sau khi chuẩn hóa định lượng và báo cáo variance. ABC và CM tuyệt đối đổi hẳn quyết định menu.'
+      data_reliability: illustrative
+  - id: "m07-case_lessons-2"
+    title: "Bài học case: GreenPack (thành công, sản xuất bao bì, gọi vốn Series A)"
+    tags: ["bài", "học", "case", "greenpack", "thành", "công", "sản", "xuất", "bao", "bì", "gọi", "vốn"]
+    text: |-
+      name: GreenPack (thành công, sản xuất bao bì, gọi vốn Series A)
+      type: success
+      setup: 'Nhà sản xuất bao bì tái chế, DT khoảng 15 tỷ (14,95), 50 nhân viên, cần 10 tỷ CapEx nhà máy 2. Nhà đầu tư hỏi: số có tin được không, giá thành thật, kế hoạch hợp lý không, vận hành kiểm soát không, đáng giá bao nhiêu.'
+      key_calculations:
+      - 'Bridge: EBT 1.440 - 60 (cut-off) - 30 (IFRS 16) - 400 (impairment) = 950; LNST 760 (-34%); chạy đều 1.080 (-6,3%).'
+      - 'ABC: setup 7,692 tr/lần, test 1,714 tr/lần, thiết kế 8,889 tr/thiết kế; OH phân bổ A 284,0; B 1.053,5; C 662,5 (tổng 2.000).'
+      - 'OH/đv: A 158, B 2.341, C 1.152 vs truyền thống 708; biên A 32,3% -> 46,1%; B 37,0% -> 13,7%; C 24,9% -> 19,3%.'
+      - 'Tăng giá B 7.000 -> 7.800: biên ABC 22,6%.'
+      - 'Pro-forma: FCF -6,19; 1,50; 5,84; 8,76; 12,36 tỷ; lũy kế dương năm 3; PV(FCF)=10,75; TV=106,09; PV(TV)=52,75; giá trị 63,49 tỷ, TV 83%.'
+      - Gọi 15 tỷ cho 25% -> post-money 60 tỷ (4x DT).
+      - 'Variance NVL: giá (21.500-22.000)x10.400 = -5,2 tr (F); lượng (10.400-10.000)x22.000 = +8,8 tr (U); tổng +3,6 tr (U).'
+      lesson: Sáu công cụ trở thành sáu slide pitch. BCTC trung thực giúp đàm phán; ABC tiết lộ Hộp B lãi 13,7% chứ không phải 37%; TV chiếm trên 80% nên cần kịch bản xấu.
+      data_reliability: illustrative
+  - id: "m07-case_lessons-3"
+    title: "Bài học case: Mộc Thu (SME VN, shop thời trang online, lãi mà thiếu tiền)"
+    tags: ["bài", "học", "case", "mộc", "thu", "sme", "vn", "shop", "thời", "trang", "online", "lãi"]
+    text: |-
+      name: Mộc Thu (SME VN, shop thời trang online, lãi mà thiếu tiền)
+      type: sme
+      setup: Shop thời trang bán đa kênh, 18 nhân sự, DT 12 tỷ, LNST 960 tr nhưng thiếu tiền nhập hàng Tết. Dựng ba BCTC khớp nhau.
+      key_calculations:
+      - 'IS: GP 4.800 (40%), EBIT 1.280, EBT 1.200, LNST 960.'
+      - 'BS cân: 3.100 -> 3.910; lợi nhuận giữ lại 500+960-300 = 1.160; TSCĐ 700+300-120 = 880.'
+      - 'CFS gián tiếp: CFO = 960+120-150-300+200+50 = 880; CFI -300; CFF -400; tiền +180 (600 -> 780).'
+      - Current 1,95 vs Quick 0,79; tồn kho 59% tài sản ngắn hạn; DIO 83,6, DSO 11,4, DPO 45,6, CCC 49,4 ngày.
+      - 'DuPont: 8% x 3,42 x 2,15 = 58,9% (tài sản và vốn chủ bình quân 3.505 và 1.630).'
+      - 'CVP: CM 20%, định phí 1.200 (kể cả lãi vay), BEP 6.000, MOS 50%.'
+      - 'Variance GP: +420 khối lượng, -240 biên, tổng +180.'
+      - Giảm DIO 83,6 -> 60 giải phóng khoảng 465 tr.
+      lesson: 'Lợi nhuận khác tiền mặt: tồn kho và phải thu nuốt 450. Current đẹp che Quick xấu. ROE cao nhờ vòng quay, mong manh. Bán nhiều che việc bán rẻ -240 tr. Hành động: giảm DIO, dự báo 13 tuần, cắt cổ tức quá tay, theo dõi 4 chỉ số hằng tháng.'
+      data_reliability: illustrative
+  - id: "m07-case_lessons-4"
+    title: "Bài học case: TechMart (thất bại, chuỗi bán lẻ điện tử)"
+    tags: ["bài", "học", "case", "techmart", "thất", "bại", "chuỗi", "bán", "lẻ", "điện", "tử"]
+    text: |-
+      name: TechMart (thất bại, chuỗi bán lẻ điện tử)
+      type: failure
+      setup: 15 cửa hàng, DT đỉnh 500 tỷ (2019), đóng 10/15 cửa hàng đến 2023. Có đủ công cụ nhưng mỗi công cụ gãy một chỗ và không có hành động.
+      key_calculations:
+      - 'Điều chỉnh 2019: khấu hao nội thất 45/3-45/10 = -10,5; dự phòng tồn -12,0; đảo DT nội bộ 20x12% = -2,4; tổng -24,9; LNST 15 -> 15-19,92 = -4,9 tỷ.'
+      - 'Nợ thuê: 18 tỷ/năm x 7 năm, 10%: PV 87,6 tỷ; D/E 1,0 -> 1,88.'
+      - 'Mix: điện thoại 250 tỷ biên 3%, laptop 150 tỷ 10%, phụ kiện 100 tỷ 37% -> biên gộp 11,9%; trừ logistics 4%: điện thoại -1%; phụ kiện tạo 62% lợi nhuận gộp.'
+      - 'Ngân sách lệch: 2020 -26,9%, 2021 -22,2%, 2022 -33,3%, 2023 -48,6%.'
+      - 'Đòn bẩy hoạt động: DT 180 tỷ x biên 8% = 14,4 tỷ gộp < tiền thuê 18 tỷ.'
+      - 'DuPont 2019 -> 2022: 3% x 2,5 x 2,0 = 15% -> -12% x 0,8 x 5,0 = -48% (LNST -33,6; tài sản 350; vốn chủ 70).'
+      lesson: Công cụ chỉ có giá trị khi đi kèm hành động và trách nhiệm. Đặt trigger trước; thiên kiến lạc quan là kẻ thù; DuPont cho thấy ROE đổi vì biên, vòng quay hay đòn bẩy.
+      data_reliability: illustrative
+  - id: "m07-worked_examples-1"
+    title: "Ví dụ có lời giải: m07_we_moc_thu_three_statements — Mộc Thu - ba báo cáo khớp nhau và chẩn đoán tiền"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m07_we_moc_thu_three_statements", "mộc", "thu", "ba", "báo", "cáo", "khớp"]
+    text: |-
+      id: m07_we_moc_thu_three_statements
+      name: Mộc Thu - ba báo cáo khớp nhau và chẩn đoán tiền
+      inputs:
+        is:
+          revenue: 12000
+          cogs: 7200
+          selling: 2400
+          admin: 1000
+          depreciation: 120
+          interest: 80
+          tax_rate: 0.2
+        bs_2023:
+          cash: 600
+          ar: 300
+          inv: 1500
+          fa: 700
+          ap: 800
+          accrued: 100
+          st_debt: 400
+          lt_debt: 500
+          capital: 800
+          re: 500
+        bs_2024:
+          cash: 780
+          ar: 450
+          inv: 1800
+          fa: 880
+          ap: 1000
+          accrued: 150
+          st_debt: 400
+          lt_debt: 400
+          capital: 800
+          re: 1160
+        dividend: 300
+        capex: 300
+      steps:
+      - GP = 12.000-7.200 = 4.800; EBIT = 4.800-2.400-1.000-120 = 1.280; EBT = 1.200; NI = 960.
+      - 'BS 2023: TS 3.100 = 800+100+400+500+800+500; BS 2024: TS 3.910 = 1.000+150+400+400+800+1.160.'
+      - 'RE: 500+960-300 = 1.160; FA: 700+300-120 = 880.'
+      - CFO = 960+120-150-300+200+50 = 880; CFI = -300; CFF = -100-300 = -400; delta cash = 180; 600+180 = 780.
+      - Current 3.030/1.550 = 1,95; Quick 1.230/1.550 = 0,79; DIO 83,6; DSO 11,4; DPO 45,6; CCC 49,4.
+      - 'DuPont: 0,08 x 3,4237 x 2,1503 = 58,9%.'
+      - BEP = 1.200/20% = 6.000; MOS 50%; kiểm tra 12.000x20%-1.200 = 1.200 = EBT.
+      result: Lãi 960 nhưng tiền chỉ +180; tồn kho (300) và phải thu (150) nuốt tiền; giảm DIO về 60 ngày giải phóng khoảng 465 tr.
+  - id: "m07-worked_examples-2"
+    title: "Ví dụ có lời giải: m07_we_greenpack_abc_bridge — GreenPack - ABC ba dòng sản phẩm và cầu nối lợi nhuận"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m07_we_greenpack_abc_bridge", "greenpack", "abc", "ba", "dòng", "sản", "phẩm"]
+    text: |-
+      id: m07_we_greenpack_abc_bridge
+      name: GreenPack - ABC ba dòng sản phẩm và cầu nối lợi nhuận
+      inputs:
+        pools:
+          setup:
+          - 1000
+          - 130
+          test:
+          - 600
+          - 350
+          design:
+          - 400
+          - 45
+        usage:
+          A:
+          - 20
+          - 50
+          - 5
+          B:
+          - 80
+          - 100
+          - 30
+          C:
+          - 30
+          - 200
+          - 10
+        volume:
+          A: 1800000
+          B: 450000
+          C: 575000
+        price:
+          A: 4000
+          B: 7000
+          C: 8000
+        dm_dl:
+          A:
+          - 1200
+          - 800
+          B:
+          - 2500
+          - 1200
+          C:
+          - 3800
+          - 1500
+      steps:
+      - 'Rates: 7,692; 1,714; 8,889 tr/driver.'
+      - 'OH: A 284,0; B 1.053,5; C 662,5; tổng 2.000 (khớp quỹ).'
+      - 'OH/đv ABC: A 158; B 2.341; C 1.152; truyền thống 2.000 tr/2.825.000 = 708.'
+      - 'Giá thành ABC: A 2.158; B 6.041; C 6.452; biên ABC 46,1%; 13,7%; 19,3%; biên TT 32,3%; 37,0%; 24,9%.'
+      - Tổng GP = 4.637,5 tr cả hai cách (chỉ phân bổ đổi); biên chung 31,0%.
+      - 'Bridge VAS: EBT 1.440-60-30-400 = 950; NI 760; -34%.'
+      result: Hộp B lãi thật 13,7% (không phải 37%); Hộp A bò sữa 46,1%; LN bền vững giảm chỉ 6,3%.
+  - id: "m07-worked_examples-3"
+    title: "Ví dụ có lời giải: m07_we_pho_viet_menu_scenario — Phở Việt - Menu Engineering và NPV kịch bản"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m07_we_pho_viet_menu_scenario", "phở", "việt", "menu", "engineering", "và", "npv"]
+    text: |-
+      id: m07_we_pho_viet_menu_scenario
+      name: Phở Việt - Menu Engineering và NPV kịch bản
+      inputs:
+        menu:
+          price_k:
+          - 70
+          - 150
+          - 65
+          - 60
+          - 30
+          fc_pct:
+          - 0.35
+          - 0.55
+          - 0.3
+          - 0.25
+          - 0.15
+          prep_min:
+          - 15
+          - 20
+          - 25
+          - 10
+          - 3
+          rev_share:
+          - 0.4
+          - 0.15
+          - 0.2
+          - 0.15
+          - 0.1
+        branch:
+          invest: 1600
+          discount: 0.15
+          fixed_month: 120
+          cm_bowl_k: 48
+      steps:
+      - 'Popularity = share/price chuẩn hóa: 36,6%; 6,4%; 19,7%; 16,0%; 21,3%.'
+      - Chi phí bếp TT bình quân 13,93k/món; ABC theo phút.
+      - 'Biên TT vs ABC: bò 45,1/43,6; Wagyu 35,7/31,7; bún 48,6/31,5; gà 51,8/58,3; nước 38,6/75,0.'
+      - 'CM: 30,5; 47,5; 20,5; 35,0; 22,5; CM_avg 28,63; ngưỡng popularity 14%.'
+      - 'Wagyu 180k: CM 77,5; sụt tối đa 38,7%.'
+      - 'NPV: 150 tô/ngày +2.061; 120 +414; 90 -1.234; E = +413,75.'
+      result: 'Star: bò TT, gà; Puzzle: Wagyu; Plowhorse: bún, nước; mở chi nhánh có điều kiện vì kịch bản xấu mất 77% vốn.'
+  - id: "m07-worked_examples-4"
+    title: "Ví dụ có lời giải: m07_we_techmart_adjustments — TechMart - điều chỉnh lợi nhuận, nợ thuê và DuPont"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m07_we_techmart_adjustments", "techmart", "điều", "chỉnh", "lợi", "nhuận", "nợ"]
+    text: |-
+      id: m07_we_techmart_adjustments
+      name: TechMart - điều chỉnh lợi nhuận, nợ thuê và DuPont
+      inputs:
+        reported:
+          revenue: 500
+          ni: 15
+          tax_rate: 0.2
+        adj:
+          furniture: 45
+          life_real: 3
+          life_book: 10
+          inventory_provision: 12
+          internal_rev: 20
+          margin: 0.12
+        lease:
+          rent: 18
+          years: 7
+          rate: 0.1
+          debt: 100
+          equity: 100
+      steps:
+      - 'Khấu hao: 45/3-45/10 = 10,5; đảo DT nội bộ: 20x12% = 2,4; tổng điều chỉnh 10,5+12+2,4 = 24,9.'
+      - NI_adj = 15 - 24,9x0,8 = -4,92 tỷ.
+      - PV thuê = 18x4,8684 = 87,63; D/E_adj = 1,876.
+      - 'Mix: 0,5x3%+0,3x10%+0,2x37% = 11,9%; điện thoại 3%-4% = -1%; phụ kiện 37/59,5 = 62%.'
+      - 'DuPont 2022: LNST = -12%x280 = -33,6; TS = 280/0,8 = 350; VCSH = 350/5 = 70; ROE = -48%.'
+      result: Lãi báo cáo 15 tỷ thực là lỗ khoảng 4,9 tỷ; đòn bẩy thực 1,88; ROE rơi 15% -> -48%.
+  - id: "m07-worked_examples-5"
+    title: "Ví dụ có lời giải: m07_we_thu_duc_branch — Thủ Đức - phân rã lệch lợi nhuận chi nhánh"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m07_we_thu_duc_branch", "thủ", "đức", "phân", "rã", "lệch", "lợi"]
+    text: |-
+      id: m07_we_thu_duc_branch
+      name: Thủ Đức - phân rã lệch lợi nhuận chi nhánh
+      inputs:
+        plan:
+          rev: 320
+          fc_pct: 0.32
+          labor: 80
+          rent: 60
+          other: 40
+        actual:
+          rev_change: -0.08
+          fc: 106.0
+          labor: 92
+      steps:
+      - LN kế hoạch = 320-102,4-80-60-40 = 37,6; DT thực 294,4; LN thực = 294,4-106-92-60-40 = -3,6; lệch -41,2.
+      - V_vol = -25,6x0,68 = -17,41; food cost linh hoạt 94,21; V_fc = -11,79; V_lab = -12; tổng -41,2.
+      - Tỷ lệ sửa được = (11,79+12)/41,2 = 57,7%.
+      result: Khoảng 58% thiệt hại do vận hành sửa được; ngoại cảnh chỉ 42%.
+  - id: "m07-practice_questions-1"
+    title: "Câu hỏi luyện tập: Quán có giá 80k, biến phí 32k, định phí 120 tr/tháng, công suất 180 lượt/ngày. BEP theo tô/ngày và …"
+    tags: ["câu", "hỏi", "luyện", "tập", "quán", "có", "giá", "80k", "biến", "phí", "32k", "định"]
+    text: |-
+      q: Quán có giá 80k, biến phí 32k, định phí 120 tr/tháng, công suất 180 lượt/ngày. BEP theo tô/ngày và % công suất?
+      a: CM 48k; BEP = 2.500 tô/tháng = 83,3 tô/ngày = 46,3% công suất. Với 90 khách/ngày MOS = 7,4%.
+  - id: "m07-practice_questions-2"
+    title: "Câu hỏi luyện tập: Vì sao bún bò Huế biên truyền thống 48,6% nhưng ABC chỉ 31,5%?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "bún", "bò", "huế", "biên", "truyền", "thống"]
+    text: |-
+      q: Vì sao bún bò Huế biên truyền thống 48,6% nhưng ABC chỉ 31,5%?
+      a: Mất 25 phút bếp (x1.000 = 25k) so với bình quân 13,9k nên gánh thêm chi phí; (65-19,5-25)/65 = 31,5%.
+  - id: "m07-practice_questions-3"
+    title: "Câu hỏi luyện tập: Wagyu biên % thấp nhưng vì sao vẫn là món cần đẩy?"
+    tags: ["câu", "hỏi", "luyện", "tập", "wagyu", "biên", "thấp", "nhưng", "vì", "sao", "vẫn", "là"]
+    text: |-
+      q: Wagyu biên % thấp nhưng vì sao vẫn là món cần đẩy?
+      a: CM tuyệt đối 47,5k cao nhất; Puzzle do popularity 6,4% < 14%; đẩy bán hoặc tăng giá 180k (chịu sụt tối đa 38,7%).
+  - id: "m07-practice_questions-4"
+    title: "Câu hỏi luyện tập: Hộp B GreenPack trông lãi 37% truyền thống, thực tế?"
+    tags: ["câu", "hỏi", "luyện", "tập", "hộp", "greenpack", "trông", "lãi", "37", "truyền", "thống", "thực"]
+    text: |-
+      q: Hộp B GreenPack trông lãi 37% truyền thống, thực tế?
+      a: ABC 13,7% do chiếm 80 setup, 100 test, 30 thiết kế (OH 2.341 vs 708 phẳng).
+  - id: "m07-practice_questions-5"
+    title: "Câu hỏi luyện tập: TV chiếm 83% giá trị dự án GreenPack cần làm gì?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tv", "chiếm", "83", "giá", "trị", "dự", "án", "greenpack"]
+    text: |-
+      q: TV chiếm 83% giá trị dự án GreenPack cần làm gì?
+      a: Chạy kịch bản chậm 30%, ma trận độ nhạy r-g; trình bày PV(TV) và PV(FCF) riêng.
+  - id: "m07-practice_questions-6"
+    title: "Câu hỏi luyện tập: Mộc Thu LNST 960 nhưng tiền tăng 180: giải thích?"
+    tags: ["câu", "hỏi", "luyện", "tập", "mộc", "thu", "lnst", "960", "nhưng", "tiền", "tăng", "180"]
+    text: |-
+      q: 'Mộc Thu LNST 960 nhưng tiền tăng 180: giải thích?'
+      a: CFO 880 sau khi tồn kho -300, phải thu -150, NCC +200, chi phí phải trả +50, khấu hao +120; trừ capex 300, nợ gốc 100, cổ tức 300 -> +180.
+  - id: "m07-practice_questions-7"
+    title: "Câu hỏi luyện tập: Giảm DIO của Mộc Thu từ 83,6 xuống 60 giải phóng bao nhiêu?"
+    tags: ["câu", "hỏi", "luyện", "tập", "giảm", "dio", "của", "mộc", "thu", "từ", "83", "xuống"]
+    text: |-
+      q: Giảm DIO của Mộc Thu từ 83,6 xuống 60 giải phóng bao nhiêu?
+      a: 7.200/365x23,6 = khoảng 465 tr.
+  - id: "m07-practice_questions-8"
+    title: "Câu hỏi luyện tập: TechMart: tính LNST điều chỉnh 2019 và D/E điều chỉnh."
+    tags: ["câu", "hỏi", "luyện", "tập", "techmart", "tính", "lnst", "điều", "chỉnh", "2019", "và"]
+    text: |-
+      q: 'TechMart: tính LNST điều chỉnh 2019 và D/E điều chỉnh.'
+      a: -24,9 trước thuế -> NI_adj 15-19,92 = -4,92 tỷ; PV thuê 87,6; D/E 1,88.
+  - id: "m07-practice_questions-9"
+    title: "Câu hỏi luyện tập: Vì sao variance TechMart vô nghĩa?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "variance", "techmart", "vô", "nghĩa"]
+    text: |-
+      q: Vì sao variance TechMart vô nghĩa?
+      a: Không có trigger, owner, hành động; recency bias; ngân sách tăng dần; ratios cờ đỏ 2+ năm bị bỏ qua.
+  - id: "m07-practice_questions-10"
+    title: "Câu hỏi luyện tập: Bài toán lãi nhưng thiếu tiền thì đi qua module nào theo thứ tự?"
+    tags: ["câu", "hỏi", "luyện", "tập", "bài", "toán", "lãi", "nhưng", "thiếu", "tiền", "thì", "đi"]
+    text: |-
+      q: Bài toán lãi nhưng thiếu tiền thì đi qua module nào theo thứ tự?
+      a: m01 (3 BCTC + CFS) -> m06 (Quick, DIO/DSO/DPO/CCC, DuPont) -> m02 (CVP) -> m05 (variance khối lượng/biên) -> m04 (dự báo tiền 13 tuần).
+  - id: "m07-checklist-1"
+    title: "Checklist: □ BCTC đúng chuẩn đang áp dụng (VAS/IFRS), đã xác nhận quy định hiện hành?"
+    tags: ["checklist", "bctc", "đúng", "chuẩn", "đang", "áp", "dụng", "vas", "ifrs", "đã", "xác", "nhận"]
+    text: |-
+      □ BCTC đúng chuẩn đang áp dụng (VAS/IFRS), đã xác nhận quy định hiện hành?
+  - id: "m07-checklist-2"
+    title: "Checklist: □ Doanh thu ghi đúng thời điểm chuyển giao quyền kiểm soát, không theo xuất kho nội bộ?"
+    tags: ["checklist", "doanh", "thu", "ghi", "đúng", "thời", "điểm", "chuyển", "giao", "quyền", "kiểm", "soát"]
+    text: |-
+      □ Doanh thu ghi đúng thời điểm chuyển giao quyền kiểm soát, không theo xuất kho nội bộ?
+  - id: "m07-checklist-3"
+    title: "Checklist: □ Đã trích lập dự phòng tồn kho/nợ phải thu, khấu hao theo tuổi thọ thực?"
+    tags: ["checklist", "đã", "trích", "lập", "dự", "phòng", "tồn", "kho", "nợ", "phải", "thu", "khấu"]
+    text: |-
+      □ Đã trích lập dự phòng tồn kho/nợ phải thu, khấu hao theo tuổi thọ thực?
+  - id: "m07-checklist-4"
+    title: "Checklist: □ Có CFS và khớp thay đổi tiền hai kỳ? BS cân? RE = đầu kỳ + LNST - cổ tức?"
+    tags: ["checklist", "có", "cfs", "và", "khớp", "thay", "đổi", "tiền", "hai", "kỳ", "bs", "cân"]
+    text: |-
+      □ Có CFS và khớp thay đổi tiền hai kỳ? BS cân? RE = đầu kỳ + LNST - cổ tức?
+  - id: "m07-checklist-5"
+    title: "Checklist: □ Nghĩa vụ thuê dài hạn được nhìn như nợ cố định khi đánh giá đòn bẩy?"
+    tags: ["checklist", "nghĩa", "vụ", "thuê", "dài", "hạn", "được", "nhìn", "như", "nợ", "cố", "định"]
+    text: |-
+      □ Nghĩa vụ thuê dài hạn được nhìn như nợ cố định khi đánh giá đòn bẩy?
+  - id: "m07-checklist-6"
+    title: "Checklist: □ Biết BEP và biên an toàn; P&L theo cửa hàng/dòng sản phẩm/kênh?"
+    tags: ["checklist", "biết", "bep", "và", "biên", "an", "toàn", "theo", "cửa", "hàng", "dòng", "sản"]
+    text: |-
+      □ Biết BEP và biên an toàn; P&L theo cửa hàng/dòng sản phẩm/kênh?
+  - id: "m07-checklist-7"
+    title: "Checklist: □ Chi phí chung phân bổ ABC; tổng sau phân bổ = quỹ ban đầu?"
+    tags: ["checklist", "chi", "phí", "chung", "phân", "bổ", "abc", "tổng", "sau", "quỹ", "ban", "đầu"]
+    text: |-
+      □ Chi phí chung phân bổ ABC; tổng sau phân bổ = quỹ ban đầu?
+  - id: "m07-checklist-8"
+    title: "Checklist: □ Phân biệt biên % và CM tuyệt đối; menu/SKU phân loại Star/Plowhorse/Puzzle/Dog?"
+    tags: ["checklist", "phân", "biệt", "biên", "và", "cm", "tuyệt", "đối", "menu", "sku", "loại", "star"]
+    text: |-
+      □ Phân biệt biên % và CM tuyệt đối; menu/SKU phân loại Star/Plowhorse/Puzzle/Dog?
+  - id: "m07-checklist-9"
+    title: "Checklist: □ Đầu tư lớn có 3 kịch bản, NPV kỳ vọng, mức lỗ tối đa, ngưỡng cắt lỗ?"
+    tags: ["checklist", "đầu", "tư", "lớn", "có", "kịch", "bản", "npv", "kỳ", "vọng", "mức", "lỗ"]
+    text: |-
+      □ Đầu tư lớn có 3 kịch bản, NPV kỳ vọng, mức lỗ tối đa, ngưỡng cắt lỗ?
+  - id: "m07-checklist-10"
+    title: "Checklist: □ Có dự báo tiền 13 tuần cho mùa cao điểm; ZBB ít nhất 1 lần/năm?"
+    tags: ["checklist", "có", "dự", "báo", "tiền", "13", "tuần", "cho", "mùa", "cao", "điểm", "zbb"]
+    text: |-
+      □ Có dự báo tiền 13 tuần cho mùa cao điểm; ZBB ít nhất 1 lần/năm?
+  - id: "m07-checklist-11"
+    title: "Checklist: □ Pro-forma có FCF, TV và tỷ trọng TV?"
+    tags: ["checklist", "pro", "forma", "có", "fcf", "tv", "và", "tỷ", "trọng"]
+    text: |-
+      □ Pro-forma có FCF, TV và tỷ trọng TV?
+  - id: "m07-checklist-12"
+    title: "Checklist: □ Variance hằng tháng dùng ngân sách linh hoạt, tách khối lượng/giá/lượng/biên?"
+    tags: ["checklist", "variance", "hằng", "tháng", "dùng", "ngân", "sách", "linh", "hoạt", "tách", "khối", "lượng"]
+    text: |-
+      □ Variance hằng tháng dùng ngân sách linh hoạt, tách khối lượng/giá/lượng/biên?
+  - id: "m07-checklist-13"
+    title: "Checklist: □ Có trigger, owner, hạn xử lý; so với kế hoạch/cùng kỳ?"
+    tags: ["checklist", "có", "trigger", "owner", "hạn", "xử", "lý", "so", "với", "kế", "hoạch", "cùng"]
+    text: |-
+      □ Có trigger, owner, hạn xử lý; so với kế hoạch/cùng kỳ?
+  - id: "m07-checklist-14"
+    title: "Checklist: □ Theo dõi Current/Quick, DIO-DSO-DPO-CCC, D/E, ICR, biên gộp; DuPont ROE; cảnh báo khi xấu đi 2 kỳ?"
+    tags: ["checklist", "theo", "dõi", "current", "quick", "dio", "dso", "dpo", "ccc", "icr", "biên", "gộp"]
+    text: |-
+      □ Theo dõi Current/Quick, DIO-DSO-DPO-CCC, D/E, ICR, biên gộp; DuPont ROE; cảnh báo khi xấu đi 2 kỳ?
+  - id: "m07-checklist-15"
+    title: "Checklist: □ Đã chạy python3/Excel kiểm tra tính nhất quán trước khi trình bày?"
+    tags: ["checklist", "đã", "chạy", "python3", "excel", "kiểm", "tra", "tính", "nhất", "quán", "trước", "khi"]
+    text: |-
+      □ Đã chạy python3/Excel kiểm tra tính nhất quán trước khi trình bày?
+  - id: "m07-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Workbook ba báo cáo: sheet IS, BS 2 kỳ, CFS gián tiếp, ô kiểm tra BS cân và tiền cuối kỳ khớp."
+    tags: ["mẫu", "excel", "sheets", "workbook", "ba", "báo", "cáo", "sheet", "is", "bs", "kỳ", "cfs"]
+    text: |-
+      Workbook ba báo cáo: sheet IS, BS 2 kỳ, CFS gián tiếp, ô kiểm tra BS cân và tiền cuối kỳ khớp.
+  - id: "m07-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Sheet Menu Engineering: giá, food cost, phút bếp, rate/phút, popularity, CM, CM_avg, phân loại bằng…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "menu", "engineering", "giá", "food", "cost", "phút", "bếp", "rate"]
+    text: |-
+      Sheet Menu Engineering: giá, food cost, phút bếp, rate/phút, popularity, CM, CM_avg, phân loại bằng IF.
+  - id: "m07-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: Sheet ABC: quỹ chi phí, driver, đơn giá, ma trận phân bổ, kiểm tra tổng = quỹ."
+    tags: ["mẫu", "excel", "sheets", "sheet", "abc", "quỹ", "chi", "phí", "driver", "đơn", "giá", "ma"]
+    text: |-
+      Sheet ABC: quỹ chi phí, driver, đơn giá, ma trận phân bổ, kiểm tra tổng = quỹ.
+  - id: "m07-excel_google_sheets_templates-4"
+    title: "Mẫu Excel/Sheets: Sheet Scenario NPV: 3 kịch bản, xác suất, NPV(), SUMPRODUCT, hoàn vốn."
+    tags: ["mẫu", "excel", "sheets", "sheet", "scenario", "npv", "kịch", "bản", "xác", "suất", "sumproduct", "hoàn"]
+    text: |-
+      Sheet Scenario NPV: 3 kịch bản, xác suất, NPV(), SUMPRODUCT, hoàn vốn.
+  - id: "m07-excel_google_sheets_templates-5"
+    title: "Mẫu Excel/Sheets: Sheet Variance chi nhánh: ngân sách tĩnh, linh hoạt, phân rã khối lượng/food cost/nhân công, đèn tí…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "variance", "chi", "nhánh", "ngân", "sách", "tĩnh", "linh", "hoạt"]
+    text: |-
+      Sheet Variance chi nhánh: ngân sách tĩnh, linh hoạt, phân rã khối lượng/food cost/nhân công, đèn tín hiệu.
+  - id: "m07-excel_google_sheets_templates-6"
+    title: "Mẫu Excel/Sheets: Dashboard cảnh báo sớm: 8 chỉ số, ngưỡng, định dạng có điều kiện, cột owner/hạn."
+    tags: ["mẫu", "excel", "sheets", "dashboard", "cảnh", "báo", "sớm", "chỉ", "số", "ngưỡng", "định", "dạng"]
+    text: |-
+      Dashboard cảnh báo sớm: 8 chỉ số, ngưỡng, định dạng có điều kiện, cột owner/hạn.
+  - id: "m07-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: 07-integrated-case-studies.md

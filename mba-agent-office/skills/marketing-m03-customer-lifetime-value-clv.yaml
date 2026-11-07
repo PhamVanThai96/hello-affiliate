@@ -1,0 +1,1524 @@
+id: marketing-m03
+title: "Marketing m03: Giá trị vòng đời khách hàng (CLV) và tư duy lấy khách hàng làm trung tâm"
+summary: "Trả lời \"một khách hàng đáng giá bao nhiêu tiền và được phép chi bao nhiêu để có họ\": tính CLV, CAC, CLV:CAC, thời gian hoàn vốn CAC, churn, NRR; phân khúc khách theo RFM; chọn 3 đòn bẩy tăng CLV (AOV, tần suất, vòng đời); và chuyển tư duy từ 4P (inside-out) sang customer-centri…"
+agents: ["marketing_expert"]
+order: 23
+when: ["clv", "ltv", "cac", "ltv:cac", "gia tri vong doi khach hang", "chi phi thu hut khach", "giu chan khach", "retention", "churn", "rfm", "cohort", "khach hang trung thanh", "loyalty", "tai mua", "ty le roi bo", "unit economics", "thoi gian hoan von cac", "gia tri vong doi khach hang (clv) va tu duy lay khach hang lam trung tam", "customer lifetime value (clv) and customer-centricity"]
+body_max: 2750
+sections:
+  - id: "m03-tong-quan"
+    title: "Tổng quan m03"
+    tags: ["m03", "giá", "trị", "vòng", "đời", "khách", "hàng", "clv", "và", "tư", "duy", "lấy"]
+    text: |-
+      Giá trị vòng đời khách hàng (CLV) và tư duy lấy khách hàng làm trung tâm (Customer Lifetime Value (CLV) and Customer-Centricity) — module m03
+
+      Mục đích: Trả lời "một khách hàng đáng giá bao nhiêu tiền và được phép chi bao nhiêu để có họ": tính CLV, CAC, CLV:CAC, thời gian hoàn vốn CAC, churn, NRR; phân khúc khách theo RFM; chọn 3 đòn bẩy tăng CLV (AOV, tần suất, vòng đời); và chuyển tư duy từ 4P (inside-out) sang customer-centric/4C (outside-in) để ra quyết định đầu tư marketing theo lợi nhuận dài hạn thay vì doanh số một lần.
+
+      Dùng khi:
+      - Chủ SME hỏi 'một khách quán/shop đáng giá bao nhiêu?', 'được chi bao nhiêu quảng cáo để có 1 khách mới?'
+      - Cần tính CLV (đơn giản, có chiết khấu, subscription), CAC, CLV:CAC, payback, churn, NRR, NPS.
+      - Cần phân khúc khách hàng theo RFM (Champions, Loyal, Potential Loyalists, At Risk, Hibernating) và chọn chiến thuật cho từng nhóm.
+      - Doanh thu đứng yên dù chạy quảng cáo nhiều: cần xem retention, tần suất mua, giá trị đơn thay vì chỉ tìm khách mới.
+      - Thiết kế loyalty, subscription/membership (kiểu Amazon Prime, Starbucks Rewards, Grab Unlimited) và đánh giá có đáng lỗ ngắn hạn không.
+      - Muốn chuyển DN từ product-centric (4P/7P) sang customer-centric (4C, D2C, co-creation); cần dữ liệu khách hàng chính chủ (first-party data).
+      - Cần chỉ tiêu thưởng/KPI nội bộ gắn với CLV, không chỉ doanh thu.
+
+      Module liên quan: - 'm01 - STP: phân khúc và chọn đối tượng; RFM/CLV cho biết phân khúc nào đáng đầu tư' - 'm02 - Marketing Mix 4P/7P: 4P là bộ công cụ thực thi, customer-centric là kim chỉ nam; 4C ở mục chuyển đổi tư duy' - 'm04 - Brand Management: advocacy, lòng trung thành thương hiệu, NPS' - 'm05 - Digital Marketing và Growth Hacking: AARRR (Retention, Referral, Revenue), CAC theo kênh, email drip, push' - 'm0…
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m03_clv_simple: CLV công thức đơn giản (doanh thu)
+      - m03_clv_margin: CLV theo lợi nhuận gộp
+      - m03_clv_discounted: CLV có chiết khấu và retention
+      - m03_clv_subscription: CLV mô hình thuê bao
+      - m03_cac: Chi phí thu hút khách hàng
+      - m03_clv_cac_ratio: Tỷ lệ CLV:CAC
+      - m03_cac_payback: Thời gian hoàn vốn CAC
+      - m03_churn_lifespan: Churn, Retention và vòng đời kỳ vọng
+      - m03_nrr: Tỷ lệ giữ chân doanh thu ròng
+      - m03_nps: Điểm giới thiệu ròng NPS
+      - m03_prime_net_per_member: Lợi nhuận ròng mỗi thành viên thuê bao (kiểu Amazon Prime)
+
+      Kho tra cứu của module: Khái niệm 16, Công thức 11, frameworks 9, Quy trình 3, Quy tắc quyết định 16, Chuẩn so sánh 10, Lỗi thường gặp 16, Lưu ý SME Việt Nam 12, Bài học case 5, Ví dụ có lời giải 5, Câu hỏi luyện tập 10, Checklist 13, Mẫu Excel/Sheets 6. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ CLV", "lỗi thường gặp định giá").
+  - id: "m03-concepts-1"
+    title: "Khái niệm: Giá trị vòng đời khách hàng"
+    tags: ["khái", "niệm", "giá", "trị", "vòng", "đời", "khách", "hàng"]
+    text: |-
+      term_vi: Giá trị vòng đời khách hàng
+      term_en: Customer Lifetime Value (CLV, LTV)
+      definition: Tổng lợi nhuận ròng DN kỳ vọng thu được từ một khách hàng trong toàn bộ thời gian họ còn quan hệ với DN. Nói đơn giản - 1 khách hàng đáng giá bao nhiêu tiền.
+      why_it_matters: |
+        Doanh số một lần không cho biết khách có đáng giữ/đáng mua hay không. CLV chuyển câu hỏi marketing từ "bán được bao nhiêu" sang "mỗi khách mang về bao nhiêu lợi nhuận suốt đời", nhờ đó đặt được trần chi cho CAC, biết nhóm khách nào ưu tiên, và định giá được DN subscription. Tư tưởng customer-centricity của Peter Fader (Wharton, 2012) và The Loyalty Effect của Fred Reichheld (Bain, 1996) là nền tảng. Lưu ý: CLV đúng nghĩa là LỢI NHUẬN (đã trừ giá vốn/chi phí phục vụ), không phải doanh thu.
+  - id: "m03-concepts-2"
+    title: "Khái niệm: Chi phí giữ khách rẻ hơn mua khách mới"
+    tags: ["khái", "niệm", "chi", "phí", "giữ", "khách", "rẻ", "hơn", "mua", "mới"]
+    text: |-
+      term_vi: Chi phí giữ khách rẻ hơn mua khách mới
+      term_en: Retention vs Acquisition economics
+      definition: Mua khách mới tốn gấp 5-7 lần giữ khách cũ (Bain). Tăng retention 5% có thể tăng lợi nhuận 25-95% (Reichheld, Bain). Quy tắc 80/20 - khoảng 80% doanh thu đến từ 20% khách trung thành.
+      why_it_matters: |
+        Giải thích vì sao ngân sách nên chia cho cả giữ chân, không dồn hết vào tìm khách mới. Khách cũ không tốn CAC lần nữa, mua nhiều và rẻ phục vụ hơn. Ghi chú nguồn: file gốc chỗ khác ghi 5-25 lần; con số phụ thuộc ngành, dùng như bậc độ lớn (confidence medium), không phải hằng số.
+  - id: "m03-concepts-3"
+    title: "Khái niệm: Chi phí thu hút khách hàng"
+    tags: ["khái", "niệm", "chi", "phí", "thu", "hút", "khách", "hàng"]
+    text: |-
+      term_vi: Chi phí thu hút khách hàng
+      term_en: Customer Acquisition Cost (CAC)
+      definition: Tổng chi phí marketing và sales trong kỳ chia cho số khách mới có được trong kỳ đó.
+      why_it_matters: Là vế chi của bài toán CLV; thiếu CAC thì CLV không ra quyết định được (có thể đang mua khách đắt hơn giá trị họ mang lại).
+  - id: "m03-concepts-4"
+    title: "Khái niệm: Tỷ lệ CLV trên CAC"
+    tags: ["khái", "niệm", "tỷ", "lệ", "clv", "trên", "cac"]
+    text: |-
+      term_vi: Tỷ lệ CLV trên CAC
+      term_en: CLV:CAC ratio
+      definition: 'CLV chia CAC; mỗi 1 đồng bỏ ra mua khách thu về bao nhiêu đồng lợi nhuận. Mốc tham chiếu theo nguồn: tối thiểu 3:1.'
+      why_it_matters: Dưới 1 là lỗ trên mỗi khách; 1-3 mỏng vì còn phải gánh chi phí chung và rủi ro dự báo; quá cao có thể là đang đầu tư marketing thiếu.
+  - id: "m03-concepts-5"
+    title: "Khái niệm: Thời gian hoàn vốn CAC"
+    tags: ["khái", "niệm", "thời", "gian", "hoàn", "vốn", "cac"]
+    text: |-
+      term_vi: Thời gian hoàn vốn CAC
+      term_en: CAC Payback Period
+      definition: CAC chia lợi nhuận gộp hàng tháng trên mỗi khách = số tháng để thu hồi tiền mua khách.
+      why_it_matters: CLV:CAC tốt vẫn có thể chết vì cạn tiền mặt nếu payback quá dài; payback là góc nhìn dòng tiền cho SME vốn mỏng.
+  - id: "m03-concepts-6"
+    title: "Khái niệm: Tỷ lệ rời bỏ"
+    tags: ["khái", "niệm", "tỷ", "lệ", "rời", "bỏ"]
+    text: |-
+      term_vi: Tỷ lệ rời bỏ
+      term_en: Churn Rate
+      definition: Số khách rời bỏ trong kỳ chia tổng số khách đầu kỳ. Retention = 1 - churn. Vòng đời kỳ vọng = 1/churn.
+      why_it_matters: 'Churn là mẫu số của CLV subscription: giảm churn từ 8% xuống 6% tăng vòng đời từ 12.5 lên 16.7 kỳ, nên CLV tăng ~33% mà không tốn thêm CAC.'
+  - id: "m03-concepts-7"
+    title: "Khái niệm: Tỷ lệ giữ chân doanh thu ròng"
+    tags: ["khái", "niệm", "tỷ", "lệ", "giữ", "chân", "doanh", "thu", "ròng"]
+    text: |-
+      term_vi: Tỷ lệ giữ chân doanh thu ròng
+      term_en: Net Revenue Retention (NRR)
+      definition: (Doanh thu đầu kỳ - doanh thu mất do churn/hạ gói + doanh thu mở rộng upsell/cross-sell) chia doanh thu đầu kỳ, tính trên nhóm khách đã có đầu kỳ.
+      why_it_matters: NRR > 100% nghĩa là dù không có khách mới, doanh thu từ khách hiện tại vẫn tăng - dấu hiệu CLV đang tăng.
+  - id: "m03-concepts-8"
+    title: "Khái niệm: Điểm giới thiệu ròng"
+    tags: ["khái", "niệm", "điểm", "giới", "thiệu", "ròng"]
+    text: |-
+      term_vi: Điểm giới thiệu ròng
+      term_en: Net Promoter Score (NPS)
+      definition: Hỏi 'từ 0-10, bạn có sẵn sàng giới thiệu cho người khác không?'. Promoters 9-10, Passives 7-8, Detractors 0-6. NPS = %Promoters - %Detractors (từ -100 đến +100).
+      why_it_matters: 'Là chỉ báo sớm của retention và advocacy; NPS cao thường tương quan CLV cao vì khách hài lòng mua nhiều và ở lâu. Nguồn: Reichheld (Bain).'
+  - id: "m03-concepts-9"
+    title: "Khái niệm: Bỏ qua giá trị giới thiệu"
+    tags: ["khái", "niệm", "bỏ", "qua", "giá", "trị", "giới", "thiệu"]
+    text: |-
+      term_vi: Bỏ qua giá trị giới thiệu
+      term_en: Referral value / Customer Referral Value
+      definition: CLV truyền thống chỉ tính chi tiêu của chính khách, bỏ qua giá trị khách đó giới thiệu bạn bè (word-of-mouth).
+      why_it_matters: Với SME F&B, khách trung thành thường kéo thêm khách; không tính sẽ đánh giá thấp nhóm Champions.
+  - id: "m03-concepts-10"
+    title: "Khái niệm: Lấy khách hàng làm trung tâm (4.0)"
+    tags: ["khái", "niệm", "lấy", "khách", "hàng", "làm", "trung", "tâm"]
+    text: |-
+      term_vi: Lấy khách hàng làm trung tâm (4.0)
+      term_en: Customer-Centric (Outside-In)
+      definition: |
+        Đặt khách hàng vào trọng tâm mọi quyết định (thiết kế sản phẩm, chuỗi cung ứng, trải nghiệm sau mua) dựa trên dữ liệu số và công nghệ, cá nhân hóa trên mọi điểm chạm (omnichannel). Tìm sản phẩm/giải pháp cho vấn đề của khách thay vì tìm khách cho sản phẩm có sẵn.
+      why_it_matters: |
+        Mô hình 4P/7P là Inside-Out (DN có gì thì bán cái đó, mục tiêu volume, giao dịch ngắn hạn); Customer-Centric là Outside-In (xuất phát từ pain point, mục tiêu tối ưu CLV, quan hệ dài hạn biến khách thành người lan tỏa/advocacy). Hai mô hình bổ sung nhau: customer-centric là kim chỉ nam tư duy, 4P/7P là bộ công cụ thực thi.
+  - id: "m03-concepts-11"
+    title: "Khái niệm: Đòn bẩy CLV"
+    tags: ["khái", "niệm", "đòn", "bẩy", "clv"]
+    text: |-
+      term_vi: Đòn bẩy CLV
+      term_en: CLV levers
+      definition: 'Ba cách tăng CLV: tăng giá trị đơn trung bình (AOV), tăng tần suất mua, tăng vòng đời khách (giảm churn). CLV đơn giản = AOV x Frequency x Lifespan nên mỗi đòn bẩy nhân vào kết quả.'
+      why_it_matters: Chia nhỏ bài toán 'tăng CLV' thành 3 biến đo được, mỗi biến có bộ chiến thuật riêng.
+  - id: "m03-concepts-12"
+    title: "Khái niệm: Win-back campaign"
+    tags: ["khái", "niệm", "win", "back", "campaign"]
+    text: |-
+      term_vi: Win-back campaign
+      term_en: Win-back
+      definition: Chiến dịch nhắm vào khách đã rời bỏ hoặc không hoạt động để kéo họ quay lại (email ưu đãi đặc biệt, giảm giá, giới thiệu sản phẩm mới).
+      why_it_matters: Khách cũ từng mua rẻ hơn khách lạ; nhưng chỉ nên win-back nhóm có CLV lịch sử cao (At Risk), không đổ tiền cho nhóm Hibernating giá trị thấp.
+  - id: "m03-concepts-13"
+    title: "Khái niệm: Cảnh báo sớm rời bỏ"
+    tags: ["khái", "niệm", "cảnh", "báo", "sớm", "rời", "bỏ"]
+    text: |-
+      term_vi: Cảnh báo sớm rời bỏ
+      term_en: Early Warning Signals (churn)
+      definition: 'Dấu hiệu trước khi khách rời: khoảng cách giữa các lần mua dài ra, giảm chi tiêu, hết mở email, khiếu nại, NPS giảm. (Checklist nguồn yêu cầu theo dõi, nhưng không liệt kê chi tiết; ví dụ ở đây là tổng hợp của người distill.)'
+      why_it_matters: Phát hiện sớm cho phép can thiệp (proactive support, win-back) trước khi khách thực sự mất.
+  - id: "m03-concepts-14"
+    title: "Khái niệm: Gaming CLV (CLV âm)"
+    tags: ["khái", "niệm", "gaming", "clv", "âm"]
+    text: |-
+      term_vi: Gaming CLV (CLV âm)
+      term_en: CLV gaming / negative-CLV customers
+      definition: Team marketing 'chơi số' bằng cách giữ chân khách chi tiêu ít nhưng chi phí phục vụ cao, làm CLV doanh thu trông cao nhưng lợi nhuận thật âm.
+      why_it_matters: Là lý do KPI nên gắn với CLV theo lợi nhuận (đã trừ chi phí phục vụ), không chỉ doanh thu hay số khách giữ lại.
+  - id: "m03-concepts-15"
+    title: "Khái niệm: Dữ liệu chính chủ"
+    tags: ["khái", "niệm", "dữ", "liệu", "chính", "chủ"]
+    text: |-
+      term_vi: Dữ liệu chính chủ
+      term_en: First-party data
+      definition: Dữ liệu hành vi khách do DN tự thu thập qua app, website, thẻ thành viên, CRM/CDP, không phải qua trung gian bán lẻ hay bên thứ ba.
+      why_it_matters: Nike trước 2017 mất kết nối với khách cuối vì dữ liệu kẹt ở đại lý; có first-party data mới tính được CLV, cá nhân hóa và R&D theo nhu cầu thật.
+  - id: "m03-concepts-16"
+    title: "Khái niệm: Đồng sáng tạo"
+    tags: ["khái", "niệm", "đồng", "sáng", "tạo"]
+    text: |-
+      term_vi: Đồng sáng tạo
+      term_en: Co-creation
+      definition: 'Đưa khách vào quy trình tạo sản phẩm (LEGO Ideas: 10,000 vote thì LEGO thẩm định thương mại, người thiết kế nhận 1% doanh thu ròng).'
+      why_it_matters: 'Giảm rủi ro chữ P (Product): sản phẩm chưa sản xuất đã biết có cộng đồng sẵn sàng mua.'
+  - id: "m03-formulas-1"
+    title: "Công thức: m03_clv_simple — CLV công thức đơn giản (doanh thu)"
+    tags: ["công", "thức", "m03_clv_simple", "clv", "đơn", "giản", "doanh", "thu"]
+    text: |-
+      id: m03_clv_simple
+      name_vi: CLV công thức đơn giản (doanh thu)
+      name_en: Simple CLV (revenue basis)
+      expression_latex: CLV = AOV \times F \times L
+      expression_python: aov * freq * lifespan
+      excel: =B1*B2*B3
+      variables:
+      - symbol: aov
+        meaning: Giá trị mua trung bình mỗi lần (Average Purchase Value)
+        unit: VNĐ/lần
+      - symbol: freq
+        meaning: Số lần mua mỗi năm (Purchase Frequency)
+        unit: lần/năm
+      - symbol: lifespan
+        meaning: Thời gian gắn bó (Customer Lifespan)
+        unit: năm
+      when_to_use: Ước lượng nhanh, bậc độ lớn, khi chưa có dữ liệu cohort. Muốn ra lợi nhuận phải nhân thêm biên lợi nhuận gộp (xem m03_clv_margin).
+      why_it_works: Tổng chi tiêu = mỗi lần chi x số lần mỗi năm x số năm. Ba thừa số tương ứng 3 đòn bẩy CLV nên công thức chỉ ra ngay phải kéo đòn bẩy nào.
+      assumptions:
+      - Giá trị đơn, tần suất, vòng đời ổn định
+      - Không chiết khấu thời gian
+      - Là doanh thu trừ khi nhân biên lợi nhuận
+      pitfalls:
+      - Kết quả là TỔNG DOANH THU, không phải lợi nhuận. Nguồn đặt tên là CLV (46.8 triệu) cho quán cà phê nhưng thực chất là doanh thu; với biên gộp 60% thì lợi nhuận ~28.08 triệu.
+      - Vòng đời 5 năm là giả định lạc quan; dùng 1/churn hoặc dữ liệu cohort.
+      - Không chiết khấu nên phóng đại giá trị xa.
+      interpretation: Dùng để so sánh nhóm khách và xem đòn bẩy nào nhạy nhất. So với CAC phải dùng bản lợi nhuận.
+      example:
+        inputs:
+          aov: 60000
+          freq: 156
+          lifespan: 5
+        steps:
+        - freq = 3 lần/tuần x 52 = 156
+        - CLV = 60,000 x 156 x 5 = 46,800,000 VNĐ (doanh thu)
+        result: 46,800,000 VNĐ doanh thu trọn đời
+  - id: "m03-formulas-2"
+    title: "Công thức: m03_clv_margin — CLV theo lợi nhuận gộp"
+    tags: ["công", "thức", "m03_clv_margin", "clv", "theo", "lợi", "nhuận", "gộp"]
+    text: |-
+      id: m03_clv_margin
+      name_vi: CLV theo lợi nhuận gộp
+      name_en: Margin-based CLV
+      expression_latex: CLV = AOV \times F \times L \times GM
+      expression_python: aov * freq * lifespan * gm
+      excel: =B1*B2*B3*B4
+      variables:
+      - symbol: aov
+        meaning: Giá trị đơn trung bình
+        unit: VNĐ
+      - symbol: freq
+        meaning: Số lần mua/năm
+        unit: lần/năm
+      - symbol: lifespan
+        meaning: Vòng đời
+        unit: năm
+      - symbol: gm
+        meaning: Biên lợi nhuận gộp (đã trừ giá vốn, nên trừ cả chi phí phục vụ trực tiếp)
+        unit: tỷ lệ 0-1
+      when_to_use: Khi cần so với CAC hoặc ra quyết định đầu tư; đây là dạng đúng nghĩa 'lợi nhuận ròng' của định nghĩa CLV.
+      why_it_works: Lợi nhuận mới trả được CAC; doanh thu chưa trừ giá vốn đánh lừa quyết định chi marketing.
+      assumptions:
+      - Biên gộp ổn định
+      - Chưa chiết khấu
+      pitfalls:
+      - Quên trừ chi phí phục vụ (ship, hỗ trợ) làm CLV ảo - nguồn nêu rõ rủi ro CLV âm bị che
+      - Dùng GM theo cả công ty thay vì theo phân khúc
+      interpretation: So sánh CLV theo từng phân khúc; so với CAC cùng phân khúc.
+      example:
+        inputs:
+          aov: 60000
+          freq: 156
+          lifespan: 5
+          gm: 0.6
+        steps:
+        - 46,800,000 x 0.6 = 28,080,000 VNĐ
+        - Biên 60% là giả định minh họa
+        result: 28,080,000 VNĐ lợi nhuận gộp trọn đời
+  - id: "m03-formulas-3"
+    title: "Công thức: m03_clv_discounted — CLV có chiết khấu và retention"
+    tags: ["công", "thức", "m03_clv_discounted", "clv", "có", "chiết", "khấu", "và", "retention"]
+    text: |-
+      id: m03_clv_discounted
+      name_vi: CLV có chiết khấu và retention
+      name_en: Discounted CLV with retention
+      expression_latex: CLV = \sum_{t=1}^{T} \frac{(Revenue_t - Cost_t) \times Retention_t}{(1+d)^t}
+      expression_python: sum((rev_cost) * r**(t-1) / (1+d)**t for t in range(1, T+1))
+      excel: =SUMPRODUCT(margin*retention_vector/(1+d)^period_vector)
+      variables:
+      - symbol: rev_cost
+        meaning: Lợi nhuận mỗi năm của khách còn lại (Revenue_t - Cost_t)
+        unit: VNĐ/năm
+      - symbol: r
+        meaning: Retention hằng năm; Retention_t lũy kế là r^(t-1) nếu năm 1 chắc chắn có mặt
+        unit: tỷ lệ 0-1
+      - symbol: d
+        meaning: Lãi suất chiết khấu (discount rate)
+        unit: tỷ lệ/năm
+      - symbol: T
+        meaning: Số năm dự phóng (cắt tại một hữu hạn, thường 3-10)
+        unit: năm
+      - symbol: t
+        meaning: Năm thứ t
+        unit: năm
+      when_to_use: Khi vòng đời dài, cần giá trị hiện tại để so với CAC trả ngay hôm nay hoặc định giá DN.
+      why_it_works: Đồng tiền nhận sau có giá trị thấp hơn (time value of money); nhân xác suất khách còn ở lại để ra giá trị kỳ vọng. Cộng các năm = giá trị hiện tại kỳ vọng.
+      assumptions:
+      - Retention_t là xác suất khách còn hoạt động tới năm t (tích lũy), không phải tỷ lệ giữ chân từng năm riêng lẻ
+      - Dòng tiền cuối năm
+      - d chủ quan
+      pitfalls:
+      - Nguồn viết Retention_t mơ hồ; phải dùng xác suất sống sót lũy kế (r^(t-1)), nếu nhân r^t thì năm 1 đã bị trừ nhầm.
+      - Chọn d khác nhau làm CLV đổi lớn (nhược điểm nguồn nêu); báo cáo kèm độ nhạy d = 10%, 12%, 15%.
+      - Cắt T quá dài khi churn thấp sẽ phóng đại; thường chỉ tin 3-5 năm.
+      interpretation: CLV chiết khấu luôn nhỏ hơn CLV không chiết khấu cùng kỳ. So với CAC để ra CLV:CAC.
+      example:
+        inputs:
+          rev_cost: 5616000
+          r: 0.7
+          d: 0.12
+          T: 10
+        steps:
+        - Lợi nhuận/năm = 60,000 x 156 x 60% = 5,616,000 VNĐ
+        - 'Với r = 0.7, d = 12%, T = 10: tổng = 13,249,816 VNĐ'
+        - Vòng đời kỳ vọng 1/(1-0.7) = 3.33 năm; so với giả định 5 năm của công thức đơn giản
+        result: CLV chiết khấu ~13.25 triệu VNĐ (thấp hơn nhiều so với 46.8 triệu doanh thu hoặc 28.08 triệu lãi gộp)
+  - id: "m03-formulas-4"
+    title: "Công thức: m03_clv_subscription — CLV mô hình thuê bao"
+    tags: ["công", "thức", "m03_clv_subscription", "clv", "mô", "hình", "thuê", "bao"]
+    text: |-
+      id: m03_clv_subscription
+      name_vi: CLV mô hình thuê bao
+      name_en: Subscription CLV
+      expression_latex: CLV = \frac{ARPU \times GM}{Churn}
+      expression_python: arpu * gm / churn
+      excel: =B1*B2/B3
+      variables:
+      - symbol: arpu
+        meaning: Doanh thu trung bình mỗi user mỗi kỳ (tháng)
+        unit: VNĐ hoặc USD/kỳ
+      - symbol: gm
+        meaning: Biên lợi nhuận gộp
+        unit: tỷ lệ 0-1
+      - symbol: churn
+        meaning: Tỷ lệ rời bỏ cùng kỳ với ARPU
+        unit: tỷ lệ/kỳ
+      when_to_use: 'Subscription/membership/SaaS: doanh thu lặp lại đều, churn tương đối ổn định.'
+      why_it_works: 'Lợi nhuận mỗi kỳ ARPU x GM cộng trong vòng đời kỳ vọng 1/churn (tổng chuỗi hình học). Mẫu số churn khiến CLV rất nhạy: giảm một nửa churn gấp đôi CLV.'
+      assumptions:
+      - Churn không đổi theo thời gian (thực tế churn cao ở những tháng đầu)
+      - ARPU ổn định
+      - Chưa chiết khấu
+      pitfalls:
+      - ARPU và churn phải cùng đơn vị kỳ (tháng-tháng)
+      - Churn gần 0 làm CLV vô cực - cần cap vòng đời
+      - Dùng churn blended che khác biệt giữa cohort
+      interpretation: 'Netflix ví dụ: 15 x 0.40 / 0.025 = 240 USD; vòng đời 40 tháng.'
+      example:
+        inputs:
+          arpu: 15
+          gm: 0.4
+          churn: 0.025
+        steps:
+        - 15 x 0.40 = 6 USD lợi nhuận/tháng
+        - 6 / 0.025 = 240 USD
+        - Vòng đời = 1/0.025 = 40 tháng
+        result: CLV = 240 USD (số Netflix là minh họa của nguồn, confidence low)
+  - id: "m03-formulas-5"
+    title: "Công thức: m03_cac — Chi phí thu hút khách hàng"
+    tags: ["công", "thức", "m03_cac", "chi", "phí", "thu", "hút", "khách", "hàng"]
+    text: |-
+      id: m03_cac
+      name_vi: Chi phí thu hút khách hàng
+      name_en: Customer Acquisition Cost (CAC)
+      expression_latex: CAC = \frac{\text{Marketing cost} + \text{Sales cost}}{\text{New customers}}
+      expression_python: (marketing_cost + sales_cost) / new_customers
+      excel: =(B1+B2)/B3
+      variables:
+      - symbol: marketing_cost
+        meaning: Chi phí marketing trong kỳ (quảng cáo, khuyến mãi, content, lương marketing)
+        unit: VNĐ
+      - symbol: sales_cost
+        meaning: Chi phí sales trong kỳ (lương, hoa hồng, công cụ)
+        unit: VNĐ
+      - symbol: new_customers
+        meaning: Số khách mới thật sự trong cùng kỳ
+        unit: khách
+      when_to_use: Mỗi kỳ (tháng/quý) và theo từng kênh để biết kênh nào mua khách rẻ.
+      why_it_works: Chia tổng chi cho số khách mới cho giá vốn 1 khách; là vế chi của CLV:CAC.
+      assumptions:
+      - Khách mới quy được về kỳ chi tiêu
+      - Nên dùng chi phí đầy đủ (fully loaded)
+      pitfalls:
+      - Chỉ tính tiền quảng cáo, quên lương sales/marketing và voucher
+      - Đếm cả khách cũ quay lại làm CAC giả thấp
+      - Độ trễ chuyển đổi giữa chi tiêu và khách mới
+      interpretation: So với lợi nhuận gộp bình quân mỗi khách (CLV) và payback.
+      example:
+        inputs:
+          marketing_cost: 30000000
+          sales_cost: 0
+          new_customers: 60
+        steps:
+        - CAC = 30,000,000 / 60 = 500,000 VNĐ (số minh họa)
+        result: CAC = 500,000 VNĐ/khách
+  - id: "m03-formulas-6"
+    title: "Công thức: m03_clv_cac_ratio — Tỷ lệ CLV:CAC"
+    tags: ["công", "thức", "m03_clv_cac_ratio", "tỷ", "lệ", "clv", "cac"]
+    text: |-
+      id: m03_clv_cac_ratio
+      name_vi: Tỷ lệ CLV:CAC
+      name_en: CLV to CAC ratio
+      expression_latex: CLV{:}CAC = \frac{CLV}{CAC}
+      expression_python: clv / cac
+      excel: =B1/B2
+      variables:
+      - symbol: clv
+        meaning: CLV theo lợi nhuận
+        unit: VNĐ
+      - symbol: cac
+        meaning: CAC cùng phân khúc/kênh
+        unit: VNĐ
+      when_to_use: Đánh giá một kênh/phân khúc có đáng đầu tư không.
+      why_it_works: Ngưỡng 3:1 chừa chỗ cho chi phí chung (overhead) chưa vào CLV, sai số dự báo, và khoảng thời gian chờ thu hồi. Benchmark 3:1 phổ biến trong SaaS/subscription (nguồn nêu tối thiểu 3:1, không nêu cơ sở).
+      assumptions:
+      - CLV và CAC cùng kỳ, cùng phân khúc
+      - CLV là lợi nhuận, không phải doanh thu
+      pitfalls:
+      - So CLV doanh thu với CAC
+      - Dùng CLV trung bình toàn công ty cho kênh có chất lượng khác
+      interpretation: <1 lỗ; 1-3 mỏng, cần sửa; >=3 khỏe; quá cao (vd >5) cân nhắc tăng đầu tư mua khách (nếu payback ổn).
+      example:
+        inputs:
+          clv: 1350000
+          cac: 500000
+        steps:
+        - 'Subscription ví dụ: CLV 2,250,000 và CAC 600,000 cho ratio 3.75'
+        - 'Ví dụ trên: 1,350,000/500,000 = 2.7 (dưới 3)'
+        result: 2.7 nghĩa là chưa đạt ngưỡng 3:1, cần giảm CAC hoặc nâng CLV
+  - id: "m03-formulas-7"
+    title: "Công thức: m03_cac_payback — Thời gian hoàn vốn CAC"
+    tags: ["công", "thức", "m03_cac_payback", "thời", "gian", "hoàn", "vốn", "cac"]
+    text: |-
+      id: m03_cac_payback
+      name_vi: Thời gian hoàn vốn CAC
+      name_en: CAC Payback Period
+      expression_latex: Payback = \frac{CAC}{\text{Monthly margin per customer}}
+      expression_python: cac / monthly_margin
+      excel: =B1/B2
+      variables:
+      - symbol: cac
+        meaning: Chi phí thu hút một khách
+        unit: VNĐ
+      - symbol: monthly_margin
+        meaning: Lợi nhuận gộp mỗi tháng trên một khách (ARPU x GM)
+        unit: VNĐ/tháng
+      when_to_use: Kiểm tra áp lực dòng tiền; SME cần payback ngắn.
+      why_it_works: Chia CAC cho lợi nhuận tháng cho số tháng cho tới khi khách bắt đầu sinh lãi thật.
+      assumptions:
+      - Lợi nhuận tháng đều, khách chưa churn trong giai đoạn hoàn vốn
+      pitfalls:
+      - Bỏ qua churn trong thời gian hoàn vốn
+      - Dùng doanh thu thay lợi nhuận
+      interpretation: Ngưỡng cụ thể không có trong nguồn; thực hành phổ biến SaaS khoảng 12 tháng, SME F&B nên ngắn hơn (đánh dấu confidence low).
+      example:
+        inputs:
+          cac: 600000
+          monthly_margin: 180000
+        steps:
+        - monthly_margin = 300,000 x 0.6 = 180,000
+        - Payback = 600,000/180,000 = 3.33 tháng
+        result: 3.3 tháng
+  - id: "m03-formulas-8"
+    title: "Công thức: m03_churn_lifespan — Churn, Retention và vòng đời kỳ vọng"
+    tags: ["công", "thức", "m03_churn_lifespan", "churn", "retention", "và", "vòng", "đời", "kỳ", "vọng"]
+    text: |-
+      id: m03_churn_lifespan
+      name_vi: Churn, Retention và vòng đời kỳ vọng
+      name_en: Churn rate and expected lifespan
+      expression_latex: Churn = \frac{\text{Lost customers}}{\text{Customers at start}},\quad L = \frac{1}{Churn}
+      expression_python: lost / start, 1 / (lost / start)
+      excel: =B1/B2 ; =1/(B1/B2)
+      variables:
+      - symbol: lost
+        meaning: Số khách rời bỏ trong kỳ (từ nhóm khách đầu kỳ)
+        unit: khách
+      - symbol: start
+        meaning: Số khách đầu kỳ
+        unit: khách
+      when_to_use: Ước lượng vòng đời khi chưa có dữ liệu dài; theo dõi hàng tháng.
+      why_it_works: Nếu mỗi kỳ mất tỷ lệ c, thời gian ở lại kỳ vọng là 1/c (phân phối hình học).
+      assumptions:
+      - Churn hằng định theo thời gian
+      pitfalls:
+      - Lẫn khách mới vào tử số/mẫu số
+      - Churn tháng vs năm khác đơn vị
+      - Churn thực tế giảm dần theo tuổi cohort
+      interpretation: Retention 60% cho vòng đời 2.5 năm; 93% cho ~14.3 năm (số Amazon trong nguồn).
+      example:
+        inputs:
+          lost: 8
+          start: 100
+        steps:
+        - churn = 8/100 = 8%
+        - L = 1/0.08 = 12.5 kỳ
+        result: Vòng đời 12.5 tháng nếu churn tháng 8%
+  - id: "m03-formulas-9"
+    title: "Công thức: m03_nrr — Tỷ lệ giữ chân doanh thu ròng"
+    tags: ["công", "thức", "m03_nrr", "tỷ", "lệ", "giữ", "chân", "doanh", "thu", "ròng"]
+    text: |-
+      id: m03_nrr
+      name_vi: Tỷ lệ giữ chân doanh thu ròng
+      name_en: Net Revenue Retention (NRR)
+      expression_latex: NRR = \frac{R_0 - \text{Churn} + \text{Expansion}}{R_0}
+      expression_python: (r0 - churn_rev + expansion) / r0
+      excel: =(B1-B2+B3)/B1
+      variables:
+      - symbol: r0
+        meaning: Doanh thu đầu kỳ từ nhóm khách hiện có
+        unit: VNĐ
+      - symbol: churn_rev
+        meaning: Doanh thu mất do khách rời hoặc hạ gói
+        unit: VNĐ
+      - symbol: expansion
+        meaning: Doanh thu tăng thêm từ khách hiện có (upsell, cross-sell)
+        unit: VNĐ
+      when_to_use: Subscription/B2B có nhiều lần bán thêm cho khách cũ.
+      why_it_works: Tách riêng tăng trưởng từ khách hiện có khỏi khách mới.
+      assumptions:
+      - Cohort cố định đầu kỳ, không tính khách mới
+      pitfalls:
+      - Lẫn doanh thu khách mới
+      - Nguồn chỉ ghi công thức, không có ví dụ số
+      interpretation: NRR > 100% nghĩa là doanh thu từ khách cũ tự tăng.
+      example:
+        inputs:
+          r0: 100
+          churn_rev: 10
+          expansion: 15
+        steps:
+        - (100 - 10 + 15)/100 = 1.05
+        result: NRR 105% (số minh họa)
+  - id: "m03-formulas-10"
+    title: "Công thức: m03_nps — Điểm giới thiệu ròng NPS"
+    tags: ["công", "thức", "m03_nps", "điểm", "giới", "thiệu", "ròng", "nps"]
+    text: |-
+      id: m03_nps
+      name_vi: Điểm giới thiệu ròng NPS
+      name_en: Net Promoter Score
+      expression_latex: NPS = \%Promoters - \%Detractors
+      expression_python: pct_promoters - pct_detractors
+      excel: =B1-B2
+      variables:
+      - symbol: pct_promoters
+        meaning: '% người trả lời 9-10'
+        unit: điểm %
+      - symbol: pct_detractors
+        meaning: '% người trả lời 0-6'
+        unit: điểm %
+      when_to_use: Đo sự hài lòng/trung thành, chỉ báo sớm của churn.
+      why_it_works: Câu hỏi giới thiệu thể hiện mức tin cậy đủ để đặt uy tín cá nhân; chênh lệch hai cực loại bỏ nhóm trung lập.
+      assumptions:
+      - Mẫu đủ lớn, đại diện
+      pitfalls:
+      - Chỉ đo không hành động
+      - Bỏ qua Passives
+      interpretation: Dải -100 đến +100; theo dõi xu hướng và so cùng ngành.
+      example:
+        inputs:
+          pct_promoters: 50
+          pct_detractors: 20
+        steps:
+        - 50 - 20 = 30
+        result: NPS +30 (số minh họa)
+  - id: "m03-formulas-11"
+    title: "Công thức: m03_prime_net_per_member — Lợi nhuận ròng mỗi thành viên thuê bao (kiểu Amazon Prime)"
+    tags: ["công", "thức", "m03_prime_net_per_member", "lợi", "nhuận", "ròng", "mỗi", "thành", "viên", "thuê", "bao", "kiểu"]
+    text: |-
+      id: m03_prime_net_per_member
+      name_vi: Lợi nhuận ròng mỗi thành viên thuê bao (kiểu Amazon Prime)
+      name_en: Net contribution per subscription member
+      expression_latex: Net = Spend \times GM + Fee + Ads - Shipping,\quad CLV = Net \times L
+      expression_python: (spend*gm + fee + ads - shipping) * lifespan
+      excel: =(B1*B2+B3+B4-B5)*B6
+      variables:
+      - symbol: spend
+        meaning: Chi tiêu mua sắm mỗi năm
+        unit: USD/năm
+      - symbol: gm
+        meaning: Biên lợi nhuận gộp hàng hóa
+        unit: tỷ lệ
+      - symbol: fee
+        meaning: Phí thuê bao/năm
+        unit: USD
+      - symbol: ads
+        meaning: Doanh thu quảng cáo mỗi thành viên
+        unit: USD/năm
+      - symbol: shipping
+        meaning: Chi phí vận chuyển phục vụ thành viên
+        unit: USD/năm
+      - symbol: lifespan
+        meaning: Số năm giữ chân
+        unit: năm
+      when_to_use: Đánh giá có nên 'lỗ' một hạng mục (ship) để lấy retention/chi tiêu cao hơn.
+      why_it_works: Hạng mục lỗ ship không được đánh giá riêng lẻ mà trong tổng lợi nhuận đóng góp trên mỗi thành viên suốt vòng đời.
+      assumptions:
+      - Chưa chiết khấu
+      - Các số Amazon chỉ là ước lượng minh họa trong nguồn (illustrative)
+      pitfalls:
+      - Nguồn đưa CLV Prime ~12,000 USD nhưng tính chi tiết ra 1,246 USD; hai số mâu thuẫn, dùng 1,246
+      - 14 năm chưa chiết khấu quá lạc quan
+      interpretation: Prime 1,246 USD vs non-Prime 375 USD (600 x 25% x 2.5), gấp ~3.3 lần.
+      example:
+        inputs:
+          spend: 1400
+          gm: 0.25
+          fee: 139
+          ads: 50
+          shipping: 450
+          lifespan: 14
+        steps:
+        - 1,400 x 0.25 = 350
+        - 350 + 139 + 50 = 539
+        - 539 - 450 = 89 USD/năm
+        - 89 x 14 = 1,246 USD
+        - 'Non-Prime: 600 x 0.25 x 2.5 = 375; tỷ lệ 1,246/375 = 3.32'
+        result: CLV Prime ~1,246 USD vs 375 USD (gấp ~3.3 lần)
+  - id: "m03-frameworks-1"
+    title: "Frameworks: m03_rfm — Phân khúc RFM"
+    tags: ["frameworks", "m03_rfm", "phân", "khúc", "rfm"]
+    text: |-
+      id: m03_rfm
+      name_vi: Phân khúc RFM
+      name_en: RFM Analysis (Recency, Frequency, Monetary)
+      origin: |
+        Xuất phát từ ngành direct marketing/catalog mail-order (thập niên 1960-1990, thường gắn với Arthur Hughes; nguồn gốc cụ thể không có trong file nguồn, confidence low). Lý do ra đời: bưu phẩm tốn tiền, cần chọn danh sách khách có khả năng mua lại cao nhất chỉ bằng ba thông tin có sẵn trong sổ giao dịch.
+      components:
+      - 'R - Recency: lần mua gần nhất cách đây bao lâu'
+      - 'F - Frequency: số lần mua trong kỳ phân tích'
+      - 'M - Monetary: tổng/bình quân chi tiêu'
+      - 'Segments (nguồn): Champions (R cao, F cao, M cao: VIP, referral); Loyal (R cao, F cao, M TB: upsell, cross-sell); Potential Loyalists (R cao, F TB, M TB: nurture, loyalty program); At Risk (R thấp, F cao, M cao: win-back, ưu đãi đặc biệt); Hibernating (R thấp, F thấp, M thấp: re-activation hoặc buông)'
+      when_to_use: Có dữ liệu giao dịch theo khách (POS có thẻ thành viên, CRM, số điện thoại). Cần chọn ai nhận ưu đãi, ai cần win-back, ai bỏ qua.
+      how_to_apply:
+      - 'Xuất dữ liệu: mã khách, ngày mua gần nhất, số đơn, tổng chi tiêu trong 12 tháng.'
+      - Tính R (số ngày từ lần mua cuối), F (số đơn), M (tổng tiền).
+      - Chấm điểm 1-5 theo quintile (hoặc 1-3 nếu ít dữ liệu); R càng gần càng điểm cao.
+      - Gộp điểm thành segment theo bảng (Champions 5-5-5/4-4-4...; At Risk R thấp F-M cao...).
+      - Mỗi segment gán hành động và ngân sách; đo lại hàng tháng.
+      how_to_read_results: Nhóm nhỏ nhưng chiếm phần lớn doanh thu là Champions (kiểm chứng 80/20). At Risk giá trị cao đáng ưu tiên win-back nhất vì từng chi nhiều. Hibernating chi tiêu thấp, thử re-activation giá rẻ rồi buông.
+      pitfalls:
+      - Ngưỡng quintile tuyệt đối thay đổi theo ngành (quán cà phê R tính ngày, nội thất tính năm).
+      - RFM chỉ nhìn quá khứ, không dự báo trực tiếp như mô hình xác suất (Fader).
+      - M nên tính lợi nhuận nếu biên giữa khách chênh lệch lớn (tránh CLV âm).
+      - Nguồn chỉ cho 5 segment tổng quát, không có quy tắc điểm chuẩn; thang điểm trong ví dụ là do người distill đặt.
+      example: 'Shop 8 khách: A và B (R 5-10 ngày, 9-12 đơn, 4.5-6 triệu) là Champions; D từng chi 5.5 triệu nhưng 95 ngày chưa mua là At Risk; E, H là Hibernating. Ba khách A, B, D chiếm 72.7% doanh thu dù chỉ 37.5% số khách. Xem worked example m03_we_rfm.'
+  - id: "m03-frameworks-2"
+    title: "Frameworks: m03_clv_optimization_process — Quy trình tối ưu CLV 5 bước"
+    tags: ["frameworks", "m03_clv_optimization_process", "quy", "trình", "tối", "ưu", "clv", "bước"]
+    text: |-
+      id: m03_clv_optimization_process
+      name_vi: Quy trình tối ưu CLV 5 bước
+      name_en: CLV optimization process
+      origin: 'Quy trình tổng hợp trong file nguồn (không gắn tác giả). Lý do: CLV chỉ có giá trị khi thành vòng lặp đo - phân khúc - hành động - theo dõi.'
+      components:
+      - Bước 1 Đo lường CLV hiện tại (theo phân khúc, cohort)
+      - Bước 2 Phân khúc khách theo CLV (High-value, Medium, Low, At-risk)
+      - 'Bước 3 Tăng CLV qua 3 đòn bẩy: AOV, Frequency, Lifespan'
+      - Bước 4 Tối ưu CAC để CLV:CAC >= 3:1
+      - Bước 5 Theo dõi và lặp lại
+      when_to_use: Khi muốn một khung hành động trọn vẹn từ chẩn đoán đến cải thiện.
+      how_to_apply:
+      - Tính CLV và CAC theo từng phân khúc/kênh/cohort (xem procedure m03_proc_clv_cac_rfm).
+      - 'Chọn 1 đòn bẩy rẻ nhất, nhạy nhất để thử (so sánh nhạy cảm: +10% mỗi biến thì CLV +10% vì nhân; churn nhạy hơn nhiều ở mẫu số).'
+      - Chạy thử có đối chứng, đo thay đổi retention/AOV/tần suất sau 1-2 chu kỳ mua.
+      - Cập nhật dashboard hàng tháng; mọi bộ phận (marketing, sales, CS) cùng biết CLV.
+      how_to_read_results: Hiệu quả = CLV phân khúc tăng mà CAC không tăng tương ứng, và biên lợi nhuận không giảm.
+      pitfalls:
+      - Tăng doanh thu nhưng chi phí phục vụ tăng nhanh hơn (CLV lợi nhuận giảm)
+      - Chỉ thưởng doanh thu
+      example: Quán cà phê chọn đòn bẩy tần suất bằng thẻ tích điểm (mua 9 tặng 1) thay vì tăng giá.
+  - id: "m03-frameworks-3"
+    title: "Frameworks: m03_three_levers — Ba đòn bẩy tăng CLV"
+    tags: ["frameworks", "m03_three_levers", "ba", "đòn", "bẩy", "tăng", "clv"]
+    text: |-
+      id: m03_three_levers
+      name_vi: Ba đòn bẩy tăng CLV
+      name_en: Three CLV levers (AOV, Frequency, Lifespan)
+      origin: Phân rã trực tiếp từ công thức CLV = AOV x Frequency x Lifespan; ví dụ thực tế trong nguồn lấy từ Amazon, Starbucks, Grab, Netflix, Spotify, Shopee.
+      components:
+      - 'Tăng AOV: upsell, cross-sell, bundling, premium tier (Amazon ''Frequently bought together'', Shopee Flash Sale bundles)'
+      - 'Tăng Frequency: loyalty/points, subscription, push notification, email drip (Starbucks Rewards, Grab Unlimited)'
+      - 'Giảm Churn: cải thiện NPS, proactive support, win-back email, exit survey (Netflix gợi ý cá nhân hóa, Spotify Discover Weekly)'
+      when_to_use: Sau khi đo được baseline CLV và biết biến nào đang yếu.
+      how_to_apply:
+      - 'Chẩn đoán biến yếu nhất so với đối thủ/ngành: AOV thấp thì upsell, tần suất thưa thì loyalty, rời nhanh thì chăm sóc.'
+      - Chọn 1-2 chiến thuật có chi phí thấp và đo trong 1 chu kỳ.
+      - 'Tính ROI chiến thuật: tăng CLV phân khúc x số khách so với chi phí chương trình.'
+      how_to_read_results: 'Lưu ý nguồn: tăng CLV phải là tối ưu lợi nhuận, cân bằng giữa tăng giá trị và kiểm soát chi phí phục vụ.'
+      pitfalls:
+      - Giảm giá để tăng tần suất làm tụt biên
+      - Loyalty thưởng cho khách vốn đã trung thành (tốn chi phí không tăng thêm)
+      example: Phở Pass 999k/tháng (case 02 trong KB) là đòn bẩy tần suất + lock-in; xem case-studies/02.
+  - id: "m03-frameworks-4"
+    title: "Frameworks: m03_amazon_prime_clv — Amazon Prime: CLV-first strategy"
+    tags: ["frameworks", "m03_amazon_prime_clv", "amazon", "prime", "clv", "first", "strategy"]
+    text: |-
+      id: m03_amazon_prime_clv
+      name_vi: 'Amazon Prime: CLV-first strategy'
+      name_en: Amazon Prime CLV-first case
+      origin: Prime ra mắt 2005 giá 79 USD/năm (nay 139 USD/năm). Jeff Bezos coi tăng CLV là cách thắng e-commerce, chấp nhận lỗ ship ngắn hạn.
+      components:
+      - 'So sánh Non-Prime vs Prime: chi tiêu 600 vs 1,400 USD/năm; tần suất 14 vs 26 lần; retention 60% vs 93%; lifespan 2.5 vs ~14 năm'
+      - '3 đòn bẩy: cross-sell AI (35% doanh thu từ recommendation), free ship + 1-click tăng frequency, thêm Video/Music/Reading giảm churn'
+      - 'Kinh tế học ship: phí 139 - ship 450 = -311/năm nhưng tổng gộp 539 - 450 = 89/năm x 14 = 1,246 USD'
+      when_to_use: Cần lập luận cho đầu tư giữ chân khách dài hạn hoặc thiết kế membership.
+      how_to_apply:
+      - Liệt kê mọi dòng đóng góp và dòng chi của một thành viên (không đánh giá riêng hạng mục lỗ).
+      - Tính lợi nhuận ròng mỗi thành viên/năm và nhân vòng đời.
+      - So với nhóm không là thành viên cùng cách tính.
+      how_to_read_results: Lỗ ship -311 chỉ là một dòng; tổng thành viên vẫn +89/năm, CLV gấp ~3.3 lần non-Prime.
+      pitfalls:
+      - Bảng nguồn ghi CLV 900 vs 12,000 USD không khớp với phép tính chi tiết (375 vs 1,246); dùng bản tính lại.
+      - 'Nguồn nêu 200M x 12,000 = 2.4 nghìn tỷ USD ''giải thích market cap 1.8 nghìn tỷ'' nhưng 2.4T > 1.8T và 12,000 sai; với 1,246: 200M x 1,246 = 249.2 tỷ USD.'
+      - 'Hạn chế: cần quy mô khổng lồ, kiên nhẫn và vốn nhiều năm; rủi ro privacy khi dùng AI + dữ liệu lớn.'
+      example: Xem case_lessons Amazon Prime và worked example m03_we_prime.
+  - id: "m03-frameworks-5"
+    title: "Frameworks: m03_customer_centric_vs_4p — Customer-Centric (Outside-In) và 4P/7P (Inside-Out)"
+    tags: ["frameworks", "m03_customer_centric_vs_4p", "customer", "centric", "outside", "in", "và", "4p", "7p", "inside", "out"]
+    text: |-
+      id: m03_customer_centric_vs_4p
+      name_vi: Customer-Centric (Outside-In) và 4P/7P (Inside-Out)
+      name_en: Customer-Centric vs 4P/7P
+      origin: |
+        4P do E. Jerome McCarthy (1960) hệ thống hóa, 7P do Booms và Bitner (1981) mở rộng cho dịch vụ. Philip Kotler (Marketing 4.0) chuyển 4P sang 4C để phản ánh kỷ nguyên số. (Các mốc năm/tác giả 4P và 7P là kiến thức chung của người distill, không có trong file nguồn.)
+      components:
+      - 'Góc nhìn: 4P/7P Inside-Out (năng lực nội bộ) vs Customer-Centric Outside-In (hành vi, dữ liệu khách)'
+      - 'Điểm khởi đầu: sản phẩm/nhà máy vs pain point, nhu cầu chưa được đáp ứng'
+      - 'Mục tiêu: volume, thị phần vs CLV'
+      - 'Quan hệ: giao dịch ngắn hạn vs dài hạn, advocacy'
+      - 'Ưu: lòng trung thành, giảm rủi ro ra sản phẩm mới, tăng CLV và biên (cross-sell, upsell); giữ khách cũ rẻ hơn 5-25 lần (theo nguồn)'
+      - 'Nhược: chi phí công nghệ/dữ liệu (CRM, CDP, automation); nguy cơ chỉ cải tiến vụn vặt, bỏ lỡ đột phá (Apple iPhone); xung đột silo phòng ban'
+      - 'Lời khuyên: customer-centric là kim chỉ nam, 4P/7P là công cụ thực thi'
+      when_to_use: Khi cần định hướng chiến lược marketing, tái cơ cấu tổ chức, chọn đầu tư dữ liệu.
+      how_to_apply:
+      - 'Bước 1: Xác định pain point của một tệp khách cụ thể bằng dữ liệu và phỏng vấn.'
+      - 'Bước 2: Hỏi ''khách gặp vấn đề gì và ta giải quyết thế nào'' thay vì ''ta bán được gì''.'
+      - 'Bước 3: Dùng 4P/7P để đóng gói giải pháp, định giá, phân phối, truyền thông.'
+      - 'Bước 4: Gom dữ liệu khách vào một nguồn dùng chung (CRM/CDP) giữa Product, Tech, CS, Sales.'
+      - 'Bước 5: Đo bằng CLV, retention, NPS thay vì chỉ doanh số.'
+      how_to_read_results: 'Dấu hiệu chuyển đổi thành công: dữ liệu chính chủ tăng, CLV phân khúc tăng, sản phẩm mới có cầu rõ trước khi sản xuất.'
+      pitfalls:
+      - Chỉ lắng nghe khách hiện tại nên bỏ lỡ sản phẩm đột phá
+      - Đầu tư CDP khi chưa có quy trình dùng dữ liệu
+      - Phòng ban vẫn silo
+      example: Nike (D2C) và LEGO (co-creation) trong case_lessons.
+  - id: "m03-frameworks-6"
+    title: "Frameworks: m03_4c_shift — Chuyển dịch 4P sang 4C (Customer Solution, Cost, Convenience, Communication)"
+    tags: ["frameworks", "m03_4c_shift", "chuyển", "dịch", "4p", "sang", "4c", "customer", "solution", "cost", "convenience", "communication"]
+    text: |-
+      id: m03_4c_shift
+      name_vi: Chuyển dịch 4P sang 4C (Customer Solution, Cost, Convenience, Communication)
+      name_en: From 4P to 4C
+      origin: 'Dạng 4C Lauterborn (1990) quen thuộc: Customer Solution, Customer Cost, Convenience, Communication. Nguồn có thêm 4C Kotler (Co-creation, Currency, Communal Activation, Conversation); tuy nhiên bài này không phân biệt rõ hai bộ. Mốc 1990 là kiến thức bổ sung của người distill (confidence medium).'
+      components:
+      - 'Product -> Customer Solution: bán giải pháp cho pain point thay vì tính năng'
+      - 'Price -> Customer Cost: tổng chi phí khách bỏ ra (giá, thời gian, công sức, rủi ro chuyển đổi)'
+      - 'Place -> Convenience: sản phẩm xuất hiện ở nơi khách thuận tiện nhất'
+      - 'Promotion -> Communication: đối thoại hai chiều thay vì quảng cáo một chiều'
+      - 'Bộ 4C Kotler: Co-creation, Currency (giá linh hoạt theo dữ liệu), Communal Activation, Conversation'
+      when_to_use: Khi rà lại từng chữ P bằng góc nhìn khách; chi tiết ở m11.
+      how_to_apply:
+      - Với mỗi P, viết lại câu hỏi theo C tương ứng.
+      - Liệt kê chi phí ẩn của khách (đợi lâu, đi xa, khó thanh toán) và loại bỏ.
+      - Kiểm tra điểm chạm omnichannel.
+      how_to_read_results: Điểm nghẽn lớn nhất của hành trình khách chính là C cần ưu tiên.
+      pitfalls:
+      - Trộn hai bộ 4C mà không nói rõ
+      - Đổi tên mà không đổi hành vi
+      example: Quán cà phê giảm 'Customer Cost' bằng đặt trước qua Zalo, không phải đợi.
+  - id: "m03-frameworks-7"
+    title: "Frameworks: m03_nike_d2c — Nike: từ đại lý sang hệ sinh thái D2C"
+    tags: ["frameworks", "m03_nike_d2c", "nike", "từ", "đại", "lý", "sang", "hệ", "sinh", "thái", "d2c"]
+    text: |-
+      id: m03_nike_d2c
+      name_vi: 'Nike: từ đại lý sang hệ sinh thái D2C'
+      name_en: Nike Consumer Direct Offense / Acceleration
+      origin: Trước 2017 Nike thành công theo 4P qua đại lý (Foot Locker); dữ liệu hành vi kẹt ở đại lý. Năm 2017 công bố 'Consumer Direct Offense', nâng cấp 'Consumer Direct Acceleration' năm 2020.
+      components:
+      - 'Product -> Solution: Nike Run Club (NRC), Nike Training Club (NTC) cho lối sống lành mạnh, người dùng được hướng dẫn miễn phí, Nike thu dữ liệu hành vi'
+      - 'Place -> Convenience: cắt hơn 50% đối tác bán lẻ trung gian (theo nguồn), tập trung Nike Direct (website, app), cửa hàng Nike Live thiết kế theo dữ liệu khu vực'
+      - 'Promotion -> Communication: cá nhân hóa theo dữ liệu app (chúc mừng chạy 10km, Early Access giày phù hợp)'
+      when_to_use: Cần ví dụ chuyển đổi từ phân phối trung gian sang quan hệ trực tiếp, thu first-party data.
+      how_to_apply:
+      - Xác định dữ liệu khách DN đang thiếu vì qua trung gian.
+      - Tạo giá trị thực (app/nội dung miễn phí) đổi lấy dữ liệu.
+      - Dùng dữ liệu cá nhân hóa ưu đãi và R&D.
+      how_to_read_results: 'Nguồn nêu kết quả định tính: D2C tăng mạnh, biên gộp tăng nhờ bớt chiết khấu, có first-party data. Không có số liệu cụ thể trong nguồn.'
+      pitfalls:
+      - Cần vốn công nghệ lớn
+      - Mất kênh đại lý có thể giảm độ phủ
+      example: 'SME: shop thời trang nhỏ xây nhóm Zalo OA/khách thân thiết để sở hữu danh sách khách thay vì phụ thuộc hoàn toàn sàn TMĐT.'
+  - id: "m03-frameworks-8"
+    title: "Frameworks: m03_lego_ideas — LEGO Ideas: đồng sáng tạo với khách"
+    tags: ["frameworks", "m03_lego_ideas", "lego", "ideas", "đồng", "sáng", "tạo", "với", "khách"]
+    text: |-
+      id: m03_lego_ideas
+      name_vi: 'LEGO Ideas: đồng sáng tạo với khách'
+      name_en: LEGO Ideas co-creation
+      origin: Đầu những năm 2000 LEGO sát bờ vực phá sản vì tư duy Product-driven (tung quá nhiều dòng, quần áo trẻ em, Legoland không dựa nhu cầu khách). Sau đó dựa vào cộng đồng fan (gồm AFOL) qua nền tảng LEGO Ideas.
+      components:
+      - Khách đăng thiết kế; đạt 10,000 vote thì vào thẩm định thương mại, sản xuất, ra thị trường
+      - Người thiết kế nhận 1% doanh thu ròng
+      - 'Sản phẩm thành công: The Big Bang Theory, NASA Apollo Saturn V'
+      when_to_use: Giảm rủi ro sản phẩm mới; xây cộng đồng.
+      how_to_apply:
+      - Mở kênh nhận ý tưởng từ khách (form, group).
+      - Đặt ngưỡng cầu tối thiểu (vote/đặt cọc) trước khi sản xuất.
+      - Chia sẻ giá trị với người đóng góp.
+      how_to_read_results: Ngưỡng vote là kiểm chứng nhu cầu trước khi đầu tư.
+      pitfalls:
+      - Vote không đồng nghĩa mua
+      - Cần quy trình thẩm định thương mại, bản quyền
+      example: Quán cà phê cho khách bình chọn món mới; đạt 200 đặt trước mới sản xuất.
+  - id: "m03-frameworks-9"
+    title: "Frameworks: m03_nps_framework — NPS và vai trò Customer Service trong giữ chân"
+    tags: ["frameworks", "m03_nps_framework", "nps", "và", "vai", "trò", "customer", "service", "trong", "giữ", "chân"]
+    text: |-
+      id: m03_nps_framework
+      name_vi: NPS và vai trò Customer Service trong giữ chân
+      name_en: NPS and Customer Service for retention
+      origin: NPS do Fred Reichheld (Bain) đề xuất; năm công bố không có trong nguồn (thường được dẫn là 2003, confidence medium).
+      components:
+      - Câu hỏi 0-10; Promoters 9-10, Passives 7-8, Detractors 0-6
+      - NPS = %Promoters - %Detractors
+      - 'CS (Customer Service): hỗ trợ, giải quyết vấn đề; xử lý tốt có thể biến khách gặp sự cố thành khách trung thành'
+      when_to_use: Đo hài lòng, dự báo churn, đưa vào KPI CS.
+      how_to_apply:
+      - Gửi khảo sát sau mua/định kỳ (SMS, Zalo, QR).
+      - Phân nhóm, gọi lại Detractors trong 48h.
+      - Mời Promoters giới thiệu.
+      how_to_read_results: NPS tăng cùng retention là tín hiệu tốt; theo dõi xu hướng thay vì một con số.
+      pitfalls:
+      - Khảo sát mẫu lệch
+      - Không đóng vòng phản hồi
+      example: Quán gửi Zalo 'bạn có giới thiệu quán cho bạn bè không (0-10)?' sau mỗi bill tại nhà.
+  - id: "m03-procedures-1"
+    title: "Quy trình: m03_proc_clv_cac_rfm — Tính CLV, CAC, CLV:CAC và RFM cho một doanh nghiệp (từ đầu đến cuối)"
+    tags: ["quy", "trình", "m03_proc_clv_cac_rfm", "tính", "clv", "cac", "và", "rfm", "cho", "một", "doanh", "nghiệp"]
+    text: |-
+      id: m03_proc_clv_cac_rfm
+      name: Tính CLV, CAC, CLV:CAC và RFM cho một doanh nghiệp (từ đầu đến cuối)
+      steps:
+      - 'Hỏi bối cảnh: loại hình (F&B, bán lẻ, thuê bao), có thẻ thành viên/SĐT không, dữ liệu bao lâu (>=12 tháng?), kênh bán, mục tiêu (xin vốn, ra quyết định chi quảng cáo, tối ưu giữ chân).'
+      - 'Hỏi số liệu bắt buộc: doanh thu/đơn, số đơn mỗi khách mỗi năm, biên gộp (giá vốn, chi phí phục vụ), tỷ lệ khách quay lại hoặc churn, tổng chi marketing và sales theo kỳ, số khách mới theo kênh.'
+      - 'Chuẩn hóa dữ liệu: lọc khách có ID, loại giao dịch hoàn/hủy, gộp trùng SĐT; xác định cửa sổ phân tích.'
+      - Tính AOV = tổng doanh thu / số đơn; Frequency = số đơn / số khách / năm; Gross margin theo phân khúc.
+      - 'Ước lượng vòng đời: nếu có cohort thì đọc thực tế; nếu chưa thì L = 1/churn (hoặc 1/(1 - retention năm)).'
+      - 'Tính CLV: dạng doanh thu (m03_clv_simple) để tham chiếu, dạng lợi nhuận (m03_clv_margin) và dạng chiết khấu (m03_clv_discounted) với d = 10%, 12%, 15% để ra độ nhạy; subscription dùng m03_clv_subscription.'
+      - Tính CAC theo từng kênh (m03_cac) gồm cả lương và voucher; tính CLV:CAC và payback (m03_cac_payback).
+      - 'RFM: tính R, F, M mỗi khách; chấm điểm 1-5 (hoặc 1-3 nếu ít khách); gán segment Champions/Loyal/Potential Loyalists/At Risk/Hibernating; tính % khách và % doanh thu mỗi nhóm.'
+      - Xác định Top 20% khách (80/20), nhóm At Risk giá trị cao, nhóm nên buông.
+      - Chọn đòn bẩy (AOV, Frequency, Churn) theo biến yếu nhất; đề xuất 2-3 chiến thuật có chi phí thấp, kèm ROI kỳ vọng.
+      - 'Kiểm tra logic: CLV lợi nhuận <= CLV doanh thu; CLV chiết khấu < CLV chưa chiết khấu; CLV:CAC phân khúc; không có khách CLV âm bị che.'
+      - 'Báo cáo: bảng baseline, bảng segment, khuyến nghị theo ưu tiên, dashboard theo dõi hàng tháng, giả định và độ nhạy.'
+      outputs: Bảng CLV/CAC/CLV:CAC/payback theo phân khúc và kênh; bảng RFM kèm tỷ trọng doanh thu; 3 hành động ưu tiên có số liệu; danh sách giả định.
+  - id: "m03-procedures-2"
+    title: "Quy trình: m03_proc_retention_program — Thiết kế chương trình giữ chân (loyalty/subscription)"
+    tags: ["quy", "trình", "m03_proc_retention_program", "thiết", "kế", "chương", "giữ", "chân", "loyalty", "subscription"]
+    text: |-
+      id: m03_proc_retention_program
+      name: Thiết kế chương trình giữ chân (loyalty/subscription)
+      steps:
+      - 'Đo baseline: tần suất, AOV, churn, NPS theo segment.'
+      - 'Chọn đòn bẩy chính: tần suất thì loyalty/subscription; AOV thì bundle/upsell; churn thì CS và win-back.'
+      - 'Tính kinh tế học chương trình theo từng thành viên: lợi nhuận tăng thêm vs chi phí (như m03_prime_net_per_member), không chỉ nhìn một hạng mục lỗ.'
+      - 'Giới hạn rủi ro: pilot nhóm nhỏ, thời hạn 1-3 tháng, KPI thành công định trước.'
+      - Thiết lập early warning (khoảng cách lần mua dài ra, hết mở tin, NPS giảm) kích hoạt win-back.
+      - Đo lại và quyết định mở rộng/dừng.
+      outputs: Thiết kế chương trình, P&L mỗi thành viên, KPI, kế hoạch pilot.
+  - id: "m03-procedures-3"
+    title: "Quy trình: m03_proc_customer_centric_transition — Chuyển một SME từ product-centric sang customer-centric"
+    tags: ["quy", "trình", "m03_proc_customer_centric_transition", "chuyển", "một", "sme", "từ", "product", "centric", "sang", "customer"]
+    text: |-
+      id: m03_proc_customer_centric_transition
+      name: Chuyển một SME từ product-centric sang customer-centric
+      steps:
+      - 'Chẩn đoán: DN hiện đo gì (volume hay CLV)? Dữ liệu khách nằm ở đâu (sàn TMĐT, đại lý, sổ tay)?'
+      - Chọn 1 tệp khách mục tiêu và liệt kê pain point (phỏng vấn 10-20 khách).
+      - Tái định nghĩa mỗi P sang C (Solution, Cost, Convenience, Communication).
+      - 'Thiết lập hạ tầng dữ liệu tối thiểu: POS có thẻ thành viên, CRM đơn giản, Zalo OA.'
+      - 'Đồng bộ nội bộ: chung dữ liệu cho Sales, CS, Product; KPI gắn CLV.'
+      - Thử nghiệm co-creation/ngưỡng cầu trước khi sản xuất mới.
+      outputs: Roadmap 3-6 tháng, KPI customer-centric, ngân sách công cụ.
+  - id: "m03-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu CLV:CAC < 1 thì dừng/giảm kênh ngay hoặc nâng giá/giữ chân; mỗi khách mới đang lỗ."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "clv", "cac", "thì", "dừng", "giảm", "kênh", "ngay"]
+    text: |-
+      Nếu CLV:CAC < 1 thì dừng/giảm kênh ngay hoặc nâng giá/giữ chân; mỗi khách mới đang lỗ.
+  - id: "m03-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu CLV:CAC trong 1-3 thì sửa trước (giảm CAC hoặc nâng CLV) rồi mới mở rộng ngân sách."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "clv", "cac", "trong", "thì", "sửa", "trước", "giảm"]
+    text: |-
+      Nếu CLV:CAC trong 1-3 thì sửa trước (giảm CAC hoặc nâng CLV) rồi mới mở rộng ngân sách.
+  - id: "m03-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu CLV:CAC >= 3 và payback ngắn thì có cơ sở tăng ngân sách mua khách."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "clv", "cac", "và", "payback", "ngắn", "thì", "có"]
+    text: |-
+      Nếu CLV:CAC >= 3 và payback ngắn thì có cơ sở tăng ngân sách mua khách.
+  - id: "m03-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu CLV:CAC quá cao (vd > 5) thì có thể đang đầu tư marketing thiếu; cân nhắc tăng chi nếu dòng tiề…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "clv", "cac", "quá", "cao", "vd", "thì", "có"]
+    text: |-
+      Nếu CLV:CAC quá cao (vd > 5) thì có thể đang đầu tư marketing thiếu; cân nhắc tăng chi nếu dòng tiền cho phép.
+  - id: "m03-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu payback dài hơn lượng tiền mặt SME chịu được thì giảm CAC/đổi kênh dù CLV:CAC đạt 3."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "payback", "dài", "hơn", "lượng", "tiền", "mặt", "sme"]
+    text: |-
+      Nếu payback dài hơn lượng tiền mặt SME chịu được thì giảm CAC/đổi kênh dù CLV:CAC đạt 3.
+  - id: "m03-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu churn cao thì ưu tiên giữ chân (NPS, hỗ trợ, win-back) trước khi tăng ngân sách tìm khách mới."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "churn", "cao", "thì", "ưu", "tiên", "giữ", "chân"]
+    text: |-
+      Nếu churn cao thì ưu tiên giữ chân (NPS, hỗ trợ, win-back) trước khi tăng ngân sách tìm khách mới.
+  - id: "m03-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu AOV thấp thì upsell, cross-sell, bundling; nếu tần suất thưa thì loyalty/subscription/push; nếu…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "aov", "thấp", "thì", "upsell", "cross", "sell", "bundling"]
+    text: |-
+      Nếu AOV thấp thì upsell, cross-sell, bundling; nếu tần suất thưa thì loyalty/subscription/push; nếu vòng đời ngắn thì giảm churn.
+  - id: "m03-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu khách thuộc At Risk (R thấp, F-M cao) thì win-back ưu tiên số một; nếu Hibernating thì thử re-a…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "khách", "thuộc", "at", "risk", "thấp", "cao", "thì"]
+    text: |-
+      Nếu khách thuộc At Risk (R thấp, F-M cao) thì win-back ưu tiên số một; nếu Hibernating thì thử re-activation chi phí thấp rồi buông.
+  - id: "m03-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu khách thuộc Champions thì VIP và referral; Loyal thì upsell; Potential Loyalists thì nurture và…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "khách", "thuộc", "champions", "thì", "vip", "và", "referral"]
+    text: |-
+      Nếu khách thuộc Champions thì VIP và referral; Loyal thì upsell; Potential Loyalists thì nurture và loyalty program.
+  - id: "m03-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu doanh nghiệp chưa có dữ liệu lịch sử (startup) thì dùng giả định/benchmark ngành, ghi rõ độ bất…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "doanh", "nghiệp", "chưa", "có", "dữ", "liệu", "lịch"]
+    text: |-
+      Nếu doanh nghiệp chưa có dữ liệu lịch sử (startup) thì dùng giả định/benchmark ngành, ghi rõ độ bất định, cập nhật khi có cohort.
+  - id: "m03-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu một chương trình lỗ trên một hạng mục (ship, ưu đãi) thì đánh giá theo lợi nhuận ròng mỗi thành…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "một", "chương", "trình", "lỗ", "trên", "hạng", "mục"]
+    text: |-
+      Nếu một chương trình lỗ trên một hạng mục (ship, ưu đãi) thì đánh giá theo lợi nhuận ròng mỗi thành viên suốt vòng đời, không riêng hạng mục.
+  - id: "m03-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu so CLV với CAC thì bắt buộc dùng CLV lợi nhuận (biên gộp), không dùng doanh thu."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "so", "clv", "với", "cac", "thì", "bắt", "buộc"]
+    text: |-
+      Nếu so CLV với CAC thì bắt buộc dùng CLV lợi nhuận (biên gộp), không dùng doanh thu.
+  - id: "m03-decision_rules-13"
+    title: "Quy tắc quyết định: Nếu thưởng nhân viên marketing thì gắn với CLV lợi nhuận/retention, không chỉ doanh thu, để tránh g…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "thưởng", "nhân", "viên", "marketing", "thì", "gắn", "với"]
+    text: |-
+      Nếu thưởng nhân viên marketing thì gắn với CLV lợi nhuận/retention, không chỉ doanh thu, để tránh gaming.
+  - id: "m03-decision_rules-14"
+    title: "Quy tắc quyết định: Nếu dữ liệu khách nằm ở trung gian (sàn, đại lý) thì xây kênh trực tiếp (thẻ thành viên, Zalo OA) đ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dữ", "liệu", "khách", "nằm", "trung", "gian", "sàn"]
+    text: |-
+      Nếu dữ liệu khách nằm ở trung gian (sàn, đại lý) thì xây kênh trực tiếp (thẻ thành viên, Zalo OA) để có first-party data.
+  - id: "m03-decision_rules-15"
+    title: "Quy tắc quyết định: Nếu chỉ lắng nghe khách hiện tại và đối thủ cùng làm thì thêm khám phá đột phá (blue ocean), tránh …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "chỉ", "lắng", "nghe", "khách", "hiện", "tại", "và"]
+    text: |-
+      Nếu chỉ lắng nghe khách hiện tại và đối thủ cùng làm thì thêm khám phá đột phá (blue ocean), tránh cải tiến vụn vặt.
+  - id: "m03-decision_rules-16"
+    title: "Quy tắc quyết định: Nếu DN thiếu vốn và công nghệ thì làm customer-centric mức tối thiểu (sổ khách, Zalo) thay vì CDP đ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dn", "thiếu", "vốn", "và", "công", "nghệ", "thì"]
+    text: |-
+      Nếu DN thiếu vốn và công nghệ thì làm customer-centric mức tối thiểu (sổ khách, Zalo) thay vì CDP đắt tiền.
+  - id: "m03-benchmarks-1"
+    title: "Chuẩn so sánh: CLV:CAC tối thiểu"
+    tags: ["chuẩn", "so", "sánh", "clv", "cac", "tối", "thiểu"]
+    text: |-
+      metric: CLV:CAC tối thiểu
+      value: '>= 3:1'
+      context: Quy tắc trong nguồn; phổ biến SaaS/subscription
+      confidence: medium
+  - id: "m03-benchmarks-2"
+    title: "Chuẩn so sánh: Chi phí mua khách mới so với giữ khách cũ"
+    tags: ["chuẩn", "so", "sánh", "chi", "phí", "mua", "khách", "mới", "với", "giữ", "cũ"]
+    text: |-
+      metric: Chi phí mua khách mới so với giữ khách cũ
+      value: 5-7 lần (Bain); nguồn chỗ khác ghi 5-25 lần
+      context: Bậc độ lớn, thay đổi theo ngành
+      confidence: medium
+  - id: "m03-benchmarks-3"
+    title: "Chuẩn so sánh: Tăng retention 5% làm tăng lợi nhuận"
+    tags: ["chuẩn", "so", "sánh", "tăng", "retention", "làm", "lợi", "nhuận"]
+    text: |-
+      metric: Tăng retention 5% làm tăng lợi nhuận
+      value: 25-95%
+      context: Reichheld (Bain), The Loyalty Effect 1996
+      confidence: medium
+  - id: "m03-benchmarks-4"
+    title: "Chuẩn so sánh: Quy tắc 80/20"
+    tags: ["chuẩn", "so", "sánh", "quy", "tắc", "80", "20"]
+    text: |-
+      metric: Quy tắc 80/20
+      value: 80% doanh thu từ 20% khách
+      context: Xấp xỉ; kiểm chứng bằng RFM
+      confidence: medium
+  - id: "m03-benchmarks-5"
+    title: "Chuẩn so sánh: Retention Prime vs non-Prime (Amazon)"
+    tags: ["chuẩn", "so", "sánh", "retention", "prime", "vs", "non", "amazon"]
+    text: |-
+      metric: Retention Prime vs non-Prime (Amazon)
+      value: 93% vs 60%
+      context: Ước tính minh họa trong nguồn
+      confidence: low
+  - id: "m03-benchmarks-6"
+    title: "Chuẩn so sánh: Doanh thu từ recommendation engine Amazon"
+    tags: ["chuẩn", "so", "sánh", "doanh", "thu", "từ", "recommendation", "engine", "amazon"]
+    text: |-
+      metric: Doanh thu từ recommendation engine Amazon
+      value: 35%
+      context: Con số lưu hành phổ biến
+      confidence: low
+  - id: "m03-benchmarks-7"
+    title: "Chuẩn so sánh: NPS phân loại"
+    tags: ["chuẩn", "so", "sánh", "nps", "phân", "loại"]
+    text: |-
+      metric: NPS phân loại
+      value: Promoters 9-10, Passives 7-8, Detractors 0-6
+      context: Định nghĩa chuẩn
+      confidence: high
+  - id: "m03-benchmarks-8"
+    title: "Chuẩn so sánh: NRR"
+    tags: ["chuẩn", "so", "sánh", "nrr"]
+    text: |-
+      metric: NRR
+      value: '> 100% là tốt'
+      context: Doanh thu từ khách hiện tại tự tăng
+      confidence: medium
+  - id: "m03-benchmarks-9"
+    title: "Chuẩn so sánh: Netflix ARPU/GM/churn"
+    tags: ["chuẩn", "so", "sánh", "netflix", "arpu", "gm", "churn"]
+    text: |-
+      metric: Netflix ARPU/GM/churn
+      value: 15 USD / 40% / 2.5% tháng
+      context: Ví dụ minh họa trong nguồn
+      confidence: low
+  - id: "m03-benchmarks-10"
+    title: "Chuẩn so sánh: Số thành viên Prime"
+    tags: ["chuẩn", "so", "sánh", "số", "thành", "viên", "prime"]
+    text: |-
+      metric: Số thành viên Prime
+      value: 200M+ (2024)
+      context: Số nguồn nêu
+      confidence: low
+  - id: "m03-pitfalls-1"
+    title: "Lỗi thường gặp: Nhầm CLV doanh thu với CLV lợi nhuận: ví dụ cà phê nguồn 46.8 triệu là doanh thu; với biên gộp 60% …"
+    tags: ["lỗi", "thường", "gặp", "nhầm", "clv", "doanh", "thu", "với", "lợi", "nhuận", "ví", "dụ"]
+    text: |-
+      Nhầm CLV doanh thu với CLV lợi nhuận: ví dụ cà phê nguồn 46.8 triệu là doanh thu; với biên gộp 60% chỉ ~28.08 triệu, chiết khấu và churn thực tế ~13.25 triệu.
+  - id: "m03-pitfalls-2"
+    title: "Lỗi thường gặp: Nguồn mâu thuẫn Amazon: bảng ghi CLV Non-Prime ~900 và Prime ~12,000 USD (+1,233%), nhưng phép tính…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "mâu", "thuẫn", "amazon", "bảng", "ghi", "clv", "non", "prime"]
+    text: |-
+      Nguồn mâu thuẫn Amazon: bảng ghi CLV Non-Prime ~900 và Prime ~12,000 USD (+1,233%), nhưng phép tính chi tiết ra 375 và 1,246 USD (gấp 3.3 lần). Dùng 375/1,246.
+  - id: "m03-pitfalls-3"
+    title: "Lỗi thường gặp: Nguồn nêu 200M x 12,000 USD = 2.4 nghìn tỷ USD 'giải thích market cap 1.8 nghìn tỷ' - tự mâu thuẫn …"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "nêu", "200m", "12", "000", "usd", "nghìn", "tỷ", "giải"]
+    text: |-
+      Nguồn nêu 200M x 12,000 USD = 2.4 nghìn tỷ USD 'giải thích market cap 1.8 nghìn tỷ' - tự mâu thuẫn (2.4T > 1.8T). Với 1,246 USD thì 249.2 tỷ USD, chỉ là một phần market cap.
+  - id: "m03-pitfalls-4"
+    title: "Lỗi thường gặp: Nguồn ghi 'giữ khách rẻ hơn 5-7 lần' và 'rẻ hơn 5 đến 25 lần' ở hai chỗ: dùng dải, kèm confidence m…"
+    tags: ["lỗi", "thường", "gặp", "nguồn", "ghi", "giữ", "khách", "rẻ", "hơn", "lần", "và", "đến"]
+    text: |-
+      Nguồn ghi 'giữ khách rẻ hơn 5-7 lần' và 'rẻ hơn 5 đến 25 lần' ở hai chỗ: dùng dải, kèm confidence medium.
+  - id: "m03-pitfalls-5"
+    title: "Lỗi thường gặp: Retention_t trong công thức chiết khấu phải là xác suất sống sót lũy kế, không phải tỷ lệ từng năm."
+    tags: ["lỗi", "thường", "gặp", "retention_t", "trong", "công", "thức", "chiết", "khấu", "phải", "là", "xác"]
+    text: |-
+      Retention_t trong công thức chiết khấu phải là xác suất sống sót lũy kế, không phải tỷ lệ từng năm.
+  - id: "m03-pitfalls-6"
+    title: "Lỗi thường gặp: Giả định retention/churn hằng định: thực tế churn cao ở tháng đầu, giảm dần theo tuổi cohort."
+    tags: ["lỗi", "thường", "gặp", "giả", "định", "retention", "churn", "hằng", "thực", "tế", "cao", "tháng"]
+    text: |-
+      Giả định retention/churn hằng định: thực tế churn cao ở tháng đầu, giảm dần theo tuổi cohort.
+  - id: "m03-pitfalls-7"
+    title: "Lỗi thường gặp: Discount rate chủ quan: luôn báo kết quả theo nhiều d."
+    tags: ["lỗi", "thường", "gặp", "discount", "rate", "chủ", "quan", "luôn", "báo", "kết", "quả", "theo"]
+    text: |-
+      Discount rate chủ quan: luôn báo kết quả theo nhiều d.
+  - id: "m03-pitfalls-8"
+    title: "Lỗi thường gặp: CLV truyền thống bỏ qua referral value; với F&B nhóm Champions có thể mang thêm khách."
+    tags: ["lỗi", "thường", "gặp", "clv", "truyền", "thống", "bỏ", "qua", "referral", "value", "với", "nhóm"]
+    text: |-
+      CLV truyền thống bỏ qua referral value; với F&B nhóm Champions có thể mang thêm khách.
+  - id: "m03-pitfalls-9"
+    title: "Lỗi thường gặp: Startup thiếu dữ liệu: không nên tin CLV tính trên vài tháng."
+    tags: ["lỗi", "thường", "gặp", "startup", "thiếu", "dữ", "liệu", "không", "nên", "tin", "clv", "tính"]
+    text: |-
+      Startup thiếu dữ liệu: không nên tin CLV tính trên vài tháng.
+  - id: "m03-pitfalls-10"
+    title: "Lỗi thường gặp: Gaming: giữ chân khách chi ít nhưng tốn chi phí phục vụ làm CLV doanh thu ảo; dùng lợi nhuận đã trừ…"
+    tags: ["lỗi", "thường", "gặp", "gaming", "giữ", "chân", "khách", "chi", "ít", "nhưng", "tốn", "phí"]
+    text: |-
+      Gaming: giữ chân khách chi ít nhưng tốn chi phí phục vụ làm CLV doanh thu ảo; dùng lợi nhuận đã trừ chi phí phục vụ.
+  - id: "m03-pitfalls-11"
+    title: "Lỗi thường gặp: Bỏ qua chi phí nội bộ trong CAC (lương, voucher) làm CLV:CAC đẹp giả tạo."
+    tags: ["lỗi", "thường", "gặp", "bỏ", "qua", "chi", "phí", "nội", "bộ", "trong", "cac", "lương"]
+    text: |-
+      Bỏ qua chi phí nội bộ trong CAC (lương, voucher) làm CLV:CAC đẹp giả tạo.
+  - id: "m03-pitfalls-12"
+    title: "Lỗi thường gặp: Customer-centric đầu tư dữ liệu quá sớm: CRM/CDP đắt khi chưa có người khai thác."
+    tags: ["lỗi", "thường", "gặp", "customer", "centric", "đầu", "tư", "dữ", "liệu", "quá", "sớm", "crm"]
+    text: |-
+      Customer-centric đầu tư dữ liệu quá sớm: CRM/CDP đắt khi chưa có người khai thác.
+  - id: "m03-pitfalls-13"
+    title: "Lỗi thường gặp: Chỉ nghe khách hiện tại: dễ rơi vào cải tiến vụn vặt, bỏ lỡ đột phá."
+    tags: ["lỗi", "thường", "gặp", "chỉ", "nghe", "khách", "hiện", "tại", "dễ", "rơi", "vào", "cải"]
+    text: |-
+      Chỉ nghe khách hiện tại: dễ rơi vào cải tiến vụn vặt, bỏ lỡ đột phá.
+  - id: "m03-pitfalls-14"
+    title: "Lỗi thường gặp: Silo phòng ban: customer-centric thất bại nếu Sales, CS, Product không chia sẻ dữ liệu."
+    tags: ["lỗi", "thường", "gặp", "silo", "phòng", "ban", "customer", "centric", "thất", "bại", "nếu", "sales"]
+    text: |-
+      Silo phòng ban: customer-centric thất bại nếu Sales, CS, Product không chia sẻ dữ liệu.
+  - id: "m03-pitfalls-15"
+    title: "Lỗi thường gặp: Amazon chỉ làm được vì quy mô và vốn; SME không sao chép nguyên: kiên nhẫn 15 năm không khả thi."
+    tags: ["lỗi", "thường", "gặp", "amazon", "chỉ", "làm", "được", "vì", "quy", "mô", "và", "vốn"]
+    text: |-
+      Amazon chỉ làm được vì quy mô và vốn; SME không sao chép nguyên: kiên nhẫn 15 năm không khả thi.
+  - id: "m03-pitfalls-16"
+    title: "Lỗi thường gặp: Lỗi định dạng nguồn (dấu * thừa, từ 'para', nhiều tiêu đề cấp ## trùng) không ảnh hưởng nội dung."
+    tags: ["lỗi", "thường", "gặp", "định", "dạng", "nguồn", "dấu", "thừa", "từ", "para", "nhiều", "tiêu"]
+    text: |-
+      Lỗi định dạng nguồn (dấu * thừa, từ 'para', nhiều tiêu đề cấp ## trùng) không ảnh hưởng nội dung.
+  - id: "m03-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Bắt đầu rất nhẹ: xin SĐT khách (thẻ thành viên, QR bill, Zalo OA) để có ID khách; không có ID thì k…"
+    tags: ["lưu", "sme", "việt", "nam", "bắt", "đầu", "rất", "nhẹ", "xin", "sđt", "khách", "thẻ"]
+    text: |-
+      Bắt đầu rất nhẹ: xin SĐT khách (thẻ thành viên, QR bill, Zalo OA) để có ID khách; không có ID thì không tính được CLV hay RFM.
+  - id: "m03-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: POS có CRM/loyalty: KiotViet, Sapo, iPOS (xem cong-cu-quan-tri-doanh-nghiep-sme.md để có giá đã tổn…"
+    tags: ["lưu", "sme", "việt", "nam", "pos", "có", "crm", "loyalty", "kiotviet", "sapo", "ipos", "xem"]
+    text: |-
+      POS có CRM/loyalty: KiotViet, Sapo, iPOS (xem cong-cu-quan-tri-doanh-nghiep-sme.md để có giá đã tổng hợp). Giá phần mềm thay đổi theo thời điểm, cần xác nhận lại với nhà cung cấp (confidence low).
+  - id: "m03-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Excel/Google Sheets đủ cho RFM đến vài nghìn khách: dùng PERCENTRANK hoặc QUARTILE; Pivot Table tín…"
+    tags: ["lưu", "sme", "việt", "nam", "excel", "google", "sheets", "đủ", "cho", "rfm", "đến", "vài"]
+    text: |-
+      Excel/Google Sheets đủ cho RFM đến vài nghìn khách: dùng PERCENTRANK hoặc QUARTILE; Pivot Table tính % doanh thu theo segment.
+  - id: "m03-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Công cụ rẻ cho giữ chân: Zalo OA / Zalo ZNS (tin nhắn giao dịch tính phí theo tin, giá cần xác nhận…"
+    tags: ["lưu", "sme", "việt", "nam", "công", "cụ", "rẻ", "cho", "giữ", "chân", "zalo", "oa"]
+    text: |-
+      Công cụ rẻ cho giữ chân: Zalo OA / Zalo ZNS (tin nhắn giao dịch tính phí theo tin, giá cần xác nhận), Facebook/Messenger, email (Mailchimp, Google Workspace); chi phí mỗi tin SMS/ZNS cỡ vài trăm đến vài nghìn đồng (confidence low).
+  - id: "m03-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: Loyalty cho F&B: tích điểm/tem (mua 9 tặng 1), hạng thành viên; nhớ ngân sách ưu đãi tính vào biên."
+    tags: ["lưu", "sme", "việt", "nam", "loyalty", "cho", "tích", "điểm", "tem", "mua", "tặng", "hạng"]
+    text: |-
+      Loyalty cho F&B: tích điểm/tem (mua 9 tặng 1), hạng thành viên; nhớ ngân sách ưu đãi tính vào biên.
+  - id: "m03-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: Subscription F&B: Phở Pass 999k/tháng (case 02 trong KB) là ví dụ; tính điểm hòa vốn dựa trên lượt …"
+    tags: ["lưu", "sme", "việt", "nam", "subscription", "phở", "pass", "999k", "tháng", "case", "02", "trong"]
+    text: |-
+      Subscription F&B: Phở Pass 999k/tháng (case 02 trong KB) là ví dụ; tính điểm hòa vốn dựa trên lượt dùng trung bình, không chỉ giá trần.
+  - id: "m03-sme_vn_guidance-7"
+    title: "Lưu ý SME Việt Nam: Sàn TMĐT (Shopee, TikTok Shop) giữ dữ liệu khách; chuyển khách về kênh sở hữu (Zalo OA, website) bằ…"
+    tags: ["lưu", "sme", "việt", "nam", "sàn", "tmđt", "shopee", "tiktok", "shop", "giữ", "dữ", "liệu"]
+    text: |-
+      Sàn TMĐT (Shopee, TikTok Shop) giữ dữ liệu khách; chuyển khách về kênh sở hữu (Zalo OA, website) bằng ưu đãi, tuân thủ chính sách sàn.
+  - id: "m03-sme_vn_guidance-8"
+    title: "Lưu ý SME Việt Nam: Pháp lý dữ liệu cá nhân: Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân yêu cầu đồng ý khi thu t…"
+    tags: ["lưu", "sme", "việt", "nam", "pháp", "lý", "dữ", "liệu", "cá", "nhân", "nghị", "định"]
+    text: |-
+      Pháp lý dữ liệu cá nhân: Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân yêu cầu đồng ý khi thu thập (cần xác nhận với luật sư/chuyên gia; confidence medium).
+  - id: "m03-sme_vn_guidance-9"
+    title: "Lưu ý SME Việt Nam: Đo CAC theo kênh: chi quảng cáo Facebook/TikTok/Google, KOC, voucher; chia cho khách mới thật sự (k…"
+    tags: ["lưu", "sme", "việt", "nam", "đo", "cac", "theo", "kênh", "chi", "quảng", "cáo", "facebook"]
+    text: |-
+      Đo CAC theo kênh: chi quảng cáo Facebook/TikTok/Google, KOC, voucher; chia cho khách mới thật sự (khác khách cũ).
+  - id: "m03-sme_vn_guidance-10"
+    title: "Lưu ý SME Việt Nam: Quán nhỏ thường có churn rất cao; ưu tiên tần suất và thói quen (giờ cao điểm, combo sáng) trước kh…"
+    tags: ["lưu", "sme", "việt", "nam", "quán", "nhỏ", "thường", "có", "churn", "rất", "cao", "ưu"]
+    text: |-
+      Quán nhỏ thường có churn rất cao; ưu tiên tần suất và thói quen (giờ cao điểm, combo sáng) trước khi chạy quảng cáo.
+  - id: "m03-sme_vn_guidance-11"
+    title: "Lưu ý SME Việt Nam: Đặt mục tiêu thực tế: SME 5-20 khách/ngày mới có thể sử dụng sổ tay/Sheets, chỉ lên CRM khi >1,000 …"
+    tags: ["lưu", "sme", "việt", "nam", "đặt", "mục", "tiêu", "thực", "tế", "20", "khách", "ngày"]
+    text: |-
+      Đặt mục tiêu thực tế: SME 5-20 khách/ngày mới có thể sử dụng sổ tay/Sheets, chỉ lên CRM khi >1,000 khách lặp lại.
+  - id: "m03-sme_vn_guidance-12"
+    title: "Lưu ý SME Việt Nam: Giá và số liệu thị trường (giá phần mềm, chi phí tin nhắn) là tham khảo, confidence low; kiểm tra b…"
+    tags: ["lưu", "sme", "việt", "nam", "giá", "và", "số", "liệu", "thị", "trường", "phần", "mềm"]
+    text: |-
+      Giá và số liệu thị trường (giá phần mềm, chi phí tin nhắn) là tham khảo, confidence low; kiểm tra bảng giá hiện hành.
+  - id: "m03-case_lessons-1"
+    title: "Bài học case: Amazon Prime - CLV-first, chấp nhận lỗ ship"
+    tags: ["bài", "học", "case", "amazon", "prime", "clv", "first", "chấp", "nhận", "lỗ", "ship"]
+    text: |-
+      name: Amazon Prime - CLV-first, chấp nhận lỗ ship
+      type: success
+      setup: Prime ra mắt 2005 (79 USD/năm, nay 139). So sánh Non-Prime (chi tiêu 600 USD, retention 60%, 2.5 năm) với Prime (1,400 USD, 93%, ~14 năm); Prime lỗ ship nhưng tăng chi tiêu và retention.
+      key_calculations:
+      - 'Retention -> vòng đời: 1/(1-0.60) = 2.5 năm; 1/(1-0.93) = 14.3 năm'
+      - 'Ship: 139 - 450 = -311 USD/năm'
+      - 'Net Prime/năm: 1,400 x 25% + 139 + 50 - 450 = 89 USD; x 14 = 1,246 USD'
+      - 'Non-Prime: 600 x 25% x 2.5 = 375 USD; tỷ lệ 1,246/375 = 3.3'
+      - 'Đã tính lại: 200M x 1,246 = 249.2 tỷ USD (nguồn ghi 2.4T từ số 12,000 không nhất quán)'
+      lesson: Đánh giá chương trình theo lợi nhuận ròng trên mỗi thành viên suốt vòng đời; hy sinh lợi nhuận ngắn hạn đổi lấy retention/chi tiêu; subscription tạo lock-in và switching cost; AI cross-sell tăng AOV. Cần quy mô và kiên nhẫn dài hạn, rủi ro privacy; SME không sao chép nguyên.
+      data_reliability: illustrative
+  - id: "m03-case_lessons-2"
+    title: "Bài học case: Nike - Consumer Direct (D2C)"
+    tags: ["bài", "học", "case", "nike", "consumer", "direct", "d2c"]
+    text: |-
+      name: Nike - Consumer Direct (D2C)
+      type: success
+      setup: Trước 2017 phân phối qua đại lý nên mất dữ liệu khách; 2017 Consumer Direct Offense, 2020 Acceleration; app NRC/NTC, cắt hơn 50% đối tác bán lẻ, Nike Live.
+      key_calculations:
+      - Nguồn không cung cấp số liệu định lượng ngoài việc cắt >50% đối tác (con số lưu hành, cần xác nhận)
+      lesson: Sở hữu first-party data là điều kiện để cá nhân hóa, tăng biên (bớt chiết khấu trung gian) và R&D theo nhu cầu thật; đổi giá trị (app miễn phí) lấy dữ liệu.
+      data_reliability: unverified
+  - id: "m03-case_lessons-3"
+    title: "Bài học case: LEGO - Co-creation LEGO Ideas"
+    tags: ["bài", "học", "case", "lego", "co", "creation", "ideas"]
+    text: |-
+      name: LEGO - Co-creation LEGO Ideas
+      type: success
+      setup: 'Đầu 2000s gần phá sản vì Product-driven; chuyển sang đồng sáng tạo: 10,000 vote thì thẩm định thương mại, người thiết kế nhận 1% doanh thu ròng.'
+      key_calculations:
+      - Ngưỡng 10,000 vote là bằng chứng cầu trước sản xuất
+      - Chia sẻ 1% doanh thu ròng cho người thiết kế
+      lesson: Đưa khách vào quy trình tạo sản phẩm giảm rủi ro tồn kho/ế, xây cộng đồng advocacy.
+      data_reliability: unverified
+  - id: "m03-case_lessons-4"
+    title: "Bài học case: Quán cà phê - CLV ví dụ nguồn"
+    tags: ["bài", "học", "case", "quán", "cà", "phê", "clv", "ví", "dụ", "nguồn"]
+    text: |-
+      name: Quán cà phê - CLV ví dụ nguồn
+      type: sme
+      setup: Khách 60,000 VNĐ/lần, 3 lần/tuần, 5 năm.
+      key_calculations:
+      - Doanh thu trọn đời 60,000 x 156 x 5 = 46.8 triệu
+      - Lợi nhuận gộp (GM 60% giả định) 28.08 triệu
+      - 'Chiết khấu 12%, retention 70%: ~13.25 triệu'
+      lesson: Cùng một khách có ba con số CLV khác nhau; chọn đúng loại khi so với CAC.
+      data_reliability: illustrative
+  - id: "m03-case_lessons-5"
+    title: "Bài học case: Netflix - subscription CLV"
+    tags: ["bài", "học", "case", "netflix", "subscription", "clv"]
+    text: |-
+      name: Netflix - subscription CLV
+      type: success
+      setup: ARPU 15 USD/tháng, GM 40%, churn 2.5%.
+      key_calculations:
+      - 15 x 0.4 / 0.025 = 240 USD
+      - Vòng đời 40 tháng
+      lesson: Giảm churn là đòn bẩy mạnh nhất với CLV thuê bao.
+      data_reliability: illustrative
+  - id: "m03-worked_examples-1"
+    title: "Ví dụ có lời giải: m03_we_coffee_clv — CLV quán cà phê: doanh thu, lợi nhuận và chiết khấu"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m03_we_coffee_clv", "clv", "quán", "cà", "phê", "doanh", "thu"]
+    text: |-
+      id: m03_we_coffee_clv
+      title: 'CLV quán cà phê: doanh thu, lợi nhuận và chiết khấu'
+      scenario: 'Quán cà phê Q.3 TP.HCM: khách quen mua 60,000 VNĐ/lần, 3 lần/tuần, kỳ vọng 5 năm. Biên gộp 60% (giả định), retention năm 70%, chiết khấu 12%.'
+      inputs:
+        aov: 60000
+        freq: 156
+        lifespan: 5
+        gm: 0.6
+        retention: 0.7
+        discount: 0.12
+      steps:
+      - CLV doanh thu = 60,000 x 156 x 5 = 46,800,000 VNĐ
+      - Lợi nhuận gộp/năm = 60,000 x 156 x 0.6 = 5,616,000; trọn đời 5 năm = 28,080,000 VNĐ
+      - 'Vòng đời từ retention: 1/(1-0.7) = 3.33 năm (thấp hơn giả định 5 năm)'
+      - 'CLV chiết khấu T=10: tổng 5,616,000 x 0.7^(t-1) / 1.12^t = 13,249,816 VNĐ'
+      result: Chọn 13.25 triệu (chiết khấu, retention) hoặc ít nhất 28.08 triệu (lợi nhuận) để so với CAC; 46.8 triệu chỉ là doanh thu. Nếu CAC mua một khách là 1,5 triệu thì CLV:CAC khoảng 8.8.
+      interpretation: Giả định vòng đời 5 năm và tần suất 3 lần/tuần rất lạc quan cho khách thường; dùng cohort thực.
+  - id: "m03-worked_examples-2"
+    title: "Ví dụ có lời giải: m03_we_subscription — CLV và payback cho gói thuê bao box hoa/cà phê hàng tháng"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m03_we_subscription", "clv", "và", "payback", "cho", "gói", "thuê"]
+    text: |-
+      id: m03_we_subscription
+      title: CLV và payback cho gói thuê bao box hoa/cà phê hàng tháng
+      scenario: 'Shop gói cà phê thuê bao: ARPU 300,000 VNĐ/tháng, biên gộp 60%, churn tháng 8%, chi phí quảng cáo 30,000,000 VNĐ/tháng cho 50 khách mới.'
+      inputs:
+        arpu: 300000
+        gm: 0.6
+        churn: 0.08
+        marketing_cost: 30000000
+        new_customers: 50
+      steps:
+      - Lợi nhuận tháng = 300,000 x 0.6 = 180,000
+      - Vòng đời = 1/0.08 = 12.5 tháng
+      - CLV = 180,000 / 0.08 = 2,250,000 VNĐ
+      - CAC = 30,000,000/50 = 600,000 VNĐ
+      - CLV:CAC = 2,250,000/600,000 = 3.75
+      - Payback = 600,000/180,000 = 3.33 tháng
+      - 'Nếu churn giảm xuống 6%: CLV = 180,000/0.06 = 3,000,000 (+33%); CLV:CAC = 5.0'
+      result: Đạt ngưỡng 3:1, payback 3.3 tháng chấp nhận được; giảm churn 2 điểm tăng CLV +33% mà không tăng CAC.
+      interpretation: Đòn bẩy giảm churn hiệu quả hơn tăng chi quảng cáo; kiểm tra churn theo cohort tháng đầu.
+  - id: "m03-worked_examples-3"
+    title: "Ví dụ có lời giải: m03_we_rfm — RFM cho cửa hàng 8 khách"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m03_we_rfm", "rfm", "cho", "cửa", "hàng", "khách"]
+    text: |-
+      id: m03_we_rfm
+      title: RFM cho cửa hàng 8 khách
+      scenario: 'Cửa hàng đồ uống có 8 khách thẻ thành viên 12 tháng (R ngày, F đơn, M triệu VNĐ). Thang điểm 1-3: R <=30 ngày=3, 31-90=2, >90=1; F >=8=3, 4-7=2, <4=1; M >=4 triệu=3, 1.5-4=2, <1.5=1.'
+      inputs:
+        A:
+        - 5
+        - 12
+        - 6.0
+        B:
+        - 10
+        - 9
+        - 4.5
+        C:
+        - 20
+        - 4
+        - 2.0
+        D:
+        - 95
+        - 10
+        - 5.5
+        E:
+        - 120
+        - 1
+        - 0.4
+        F:
+        - 7
+        - 2
+        - 0.8
+        G:
+        - 40
+        - 5
+        - 2.2
+        H:
+        - 150
+        - 2
+        - 0.6
+      steps:
+      - 'Điểm RFM: A 3-3-3; B 3-3-3; C 3-2-2; D 1-3-3; E 1-1-1; F 3-1-1; G 2-2-2; H 1-1-1'
+      - 'Segment: A, B = Champions; C = Potential Loyalists (R cao, F-M TB); D = At Risk (R thấp, F-M cao); E, H = Hibernating; F = khách mới (R cao, F-M thấp); G = giữa'
+      - Tổng M = 6.0+4.5+2.0+5.5+0.4+0.8+2.2+0.6 = 22.0 triệu
+      - A+B+D = 16.0 triệu = 72.7% doanh thu, 3/8 = 37.5% số khách
+      result: D là ưu tiên win-back (ưu đãi riêng, gọi trực tiếp); A, B giữ VIP và xin giới thiệu; C đưa vào loyalty; E, H chỉ thử re-activation rẻ; F nurture lên lần 2.
+      interpretation: Dữ liệu 8 khách chỉ minh họa; trong thực tế dùng quintile trên danh sách đủ lớn.
+  - id: "m03-worked_examples-4"
+    title: "Ví dụ có lời giải: m03_we_prime — Tính lại kinh tế học Amazon Prime"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m03_we_prime", "tính", "lại", "kinh", "tế", "học", "amazon"]
+    text: |-
+      id: m03_we_prime
+      title: Tính lại kinh tế học Amazon Prime
+      scenario: Chi tiêu Prime 1,400 USD/năm, GM 25%, phí 139, quảng cáo 50, ship 450, 14 năm; Non-Prime 600 USD/năm, 2.5 năm.
+      inputs:
+        spend: 1400
+        gm: 0.25
+        fee: 139
+        ads: 50
+        shipping: 450
+        lifespan: 14
+      steps:
+      - 'Lỗ riêng ship: 139 - 450 = -311'
+      - Lợi nhuận hàng hóa 1,400 x 0.25 = 350; cộng phí và quảng cáo = 539; trừ ship = 89
+      - CLV Prime = 89 x 14 = 1,246 USD
+      - CLV Non-Prime = 600 x 0.25 x 2.5 = 375 USD
+      - Tỷ lệ = 3.32; 200M x 1,246 = 249.2 tỷ USD
+      result: Prime tạo ~1,246 USD vs 375 USD, gấp ~3.3 lần (chưa chiết khấu). Con số 12,000 USD của nguồn không khớp.
+      interpretation: 'Bài học: nhìn chương trình tổng thể thay vì từng dòng lỗ.'
+  - id: "m03-worked_examples-5"
+    title: "Ví dụ có lời giải: m03_we_clv_cac_channel — So sánh CLV:CAC theo kênh cho shop thời trang online"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m03_we_clv_cac_channel", "so", "sánh", "clv", "cac", "theo", "kênh"]
+    text: |-
+      id: m03_we_clv_cac_channel
+      title: So sánh CLV:CAC theo kênh cho shop thời trang online
+      scenario: 'Shop thời trang bán qua Shopee và Facebook Ads. AOV 350,000, biên gộp 40%, mua 2 lần/năm, retention năm 50%. Facebook: chi 40,000,000, 80 khách mới. Shopee: chi 25,000,000 (phí sàn, voucher), 100 khách mới nhưng ít quay lại (retention 30%).'
+      inputs:
+        aov: 350000
+        gm: 0.4
+        freq: 2
+      steps:
+      - Lợi nhuận/năm = 350,000 x 2 x 0.4 = 280,000
+      - 'Facebook: vòng đời 1/(1-0.5) = 2 năm; CLV = 560,000; CAC = 40,000,000/80 = 500,000; ratio 1.12'
+      - 'Shopee: vòng đời 1/(1-0.3) = 1.43 năm; CLV = 400,000; CAC = 25,000,000/100 = 250,000; ratio 1.6'
+      - 'Cả hai dưới 3: cần tăng AOV (bundle), tần suất (voucher quay lại), hoặc giảm CAC'
+      result: Cả hai kênh dưới 3:1; Shopee có ratio cao hơn nhưng khách khó quay lại. Ưu tiên chương trình giữ chân sau mua để nâng retention.
+      interpretation: Số minh họa; cần cohort thực tế.
+  - id: "m03-practice_questions-1"
+    title: "Câu hỏi luyện tập: Khách mua 80,000 VNĐ/lần, 2 lần/tuần, ở lại 3 năm. Tính CLV doanh thu và lợi nhuận với GM 50%."
+    tags: ["câu", "hỏi", "luyện", "tập", "khách", "mua", "80", "000", "vnđ", "lần", "tuần", "lại"]
+    text: |-
+      q: Khách mua 80,000 VNĐ/lần, 2 lần/tuần, ở lại 3 năm. Tính CLV doanh thu và lợi nhuận với GM 50%.
+      a: freq = 104/năm. Doanh thu = 80,000 x 104 x 3 = 24,960,000. Lợi nhuận = 12,480,000 VNĐ.
+  - id: "m03-practice_questions-2"
+    title: "Câu hỏi luyện tập: Gói thuê bao ARPU 200,000/tháng, GM 70%, churn tháng 5%, CAC 500,000. Tính CLV, CLV:CAC và payback."
+    tags: ["câu", "hỏi", "luyện", "tập", "gói", "thuê", "bao", "arpu", "200", "000", "tháng", "gm"]
+    text: |-
+      q: Gói thuê bao ARPU 200,000/tháng, GM 70%, churn tháng 5%, CAC 500,000. Tính CLV, CLV:CAC và payback.
+      a: Lợi nhuận tháng 140,000; CLV = 140,000/0.05 = 2,800,000; ratio 5.6; payback 500,000/140,000 = 3.57 tháng.
+  - id: "m03-practice_questions-3"
+    title: "Câu hỏi luyện tập: Vì sao không nên dùng CLV doanh thu để so với CAC?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "không", "nên", "dùng", "clv", "doanh", "thu"]
+    text: |-
+      q: Vì sao không nên dùng CLV doanh thu để so với CAC?
+      a: CAC được trả bằng lợi nhuận, không phải doanh thu; doanh thu chưa trừ giá vốn và chi phí phục vụ nên làm CLV:CAC ảo.
+  - id: "m03-practice_questions-4"
+    title: "Câu hỏi luyện tập: Một nhóm có retention 80%. Vòng đời kỳ vọng? Nếu tăng lên 85%?"
+    tags: ["câu", "hỏi", "luyện", "tập", "một", "nhóm", "có", "retention", "80", "vòng", "đời", "kỳ"]
+    text: |-
+      q: Một nhóm có retention 80%. Vòng đời kỳ vọng? Nếu tăng lên 85%?
+      a: 1/(1-0.8) = 5 kỳ; 1/(1-0.85) = 6.67 kỳ (+33%).
+  - id: "m03-practice_questions-5"
+    title: "Câu hỏi luyện tập: NPS: 45% Promoters, 35% Passives, 20% Detractors. NPS?"
+    tags: ["câu", "hỏi", "luyện", "tập", "nps", "45", "promoters", "35", "passives", "20", "detractors"]
+    text: |-
+      q: 'NPS: 45% Promoters, 35% Passives, 20% Detractors. NPS?'
+      a: 45 - 20 = +25.
+  - id: "m03-practice_questions-6"
+    title: "Câu hỏi luyện tập: Cho khách R=120 ngày, F=10, M=8 triệu. Segment nào và làm gì?"
+    tags: ["câu", "hỏi", "luyện", "tập", "cho", "khách", "120", "ngày", "10", "triệu", "segment", "nào"]
+    text: |-
+      q: Cho khách R=120 ngày, F=10, M=8 triệu. Segment nào và làm gì?
+      a: 'At Risk (R thấp, F-M cao): win-back campaign với ưu đãi riêng.'
+  - id: "m03-practice_questions-7"
+    title: "Câu hỏi luyện tập: Công thức chiết khấu: lợi nhuận/năm 3 triệu, retention 0.6, d=10%, T=3. Tính CLV."
+    tags: ["câu", "hỏi", "luyện", "tập", "công", "thức", "chiết", "khấu", "lợi", "nhuận", "năm", "triệu"]
+    text: |-
+      q: 'Công thức chiết khấu: lợi nhuận/năm 3 triệu, retention 0.6, d=10%, T=3. Tính CLV.'
+      a: 3/1.1 + 3x0.6/1.21 + 3x0.36/1.331 = 2.727 + 1.488 + 0.811 = 5.03 triệu VNĐ (tính nhanh).
+  - id: "m03-practice_questions-8"
+    title: "Câu hỏi luyện tập: Tại sao Amazon chấp nhận lỗ ship 311 USD/năm/thành viên?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tại", "sao", "amazon", "chấp", "nhận", "lỗ", "ship", "311"]
+    text: |-
+      q: Tại sao Amazon chấp nhận lỗ ship 311 USD/năm/thành viên?
+      a: Tổng đóng góp mỗi thành viên vẫn dương (89/năm, 1,246 trong 14 năm) và gấp ~3.3 lần Non-Prime nhờ chi tiêu, retention cao và lock-in.
+  - id: "m03-practice_questions-9"
+    title: "Câu hỏi luyện tập: 4P và Customer-Centric khác nhau cơ bản ở đâu?"
+    tags: ["câu", "hỏi", "luyện", "tập", "4p", "và", "customer", "centric", "khác", "nhau", "cơ", "bản"]
+    text: |-
+      q: 4P và Customer-Centric khác nhau cơ bản ở đâu?
+      a: 4P/7P là Inside-Out (bắt đầu từ sản phẩm/năng lực), mục tiêu volume; Customer-Centric là Outside-In (bắt đầu từ pain point), mục tiêu CLV và quan hệ dài hạn. Hai mô hình bổ sung.
+  - id: "m03-practice_questions-10"
+    title: "Câu hỏi luyện tập: Kể 3 nhược điểm khi áp dụng customer-centric."
+    tags: ["câu", "hỏi", "luyện", "tập", "kể", "nhược", "điểm", "khi", "áp", "dụng", "customer", "centric"]
+    text: |-
+      q: Kể 3 nhược điểm khi áp dụng customer-centric.
+      a: Chi phí công nghệ và dữ liệu lớn; nguy cơ bỏ lỡ đột phá do chỉ nghe khách hiện tại; xung đột silo trong tổ chức.
+  - id: "m03-checklist-1"
+    title: "Checklist: Đã tính CLV theo lợi nhuận (không phải doanh thu) và theo phân khúc?"
+    tags: ["checklist", "đã", "tính", "clv", "theo", "lợi", "nhuận", "không", "phải", "doanh", "thu", "và"]
+    text: |-
+      Đã tính CLV theo lợi nhuận (không phải doanh thu) và theo phân khúc?
+  - id: "m03-checklist-2"
+    title: "Checklist: Đã tính CAC đầy đủ (cả lương, voucher) theo kênh?"
+    tags: ["checklist", "đã", "tính", "cac", "đầy", "đủ", "cả", "lương", "voucher", "theo", "kênh"]
+    text: |-
+      Đã tính CAC đầy đủ (cả lương, voucher) theo kênh?
+  - id: "m03-checklist-3"
+    title: "Checklist: CLV:CAC >= 3:1 và payback phù hợp dòng tiền?"
+    tags: ["checklist", "clv", "cac", "và", "payback", "phù", "hợp", "dòng", "tiền"]
+    text: |-
+      CLV:CAC >= 3:1 và payback phù hợp dòng tiền?
+  - id: "m03-checklist-4"
+    title: "Checklist: Đã tính churn/retention và vòng đời kỳ vọng?"
+    tags: ["checklist", "đã", "tính", "churn", "retention", "và", "vòng", "đời", "kỳ", "vọng"]
+    text: |-
+      Đã tính churn/retention và vòng đời kỳ vọng?
+  - id: "m03-checklist-5"
+    title: "Checklist: Đã chạy độ nhạy discount rate và retention?"
+    tags: ["checklist", "đã", "chạy", "độ", "nhạy", "discount", "rate", "và", "retention"]
+    text: |-
+      Đã chạy độ nhạy discount rate và retention?
+  - id: "m03-checklist-6"
+    title: "Checklist: Đã phân khúc RFM; xác định Top 20% khách và nhóm At Risk?"
+    tags: ["checklist", "đã", "phân", "khúc", "rfm", "xác", "định", "top", "20", "khách", "và", "nhóm"]
+    text: |-
+      Đã phân khúc RFM; xác định Top 20% khách và nhóm At Risk?
+  - id: "m03-checklist-7"
+    title: "Checklist: Có chiến lược cho 3 đòn bẩy (AOV, Frequency, Churn)?"
+    tags: ["checklist", "có", "chiến", "lược", "cho", "đòn", "bẩy", "aov", "frequency", "churn"]
+    text: |-
+      Có chiến lược cho 3 đòn bẩy (AOV, Frequency, Churn)?
+  - id: "m03-checklist-8"
+    title: "Checklist: Có early warning signals và win-back?"
+    tags: ["checklist", "có", "early", "warning", "signals", "và", "win", "back"]
+    text: |-
+      Có early warning signals và win-back?
+  - id: "m03-checklist-9"
+    title: "Checklist: Dashboard CLV cập nhật hàng tháng?"
+    tags: ["checklist", "dashboard", "clv", "cập", "nhật", "hàng", "tháng"]
+    text: |-
+      Dashboard CLV cập nhật hàng tháng?
+  - id: "m03-checklist-10"
+    title: "Checklist: Marketing, sales, CS cùng biết CLV; KPI/thưởng gắn CLV, không chỉ doanh thu?"
+    tags: ["checklist", "marketing", "sales", "cs", "cùng", "biết", "clv", "kpi", "thưởng", "gắn", "không", "chỉ"]
+    text: |-
+      Marketing, sales, CS cùng biết CLV; KPI/thưởng gắn CLV, không chỉ doanh thu?
+  - id: "m03-checklist-11"
+    title: "Checklist: Đã kiểm tra khách CLV âm (chi phí phục vụ cao)?"
+    tags: ["checklist", "đã", "kiểm", "tra", "khách", "clv", "âm", "chi", "phí", "phục", "vụ", "cao"]
+    text: |-
+      Đã kiểm tra khách CLV âm (chi phí phục vụ cao)?
+  - id: "m03-checklist-12"
+    title: "Checklist: Dữ liệu cá nhân thu thập có đồng ý và tuân thủ pháp luật?"
+    tags: ["checklist", "dữ", "liệu", "cá", "nhân", "thu", "thập", "có", "đồng", "và", "tuân", "thủ"]
+    text: |-
+      Dữ liệu cá nhân thu thập có đồng ý và tuân thủ pháp luật?
+  - id: "m03-checklist-13"
+    title: "Checklist: Đã ghi giả định và mức tin cậy các con số thị trường?"
+    tags: ["checklist", "đã", "ghi", "giả", "định", "và", "mức", "tin", "cậy", "các", "con", "số"]
+    text: |-
+      Đã ghi giả định và mức tin cậy các con số thị trường?
+  - id: "m03-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Sheet CLV: cột AOV, Freq, Lifespan, GM; CLV doanh thu = B*C*D; CLV lợi nhuận = nhân thêm GM."
+    tags: ["mẫu", "excel", "sheets", "sheet", "clv", "cột", "aov", "freq", "lifespan", "gm", "doanh", "thu"]
+    text: |-
+      Sheet CLV: cột AOV, Freq, Lifespan, GM; CLV doanh thu = B*C*D; CLV lợi nhuận = nhân thêm GM.
+  - id: "m03-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Sheet CLV chiết khấu: cột năm t, retention lũy kế = r^(t-1), lợi nhuận, hệ số chiết khấu 1/(1+d)^t;…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "clv", "chiết", "khấu", "cột", "năm", "retention", "lũy", "kế"]
+    text: |-
+      Sheet CLV chiết khấu: cột năm t, retention lũy kế = r^(t-1), lợi nhuận, hệ số chiết khấu 1/(1+d)^t; tổng bằng SUMPRODUCT.
+  - id: "m03-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: Sheet CAC theo kênh: chi phí, khách mới, CAC = chi phí/khách mới, CLV:CAC, payback."
+    tags: ["mẫu", "excel", "sheets", "sheet", "cac", "theo", "kênh", "chi", "phí", "khách", "mới", "clv"]
+    text: |-
+      Sheet CAC theo kênh: chi phí, khách mới, CAC = chi phí/khách mới, CLV:CAC, payback.
+  - id: "m03-excel_google_sheets_templates-4"
+    title: "Mẫu Excel/Sheets: Sheet RFM: dữ liệu giao dịch -> Pivot (mã khách, ngày cuối, số đơn, tổng tiền); điểm bằng PERCENTRA…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "rfm", "dữ", "liệu", "giao", "dịch", "pivot", "mã", "khách"]
+    text: |-
+      Sheet RFM: dữ liệu giao dịch -> Pivot (mã khách, ngày cuối, số đơn, tổng tiền); điểm bằng PERCENTRANK hoặc IFS; segment bằng IF/IFS; Pivot % doanh thu theo segment.
+  - id: "m03-excel_google_sheets_templates-5"
+    title: "Mẫu Excel/Sheets: Sheet churn/cohort: số khách còn hoạt động theo tháng từ cohort mua đầu tiên."
+    tags: ["mẫu", "excel", "sheets", "sheet", "churn", "cohort", "số", "khách", "còn", "hoạt", "động", "theo"]
+    text: |-
+      Sheet churn/cohort: số khách còn hoạt động theo tháng từ cohort mua đầu tiên.
+  - id: "m03-excel_google_sheets_templates-6"
+    title: "Mẫu Excel/Sheets: Sheet NPS: đếm Promoters/Detractors, NPS = %P - %D theo tháng."
+    tags: ["mẫu", "excel", "sheets", "sheet", "nps", "đếm", "promoters", "detractors", "theo", "tháng"]
+    text: |-
+      Sheet NPS: đếm Promoters/Detractors, NPS = %P - %D theo tháng.
+  - id: "m03-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: 03-customer-life-time-value.md

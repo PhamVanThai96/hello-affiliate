@@ -13,5 +13,9 @@ esc() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
 APP="$OUT/MBA Office.app"
 rm -rf "$APP"
 osacompile -o "$APP" -e "do shell script \"open -a Terminal \" & quoted form of \"$(esc "$LAUNCHER")\"" || { echo "Tạo ứng dụng thất bại."; exit 1; }
+ICON="$TOOL_DIR/MBA Office.icns"
+if [ -f "$ICON" ]; then   # biểu tượng ứng dụng (ghi đè biểu tượng mặc định của osacompile)
+  cp "$ICON" "$APP/Contents/Resources/applet.icns" && touch "$APP"
+fi
 printf '✔ Đã tạo: %s\n  Kéo ứng dụng vào Dock để mở nhanh. Lần đầu macOS có thể hỏi xác nhận: chuột phải → Mở.\n' "$APP"
 sleep 3

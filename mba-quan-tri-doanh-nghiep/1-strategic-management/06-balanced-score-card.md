@@ -300,6 +300,32 @@ Bước 8: Cascading – Trải xuống các cấp (phòng ban → cá nhân)
 - Đầu tư vào con người (Learning) tạo lợi thế cạnh tranh bền vững
 - **Hạn chế thực tế**: Năm 2022-2023, NV Starbucks Mỹ đình công đòi quyền lợi → BSC "trên giấy" không phải lúc nào cũng phản ánh thực tế. Employee engagement score cao ≠ NV thực sự hài lòng
 
+### Case Study 3 (SME Việt Nam, giả định minh họa): Chuỗi 3 quán cà phê "Cà Phê Nhà" – BSC và chấm điểm KPI
+
+#### Bối cảnh
+Chủ chuỗi 3 quán (TP.HCM), 25 nhân viên, chiến lược "giữ khách quen, phục vụ nhanh". Trọng số viễn cảnh: Tài chính 35%, Khách hàng 30%, Quy trình 20%, Học hỏi 15%. Mỗi viễn cảnh 2 KPI, trọng số 50/50.
+
+#### Tính điểm từng KPI (Điểm = đạt/chỉ tiêu, KPI càng thấp càng tốt thì chỉ tiêu/đạt; trần 120%; KPI tăng trưởng có mốc nền thì (đạt - nền)/(chỉ tiêu - nền))
+
+| Viễn cảnh | KPI | Nền | Chỉ tiêu | Thực đạt | Điểm |
+|---|---|---|---|---|---|
+| Tài chính | Tăng trưởng doanh thu | 10% | 20% | 17% | (17-10)/(20-10) = 0.70 |
+| Tài chính | Biên lợi nhuận ròng | - | 8% | 6.4% | 6.4/8 = 0.80 |
+| Khách hàng | NPS | 25 | 50 | 42 | (42-25)/(50-25) = 0.68 |
+| Khách hàng | Tỷ lệ giữ chân | - | 60% | 57% | 57/60 = 0.95 |
+| Quy trình | Thời gian phục vụ (phút, thấp tốt) | - | 4 | 4.5 | 4/4.5 = 0.889 |
+| Quy trình | Tỷ lệ lỗi đơn (%, thấp tốt) | - | 2 | 1.6 | 2/1.6 = 1.25, cắt trần 1.20 |
+| Học hỏi | Giờ đào tạo/NV/năm | - | 40 | 32 | 32/40 = 0.80 |
+| Học hỏi | Turnover (%, thấp tốt) | - | 30 | 36 | 30/36 = 0.833 |
+
+Điểm viễn cảnh: Tài chính 0.750; Khách hàng 0.815; Quy trình 1.044; Học hỏi 0.817.
+Điểm tổng = 0.35x0.750 + 0.30x0.815 + 0.20x1.044 + 0.15x0.817 = **0.838 (~84%)**.
+
+#### Diễn giải và khuyến nghị
+- Quy trình vượt chỉ tiêu nhưng Tài chính chỉ 75%: vận hành tốt chưa chuyển thành doanh thu, vì NPS (68% điểm) còn thấp so với mục tiêu; ưu tiên sáng kiến tăng NPS (loyalty, đào tạo barista) thay vì cải tiến tốc độ thêm.
+- Học hỏi 82% với turnover 36% cao hơn chỉ tiêu: rủi ro nền tảng, cần chính sách giữ người trước khi mở quán thứ 4.
+- Kiểm chứng nhân quả: tăng tỷ lệ khách quay lại từ 25% lên 35% trên 2,000 khách = +200 khách; mỗi khách quay lại 3 lần/năm x 450,000 đ = 270 triệu doanh thu, biên gộp 40% = 108 triệu; sáng kiến tốn 60 triệu thì ROI = (108-60)/60 = 80%.
+
 ---
 
 ## VII. MỞ RỘNG: BSC THẾ HỆ MỚI

@@ -1,0 +1,911 @@
+# m05 - Phân tích chênh lệch (distill từ 05-variance-analysis.md)
+id: "m05"
+name_vi: "Phân tích chênh lệch"
+name_en: "Variance Analysis"
+purpose: >
+  So sánh kết quả thực tế (Actual) với chuẩn/ngân sách (Standard/Budget), bóc tổng chênh lệch lợi nhuận thành các mảnh
+  nhỏ gắn với một người/bộ phận kiểm soát được (giá mua, lượng dùng, đơn giá giờ công, hiệu suất, chi tiêu chung, công suất,
+  giá bán, sản lượng, cơ cấu bán), rồi quy trách nhiệm và đề ra hành động khắc phục. Trả lời: lợi nhuận hụt kế hoạch X triệu
+  thì do đâu, bao nhiêu phần ngoài tầm kiểm soát, ai sửa gì trước.
+when_to_use:
+  - "Chủ SME hỏi 'tháng này lợi nhuận thấp hơn kế hoạch X triệu, vì sao?', 'ai chịu trách nhiệm khoản hụt này?'."
+  - "Cần lập thẻ định mức (Standard Cost Card) cho 1 sản phẩm/ly/suất ăn/đơn hàng."
+  - "Cần chuyển ngân sách tĩnh sang ngân sách linh hoạt trước khi so sánh với thực tế."
+  - "Cần tính/diễn giải DM Price-Quantity, DL Rate-Efficiency, VOH Spending-Efficiency, FOH Budget-Volume, Sales Price-Volume-Mix."
+  - "Cần lập bảng đối chiếu (reconciliation) để chứng minh tổng các variance bằng chênh lệch lợi nhuận."
+  - "Cần chọn ngưỡng quản trị theo ngoại lệ, 5 Whys, controllable/uncontrollable, action plan ai-làm gì-hạn nào."
+  - "Câu hỏi về Volume Variance của định phí, absorption vs contribution costing, bẫy sản xuất thừa để 'đẹp' variance."
+  - "Thiết kế báo cáo variance hằng tháng trên Excel/Google Sheets/Looker Studio cho SME."
+prerequisites: []
+related_modules:
+  - "m02 - Kế toán quản trị: CM, absorption vs variable costing, CVP dùng chung với Sales Volume Variance"
+  - "m03 - Kế toán giá thành: định mức, thẻ giá thành, phân bổ chi phí chung, FOH rate"
+  - "m04 - Ngân sách và dự báo: ngân sách tĩnh làm gốc so sánh, rolling forecast cập nhật sau khi có variance"
+  - "m01 - Kế toán tài chính: Actual lấy từ TK 621, 622, 627, 154, 632; VAS 02 về hàng tồn kho và định mức"
+  - "m06 - Tỷ số tài chính: biên lợi nhuận, lãi gộp để so sánh trend khi variance lặp lại"
+  - "m07 - Case tích hợp: ghép variance vào bài toán tổng hợp"
+
+concepts:
+  - term_vi: "Phân tích chênh lệch"
+    term_en: "Variance Analysis"
+    definition: "So sánh Actual với Standard/Budget: Variance = Actual - Standard; xác định nguyên nhân, quy trách nhiệm, đề xuất hành động. Là bước Check của vòng PDCA / Management Control Cycle (Plan - Execute - Measure - Compare - Corrective Action)."
+    why_it_matters: "Tổng 'lợi nhuận hụt 80 triệu' có hàng chục nguyên nhân (bán ít, bán rẻ, vải đắt, thợ chậm, điện nước tăng) - không ai biết sửa ở đâu, giao cho ai. Variance bóc tổng thành các mảnh gắn với một người kiểm soát được (Mua hàng - giá; Sản xuất - định mức; Nhân sự - đơn giá giờ công; Kinh doanh - giá bán, số lượng). Không có bước này ngân sách chỉ là tờ giấy; không có hành động khắc phục thì phân tích chỉ là báo cáo khám nghiệm tử thi."
+  - term_vi: "Chênh lệch thuận lợi / bất lợi"
+    term_en: "Favorable (F) / Unfavorable (U) Variance"
+    definition: "F là kết quả tốt hơn kế hoạch (doanh thu cao hơn hoặc chi phí thấp hơn, làm lợi nhuận tăng); U là xấu hơn (làm lợi nhuận giảm). Quy ước dấu nguồn: chi phí - Variance = Actual - Standard nên dương = U, âm = F; doanh thu và lợi nhuận - âm = U, dương = F."
+    why_it_matters: "Hai quy ước dấu ngược nhau là nguồn nhầm lẫn số một. Luôn ghi chữ (F) hoặc (U) sau mỗi con số. F không đồng nghĩa tốt: có thể do cắt chất lượng, cắt bảo trì, sản xuất thừa."
+  - term_vi: "Chi phí tiêu chuẩn / định mức"
+    term_en: "Standard Cost"
+    definition: "Chi phí kỳ vọng để làm ra 1 đơn vị sản phẩm/dịch vụ trong điều kiện hoạt động hợp lý, ghi trên thẻ định mức (Standard Cost Card): lượng và giá NVL, giờ và đơn giá nhân công, biến phí chung, định phí phân bổ."
+    why_it_matters: "Muốn biết thực tế tốt hay xấu phải có thước đo. Không có thước thì chỉ so với tháng trước (mà tháng trước có thể đã kém). Mọi chi phí đều là tích Giá x Lượng nên thẻ định mức tách rõ hai yếu tố để về sau tách variance đúng."
+  - term_vi: "Ba loại tiêu chuẩn"
+    term_en: "Ideal / Currently Attainable / Basic Standard"
+    definition: "Ideal: hoàn hảo, không lãng phí, không hỏng máy (mục tiêu dài hạn, Toyota/Lean). Currently Attainable: khả thi, cho phép hao hụt hợp lý (phổ biến nhất để lập ngân sách và đánh giá). Basic: cố định nhiều năm, dùng so sánh xu hướng."
+    why_it_matters: "Chọn sai loại sinh hành vi sai: Ideal dùng để đánh giá thì luôn U, nhân viên nản; Attainable đặt dễ quá thì luôn đạt nhưng không cải tiến (GM); Basic lạc hậu khi giá/công nghệ đổi."
+  - term_vi: "Ngân sách tĩnh"
+    term_en: "Static Budget"
+    definition: "Ngân sách lập cho một mức hoạt động kế hoạch cố định (vd 1.200 áo/6.000 ly), không điều chỉnh khi sản lượng thực tế khác."
+    why_it_matters: "Dùng để đo mục tiêu ban đầu và tổng chênh lệch. Không dùng để đánh giá chi phí biến đổi khi sản lượng khác kế hoạch."
+  - term_vi: "Ngân sách linh hoạt"
+    term_en: "Flexible Budget"
+    definition: "Ngân sách tính lại cho đúng mức hoạt động thực tế: biến phí = sản lượng thực tế x định mức biến phí/đơn vị; định phí giữ nguyên trong phạm vi công suất. Chia tổng chênh lệch thành 2 tầng: Sales Volume Variance (Static -> Flexible) và Flexible Budget Variance (Flexible -> Actual)."
+    why_it_matters: "Ngân sách 1.200 áo, thực tế 1.000 áo: so thẳng thì mọi biến phí đều 'tiết kiệm' giả (so táo với cam). Tầng 1 phụ thuộc thị trường/kinh doanh; tầng 2 (giá, lượng, hiệu suất) mới là trách nhiệm quản lý sản xuất - người sản xuất chỉ nên bị đánh giá trên tầng 2."
+  - term_vi: "Sản lượng/lượng/giờ cho phép theo chuẩn"
+    term_en: "Standard quantity / hours allowed (SQ, SH)"
+    definition: "SQ = sản lượng THỰC TẾ x lượng chuẩn/đơn vị; SH = sản lượng THỰC TẾ x giờ chuẩn/đơn vị. Không phải theo sản lượng ngân sách."
+    why_it_matters: "Nhầm SQ theo sản lượng ngân sách là lỗi phổ biến nhất - biến Quantity Variance thành Sales Volume Variance trá hình."
+  - term_vi: "Chênh lệch giá và chênh lệch lượng"
+    term_en: "Price vs Quantity (Efficiency) Variance"
+    definition: "Mọi chi phí = Giá x Lượng. Thay lần lượt từng biến: đổi giá trước (giữ lượng thực tế) ra chênh lệch giá; đổi lượng (giữ giá chuẩn) ra chênh lệch lượng. Hai phần cộng đúng bằng tổng chênh lệch."
+    why_it_matters: "Price Variance nhân AQ vì giá tác động lên toàn bộ lượng thực tế (kể cả phần hao phí). Quantity Variance định giá bằng SP để loại ảnh hưởng của giá, đo trách nhiệm Sản xuất công bằng. Gộp chung thì không ai phải giải trình."
+  - term_vi: "Chi phí sản xuất chung (MOH) và Volume Variance của định phí"
+    term_en: "Manufacturing Overhead (MOH), Fixed Overhead Volume Variance"
+    definition: "MOH không gắn trực tiếp sản phẩm nên phân bổ theo tiêu thức (giờ nhân công trực tiếp - DLH). Tách VOH (biến phí) và FOH (định phí). FOH Rate tính từ sản lượng kế hoạch; Volume Variance = FOH dự toán - FOH đã phân bổ (SH x FOH Rate)."
+    why_it_matters: "Định phí là tiền chi không đổi dù sản xuất nhiều hay ít, nhưng phải phân bổ bằng một mức/đơn vị cố định tính từ sản lượng kế hoạch. Sản xuất ít hơn kế hoạch thì phần gánh vào sản phẩm thấp hơn số dự toán; phần chưa gánh hết là Volume Variance (U) = công suất bỏ không. Đây là hệ quả toán học của cách phân bổ, không phải sai sót chi tiêu; chỉ báo xem lại công suất/kế hoạch bán, không phải mục tiêu để 'tối ưu về 0'."
+  - term_vi: "Absorption costing vs Contribution (Variable) costing trong variance"
+    term_en: "Absorption vs Contribution costing"
+    definition: "Absorption: Sales Volume Variance nhân lãi gộp chuẩn (giá - giá thành đầy đủ) và có thêm FOH Volume Variance. Contribution: nhân CM chuẩn (giá - biến phí), định phí là chi phí kỳ nên không có FOH Volume Variance, chỉ có FOH Budget Variance. Tổng chênh lệch lợi nhuận hai cách bằng nhau."
+    why_it_matters: "Cách Contribution rõ hơn cho SME vì không sinh ra Volume Variance khó hiểu. Quy tắc nhất quán: đã chọn cách nào thì dùng cho cả Sales Volume lẫn xử lý định phí, không trộn."
+  - term_vi: "Chênh lệch cơ cấu và số lượng bán"
+    term_en: "Sales Mix & Sales Quantity Variance"
+    definition: "Khi bán nhiều sản phẩm margin khác nhau, Sales Volume Variance tách thành Quantity (tổng lượng lệch x CM bình quân ngân sách) và Mix (lượng từng sản phẩm lệch so với cơ cấu ngân sách áp lên tổng lượng thực tế, x CM từng sản phẩm)."
+    why_it_matters: "Bán đủ số ly nhưng dồn vào món margin thấp thì lợi nhuận vẫn thua kế hoạch; tổng số lượng không nói lên điều đó."
+  - term_vi: "Quản trị theo ngoại lệ"
+    term_en: "Management by Exception"
+    definition: "Chỉ điều tra variance đủ lớn (theo % và giá trị tuyệt đối) hoặc lặp lại nhiều kỳ. Ngưỡng tham khảo: Insignificant dưới 3% VÀ dưới 2 triệu; Moderate 3-10% HOẶC 2-10 triệu; Significant trên 10% HOẶC trên 10 triệu; Recurring cùng variance 3+ tháng liên tiếp."
+    why_it_matters: "Sự chú ý của chủ SME có hạn; điều tra mọi variance nhỏ tốn hơn lợi ích. Variance lặp lại 3+ tháng thường là dấu hiệu định mức sai, vấn đề hệ thống chứ không phải biến cố."
+  - term_vi: "Điều tra nguyên nhân gốc và kiểm soát được"
+    term_en: "Root Cause Analysis (5 Whys) & Controllable vs Uncontrollable"
+    definition: "5 Whys hỏi 'tại sao' liên tiếp đến nguyên nhân gốc (kỹ thuật do Sakichi Toyoda phát triển và Toyota phổ biến - cần đối chiếu nguồn). Phân loại controllable (manager sửa được) và uncontrollable (thị trường, thiên tai, chính sách)."
+    why_it_matters: "Chỉ hành động lên nguyên nhân kiểm soát được; nguyên nhân bất khả kháng thì điều chỉnh kế hoạch/định mức chứ không phạt người."
+  - term_vi: "Quan hệ cặp giữa các variance"
+    term_en: "Interacting variances (Price-Qty, Rate-Efficiency, Price-Volume)"
+    definition: "Mua vải rẻ (Price F) có thể làm hao phí nhiều (Quantity U); thuê thợ giỏi (Rate U) có thể giảm giờ (Efficiency F); khuyến mãi giảm giá (Price U) phải kéo lượng (Volume F) - nếu không là lỗi kép."
+    why_it_matters: "Đọc riêng lẻ dễ khen thưởng sai hành vi (Mua hàng chỉ bị đánh giá theo Price Variance sẽ có động cơ mua rẻ, kém). Luôn đọc cặp trước khi kết luận."
+  - term_vi: "Variance trong triết lý Kaizen vs văn hóa đạt chỉ tiêu"
+    term_en: "Toyota Kaizen vs GM 'hit the number'"
+    definition: "Toyota: variance là tín hiệu cải tiến tại hiện trường, phân tích real-time, Ideal Standard kéo giãn, Andon dừng sửa ngay, sản xuất theo cầu (pull). Doanh nghiệp theo kiểu GM: variance là công cụ đổ lỗi, standard dễ, che giấu, sản xuất tối đa để giảm unit cost."
+    why_it_matters: "Cùng công cụ, văn hóa quyết định kết quả. Volume Variance Favorable không bằng tốt: sản xuất thừa để dàn định phí tạo tồn kho và giảm giá lớn gấp nhiều lần phần định phí 'cứu' được."
+  - term_vi: "Nguồn gốc lịch sử (cần đối chiếu nguồn khi trích dẫn)"
+    term_en: "Origins of standard costing"
+    definition: "Đầu thế kỷ 20 Scientific Management (F. W. Taylor): đo thời gian chuẩn từng thao tác. Khoảng 1910s-1920s Standard Costing được hệ thống hóa ở Mỹ (thường nhắc G. Charter Harrison với công thức chênh lệch giá/lượng); DuPont và GM cùng thời phát triển kiểm soát tài chính theo kế hoạch - thực tế (cùng dòng với DuPont analysis). Sau 1950s vào giáo trình Managerial/Cost Accounting và kỳ thi CMA; từ 1980-1990 Lean/Toyota phê bình lạm dụng variance trong môi trường cải tiến liên tục."
+    why_it_matters: "Hiểu bối cảnh sản xuất lặp lại, quy mô lớn giải thích tại sao công cụ hiệu quả nhất ở sản xuất lặp lại và kém hiệu quả ở R&D, startup, dịch vụ khó chuẩn hóa."
+
+formulas:
+  - id: "m05_basic_variance"
+    name_vi: "Chênh lệch cơ bản và nhãn F/U"
+    name_en: "Basic variance and F/U flag"
+    expression_latex: '\text{Variance} = \text{Actual} - \text{Standard};\quad \text{chi phí: } >0 \Rightarrow U,\ <0 \Rightarrow F;\quad \text{doanh thu/lợi nhuận: } <0 \Rightarrow U'
+    expression_python: '("U" if (actual - standard) > 0 else "F") if is_cost else ("U" if (actual - standard) < 0 else "F")'
+    excel: '=IF(Var>0,"U","F")  (chi phí); =IF(Var<0,"U","F")  (doanh thu, lợi nhuận)'
+    variables:
+      - {symbol: "actual", meaning: "Giá trị thực tế", unit: "VNĐ"}
+      - {symbol: "standard", meaning: "Giá trị chuẩn hoặc ngân sách", unit: "VNĐ"}
+      - {symbol: "is_cost", meaning: "True nếu là khoản chi phí, False nếu doanh thu hoặc lợi nhuận", unit: "bool"}
+    when_to_use: "Mọi variance: xác định hướng tác động lên lợi nhuận trước khi diễn giải."
+    why_it_works: "Chi phí tăng làm lợi nhuận giảm nên (+) là U; doanh thu giảm làm lợi nhuận giảm nên (-) là U. Nhãn chữ loại bỏ nhập nhằng dấu."
+    assumptions: ["Actual và Standard cùng mức hoạt động (đã quy về flexible budget khi so biến phí)", "Cùng đơn vị tiền tệ và kỳ"]
+    pitfalls:
+      - "Trộn quy ước dấu chi phí và doanh thu trong cùng bảng tổng hợp; khi cộng vào tác động lợi nhuận phải đổi dấu chi phí U thành âm."
+      - "Coi F là luôn tốt (có thể do cắt chất lượng, cắt bảo trì, sản xuất thừa)."
+    interpretation: "U của chi phí vượt chuẩn; U của doanh thu thiếu chuẩn. F cũng cần soát xem có đánh đổi chất lượng không."
+    example:
+      inputs: {actual: 64800000, standard: 60000000, is_cost: true}
+      steps: ["64.800.000 - 60.000.000 = +4.800.000, chi phí dương nên U"]
+      result: "4.800.000 (U)"
+  - id: "m05_std_allowed"
+    name_vi: "Lượng/giờ cho phép theo chuẩn"
+    name_en: "Standard quantity / hours allowed for actual output"
+    expression_latex: 'SQ = Q_{actual\ output} \times \text{std qty per unit};\quad SH = Q_{actual\ output} \times \text{std hours per unit}'
+    expression_python: 'actual_output * std_per_unit'
+    excel: "=SanLuongThucTe*DinhMucDonVi"
+    variables:
+      - {symbol: "actual_output", meaning: "Sản lượng thực tế", unit: "đơn vị SP"}
+      - {symbol: "std_per_unit", meaning: "Định mức lượng NVL hoặc giờ công trên 1 đơn vị SP", unit: "m, g hoặc giờ/SP"}
+    when_to_use: "Bước đầu của mọi tính toán Quantity, Efficiency, VOH Efficiency, FOH Volume."
+    why_it_works: "Muốn đo hiệu quả dùng đầu vào phải so với lượng ĐÁNG LẼ cần cho đúng số sản phẩm đã làm ra, không phải số kế hoạch."
+    assumptions: ["Định mức đã kiểm chứng thực tế", "Sản phẩm dở dang quy đổi tương đương nếu có"]
+    pitfalls: ["Dùng sản lượng ngân sách thay cho thực tế làm lẫn Quantity Var với Volume Var", "Quên cộng phế phẩm cho phép nếu định mức đã tính hao hụt"]
+    interpretation: "Là cột 'Standard' trong mọi so sánh lượng."
+    example:
+      inputs: {actual_output: 1000, std_per_unit: 1.2}
+      steps: ["SQ vải = 1.000 x 1,2 = 1.200 m"]
+      result: "SQ = 1.200 m (áo thun)"
+  - id: "m05_flexible_budget_cost"
+    name_vi: "Chi phí ngân sách linh hoạt"
+    name_en: "Flexible budget cost"
+    expression_latex: '\text{Flex cost} = Q_{actual} \times v_{std} + F_{budget}'
+    expression_python: 'actual_output * var_cost_per_unit + fixed_cost'
+    excel: "=SanLuongThucTe*BienPhiDonVi+DinhPhi"
+    variables:
+      - {symbol: "actual_output", meaning: "Sản lượng/doanh số thực tế", unit: "đơn vị SP"}
+      - {symbol: "var_cost_per_unit", meaning: "Biến phí chuẩn trên 1 đơn vị", unit: "VNĐ/SP"}
+      - {symbol: "fixed_cost", meaning: "Định phí ngân sách (không đổi trong phạm vi công suất)", unit: "VNĐ"}
+    when_to_use: "Trước khi so chi phí thực tế với kế hoạch khi sản lượng thực tế khác ngân sách tĩnh."
+    why_it_works: "Biến phí đổi theo sản lượng nên phải tính lại; định phí không đổi nên giữ nguyên. Nhờ vậy so cùng mức hoạt động."
+    assumptions: ["Phân loại biến phí/định phí đúng", "Sản lượng thực tế nằm trong phạm vi công suất liên quan (relevant range)"]
+    pitfalls: ["Coi cả chi phí 'bán biến đổi' (lương ca, điện) là biến phí hoàn toàn", "Quên định phí bậc thang (step cost) khi sản lượng vượt công suất"]
+    interpretation: "Là mốc so sánh công bằng với Actual; chênh lệch với Actual = Flexible Budget Variance."
+    example:
+      inputs: {actual_output: 5400, var_cost_per_unit: 22900, fixed_cost: 60000000}
+      steps: ["5.400 x 22.900 = 123.660.000", "+ 60.000.000 = 183.660.000"]
+      result: "Chi phí linh hoạt quán Hẻm 25 = 183.660.000"
+  - id: "m05_dm_price"
+    name_vi: "Chênh lệch giá NVL"
+    name_en: "Direct Materials Price Variance"
+    expression_latex: '(AP - SP)\times AQ'
+    expression_python: '(ap - sp) * aq'
+    excel: "=(AP-SP)*AQ"
+    variables:
+      - {symbol: "ap", meaning: "Giá mua thực tế", unit: "VNĐ/đơn vị NVL"}
+      - {symbol: "sp", meaning: "Giá mua chuẩn", unit: "VNĐ/đơn vị NVL"}
+      - {symbol: "aq", meaning: "Lượng NVL thực tế (dùng hoặc mua tuỳ thời điểm ghi nhận)", unit: "đơn vị NVL"}
+    when_to_use: "Đánh giá bộ phận Mua hàng: đàm phán, nhà cung cấp, thời điểm mua."
+    why_it_works: "Giá chỉ lệch đúng một lần trên mọi đơn vị thực tế đã chi; nhân AQ gồm cả phần hao phí vì phần hao phí cũng đã mua với giá đó."
+    assumptions: ["AQ cùng đơn vị với giá", "Nếu báo cáo ghi nhận lúc mua thì AQ là lượng mua, khi đó phần tồn chưa dùng vẫn mang giá chuẩn"]
+    pitfalls:
+      - "Đọc riêng, bỏ qua cặp Quantity: mua rẻ chất kém làm hao phí tăng."
+      - "Đánh giá Mua hàng chỉ bằng Price Var tạo động cơ mua rẻ kém; nên kèm tổng chi phí NVL trên đơn vị thành phẩm đạt chất lượng và tỷ lệ phế phẩm."
+    interpretation: "Âm là F (mua rẻ hơn chuẩn), dương là U. Nguyên nhân F: đàm phán tốt, mua sỉ, giảm giá mùa vụ; U: khan hiếm, mua gấp, đổi chính sách NCC."
+    example:
+      inputs: {ap: 48000, sp: 50000, aq: 1350}
+      steps: ["(48.000 - 50.000) x 1.350 = -2.700.000"]
+      result: "-2.700.000 (F)"
+  - id: "m05_dm_quantity"
+    name_vi: "Chênh lệch lượng NVL"
+    name_en: "Direct Materials Quantity (Usage) Variance"
+    expression_latex: '(AQ - SQ)\times SP'
+    expression_python: '(aq - sq) * sp'
+    excel: "=(AQ-SQ)*SP"
+    variables:
+      - {symbol: "aq", meaning: "Lượng NVL dùng thực tế", unit: "đơn vị NVL"}
+      - {symbol: "sq", meaning: "Lượng chuẩn cho sản lượng thực tế", unit: "đơn vị NVL"}
+      - {symbol: "sp", meaning: "Giá mua chuẩn", unit: "VNĐ/đơn vị NVL"}
+    when_to_use: "Đánh giá Sản xuất: tay nghề, phế phẩm, máy móc, thiết kế, chất lượng NVL."
+    why_it_works: "Định giá phần lượng thừa bằng giá chuẩn để cô lập hiệu suất sử dụng khỏi biến động giá; trách nhiệm Sản xuất đo công bằng."
+    assumptions: ["SQ tính theo sản lượng thực tế", "Giá chuẩn ổn định trong kỳ"]
+    pitfalls: ["Nhân giá thực tế thay vì giá chuẩn làm trộn lẫn hai variance, tổng sẽ không khớp", "Quên phế phẩm bình thường đã nằm trong định mức"]
+    interpretation: "Dương là U (dùng thừa), âm là F. Nguyên nhân U: thợ mới, máy cũ, NVL kém, thiết kế phức tạp hơn dự kiến; F: thợ lành nghề, cải tiến quy trình."
+    example:
+      inputs: {aq: 1350, sq: 1200, sp: 50000}
+      steps: ["(1.350 - 1.200) x 50.000 = 7.500.000"]
+      result: "+7.500.000 (U)"
+  - id: "m05_dm_total"
+    name_vi: "Tổng chênh lệch NVL trực tiếp"
+    name_en: "Total DM Variance (check)"
+    expression_latex: 'AQ\cdot AP - SQ\cdot SP = (AP-SP)AQ + (AQ-SQ)SP'
+    expression_python: 'aq * ap - sq * sp'
+    excel: "=AQ*AP-SQ*SP"
+    variables:
+      - {symbol: "aq", meaning: "Lượng thực tế", unit: "đơn vị NVL"}
+      - {symbol: "ap", meaning: "Giá thực tế", unit: "VNĐ/đơn vị"}
+      - {symbol: "sq", meaning: "Lượng chuẩn cho sản lượng thực tế", unit: "đơn vị NVL"}
+      - {symbol: "sp", meaning: "Giá chuẩn", unit: "VNĐ/đơn vị"}
+    when_to_use: "Kiểm chứng Price + Quantity cộng khớp tổng chi phí thực tế trừ chi phí chuẩn."
+    why_it_works: "Thêm bớt AQ.SP vào giữa: AP.AQ - SP.AQ + SP.AQ - SP.SQ - tách tuần tự từng biến, hai phần cộng khít, không thừa thiếu."
+    assumptions: ["Dùng cùng một bộ giá, lượng cho cả ba phép tính"]
+    pitfalls: ["Tổng không khớp thường do SQ tính sai sản lượng hoặc nhân sai giá ở một trong hai variance"]
+    interpretation: "Dương là U. Dùng làm bước đối chiếu bắt buộc."
+    example:
+      inputs: {aq: 1350, ap: 48000, sq: 1200, sp: 50000}
+      steps: ["1.350 x 48.000 = 64.800.000", "1.200 x 50.000 = 60.000.000", "chênh = 4.800.000 = -2.700.000 + 7.500.000"]
+      result: "+4.800.000 (U)"
+  - id: "m05_dl_rate"
+    name_vi: "Chênh lệch đơn giá nhân công"
+    name_en: "Direct Labor Rate Variance"
+    expression_latex: '(AR - SR)\times AH'
+    expression_python: '(ar - sr) * ah'
+    excel: "=(AR-SR)*AH"
+    variables:
+      - {symbol: "ar", meaning: "Lương thực tế/giờ", unit: "VNĐ/giờ"}
+      - {symbol: "sr", meaning: "Lương chuẩn/giờ", unit: "VNĐ/giờ"}
+      - {symbol: "ah", meaning: "Giờ làm thực tế", unit: "giờ"}
+    when_to_use: "Đánh giá chính sách nhân sự, tăng ca (OT), cơ cấu thợ, tăng lương tối thiểu vùng (mức hiện hành cần xác nhận)."
+    why_it_works: "Nhân công cũng là Giá x Lượng: Rate là giá. Nhân AH vì đơn giá áp lên mọi giờ thực tế đã trả."
+    assumptions: ["Đơn giá bình quân gồm cả phụ cấp, OT, bảo hiểm tính theo giờ"]
+    pitfalls: ["Đọc riêng, bỏ qua Efficiency: thuê thợ giỏi (Rate U) có thể giảm giờ (Efficiency F)", "Quên quy đổi lương tháng ra đơn giá giờ"]
+    interpretation: "Dương là U. Nếu Efficiency F lớn hơn Rate U thì quyết định thuê thợ giỏi là đúng."
+    example:
+      inputs: {ar: 42000, sr: 40000, ah: 1900}
+      steps: ["(42.000 - 40.000) x 1.900 = 3.800.000"]
+      result: "+3.800.000 (U)"
+  - id: "m05_dl_efficiency"
+    name_vi: "Chênh lệch hiệu suất nhân công"
+    name_en: "Direct Labor Efficiency Variance"
+    expression_latex: '(AH - SH)\times SR'
+    expression_python: '(ah - sh) * sr'
+    excel: "=(AH-SH)*SR"
+    variables:
+      - {symbol: "ah", meaning: "Giờ làm thực tế", unit: "giờ"}
+      - {symbol: "sh", meaning: "Giờ chuẩn cho sản lượng thực tế", unit: "giờ"}
+      - {symbol: "sr", meaning: "Lương chuẩn/giờ", unit: "VNĐ/giờ"}
+    when_to_use: "Đánh giá quản đốc/ca làm: năng suất, bố trí dây chuyền, đào tạo, máy hỏng."
+    why_it_works: "Giờ thừa định giá bằng đơn giá chuẩn để tách khỏi biến động lương."
+    assumptions: ["Định mức giờ đúng thực tế; nếu một phần nhân công là cố định theo ca thì định mức theo ly/áo sẽ sai"]
+    pitfalls: ["Với SME giữ người theo ca cố định, Efficiency U có thể là vấn đề xếp ca chứ không phải tay nghề; cần xem lại định mức", "Ghi nhận AH không đủ (chấm công thiếu)"]
+    interpretation: "Dương là U (làm chậm hơn chuẩn). Nguyên nhân U: thợ mới, máy hỏng, NVL kém, dây chuyền chưa hợp lý; còn kéo theo VOH Efficiency U."
+    example:
+      inputs: {ah: 1900, sh: 1700, sr: 40000}
+      steps: ["(1.900 - 1.700) x 40.000 = 8.000.000"]
+      result: "+8.000.000 (U)"
+  - id: "m05_voh_spending"
+    name_vi: "Chênh lệch chi tiêu biến phí chung"
+    name_en: "Variable Overhead Spending Variance"
+    expression_latex: '\text{Actual VOH} - AH \times \text{Std VOH rate}'
+    expression_python: 'actual_voh - ah * std_voh_rate'
+    excel: "=ActualVOH-AH*StdVOHRate"
+    variables:
+      - {symbol: "actual_voh", meaning: "Biến phí chung thực tế", unit: "VNĐ"}
+      - {symbol: "ah", meaning: "Giờ nhân công thực tế (tiêu thức phân bổ)", unit: "giờ"}
+      - {symbol: "std_voh_rate", meaning: "Đơn giá biến phí chung chuẩn trên giờ", unit: "VNĐ/giờ"}
+    when_to_use: "Kiểm tra chi tiêu điện, gas, vật tư phụ so với mức phải chi cho số giờ thực tế."
+    why_it_works: "Tách ảnh hưởng của 'giá' khỏi 'hoạt động': so Actual với mức phải chi cho đúng AH."
+    assumptions: ["Tiêu thức phân bổ (DLH) phản ánh động lực chi phí thật", "Định mức tính theo ly/đơn vị thì chỉ có Spending Variance (Case Hẻm 25)"]
+    pitfalls: ["Chọn tiêu thức phân bổ không liên quan động lực chi phí"]
+    interpretation: "Dương là U (điện, gas, vật tư phụ đắt hơn hoặc lãng phí)."
+    example:
+      inputs: {actual_voh: 30000000, ah: 1900, std_voh_rate: 15000}
+      steps: ["1.900 x 15.000 = 28.500.000", "30.000.000 - 28.500.000 = 1.500.000"]
+      result: "+1.500.000 (U)"
+  - id: "m05_voh_efficiency"
+    name_vi: "Chênh lệch hiệu suất biến phí chung"
+    name_en: "Variable Overhead Efficiency Variance"
+    expression_latex: '(AH - SH)\times \text{Std VOH rate}'
+    expression_python: '(ah - sh) * std_voh_rate'
+    excel: "=(AH-SH)*StdVOHRate"
+    variables:
+      - {symbol: "ah", meaning: "Giờ thực tế", unit: "giờ"}
+      - {symbol: "sh", meaning: "Giờ chuẩn cho sản lượng thực tế", unit: "giờ"}
+      - {symbol: "std_voh_rate", meaning: "Đơn giá biến phí chung chuẩn/giờ", unit: "VNĐ/giờ"}
+    when_to_use: "Xem biến phí chung tăng thêm vì làm chậm; chỉ là hệ quả của DL Efficiency."
+    why_it_works: "VOH phân bổ theo giờ; làm chậm (AH > SH) kéo biến phí theo. Không phải sai sót độc lập."
+    assumptions: ["Phân bổ VOH theo giờ nhân công"]
+    pitfalls: ["Quy trách nhiệm trùng hai lần (DL Efficiency và VOH Efficiency cùng một nguyên nhân gốc); khi báo cáo nên chỉ ra là cùng nguồn"]
+    interpretation: "Dương là U. Cải thiện DL Efficiency tự động giảm khoản này."
+    example:
+      inputs: {ah: 1900, sh: 1700, std_voh_rate: 15000}
+      steps: ["(1.900 - 1.700) x 15.000 = 3.000.000"]
+      result: "+3.000.000 (U)"
+  - id: "m05_foh_rate"
+    name_vi: "Mức phân bổ định phí chung"
+    name_en: "Fixed Overhead Rate"
+    expression_latex: '\text{FOH rate} = \dfrac{\text{Budgeted FOH}}{\text{Budgeted output}\times \text{Std hours/unit}}'
+    expression_python: 'budget_foh / (budget_output * std_hours_per_unit)'
+    excel: "=DinhPhiNganSach/(SanLuongNganSach*GioChuan)"
+    variables:
+      - {symbol: "budget_foh", meaning: "Định phí chung ngân sách", unit: "VNĐ"}
+      - {symbol: "budget_output", meaning: "Sản lượng ngân sách", unit: "đơn vị SP"}
+      - {symbol: "std_hours_per_unit", meaning: "Giờ chuẩn/đơn vị SP", unit: "giờ/SP"}
+    when_to_use: "Lập thẻ giá thành (định phí phân bổ/đơn vị) và tính FOH Volume Variance."
+    why_it_works: "Định phí phân bổ bằng một mức cố định tính từ công suất kế hoạch (giờ chuẩn của sản lượng kế hoạch)."
+    assumptions: ["Dùng công suất kế hoạch/bình thường làm mẫu số; VAS 02 yêu cầu phân bổ theo công suất bình thường (cần xác nhận hiện hành)"]
+    pitfalls: ["Đổi mẫu số giữa các kỳ làm thẻ giá thành nhảy", "Nguồn từng ghi 19.608 làm lệch thẻ; giá trị đúng là 20.000/DLH"]
+    interpretation: "Mỗi giờ nhân công chuẩn 'gánh' bao nhiêu định phí."
+    example:
+      inputs: {budget_foh: 40800000, budget_output: 1200, std_hours_per_unit: 1.7}
+      steps: ["1.200 x 1,7 = 2.040 giờ", "40.800.000 / 2.040 = 20.000"]
+      result: "20.000 VNĐ/DLH"
+  - id: "m05_foh_budget"
+    name_vi: "Chênh lệch chi tiêu định phí chung (ngân sách)"
+    name_en: "Fixed Overhead Budget (Spending) Variance"
+    expression_latex: '\text{Actual FOH} - \text{Budgeted FOH}'
+    expression_python: 'actual_foh - budget_foh'
+    excel: "=ActualFOH-BudgetFOH"
+    variables:
+      - {symbol: "actual_foh", meaning: "Định phí chung thực tế", unit: "VNĐ"}
+      - {symbol: "budget_foh", meaning: "Định phí chung ngân sách", unit: "VNĐ"}
+    when_to_use: "Kiểm soát thuê mặt bằng, khấu hao, lương quản lý, bảo hiểm so ngân sách (có trong cả absorption và contribution)."
+    why_it_works: "Định phí không đổi theo hoạt động nên so thẳng với ngân sách, không cần flexible."
+    assumptions: ["Trong phạm vi công suất liên quan"]
+    pitfalls: ["Nhầm với Volume Variance"]
+    interpretation: "Dương là U (chi vượt). Do giá thuê, hóa đơn điện tăng, phát sinh khấu hao."
+    example:
+      inputs: {actual_foh: 42000000, budget_foh: 40800000}
+      steps: ["42.000.000 - 40.800.000 = 1.200.000"]
+      result: "+1.200.000 (U)"
+  - id: "m05_foh_volume"
+    name_vi: "Chênh lệch công suất định phí chung"
+    name_en: "Fixed Overhead Volume Variance"
+    expression_latex: '\text{Budgeted FOH} - SH\times \text{FOH rate}'
+    expression_python: 'budget_foh - sh * foh_rate'
+    excel: "=BudgetFOH-SH*FOHRate"
+    variables:
+      - {symbol: "budget_foh", meaning: "Định phí ngân sách", unit: "VNĐ"}
+      - {symbol: "sh", meaning: "Giờ chuẩn cho sản lượng thực tế", unit: "giờ"}
+      - {symbol: "foh_rate", meaning: "Mức phân bổ định phí", unit: "VNĐ/giờ"}
+    when_to_use: "Chỉ khi dùng absorption costing: đo công suất bỏ không (hay vượt) so với kế hoạch."
+    why_it_works: "Định phí đã dự toán nhưng chỉ 'gánh' vào sản phẩm theo SH x rate; phần chưa gánh hết là tiền trả cho công suất không dùng."
+    assumptions: ["Absorption costing", "FOH rate tính từ sản lượng kế hoạch"]
+    pitfalls:
+      - "Theo đuổi Volume Variance = 0 bằng cách sản xuất đủ kế hoạch dù thị trường không cần (bẫy GM): tồn kho và giảm giá thiệt hại lớn hơn nhiều."
+      - "Quy cho Sản xuất trong khi nguyên nhân thường là cầu thị trường hoặc kế hoạch."
+      - "Trong contribution costing không có khoản này; đừng cộng hai lần cùng với Sales Volume tính theo CM."
+    interpretation: "Dương là U (sản xuất ít hơn kế hoạch, công suất bỏ không); âm là F (vượt kế hoạch). Là chỉ báo xem lại công suất/kế hoạch bán hàng, không phải mục tiêu tối ưu."
+    example:
+      inputs: {budget_foh: 40800000, sh: 1700, foh_rate: 20000}
+      steps: ["Applied = 1.700 x 20.000 = 34.000.000", "40.800.000 - 34.000.000 = 6.800.000"]
+      result: "+6.800.000 (U)"
+  - id: "m05_sales_price"
+    name_vi: "Chênh lệch giá bán"
+    name_en: "Sales Price Variance"
+    expression_latex: '(AP_{sell} - BP_{sell})\times AQ_{sold}'
+    expression_python: '(actual_price - budget_price) * actual_qty'
+    excel: "=(GiaTT-GiaKH)*SoLuongTT"
+    variables:
+      - {symbol: "actual_price", meaning: "Giá bán thực tế bình quân", unit: "VNĐ/đơn vị"}
+      - {symbol: "budget_price", meaning: "Giá bán ngân sách", unit: "VNĐ/đơn vị"}
+      - {symbol: "actual_qty", meaning: "Số lượng bán thực tế", unit: "đơn vị"}
+    when_to_use: "Đánh giá chính sách giá, khuyến mãi, chiết khấu, cạnh tranh giá."
+    why_it_works: "Giá lệch tác động toàn bộ lên lợi nhuận (không có chi phí đi kèm) và áp lên số lượng đã thực sự bán."
+    assumptions: ["Giá bình quân thực tế đã trừ chiết khấu, voucher, hoa hồng sàn nếu coi là giảm giá"]
+    pitfalls: ["Khuyến mãi giảm giá mà lượng không tăng là lỗi kép (Price U và Volume U)", "Gộp doanh thu sau chiết khấu sai kỳ"]
+    interpretation: "Dương là F, âm là U (doanh thu). Nguyên nhân U controllable: giảm giá nhiều để đẩy lượng; uncontrollable: đối thủ giảm giá."
+    example:
+      inputs: {actual_price: 43000, budget_price: 45000, actual_qty: 5400}
+      steps: ["(43.000 - 45.000) x 5.400 = -10.800.000"]
+      result: "-10.800.000 (U)"
+  - id: "m05_sales_volume"
+    name_vi: "Chênh lệch sản lượng bán"
+    name_en: "Sales Volume Variance"
+    expression_latex: '(AQ_{sold} - BQ)\times \text{Budgeted margin per unit}'
+    expression_python: '(actual_qty - budget_qty) * budget_margin'
+    excel: "=(SLTT-SLKH)*MarginNganSach"
+    variables:
+      - {symbol: "actual_qty", meaning: "Số lượng bán thực tế", unit: "đơn vị"}
+      - {symbol: "budget_qty", meaning: "Số lượng bán ngân sách", unit: "đơn vị"}
+      - {symbol: "budget_margin", meaning: "Margin chuẩn/đơn vị: CM (contribution) hoặc lãi gộp absorption, chọn nhất quán", unit: "VNĐ/đơn vị"}
+    when_to_use: "Tầng 1 (Static -> Flexible): phần lợi nhuận mất/được do bán ít/nhiều hơn kế hoạch."
+    why_it_works: "Bán thêm 1 sản phẩm chỉ tăng lợi nhuận đúng phần margin của nó; nhân giá bán sẽ cường điệu vì bỏ qua chi phí bù đắp."
+    assumptions: ["Margin dùng nhất quán: CM thì định phí là chi phí kỳ; lãi gộp absorption thì phải thêm FOH Volume Variance"]
+    pitfalls: ["Nhân giá bán thay margin", "Trộn CM với FOH Volume Variance làm đếm hai lần", "Cho rằng toàn bộ là lỗi của nhân viên bán hàng (thường do thị trường, mùa vụ)"]
+    interpretation: "Dương là F, âm là U. Phần lớn ngoài tầm kiểm soát của sản xuất; hướng tới marketing, vị trí, đội bán."
+    example:
+      inputs: {actual_qty: 1000, budget_qty: 1200, budget_margin: 157500}
+      steps: ["(1.000 - 1.200) x 157.500 = -31.500.000 (lãi gộp absorption)", "Với CM 191.500: -200 x 191.500 = -38.300.000"]
+      result: "-31.500.000 (U) theo absorption; -38.300.000 (U) theo CM"
+  - id: "m05_sales_quantity"
+    name_vi: "Chênh lệch tổng số lượng bán"
+    name_en: "Sales Quantity Variance (multi-product)"
+    expression_latex: '(\sum AQ_i - \sum BQ_i)\times \overline{CM}_{budget}'
+    expression_python: '(total_actual_qty - total_budget_qty) * budget_avg_cm'
+    excel: "=(TongSLTT-TongSLKH)*CMBinhQuanNganSach"
+    variables:
+      - {symbol: "total_actual_qty", meaning: "Tổng số lượng bán thực tế mọi sản phẩm", unit: "đơn vị"}
+      - {symbol: "total_budget_qty", meaning: "Tổng số lượng ngân sách", unit: "đơn vị"}
+      - {symbol: "budget_avg_cm", meaning: "CM bình quân gia quyền theo cơ cấu ngân sách", unit: "VNĐ/đơn vị"}
+    when_to_use: "Nhiều sản phẩm có margin khác nhau; phần 'bán nhiều hay ít' thuần túy."
+    why_it_works: "Giả định cơ cấu ngân sách giữ nguyên, tổng lượng lệch được định giá bằng CM bình quân ngân sách."
+    assumptions: ["Có cơ cấu bán ngân sách xác định", "Sản phẩm thay thế được cho nhau về mặt bán hàng"]
+    pitfalls: ["Dùng CM bình quân thực tế thay vì ngân sách làm Quantity và Mix lẫn nhau"]
+    interpretation: "Cộng với Mix bằng tổng Sales Volume Variance. Dương F, âm U."
+    example:
+      inputs: {total_actual_qty: 5400, total_budget_qty: 6000, budget_avg_cm: 21600}
+      steps: ["CM bình quân ngân sách = (3.600 x 24.000 + 2.400 x 18.000) / 6.000 = 21.600", "(5.400 - 6.000) x 21.600 = -12.960.000"]
+      result: "-12.960.000 (U)"
+  - id: "m05_sales_mix"
+    name_vi: "Chênh lệch cơ cấu bán"
+    name_en: "Sales Mix Variance"
+    expression_latex: '\sum_i \left(AQ_i - \sum AQ \times Mix^{budget}_i\right)\times CM_i'
+    expression_python: 'sum((aq[k] - sum(aq.values()) * budget_mix[k]) * cm[k] for k in aq)'
+    excel: "=SUMPRODUCT((SLTT-TongSLTT*CoCauNS)*CM)"
+    variables:
+      - {symbol: "aq", meaning: "Dict số lượng bán thực tế theo sản phẩm", unit: "đơn vị"}
+      - {symbol: "budget_mix", meaning: "Dict tỷ trọng cơ cấu ngân sách (tổng 1)", unit: "tỷ lệ"}
+      - {symbol: "cm", meaning: "Dict CM chuẩn từng sản phẩm", unit: "VNĐ/đơn vị"}
+    when_to_use: "Khi khách chuyển sang món/gói margin thấp hơn (hoặc cao hơn) dù tổng lượng không đổi."
+    why_it_works: "Áp cơ cấu ngân sách lên tổng lượng thực tế, phần lệch từng sản phẩm x CM của nó cho biết lợi nhuận bị kéo bởi thay đổi cơ cấu."
+    assumptions: ["Tổng Mix phần lệch bằng 0 về số lượng; chỉ giá trị khác nhau do CM khác nhau"]
+    pitfalls: ["Với một sản phẩm duy nhất Mix luôn = 0", "Nhầm Mix là lỗi chiến lược khi nó có thể là hành vi khách cố hữu"]
+    interpretation: "Âm là U (cơ cấu dịch về món CM thấp), dương là F. Quantity + Mix = Total Sales Volume = Σ (AQ_i - BQ_i) x CM_i."
+    example:
+      inputs: {aq: {cafe: 2700, tra: 2700}, budget_mix: {cafe: 0.6, tra: 0.4}, cm: {cafe: 24000, tra: 18000}}
+      steps: ["Tổng thực tế 5.400: cơ cấu NS cà phê 3.240, trà 2.160", "(2.700 - 3.240) x 24.000 = -12.960.000", "(2.700 - 2.160) x 18.000 = +9.720.000", "Mix = -3.240.000"]
+      result: "-3.240.000 (U); Quantity -12.960.000 + Mix -3.240.000 = -16.200.000"
+  - id: "m05_cm_vs_abs_bridge"
+    name_vi: "Cầu nối Sales Volume theo CM và theo absorption"
+    name_en: "Contribution vs Absorption volume bridge"
+    expression_latex: '(AQ-BQ)\cdot CM = (AQ-BQ)\cdot GM_{abs} + FOH_{vol},\quad FOH_{vol} = (BQ-AQ)\cdot \text{FOH/unit}'
+    expression_python: '(actual_qty - budget_qty) * (price - var_cost) - ((actual_qty - budget_qty) * (price - var_cost - foh_per_unit) + (budget_qty - actual_qty) * foh_per_unit)'
+    excel: "=(SLTT-SLKH)*CM - ((SLTT-SLKH)*LaiGop + (SLKH-SLTT)*DinhPhiDonVi)"
+    variables:
+      - {symbol: "actual_qty", meaning: "Số lượng thực tế", unit: "đơn vị"}
+      - {symbol: "budget_qty", meaning: "Số lượng ngân sách", unit: "đơn vị"}
+      - {symbol: "price", meaning: "Giá bán chuẩn", unit: "VNĐ"}
+      - {symbol: "var_cost", meaning: "Biến phí chuẩn/đơn vị", unit: "VNĐ"}
+      - {symbol: "foh_per_unit", meaning: "Định phí phân bổ chuẩn/đơn vị (= FOH rate x giờ chuẩn)", unit: "VNĐ"}
+    when_to_use: "Chứng minh hai cách (CM và absorption) cho cùng tổng; kiểm tra đối chiếu khi đổi phương pháp. Hàm trả 0 nếu đồng nhất."
+    why_it_works: "CM = lãi gộp absorption + định phí/đơn vị; Sales Volume theo CM bằng Sales Volume theo absorption + FOH Volume (khi sản lượng sản xuất = bán)."
+    assumptions: ["Sản lượng sản xuất bằng sản lượng bán (không đổi tồn kho)", "FOH Volume tính theo sản lượng thực tế chênh ngân sách"]
+    pitfalls: ["Nếu tồn kho thay đổi, FOH Volume liên quan sản lượng sản xuất chứ không phải sản lượng bán; cầu nối sẽ lệch"]
+    interpretation: "Kết quả 0 nghĩa hai cách khớp."
+    example:
+      inputs: {actual_qty: 5400, budget_qty: 6000, price: 45000, var_cost: 22900, foh_per_unit: 10000}
+      steps: ["CM: -600 x 22.100 = -13.260.000", "Absorption: -600 x 12.100 = -7.260.000; FOH Volume = 600 x 10.000 = 6.000.000 (U)", "Cầu nối = -13.260.000 - (-7.260.000 - 6.000.000) = 0"]
+      result: "0 (khớp)"
+  - id: "m05_profit_reconciliation"
+    name_vi: "Đối chiếu tổng các variance với chênh lệch lợi nhuận"
+    name_en: "Variance-to-profit reconciliation check"
+    expression_latex: '\sum \text{impact}_i = \text{Actual profit} - \text{Budgeted profit}'
+    expression_python: 'sum(impacts) - (actual_profit - budget_profit)'
+    excel: "=SUM(TacDong)-(LNThucTe-LNNganSach)"
+    variables:
+      - {symbol: "impacts", meaning: "Danh sách tác động từng variance lên lợi nhuận (U là âm, F là dương)", unit: "VNĐ"}
+      - {symbol: "actual_profit", meaning: "Lợi nhuận thực tế", unit: "VNĐ"}
+      - {symbol: "budget_profit", meaning: "Lợi nhuận ngân sách tĩnh", unit: "VNĐ"}
+    when_to_use: "Bước bắt buộc cuối mỗi báo cáo variance."
+    why_it_works: "Phân rã đầy đủ phải cộng khít; chênh lệch dư chỉ ra variance sót hoặc tính sai."
+    assumptions: ["Các variance phủ hết doanh thu và mọi khoản chi phí", "Cùng quy ước margin (CM hoặc absorption)"]
+    pitfalls: ["Quên khoản mục (vd NVL khác) không có giá/lượng riêng - vẫn phải đưa vào dưới dạng một variance gộp", "Quên đổi dấu chi phí U thành âm khi cộng với doanh thu", "Absorption mà quên FOH Volume, hoặc CM mà vẫn thêm FOH Volume"]
+    interpretation: "Kết quả 0 là khớp. Khác 0 thì dò theo thứ tự: bước flexible budget, từng cặp price/qty, định phí."
+    example:
+      inputs: {impacts: [-13260000, -10800000, -3240000, -4860000, -2160000, -780000, -3080000, -2700000, -2500000], actual_profit: 29220000, budget_profit: 72600000}
+      steps: ["Σ = -43.380.000", "29.220.000 - 72.600.000 = -43.380.000", "Chênh = 0"]
+      result: "0 (khớp, quán Hẻm 25)"
+  - id: "m05_exception_pct"
+    name_vi: "Phần trăm variance so với chuẩn để phân loại ngoại lệ"
+    name_en: "Variance % for management by exception"
+    expression_latex: '\%\text{var} = \dfrac{|\text{Variance}|}{\text{Standard of that line}}\times 100'
+    expression_python: 'abs(variance) / standard * 100'
+    excel: "=ABS(Var)/Chuan*100"
+    variables:
+      - {symbol: "variance", meaning: "Giá trị variance", unit: "VNĐ"}
+      - {symbol: "standard", meaning: "Chi phí hoặc doanh thu chuẩn của khoản mục đó (flexible)", unit: "VNĐ"}
+    when_to_use: "Xếp hạng variance để chọn 3 việc cần xử lý, áp ngưỡng Insignificant/Moderate/Significant."
+    why_it_works: "Đồng thời xét quy mô tương đối (%) và tuyệt đối (triệu) để không bỏ sót khoản lớn nhỏ lẻ cũng không sa vào khoản vụn."
+    assumptions: ["Ngưỡng do doanh nghiệp tự thống nhất; số trong module là tham khảo"]
+    pitfalls: ["Mẫu số không nhất quán giữa các khoản (nguồn có chỗ chia cho chi phí thực tế, chỗ cho chuẩn)", "Bỏ qua variance nhỏ nhưng lặp lại 3+ tháng"]
+    interpretation: "Dưới 3% và dưới 2 triệu: bỏ qua. 3-10% hoặc 2-10 triệu: theo dõi. Trên 10% hoặc trên 10 triệu: điều tra ngay. Lặp 3+ tháng: rà soát định mức."
+    example:
+      inputs: {variance: 4860000, standard: 43740000}
+      steps: ["4.860.000 / 43.740.000 = 11,1%"]
+      result: "11,1%, Significant (Hạt - lượng, Hẻm 25)"
+
+frameworks:
+  - id: "m05_standard_cost_card"
+    name_vi: "Thẻ định mức (Standard Cost Card) và ba loại tiêu chuẩn"
+    name_en: "Standard Cost Card & standard types"
+    origin: "Khởi nguồn từ Scientific Management (Taylor, đầu thế kỷ 20) đo thời gian chuẩn; Standard Costing hệ thống hóa ở Mỹ khoảng 1910s-1920s. Cần đối chiếu nguồn."
+    components:
+      - "NVL trực tiếp: lượng chuẩn x giá chuẩn (+ phụ kiện)"
+      - "Nhân công trực tiếp: giờ chuẩn x đơn giá giờ chuẩn theo công đoạn"
+      - "Biến phí chung: giờ x VOH rate"
+      - "Định phí chung phân bổ: giờ x FOH rate"
+      - "Tổng giá thành chuẩn/đơn vị, biến phí/đơn vị, CM, lãi gộp absorption"
+    when_to_use: "Mọi tổ chức sản xuất/dịch vụ lặp lại muốn đo hiệu quả; chuẩn bị nền cho flexible budget."
+    how_to_apply:
+      - "Chọn đơn vị tính (áo, ly, suất, đơn hàng)."
+      - "Thu thập dữ liệu thực tế 3-6 tháng + cân, đo, bấm giờ để đặt lượng và giờ."
+      - "Chọn loại chuẩn: Currently Attainable cho đánh giá; Ideal cho mục tiêu Kaizen; Basic cho xu hướng."
+      - "Tính giá thành chuẩn và kiểm tra cộng khớp: Áo thun 60.000 vải + 5.000 phụ kiện + 68.000 nhân công + 25.500 VOH + 34.000 FOH = 192.500."
+      - "Thống nhất với nhân viên và rà soát mỗi quý/6 tháng."
+    how_to_read_results: "Thẻ là thước đo; sai thẻ thì mọi variance vô nghĩa. Variance lặp 3+ tháng thường báo hiệu thẻ lạc hậu."
+    pitfalls: ["Đặt định mức theo trí nhớ/cảm tính", "Ideal Standard dùng đánh giá thì luôn U", "Standard dễ quá thì luôn F và không cải tiến (GM)", "Nguồn từng ghi sai QC 35.000/h và FOH rate 19.608; giá trị đúng 40.000/h và 20.000/DLH"]
+    example: "Áo thun: biến phí 158.500, giá thành đầy đủ 192.500, CM 191.500 (giá 350.000), lãi gộp absorption 157.500."
+  - id: "m05_static_flexible_budget"
+    name_vi: "Ngân sách tĩnh - ngân sách linh hoạt - thực tế (hai tầng)"
+    name_en: "Static / Flexible / Actual two-layer analysis"
+    origin: "Công cụ của kế toán quản trị chuẩn (Horngren, Garrison); nền tảng của mọi phân tích variance."
+    components:
+      - "Static Budget (mức kế hoạch)"
+      - "Flexible Budget (sản lượng thực tế x định mức)"
+      - "Actual"
+      - "Tầng 1 Sales Volume Variance = Static -> Flexible"
+      - "Tầng 2 Flexible Budget Variance = Flexible -> Actual, gồm Sales Price, DM, DL, VOH, FOH Budget"
+    when_to_use: "Mỗi lần sản lượng thực tế khác ngân sách (gần như luôn luôn)."
+    how_to_apply:
+      - "Lập Static Budget (doanh thu, chi phí, lợi nhuận)."
+      - "Lấy sản lượng/doanh số thực tế."
+      - "Tính Flexible Budget: biến phí tính lại, định phí giữ nguyên, doanh thu theo giá chuẩn."
+      - "Tính Sales Volume Variance = Flexible profit - Static profit."
+      - "Tính Flexible Budget Variance = Actual profit - Flexible profit, rồi tách tiếp theo khoản mục."
+      - "Cộng tất cả và đối chiếu với tổng chênh lệch."
+    how_to_read_results: "Phần Tầng 1 phụ thuộc thị trường/kinh doanh; Tầng 2 là trách nhiệm quản lý và chính là nơi hành động. Quán Hẻm 25: 13,26 triệu (31%) do bán ít, 30,12 triệu (69%) do vận hành."
+    pitfalls: ["So thẳng Actual với Static", "Coi toàn bộ chi phí biến đổi theo sản lượng (bỏ qua định phí/bán biến phí)", "Dùng lẫn CM và absorption"]
+    example: "Hẻm 25: Static LN 72,6 triệu -> Flexible 59,34 triệu -> Actual 29,22 triệu."
+  - id: "m05_dm_dl_moh_sales_tree"
+    name_vi: "Cây phân rã tổng chênh lệch lợi nhuận"
+    name_en: "Total profit variance tree"
+    origin: "Sơ đồ chuẩn trong Cost Accounting (Horngren, Datar, Rajan; Garrison); cùng dòng với DuPont."
+    components:
+      - "Revenue: Sales Price, Sales Volume (-> Quantity + Mix)"
+      - "DM: Price (Mua hàng), Quantity (Sản xuất)"
+      - "DL: Rate (Nhân sự), Efficiency (Quản đốc)"
+      - "VOH: Spending, Efficiency (hệ quả DL Efficiency)"
+      - "FOH: Budget (chi tiêu), Volume (công suất, chỉ absorption)"
+    when_to_use: "Khi cần báo cáo đầy đủ cho sản xuất lặp lại; với dịch vụ/F&B thu gọn còn Price/Quantity cho nguyên liệu chính, Rate/Efficiency cho giờ công, Spending cho chi phí chung, Budget cho định phí."
+    how_to_apply:
+      - "Xác định người chịu trách nhiệm cho từng nhánh."
+      - "Tính từng variance theo công thức."
+      - "Đổi dấu: U thành tác động âm lên lợi nhuận."
+      - "Cộng và đối chiếu."
+    how_to_read_results: "Nhìn cặp: DM Price + Quantity, DL Rate + Efficiency, Sales Price + Volume. Phân biệt controllable với uncontrollable."
+    pitfalls: ["Bỏ nhánh không có dữ liệu giá/lượng riêng (như NVL khác ở Hẻm 25): vẫn cần một variance gộp", "Quy trách nhiệm hai lần cho DL Efficiency và VOH Efficiency"]
+    example: "Áo thun: tổng chi phí U 29,1 triệu = 4,8 DM + 11,8 DL + 4,5 VOH + 8,0 FOH."
+  - id: "m05_variance_investigation"
+    name_vi: "Quy trình điều tra 6 bước và 5 Whys"
+    name_en: "Variance investigation process & 5 Whys"
+    origin: "5 Whys do Sakichi Toyoda phát triển, Toyota phổ biến (cần đối chiếu nguồn). Vòng PDCA từ quản trị chất lượng."
+    components:
+      - "B1 Significant không? (5-10% hoặc X triệu)"
+      - "B2 F hay U? (F cũng xem)"
+      - "B3 Root cause bằng 5 Whys"
+      - "B4 Controllable hay uncontrollable?"
+      - "B5 Corrective action (ai, làm gì, khi nào)"
+      - "B6 Cập nhật standard nếu điều kiện đổi bền vững"
+    when_to_use: "Sau khi có bảng variance; với các khoản vượt ngưỡng ngoại lệ."
+    how_to_apply:
+      - "Lọc theo ngưỡng; lấy top 3."
+      - "Hỏi tại sao tối thiểu 3 lần (lý tưởng 5) cho từng khoản."
+      - "Ví dụ DM Quantity U 7,5 triệu: phế phẩm 5% lên 15% -> máy cắt lệch -> lưỡi dao cũ -> không có lịch bảo trì -> quản đốc mới chưa được đào tạo SOP; hành động: lập SOP bảo trì + đào tạo bắt buộc."
+      - "Gán người chịu trách nhiệm và hạn; theo dõi tháng sau."
+    how_to_read_results: "Nguyên nhân gốc thường là quy trình/đào tạo chứ không phải 'công nhân cẩu thả'. Nguyên nhân bất khả kháng thì điều chỉnh kế hoạch."
+    pitfalls: ["Dừng ở nguyên nhân bề mặt", "Phạt khi U làm nhân viên che giấu", "Điều tra variance vụn vặt"]
+    example: "Bảng ma trận: DM Price U (controllable: mua ngoài deal; uncontrollable: giá thế giới tăng); Sales Vol U (controllable: marketing yếu; uncontrollable: suy thoái, mùa thấp điểm)."
+  - id: "m05_management_by_exception"
+    name_vi: "Quản trị theo ngoại lệ - bảng ngưỡng"
+    name_en: "Management by Exception thresholds"
+    origin: "Nguyên tắc quản trị tập trung nguồn lực chú ý hữu hạn vào độ lệch lớn."
+    components:
+      - "Insignificant: < 3% VÀ < 2 triệu - bỏ qua"
+      - "Moderate: 3-10% HOẶC 2-10 triệu - theo dõi, báo cáo tháng"
+      - "Significant: > 10% HOẶC > 10 triệu - điều tra ngay"
+      - "Recurring: cùng variance 3+ tháng - rà soát standard"
+    when_to_use: "Mọi báo cáo variance hằng tháng."
+    how_to_apply:
+      - "Tính % so với chuẩn của chính khoản mục."
+      - "Áp ngưỡng (điều chỉnh theo quy mô DN)."
+      - "Tô màu bằng conditional formatting."
+      - "Đánh dấu khoản lặp."
+    how_to_read_results: "Hẻm 25: Significant - Hạt lượng (11,1%), nhân công hiệu suất (20,4%), biến phí chung (16,7%), giá bán (>10 triệu). Moderate - Hạt giá, NVL khác, định phí. Rate nhân công ở mức Insignificant/Moderate."
+    pitfalls: ["Ngưỡng cứng cho quán nhỏ quá lỏng/chặt (10 triệu có thể bằng 30% lợi nhuận tháng); chỉnh theo quy mô", "Mẫu số % không nhất quán"]
+    example: "Hẻm 25 chọn 3 việc: định lượng hạt (4,86tr), lịch ca (3,08tr), khuyến mãi (10,8tr)."
+  - id: "m05_kaizen_vs_blame"
+    name_vi: "Toyota Kaizen so với văn hóa đạt chỉ tiêu"
+    name_en: "Kaizen use of variance vs blame culture"
+    origin: "Toyota Production System, Kaizen (Imai 1986), Lean (Womack & Jones); phê bình của HBR 'Stop Using Cost Variance Analysis'. Số liệu minh họa, cần đối chiếu nguồn."
+    components:
+      - "Tần suất: hằng ngày/giờ so với hằng tháng"
+      - "Ai phân tích: tổ trưởng/công nhân tại hiện trường so với kế toán"
+      - "Standard: Ideal, kéo giãn so với Attainable dễ"
+      - "Phản ứng: Andon dừng và sửa so với chờ cuối tháng"
+      - "Khi F: kéo standard xuống (18,0h -> 17,8h -> 16,5h)"
+    when_to_use: "Thiết kế văn hóa và nhịp báo cáo variance; chống gaming."
+    how_to_apply:
+      - "Đo ngay tại nguồn (hằng tuần/ngày cho khoản chính)."
+      - "Variance U là tín hiệu cải tiến, không phải phạt."
+      - "Khi F bền vững thì cập nhật standard."
+      - "Chỉ sản xuất theo cầu, không sản xuất thừa để giảm Volume Variance."
+    how_to_read_results: "Volume Variance F không bằng tốt. Mua rẻ -> bảo hành đắt: tối ưu cục bộ làm hại toàn cục."
+    pitfalls: ["Phạt khi U", "Standard dễ", "Cắt bảo trì/đào tạo để đẹp tháng", "Phân tích theo silo"]
+    example: "Toyota giả định tiết kiệm 1,5 giờ x 400.000 xe = 600.000 giờ/năm; GM: Volume Var 1.500 tỷ vs thiệt hại tồn kho 15.000 tỷ."
+  - id: "m05_variance_monthly_workflow"
+    name_vi: "Quy trình variance hằng tháng cho SME và cấu trúc Sheets"
+    name_en: "Monthly SME variance workflow"
+    origin: "Thực hành SME dựa trên PDCA."
+    components:
+      - "6 bước: so sánh với flexible, tô màu vượt ngưỡng, top 3 + hỏi Why, ghi action, follow-up, cập nhật định mức quý"
+      - "Sheets: Standards, Budget, Actual, Flexible, Variance, Dashboard"
+    when_to_use: "SME muốn đưa variance vào nhịp quản trị đều đặn."
+    how_to_apply:
+      - "Tháng đầu: lập định mức cho 3-5 khoản chi lớn nhất."
+      - "Nhập Actual từ POS/kế toán/chấm công."
+      - "Họp 30 phút top 3."
+      - "Ghi action vào Notion/Trello."
+      - "Họp quý cập nhật định mức."
+    how_to_read_results: "Mỗi tháng có ≤3 hành động, có người và hạn, theo dõi được."
+    pitfalls: ["Báo cáo xong để đó không hành động", "Dữ liệu thực tế ghi Zalo/sổ tay thiếu"]
+    example: "Waterfall từ LN ngân sách -> LN thực tế trên Dashboard."
+
+procedures:
+  - id: "m05_proc_full_variance"
+    name: "Phân tích chênh lệch từ ngân sách tĩnh đến hành động"
+    steps:
+      - "Hỏi đủ đầu vào: ngân sách tĩnh (sản lượng, giá bán, chi phí), thẻ định mức (giá, lượng, giờ, biến phí, định phí), số liệu thực tế (sản lượng, giá bán, giá mua, lượng dùng, giờ, chi phí chung); cách chọn margin (CM hay absorption); đơn vị và kỳ."
+      - "Tính Static Budget: doanh thu, chi phí, lợi nhuận (kế hoạch)."
+      - "Tính Actual: doanh thu, chi phí, lợi nhuận thực tế. Tổng chênh lệch = Actual profit - Static profit."
+      - "Lập Flexible Budget với sản lượng thực tế (biến phí tính lại, định phí giữ)."
+      - "Tầng 1: Sales Volume Variance (và tách Quantity/Mix nếu nhiều SP)."
+      - "Tầng 2: Sales Price Variance; DM Price-Quantity; DL Rate-Efficiency; VOH Spending-Efficiency; FOH Budget (và Volume nếu absorption). Khoản không có dữ liệu giá/lượng riêng thì tính một variance gộp."
+      - "Lập bảng đối chiếu: đổi dấu U thành âm, cộng và so với tổng chênh lệch. Phải khớp; nếu không dò lại từng bước."
+      - "Phân loại theo ngưỡng ngoại lệ (% và triệu); chọn top 3."
+      - "Với mỗi khoản top: đọc cặp (Price-Qty...), 5 Whys, controllable hay không, hành động (ai - làm gì - hạn), ước lượng tiền cho 1 đơn vị cải thiện."
+      - "Kết luận tỷ lệ: bao nhiêu % ngoài tầm kiểm soát (Volume), bao nhiêu % vận hành."
+      - "Cập nhật định mức nếu điều kiện đổi bền vững; ghi lại để theo dõi tháng sau."
+    outputs: "Bảng Static / Flexible / Actual; bảng variance F/U kèm tác động lợi nhuận; bảng đối chiếu cộng khớp; top 3 variance kèm nguyên nhân gốc, hành động, người, hạn; kết luận controllable vs uncontrollable."
+  - id: "m05_proc_standard_setup"
+    name: "Lập thẻ định mức cho SME"
+    steps:
+      - "Chọn đơn vị tính sản phẩm/dịch vụ."
+      - "Lấy dữ liệu 3-6 tháng gần nhất; cân đo lượng NVL (vd 18 g cà phê/ly), bấm giờ thao tác."
+      - "Chọn loại chuẩn (Currently Attainable cho đánh giá; Ideal làm mục tiêu cải tiến)."
+      - "Tính từng dòng: NVL, nhân công, VOH, FOH rate; cộng tổng."
+      - "Kiểm tra: tổng khớp; biến phí/đơn vị; CM; lãi gộp absorption."
+      - "Thống nhất với nhân viên; ghi hiệu lực và ngày rà soát."
+    outputs: "Thẻ định mức 1 đơn vị kèm CM và lãi gộp; lịch rà soát quý."
+  - id: "m05_proc_dm_dl_pairs"
+    name: "Tính và đọc cặp variance giá-lượng"
+    steps:
+      - "Xác định AP, SP, AQ, SQ (SQ theo sản lượng thực tế)."
+      - "Price = (AP - SP) x AQ; Quantity = (AQ - SQ) x SP; kiểm tra tổng = AQ.AP - SQ.SP."
+      - "Làm tương tự DL: Rate = (AR - SR) x AH; Efficiency = (AH - SH) x SR."
+      - "Đọc cặp: F giá nhưng U lượng lớn hơn thì quyết định 'mua rẻ' lỗ ròng; Rate U nhưng Efficiency F lớn hơn thì thuê thợ giỏi hợp lý."
+      - "Hỏi nguyên nhân ở bộ phận khác nhau (Mua hàng, Sản xuất, Nhân sự)."
+    outputs: "Hai con số cho mỗi cặp, tổng đối chiếu, nhận định cặp và hành động theo từng bộ phận."
+  - id: "m05_proc_overhead_sales"
+    name: "Variance chi phí chung và doanh thu"
+    steps:
+      - "Tách MOH thành biến phí và định phí."
+      - "VOH: Spending và Efficiency (hoặc chỉ Spending nếu định mức theo ly)."
+      - "FOH: tính FOH rate, Budget variance; nếu absorption thêm Volume variance."
+      - "Quyết định dùng CM hay absorption cho Sales Volume và nhất quán."
+      - "Sales Price = (giá TT - giá KH) x lượng TT; Sales Volume = (lượng TT - lượng KH) x margin chuẩn."
+      - "Nhiều sản phẩm: tách Quantity (CM bình quân ngân sách) và Mix; kiểm tra tổng bằng cách tính trực tiếp Σ (AQ_i - BQ_i) x CM_i."
+    outputs: "Variance chi phí chung và doanh thu, kèm giải thích Volume Variance và cơ cấu."
+  - id: "m05_proc_report_and_followup"
+    name: "Lập báo cáo variance và theo dõi hành động"
+    steps:
+      - "Dựng bảng Budget / Flexible / Actual / Var / F-U cho Doanh thu, NVL, Nhân công, Overhead, Lãi gộp, Chi phí bán hàng, Quản lý, Lợi nhuận."
+      - "Tô màu khoản vượt ngưỡng."
+      - "Ghi TOP 3 VARIANCE: khoản - hành động - ai - hạn."
+      - "Họp review 30 phút; ghi action vào Notion/Trello; tháng sau follow-up."
+      - "Kiểm tra variance lặp 3+ tháng để rà soát định mức."
+    outputs: "Báo cáo 1-2 trang và danh sách hành động có chủ."
+  - id: "m05_proc_volume_trap_check"
+    name: "Kiểm tra bẫy Volume Variance trước khi quyết định sản xuất"
+    steps:
+      - "Tính FOH rate và Volume Variance nếu sản xuất đúng cầu."
+      - "Tính kịch bản sản xuất thừa để Volume Var = 0: số tồn kho thừa x mức giảm giá cần để bán + chi phí lưu kho."
+      - "So hai kịch bản bằng tiền thật; chọn sản xuất theo cầu nếu thiệt hại tồn kho lớn hơn Volume Var."
+      - "Báo cáo Volume Var là chi phí của công suất dư; hướng xử lý: tăng cầu, dùng công suất cho đơn khác, giảm định phí."
+    outputs: "So sánh hai kịch bản và khuyến nghị sản xuất theo cầu."
+
+decision_rules:
+  - "Nếu sản lượng thực tế khác ngân sách thì BẮT BUỘC dùng flexible budget; không so chi phí biến đổi với ngân sách tĩnh."
+  - "Nếu so chi phí thực tế với flexible budget thì SQ và SH tính theo sản lượng thực tế, không phải sản lượng ngân sách."
+  - "Nếu chi phí có Giá x Lượng thì tách Price (nhân lượng thực tế) và Quantity (nhân giá chuẩn); kiểm tra cộng khớp tổng."
+  - "Nếu DM Price F nhưng DM Quantity U lớn hơn thì quyết định mua rẻ là lỗ ròng; xem lại chất lượng nhà cung cấp và chỉ tiêu đánh giá Mua hàng."
+  - "Nếu DL Rate U nhưng Efficiency F lớn hơn thì thuê thợ giỏi/tăng ca hợp lý; nếu ngược lại thì xem lại."
+  - "Nếu định mức giờ công gắn với ca cố định (SME giữ người theo ca) thì DL Efficiency U nhiều khả năng do xếp ca; xem lại định mức/ lịch ca thay vì quy lỗi thợ."
+  - "Nếu VOH Efficiency U thì xem DL Efficiency trước; cùng một nguyên nhân gốc, đừng quy trách nhiệm hai lần."
+  - "Nếu Sản xuất ít hơn kế hoạch thì FOH Volume Variance (U) xuất hiện (absorption): đó là công suất bỏ không, xem kế hoạch bán và công suất, không phạt người."
+  - "Nếu muốn Volume Variance về 0 bằng cách sản xuất thêm mà thị trường không cần thì dừng: tính thiệt hại tồn kho/giảm giá trước (bẫy GM)."
+  - "Nếu SME muốn đơn giản thì dùng contribution costing: không có FOH Volume Variance, chỉ FOH Budget Variance; nhân Sales Volume với CM."
+  - "Nếu dùng absorption thì Sales Volume nhân lãi gộp và phải thêm FOH Volume; tổng hai cách phải bằng nhau."
+  - "Nếu bán nhiều sản phẩm margin khác nhau thì tách Sales Quantity và Sales Mix; Mix U nghĩa là khách dịch về món margin thấp."
+  - "Nếu Sales Price U mà Sales Volume không tăng thì khuyến mãi thất bại (lỗi kép); dừng hoặc thiết kế lại (giới hạn món, khung giờ)."
+  - "Nếu variance < 3% và < 2 triệu thì bỏ qua; 3-10% hoặc 2-10 triệu thì theo dõi; > 10% hoặc > 10 triệu thì điều tra ngay."
+  - "Nếu cùng variance lặp 3+ tháng liên tiếp thì rà soát định mức (có thể vấn đề hệ thống/định mức lỗi thời)."
+  - "Nếu variance F thì vẫn kiểm tra có đánh đổi chất lượng, cắt bảo trì/đào tạo không."
+  - "Nếu nguyên nhân gốc là uncontrollable (giá thế giới, tăng lương tối thiểu vùng, suy thoái) thì điều chỉnh kế hoạch/định mức, không phạt người."
+  - "Nếu tổng variance không khớp chênh lệch lợi nhuận thì kiểm tra theo thứ tự: flexible budget, SQ/SH, định phí, khoản mục sót, quy ước dấu."
+  - "Nếu Ideal Standard dùng để đánh giá cá nhân thì đổi sang Currently Attainable; giữ Ideal làm mục tiêu Kaizen."
+  - "Nếu là ngành dịch vụ khó chuẩn hóa/startup chưa đủ dữ liệu/R&D thì dùng đơn vị dịch vụ (ly, lượt, bàn) hoặc chỉ theo dõi vài khoản chính; không ép đầy đủ."
+  - "Nếu dùng định mức cho BCTC thì tuân VAS 02 (giá định mức xấp xỉ thực tế, điều chỉnh chênh lệch cuối kỳ): cần xác nhận với kế toán/thuế."
+
+benchmarks:
+  - {metric: "Ngưỡng Insignificant", value: "< 3% VÀ < 2 triệu", context: "Quản trị theo ngoại lệ, bỏ qua", confidence: "medium"}
+  - {metric: "Ngưỡng Moderate", value: "3-10% HOẶC 2-10 triệu", context: "Theo dõi, báo cáo hằng tháng", confidence: "medium"}
+  - {metric: "Ngưỡng Significant", value: "> 10% HOẶC > 10 triệu", context: "Điều tra ngay; ngưỡng tiền cần chỉnh theo quy mô DN", confidence: "medium"}
+  - {metric: "Variance lặp", value: "3+ tháng liên tiếp", context: "Rà soát định mức và hệ thống", confidence: "medium"}
+  - {metric: "Chu kỳ rà soát định mức", value: "mỗi quý hoặc 6 tháng", context: "SME", confidence: "medium"}
+  - {metric: "Dữ liệu lập định mức", value: "3-6 tháng gần nhất + cân đo/bấm giờ", context: "SME", confidence: "medium"}
+  - {metric: "Số tháng giá hợp đồng nguyên liệu", value: "3-6 tháng", context: "Giảm DM Price variance (ví dụ Hẻm 25)", confidence: "low"}
+  - {metric: "Nhóm hành động sau họp", value: "Top 3 variance", context: "Họp review 30 phút hằng tháng", confidence: "medium"}
+
+pitfalls:
+  - "So chi phí thực tế với ngân sách tĩnh khi sản lượng khác: kết luận sai (biến phí tiết kiệm giả)."
+  - "Dùng SQ/SH theo sản lượng ngân sách thay vì thực tế."
+  - "Trộn quy ước dấu chi phí và doanh thu; thiếu nhãn F/U."
+  - "Đọc riêng từng variance, bỏ qua cặp Price-Quantity, Rate-Efficiency, Price-Volume."
+  - "Đặt định mức theo cảm tính hoặc không cập nhật; variance F/U liên tục mất ý nghĩa."
+  - "Phạt khi U làm nhân viên che giấu, gaming (đặt chuẩn dễ), cắt bảo trì/đào tạo để đẹp."
+  - "Theo đuổi Volume Variance = 0 bằng sản xuất thừa; Volume F không bằng tốt."
+  - "Trộn CM với FOH Volume Variance (đếm hai lần) hoặc dùng absorption mà quên FOH Volume."
+  - "Quy trách nhiệm trùng hai lần cho DL Efficiency và VOH Efficiency."
+  - "Áp variance cho R&D, startup, thị trường biến động mạnh, dịch vụ khó chuẩn hóa mà không điều chỉnh."
+  - "Tách báo cáo quản trị và báo cáo thuế: variance dùng nội bộ, BCTC/thuế theo VAS và TT200/TT133 (cần xác nhận hiện hành)."
+  - "Số liệu Toyota, GM chỉ minh họa nguyên lý, cần đối chiếu nguồn trước khi trích dẫn."
+  - "Lỗi/mâu thuẫn trong nguồn đã được chuẩn hóa, xem sme_vn_guidance và procedures để dùng giá trị đúng: thẻ áo thun QC 40.000/h và FOH rate 20.000/DLH (bản cũ 35.000 và 19.608); tổng chi phí U báo cáo áo thun 29,1 triệu và tổng chênh lệch 80,6 triệu (bản cũ ghi 49,0)."
+  - "Nguồn: tỷ lệ % của Hạt - giá ghi 7,4% (3,24/43,74 chia cho chuẩn lượng) nhưng chuẩn đúng của dòng giá là 48,6 triệu (AQ x SP) nên là 6,7%; DL Rate ghi 4,3% (0,78/18,2) trong khi mẫu số hợp lý 18,98 hoặc 18,2 (432 x 36,5)... Chỉ là xếp loại ngoại lệ, không đổi kết luận (đều Moderate/Insignificant)."
+
+sme_vn_guidance:
+  - "Không cần hệ thống phức tạp: bắt đầu bằng ngân sách theo tháng + định mức cho 3-5 khoản chi lớn nhất (NVL, nhân công, mặt bằng, marketing)."
+  - "Dữ liệu là điểm nghẽn: nhiều SME ghi chép sổ tay/Zalo; bước đầu là thu thập số liệu thực tế đủ và kịp (POS, phiếu xuất kho, bảng chấm công)."
+  - "Đưa chi phí không chính thức (tiền mặt, nhân công thời vụ, giao nhận) vào sổ quản trị để định mức sát thực tế."
+  - "Đặt định mức dựa trên dữ liệu 3-6 tháng + cân đo/bấm giờ; dễ sai khi đặt theo trí nhớ."
+  - "Tách báo cáo quản trị và báo cáo thuế/BCTC: BCTC theo VAS và Thông tư 200/2014/TT-BTC (hoặc Thông tư 133/2016/TT-BTC cho DN nhỏ và vừa); cần xác nhận hiện hành với kế toán/thuế."
+  - "VAS 02 cho phép dùng giá định mức để ghi hàng tồn kho nếu xấp xỉ giá thực tế, chênh lệch cuối kỳ phải điều chỉnh; FOH cố định phân bổ theo công suất bình thường, phần vượt ghi vào giá vốn trong kỳ. Cần xác nhận hiện hành. IAS 2 tương tự; lộ trình IFRS tại VN cần xác nhận."
+  - "Tài khoản nguồn Actual theo TT200: 621 (NVL trực tiếp), 622 (nhân công trực tiếp), 627 (chi phí SX chung), 154, 632. Cần xác nhận hiện hành."
+  - "Tăng lương tối thiểu vùng ảnh hưởng DL Rate (uncontrollable); mức hiện hành cần xác nhận."
+  - "Phần mềm kế toán: MISA SME / MISA AMIS Kế toán (giá thành, công nợ; so sánh thực tế-kế hoạch cần xuất Excel; giá từ vài triệu/năm - confidence low, cần xác nhận); FAST Accounting (giá thành, định mức NVL BOM; giá tùy module - cần báo giá)."
+  - "POS/bán hàng: KiotViet (doanh thu, giá bán thực tế, tồn kho, lãi gộp theo SP; khoảng vài trăm nghìn/tháng - confidence low, cần xác nhận); Sapo / iPOS (lãi gộp, doanh số theo kênh; giá tương tự - cần xác nhận)."
+  - "Excel/Google Sheets là linh hoạt nhất cho SME nhỏ; Looker Studio miễn phí, Power BI theo gói (cần xác nhận); Notion/Trello (gói cơ bản miễn phí) ghi action items."
+  - "Cấu trúc Sheets: Standards (ô input xanh), Budget, Actual, Flexible, Variance (công thức Price/Qty/Rate/Efficiency/Spending/Volume, cột F/U bằng IF), Dashboard (waterfall từ LN ngân sách đến thực tế)."
+  - "Quán cà phê: quy chuẩn số gam hạt/ly, cân định lượng; lịch ca theo khung giờ cao điểm; thiết kế khuyến mãi giới hạn món/khung giờ."
+  - "Xưởng may: định mức vải/áo, phế phẩm, đơn giá giờ công và OT, đánh giá Mua hàng bằng tổng chi phí NVL/đơn vị đạt chất lượng."
+
+case_lessons:
+  - name: "Toyota - variance trong văn hóa Kaizen"
+    type: "success"
+    setup: "Toyota dùng variance trong TPS như tín hiệu cải tiến tại genba: real-time, tổ trưởng/công nhân phân tích, Ideal Standard, Andon dừng ngay, kéo standard xuống khi F."
+    key_calculations:
+      - "Standard 18,0 giờ/xe; Tuần 1 thực tế 18,3h = +0,3h (U) -> jig mới; Tuần 4 17,8h = -0,2h (F) -> cập nhật standard 17,8h."
+      - "Sau 1 năm giả định standard 16,5h: tiết kiệm 1,5 giờ x 400.000 xe = 600.000 giờ/năm."
+      - "Nếu giờ công 400.000đ/giờ giả định thì 600.000 x 400.000 = 240 tỷ đồng/năm."
+    lesson: "Variance không dừng ở đạt chuẩn mà là điểm khởi đầu của vòng cải tiến mới. Bốn bài học: real-time, tại nguồn, cải tiến không đổ lỗi, cập nhật standard."
+    data_reliability: "illustrative"
+  - name: "General Motors - văn hóa đạt chỉ tiêu và bẫy Volume Variance"
+    type: "failure"
+    setup: "Trước phá sản 2009 (Chapter 11), GM được nhiều tài liệu mô tả dùng chỉ tiêu 'hit the number': standard dễ, đổ lỗi, cắt bảo trì/đào tạo, ám ảnh Volume Variance, tối ưu theo silo."
+    key_calculations:
+      - "Công suất 500.000 xe, định phí 5.000 tỷ: FOH rate = 5.000 tỷ / 500.000 = 10 triệu/xe; cầu chỉ 350.000 xe."
+      - "Sản xuất đúng cầu: Applied = 350.000 x 10tr = 3.500 tỷ; Volume Var = 5.000 - 3.500 = 1.500 tỷ (U), không tồn kho."
+      - "Sản xuất 500.000 xe: Volume Var = 0 nhưng thừa 150.000 xe; giảm giá 20% trên 500 triệu = 100 triệu/xe x 150.000 = 15.000 tỷ, gấp 10 lần Volume Var."
+    lesson: "Volume Variance (U) 1.500 tỷ là chi phí thật của công suất dư, nhưng 'chữa' bằng sản xuất thừa tốn gấp 10 lần. Volume F không bằng tốt; standard phải đủ thách thức; nhìn toàn cục (mua rẻ -> bảo hành đắt)."
+    data_reliability: "illustrative"
+  - name: "Quán cà phê Hẻm 25 - variance tháng 9"
+    type: "sme"
+    setup: "Ngân sách 6.000 ly x 45.000đ, LN kế hoạch 72,6 triệu; thực tế 5.400 ly, giá 43.000đ, LN 29,22 triệu. Chênh lệch -43,38 triệu. Giả định minh họa, đã verify nhất quán."
+    key_calculations:
+      - "Thẻ chuẩn: biến phí 22.900/ly (hạt 8.100 + NVL khác 9.000 + nhân công 2.800 + biến phí chung 3.000), định phí 60 triệu (10.000/ly), CM 22.100, lãi gộp absorption 12.100."
+      - "Flexible budget 5.400 ly: LN 243,0 - 183,66 = 59,34 triệu. Sales Volume (CM) = -600 x 22.100 = -13,26 triệu."
+      - "Hạt: Price (480 - 450) x 108.000 = +3,24tr U; Qty (108.000 - 97.200) x 450 = +4,86tr U."
+      - "NVL khác: 50,76 - 48,6 = +2,16tr U. Nhân công: Rate +0,78tr U; Efficiency (520 - 432) x 35.000 = +3,08tr U."
+      - "Biến phí chung +2,7tr U; Định phí Budget +2,5tr U; (absorption) FOH Volume +6,0tr U."
+      - "Giá bán (43.000 - 45.000) x 5.400 = -10,8tr U. Tổng = 43,38 triệu U, khớp."
+    lesson: "31% (13,26tr) do bán ít, 69% (30,12tr) do vận hành kiểm soát được (khuyến mãi 10,8tr, hạt, ca làm, chi phí chung). Khuyến mãi làm giảm giá nhưng lượng vẫn thấp hơn kế hoạch 600 ly - chương trình không hiệu quả. Chọn top 3 bằng Management by Exception: khuyến mãi, định lượng hạt, lịch ca."
+    data_reliability: "illustrative"
+  - name: "Công ty áo thun - đối chiếu 80,6 triệu"
+    type: "sme"
+    setup: "Ngân sách 1.200 áo x 350.000, LN 189,0 triệu; thực tế 1.000 áo x 330.000, LN 108,4 triệu. Chênh lệch -80,6 triệu."
+    key_calculations:
+      - "Sales Price -20,0; Sales Volume (absorption) -31,5 (hoặc CM -38,3); DM Price -2,7 F; DM Qty +7,5 U; DL Rate +3,8 U; DL Eff +8,0 U; VOH Spend +1,5 U; VOH Eff +3,0 U; FOH Budget +1,2 U; FOH Volume +6,8 U."
+      - "Tổng chi phí U 29,1; 20,0 + 31,5 + 29,1 = 80,6; hoặc contribution: 20,0 + 38,3 + 4,8 + 11,8 + 4,5 + 1,2 = 80,6."
+    lesson: "Hai cách costing cho cùng tổng; contribution rõ hơn cho SME. DM Price F 2,7 bị DM Qty U 7,5 xóa - nếu chỉ nhìn tổng (+4,8 U) sẽ không biết Mua hàng làm tốt còn Sản xuất làm kém."
+    data_reliability: "illustrative"
+  - name: "Quán cà phê - Mix Variance (cà phê vs trà)"
+    type: "sme"
+    setup: "Ngân sách 6.000 ly = 3.600 cà phê (CM 24.000) + 2.400 trà (CM 18.000); thực tế 5.400 = 2.700 + 2.700."
+    key_calculations:
+      - "CM bình quân NS = 21.600; Quantity = -600 x 21.600 = -12,96tr U."
+      - "Cơ cấu NS áp 5.400: cà phê 3.240, trà 2.160. Mix = -540 x 24.000 + 540 x 18.000 = -3,24tr U."
+      - "Tổng Volume = -16,2tr = (2.700-3.600) x 24.000 + (2.700-2.400) x 18.000."
+    lesson: "Khách chuyển sang trà (margin thấp hơn) làm mất thêm 3,24 triệu ngoài việc bán ít hơn; tổng số ly không nói lên điều đó."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Áo thun: thẻ định mức, DM, DL, MOH, Sales và đối chiếu 80,6 triệu"
+    inputs: {budget_qty: 1200, actual_qty: 1000, std_price: 350000, actual_price: 330000, std_card: {vai_m: 1.2, vai_price: 50000, phu_kien: 5000, hours: 1.7, rate: 40000, voh_rate: 15000, foh_rate: 20000}, actual: {vai_m: 1350, vai_price: 48000, phu_kien: 5000, ah: 1900, ar: 42000, voh: 30000000, foh: 42000000}}
+    steps:
+      - "Giá thành chuẩn/áo = 60.000 + 5.000 + 68.000 + 25.500 + 34.000 = 192.500; biến phí 158.500; CM 191.500; lãi gộp 157.500."
+      - "Ngân sách: Doanh thu 420tr; chi phí 78 + 81,6 + 30,6 + 40,8 = 231; LN 189tr. Thực tế: DT 330; chi phí 69,8 + 79,8 + 30 + 42 = 221,6; LN 108,4. Chênh -80,6."
+      - "DM: Price (48.000 - 50.000) x 1.350 = -2,7tr F; Qty (1.350 - 1.200) x 50.000 = +7,5tr U; tổng +4,8 U."
+      - "DL: Rate (42.000 - 40.000) x 1.900 = +3,8tr U; Eff (1.900 - 1.700) x 40.000 = +8,0 U; tổng +11,8 U."
+      - "VOH: Spend 30,0 - 1.900 x 15.000 = +1,5 U; Eff (200) x 15.000 = +3,0 U. FOH: Budget +1,2 U; Volume 40,8 - 1.700 x 20.000 = +6,8 U."
+      - "Sales: Price (330.000 - 350.000) x 1.000 = -20,0 U; Volume (-200) x 157.500 = -31,5 U."
+      - "Σ = 20,0 + 31,5 + 29,1 = 80,6, khớp. Cách contribution: 20,0 + 38,3 + 4,8 + 11,8 + 4,5 + 1,2 = 80,6."
+    result: "Tổng chênh lệch -80,6 triệu (U), khớp cả absorption lẫn contribution; DM Price F 2,7 bị Quantity U 7,5 xóa. Ưu tiên: hao phí vải, hiệu suất công, giá bán/khuyến mãi, công suất bỏ không."
+  - name: "Hẻm 25: ngân sách linh hoạt hai tầng và bảng đối chiếu"
+    inputs: {budget_qty: 6000, actual_qty: 5400, budget_price: 45000, actual_price: 43000, var_cost_std: 22900, fixed_std: 60000000, actual_costs: {hat: 51840000, nvl_khac: 50760000, nhan_cong: 18980000, voh: 18900000, dinh_phi: 62500000}}
+    steps:
+      - "Static LN = 6.000 x 22.100 - 60.000.000 = 72,6tr. Actual LN = 232,2 - 202,98 = 29,22tr; chênh -43,38."
+      - "Flexible LN = 5.400 x 22.100 - 60.000.000 = 59,34tr. Tầng 1: -13,26tr U. Tầng 2: 29,22 - 59,34 = -30,12tr U."
+      - "Hạt: SQ 97.200 g; Price +3,24 U; Qty +4,86 U. Nhân công: SH 432; Rate +0,78 U; Eff +3,08 U."
+      - "NVL khác +2,16 U; Biến phí chung +2,7 U; Định phí +2,5 U; Giá bán -10,8 U."
+      - "Σ = 13,26 + 10,8 + 3,24 + 4,86 + 2,16 + 0,78 + 3,08 + 2,7 + 2,5 = 43,38, khớp."
+      - "Tỷ lệ: 13,26/43,38 = 30,6% do bán ít; 30,12/43,38 = 69,4% do vận hành."
+    result: "-43,38 triệu (U): 31% Volume, 69% vận hành. Top 3 xử lý: khuyến mãi (10,8tr), định lượng hạt (4,86tr), lịch ca (3,08tr). Mỗi 1 g hạt/ly = 5.400 x 450 = 2,43tr/tháng."
+  - name: "Mix và Quantity: quán cà phê hai món"
+    inputs: {budget: {cafe: 3600, tra: 2400}, cm: {cafe: 24000, tra: 18000}, actual: {cafe: 2700, tra: 2700}}
+    steps:
+      - "CM bình quân NS = (3.600 x 24.000 + 2.400 x 18.000) / 6.000 = 21.600."
+      - "Quantity = (5.400 - 6.000) x 21.600 = -12.960.000 U."
+      - "Mix = (2.700 - 3.240) x 24.000 + (2.700 - 2.160) x 18.000 = -12.960.000 + 9.720.000 = -3.240.000 U."
+      - "Kiểm tra: Σ (AQ - BQ) x CM = -900 x 24.000 + 300 x 18.000 = -16.200.000."
+    result: "Tổng Volume -16,2 triệu U (Quantity -12,96 + Mix -3,24)."
+  - name: "Xưởng may: DM và DL từ bài tập"
+    inputs: {sq: 2000, sp: 100000, aq: 2100, ap: 95000, sh: 1400, sr: 50000, ah: 1500, ar: 52000}
+    steps:
+      - "DM Price = (95.000 - 100.000) x 2.100 = -10.500.000 F."
+      - "DM Qty = (2.100 - 2.000) x 100.000 = +10.000.000 U; Total = -500.000 F (199,5tr vs 200tr)."
+      - "DL Rate = (52.000 - 50.000) x 1.500 = +3.000.000 U; Eff = (1.500 - 1.400) x 50.000 = +5.000.000 U; Total = 8.000.000 U."
+    result: "NVL: tiết kiệm giá gần như bị hao phí triệt tiêu, nghi chất lượng vải. Nhân công: 8,0tr U do OT/thuê thợ đắt và hiệu suất thấp."
+  - name: "Nhà hàng phở (SME mới): linh hoạt ngân sách bán 2.000 -> 1.700 tô"
+    inputs: {budget_qty: 2000, actual_qty: 1700, budget_price: 55000, actual_price: 52000, var_cost_std: 28000, fixed_std: 30000000, actual_var_cost: 50300000, actual_fixed: 32000000}
+    steps:
+      - "CM chuẩn = 55.000 - 28.000 = 27.000. Static LN = 2.000 x 27.000 - 30tr = 24,0tr."
+      - "Flexible LN = 1.700 x 27.000 - 30tr = 15,9tr; Sales Volume = -300 x 27.000 = -8,1tr U."
+      - "Actual LN = 1.700 x 52.000 - 50,3tr - 32tr = 6,1tr."
+      - "Sales Price = (52.000 - 55.000) x 1.700 = -5,1tr U. Biến phí: 50,3 - 1.700 x 28.000 (47,6) = +2,7tr U. Định phí: 32 - 30 = +2,0tr U."
+      - "Σ = 8,1 + 5,1 + 2,7 + 2,0 = 17,9 = 24,0 - 6,1."
+    result: "-17,9 triệu (U): 45% do bán ít, còn lại giảm giá 5,1tr và chi phí 4,7tr. Hành động: kiểm tra giảm giá có kéo lượng không; định lượng thịt, hành, nước dùng; rà soát hóa đơn điện, gas."
+  - name: "Shop online ba sản phẩm: Quantity và Mix (nghìn đồng)"
+    inputs: {budget: {A: 500, B: 300, C: 200}, cm: {A: 60, B: 100, C: 150}, actual: {A: 620, B: 260, C: 160}}
+    steps:
+      - "Tổng NS 1.000, TT 1.040; CM bình quân NS = (500 x 60 + 300 x 100 + 200 x 150) / 1.000 = 90."
+      - "Quantity = (1.040 - 1.000) x 90 = +3.600 (F)."
+      - "Mix = Σ (AQ - 1.040 x tỷ trọng NS) x CM = (620 - 520) x 60 + (260 - 312) x 100 + (160 - 208) x 150 = 6.000 - 5.200 - 7.200 = -6.400 (U)."
+      - "Tổng = 3.600 - 6.400 = -2.800 = Σ (AQ - BQ) x CM = 120 x 60 + (-40) x 100 + (-40) x 150 = 7.200 - 4.000 - 6.000 = -2.800."
+    result: "Bán nhiều hơn 4% nhưng lợi nhuận thấp hơn 2,8 triệu vì dồn vào sản phẩm A (CM thấp 60k); cần đẩy B, C."
+  - name: "Bẫy Volume Variance (GM) - số liệu giả định"
+    inputs: {capacity_cars: 500000, fixed_cost_billion: 5000, demand_cars: 350000, price_million: 500, discount: 0.2}
+    steps:
+      - "FOH rate = 5.000 tỷ / 500.000 = 10 triệu/xe."
+      - "Sản xuất 350.000: Applied 3.500 tỷ, Volume Var = 1.500 tỷ U."
+      - "Sản xuất 500.000: Volume Var = 0 nhưng tồn 150.000 xe; giảm 20% x 500 triệu = 100 triệu/xe; 150.000 x 100 triệu = 15.000 tỷ."
+      - "15.000 / 1.500 = 10 lần."
+    result: "Sản xuất thừa để 'đẹp' variance tốn gấp 10 lần phần định phí cần cứu; chọn sản xuất theo cầu."
+
+practice_questions:
+  - q: "Xưởng may: SQ 2.000 m, giá chuẩn 100.000/m. Thực tế dùng 2.100 m, giá 95.000. Tính Price, Quantity, Total và nhận định."
+    a: "Price = -10.500.000 (F); Quantity = +10.000.000 (U); Total = -500.000 (F), chi phí thực 199,5 triệu vs chuẩn 200 triệu. Tiết kiệm giá bị hao phí triệt tiêu, nghi chất lượng vải kém."
+  - q: "Tiêu chuẩn 1.400 giờ, 50.000đ/giờ. Thực tế 1.500 giờ, 52.000đ/giờ. Tính Rate, Efficiency và nêu 2 nguyên nhân."
+    a: "Rate = +3.000.000 (U); Efficiency = +5.000.000 (U); Total 8.000.000 (U). Nguyên nhân: tăng ca/thuê thợ đắt; thợ mới, máy hỏng."
+  - q: "Ngân sách 1.000 SP giá 200.000, chi phí chuẩn 120.000 (margin 80.000). Thực tế bán 900 giá 180.000. Tính Sales Price và Sales Volume."
+    a: "Price = (180.000 - 200.000) x 900 = -18.000.000 (U); Volume = (900 - 1.000) x 80.000 = -8.000.000 (U); tổng -26.000.000."
+  - q: "Quán cà phê: ngân sách 3.600 cà phê CM 24.000 + 2.400 trà CM 18.000; thực tế 2.700 + 2.700. Tính Quantity, Mix, Total."
+    a: "Quantity = -12.960.000 (U); Mix = -3.240.000 (U); Total = -16.200.000 (U)."
+  - q: "Hẻm 25: nếu ngừng khuyến mãi (giá 45.000, bán 5.400 ly) thì lợi nhuận thực tế mới? Nếu đồng thời giảm hạt còn 18 g/ly (giá 480đ/g)?"
+    a: "Sales Price Var = 0 nên LN tăng 10,8tr: 29,22 + 10,8 = 40,02 triệu. Hạt 18 g: lượng 97.200 g x 480 = 46.656.000 (giảm 5.184.000 so với 51.840.000); LN = 45,204 triệu. Qty Var về 0, Price Var còn 2,916tr."
+  - q: "Bộ phận Mua hàng báo DM Price (F) lớn nhưng DM Quantity (U) lớn hơn. Thiết kế đánh giá Mua hàng thế nào?"
+    a: "Đánh giá theo tổng chi phí NVL trên đơn vị thành phẩm đạt chất lượng, kèm tỷ lệ phế phẩm/trả hàng; chia sẻ chỉ tiêu giữa Mua hàng và Sản xuất, không chỉ theo giá mua."
+  - q: "Vì sao Price Variance nhân AQ còn Quantity Variance nhân SP?"
+    a: "Giá áp lên toàn bộ lượng thực tế đã chi (kể cả hao phí). Lượng thừa định giá bằng giá chuẩn để loại ảnh hưởng của giá, đo trách nhiệm Sản xuất công bằng; tổng hai phần = AP.AQ - SP.SQ."
+  - q: "Vì sao có FOH Volume Variance dù định phí không đổi? Có nên đưa về 0?"
+    a: "Vì định phí được phân bổ bằng mức cố định tính từ sản lượng kế hoạch; sản xuất ít hơn thì phần gánh vào sản phẩm thấp hơn dự toán, phần còn lại là công suất bỏ không. Không nên ép về 0 bằng sản xuất thừa (bẫy GM); dùng làm chỉ báo xem lại công suất/kế hoạch."
+  - q: "Với Hẻm 25, có bao nhiêu % tổng thiếu hụt do bán ít và bao nhiêu % kiểm soát được?"
+    a: "13,26/43,38 = 30,6% do bán ít; 30,12/43,38 = 69,4% do vận hành kiểm soát được."
+  - q: "Static 1.200 áo, thực tế 1.000. DL Eff, SH là gì khi giờ chuẩn 1,7/áo?"
+    a: "SH = 1.000 x 1,7 = 1.700 giờ (theo sản lượng thực tế, không phải 1.200 x 1,7 = 2.040)."
+
+checklist:
+  - "Đã xác định đơn vị tính (áo, ly, suất, đơn hàng)."
+  - "Đã lập thẻ định mức từ dữ liệu 3-6 tháng + cân đo/bấm giờ; chọn loại standard."
+  - "Đã lập ngân sách tĩnh VÀ flexible budget theo sản lượng thực tế."
+  - "Đã chọn CM hay absorption và dùng nhất quán cho Sales Volume và định phí."
+  - "SQ, SH tính theo sản lượng thực tế."
+  - "Đã có đủ dữ liệu thực tế (POS, kế toán, chấm công, phiếu xuất kho)."
+  - "Đã tách Sales Price, Volume (và Mix nếu nhiều sản phẩm)."
+  - "Đã tính DM Price/Qty, DL Rate/Efficiency, VOH, FOH Budget (và Volume nếu absorption)."
+  - "Mỗi variance có nhãn F/U và đơn vị."
+  - "Đã đọc cặp Price-Quantity, Rate-Efficiency, Price-Volume trước khi kết luận."
+  - "Bảng đối chiếu: tổng variance = Actual profit - Budgeted profit."
+  - "Đã áp ngưỡng ngoại lệ; chọn top 3; kiểm tra variance lặp 3+ tháng."
+  - "Đã làm 5 Whys, phân loại controllable/uncontrollable."
+  - "Đã gán hành động (ai - làm gì - hạn) và có follow-up."
+  - "Đã kiểm tra bẫy Volume Variance (không đề xuất sản xuất thừa)."
+  - "Đã cập nhật định mức nếu điều kiện thay đổi bền vững."
+  - "Đã đánh dấu 'cần xác nhận' cho pháp lý/thuế (VAS 02, TT200/133, IFRS) và giá phần mềm."
+  - "Số liệu công ty thật (Toyota, GM) ghi rõ là minh họa, cần đối chiếu nguồn."
+
+excel_google_sheets_templates:
+  - "Sheet Standards: giá, lượng, giờ, VOH rate, FOH rate, CM; ô input màu xanh."
+  - "Sheet Budget: ngân sách tĩnh theo tháng. Sheet Actual: dữ liệu thực tế từ POS/kế toán."
+  - "Sheet Flexible: =SanLuongThucTe*DinhMuc (biến phí) + định phí giữ nguyên."
+  - "Sheet Variance: =(AP-SP)*AQ ; =(AQ-SQ)*SP ; =(AR-SR)*AH ; =(AH-SH)*SR ; =ActualVOH-AH*Rate ; =BudgetFOH-SH*FOHRate."
+  - "Cột F/U: =IF(Var>0,\"U\",\"F\") cho chi phí; đảo chiều cho doanh thu."
+  - "Cờ ngoại lệ: =IF(ABS(Var)/Standard>0.1,\"Điều tra\",\"OK\")."
+  - "Dashboard: biểu đồ waterfall từ lợi nhuận ngân sách đến thực tế; Looker Studio nối với Sheets."
+  - "Mẫu báo cáo: Budget / Flex.Bdg / Actual / Var / F-U cho Doanh thu, NVL, Nhân công, Overhead, Lãi gộp, Chi phí bán hàng, Quản lý, Lợi nhuận + TOP 3 variance (Action / Ai / Hạn)."
+
+source_file: "05-variance-analysis.md"

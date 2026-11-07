@@ -1,0 +1,1956 @@
+# 06-formulas-index.yaml — SINH TỰ ĐỘNG bởi tools/build_and_validate.py từ modules/*.yaml. Không sửa tay.
+total: 161
+formulas:
+- id: m01_accounting_equation
+  module: m01
+  name_vi: Phương trình kế toán và kiểm tra cân đối
+  name_en: Accounting equation check
+  expression_latex: A = L + E;\quad \text{Check} = A - (L + E) = 0
+  expression_python: assets - (liabilities + equity)
+  excel: =TongTaiSan-(NoPhaiTra+VonCSH)
+  variables:
+  - assets
+  - liabilities
+  - equity
+  when_to_use: Mọi lần lập Bảng cân đối, sau mỗi bút toán, và là kiểm tra chéo số 1 trước khi tin báo cáo.
+- id: m01_retained_earnings
+  module: m01
+  name_vi: Lợi nhuận giữ lại (chưa phân phối) cuối kỳ
+  name_en: Retained earnings roll-forward
+  expression_latex: \text{RE}_{end} = \text{RE}_{begin} + NI - \text{Dividends}
+  expression_python: re_begin + net_income - dividends
+  excel: =LNCPPDauKy+LNST-CoTuc
+  variables:
+  - re_begin
+  - net_income
+  - dividends
+  when_to_use: Nối P&L với Bảng cân đối; tìm lợi nhuận sau thuế khi biết hai số dư RE (Bài 4).
+- id: m01_net_revenue
+  module: m01
+  name_vi: Doanh thu thuần
+  name_en: Net revenue
+  expression_latex: \text{Net Revenue} = \text{Gross Revenue} - \text{Returns} - \text{Allowances} - \text{Discounts}
+  expression_python: gross_revenue - returns - allowances - discounts
+  excel: =DoanhThuGop-HangBanTraLai-GiamGia-ChietKhau
+  variables:
+  - gross_revenue
+  - returns
+  - allowances
+  - discounts
+  when_to_use: Dòng đầu P&L; biên lợi nhuận phải dùng doanh thu thuần làm mẫu số.
+- id: m01_cogs_periodic
+  module: m01
+  name_vi: Giá vốn hàng bán (kiểm kê định kỳ)
+  name_en: Cost of goods sold
+  expression_latex: \text{COGS} = \text{Beginning Inv} + \text{Purchases} - \text{Ending Inv}
+  expression_python: begin_inv + purchases - end_inv
+  excel: =TonDau+Mua-TonCuoi
+  variables:
+  - begin_inv
+  - purchases
+  - end_inv
+  when_to_use: Suy ra giá vốn khi chỉ biết tồn đầu, tồn cuối, mua vào; hoặc suy mua hàng = COGS + tồn cuối - tồn đầu.
+- id: m01_pl_ladder
+  module: m01
+  name_vi: Bậc thang lợi nhuận (Lợi nhuận gộp, EBIT, EBT, LNST)
+  name_en: Income statement ladder
+  expression_latex: GP = Rev - COGS;\ EBIT = GP - SellExp - G\&A;\ EBT = EBIT - Interest;\ NI = EBT\,(1-t)
+  expression_python: ((revenue - cogs - selling - admin) - interest) * (1 - tax_rate)
+  excel: =((DT-GV-CPBH-CPQL)-LaiVay)*(1-ThueSuat)
+  variables:
+  - revenue
+  - cogs
+  - selling
+  - admin
+  - interest
+  - tax_rate
+  when_to_use: Lập P&L từ số liệu thô; tính lợi nhuận sau thuế để nối vào RE và CFO.
+- id: m01_margins
+  module: m01
+  name_vi: Biên lợi nhuận gộp, hoạt động, ròng
+  name_en: Gross / Operating / Net margin
+  expression_latex: \text{GM}=\frac{GP}{Rev},\ \text{OM}=\frac{EBIT}{Rev},\ \text{NM}=\frac{NI}{Rev}
+  expression_python: (gross_profit / revenue, ebit / revenue, net_income / revenue)
+  excel: =LNGop/DT ; =EBIT/DT ; =LNST/DT
+  variables:
+  - gross_profit
+  - ebit
+  - net_income
+  - revenue
+  when_to_use: So sánh hiệu quả giữa DN khác quy mô hoặc cùng DN qua các kỳ.
+- id: m01_fifo_cogs
+  module: m01
+  name_vi: Giá vốn theo FIFO (hai lô)
+  name_en: COGS under FIFO (two lots)
+  expression_latex: \text{COGS}_{FIFO}=\min(q_s,q_1)\,p_1+\max(q_s-q_1,0)\,p_2
+  expression_python: min(q_sold, q1) * p1 + max(q_sold - q1, 0) * p2
+  excel: =MIN(SLBan;SL1)*G1+MAX(SLBan-SL1;0)*G2
+  variables:
+  - q_sold
+  - q1
+  - p1
+  - p2
+  when_to_use: Giá nhập đổi theo lô và cần tính giá vốn khi bán; mở rộng nhiều lô bằng cách trừ dần lô cũ nhất.
+- id: m01_weighted_avg_cogs
+  module: m01
+  name_vi: Giá vốn theo bình quân gia quyền (hai lô)
+  name_en: COGS under Weighted Average (two lots)
+  expression_latex: \bar p=\frac{q_1p_1+q_2p_2}{q_1+q_2};\ \text{COGS}=q_s\,\bar p
+  expression_python: q_sold * (q1 * p1 + q2 * p2) / (q1 + q2)
+  excel: =SLBan*(SL1*G1+SL2*G2)/(SL1+SL2)
+  variables:
+  - q_sold
+  - q1
+  - p1
+  - q2
+  - p2
+  when_to_use: Muốn san bằng biến động giá, đơn giản; phổ biến ở SME và phần mềm kế toán.
+- id: m01_nrv_lower_of_cost
+  module: m01
+  name_vi: Tồn kho theo giá thấp hơn giữa giá gốc và NRV
+  name_en: Lower of cost and net realizable value
+  expression_latex: \text{Inventory carrying}=\min(\text{Cost},\ \text{NRV})\times Q;\ \text{NRV}=P_{sell}-C_{sell}
+  expression_python: min(cost_unit, sell_price - sell_cost) * qty
+  excel: =MIN(GiaGoc;GiaBan-CPBan)*SL
+  variables:
+  - cost_unit
+  - sell_price
+  - sell_cost
+  - qty
+  when_to_use: Cuối kỳ khi hàng hư hỏng, lỗi mốt, giảm giá bán mạnh để trích lập dự phòng giảm giá hàng tồn kho.
+- id: m01_dep_straight_line
+  module: m01
+  name_vi: Khấu hao đường thẳng
+  name_en: Straight-line depreciation
+  expression_latex: \text{Dep}=\frac{\text{Cost}-\text{Salvage}}{\text{Useful life}}
+  expression_python: (cost - salvage) / life
+  excel: =SLN(cost, salvage, life)
+  variables:
+  - cost
+  - salvage
+  - life
+  when_to_use: Mặc định cho phần lớn TSCĐ có lợi ích đều theo thời gian; dễ giải trình thuế.
+- id: m01_dep_declining_balance
+  module: m01
+  name_vi: Khấu hao số dư giảm dần (một năm)
+  name_en: Declining balance depreciation (one year)
+  expression_latex: \text{Dep}_t=\min\big(NBV_{t-1}\cdot r,\ NBV_{t-1}-\text{Salvage}\big)
+  expression_python: min(nbv_begin * rate, nbv_begin - salvage)
+  excel: =DDB(cost, salvage, life, period, factor)  (DB() dùng tỷ lệ tự tính, không cho nhập 40%)
+  variables:
+  - nbv_begin
+  - rate
+  - salvage
+  when_to_use: Tài sản hao mòn nhanh lúc đầu (thiết bị công nghệ); cần hiểu chênh lệch thời điểm so với đường thẳng.
+- id: m01_dep_units_of_production
+  module: m01
+  name_vi: Khấu hao theo sản lượng
+  name_en: Units-of-production depreciation
+  expression_latex: \text{Dep}=\frac{\text{Cost}-\text{Salvage}}{\text{Total units}}\times \text{Actual units}
+  expression_python: (cost - salvage) / total_units * units_actual
+  excel: =(cost-salvage)/TongSL*SLThucTe
+  variables:
+  - cost
+  - salvage
+  - total_units
+  - units_actual
+  when_to_use: Máy móc hao mòn theo công suất (máy đóng gói, máy in).
+- id: m01_net_book_value
+  module: m01
+  name_vi: Giá trị còn lại (NBV)
+  name_en: Net book value
+  expression_latex: NBV=\text{Cost}-\text{Accumulated depreciation}
+  expression_python: cost - accumulated_dep
+  excel: =NguyenGia-HaoMonLuyKe
+  variables:
+  - cost
+  - accumulated_dep
+  when_to_use: Trình bày TSCĐ trên BS; roll-forward TSCĐ = NBV đầu + mua mới - khấu hao.
+- id: m01_cfo_indirect
+  module: m01
+  name_vi: Lưu chuyển tiền từ HĐKD - phương pháp gián tiếp
+  name_en: Cash flow from operations (indirect)
+  expression_latex: CFO=NI+\text{Dep}-\Delta AR-\Delta Inv+\Delta AP
+  expression_python: ni + dep - d_ar - d_inv + d_ap
+  excel: =LNST+KhauHao-DeltaPhaiThu-DeltaTonKho+DeltaPhaiTra
+  variables:
+  - ni
+  - dep
+  - d_ar
+  - d_inv
+  - d_ap
+  when_to_use: Lập CFS từ BS hai kỳ + P&L; giải thích vì sao lãi mà thiếu tiền.
+- id: m01_ending_cash
+  module: m01
+  name_vi: Tiền cuối kỳ
+  name_en: Ending cash
+  expression_latex: \text{Cash}_{end}=\text{Cash}_{begin}+CFO+CFI+CFF
+  expression_python: cash_begin + cfo + cfi + cff
+  excel: =TienDau+CFO+CFI+CFF
+  variables:
+  - cash_begin
+  - cfo
+  - cfi
+  - cff
+  when_to_use: 'Kiểm tra chéo CFS với Bảng cân đối: tiền cuối kỳ CFS phải bằng dòng Tiền trên BS.'
+- id: m01_cfo_direct_components
+  module: m01
+  name_vi: Thu từ khách hàng và chi trả nhà cung cấp (phương pháp trực tiếp)
+  name_en: Direct method components
+  expression_latex: \text{Collections}=Rev-\Delta AR;\ \text{Supplier payments}=COGS+\Delta Inv-\Delta AP
+  expression_python: (revenue - d_ar, cogs + d_inv - d_ap)
+  excel: =DT-DeltaPhaiThu ; =GV+DeltaTonKho-DeltaPhaiTra
+  variables:
+  - revenue
+  - cogs
+  - d_ar
+  - d_inv
+  - d_ap
+  when_to_use: Đối chiếu CFO gián tiếp bằng cách tính trực tiếp, hoặc khi chủ muốn nhìn thu - chi tiền rõ ràng.
+- id: m01_free_cash_flow_simple
+  module: m01
+  name_vi: Dòng tiền tự do đơn giản
+  name_en: Simple free cash flow
+  expression_latex: FCF=CFO-\text{CapEx}
+  expression_python: cfo - capex
+  excel: =CFO-ChiMuaTSCD
+  variables:
+  - cfo
+  - capex
+  when_to_use: Đánh giá khả năng trả nợ gốc, chia cổ tức mà không cần vay thêm.
+- id: m01_payout_ratio
+  module: m01
+  name_vi: Tỷ lệ chi trả cổ tức
+  name_en: Dividend payout ratio
+  expression_latex: \text{Payout}=\frac{\text{Dividends}}{NI}
+  expression_python: dividends / net_income
+  excel: =CoTuc/LNST
+  variables:
+  - dividends
+  - net_income
+  when_to_use: Đánh giá chính sách chia lợi nhuận của chủ DN so với lợi nhuận và dòng tiền.
+- id: m01_working_capital
+  module: m01
+  name_vi: Vốn lưu động ròng
+  name_en: Net working capital
+  expression_latex: WC=CA-CL
+  expression_python: current_assets - current_liabilities
+  excel: =TSNH-NoNH
+  variables:
+  - current_assets
+  - current_liabilities
+  when_to_use: Đánh giá an toàn thanh khoản ngắn hạn.
+- id: m01_current_ratio
+  module: m01
+  name_vi: Hệ số thanh toán hiện hành
+  name_en: Current ratio
+  expression_latex: \text{Current}=\frac{CA}{CL}
+  expression_python: current_assets / current_liabilities
+  excel: =TSNH/NoNH
+  variables:
+  - current_assets
+  - current_liabilities
+  when_to_use: Kiểm tra khả năng trả nợ ngắn hạn toàn diện.
+- id: m01_quick_ratio
+  module: m01
+  name_vi: Hệ số thanh toán nhanh
+  name_en: Quick ratio
+  expression_latex: \text{Quick}=\frac{\text{Cash}+AR}{CL}
+  expression_python: (cash + ar) / current_liabilities
+  excel: =(Tien+PhaiThu)/NoNH
+  variables:
+  - cash
+  - ar
+  - current_liabilities
+  when_to_use: Khi muốn kiểm tra thanh khoản khắt khe, không tính tồn kho.
+- id: m01_dso
+  module: m01
+  name_vi: Kỳ thu tiền bình quân (DSO)
+  name_en: Days sales outstanding
+  expression_latex: DSO=\frac{AR}{Rev}\times 365
+  expression_python: ar / revenue * 365
+  excel: =PhaiThu/DT*365
+  variables:
+  - ar
+  - revenue
+  when_to_use: Đo tốc độ thu tiền.
+- id: m01_dio
+  module: m01
+  name_vi: Số ngày tồn kho (DIO)
+  name_en: Days inventory outstanding
+  expression_latex: DIO=\frac{Inv}{COGS}\times 365
+  expression_python: inventory / cogs * 365
+  excel: =TonKho/GiaVon*365
+  variables:
+  - inventory
+  - cogs
+  when_to_use: Đo vòng quay kho.
+- id: m01_dpo
+  module: m01
+  name_vi: Số ngày trả nhà cung cấp (DPO)
+  name_en: Days payables outstanding
+  expression_latex: DPO=\frac{AP}{COGS}\times 365
+  expression_python: ap / cogs * 365
+  excel: =PhaiTra/GiaVon*365
+  variables:
+  - ap
+  - cogs
+  when_to_use: Đo thời gian nợ nhà cung cấp.
+- id: m01_ccc
+  module: m01
+  name_vi: Vòng quay tiền (CCC)
+  name_en: Cash conversion cycle
+  expression_latex: CCC=DIO+DSO-DPO
+  expression_python: dio + dso - dpo
+  excel: =DIO+DSO-DPO
+  variables:
+  - dio
+  - dso
+  - dpo
+  when_to_use: Đo số ngày một đồng mua hàng bị đóng băng trước khi quay lại thành tiền.
+- id: m01_cash_release_from_dio
+  module: m01
+  name_vi: Tiền giải phóng khi giảm tồn kho
+  name_en: Cash released by shortening DIO
+  expression_latex: \text{Released}=\frac{COGS}{365}\times \Delta DIO
+  expression_python: cogs / 365 * days_reduced
+  excel: =GiaVon/365*SoNgayGiam
+  variables:
+  - cogs
+  - days_reduced
+  when_to_use: Định lượng lợi ích giải phóng tiền mà không cần vay.
+- id: m01_roe
+  module: m01
+  name_vi: Tỷ suất sinh lời trên vốn chủ (ROE)
+  name_en: Return on equity
+  expression_latex: ROE=\frac{NI}{E}
+  expression_python: net_income / equity
+  excel: =LNST/VonCSH
+  variables:
+  - net_income
+  - equity
+  when_to_use: Đánh giá chủ sở hữu kiếm được bao nhiêu trên mỗi đồng vốn của mình.
+- id: m01_debt_to_equity
+  module: m01
+  name_vi: Nợ trên vốn chủ
+  name_en: Debt-to-equity
+  expression_latex: D/E=\frac{L}{E}
+  expression_python: liabilities / equity
+  excel: =NoPhaiTra/VonCSH
+  variables:
+  - liabilities
+  - equity
+  when_to_use: Đánh giá đòn bẩy, rủi ro tài chính; kiểm tra bằng cách cộng nợ giấu qua SPE.
+- id: m01_cash_conversion_ratio
+  module: m01
+  name_vi: Tỷ số chất lượng lợi nhuận (CFO / Lợi nhuận sau thuế)
+  name_en: Cash conversion of earnings (CFO/NI)
+  expression_latex: \text{CFO/NI}=\frac{CFO}{NI}
+  expression_python: cfo / net_income
+  excel: =CFO/LNST
+  variables:
+  - cfo
+  - net_income
+  when_to_use: Sàng lọc chất lượng lợi nhuận; cờ đỏ kiểu Enron (lợi nhuận tăng mà CFO không tăng). Chỉ số tổng hợp từ bài
+    học trong nguồn, không phải chuẩn mực.
+- id: m01_gordon
+  module: m01
+  name_vi: Mô hình Gordon (giá cổ phiếu và chi phí vốn)
+  name_en: Gordon growth model
+  expression_latex: P_0=\frac{D_1}{k_e-g}
+  expression_python: d1 / (ke - g)
+  excel: =D1/(ke-g)
+  variables:
+  - d1
+  - ke
+  - g
+  when_to_use: 'Giải thích vì sao minh bạch kế toán làm tăng giá trị: giảm phần bù rủi ro thông tin làm giảm ke.'
+- id: m01_pv_annuity_mtm
+  module: m01
+  name_vi: Giá trị hiện tại của dòng lãi kỳ vọng (minh họa mark-to-market)
+  name_en: PV of annuity (mark-to-market illustration)
+  expression_latex: PV=\sum_{t=1}^{n}\frac{CF}{(1+r)^t}=CF\cdot\frac{1-(1+r)^{-n}}{r}
+  expression_python: cf * (1 - (1 + r) ** (-n)) / r
+  excel: =PV(r, n, -cf)
+  variables:
+  - cf
+  - r
+  - n
+  when_to_use: Hiểu vì sao Mark-to-Market lạm dụng tạo lợi nhuận kế toán lớn ngay mà tiền thực nhận bằng 0.
+- id: m01_ssp_allocation
+  module: m01
+  name_vi: Phân bổ giá giao dịch theo giá bán độc lập tương đối
+  name_en: Relative standalone selling price allocation (IFRS 15 step 4)
+  expression_latex: \text{Alloc}_i=\text{Price}\times\frac{SSP_i}{\sum_j SSP_j}
+  expression_python: price * ssp_i / sum(ssp_all)
+  excel: =GiaHD*SSPi/SUM(SSP)
+  variables:
+  - price
+  - ssp_i
+  - ssp_all
+  when_to_use: Hợp đồng gói nhiều nghĩa vụ (license, triển khai, support) với giá gói được giảm.
+- id: m01_deferred_revenue_straight_line
+  module: m01
+  name_vi: Doanh thu ghi nhận và doanh thu chưa thực hiện theo thời gian
+  name_en: Straight-line revenue recognition / unearned revenue
+  expression_latex: \text{Recognized}=\frac{Fee}{N}\times m;\quad \text{Unearned}=Fee-\text{Recognized}
+  expression_python: (fee / total_months * months_elapsed, fee - fee / total_months * months_elapsed)
+  excel: =Phi/TongThang*SoThang ; =Phi-DaGhiNhan
+  variables:
+  - fee
+  - total_months
+  - months_elapsed
+  when_to_use: Học phí trọn khóa, thuê bao năm, bảo trì/support, vé trả trước.
+- id: m01_capitalization_overstatement
+  module: m01
+  name_vi: Lợi nhuận bị thổi phồng khi vốn hóa chi phí
+  name_en: Profit overstatement from capitalizing expenses
+  expression_latex: \text{Overstatement}=X-\frac{X}{n}
+  expression_python: x - x / n
+  excel: =X-X/n
+  variables:
+  - x
+  - n
+  when_to_use: Giải thích thủ thuật Enron và kiểm tra khi chi phí bất thường bị chuyển thành tài sản.
+- id: m02_cm_unit
+  module: m02
+  name_vi: Số dư đảm phí đơn vị và tỷ lệ CM
+  name_en: Contribution Margin per Unit and CM Ratio
+  expression_latex: \text{CM}=P-V,\quad \text{CM Ratio}=\frac{P-V}{P}
+  expression_python: (P - V, (P - V) / P)
+  excel: =P-V ; =(P-V)/P
+  variables:
+  - P
+  - V
+  when_to_use: Bước đầu của mọi phân tích CVP, định giá, so sánh sản phẩm.
+- id: m02_bep_units
+  module: m02
+  name_vi: Điểm hòa vốn theo sản lượng
+  name_en: Break-Even Point (units)
+  expression_latex: \text{BEP}_{units}=\frac{FC}{P-V}
+  expression_python: FC / (P - V)
+  excel: =FC/(P-V)
+  variables:
+  - FC
+  - P
+  - V
+  when_to_use: Một sản phẩm (hoặc sản phẩm bình quân) và cần biết phải bán bao nhiêu đơn vị để lợi nhuận bằng 0.
+- id: m02_bep_sales
+  module: m02
+  name_vi: Điểm hòa vốn theo doanh thu
+  name_en: Break-Even Point (sales value)
+  expression_latex: \text{BEP}_{VND}=\frac{FC}{\text{CM Ratio}}
+  expression_python: FC / cm_ratio
+  excel: =FC/CMratio
+  variables:
+  - FC
+  - cm_ratio
+  when_to_use: Nhiều sản phẩm khác giá hoặc chỉ biết doanh thu, không biết sản lượng.
+- id: m02_target_units
+  module: m02
+  name_vi: Sản lượng đạt lợi nhuận mục tiêu
+  name_en: Target Profit Volume
+  expression_latex: \text{Units}=\frac{FC+\pi^{*}}{P-V}
+  expression_python: (FC + target_profit) / (P - V)
+  excel: =(FC+LNmt)/(P-V)
+  variables:
+  - FC
+  - target_profit
+  - P
+  - V
+  when_to_use: Đặt chỉ tiêu bán hàng để đạt lãi mong muốn.
+- id: m02_profit_cvp
+  module: m02
+  name_vi: Lợi nhuận theo CVP
+  name_en: CVP Operating Profit
+  expression_latex: \pi=n\,(P-V)-FC
+  expression_python: n * (P - V) - FC
+  excel: =n*(P-V)-FC
+  variables:
+  - n
+  - P
+  - V
+  - FC
+  when_to_use: Dự báo lợi nhuận theo kịch bản sản lượng/giá.
+- id: m02_mos
+  module: m02
+  name_vi: Biên an toàn
+  name_en: Margin of Safety
+  expression_latex: \text{MoS}=\frac{S_{actual}-S_{BEP}}{S_{actual}}\times 100\%
+  expression_python: (S_actual - S_bep) / S_actual * 100
+  excel: =(Ssales-Sbep)/Ssales
+  variables:
+  - S_actual
+  - S_bep
+  when_to_use: Đánh giá mức an toàn trước rủi ro doanh thu sụt.
+- id: m02_dol
+  module: m02
+  name_vi: Đòn bẩy hoạt động
+  name_en: Degree of Operating Leverage
+  expression_latex: \text{DOL}=\frac{CM}{OI}=1+\frac{FC}{OI}=\frac{1}{\text{MoS}},\qquad \%\Delta OI=\text{DOL}\times\%\Delta
+    S
+  expression_python: CM_total / OI
+  excel: =CMtotal/OI
+  variables:
+  - CM_total
+  - OI
+  when_to_use: Đo độ nhạy lợi nhuận với doanh thu; so sánh rủi ro giữa mô hình định phí cao và biến phí cao.
+- id: m02_high_low
+  module: m02
+  name_vi: Tách chi phí hỗn hợp điểm cao - điểm thấp
+  name_en: High-Low Method
+  expression_latex: b=\frac{Y_{high}-Y_{low}}{X_{high}-X_{low}},\quad a=Y_{high}-b\,X_{high}
+  expression_python: ((Y_high - Y_low) / (X_high - X_low), Y_high - (Y_high - Y_low) / (X_high - X_low) * X_high)
+  excel: =SLOPE(Y,X) ; =INTERCEPT(Y,X) (khi có đủ dữ liệu)
+  variables:
+  - Y_high
+  - Y_low
+  - X_high
+  - X_low
+  when_to_use: Chi phí hỗn hợp Y = a + bX (điện, internet, bảo trì) chỉ có hóa đơn từng tháng.
+- id: m02_product_cost
+  module: m02
+  name_vi: Prime cost, Conversion cost, Giá thành sản phẩm
+  name_en: Prime, Conversion and Total Product Cost
+  expression_latex: \text{Prime}=DM+DL,\ \text{Conversion}=DL+MOH,\ \text{Product Cost}=DM+DL+MOH,\ \text{Total}=\text{Product}+\text{Period}
+  expression_python: (DM + DL, DL + MOH, DM + DL + MOH)
+  excel: =DM+DL ; =DL+MOH ; =DM+DL+MOH
+  variables:
+  - DM
+  - DL
+  - MOH
+  when_to_use: Xây dựng giá thành, phân biệt chi phí sản phẩm (vào tồn kho) và chi phí thời kỳ.
+- id: m02_weighted_cm_bep
+  module: m02
+  name_vi: Hòa vốn đa sản phẩm
+  name_en: Multi-product Break-Even (weighted CM ratio)
+  expression_latex: \text{CM Ratio}_{avg}=\frac{\sum CM_i}{\sum Rev_i},\quad \text{BEP}_{VND}=\frac{FC_{total}}{\text{CM Ratio}_{avg}}
+  expression_python: FC_total / (sum(CM_list) / sum(Rev_list))
+  excel: =FC/(SUM(CM)/SUM(Rev))
+  variables:
+  - CM_list
+  - Rev_list
+  - FC_total
+  when_to_use: Quán/xưởng bán nhiều sản phẩm có CM khác nhau, không có 'CM/đơn vị' chung.
+- id: m02_segment_margin
+  module: m02
+  name_vi: Số dư bộ phận và quy tắc giữ/dừng
+  name_en: Segment Margin and Discontinue Rule
+  expression_latex: \text{SM}=CM-FC_{direct},\qquad \text{Dừng nếu } CM<FC_{avoidable}
+  expression_python: (CM - FC_direct, CM < FC_avoidable)
+  excel: =CM-FCtt ; =IF(CM<FCtranh,"Dung","Giu")
+  variables:
+  - CM
+  - FC_direct
+  - FC_avoidable
+  when_to_use: Quyết định giữ hay dừng sản phẩm, chi nhánh, kênh.
+- id: m02_make_or_buy
+  module: m02
+  name_vi: Tự làm hay mua ngoài
+  name_en: Make or Buy
+  expression_latex: \text{Make nếu } V+\frac{FC_{av}}{Q}<P_{buy}\iff Q>Q^{*}=\frac{FC_{av}}{P_{buy}-V}
+  expression_python: FC_av / (P_buy - V)
+  excel: =FCtranh/(Pmua-V)
+  variables:
+  - FC_av
+  - P_buy
+  - V
+  when_to_use: So sánh gia công/mua ngoài với tự sản xuất.
+- id: m02_special_order
+  module: m02
+  name_vi: Đơn hàng đặc biệt
+  name_en: Special Order Decision
+  expression_latex: \Delta\pi=q\,(P_{sp}-V_{inc})-q_{displaced}\,CM_{regular}
+  expression_python: q * (P_sp - V_inc) - q_displaced * CM_regular
+  excel: =q*(Psp-Vinc)-qdisp*CMthuong
+  variables:
+  - q
+  - P_sp
+  - V_inc
+  - q_displaced
+  - CM_regular
+  when_to_use: Có công suất nhàn rỗi và khách đề nghị mua giá thấp hơn giá thường.
+- id: m02_absorption_vs_variable
+  module: m02
+  name_vi: Chênh lệch lợi nhuận giữa tính giá toàn bộ và tính giá trực tiếp
+  name_en: Absorption vs Variable Costing Income Difference
+  expression_latex: \pi_{abs}-\pi_{var}=(Q_{prod}-Q_{sold})\times\frac{FOH}{Q_{prod}}
+  expression_python: (Q_prod - Q_sold) * FOH / Q_prod
+  excel: =(Qsx-Qban)*FOH/Qsx
+  variables:
+  - Q_prod
+  - Q_sold
+  - FOH
+  when_to_use: Giải thích vì sao lợi nhuận quản trị (variable) khác báo cáo tài chính (absorption); đánh giá thưởng quản đốc.
+- id: m02_overhead_alloc_revenue
+  module: m02
+  name_vi: Phân bổ định phí chung theo doanh thu
+  name_en: Common Fixed Cost Allocation by Revenue
+  expression_latex: A_i=FC_{common}\times\frac{Rev_i}{\sum Rev}
+  expression_python: FC_common * Rev_i / Rev_total
+  excel: =FCchung*Rev_i/SUM(Rev)
+  variables:
+  - FC_common
+  - Rev_i
+  - Rev_total
+  when_to_use: Chỉ để HIỂU vì sao báo cáo kế toán thấy một sản phẩm 'lỗ'; dùng báo cáo phân bổ khi cần đủ chi phí, không dùng
+    để dừng sản phẩm.
+- id: m03_pohr
+  module: m03
+  name_vi: Tỷ lệ phân bổ chi phí chung định trước
+  name_en: Predetermined Overhead Rate (POHR)
+  expression_latex: \text{POHR} = \dfrac{\text{Estimated Total MOH}}{\text{Estimated Total Allocation Base}}
+  expression_python: est_moh / est_base
+  excel: =SUM(MOH_est)/SUM(Base_est)
+  variables:
+  - est_moh
+  - est_base
+  when_to_use: Đầu kỳ, trước khi nhận job; để báo giá và tính giá thành job sớm, ổn định giữa các tháng mùa vụ.
+- id: m03_applied_moh
+  module: m03
+  name_vi: Chi phí sản xuất chung áp dụng (phân bổ vào job)
+  name_en: Applied Manufacturing Overhead
+  expression_latex: \text{Applied MOH} = \text{POHR} \times \text{Actual Activity}
+  expression_python: pohr * actual_base
+  excel: =POHR*Actual_Base
+  variables:
+  - pohr
+  - actual_base
+  when_to_use: 'Mỗi khi ghi DL/giờ máy vào job: cộng MOH áp dụng vào Job Cost Sheet; cuối kỳ để so với MOH thực tế.'
+- id: m03_job_cost
+  module: m03
+  name_vi: Giá thành và lãi gộp đơn hàng
+  name_en: Job Cost and Gross Profit
+  expression_latex: \text{Job Cost} = DM + DL + \text{Applied MOH};\quad GP\% = \dfrac{\text{Price} - \text{Job Cost}}{\text{Price}}
+  expression_python: (dm + dl + applied_moh, (price - (dm + dl + applied_moh)) / price)
+  excel: =DM+DL+MOH ; =(Giá-Giáthành)/Giá
+  variables:
+  - dm
+  - dl
+  - applied_moh
+  - price
+  when_to_use: Khi đóng job để biết lãi/lỗ; khi báo giá để kiểm tra giá sàn.
+- id: m03_under_over_applied
+  module: m03
+  name_vi: Chênh lệch chi phí chung phân bổ thiếu/thừa
+  name_en: Under/Over-applied Overhead
+  expression_latex: \text{Variance} = \text{Actual MOH} - \text{Applied MOH}\quad(>0\ \text{under},\ <0\ \text{over})
+  expression_python: actual_moh - applied_moh
+  excel: =Actual_MOH-Applied_MOH (dương = under)
+  variables:
+  - actual_moh
+  - applied_moh
+  when_to_use: Cuối kỳ (tháng/quý/năm) đối chiếu POHR.
+- id: m03_overhead_reallocation
+  module: m03
+  name_vi: Phân bổ lại chênh lệch MOH theo số dư (ngoài nguồn phần công thức tổng quát)
+  name_en: Proration of Under/Over-applied Overhead
+  expression_latex: \text{Share}_i = \text{Variance} \times \dfrac{B_i}{\sum B}
+  expression_python: variance * balance_i / total_balance
+  excel: =Variance*B_i/SUM(B)
+  variables:
+  - variance
+  - balance_i
+  - total_balance
+  when_to_use: Chênh lệch trọng yếu so với lợi nhuận.
+- id: m03_equivalent_units_wa
+  module: m03
+  name_vi: Sản lượng tương đương - Bình quân gia quyền
+  name_en: Equivalent Units - Weighted Average
+  expression_latex: \text{EU} = \text{Units Completed} + (\text{WIP}_{end} \times \text{\% Completion})
+  expression_python: completed + wip_end * pct_end
+  excel: =Completed+WIP_end*Pct
+  variables:
+  - completed
+  - wip_end
+  - pct_end
+  when_to_use: Mỗi kỳ, mỗi công đoạn; tính RIÊNG cho NVL và cho chế biến.
+- id: m03_cost_per_eu
+  module: m03
+  name_vi: Chi phí trên mỗi đơn vị tương đương
+  name_en: Cost per Equivalent Unit
+  expression_latex: \text{Cost per EU} = \dfrac{\text{Cost (opening WIP + current)}}{\text{EU}}
+  expression_python: cost_total / eu
+  excel: =Cost/EU
+  variables:
+  - cost_total
+  - eu
+  when_to_use: Sau khi có EU, tính riêng NVL và chế biến rồi cộng thành giá thành đơn vị.
+- id: m03_equivalent_units_fifo
+  module: m03
+  name_vi: Sản lượng tương đương - FIFO
+  name_en: Equivalent Units - FIFO
+  expression_latex: \text{EU}_{FIFO} = WIP_{beg}(1-p_{beg}) + (\text{Completed} - WIP_{beg}) + WIP_{end}\, p_{end}
+  expression_python: wip_begin * (1 - pct_begin) + (completed - wip_begin) + wip_end * pct_end
+  excel: =WIPbeg*(1-Pbeg)+(Completed-WIPbeg)+WIPend*Pend
+  variables:
+  - wip_begin
+  - pct_begin
+  - completed
+  - wip_end
+  - pct_end
+  when_to_use: Giá đầu vào biến động mạnh giữa các kỳ, cần đo hiệu quả kỳ hiện tại.
+- id: m03_activity_rate
+  module: m03
+  name_vi: Đơn giá hoạt động (ABC)
+  name_en: Activity Rate
+  expression_latex: \text{Activity Rate} = \dfrac{\text{Activity Cost Pool}}{\text{Total Cost Driver}}
+  expression_python: pool / driver_total
+  excel: =Pool/Total_Driver
+  variables:
+  - pool
+  - driver_total
+  when_to_use: Bước 4 của quy trình ABC.
+- id: m03_abc_allocation
+  module: m03
+  name_vi: Phân bổ MOH theo ABC cho sản phẩm/đơn/khách
+  name_en: ABC Overhead Allocation
+  expression_latex: \text{MOH}_{ABC} = \sum_{k} \text{Rate}_k \times \text{Driver}_{k}
+  expression_python: sum(r * d for r, d in zip(rates, drivers))
+  excel: =SUMPRODUCT(Rates,Drivers)
+  variables:
+  - rates
+  - drivers
+  when_to_use: 'Bước 5 ABC: tính MOH cho từng sản phẩm/job/khách; sau đó so với Traditional.'
+- id: m03_cost_per_minute
+  module: m03
+  name_vi: Chi phí mỗi phút công suất (TDABC)
+  name_en: Cost per Minute of Capacity
+  expression_latex: \text{Cost per minute} = \dfrac{\text{Total department cost}}{\text{Practical capacity (minutes)}}
+  expression_python: dept_cost / practical_minutes
+  excel: =DeptCost/PracticalMinutes
+  variables:
+  - dept_cost
+  - practical_minutes
+  when_to_use: Bộ phận dịch vụ/xử lý (đơn hàng, CSKH, kho, QC) nhiều loại giao dịch khác thời gian.
+- id: m03_activity_cost_time
+  module: m03
+  name_vi: Chi phí hoạt động theo thời gian (TDABC)
+  name_en: TDABC Activity Cost
+  expression_latex: \text{Activity cost} = \text{Minutes} \times \text{Cost per minute}
+  expression_python: minutes * cost_per_minute
+  excel: =Minutes*CostPerMin
+  variables:
+  - minutes
+  - cost_per_minute
+  when_to_use: Định giá phí dịch vụ/đơn đặc biệt; so sánh chi phí xử lý các loại giao dịch.
+- id: m03_idle_capacity
+  module: m03
+  name_vi: Chi phí công suất nhàn rỗi (TDABC)
+  name_en: Idle Capacity Cost
+  expression_latex: \text{Idle cost} = (\text{Practical minutes} - \text{Used minutes}) \times \text{Cost per minute}
+  expression_python: (practical_minutes - used_minutes) * cost_per_minute
+  excel: =(Practical-Used)*CostPerMin
+  variables:
+  - practical_minutes
+  - used_minutes
+  - cost_per_minute
+  when_to_use: Đánh giá bộ phận dư/thiếu nhân lực.
+- id: m03_absorption_unit_cost
+  module: m03
+  name_vi: Giá thành đơn vị - Absorption Costing
+  name_en: Absorption Unit Cost
+  expression_latex: \text{Unit cost}_{abs} = VC + \dfrac{\text{Fixed MOH}}{\text{Units produced}}
+  expression_python: vc + fixed_moh / units_produced
+  excel: =VC+FixedMOH/UnitsProduced
+  variables:
+  - vc
+  - fixed_moh
+  - units_produced
+  when_to_use: Lập BCTC, định giá toàn phần, giá trị tồn kho.
+- id: m03_profit_difference
+  module: m03
+  name_vi: Chênh lệch lợi nhuận Absorption vs Variable
+  name_en: Absorption vs Variable Profit Difference
+  expression_latex: \Delta = (\text{Units produced} - \text{Units sold}) \times \dfrac{\text{Fixed MOH}}{\text{Units produced}}
+  expression_python: (units_produced - units_sold) * fixed_moh / units_produced
+  excel: =(Produced-Sold)*FixedMOH/Produced
+  variables:
+  - units_produced
+  - units_sold
+  - fixed_moh
+  when_to_use: Đối chiếu lợi nhuận hai phương pháp (bảng đối chiếu giá thành quản trị vs BCTC).
+- id: m03_target_cost
+  module: m03
+  name_vi: Chi phí mục tiêu
+  name_en: Target Cost
+  expression_latex: \text{Target Cost} = \text{Target Price} - \text{Target Profit} = \text{Price}(1-m)
+  expression_python: target_price * (1 - margin)
+  excel: =Price*(1-Margin)
+  variables:
+  - target_price
+  - margin
+  when_to_use: Thiết kế sản phẩm mới, giá bị thị trường áp đặt.
+- id: m03_cost_gap
+  module: m03
+  name_vi: Khoảng cách chi phí cần cắt giảm
+  name_en: Cost Reduction Gap
+  expression_latex: \text{Gap} = \text{Current Cost} - \text{Target Cost}
+  expression_python: current_cost - target_cost
+  excel: =Current-Target
+  variables:
+  - current_cost
+  - target_cost
+  when_to_use: Sau khi có target cost.
+- id: m03_min_price_for_margin
+  module: m03
+  name_vi: Giá tối thiểu để đạt biên lãi mục tiêu
+  name_en: Minimum Price for Target Margin
+  expression_latex: \text{Price} = \dfrac{\text{Cost}}{1 - m}
+  expression_python: cost / (1 - margin)
+  excel: =Cost/(1-Margin)
+  variables:
+  - cost
+  - margin
+  when_to_use: Tái định giá đơn nhỏ/phức tạp, đặt phí setup/MOQ.
+- id: m03_breakeven
+  module: m03
+  name_vi: Điểm hòa vốn và biên an toàn
+  name_en: Break-even and Margin of Safety
+  expression_latex: Q_{BE} = \dfrac{F}{p - v};\quad R_{BE} = \dfrac{F}{CM\%};\quad MoS = \dfrac{R - R_{BE}}{R}
+  expression_python: (fixed / (price - vc), fixed / ((price - vc) / price), (revenue - fixed / ((price - vc) / price)) / revenue)
+  excel: =Fixed/(Price-VC)
+  variables:
+  - fixed
+  - price
+  - vc
+  - revenue
+  when_to_use: Đánh giá chi nhánh/sản phẩm trước khi mở rộng (chi tiết m02).
+- id: m03_weighted_food_cost
+  module: m03
+  name_vi: Food cost bình quân gia quyền theo nhóm món
+  name_en: Weighted Average Food Cost %
+  expression_latex: \text{FC}\% = \sum_i w_i \times fc_i
+  expression_python: sum(w * f for w, f in zip(weights, fcs))
+  excel: =SUMPRODUCT(Weights,FoodCost%)
+  variables:
+  - weights
+  - fcs
+  when_to_use: Phân tích menu F&B (ABC-lite theo nhóm món).
+- id: m03_cogm_cogs
+  module: m03
+  name_vi: Giá thành sản phẩm hoàn thành và giá vốn hàng bán (ngoài nguồn)
+  name_en: COGM and COGS Schedule
+  expression_latex: COGM = DM + DL + MOH + WIP_{beg} - WIP_{end};\quad COGS = FG_{beg} + COGM - FG_{end}
+  expression_python: (dm + dl + moh + wip_beg - wip_end, fg_beg + (dm + dl + moh + wip_beg - wip_end) - fg_end)
+  excel: =DM+DL+MOH+WIPbeg-WIPend
+  variables:
+  - dm
+  - dl
+  - moh
+  - wip_beg
+  - wip_end
+  - fg_beg
+  - fg_end
+  when_to_use: Lập báo cáo giá thành và giá vốn cuối kỳ, kiểm tra khớp với sổ.
+- id: m04_production_budget
+  module: m04
+  name_vi: Sản lượng cần sản xuất (Ngân sách sản xuất)
+  name_en: Production budget
+  expression_latex: \text{Sản xuất} = \text{Bán} + \text{Tồn cuối mong muốn} - \text{Tồn đầu}
+  expression_python: sales + ending_inv - beginning_inv
+  excel: =Ban+TonCuoi-TonDau (TonCuoi = 0.2*Ban_ky_sau)
+  variables:
+  - sales
+  - ending_inv
+  - beginning_inv
+  when_to_use: Bước 2 của Master Budget, sau ngân sách bán hàng.
+- id: m04_materials_purchase
+  module: m04
+  name_vi: NVL cần mua
+  name_en: Direct materials purchases
+  expression_latex: \text{Mua} = \text{Dùng} + \text{Tồn cuối} - \text{Tồn đầu};\quad \text{Dùng} = \text{Sản lượng SX} \times
+    \text{định mức}
+  expression_python: production * qty_per_unit + ending_rm - beginning_rm
+  excel: =SX*DinhMuc+TonCuoiNVL-TonDauNVL
+  variables:
+  - production
+  - qty_per_unit
+  - ending_rm
+  - beginning_rm
+  when_to_use: Bước 3 Master Budget; tính chi phí mua = lượng mua x đơn giá.
+- id: m04_cash_collections
+  module: m04
+  name_vi: Lịch thu tiền bán hàng
+  name_en: Cash collections schedule
+  expression_latex: '\text{Thu}_t = p \times \text{DT}_t + (1-p)\times \text{DT}_{t-1}\ (\text{kỳ 1: } + \text{phải thu đầu
+    năm})'
+  expression_python: p * revenue_t + (1 - p) * revenue_prev
+  excel: =0.9*DT_ky+0.1*DT_ky_truoc
+  variables:
+  - p
+  - revenue_t
+  - revenue_prev
+  when_to_use: Chuyển ngân sách doanh thu (dồn tích) sang tiền thu thực.
+- id: m04_cash_budget
+  module: m04
+  name_vi: Ngân sách tiền mặt và nhu cầu vay
+  name_en: Cash budget and financing need
+  expression_latex: \text{Tiền trước tài trợ} = C_0 + \text{Thu} - \text{Chi}; \quad \text{Vay} = \lceil (C_{min} - \text{Tiền
+    trước TT})/b \rceil \times b\ \text{nếu} < C_{min}; \quad C_{end} = \text{trước TT} + \text{Vay} - \text{Trả nợ}
+  expression_python: (opening + receipts - disbursements) + ((-(-(min_cash - (opening + receipts - disbursements)) // multiple))
+    * multiple if (opening + receipts - disbursements) < min_cash else 0) - repay
+  excel: =Dau+Thu-Chi ; Vay =IF(Pre<Min,CEILING(Min-Pre,10),0)
+  variables:
+  - opening
+  - receipts
+  - disbursements
+  - min_cash
+  - multiple
+  - repay
+  when_to_use: 'Bước 7 Master Budget: phát hiện quý thiếu tiền để kịp vay, thương lượng kỳ hạn hoặc hoãn đầu tư.'
+- id: m04_profit_to_cash
+  module: m04
+  name_vi: Đối chiếu lợi nhuận sang dòng tiền
+  name_en: Profit to cash reconciliation
+  expression_latex: \Delta \text{Tiền} = NI + D\&A - \Delta AR - \Delta Inv + \Delta \text{Thuế phải nộp} - CapEx
+  expression_python: ni + dep - delta_ar - delta_inv + delta_tax_payable - capex
+  excel: =LN+KhauHao-TangPhaiThu-TangTonKho+TangThuePhaiNop-CapEx
+  variables:
+  - ni
+  - dep
+  - delta_ar
+  - delta_inv
+  - delta_tax_payable
+  - capex
+  when_to_use: Kiểm tra chéo ngân sách tiền mặt với báo cáo dự kiến; giải thích vì sao lãi X nhưng tiền tăng Y.
+- id: m04_flexible_budget
+  module: m04
+  name_vi: Ngân sách linh hoạt
+  name_en: Flexible budget
+  expression_latex: \text{NS linh hoạt} = v \times Q_{TT} + FC;\quad \pi_{flex} = (P-v)\,Q_{TT} - FC
+  expression_python: var_cost_per_unit * actual_qty + fixed_cost
+  excel: =BienPhiDV*SLThucTe+DinhPhi
+  variables:
+  - var_cost_per_unit
+  - actual_qty
+  - fixed_cost
+  when_to_use: Mọi so sánh thực tế với kế hoạch khi sản lượng khác ngân sách tĩnh.
+- id: m04_volume_variance
+  module: m04
+  name_vi: Chênh lệch khối lượng bán
+  name_en: Sales volume variance (contribution basis)
+  expression_latex: (Q_{TT}-Q_{NS})\times CM_{NS}
+  expression_python: (actual_qty - budget_qty) * cm_budget
+  excel: =(SL_TT-SL_NS)*CM_NS
+  variables:
+  - actual_qty
+  - budget_qty
+  - cm_budget
+  when_to_use: 'Tầng 1: tách phần lợi nhuận lệch do bán nhiều/ít hơn kế hoạch.'
+- id: m04_price_variance
+  module: m04
+  name_vi: Chênh lệch giá bán
+  name_en: Selling price variance
+  expression_latex: (P_{TT}-P_{NS})\times Q_{TT}
+  expression_python: (actual_price - budget_price) * actual_qty
+  excel: =(Gia_TT-Gia_NS)*SL_TT
+  variables:
+  - actual_price
+  - budget_price
+  - actual_qty
+  when_to_use: Đo tác động giảm giá/chiết khấu lên lợi nhuận.
+- id: m04_vc_variance
+  module: m04
+  name_vi: Chênh lệch biến phí
+  name_en: Variable cost variance (flexible)
+  expression_latex: -(v_{TT}-v_{NS})\times Q_{TT}
+  expression_python: -(actual_v - budget_v) * actual_qty
+  excel: =-(BienPhi_TT-BienPhi_NS)*SL_TT
+  variables:
+  - actual_v
+  - budget_v
+  - actual_qty
+  when_to_use: 'Tầng 2: gộp giá+lượng biến phí; có thể tách từng thành phần (cà phê nhân, bao bì, nhân công, vận chuyển) hoặc
+    tách Price/Quantity theo m05.'
+- id: m04_fc_variance
+  module: m04
+  name_vi: Chênh lệch định phí
+  name_en: Fixed cost variance
+  expression_latex: -(FC_{TT}-FC_{NS})
+  expression_python: -(actual_fc - budget_fc)
+  excel: =-(DinhPhi_TT-DinhPhi_NS)
+  variables:
+  - actual_fc
+  - budget_fc
+  when_to_use: Tầng 2, phần định phí.
+- id: m04_variance_reconciliation
+  module: m04
+  name_vi: Đối chiếu tổng chênh lệch lợi nhuận
+  name_en: Variance reconciliation check
+  expression_latex: \pi_{TT}-\pi_{NS}=V_{vol}+V_{price}+V_{vc}+V_{fc}
+  expression_python: vol + price + vc + fc
+  excel: =KL+Gia+BienPhi+DinhPhi
+  variables:
+  - vol
+  - price
+  - vc
+  - fc
+  when_to_use: Bước kiểm chứng bắt buộc cuối mọi phân tích.
+- id: m04_breakeven
+  module: m04
+  name_vi: Sản lượng và doanh thu hòa vốn
+  name_en: Break-even quantity and revenue
+  expression_latex: Q^{*}=\frac{FC}{P-v}=\frac{FC}{CM};\quad R^{*}=\frac{FC}{CM\%}
+  expression_python: fixed_cost / (price - var_cost)
+  excel: =DinhPhi/(Gia-BienPhi); =DinhPhi/CMpercent
+  variables:
+  - fixed_cost
+  - price
+  - var_cost
+  when_to_use: Đặt mục tiêu bán tối thiểu; đo độ dày lớp đệm; kiểm tra lại khi giá/chi phí đổi.
+- id: m04_margin_of_safety
+  module: m04
+  name_vi: Biên an toàn
+  name_en: Margin of safety
+  expression_latex: MOS=\frac{Q-Q^{*}}{Q}
+  expression_python: (qty - breakeven_qty) / qty
+  excel: =(SL-SLHoaVon)/SL
+  variables:
+  - qty
+  - breakeven_qty
+  when_to_use: Chỉ báo sớm rủi ro lỗ; trong bảng 10 chỉ số cảnh báo.
+- id: m04_moving_average
+  module: m04
+  name_vi: Trung bình di động
+  name_en: Moving average (MA-n)
+  expression_latex: F_{t+1}=\frac{A_t+A_{t-1}+\dots+A_{t-n+1}}{n}
+  expression_python: sum(actuals[-n:]) / n
+  excel: =AVERAGE(B2:B4)
+  variables:
+  - actuals
+  - n
+  when_to_use: Doanh số ổn định, ít xu hướng; làm mượt nhiễu.
+- id: m04_exp_smoothing
+  module: m04
+  name_vi: San mũ đơn
+  name_en: Simple exponential smoothing
+  expression_latex: F_{t+1}=\alpha A_t+(1-\alpha)F_t=\alpha A_t+\alpha(1-\alpha)A_{t-1}+\dots
+  expression_python: alpha * actual_t + (1 - alpha) * forecast_t
+  excel: =$H$1*B3+(1-$H$1)*C3
+  variables:
+  - alpha
+  - actual_t
+  - forecast_t
+  when_to_use: Nhu cầu ổn định cần phản ứng theo dữ liệu mới; chỉ cần lưu dự báo cũ và thực tế mới.
+- id: m04_seasonal_index
+  module: m04
+  name_vi: Chỉ số mùa vụ
+  name_en: Seasonal index
+  expression_latex: SI_i=\frac{\bar{A}_i}{\bar{A}};\quad F_{i}=\frac{T_{năm}}{k}\times SI_i
+  expression_python: quarter_avg / overall_avg
+  excel: =TB_quy/TB_chung
+  variables:
+  - quarter_avg
+  - overall_avg
+  when_to_use: F&B, bán lẻ, du lịch có doanh số lặp theo mùa; chia dự báo năm theo quý.
+- id: m04_linear_regression
+  module: m04
+  name_vi: Hồi quy tuyến tính đơn
+  name_en: Simple linear regression (OLS)
+  expression_latex: Y=a+bX;\quad b=\frac{n\sum XY-\sum X\sum Y}{n\sum X^2-(\sum X)^2};\quad a=\bar{Y}-b\bar{X}
+  expression_python: '(sy/n) - ((n*sxy - sx*sy) / (n*sxx - sx**2)) * (sx/n)  # a; slope b = (n*sxy - sx*sy) / (n*sxx - sx**2)'
+  excel: =FORECAST.LINEAR(x, Y_range, X_range); =SLOPE(Y,X); =INTERCEPT(Y,X)
+  variables:
+  - n
+  - sx, sy, sxy, sxx
+  - b
+  - a
+  when_to_use: Doanh số phụ thuộc một yếu tố đo được (marketing, giá, thời tiết).
+- id: m04_mad
+  module: m04
+  name_vi: Độ lệch tuyệt đối trung bình (MAD)
+  name_en: Mean Absolute Deviation
+  expression_latex: MAD=\frac{\sum |A-F|}{n}
+  expression_python: sum(abs(a - f) for a, f in zip(actual, forecast)) / len(actual)
+  excel: =SUMPRODUCT(ABS(A-F))/COUNT(A)
+  variables:
+  - actual
+  - forecast
+  when_to_use: 'Trả lời: dự báo lệch trung bình bao nhiêu đơn vị; chọn alpha, n.'
+- id: m04_mape
+  module: m04
+  name_vi: Sai số phần trăm tuyệt đối trung bình (MAPE)
+  name_en: Mean Absolute Percentage Error
+  expression_latex: MAPE=\frac{1}{n}\sum \left|\frac{A-F}{A}\right|\times 100\%
+  expression_python: sum(abs((a - f) / a) for a, f in zip(actual, forecast)) / len(actual) * 100
+  excel: =SUMPRODUCT(ABS((A-F)/A))/COUNT(A)
+  variables:
+  - actual
+  - forecast
+  when_to_use: So sánh độ chính xác giữa các sản phẩm/quy mô khác nhau; chỉ số 10 trong bảng cảnh báo (ngưỡng gợi ý trên 15%).
+- id: m04_mse
+  module: m04
+  name_vi: Sai số bình phương trung bình (MSE)
+  name_en: Mean Squared Error
+  expression_latex: MSE=\frac{1}{n}\sum (A-F)^2
+  expression_python: sum((a - f) ** 2 for a, f in zip(actual, forecast)) / len(actual)
+  excel: =SUMXMY2(A,F)/COUNT(A)
+  variables:
+  - actual
+  - forecast
+  when_to_use: Phát hiện sai số lớn đột xuất.
+- id: m04_tracking_signal
+  module: m04
+  name_vi: Tín hiệu theo dõi (thiên lệch dự báo)
+  name_en: Tracking signal
+  expression_latex: TS=\frac{\sum (A-F)}{MAD}
+  expression_python: sum(a - f for a, f in zip(actual, forecast)) / mad
+  excel: =SUM(A-F)/MAD
+  variables:
+  - actual
+  - forecast
+  - mad
+  when_to_use: Kiểm tra dự báo có lệch một chiều (bias).
+- id: m04_zbb_ratio
+  module: m04
+  name_vi: Tỷ lệ lợi ích/chi phí xếp hạng gói ZBB
+  name_en: ZBB benefit-cost ranking
+  expression_latex: r_j=\frac{\text{Lợi nhuận gộp kỳ vọng}_j}{\text{Chi phí}_j};\ \text{duyệt theo thứ hạng giảm dần đến khi
+    } \sum \text{Chi phí} \le \text{Trần}
+  expression_python: expected_gross_profit / cost
+  excel: =LoiNhuanGop/ChiPhi
+  variables:
+  - expected_gross_profit
+  - cost
+  when_to_use: Phân bổ trần ngân sách (marketing, chi chung) cho nhiều gói cạnh tranh.
+- id: m04_cash_13week
+  module: m04
+  name_vi: Tiền cuối tuần trong dòng tiền 13 tuần
+  name_en: 13-week cash roll-forward
+  expression_latex: C_w=C_{w-1}+\text{Thu}_w-\text{Chi NCC/biến phí}_w-\text{Lương}_w-\text{Định phí}_w-\text{Trả nợ}_w-CapEx_w
+  expression_python: prev_cash + receipts - variable_payments - payroll - fixed - debt_service - capex
+  excel: =TienDau+Thu-BienPhi-Luong-DinhPhi-TraNo-CapEx
+  variables:
+  - prev_cash
+  - receipts
+  - variable_payments
+  - payroll
+  - fixed
+  - debt_service
+  - capex
+  when_to_use: Mỗi tuần cho startup/SME; bắt buộc trước khi chi CapEx lớn hoặc trả nợ.
+- id: m05_basic_variance
+  module: m05
+  name_vi: Chênh lệch cơ bản và nhãn F/U
+  name_en: Basic variance and F/U flag
+  expression_latex: '\text{Variance} = \text{Actual} - \text{Standard};\quad \text{chi phí: } >0 \Rightarrow U,\ <0 \Rightarrow
+    F;\quad \text{doanh thu/lợi nhuận: } <0 \Rightarrow U'
+  expression_python: ("U" if (actual - standard) > 0 else "F") if is_cost else ("U" if (actual - standard) < 0 else "F")
+  excel: =IF(Var>0,"U","F")  (chi phí); =IF(Var<0,"U","F")  (doanh thu, lợi nhuận)
+  variables:
+  - actual
+  - standard
+  - is_cost
+  when_to_use: 'Mọi variance: xác định hướng tác động lên lợi nhuận trước khi diễn giải.'
+- id: m05_std_allowed
+  module: m05
+  name_vi: Lượng/giờ cho phép theo chuẩn
+  name_en: Standard quantity / hours allowed for actual output
+  expression_latex: SQ = Q_{actual\ output} \times \text{std qty per unit};\quad SH = Q_{actual\ output} \times \text{std
+    hours per unit}
+  expression_python: actual_output * std_per_unit
+  excel: =SanLuongThucTe*DinhMucDonVi
+  variables:
+  - actual_output
+  - std_per_unit
+  when_to_use: Bước đầu của mọi tính toán Quantity, Efficiency, VOH Efficiency, FOH Volume.
+- id: m05_flexible_budget_cost
+  module: m05
+  name_vi: Chi phí ngân sách linh hoạt
+  name_en: Flexible budget cost
+  expression_latex: \text{Flex cost} = Q_{actual} \times v_{std} + F_{budget}
+  expression_python: actual_output * var_cost_per_unit + fixed_cost
+  excel: =SanLuongThucTe*BienPhiDonVi+DinhPhi
+  variables:
+  - actual_output
+  - var_cost_per_unit
+  - fixed_cost
+  when_to_use: Trước khi so chi phí thực tế với kế hoạch khi sản lượng thực tế khác ngân sách tĩnh.
+- id: m05_dm_price
+  module: m05
+  name_vi: Chênh lệch giá NVL
+  name_en: Direct Materials Price Variance
+  expression_latex: (AP - SP)\times AQ
+  expression_python: (ap - sp) * aq
+  excel: =(AP-SP)*AQ
+  variables:
+  - ap
+  - sp
+  - aq
+  when_to_use: 'Đánh giá bộ phận Mua hàng: đàm phán, nhà cung cấp, thời điểm mua.'
+- id: m05_dm_quantity
+  module: m05
+  name_vi: Chênh lệch lượng NVL
+  name_en: Direct Materials Quantity (Usage) Variance
+  expression_latex: (AQ - SQ)\times SP
+  expression_python: (aq - sq) * sp
+  excel: =(AQ-SQ)*SP
+  variables:
+  - aq
+  - sq
+  - sp
+  when_to_use: 'Đánh giá Sản xuất: tay nghề, phế phẩm, máy móc, thiết kế, chất lượng NVL.'
+- id: m05_dm_total
+  module: m05
+  name_vi: Tổng chênh lệch NVL trực tiếp
+  name_en: Total DM Variance (check)
+  expression_latex: AQ\cdot AP - SQ\cdot SP = (AP-SP)AQ + (AQ-SQ)SP
+  expression_python: aq * ap - sq * sp
+  excel: =AQ*AP-SQ*SP
+  variables:
+  - aq
+  - ap
+  - sq
+  - sp
+  when_to_use: Kiểm chứng Price + Quantity cộng khớp tổng chi phí thực tế trừ chi phí chuẩn.
+- id: m05_dl_rate
+  module: m05
+  name_vi: Chênh lệch đơn giá nhân công
+  name_en: Direct Labor Rate Variance
+  expression_latex: (AR - SR)\times AH
+  expression_python: (ar - sr) * ah
+  excel: =(AR-SR)*AH
+  variables:
+  - ar
+  - sr
+  - ah
+  when_to_use: Đánh giá chính sách nhân sự, tăng ca (OT), cơ cấu thợ, tăng lương tối thiểu vùng (mức hiện hành cần xác nhận).
+- id: m05_dl_efficiency
+  module: m05
+  name_vi: Chênh lệch hiệu suất nhân công
+  name_en: Direct Labor Efficiency Variance
+  expression_latex: (AH - SH)\times SR
+  expression_python: (ah - sh) * sr
+  excel: =(AH-SH)*SR
+  variables:
+  - ah
+  - sh
+  - sr
+  when_to_use: 'Đánh giá quản đốc/ca làm: năng suất, bố trí dây chuyền, đào tạo, máy hỏng.'
+- id: m05_voh_spending
+  module: m05
+  name_vi: Chênh lệch chi tiêu biến phí chung
+  name_en: Variable Overhead Spending Variance
+  expression_latex: \text{Actual VOH} - AH \times \text{Std VOH rate}
+  expression_python: actual_voh - ah * std_voh_rate
+  excel: =ActualVOH-AH*StdVOHRate
+  variables:
+  - actual_voh
+  - ah
+  - std_voh_rate
+  when_to_use: Kiểm tra chi tiêu điện, gas, vật tư phụ so với mức phải chi cho số giờ thực tế.
+- id: m05_voh_efficiency
+  module: m05
+  name_vi: Chênh lệch hiệu suất biến phí chung
+  name_en: Variable Overhead Efficiency Variance
+  expression_latex: (AH - SH)\times \text{Std VOH rate}
+  expression_python: (ah - sh) * std_voh_rate
+  excel: =(AH-SH)*StdVOHRate
+  variables:
+  - ah
+  - sh
+  - std_voh_rate
+  when_to_use: Xem biến phí chung tăng thêm vì làm chậm; chỉ là hệ quả của DL Efficiency.
+- id: m05_foh_rate
+  module: m05
+  name_vi: Mức phân bổ định phí chung
+  name_en: Fixed Overhead Rate
+  expression_latex: \text{FOH rate} = \dfrac{\text{Budgeted FOH}}{\text{Budgeted output}\times \text{Std hours/unit}}
+  expression_python: budget_foh / (budget_output * std_hours_per_unit)
+  excel: =DinhPhiNganSach/(SanLuongNganSach*GioChuan)
+  variables:
+  - budget_foh
+  - budget_output
+  - std_hours_per_unit
+  when_to_use: Lập thẻ giá thành (định phí phân bổ/đơn vị) và tính FOH Volume Variance.
+- id: m05_foh_budget
+  module: m05
+  name_vi: Chênh lệch chi tiêu định phí chung (ngân sách)
+  name_en: Fixed Overhead Budget (Spending) Variance
+  expression_latex: \text{Actual FOH} - \text{Budgeted FOH}
+  expression_python: actual_foh - budget_foh
+  excel: =ActualFOH-BudgetFOH
+  variables:
+  - actual_foh
+  - budget_foh
+  when_to_use: Kiểm soát thuê mặt bằng, khấu hao, lương quản lý, bảo hiểm so ngân sách (có trong cả absorption và contribution).
+- id: m05_foh_volume
+  module: m05
+  name_vi: Chênh lệch công suất định phí chung
+  name_en: Fixed Overhead Volume Variance
+  expression_latex: \text{Budgeted FOH} - SH\times \text{FOH rate}
+  expression_python: budget_foh - sh * foh_rate
+  excel: =BudgetFOH-SH*FOHRate
+  variables:
+  - budget_foh
+  - sh
+  - foh_rate
+  when_to_use: 'Chỉ khi dùng absorption costing: đo công suất bỏ không (hay vượt) so với kế hoạch.'
+- id: m05_sales_price
+  module: m05
+  name_vi: Chênh lệch giá bán
+  name_en: Sales Price Variance
+  expression_latex: (AP_{sell} - BP_{sell})\times AQ_{sold}
+  expression_python: (actual_price - budget_price) * actual_qty
+  excel: =(GiaTT-GiaKH)*SoLuongTT
+  variables:
+  - actual_price
+  - budget_price
+  - actual_qty
+  when_to_use: Đánh giá chính sách giá, khuyến mãi, chiết khấu, cạnh tranh giá.
+- id: m05_sales_volume
+  module: m05
+  name_vi: Chênh lệch sản lượng bán
+  name_en: Sales Volume Variance
+  expression_latex: (AQ_{sold} - BQ)\times \text{Budgeted margin per unit}
+  expression_python: (actual_qty - budget_qty) * budget_margin
+  excel: =(SLTT-SLKH)*MarginNganSach
+  variables:
+  - actual_qty
+  - budget_qty
+  - budget_margin
+  when_to_use: 'Tầng 1 (Static -> Flexible): phần lợi nhuận mất/được do bán ít/nhiều hơn kế hoạch.'
+- id: m05_sales_quantity
+  module: m05
+  name_vi: Chênh lệch tổng số lượng bán
+  name_en: Sales Quantity Variance (multi-product)
+  expression_latex: (\sum AQ_i - \sum BQ_i)\times \overline{CM}_{budget}
+  expression_python: (total_actual_qty - total_budget_qty) * budget_avg_cm
+  excel: =(TongSLTT-TongSLKH)*CMBinhQuanNganSach
+  variables:
+  - total_actual_qty
+  - total_budget_qty
+  - budget_avg_cm
+  when_to_use: Nhiều sản phẩm có margin khác nhau; phần 'bán nhiều hay ít' thuần túy.
+- id: m05_sales_mix
+  module: m05
+  name_vi: Chênh lệch cơ cấu bán
+  name_en: Sales Mix Variance
+  expression_latex: \sum_i \left(AQ_i - \sum AQ \times Mix^{budget}_i\right)\times CM_i
+  expression_python: sum((aq[k] - sum(aq.values()) * budget_mix[k]) * cm[k] for k in aq)
+  excel: =SUMPRODUCT((SLTT-TongSLTT*CoCauNS)*CM)
+  variables:
+  - aq
+  - budget_mix
+  - cm
+  when_to_use: Khi khách chuyển sang món/gói margin thấp hơn (hoặc cao hơn) dù tổng lượng không đổi.
+- id: m05_cm_vs_abs_bridge
+  module: m05
+  name_vi: Cầu nối Sales Volume theo CM và theo absorption
+  name_en: Contribution vs Absorption volume bridge
+  expression_latex: (AQ-BQ)\cdot CM = (AQ-BQ)\cdot GM_{abs} + FOH_{vol},\quad FOH_{vol} = (BQ-AQ)\cdot \text{FOH/unit}
+  expression_python: (actual_qty - budget_qty) * (price - var_cost) - ((actual_qty - budget_qty) * (price - var_cost - foh_per_unit)
+    + (budget_qty - actual_qty) * foh_per_unit)
+  excel: =(SLTT-SLKH)*CM - ((SLTT-SLKH)*LaiGop + (SLKH-SLTT)*DinhPhiDonVi)
+  variables:
+  - actual_qty
+  - budget_qty
+  - price
+  - var_cost
+  - foh_per_unit
+  when_to_use: Chứng minh hai cách (CM và absorption) cho cùng tổng; kiểm tra đối chiếu khi đổi phương pháp. Hàm trả 0 nếu
+    đồng nhất.
+- id: m05_profit_reconciliation
+  module: m05
+  name_vi: Đối chiếu tổng các variance với chênh lệch lợi nhuận
+  name_en: Variance-to-profit reconciliation check
+  expression_latex: \sum \text{impact}_i = \text{Actual profit} - \text{Budgeted profit}
+  expression_python: sum(impacts) - (actual_profit - budget_profit)
+  excel: =SUM(TacDong)-(LNThucTe-LNNganSach)
+  variables:
+  - impacts
+  - actual_profit
+  - budget_profit
+  when_to_use: Bước bắt buộc cuối mỗi báo cáo variance.
+- id: m05_exception_pct
+  module: m05
+  name_vi: Phần trăm variance so với chuẩn để phân loại ngoại lệ
+  name_en: Variance % for management by exception
+  expression_latex: \%\text{var} = \dfrac{|\text{Variance}|}{\text{Standard of that line}}\times 100
+  expression_python: abs(variance) / standard * 100
+  excel: =ABS(Var)/Chuan*100
+  variables:
+  - variance
+  - standard
+  when_to_use: Xếp hạng variance để chọn 3 việc cần xử lý, áp ngưỡng Insignificant/Moderate/Significant.
+- id: m06_ebit_vas
+  module: m06
+  name_vi: EBIT từ BCTC theo VAS
+  name_en: EBIT from VAS statements
+  expression_latex: \text{EBIT} = \text{EBT (mã 50)} + \text{Chi phí lãi vay (mã 23)} - \text{Thu nhập khác bất thường} +
+    \text{Chi phí khác bất thường}
+  expression_python: ebt + interest - abnormal_income + abnormal_expense
+  excel: =B02_ma50+B02_ma23-ThuNhapBatThuong+ChiPhiBatThuong
+  variables:
+  - ebt
+  - interest
+  - abnormal_income
+  - abnormal_expense
+  when_to_use: Mọi lần cần EBIT (ICR, Operating Margin, DuPont 5, EBITDA) vì BCTC VAS không có dòng EBIT riêng.
+- id: m06_average_balance
+  module: m06
+  name_vi: Số dư bình quân
+  name_en: Average balance
+  expression_latex: \bar{B} = \frac{B_{\text{đầu kỳ}} + B_{\text{cuối kỳ}}}{2}
+  expression_python: (opening + closing) / 2
+  excel: =AVERAGE(DauKy,CuoiKy)
+  variables:
+  - opening
+  - closing
+  when_to_use: Mẫu số của mọi tỷ số có tử số là dòng chảy (vòng quay, ROE, ROA).
+- id: m06_current_ratio
+  module: m06
+  name_vi: Tỷ số thanh toán hiện hành
+  name_en: Current Ratio
+  expression_latex: \text{CR} = \frac{\text{Tài sản ngắn hạn (mã 100)}}{\text{Nợ ngắn hạn (mã 310)}}
+  expression_python: current_assets / current_liabilities
+  excel: =B01_ma100/B01_ma310
+  variables:
+  - current_assets
+  - current_liabilities
+  when_to_use: Bước đầu đánh giá khả năng trả nợ trong 12 tháng/1 chu kỳ.
+- id: m06_quick_ratio
+  module: m06
+  name_vi: Tỷ số thanh toán nhanh
+  name_en: Quick (Acid-Test) Ratio
+  expression_latex: \text{QR} = \frac{\text{CA} - \text{Inventory}}{\text{CL}} = \frac{\text{Cash} + \text{ST Investments}
+    + \text{AR}}{\text{CL}}
+  expression_python: (current_assets - inventory) / current_liabilities
+  excel: =(B01_ma100-B01_ma140)/B01_ma310
+  variables:
+  - current_assets
+  - inventory
+  - current_liabilities
+  when_to_use: Kiểm tra thanh khoản khi không bán thêm được hàng nào; ưu tiên với bán lẻ, phân phối, sản xuất.
+- id: m06_cash_ratio
+  module: m06
+  name_vi: Tỷ số tiền mặt
+  name_en: Cash Ratio
+  expression_latex: \text{Cash Ratio} = \frac{\text{Tiền và tương đương tiền (mã 110)}}{\text{Nợ ngắn hạn}}
+  expression_python: cash / current_liabilities
+  excel: =B01_ma110/B01_ma310
+  variables:
+  - cash
+  - current_liabilities
+  when_to_use: 'Phép thử khắt khe nhất: nếu ngày mai chủ nợ đồng loạt đòi thì trả được bao nhiêu phần; ngân hàng quan tâm
+    khi nhiều khoản vay đến hạn cùng lúc.'
+- id: m06_nwc
+  module: m06
+  name_vi: Vốn lưu động ròng
+  name_en: Net Working Capital (balance-sheet basis)
+  expression_latex: \text{NWC} = \text{CA} - \text{CL}
+  expression_python: current_assets - current_liabilities
+  excel: =B01_ma100-B01_ma310
+  variables:
+  - current_assets
+  - current_liabilities
+  when_to_use: Xem đệm thanh khoản tuyệt đối; luôn đọc cùng cấu trúc (tiền hay HTK/phải thu).
+- id: m06_inventory_turnover_dio
+  module: m06
+  name_vi: Vòng quay hàng tồn kho và số ngày tồn kho
+  name_en: Inventory Turnover and DIO
+  expression_latex: \text{Turnover} = \frac{\text{COGS}}{\text{Avg Inventory}},\quad \text{DIO} = \frac{365}{\text{Turnover}}
+  expression_python: 365 / (cogs / avg_inventory)
+  excel: =365/(GiaVon/HTKBinhQuan)
+  variables:
+  - cogs
+  - avg_inventory
+  when_to_use: Đánh giá hàng nằm kho bao lâu; phát hiện tồn kho ứ đọng.
+- id: m06_ar_turnover_dso
+  module: m06
+  name_vi: Vòng quay phải thu và số ngày thu tiền
+  name_en: AR Turnover and DSO
+  expression_latex: \text{DSO} = \frac{365}{\text{Net Credit Sales}/\text{Avg AR}} = \frac{\text{Avg AR}}{\text{Net Credit
+    Sales}}\times 365
+  expression_python: avg_ar / credit_sales * 365
+  excel: =PhaiThuBinhQuan/DoanhThuBanChiu*365
+  variables:
+  - avg_ar
+  - credit_sales
+  when_to_use: Đo bán xong bao lâu thì thu tiền; so với điều khoản bán hàng.
+- id: m06_ap_turnover_dpo
+  module: m06
+  name_vi: Vòng quay phải trả và số ngày trả tiền
+  name_en: AP Turnover and DPO
+  expression_latex: \text{DPO} = \frac{\text{Avg AP}}{\text{COGS (hoặc Purchases)}}\times 365
+  expression_python: avg_ap / purchases_or_cogs * 365
+  excel: =PhaiTraBinhQuan/GiaVon*365
+  variables:
+  - avg_ap
+  - purchases_or_cogs
+  when_to_use: Đo số ngày giữ tiền của nhà cung cấp (nguồn vốn lưu động miễn phí).
+- id: m06_ccc
+  module: m06
+  name_vi: Chu kỳ chuyển đổi tiền mặt
+  name_en: Cash Conversion Cycle
+  expression_latex: \text{CCC} = \text{DIO} + \text{DSO} - \text{DPO}
+  expression_python: dio + dso - dpo
+  excel: =DIO+DSO-DPO
+  variables:
+  - dio
+  - dso
+  - dpo
+  when_to_use: Doanh nghiệp phân phối/bán lẻ/sản xuất; quy đổi sang số tiền cần tài trợ hoặc giải phóng được.
+- id: m06_cash_release
+  module: m06
+  name_vi: Tiền giải phóng khi rút ngắn CCC
+  name_en: Cash released by days saved
+  expression_latex: \Delta\text{Cash} = \Delta\text{DSO}\times\frac{\text{Revenue}}{365} + \Delta\text{DIO}\times\frac{\text{COGS}}{365}
+    + \Delta\text{DPO}\times\frac{\text{COGS}}{365}
+  expression_python: d_dso * revenue / 365 + d_dio * cogs / 365 + d_dpo * cogs / 365
+  excel: =dDSO*DoanhThu/365+dDIO*GiaVon/365+dDPO*GiaVon/365
+  variables:
+  - d_dso
+  - d_dio
+  - d_dpo
+  - revenue
+  - cogs
+  when_to_use: 'Biến tỷ số thành quyết định tiền thật: mỗi ngày CCC = một lượng tiền cụ thể.'
+- id: m06_asset_turnover
+  module: m06
+  name_vi: Vòng quay tổng tài sản
+  name_en: Total Asset Turnover
+  expression_latex: \text{AT} = \frac{\text{Revenue}}{\text{Avg Total Assets (mã 270)}}
+  expression_python: revenue / avg_total_assets
+  excel: =DoanhThu/TongTaiSanBinhQuan
+  variables:
+  - revenue
+  - avg_total_assets
+  when_to_use: Mỗi đồng tài sản tạo bao nhiêu đồng doanh thu; trụ cột thứ hai của DuPont.
+- id: m06_debt_to_equity
+  module: m06
+  name_vi: Tỷ số nợ trên vốn chủ
+  name_en: Debt-to-Equity (D/E)
+  expression_latex: \text{D/E} = \frac{\text{Nợ phải trả (mã 300)}}{\text{Vốn chủ sở hữu (mã 400)}}
+  expression_python: total_liabilities / equity
+  excel: =B01_ma300/B01_ma400
+  variables:
+  - total_liabilities
+  - equity
+  when_to_use: Đo đệm vốn chủ bảo vệ chủ nợ; ngân hàng thẩm định vay.
+- id: m06_debt_ratio
+  module: m06
+  name_vi: Tỷ số nợ trên tổng tài sản
+  name_en: Debt Ratio
+  expression_latex: \text{Debt Ratio} = \frac{\text{TL}}{\text{TA}} = 1 - \text{Equity Ratio};\quad \text{D/E} = \frac{\text{DR}}{1-\text{DR}}
+  expression_python: total_liabilities / total_assets
+  excel: =B01_ma300/B01_ma270
+  variables:
+  - total_liabilities
+  - total_assets
+  when_to_use: Cùng thông tin D/E nhưng ở dạng phần trăm tài sản tài trợ bằng nợ, dễ hiểu cho người không quen D/E.
+- id: m06_interest_coverage
+  module: m06
+  name_vi: Khả năng thanh toán lãi vay
+  name_en: Interest Coverage Ratio (ICR)
+  expression_latex: \text{ICR} = \frac{\text{EBIT}}{\text{Chi phí lãi vay}}
+  expression_python: ebit / interest_expense
+  excel: =EBIT/ChiPhiLaiVay
+  variables:
+  - ebit
+  - interest_expense
+  when_to_use: Ngân hàng/chủ nợ đánh giá đệm lợi nhuận trả lãi; kiểm tra độ nhạy khi EBIT giảm.
+- id: m06_equity_multiplier
+  module: m06
+  name_vi: Hệ số vốn chủ sở hữu
+  name_en: Equity Multiplier
+  expression_latex: \text{EM} = \frac{\text{TA}}{\text{Equity}} = 1 + \text{D/E}
+  expression_python: total_assets / equity
+  excel: =B01_ma270/B01_ma400
+  variables:
+  - total_assets
+  - equity
+  when_to_use: Thành phần đòn bẩy trong DuPont; mỗi đồng vốn chủ chống đỡ bao nhiêu đồng tài sản.
+- id: m06_dscr
+  module: m06
+  name_vi: Hệ số khả năng trả nợ (gốc và lãi)
+  name_en: Debt Service Coverage Ratio (DSCR)
+  expression_latex: \text{DSCR} = \frac{\text{EBITDA} - \text{Thuế TNDN} - \text{Capex duy trì}}{\text{Gốc phải trả trong
+    kỳ} + \text{Lãi phải trả trong kỳ}}
+  expression_python: (ebitda - tax - maintenance_capex) / (principal + interest)
+  excel: =(EBITDA-Thue-CapexDuyTri)/(Goc+Lai)
+  variables:
+  - ebitda
+  - tax
+  - maintenance_capex
+  - principal
+  - interest
+  when_to_use: Thẩm định vay và rà soát SME có lịch trả gốc lớn; bổ sung cho ICR chỉ xét lãi.
+- id: m06_gross_margin
+  module: m06
+  name_vi: Biên lợi nhuận gộp
+  name_en: Gross Margin
+  expression_latex: \text{GM} = \frac{\text{Revenue} - \text{COGS}}{\text{Revenue}}\times 100\%
+  expression_python: (revenue - cogs) / revenue
+  excel: =(B02_ma10-B02_ma11)/B02_ma10
+  variables:
+  - revenue
+  - cogs
+  when_to_use: Đo sức mạnh định giá và hiệu quả mua hàng/sản xuất.
+- id: m06_operating_margin
+  module: m06
+  name_vi: Biên lợi nhuận hoạt động
+  name_en: Operating Margin
+  expression_latex: \text{OM} = \frac{\text{EBIT}}{\text{Revenue}}
+  expression_python: ebit / revenue
+  excel: =EBIT/DoanhThuThuan
+  variables:
+  - ebit
+  - revenue
+  when_to_use: So hiệu quả cốt lõi giữa hai doanh nghiệp vay nợ khác nhau.
+- id: m06_ebitda_margin
+  module: m06
+  name_vi: Biên EBITDA
+  name_en: EBITDA Margin
+  expression_latex: \text{EBITDA Margin} = \frac{\text{EBIT} + \text{D\&A}}{\text{Revenue}}
+  expression_python: (ebit + depreciation_amortization) / revenue
+  excel: =(EBIT+KhauHao)/DoanhThuThuan
+  variables:
+  - ebit
+  - depreciation_amortization
+  - revenue
+  when_to_use: Xem khả năng tạo dòng tiền hoạt động thô; so công ty có chính sách khấu hao khác nhau.
+- id: m06_net_margin
+  module: m06
+  name_vi: Biên lợi nhuận ròng
+  name_en: Net Profit Margin
+  expression_latex: \text{NM} = \frac{\text{Net Income (mã 60)}}{\text{Revenue}}\times 100\%
+  expression_python: net_income / revenue
+  excel: =B02_ma60/B02_ma10
+  variables:
+  - net_income
+  - revenue
+  when_to_use: 'Bottom line: giữ lại bao nhiêu từ mỗi đồng doanh thu sau mọi chi phí, lãi vay và thuế.'
+- id: m06_roe
+  module: m06
+  name_vi: Tỷ suất sinh lời trên vốn chủ
+  name_en: Return on Equity (ROE)
+  expression_latex: \text{ROE} = \frac{\text{Net Income}}{\text{Avg Equity}}\times 100\%
+  expression_python: net_income / avg_equity
+  excel: =B02_ma60/VonChuBinhQuan
+  variables:
+  - net_income
+  - avg_equity
+  when_to_use: 'Góc nhìn chủ sở hữu: mỗi đồng vốn bỏ vào kiếm bao nhiêu; so chi phí cơ hội.'
+- id: m06_roa
+  module: m06
+  name_vi: Tỷ suất sinh lời trên tài sản
+  name_en: Return on Assets (ROA)
+  expression_latex: \text{ROA} = \frac{\text{Net Income}}{\text{Avg Total Assets}}\times 100\%;\quad \text{ROA hiệu chỉnh}
+    = \frac{\text{NI} + \text{Lãi vay}(1-T)}{\text{Avg TA}}
+  expression_python: net_income / avg_total_assets
+  excel: =B02_ma60/TongTaiSanBinhQuan
+  variables:
+  - net_income
+  - avg_total_assets
+  when_to_use: Đánh giá năng lực quản lý dùng tài sản, độc lập cấu trúc vốn.
+- id: m06_burn_runway
+  module: m06
+  name_vi: Burn Rate và Runway
+  name_en: Burn Rate and Runway
+  expression_latex: \text{Runway (tháng)} = \frac{\text{Tiền mặt hiện có}}{\text{Burn Rate/tháng}}
+  expression_python: cash_on_hand / monthly_burn
+  excel: =TienMat/BurnRate
+  variables:
+  - cash_on_hand
+  - monthly_burn
+  when_to_use: Startup/SME lỗ hoặc dòng tiền âm, cần biết còn sống bao lâu.
+- id: m06_cfo_to_ni
+  module: m06
+  name_vi: Tỷ lệ dòng tiền hoạt động trên lợi nhuận ròng
+  name_en: CFO to Net Income
+  expression_latex: \text{CFO/NI} = \frac{\text{Lưu chuyển tiền thuần từ HĐKD}}{\text{Lợi nhuận sau thuế}}
+  expression_python: cfo / net_income
+  excel: =CFO/LNST
+  variables:
+  - cfo
+  - net_income
+  when_to_use: Kiểm tra chất lượng lợi nhuận; phát hiện tăng trưởng đốt tiền hoặc ghi nhận doanh thu sớm.
+- id: m06_operating_wc
+  module: m06
+  name_vi: Vốn lưu động hoạt động
+  name_en: Operating working capital
+  expression_latex: \text{OWC} = \text{AR} + \text{Inventory} - \text{AP}
+  expression_python: ar + inventory - ap
+  excel: =PhaiThu+HTK-PhaiTra
+  variables:
+  - ar
+  - inventory
+  - ap
+  when_to_use: Lượng vốn thực sự bị kẹt trong chu kỳ hoạt động; giải thích vì sao lãi mà thiếu tiền.
+- id: m06_revenue_growth
+  module: m06
+  name_vi: Tăng trưởng và so sánh tốc độ tăng
+  name_en: Growth rate comparison
+  expression_latex: g = \frac{X_t}{X_{t-1}} - 1
+  expression_python: current / previous - 1
+  excel: =KyNay/KyTruoc-1
+  variables:
+  - current
+  - previous
+  when_to_use: So tốc độ tăng của doanh thu với phải thu, tồn kho, phải trả, lợi nhuận, CFO để lộ sự phân kỳ.
+- id: m06_cogs_fifo_wavg
+  module: m06
+  name_vi: Giá vốn theo FIFO và bình quân gia quyền
+  name_en: COGS under FIFO vs weighted average
+  expression_latex: \text{COGS}_{FIFO} = \sum \text{lô cũ trước};\quad \text{COGS}_{WA} = Q_{bán}\times\frac{\text{Giá trị
+    tồn đầu} + \text{Giá trị nhập}}{Q_{tồn đầu}+Q_{nhập}}
+  expression_python: qty_sold * (open_qty * open_price + buy_qty * buy_price) / (open_qty + buy_qty)
+  excel: =SL_ban*(SL_dau*Gia_dau+SL_nhap*Gia_nhap)/(SL_dau+SL_nhap)
+  variables:
+  - qty_sold
+  - open_qty
+  - open_price
+  - buy_qty
+  - buy_price
+  when_to_use: So sánh hai doanh nghiệp khác phương pháp giá xuất kho; đánh giá ảnh hưởng chính sách lên Gross Margin, HTK,
+    DIO.
+- id: m07_adjusted_earnings_bridge
+  module: m07
+  name_vi: Cầu nối điều chỉnh lợi nhuận (VAS sang chuẩn nhà đầu tư)
+  name_en: Earnings normalization bridge
+  expression_latex: EBT_{adj} = EBT_{VAS} + \sum \Delta_i ; \; NI_{adj} = EBT_{adj}(1-t)
+  expression_python: ebt_adj = ebt_vas + sum(adjustments); ni_adj = ebt_adj*(1-t); ni_recurring = (ebt_vas + sum(recurring_adj))*(1-t)
+  excel: =EBT + SUM(dieu_chinh)  ;  =EBT_dc*(1-thue)
+  variables:
+  - ebt_vas
+  - adjustments
+  - t
+  when_to_use: Gọi vốn, M&A, vay lớn, hoặc tự rà soát BCTC trước khi ra quyết định đầu tư/vay.
+- id: m07_menu_engineering
+  module: m07
+  name_vi: Phân loại Menu Engineering (Star/Plowhorse/Puzzle/Dog)
+  name_en: Menu engineering classification
+  expression_latex: CM_i = P_i - FC_i - C^{ABC}_i ; \; \overline{CM} = \sum w_i CM_i ; \; pop\_threshold = 70\% \times \frac{1}{n}
+  expression_python: cm_i = price - food_cost - prep_min*rate_per_min; cm_avg = sum(w*cm for w,cm in zip(weights,cms)); pop_thr
+    = 0.7/n
+  excel: =SUMPRODUCT(ty_trong; CM)  ;  =0.7/COUNTA(mon)
+  variables:
+  - price
+  - food_cost
+  - prep_min
+  - rate_per_min
+  - weights
+  - n
+  when_to_use: Tối ưu menu nhà hàng/quán cà phê, danh mục SKU bán lẻ; kết hợp ABC để CM phản ánh đúng công sức bếp.
+- id: m07_price_rise_breakeven_volume
+  module: m07
+  name_vi: Sản lượng sụt tối đa khi tăng giá mà lợi nhuận không giảm
+  name_en: Break-even volume loss on price increase
+  expression_latex: L_{max} = 1 - \frac{CM_{old}}{CM_{new}}
+  expression_python: l_max = 1 - cm_old/cm_new
+  excel: =1-CM_cu/CM_moi
+  variables:
+  - cm_old
+  - cm_new
+  when_to_use: Đánh giá tăng giá món Puzzle, hoặc tăng giá sản phẩm biên thấp.
+- id: m07_scenario_expected_npv
+  module: m07
+  name_vi: NPV kịch bản và NPV kỳ vọng cho chi nhánh mới
+  name_en: Scenario NPV and expected NPV
+  expression_latex: NPV_s = -I_0 + \sum_{t=1}^{5}\frac{CF_t}{(1+r)^t} ; \; E[NPV]=\sum p_s NPV_s
+  expression_python: npv_s = -i0 + sum(cf/(1+r)**(t+1) for t,cf in enumerate(cfs)); e_npv = sum(p*n for p,n in zip(probs,npvs))
+  excel: =NPV(r; CF1:CF5) - I0  ;  =SUMPRODUCT(xac_suat; NPV)
+  variables:
+  - i0
+  - cfs
+  - r
+  - probs
+  when_to_use: Quyết định đầu tư lớn khó đảo ngược (chi nhánh, nhà máy) cần nhìn thấy mức mất ở kịch bản xấu.
+- id: m07_lease_adjusted_de
+  module: m07
+  name_vi: D/E điều chỉnh nghĩa vụ thuê (kiểu IFRS 16)
+  name_en: Lease-adjusted leverage
+  expression_latex: PV_{lease} = L\,\frac{1-(1+r)^{-n}}{r} ; \; \frac{D}{E}_{adj} = \frac{D + PV_{lease}}{E}
+  expression_python: pv_lease = rent*(1-(1+r)**-n)/r; de_adj = (debt + pv_lease)/equity
+  excel: =PV(r; n; -rent)  ;  =(Nợ+PV)/Vốn chủ
+  variables:
+  - rent
+  - n
+  - r
+  - debt
+  - equity
+  when_to_use: Chuỗi bán lẻ/F&B thuê nhiều mặt bằng dài hạn; phân tích đòn bẩy thực.
+- id: m07_gp_volume_margin_variance
+  module: m07
+  name_vi: 'Tách variance lợi nhuận gộp: khối lượng và biên'
+  name_en: Gross profit volume vs margin variance
+  expression_latex: V_{vol} = (Rev_a - Rev_b)\,m_b ; \; V_{mar} = (m_a - m_b)\,Rev_a
+  expression_python: v_vol = (rev_a-rev_b)*m_b; v_mar = (m_a-m_b)*rev_a; assert abs((v_vol+v_mar)-(rev_a*m_a-rev_b*m_b))<1e-9
+  excel: =(DT_TT-DT_NS)*Bien_NS  ;  =(Bien_TT-Bien_NS)*DT_TT
+  variables:
+  - rev_a, rev_b
+  - m_a, m_b
+  when_to_use: Doanh thu vượt kế hoạch nhưng nghi ngờ bán rẻ xả hàng.
+- id: m07_inventory_cash_release
+  module: m07
+  name_vi: Tiền mặt giải phóng khi giảm DIO
+  name_en: Cash released by lower DIO
+  expression_latex: Cash = \frac{COGS}{365}(DIO_{old}-DIO_{new})
+  expression_python: cash = cogs/365*(dio_old-dio_new)
+  excel: =GiaVon/365*(DIO_cu-DIO_moi)
+  variables:
+  - cogs
+  - dio_old, dio_new
+  when_to_use: Cần tiền nhập hàng mùa cao điểm mà chưa muốn vay.
+- id: m07_terminal_value_share
+  module: m07
+  name_vi: Pro-forma FCF, giá trị cuối kỳ và tỷ trọng TV
+  name_en: FCF pro-forma and terminal value share
+  expression_latex: FCF = EBIT(1-t)+D\&A-CapEx-\Delta NWC ; \; TV_n=\frac{FCF_n(1+g)}{r-g} ; \; share=\frac{PV(TV)}{PV_{FCF}+PV(TV)}
+  expression_python: fcf = ebit*(1-t)+da-capex-dnwc; tv = fcf_n*(1+g)/(r-g); pv_tv = tv/(1+r)**n; share = pv_tv/(pv_fcf+pv_tv)
+  excel: =EBIT*(1-t)+KH-CapEx-dNWC  ;  =FCF*(1+g)/(r-g)
+  variables:
+  - t
+  - g
+  - r
+  when_to_use: Chuẩn bị gọi vốn; kiểm tra độ nhạy của định giá.
+- id: m07_flexible_branch_decomp
+  module: m07
+  name_vi: Phân rã lệch lợi nhuận chi nhánh bằng ngân sách linh hoạt
+  name_en: Branch profit variance decomposition
+  expression_latex: V_{vol}=-(\Delta Rev)(1-fc\%_{std}) ; \; V_{fc}=FC_a - fc\%_{std}Rev_a ; \; V_{labor}=Lab_a-Lab_b
+  expression_python: v_vol = (rev_a-rev_b)*(1-fc_std); v_fc = -(fc_a - fc_std*rev_a); v_lab = -(lab_a-lab_b); total = v_vol+v_fc+v_lab
+  excel: =(DT_TT-DT_NS)*(1-fc_chuan)
+  variables:
+  - fc_std
+  - fc_a
+  - lab_a, lab_b
+  when_to_use: Chi nhánh 'đỏ' cần biết bao nhiêu lệch là ngoại cảnh, bao nhiêu là vận hành sửa được.
+- id: m08_reciprocal_allocation
+  module: m08
+  name_vi: Phân bổ chi phí hỗ trợ theo phương pháp tương hỗ
+  name_en: Reciprocal method (linear algebra)
+  expression_latex: S_i = C_i + \sum_j a_{ji} S_j \;\Rightarrow\; \mathbf{S} = (\mathbf{I}-\mathbf{A}^{T})^{-1}\mathbf{C}
+  expression_python: np.linalg.solve(np.eye(n) - A.T, C)
+  excel: =MMULT(MINVERSE(I - TRANSPOSE(A)), C)
+  variables:
+  - C_i
+  - a_ji
+  - S_i
+  when_to_use: Hai bộ phận hỗ trợ (kho - đội xe, IT - bảo trì) phục vụ lẫn nhau đáng kể (hơn khoảng 10%) và kết quả ảnh hưởng
+    quyết định (thứ hạng kênh, giá thành).
+- id: m08_stepdown_allocation
+  module: m08
+  name_vi: Phân bổ bậc thang và trực tiếp
+  name_en: Step-down and direct allocation
+  expression_latex: Alloc_{j\to i}=Cost_j\times share_{ji}; \quad direct:\; share_{ji}/\sum_{i\in prod}share_{ji}
+  expression_python: cost_j * share_ji
+  excel: =B2*C2
+  variables:
+  - Cost_j
+  - share_ji
+  when_to_use: 'Cần cách gần đúng đơn giản: trực tiếp (bỏ qua phục vụ lẫn nhau), bậc thang (một chiều, bộ phận đã đóng sổ
+    không nhận lại).'
+- id: m08_ifrs15_ssp_allocation
+  module: m08
+  name_vi: Phân bổ giá giao dịch theo giá bán độc lập (SSP)
+  name_en: IFRS 15 transaction price allocation by relative SSP
+  expression_latex: Rev_i = Price \times \frac{SSP_i}{\sum_k SSP_k}
+  expression_python: price * ssp_i / sum(ssp)
+  excel: =Price*SSP_i/SUM(SSP)
+  variables:
+  - Price
+  - SSP_i
+  when_to_use: Hợp đồng gói gồm phần cứng giao ngay + phần mềm/bảo trì nhiều năm.
+- id: m08_ifrs16_pv
+  module: m08
+  name_vi: Nợ thuê tài sản (PV các khoản thuê cố định)
+  name_en: IFRS 16 lease liability PV (level and growing)
+  expression_latex: PV = PMT\frac{1-(1+r)^{-n}}{r} \;;\; PV_g = PMT_1\frac{1-\left(\frac{1+g}{1+r}\right)^{n}}{r-g}
+  expression_python: 'pmt*(1-(1+r)**-n)/r  # tăng g: pmt1*(1-((1+g)/(1+r))**n)/(r-g)'
+  excel: =PV(r,n,-PMT)
+  variables:
+  - PMT
+  - r
+  - g
+  - n
+  when_to_use: Thuê dài hạn không hủy ngang (nhà xưởng, showroom, đội xe).
+- id: m08_ias36_recoverable
+  module: m08
+  name_vi: Giá trị sử dụng, giá trị thu hồi và tổn thất tài sản
+  name_en: VIU, recoverable amount and impairment loss
+  expression_latex: VIU=\sum_t \frac{FCF_t}{(1+r)^t}+\frac{FCF_n(1+g)}{(r-g)(1+r)^n};\; RA=\max(FVLCD,VIU);\; Loss=CA-RA
+  expression_python: max(fvlcd, viu); loss = max(0, carrying - max(fvlcd, viu))
+  excel: =NPV(r,FCF)+TV/(1+r)^n
+  variables:
+  - FCF_t
+  - r
+  - g
+  - CA
+  when_to_use: Có dấu hiệu suy giảm (công suất giảm, thị trường xấu) hoặc kiểm tra goodwill hằng năm.
+- id: m08_altman_z
+  module: m08
+  name_vi: Altman Z' (doanh nghiệp sản xuất không niêm yết)
+  name_en: Altman Z-Score (Z' variant)
+  expression_latex: Z' = 0.717X_1 + 0.847X_2 + 3.107X_3 + 0.420X_4 + 0.998X_5
+  expression_python: 0.717*x1 + 0.847*x2 + 3.107*x3 + 0.420*x4 + 0.998*x5
+  excel: =0.717*X1+0.847*X2+3.107*X3+0.42*X4+0.998*X5
+  variables:
+  - X1
+  - X2
+  - X3
+  - X4
+  - X5
+  when_to_use: Sàng lọc nhanh rủi ro phá sản doanh nghiệp sản xuất không niêm yết.
+- id: m08_deferred_tax_transition
+  module: m08
+  name_vi: Điều chỉnh chuyển đổi VAS sang IFRS kèm thuế hoãn lại
+  name_en: VAS-to-IFRS transition adjustment with deferred tax
+  expression_latex: DTA = t \times \sum \text{pre-tax deductible differences};\; \Delta RE = \sum adj_{pre\text{-}tax} + DTA
+  expression_python: dta = t*sum(diffs); d_re = sum(adj) + dta
+  excel: =t*SUM(diffs)
+  variables:
+  - t
+  - diffs
+  when_to_use: Chuyển lần đầu sang IFRS (IFRS 1) hoặc lập bảng đối chiếu VAS-IFRS.
+- id: m08_nrv_provision
+  module: m08
+  name_vi: Dự phòng giảm giá hàng tồn kho theo NRV
+  name_en: Inventory write-down to net realisable value
+  expression_latex: NRV = P_{est} - C_{sell};\; Provision = \max(0, Cost - NRV);\; \Delta NI = Provision(1-t)
+  expression_python: prov = max(0, cost - (price_est - sell_cost)); d_ni = prov*(1-t)
+  excel: =MAX(0,Cost-(Price-SellCost))
+  variables:
+  - Cost
+  - P_est
+  - C_sell
+  when_to_use: Hàng điện tử/thời trang lỗi mốt, tồn kho cũ.
+- id: m08_under_absorbed
+  module: m08
+  name_vi: Chi phí sản xuất chung chưa hấp thụ
+  name_en: Under-absorbed fixed overhead (normal capacity)
+  expression_latex: SR = \frac{F}{Q_{normal}};\; Absorbed=Q_{act}\times SR;\; Under = F - Absorbed
+  expression_python: under = f - q_act*(f/q_normal)
+  excel: =F-Qact*(F/Qnormal)
+  variables:
+  - F
+  - Q_normal
+  - Q_act
+  when_to_use: Công suất thực tế thấp hơn bình thường.
+- id: m08_shadow_price
+  module: m08
+  name_vi: Giá bóng của nguồn lực nút cổ chai
+  name_en: Shadow price / contribution per bottleneck hour
+  expression_latex: CM/\text{giờ máy}=\frac{CM_i}{h_i};\; \text{xếp ưu tiên giảm dần}; \; \lambda=\frac{CM}{h}\text{ của SP
+    cận biên}
+  expression_python: cm_i / hours_i
+  excel: =CM/Hours
+  variables:
+  - CM_i
+  - h_i
+  when_to_use: Công suất một hoạt động bị giới hạn, chọn cơ cấu sản phẩm tối đa hóa lợi nhuận (LP trong ABC).
+- id: m08_variable_consideration_revenue
+  module: m08
+  name_vi: Doanh thu thuần sau yếu tố biến đổi (trả hàng, thưởng, trưng bày)
+  name_en: IFRS 15 net revenue after variable consideration
+  expression_latex: Rev = Invoice - Returns - Rebates - Slotting;\; COGS = Cost(1-ret\%)
+  expression_python: rev = invoice - returns - rebates - slotting
+  excel: =Invoice-Returns-Rebates-Slotting
+  variables:
+  - Invoice
+  - Returns
+  - Rebates
+  - Slotting
+  when_to_use: Bán qua siêu thị/đại lý có quyền trả hàng và chiết khấu theo doanh số.

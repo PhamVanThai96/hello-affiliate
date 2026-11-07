@@ -5,9 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Agent Office</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="office3d/css/fonts.css">
+<link rel="stylesheet" href="theme3d.css">
 </head>
 <body>
 <main id="office">
+  <div id="o3" hidden><iframe id="o3Frame" title="Văn phòng 3D" allow="fullscreen" tabindex="0"></iframe></div>
   <div id="legend"></div>
   <div id="stage">
     <div id="world">
@@ -93,6 +96,14 @@
     <button id="openAdmin" type="button"><i>🔐</i><span><b>Quản trị (Admin)</b><small>Admin ID &amp; mật khẩu bảo vệ việc sửa/xoá agent và đổi cấu hình; đổi mật khẩu, đăng xuất</small></span></button>
     <button id="openMemory" type="button"><i>🧠</i><span><b>Trí nhớ &amp; kỹ năng agent</b><small>Sổ tay kinh nghiệm tự cập nhật của từng agent, bài học, nén skill</small></span></button>
   </div>
+  <div class="gfx">
+    <h4>🎨 Cấu hình đồ hoạ</h4>
+    <div id="viewSw"><button type="button" data-v="3d" class="on">🏙️ Văn phòng 3D</button><button type="button" data-v="2d">🏢 Văn phòng 2D</button></div>
+  </div>
+</dialog>
+<dialog id="rpDlg">
+  <div class="usHead"><b>Báo cáo</b><span></span><a href="reports.html" target="_blank" rel="noopener">Mở tab mới ↗</a><button id="rpClose" type="button" class="ghost">Đóng</button></div>
+  <iframe id="rpFrame" title="Báo cáo"></iframe>
 </dialog>
 <dialog id="memDlg">
   <div class="usHead"><b>Trí nhớ &amp; kỹ năng agent</b><span></span><a id="memOpen" href="memory.html" target="_blank" rel="noopener">Mở tab mới ↗</a><button id="memClose" type="button" class="ghost">Đóng</button></div>
@@ -134,5 +145,30 @@
 <div id="dropzone"><div>Thả file để đính kèm vào việc giao<small>Ảnh, kịch bản, brief, CSV chỉ số… tối đa 20MB/file, 10 file/lần</small></div></div>
 <script src="admin.js"></script>
 <script src="app.js"></script>
+<script>
+// Hai giao diện: 3D (nhúng /office3d/ trong khung riêng, chỉ nạp khi đang xem để không tốn RAM ở 2D) và 2D cũ.
+(function () {
+  var sw = document.getElementById('viewSw'), o3 = document.getElementById('o3'), fr = document.getElementById('o3Frame');
+  function setView(v) {
+    var is3 = v === '3d';
+    o3.hidden = !is3; document.getElementById('stage').hidden = is3; document.getElementById('legend').hidden = is3;
+    document.body.classList.toggle('v3', is3);
+    if (is3) { if (!fr.getAttribute('src')) fr.src = 'office3d/?v=24caf593'; } else fr.removeAttribute('src');
+    Array.prototype.forEach.call(sw.children, function (b) { b.classList.toggle('on', b.dataset.v === v); });
+    try { localStorage.setItem('ao.view3', v); } catch (e) { /* bỏ qua */ }
+  }
+  sw.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; setView(b.dataset.v); var d = document.getElementById('offDlg'); if (d && d.open) d.close(); });
+  var v = '3d'; try { v = localStorage.getItem('ao.view3') === '2d' ? '2d' : '3d'; } catch (e) { /* mặc định 3D */ }
+  setView(v);
+  // bấm CEO trong văn phòng 3D → xem các báo cáo
+  var rp = document.getElementById('rpDlg'), rf = document.getElementById('rpFrame');
+  window.addEventListener('message', function (e) {
+    if (e.origin !== location.origin || !e.data || e.data.ao !== 'report') return;
+    rf.src = 'reports.html'; if (!rp.open) rp.showModal();
+  });
+  document.getElementById('rpClose').onclick = function () { rp.close(); };
+  rp.addEventListener('close', function () { rf.removeAttribute('src'); });
+})();
+</script>
 </body>
 </html>

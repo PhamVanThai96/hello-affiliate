@@ -1,0 +1,790 @@
+# m07 - Nghiên cứu marketing (distill từ 07-marketing-research.md)
+id: "m07"
+name_vi: "Nghiên cứu marketing"
+name_en: "Marketing Research"
+purpose: >
+  Cung cấp quy trình và công cụ thu thập, phân tích, diễn giải thông tin hệ thống về thị trường, khách hàng, đối thủ
+  để ra quyết định marketing dựa trên dữ liệu thay vì trực giác: chọn loại nghiên cứu (khám phá, mô tả, nhân quả),
+  chọn phương pháp định tính/định lượng, thiết kế khảo sát và tính cỡ mẫu, chạy A/B test, đo NPS/CTR, dùng công cụ digital
+  với chi phí thấp, và tránh các bẫy dữ liệu (stated vs revealed preference, garbage in garbage out, analysis paralysis).
+when_to_use:
+  - "Chủ SME hỏi 'tôi nên hỏi khách hàng gì', 'khảo sát bao nhiêu người là đủ', 'làm sao biết khách có thích sản phẩm mới không'."
+  - "Cần thiết kế khảo sát, phỏng vấn sâu, focus group hoặc quan sát trước khi mở quán/ra mắt sản phẩm/đổi giá."
+  - "Cần tính cỡ mẫu (sample size), sai số (margin of error) hoặc xem kết quả A/B test có ý nghĩa thống kê không."
+  - "Đánh giá mức độ trung thành bằng NPS, tối ưu CTR của quảng cáo/thumbnail/tiêu đề."
+  - "Chọn bộ công cụ nghiên cứu số (Google Analytics, Trends, Meta Insights, Hotjar/Clarity, SurveyMonkey/Typeform, social listening)."
+  - "So sánh nghiên cứu truyền thống và digital về tốc độ, chi phí, độ chính xác, thiên lệch."
+  - "Học từ case Netflix: dùng dữ liệu hành vi, A/B test liên tục, nghiên cứu dự báo."
+prerequisites: []
+related_modules:
+  - "m01 - STP: nghiên cứu cung cấp dữ liệu để phân khúc, chọn mục tiêu, định vị"
+  - "m06 - Hành vi người tiêu dùng: nghiên cứu để hiểu động cơ, hành trình mua; stated vs revealed preference"
+  - "m03 - CLV: dữ liệu hành vi/panel cho retention, cohort, RFM"
+  - "m05 - Digital marketing và growth hacking: A/B test, analytics, funnel"
+  - "m10 - Định giá: nghiên cứu willingness-to-pay, test giá bằng experiment"
+  - "m04 - Brand management: khảo sát nhận biết/hình ảnh thương hiệu, NPS"
+  - "m09 - Product life cycle: nghiên cứu để xác định giai đoạn và nhu cầu đổi mới"
+
+concepts:
+  - term_vi: "Nghiên cứu marketing"
+    term_en: "Marketing Research"
+    definition: "Quá trình thu thập, phân tích và diễn giải thông tin một cách hệ thống về thị trường, khách hàng, đối thủ, môi trường kinh doanh để hỗ trợ quyết định marketing."
+    why_it_matters: "Giảm rủi ro và xác suất sai khi quyết định tốn kém (mở điểm bán, ra sản phẩm, đổi giá). Câu của W. Edwards Deming: không có dữ liệu thì bạn chỉ là một người có ý kiến. Nguyên tắc cốt lõi: nghiên cứu phục vụ một quyết định cụ thể, không phải để sưu tầm dữ liệu."
+  - term_vi: "Nghiên cứu khám phá"
+    term_en: "Exploratory Research"
+    definition: "Nghiên cứu linh hoạt, quy mô nhỏ để hiểu vấn đề và tìm insight ban đầu (focus group, phỏng vấn sâu, quan sát)."
+    why_it_matters: "Dùng khi chưa rõ vấn đề: tránh đi khảo sát số lớn với bảng hỏi sai khung. Kết quả là giả thuyết, không phải kết luận có thể suy rộng."
+  - term_vi: "Nghiên cứu mô tả"
+    term_en: "Descriptive Research"
+    definition: "Mô tả đặc điểm thị trường/khách hàng, trả lời 'cái gì', 'bao nhiêu', 'ai' bằng khảo sát, dữ liệu thứ cấp, panel."
+    why_it_matters: "Cho con số có thể suy rộng (nếu mẫu đại diện) để đo quy mô, thị phần, mức hài lòng, tần suất mua."
+  - term_vi: "Nghiên cứu nhân quả"
+    term_en: "Causal Research"
+    definition: "Kiểm tra quan hệ nguyên nhân-kết quả bằng thí nghiệm có nhóm đối chứng (experiment, A/B testing): 'nếu đổi X thì Y thay đổi bao nhiêu'."
+    why_it_matters: "Chỉ thí nghiệm ngẫu nhiên mới tách được tác động của một thay đổi khỏi nhiễu (mùa vụ, khuyến mãi khác). Khảo sát và tương quan không chứng minh nhân quả."
+  - term_vi: "Dữ liệu sơ cấp và thứ cấp"
+    term_en: "Primary vs Secondary Data"
+    definition: "Sơ cấp: doanh nghiệp tự thu thập (survey, interview, A/B test), khớp mục tiêu nhưng tốn thời gian và tiền. Thứ cấp: có sẵn (báo cáo ngành, Google Trends, thống kê nhà nước), nhanh và rẻ nhưng có thể lỗi thời hoặc lệch mục tiêu."
+    why_it_matters: "Quy tắc tiết kiệm: luôn khai thác dữ liệu thứ cấp trước để khoanh vùng câu hỏi, chỉ thu sơ cấp cho phần khoảng trống còn lại."
+  - term_vi: "Định tính và định lượng"
+    term_en: "Qualitative vs Quantitative"
+    definition: "Định tính trả lời 'tại sao' (mẫu nhỏ, sâu, không suy rộng thống kê). Định lượng trả lời 'bao nhiêu' (mẫu lớn, chuẩn hóa, kiểm định thống kê)."
+    why_it_matters: "Hai loại bổ trợ nhau: định tính sinh giả thuyết và ngôn ngữ của khách để viết bảng hỏi; định lượng kiểm chứng quy mô. Dùng cả hai theo thứ tự định tính trước, định lượng sau."
+  - term_vi: "Sở thích tuyên bố và sở thích thực tế"
+    term_en: "Stated vs Revealed Preference"
+    definition: "Stated: điều khách NÓI họ muốn. Revealed: điều khách THỰC SỰ làm/mua (suy ra từ dữ liệu hành vi)."
+    why_it_matters: "Khách nói muốn ăn healthy nhưng mua fast food; nói thích documentary nhưng xem true crime. Khi hai loại mâu thuẫn, ưu tiên hành vi, dùng khảo sát để hiểu lý do chứ không để dự báo hành vi."
+  - term_vi: "Rác vào, rác ra"
+    term_en: "Garbage In, Garbage Out (GIGO)"
+    definition: "Dữ liệu kém chất lượng (mẫu lệch, câu hỏi dẫn dắt, bot traffic) cho insight sai và quyết định sai."
+    why_it_matters: "Một nghiên cứu cẩu thả nguy hiểm hơn không có nghiên cứu vì tạo cảm giác chắc chắn giả. Kiểm soát thiên lệch quan trọng hơn tăng cỡ mẫu."
+  - term_vi: "Liệt phân tích"
+    term_en: "Analysis Paralysis"
+    definition: "Có quá nhiều dữ liệu nhưng không biết quyết định gì, hoặc nghiên cứu kéo dài làm chậm hành động."
+    why_it_matters: "Phòng ngừa bằng cách xác định quyết định cần ra và ngưỡng hành động (decision rule) TRƯỚC khi thu thập dữ liệu."
+  - term_vi: "Nghiên cứu liên tục"
+    term_en: "Continuous Research Culture"
+    definition: "Nghiên cứu là văn hóa vận hành thường xuyên (đo, thử, học), không phải dự án làm một lần."
+    why_it_matters: "Bài học Netflix: chạy A/B test liên tục. Với SME: lịch tối thiểu mỗi tháng một thử nghiệm nhỏ và mỗi quý một vòng phản hồi khách."
+  - term_vi: "Dữ liệu lịch sử không đảm bảo tương lai"
+    term_en: "Past is not Future"
+    definition: "Mô hình dựa trên quá khứ không dự báo được thay đổi cấu trúc, xu hướng văn hóa đột biến (ví dụ Squid Game)."
+    why_it_matters: "Dùng dữ liệu để tăng xác suất, không để thay thế tầm nhìn; đột phá cần giả thuyết sáng tạo cộng thử nghiệm nhỏ."
+
+formulas:
+  - id: "m07_sample_size_cochran"
+    name_vi: "Cỡ mẫu khảo sát tỷ lệ (Cochran)"
+    name_en: "Sample size for a proportion (Cochran)"
+    expression_latex: 'n_0 = \dfrac{Z^2 \, p(1-p)}{e^2}'
+    expression_python: "n0 = z**2 * p * (1 - p) / e**2  # làm tròn lên: math.ceil(n0)"
+    excel: "=ROUNDUP(z^2*p*(1-p)/e^2,0)"
+    variables:
+      - {symbol: "z", meaning: "Giá trị Z theo độ tin cậy (1.645 cho 90%, 1.96 cho 95%, 2.576 cho 99%)", unit: "không đơn vị"}
+      - {symbol: "p", meaning: "Tỷ lệ kỳ vọng của đặc điểm cần đo (không biết thì lấy 0.5, cho cỡ mẫu lớn nhất, an toàn nhất)", unit: "tỷ lệ 0-1"}
+      - {symbol: "e", meaning: "Sai số biên chấp nhận (margin of error)", unit: "tỷ lệ 0-1 (0.05 = 5 điểm %)"}
+    when_to_use: "Thiết kế khảo sát định lượng với mẫu ngẫu nhiên đơn giản, biến chính là tỷ lệ (% hài lòng, % sẽ mua), quần thể lớn."
+    why_it_works: >
+      Tỷ lệ mẫu xấp xỉ phân phối chuẩn quanh tỷ lệ thật với độ lệch chuẩn sqrt(p(1-p)/n). Sai số biên = Z nhân độ lệch chuẩn đó.
+      Giải ngược cho n được công thức. p(1-p) lớn nhất tại p=0.5 nên p=0.5 là lựa chọn thận trọng khi chưa biết gì.
+      Sai số tỷ lệ nghịch với căn n: muốn giảm một nửa sai số phải gấp bốn lần cỡ mẫu (nên mẫu vượt 1000 hiếm khi đáng tiền).
+    assumptions:
+      - "Mẫu ngẫu nhiên đơn giản, quần thể đủ lớn (hoặc dùng hiệu chỉnh quần thể hữu hạn)."
+      - "Trả lời trung thực, không thiên lệch không phản hồi."
+    pitfalls:
+      - "Công thức chỉ kiểm soát sai số lấy mẫu; không sửa được thiên lệch chọn mẫu (khảo sát trên fanpage chỉ đại diện fan) hay câu hỏi dẫn dắt."
+      - "Cỡ mẫu là số phiếu HỢP LỆ cần có, không phải số người mời (phải chia cho tỷ lệ phản hồi)."
+      - "Muốn phân tích theo từng phân khúc con thì mỗi phân khúc cần đủ cỡ mẫu riêng."
+      - "Nguồn nêu mẫu khảo sát 200-2000+ chung chung; con số cụ thể phải tính theo sai số và độ tin cậy, không lấy tùy ý."
+    interpretation: "95% tin cậy, sai số 5%, p=0.5 cho 385 phiếu; sai số 10% chỉ cần khoảng 97 phiếu. Chọn sai số theo mức độ rủi ro của quyết định."
+    example:
+      inputs: {z: 1.96, p: 0.5, e: 0.05}
+      steps:
+        - "n0 = 1.96^2 * 0.5 * 0.5 / 0.05^2 = 3.8416 * 0.25 / 0.0025 = 384.16"
+        - "Làm tròn lên: 385 phiếu hợp lệ"
+        - "Với e = 0.10: n0 = 96.04, làm tròn 97 phiếu"
+      result: "385 phiếu hợp lệ cho 95% tin cậy và sai số 5 điểm %"
+
+  - id: "m07_sample_size_fpc"
+    name_vi: "Hiệu chỉnh cỡ mẫu cho quần thể hữu hạn"
+    name_en: "Finite population correction (FPC)"
+    expression_latex: 'n = \dfrac{n_0}{1 + \dfrac{n_0 - 1}{N}}'
+    expression_python: "n = n0 / (1 + (n0 - 1) / N)"
+    excel: "=n0/(1+(n0-1)/N)"
+    variables:
+      - {symbol: "n0", meaning: "Cỡ mẫu từ công thức Cochran", unit: "người/phiếu"}
+      - {symbol: "N", meaning: "Quy mô quần thể (tổng số khách hàng/đối tượng cần nghiên cứu)", unit: "người"}
+    when_to_use: "Quần thể nhỏ (vài trăm đến vài nghìn: khách thành viên của một quán, nhân viên, khách B2B) khi n0 chiếm hơn khoảng 5% N."
+    why_it_works: "Khi lấy mẫu không hoàn lại từ quần thể nhỏ, mỗi phần tử đã chọn cung cấp thông tin nhiều hơn nên phương sai giảm; công thức FPC giảm cỡ mẫu cần thiết tương ứng."
+    assumptions:
+      - "Lấy mẫu không hoàn lại từ danh sách quần thể xác định."
+    pitfalls:
+      - "Không dùng FPC khi quần thể rất lớn (kết quả gần như bằng n0)."
+      - "Kết quả luôn nhỏ hơn n0 và nhỏ hơn N; nếu n tiến gần N nên điều tra toàn bộ (census)."
+    interpretation: "Quần thể 2.000 khách thành viên, 95%, sai số 5%: chỉ cần khoảng 323 phiếu thay vì 385."
+    example:
+      inputs: {n0: 384.16, N: 2000}
+      steps:
+        - "n = 384.16 / (1 + 383.16/2000) = 384.16 / 1.19158 = 322.4"
+        - "Làm tròn lên: 323"
+      result: "323 phiếu hợp lệ"
+
+  - id: "m07_margin_of_error"
+    name_vi: "Sai số biên và khoảng tin cậy của tỷ lệ"
+    name_en: "Margin of error / confidence interval for a proportion"
+    expression_latex: 'e = Z \sqrt{\dfrac{\hat{p}(1-\hat{p})}{n}}, \quad CI = \hat{p} \pm e'
+    expression_python: "e = z * (p_hat * (1 - p_hat) / n) ** 0.5"
+    excel: "=NORM.S.INV(0.975)*SQRT(p_hat*(1-p_hat)/n)"
+    variables:
+      - {symbol: "p_hat", meaning: "Tỷ lệ quan sát được trong mẫu", unit: "tỷ lệ 0-1"}
+      - {symbol: "n", meaning: "Số phiếu hợp lệ", unit: "người"}
+      - {symbol: "z", meaning: "Giá trị Z theo độ tin cậy (1.96 cho 95%)", unit: "không đơn vị"}
+    when_to_use: "Sau khi có dữ liệu khảo sát, báo cáo kết quả kèm khoảng tin cậy; hoặc kiểm tra nhanh 'kết quả 60% có chắc không'."
+    why_it_works: "Cùng logic phân phối chuẩn của tỷ lệ mẫu như Cochran, nhưng dùng p_hat quan sát thay vì p giả định."
+    assumptions:
+      - "Mẫu ngẫu nhiên, n*p_hat >= 10 và n*(1-p_hat) >= 10 để xấp xỉ chuẩn."
+    pitfalls:
+      - "Hai khoảng tin cậy chồng nhau chưa kết luận hai nhóm không khác; dùng kiểm định hai tỷ lệ (m07_two_prop_ztest)."
+      - "Báo '60%' mà không kèm n và sai số dễ gây hiểu lầm."
+    interpretation: "p_hat=0.60, n=250: sai số 6.07 điểm %, khoảng tin cậy 95% là 53.9% đến 66.1%. Nếu quyết định cần ngưỡng 50%, kết quả đủ chắc; nếu cần ngưỡng 60% thì chưa kết luận được."
+    example:
+      inputs: {z: 1.96, p_hat: 0.6, n: 250}
+      steps:
+        - "e = 1.96 * sqrt(0.6*0.4/250) = 1.96 * sqrt(0.00096) = 1.96 * 0.030984 = 0.0607"
+        - "CI = 0.600 +/- 0.0607 = [0.539, 0.661]"
+      result: "60% +/- 6.1 điểm %"
+
+  - id: "m07_invites_needed"
+    name_vi: "Số người cần mời khảo sát theo tỷ lệ phản hồi"
+    name_en: "Invitations required given response rate"
+    expression_latex: 'N_{invite} = \dfrac{n}{r}'
+    expression_python: "n_invite = n / r"
+    excel: "=ROUNDUP(n/r,0)"
+    variables:
+      - {symbol: "n", meaning: "Số phiếu hợp lệ cần có", unit: "phiếu"}
+      - {symbol: "r", meaning: "Tỷ lệ phản hồi hợp lệ dự kiến (email 10-25%, tại chỗ có quà cao hơn; con số giả định, cần đo thực tế)", unit: "tỷ lệ 0-1"}
+    when_to_use: "Lập kế hoạch phát khảo sát, quyết định cần mời bao nhiêu người hoặc cần chạy quảng cáo kéo bao nhiêu lượt vào form."
+    why_it_works: "Số phiếu thu được = số mời nhân tỷ lệ phản hồi, nên số mời = n chia r."
+    assumptions:
+      - "Người phản hồi đại diện cho người không phản hồi (thường không hoàn toàn đúng)."
+    pitfalls:
+      - "Tỷ lệ phản hồi thấp làm tăng thiên lệch không phản hồi, không chỉ tăng chi phí."
+    interpretation: "Cần 385 phiếu, phản hồi 20% thì phải mời 1.925 người."
+    example:
+      inputs: {n: 385, r: 0.2}
+      steps: ["385 / 0.2 = 1925"]
+      result: "Mời 1.925 người"
+
+  - id: "m07_nps"
+    name_vi: "Chỉ số NPS (Net Promoter Score)"
+    name_en: "Net Promoter Score"
+    expression_latex: 'NPS = \%Promoters - \%Detractors'
+    expression_python: "nps = (promoters - detractors) / total * 100"
+    excel: "=(COUNTIF(range,\">=9\")-COUNTIF(range,\"<=6\"))/COUNT(range)*100"
+    variables:
+      - {symbol: "promoters", meaning: "Số người chấm 9-10 cho câu 'Bạn có sẵn lòng giới thiệu chúng tôi cho bạn bè/đồng nghiệp không? (0-10)'", unit: "người"}
+      - {symbol: "detractors", meaning: "Số người chấm 0-6", unit: "người"}
+      - {symbol: "total", meaning: "Tổng số người trả lời (passives = 7-8 được tính vào tổng nhưng không cộng/trừ)", unit: "người"}
+    when_to_use: "Đo lòng trung thành/khả năng truyền miệng của khách qua một câu hỏi, theo dõi theo thời gian hoặc so giữa chi nhánh."
+    why_it_works: >
+      Fred Reichheld (Bain and Company) công bố năm 2003 trên Harvard Business Review, với lập luận một câu hỏi về mức sẵn lòng giới thiệu
+      liên quan tốt tới tăng trưởng hơn các thang đo hài lòng dài. Trừ detractors khỏi promoters phản ánh rằng người chê làm tổn hại
+      tăng trưởng ngang việc người khen làm tăng trưởng. Đây là kiến thức ngoài nguồn bổ sung cho mục đo satisfaction/NPS mà nguồn chỉ nhắc tên.
+    assumptions:
+      - "Thang 0-10, cách chia nhóm chuẩn: 9-10, 7-8, 0-6."
+    pitfalls:
+      - "NPS nằm trong khoảng -100 đến +100, không phải phần trăm."
+      - "So sánh NPS giữa ngành khác nhau không công bằng; so với chính mình theo thời gian và với đối thủ cùng ngành."
+      - "Cỡ mẫu nhỏ (dưới khoảng 100) làm NPS dao động mạnh; luôn hỏi thêm câu mở 'vì sao bạn chấm điểm này'."
+    interpretation: "Trên 0 là tốt hơn mức trung bình tồi, trên 30 khá, trên 50 xuất sắc (ngưỡng tham chiếu phổ biến, độ tin cậy trung bình, thay đổi theo ngành)."
+    example:
+      inputs: {promoters: 90, passives: 70, detractors: 40, total: 200}
+      steps:
+        - "%Promoters = 90/200 = 45%"
+        - "%Detractors = 40/200 = 20%"
+        - "NPS = 45 - 20 = 25"
+      result: "NPS = +25"
+
+  - id: "m07_ctr"
+    name_vi: "Tỷ lệ nhấp (CTR) và tỷ lệ chuyển đổi"
+    name_en: "Click-through rate / Conversion rate"
+    expression_latex: 'CTR = \dfrac{Clicks}{Impressions}, \quad CR = \dfrac{Conversions}{Visitors}'
+    expression_python: "ctr = clicks / impressions"
+    excel: "=clicks/impressions"
+    variables:
+      - {symbol: "clicks", meaning: "Số lượt nhấp", unit: "lượt"}
+      - {symbol: "impressions", meaning: "Số lượt hiển thị", unit: "lượt"}
+    when_to_use: "Chỉ số kết quả chính trong A/B test thumbnail, tiêu đề, quảng cáo, landing page (Netflix tối ưu CTR cho từng title)."
+    why_it_works: "Chuẩn hóa hành vi nhấp theo lượt hiển thị để so sánh các biến thể có lượng hiển thị khác nhau."
+    assumptions:
+      - "Các biến thể được hiển thị cho tập người tương đương (ngẫu nhiên)."
+    pitfalls:
+      - "CTR cao không đồng nghĩa doanh thu cao (clickbait); nên kèm chỉ số cuối phễu (đơn hàng, giữ chân)."
+      - "Bot traffic làm sai CTR."
+    interpretation: "Chỉ đọc khi chênh lệch có ý nghĩa thống kê (m07_two_prop_ztest) và đủ cỡ mẫu (m07_ab_sample_size)."
+    example:
+      inputs: {clicks: 68, impressions: 1000}
+      steps: ["68 / 1000 = 0.068"]
+      result: "CTR = 6.8%"
+
+  - id: "m07_ab_sample_size"
+    name_vi: "Cỡ mẫu mỗi nhóm cho A/B test (hai tỷ lệ)"
+    name_en: "A/B test sample size per group (two proportions)"
+    expression_latex: 'n = \dfrac{(Z_{\alpha/2} + Z_{\beta})^2 \, [p_1(1-p_1) + p_2(1-p_2)]}{(p_2 - p_1)^2}'
+    expression_python: "n = (z_alpha + z_beta) ** 2 * (p1 * (1 - p1) + p2 * (1 - p2)) / (p2 - p1) ** 2"
+    excel: "=((z_alpha+z_beta)^2*(p1*(1-p1)+p2*(1-p2)))/(p2-p1)^2"
+    variables:
+      - {symbol: "p1", meaning: "Tỷ lệ chuyển đổi/CTR hiện tại (nhóm đối chứng)", unit: "tỷ lệ 0-1"}
+      - {symbol: "p2", meaning: "Tỷ lệ mong muốn phát hiện được (hiệu ứng tối thiểu có ý nghĩa kinh doanh)", unit: "tỷ lệ 0-1"}
+      - {symbol: "z_alpha", meaning: "Z hai phía cho mức ý nghĩa alpha (1.96 ứng với alpha 0.05)", unit: "không đơn vị"}
+      - {symbol: "z_beta", meaning: "Z ứng với power (0.8416 cho power 80%)", unit: "không đơn vị"}
+    when_to_use: "Trước khi chạy thí nghiệm giá, quảng cáo, landing page, email subject: để biết có đủ lưu lượng hay không."
+    why_it_works: "Muốn phát hiện chênh lệch nhỏ giữa hai tỷ lệ trong nhiễu lấy mẫu thì cần nhiều dữ liệu: cỡ mẫu tăng theo nghịch đảo bình phương mức chênh lệch. Power 80% nghĩa là nếu khác biệt thật tồn tại, ta phát hiện được với xác suất 80%."
+    assumptions:
+      - "Hai nhóm bằng nhau, phân bổ ngẫu nhiên; kiểm định hai phía."
+    pitfalls:
+      - "Con số 'mỗi nhóm 1000+' trong nguồn chỉ là quy tắc thô: để phát hiện 5% lên 6% cần khoảng 8.156 mỗi nhóm; để phát hiện 5% lên 10% chỉ cần khoảng 432."
+      - "Dừng test sớm khi thấy kết quả 'đẹp' (peeking) làm tăng dương tính giả; cố định cỡ mẫu/thời gian trước."
+      - "Chạy tối thiểu một chu kỳ tuần (7 ngày) để bắt hiệu ứng ngày trong tuần."
+    interpretation: "Nếu lưu lượng không đủ, hãy kiểm tra thay đổi lớn hơn (hiệu ứng lớn), kéo dài thời gian, hoặc dùng phương pháp định tính thay A/B test."
+    example:
+      inputs: {p1: 0.05, p2: 0.06, z_alpha: 1.96, z_beta: 0.8416}
+      steps:
+        - "(1.96+0.8416)^2 = 7.849"
+        - "p1(1-p1)+p2(1-p2) = 0.0475 + 0.0564 = 0.1039"
+        - "(p2-p1)^2 = 0.0001"
+        - "n = 7.849 * 0.1039 / 0.0001 = 8155.1, làm tròn lên 8156 mỗi nhóm"
+      result: "Khoảng 8.156 người mỗi nhóm (16.312 tổng)"
+
+  - id: "m07_two_prop_ztest"
+    name_vi: "Kiểm định z hai tỷ lệ (đọc kết quả A/B)"
+    name_en: "Two-proportion z-test"
+    expression_latex: 'z = \dfrac{\hat{p}_B - \hat{p}_A}{\sqrt{\hat{p}(1-\hat{p})\left(\frac{1}{n_A}+\frac{1}{n_B}\right)}}, \quad \hat{p} = \dfrac{x_A + x_B}{n_A + n_B}'
+    expression_python: "p = (xa + xb) / (na + nb); se = (p * (1 - p) * (1 / na + 1 / nb)) ** 0.5; z = (xb / nb - xa / na) / se"
+    excel: "=(xb/nb-xa/na)/SQRT(p*(1-p)*(1/na+1/nb))"
+    variables:
+      - {symbol: "xa, xb", meaning: "Số thành công (click/mua) ở nhóm A và B", unit: "lượt"}
+      - {symbol: "na, nb", meaning: "Số người/lượt hiển thị mỗi nhóm", unit: "lượt"}
+    when_to_use: "Sau khi A/B test kết thúc, kết luận biến thể B có thật sự hơn A không."
+    why_it_works: "Giả thuyết không là hai tỷ lệ bằng nhau; ước lượng tỷ lệ chung (pooled) để tính sai số chuẩn; |z| > 1.96 tương ứng p-value dưới 0.05 (hai phía)."
+    assumptions:
+      - "Ngẫu nhiên hóa; quan sát độc lập; số thành công và thất bại mỗi nhóm đều trên khoảng 10."
+    pitfalls:
+      - "p-value dưới 0.05 chỉ nói khác biệt khó do ngẫu nhiên, không nói khác biệt đủ lớn để đáng triển khai: luôn so với chi phí và mức tăng doanh thu."
+      - "Chạy nhiều biến thể cùng lúc làm tăng nguy cơ dương tính giả."
+    interpretation: "p-value hai phía khoảng 0.056 là chưa đạt ngưỡng 0.05: chưa đủ bằng chứng, nên chạy thêm dữ liệu thay vì kết luận B thắng."
+    example:
+      inputs: {xa: 48, na: 1000, xb: 68, nb: 1000}
+      steps:
+        - "p_chung = (48+68)/2000 = 0.058"
+        - "SE = sqrt(0.058*0.942*(2/1000)) = 0.010453"
+        - "z = (0.068-0.048)/0.010453 = 1.913"
+        - "p-value hai phía = 0.0557"
+      result: "z = 1.91, p = 0.056: chưa đạt ý nghĩa ở mức 5%, B nhỉnh hơn nhưng cần thêm dữ liệu"
+
+frameworks:
+  - id: "m07_research_types"
+    name_vi: "Ba loại nghiên cứu: Khám phá, Mô tả, Nhân quả"
+    name_en: "Exploratory, Descriptive, Causal Research"
+    origin: "Phân loại chuẩn trong giáo trình nghiên cứu marketing (Malhotra; Aaker, Kumar và Day), dựa trên mức độ rõ ràng của vấn đề; ra đời để chọn phương pháp phù hợp thay vì mặc định dùng khảo sát cho mọi câu hỏi."
+    components:
+      - "Exploratory (Khám phá): hiểu vấn đề, tìm insight ban đầu; phương pháp focus group, phỏng vấn sâu, quan sát; dùng khi chưa rõ vấn đề, giai đoạn đầu."
+      - "Descriptive (Mô tả): mô tả đặc điểm thị trường/khách hàng; phương pháp survey, dữ liệu thứ cấp, panel; dùng khi cần biết cái gì, bao nhiêu."
+      - "Causal (Nhân quả): kiểm tra quan hệ nhân quả; phương pháp experiment, A/B testing; dùng khi cần biết tại sao, nếu... thì."
+    when_to_use: "Bước 2 của quy trình nghiên cứu: chọn thiết kế nghiên cứu sau khi đã phát biểu rõ vấn đề và quyết định cần ra."
+    how_to_apply:
+      - "Hỏi: mức độ hiểu biết về vấn đề hiện nay? Chưa rõ thì Exploratory trước."
+      - "Nếu đã có giả thuyết và cần con số suy rộng thì Descriptive."
+      - "Nếu cần biết thay đổi X có làm Y tăng không thì Causal (thí nghiệm có nhóm đối chứng, ngẫu nhiên)."
+      - "Đi theo chuỗi: Exploratory để sinh giả thuyết, Descriptive để đo quy mô, Causal để kiểm chứng can thiệp."
+    how_to_read_results: "Exploratory cho giả thuyết, không suy rộng; Descriptive cho ước lượng với sai số; Causal cho tác động ước lượng nếu thiết kế sạch."
+    pitfalls:
+      - "Dùng kết quả focus group (vài chục người) để kết luận tỷ lệ thị trường."
+      - "Dùng khảo sát mô tả để khẳng định nhân quả (tương quan khác nhân quả)."
+    example: "Quán phở muốn tăng khách buổi trưa: phỏng vấn sâu 12 khách văn phòng (Exploratory) thấy họ ngại chờ lâu; khảo sát 385 người quanh khu (Descriptive) cho thấy 58% chỉ có 45 phút nghỉ; thử set trưa giao nhanh 10 phút cho một nửa số ngày (Causal) để đo doanh thu chênh lệch."
+
+  - id: "m07_data_sources"
+    name_vi: "Dữ liệu sơ cấp và thứ cấp"
+    name_en: "Primary vs Secondary Data"
+    origin: "Phân loại nguồn dữ liệu cơ bản của nghiên cứu marketing; ra đời để nhắc nghiên cứu viên rằng nên tận dụng dữ liệu có sẵn trước khi tốn tiền thu mới."
+    components:
+      - "Sơ cấp: DN tự thu (survey, interview, A/B test); ưu: khớp mục tiêu; nhược: tốn thời gian, chi phí."
+      - "Thứ cấp: có sẵn (báo cáo ngành, Google Trends, thống kê chính phủ); ưu: nhanh, rẻ, sẵn có; nhược: có thể lỗi thời, không phù hợp."
+    when_to_use: "Mọi dự án nghiên cứu, ngay sau khi xác định mục tiêu."
+    how_to_apply:
+      - "Liệt kê câu hỏi nghiên cứu, tìm dữ liệu thứ cấp trả lời được phần nào (Google Trends, báo cáo ngành, Tổng cục Thống kê, dữ liệu nội bộ POS/CRM/Google Analytics)."
+      - "Kiểm tra độ mới, phương pháp lấy mẫu, định nghĩa chỉ tiêu của nguồn thứ cấp."
+      - "Chỉ thiết kế thu thập sơ cấp cho phần khoảng trống."
+    how_to_read_results: "Dữ liệu thứ cấp dùng để khoanh vùng và làm benchmark, không thay thế hiểu biết về khách hàng cụ thể của mình."
+    pitfalls:
+      - "Dùng báo cáo ngành cũ nhiều năm hoặc định nghĩa thị trường khác với thị trường mình."
+      - "Bỏ qua dữ liệu nội bộ sẵn có (hóa đơn POS, đơn hàng, lịch sử chat) vốn là dữ liệu hành vi rất giá trị."
+    example: "Trước khi mở quán cà phê specialty, dùng Google Trends xem xu hướng tìm 'specialty coffee' theo tháng, rồi mới khảo sát 385 người quanh khu để hỏi mức giá chấp nhận."
+
+  - id: "m07_six_step_process"
+    name_vi: "Quy trình nghiên cứu marketing 6 bước"
+    name_en: "6-Step Marketing Research Process"
+    origin: "Quy trình chuẩn trong giáo trình Malhotra, Aaker và cộng sự; ra đời để nghiên cứu đi từ quyết định đến hành động, tránh thu thập dữ liệu không dẫn tới quyết định nào."
+    components:
+      - "Bước 1: Xác định vấn đề và mục tiêu (cần biết gì, để quyết định gì)."
+      - "Bước 2: Thiết kế phương pháp (Exploratory/Descriptive/Causal, định tính hay định lượng)."
+      - "Bước 3: Thu thập dữ liệu (survey, interview, observation, digital analytics)."
+      - "Bước 4: Phân tích dữ liệu (thống kê, thematic analysis, AI/ML)."
+      - "Bước 5: Trình bày kết quả (báo cáo, dashboard, khuyến nghị)."
+      - "Bước 6: Ra quyết định và hành động."
+    when_to_use: "Mọi dự án nghiên cứu; dùng như khung kiểm tra để không nhảy cóc."
+    how_to_apply:
+      - "Viết một câu: 'Chúng tôi cần biết X để quyết định Y; nếu kết quả là Z1 thì làm A, nếu Z2 thì làm B' (decision rule trước khi thu thập)."
+      - "Chọn thiết kế và phương pháp theo m07_research_types, m07_qualitative_methods, m07_quantitative_methods; dự toán ngân sách và thời gian."
+      - "Soạn công cụ (bảng hỏi, kịch bản phỏng vấn), thử nghiệm (pilot) với 5-10 người trước khi chạy chính thức."
+      - "Thu thập: kiểm soát chất lượng (loại bot, trả lời vội, trùng)."
+      - "Phân tích: làm sạch dữ liệu, thống kê mô tả, kiểm định phù hợp; với định tính, mã hóa chủ đề."
+      - "Trình bày: nêu kết luận trước, bằng chứng sau, kèm n, sai số, hạn chế; mỗi phát hiện gắn một khuyến nghị hành động."
+      - "Thực thi quyết định, đo kết quả, ghi lại bài học cho vòng sau."
+    how_to_read_results: "Bước 6 là thước đo: nghiên cứu không dẫn tới quyết định/hành động nào là nghiên cứu thất bại, dù số liệu đẹp."
+    pitfalls:
+      - "Nhảy thẳng vào thu thập dữ liệu (bước 3) khi chưa rõ quyết định (bước 1)."
+      - "Bỏ pilot nên bảng hỏi có câu hiểu sai."
+      - "Báo cáo dài liệt kê số liệu mà không có khuyến nghị."
+    example: "Quán trà sữa cân nhắc mở chi nhánh: quyết định = mở hay không ở khu X; ngưỡng = nếu tối thiểu 30% trong 385 người khảo sát nói sẽ mua tuần ít nhất một lần và lưu lượng đi bộ đạt mức đề ra thì mở."
+
+  - id: "m07_qualitative_methods"
+    name_vi: "Phương pháp định tính (Tại sao?)"
+    name_en: "Qualitative Research Methods"
+    origin: "Gốc từ nhân học (ethnography) và tâm lý học; focus group phát triển mạnh trong marketing từ giữa thế kỷ 20; netnography do Robert Kozinets đề xuất cuối thập niên 1990 để nghiên cứu cộng đồng online (kiến thức ngoài nguồn). Ra đời vì khảo sát chuẩn hóa không bắt được động cơ và ngữ cảnh."
+    components:
+      - "In-depth Interview (Phỏng vấn sâu): 1-1, 10-30 người; hiểu động cơ, pain point."
+      - "Focus Group (Thảo luận nhóm): 6-10 người/nhóm, 2-5 nhóm; test concept, khám phá insight."
+      - "Ethnography (Dân tộc học/quan sát): 5-20 người trong môi trường tự nhiên; hiểu hành vi thực tế."
+      - "Netnography: phân tích hành vi online (forum, mạng xã hội), hàng nghìn bài đăng; hiểu hội thoại tự nhiên."
+    when_to_use: "Khi chưa rõ vấn đề, cần hiểu lý do, cần ngôn ngữ của khách để viết bảng hỏi, thử concept sớm, hoặc khi khách khó diễn đạt nhu cầu."
+    how_to_apply:
+      - "Xác định câu hỏi nghiên cứu và tiêu chí chọn người tham gia (screener) bám sát phân khúc mục tiêu."
+      - "Soạn kịch bản bán cấu trúc: câu hỏi mở, từ rộng đến hẹp, hỏi 'lần gần nhất bạn... kể cho tôi nghe', hỏi tiếp 'vì sao'."
+      - "Phỏng vấn/nhóm: ghi âm có xin phép; focus group cần người điều phối trung lập, tránh để một người chi phối."
+      - "Dừng khi hết thông tin mới (bão hòa chủ đề), thường trong khoảng nguồn đề xuất."
+      - "Mã hóa theo chủ đề (thematic analysis), tóm tắt kèm trích dẫn nguyên văn của khách."
+      - "Đổi giả thuyết thành câu hỏi kiểm chứng định lượng."
+    how_to_read_results: "Là hệ giả thuyết và ngôn ngữ khách hàng; không báo cáo bằng phần trăm dù mẫu có vẻ nhiều."
+    pitfalls:
+      - "Suy rộng kết quả thành tỷ lệ thị trường."
+      - "Chọn người quen/bạn bè gây thiên lệch lịch sự."
+      - "Câu hỏi dẫn dắt ('bạn có thấy món này ngon không')."
+      - "Focus group bị người nói nhiều áp đảo (groupthink)."
+    example: "Chủ shop thời trang online phỏng vấn sâu 15 khách đã mua ít nhất 2 lần để tìm lý do quay lại; kết quả: chính sách đổi trả quan trọng hơn giá, từ đó thiết kế câu hỏi khảo sát định lượng cho 385 khách."
+
+  - id: "m07_quantitative_methods"
+    name_vi: "Phương pháp định lượng (Bao nhiêu?)"
+    name_en: "Quantitative Research Methods"
+    origin: "Dựa trên thống kê suy diễn (lấy mẫu ngẫu nhiên, kiểm định giả thuyết) và thiết kế thí nghiệm của R. A. Fisher những năm 1920-1930 (kiến thức ngoài nguồn); ra đời để đo lường có sai số kiểm soát được."
+    components:
+      - "Survey: bảng hỏi chuẩn hóa, 200-2000+ phiếu; đo thái độ, mức hài lòng."
+      - "Experiment: A/B test, nguồn nêu 1000+ mỗi nhóm (cần tính theo m07_ab_sample_size); test giá, quảng cáo, tính năng."
+      - "Panel data: theo dõi cùng nhóm khách theo thời gian, hàng nghìn; tracking hành vi mua."
+      - "Big Data Analytics: hàng triệu bản ghi; dự báo, nhận dạng mẫu."
+    when_to_use: "Khi đã có giả thuyết cần đo quy mô, so sánh nhóm, hoặc kiểm tra tác động của một thay đổi."
+    how_to_apply:
+      - "Xác định biến cần đo, nhóm đối tượng, khung lấy mẫu."
+      - "Tính cỡ mẫu theo m07_sample_size_cochran (và m07_sample_size_fpc nếu quần thể nhỏ); chia cho tỷ lệ phản hồi (m07_invites_needed)."
+      - "Soạn bảng hỏi theo quy tắc: câu ngắn, một ý, không dẫn dắt, thang đo nhất quán (Likert 5 điểm), câu sàng lọc đầu, câu nhân khẩu cuối; pilot 5-10 người."
+      - "Thu thập bằng form online hoặc tại điểm bán; có kiểm soát chất lượng (thời gian trả lời tối thiểu, câu kiểm tra chú ý)."
+      - "Phân tích: thống kê mô tả, khoảng tin cậy (m07_margin_of_error), so sánh nhóm (m07_two_prop_ztest), crosstab theo phân khúc."
+      - "Báo cáo kèm n, sai số, cách lấy mẫu, hạn chế."
+    how_to_read_results: "Đọc tỷ lệ cùng khoảng tin cậy; khác biệt dưới sai số biên coi như chưa khác; luôn cân nhắc thiên lệch chọn mẫu."
+    pitfalls:
+      - "Mẫu thuận tiện (chỉ khảo sát khách đang ngồi quán) không đại diện thị trường tiềm năng."
+      - "Bảng hỏi quá dài làm bỏ dở hoặc trả lời đại."
+      - "Panel: người tham gia lâu dần thành 'không điển hình'."
+    example: "Khảo sát quán cà phê Q.1: 385 phiếu hợp lệ, hỏi tần suất mua, mức giá chấp nhận, kênh biết đến quán; phân tích theo nhóm tuổi."
+
+  - id: "m07_digital_tools"
+    name_vi: "Bộ công cụ nghiên cứu số (Digital Research Tools)"
+    name_en: "Digital Research Tools"
+    origin: "Phát triển cùng Internet, mạng xã hội và AI từ những năm 2000; ra đời vì hành vi khách hàng nay để lại dấu vết số, cho phép đo thời gian thực với chi phí thấp hơn nhiều so với nghiên cứu truyền thống."
+    components:
+      - "Google Analytics (miễn phí): hành vi web, traffic, chuyển đổi, user flow."
+      - "Google Trends (miễn phí): mức quan tâm tìm kiếm, xu hướng, mùa vụ."
+      - "Meta Audience Insights (miễn phí): nhân khẩu học mạng xã hội, profiling."
+      - "SEMrush / Ahrefs (trả phí): SEO, từ khóa, phân tích đối thủ."
+      - "SurveyMonkey / Typeform (freemium): khảo sát online."
+      - "Hotjar / Microsoft Clarity (freemium): heatmap, session recording."
+      - "Brandwatch / Sprout (trả phí): social listening, sentiment."
+      - "ChatGPT / công cụ AI (freemium): tóm tắt báo cáo, gom chủ đề, sinh insight (cần kiểm chứng)."
+    when_to_use: "Cần dữ liệu nhanh, rẻ, thời gian thực; SME có ngân sách hạn chế."
+    how_to_apply:
+      - "Bắt đầu với bộ miễn phí: Google Analytics + Google Trends + Meta Insights + Clarity + Google Forms."
+      - "Gắn tracking (GA4, Meta Pixel) để thu hành vi thật trước khi cần ra quyết định."
+      - "Dùng Trends/SEMrush trước để khoanh vùng nhu cầu và đối thủ, rồi khảo sát để hiểu lý do."
+      - "Dùng AI để gom và tóm tắt phản hồi mở, nhưng kiểm tra lại mẫu trích dẫn gốc."
+      - "Nâng cấp công cụ trả phí khi có câu hỏi cụ thể và ngân sách."
+    how_to_read_results: "Dữ liệu hành vi cho biết khách LÀM gì; không cho biết VÌ SAO. Kết hợp với phỏng vấn/khảo sát ngắn để giải thích."
+    pitfalls:
+      - "Selection bias (người dùng online không đại diện toàn dân) và bot traffic làm sai số liệu."
+      - "Đo nhiều nhưng không hành động (analysis paralysis)."
+      - "Quyền riêng tư: tuân thủ quy định dữ liệu cá nhân; cần xác nhận quy định hiện hành tại Việt Nam."
+      - "Đánh giá AI như nguồn sự thật: AI có thể bịa số liệu thị trường."
+    example: "Shop mỹ phẩm online dùng Google Trends so sánh 'serum vitamin C' và 'serum retinol' theo mùa, Clarity xem khách bỏ giỏ ở bước nào, rồi gửi khảo sát 5 câu qua Zalo cho khách vừa bỏ giỏ."
+
+  - id: "m07_traditional_vs_digital"
+    name_vi: "So sánh nghiên cứu truyền thống và digital"
+    name_en: "Traditional vs Digital Research"
+    origin: "Khung so sánh giáo khoa cho kỷ nguyên Marketing 4.0 (Kotler); ra đời để SME chọn cách tiếp cận phù hợp ngân sách và loại câu hỏi."
+    components:
+      - "Tốc độ: truyền thống tuần-tháng; digital giờ-ngày."
+      - "Chi phí: truyền thống cao (nguồn: $50K-500K); digital thấp-trung bình ($0-50K); đây là mức của dự án lớn, giá thị trường VN thấp hơn nhiều, confidence thấp."
+      - "Sample size: truyền thống trăm-nghìn; digital triệu-tỉ."
+      - "Accuracy: truyền thống kiểm soát chặt nhưng nhỏ; digital lớn nhưng nhiễu (messy)."
+      - "Real-time: truyền thống không; digital có (live dashboard)."
+      - "Bias: truyền thống survey bias, câu hỏi dẫn dắt; digital selection bias, bot traffic."
+    when_to_use: "Lựa chọn phương pháp ở bước 2 và lập ngân sách."
+    how_to_apply:
+      - "Cần hiểu động cơ, sản phẩm mới chưa có dữ liệu, đối tượng offline: ưu tiên truyền thống/định tính."
+      - "Cần theo dõi hiệu quả liên tục, tối ưu chi phí, kênh online: ưu tiên digital."
+      - "Kết hợp (mixed methods): digital cho 'cái gì', truyền thống/định tính cho 'tại sao'."
+    how_to_read_results: "Không phương pháp nào thắng tuyệt đối; kết quả đáng tin nhất khi hai nguồn độc lập cùng chỉ một hướng (triangulation)."
+    pitfalls:
+      - "Cho rằng dữ liệu lớn tự đúng; dữ liệu lớn có thể lệch hệ thống."
+      - "Cho rằng nghiên cứu truyền thống luôn tốn kém; SME có thể làm khảo sát nhỏ tại điểm bán với chi phí thấp."
+    example: "Chuỗi cà phê dùng Google Analytics đo lưu lượng đặt hàng online, nhưng phỏng vấn trực tiếp 10 khách quen để hiểu vì sao đơn tối ít."
+
+  - id: "m07_stated_vs_revealed"
+    name_vi: "Sở thích tuyên bố và sở thích thực tế"
+    name_en: "Stated vs Revealed Preference"
+    origin: "Khái niệm revealed preference do nhà kinh tế Paul Samuelson đề xuất năm 1938 (kiến thức ngoài nguồn): suy ra sở thích từ lựa chọn thực tế. Ra đời vì lời nói về sở thích thường không khớp hành vi."
+    components:
+      - "Stated: lời nói, trả lời khảo sát, ý định mua."
+      - "Revealed: hành vi quan sát được (đơn hàng, lượt xem, hóa đơn)."
+      - "Khoảng cách: do thiên lệch mong muốn xã hội (social desirability), hiểu biết sai về bản thân, ý định mua không biến thành hành động."
+    when_to_use: "Mọi lúc dùng khảo sát để dự báo hành vi mua; khi dữ liệu khảo sát mâu thuẫn dữ liệu bán hàng."
+    how_to_apply:
+      - "Ưu tiên dữ liệu hành vi (POS, analytics) khi có; dùng khảo sát để giải thích."
+      - "Đo ý định bằng hành vi nhỏ có chi phí (đặt cọc, đăng ký danh sách chờ, mua thử) thay vì chỉ hỏi 'có mua không'."
+      - "Hỏi về hành vi quá khứ cụ thể ('lần gần nhất bạn mua...') thay vì ý định tương lai."
+      - "Khi dùng ý định mua, chiết khấu mạnh (ví dụ chỉ phần nhỏ những người nói 'chắc chắn mua' thật sự mua; tỷ lệ phải đo theo ngành)."
+    how_to_read_results: "Nếu khảo sát nói 70% muốn món healthy nhưng doanh số món healthy chỉ 8%, hãy tin doanh số và tìm lý do bằng phỏng vấn."
+    pitfalls:
+      - "Dựa hoàn toàn vào ý định mua khi lập dự báo doanh thu."
+    example: "Khách nói thích tài liệu (documentary) nhưng dữ liệu xem cho thấy họ xem true crime nhiều hơn (case Netflix)."
+
+  - id: "m07_netflix_system"
+    name_vi: "Hệ thống nghiên cứu dữ liệu của Netflix"
+    name_en: "Netflix Data-Driven Research System"
+    origin: "Netflix chuyển từ cho thuê DVD sang streaming rồi sản xuất nội dung gốc (House of Cards, 2013) và đặt dữ liệu ở trung tâm mọi quyết định để giảm rủi ro khi đầu tư lớn."
+    components:
+      - "Behavioral data: theo dõi hành vi xem (xem gì, khi nào, dừng ở đâu, tua lại, bỏ giữa chừng) cho cá nhân hóa và gợi ý."
+      - "A/B Testing: thử thumbnail, tiêu đề, tóm tắt, trailer; nguồn nêu 250+ thử nghiệm đồng thời (số liệu không kiểm chứng)."
+      - "Content Research: phân tích độ phổ biến thể loại, diễn viên, sentiment đánh giá để quyết định sản xuất."
+      - "Market Research: khảo sát hài lòng, NPS, willingness-to-pay cho giá và vào thị trường mới."
+      - "Predictive (ML): dự đoán show nào hit, khách nào sẽ rời bỏ (churn) để greenlight và retention."
+    when_to_use: "Mô hình tham chiếu để thiết kế văn hóa nghiên cứu dựa trên dữ liệu hành vi liên tục."
+    how_to_apply:
+      - "Thu thập dữ liệu hành vi sẵn có của mình (hóa đơn POS, lịch sử đơn, chat, lượt xem video)."
+      - "Chạy thử nghiệm nhỏ liên tục (tiêu đề, ảnh, giá, ưu đãi) với quyết định theo ngưỡng định trước."
+      - "Kết hợp khảo sát (NPS, WTP) với hành vi để hiểu lý do."
+      - "Dùng dữ liệu để đặt cược có tính toán, không để thay thế tầm nhìn."
+    how_to_read_results: "Hành vi quan sát được đáng tin hơn lời nói; kết quả A/B chỉ tối ưu cải tiến nhỏ, đột phá cần tầm nhìn."
+    pitfalls:
+      - "Dữ liệu bỏ lỡ khoảnh khắc văn hóa (không dự đoán được Squid Game viral toàn cầu)."
+      - "Quá phụ thuộc dữ liệu dẫn tới hủy show niche chất lượng nhưng lượt xem thấp."
+      - "Lo ngại quyền riêng tư khi theo dõi hành vi chi tiết đến từng phút."
+      - "SME không có quy mô Netflix; bắt chước nguyên cấu trúc 250 test là phi thực tế."
+    example: "Phiên bản SME: quán phở theo dõi món bán chạy theo giờ trong POS, thử 2 mẫu menu trong 2 tuần và hỏi NPS bằng mã QR ở bàn."
+
+  - id: "m07_ab_testing"
+    name_vi: "A/B Testing (thử nghiệm đối chứng)"
+    name_en: "A/B Testing"
+    origin: "Thiết kế thí nghiệm ngẫu nhiên có nhóm đối chứng của R. A. Fisher (thập niên 1920-30, nông nghiệp) được các công ty web ứng dụng từ đầu những năm 2000 vì thay đổi giao diện có thể thử rẻ trên hàng triệu người dùng. Dùng trong marketing vì là cách duy nhất tách tác động của một thay đổi khỏi nhiễu."
+    components:
+      - "Biến thể A (đối chứng) và B (thử nghiệm), khác nhau ở một yếu tố."
+      - "Phân bổ ngẫu nhiên người dùng vào mỗi nhóm."
+      - "Chỉ số kết quả chính đặt trước (CTR, chuyển đổi, doanh thu/khách)."
+      - "Cỡ mẫu và thời gian xác định trước."
+      - "Kiểm định ý nghĩa thống kê."
+    when_to_use: "Test thumbnail/tiêu đề/ảnh quảng cáo, giá, landing page, email subject, tính năng; khi có đủ lưu lượng."
+    how_to_apply:
+      - "Phát biểu giả thuyết: 'đổi X thành Y sẽ tăng chỉ số Z ít nhất k điểm %'."
+      - "Chọn chỉ số chính và hiệu ứng tối thiểu đáng quan tâm; tính cỡ mẫu bằng m07_ab_sample_size."
+      - "Chỉ đổi MỘT yếu tố; chia ngẫu nhiên; chạy đồng thời hai biến thể (không chạy A tuần này, B tuần sau)."
+      - "Chạy tối thiểu một chu kỳ tuần, không dừng sớm."
+      - "Kiểm định bằng m07_two_prop_ztest; xem cả ý nghĩa thực tế (mức tăng doanh thu so với chi phí triển khai)."
+      - "Ghi lại kết quả (kể cả thất bại) vào sổ thí nghiệm."
+    how_to_read_results: "Kết quả có ý nghĩa thống kê VÀ đủ lớn về kinh doanh mới triển khai; không có ý nghĩa thì giữ nguyên bản đối chứng, đừng kết luận B tệ hơn."
+    pitfalls:
+      - "Đổi nhiều yếu tố cùng lúc nên không biết yếu tố nào gây ra khác biệt."
+      - "Dừng khi thấy B thắng (peeking), cỡ mẫu quá nhỏ, nhiều biến thể."
+      - "Hiệu ứng tân kỳ (novelty): biến thể mới được click nhiều lúc đầu rồi giảm."
+      - "Chỉ tối ưu chi tiết nhỏ, bỏ qua câu hỏi chiến lược lớn."
+    example: "Netflix cho biết một thumbnail có thể đổi 20-30% lượt xem cùng một phim (số liệu không kiểm chứng, minh họa); insight: khuôn mặt biểu cảm mạnh hơn phong cảnh, dưới 3 người trong hình hơn nhiều người, villain hơn hero cho thể loại tội phạm."
+
+procedures:
+  - id: "m07_proc_design_survey"
+    name: "Thiết kế và triển khai khảo sát khách hàng định lượng từ đầu đến cuối"
+    steps:
+      - "1. Phát biểu quyết định: 'Chúng tôi cần biết ... để quyết định ...'. Viết sẵn ngưỡng hành động (nếu kết quả >= x% thì làm A, nếu không thì B)."
+      - "2. Tìm dữ liệu thứ cấp và dữ liệu nội bộ (POS, CRM, GA, Google Trends, báo cáo ngành) để khoanh vùng; chỉ khảo sát cho phần chưa biết."
+      - "3. Nếu chưa rõ lý do/động cơ: phỏng vấn sâu 10-15 người trước để lấy ngôn ngữ và giả thuyết."
+      - "4. Xác định quần thể mục tiêu và khung lấy mẫu (ví dụ người sống/làm việc trong bán kính 1 km, khách thành viên); chia phân khúc nếu cần."
+      - "5. Tính cỡ mẫu: m07_sample_size_cochran (95%, e 5%, p 0.5 thì 385); nếu quần thể nhỏ dùng m07_sample_size_fpc; nếu cần phân tích riêng từng phân khúc thì tính cho từng phân khúc; chia cho tỷ lệ phản hồi (m07_invites_needed)."
+      - "6. Soạn bảng hỏi: câu sàng lọc, câu chính (thái độ, hành vi gần nhất, mức giá chấp nhận, kênh biết đến, rào cản), câu nhân khẩu (cuối). Quy tắc: một ý mỗi câu, không dẫn dắt, thang đo nhất quán, tránh câu phủ định kép, thêm 1-2 câu mở."
+      - "7. Pilot với 5-10 người, sửa câu hiểu sai, đo thời gian làm bài (mục tiêu 3-7 phút)."
+      - "8. Thu thập: Google Forms/Typeform qua Zalo/Facebook/QR tại điểm bán; thêm ưu đãi nhỏ (voucher) để tăng phản hồi; theo dõi đa dạng nguồn để tránh mẫu lệch."
+      - "9. Làm sạch dữ liệu: loại trùng, trả lời vội, mâu thuẫn; tính tỷ lệ phản hồi thực."
+      - "10. Phân tích: thống kê mô tả, khoảng tin cậy (m07_margin_of_error), crosstab theo phân khúc, so sánh nhóm (m07_two_prop_ztest), NPS (m07_nps) nếu có; tóm tắt câu mở theo chủ đề."
+      - "11. Báo cáo: kết luận trước, bằng chứng, n và sai số, hạn chế, khuyến nghị gắn với ngưỡng hành động ở bước 1."
+      - "12. Hành động và đo kết quả thực (so khảo sát với doanh số thực để hiệu chỉnh stated vs revealed cho lần sau)."
+    outputs: "Báo cáo khảo sát 1-2 trang: quyết định, phương pháp, mẫu, kết quả chính kèm khoảng tin cậy, hạn chế, khuyến nghị và kế hoạch hành động."
+
+  - id: "m07_proc_choose_method"
+    name_vi: "Chọn phương pháp nghiên cứu theo ngân sách và câu hỏi"
+    name: "Chọn loại nghiên cứu và phương pháp"
+    steps:
+      - "1. Viết câu hỏi nghiên cứu dạng 'cái gì / bao nhiêu / tại sao / nếu thay đổi thì sao'."
+      - "2. Ánh xạ: không rõ vấn đề hoặc 'tại sao' thì Exploratory (định tính); 'cái gì/bao nhiêu' thì Descriptive (survey, thứ cấp, panel); 'nếu thay đổi X thì' thì Causal (experiment)."
+      - "3. Kiểm tra dữ liệu thứ cấp và nội bộ có trả lời được không; nếu có thì dừng, không cần sơ cấp."
+      - "4. Chọn kênh: khách online có lưu lượng thì digital (A/B, analytics); khách offline hoặc cần chiều sâu thì phỏng vấn/quan sát tại điểm bán."
+      - "5. Kiểm tra ràng buộc: ngân sách, thời gian ra quyết định, lưu lượng cho A/B (m07_ab_sample_size); nếu không đủ lưu lượng thì chuyển sang định tính hoặc test hiệu ứng lớn."
+      - "6. Quyết định mixed methods: định tính trước, định lượng sau, hành vi đối chiếu."
+    outputs: "Một bản thiết kế nghiên cứu 1 trang: câu hỏi, loại nghiên cứu, phương pháp, mẫu, chi phí, thời gian, ngưỡng hành động."
+
+  - id: "m07_proc_run_ab_test"
+    name: "Chạy một A/B test đúng cách"
+    steps:
+      - "1. Giả thuyết và chỉ số chính (ví dụ CTR quảng cáo, tỷ lệ đặt hàng landing page)."
+      - "2. Lấy p1 hiện tại từ analytics; chọn p2 tối thiểu đáng làm; tính n mỗi nhóm bằng m07_ab_sample_size."
+      - "3. Ước thời gian = 2n / lưu lượng mỗi ngày; nếu quá dài (vài tháng) thì tăng hiệu ứng, đổi chỉ số, hoặc dùng định tính."
+      - "4. Thiết lập chia ngẫu nhiên 50/50, chạy đồng thời, khoá các yếu tố khác (không đổi khuyến mãi giữa chừng)."
+      - "5. Không dừng sớm; chạy trọn số ngày đã định (bội số 7)."
+      - "6. Tính CTR/CR hai nhóm, m07_two_prop_ztest, khoảng tin cậy chênh lệch."
+      - "7. Quyết định: có ý nghĩa và đủ lớn thì triển khai; không có ý nghĩa thì giữ A; hai trường hợp đều ghi vào sổ thí nghiệm."
+    outputs: "Quyết định triển khai/giữ nguyên, kèm số liệu, ghi bài học và giả thuyết tiếp theo."
+
+  - id: "m07_proc_nps_program"
+    name: "Triển khai chương trình đo NPS và vòng phản hồi"
+    steps:
+      - "1. Hỏi 'Bạn sẵn lòng giới thiệu [tên] cho bạn bè (0-10)?' và 1 câu mở 'Vì sao bạn chấm vậy?' qua QR trên hóa đơn/Zalo OA sau mua."
+      - "2. Thu tối thiểu 100 phản hồi mỗi kỳ (tháng/quý) cho mỗi điểm bán để tránh dao động quá lớn."
+      - "3. Tính NPS bằng m07_nps; phân tích theo chi nhánh, nhóm khách, kênh."
+      - "4. Mã hóa câu mở của Detractors thành 3-5 chủ đề chính; xếp hạng theo tần suất."
+      - "5. Liên hệ lại Detractors trong 48 giờ để xử lý; mời Promoters chia sẻ/giới thiệu."
+      - "6. Chọn 1-2 cải tiến, đo lại NPS kỳ sau và so với doanh thu lặp lại."
+    outputs: "Dashboard NPS theo kỳ, danh sách chủ đề phàn nàn ưu tiên, kế hoạch cải tiến."
+
+  - id: "m07_proc_digital_stack"
+    name: "Dựng bộ nghiên cứu số tối thiểu cho SME"
+    steps:
+      - "1. Cài Google Analytics 4 và Meta Pixel (hoặc TikTok Pixel) lên website/landing page; đặt các sự kiện chuyển đổi chính."
+      - "2. Dùng Google Trends kiểm tra xu hướng và mùa vụ của ngành/từ khóa."
+      - "3. Dùng Meta Audience Insights/Ads Manager để hiểu nhân khẩu học tệp khách."
+      - "4. Cài Microsoft Clarity (miễn phí) để xem heatmap và ghi phiên."
+      - "5. Dùng Google Forms/Typeform cho khảo sát ngắn; Zalo OA để gửi."
+      - "6. Đặt lịch xem số liệu hàng tuần (30 phút) và một thử nghiệm mỗi tháng."
+    outputs: "Hệ thống đo lường chạy tự động và nhịp nghiên cứu liên tục."
+
+decision_rules:
+  - "Nếu chưa rõ vấn đề hoặc cần hiểu lý do thì làm nghiên cứu khám phá định tính (phỏng vấn sâu 10-30, focus group 2-5 nhóm) trước khi khảo sát số lớn."
+  - "Nếu cần con số suy rộng (tỷ lệ, quy mô) thì làm khảo sát/ dữ liệu mô tả với cỡ mẫu tính theo sai số; mặc định 385 cho 95% tin cậy, sai số 5%."
+  - "Nếu cần chứng minh một thay đổi có tác dụng thì làm thí nghiệm ngẫu nhiên (A/B test), không dựa trên khảo sát hay so sánh trước-sau."
+  - "Nếu dữ liệu thứ cấp hoặc nội bộ đã trả lời được câu hỏi thì không thu dữ liệu sơ cấp."
+  - "Nếu lời khách nói (stated) mâu thuẫn hành vi (revealed) thì tin hành vi và dùng định tính để tìm lý do."
+  - "Nếu quần thể dưới vài nghìn và n0 lớn hơn khoảng 5% N thì áp dụng hiệu chỉnh quần thể hữu hạn."
+  - "Nếu quyết định ít rủi ro, dễ đảo ngược (đổi tiêu đề quảng cáo) thì chấp nhận sai số lớn hơn (10%) và nghiên cứu nhanh; nếu tốn kém và khó đảo ngược (mở chi nhánh, thuê mặt bằng 3 năm) thì đầu tư nghiên cứu kỹ."
+  - "Nếu lưu lượng không đủ cho A/B test (cỡ mẫu tính ra cần vượt thời gian chấp nhận được) thì thử hiệu ứng lớn hơn, kéo dài thời gian, hoặc chuyển sang định tính."
+  - "Nếu p-value A/B lớn hơn 0.05 thì không kết luận B hơn A; chạy thêm hoặc giữ A."
+  - "Nếu A/B có ý nghĩa nhưng mức tăng doanh thu nhỏ hơn chi phí triển khai thì không triển khai."
+  - "Nếu NPS thấp hoặc giảm thì đọc câu mở của Detractors để tìm nguyên nhân trước khi chỉnh số liệu hay chạy thêm marketing."
+  - "Nếu dữ liệu digital lớn nhưng đối tượng online không đại diện khách mục tiêu (ví dụ khách lớn tuổi mua offline) thì bổ sung khảo sát/quan sát offline."
+  - "Nếu nghiên cứu đã kéo dài nhưng quyết định bị trì hoãn thì quay lại ngưỡng hành động ở bước 1; đặt hạn chót và ra quyết định theo thông tin sẵn có."
+  - "Nếu đang tối ưu chi tiết nhỏ mà thị trường cần đột phá (ngành thay đổi) thì kết hợp tầm nhìn chiến lược và thử nghiệm sản phẩm/mô hình mới, không chỉ A/B test."
+
+benchmarks:
+  - {metric: "Cỡ mẫu khảo sát (95%, sai số 5%, p 0.5)", value: "385", context: "Quần thể lớn; công thức Cochran (đã tính lại bằng Python)", confidence: high}
+  - {metric: "Cỡ mẫu khảo sát (95%, sai số 10%, p 0.5)", value: "97", context: "Khảo sát thăm dò nhanh", confidence: high}
+  - {metric: "Phỏng vấn sâu", value: "10-30 người", context: "Nguồn; thường dừng khi bão hòa chủ đề", confidence: medium}
+  - {metric: "Focus group", value: "6-10 người/nhóm, 2-5 nhóm", context: "Nguồn", confidence: medium}
+  - {metric: "Ethnography", value: "5-20 người", context: "Nguồn", confidence: medium}
+  - {metric: "Survey định lượng", value: "200-2000+ phiếu", context: "Nguồn; cỡ mẫu cụ thể tính theo sai số", confidence: medium}
+  - {metric: "A/B test", value: "1000+ mỗi nhóm (quy tắc thô); thực tế 432 đến 8.156 mỗi nhóm tùy hiệu ứng", context: "5%->10% cần 432; 5%->6% cần 8.156 (tính lại)", confidence: high}
+  - {metric: "NPS tham chiếu", value: ">0 chấp nhận được, >30 tốt, >50 xuất sắc", context: "Ngưỡng phổ biến, thay đổi theo ngành, kiến thức ngoài nguồn", confidence: medium}
+  - {metric: "Chi phí nghiên cứu truyền thống vs digital", value: "$50K-500K vs $0-50K", context: "Nguồn, quy mô dự án lớn quốc tế; không dùng cho SME VN", confidence: low}
+  - {metric: "Tốc độ", value: "Truyền thống tuần-tháng; digital giờ-ngày", context: "Nguồn", confidence: medium}
+  - {metric: "Thumbnail thay đổi lượt xem", value: "20-30%", context: "Số Netflix theo nguồn, minh họa, chưa kiểm chứng", confidence: low}
+  - {metric: "Số A/B test đồng thời của Netflix", value: "250+", context: "Nguồn, chưa kiểm chứng", confidence: low}
+  - {metric: "Thời gian làm khảo sát khách", value: "3-7 phút", context: "Thực hành phổ biến, kiến thức ngoài nguồn", confidence: low}
+
+pitfalls:
+  - "Nghiên cứu không gắn với quyết định cụ thể: thu nhiều dữ liệu nhưng không biết làm gì (analysis paralysis)."
+  - "Garbage in, garbage out: mẫu lệch, câu hỏi dẫn dắt, bot traffic làm insight sai; kiểm soát chất lượng quan trọng hơn tăng cỡ mẫu."
+  - "Tin vào stated preference: khách nói muốn healthy nhưng mua fast food."
+  - "Suy rộng kết quả định tính thành tỷ lệ thị trường."
+  - "Khảo sát khách hiện tại để quyết định thu hút khách mới (thiên lệch người sống sót)."
+  - "Dùng khảo sát/tương quan để khẳng định nhân quả."
+  - "Báo cáo tỷ lệ mà không có n, sai số và cách chọn mẫu."
+  - "Dừng A/B test sớm hoặc đổi nhiều yếu tố cùng lúc."
+  - "Nhầm ý nghĩa thống kê với ý nghĩa kinh doanh (khác biệt nhỏ nhưng có ý nghĩa thống kê vẫn có thể không đáng triển khai)."
+  - "Nghiên cứu chất lượng cao tốn thời gian và tiền: cần cân bằng với giá trị của quyết định (nghiên cứu quá kỹ làm chậm quyết định)."
+  - "Dữ liệu quá khứ không đảm bảo dự đoán tương lai; thuật toán bỏ lỡ các khoảnh khắc văn hóa (Squid Game)."
+  - "Quá phụ thuộc dữ liệu làm hủy hoặc bỏ qua các ý tưởng đột phá/niche chất lượng."
+  - "Quyền riêng tư: theo dõi hành vi chi tiết cần minh bạch và tuân thủ quy định."
+  - "Bắt chước Netflix quy mô lớn mà SME không có dữ liệu, lưu lượng và đội ngũ phù hợp."
+
+sme_vn_guidance:
+  - "Bộ công cụ miễn phí đủ để bắt đầu: Google Analytics 4, Google Trends, Google Forms, Meta Business Suite/Audience Insights, Microsoft Clarity, dữ liệu POS (KiotViet, Sapo, iPOS) và Zalo OA. Chi phí tool này gần 0 đồng; tính năng và chính sách có thể thay đổi, cần xác nhận."
+  - "Công cụ trả phí khi cần: SurveyMonkey/Typeform bản trả phí, SEMrush/Ahrefs (khoảng vài trăm USD/tháng, confidence low), Brandwatch/Sprout (đắt, hầu như không phù hợp SME nhỏ). Ưu tiên bản freemium trước."
+  - "Chi phí tham khảo (confidence low, cần xác nhận): khảo sát online tự làm 0-3 triệu VNĐ (voucher/quảng cáo kéo form); phỏng vấn sâu mỗi người 100-300 nghìn VNĐ quà; focus group qua công ty nghiên cứu thị trường khoảng 20-60 triệu VNĐ một nhóm; thuê công ty nghiên cứu cả dự án hàng trăm triệu."
+  - "Cách làm rẻ nhất có chất lượng: (1) khai thác dữ liệu hóa đơn POS; (2) QR trên hóa đơn hỏi NPS và một câu mở; (3) 10-15 phỏng vấn sâu khách quen mỗi quý; (4) A/B test tiêu đề/ảnh quảng cáo trên Facebook/TikTok Ads với ngân sách nhỏ."
+  - "Mẫu khảo sát nên lấy theo khu vực phục vụ thực tế (bán kính 1-3 km với quán), không chỉ fanpage; lấy ngẫu nhiên tại điểm bán vào các khung giờ khác nhau (sáng, trưa, tối, cuối tuần)."
+  - "Tỷ lệ phản hồi khảo sát online qua Zalo/Facebook thường thấp (khoảng 5-20%, confidence low); thêm voucher nhỏ (5-20 nghìn VNĐ) tăng phản hồi."
+  - "Văn hóa trả lời tại VN: thiên lệch lịch sự cao (ít chê thẳng); dùng khảo sát ẩn danh, câu hỏi gián tiếp, đọc kỹ điểm trung bình thấp ở câu mở."
+  - "Netnography miễn phí: đọc review Google Maps, Foodbook, group Facebook, bình luận TikTok về đối thủ để rút ra pain point và từ ngữ của khách."
+  - "A/B test cho SME ít lưu lượng: test thay đổi lớn (ưu đãi khác hẳn, ảnh khác hẳn) và chỉ số chặng đầu (CTR) thay vì chỉ số hiếm (mua hàng)."
+  - "Dữ liệu cá nhân của khách (số điện thoại, hành vi) cần tuân thủ quy định bảo vệ dữ liệu cá nhân hiện hành của Việt Nam (cần xác nhận văn bản pháp luật cập nhật)."
+
+case_lessons:
+  - name: "Netflix: House of Cards (2013)"
+    type: success
+    setup: >
+      Netflix cân nhắc sản xuất nội dung gốc đầu tiên, rủi ro trên 100 triệu USD. Phân tích dữ liệu xem thấy ba yếu tố có giao thoa lớn trong khán giả:
+      Kevin Spacey, đạo diễn David Fincher, và bản House of Cards gốc của Anh. Mua thẳng hai mùa (26 tập) mà không làm tập thí điểm,
+      và tạo 10 phiên bản trailer cho từng phân khúc (fan phim chính trị, fan Spacey, fan chính kịch).
+    key_calculations:
+      - "2 mùa x 13 tập = 26 tập (nguồn khớp)"
+      - "Rủi ro đầu tư ước tính trên 100 triệu USD; giá trị thương hiệu ước tính trên 500 triệu USD (số của nguồn, chưa kiểm chứng)"
+      - "Giá trị dữ liệu: nếu xác suất thành công từ dữ liệu cao hơn trực giác, chi phí thử nghiệm thí điểm tiết kiệm được là chi phí mà thí điểm sẽ tốn thêm (không có số trong nguồn)"
+    lesson: >
+      Khi dữ liệu hành vi cho thấy giao thoa sở thích rõ ràng, có thể giảm bước thử nghiệm tốn kém; cá nhân hóa truyền thông theo phân khúc (nhiều phiên bản trailer)
+      tăng hiệu quả. Cho SME: dùng dữ liệu bán hàng để chọn món/sản phẩm đặt cược, và tạo nhiều phiên bản quảng cáo cho từng phân khúc. Cẩn thận: một case thành công không chứng minh quy trình luôn đúng (thiên lệch người sống sót).
+    data_reliability: illustrative
+  - name: "Netflix: thumbnail A/B testing"
+    type: success
+    setup: >
+      Netflix thử nhiều ảnh đại diện cho cùng một title và cá nhân hóa ảnh cho từng người xem. Theo nguồn, một ảnh có thể đổi 20-30% lượt xem; insight: khuôn mặt biểu cảm mạnh,
+      ít hơn 3 người, villain cho thể loại tội phạm.
+    key_calculations:
+      - "Nếu CTR cơ sở 5% và ảnh tốt hơn tăng tương đối 25% thì CTR mới = 6.25% (chênh 1.25 điểm %)"
+      - "Cỡ mẫu để phát hiện 5% lên 6.25%: tính bằng m07_ab_sample_size, khoảng 5.330 mỗi nhóm (đã tính lại)"
+    lesson: >
+      Yếu tố nhỏ (ảnh) tác động doanh thu lớn; test liên tục; mỗi phân khúc có thể nên thấy phiên bản khác. SME có thể áp dụng cho ảnh sản phẩm, thumbnail video, tiêu đề email.
+    data_reliability: unverified
+  - name: "Netflix: hạn chế của quyết định dựa trên dữ liệu"
+    type: failure
+    setup: >
+      Thuật toán khó dự đoán các hiện tượng văn hóa (Squid Game viral toàn cầu); quá phụ thuộc dữ liệu dẫn tới hủy nhiều show niche chất lượng nhưng lượt xem thấp; tracking chi tiết gây lo ngại quyền riêng tư; A/B test hợp với thay đổi nhỏ, đột phá cần tầm nhìn.
+    key_calculations:
+      - "Không có số liệu định lượng trong nguồn"
+    lesson: >
+      Dữ liệu là công cụ tăng xác suất, không thay thế tầm nhìn: dành một phần ngân sách (ví dụ 10-20%, tỷ lệ gợi ý của agent, không phải số của nguồn) cho thử nghiệm đặt cược không dựa dữ liệu quá khứ. Đảm bảo minh bạch về dữ liệu cá nhân.
+    data_reliability: illustrative
+  - name: "Netflix: bài học Marketing 4.0 tổng hợp"
+    type: success
+    setup: "Năm bài học: Data hơn Intuition; Behavioral hơn Survey; Research liên tục; Thumbnail research là doanh thu; Predictive hơn Descriptive."
+    key_calculations:
+      - "Quy mô theo nguồn: hơn 230 triệu thuê bao, 250+ A/B test đồng thời (chưa kiểm chứng, minh họa)"
+    lesson: >
+      Với SME, thu nhỏ năm bài học thành quy tắc: (1) quyết định quan trọng phải có dữ liệu; (2) tin hành vi hơn lời nói; (3) mỗi tháng một thử nghiệm; (4) tối ưu yếu tố tiếp xúc đầu (ảnh, tiêu đề); (5) dùng dữ liệu để dự đoán khách sắp rời bỏ (ví dụ khách quen 30 ngày chưa quay lại thì gửi ưu đãi).
+    data_reliability: illustrative
+  - name: "SME: quán cà phê khảo sát trước khi tăng giá (minh họa tự thiết kế)"
+    type: sme
+    setup: >
+      Quán cà phê Q.1 muốn tăng giá ly signature từ 55.000 lên 60.000 VNĐ nhưng sợ mất khách. Quán dùng dữ liệu POS (revealed) và khảo sát ngắn (stated) rồi chạy thử nghiệm hai chi nhánh nhỏ.
+    key_calculations:
+      - "Cỡ mẫu khảo sát: 385 phiếu cho sai số 5% (đã tính)"
+      - "Thử nghiệm giá: 2 chi nhánh tương đương, so doanh thu tuần"
+    lesson: "Kết hợp ba lớp: dữ liệu POS, khảo sát WTP, thử nghiệm giá thật; ra quyết định theo ngưỡng định trước. Số liệu mang tính minh họa."
+    data_reliability: illustrative
+
+worked_examples:
+  - name: "Thiết kế khảo sát cho quán cà phê specialty Q.1 (cỡ mẫu và số cần mời)"
+    inputs: {z: 1.96, p: 0.5, e: 0.05, response_rate: 0.2}
+    steps:
+      - "Quyết định: mở quán cà phê specialty ở Q.1 nếu ít nhất 25% người khảo sát sẵn sàng mua tuần hai lần và chấp nhận giá trung bình trên 55.000 VNĐ."
+      - "Cỡ mẫu Cochran: n0 = 1.96^2*0.5*0.5/0.05^2 = 384.16, làm tròn 385 phiếu hợp lệ."
+      - "Tỷ lệ phản hồi dự kiến 20% nên cần mời 385/0.2 = 1.925 người (khảo sát Zalo/Facebook cộng với phát QR ở các tòa nhà văn phòng)."
+      - "Nếu chỉ khảo sát khách của một tòa nhà 2.000 người thì n = 384.16/(1+383.16/2000) = 322.4, tức khoảng 323 phiếu."
+      - "Bảng hỏi 8-10 câu: tần suất mua cà phê, nơi mua gần nhất và giá, mức giá sẵn sàng trả, yếu tố quan trọng (hương vị, không gian, giá), kênh biết đến, nhân khẩu."
+      - "Sau khi thu 385 phiếu, giả sử 112 người đạt ngưỡng: p_hat = 112/385 = 29.1%; sai số = 1.96*sqrt(0.291*0.709/385) = 4.5 điểm %; CI 95% = [24.6%, 33.6%]. Cận dưới (24.6%) hơi dưới ngưỡng 25% nhưng gần; kết luận: gần ngưỡng, nên làm thử pop-up hoặc nghiên cứu bổ sung trước khi thuê mặt bằng."
+    result: "385 phiếu hợp lệ (hoặc 323 nếu quần thể 2.000); mời 1.925 người; kết quả 29.1% với CI [24.6%, 33.6%] đặt cận dưới sát ngưỡng quyết định"
+  - name: "Đọc kết quả A/B test quảng cáo của shop online"
+    inputs: {xa: 48, na: 1000, xb: 68, nb: 1000}
+    steps:
+      - "Shop chạy quảng cáo ảnh A (ảnh sản phẩm trắng nền) và B (ảnh người dùng thật) trong 7 ngày, mỗi biến thể 1.000 lượt hiển thị cho tệp tương đương."
+      - "CTR A = 48/1000 = 4.8%; CTR B = 68/1000 = 6.8%; chênh lệch 2.0 điểm %, tăng tương đối 41.7%."
+      - "Tỷ lệ chung p = 116/2000 = 0.058; SE = sqrt(0.058*0.942*0.002) = 0.01045; z = 0.02/0.01045 = 1.91; p-value hai phía 0.056."
+      - "p-value 0.056 lớn hơn 0.05: chưa đủ bằng chứng ở mức 5%. Không kết luận B thắng."
+      - "Cỡ mẫu cần để phát hiện 4.8% -> 6.8% (power 80%): (2.8016)^2 * (0.0457+0.0634) / 0.0004 = 7.849*0.1091/0.0004 = 2.141 mỗi nhóm; vậy 1.000 lượt/nhóm chưa đủ."
+      - "Khuyến nghị: tiếp tục chạy B đến khoảng 2.150 lượt mỗi nhóm, hoặc thử một khác biệt lớn hơn; trong lúc chờ có thể phân bổ nhiều ngân sách hơn cho B vì chi phí đổi nhỏ (quyết định dễ đảo ngược)."
+    result: "z = 1.91, p = 0.056: chưa đạt ý nghĩa; cần khoảng 2.150 lượt hiển thị mỗi nhóm để chắc phát hiện chênh 2 điểm %"
+  - name: "Tính NPS và kế hoạch hành động cho nhà hàng phở"
+    inputs: {total: 200, promoters: 90, passives: 70, detractors: 40}
+    steps:
+      - "Quán phở thu 200 phản hồi qua QR bàn: 90 người chấm 9-10, 70 người 7-8, 40 người 0-6."
+      - "%Promoters = 45%; %Detractors = 20%; NPS = +25."
+      - "Sai số: tỷ lệ detractors 20% với n=200 có sai số 1.96*sqrt(0.2*0.8/200) = 5.5 điểm %; NPS có sai số cỡ vài chục điểm khi n nhỏ nên theo dõi xu hướng nhiều kỳ, không đọc tuyệt đối."
+      - "Đọc câu mở của 40 detractors: nhóm 'chờ lâu giờ trưa' 17, 'nước dùng nhạt' 9, 'giá cao' 8, khác 6. Ưu tiên giải quyết thời gian chờ (chiếm 42.5% = 17/40)."
+      - "Hành động: set trưa phục vụ nhanh 10 phút, đo lại NPS sau 4 tuần với n tối thiểu 100; mục tiêu NPS 35."
+    result: "NPS = +25; vấn đề ưu tiên số 1 là thời gian chờ buổi trưa (42.5% detractors)"
+  - name: "Chọn phương pháp nghiên cứu cho shop thời trang online ngân sách 5 triệu VNĐ"
+    inputs: {budget_vnd: 5000000}
+    steps:
+      - "Vấn đề: tỷ lệ khách mua lại thấp (12%), chưa rõ lý do. Quyết định: đổi chính sách hay đổi sản phẩm."
+      - "Loại nghiên cứu: chưa rõ vấn đề nên Exploratory trước; sau đó Descriptive để đo quy mô; sau đó Causal để thử giải pháp."
+      - "Dữ liệu thứ cấp/nội bộ (miễn phí): xuất lịch sử đơn, tính tỷ lệ mua lại theo sản phẩm, kênh; xem Clarity/GA nơi khách bỏ giỏ."
+      - "Định tính: 12 phỏng vấn điện thoại 15 phút, quà 100.000 VNĐ mỗi người = 1.200.000 VNĐ."
+      - "Định lượng: khảo sát Google Forms 5 câu gửi Zalo cho 1.500 khách cũ; tỷ lệ phản hồi dự kiến 20% = 300 phiếu; voucher 20.000 VNĐ cho 300 người = 6.000.000 VNĐ vượt ngân sách, nên chỉ tặng bốc thăm 10 voucher 100.000 VNĐ = 1.000.000 VNĐ."
+      - "Sai số với n=300, p=0.5: 1.96*sqrt(0.25/300) = 5.7 điểm % (chấp nhận được cho quyết định dễ đảo ngược)."
+      - "Thử nghiệm: gửi ưu đãi mua lại cho 50% khách ngẫu nhiên (A/B), đo tỷ lệ mua lại 30 ngày."
+      - "Tổng chi phí khoảng 1.200.000 + 1.000.000 = 2.200.000 VNĐ, dưới ngân sách 5 triệu."
+    result: "Quy trình Exploratory -> Descriptive -> Causal với tổng chi khoảng 2,2 triệu VNĐ; giá/mức phản hồi minh họa, confidence thấp"
+  - name: "Cỡ mẫu A/B khi phát hiện nhỏ so với lớn (thumbnail kiểu Netflix cho SME)"
+    inputs: {p1: 0.05, p2_small: 0.06, p2_large: 0.10}
+    steps:
+      - "Hiệu ứng nhỏ (5% -> 6%): n = 7.849*(0.0475+0.0564)/0.0001 = 8.155, làm tròn 8.156 mỗi nhóm."
+      - "Hiệu ứng lớn (5% -> 10%): n = 7.849*(0.0475+0.09)/0.0025 = 431.7, làm tròn 432 mỗi nhóm."
+      - "Hệ quả: shop chỉ có 300 lượt hiển thị/ngày/biến thể: hiệu ứng nhỏ cần 27 ngày, hiệu ứng lớn cần 1.5 ngày (làm tròn thành 7 ngày để phủ chu kỳ tuần)."
+    result: "432 mỗi nhóm (hiệu ứng lớn) so với 8.156 mỗi nhóm (hiệu ứng nhỏ); thiết kế test phải bám lưu lượng thực"
+
+practice_questions:
+  - q: "Phân biệt nghiên cứu khám phá, mô tả, nhân quả; mỗi loại cho một ví dụ cho quán cà phê."
+    a: "Khám phá: phỏng vấn sâu 12 khách để hiểu vì sao tối vắng. Mô tả: khảo sát 385 người tính % sẽ ghé buổi tối. Nhân quả: A/B test khuyến mãi buổi tối ở hai ca để xem doanh thu tăng không."
+  - q: "Tính cỡ mẫu khảo sát với độ tin cậy 95%, sai số 5%, p chưa biết. Nếu quần thể 2.000 người thì sao?"
+    a: "n0 = 384.16, làm tròn 385. Với N=2.000: n = 384.16/(1+383.16/2000) = 322.4, tức 323."
+  - q: "Khảo sát 250 khách, 60% hài lòng. Tính khoảng tin cậy 95%."
+    a: "e = 1.96*sqrt(0.6*0.4/250) = 0.0607; CI = [53.9%, 66.1%]."
+  - q: "NPS của quán có 120 promoters, 50 passives, 30 detractors trên 200 người là bao nhiêu?"
+    a: "(120-30)/200*100 = 45."
+  - q: "Vì sao dữ liệu hành vi thường đáng tin hơn khảo sát? Cho ví dụ."
+    a: "Vì khách có thể nói điều họ nghĩ nên nói (social desirability) hoặc không biết rõ mình muốn gì (stated preference); hành vi (revealed) là lựa chọn thật. Ví dụ khách nói thích documentary nhưng xem nhiều true crime; nói muốn healthy nhưng mua fast food."
+  - q: "A/B test: nhóm A 30/600 click, nhóm B 45/600. B có thắng không?"
+    a: "p chung = 75/1200 = 0.0625; SE = sqrt(0.0625*0.9375*(2/600)) = 0.01398; z = (0.075-0.05)/0.01398 = 1.79; p-value khoảng 0.074 > 0.05: chưa đủ bằng chứng, cần thêm dữ liệu."
+  - q: "Vì sao không nên dừng A/B test ngay khi thấy B đang dẫn?"
+    a: "Dừng sớm (peeking) làm tăng nguy cơ dương tính giả vì chênh lệch dao động ngẫu nhiên theo thời gian; phải chạy đủ cỡ mẫu/thời gian đã tính trước, tối thiểu một chu kỳ tuần."
+  - q: "Hãy nêu 4 thiên lệch/rủi ro của nghiên cứu digital so với truyền thống."
+    a: "Selection bias (người online không đại diện), bot traffic, dữ liệu lớn nhưng nhiễu (messy), vấn đề quyền riêng tư; trong khi truyền thống có survey bias và câu hỏi dẫn dắt."
+  - q: "Khi nào nên dùng dữ liệu thứ cấp thay vì sơ cấp?"
+    a: "Khi dữ liệu thứ cấp (báo cáo ngành, Google Trends, thống kê, dữ liệu nội bộ) đã trả lời đủ câu hỏi, còn mới và đúng định nghĩa; vì nhanh và rẻ. Thu sơ cấp chỉ cho khoảng trống."
+  - q: "Mini case: chủ quán lẩu muốn biết có nên mở thêm bữa sáng. Hãy thiết kế nghiên cứu."
+    a: "Quyết định: mở hay không bữa sáng. Dữ liệu nội bộ: lưu lượng 6-9h. Khám phá: phỏng vấn 10-15 người đi làm gần quán. Mô tả: khảo sát 385 người (hoặc 97 nếu cần nhanh): thói quen ăn sáng, giá, thời gian. Nhân quả: chạy thử 2 tuần bữa sáng với menu hạn chế, đo doanh thu và lợi nhuận. Ngưỡng: nếu doanh thu sáng bù chi phí cố định thêm thì mở rộng."
+  - q: "Netflix mua thẳng 2 mùa House of Cards không cần tập thí điểm: rủi ro của cách tiếp cận này là gì?"
+    a: "Dữ liệu quá khứ không đảm bảo tương lai; quá tin dữ liệu bỏ qua yếu tố văn hóa khó đo; một thành công không chứng minh phương pháp luôn đúng (thiên lệch người sống sót); chi phí sai rất lớn."
+
+checklist:
+  - "□ Đã viết rõ quyết định cần ra và ngưỡng hành động trước khi thu thập dữ liệu."
+  - "□ Đã kiểm tra dữ liệu thứ cấp và dữ liệu nội bộ (POS, CRM, GA, Trends) trước khi thu sơ cấp."
+  - "□ Đã chọn đúng loại nghiên cứu (khám phá/mô tả/nhân quả) cho câu hỏi."
+  - "□ Đã tính cỡ mẫu (Cochran/FPC) và số cần mời theo tỷ lệ phản hồi; ghi rõ sai số và độ tin cậy."
+  - "□ Mẫu đại diện đúng nhóm mục tiêu (không chỉ fan hoặc khách hiện tại, trừ khi mục tiêu là họ)."
+  - "□ Bảng hỏi: một ý mỗi câu, không dẫn dắt, thang đo nhất quán, đã pilot 5-10 người."
+  - "□ Đã có cơ chế loại bot, trả lời vội, trùng lặp."
+  - "□ Đã dùng dữ liệu hành vi để đối chiếu với lời khách nói."
+  - "□ A/B test: giả thuyết, chỉ số chính, cỡ mẫu, thời gian (bội số 7 ngày) xác định trước; chỉ đổi một yếu tố; không dừng sớm."
+  - "□ Báo cáo có n, sai số/CI, hạn chế, kèm khuyến nghị hành động cụ thể."
+  - "□ Đã xét quyền riêng tư và quy định dữ liệu cá nhân."
+  - "□ Đã ghi lại bài học và lịch nghiên cứu tiếp theo (nghiên cứu liên tục)."
+
+excel_google_sheets_templates:
+  - "Máy tính cỡ mẫu: ô nhập z, p, e, N, tỷ lệ phản hồi; công thức Cochran =ROUNDUP(z^2*p*(1-p)/e^2,0), FPC =ROUNDUP(n0/(1+(n0-1)/N),0), số mời =ROUNDUP(n/r,0)."
+  - "Bảng kết quả khảo sát: cột tỷ lệ, n, sai số =NORM.S.INV(0.975)*SQRT(p*(1-p)/n), CI dưới/trên."
+  - "Sổ A/B test: giả thuyết, biến thể, ngày bắt đầu/kết thúc, xa, na, xb, nb, CTR, z, p-value (=2*(1-NORM.S.DIST(ABS(z),TRUE))), quyết định, bài học."
+  - "Dashboard NPS theo tháng/chi nhánh: số promoters/passives/detractors, NPS, top 5 chủ đề phàn nàn từ câu mở."
+  - "Bảng thiết kế nghiên cứu 1 trang: quyết định, câu hỏi, loại nghiên cứu, phương pháp, mẫu, chi phí, thời gian, ngưỡng hành động, người phụ trách."
+  - "Bảng theo dõi lịch nghiên cứu liên tục: mỗi tháng một thử nghiệm, mỗi quý một vòng phỏng vấn khách."
+
+source_file: "07-marketing-research.md"

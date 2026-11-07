@@ -123,7 +123,7 @@ BẤT ĐỊNH (Uncertainty)
 | E | Tốc độ đô thị hóa | Cao | Thấp (trend rõ) |
 | S | Nhu cầu nhà ở Gen Z | Cao | Trung bình |
 | T | PropTech, BĐS số hóa | Trung bình | Cao |
-| E | Quy định xanh (green building) | Trung bình | Trung bình |
+| L/E | Quy định xanh (green building) | Trung bình | Trung bình |
 | L | Siết tín dụng BĐS | **CAO** | **CAO** |
 
 ### Bước 3-4: Chọn 2 yếu tố bất định quan trọng nhất
@@ -240,6 +240,8 @@ BẤT ĐỊNH (Uncertainty)
 - Shell vươn từ vị trí thứ 7 lên **thứ 2** về lợi nhuận trong ngành (sau Exxon)
 - Tiết kiệm hàng tỉ đô nhờ đã điều chỉnh chiến lược trước khủng hoảng
 
+> **Lưu ý độ tin cậy**: mốc giá dầu ($3 → $12) và việc Shell "từ hạng 7 lên hạng 2" là câu chuyện kinh điển được trích dẫn rộng rãi (Wack, HBR 1985; Schwartz 1991), nhưng các con số xếp hạng khó kiểm chứng độc lập; nên dùng như minh họa về cách tư duy hơn là số liệu chính xác.
+
 **Bài học thực tế**:
 - Scenario Planning **KHÔNG** dự đoán chính xác chiến tranh Yom Kippur
 - Nhưng kịch bản "OPEC kiểm soát giá" đã được xây dựng → khi sự kiện xảy ra, Shell phản ứng nhanh hơn đối thủ 6-12 tháng
@@ -280,12 +282,14 @@ BẤT ĐỊNH (Uncertainty)
 
 | | **Tăng trưởng NHANH** | **Tăng trưởng CHẬM** |
 |---|---|---|
-| **Ổn định chính trị** | 🌞 "Golden Age" – Thị trường | 🌤️ "Steady Growth" – Phát triển chậm nhưng ổn định |
-| **Biến động chính trị** | ⛈️ "Turbulent Waters" – Rủi ro cao, cạnh tranh khốc liệt | 🌧️ "Uncertain Future – Rủi ro cao + thị trường khó |
+| **Ổn định chính trị** | 🌞 "Golden Age" – Thị trường mở rộng nhanh, ít rào cản | 🌤️ "Steady Growth" – Phát triển chậm nhưng ổn định |
+| **Biến động chính trị** | ⛈️ "Turbulent Waters" – Rủi ro cao, cạnh tranh khốc liệt | 🌧️ "Uncertain Future" – Rủi ro cao + thị trường khó |
 
 **Chiến lược robust của Starbucks**: Tập trung vào **"premium experience"** (cửa hàng đẹp, menu đa dạng, dịch vụ tốt) thay vì chỉ bán cà phê giá rẻ.
 **Logic**: Dù tăng trưởng nhanh hay chậm, dù chính trị ổn định hay biến động, khách hàng vẫn sẵn sàng trả tiền cho trải nghiệm cao cấp.
 **Kết quả**: Starbucks trở thành thương hiệu cà phê cao cấp hàng đầu tại Trung Quốc, vượt qua các đối thủ địa phương và quốc tế.
+> **Lưu ý độ tin cậy**: các trục/kịch bản của Starbucks ở đây mang tính minh họa (không có tài liệu công khai Starbucks công bố bộ kịch bản này); dùng để học cách áp dụng framework.
+
 **Bài học thực tế**:
 - Scenario Planning giúp Starbucks định vị thương hiệu phù hợp với nhiều kịch bản tăng trưởng và rủi ro chính trị
 - Chiến lược "premium experience" là robust, giúp công ty thành công dù thị trường có biến động thế nào
@@ -297,12 +301,12 @@ BẤT ĐỊNH (Uncertainty)
 
 ---
 
-### Bước 1: XÁC ĐỊNH VẤN ĐỀ CHIẾN LƯỢC
+#### Bước 1: XÁC ĐỊNH VẤN ĐỀ CHIẾN LƯỢC
 
 * **Câu hỏi:** Quyết định chiến lược nào cần kịch bản?
 * **Phân tích:** Doanh nghiệp của bạn đang đứng trước quyết định: **"Có nên đa dạng hóa nguồn cung và thị trường tiêu thụ sang các khu vực mới, hay tập trung sâu vào thị trường truyền thống để tối ưu chi phí?"** Đây là quyết định sinh tử vì liên quan đến dòng vốn và năng lực logistic.
 
-### Bước 2: XÁC ĐỊNH DRIVING FORCES (PESTEL)
+#### Bước 2: XÁC ĐỊNH DRIVING FORCES (PESTEL)
 
 * **Câu hỏi:** Yếu tố nào định hình tương lai?
 * **Phân tích:**
@@ -315,7 +319,7 @@ BẤT ĐỊNH (Uncertainty)
 
 
 
-### Bước 3: XẾP HẠNG THEO TÁC ĐỘNG & BẤT ĐỊNH
+#### Bước 3: XẾP HẠNG THEO TÁC ĐỘNG & BẤT ĐỊNH
 
 * **Câu hỏi:** Yếu tố nào quan trọng nhất VÀ bất định nhất?
 * **Phân tích:**
@@ -324,7 +328,7 @@ BẤT ĐỊNH (Uncertainty)
 
 
 
-### Bước 4: CHỌN 2 YẾU TỐ BẤT ĐỊNH QUAN TRỌNG NHẤT
+#### Bước 4: CHỌN 2 YẾU TỐ BẤT ĐỊNH QUAN TRỌNG NHẤT
 
 * **Ma trận 2x2:**
 * **Trục X:** Chính sách thương mại (Tự do hóa vs. Bảo hộ cực đoan).
@@ -337,14 +341,14 @@ BẤT ĐỊNH (Uncertainty)
 | **Logistic Bình ổn** | **Kịch bản 1: Thịnh vượng xanh** | **Kịch bản 2: Pháo đài nội địa** |
 | **Logistic Tăng vọt** | **Kịch bản 3: Sống sót trong bão** | **Kịch bản 4: Sụp đổ chuỗi** |
 
-### Bước 5: XÂY DỰNG KỊCH BẢN (Câu chuyện)
+#### Bước 5: XÂY DỰNG KỊCH BẢN (Câu chuyện)
 
 1. **Thịnh vượng xanh:** Thế giới ổn định, chi phí thấp, biên lợi nhuận cao.
 2. **Pháo đài nội địa:** Các nước dựng hàng rào thuế quan. Doanh nghiệp phải chuyển hướng sang sản xuất tại chỗ hoặc tìm thị trường ngách ít bị kiểm soát.
 3. **Sống sót trong bão:** Chi phí logistic cao làm ăn mòn lợi nhuận. Cần tối ưu kho bãi và công nghệ dự báo nhu cầu.
 4. **Sụp đổ chuỗi:** Biến cố lớn (chiến tranh, phong tỏa). Doanh nghiệp cần dự phòng tài chính và nguồn hàng thay thế ngay lập tức.
 
-### Bước 6: PHÂN TÍCH TÁC ĐỘNG
+#### Bước 6: PHÂN TÍCH TÁC ĐỘNG
 
 * **Câu hỏi:** Mỗi kịch bản ảnh hưởng DN thế nào?
 * **Phân tích:**
@@ -353,7 +357,7 @@ BẤT ĐỊNH (Uncertainty)
 
 
 
-### Bước 7: XÂY DỰNG CHIẾN LƯỢC
+#### Bước 7: XÂY DỰNG CHIẾN LƯỢC
 
 * **Câu hỏi:** Chiến lược nào "robust" (vững chắc) qua nhiều kịch bản?
 * **Chiến lược Robust (Đúng trong mọi kịch bản):**
@@ -363,7 +367,7 @@ BẤT ĐỊNH (Uncertainty)
 
 
 
-### Bước 8: GIÁM SÁT EARLY WARNING SIGNALS
+#### Bước 8: GIÁM SÁT EARLY WARNING SIGNALS
 
 * **Câu hỏi:** Dấu hiệu nào cho thấy kịch bản nào đang xảy ra?
 * **Phân tích:**
@@ -404,6 +408,18 @@ Tương lai mong muốn (2030) ←── Trung gian (2028) ←── Bước đ�
 ```
 
 **Khác với Scenario**: SP đi từ hiện tại → tương lai. Backcasting đi từ tương lai mong muốn → ngược lại → hiện tại.
+
+### 4. Công cụ định lượng để chọn chiến lược (bổ sung)
+
+Scenario Planning không cho xác suất, nhưng khi cần so sánh các phương án, có thể gắn **điểm số chủ quan** vào ma trận "chiến lược x kịch bản" (đơn vị: lợi nhuận/NPV 3 năm, tỷ VNĐ):
+
+| Tiêu chí | Công thức | Ý nghĩa | Khi nào dùng |
+|---|---|---|---|
+| **Maximin** | max theo chiến lược của (min payoff qua các kịch bản) | Chọn phương án có "kịch bản xấu nhất" đỡ tệ nhất | DN mỏng vốn, không chịu nổi thua lỗ lớn |
+| **Expected value** | Σ (trọng số kịch bản x payoff) | Trung bình có trọng số; trọng số chỉ là phán đoán, không phải xác suất khách quan | Khi có thể chấp nhận rủi ro lặp lại |
+| **Minimax regret** | Regret = payoff tốt nhất của kịch bản đó - payoff của phương án; chọn phương án có regret lớn nhất nhỏ nhất | Tối thiểu hóa "hối tiếc" khi chọn sai | Quyết định một lần, khó đảo ngược |
+
+Nếu ba tiêu chí cho ba đáp án khác nhau, đó là tín hiệu quyết định phụ thuộc khẩu vị rủi ro của chủ DN, cần thảo luận chứ không "bấm máy tính".
 
 ---
 

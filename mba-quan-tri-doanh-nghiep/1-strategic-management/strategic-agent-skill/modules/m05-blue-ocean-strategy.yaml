@@ -1,0 +1,673 @@
+# m05 - Chiến lược Đại dương xanh (distill từ 05-blue-ocean.md)
+id: "m05"
+name_vi: "Chiến lược Đại dương xanh"
+name_en: "Blue Ocean Strategy"
+purpose: >
+  Giúp doanh nghiệp thoát khỏi cạnh tranh trực diện (đại dương đỏ) bằng đổi mới giá trị (value innovation):
+  vẽ Strategy Canvas, dùng ERRC/Four Actions để thiết kế đường cong giá trị mới, tìm khách hàng chưa phục vụ
+  (non-customers), kiểm tra tính khả thi bằng Buyer Utility, Price, Cost, Adoption. Agent dùng module này để
+  dẫn dắt một chủ SME từ "đang đua giá/đua tính năng" tới một đề xuất giá trị khác biệt, rẻ hơn về cấu trúc chi phí và có thể kiểm chứng bằng số.
+when_to_use:
+  - "Chủ SME than 'thị trường quá đông, ai cũng giống nhau, chỉ còn cách giảm giá' (F&B, bán lẻ, dịch vụ...)."
+  - "Cần dựng Strategy Canvas và so sánh đường cong giá trị với đối thủ; cần bảng ERRC cho một doanh nghiệp cụ thể."
+  - "Cần tìm nhóm khách hàng chưa mua (non-customers) hoặc ý tưởng mô hình mới (Six Paths, Buyer Utility Map)."
+  - "Đánh giá một ý tưởng 'đại dương xanh' có thực sự xanh (khác biệt + chi phí thấp) hay chỉ là tính năng thêm chi phí."
+  - "Cân nhắc nên đổi mới giá trị hay tối ưu để thống trị đại dương đỏ (kiểu McDonald's)."
+  - "Làm workshop chiến lược, cần quy trình Blue Ocean Shift và cách vượt rào cản nội bộ (fair process)."
+prerequisites:
+  - "m01 - PESTEL và Porter 5 Forces: hiểu ngành để biết yếu tố cạnh tranh hiện hành"
+  - "m03 - Chiến lược cạnh tranh: Cost Leadership và Differentiation, để thấy vì sao BOS đòi hỏi phá trade-off"
+related_modules:
+  - "m02 - Phân tích nội bộ: VRIO kiểm tra có năng lực thực hiện đường cong mới không"
+  - "m04 - Tăng trưởng Ansoff: đại dương xanh là dạng đa dạng hóa/phát triển thị trường mới"
+  - "m06 - Balanced Scorecard: đo và theo dõi thực thi sau khi chọn chiến lược"
+  - "m07 - Scenario Planning: kiểm tra giả định về nhu cầu của thị trường chưa tồn tại"
+  - "m08 - Case The Coffee House và các case F&B: ví dụ ứng dụng"
+  - "2-marketing STP, Pricing: định vị và định giá chiến lược cho mass market"
+
+concepts:
+  - term_vi: "Đại dương đỏ và đại dương xanh"
+    term_en: "Red Ocean and Blue Ocean"
+    definition: >
+      Đại dương đỏ là không gian thị trường hiện có, ranh giới ngành đã định, mục tiêu đánh bại đối thủ, chia phần
+      nhu cầu hiện tại, chấp nhận trade-off giá trị hoặc chi phí. Đại dương xanh là không gian thị trường mới tạo ra, cạnh tranh trở nên không còn ý nghĩa,
+      tạo và nắm bắt nhu cầu mới, phá trade-off (vừa khác biệt vừa chi phí thấp).
+    why_it_matters: >
+      Kim và Mauborgne (INSEAD, sách 2005) phân tích khoảng 150 bước đi chiến lược ở hơn 30 ngành trong hơn 100 năm và thấy
+      phần lớn tăng trưởng lợi nhuận đến từ việc mở thị trường mới chứ không từ đua trong thị trường cũ.
+      Đại dương xanh không nhất thiết là công nghệ mới; nó là cách đặt lại ranh giới giá trị.
+  - term_vi: "Đổi mới giá trị"
+    term_en: "Value Innovation"
+    definition: "Theo đuổi đồng thời khác biệt hóa (giá trị cho người mua tăng) và chi phí thấp (loại bỏ, giảm yếu tố tốn kém mà khách không quý)."
+    why_it_matters: >
+      Phá thế lưỡng nan của Porter (chi phí thấp hoặc khác biệt). Chi phí giảm nhờ bỏ/giảm yếu tố ngành đua nhau đầu tư; giá trị tăng nhờ nâng/tạo yếu tố mới.
+      Vòng lặp: giá trị cao hơn -> doanh số tăng -> kinh tế quy mô -> chi phí giảm thêm. Nếu chỉ tăng giá trị mà không giảm chi phí thì là đổi mới công nghệ/khác biệt hóa thường, chưa phải BOS.
+  - term_vi: "Yếu tố cạnh tranh và đường cong giá trị"
+    term_en: "Factors of competition and Value Curve"
+    definition: "Yếu tố cạnh tranh là các thuộc tính mà ngành đầu tư và đua nhau (giá, menu, vị trí...). Đường cong giá trị là đồ thị mức đầu tư/cung cấp của một doanh nghiệp qua các yếu tố đó."
+    why_it_matters: "Đối thủ trong ngành đỏ có đường cong gần trùng nhau (me-too). Khác biệt chiến lược thể hiện thành hình dạng đường cong khác, không phải điểm cao hơn một chút."
+  - term_vi: "Khách hàng chưa phục vụ"
+    term_en: "Non-customers"
+    definition: "Những người chưa mua ngành mình: 3 tầng gồm soon-to-be, refusing, unexplored; càng xa thị trường hiện tại thì quy mô tiềm năng càng lớn."
+    why_it_matters: "Thay vì chia nhỏ khách hiện có bằng phân khúc mịn hơn, BOS gom điểm chung của non-customers để mở rộng cầu."
+  - term_vi: "Lý do 6 nguyên tắc: 4 xây dựng, 2 thực thi"
+    term_en: "Six principles (formulation and execution)"
+    definition: >
+      Xây dựng - (1) Tái tạo ranh giới thị trường (Six Paths), (2) Tập trung bức tranh lớn (Strategy Canvas),
+      (3) Vươn ra ngoài nhu cầu hiện tại (3 tầng non-customers), (4) Đúng trình tự chiến lược (BOS Sequence).
+      Thực thi - (5) Vượt rào cản tổ chức (Tipping Point Leadership), (6) Tích hợp thực thi vào chiến lược (Fair Process).
+    why_it_matters: "Mỗi nguyên tắc giảm một loại rủi ro: tìm sai chỗ, sa vào chi tiết, thị trường quá nhỏ, mô hình không sinh lời, tổ chức không làm theo, mất lòng tin nhân viên."
+  - term_vi: "Tính tạm thời của đại dương xanh"
+    term_en: "Imitation and erosion"
+    definition: "Khi thành công lộ ra, đối thủ bắt chước và đại dương xanh dần đỏ lên (Uber, McDonald's). Nguồn nêu mức bảo vệ khoảng 10-15 năm, không có bảo đảm."
+    why_it_matters: "Agent không hứa 'một lần xanh là xanh mãi'. Cần rào cản bắt chước (hệ thống vận hành, mạng lưới, thương hiệu, chi phí) và kế hoạch tìm đại dương xanh kế tiếp (Nintendo: Wii -> Wii U thất bại -> Switch)."
+
+formulas:
+  - id: "m05_value_curve_divergence"
+    name_vi: "Độ phân kỳ đường cong giá trị (trung bình sai lệch tuyệt đối)"
+    name_en: "Value curve divergence (mean absolute deviation)"
+    expression_latex: "D = \\frac{1}{n}\\sum_{i=1}^{n}\\left|s_i - c_i\\right|"
+    expression_python: "sum(abs(s - c) for s, c in zip(scores, competitor_avg)) / len(scores)"
+    excel: "=SUMPRODUCT(ABS(B2:B11-C2:C11))/COUNT(B2:B11)"
+    variables:
+      - {symbol: "s_i", meaning: "Điểm của doanh nghiệp ở yếu tố i (thang 0-5)", unit: "điểm"}
+      - {symbol: "c_i", meaning: "Điểm trung bình đối thủ chính ở yếu tố i", unit: "điểm"}
+      - {symbol: "n", meaning: "Số yếu tố trên canvas", unit: "yếu tố"}
+    when_to_use: "Lượng hóa tiêu chí Divergence của value curve (không phải công thức của tác giả, là thang bổ trợ để agent kiểm tra khách quan)."
+    why_it_works: "Đường cong giống đối thủ thì chênh lệch từng điểm nhỏ; đường cong thật sự khác sẽ có vài yếu tố chênh 2-4 điểm. MAD đo độ lệch trung bình, dễ giải thích cho chủ SME."
+    assumptions:
+      - "Điểm đã được chuẩn hóa cùng thang 0-5 và có bằng chứng (khảo sát, quan sát)."
+      - "Các yếu tố là yếu tố khách hàng thật sự cân nhắc khi mua, không phải liệt kê tùy ý."
+    pitfalls:
+      - "Chênh lệch lớn ở yếu tố khách không quan tâm vẫn cho D cao nhưng không tạo giá trị."
+      - "Chỉ nhìn D mà bỏ qua Focus: nhiều yếu tố đều cao hơn là dàn trải, không phải BOS."
+    interpretation: "D < 0.8 gần như me-too (đỏ); 0.8-1.5 khác biệt vừa; > 1.5 phân kỳ rõ. Ngưỡng là quy ước thực hành của module, cần cùng kiểm tra với Focus và Tagline."
+    example:
+      inputs:
+        scores: [2, 3, 1, 2, 5, 5, 5, 4, 1, 4]
+        competitor_avg: [3, 4, 4, 4, 3, 2, 1, 1, 3, 1]
+      steps:
+        - "Chênh tuyệt đối: |2-3|=1, 1, 3, 2, 2, 3, 4, 3, 2, 3 -> tổng 24."
+        - "D = 24 / 10 = 2.4."
+      result: "D = 2.4 > 1.5: phân kỳ rõ so với đối thủ."
+  - id: "m05_value_curve_correlation"
+    name_vi: "Tương quan hình dạng giữa hai đường cong giá trị"
+    name_en: "Value curve shape correlation (Pearson r)"
+    expression_latex: "r = \\frac{\\sum (s_i-\\bar s)(c_i-\\bar c)}{\\sqrt{\\sum (s_i-\\bar s)^2 \\sum (c_i-\\bar c)^2}}"
+    expression_python: "(lambda a,b: sum((x-sum(a)/len(a))*(y-sum(b)/len(b)) for x,y in zip(a,b))/(sum((x-sum(a)/len(a))**2 for x in a)*sum((y-sum(b)/len(b))**2 for y in b))**0.5)(scores, competitor_avg)"
+    excel: "=CORREL(B2:B11,C2:C11)"
+    variables:
+      - {symbol: "s_i, c_i", meaning: "Điểm của doanh nghiệp và đối thủ ở yếu tố i", unit: "điểm"}
+    when_to_use: "Bổ trợ cho D: D đo chênh độ cao, r đo giống hình dạng (cùng đỉnh, cùng đáy) hay không."
+    why_it_works: "Hai đường cong có thể cách nhau 1 điểm đều ở mọi yếu tố (D=1) nhưng cùng hình dạng, r gần +1: vẫn là me-too. r âm nghĩa là đỉnh của bên này là đáy của bên kia, dấu hiệu tái cấu trúc giá trị."
+    assumptions: ["n >= 6 yếu tố để r có ý nghĩa thực hành."]
+    pitfalls: ["Với n nhỏ (dưới 5) r dao động mạnh, không kết luận."]
+    interpretation: "r > 0.7 hình dạng giống (đỏ); 0.3-0.7 hơi khác; r < 0.3 hình dạng khác; r < 0 đảo cấu trúc. Ngưỡng là quy ước module."
+    example:
+      inputs:
+        scores: [2, 3, 1, 2, 5, 5, 5, 4, 1, 4]
+        competitor_avg: [3, 4, 4, 4, 3, 2, 1, 1, 3, 1]
+      steps: ["Tính trung bình 2 dãy, nhân chéo độ lệch, chia căn tích bình phương."]
+      result: "r = -0.66: đường cong gần như đảo ngược so với đối thủ."
+  - id: "m05_target_cost"
+    name_vi: "Chi phí mục tiêu (BOS Sequence cổng Chi phí)"
+    name_en: "Target Cost"
+    expression_latex: "C_{target} = P_{strategic} - \\pi_{target} = P_{strategic}(1 - m_{target})"
+    expression_python: "price_strategic - price_strategic * target_margin"
+    excel: "=B1-B1*B2"
+    variables:
+      - {symbol: "P_strategic", meaning: "Giá chiến lược đặt trong hành lang giá của đại chúng (price corridor of the mass)", unit: "VND/đơn vị"}
+      - {symbol: "m_target", meaning: "Biên lợi nhuận mục tiêu trên giá", unit: "tỷ lệ"}
+    when_to_use: "Khi kiểm tra cổng Cost: mô hình có sinh lời ở mức giá đại chúng chấp nhận không."
+    why_it_works: >
+      Đảo thứ tự tính truyền thống (chi phí + lãi = giá). BOS đi từ giá khách chịu trả xuống chi phí cho phép,
+      buộc đội ngũ tìm cách cắt chi phí qua ERRC thay vì chấp nhận chi phí hiện có (Toyota gọi tương tự là target costing).
+    assumptions: ["Giá chiến lược xác định từ nghiên cứu khả năng chi trả của nhóm non-customers."]
+    pitfalls: ["Chọn giá cao do chi phí cao rồi gọi là 'cao cấp' mà không kiểm chứng cầu đại chúng."]
+    interpretation: "Nếu chi phí thực tế thiết kế <= C_target thì qua cổng Cost; nếu lớn hơn, quay lại ERRC cắt/giảm tiếp."
+    example:
+      inputs: {price_strategic: 22000, target_margin: 0.18}
+      steps: ["Lợi nhuận mục tiêu = 22,000 x 0.18 = 3,960.", "C_target = 22,000 - 3,960 = 18,040 VND/kg."]
+      result: "Chi phí phải <= 18,040 VND/kg."
+  - id: "m05_errc_net_cost"
+    name_vi: "Tác động chi phí ròng của ERRC"
+    name_en: "ERRC net unit cost"
+    expression_latex: "C_{new} = C_{base} - S_{E} - S_{R} + I_{Ra} + I_{C}"
+    expression_python: "cost_base - saving_eliminate - saving_reduce + invest_raise + invest_create"
+    excel: "=B1-B2-B3+B4+B5"
+    variables:
+      - {symbol: "C_base", meaning: "Chi phí đơn vị của mô hình ngành chuẩn", unit: "VND/đơn vị"}
+      - {symbol: "S_E, S_R", meaning: "Tiết kiệm từ Eliminate và Reduce trên mỗi đơn vị", unit: "VND/đơn vị"}
+      - {symbol: "I_Ra, I_C", meaning: "Chi phí tăng thêm do Raise và Create", unit: "VND/đơn vị"}
+    when_to_use: "Kiểm chứng ERRC có thật sự 'rẻ hơn' (value innovation) hay chỉ là thêm chi phí."
+    why_it_works: "Value innovation đòi hỏi tiết kiệm từ nửa trái (E, R) bù hoặc vượt chi phí nửa phải (Ra, C). Công thức bắt buộc đội ngũ định giá từng hành động."
+    assumptions: ["Có thể quy chi phí về đơn vị chung (lượt khách, kg, ly)."]
+    pitfalls: ["Quên chi phí ẩn của Create (app, đào tạo, bảo trì).", "Tính tiết kiệm Eliminate nhưng vẫn giữ cấu trúc chi phí cố định (lương, mặt bằng)."]
+    interpretation: "C_new <= C_target thì đạt. C_new > C_base là đỏ/khác biệt hóa tốn kém, chưa phải BOS."
+    example:
+      inputs: {cost_base: 21000, saving_eliminate: 3500, saving_reduce: 2000, invest_raise: 1300, invest_create: 1100}
+      steps: ["21,000 - 3,500 - 2,000 = 15,500.", "15,500 + 1,300 + 1,100 = 17,900."]
+      result: "C_new = 17,900 <= C_target 18,040: qua cổng Cost."
+  - id: "m05_noncustomer_demand"
+    name_vi: "Ước lượng cầu tiềm năng từ 3 tầng non-customers"
+    name_en: "Noncustomer demand sizing"
+    expression_latex: "Q = \\sum_{k=1}^{3} N_k \\cdot r_k"
+    expression_python: "sum(n * r for n, r in tiers)"
+    excel: "=SUMPRODUCT(B2:B4,C2:C4)"
+    variables:
+      - {symbol: "N_k", meaning: "Số người trong tầng k ở vùng phục vụ", unit: "người"}
+      - {symbol: "r_k", meaning: "Tỷ lệ chuyển đổi giả định của tầng k (giảm dần khi đi xa)", unit: "tỷ lệ"}
+    when_to_use: "Ước lượng sơ bộ quy mô đại dương xanh trước khi đầu tư."
+    why_it_works: "Tầng xa có N rất lớn nhưng r nhỏ; nhân từng tầng giúp thấy tổng cầu mở rộng và tránh thổi phồng tổng N."
+    assumptions: ["r_k là giả định cần kiểm tra bằng khảo sát, pre-order hoặc thử nghiệm (MVP)."]
+    pitfalls: ["Lấy toàn bộ dân cư làm thị trường.", "Dùng cùng một tỷ lệ cho 3 tầng."]
+    interpretation: "So Q với điểm hòa vốn; nếu Q < BE thì thu hẹp chi phí cố định hoặc mở rộng vùng phục vụ."
+    example:
+      inputs: {tiers: [[800, 0.30], [3000, 0.08], [12000, 0.015]]}
+      steps: ["Tầng 1: 800 x 0.30 = 240.", "Tầng 2: 3,000 x 0.08 = 240.", "Tầng 3: 12,000 x 0.015 = 180."]
+      result: "Q = 660 khách (thành viên)."
+  - id: "m05_breakeven_units"
+    name_vi: "Điểm hòa vốn (số khách/đơn vị) cho mô hình mới"
+    name_en: "Break-even units"
+    expression_latex: "BE = \\frac{F}{p(1 - v)}"
+    expression_python: "fixed_cost / (price * (1 - variable_ratio))"
+    excel: "=B1/(B2*(1-B3))"
+    variables:
+      - {symbol: "F", meaning: "Chi phí cố định mỗi kỳ", unit: "VND/kỳ"}
+      - {symbol: "p", meaning: "Giá bán trên đơn vị (kỳ)", unit: "VND"}
+      - {symbol: "v", meaning: "Tỷ lệ chi phí biến đổi trên giá", unit: "tỷ lệ"}
+    when_to_use: "Cổng Price + Cost của BOS Sequence: số khách cần có so với cầu Q."
+    why_it_works: "Mỗi khách đóng góp p(1-v); chia F cho phần đóng góp đó ra số khách tối thiểu."
+    assumptions: ["Chi phí cố định không đổi trong khoảng sản lượng đang xét."]
+    pitfalls: ["Quên chi phí khuyến mãi/ra mắt trong F."]
+    interpretation: "Q/BE > 1.3 tương đối an toàn (quy ước); < 1 chưa khả thi."
+    example:
+      inputs: {fixed_cost: 60000000, price: 199000, variable_ratio: 0.25}
+      steps: ["Đóng góp mỗi khách = 199,000 x 0.75 = 149,250.", "BE = 60,000,000 / 149,250 = 402.01 -> 403 khách."]
+      result: "Cần tối thiểu 403 thành viên; Q = 660 (tỷ số 1.64)."
+  - id: "m05_bum_opportunity"
+    name_vi: "Chỉ số ô trống trên Buyer Utility Map"
+    name_en: "Buyer Utility Map blank-cell ratio"
+    expression_latex: "B = \\frac{36 - N_{served}}{36}"
+    expression_python: "(36 - cells_served) / 36"
+    excel: "=(36-B1)/36"
+    variables:
+      - {symbol: "N_served", meaning: "Số ô trong ma trận 6x6 mà đối thủ hiện đã phục vụ tốt", unit: "ô"}
+    when_to_use: "Chọn ô cơ hội để ưu tiên ERRC."
+    why_it_works: "Nhiều ô trống nghĩa là ngành bỏ sót nhiều điểm đau; chọn các ô có nhiều khách đau nhất và chi phí giải thấp."
+    assumptions: ["Đánh giá ô được phục vụ dựa trên trải nghiệm khách thật, không phải quảng cáo của đối thủ."]
+    pitfalls: ["Đánh dấu theo cảm tính, không phỏng vấn."]
+    interpretation: "B > 0.5 ngành có nhiều khoảng trống; B < 0.25 ngành đã phủ gần hết, khó tìm ngách."
+    example:
+      inputs: {cells_served: 14}
+      steps: ["36 - 14 = 22 ô trống.", "B = 22 / 36 = 0.611."]
+      result: "61% ô trống: nhiều không gian đổi mới."
+
+frameworks:
+  - id: "m05_strategy_canvas"
+    name_vi: "Bản đồ chiến lược"
+    name_en: "Strategy Canvas"
+    origin: >
+      Kim và Mauborgne (INSEAD), giới thiệu cùng sách Blue Ocean Strategy 2005, phát triển từ thập niên 1990 khi họ nghiên cứu
+      cách các công ty như Cirque du Soleil thắng. Ra đời để buộc nhà quản lý nhìn bức tranh lớn bằng một hình vẽ thay vì bảng phân tích dài, vừa chẩn đoán hiện trạng vừa vẽ tương lai.
+    components:
+      - "Trục ngang - các yếu tố cạnh tranh của ngành (giá, tính năng, dịch vụ, vị trí...)."
+      - "Trục dọc - mức đầu tư/cung cấp (thấp -> cao) ở mỗi yếu tố."
+      - "Đường cong giá trị - của doanh nghiệp, của từng nhóm đối thủ, của non-customers (nếu muốn)."
+    when_to_use: "Bước đầu của mọi dự án BOS; cũng dùng để kiểm chứng đường cong mới (tiêu chí Focus, Divergence, Tagline)."
+    how_to_apply:
+      - "Liệt kê 8-12 yếu tố ngành đang đua (hỏi khách và đối thủ, không tự đoán): giá, chất lượng sản phẩm, menu, không gian, phục vụ, thương hiệu, tiện lợi..."
+      - "Chấm 0-5 cho doanh nghiệp và 2-3 nhóm đối thủ (trung bình nhóm); ghi bằng chứng cho mỗi điểm."
+      - "Vẽ các đường nối điểm; nhóm đối thủ giống nhau gộp một đường."
+      - "Nhận xét: đường cong có trùng nhau không, ngành đang đầu tư quá mức vào đâu."
+      - "Sau ERRC vẽ canvas mới; kiểm tra Focus, Divergence, Tagline; tính D và r (formulas)."
+    how_to_read_results: >
+      Các đường chạy song song, cùng đỉnh/đáy tức ngành là đại dương đỏ. Đường mới có đỉnh ở yếu tố ngành bỏ qua và đáy ở yếu tố ngành đổ tiền vào cho thấy chiến lược khác biệt.
+      Đường dàn trải (cao mọi nơi) là sai, vì chi phí không giảm.
+    pitfalls:
+      - "Liệt kê yếu tố theo suy đoán của nhà quản lý, không dựa phản hồi khách."
+      - "Chọn quá nhiều yếu tố (>15) làm mất bức tranh lớn; quá ít (<6) thiếu thông tin."
+      - "Chấm điểm không bằng chứng, chấm đối thủ bằng cảm tính."
+    example: "Cirque du Soleil vs Ringling: đối thủ cao ở ngôi sao, thú vật, hài hước, hồi hộp; Cirque bỏ ngôi sao/thú vật, nâng nghệ thuật, nhạc sống, chủ đề, không gian và giá vé."
+  - id: "m05_four_actions_errc"
+    name_vi: "Khung 4 hành động và Bảng ERRC"
+    name_en: "Four Actions Framework and ERRC Grid"
+    origin: >
+      Kim và Mauborgne (2005). Canvas chỉ chẩn đoán; ERRC bắt buộc trả lời bốn câu hỏi để tái cấu trúc giá trị. Bảng ERRC ra đời để ép
+      doanh nghiệp xử lý cả chi phí (E, R) lẫn giá trị (Ra, C), vì nếu chỉ hỏi 'thêm gì' thì chi phí sẽ phình.
+    components:
+      - "Eliminate (Loại bỏ) - yếu tố ngành coi là đương nhiên nhưng khách không còn quý."
+      - "Reduce (Giảm) - yếu tố cần giảm dưới chuẩn ngành vì thiết kế quá mức."
+      - "Raise (Tăng) - yếu tố cần nâng trên chuẩn ngành để giải điểm đau thật."
+      - "Create (Tạo mới) - yếu tố ngành chưa từng cung cấp."
+    when_to_use: "Sau khi vẽ canvas hiện tại và biết non-customers; trước khi vẽ canvas mới."
+    how_to_apply:
+      - "Điền bảng ERRC bằng câu hỏi gợi ý: bỏ gì mà khách không nhớ?, giảm gì mà khách không trả tiền?, nâng gì để khách thật sự cảm nhận?, tạo gì để giải điểm đau ngành bỏ qua?"
+      - "Mỗi hành động gắn với yếu tố trên canvas và có tác động chi phí ước tính (VND/đơn vị)."
+      - "Chọn 2-4 hành động mỗi ô; quá nhiều là dàn trải. Ô Eliminate và Reduce phải không rỗng."
+      - "Tính C_new (m05_errc_net_cost), so với C_target (m05_target_cost)."
+      - "Kiểm thử bằng MVP / pre-order / khảo sát trước khi đầu tư lớn."
+    how_to_read_results: >
+      Nếu ô E và R trống, đây không phải BOS mà là khác biệt hóa thêm chi phí. Nếu ô Ra và C rộng nhưng không có nhóm khách mới thì đang 'làm đẹp' cho khách cũ.
+      Đạt khi C_new <= C_target và giá trị tăng đo được.
+    pitfalls:
+      - "Điền ERRC theo mong muốn thay vì theo dữ liệu khách."
+      - "Chỉ Raise và Create, bỏ nửa trái."
+      - "Eliminate yếu tố mà khách thực sự cần (ví dụ bỏ chất lượng cốt lõi)."
+    example: "Wii: bỏ đồ họa đỉnh/ổ cứng lớn, giảm cấu hình, tăng giá dễ mua và dễ chơi, tạo motion control và trải nghiệm gia đình."
+  - id: "m05_six_paths"
+    name_vi: "Sáu con đường tái tạo ranh giới thị trường"
+    name_en: "Six Paths Framework"
+    origin: >
+      Kim và Mauborgne (2005). Ra đời vì ranh giới ngành thường bị coi là cố định; sáu con đường nhắc nhà quản lý nhìn ra ngoài sáu 'bức tường' khiến mọi người cạnh tranh trong cùng khung.
+    components:
+      - "1. Ngành thay thế (alternative industries) - Netflix thay thế TV/rental."
+      - "2. Nhóm chiến lược (strategic groups) - Lexus giữa phổ thông và hạng sang."
+      - "3. Chuỗi người mua (buyer chain: người mua, người dùng, người ảnh hưởng) - Bloomberg tới trader."
+      - "4. Sản phẩm/dịch vụ bổ sung (complementary offerings) - IKEA nội thất + thiết kế + lắp ráp."
+      - "5. Chức năng hoặc cảm xúc (functional-emotional orientation) - Swatch: đồng hồ thành phụ kiện thời trang."
+      - "6. Thời gian (time) - nhìn xu hướng sắp tới, ví dụ iTunes nhạc số."
+    when_to_use: "Giai đoạn tìm ý tưởng trước ERRC, khi chưa biết mình nên nhìn đại dương xanh ở đâu."
+    how_to_apply:
+      - "Với mỗi con đường, đặt câu hỏi cho ngành mình: khách chọn giữa mình và ngành nào khác (ví dụ quán cà phê vs coworking)?"
+      - "Ghi 2-3 giả thuyết/đường; mỗi giả thuyết nêu nhóm khách và điểm đau."
+      - "Chấm sơ bộ (khách đau nhiều? chi phí giải thấp? ngành chưa làm?) rồi chọn 1-2 đường để đi sâu."
+      - "Trước khi quyết, phỏng vấn 10-15 người ở nhóm đích."
+    how_to_read_results: "Ý tưởng tốt giải điểm đau thật của nhóm không thuộc khách hiện tại và dùng được năng lực sẵn có; ý tưởng mà chỉ 'nghe hay' phải loại."
+    pitfalls:
+      - "Liệt kê đủ 6 đường rồi theo cả 6 thay vì chọn."
+      - "Nhầm chức năng/cảm xúc: đẩy cảm xúc nhưng không giải điểm đau chức năng."
+    example: "Quán cà phê Đà Nẵng nhìn qua ngành thay thế (coworking) và chuỗi người mua (dân tech, freelancer): thành 'cà phê làm việc có cabin yên tĩnh'."
+  - id: "m05_three_tiers"
+    name_vi: "Ba tầng khách hàng chưa phục vụ"
+    name_en: "Three Tiers of Noncustomers"
+    origin: >
+      Kim và Mauborgne (2005). Ra đời vì tăng trưởng bằng phân khúc mịn hơn làm thị trường chia nhỏ; muốn đại dương lớn phải tìm điểm chung ở người chưa mua.
+    components:
+      - "Tầng 1 - Soon-to-be (sắp rời bỏ): đang dùng tối thiểu, tìm lối thoát; gần ranh giới nhất."
+      - "Tầng 2 - Refusing (từ chối): biết ngành nhưng chọn không dùng vì giá, độ phức tạp, hình ảnh."
+      - "Tầng 3 - Unexplored (chưa khám phá): chưa nghĩ ngành là lựa chọn; xa nhất, quy mô lớn nhất."
+    when_to_use: "Khi muốn mở rộng quy mô cầu hoặc kiểm tra ý tưởng có phục vụ đúng khách mới hay không."
+    how_to_apply:
+      - "Xác định 3 nhóm trong vùng phục vụ; thu thập số lượng từ dữ liệu dân cư, khảo sát hoặc hội nhóm."
+      - "Phỏng vấn sâu 5-10 người mỗi tầng: vì sao không dùng?, điều gì khiến họ cân nhắc?"
+      - "Tìm điểm chung giữa các nhóm (ví dụ: 'ngại bị đánh giá', 'sợ giá lệch')."
+      - "Ước lượng Q bằng m05_noncustomer_demand; thiết kế ERRC để giải điểm chung."
+    how_to_read_results: "Điểm chung xuất hiện ở tầng 2 và 3 là nguồn quy mô; nếu tầng nào cũng cần giải pháp khác nhau thì đang chia nhỏ, không phải BOS."
+    pitfalls:
+      - "Chỉ tập trung tầng 1 (dễ nhất) nên thị trường nhỏ."
+      - "Phân khúc chi tiết (nhiều nhóm riêng) thay vì tìm điểm chung."
+    example: "Planet Fitness nhắm người sợ bị đánh giá ở phòng gym: bỏ tạ nặng/gương toàn thân, tạo 'Judgement Free Zone', pizza/bagel, giá thấp; thành chuỗi lớn nhất Mỹ về số hội viên."
+  - id: "m05_buyer_utility_map"
+    name_vi: "Bản đồ tiện ích người mua"
+    name_en: "Buyer Utility Map"
+    origin: "Kim và Mauborgne (2005). Ra đời vì doanh nghiệp thường nhìn sản phẩm chứ không nhìn toàn bộ trải nghiệm sử dụng của người mua."
+    components:
+      - "6 giai đoạn - Mua sắm, Giao hàng, Sử dụng, Bổ sung, Bảo trì, Thanh lý."
+      - "6 đòn bẩy tiện ích - Năng suất khách, Đơn giản, Tiện lợi, Giảm rủi ro, Vui thích và hình ảnh, Thân thiện môi trường."
+    when_to_use: "Khi cần tìm điểm đau cụ thể trong hành trình khách hàng, đặc biệt dịch vụ có nhiều chạm điểm."
+    how_to_apply:
+      - "Vẽ ma trận 6x6 (36 ô)."
+      - "Đánh dấu ô đối thủ hiện phục vụ tốt dựa trên trải nghiệm thật."
+      - "Phỏng vấn khách, ghi ô có nhiều đau nhất."
+      - "Tính chỉ số ô trống (m05_bum_opportunity); chọn 2-3 ô trống vừa quan trọng vừa có chi phí giải thấp."
+      - "Đưa ô đã chọn vào mục Raise hoặc Create của ERRC."
+    how_to_read_results: "Cụm ô trống liền nhau (cả một giai đoạn bị bỏ qua) là cơ hội mô hình mới; ô lẻ chỉ là cải tiến nhỏ."
+    pitfalls:
+      - "Điền theo suy luận, không dựa phỏng vấn."
+      - "Bỏ qua giai đoạn Bảo trì/Thanh lý, nơi ngành thường lơ là."
+    example: "Quán cà phê làm việc: trống ở 'Sử dụng x Năng suất' (ổ cắm, yên tĩnh, bàn đứng) và 'Sử dụng x Tiện lợi' (đặt chỗ trước)."
+  - id: "m05_pms_map"
+    name_vi: "Bản đồ Pioneer-Migrator-Settler"
+    name_en: "Pioneer-Migrator-Settler (PMS) Map"
+    origin: "Kim và Mauborgne (2005). Ra đời để kiểm tra danh mục sản phẩm của doanh nghiệp xem bao nhiêu thứ thật sự đổi mới giá trị."
+    components:
+      - "Pioneer - đổi mới giá trị đột phá, tạo thị trường mới."
+      - "Migrator - giá trị cao hơn đối thủ nhưng cùng khuôn ngành."
+      - "Settler - bắt chước, cạnh tranh ở đại dương đỏ."
+    when_to_use: "Rà soát danh mục sản phẩm/dịch vụ hoặc đánh giá cuộc khởi động mới."
+    how_to_apply:
+      - "Liệt kê sản phẩm/dịch vụ và doanh thu, lợi nhuận mỗi dòng."
+      - "Phân loại bằng 3 câu hỏi: khách có mới không? đường cong có khác không? chi phí có thấp hơn không?"
+      - "Tính tỷ trọng doanh thu và lợi nhuận theo loại; so với kế hoạch."
+      - "Đặt mục tiêu chuyển ít nhất một dòng Settler/Migrator sang Pioneer hoặc cắt dòng không sinh lợi."
+    how_to_read_results: "Tác giả nêu Pioneer chiếm tỷ lệ nhỏ số lần ra mắt nhưng phần lớn lợi nhuận (khoảng 14% ra mắt -> 38% doanh thu, 61% lợi nhuận; số liệu của tác giả, chưa kiểm chứng độc lập). Danh mục toàn Settler là cảnh báo."
+    pitfalls:
+      - "Tự gán nhãn Pioneer vì sản phẩm 'mới' mà không đo giá trị."
+      - "Dùng làm lý do bỏ hết Settler: dòng nền vẫn tạo dòng tiền."
+    example: "Chuỗi trà sữa: 12 vị cơ bản là Settler, trà sữa không đường + app đặt trước là Migrator, gói 'trà sữa pha tại công ty' (B2B) là Pioneer thử nghiệm."
+  - id: "m05_bos_sequence"
+    name_vi: "Trình tự chiến lược đại dương xanh"
+    name_en: "Blue Ocean Strategic Sequence (BOS Sequence)"
+    origin: "Kim và Mauborgne (2005). Ra đời vì ý tưởng hay chưa chắc thành mô hình kinh doanh sinh lời; trình tự ép kiểm tra từng cổng theo thứ tự."
+    components:
+      - "Cổng 1 Buyer Utility - có tiện ích người mua đủ hấp dẫn không?"
+      - "Cổng 2 Price - giá chiến lược có nằm trong hành lang giá của đại chúng không?"
+      - "Cổng 3 Cost - đạt chi phí mục tiêu để sinh lời không?"
+      - "Cổng 4 Adoption - rào cản áp dụng (đối tác, nhân viên, pháp lý, thói quen) đã giải chưa?"
+    when_to_use: "Sau khi có ERRC và canvas mới, trước khi triển khai/đầu tư."
+    how_to_apply:
+      - "Cổng 1: so sánh mới và hiện tại bằng Buyer Utility Map; kiểm chứng với 10-15 khách đích."
+      - "Cổng 2: xác định hành lang giá (giá sản phẩm thay thế cùng hình thức, cùng chức năng); đặt giá chiến lược ở phần thấp/giữa."
+      - "Cổng 3: tính C_target = giá - lợi nhuận mục tiêu; tính C_new từ ERRC; điều chỉnh bằng đối tác, mô hình thu phí, đổi mới quy trình."
+      - "Cổng 4: lập danh sách bên liên quan (nhân viên, nhà cung cấp, cơ quan quản lý), phản đối dự kiến, kế hoạch tháo gỡ."
+    how_to_read_results: "Trượt cổng nào thì quay lại cổng đó; không nhảy cóc. Chỉ khi cả 4 qua mới đầu tư lớn."
+    pitfalls:
+      - "Làm từ cổng 3 (chi phí) trước rồi gắn giá."
+      - "Quên cổng 4: ý tưởng tốt chết vì nhân viên/đối tác không làm theo."
+    example: "VinFast thuê pin: giảm giá mua ban đầu (cổng giá), nhưng cổng 4 (hạ tầng sạc, thói quen) mới là rào cản."
+  - id: "m05_pioneer_shift_process"
+    name_vi: "Quy trình Blue Ocean Shift"
+    name_en: "Blue Ocean Shift (2017)"
+    origin: "Kim và Mauborgne (2017), sách Blue Ocean Shift. Ra đời vì sách 2005 mạnh về lý thuyết nhưng yếu về cách thực hiện từng bước."
+    components:
+      - "Bước 1 Start Right - chọn đơn vị, đội và mục tiêu đúng."
+      - "Bước 2 Understand where you are now - vẽ canvas hiện tại, đi thực địa (bus tour)."
+      - "Bước 3 Imagine where you could be - ERRC, vẽ canvas tương lai."
+      - "Bước 4 Find how to get there - Blue Ocean Fair, thu phản hồi khách."
+      - "Bước 5 Make your move - thí điểm, mở rộng, áp dụng fair process."
+    when_to_use: "Khi cần chạy workshop BOS có đội và thời hạn."
+    how_to_apply:
+      - "Thành lập đội 4-8 người đa chức năng, 1 người quyết định."
+      - "Chạy hành trình thực địa với khách và non-customers."
+      - "Vẽ canvas, ERRC; mỗi đội vẽ 'canvas tương lai' độc lập."
+      - "Trình bày (Fair) cho khách và đội khác, bình chọn."
+      - "Thí điểm quy mô nhỏ, đo, rồi mở rộng."
+    how_to_read_results: "Phản hồi tích cực ở thí điểm kèm chi phí dưới mục tiêu thì mở rộng; nếu không thì quay lại bước 3."
+    pitfalls: ["Làm workshop xong không thí điểm.", "Quyết định chỉ do lãnh đạo, đội cảm thấy bị loại."]
+    example: "Tiệm giặt tự phục vụ: bus tour 1 ngày ở 5 tiệm giặt hiện có, phỏng vấn 10 người chưa dùng dịch vụ, thí điểm 1 điểm 8 tuần."
+  - id: "m05_execution_principles"
+    name_vi: "Thực thi: Tipping Point Leadership và Fair Process"
+    name_en: "Tipping Point Leadership and Fair Process"
+    origin: >
+      Kim và Mauborgne (2005, dựa trên nghiên cứu về lãnh đạo thay đổi, ví dụ cảnh sát New York dưới Bratton). Ra đời vì rào cản thực sự của chiến lược mới thường là con người và tổ chức chứ không phải ý tưởng.
+    components:
+      - "Bốn rào cản - nhận thức, nguồn lực, động lực, chính trị."
+      - "Fair Process ba trụ - Engagement (tham gia), Explanation (giải thích), Expectation clarity (kỳ vọng rõ)."
+    when_to_use: "Khi chiến lược đã chọn nhưng đội không cam kết hoặc nguồn lực có hạn."
+    how_to_apply:
+      - "Cho người ảnh hưởng thấy tận mắt vấn đề (rào cản nhận thức)."
+      - "Tập trung nguồn lực vào điểm nóng, tái phân bổ từ điểm lạnh (nguồn lực)."
+      - "Chọn người truyền cảm hứng, đặt mục tiêu minh bạch (động lực)."
+      - "Thu hút đồng minh, vô hiệu hóa phản đối chính (chính trị)."
+      - "Áp dụng fair process từ giai đoạn thiết kế đến triển khai."
+    how_to_read_results: "Nhân viên hiểu vì sao đổi và biết mình được đánh giá thế nào là dấu hiệu fair process hoạt động."
+    pitfalls: ["Giấu thông tin đến khi sát ngày thực hiện.", "Đưa mục tiêu mà không giải thích lý do."]
+    example: "SME 15 nhân viên chuyển sang 'quán không thực đơn dài': chủ họp cả đội, giải thích số liệu hao hụt, cho nhân viên đề xuất món giữ lại."
+  - id: "m05_red_ocean_vs_blue"
+    name_vi: "Khi nào ở lại đại dương đỏ"
+    name_en: "Dominate the red ocean (McDonald's logic)"
+    origin: "Bài học từ McDonald's trong nguồn: ban đầu là đại dương xanh (anh em McDonald 1948), sau thống trị đại dương đỏ bằng bất động sản, chuẩn hóa vận hành và chuỗi cung ứng tích hợp."
+    components:
+      - "Đại dương xanh ban đầu - bỏ phục vụ tại bàn và dụng cụ sứ, giảm thực đơn từ khoảng 25 xuống 9 món, tăng tốc độ và chuẩn hóa."
+      - "Pháo đài sau đó - mô hình bất động sản, nhất quán vận hành, chuỗi cung ứng; McLocal để 'nhuộm xanh' từng phần."
+    when_to_use: "Doanh nghiệp đã dẫn đầu, quy mô lớn, hệ thống tối ưu; hoặc thiếu nguồn lực nuôi một đại dương mới."
+    how_to_apply:
+      - "Hỏi: lợi thế quy mô/chuỗi cung ứng/vị trí của mình có khó sao chép không?"
+      - "Nếu có, tập trung đổi mới giá trị cục bộ (menu địa phương, dịch vụ gia tăng) thay vì chuyển hẳn mô hình."
+      - "Nếu không, cân nhắc tìm ngách xanh nhỏ."
+    how_to_read_results: "Không phải DN nào cũng cần đại dương xanh; hệ thống vận hành xuất sắc có thể bền hơn ý tưởng mới."
+    pitfalls: ["Nhầm 'dẫn đầu' với 'không cần đổi mới'.", "Bỏ hệ thống đang hiệu quả để chạy theo mô hình mới thiếu nền tảng."]
+    example: "McLocal ở VN: Phở Burger, cơm gà: giữ chuẩn toàn cầu nhưng nhuộm xanh một phần theo khẩu vị địa phương."
+
+procedures:
+  - id: "m05_proc_full_blue_ocean"
+    name: "Dựng Strategy Canvas + ERRC + kiểm tra BOS Sequence cho một doanh nghiệp (đầu-cuối)"
+    steps:
+      - "Bước 0 - Hỏi đầu vào (intake): ngành, địa bàn, sản phẩm/dịch vụ, giá bán, 3-5 đối thủ chính và giá của họ, nguồn lực (vốn, nhân sự, mặt bằng), khách hiện tại (ai, vì sao đến), dữ liệu doanh thu/chi phí, mục tiêu."
+      - "Bước 1 - Đặt khung: xác định 'ngành' mình đang cạnh tranh (ví dụ cà phê khu Tây Bắc Đà Nẵng); chọn 2-3 nhóm đối thủ."
+      - "Bước 2 - Liệt kê 8-12 yếu tố cạnh tranh từ phản hồi khách và quan sát (hỏi: khách chọn quán vì gì? ngành đua nhau điều gì?)."
+      - "Bước 3 - Chấm điểm 0-5 cho mình và trung bình nhóm đối thủ, ghi bằng chứng; vẽ canvas hiện tại (bảng + mô tả đường cong)."
+      - "Bước 4 - Phát hiện tính me-too: tính D và r (m05_value_curve_divergence, m05_value_curve_correlation) giữa mình và đối thủ."
+      - "Bước 5 - Tìm cơ hội: áp Six Paths (chọn 2 đường), 3 tầng non-customers (số lượng + lý do không mua), Buyer Utility Map (tính chỉ số ô trống)."
+      - "Bước 6 - Điền ERRC: mỗi ô 2-4 mục, gắn với yếu tố canvas; ước tính tác động chi phí mỗi mục (VND/đơn vị)."
+      - "Bước 7 - Vẽ canvas mới: gán điểm mới cho từng yếu tố; kiểm tra Focus (có >=3 yếu tố bị hạ?), Divergence (D > 1.5), Tagline (nói được trong 1 câu); tính lại D, r."
+      - "Bước 8 - BOS Sequence: cổng 1 tiện ích (so BUM), cổng 2 giá chiến lược (so giá thay thế), cổng 3 chi phí (C_target vs C_new), cổng 4 rào cản áp dụng."
+      - "Bước 9 - Định lượng: Q từ non-customers (m05_noncustomer_demand), BE (m05_breakeven_units); tính Q/BE."
+      - "Bước 10 - Kiểm chứng giả định rẻ nhất: pre-order, khảo sát 30-50 người đích, thí điểm 4-8 tuần; đặt tiêu chí đạt/không đạt trước."
+      - "Bước 11 - Lập kế hoạch thực thi (fair process, rào cản, nguồn lực) và KPI (liên kết m06)."
+    outputs: >
+      Gồm: bảng canvas hiện tại và mới (điểm, bằng chứng), D và r, bảng ERRC kèm tác động chi phí, tagline,
+      kết quả 4 cổng BOS Sequence (đạt/trượt, lý do), Q, BE, Q/BE, danh sách giả định cần kiểm chứng và kế hoạch thí điểm, rủi ro bị bắt chước.
+  - id: "m05_proc_find_noncustomers"
+    name: "Tìm và định lượng khách hàng chưa phục vụ"
+    steps:
+      - "Xác định vùng phục vụ (bán kính, nhóm tuổi) và số dân từ dữ liệu có sẵn."
+      - "Phân 3 tầng: soon-to-be, refusing, unexplored; gán số người cho mỗi tầng."
+      - "Phỏng vấn 5-10 người mỗi tầng: 'Vì sao bạn không dùng/ít dùng?', 'Điều gì khiến bạn thử?'"
+      - "Tìm điểm chung xuyên tầng; viết thành 1-2 câu 'điểm đau chung'."
+      - "Gán tỷ lệ chuyển đổi giả định giảm dần theo tầng; tính Q."
+      - "Đề xuất ERRC giải điểm đau chung; kiểm chứng bằng pre-order/khảo sát."
+    outputs: "Bảng 3 tầng (số người, lý do, điểm đau chung, tỷ lệ giả định), Q, đề xuất ERRC."
+  - id: "m05_proc_test_idea"
+    name: "Kiểm tra nhanh một ý tưởng 'đại dương xanh'"
+    steps:
+      - "Hỏi: yếu tố nào bị loại hoặc giảm (E, R)? Nếu không có, cảnh báo đây là khác biệt hóa tốn kém."
+      - "Hỏi: nhóm khách mới là ai và họ không mua vì sao?"
+      - "Tính C_new so với C_target; tính Q/BE."
+      - "Hỏi: đối thủ sao chép trong bao lâu? Rào cản bắt chước nào?"
+      - "Kết luận: Xanh thật / Xanh một phần (ngách) / Đỏ đổi tên, kèm lý do và hành động tiếp theo."
+    outputs: "Phán quyết 3 mức + 3 lý do + 1-2 thử nghiệm đề xuất."
+
+decision_rules:
+  - "Nếu mọi đối thủ có đường cong giống nhau (r > 0.7) và đua giá thì thị trường là đại dương đỏ; bắt đầu từ ERRC thay vì giảm giá thêm."
+  - "Nếu ô Eliminate và Reduce trong ERRC trống thì ý tưởng là khác biệt hóa thêm chi phí, không phải BOS; yêu cầu bổ sung tối thiểu một mục E và một mục R."
+  - "Nếu C_new > C_target thì quay lại ERRC cắt/giảm thêm hoặc đổi mô hình thu phí/đối tác; không đi tiếp cổng 4."
+  - "Nếu đường cong mới cao ở hầu hết yếu tố (dàn trải) thì thiếu Focus; hạ ít nhất 3 yếu tố."
+  - "Nếu D < 0.8 thì chưa đủ Divergence; làm lại ERRC với Six Paths hoặc non-customers."
+  - "Nếu chỉ phục vụ tầng 1 non-customers thì thị trường nhỏ; kiểm tra tầng 2 và 3 để tìm điểm chung."
+  - "Nếu Q/BE < 1 thì chưa khả thi; giảm chi phí cố định, tăng vùng phục vụ hoặc nâng giá cho phân khúc rõ hơn."
+  - "Nếu chi phí khảo sát/thí điểm vượt 5% vốn dự kiến thì thu nhỏ thử nghiệm (MVP) trước khi mở rộng."
+  - "Nếu doanh nghiệp là người dẫn đầu với hệ thống vận hành khó sao chép (quy mô, chuỗi cung ứng) thì cân nhắc 'nhuộm xanh' từng phần (kiểu McLocal) thay vì đổi toàn bộ mô hình."
+  - "Nếu SME vốn nhỏ thì ưu tiên đại dương xanh dạng ngách (một khu vực, một nhóm khách) và thí điểm 1 điểm bán; không đầu tư lớn ngay."
+  - "Nếu ý tưởng cần công nghệ/giáo dục thị trường lớn thì kiểm tra cổng 4 (Adoption) trước khi cam kết vốn."
+  - "Nếu đối thủ sao chép được trong dưới 6 tháng thì cần rào cản khác (hệ thống, thương hiệu, cộng đồng) hoặc lên kế hoạch tiếp theo; không dựa vào 'bảo vệ 10-15 năm'."
+  - "Nếu cùng sản phẩm bán ở thị trường khác thì đánh giá lại: có thể xanh ở VN nhưng đỏ ở Mỹ/EU (VinFast)."
+
+benchmarks:
+  - {metric: "Số yếu tố trên Strategy Canvas", value: "8-12 (tránh >15)", context: "Quy ước thực hành để giữ bức tranh lớn", confidence: "medium"}
+  - {metric: "Độ phân kỳ D (MAD thang 0-5)", value: "<0.8 me-too; 0.8-1.5 vừa; >1.5 rõ", context: "Quy ước của module, không phải chuẩn học thuật", confidence: "low"}
+  - {metric: "Tương quan hình dạng r với đối thủ", value: ">0.7 giống; <0.3 khác; <0 đảo", context: "Quy ước của module", confidence: "low"}
+  - {metric: "Số mục mỗi ô ERRC", value: "2-4", context: "Giữ Focus, tránh dàn trải", confidence: "medium"}
+  - {metric: "Q/BE cho thí điểm", value: ">1.3", context: "Quy ước an toàn, cần điều chỉnh theo ngành", confidence: "low"}
+  - {metric: "Pioneer share (nghiên cứu tác giả)", value: "~14% ra mắt -> ~38% doanh thu, ~61% lợi nhuận", context: "Số liệu từ Kim và Mauborgne, chưa kiểm chứng độc lập", confidence: "low"}
+  - {metric: "Thời gian bảo vệ đại dương xanh", value: "10-15 năm (theo nguồn)", context: "Không phải bảo đảm; thực tế ngắn hơn trong ngành dễ sao chép", confidence: "low"}
+  - {metric: "Số khách phỏng vấn để kiểm chứng sơ bộ", value: "10-15 mỗi nhóm; khảo sát 30-50", context: "Thực hành định tính, không phải ý nghĩa thống kê", confidence: "medium"}
+
+pitfalls:
+  - "Gọi mọi ý tưởng khác biệt là 'đại dương xanh' dù không có ô Eliminate/Reduce, tức không phá trade-off."
+  - "Nhầm BOS với phá giá (disruption) hay công nghệ mới; BOS là đổi mới giá trị."
+  - "Survivorship bias: nguồn chỉ kể case thành công (Cirque, Wii); cần nhìn cả thất bại (Wii U, nhiều ý tưởng 'thị trường ma')."
+  - "Vẽ canvas bằng trực giác thay vì dữ liệu khách; liệt kê yếu tố của riêng mình thay vì yếu tố ngành."
+  - "Dàn trải: nâng mọi yếu tố, chi phí tăng, không có tagline."
+  - "Bỏ qua cổng Adoption và thực thi (nguồn thừa nhận BOS yếu về execution)."
+  - "Đầu tư lớn khi chưa thử: thị trường mới = nhu cầu không chắc chắn."
+  - "Không kế hoạch cho việc bị sao chép; một lần xanh không là xanh mãi."
+  - "SME nhỏ mô phỏng dự án khổng lồ (VinFast, Apple) thay vì chọn ngách xanh quy mô nhỏ."
+  - "Dùng số liệu nguồn chưa kiểm chứng (ví dụ số trạm sạc, số hội viên) như chuẩn mà không ghi độ tin cậy."
+
+sme_vn_guidance:
+  - "Mục tiêu thực tế của SME là đại dương xanh dạng ngách: một khu vực, một nhóm khách, một yếu tố giá trị mới. Thí điểm 1 điểm bán 4-8 tuần trước khi nhân rộng."
+  - "Công cụ rẻ: Google Sheets/Excel (canvas, ERRC), Google Forms hoặc Zalo OA khảo sát (miễn phí), Canva/Figma free để vẽ canvas; chi phí chủ yếu là thời gian phỏng vấn."
+  - "Nguồn dữ liệu non-customers ở VN: nhóm Facebook/Zalo khu dân cư, bình luận Google Maps/Foody của đối thủ (xem than phiền), khảo sát tại chỗ, dữ liệu dân cư địa phương; các số liệu này đều cần xác nhận."
+  - "F&B: hỏi 'khách đến quán vì nhu cầu nào ngoài uống/ăn?' (làm việc, hoài niệm, họp mặt gia đình); nhiều quán đỏ vì cùng đua menu và decor. Ví dụ ý tưởng xanh: cà phê làm việc có ổ cắm/yên tĩnh, thực đơn rút gọn, giá minh bạch."
+  - "Cộng Cà Phê (bài học trong nguồn): không đua 'cà phê ngon nhất' mà cạnh tranh bằng trải nghiệm hoài niệm; kết quả khách ít so giá."
+  - "Với vốn nhỏ, ưu tiên ERRC thiên về Eliminate/Reduce (menu ngắn, ít nhân sự phục vụ bàn, thanh toán QR) để có chi phí mục tiêu thấp, rồi mới Raise ít yếu tố cốt lõi."
+  - "Tránh giá chiến lược chỉ dựa trên cảm tính: đối chiếu giá thay thế gần nhất (ví dụ giá coworking theo giờ, giá giặt ủi theo kg) để xác định hành lang giá."
+  - "Thuế/pháp lý (hộ kinh doanh, kinh doanh thực phẩm, phòng cháy) là rào cản cổng Adoption khi đổi mô hình (ví dụ cabin ngủ, 24/7); cần xác nhận quy định địa phương trước khi đầu tư."
+  - "Mọi con số chi phí, giá trong các ví dụ là minh họa; agent cần xin số thực của chủ SME trước khi kết luận."
+
+case_lessons:
+  - name: "Cirque du Soleil - đại dương xanh kinh điển"
+    type: "success"
+    setup: >
+      Xiếc truyền thống thập niên 1980 suy tàn (Ringling lỗ, phản đối quyền động vật, TV và game cạnh tranh, khách trẻ em giảm).
+      ERRC của Cirque - Eliminate: ngôi sao, thú vật, bán hàng lưu niệm, 3 sân khấu cùng lúc; Reduce: hài hước, hồi hộp nguy hiểm; Raise: không gian độc đáo, yếu tố nghệ thuật; Create: chủ đề/câu chuyện, nhạc sống, nhiều show, môi trường tinh tế, giá vé tương đương kịch.
+    key_calculations:
+      - "Giá vé 100-300 USD so với 10-30 USD của xiếc truyền thống (nguồn), khoảng 10 lần."
+      - "Doanh thu trên 1 tỷ USD/năm trước COVID; hơn 150 triệu khán giả ở hơn 450 thành phố (số liệu nguồn)."
+      - "Khán giả mới: người lớn, cặp đôi, doanh nghiệp, không phụ thuộc trẻ em và gia đình."
+    lesson: "Khác biệt không phải làm xiếc tốt hơn mà ghép xiếc + nhà hát, bỏ chi phí lớn (ngôi sao, thú) và nâng yếu tố khách trả tiền. Nhắm vào non-customers người lớn."
+    data_reliability: "unverified"
+  - name: "Nintendo Wii - non-customers và giới hạn của BOS"
+    type: "success"
+    setup: >
+      2006: PS3 và Xbox 360 đua cấu hình cho hardcore gamer, giá 399-599 USD; Wii giá 249 USD, motion control, game đơn giản, chơi gia đình.
+    key_calculations:
+      - "Wii bán khoảng 101 triệu máy so với PS3 khoảng 87M, Xbox 360 khoảng 84M (số liệu nguồn)."
+      - "Giá Wii 249 so với 399 đến 599 USD: thấp hơn khoảng 38% đến 58% (249/399 = 0.624 và 249/599 = 0.416)."
+      - "Sony từng lỗ khoảng 240 USD mỗi máy PS3 năm đầu (ước tính trong nguồn, cần kiểm chứng)."
+    lesson: "Nhắm ông bà, mẹ, người không chơi game; giảm cấu hình để giảm chi phí và có biên tốt. Wii U (2012) thất bại: BOS không bảo đảm dài hạn; Nintendo phải tìm xanh mới (Switch 2017)."
+    data_reliability: "illustrative"
+  - name: "VinFast VF e34 tại Việt Nam - xanh ở VN, đỏ ở Mỹ/EU"
+    type: "success"
+    setup: >
+      2021: thị trường ô tô điện VN gần như chưa có; mô hình thuê pin, hệ sinh thái VinFast + Vinhomes, app dịch vụ. Ở Mỹ/EU đối đầu Tesla, BYD.
+    key_calculations:
+      - "Mức chi phí: giảm giá mua nhờ thuê pin (chuyển CAPEX thành thuê bao)."
+      - "Số trạm sạc trong nguồn gốc là 'hàng nghìn' (số cụ thể cần xác nhận)."
+    lesson: "Đánh giá BOS theo từng thị trường; chưa rõ xanh thực sự hay chỉ là first mover trong đỏ tương lai. Rào cản cổng Adoption (hạ tầng sạc, thói quen) là then chốt."
+    data_reliability: "unverified"
+  - name: "McDonald's - từ xanh sang thống trị đỏ"
+    type: "success"
+    setup: >
+      1948 anh em McDonald: bỏ phục vụ tại bàn và dụng cụ sứ, giảm thực đơn khoảng 25 xuống 9 món, tốc độ phục vụ từ khoảng 20 phút xuống khoảng 30 giây (số liệu nguồn). Sau này đạt thống trị nhờ bất động sản, chuẩn hóa, chuỗi cung ứng.
+    key_calculations:
+      - "Thực đơn giảm (25 - 9)/25 = 64%."
+      - "Thời gian phục vụ giảm từ 20 phút xuống 0.5 phút (giảm khoảng 97.5%), số liệu nguồn."
+    lesson: "Đại dương xanh trở thành đỏ khi bị sao chép; doanh nghiệp có thể bảo vệ bằng hệ thống (bất động sản, chuẩn hóa, chuỗi cung ứng) và nhuộm xanh từng phần (McLocal)."
+    data_reliability: "unverified"
+  - name: "Planet Fitness - nhắm tầng 2 và 3 non-customers"
+    type: "success"
+    setup: >
+      Nhắm người ngại phòng gym truyền thống. Eliminate: tạ nặng, gương toàn thân, văn hóa 'gym bro'; Reduce: thiết bị chuyên nghiệp; Raise: không gian thoải mái, 'Judgement Free Zone'; Create: Pizza Monday, Tootsie Roll Tuesday, hội viên 10 USD/tháng.
+    key_calculations:
+      - "Nguồn nêu 18 triệu hội viên, lớn nhất Mỹ; số liệu thực tế có thể khác theo năm."
+      - "Doanh thu hội viên tối thiểu theo nguồn: 18 triệu x 10 USD x 12 = 2.16 tỷ USD/năm (ước tính tối thiểu, bỏ qua gói cao cấp)."
+    lesson: "Chiến lược xanh không cần công nghệ: chỉ cần hiểu vì sao người không tập gym không mua, rồi bỏ đúng thứ họ sợ."
+    data_reliability: "unverified"
+  - name: "Cộng Cà Phê và quán cà phê trải nghiệm"
+    type: "success"
+    setup: "Không cạnh tranh 'cà phê ngon nhất' mà cạnh tranh trải nghiệm hoài niệm (không gian, kỷ niệm); khách ít so giá với quán cóc."
+    key_calculations: ["Không có số liệu định lượng trong nguồn; đây là bài học định tính."]
+    lesson: "Đổi trục cạnh tranh sang cảm xúc làm giảm áp lực giá; nhưng cần kiểm tra chi phí đầu tư không gian có được bù bằng giá/lượng khách không."
+    data_reliability: "illustrative"
+  - name: "Quán cà phê làm việc cho dân tech (SME giả định, Tây Bắc Đà Nẵng)"
+    type: "sme"
+    setup: >
+      Khu đô thị mới, dân kỹ thuật trẻ. Quán cà phê trung bình: menu dài, decor đẹp, wifi tạm, ồn. Ý tưởng: cà phê làm việc yên tĩnh có bàn đứng, màn hình rời, cabin nghỉ, gói thành viên.
+    key_calculations:
+      - "Canvas 10 yếu tố: quán trung bình [3,4,4,4,3,2,1,1,3,1] và quán mới [2,3,1,2,5,5,5,4,1,4]."
+      - "Chênh tuyệt đối tổng 24, D = 24/10 = 2.4 (phân kỳ rõ)."
+      - "Pearson r = -0.66: hình dạng đảo ngược."
+      - "Tầng 1+2+3 giả định: 240 + 240 + 180 = 660 khách tiềm năng."
+    lesson: "Bỏ menu rộng, decor và phục vụ bàn (E/R); nâng wifi/ổ cắm, yên tĩnh, bàn đứng; tạo cabin và thành viên. Cần kiểm chứng giả định bằng pre-order gói thành viên trước khi thuê mặt bằng."
+    data_reliability: "illustrative"
+  - name: "Tiệm giặt tự phục vụ 24/7 (SME giả định, Hà Nội)"
+    type: "sme"
+    setup: "Tiệm giặt ủi truyền thống tính theo kg, đóng cửa tối, nhân viên giặt tay. Ý tưởng: giặt tự phục vụ 24/7 thanh toán QR cho dân chung cư/nhà trọ."
+    key_calculations:
+      - "C_target = 22,000 - 22,000 x 0.18 = 18,040 VND/kg."
+      - "Phiên bản 1: 21,000 - 3,500 - 1,200 + 1,300 + 700 + 400 = 18,700 > 18,040: trượt cổng Cost."
+      - "Phiên bản 2: thêm Reduce 800 (rút gọn dịch vụ ủi), được 17,900 <= 18,040: qua."
+    lesson: "Giá chiến lược quyết định chi phí cho phép; trượt cổng Cost phải quay lại ERRC chứ không tăng giá."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - id: "m05_ex_cafe_work"
+    title: "Quán cà phê làm việc (Đà Nẵng): canvas, ERRC, D và r"
+    inputs:
+      factors: ["Giá", "Hương vị", "Menu đa dạng", "Decor/check-in", "Wifi/ổ cắm", "Yên tĩnh", "Bàn đứng/màn hình", "Cabin nghỉ", "Phục vụ bàn", "Gói thành viên"]
+      competitor_avg: [3, 4, 4, 4, 3, 2, 1, 1, 3, 1]
+      new_curve: [2, 3, 1, 2, 5, 5, 5, 4, 1, 4]
+    steps:
+      - "ERRC - Eliminate: phục vụ bàn (điểm 1), menu rộng (còn 8 món); Reduce: decor check-in (4->2), hương vị đặc sản (4->3, đủ tốt không cần đỉnh); Raise: wifi/ổ cắm 3->5, yên tĩnh 2->5; Create: bàn đứng/màn hình rời, cabin nghỉ 15 phút, gói thành viên 24/7."
+      - "D = (|2-3|+|3-4|+|1-4|+|2-4|+|5-3|+|5-2|+|5-1|+|4-1|+|1-3|+|4-1|)/10 = (1+1+3+2+2+3+4+3+2+3)/10 = 2.4."
+      - "r = -0.66 (đảo cấu trúc: yếu tố ngành mạnh thì mình yếu và ngược lại)."
+      - "Focus: 5 yếu tố bị hạ hoặc giữ thấp (giá, hương vị, menu, decor, phục vụ bàn) - đạt; Tagline: 'Quán cà phê làm việc yên tĩnh cho người kỹ thuật'."
+      - "Q (giả định): tầng 1 800 x 0.30 = 240; tầng 2 3,000 x 0.08 = 240; tầng 3 12,000 x 0.015 = 180; Q = 660."
+      - "BE (F = 60 triệu/tháng, p = 199,000 gói tháng, v = 25%): 60,000,000/(199,000 x 0.75) = 402.01 -> 403; Q/BE = 660/403 = 1.64."
+      - "Lợi nhuận tháng dự kiến ở Q: 660 x 149,250 - 60,000,000 = 38,505,000 VND (cần xác nhận)."
+    result: "D 2.4, r -0.66, Q/BE 1.64: qua kiểm tra sơ bộ; việc tiếp theo là pre-order 150 gói thành viên trước khi ký thuê."
+  - id: "m05_ex_laundry_cost"
+    title: "Tiệm giặt tự phục vụ: target costing và ERRC"
+    inputs: {price_strategic: 22000, target_margin: 0.18, cost_base: 21000}
+    steps:
+      - "C_target = 22,000 x (1 - 0.18) = 18,040."
+      - "Phiên bản 1 ERRC: Eliminate nhân viên giặt tay -3,500; Reduce diện tích/trang trí -1,200; Raise máy công nghiệp +1,300; Create app/QR +700; Create camera an ninh 24/7 +400."
+      - "C_new1 = 21,000 - 3,500 - 1,200 + 1,300 + 700 + 400 = 18,700 > 18,040: trượt (vượt 660)."
+      - "Phiên bản 2: Reduce dịch vụ ủi/gấp -800 (chuyển thành add-on), C_new2 = 17,900 <= 18,040."
+      - "Biên thực = (22,000 - 17,900)/22,000 = 18.6%."
+    result: "Phiên bản 2 qua cổng Cost với biên 18.6%; kết luận: bỏ ủi/gấp khỏi gói chuẩn, bán add-on."
+  - id: "m05_ex_gym_noncustomers"
+    title: "Phòng tập 'không phán xét': 3 tầng non-customers và hòa vốn"
+    inputs: {tiers: [[800, 0.30], [3000, 0.08], [12000, 0.015]], price: 199000, fixed_cost: 60000000, variable_ratio: 0.25}
+    steps:
+      - "Tầng 1 sắp bỏ tập: 800 x 0.30 = 240."
+      - "Tầng 2 từ chối vì ngại bị đánh giá/giá: 3,000 x 0.08 = 240."
+      - "Tầng 3 chưa nghĩ đến: 12,000 x 0.015 = 180."
+      - "Q = 660 thành viên; doanh thu tháng = 660 x 199,000 = 131,340,000 VND."
+      - "BE = 60,000,000/(199,000 x 0.75) = 402.01 -> 403; biên an toàn = (660 - 403)/660 = 38.9%."
+    result: "Khả thi nếu giả định tỷ lệ chuyển đổi đạt; nếu tầng 3 chỉ đạt 0.5% (60 người) thì Q = 540, Q/BE = 1.34, vẫn qua ngưỡng 1.3."
+  - id: "m05_ex_buyer_utility"
+    title: "Buyer Utility Map cho dịch vụ giặt ủi"
+    inputs: {cells_served: 14}
+    steps:
+      - "Ma trận 6x6 = 36 ô; đối thủ phục vụ tốt 14 ô (chủ yếu Sử dụng x Đơn giản, Mua sắm x Tiện lợi)."
+      - "Ô trống = 36 - 14 = 22; B = 22/36 = 0.611."
+      - "Ô trống chọn: Sử dụng x Tiện lợi (24/7), Giao hàng x Năng suất (đặt qua app), Bảo trì x Giảm rủi ro (không hỏng đồ)."
+    result: "B = 0.61: ngành còn nhiều khoảng trống; ưu tiên 3 ô trên vào mục Raise/Create."
+
+practice_questions:
+  - q: "Phân biệt đại dương đỏ và xanh theo 3 tiêu chí, và nêu vì sao BOS nói 'phá trade-off giá trị-chi phí'."
+    a: "Cạnh tranh (đánh bại đối thủ vs làm cạnh tranh vô nghĩa), nhu cầu (khai thác hiện tại vs tạo mới), giá trị-chi phí (chọn một vs cả hai). BOS giảm chi phí qua Eliminate/Reduce và tăng giá trị qua Raise/Create nên cả hai cùng đạt."
+  - q: "Quán phở của bạn có đường cong giá trị [4,4,3,3,2] và đối thủ [4,4,3,3,2]. Đánh giá?"
+    a: "D = 0, r = +1: giống hệt, me-too, đại dương đỏ; cần ERRC và Six Paths."
+  - q: "ERRC của một ý tưởng có Eliminate và Reduce rỗng, Raise/Create 6 mục. Kết luận?"
+    a: "Khác biệt hóa thêm chi phí, chưa phải BOS; cần tìm yếu tố bỏ/giảm để C_new <= C_target."
+  - q: "Tính C_target nếu giá chiến lược 45,000 và biên mục tiêu 20%."
+    a: "45,000 x 0.8 = 36,000 VND."
+  - q: "Cho cost_base 21,000, tiết kiệm E 3,000, R 1,500, Raise +1,000, Create +1,500, C_target 18,000. Qua cổng Cost không?"
+    a: "C_new = 21,000 - 3,000 - 1,500 + 1,000 + 1,500 = 19,000 > 18,000: trượt; cần cắt thêm >= 1,000 hoặc đổi mô hình."
+  - q: "Ba tầng non-customers gồm 500x25%, 2,000x6%, 10,000x1%. Tính Q."
+    a: "125 + 120 + 100 = 345."
+  - q: "Fixed 40 triệu, giá 150,000, biến phí 30%. BE?"
+    a: "Đóng góp 105,000; 40,000,000/105,000 = 380.95 -> 381."
+  - q: "Vì sao 'Planet Fitness' thành công với tầng 2 và 3?"
+    a: "Bỏ đúng điều họ sợ (tạ nặng, gương, văn hóa gym bro), tạo cảm giác không bị đánh giá, giá 10 USD; giải điểm đau chung xuyên tầng."
+  - q: "Nêu 4 cổng BOS Sequence và thứ tự."
+    a: "Buyer Utility -> Price -> Cost -> Adoption. Trượt cổng nào thì quay lại cổng đó."
+  - q: "McDonald's sau khi thành công không đi tiếp đại dương xanh. Vì sao?"
+    a: "Quy mô và định vị gắn với tốc độ, quen thuộc; chuyển mô hình phá lợi thế quy mô và khách trung thành; họ chọn thống trị đỏ và nhuộm xanh cục bộ (McLocal)."
+  - q: "Nêu 2 hạn chế của BOS mà agent phải nói với chủ SME."
+    a: "Survivorship bias và rủi ro cầu không chắc chắn; BOS yếu về thực thi; xanh sẽ bị sao chép."
+  - q: "Giải thích Pioneer, Migrator, Settler."
+    a: "Pioneer đổi mới giá trị tạo thị trường mới; Migrator tốt hơn đối thủ nhưng cùng khuôn; Settler bắt chước."
+
+checklist:
+  - "Yếu tố canvas lấy từ phản hồi khách và quan sát, không từ suy đoán; điểm có bằng chứng."
+  - "Đã so với ít nhất 2-3 nhóm đối thủ, không chỉ 1."
+  - "Đã tính D và r; D > 1.5 hoặc có giải thích."
+  - "ERRC: ô Eliminate và Reduce không rỗng; mỗi ô 2-4 mục."
+  - "Đã tìm điểm chung của non-customers 3 tầng (không chỉ tầng 1)."
+  - "Đường cong mới đạt Focus, Divergence, Tagline 1 câu."
+  - "Đã qua 4 cổng BOS Sequence theo thứ tự (Utility, Price, Cost, Adoption)."
+  - "C_new <= C_target; Q/BE >= 1.3."
+  - "Giả định cầu đã có kế hoạch kiểm chứng rẻ (pre-order, MVP) với tiêu chí đạt/không đạt."
+  - "Đã đánh giá rủi ro bị sao chép và rào cản; kế hoạch bước tiếp theo."
+  - "Kế hoạch thực thi có fair process và người chịu trách nhiệm."
+  - "Mọi số liệu minh họa/chưa kiểm chứng đã đánh dấu độ tin cậy trong báo cáo."
+
+excel_google_sheets_templates:
+  - name: "Strategy Canvas Scoring"
+    description: "Cột A: yếu tố; B: điểm mình; C: điểm đối thủ 1; D: đối thủ 2; E: trung bình đối thủ (=AVERAGE(C2:D2)); F: |B-E|. Ô tổng: D = AVERAGE(F2:F11), r = CORREL(B2:B11,E2:E11). Vẽ Line chart nhiều series."
+  - name: "ERRC Cost Model"
+    description: "Bảng 4 ô (E/R/Ra/C) với cột tác động VND/đơn vị; ô C_new = C_base - SUMIF(E,R) + SUMIF(Ra,C); so với C_target = Giá*(1-Biên)."
+  - name: "Noncustomer Sizing + Break-even"
+    description: "3 hàng tầng với N và r; Q = SUMPRODUCT; BE = F/(p*(1-v)); tỷ số Q/BE; biên an toàn."
+  - name: "Buyer Utility Map 6x6"
+    description: "Ma trận 6 giai đoạn x 6 đòn bẩy, đánh dấu 1 nếu đối thủ phục vụ tốt; B = (36 - SUM)/36; tô màu ô trống."
+  - name: "PMS Portfolio"
+    description: "Danh mục sản phẩm, doanh thu, lợi nhuận, nhãn Pioneer/Migrator/Settler; pivot tỷ trọng."
+
+source_file: "05-blue-ocean.md"

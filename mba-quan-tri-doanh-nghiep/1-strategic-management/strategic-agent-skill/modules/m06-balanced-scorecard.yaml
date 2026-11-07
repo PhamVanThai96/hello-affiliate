@@ -1,0 +1,558 @@
+# m06 - Balanced Scorecard (distill từ 06-balanced-score-card.md)
+id: "m06"
+name_vi: "Thẻ điểm cân bằng"
+name_en: "Balanced Scorecard (BSC)"
+purpose: >
+  Dịch tầm nhìn và chiến lược thành hệ thống mục tiêu, KPI, chỉ tiêu, sáng kiến và trách nhiệm trên 4 viễn cảnh
+  (Tài chính, Khách hàng, Quy trình nội bộ, Học hỏi và phát triển) liên kết nhân quả qua Strategy Map; chấm điểm
+  thực thi chiến lược, phối hợp với OKR cho thực thi ngắn hạn. Giải quyết bài toán "chiến lược nằm trên giấy, chỉ đo tài chính (chỉ số trễ)".
+when_to_use:
+  - "Chủ SME/CEO hỏi 'làm sao biến chiến lược thành KPI và hành động?', 'đo hiệu quả công ty ngoài lợi nhuận thế nào?'"
+  - "Cần xây BSC 4 viễn cảnh, vẽ Strategy Map, chọn KPI, đặt chỉ tiêu, gắn sáng kiến và người chịu trách nhiệm."
+  - "Cần chấm điểm kết quả KPI/viễn cảnh/tổng thể, xác định xanh-vàng-đỏ, tìm viễn cảnh yếu."
+  - "Phân biệt chỉ số dẫn (leading) và chỉ số trễ (lagging); cân bằng ngắn-dài hạn, trong-ngoài."
+  - "Chọn giữa BSC và OKR, hoặc kết hợp; cascading xuống phòng ban/cá nhân; gắn lương thưởng."
+  - "Rà soát BSC đã có: quá nhiều KPI, KPI không nối chiến lược, gaming, chỉ là paperwork."
+prerequisites: ["m01", "m02", "m03"]
+related_modules:
+  - "m01 - Môi trường bên ngoài: nguồn cho cơ hội/đe dọa trước khi chọn mục tiêu"
+  - "m02 - Phân tích nội bộ (Value Chain, VRIO): viễn cảnh Quy trình nối trực tiếp chuỗi giá trị; VRIO chỉ ra năng lực cần đầu tư ở Học hỏi"
+  - "m03 - Chiến lược cạnh tranh: chiến lược chọn (chi phí thấp, khác biệt hóa) quyết định KPI Khách hàng và Quy trình"
+  - "m04 - Chiến lược tăng trưởng: mục tiêu tăng trưởng thành mục tiêu Tài chính/Khách hàng"
+  - "m05 - Blue Ocean: ERRC chuyển thành mục tiêu và KPI mới trong Strategy Map"
+  - "m07 - Scenario Planning: chạy BSC dưới nhiều kịch bản, điều chỉnh chỉ tiêu"
+  - "finance m05 - Phân tích BCTC: nguồn tính KPI tài chính (margin, ROE, FCF)"
+
+concepts:
+  - term_vi: "Thẻ điểm cân bằng"
+    term_en: "Balanced Scorecard"
+    definition: "Hệ thống quản lý chiến lược dịch Vision và Strategy thành mục tiêu, thước đo, chỉ tiêu và sáng kiến cụ thể trên 4 viễn cảnh."
+    why_it_matters: "Robert Kaplan (Harvard Business School) và David Norton công bố 1992 trên HBR ('The Balanced Scorecard - Measures That Drive Performance'). Trước đó DN chỉ đo tài chính, tức nhìn 'gương chiếu hậu': biết kết quả khi đã xảy ra. BSC cân bằng tài chính-phi tài chính, ngắn-dài hạn, trong-ngoài, leading-lagging."
+  - term_vi: "Chỉ số dẫn và chỉ số trễ"
+    term_en: "Leading vs Lagging indicators"
+    definition: "Lagging: phản ánh kết quả đã xảy ra (doanh thu, lợi nhuận, ROE). Leading: tác nhân dự báo kết quả (giờ đào tạo, thời gian phục vụ, NPS, số khách quay lại)."
+    why_it_matters: "Chỉ lagging thì phát hiện vấn đề quá muộn; chỉ leading thì không biết có ra tiền không. Tài chính chủ yếu lagging; Quy trình và Học hỏi chủ yếu leading; Khách hàng trộn cả hai."
+  - term_vi: "Mục tiêu chiến lược, KPI, chỉ tiêu, sáng kiến"
+    term_en: "Objective, Measure/KPI, Target, Initiative"
+    definition: "Objective: điều cần đạt. KPI: thước đo tiến độ. Target: giá trị cần đạt theo SMART (Specific, Measurable, Achievable, Relevant, Time-bound). Initiative: dự án/hành động có ngân sách để đạt target. Thêm Owner (người chịu trách nhiệm)."
+    why_it_matters: "Thiếu sáng kiến thì chỉ tiêu chỉ là mong muốn; thiếu owner thì không ai chịu trách nhiệm. Bảng 6 cột: Viễn cảnh, Mục tiêu, KPI, Chỉ tiêu, Sáng kiến, Trách nhiệm."
+  - term_vi: "Chuỗi nhân quả"
+    term_en: "Cause-and-Effect chain"
+    definition: "Học hỏi dẫn đến Quy trình, dẫn đến Khách hàng, dẫn đến Tài chính. Mỗi mục tiêu là một giả thuyết 'nếu... thì...'."
+    why_it_matters: "BSC khác danh sách KPI ở chỗ các thước đo liên kết thành lý thuyết chiến lược có thể kiểm chứng; nếu KPI dẫn cải thiện mà KPI trễ không động thì giả thuyết sai và phải sửa chiến lược."
+  - term_vi: "Bản đồ chiến lược"
+    term_en: "Strategy Map"
+    definition: "Sơ đồ 1 trang các mục tiêu 4 viễn cảnh nối bằng mũi tên nhân quả (Kaplan và Norton, sách 'Strategy Maps' 2004)."
+    why_it_matters: "Công cụ giao tiếp: toàn tổ chức nhìn thấy vai trò của mình trong chiến lược. Vẽ trước, chọn KPI sau."
+  - term_vi: "Cascading"
+    term_en: "Cascading / Alignment"
+    definition: "Trải BSC cấp công ty xuống phòng ban rồi cá nhân; mục tiêu cấp dưới là phương tiện cho mục tiêu cấp trên."
+    why_it_matters: "Tạo alignment. Liên kết lương thưởng chỉ có tác dụng khi KPI đo đúng; sai thì khuyến khích gaming."
+  - term_vi: "Gaming KPI"
+    term_en: "KPI Gaming"
+    definition: "Nhân viên 'chơi số' để đạt KPI mà không cải thiện thật."
+    why_it_matters: "Định luật Goodhart: khi thước đo thành mục tiêu thì mất giá trị đo. Giảm bằng KPI đối trọng (tốc độ + tỷ lệ lỗi), đo chéo, kiểm tra ngẫu nhiên."
+  - term_vi: "Ba thế hệ BSC"
+    term_en: "BSC Generations"
+    definition: "Gen 1 (1992): hệ thống đo lường, scorecard + KPI. Gen 2 (1996): quản lý chiến lược, Strategy Map + cascading (sách 'The Balanced Scorecard: Translating Strategy into Action'). Gen 3 (2000+): tổ chức học hỏi, strategic learning, kết hợp OKR."
+    why_it_matters: "Biết BSC không chỉ là bảng KPI mà là vòng quản trị chiến lược: lập, truyền thông, thực thi, rà soát, học hỏi, điều chỉnh."
+  - term_vi: "Các loại vốn của Học hỏi"
+    term_en: "Human, Information, Organization Capital"
+    definition: "Nhân sự (kỹ năng), Thông tin (hệ thống IT, chất lượng dữ liệu), Tổ chức (văn hóa, lãnh đạo, gắn kết) và Đổi mới."
+    why_it_matters: "Học hỏi là nền tảng và hay bị bỏ qua vì lợi ích đến muộn; nhưng thiếu nó thì 3 viễn cảnh trên không bền."
+
+formulas:
+  - id: "m06_kpi_score_higher"
+    name_vi: "Điểm KPI (càng cao càng tốt, có chỉ tiêu)"
+    name_en: "KPI Achievement - higher is better"
+    expression_latex: "S = \\min\\left(\\frac{A}{T},\\ cap\\right)"
+    expression_python: "min(actual/target, cap)"
+    excel: "=MIN(A/T, 1.2)"
+    variables:
+      - {symbol: "A", meaning: "Giá trị thực đạt (actual)", unit: "theo KPI"}
+      - {symbol: "T", meaning: "Chỉ tiêu (target)", unit: "theo KPI"}
+      - {symbol: "cap", meaning: "Trần điểm (thường 1.0 đến 1.2)", unit: "tỷ lệ"}
+    when_to_use: "KPI mà số lớn là tốt: doanh thu, retention, giờ đào tạo, biên lợi nhuận."
+    why_it_works: "Chuẩn hóa mọi KPI về cùng thang tỷ lệ so với chỉ tiêu để cộng gộp được dù đơn vị khác nhau (%, phút, triệu đồng). Trần tránh một KPI vượt quá che lấp KPI yếu."
+    assumptions: ["Target dương, hợp lý (SMART)", "Quan hệ tuyến tính giữa mức đạt và giá trị"]
+    pitfalls: ["Target quá thấp thì điểm ảo", "Chia cho 0 khi target = 0"]
+    interpretation: "Điểm >= 1.0 đạt; 0.8-1.0 gần đạt; < 0.8 yếu."
+    example:
+      inputs: {actual: 6.4, target: 8, cap: 1.2}
+      steps: ["6.4 / 8 = 0.80"]
+      result: "0.80"
+  - id: "m06_kpi_score_lower"
+    name_vi: "Điểm KPI (càng thấp càng tốt)"
+    name_en: "KPI Achievement - lower is better"
+    expression_latex: "S = \\min\\left(\\frac{T}{A},\\ cap\\right)"
+    expression_python: "min(target/actual, cap)"
+    excel: "=MIN(T/A, 1.2)"
+    variables:
+      - {symbol: "A", meaning: "Giá trị thực đạt (phải > 0)", unit: "theo KPI"}
+      - {symbol: "T", meaning: "Chỉ tiêu", unit: "theo KPI"}
+      - {symbol: "cap", meaning: "Trần điểm", unit: "tỷ lệ"}
+    when_to_use: "Thời gian phục vụ, tỷ lệ lỗi, turnover, chi phí đơn vị."
+    why_it_works: "Đảo tỷ lệ để giá trị nhỏ hơn mục tiêu cho điểm lớn hơn 1, cùng chiều với KPI tăng."
+    assumptions: ["actual > 0"]
+    pitfalls: ["actual = 0 gây chia cho 0: gán điểm = cap", "Không cắt trần thì tỷ lệ lỗi gần 0 cho điểm vô cực"]
+    interpretation: "Như điểm KPI tăng."
+    example:
+      inputs: {actual: 4.5, target: 4, cap: 1.2}
+      steps: ["4 / 4.5 = 0.889"]
+      result: "0.889"
+  - id: "m06_kpi_score_baseline"
+    name_vi: "Điểm tiến độ KPI theo mốc nền"
+    name_en: "Progress from baseline"
+    expression_latex: "S = \\frac{A - B}{T - B}"
+    expression_python: "(actual - baseline) / (target - baseline)"
+    excel: "=(A-B)/(T-B)"
+    variables:
+      - {symbol: "A", meaning: "Thực đạt", unit: "theo KPI"}
+      - {symbol: "B", meaning: "Mốc nền đầu kỳ (baseline)", unit: "theo KPI"}
+      - {symbol: "T", meaning: "Chỉ tiêu", unit: "theo KPI"}
+    when_to_use: "KPI mà mốc nền khác 0 và chỉ tiêu là mức cải thiện: NPS, tăng trưởng, thị phần."
+    why_it_works: "NPS từ 25 lên 42 trên chỉ tiêu 50 đã đi 68% quãng đường chứ không phải 84%; tỷ lệ A/T thổi phồng khi nền cao."
+    assumptions: ["T khác B"]
+    pitfalls: ["Chia cho 0 nếu T = B", "Cần ghi rõ baseline ngay khi đặt target"]
+    interpretation: "1.0 = hoàn thành quãng đường cải thiện; âm = tụt so với nền."
+    example:
+      inputs: {actual: 42, baseline: 25, target: 50}
+      steps: ["(42-25)/(50-25) = 17/25 = 0.68"]
+      result: "0.68"
+  - id: "m06_perspective_score"
+    name_vi: "Điểm viễn cảnh (trung bình có trọng số KPI)"
+    name_en: "Perspective score"
+    expression_latex: "P_j = \\sum_i w_i S_i,\\ \\sum_i w_i = 1"
+    expression_python: "sum(w*s for w,s in zip(weights, scores))"
+    excel: "=SUMPRODUCT(w_range, s_range)"
+    variables:
+      - {symbol: "w_i", meaning: "Trọng số KPI i trong viễn cảnh", unit: "tỷ lệ"}
+      - {symbol: "S_i", meaning: "Điểm KPI i", unit: "tỷ lệ"}
+    when_to_use: "Tổng hợp KPI thành điểm của từng viễn cảnh."
+    why_it_works: "KPI quan trọng hơn nên có quyền lực lớn hơn; chuẩn hóa tổng trọng số = 1 để giữ thang."
+    assumptions: ["Tổng trọng số = 1", "Điểm KPI đã chuẩn hóa"]
+    pitfalls: ["Cho trọng số theo cảm tính không gắn chiến lược", "Quên chuẩn hóa tổng"]
+    interpretation: "Dùng so sánh giữa 4 viễn cảnh để thấy điểm nghẽn."
+    example:
+      inputs: {weights: [0.5, 0.5], scores: [0.70, 0.80]}
+      steps: ["0.5x0.70 + 0.5x0.80 = 0.75"]
+      result: "0.75"
+  - id: "m06_overall_score"
+    name_vi: "Điểm BSC tổng thể"
+    name_en: "Overall BSC score"
+    expression_latex: "BSC = \\sum_j W_j P_j,\\ \\sum_j W_j = 1"
+    expression_python: "sum(W[j]*P[j] for j in W)"
+    excel: "=SUMPRODUCT(W_range, P_range)"
+    variables:
+      - {symbol: "W_j", meaning: "Trọng số viễn cảnh j (vd Tài chính 35%, KH 30%, QT 20%, HH 15%)", unit: "tỷ lệ"}
+      - {symbol: "P_j", meaning: "Điểm viễn cảnh j", unit: "tỷ lệ"}
+    when_to_use: "Báo cáo một con số tổng cho Ban lãnh đạo, liên kết thưởng."
+    why_it_works: "Trọng số thể hiện ưu tiên chiến lược; giai đoạn tăng trưởng nên tăng KH và Học hỏi, giai đoạn trưởng thành tăng Tài chính và Quy trình."
+    assumptions: ["Trọng số tổng = 1 và do lãnh đạo duyệt trước kỳ"]
+    pitfalls: ["Con số tổng che viễn cảnh yếu: luôn xem điểm từng viễn cảnh", "Đổi trọng số sau kỳ để đẹp số"]
+    interpretation: ">= 0.9 xanh; 0.7-0.9 vàng; < 0.7 đỏ (ngưỡng đề xuất, tùy DN)."
+    example:
+      inputs: {W: {F: 0.35, C: 0.30, P: 0.20, L: 0.15}, P: {F: 0.75, C: 0.815, P: 1.0444, L: 0.8167}}
+      steps: ["0.35x0.75 + 0.30x0.815 + 0.20x1.0444 + 0.15x0.8167 = 0.2625+0.2445+0.2089+0.1225", "= 0.838"]
+      result: "0.838 (~84%)"
+  - id: "m06_nps"
+    name_vi: "Chỉ số NPS"
+    name_en: "Net Promoter Score"
+    expression_latex: "NPS = \\%Promoters - \\%Detractors"
+    expression_python: "pct_promoters - pct_detractors"
+    excel: "=P - D"
+    variables:
+      - {symbol: "Promoters", meaning: "Tỷ lệ chấm 9-10 trên thang 0-10 khi hỏi 'có giới thiệu bạn bè không?'", unit: "%"}
+      - {symbol: "Detractors", meaning: "Tỷ lệ chấm 0-6", unit: "%"}
+    when_to_use: "KPI lòng trung thành viễn cảnh Khách hàng (chỉ tiêu ví dụ trong nguồn: NPS >= 50)."
+    why_it_works: "Bỏ nhóm trung lập (7-8); trừ người chê khỏi người khen cho thấy tăng trưởng truyền miệng thực."
+    assumptions: ["Mẫu đủ lớn (vd >= 100 phản hồi)"]
+    pitfalls: ["Khảo sát thiên lệch", "Nhầm NPS với CSAT"]
+    interpretation: "Thang -100 đến +100; > 0 tốt, > 50 xuất sắc (khuyến nghị tham chiếu, cần xác nhận theo ngành)."
+    example:
+      inputs: {pct_promoters: 0.55, pct_detractors: 0.18}
+      steps: ["0.55 - 0.18 = 0.37 = NPS 37"]
+      result: "NPS = 37"
+  - id: "m06_retention"
+    name_vi: "Tỷ lệ giữ chân khách hàng"
+    name_en: "Customer Retention Rate"
+    expression_latex: "CRR = \\frac{E - N}{S}"
+    expression_python: "(end_customers - new_customers) / start_customers"
+    excel: "=(E-N)/S"
+    variables:
+      - {symbol: "E", meaning: "Số khách cuối kỳ", unit: "người"}
+      - {symbol: "N", meaning: "Khách mới trong kỳ", unit: "người"}
+      - {symbol: "S", meaning: "Số khách đầu kỳ", unit: "người"}
+    when_to_use: "KPI giữ chân (chỉ tiêu ví dụ >= 90% trong nguồn)."
+    why_it_works: "Loại khách mới khỏi cuối kỳ để chỉ đếm số khách cũ còn ở lại."
+    assumptions: ["Khách định danh được (SĐT, app, thẻ)"]
+    pitfalls: ["Không định danh khách thì không đo được"]
+    interpretation: "Mỗi 5 điểm % retention tăng có thể tăng lợi nhuận đáng kể (khái niệm CLV, xem 2-marketing/03)."
+    example:
+      inputs: {end_customers: 520, new_customers: 140, start_customers: 500}
+      steps: ["(520-140)/500 = 0.76"]
+      result: "76%"
+  - id: "m06_turnover"
+    name_vi: "Tỷ lệ nghỉ việc"
+    name_en: "Employee Turnover Rate"
+    expression_latex: "TR = \\frac{L}{(H_0 + H_1)/2}"
+    expression_python: "leavers / ((headcount_start + headcount_end) / 2)"
+    excel: "=L/AVERAGE(H0,H1)"
+    variables:
+      - {symbol: "L", meaning: "Số người nghỉ trong kỳ", unit: "người"}
+      - {symbol: "H0, H1", meaning: "Nhân sự đầu/cuối kỳ", unit: "người"}
+    when_to_use: "KPI Học hỏi (chỉ tiêu ví dụ trong nguồn: < 20%/năm cho chuỗi cà phê)."
+    why_it_works: "Chia cho nhân sự bình quân vì quy mô đổi trong kỳ."
+    assumptions: ["Kỳ 12 tháng"]
+    pitfalls: ["Gộp nghỉ do sa thải với tự nguyện", "Trộn nhân viên thời vụ"]
+    interpretation: "F&B VN thường rất cao; so sánh ngành trước khi đặt target."
+    example:
+      inputs: {leavers: 12, headcount_start: 20, headcount_end: 18}
+      steps: ["12 / ((20+18)/2) = 12/19 = 0.632"]
+      result: "63%"
+  - id: "m06_okr_score"
+    name_vi: "Điểm OKR"
+    name_en: "OKR Score"
+    expression_latex: "OKR = \\frac{1}{n}\\sum_k KR_k"
+    expression_python: "sum(kr_scores)/len(kr_scores)"
+    excel: "=AVERAGE(KR_range)"
+    variables:
+      - {symbol: "KR_k", meaning: "Điểm Key Result k (0-1)", unit: "tỷ lệ"}
+    when_to_use: "Chấm Objective hàng quý (3-5 Objectives, mỗi cái 3-5 KR)."
+    why_it_works: "Trung bình các KR để Objective phản ánh tiến độ đa chiều; OKR là mục tiêu tham vọng (stretch) nên điểm 0.6-0.7 đã tốt, khác BSC (100% = tốt)."
+    assumptions: ["KR đo được, chấm 0-1"]
+    pitfalls: ["Dùng OKR như KPI cứng thì mất tính tham vọng", "Đưa việc hằng ngày vào OKR"]
+    interpretation: "0.7 tốt; 1.0 liên tục nghĩa là đặt mục tiêu quá thấp."
+    example:
+      inputs: {kr_scores: [1.0, 0.6, 0.4]}
+      steps: ["(1.0+0.6+0.4)/3 = 0.667"]
+      result: "0.667"
+  - id: "m06_initiative_roi"
+    name_vi: "ROI sáng kiến (kiểm chứng giả thuyết nhân quả)"
+    name_en: "Initiative ROI"
+    expression_latex: "ROI = \\frac{\\Delta Rev \\cdot GM - Cost}{Cost}"
+    expression_python: "(delta_rev * gross_margin - cost) / cost"
+    excel: "=(dRev*GM-Cost)/Cost"
+    variables:
+      - {symbol: "dRev", meaning: "Doanh thu tăng thêm từ cải thiện KPI dẫn", unit: "VNĐ"}
+      - {symbol: "GM", meaning: "Biên lợi nhuận gộp", unit: "tỷ lệ"}
+      - {symbol: "Cost", meaning: "Chi phí sáng kiến", unit: "VNĐ"}
+    when_to_use: "Chứng minh chuỗi nhân quả Học hỏi/Quy trình/Khách hàng ra tiền, xếp ưu tiên sáng kiến."
+    why_it_works: "Nối KPI dẫn với kết quả tài chính để lãnh đạo thấy BSC không chỉ phi tài chính."
+    assumptions: ["Quan hệ nhân quả đã được kiểm chứng/ước lượng hợp lý"]
+    pitfalls: ["Gán toàn bộ tăng doanh thu cho một sáng kiến"]
+    interpretation: "ROI > 0 đáng làm; so sánh giữa các sáng kiến để xếp hạng."
+    example:
+      inputs: {delta_rev: 270000000, gross_margin: 0.4, cost: 60000000}
+      steps: ["270 x 0.4 = 108 triệu", "(108-60)/60 = 0.8"]
+      result: "ROI = 80%"
+  - id: "m06_rag_status"
+    name_vi: "Trạng thái xanh-vàng-đỏ"
+    name_en: "RAG Status"
+    expression_latex: "Status = \\begin{cases} Green & S \\ge 0.9 \\\\ Amber & 0.7 \\le S < 0.9 \\\\ Red & S < 0.7 \\end{cases}"
+    expression_python: "'Green' if s >= 0.9 else ('Amber' if s >= 0.7 else 'Red')"
+    excel: "=IF(S>=0.9,\"Xanh\",IF(S>=0.7,\"Vàng\",\"Đỏ\"))"
+    variables:
+      - {symbol: "S", meaning: "Điểm KPI/viễn cảnh/tổng", unit: "tỷ lệ"}
+    when_to_use: "Dashboard cho lãnh đạo, ưu tiên chú ý."
+    why_it_works: "Rút gọn quyết định: chỉ họp sâu vào đỏ và vàng."
+    assumptions: ["Ngưỡng 0.9/0.7 là đề xuất, tùy tổ chức"]
+    pitfalls: ["Ngưỡng cứng gây gaming ở sát ngưỡng"]
+    interpretation: "Đỏ cần kế hoạch hành động và owner; vàng theo dõi."
+    example:
+      inputs: {s: 0.838}
+      steps: ["0.7 <= 0.838 < 0.9"]
+      result: "Amber"
+
+frameworks:
+  - id: "m06_four_perspectives"
+    name_vi: "Bốn viễn cảnh BSC"
+    name_en: "Four Perspectives"
+    origin: "Kaplan (HBS) và Norton, HBR 1992. Ra đời vì đo lường chỉ tài chính khiến quản lý ngắn hạn, bỏ qua năng lực tạo giá trị tương lai."
+    components:
+      - "Tài chính (Financial) - 'cổ đông muốn gì?': tăng trưởng doanh thu, net margin, chi phí, ROE, FCF. Chủ yếu lagging, là đích cuối."
+      - "Khách hàng (Customer) - 'khách nhìn ta thế nào?': CSAT, retention, khách mới, thị phần, NPS, CLV. Trộn leading và lagging."
+      - "Quy trình nội bộ (Internal Process) - 'phải giỏi ở đâu?': Innovation (time-to-market), Operations (cycle time, defect rate), Customer Management (response time), Regulatory & Social (compliance, ESG). Leading, nối Value Chain của Porter."
+      - "Học hỏi và phát triển (Learning and Growth) - 'làm sao tiếp tục cải tiến?': Human (training hours), Information (uptime, data quality), Organization (engagement, turnover), Đổi mới (số ý tưởng/quý). Nền tảng, leading."
+    when_to_use: "Mọi lần thiết kế hệ thống đo lường chiến lược."
+    how_to_apply:
+      - "Với mỗi viễn cảnh trả lời câu hỏi chủ đạo bằng 3-5 mục tiêu."
+      - "Chọn 1-2 KPI/mục tiêu, đảm bảo có cả leading và lagging."
+      - "Kiểm tra cân bằng: tài chính-phi tài chính, ngắn-dài, trong-ngoài."
+      - "Với SME, có thể giảm còn 1-3 mục tiêu/viễn cảnh (8-12 mục tiêu, 10-15 KPI)."
+    how_to_read_results: "Điểm từng viễn cảnh quan trọng hơn điểm tổng: Quy trình xanh nhưng Tài chính đỏ nghĩa là cải tiến vận hành chưa chuyển hóa thành giá trị khách hàng (giả thuyết nhân quả sai hoặc thiếu mắt xích)."
+    pitfalls:
+      - "Chỉ 4 viễn cảnh nên bỏ qua nhà cung cấp, cộng đồng, môi trường (có thể thêm viễn cảnh thứ 5, ví dụ Stakeholders/ESG)."
+      - "Coi Học hỏi là phần phụ nên cắt ngân sách đầu tiên."
+      - "KPI chỉ là lagging."
+    example: "Chuỗi cà phê: Tài chính tăng doanh thu/CH 15% và gross margin >= 60%; Khách hàng NPS >= 50, tần suất >= 3 lần/tuần, app loyalty >= 40%; Quy trình phục vụ <= 3 phút, lỗi < 1%, mở 2 CH/tháng; Học hỏi 100% barista có chứng chỉ, engagement >= 80%, turnover < 20%/năm."
+  - id: "m06_strategy_map"
+    name_vi: "Bản đồ chiến lược và chuỗi nhân quả"
+    name_en: "Strategy Map"
+    origin: "Kaplan và Norton phát triển ở Gen 2 (1996) và sách 'Strategy Maps' (2004), vì Gen 1 chỉ là danh sách KPI rời rạc, không giải thích chiến lược vận hành ra sao."
+    components:
+      - "Bốn tầng xếp từ dưới lên: Học hỏi, Quy trình, Khách hàng, Tài chính."
+      - "Mỗi mục tiêu là ô; mũi tên nhân quả chỉ 'nhờ mục tiêu này nên đạt mục tiêu kia'."
+      - "Chuỗi mẫu: đào tạo kỹ năng bán hàng, tư vấn nhanh và chất lượng hơn, khách hài lòng mua lại, doanh thu và lợi nhuận tăng."
+    when_to_use: "Sau khi có mục tiêu chiến lược, trước khi chọn KPI."
+    how_to_apply:
+      - "Bắt đầu từ đỉnh: mục tiêu tài chính cuối cùng (vd tăng lợi nhuận bằng tăng doanh thu hoặc giảm chi phí)."
+      - "Hỏi 'khách hàng phải làm gì khác (mua nhiều hơn, quay lại, giới thiệu) để đạt điều đó?', rồi tạo mục tiêu Khách hàng."
+      - "Hỏi 'quy trình nào phải xuất sắc để giao giá trị đó?', rồi mục tiêu Quy trình."
+      - "Hỏi 'năng lực, hệ thống, văn hóa nào cần có?', rồi mục tiêu Học hỏi."
+      - "Vẽ mũi tên; xóa mục tiêu không nối được tới đỉnh (không phục vụ chiến lược)."
+      - "Tối đa 1 trang để giao tiếp."
+    how_to_read_results: "Ô không có mũi tên ra hoặc vào là mục tiêu mồ côi. Khi chạy kỳ sau, so sánh hướng biến động KPI dọc chuỗi để kiểm chứng giả thuyết."
+    pitfalls:
+      - "Vẽ map sau khi đã có KPI nên map bị 'hợp thức hóa' danh sách cũ."
+      - "Mũi tên chéo tầng không giải thích."
+      - "Map quá nhiều ô."
+    example: "FPT (minh họa): đào tạo 5,000+ kỹ sư AI, 500+ dự án AI/Cloud chất lượng, 150+ khách hàng triệu đô, doanh thu CNTT nước ngoài tăng 28%."
+  - id: "m06_build_process"
+    name_vi: "Quy trình 8 bước xây BSC"
+    name_en: "8-step BSC build"
+    origin: "Tổng hợp từ phương pháp triển khai của Kaplan và Norton (Translating Strategy into Action, 1996)."
+    components:
+      - "1 Vision và Mission"
+      - "2 Strategy 3-5 năm"
+      - "3 Strategic Objectives (3-5/viễn cảnh, tổng 12-20)"
+      - "4 Strategy Map"
+      - "5 KPI (1-2/mục tiêu, tổng 20-25 cho DN lớn)"
+      - "6 Targets SMART"
+      - "7 Initiatives và ngân sách"
+      - "8 Cascading phòng ban, cá nhân"
+    when_to_use: "Xây BSC mới hoặc làm lại BSC."
+    how_to_apply:
+      - "Họp lãnh đạo chốt Vision, Mission, 3 ưu tiên chiến lược (nguồn từ m01-m05)."
+      - "Workshop tạo mục tiêu từng viễn cảnh; mỗi mục tiêu viết theo mẫu 'Động từ + đối tượng'."
+      - "Vẽ Strategy Map, rà nhân quả."
+      - "Với mỗi mục tiêu chọn KPI theo tiêu chí: đo được, có dữ liệu, có owner, tác động được, có leading."
+      - "Đặt baseline + target SMART, chọn công thức chấm điểm (hi/lo/baseline)."
+      - "Gắn sáng kiến có ngân sách và owner; mỗi KPI đỏ phải có sáng kiến."
+      - "Cascade xuống phòng ban/cá nhân; đào tạo nhân viên."
+      - "Dashboard, họp rà soát hàng quý, điều chỉnh hàng năm."
+    how_to_read_results: "Xong khi mỗi mục tiêu có KPI-target-sáng kiến-owner và Strategy Map 1 trang."
+    pitfalls:
+      - "Làm BSC khi chưa có chiến lược rõ."
+      - "Triển khai mất 6-12 tháng nên không có quick win thì cạn kiên nhẫn: làm thử một đơn vị (pilot) trước."
+      - "Gắn thưởng ngay năm đầu khi dữ liệu chưa đáng tin."
+    example: "Bảng 6 cột: Tài chính/Tăng doanh thu/Revenue Growth/+15% YoY/Mở 20 CH/CEO-CFO; Khách hàng/Tăng loyalty/NPS >= 50/Loyalty app/CMO; Quy trình/Giảm thời gian phục vụ/<= 3 phút/Tối ưu POS/COO; Học hỏi/Phát triển NV/40h/NV/năm/Barista Pro/CHRO."
+  - id: "m06_bsc_vs_okr"
+    name_vi: "BSC so với OKR và BSC thế hệ mới"
+    name_en: "BSC vs OKR; BSC generations"
+    origin: "OKR: Andy Grove tại Intel thập niên 1970, phổ biến bởi Google, Netflix. BSC: Kaplan và Norton 1992. Gen 3 BSC (2000+) kết hợp học hỏi chiến lược và OKR."
+    components:
+      - "Chu kỳ: BSC theo năm; OKR theo quý."
+      - "Số lượng: BSC 20-25 KPI; OKR 3-5 Objectives x 3-5 KR."
+      - "Cấu trúc: BSC 4 viễn cảnh cố định; OKR linh hoạt."
+      - "Tính chất: BSC mô tả chiến lược, 100% = tốt; OKR tham vọng, ~70% = tốt."
+      - "Phù hợp: BSC DN lớn, chiến lược ổn định; OKR startup, DN agile."
+    when_to_use: "Chọn công cụ quản trị hiệu suất."
+    how_to_apply:
+      - "Nếu chiến lược ổn định, cần báo cáo ban lãnh đạo/ngân hàng thì BSC."
+      - "Nếu thị trường đổi nhanh, cần tập trung thực thi 90 ngày thì OKR."
+      - "Kết hợp: BSC = khung chiến lược dài hạn (năm), OKR = thực thi ngắn hạn mỗi quý; mỗi Objective OKR gắn vào một mục tiêu BSC."
+      - "Không chấm OKR 100% như KPI."
+    how_to_read_results: "Điểm OKR 0.6-0.7 bình thường; KPI BSC dưới 0.9 cần hành động."
+    pitfalls:
+      - "Trộn lẫn cách chấm điểm."
+      - "Dùng OKR để bỏ qua chiến lược dài hạn."
+    example: "Quán chuỗi: BSC năm có mục tiêu 'tăng NPS lên 50'; OKR quý 2: O = 'Khách mê quán' với KR1 NPS 38, KR2 retention 58%, KR3 app 25%."
+  - id: "m06_kpi_design"
+    name_vi: "Thiết kế KPI và chống gaming"
+    name_en: "KPI design and anti-gaming"
+    origin: "Thực hành BSC (SMART, leading/lagging). Cảnh báo gaming dựa trên Goodhart và thực tế nguồn (Starbucks đình công dù engagement cao)."
+    components:
+      - "Tiêu chí KPI: đo được, có dữ liệu, tác động được, gắn mục tiêu, có owner."
+      - "Pha trộn leading và lagging; KPI đối trọng."
+      - "SMART cho target."
+    when_to_use: "Chọn KPI và target."
+    how_to_apply:
+      - "Liệt kê 3-5 KPI ứng viên mỗi mục tiêu; chọn 1-2 qua tiêu chí."
+      - "Với mỗi KPI nhanh, thêm KPI chất lượng đối trọng (thời gian phục vụ + tỷ lệ lỗi)."
+      - "Đặt baseline từ dữ liệu 3-6 tháng; target kéo giãn nhưng khả thi."
+      - "Kiểm tra chéo bằng khảo sát/mystery shopper."
+    how_to_read_results: "KPI tốt: thay đổi hành vi đúng; xấu: đẹp số mà khách và doanh thu không đổi."
+    pitfalls:
+      - "Quá nhiều KPI (20-25+) khó quản lý."
+      - "KPI phi tài chính khó đo chính xác, chủ quan."
+      - "Thưởng gắn 1 KPI duy nhất."
+    example: "Barista bị đo 'phục vụ <= 3 phút' có thể bỏ qua chất lượng; thêm 'lỗi đơn < 1%' và NPS."
+
+procedures:
+  - id: "m06_proc_build_sme_bsc"
+    name: "Xây BSC 4 viễn cảnh + KPI cho SME từ đầu đến cuối"
+    steps:
+      - "Hỏi đầu vào: ngành, quy mô (nhân sự, doanh thu), chiến lược/lợi thế chính (chi phí thấp, khác biệt, ngách), mục tiêu 1-3 năm, KPI hiện đang theo dõi, nguồn dữ liệu (POS, kế toán, khảo sát), ai là owner."
+      - "Chốt Vision, Mission, chiến lược 3 ưu tiên (tham chiếu m03-m05)."
+      - "Tạo 1-3 mục tiêu/viễn cảnh (SME nhỏ tổng 8-12). Viết rõ động từ + đối tượng."
+      - "Vẽ Strategy Map dạng chữ: Học hỏi, Quy trình, Khách hàng, Tài chính; liệt kê quan hệ 'nhờ A nên B'."
+      - "Chọn 1-2 KPI/mục tiêu, tổng 10-15 KPI; đánh dấu leading/lagging; mỗi viễn cảnh có ít nhất 1 leading."
+      - "Đặt baseline, target SMART; chọn công thức chấm điểm cho từng KPI (m06_kpi_score_higher / lower / baseline)."
+      - "Đặt trọng số KPI trong viễn cảnh và trọng số viễn cảnh (tổng 100%); ghi lý do theo chiến lược."
+      - "Gắn sáng kiến, ngân sách, owner, hạn; ước ROI sáng kiến bằng m06_initiative_roi."
+      - "Cascade: mỗi quán/phòng 3-5 KPI của mình; nhân viên 2-3 KPI."
+      - "Thiết lập dashboard Google Sheets, nhịp review hàng tháng (số), hàng quý (chiến lược), hàng năm (điều chỉnh)."
+    outputs: "Strategy Map 1 trang, bảng BSC 6 cột, trọng số, mẫu chấm điểm, danh sách sáng kiến, lịch review."
+  - id: "m06_proc_score_period"
+    name: "Chấm điểm BSC cuối kỳ và đưa khuyến nghị"
+    steps:
+      - "Thu thập actual đúng định nghĩa KPI; kiểm tra chất lượng dữ liệu."
+      - "Tính điểm từng KPI bằng công thức phù hợp (cắt trần 1.2)."
+      - "Tính điểm viễn cảnh (trọng số KPI), rồi điểm tổng (trọng số viễn cảnh)."
+      - "Gán RAG; liệt kê KPI/viễn cảnh đỏ, vàng."
+      - "Kiểm tra nhân quả: KPI dẫn tốt mà KPI trễ không động?"
+      - "Khuyến nghị: hành động, sáng kiến, điều chỉnh target, owner, hạn."
+    outputs: "Bảng điểm, RAG, nhận định nhân quả, 3 hành động ưu tiên."
+  - id: "m06_proc_diagnose_bsc"
+    name: "Chẩn đoán một BSC đang vận hành kém"
+    steps:
+      - "Đếm KPI; > 25 thì cắt."
+      - "Kiểm tra mỗi KPI nối mục tiêu nào và nối lên Strategy Map."
+      - "Kiểm tra tỷ lệ leading/lagging; thiếu leading thì bổ sung."
+      - "Kiểm tra owner, sáng kiến cho KPI đỏ."
+      - "Kiểm tra dấu hiệu gaming; bổ sung KPI đối trọng."
+      - "Kiểm tra cam kết lãnh đạo và nhịp review."
+    outputs: "Danh sách lỗi, KPI cần bỏ/thêm, kế hoạch sửa."
+
+decision_rules:
+  - "Nếu chưa có chiến lược rõ thì làm chiến lược trước (m01-m05); BSC không thay thế chiến lược."
+  - "Nếu SME dưới 20 nhân sự thì dùng BSC rút gọn 8-12 mục tiêu, 10-15 KPI, có thể kết hợp OKR quý."
+  - "Nếu viễn cảnh Quy trình xanh nhưng Tài chính đỏ thì kiểm tra mắt xích Khách hàng (giả thuyết nhân quả)."
+  - "Nếu KPI dẫn đỏ thì can thiệp ngay (còn thời gian cứu KPI trễ); nếu chỉ KPI trễ đỏ thì tìm KPI dẫn nào kéo xuống."
+  - "Nếu KPI phi tài chính khó đo thì định nghĩa proxy dựa trên dữ liệu có sẵn (POS, CRM)."
+  - "Nếu thị trường đổi nhanh thì rút chu kỳ review còn quý và dùng OKR cho thực thi."
+  - "Nếu KPI dễ gaming thì thêm KPI đối trọng chất lượng."
+  - "Nếu turnover cao hơn chỉ tiêu thì xử lý Học hỏi trước khi mở rộng (nền tảng)."
+  - "Nếu KPI có mốc nền khác 0 (NPS, tăng trưởng) thì chấm theo baseline, không dùng A/T."
+  - "Nếu điểm tổng vàng/xanh nhưng một viễn cảnh đỏ thì báo cáo viễn cảnh đó riêng, không để điểm tổng che."
+  - "Nếu gắn lương thưởng thì chỉ sau khi dữ liệu KPI ổn định 1-2 kỳ và có KPI đối trọng."
+  - "Nếu tổ chức cần ngôn ngữ ngành/ESG hoặc stakeholders khác thì thêm viễn cảnh thứ 5."
+
+benchmarks:
+  - {metric: "Số mục tiêu BSC (DN lớn)", value: "12-20 (3-5/viễn cảnh)", context: "Quy trình nguồn", confidence: "medium"}
+  - {metric: "Số KPI BSC (DN lớn)", value: "20-25, trên 25 khó quản lý", context: "Nguồn", confidence: "medium"}
+  - {metric: "Thời gian triển khai đầy đủ", value: "6-12 tháng", context: "Nguồn", confidence: "medium"}
+  - {metric: "Tỷ lệ Fortune 1000 dùng BSC", value: "50%+ (nguồn dẫn Bain and Company)", context: "Cần xác nhận", confidence: "low"}
+  - {metric: "Chỉ tiêu ví dụ", value: "Revenue growth 15% YoY; net margin 12%; ROE 18%; CSAT >= 85%; retention >= 90%; NPS >= 50; CLV +20%", context: "Ví dụ minh họa trong nguồn, không phải chuẩn ngành", confidence: "low"}
+  - {metric: "Điểm BSC ngưỡng RAG", value: "Xanh >= 0.9; Vàng 0.7-0.9; Đỏ < 0.7", context: "Đề xuất của module, tùy tổ chức", confidence: "low"}
+  - {metric: "Điểm OKR tốt", value: "~0.7", context: "Thực hành OKR", confidence: "medium"}
+
+pitfalls:
+  - "Chỉ có tài chính hoặc toàn lagging nên không dự báo được."
+  - "Quá nhiều KPI (20-25+), không tập trung."
+  - "KPI không nối Strategy Map (mồ côi)."
+  - "Bỏ Học hỏi vì khó thấy lợi ích."
+  - "Lãnh đạo không cam kết nên BSC thành paperwork."
+  - "Gaming; gắn thưởng quá sớm."
+  - "Cứng nhắc khi chiến lược đổi nhanh."
+  - "Thiếu sáng kiến và owner nên target chỉ là mong muốn."
+  - "Nhầm điểm engagement cao với nhân viên thật sự hài lòng (Starbucks 2022-2023)."
+  - "Dùng A/T cho KPI có baseline làm điểm ảo."
+
+sme_vn_guidance:
+  - "Bắt đầu nhỏ: 8-12 mục tiêu, 10-15 KPI, Google Sheets làm dashboard (miễn phí); chưa cần phần mềm BSC đắt tiền."
+  - "Nguồn dữ liệu: POS (KiotViet, Sapo) cho doanh thu, tần suất; MISA/Fast cho tài chính; Google Forms cho NPS/CSAT; Base HRM cho đào tạo và turnover (giá cần xác nhận)."
+  - "Pilot 1 quán/phòng trong 1-2 quý trước khi nhân rộng; quick win để giữ động lực."
+  - "Review hàng tháng 30 phút cho số, hàng quý 2 giờ cho chiến lược."
+  - "Turnover F&B và bán lẻ thường cao: đặt target thực tế theo baseline rồi cải thiện dần."
+  - "Dùng OKR quý khi chủ muốn tốc độ; dùng BSC làm khung năm khi cần trình ngân hàng/nhà đầu tư."
+  - "Gắn thưởng: bắt đầu bằng phần nhỏ (10-20% thưởng) khi dữ liệu mới."
+
+case_lessons:
+  - name: "FPT Corporation - BSC với Học hỏi dẫn dắt"
+    type: "success"
+    setup: "FPT áp dụng BSC từ đầu 2010s, chiến lược Go Global; nguồn mô phỏng dựa trên báo cáo thường niên (60,000+ nhân sự)."
+    key_calculations:
+      - "Chuỗi: 5,000+ kỹ sư AI, 500+ dự án AI/Cloud, 150+ khách hàng triệu đô, doanh thu CNTT nước ngoài +28% (~1 tỷ USD)."
+      - "Net margin 11.3%; on-time delivery > 95%."
+    lesson: "Đầu tư Học hỏi dẫn tới tăng trưởng tài chính nếu nối nhân quả rõ; BSC giúp align hàng chục nghìn nhân sự; rủi ro turnover ngành IT đòi hỏi đầu tư Học hỏi liên tục."
+    data_reliability: "illustrative"
+  - name: "Starbucks - BSC như triết lý quản trị và hạn chế"
+    type: "failure"
+    setup: "BSC quản lý 35,000+ cửa hàng, 80+ nước; 'Partners', College Achievement Plan; năm 2022-2023 nhân viên Mỹ đình công đòi quyền lợi."
+    key_calculations:
+      - "KPI: comp store sales, 75M+ Rewards members, drive-thru <= 4 phút, 99% cà phê ethically sourced."
+    lesson: "KPI engagement cao trên giấy không bằng sự hài lòng thực; BSC cần kiểm chứng chéo và lắng nghe thực địa, không chỉ báo cáo."
+    data_reliability: "unverified"
+  - name: "Cà Phê Nhà - chuỗi 3 quán chấm điểm BSC (giả định)"
+    type: "sme"
+    setup: "25 nhân viên, trọng số F35/C30/P20/L15; 8 KPI."
+    key_calculations:
+      - "Điểm viễn cảnh: F 0.750, C 0.815, P 1.044, L 0.817; tổng 0.838."
+      - "ROI sáng kiến loyalty: +200 khách quay lại x 3 lần x 450k = 270tr; GM 40% = 108tr; chi 60tr; ROI 80%."
+    lesson: "Quy trình tốt chưa đủ nếu NPS thấp; ưu tiên NPS và giữ người trước khi mở rộng."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Chấm điểm BSC chuỗi Cà Phê Nhà (giả định)"
+    inputs: {weights_perspective: {F: 0.35, C: 0.30, P: 0.20, L: 0.15}, kpi_weight: "50/50 mỗi viễn cảnh"}
+    steps:
+      - "Revenue growth (baseline 10%, target 20%, actual 17%): (17-10)/(20-10) = 0.70"
+      - "Net margin (8% target, 6.4% actual): 6.4/8 = 0.80 -> Tài chính = 0.5x0.70 + 0.5x0.80 = 0.75"
+      - "NPS (25 -> 50, actual 42): 17/25 = 0.68; Retention 57/60 = 0.95 -> Khách hàng = 0.815"
+      - "Service time 4/4.5 = 0.889; error rate 2/1.6 = 1.25 cắt 1.20 -> Quy trình = 1.044"
+      - "Training 32/40 = 0.80; turnover 30/36 = 0.833 -> Học hỏi = 0.817"
+      - "Tổng = 0.35x0.75 + 0.30x0.815 + 0.20x1.044 + 0.15x0.817 = 0.838 -> Amber"
+    result: "0.838 (Vàng). Điểm nghẽn: Tài chính và NPS; rủi ro nền: turnover."
+  - name: "Kiểm chứng nhân quả: sáng kiến giữ khách (giả định)"
+    inputs: {customers: 2000, repeat_before: 0.25, repeat_after: 0.35, purchases_per_year: 3, aov: 450000, gross_margin: 0.4, cost: 60000000}
+    steps:
+      - "Khách quay lại thêm = 2000 x (0.35-0.25) = 200"
+      - "Doanh thu thêm = 200 x 3 x 450,000 = 270,000,000"
+      - "Lãi gộp thêm = 270tr x 0.4 = 108,000,000"
+      - "ROI = (108-60)/60 = 0.80"
+    result: "ROI 80%: sáng kiến đáng làm; nối Khách hàng (repeat) tới Tài chính."
+  - name: "Chấm OKR quý và hiểu khác biệt với BSC (giả định)"
+    inputs: {O: "Khách mê quán", KR1_score: 1.0, KR2_score: 0.6, KR3_score: 0.4}
+    steps:
+      - "Điểm O = (1.0+0.6+0.4)/3 = 0.667"
+      - "Với OKR 0.667 ~ 0.7 là tốt (tham vọng); nếu là KPI BSC thì 0.667 là Đỏ (< 0.7)."
+    result: "Cùng điểm, ý nghĩa khác nhau do BSC 100% = tốt, OKR ~70% = tốt."
+  - name: "NPS và Retention của quán (giả định)"
+    inputs: {promoters: 0.55, detractors: 0.18, start: 500, end: 520, new: 140}
+    steps:
+      - "NPS = 0.55 - 0.18 = 0.37 = 37"
+      - "Retention = (520-140)/500 = 0.76"
+    result: "NPS 37 (còn thấp so với target 50); retention 76%."
+
+practice_questions:
+  - q: "Tại sao BSC cần cả leading và lagging indicators?"
+    a: "Lagging (doanh thu, lợi nhuận) chỉ cho biết kết quả đã xảy ra; leading (đào tạo, thời gian phục vụ, NPS) cho phép can thiệp sớm. Chỉ lagging thì phát hiện vấn đề muộn."
+  - q: "KPI service time = 5 phút, target 4 phút (thấp tốt). Điểm?"
+    a: "4/5 = 0.80."
+  - q: "NPS nền 20, target 50, actual 35. Điểm?"
+    a: "(35-20)/(50-20) = 0.5."
+  - q: "Điểm F=0.8, C=0.9, P=1.0, L=0.7; trọng số 40/30/20/10. Tổng và RAG?"
+    a: "0.32+0.27+0.2+0.07 = 0.86 -> Vàng."
+  - q: "Phân biệt BSC và OKR."
+    a: "BSC: năm, 4 viễn cảnh, ~20-25 KPI, mô tả chiến lược, 100% = tốt, hợp DN ổn định. OKR: quý, linh hoạt, 3-5 O x 3-5 KR, tham vọng, ~70% = tốt, hợp startup. Có thể kết hợp."
+  - q: "Quán có Quy trình 1.05 nhưng Tài chính 0.6. Cần làm gì?"
+    a: "Kiểm tra mắt xích Khách hàng (NPS, retention); chuỗi nhân quả có thể sai hoặc sáng kiến Quy trình chưa chuyển hóa; ưu tiên sáng kiến Khách hàng."
+  - q: "Sáng kiến tốn 40tr, tăng 120tr doanh thu, GM 35%. ROI?"
+    a: "(120x0.35-40)/40 = (42-40)/40 = 0.05 = 5%."
+  - q: "Vì sao cần KPI đối trọng?"
+    a: "Chống gaming (Goodhart): đo tốc độ phải kèm đo chất lượng (tỷ lệ lỗi, NPS)."
+
+checklist:
+  - "Leadership cam kết (CEO, Board); có Vision và Strategy rõ trước khi làm BSC"
+  - "12-20 mục tiêu (SME 8-12) trên 4 viễn cảnh"
+  - "Strategy Map 1 trang với chuỗi nhân quả; không có mục tiêu mồ côi"
+  - "20-25 KPI (SME 10-15), pha trộn leading/lagging; có KPI đối trọng"
+  - "Mỗi KPI có baseline, target SMART, owner, nguồn dữ liệu"
+  - "Có sáng kiến + ngân sách; KPI đỏ có kế hoạch"
+  - "Trọng số KPI và viễn cảnh duyệt trước kỳ"
+  - "Cascade xuống phòng ban/cá nhân; đào tạo nhân viên về BSC"
+  - "Dashboard; review hàng tháng/quý, điều chỉnh hàng năm"
+  - "Liên kết lương thưởng sau khi dữ liệu ổn định"
+  - "Báo cáo điểm từng viễn cảnh, không chỉ điểm tổng"
+
+excel_google_sheets_templates:
+  - "Sheet BSC 6 cột: Viễn cảnh | Mục tiêu | KPI | Loại (leading/lagging) | Baseline | Target | Actual | Công thức điểm | Điểm | Sáng kiến | Owner"
+  - "Cột điểm: =MIN(Actual/Target,1.2) (KPI cao tốt); =MIN(Target/Actual,1.2) (thấp tốt); =(Actual-Baseline)/(Target-Baseline) (có mốc nền)"
+  - "Điểm viễn cảnh: SUMPRODUCT(trọng số KPI, điểm); điểm tổng: SUMPRODUCT(trọng số viễn cảnh, điểm viễn cảnh)"
+  - "RAG: =IF(S>=0.9,\"Xanh\",IF(S>=0.7,\"Vàng\",\"Đỏ\")) + conditional formatting"
+  - "Sheet Strategy Map: bảng 4 tầng + cột 'dẫn tới' để liệt kê quan hệ nhân quả"
+  - "Sheet OKR quý: Objective | KR | Điểm 0-1 | Trung bình"
+
+source_file: "06-balanced-score-card.md"

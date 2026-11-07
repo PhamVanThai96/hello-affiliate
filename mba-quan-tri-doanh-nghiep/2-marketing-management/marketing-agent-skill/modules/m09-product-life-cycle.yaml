@@ -1,0 +1,655 @@
+# m09 — Product Life Cycle (Vòng đời sản phẩm). Nguồn: 09-product-life-cycle.md
+id: "m09"
+name_vi: "Vòng đời sản phẩm"
+name_en: "Product Life Cycle (PLC)"
+purpose: >
+  Giúp xác định sản phẩm/ngành đang ở giai đoạn nào (Introduction, Growth, Maturity, Decline) bằng các chỉ số định lượng,
+  rồi chọn marketing mix, mục tiêu và chiến lược tài chính phù hợp từng giai đoạn; đồng thời quản lý danh mục sản phẩm
+  (portfolio) có sản phẩm ở nhiều giai đoạn để dòng tiền từ sản phẩm trưởng thành nuôi sản phẩm mới.
+when_to_use:
+  - "Chủ SME hỏi 'sản phẩm/dòng món của tôi đang ở giai đoạn nào, nên đầu tư thêm hay cắt?'"
+  - "Doanh thu tăng chậm lại hoặc đi ngang, cần quyết định kéo dài Maturity (đổi sản phẩm, thị trường, mix) hay chuyển sang sản phẩm mới"
+  - "Lên chiến lược ra mắt sản phẩm mới (giá hớt váng hay thâm nhập, kênh chọn lọc hay rộng, ngân sách PR/awareness)"
+  - "Sản phẩm công nghệ/B2B tăng trưởng đứng lại sau nhóm khách đầu tiên (nghi ngờ rơi vào Chasm)"
+  - "Sản phẩm suy thoái: quyết định Maintain / Harvest / Divest / Discontinue"
+  - "Phân bổ nguồn lực giữa các sản phẩm trong danh mục (portfolio planning)"
+prerequisites: ["m02"]
+related_modules:
+  - "m02: PLC quyết định cách điều chỉnh 4P/7P theo từng giai đoạn"
+  - "m10: chọn skimming vs penetration ở Introduction, định giá cạnh tranh ở Maturity, giá thanh lý ở Decline"
+  - "m03: ở Maturity lợi nhuận đến từ giữ chân/loyalty/CLV hơn là thu hút khách mới"
+  - "m05: Growth hacking (AARRR) hỗ trợ Introduction/Growth; digital rẻ hơn cho harvest"
+  - "m06: Rogers adoption curve là góc nhìn hành vi người tiêu dùng theo nhóm chấp nhận"
+  - "m08: IMC thay đổi trọng tâm theo giai đoạn (awareness -> brand -> loyalty)"
+  - "m01: định vị lại (repositioning) khi kéo dài Maturity bằng Market Modification"
+  - "1-strategic (Ansoff, BCG, PESTEL): Ansoff cho hướng tăng trưởng khi Maturity; PESTEL cho rủi ro disruption"
+concepts:
+  - term_vi: "Vòng đời sản phẩm"
+    term_en: "Product Life Cycle (PLC)"
+    definition: >
+      Mô hình mô tả doanh thu và lợi nhuận của một sản phẩm theo thời gian từ khi ra mắt đến khi rút khỏi thị trường,
+      thường dạng đường cong chữ S (S-curve) gồm Development (phát triển, chưa có doanh thu), Introduction, Growth, Maturity, Decline.
+    why_it_matters: >
+      Cùng một chiến thuật (giảm giá, tăng quảng cáo) có thể đúng ở giai đoạn này nhưng phá hủy giá trị ở giai đoạn khác.
+      PLC buộc người ra quyết định hỏi 'đang ở đâu' trước khi hỏi 'làm gì'. Khái niệm được Theodore Levitt (Harvard Business School)
+      phổ biến năm 1965 qua bài 'Exploit the Product Life Cycle' (HBR) nhằm giúp quản lý lập kế hoạch cho từng giai đoạn thay vì quản lý một cách tĩnh.
+  - term_vi: "Giai đoạn phát triển"
+    term_en: "Development stage"
+    definition: "Giai đoạn trước khi ra mắt: nghiên cứu, thiết kế, thử nghiệm. Chỉ có chi phí, chưa có doanh thu."
+    why_it_matters: "Nằm trước Introduction trong mô hình; chi phí R&D chìm khiến Introduction thường lỗ."
+  - term_vi: "Introduction (Giới thiệu)"
+    term_en: "Introduction stage"
+    definition: "Sản phẩm mới ra mắt, khách chưa biết, doanh thu thấp tăng chậm, lỗ do chi phí phát triển + marketing launch cao, rất ít đối thủ, khách là Innovators (~2.5%)."
+    why_it_matters: "Mục tiêu là awareness + trial, không phải lợi nhuận. Chi phí/khách rất cao nên cần runway tiền mặt đủ."
+  - term_vi: "Growth (Tăng trưởng)"
+    term_en: "Growth stage"
+    definition: "Doanh thu tăng nhanh (chỉ số tham chiếu >20%/năm), khách chấp nhận rộng (Early Adopters + Early Majority), đối thủ bắt đầu sao chép, lợi nhuận tăng nhờ economies of scale."
+    why_it_matters: "Cửa sổ giành thị phần; mục tiêu maximize market share, chiếm vị thế trước khi cạnh tranh dày."
+  - term_vi: "Maturity (Trưởng thành)"
+    term_en: "Maturity stage"
+    definition: "Doanh thu cao nhất nhưng ổn định/tăng chậm (0-5%), cạnh tranh khốc liệt nhất, lợi nhuận đạt đỉnh rồi giảm do chiến tranh giá; khách là Late Majority."
+    why_it_matters: "Giai đoạn dài và là 'cash cow'. Mục tiêu maximize profit + defend share; lợi nhuận phải bảo vệ bằng loyalty/CRM và kéo dài vòng đời."
+  - term_vi: "Decline (Suy thoái)"
+    term_en: "Decline stage"
+    definition: "Doanh thu giảm do công nghệ thay thế hoặc thị hiếu đổi; đối thủ rời ngành; khách còn lại là Laggards."
+    why_it_matters: "Mục tiêu giảm chi, thu hoạch. Quyết định chọn 1 trong 4 chiến lược: Maintain, Harvest, Divest, Discontinue."
+  - term_vi: "Đường cong chấp nhận công nghệ"
+    term_en: "Technology Adoption Curve / Diffusion of Innovations"
+    definition: "Mô hình của Everett Rogers (1962) chia người chấp nhận sản phẩm thành 5 nhóm theo thời điểm: Innovators 2.5%, Early Adopters 13.5%, Early Majority 34%, Late Majority 34%, Laggards 16% (tổng 100%)."
+    why_it_matters: "Giải thích vì sao khách hàng ở mỗi giai đoạn PLC khác nhau về tâm lý (thích mới vs cần tin cậy) nên thông điệp, kênh, giá phải đổi."
+  - term_vi: "Khoảng vực chấp nhận"
+    term_en: "The Chasm"
+    definition: "Khoảng cách nguy hiểm giữa Early Adopters và Early Majority (Geoffrey Moore, 'Crossing the Chasm', 1991)."
+    why_it_matters: "Early Adopters yêu công nghệ, chấp nhận rủi ro; Early Majority cần giải pháp thực tế, đáng tin, có tham chiếu. Nhiều sản phẩm tech chết ở đây dù bán tốt cho nhóm đầu."
+  - term_vi: "Giá hớt váng"
+    term_en: "Price skimming"
+    definition: "Đặt giá ban đầu rất cao cho sản phẩm mới rồi giảm dần theo thời gian khi thị trường bão hòa hoặc đối thủ xuất hiện."
+    why_it_matters: "Thu lợi nhuận sớm từ nhóm trả giá cao (Innovators), bù chi phí phát triển. Đối lập là Penetration (giá thấp để lấy lượng)."
+  - term_vi: "Giá bán trung bình"
+    term_en: "Average Selling Price (ASP)"
+    definition: "Giá bình quân của một loại sản phẩm trong một kỳ = tổng doanh thu / tổng số lượng bán."
+    why_it_matters: "Giúp hiểu vì sao doanh số (units) có thể giảm mà doanh thu/lợi nhuận vẫn tăng (case iPhone: premiumization)."
+  - term_vi: "Phân tích danh mục sản phẩm"
+    term_en: "Portfolio planning"
+    definition: "Duy trì sản phẩm ở nhiều giai đoạn PLC khác nhau để dòng tiền từ sản phẩm trưởng thành (Cash Cow) tài trợ cho sản phẩm tăng trưởng/mới (Stars, Question Marks)."
+    why_it_matters: "Một danh mục toàn sản phẩm cùng giai đoạn sẽ cùng suy thoái hoặc cùng ngốn tiền. Thuật ngữ Cash Cow/Star/Question Mark thuộc ma trận BCG (nguồn chỉ nhắc tên, xem framework m09_bcg_link)."
+  - term_vi: "Fad, Style, Perennial"
+    term_en: "Fad / Style / Perennial (dạng đường cong khác S-curve)"
+    definition: "Fad: trào lưu ngắn, lên nhanh xuống nhanh. Style: lặp lại theo chu kỳ. Perennial: ổn định rất lâu."
+    why_it_matters: "Không phải sản phẩm nào cũng theo S-curve; áp PLC máy móc cho fad/perennial sẽ chọn sai chiến lược."
+  - term_vi: "Lời tiên tri tự ứng nghiệm"
+    term_en: "Self-fulfilling prophecy"
+    definition: "Tin rằng sản phẩm đang suy thoái -> cắt đầu tư -> chính việc cắt khiến sản phẩm suy thoái thật."
+    why_it_matters: "Nhược điểm lớn nhất của PLC khi dùng làm công cụ quyết định cứng nhắc; phải kiểm chứng nguyên nhân giảm trước khi cắt."
+formulas:
+  - id: "m09_growth_rate"
+    name_vi: "Tốc độ tăng trưởng doanh thu/doanh số (Sales growth)"
+    name_en: "Sales growth rate"
+    expression_latex: 'g = \frac{S_t - S_{t-1}}{S_{t-1}} \times 100\%'
+    expression_python: "(s_t - s_prev) / s_prev * 100"
+    excel: "=(B3-B2)/B2"
+    variables:
+      - {symbol: "s_t", meaning: "Doanh thu (hoặc số lượng) kỳ hiện tại", unit: "VNĐ hoặc đơn vị"}
+      - {symbol: "s_prev", meaning: "Doanh thu (hoặc số lượng) kỳ trước", unit: "VNĐ hoặc đơn vị"}
+    when_to_use: "Chỉ số đầu tiên để định vị giai đoạn PLC: <10% gợi Introduction, >20% Growth, 0-5% Maturity, âm Decline (ngưỡng tham chiếu của nguồn)."
+    why_it_works: >
+      PLC về bản chất là hình dạng đường cong doanh số; độ dốc (tốc độ tăng) cho biết điểm đang đứng trên S-curve.
+      Đạo hàm bậc nhất của đường cong lớn -> Growth; gần 0 -> Maturity; âm -> Decline.
+    assumptions:
+      - "So sánh cùng kỳ (YoY) để loại mùa vụ"
+      - "Dùng cùng định nghĩa sản phẩm/ngành giữa 2 kỳ"
+    pitfalls:
+      - "Introduction có thể có % tăng rất lớn do nền thấp (từ 10 lên 40 đơn = +300%); dùng kèm thị phần, số đối thủ, biên lợi nhuận"
+      - "Ngưỡng nguồn có khoảng hở (Introduction <10%, Growth >20%, Maturity 0-5%): vùng 5-20% cần thêm tín hiệu khác, không kết luận chỉ theo 1 chỉ số"
+      - "Mùa vụ, Tết, khuyến mãi một lần làm nhiễu"
+    interpretation: "Nên xét xu hướng 3-4 kỳ liên tiếp (tốc độ tăng giảm dần = tiến vào Maturity). Ngưỡng là tham chiếu, không phải quy tắc cứng."
+    example:
+      inputs: {s_t: 1320, s_prev: 1200}
+      steps: ["g = (1320 - 1200) / 1200 * 100 = 10.0%"]
+      result: "10.0% -> vùng chuyển tiếp, chưa kết luận Growth hay Introduction; cần thêm thị phần/đối thủ/biên lợi nhuận"
+  - id: "m09_cagr"
+    name_vi: "Tốc độ tăng trưởng kép hằng năm (CAGR)"
+    name_en: "Compound Annual Growth Rate"
+    expression_latex: 'CAGR = \left(\frac{S_{end}}{S_{start}}\right)^{1/n} - 1'
+    expression_python: "((s_end / s_start) ** (1 / n) - 1) * 100"
+    excel: "=(B_end/B_start)^(1/n)-1"
+    variables:
+      - {symbol: "s_end", meaning: "Doanh thu năm cuối", unit: "VNĐ"}
+      - {symbol: "s_start", meaning: "Doanh thu năm đầu", unit: "VNĐ"}
+      - {symbol: "n", meaning: "Số năm giữa 2 mốc", unit: "năm"}
+    when_to_use: "Đánh giá tốc độ tăng trưởng bình quân nhiều năm của sản phẩm/ngành để phân biệt Growth dài hạn với đợt tăng một lần. (Bổ sung ngoài nguồn, dùng chung với growth_rate.)"
+    why_it_works: "Giữ tăng trưởng đều mỗi năm sao cho từ đầu đến cuối khớp con số thực; tránh trung bình cộng sai khi % biến động."
+    assumptions: ["Tăng trưởng đều trong kỳ (xấp xỉ)"]
+    pitfalls: ["Che giấu biến động giữa các năm (một năm tăng vọt rồi giảm)", "Chọn năm đầu bất thường làm CAGR méo"]
+    interpretation: "CAGR >20% kéo dài hỗ trợ Growth; sụt về 0-5% cho thấy chuyển Maturity."
+    example:
+      inputs: {s_end: 2400, s_start: 1000, n: 3}
+      steps: ["(2400/1000)^(1/3) - 1 = 1.3389 - 1 = 0.3389", "= 33.9%/năm"]
+      result: "CAGR ≈ 33.9%/năm"
+  - id: "m09_market_share"
+    name_vi: "Thị phần"
+    name_en: "Market share"
+    expression_latex: 'MS = \frac{S_{firm}}{S_{market}} \times 100\%'
+    expression_python: "s_firm / s_market * 100"
+    excel: "=B2/B3"
+    variables:
+      - {symbol: "s_firm", meaning: "Doanh thu (hoặc lượng bán) của sản phẩm/doanh nghiệp", unit: "VNĐ"}
+      - {symbol: "s_market", meaning: "Tổng doanh thu toàn thị trường/phân khúc", unit: "VNĐ"}
+    when_to_use: "Chỉ số định vị PLC: <5% gợi Introduction, tăng nhanh gợi Growth, ổn định Maturity, giảm Decline; cũng là mục tiêu chính ở Growth."
+    why_it_works: "Tách hiệu ứng toàn ngành khỏi hiệu quả riêng: doanh thu của bạn tăng 10% khi thị trường tăng 30% nghĩa là đang mất thị phần."
+    assumptions: ["Định nghĩa thị trường (phân khúc, địa lý) rõ ràng và nhất quán"]
+    pitfalls: ["Chọn thị trường quá rộng làm thị phần nhỏ giả; quá hẹp làm lớn giả", "Số tổng thị trường SME VN thường là ước lượng (confidence thấp)"]
+    interpretation: "Quan trọng hơn mức tuyệt đối là xu hướng thị phần (tăng/giảm) theo kỳ."
+    example:
+      inputs: {s_firm: 18, s_market: 150}
+      steps: ["18 / 150 * 100 = 12%"]
+      result: "Thị phần 12%"
+  - id: "m09_asp"
+    name_vi: "Giá bán trung bình (ASP)"
+    name_en: "Average Selling Price"
+    expression_latex: 'ASP = \frac{\text{Tổng doanh thu sản phẩm}}{\text{Tổng số lượng bán}}'
+    expression_python: "revenue / units"
+    excel: "=SUM(Doanh_thu)/SUM(So_luong)"
+    variables:
+      - {symbol: "revenue", meaning: "Tổng doanh thu của sản phẩm trong kỳ", unit: "VNĐ"}
+      - {symbol: "units", meaning: "Tổng số lượng bán trong kỳ", unit: "đơn vị"}
+    when_to_use: "Giải thích vì sao doanh thu tăng dù số lượng giảm (premiumization/upsell) ở Maturity; theo dõi hiệu quả line extension, bundle."
+    why_it_works: "Doanh thu = Số lượng x ASP, nên tăng ASP là đòn bẩy thứ hai khi số lượng đã bão hòa."
+    assumptions: ["Cơ cấu sản phẩm (mix) ổn định, hoặc phân tích riêng hiệu ứng mix"]
+    pitfalls: ["ASP tăng có thể do đổi mix (nhiều bản Pro hơn) chứ không phải tăng giá thực cùng sản phẩm", "ASP tăng quá nhanh dễ đẩy khách thấp sang đối thủ"]
+    interpretation: "Số lượng giảm nhẹ + ASP tăng mạnh = chiến lược premium hoá lành mạnh; số lượng giảm + ASP đứng = suy thoái thật."
+    example:
+      inputs: {revenue: 4800000000, units: 6000}
+      steps: ["ASP = 4,800,000,000 / 6,000 = 800,000"]
+      result: "ASP = 800,000 VNĐ/đơn vị"
+  - id: "m09_revenue_decomposition"
+    name_vi: "Phân rã thay đổi doanh thu thành lượng và giá (volume vs ASP)"
+    name_en: "Revenue growth decomposition"
+    expression_latex: '1 + g_R = (1 + g_Q)(1 + g_{ASP})'
+    expression_python: "((1 + g_q) * (1 + g_asp) - 1) * 100"
+    excel: "=(1+gQ)*(1+gASP)-1"
+    variables:
+      - {symbol: "g_q", meaning: "Tăng trưởng số lượng bán (dạng thập phân, -0.05 = -5%)", unit: "tỷ lệ"}
+      - {symbol: "g_asp", meaning: "Tăng trưởng ASP (dạng thập phân)", unit: "tỷ lệ"}
+    when_to_use: "Chẩn đoán doanh thu: tăng do lượng hay do giá; quyết định kéo dài Maturity bằng premiumization."
+    why_it_works: "Vì Doanh thu = Q x ASP nên tốc độ tăng doanh thu là tích các hệ số tăng (không phải tổng các %)."
+    assumptions: ["Q và ASP đo trên cùng phạm vi sản phẩm"]
+    pitfalls: ["Cộng thẳng % lượng và % giá cho sai số (ví dụ -5% + 15% = 10% nhưng thực là 9.25%)"]
+    interpretation: "Nếu g_asp > |g_q| doanh thu vẫn tăng; nhưng nếu lượng giảm liên tục, rủi ro mất nền khách (cần theo dõi thị phần)."
+    example:
+      inputs: {g_q: -0.05, g_asp: 0.15}
+      steps: ["(1 - 0.05) x (1 + 0.15) - 1 = 0.95 x 1.15 - 1 = 0.0925", "Kiểm tra: 100 đv x 20 = 2000; 95 đv x 23 = 2185; 2185/2000 - 1 = 9.25%"]
+      result: "Doanh thu +9.25% dù số lượng -5%"
+  - id: "m09_adopter_cumulative"
+    name_vi: "Số khách tiềm năng theo nhóm chấp nhận Rogers"
+    name_en: "Rogers adopter group size / cumulative adoption"
+    expression_latex: 'N_{nhóm} = p_{nhóm} \times N_{thị trường};\quad \text{Chasm tại } 2.5\% + 13.5\% = 16\%'
+    expression_python: "p_nhom / 100 * n_market"
+    excel: "=p*N"
+    variables:
+      - {symbol: "p_nhom", meaning: "Tỷ lệ nhóm theo Rogers (Innovators 2.5, Early Adopters 13.5, Early Majority 34, Late Majority 34, Laggards 16)", unit: "%"}
+      - {symbol: "n_market", meaning: "Quy mô thị trường tiềm năng (số khách/doanh nghiệp)", unit: "khách"}
+    when_to_use: "Ước lượng độ lớn từng nhóm và điểm Chasm (tích lũy 16%) khi hoạch định số khách cần vượt qua mới chạm đại chúng."
+    why_it_works: "Rogers quan sát phân phối chấp nhận gần dạng chuông (chuẩn) theo thời gian; các nhóm cắt theo độ lệch chuẩn quanh trung bình (2.5% = hơn 2 độ lệch chuẩn sớm hơn; 13.5% kế tiếp; 34%+34% quanh trung bình; 16% muộn nhất)."
+    assumptions: ["Phân phối chấp nhận xấp xỉ chuẩn (đúng cho nhiều đổi mới, không phải mọi sản phẩm)", "Thị trường tiềm năng xác định đúng (TAM/SAM)"]
+    pitfalls: ["Rogers ban đầu nghiên cứu hạt giống ngô nông nghiệp (không phải tech); áp dụng nguyên si cho mọi sản phẩm cần thận trọng", "Tỷ lệ là quy ước; Chasm của Moore (1991) là thêm vào mô hình gốc"]
+    interpretation: "Tích lũy: Innovators 2.5, +Early Adopters 16, +Early Majority 50, +Late Majority 84, +Laggards 100. Muốn vượt Chasm phải có 'trường hợp tham chiếu' đủ để thuyết phục Early Majority."
+    example:
+      inputs: {p_nhom: 16, n_market: 50000}
+      steps: ["Innovators = 2.5% x 50,000 = 1,250", "Early Adopters = 13.5% x 50,000 = 6,750", "Tích lũy tới Chasm = 16% x 50,000 = 8,000", "Early Majority cần chinh phục tiếp = 34% x 50,000 = 17,000"]
+      result: "Cần ~8,000 khách đầu tiên trước Chasm; 17,000 khách Early Majority là cú nhảy lớn nhất"
+  - id: "m09_stage_classifier"
+    name_vi: "Quy tắc phân loại giai đoạn PLC theo chỉ số"
+    name_en: "Heuristic PLC stage classifier"
+    expression_latex: '\text{Stage} = f(g, \text{margin}, \text{share trend}, \#\text{competitors})'
+    expression_python: "('Decline' if g < 0 else 'Growth' if g > 20 else 'Maturity' if g <= 5 and margin > 0 else 'Introduction' if g < 10 and margin < 0 else 'Transition (xem thêm thị phần, đối thủ, loại khách)')"
+    excel: '=IF(g<0,"Decline",IF(g>20,"Growth",IF(AND(g<=5,margin>0),"Maturity",IF(AND(g<10,margin<0),"Introduction","Transition"))))'
+    variables:
+      - {symbol: "g", meaning: "Tốc độ tăng doanh thu YoY", unit: "%"}
+      - {symbol: "margin", meaning: "Biên lợi nhuận của sản phẩm (dương/âm)", unit: "%"}
+    when_to_use: "Bước sàng lọc đầu để gán nhãn giai đoạn, sau đó xác nhận bằng các chỉ số định tính (số đối thủ, loại khách, xu hướng thị phần)."
+    why_it_works: "Kết hợp tín hiệu tăng trưởng với lợi nhuận: nhiều giai đoạn trùng g thấp (Introduction và Maturity đều tăng chậm) nhưng khác dấu lợi nhuận và số đối thủ."
+    assumptions: ["Ngưỡng g theo bảng nguồn (Introduction <10%, Growth >20%, Maturity 0-5%)", "Một chuẩn tham chiếu, không phải luật"]
+    pitfalls: ["Maturity có thể có margin giảm dần nhưng vẫn dương; Decline có thể vẫn có margin dương (do cắt chi phí)", "Hàm đơn giản hoá: cần đối chiếu số đối thủ, loại khách, lịch sử"]
+    interpretation: "Nếu trả về 'Transition' (g từ 5-20% hoặc dữ liệu mâu thuẫn), dùng bảng 5 chỉ số trong procedure p09_identify_stage và xét xu hướng nhiều kỳ."
+    example:
+      inputs: {g: 4.0, margin: 12}
+      steps: ["g=4 không <0, không >20; g<=5 và margin>0 -> Maturity"]
+      result: "Maturity"
+  - id: "m09_relative_market_share"
+    name_vi: "Thị phần tương đối (liên kết BCG, ngoài nguồn)"
+    name_en: "Relative market share"
+    expression_latex: 'RMS = \frac{MS_{firm}}{MS_{\text{đối thủ lớn nhất}}}'
+    expression_python: "ms_firm / ms_top_rival"
+    excel: "=MS_firm/MS_rival"
+    variables:
+      - {symbol: "ms_firm", meaning: "Thị phần của sản phẩm bạn", unit: "%"}
+      - {symbol: "ms_top_rival", meaning: "Thị phần đối thủ lớn nhất", unit: "%"}
+    when_to_use: "Gắn PLC với portfolio (nguồn nhắc Cash Cow/Star/Question Mark): trục ngang BCG là thị phần tương đối, trục dọc là tăng trưởng thị trường (proxy cho giai đoạn PLC)."
+    why_it_works: "BCG (Bruce Henderson, Boston Consulting Group, thập niên 1970) giả định đường kinh nghiệm: thị phần tương đối cao -> chi phí đơn vị thấp -> sinh tiền. Tăng trưởng thị trường cao -> cần đầu tư nhiều -> tiêu tiền."
+    assumptions: ["Quy ước BCG: RMS >1 là dẫn đầu; ngưỡng tăng trưởng thị trường thường lấy ~10% (quy ước, không có trong nguồn)"]
+    pitfalls: ["Đây là phần bổ sung ngoài nguồn để làm rõ thuật ngữ Cash Cow/Stars/Question Marks; xem thêm file chiến lược (1-strategic) cho BCG đầy đủ"]
+    interpretation: "Tăng trưởng cao + RMS>1 = Star; tăng trưởng thấp + RMS>1 = Cash Cow; tăng trưởng cao + RMS<1 = Question Mark; tăng trưởng thấp + RMS<1 = Dog."
+    example:
+      inputs: {ms_firm: 18, ms_top_rival: 30}
+      steps: ["18 / 30 = 0.6"]
+      result: "RMS = 0.6 (<1: chưa dẫn đầu; nếu thị trường còn tăng nhanh thì là Question Mark)"
+  - id: "m09_harvest_contribution"
+    name_vi: "Đóng góp lợi nhuận khi thu hoạch (Harvest) sản phẩm suy thoái"
+    name_en: "Harvest contribution comparison"
+    expression_latex: 'C = R \times cm - M - F'
+    expression_python: "r * cm - m - f"
+    excel: "=R*cm-M-F"
+    variables:
+      - {symbol: "r", meaning: "Doanh thu sản phẩm", unit: "triệu VNĐ"}
+      - {symbol: "cm", meaning: "Biên đóng góp (contribution margin, dạng thập phân)", unit: "tỷ lệ"}
+      - {symbol: "m", meaning: "Chi phí marketing dành cho sản phẩm", unit: "triệu VNĐ"}
+      - {symbol: "f", meaning: "Chi phí cố định phân bổ trực tiếp cho sản phẩm", unit: "triệu VNĐ"}
+    when_to_use: "So sánh Maintain (giữ nguyên) với Harvest (cắt marketing, giữ khách trung thành) cho sản phẩm Decline. (Công thức đơn giản hóa bổ sung ngoài nguồn.)"
+    why_it_works: "Harvest chấp nhận doanh thu giảm để đổi lấy mức giảm chi phí lớn hơn; lợi nhuận tuyệt đối có thể tăng ngắn hạn."
+    assumptions: ["Chi phí cố định phân bổ không đổi trong kỳ so sánh", "Mức sụt doanh thu sau cắt marketing ước lượng đúng"]
+    pitfalls: ["Chi phí cố định phân bổ có thể không cắt được nên lợi ích thực nhỏ hơn", "Cắt marketing quá sâu làm sụt nhanh hơn dự kiến (self-fulfilling)", "Bỏ qua chi phí cơ hội của nguồn lực (nhân sự, bếp, kho) dành cho sản phẩm mới"]
+    interpretation: "Harvest chỉ hợp lý nếu C_harvest > C_maintain và không còn khả năng hồi sinh; nếu C_harvest < 0 hãy cân nhắc Divest/Discontinue."
+    example:
+      inputs: {r: 440, cm: 0.35, m: 10, f: 90}
+      steps: ["Maintain: 480 x 0.35 - 60 - 90 = 168 - 150 = 18 triệu", "Harvest: 440 x 0.35 - 10 - 90 = 154 - 100 = 54 triệu"]
+      result: "Harvest cho đóng góp 54 triệu/năm so với 18 triệu khi Maintain (+36 triệu)"
+frameworks:
+  - id: "m09_plc_model"
+    name_vi: "Mô hình vòng đời sản phẩm 4 giai đoạn (+ Development)"
+    name_en: "Product Life Cycle model"
+    origin: >
+      Theodore Levitt (Harvard Business School) phổ biến năm 1965 bằng bài 'Exploit the Product Life Cycle' (HBR). Ra đời vì
+      các quản lý nhận thấy doanh số/lợi nhuận mọi sản phẩm đều đổi theo thời gian nhưng vẫn dùng một chiến lược cố định; cần khung nhìn động
+      để dự báo giai đoạn tiếp theo và đổi chiến lược đúng lúc.
+    components:
+      - "Development: chi phí R&D, chưa có doanh thu"
+      - "Introduction: doanh thu thấp, lỗ, ít đối thủ, khách Innovators 2.5%, chi phí/khách rất cao, mục tiêu Awareness + Trial"
+      - "Growth: doanh thu tăng nhanh, lợi nhuận tăng nhanh, đối thủ tăng dần, khách Early Adopters + Early Majority, chi phí/khách giảm nhờ economies of scale, mục tiêu Maximize market share"
+      - "Maturity: doanh thu cao nhất rồi ổn định, lợi nhuận đỉnh rồi giảm do chiến tranh giá, nhiều đối thủ nhất, khách Late Majority, chi phí/khách thấp nhất, mục tiêu Maximize profit + defend share"
+      - "Decline: doanh thu giảm, lợi nhuận thấp/âm, đối thủ rời ngành, khách Laggards, mục tiêu Reduce spend, harvest"
+    when_to_use: "Mọi lúc cần chọn chiến lược marketing/đầu tư theo vị trí sản phẩm trên đường cong."
+    how_to_apply:
+      - "Xác định đối tượng phân tích: sản phẩm cụ thể, dòng sản phẩm hay cả ngành (category)? (khác nhau về nhịp)"
+      - "Thu thập 5 chỉ số: tăng trưởng doanh số, thị phần, số đối thủ, biên lợi nhuận, loại khách (xem m09_stage_diagnosis)"
+      - "Gán giai đoạn và độ tin cậy; xem xu hướng nhiều kỳ"
+      - "Tra bảng marketing mix tương ứng (m09_stage_marketing_mix) và mục tiêu giai đoạn"
+      - "Dự báo giai đoạn kế tiếp và chuẩn bị (tồn kho, năng lực, sản phẩm kế nhiệm)"
+      - "Rà soát portfolio: bảo đảm có sản phẩm ở nhiều giai đoạn"
+    how_to_read_results: >
+      Đọc theo xu hướng (3-4 kỳ) chứ không theo một điểm. Đường cong là công cụ chẩn đoán và dự báo, không phải số phận;
+      doanh nghiệp có thể kéo dài Maturity (Market/Product/Marketing Mix Modification) hoặc tái khởi động chu kỳ bằng sản phẩm mới.
+    pitfalls:
+      - "Self-fulfilling prophecy: gán nhãn Decline rồi cắt đầu tư làm sản phẩm chết thật"
+      - "Không phải sản phẩm nào cũng S-curve: Fad, Style, Perennial"
+      - "Khó xác định ranh giới (cuối Growth hay đầu Maturity?)"
+      - "Timing mỗi giai đoạn không xác định trước"
+      - "Nhầm lẫn Product vs Category: PLC của một nhãn khác PLC của cả ngành"
+      - "Disruption: sản phẩm có thể chết đột ngột (Nokia bị iPhone vượt trong khoảng 3 năm theo nguồn)"
+    example: "Dòng 'trà sữa trân châu' tại VN: giai đoạn Growth đầu thập niên 2010-2018 (nhiều thương hiệu mở), hiện Maturity (cạnh tranh giá, saturation) -> SME cần differentiate (xem worked example 1). (Mô tả định tính, illustrative.)"
+  - id: "m09_stage_marketing_mix"
+    name_vi: "Chiến lược marketing mix theo từng giai đoạn PLC"
+    name_en: "Stage-specific marketing mix"
+    origin: "Kết hợp Marketing Mix 4P (McCarthy 1960, Kotler) với PLC; vì mục tiêu và khách khác nhau theo giai đoạn nên 4P phải đổi theo."
+    components:
+      - "INTRODUCTION - Product: phiên bản cơ bản, focus core benefit (iPhone Gen 1 2007: phone + iPod + internet). Price: Skimming (iPhone $499) hoặc Penetration (Grab voucher chuyến đầu). Place: selective distribution (Tesla: online + showroom chọn lọc). Promotion: awareness heavy - PR, influencer, seeding, demo (ChatGPT 2022: PR + word-of-mouth, không quảng cáo)"
+      - "GROWTH - Product: cải tiến, thêm features/variants (iPhone 3G, 3GS: App Store, GPS). Price: giữ hoặc giảm nhẹ để mở rộng thị trường. Place: mở rộng phân phối, thêm kênh (Grab SG -> Hà Nội -> toàn quốc -> ĐNÁ). Promotion: brand building + differentiation vs đối thủ mới"
+      - "MATURITY - Product: diversification, refreshing, line extension (Coca-Cola Zero/Diet/Cherry/Vanilla/Energy). Price: competitive pricing, promotion-heavy (hàng không war giá). Place: intensive distribution, omnichannel (Coca-Cola 200+ quốc gia). Promotion: brand loyalty, CRM, defend share (Starbucks Rewards)"
+      - "DECLINE - Product: loại variant yếu, giữ cốt lõi (iPod khai tử 2022). Price: giảm giá clear tồn hoặc giữ giá niche. Place: thu hẹp kênh (máy fax). Promotion: giảm mạnh ngân sách, chỉ target loyal users (DVD player)"
+    when_to_use: "Sau khi xác định giai đoạn, để lập kế hoạch 4P cụ thể."
+    how_to_apply:
+      - "Chọn giai đoạn đã xác định"
+      - "Với mỗi P, chọn hành động mặc định ở bảng components"
+      - "Điều chỉnh theo ngân sách SME, đối thủ, đặc thù sản phẩm"
+      - "Gắn KPI giai đoạn: Introduction (awareness, trial, CAC); Growth (thị phần, tốc độ tăng); Maturity (lợi nhuận, retention, CLV); Decline (đóng góp tiền mặt, chi phí giảm)"
+    how_to_read_results: "Kiểm tra mức nhất quán: Introduction mà phân phối rộng và giảm giá sâu = lãng phí; Maturity mà chỉ chạy awareness = bỏ qua loyalty."
+    pitfalls:
+      - "Áp ví dụ hãng lớn (Coca-Cola, Apple) nguyên si cho SME thiếu nguồn lực"
+      - "Một số ví dụ trong nguồn mang tính minh họa, chưa kiểm chứng (xem ghi chú nguồn trong pitfalls cấp module)"
+    example: "SME bán nước ép lạnh mới (Introduction): giá penetration trung bình, chỉ bán 3 cửa hàng + GrabFood, 70% ngân sách vào seeding KOC và sampling; khi Growth: thêm 2 hương vị, mở thêm điểm bán, chuyển ngân sách sang xây thương hiệu."
+  - id: "m09_stage_diagnosis"
+    name_vi: "Bảng chỉ số xác định giai đoạn PLC"
+    name_en: "PLC stage diagnostic indicators"
+    origin: "Tổng hợp thực hành (nguồn mục III) vì PLC chỉ hữu ích khi định vị được vị trí; cần các chỉ số khách quan thay vì cảm tính."
+    components:
+      - "Sales growth: Introduction <10%, Growth >20%, Maturity 0-5%, Decline âm"
+      - "Market share: Introduction <5%, Growth tăng nhanh, Maturity ổn định, Decline giảm"
+      - "Số đối thủ: Introduction 0-2, Growth tăng, Maturity nhiều nhất, Decline giảm"
+      - "Biên lợi nhuận: Introduction âm, Growth tăng, Maturity đỉnh rồi giảm, Decline thấp/âm"
+      - "Loại khách: Innovator -> Early adopter -> Majority -> Laggard"
+    when_to_use: "Ngay khi cần gán giai đoạn."
+    how_to_apply:
+      - "Tính 5 chỉ số trên cùng kỳ (YoY, 3-4 kỳ)"
+      - "Cho điểm khớp từng giai đoạn; lấy giai đoạn có nhiều tín hiệu nhất"
+      - "Nếu tín hiệu mâu thuẫn, ghi 'chuyển tiếp' và chọn chiến lược phòng thủ cho cả hai"
+      - "Lưu ý: ngưỡng có khoảng hở và không phổ quát; điều chỉnh theo ngành"
+    how_to_read_results: "Nếu ≥3/5 tín hiệu chỉ một giai đoạn -> kết luận tạm thời; theo dõi tiếp 1-2 kỳ trước khi thay đổi lớn."
+    pitfalls:
+      - "Dùng một chỉ số duy nhất"
+      - "Dữ liệu thị trường SME khó có; dùng ước lượng + khảo sát đối thủ tại khu vực"
+    example: "Quán cà phê specialty: sales growth 4%, thị phần ổn định, >50 quán trong 1km, margin giảm -> Maturity."
+  - id: "m09_maturity_extension"
+    name_vi: "3 chiến lược kéo dài Maturity (Kotler)"
+    name_en: "Maturity extension strategies: Market / Product / Marketing Mix Modification"
+    origin: "Philip Kotler, 'Marketing Management'. Vì Maturity là giai đoạn lợi nhuận đỉnh và cạnh tranh gay gắt, cách tối ưu là đẩy lùi Decline bằng cách thay đổi một trong ba đòn bẩy."
+    components:
+      - "Market Modification: tìm khách mới hoặc tăng mức sử dụng (Arm & Hammer baking soda -> cleaning, deodorizer)"
+      - "Product Modification: cải tiến chất lượng, tính năng, kiểu dáng (Samsung Galaxy nâng cấp camera)"
+      - "Marketing Mix Modification: đổi giá, kênh, promotion (McDonald's thêm delivery và đặt hàng digital)"
+    when_to_use: "Sản phẩm vào Maturity (tăng trưởng 0-5%), muốn giữ lợi nhuận và tránh Decline."
+    how_to_apply:
+      - "Lập danh sách ý tưởng cho từng đòn bẩy"
+      - "Thử nghiệm nhỏ (pilot) 4-8 tuần, đo doanh thu tăng thêm, chi phí"
+      - "Chọn đòn bẩy có ROI tốt nhất (có thể kết hợp)"
+      - "Theo dõi ASP, thị phần, retention"
+    how_to_read_results: "Thành công khi tăng trưởng quay lại >5% hoặc ASP/biên lợi nhuận tăng ổn định mà không mất thị phần."
+    pitfalls:
+      - "Đổi quá nhiều cùng lúc, không biết đòn nào hiệu quả"
+      - "Product modification quá tốn kém so với lợi ích gia tăng"
+      - "Market modification sang thị trường không phù hợp (khác văn hóa/giá)"
+    example: "Chuỗi bánh mì SME: Market Mod = bán cho khối văn phòng buổi sáng qua đặt trước; Product Mod = thêm dòng bánh mì healthy; Mix Mod = giao hàng và combo trưa."
+  - id: "m09_decline_strategies"
+    name_vi: "4 chiến lược trong giai đoạn Decline"
+    name_en: "Decline strategies: Maintain, Harvest, Divest, Discontinue"
+    origin: "Khung quản trị giai đoạn suy thoái trong marketing management (Kotler); vì nhu cầu giảm mà sản phẩm vẫn tiêu tốn nguồn lực nên cần quyết định có hệ thống thay vì kéo dài vô hạn."
+    components:
+      - "Maintain: giữ nguyên, chờ đối thủ rời trước để thu thị phần của họ"
+      - "Harvest: cắt chi phí tối đa, vắt lợi nhuận còn lại"
+      - "Divest: bán cho doanh nghiệp khác"
+      - "Discontinue: khai tử sản phẩm"
+    when_to_use: "Sản phẩm có doanh thu giảm liên tục sau khi đã loại trừ nguyên nhân nội bộ (chất lượng, giá, kênh)."
+    how_to_apply:
+      - "Xác định nguyên nhân giảm (cấu trúc/công nghệ hay lỗi vận hành?) để tránh self-fulfilling prophecy"
+      - "Tính đóng góp từng phương án (m09_harvest_contribution), gồm cả chi phí cơ hội"
+      - "Đánh giá giá trị niche/loyal users, tác động đến thương hiệu và sản phẩm khác (cannibalization, bán chéo)"
+      - "Chọn: còn đối thủ yếu + nhóm khách ổn định -> Maintain; không còn tương lai nhưng sinh tiền -> Harvest; có người mua trả giá hợp lý -> Divest; âm tiền và chiếm nguồn lực -> Discontinue"
+      - "Lập kế hoạch kết thúc: thông báo khách, xử lý tồn kho, chuyển khách sang sản phẩm thay thế"
+    how_to_read_results: "Đặt mốc dừng (trigger) bằng số: ví dụ 3 quý liên tiếp đóng góp âm -> chuyển phương án."
+    pitfalls:
+      - "Khai tử quá sớm khi chỉ do mùa vụ/đợt khó khăn"
+      - "Giữ quá lâu vì tình cảm"
+      - "Quên chi phí cơ hội (quầy bếp, kho, thời gian đội ngũ)"
+    example: "Dòng cà phê hòa tan 3in1 nhỏ: doanh thu 480 triệu giảm còn 440 sau Harvest, đóng góp tăng 18 -> 54 triệu (xem worked example 3)."
+  - id: "m09_adoption_curve"
+    name_vi: "Đường cong chấp nhận đổi mới của Rogers"
+    name_en: "Diffusion of Innovations / Technology Adoption Curve"
+    origin: >
+      Everett Rogers, 'Diffusion of Innovations' (1962). Bắt đầu từ nghiên cứu nông dân Iowa chấp nhận hạt ngô lai, sau đó khái quát hoá cách đổi mới lan truyền
+      trong xã hội; ra đời để giải thích vì sao có người chấp nhận rất sớm, người rất muộn.
+    components:
+      - "Innovators 2.5%: yêu công nghệ, chịu rủi ro"
+      - "Early Adopters 13.5%: người có ảnh hưởng, nhìn thấy tầm nhìn"
+      - "Early Majority 34%: thực dụng, cần bằng chứng và độ tin cậy"
+      - "Late Majority 34%: hoài nghi, theo số đông"
+      - "Laggards 16%: bảo thủ, chỉ chấp nhận khi đã thành chuẩn"
+      - "Tổng 100%; liên hệ PLC: Introduction (Innovators), Growth (Early Adopters + Early Majority), Maturity (Late Majority), Decline (Laggards)"
+    when_to_use: "Thiết kế thông điệp/kênh/giá theo nhóm khách, ước lượng quy mô từng nhóm, đánh giá rủi ro Chasm."
+    how_to_apply:
+      - "Xác định quy mô thị trường tiềm năng (TAM/SAM)"
+      - "Tính số khách theo nhóm bằng m09_adopter_cumulative"
+      - "Xác định nhóm hiện đang mua (khảo sát/CRM) -> biết đang ở đâu"
+      - "Chuẩn bị thông điệp cho nhóm kế tiếp (Innovator: tính năng mới; Early Majority: bằng chứng, bảo hành, case tham chiếu)"
+    how_to_read_results: "Nếu doanh số trì trệ ngay sau khi nhóm đầu bão hoà (khoảng 16% tích lũy) -> nghi ngờ Chasm."
+    pitfalls:
+      - "Coi tỷ lệ là cố định cho mọi sản phẩm"
+      - "Dùng cùng một thông điệp cho mọi nhóm"
+    example: "Phần mềm quản lý bếp cho quán ăn: 50,000 quán mục tiêu -> 1,250 Innovators, 6,750 Early Adopters; cần 17,000 Early Majority."
+  - id: "m09_chasm"
+    name_vi: "Vượt vực chấp nhận (Crossing the Chasm)"
+    name_en: "The Chasm / Crossing the Chasm"
+    origin: >
+      Geoffrey Moore, 'Crossing the Chasm' (1991), dựa trên quan sát các công ty công nghệ tăng trưởng tốt với nhóm đầu rồi đứng lại. Moore bổ sung khoảng trống
+      (chasm) giữa Early Adopters và Early Majority vào mô hình Rogers.
+    components:
+      - "Hai bên vực: Early Adopters (yêu công nghệ, chấp nhận rủi ro) vs Early Majority (cần giải pháp thực tế, đáng tin)"
+      - "Điểm then chốt: giải 'tôi làm được gì với nó?' thay vì 'công nghệ thú vị'"
+    when_to_use: "Sản phẩm công nghệ/đổi mới có doanh số tốt với nhóm đầu rồi chững."
+    how_to_apply:
+      - "Chọn một ngách (niche) cụ thể có nhu cầu rõ để thắng trước thay vì dàn trải"
+      - "Trình bày giải pháp trọn vẹn (whole product): sản phẩm + hỗ trợ + tích hợp + bảo hành"
+      - "Thu thập tham chiếu/case study từ ngách đầu để thuyết phục ngách kế"
+      - "Điều chỉnh thông điệp từ tính năng sang kết quả kinh doanh"
+    how_to_read_results: "Thành công khi nhóm Early Majority bắt đầu mua theo giới thiệu và doanh số tăng tốc."
+    pitfalls:
+      - "Tiếp tục bán theo tính năng cho Early Majority"
+      - "Dàn trải nhiều phân khúc cùng lúc nên không đủ tham chiếu ở phân khúc nào"
+    example: "Nguồn: iPhone 3G (2008) + App Store vượt chasm từ tech enthusiasts sang mainstream nhờ trả lời 'what can I DO with it?'."
+  - id: "m09_bcg_link"
+    name_vi: "Danh mục sản phẩm và dòng tiền (liên kết BCG)"
+    name_en: "Portfolio management linked to BCG"
+    origin: "Nguồn chỉ nhắc 'Cash Cow fund Stars và Question Marks'. Thuật ngữ thuộc ma trận BCG (Bruce Henderson, Boston Consulting Group, 1970s), ra đời để phân bổ vốn giữa các đơn vị kinh doanh."
+    components:
+      - "Star (tăng trưởng cao, thị phần tương đối cao): thường ở Growth"
+      - "Cash Cow (tăng trưởng thấp, thị phần cao): thường ở Maturity"
+      - "Question Mark (tăng trưởng cao, thị phần thấp): thường ở Introduction/early Growth"
+      - "Dog (tăng trưởng thấp, thị phần thấp): thường ở Decline"
+    when_to_use: "Phân bổ nguồn lực giữa các sản phẩm trong danh mục."
+    how_to_apply:
+      - "Lập bảng mỗi sản phẩm: giai đoạn, tăng trưởng thị trường, thị phần tương đối, doanh thu, đóng góp"
+      - "Dòng tiền từ Cash Cow tài trợ Stars và Question Marks có triển vọng"
+      - "Đặt trigger cắt/bán Dogs"
+    how_to_read_results: "Một danh mục khoẻ có sản phẩm ở ít nhất 2-3 giai đoạn khác nhau; không quá phụ thuộc một Cash Cow."
+    pitfalls:
+      - "Nguồn chỉ nhắc tên, chưa mô tả đầy đủ; cần file chiến lược để áp dụng chuẩn"
+      - "Đánh đồng giai đoạn PLC với ô BCG (chỉ tương quan)"
+    example: "Apple (nguồn): iPhone (Maturity, Cash Cow), Apple Watch (Growth), Vision Pro (Introduction)."
+procedures:
+  - id: "p09_identify_stage"
+    name: "Xác định giai đoạn PLC của sản phẩm/ngành"
+    steps:
+      - "Hỏi người dùng: sản phẩm/dòng/ngành nào? (xác định phạm vi); ra mắt bao lâu? có doanh thu 3-4 kỳ gần nhất không?"
+      - "Thu thập số liệu: doanh thu hoặc số lượng theo kỳ (YoY), thị phần (nếu có), số đối thủ cùng phân khúc, biên lợi nhuận sản phẩm, mô tả khách hàng chủ yếu (mới thử hay đại trà)"
+      - "Tính g (m09_growth_rate), CAGR nếu ≥3 năm, thị phần, biên lợi nhuận"
+      - "Chạy m09_stage_classifier để gán sơ bộ; đối chiếu với bảng 5 chỉ số (m09_stage_diagnosis)"
+      - "Nếu mâu thuẫn hoặc g ở vùng 5-20%: xét xu hướng, mùa vụ, sự kiện bất thường (Tết, khuyến mãi); kết luận 'chuyển tiếp'"
+      - "Kiểm tra loại hình đường cong: có phải fad/style/perennial? có nguy cơ disruption (PESTEL: công nghệ thay thế)?"
+      - "Xác định độ tin cậy kết luận (cao/trung bình/thấp) và cần dữ liệu gì thêm"
+    outputs: "Giai đoạn + độ tin cậy + bằng chứng số + cảnh báo rủi ro (self-fulfilling, disruption)."
+  - id: "p09_select_strategy"
+    name: "Chọn chiến lược theo giai đoạn (đầu ra: kế hoạch marketing mix)"
+    steps:
+      - "Lấy giai đoạn từ p09_identify_stage"
+      - "Đặt mục tiêu giai đoạn: Introduction = awareness + trial; Growth = thị phần; Maturity = lợi nhuận + bảo vệ share; Decline = giảm chi, thu hoạch"
+      - "Dùng m09_stage_marketing_mix chọn hành động mặc định cho 4P; bổ sung chiến lược giá (m10)"
+      - "Nếu Maturity: đánh giá 3 đòn bẩy kéo dài (Market/Product/Mix Modification), chọn pilot"
+      - "Nếu Decline: đánh giá 4 phương án, tính m09_harvest_contribution, kiểm tra nguyên nhân"
+      - "Đặt KPI và ngưỡng chuyển giai đoạn (trigger)"
+      - "Lập kế hoạch ngân sách và nguồn lực; đánh giá tác động lên portfolio"
+    outputs: "Kế hoạch 4P theo giai đoạn + KPI + trigger chuyển chiến lược + phân bổ ngân sách."
+  - id: "p09_launch_plan"
+    name: "Lập kế hoạch ra mắt sản phẩm mới (Introduction)"
+    steps:
+      - "Xác định core benefit và phiên bản tối thiểu (MVP) để tập trung"
+      - "Chọn giá: skimming nếu sản phẩm khác biệt, có nhóm sẵn lòng trả cao, năng lực hạn chế; penetration nếu cần lượng nhanh, dễ bị copy, quy mô kinh tế quan trọng (xem m10)"
+      - "Chọn kênh chọn lọc (selective) cho kiểm soát trải nghiệm"
+      - "Ngân sách awareness: PR, seeding, influencer, demo; thiết lập KPI trial"
+      - "Xây runway tiền mặt đủ cho giai đoạn lỗ (ước tính tháng hoà vốn)"
+      - "Chuẩn bị chiến lược vượt Chasm nếu là sản phẩm đổi mới (chọn niche, tham chiếu)"
+    outputs: "Kế hoạch launch: giá, kênh, ngân sách, KPI trial, runway."
+  - id: "p09_extend_maturity"
+    name: "Kéo dài Maturity"
+    steps:
+      - "Phân tích nguồn tăng trưởng còn lại: khách mới (Market Mod), tăng usage, nâng cấp sản phẩm (Product Mod), đổi giá/kênh/promotion (Mix Mod)"
+      - "Dùng m09_revenue_decomposition để xem dư địa ASP vs lượng"
+      - "Chọn 1-2 thử nghiệm nhỏ, đo trong 4-8 tuần"
+      - "Gắn với loyalty/CRM (m03) để bảo vệ share"
+      - "Quyết định mở rộng, điều chỉnh hay dừng dựa trên ROI"
+    outputs: "Danh sách pilot, kết quả đo, quyết định mở rộng."
+  - id: "p09_decline_decision"
+    name: "Quyết định cho sản phẩm Decline"
+    steps:
+      - "Kiểm chứng suy thoái là cấu trúc: doanh thu giảm >=3 kỳ, ngành/công nghệ thay thế, không phải do vận hành"
+      - "Tính đóng góp 4 phương án (Maintain, Harvest, Divest, Discontinue) với m09_harvest_contribution và chi phí cơ hội"
+      - "Đánh giá niche trung thành và thương hiệu"
+      - "Chọn phương án theo decision_rules"
+      - "Lập kế hoạch thực hiện (thông báo, tồn kho, chuyển khách)"
+    outputs: "Phương án + con số đóng góp + kế hoạch thực hiện + trigger xem xét lại."
+decision_rules:
+  - "Nếu tăng trưởng doanh số >20%/năm, số đối thủ đang tăng, biên lợi nhuận đang cải thiện thì xếp Growth; ưu tiên thị phần, mở rộng kênh, brand building."
+  - "Nếu tăng trưởng 0-5%, nhiều đối thủ, biên lợi nhuận giảm do chiến tranh giá thì xếp Maturity; chuyển trọng tâm sang loyalty/CRM, line extension và chọn 1-2 đòn kéo dài."
+  - "Nếu doanh thu giảm nhiều kỳ liên tiếp do nguyên nhân cấu trúc (công nghệ thay thế/thị hiếu) thì xếp Decline; tính Harvest vs Maintain vs Divest vs Discontinue."
+  - "Nếu doanh thu giảm nhưng nguyên nhân là vận hành (chất lượng, kênh, giá) thì không kết luận Decline; sửa nguyên nhân để tránh self-fulfilling prophecy."
+  - "Nếu mới ra mắt, ít đối thủ, lỗ, awareness thấp thì Introduction; ưu tiên awareness và trial, chấp nhận lỗ nhưng kiểm soát runway."
+  - "Nếu sản phẩm mới khác biệt rõ, có nhóm trả giá cao, năng lực sản xuất giới hạn thì cân nhắc skimming; nếu cần lượng nhanh, dễ bị copy, scale economies lớn thì penetration."
+  - "Nếu doanh số tốt với nhóm đầu rồi chững quanh mức tích lũy ~16% thị trường thì nghi ngờ Chasm; chọn niche, giải pháp trọn vẹn, tham chiếu."
+  - "Nếu số lượng giảm nhẹ nhưng ASP tăng đủ bù thì doanh thu vẫn tăng; xem là premiumization hợp lệ nếu thị phần không sụt mạnh."
+  - "Nếu Harvest cho đóng góp lớn hơn Maintain và không còn khả năng hồi sinh thì chọn Harvest; nếu đóng góp âm dai dẳng thì Divest hoặc Discontinue."
+  - "Nếu danh mục chỉ có sản phẩm cùng giai đoạn thì thêm sản phẩm ở giai đoạn khác (portfolio planning)."
+  - "Nếu sản phẩm có tính trào lưu (fad) thì không áp S-curve; tối đa hoá lợi nhuận nhanh, hạn chế đầu tư dài hạn."
+  - "Nếu có tín hiệu disruption (công nghệ thay thế đang lên) thì chuẩn bị sản phẩm kế nhiệm sớm, đừng chờ Decline."
+benchmarks:
+  - {metric: "Sales growth theo giai đoạn", value: "Introduction <10%; Growth >20%; Maturity 0-5%; Decline âm (khoảng hở 5-20% cần thêm tín hiệu)", context: "Ngưỡng tham chiếu của nguồn, không phải quy tắc cứng", confidence: "medium"}
+  - {metric: "Market share", value: "Introduction <5%; Growth tăng nhanh; Maturity ổn định; Decline giảm", context: "Chỉ số tham chiếu của nguồn", confidence: "medium"}
+  - {metric: "Số đối thủ", value: "Introduction 0-2; Growth tăng; Maturity nhiều nhất; Decline giảm", context: "Tham chiếu của nguồn", confidence: "medium"}
+  - {metric: "Phân phối chấp nhận Rogers", value: "2.5% / 13.5% / 34% / 34% / 16% (tổng 100%)", context: "Tỷ lệ chuẩn của Rogers; tích lũy 2.5 -> 16 -> 50 -> 84 -> 100", confidence: "high"}
+  - {metric: "Điểm Chasm", value: "~16% tích lũy (Innovators + Early Adopters)", context: "Moore 1991, tính từ tỷ lệ Rogers", confidence: "high"}
+  - {metric: "iPhone Gen 1 giá khởi điểm", value: "$499 (skimming), AT&T duy nhất tại Mỹ", context: "Case trong nguồn; số cụ thể (4GB, có hợp đồng) cần kiểm chứng", confidence: "medium"}
+  - {metric: "Apple India sales 2023", value: "+40%", context: "Số trong nguồn, không có nguồn trích dẫn", confidence: "low"}
+  - {metric: "Apple ASP tăng nhờ upsell Pro/Pro Max", value: "+15%", context: "Số trong nguồn, không rõ kỳ/nguồn", confidence: "low"}
+pitfalls:
+  - "Self-fulfilling prophecy: gán nhãn Decline rồi cắt đầu tư làm sản phẩm suy thoái thật; phải kiểm chứng nguyên nhân trước."
+  - "Không phải sản phẩm nào cũng theo S-curve: fad, style, perennial."
+  - "Khó xác định ranh giới giai đoạn (cuối Growth hay đầu Maturity?) và thời lượng giai đoạn không biết trước."
+  - "Nhầm Product vs Category: PLC áp dụng cho sản phẩm cụ thể hay cho cả ngành cho kết luận khác nhau."
+  - "Disruption: sản phẩm có thể chết nhanh (Nokia bị iPhone vượt trong ~3 năm, theo nguồn)."
+  - "Dùng một chỉ số duy nhất (ví dụ chỉ g) để kết luận giai đoạn."
+  - "Khoảng hở ngưỡng trong nguồn (Introduction <10%, Growth >20%, Maturity 0-5%): vùng 5-20% không có nhãn rõ; đừng ép."
+  - "Ghi chú dữ liệu nguồn: (1) Nguồn nêu 'Grab marketing app Việt khi Uber vào VN' là diễn giải đáng ngờ, Grab là công ty Đông Nam Á (thành lập tại Malaysia, trụ sở Singapore); dùng như minh họa, không dùng làm fact. (2) 'Netflix giảm giá khi mở rộng quốc tế' chưa kiểm chứng. (3) 'Tesla chỉ bán online + showroom chọn lọc' là mô hình direct-to-consumer, ví dụ minh họa. (4) Giá iPhone Gen 1 $499 (4GB, kèm hợp đồng AT&T); nguồn gọi là skimming, còn giá $199 'w/ contract' của 3G là giá trợ giá hợp đồng, so sánh giá hai thời điểm cần cùng điều kiện. (5) Các số India +40% và ASP +15% không có nguồn trích dẫn."
+  - "Ví dụ quốc tế (Apple, Coca-Cola, Starbucks) là hãng lớn; SME cần điều chỉnh quy mô, không sao chép."
+  - "Nguồn nhắc Cash Cow/Stars/Question Marks (BCG) mà không giải thích; module bổ sung công thức relative market share để làm rõ, đánh dấu ngoài nguồn."
+  - "Bỏ qua chi phí cơ hội khi giữ sản phẩm suy thoái."
+sme_vn_guidance:
+  - topic: "Công cụ theo dõi doanh số/giai đoạn"
+    detail: "Google Sheets/Excel tính YoY, CAGR, thị phần; phần mềm POS (KiotViet, Sapo, iPOS) xuất doanh số theo sản phẩm/tháng; Google Trends (miễn phí) xem xu hướng quan tâm; Facebook/TikTok analytics theo dõi tăng trưởng. Chi phí POS thường vài trăm nghìn đến vài triệu VNĐ/tháng."
+    confidence: "low"
+  - topic: "Đo thị phần cục bộ"
+    detail: "SME ít có số thị trường chính thức; ước lượng thị phần cục bộ bằng khảo sát/đếm đối thủ trong bán kính khu vực (ví dụ số quán cà phê trong 1km, sử dụng Google Maps), doanh thu ước tính từ báo cáo ngành (Nielsen, Euromonitor, báo cáo ngành VN) khi có."
+    confidence: "low"
+  - topic: "Quản lý danh mục menu/sản phẩm"
+    detail: "Với F&B, phân loại từng món theo giai đoạn (món mới thử nghiệm = Introduction; món bán chạy tăng = Growth; món chủ lực ổn định = Maturity; món doanh số giảm = Decline) và ra quyết định theo tháng; gắn menu engineering (Stars/Plowhorse/Puzzle/Dog)."
+    confidence: "medium"
+  - topic: "Ra mắt sản phẩm mới ngân sách thấp"
+    detail: "Dùng seeding KOC/micro-influencer, sampling tại cửa hàng, pre-order, Facebook/TikTok organic; ngân sách thử nghiệm khoảng 5-15 triệu VNĐ/tháng cho SME nhỏ (ước lượng)."
+    confidence: "low"
+  - topic: "Kéo dài Maturity cho SME"
+    detail: "Ưu tiên chi phí thấp: bán qua GrabFood/ShopeeFood/Zalo OA (Mix Mod), combo/bundle và upsell tăng ASP (Product Mod), nhắm khách văn phòng/doanh nghiệp B2B (Market Mod), chương trình tích điểm bằng Zalo/phần mềm POS (loyalty)."
+    confidence: "low"
+  - topic: "Chiến lược giá khi ra mắt tại VN"
+    detail: "Thị trường VN nhạy cảm với giá và khuyến mãi; penetration (giảm giá/voucher chuyến đầu kiểu Grab) phổ biến nhưng dễ kéo sang chiến tranh giá ở Maturity; skimming phù hợp sản phẩm khác biệt/premium (specialty coffee, đồ handmade)."
+    confidence: "low"
+  - topic: "Thời điểm Tết và mùa vụ"
+    detail: "Doanh số VN biến động mạnh theo Tết, mùa lễ, mưa/nắng; khi tính YoY dùng cùng kỳ năm trước và quan sát nhiều tháng để tránh nhầm Decline/Growth."
+    confidence: "medium"
+  - topic: "Pháp lý khi khai tử/bán sản phẩm"
+    detail: "Bán lại thương hiệu hoặc dây chuyền (Divest) cần hợp đồng chuyển nhượng, nghĩa vụ thuế (cần xác nhận với kế toán/luật sư); khai tử sản phẩm có bảo hành cần lập kế hoạch hỗ trợ khách hàng."
+    confidence: "low"
+case_lessons:
+  - name: "iPhone qua 17 năm (2007-2024)"
+    type: "success"
+    setup: >
+      Introduction 2007-2008: Gen 1 chỉ AT&T Mỹ, $499, keynote PR của Steve Jobs, phân phối hạn chế, skimming.
+      Growth 2008-2015: iPhone 3G đến 6 Plus, App Store, đa quốc gia, đa operator, giá giảm dần ($199 với hợp đồng), 'There is an app for that'.
+      Maturity 2015-2024: smartphone bão hoà, cải tiến incremental, line extension (SE, Pro, Pro Max), trade-in, services (Apple One), ecosystem lock-in.
+      Decline? Chưa: doanh số ổn định/giảm nhẹ nhưng doanh thu tăng nhờ ASP cao.
+    key_calculations:
+      - "Doanh thu = Số lượng x ASP: số lượng giảm nhẹ nhưng ASP tăng (nguồn: +15% nhờ upsell Pro) -> doanh thu và lợi nhuận tăng (minh hoạ: (1-0.05)(1+0.15)-1 = +9.25%)"
+      - "Market Modification: Ấn Độ, ĐNÁ, iPhone SE giá thấp hơn, sản xuất tại Ấn Độ: India sales +40% (2023, nguồn không trích dẫn)"
+      - "Product Modification: Camera Pro, Dynamic Island, USB-C, Apple Intelligence (2024)"
+      - "Marketing Mix Modification: trade-in, trả góp (Apple Card), Apple One bundle -> từ bán thiết bị sang bán thuê bao"
+    lesson: >
+      PLC không phải định mệnh: Apple chủ động kéo dài Maturity bằng đổi mới liên tục + ecosystem lock-in. Revenue quan trọng hơn Unit Sales
+      (premiumization qua ASP). Dịch vụ biến device thành platform nên PLC của platform dài hơn PLC của device. Vượt Chasm nhờ App Store
+      giải câu hỏi 'làm được gì' thay vì 'công nghệ hay'. Portfolio: iPhone (Maturity), Apple Watch (Growth), Vision Pro (Introduction), dòng tiền
+      Cash Cow nuôi Stars và Question Marks. Hạn chế: disruption (AR glasses, AI wearables), super cycle ít dần, phụ thuộc Trung Quốc (rủi ro PESTEL).
+    data_reliability: "illustrative"
+  - name: "Nokia bị iPhone vượt (disruption)"
+    type: "failure"
+    setup: "Nguồn nhắc ngắn: sản phẩm có thể 'chết đột ngột' vì disruption; Nokia bị iPhone 'giết' trong khoảng 3 năm."
+    key_calculations: ["Không có số liệu trong nguồn; khung thời gian ~3 năm do nguồn nêu, chưa kiểm chứng"]
+    lesson: "Đường cong S-curve không bảo vệ bạn khỏi công nghệ thay thế; cần theo dõi tín hiệu disruption (PESTEL) và phát triển sản phẩm kế nhiệm ngay ở Maturity."
+    data_reliability: "unverified"
+  - name: "Các ví dụ minh hoạ theo giai đoạn (nguồn)"
+    type: "success"
+    setup: "Introduction: ChatGPT 2022 tăng trưởng bằng PR + word-of-mouth. Growth: Grab mở rộng SG -> Hà Nội -> toàn quốc -> ĐNÁ. Maturity: Coca-Cola line extension (Zero, Diet, Cherry, Vanilla, Energy) và 200+ quốc gia; Starbucks Rewards; hàng không war giá. Decline: iPod khai tử 2022, BlackBerry giảm giá không cứu được, máy fax, DVD player. Maturity extension: Arm & Hammer baking soda -> cleaning, deodorizer; Samsung camera; McDonald's delivery."
+    key_calculations: ["Không có số liệu tài chính; minh hoạ định tính"]
+    lesson: "Mỗi giai đoạn có một đòn bẩy marketing dominating: PR/seeding (Introduction), mở rộng phân phối/brand (Growth), line extension + loyalty (Maturity), thu hẹp (Decline). Một số ví dụ nguồn (Grab vs Uber, Netflix, Tesla) cần diễn giải thận trọng."
+    data_reliability: "illustrative"
+worked_examples:
+  - name: "1. Chẩn đoán giai đoạn: thương hiệu trà sữa 'Trà Sen' (SME VN, minh hoạ)"
+    inputs: "Doanh thu (triệu VNĐ): năm 1: 600; năm 2: 1,100; năm 3: 1,500; năm 4: 1,560; năm 5: 1,580; năm 6: 1,500. Khu vực có 3 đối thủ năm 1, 25 đối thủ năm 4. Biên lợi nhuận: năm 1 âm, năm 3 +14%, năm 6 +6%."
+    steps:
+      - "Tính g từng năm: 1100/600-1 = 83.3%; 1500/1100-1 = 36.4%; 1560/1500-1 = 4.0%; 1580/1560-1 = 1.3%; 1500/1580-1 = -5.1%"
+      - "Gán nhãn: năm 2-3 g>20% -> Growth; năm 4-5 g trong 0-5% -> Maturity; năm 6 g<0 -> bắt đầu Decline? cần kiểm tra"
+      - "Xác nhận bằng số đối thủ: tăng 3 -> 25 (Maturity đông nhất); biên lợi nhuận giảm 14% -> 6% (chiến tranh giá)"
+      - "Kiểm tra nguyên nhân năm 6: có phải do cạnh tranh giá hoặc cửa hàng chuyển địa điểm? hay do ngành suy thoái (cấu trúc)?"
+      - "Kết luận: cuối Maturity, có nguy cơ vào Decline; chưa cắt đầu tư ngay (tránh self-fulfilling)"
+    result: "Trà Sen ở cuối Maturity (độ tin cậy trung bình); khuyến nghị: Market Mod (B2B văn phòng), Product Mod (dòng ít đường/healthy), Mix Mod (giao hàng, combo, thành viên); đặt trigger: nếu g<0 thêm 2 quý và đóng góp âm thì xem xét Harvest/Divest."
+  - name: "2. Doanh thu tăng nhờ ASP dù lượng giảm: công ty máy lọc nước SME (minh hoạ)"
+    inputs: "Năm trước: 100 máy x ASP 20 triệu = 2,000 triệu. Năm nay: 95 máy, ASP 23 triệu (nhờ bán nhiều dòng cao cấp và lắp đặt)."
+    steps:
+      - "g_q = 95/100 - 1 = -5%"
+      - "g_ASP = 23/20 - 1 = +15%"
+      - "Doanh thu năm nay = 95 x 23 = 2,185 triệu"
+      - "g_R = 2185/2000 - 1 = 9.25%; kiểm tra bằng tích: 0.95 x 1.15 - 1 = 0.0925"
+      - "Không cộng thẳng -5% + 15% = 10% (sai)"
+    result: "Doanh thu +9.25% nhờ premiumization (Maturity). Cảnh báo: nếu số lượng tiếp tục giảm, cần kiểm tra thị phần; hành động: line extension, trade-in máy cũ, gói bảo trì định kỳ (dịch vụ)."
+  - name: "3. Harvest sản phẩm suy thoái: cà phê hòa tan 3in1 (minh hoạ)"
+    inputs: "Doanh thu 480 triệu/năm, biên đóng góp 35%, marketing 60 triệu, chi phí cố định phân bổ 90 triệu. Nếu Harvest: marketing cắt còn 10 triệu, doanh thu giảm 8.3% còn 440 triệu."
+    steps:
+      - "Maintain: 480 x 0.35 = 168; 168 - 60 - 90 = 18 triệu"
+      - "Harvest: 440 x 0.35 = 154; 154 - 10 - 90 = 54 triệu"
+      - "Chênh lệch: 54 - 18 = +36 triệu/năm"
+      - "Kiểm tra giả định: chi phí cố định 90 có cắt được không? nếu không thì lợi ích thật là 36; xem xét tác động bán chéo sang cà phê phin/hạt"
+    result: "Harvest cho đóng góp cao hơn 36 triệu/năm. Khuyến nghị: Harvest và theo dõi hằng quý; nếu doanh thu sụt >20% bất ngờ hoặc đóng góp <0 thì chuyển Discontinue/Divest. Nguồn lực giải phóng chuyển cho dòng đang Growth."
+  - name: "4. Ước lượng khách theo nhóm Rogers và Chasm: phần mềm quản lý bếp cho quán ăn (minh hoạ)"
+    inputs: "Thị trường mục tiêu 50,000 quán ăn có thể dùng phần mềm. Hiện có 1,100 khách trả phí, doanh số bắt đầu chững."
+    steps:
+      - "Innovators = 2.5% x 50,000 = 1,250; Early Adopters = 13.5% x 50,000 = 6,750; tích lũy Chasm = 16% x 50,000 = 8,000"
+      - "Hiện 1,100 khách (2.2%) -> vẫn trong nhóm Innovators; chưa tới Chasm (cần 8,000)"
+      - "Early Majority = 34% x 50,000 = 17,000 khách; thông điệp phải đổi từ tính năng sang tiết kiệm chi phí, tham chiếu quán tương tự, bảo hành/hỗ trợ"
+      - "Chiến lược vượt Chasm: chọn niche (chuỗi phở/quán nhậu 20-50 bàn), giải pháp trọn gói (cài đặt + đào tạo + hỗ trợ Zalo), thu thập case study từ 20-30 khách đầu"
+    result: "Doanh số chững ở 1,100 chưa phải Chasm thật mà là chưa hết nhóm đầu; cần bàn phân biệt giữa bão hoà nhóm đầu và hiệu quả thông điệp trước khi kết luận."
+practice_questions:
+  - q: "Doanh thu sản phẩm A: 800, 1,000, 1,080 triệu (3 năm). Tính tăng trưởng từng năm và nhận định giai đoạn."
+    a: "g1 = 1000/800-1 = 25%; g2 = 1080/1000-1 = 8%. Từ >20% xuống 8% -> chuyển từ Growth sang giai đoạn chuyển tiếp/vào Maturity; cần thêm số đối thủ và biên lợi nhuận."
+  - q: "Sản phẩm bán 10,000 chiếc năm trước với ASP 500k; năm nay 9,000 chiếc ASP 600k. Doanh thu thay đổi bao nhiêu %?"
+    a: "Trước: 5,000 triệu; sau: 9,000 x 0.6 = 5,400 triệu -> +8%. Kiểm tra: (0.9)(1.2)-1 = 0.08."
+  - q: "Tại sao nhiều sản phẩm tech chết ở Chasm?"
+    a: "Early Adopters yêu công nghệ, chấp nhận rủi ro; Early Majority cần giải pháp thực tế, đáng tin, có tham chiếu. Sản phẩm không chuyển thông điệp và 'whole product' nên không thuyết phục nhóm kế tiếp."
+  - q: "Khi nào chọn skimming, khi nào penetration ở Introduction?"
+    a: "Skimming: sản phẩm khác biệt, có nhóm trả giá cao, năng lực giới hạn (iPhone $499). Penetration: cần lượng nhanh, dễ bị sao chép, economies of scale (Grab voucher chuyến đầu)."
+  - q: "Kể 3 chiến lược kéo dài Maturity và cho ví dụ VN."
+    a: "Market Modification (bán khối văn phòng/B2B), Product Modification (dòng healthy/ít đường), Marketing Mix Modification (giao hàng, combo, loyalty). Ví dụ nguồn: Arm & Hammer, Samsung camera, McDonald's delivery."
+  - q: "Nêu 4 chiến lược ở Decline và khi nào dùng Harvest."
+    a: "Maintain, Harvest, Divest, Discontinue. Harvest khi sản phẩm không còn tương lai nhưng vẫn sinh tiền: cắt marketing/chi phí để tối đa hoá đóng góp ngắn hạn."
+  - q: "Nhược điểm 'self-fulfilling prophecy' của PLC là gì? Cách phòng tránh?"
+    a: "Tin sản phẩm đang suy thoái nên cắt đầu tư -> gây suy thoái thật. Phòng tránh: chẩn đoán nguyên nhân (cấu trúc hay vận hành), dùng nhiều chỉ số, thử nghiệm kéo dài trước khi cắt."
+  - q: "Vì sao iPhone ở Late Maturity mà doanh thu vẫn tăng?"
+    a: "Unit sales ổn định/giảm nhẹ nhưng ASP tăng (upsell Pro/Pro Max, premium), cộng dịch vụ (Apple One, iCloud) tạo recurring revenue; doanh thu = lượng x ASP."
+  - q: "Thị trường 50,000 khách tiềm năng. Cần bao nhiêu khách để tới điểm Chasm?"
+    a: "16% x 50,000 = 8,000 khách (Innovators 1,250 + Early Adopters 6,750)."
+checklist:
+  - "Đã xác định rõ đối tượng: sản phẩm, dòng hay ngành?"
+  - "Có số liệu tối thiểu 3-4 kỳ cùng kỳ (YoY)?"
+  - "Đã tính tốc độ tăng, thị phần, số đối thủ, biên lợi nhuận, loại khách?"
+  - "Ngưỡng khoảng hở 5-20% được xử lý bằng thêm tín hiệu?"
+  - "Đã kiểm tra loại đường cong (fad/style/perennial) và tín hiệu disruption?"
+  - "Đã loại trừ nguyên nhân vận hành trước khi kết luận Decline (tránh self-fulfilling)?"
+  - "4P đã khớp mục tiêu giai đoạn?"
+  - "Với Maturity: đã thử ít nhất 1 trong 3 đòn bẩy kéo dài?"
+  - "Với Decline: đã tính đóng góp Maintain/Harvest/Divest/Discontinue gồm chi phí cơ hội?"
+  - "Danh mục có sản phẩm ở nhiều giai đoạn?"
+  - "Đã đặt trigger số để chuyển chiến lược?"
+  - "Số thị trường/giá SME có ghi rõ độ tin cậy thấp?"
+excel_google_sheets_templates:
+  - name: "Bảng chẩn đoán PLC theo sản phẩm"
+    layout: "Cột: Sản phẩm | Doanh thu kỳ t-3..t | Tăng trưởng YoY (=B3/B2-1) | Thị phần | Số đối thủ | Biên lợi nhuận | Giai đoạn (công thức IF theo m09_stage_classifier) | Chiến lược"
+  - name: "So sánh Harvest vs Maintain"
+    layout: "Dòng: Doanh thu, Biên đóng góp, Marketing, Chi phí cố định, Đóng góp = R*cm - M - F; hai cột Maintain/Harvest và chênh lệch"
+  - name: "Phân rã doanh thu"
+    layout: "Cột: Kỳ | Số lượng | ASP = Doanh thu/Số lượng | g_Q | g_ASP | g_R = (1+g_Q)(1+g_ASP)-1 (kiểm tra bằng Doanh thu_t/Doanh thu_t-1-1)"
+  - name: "Ước lượng nhóm Rogers"
+    layout: "N thị trường; hệ số 2.5%, 13.5%, 34%, 34%, 16%; cột số khách và tích lũy"
+  - name: "Danh mục sản phẩm (portfolio)"
+    layout: "Sản phẩm | Giai đoạn | Tăng trưởng thị trường | Thị phần tương đối | Doanh thu | Đóng góp | Phân loại BCG | Hành động"
+source_file: "09-product-life-cycle.md"

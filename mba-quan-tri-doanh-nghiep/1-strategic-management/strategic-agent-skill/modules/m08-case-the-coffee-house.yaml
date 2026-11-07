@@ -1,0 +1,479 @@
+# m08 - Case study The Coffee House (TCH): chẩn đoán khủng hoảng thương hiệu trưởng thành + lộ trình xoay trục chiến lược
+# Nguồn: 08-CASE-STUDY-The-Coffee-House.md. Framework nền (VRIO, 5 Forces, Ansoff, BSC...) nằm ở m01-m07; file này chỉ chứa phần MỚI:
+# cách đọc case, quy trình chạy phân tích case chiến lược end-to-end, quy tắc cắt tỉa/xoay trục, mô hình kinh tế chiến dịch CRM.
+# QUAN TRỌNG: file nguồn là phân tích ĐỊNH TÍNH, không có số liệu tài chính thật của TCH. Mọi con số trong worked_examples là GIẢ ĐỊNH MINH HỌA
+# (illustrative), đã chạy python3 verify tính toán, KHÔNG được trích như số thực của TCH.
+id: "m08"
+name_vi: "Case study The Coffee House"
+name_en: "Case Study: The Coffee House - Strategic Pivot of a Maturing Brand"
+purpose: >-
+  Dạy agent cách phân tích một case chiến lược trọn vẹn: chẩn đoán vì sao một thương hiệu tiên phong mất lợi thế (VRIO bị pha loãng, kẹt ở giữa,
+  áp lực mặt bằng), rồi đề xuất lộ trình xoay trục (cắt tỉa -> tái cấu trúc -> tái định vị) có ưu tiên dòng tiền. Module này là khuôn mẫu
+  để chạy chuỗi framework m01-m07 lên một doanh nghiệp F&B cụ thể và ra khuyến nghị hành động.
+when_to_use:
+  - "Người dùng đưa một doanh nghiệp đang suy giảm/bão hòa (chuỗi F&B, bán lẻ, thương hiệu từng dẫn đầu) và hỏi 'vì sao thất bại, cứu thế nào'."
+  - "Cần khuôn mẫu phân tích case chiến lược: thứ tự áp dụng VRIO, 5 Forces, Ansoff, BSC và cách nối chẩn đoán với lộ trình hành động."
+  - "Câu hỏi về chiến lược 'thu mình để tồn tại' (retrenchment), đóng cửa điểm bán kém hiệu quả, cắt giảm chi phí vs đổi mới concept."
+  - "Cần khai thác dữ liệu khách hàng sở hữu (first-party data, CRM, app) để tái định vị: RFM, UGC, referral, gamification, lookalike/retargeting."
+  - "Câu hỏi về bị 'kẹt ở giữa' (stuck in the middle) giữa phân khúc bình dân và specialty."
+prerequisites: [m01, m02, m03, m04, m06]
+related_modules:
+  - "m01 - PESTEL/5 Forces: bối cảnh vĩ mô (giá thuê sau đại dịch, hành vi Gen Z) và áp lực ngành (đối thủ, thế lực thương lượng của khách) dùng ở bước 1 của quy trình."
+  - "m02 - VRIO/Value Chain: bảng VRIO của TCH là lõi chẩn đoán; module này chỉ thêm cách đọc 'VRIO bị pha loãng theo thời gian'."
+  - "m03 - Chiến lược cạnh tranh Porter: khái niệm 'kẹt ở giữa' (stuck in the middle) giữa Cost Leadership và Differentiation/Focus."
+  - "m04 - Ansoff + chiến lược tăng trưởng: chọn hướng thâm nhập/phát triển sản phẩm/thị trường/đa dạng hóa cho lộ trình; cảnh báo đa dạng hóa."
+  - "m05 - Blue Ocean: concept 'Hybrid / Deep Work' là hướng tạo khoảng trống thay vì đua giá; dùng ERRC để thiết kế."
+  - "m06 - Balanced Scorecard: biến lộ trình 3 giai đoạn thành KPI 4 góc nhìn (tài chính, khách hàng, quy trình, học hỏi)."
+  - "m07 - Scenario planning: kiểm tra lộ trình dưới kịch bản giá thuê tăng / Gen Z chuyển kênh / đối thủ giảm giá."
+  - "m09-m10 - Bộ case chiến lược khác: so sánh để thấy mẫu hình lặp lại (mở rộng quá nhanh, mất trọng tâm)."
+  - "Tài chính (finance-agent-skill) - m05 phân tích BCTC, m06 vốn lưu động, m02 NPV: dùng khi cần định lượng đóng cửa cửa hàng hay dòng tiền chiến dịch."
+
+# ----------------------------------------------------------------------------------------------------------------- CONCEPTS (chỉ khái niệm MỚI)
+concepts:
+  - term_vi: "Pha loãng lợi thế cạnh tranh (VRIO dilution)"
+    term_en: "Erosion of competitive advantage / VRIO dilution"
+    definition: >-
+      Hiện tượng một nguồn lực từng thỏa đủ V-R-I-O mất dần tính 'Khó bắt chước' (I) hoặc 'Hiếm' (R) khi đối thủ sao chép thành công,
+      khiến lợi thế bền vững tụt xuống tạm thời rồi ngang bằng. Ở TCH: 'Không gian Nhà' và 'Trải nghiệm khách hàng' bị Highlands, Phúc Long,
+      chuỗi kiosk và quán specialty bắt chước.
+    why_it_matters: >-
+      VRIO (Barney, 1991) là ảnh chụp tại một thời điểm. Case dạy rằng phải chấm lại định kỳ: lợi thế 'bền vững' hôm nay có thể chỉ là 'tạm thời'
+      sau 2-3 năm. Mở rộng quá nhanh làm yếu chính cơ chế khiến nguồn lực khó bắt chước (văn hóa nhân viên, sự nhất quán trải nghiệm).
+  - term_vi: "Bị kẹt ở giữa"
+    term_en: "Stuck in the middle"
+    definition: >-
+      Doanh nghiệp không đủ rẻ để cạnh tranh nhóm bình dân (nhanh, rẻ) và cũng không đủ độc bản để phục vụ nhóm specialty (cà phê nguyên bản, gu riêng),
+      nên mất cả hai đầu của thị trường phân hóa.
+    why_it_matters: >-
+      Porter (1980) cảnh báo đây là vị thế lợi nhuận thấp nhất vì không có lợi thế chi phí lẫn khác biệt hóa rõ ràng. Dấu hiệu nhận biết:
+      biên lợi nhuận mỏng + thực đơn rộng + khách không nhớ thương hiệu mạnh về gì.
+  - term_vi: "Thương hiệu trưởng thành trong thị trường bão hòa"
+    term_en: "Maturing brand in a saturated market"
+    definition: >-
+      Giai đoạn tăng trưởng đã hết dư địa mở cửa hàng mới, cạnh tranh chuyển sang giành thị phần của nhau; khủng hoảng thường đến từ chi phí cố định
+      (mặt bằng) và mất bản sắc chứ không phải sản phẩm tồi.
+    why_it_matters: "Quyết định khung phản ứng: ở giai đoạn này ưu tiên bảo vệ dòng tiền và tìm lại bản sắc, không tiếp tục chiến lược phủ cửa hàng của giai đoạn tăng trưởng."
+  - term_vi: "Xoay trục chiến lược (thu mình để tồn tại)"
+    term_en: "Strategic pivot / retrenchment"
+    definition: >-
+      Chấp nhận giảm quy mô (đóng điểm bán lỗ, tinh giản bộ máy) để tăng chất lượng (tập trung sản phẩm đặc sản, dữ liệu, concept mới).
+      Lộ trình chuẩn của case: Cắt tỉa (ngắn hạn) -> Tái cấu trúc (trung hạn) -> Tái định vị (dài hạn).
+    why_it_matters: "Thứ tự quan trọng vì dòng tiền: cầm máu trước, mới có vốn để đổi mới. Đổi concept khi dòng tiền âm sẽ đốt nốt vốn còn lại."
+  - term_vi: "Dữ liệu sơ cấp sở hữu (first-party data) làm lợi thế cạnh tranh"
+    term_en: "First-party data / CRM as strategic asset"
+    definition: >-
+      Dữ liệu khách hàng tự thu thập qua app (lịch sử đặt, khung giờ, khẩu vị, số điện thoại/email). Là tài sản mà quán nhỏ không có và đối thủ không sao chép được ngay.
+    why_it_matters: >-
+      Giảm chi phí mua khách (CAC/CPA) vì kích hoạt khách cũ thay vì đốt tiền quảng cáo mù; cho phép cá nhân hóa, A/B test, lookalike audience.
+      Đây là nguồn lực 'App & CRM' duy nhất được chấm V-R-I-O đầy đủ trong bảng VRIO hiện tại của TCH.
+  - term_vi: "Mô hình phân mảnh khách hàng RFM"
+    term_en: "RFM (Recency - Frequency - Monetary)"
+    definition: >-
+      Chia khách theo: lần mua gần nhất (R), tần suất (F), tổng chi tiêu (M). Case dùng 3 nhóm hành động: Loyalists (khách quen, biến thành người lan tỏa),
+      Hibernating (không mở app > 3 tháng, đánh thức), Gen Z (hành vi mua món trend, đẩy kênh TikTok).
+    why_it_matters: "Một thông điệp cho tất cả = lãng phí voucher. Giảm sâu chỉ nên dành cho nhóm ngủ đông (đã mất), không cho khách quen (đằng nào cũng mua) để tránh ăn mòn biên lợi nhuận (cannibalization)."
+  - term_vi: "Chuyển đổi cửa hàng thành điểm giao hàng"
+    term_en: "O2O (Online-to-Offline) hub model"
+    definition: "Biến cửa hàng ở vị trí không đắc địa (trong ngõ, mặt bằng rẻ) thành trung tâm gom đơn và giao hàng riêng của hãng, thay vì phụ thuộc hoàn toàn sàn giao hàng bên thứ ba."
+    why_it_matters: "Tách doanh thu khỏi vị trí vàng (chi phí thuê cao) và kiểm soát chất lượng/dữ liệu; phù hợp doanh nghiệp không đủ tài chính đua mặt bằng với đối thủ lớn."
+  - term_vi: "Concept theo công năng"
+    term_en: "Function-led concept (Hybrid / Deep Work space)"
+    definition: "Thiết kế không gian gắn với công việc của khách (ổ cắm, ánh sáng, yên tĩnh cho freelancer/IT) thay vì chỉ làm đẹp. Khách đến vì quán phục vụ công việc, không chỉ để check-in."
+    why_it_matters: "Đổi 'vỏ' (sơn lại, đổi bàn ghế) chỉ kéo khách đến một lần; đổi 'lõi' (lý do tồn tại của quán) mới tạo lợi thế mới, khó bắt chước hơn. Gắn với tư duy Blue Ocean (m05)."
+  - term_vi: "Nội dung do người dùng tạo và cơ chế lan tỏa ngược"
+    term_en: "UGC campaign + Referral loop"
+    definition: "App giao nhiệm vụ (Mission) thưởng 'Hạt' khi khách quay video concept mới đăng TikTok kèm hashtag; mã giới thiệu cho cả người mời lẫn người được mời. Kết hợp gamification (huy hiệu, bảng xếp hạng)."
+    why_it_matters: "Chi phí cho mỗi hành động (CPA) thấp hơn quảng cáo, vì khách trả bằng nội dung và mạng xã hội của họ. Đồng thời tạo bằng chứng xã hội (social proof) đúng kênh Gen Z dùng TikTok thay công cụ tìm kiếm."
+
+# ----------------------------------------------------------------------------------------------------------------- FORMULAS
+# Case định tính nên không có công thức gốc. Các thang điểm dưới đây là CÔNG CỤ ĐỊNH LƯỢNG HÓA do module đề xuất, tham số là giả định.
+formulas:
+  - id: "m08_weighted_score"
+    name_vi: "Điểm có trọng số để xếp hạng lựa chọn chiến lược"
+    name_en: "Weighted scoring model"
+    expression_latex: 'S_j = \sum_{i} w_i \, x_{ij},\quad \sum_i w_i = 1'
+    expression_python: "sum(w[i]*x[i] for i in range(len(w)))"
+    excel: "=SUMPRODUCT(w_range, x_range)"
+    variables:
+      - {symbol: "w_i", meaning: "Trọng số tiêu chí i (tổng bằng 1)", unit: "tỷ lệ"}
+      - {symbol: "x_ij", meaning: "Điểm của phương án j trên tiêu chí i (thang 1-5)", unit: "điểm"}
+    when_to_use: "Chọn giữa 3-5 hướng đi (Ansoff, concept mới, kênh) khi không có đủ số liệu NPV; cũng dùng để tổng hợp điểm áp lực 5 Forces."
+    why_it_works: "Buộc người ra quyết định tách tiêu chí và nói rõ ưu tiên (ví dụ dòng tiền nặng hơn tốc độ khi đang khủng hoảng), thay vì chọn theo cảm tính."
+    assumptions: ["Tiêu chí độc lập tương đối", "Trọng số phản ánh đúng giai đoạn (khủng hoảng = trọng số nhu cầu vốn cao)"]
+    pitfalls:
+      - "Điểm số chủ quan; phải ghi lý do từng điểm và chạy độ nhạy khi đổi trọng số."
+      - "Đổi trọng số một chút có thể đảo thứ hạng; chỉ coi chênh lệch lớn (>= 0,5-1 điểm) là có ý nghĩa."
+      - "Không thay thế NPV khi đã có số liệu dòng tiền."
+    interpretation: "Điểm cao hơn = phù hợp hơn với ưu tiên đã khai báo; luôn đi kèm nhận xét định tính và rủi ro."
+    example:
+      inputs: {w: [0.30, 0.25, 0.20, 0.25], x_A: [5, 4, 5, 3]}
+      steps: ["0,30×5 + 0,25×4 + 0,20×5 + 0,25×3 = 1,5 + 1,0 + 1,0 + 0,75 = 4,25"]
+      result: "Phương án A (thâm nhập thị trường bằng CRM/app) = 4,25 điểm."
+  - id: "m08_store_closure_rule"
+    name_vi: "Quy tắc đóng cửa hàng theo EBITDA cấp cửa hàng"
+    name_en: "Store-level (4-wall) closure rule and payback"
+    expression_latex: 'ClosePayback = \dfrac{\sum_k C_k}{\sum_k |E_k|},\quad \text{đóng nếu } E_k < 0 \ \text{và } L_k > 6'
+    expression_python: "sum(closing_costs)/sum(-e for e in monthly_losses)"
+    excel: "=SUM(closing_costs)/-SUM(monthly_losses)"
+    variables:
+      - {symbol: "E_k", meaning: "EBITDA 4-wall hàng tháng của cửa hàng k (doanh thu - COGS - nhân sự - thuê - chi phí tại điểm)", unit: "triệu VNĐ/tháng"}
+      - {symbol: "L_k", meaning: "Số tháng liên tiếp lỗ 4-wall", unit: "tháng"}
+      - {symbol: "C_k", meaning: "Chi phí đóng một lần (phạt hợp đồng thuê, thanh lý, bồi thường nhân sự)", unit: "triệu VNĐ"}
+    when_to_use: "Giai đoạn Cắt tỉa của lộ trình: chọn cửa hàng đóng cửa theo tiêu chí lỗ > 6 tháng (ngưỡng 6 tháng lấy từ giải pháp đề xuất trong case)."
+    why_it_works: "Lỗ ngắn hạn có thể do mùa vụ hoặc cửa hàng mới; lỗ kéo dài > 6 tháng cho thấy vấn đề cấu trúc (vị trí, chi phí thuê). Thời gian hoàn vốn cho phép so chi phí đóng cửa với dòng tiền cầm máu."
+    assumptions: ["EBITDA 4-wall đã gồm chi phí thuê thực trả", "Không có hiệu ứng ăn mòn doanh thu sang cửa hàng lân cận (kiểm tra riêng)", "Chi phí đóng cửa ước tính đúng"]
+    pitfalls:
+      - "Đóng cửa flagship tạo hiệu ứng tâm lý tiêu cực (case nêu rõ): tính cả chi phí thương hiệu, không chỉ số học."
+      - "Bỏ qua khả năng đàm phán lại giá thuê trước khi đóng."
+      - "Chỉ nhìn lỗ 4-wall, bỏ qua vai trò hub giao hàng/marketing của cửa hàng."
+    interpretation: "Payback < 18-24 tháng thường chấp nhận được để cầm máu; > 36 tháng cần cân nhắc đàm phán thuê hoặc chuyển đổi mô hình thay vì đóng."
+    example:
+      inputs: {loss_stores: {S1: -40, S3: -22, S6: -60, S10: -30}, closing_cost_each: 600}
+      steps: ["Tổng lỗ cắt giảm = 40+22+60+30 = 152 triệu/tháng", "Chi phí đóng = 4×600 = 2.400 triệu", "Payback = 2.400/152 = 15,8 tháng"]
+      result: "Hoàn vốn quyết định đóng cửa sau khoảng 15,8 tháng (số giả định)."
+
+# ----------------------------------------------------------------------------------------------------------------- FRAMEWORKS (chỉ phần mới của module)
+frameworks:
+  - id: "m08_case_analysis_loop"
+    name_vi: "Vòng phân tích case chiến lược: Chẩn đoán -> Nguyên nhân -> Phương án -> Lộ trình -> Đo lường"
+    name_en: "End-to-end strategic case analysis loop"
+    origin: "Cấu trúc của chính case TCH (phần 1-4) kết hợp thông lệ phân tích case MBA: mô tả hiện trạng, tìm nguyên nhân gốc, sinh phương án, sắp lộ trình theo dòng tiền, gắn KPI."
+    components:
+      - "Chẩn đoán lợi thế hiện có (VRIO) - phần 1 của case"
+      - "Nguyên nhân gốc rễ thành 4 nhóm (A. mất điểm chạm cốt lõi, B. thiếu trọng tâm, C. mặt bằng/tài chính, D. phân khúc phân hóa) - phần 2"
+      - "Tổng kết vị thế vòng đời (maturing brand, saturated market) - phần 3"
+      - "Đánh giá giải pháp ban đầu (điểm mạnh) + bổ sung mắt xích thiếu (App/CRM, O2O, concept theo công năng) - phần 4.1-4.2"
+      - "Lộ trình 3 giai đoạn có mục tiêu dòng tiền - phần 4.3"
+      - "Thực thi truyền thông và CRM (TikTok kể chuyện, RFM, UGC, referral, gamification) - phần 4.4-4.5"
+    when_to_use: "Mọi yêu cầu phân tích một doanh nghiệp đang gặp khó mà cần ra khuyến nghị hành động, không chỉ liệt kê điểm SWOT."
+    how_to_apply:
+      - "1. Chốt bối cảnh và câu hỏi chiến lược (cứu bằng cắt chi phí hay đổi concept?)."
+      - "2. Chẩn đoán bên ngoài (m01) và bên trong (m02), kết luận lợi thế nào còn, lợi thế nào đã mất."
+      - "3. Gom nguyên nhân thành 3-5 nhóm có bằng chứng; phân biệt triệu chứng (doanh thu giảm) với nguyên nhân (mất bản sắc)."
+      - "4. Sinh 3-4 phương án (Ansoff m04 + Blue Ocean m05), chấm điểm theo tiêu chí có trọng số (m08_weighted_score)."
+      - "5. Lộ trình theo thứ tự dòng tiền: cắt tỉa -> tái cấu trúc -> tái định vị."
+      - "6. Gắn KPI BSC (m06) và kịch bản rủi ro (m07)."
+    how_to_read_results: "Kết luận tốt nêu rõ: lợi thế nào đáng giữ (App/CRM), điều gì phải dừng (kiosk, trà sữa, mở rộng dàn trải), điều gì cần thử (Hybrid, signature menu) và cột mốc kiểm chứng."
+    pitfalls:
+      - "Chỉ mô tả tình trạng mà không nêu được nguyên nhân gốc và hành động."
+      - "Đề xuất đồng thời quá nhiều hướng (lặp lại sai lầm 'cái gì cũng thử' của chính case)."
+      - "Bỏ qua dòng tiền: nhảy sang giai đoạn tái định vị khi chưa cầm máu."
+    example: "Xem procedure m08_p_case_analysis và worked_examples m08_we_*."
+  - id: "m08_crm_activation_loop"
+    name_vi: "Vòng kích hoạt khách hàng cũ qua app: Dữ liệu -> Kích hoạt -> Lan tỏa -> Đo lường"
+    name_en: "CRM activation workflow"
+    origin: "Bảng 'Tóm tắt quy trình vận hành (Workflow)' ở phần 4.5.6 của case, nối với RFM, UGC, referral, gamification, custom audiences."
+    components:
+      - "Dữ liệu: trích xuất tệp khách từ CRM, tính RFM, phân 3 nhóm hành động."
+      - "Kích hoạt: push/email cá nhân hóa theo nhóm và theo khẩu vị/khung giờ; A/B test trên nhóm nhỏ trước khi bung toàn tệp."
+      - "Lan tỏa: Mission trên app thưởng Hạt khi đăng TikTok; referral hai chiều; huy hiệu, bảng xếp hạng; webhook/API tự động trả thưởng."
+      - "Đo lường: theo dõi mã voucher, tỷ lệ click, tỷ lệ chuyển đổi (CVR), CPA; lookalike từ tệp khách trung thành; retargeting người cài app nhưng chưa phát sinh đơn."
+    when_to_use: "Giai đoạn Tái cấu trúc/Tái định vị khi cần kéo khách về mà ngân sách quảng cáo hạn chế."
+    how_to_apply:
+      - "Bước 1: tách nhóm; giảm sâu chỉ cho Hibernating."
+      - "Bước 2: chạy A/B nhỏ (vd 5% tệp) đo CVR và biên đóng góp trước khi bung."
+      - "Bước 3: bật Mission UGC + referral với phần thưởng trần ngân sách."
+      - "Bước 4: đo incremental (so với nhóm đối chứng), không đếm đơn của khách vốn đã mua."
+    how_to_read_results: "Hiệu quả = đóng góp biên gia tăng sau voucher - chi phí gửi/phần thưởng; so CPA với ads trả phí."
+    pitfalls:
+      - "Tặng voucher giảm sâu cho khách quen làm giảm biên mà không tăng đơn."
+      - "Thưởng đăng TikTok có thể thu hút 'săn quà' không quay lại; theo dõi retention sau thưởng (case tự đặt câu hỏi này)."
+      - "Dữ liệu cá nhân: cần đồng ý của khách theo quy định bảo vệ dữ liệu cá nhân VN (cần xác nhận văn bản hiện hành)."
+    example: "Xem worked_example m08_we_crm_campaign."
+
+# ----------------------------------------------------------------------------------------------------------------- PROCEDURES
+procedures:
+  - id: "m08_p_case_analysis"
+    name: "Chạy phân tích case chiến lược từ đầu đến cuối (mẫu TCH)"
+    steps:
+      - "Bước 1 - Tóm tắt bối cảnh trong 5 dòng: doanh nghiệp, ngành, giai đoạn vòng đời, triệu chứng (đóng cửa hàng, doanh thu/biên giảm), câu hỏi cần trả lời. Ghi rõ dữ liệu nào là thật, dữ liệu nào chỉ định tính."
+      - "Bước 2 - Môi trường bên ngoài (m01): PESTEL chọn lọc (kinh tế: giá thuê sau đại dịch; xã hội: Gen Z dùng TikTok để tìm kiếm; công nghệ: giao hàng, app) và 5 Forces (rivalry rất cao, khách mua dễ đổi, thay thế: trà sữa/specialty)."
+      - "Bước 3 - Nguồn lực bên trong (m02): lập bảng VRIO cho 4-6 nguồn lực chính. Đánh dấu cột nào đã bị đối thủ bắt chước. Dùng Value Chain để xem điểm chạm khách hàng nào yếu đi sau khi mở rộng nhanh."
+      - "Bước 4 - Nguyên nhân gốc: gom thành các nhóm (mất điểm chạm, thiếu trọng tâm, áp lực mặt bằng, kẹt ở giữa). Với mỗi nhóm nêu bằng chứng và hệ quả tài chính (chi phí vận hành tăng, biên mỏng)."
+      - "Bước 5 - Xác định vị thế chiến lược (m03): đang kẹt giữa Cost Leadership và Differentiation? Kết luận 'kẹt ở giữa' nếu không đủ rẻ và không đủ độc bản."
+      - "Bước 6 - Sinh phương án (m04 Ansoff + m05 Blue Ocean): thâm nhập (CRM/app, signature menu), phát triển sản phẩm (concept Hybrid), phát triển thị trường (hub giao hàng), đa dạng hóa (kiosk/trà sữa/bánh)."
+      - "Bước 7 - Chấm điểm phương án theo tiêu chí có trọng số (m08_weighted_score); đang khủng hoảng thì đặt trọng số cho nhu cầu vốn và tốc độ cao."
+      - "Bước 8 - Dựng lộ trình theo dòng tiền: (1) Cắt tỉa: đóng cửa hàng lỗ > 6 tháng, tinh giản cấp trung; (2) Tái cấu trúc: menu Signature, nâng cấp app; (3) Tái định vị: concept Hybrid. Mỗi giai đoạn có mục tiêu đo được."
+      - "Bước 9 - Thiết kế thực thi: CRM (RFM, UGC, referral, gamification), truyền thông TikTok kể chuyện chân thực, kênh O2O."
+      - "Bước 10 - Gắn KPI BSC (m06) và kiểm tra bằng kịch bản (m07): giá thuê tăng, Gen Z đổi kênh, đối thủ giảm giá, khách săn quà không quay lại."
+      - "Bước 11 - Nêu rủi ro, giả định chưa kiểm chứng và việc cần thu thập số liệu thật; kết luận bằng 1 khuyến nghị ưu tiên."
+    outputs: "Báo cáo case: bảng VRIO, nhóm nguyên nhân, điểm phương án, lộ trình 3 giai đoạn có KPI, danh sách rủi ro/giả định và số liệu cần bổ sung."
+  - id: "m08_p_pruning"
+    name: "Cắt tỉa mạng lưới cửa hàng (giai đoạn 1)"
+    steps:
+      - "Lập bảng EBITDA 4-wall theo cửa hàng, số tháng lỗ liên tiếp, giá thuê, thời hạn hợp đồng."
+      - "Gắn nhãn: lỗ > 6 tháng = ứng viên đóng; lỗ <= 6 tháng = theo dõi/đàm phán lại thuê."
+      - "Kiểm tra đặc thù: cửa hàng biểu tượng (flagship), cửa hàng làm hub giao hàng, vai trò thương hiệu."
+      - "Tính chi phí đóng một lần và payback (m08_store_closure_rule)."
+      - "Chọn chuyển đổi (hub giao hàng/thu nhỏ diện tích) cho cửa hàng có doanh thu giao hàng tốt nhưng không gian lớn."
+      - "Tinh giản nhân sự cấp trung song song, giữ nhân viên tuyến đầu chất lượng (nguồn gốc trải nghiệm)."
+      - "Tính dòng tiền tiết kiệm; dồn vốn cho giai đoạn 2."
+    outputs: "Danh sách cửa hàng đóng/chuyển đổi/giữ, payback, dòng tiền giải phóng."
+  - id: "m08_p_crm_campaign"
+    name: "Chiến dịch kích hoạt khách cũ qua app + TikTok"
+    steps:
+      - "Trích xuất CRM, tính RFM; tạo 3 nhóm Loyalists, Hibernating, Gen Z trend."
+      - "Thiết kế thông điệp/ưu đãi theo nhóm: Loyalists = đặc quyền 'Chủ nhà' dùng thử menu mới; Hibernating = 'Nhà đã khác, mời bạn về chơi' kèm voucher; Gen Z = nội dung TikTok và Mission check-in."
+      - "Chạy A/B test trên nhóm nhỏ; chọn biến thể có CVR và biên tốt nhất."
+      - "Bật UGC Mission + referral hai chiều với trần ngân sách thưởng."
+      - "Tải tệp trung thành lên nền tảng quảng cáo làm Lookalike; chạy retargeting cho người cài app chưa phát sinh đơn trong tháng."
+      - "Đo incremental bằng nhóm đối chứng; tính CPA và ROI; điều chỉnh."
+    outputs: "Bảng kết quả theo nhóm (phản hồi, đóng góp biên, chi phí voucher), CPA so với ads, quyết định mở rộng/dừng."
+
+# ----------------------------------------------------------------------------------------------------------------- DECISION RULES
+decision_rules:
+  - "Nếu một nguồn lực từng đủ V-R-I-O nhưng đối thủ đã sao chép (mất I) thì hạ xuống 'lợi thế tạm thời' và đừng dựa vào nó làm trụ chiến lược; tìm nguồn lực mới (dữ liệu, concept theo công năng)."
+  - "Nếu doanh nghiệp mở rộng nhanh mà trải nghiệm khách hàng thiếu nhất quán thì dừng mở cửa hàng mới và chuẩn hóa lại trải nghiệm trước (năng lực cốt lõi bị pha loãng)."
+  - "Nếu thực đơn/mô hình liên tục thay đổi, khách không nhớ thương hiệu mạnh về gì, và biên mỏng thì thu hẹp về 1-2 sản phẩm đặc sản (signature) thay vì thêm dòng sản phẩm."
+  - "Nếu cửa hàng lỗ 4-wall liên tục > 6 tháng thì là ứng viên đóng cửa; trước khi đóng, thử đàm phán thuê hoặc chuyển thành hub giao hàng."
+  - "Nếu không đủ tài chính để đua mặt bằng vàng với đối thủ lớn thì không đua; chuyển trọng tâm sang app, giao hàng riêng và vị trí chi phí thấp (O2O)."
+  - "Nếu bị kẹt giữa nhóm bình dân và specialty thì chọn một cực (hoặc tạo khoảng trống mới như Hybrid/Deep Work) thay vì cố phục vụ cả hai."
+  - "Nếu dòng tiền đang âm thì thứ tự bắt buộc là Cắt tỉa -> Tái cấu trúc -> Tái định vị; không đầu tư concept mới trước khi cầm máu."
+  - "Nếu đổi concept thì phải đổi 'lõi' (công năng phục vụ công việc của khách) chứ không chỉ 'vỏ' (sơn, bàn ghế)."
+  - "Nếu có app và CRM thì ưu tiên kích hoạt khách cũ (RFM, referral) trước khi mua khách mới bằng quảng cáo; chỉ cho giảm sâu nhóm ngủ đông."
+  - "Nếu truyền thông cho Gen Z thì kể chuyện chân thực (hành trình hạt cà phê, thiết kế lại không gian, gương mặt nhân viên) thay vì quảng cáo bóng bẩy."
+  - "Nếu cần chọn giữa nhiều hướng thì chấm điểm có trọng số và ghi lý do; chênh lệch < 0,5 điểm thì xem là hòa, quyết định bằng rủi ro/dòng tiền."
+
+# ----------------------------------------------------------------------------------------------------------------- BENCHMARKS
+benchmarks:
+  - {metric: "Ngưỡng lỗ liên tục để cân nhắc đóng cửa hàng", value: "> 6 tháng", context: "Tiêu chí trong giải pháp đề xuất của case; là quy tắc thực hành, không phải chuẩn ngành", confidence: medium}
+  - {metric: "Ngưỡng 'khách ngủ đông'", value: "không mở app > 3 tháng", context: "Định nghĩa nhóm Hibernating trong case", confidence: medium}
+  - {metric: "Thang điểm VRIO", value: "Bền vững = V,R,I,O đều có; Tạm thời = thiếu I; Ngang bằng = thiếu R; Bất lợi = thiếu V", context: "Quy ước m02 áp cho bảng VRIO của TCH", confidence: high}
+  - {metric: "Số liệu tài chính thật của TCH (doanh thu, số cửa hàng, lỗ)", value: "không có trong nguồn", context: "Case định tính; không được bịa", confidence: low}
+
+# ----------------------------------------------------------------------------------------------------------------- PITFALLS
+pitfalls:
+  - "Coi số liệu minh họa trong module này là số thật của The Coffee House (nguồn không có số tài chính)."
+  - "Dừng ở mô tả 'TCH thất bại' mà không tách triệu chứng khỏi nguyên nhân gốc (mất bản sắc, thiếu trọng tâm, mặt bằng)."
+  - "Kết luận 'thất bại hoàn toàn'; case nhấn mạnh đây là thương hiệu trưởng thành đang 'thu mình để tồn tại'."
+  - "Đề xuất quá nhiều sáng kiến cùng lúc (lặp lại sai lầm cái gì cũng thử)."
+  - "Nhảy sang tái định vị mà bỏ qua cầm máu dòng tiền."
+  - "Đóng cửa hàng chỉ theo con số, quên tác động thương hiệu khi đóng flagship."
+  - "Chạy khuyến mãi sâu cho mọi khách, làm giảm biên mà không tăng đơn gia tăng."
+  - "Đếm đơn của khách vốn đã mua là thành quả chiến dịch (không đo incremental)."
+  - "Chạy UGC/gamification nhưng không đo retention sau thưởng, khách chỉ đến săn quà."
+  - "Mâu thuẫn nhỏ trong nguồn: đoạn mô tả quá khứ nói nhân viên thuộc 'khó bắt chước' (I) trong khi bảng VRIO hiện tại chấm Đội ngũ nhân sự là Không-Không-Không; cách hiểu đúng: bảng là hiện tại, đoạn là quá khứ."
+
+# ----------------------------------------------------------------------------------------------------------------- SME VN
+sme_vn_guidance:
+  - "Bài học cho chuỗi F&B SME 3-20 cửa hàng: theo dõi EBITDA 4-wall từng cửa hàng hàng tháng; lỗ > 6 tháng thì quyết định đóng/đàm phán ngay, đừng để kéo dài."
+  - "Hợp đồng thuê mặt bằng: đàm phán điều khoản thoát (break clause), mức thuê theo doanh thu hoặc giảm giá theo giai đoạn; cần luật sư xác nhận (điều khoản cụ thể cần kiểm tra)."
+  - "Dữ liệu khách hàng: dùng app/CRM sẵn có (ví dụ KiotViet, Sapo, loyalty app; xem bảng giá hiện hành, cần xác nhận) để lập RFM; SME nhỏ có thể bắt đầu bằng Zalo OA hoặc Google Sheets."
+  - "Zalo/TikTok/Facebook là kênh chính của Gen Z VN; TikTok dùng để kể chuyện chân thực (hành trình nguyên liệu, nhân viên) thay vì quảng cáo bóng bẩy."
+  - "Hub giao hàng: nếu tự giao, tính đủ chi phí shipper, phí cổng thanh toán; so với hoa hồng nền tảng ShopeeFood/GrabFood (tỷ lệ hoa hồng cần xác nhận)."
+  - "Tuân thủ quy định bảo vệ dữ liệu cá nhân khi gửi push/email/SMS và tải tệp khách lên nền tảng quảng cáo (cần xác nhận văn bản hiện hành về bảo vệ dữ liệu cá nhân)."
+  - "Concept Hybrid/Deep Work: chi phí đầu tư thêm ổ cắm, ánh sáng, cách âm cần ước tính theo diện tích; thử nghiệm 1 cửa hàng trước khi nhân rộng."
+
+# ----------------------------------------------------------------------------------------------------------------- CASE LESSONS
+case_lessons:
+  - name: "TCH giai đoạn 1 - Thời kỳ đỉnh cao: lợi thế V-R-I-O đầy đủ"
+    type: success
+    setup: >-
+      TCH định vị 'Nơi thứ ba' (sau nhà và văn phòng), tiên phong thay đổi văn hóa cà phê VN. Bốn nguồn lực chính: không gian Nhà, trải nghiệm khách hàng,
+      app và CRM, đội ngũ nhân sự trẻ nhiệt huyết.
+    key_calculations:
+      - "Chấm VRIO quá khứ: Không gian Nhà (V=1,R=1,I=1,O=1) = 4/4 = lợi thế bền vững."
+      - "App/CRM (1,1,1,1) = 4/4: vẫn là lợi thế bền vững tới hiện tại."
+      - "Không có số liệu doanh thu/cửa hàng thời kỳ này trong nguồn."
+    lesson: "Lợi thế từng bền vững vẫn có thể bị bào mòn; hãy coi VRIO là ảnh chụp có hạn sử dụng và chấm lại theo định kỳ."
+    data_reliability: unverified
+  - name: "TCH giai đoạn 2 - Mở rộng nhanh làm mất nhất quán trải nghiệm"
+    type: failure
+    setup: >-
+      Mở rộng nhanh khiến sự nhất quán trải nghiệm (năng lực cốt lõi) suy giảm; nhân viên không còn giữ kết nối cảm xúc mạnh như thời kỳ đầu,
+      khách không còn thấy khác biệt so với quán khác.
+    key_calculations:
+      - "VRIO hiện tại: Trải nghiệm khách hàng (V=1,R=1,I=0,O=1) = 3/4 -> lợi thế tạm thời (mất I)."
+      - "Đội ngũ nhân sự (1,0,0,0) = 1/4 -> ngang bằng."
+      - "Không có số liệu số cửa hàng/tốc độ mở trong nguồn."
+    lesson: "Tốc độ mở rộng phải đi cùng năng lực nhân bản văn hóa và quy trình; nếu không, chính lợi thế khó bắt chước bị phá. Mở nhanh hơn năng lực chuẩn hóa là sai lầm kinh điển."
+    data_reliability: unverified
+  - name: "TCH giai đoạn 3 - Chiến lược 'cái gì cũng thử', đa dạng hóa thiếu trọng tâm"
+    type: failure
+    setup: >-
+      Thử nhiều mô hình: kiosk (cạnh tranh giá nhưng không có quy mô như Highlands), thêm trà sữa, bánh, đồ ăn, thay đổi thực đơn liên tục; thương hiệu bị loãng,
+      chi phí vận hành tăng vọt, biên mỗi ly mỏng đi.
+    key_calculations:
+      - "Mức điểm Ansoff minh họa: Đa dạng hóa (kiosk/trà sữa/bánh) 1,45 điểm so với Thâm nhập 4,25 (xem worked_example m08_we_ansoff)."
+      - "Không có số liệu chi phí vận hành/biên cụ thể trong nguồn."
+    lesson: "Đa dạng hóa không liên quan (hoặc gần liên quan nhưng không có lợi thế quy mô) khi mất bản sắc làm tăng chi phí mà không tạo lợi thế; khách phải nhớ thương hiệu mạnh về điều gì."
+    data_reliability: unverified
+  - name: "TCH giai đoạn 4 - Áp lực mặt bằng và đóng cửa flagship"
+    type: failure
+    setup: >-
+      Không sở hữu nhiều vị trí đắc địa dài hạn như Highlands; giá thuê trung tâm tăng sau đại dịch khiến không gian rộng trở thành gánh nặng;
+      buộc đóng nhiều cửa hàng biểu tượng, gây hiệu ứng tâm lý tiêu cực.
+    key_calculations:
+      - "Ví dụ minh họa 10 cửa hàng: 4 cửa hàng lỗ > 6 tháng, tổng lỗ 152 triệu/tháng; tổng 4-wall mạng lưới -103 -> +49 triệu/tháng sau cắt (xem m08_we_store_pruning)."
+      - "Không có số liệu thuê/đóng cửa thật của TCH trong nguồn."
+    lesson: "Mô hình không gian rộng ở mặt bằng vàng là chi phí cố định cao, dễ chuyển thành gánh nặng khi giá thuê tăng; đóng cửa flagship có chi phí thương hiệu cần tính trước."
+    data_reliability: unverified
+  - name: "TCH giai đoạn 5 - Bị kẹt giữa bình dân và specialty"
+    type: failure
+    setup: >-
+      Thị trường phân hóa: nhóm bình dân (nhanh, rẻ: Highlands, kiosk) và nhóm trải nghiệm cao cấp (specialty). TCH không đủ rẻ để đại chúng hóa
+      và không đủ độc bản cho người sành cà phê.
+    key_calculations:
+      - "5 Forces minh họa: rivalry 9, buyers 8, new entrants 7, substitutes 7, suppliers 4; điểm áp lực có trọng số = 7,15/10 (xem m08_we_five_forces)."
+    lesson: "Khi ngành phân hóa mạnh, vị thế ở giữa là vị thế yếu nhất; phải chọn cực hoặc tạo không gian thị trường mới (Hybrid/Deep Work) thay vì cố bao phủ cả hai."
+    data_reliability: illustrative
+  - name: "Giải pháp 1 - Cắt tỉa: đóng cửa lỗ, tinh giản cấp trung, cầm máu dòng tiền"
+    type: success
+    setup: "Giai đoạn ngắn hạn của lộ trình: đóng mặt bằng lỗ > 6 tháng, tinh giản nhân sự cấp trung để bảo vệ dòng tiền và dồn vốn."
+    key_calculations:
+      - "Quy tắc: đóng nếu 4-wall < 0 và lỗ > 6 tháng."
+      - "Ví dụ minh họa: tiết kiệm 152 triệu/tháng = 1.824 triệu/năm; chi phí đóng 2.400 triệu; payback 15,8 tháng."
+    lesson: "Cầm máu trước là điều kiện cho mọi đổi mới sau. Trong tài chính, đây là cắt mảng đốt tiền để bảo vệ dòng tiền (Cash flow)."
+    data_reliability: illustrative
+  - name: "Giải pháp 2 - Tái cấu trúc: menu Signature và nâng cấp app"
+    type: success
+    setup: >-
+      Trung hạn: tìm lại 'ngôi sao' như Trà Đào Cam Sả từng làm nên tên tuổi (menu Signature dựa trên nông sản Việt), nâng cấp app để tạo lý do khách quay lại
+      không phụ thuộc mặt bằng.
+    key_calculations:
+      - "Thâm nhập (CRM/app + signature menu) đạt 4,25 điểm, cao nhất trong 4 hướng Ansoff minh họa."
+      - "Trà Đào Cam Sả là sản phẩm có thật được case nhắc; không có doanh số."
+    lesson: "Một sản phẩm đặc trưng + dữ liệu khách hàng là cách nhanh nhất kéo khách quay lại với chi phí thấp, thay vì mở thêm điểm bán."
+    data_reliability: unverified
+  - name: "Giải pháp 3 - Tái định vị: concept Hybrid (cà phê + không gian làm việc số) và O2O"
+    type: success
+    setup: >-
+      Dài hạn: concept gắn công năng (Deep Work: ổ cắm, ánh sáng, yên tĩnh) cho freelancer/IT; biến cửa hàng ở vị trí kém đắc địa thành hub giao hàng với tốc độ giao riêng.
+    key_calculations:
+      - "Phát triển sản phẩm (Hybrid) 3,1 điểm; phát triển thị trường (hub giao hàng) 3,0 điểm; thấp hơn Thâm nhập vì cần vốn và thời gian (minh họa)."
+    lesson: "Hybrid là hướng định vị dài hạn, không nên làm trước khi cầm máu. Đổi lõi (công năng) chứ không đổi vỏ."
+    data_reliability: illustrative
+  - name: "Giải pháp 4 - Tận dụng app và CRM để kích hoạt khách cũ cho chiến dịch TikTok"
+    type: success
+    setup: >-
+      Dùng RFM (Loyalists, Hibernating, Gen Z), UGC Mission, referral hai chiều, hyper-personalization, A/B test push, lookalike/retargeting, gamification,
+      tích hợp webhooks/API để tự động trả thưởng.
+    key_calculations:
+      - "Mô hình minh họa 100.000 người dùng: đóng góp biên gia tăng sau voucher 114 triệu - 3 triệu push = 111 triệu/chiến dịch (xem m08_we_crm_campaign)."
+      - "CPA tham chiếu: ads 90.000 đ/người dùng mới so với referral hai chiều 40.000 đ."
+    lesson: "Dữ liệu sơ cấp biến thành đòn bẩy rẻ hơn quảng cáo, nhưng phải đo incremental và retention; case tự hỏi liệu cơ chế săn quà có kéo được khách đã hơi chán thương hiệu không (câu hỏi mở)."
+    data_reliability: illustrative
+  - name: "Kết luận case - Thương hiệu trưởng thành 'thu mình để tồn tại'"
+    type: failure
+    setup: >-
+      Tổng kết: TCH không hẳn thất bại hoàn toàn mà đang ở quá trình thu mình: đóng điểm kém hiệu quả, tập trung app và giao hàng, tìm lại bản sắc. Câu hỏi mở:
+      cắt giảm chi phí để sinh tồn hay đổi mới concept để giành lại vị thế dẫn đầu.
+    key_calculations:
+      - "Không có phép tính; quyết định dựa trên thứ tự dòng tiền: cắt giảm trước (bắt buộc), đổi mới concept sau (điều kiện đủ)."
+    lesson: "Đáp án cho câu hỏi 'cắt giảm hay đổi mới' là cả hai, theo đúng thứ tự: cắt giảm để có thời gian và vốn, đổi mới để thoát khỏi vị thế kẹt ở giữa."
+    data_reliability: unverified
+
+# ----------------------------------------------------------------------------------------------------------------- WORKED EXAMPLES
+# Mọi số liệu dưới đây là GIẢ ĐỊNH MINH HỌA (không phải số thực của TCH), đã verify bằng python3.
+worked_examples:
+  - id: "m08_we_vrio"
+    name: "VRIO của TCH: chấm điểm, phân loại và kiểm tra pha loãng"
+    inputs:
+      resources: {Third_Place: [1,1,1,1], Customer_Experience: [1,1,0,1], App_CRM: [1,1,1,1], Staff: [1,0,0,0]}
+      rule: "V=0 -> bất lợi; V=1,R=0 -> ngang bằng; R=1,I=0 -> tạm thời; I=1,O=0 -> chưa khai thác; đủ 4 -> bền vững"
+    steps:
+      - "Third Place (1,1,1,1): tổng 4 -> lợi thế bền vững (trong quá khứ)."
+      - "Customer Experience (1,1,0,1): V=1,R=1 nhưng I=0 -> lợi thế tạm thời; tổng 3."
+      - "App_CRM (1,1,1,1): tổng 4 -> lợi thế bền vững."
+      - "Staff (1,0,0,0): R=0 -> ngang bằng; tổng 1."
+      - "Kiểm tra pha loãng: nếu Third Place mất I (đối thủ sao chép không gian), (1,1,0,1) -> hạ xuống lợi thế tạm thời. Đây là kịch bản đang xảy ra theo case."
+      - "Số nguồn lực bền vững còn lại = 1/4 (chỉ App_CRM)."
+    result: "Chỉ App/CRM còn là lợi thế bền vững; không gian Nhà có nguy cơ hạ cấp. Hàm ý: chiến lược cứu phải dựa trên dữ liệu và xây một nguồn lực I mới (concept theo công năng)."
+  - id: "m08_we_five_forces"
+    name: "5 Forces của thị trường cà phê chuỗi: điểm áp lực có trọng số"
+    inputs:
+      scores_1_10: {rivalry: 9, buyers: 8, new_entrants: 7, substitutes: 7, suppliers: 4}
+      weights: {rivalry: 0.25, buyers: 0.25, new_entrants: 0.15, substitutes: 0.15, suppliers: 0.20}
+    steps:
+      - "Kiểm tra tổng trọng số = 0,25+0,25+0,15+0,15+0,20 = 1,00"
+      - "Điểm = 0,25×9 + 0,25×8 + 0,15×7 + 0,15×7 + 0,20×4 = 2,25 + 2,00 + 1,05 + 1,05 + 0,80 = 7,15"
+      - "Lý do điểm (giả định): rivalry cao (Highlands, Phúc Long, kiosk, specialty nhỏ); buyers cao (đổi quán dễ); entrants cao (quán nhỏ mở dễ); substitutes cao (trà sữa, specialty, đồ uống tại nhà); suppliers thấp (nhiều nguồn cà phê)."
+    result: "Điểm áp lực 7,15/10: ngành kém hấp dẫn với vị thế ở giữa; phải chọn cực hoặc tạo khoảng trống để không bị ép biên."
+  - id: "m08_we_ansoff"
+    name: "Chọn hướng tăng trưởng Ansoff cho giai đoạn khủng hoảng"
+    inputs:
+      weights: {fit_core: 0.30, cash_need_inverse: 0.25, speed: 0.20, defensibility: 0.25}
+      options: {A_penetration_CRM_signature: [5,4,5,3], B_product_dev_Hybrid: [4,2,2,4], C_market_dev_hub: [3,3,3,3], D_diversification_kiosk_tea_bakery: [1,2,2,1]}
+    steps:
+      - "A: 0,30×5 + 0,25×4 + 0,20×5 + 0,25×3 = 1,5 + 1,0 + 1,0 + 0,75 = 4,25"
+      - "B: 0,30×4 + 0,25×2 + 0,20×2 + 0,25×4 = 1,2 + 0,5 + 0,4 + 1,0 = 3,10"
+      - "C: 0,30×3 + 0,25×3 + 0,20×3 + 0,25×3 = 3,00"
+      - "D: 0,30×1 + 0,25×2 + 0,20×2 + 0,25×1 = 0,3 + 0,5 + 0,4 + 0,25 = 1,45"
+      - "Xếp hạng: A (4,25) > B (3,10) > C (3,00) > D (1,45). Chênh B-C chỉ 0,10 nên coi là hòa; B ưu thế dài hạn (bảo vệ), C ưu thế linh hoạt."
+    result: "Giai đoạn 1-2 chọn thâm nhập (CRM/app + signature menu); giai đoạn 3 nâng cấp lên Hybrid. Đa dạng hóa bị loại, đúng với bài học 'cái gì cũng thử'."
+  - id: "m08_we_store_pruning"
+    name: "Cắt tỉa 10 cửa hàng: lỗ 4-wall > 6 tháng"
+    inputs:
+      stores_monthly_ebitda_trieu_and_loss_months: {S1: [-40, 9], S2: [35, 0], S3: [-22, 7], S4: [12, 0], S5: [-8, 3], S6: [-60, 12], S7: [20, 0], S8: [-15, 6], S9: [5, 0], S10: [-30, 8]}
+      closing_cost_each_trieu: 600
+    steps:
+      - "Tổng 4-wall mạng lưới = -40+35-22+12-8-60+20-15+5-30 = -103 triệu/tháng"
+      - "Ứng viên đóng (E<0 và L>6): S1 (9 tháng), S3 (7), S6 (12), S10 (8). S8 lỗ đúng 6 tháng nên không thỏa 'lớn hơn 6' -> theo dõi/đàm phán thuê. S5 lỗ 3 tháng -> theo dõi."
+      - "Lỗ cắt bỏ = 40+22+60+30 = 152 triệu/tháng; mạng lưới còn lại = -103 + 152 = +49 triệu/tháng"
+      - "Tiết kiệm năm = 152×12 = 1.824 triệu; chi phí đóng = 4×600 = 2.400 triệu; payback = 2.400/152 = 15,8 tháng"
+      - "Kiểm tra: cửa hàng còn lại S2+S4+S5+S7+S8+S9 = 35+12-8+20-15+5 = 49 (khớp)."
+    result: "Đóng 4 cửa hàng, hoàn vốn 15,8 tháng, mạng lưới chuyển từ -103 sang +49 triệu/tháng. S5, S8 theo dõi hoặc chuyển hub. Số giả định."
+  - id: "m08_we_crm_campaign"
+    name: "Kinh tế chiến dịch kích hoạt khách cũ theo RFM"
+    inputs:
+      segments: {Loyalists: {n: 20000, response: 0.25, contrib_vnd: 28000, voucher_vnd: 0, incremental_share: 0.30}, Hibernating: {n: 50000, response: 0.06, contrib_vnd: 22000, voucher_vnd: 15000, incremental_share: 1.0}, Gen_Z: {n: 30000, response: 0.10, contrib_vnd: 25000, voucher_vnd: 8000, incremental_share: 1.0}}
+      push_cost_vnd: 3000000
+      CPA_ads_vnd: 90000
+      referral_reward_each_vnd: 20000
+    steps:
+      - "Loyalists: người phản hồi = 20.000×0,25 = 5.000; đóng góp = 5.000×28.000 = 140 triệu; chỉ 30% là gia tăng thật (còn lại khách vốn đã mua) = 42 triệu; voucher 0."
+      - "Hibernating: 50.000×0,06 = 3.000 phản hồi; đóng góp = 66 triệu; voucher = 3.000×15.000 = 45 triệu; ròng = 21 triệu."
+      - "Gen Z: 30.000×0,10 = 3.000; đóng góp = 75 triệu; voucher = 3.000×8.000 = 24 triệu; ròng = 51 triệu."
+      - "Tổng ròng sau voucher = 42 + 21 + 51 = 114 triệu; trừ chi phí push 3 triệu = 111 triệu."
+      - "Referral hai chiều = 2×20.000 = 40.000 đ/người dùng mới; so ads 90.000 -> rẻ hơn 2,25 lần; 10.000 người mới: ads 900 triệu vs referral 400 triệu."
+    result: "Chiến dịch tạo khoảng 111 triệu đóng góp gia tăng ròng (giả định); Hibernating có ROI thấp nhất nhưng là nhóm cần khôi phục, Gen Z hiệu quả nhất. Hàm ý: không cho giảm sâu Loyalists; ưu tiên referral; đo incremental thật bằng nhóm đối chứng."
+
+# ----------------------------------------------------------------------------------------------------------------- PRACTICE QUESTIONS
+practice_questions:
+  - q: "Theo bảng VRIO của case, nguồn lực nào còn là lợi thế cạnh tranh bền vững hiện nay và vì sao?"
+    a: "Nền tảng công nghệ (App và CRM): V,R,I,O đều là Có. Không gian Nhà từng bền vững nhưng đang bị pha loãng vì đối thủ sao chép. Trải nghiệm chỉ tạm thời (thiếu I), nhân sự chỉ ngang bằng."
+  - q: "Vì sao nói TCH 'bị kẹt ở giữa'? Dấu hiệu nhận biết?"
+    a: "Không đủ rẻ để cạnh tranh nhóm bình dân (Highlands, kiosk) và không đủ độc bản cho specialty. Dấu hiệu: biên mỏng, thực đơn rộng thay đổi liên tục, khách không nhớ TCH mạnh về gì. Khái niệm từ Porter (m03)."
+  - q: "Liệt kê 4 nhóm nguyên nhân gốc rễ của khủng hoảng TCH."
+    a: "A. Mất điểm chạm cốt lõi do mở rộng quá nhanh; B. Chiến lược cái gì cũng thử thiếu trọng tâm; C. Áp lực mặt bằng và tài chính; D. Sự phân hóa thị trường bình dân/specialty."
+  - q: "Thứ tự 3 giai đoạn lộ trình là gì và vì sao thứ tự đó?"
+    a: "Cắt tỉa (cầm máu, đóng cửa hàng lỗ > 6 tháng, tinh giản cấp trung) -> Tái cấu trúc (menu Signature, nâng cấp app) -> Tái định vị (Hybrid). Thứ tự theo dòng tiền: phải có vốn và thời gian trước khi đổi mới."
+  - q: "Cho 10 cửa hàng như ví dụ m08_we_store_pruning; nếu chi phí đóng mỗi cửa hàng là 900 triệu thì payback bao nhiêu?"
+    a: "4×900 = 3.600 triệu; 3.600/152 = 23,7 tháng. Vẫn trong ngưỡng chấp nhận (< 36 tháng) nhưng nên thử đàm phán thuê trước."
+  - q: "Vì sao không nên tặng voucher giảm sâu cho nhóm Loyalists?"
+    a: "Họ vốn đã mua nên đơn không gia tăng thật; giảm sâu chỉ ăn mòn biên (cannibalization). Giảm sâu dành cho Hibernating; Loyalists nhận đặc quyền phi giá như trải nghiệm menu mới đầu tiên."
+  - q: "Cho trọng số Ansoff 0,30/0,25/0,20/0,25 và điểm phương án (4,3,5,2). Tính điểm."
+    a: "0,30×4 + 0,25×3 + 0,20×5 + 0,25×2 = 1,2 + 0,75 + 1,0 + 0,5 = 3,45."
+  - q: "'Đổi vỏ' khác 'đổi lõi' thế nào? Ví dụ trong case?"
+    a: "Đổi vỏ = sơn, đổi bàn ghế, khách check-in một lần. Đổi lõi = đổi lý do khách đến: Hybrid/Deep Work phục vụ công việc (ổ cắm, ánh sáng, yên tĩnh) cho freelancer/IT."
+  - q: "Hub giao hàng giải quyết vấn đề gì cho TCH và rủi ro khi áp dụng?"
+    a: "Tách doanh thu khỏi mặt bằng vàng, kiểm soát chất lượng và dữ liệu nhờ giao hàng riêng. Rủi ro: chi phí giao hàng, chất lượng đồ uống khi vận chuyển, đầu tư logistics."
+  - q: "Theo 4.4 của case, nội dung TikTok nên kể điều gì và insight là gì?"
+    a: "Hành trình tìm hạt cà phê đặc sản, quá trình thiết kế lại không gian Nhà, gương mặt nhân viên tận tâm. Insight: người trẻ thích chân thực hơn quảng cáo bóng bẩy."
+  - q: "Hãy nêu 3 rủi ro của chiến dịch săn quà trên app và cách giảm."
+    a: "(1) Khách săn quà không quay lại: theo dõi retention sau thưởng, đặt điều kiện mua kèm. (2) Ăn mòn biên: trần ngân sách thưởng, giảm sâu chỉ cho Hibernating. (3) Rủi ro dữ liệu cá nhân: xin đồng ý, tuân thủ quy định hiện hành."
+  - q: "Nếu bạn là CEO TCH, cắt chi phí hay đổi concept trước? Trả lời theo case."
+    a: "Cắt chi phí trước (cầm máu), đồng thời giữ lại lợi thế App/CRM; đổi concept (Hybrid) sau khi dòng tiền ổn. Cả hai cần thiết, khác nhau về thứ tự."
+
+# ----------------------------------------------------------------------------------------------------------------- CHECKLIST
+checklist:
+  - "Đã nêu rõ dữ liệu nào thật và dữ liệu nào là giả định minh họa; không bịa số tài chính của TCH."
+  - "Đã chấm VRIO cho từng nguồn lực chính và đánh dấu nguồn lực bị đối thủ bắt chước."
+  - "Đã gom nguyên nhân gốc (không chỉ triệu chứng) thành nhóm có bằng chứng."
+  - "Đã xác định có bị kẹt ở giữa không và chọn cực hoặc khoảng trống mới."
+  - "Đã so sánh ít nhất 3 phương án (Ansoff/Blue Ocean) bằng điểm có trọng số và nêu lý do."
+  - "Đã sắp lộ trình theo dòng tiền: cắt tỉa -> tái cấu trúc -> tái định vị."
+  - "Đã tính tác động đóng cửa hàng (payback) và cân nhắc chi phí thương hiệu khi đóng flagship."
+  - "Đã dùng RFM, không gửi một thông điệp cho tất cả; giảm sâu chỉ cho nhóm ngủ đông."
+  - "Đã đo incremental, CPA, retention sau thưởng; không đếm đơn của khách vốn đã mua."
+  - "Đã gắn KPI BSC và kịch bản rủi ro (giá thuê, đối thủ giảm giá, Gen Z đổi kênh)."
+  - "Đã kiểm tra quy định dữ liệu cá nhân khi dùng CRM và quảng cáo lookalike."
+  - "Đã đưa ra một khuyến nghị ưu tiên rõ ràng và chỉ ra số liệu thật cần thu thập thêm."
+
+excel_google_sheets_templates:
+  - "Sheet VRIO: cột Nguồn lực | V | R | I | O | Tổng | Phân loại (=IF(V=0,\"Bất lợi\",IF(R=0,\"Ngang bằng\",IF(I=0,\"Tạm thời\",IF(O=0,\"Chưa khai thác\",\"Bền vững\")))))."
+  - "Sheet Điểm phương án: cột tiêu chí + trọng số, các phương án ở hàng; điểm = SUMPRODUCT(trọng số, điểm phương án); kiểm tra tổng trọng số = 1."
+  - "Sheet 4-wall: Cửa hàng | EBITDA tháng | Số tháng lỗ liên tiếp | Chi phí đóng | Quyết định (=IF(AND(E<0,L>6),\"Đóng\",\"Theo dõi\")); payback = SUM(chi phí đóng)/-SUM(lỗ cắt)."
+  - "Sheet CRM: Nhóm RFM | Số người | Tỷ lệ phản hồi | Đóng góp/đơn | Voucher/đơn | Tỷ lệ gia tăng | Ròng = người×phản hồi×(đóng góp×gia tăng - voucher)."
+
+source_file: "08-CASE-STUDY-The-Coffee-House.md"
