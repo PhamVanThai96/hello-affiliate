@@ -1,0 +1,1562 @@
+id: investor-m06
+title: "Đầu tư m06: Thẩm định dự án và tài sản đầu tư (CFO)"
+summary: "Thẩm định một khoản đầu tư dài hạn có dùng đòn bẩy (nhà cho thuê, đất nền, nhà xưởng, tài sản sinh dòng tiền) bằng tư duy CFO: dựng đúng dòng tiền (NOI, thuế, khấu hao, lãi vay, giá trị thanh lý), chọn ĐÚNG cặp dòng tiền với tỷ suất chiết khấu (FCFF với WACC, hoặc FCFE với Re th…"
+agents: ["investor"]
+order: 26
+when: ["tham dinh du an", "dau tu bat dong san", "dat nen", "nha o xa hoi", "can ho cho thue", "mua nha dau tu", "npv du an", "mirr", "la chan thue", "khau hao", "vay don bay mua tai san", "tra no goc deu", "dau tu ca nhan hay doanh nghiep", "stress test dong tien", "quy du phong khan cap", "vang", "nha xuong", "tham dinh du an va tai san dau tu (cfo)", "project and asset investment appraisal (cfo view)"]
+body_max: 3198
+sections:
+  - id: "m06-tong-quan"
+    title: "Tổng quan m06"
+    tags: ["m06", "thẩm", "định", "dự", "án", "và", "tài", "sản", "đầu", "tư", "cfo", "project"]
+    text: |-
+      Thẩm định dự án và tài sản đầu tư (CFO) (Project and Asset Investment Appraisal (CFO view)) — module m06
+
+      Mục đích: Thẩm định một khoản đầu tư dài hạn có dùng đòn bẩy (nhà cho thuê, đất nền, nhà xưởng, tài sản sinh dòng tiền) bằng tư duy CFO: dựng đúng dòng tiền (NOI, thuế, khấu hao, lãi vay, giá trị thanh lý), chọn ĐÚNG cặp dòng tiền với tỷ suất chiết khấu (FCFF với WACC, hoặc FCFE với Re theo CAPM), rồi đo NPV, IRR, MIRR, điểm đảo chiều dòng tiền, DSCR, stress test và quỹ dự phòng thanh khoản. Module này chuyển prompt CFO gốc thành quy trình đã sửa các lỗi logic của nó, để agent không lặp lại lỗi khi trả l…
+
+      Dùng khi:
+      - Có nên mua căn hộ, nhà phố, đất nền, nhà xưởng, cửa hàng cho thuê bằng vốn tự có kèm vay ngân hàng? Dự án có đáng giá không
+      - Tính chi phí vốn WACC và chi phí vốn chủ sở hữu CAPM cho một tài sản cụ thể
+      - So sánh đứng tên cá nhân với đứng tên doanh nghiệp (lá chắn thuế lãi vay, khấu hao) cho cùng một dự án
+      - Lập bảng dòng tiền năm 0, 1, 5, 10, năm cuối; tìm năm dự án tự nuôi được chính nó (điểm đảo chiều)
+      - Stress test: trống phòng/thất thoát 8-10% doanh thu, lãi vay thả nổi tăng, giá tài sản giảm; tính quỹ dự phòng thanh khoản tối thiểu
+      - Kiểm tra lại một bảng tính đầu tư có sẵn (của môi giới, của chính người dùng) xem có lỗi dòng tiền hoặc chiết khấu không
+      - So sánh lợi suất dự án với gửi tiết kiệm hoặc trái phiếu chính phủ (chi phí cơ hội)
+
+      Nên nắm trước: - m05
+
+      Module liên quan: - 'm05: DCF doanh nghiệp (FCFF, FCFE, WACC, terminal value) là cùng logic với dự án; module này áp dụng cho tài sản hữu hình có đòn bẩy' - 'm07: dữ liệu thị trường VN (lợi suất trái phiếu chính phủ, lãi suất tiết kiệm, ERP) và rủi ro vĩ mô' - 'm04: định giá tương đối (cap rate, giá thuê/giá bán) để kiểm tra chéo giá mua' - 'finance-agent-skill m01, m02, m03, m04: TVM, capital budgeting, WACC/CAPM…
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m06_capm: Chi phí vốn chủ sở hữu theo CAPM
+      - m06_wacc: Chi phí vốn bình quân gia quyền (có hoặc không thuế)
+      - m06_fisher: Phương trình Fisher (danh nghĩa và thực)
+      - m06_interest_shield: Lá chắn thuế của lãi vay
+      - m06_depreciation_shield: Khấu hao đường thẳng và lá chắn thuế khấu hao
+      - m06_debt_schedule: Lịch trả nợ: gốc đều và niên kim
+      - m06_noi: Thu nhập hoạt động ròng (NOI)
+      - m06_fcff: Dòng tiền tự do của toàn bộ vốn (FCFF)
+      - m06_fcfe: Dòng tiền tự do của vốn chủ (FCFE)
+      - m06_terminal_value: Giá trị thanh lý sau thuế cuối kỳ
+      - m06_npv: Giá trị hiện tại ròng
+      - m06_irr: Tỷ suất hoàn vốn nội bộ
+      - m06_mirr: IRR điều chỉnh (MIRR)
+      - m06_payback: Điểm đảo chiều và hoàn vốn có chiết khấu
+      - m06_dscr: Hệ số khả năng trả nợ (DSCR)
+      - m06_stress: Stress test: sốc doanh thu, lãi vay, giá tài sản
+      - m06_liquidity_reserve: Quỹ dự phòng thanh khoản tối thiểu
+      - m06_personal_vs_corp: So sánh đứng tên cá nhân và doanh nghiệp
+
+      Kho tra cứu của module: Khái niệm 16, Công thức 18, frameworks 3, Quy trình 4, Quy tắc quyết định 12, Chuẩn so sánh 7, Lỗi thường gặp 12, Lưu ý SME Việt Nam 6, Bài học case 1, Ví dụ có lời giải 5, Câu hỏi luyện tập 12, Checklist 12, Mẫu Excel/Sheets 6. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ DCF", "lỗi thường gặp định giá").
+  - id: "m06-concepts-1"
+    title: "Khái niệm: Chọn cặp đúng: dòng tiền và tỷ suất chiết khấu"
+    tags: ["khái", "niệm", "chọn", "cặp", "đúng", "dòng", "tiền", "và", "tỷ", "suất", "chiết", "khấu"]
+    text: |-
+      term_vi: 'Chọn cặp đúng: dòng tiền và tỷ suất chiết khấu'
+      term_en: Cash flow and discount rate consistency
+      definition: 'Dòng tiền TRƯỚC khi trả nợ (FCFF, dòng tiền của toàn bộ vốn gồm nợ và vốn chủ) phải chiết khấu bằng WACC. Dòng tiền SAU khi trả gốc và lãi (FCFE, dòng tiền của riêng chủ sở hữu) phải chiết khấu bằng chi phí vốn chủ sở hữu Re (CAPM). Cấm trộn: FCFE chiết khấu WACC, hoặc FCFF đã trừ lãi vay chiết khấu WACC.'
+      why_it_matters: Đây là lỗi nghiêm trọng nhất của prompt gốc. WACC là bình quân chi phí của CẢ nợ lẫn vốn chủ, nên nó đã chứa chi phí lãi vay. Nếu dòng tiền đã trừ lãi và gốc mà lại chiết khấu bằng WACC thì chi phí nợ bị tính hai lần (phạt dự án hai lần), đồng thời mẫu số lại quá thấp so với rủi ro thật của dòng tiền vốn chủ (có đòn bẩy nên rủi ro cao hơn). Kết quả NPV không có nghĩa. Nguyên tắc tách bạch đầu tư với tài trợ đến từ Fisher (1930) và Modigliani-Miller (1958); chi tiết ở finance-agent-skill m02 và m04.
+  - id: "m06-concepts-2"
+    title: "Khái niệm: Dòng tiền tự do của toàn bộ vốn"
+    tags: ["khái", "niệm", "dòng", "tiền", "tự", "do", "của", "toàn", "bộ", "vốn"]
+    text: |-
+      term_vi: Dòng tiền tự do của toàn bộ vốn
+      term_en: Free Cash Flow to Firm (FCFF)
+      definition: FCFF = NOI x (1 - T) + T x Khấu hao - CAPEX - tăng vốn lưu động. Không trừ lãi vay, không trừ gốc nợ.
+      why_it_matters: Cho biết bản thân tài sản tạo ra bao nhiêu tiền bất kể cách tài trợ. Dùng để trả lời 'tài sản này có đáng mua không' (chất lượng tài sản), tách khỏi câu hỏi 'vay bao nhiêu thì tối ưu' (chất lượng cấu trúc tài chính).
+  - id: "m06-concepts-3"
+    title: "Khái niệm: Dòng tiền tự do của vốn chủ sở hữu"
+    tags: ["khái", "niệm", "dòng", "tiền", "tự", "do", "của", "vốn", "chủ", "sở", "hữu"]
+    text: |-
+      term_vi: Dòng tiền tự do của vốn chủ sở hữu
+      term_en: Free Cash Flow to Equity (FCFE)
+      definition: FCFE = FCFF - Lãi vay x (1 - T) - Trả gốc nợ (+ vay mới nếu có). Năm 0 = vốn tự có bỏ ra (âm).
+      why_it_matters: 'Đây mới là cái nhà đầu tư thực sự nhận. Prompt gốc thực chất tính FCFE nhưng gọi nhầm là dòng tiền tự do rồi chiết khấu bằng WACC. FCFE phản ánh rủi ro đòn bẩy: vay càng nhiều, dòng tiền năm đầu càng âm, nhưng lợi suất vốn chủ có thể cao hơn nếu tài sản sinh lời vượt lãi vay.'
+  - id: "m06-concepts-4"
+    title: "Khái niệm: Thu nhập hoạt động ròng"
+    tags: ["khái", "niệm", "thu", "nhập", "hoạt", "động", "ròng"]
+    text: |-
+      term_vi: Thu nhập hoạt động ròng
+      term_en: Net Operating Income (NOI) / EBITDA
+      definition: NOI = Doanh thu thuê thực thu (sau trống phòng, nợ khó đòi) - chi phí vận hành (bảo trì, quản lý, điện nước phần chủ nhà chịu, thuế sử dụng đất phi nông nghiệp, bảo hiểm, phí môi giới). Chưa trừ khấu hao, lãi vay, thuế thu nhập.
+      why_it_matters: 'Prompt gốc lấy thẳng ''doanh thu'' làm dòng tiền. Doanh thu cho thuê KHÔNG phải tiền vào túi: chủ nhà luôn gánh bảo trì, sửa chữa định kỳ, thuế tài sản, quản lý và thời gian trống. Bỏ các khoản này làm dòng tiền bị thổi phồng hệ thống (mức cụ thể tùy loại tài sản, ví dụ minh họa dưới đây dùng 15%).'
+  - id: "m06-concepts-5"
+    title: "Khái niệm: Giá trị thanh lý / giá trị cuối kỳ"
+    tags: ["khái", "niệm", "giá", "trị", "thanh", "lý", "cuối", "kỳ"]
+    text: |-
+      term_vi: Giá trị thanh lý / giá trị cuối kỳ
+      term_en: Terminal / Salvage value after tax
+      definition: Giá bán dự kiến cuối kỳ = Giá mua x (1 + g_giá)^n, trừ chi phí bán, trừ thuế trên chênh lệch (giá bán thuần - giá trị sổ sách còn lại) nếu là doanh nghiệp, trừ nợ còn lại nếu chưa trả hết. Là dòng tiền năm cuối.
+      why_it_matters: Với bất động sản, phần lớn lợi nhuận thường đến từ tăng giá tài sản chứ không phải tiền thuê (trong ví dụ dưới đây tiền thuê chỉ cho lợi suất thuần khoảng 3,5%/năm). Prompt gốc nêu giả định tài sản tăng giá 4%/năm nhưng KHÔNG đưa giá trị thanh lý vào dòng tiền nên kết luận NPV sai lệch.
+  - id: "m06-concepts-6"
+    title: "Khái niệm: Lá chắn thuế của lãi vay"
+    tags: ["khái", "niệm", "lá", "chắn", "thuế", "của", "lãi", "vay"]
+    text: |-
+      term_vi: Lá chắn thuế của lãi vay
+      term_en: Interest tax shield
+      definition: 'Thuế tiết kiệm được nhờ lãi vay được trừ khỏi thu nhập chịu thuế: Lãi vay x T. Chỉ có giá trị khi chủ thể thực sự nộp thuế thu nhập và lãi được trừ hợp lệ.'
+      why_it_matters: 'Lý do chi phí nợ sau thuế = Rd x (1 - T) thấp hơn Rd. Nguồn gốc lý thuyết: Modigliani-Miller 1963 (có thuế) cho thấy nợ làm tăng giá trị doanh nghiệp. Lưu ý: quy định hạn mức chi phí lãi vay được trừ (Nghị định 132/2020, trần 30% EBITDA) và điều kiện chi phí hợp lệ cần xác nhận hiện hành.'
+  - id: "m06-concepts-7"
+    title: "Khái niệm: Lá chắn thuế khấu hao"
+    tags: ["khái", "niệm", "lá", "chắn", "thuế", "khấu", "hao"]
+    text: |-
+      term_vi: Lá chắn thuế khấu hao
+      term_en: Depreciation tax shield
+      definition: Khấu hao không phải chi tiền nhưng làm giảm thu nhập chịu thuế nên tiết kiệm Khấu hao x T tiền thuế thật mỗi năm.
+      why_it_matters: 'Giải thích vì sao FCFF = NOI(1-T) + T x Dep: khấu hao chỉ đóng góp đúng phần thuế tiết kiệm, không phải cả khoản khấu hao. Đất không được khấu hao: phần giá trị đất phải loại khỏi nền khấu hao (prompt gốc khấu hao toàn bộ 1,3 tỷ là giả định đơn giản hóa, cần ghi chú).'
+  - id: "m06-concepts-8"
+    title: "Khái niệm: Lịch trả nợ gốc đều và niên kim"
+    tags: ["khái", "niệm", "lịch", "trả", "nợ", "gốc", "đều", "và", "niên", "kim"]
+    text: |-
+      term_vi: Lịch trả nợ gốc đều và niên kim
+      term_en: Equal-principal vs annuity (level payment) amortization
+      definition: 'Gốc đều: mỗi kỳ trả D/n gốc, lãi tính trên dư nợ đầu kỳ nên tổng trả giảm dần (kỳ đầu nặng nhất). Niên kim: tổng trả mỗi kỳ cố định PMT = D x r / (1 - (1+r)^-n), gốc tăng dần, lãi giảm dần.'
+      why_it_matters: Gốc đều gây áp lực thanh khoản đúng lúc dự án mới vận hành (DSCR thấp nhất ở năm 1); niên kim dễ thở hơn năm đầu nhưng tổng lãi cao hơn. Phải chọn lịch trả nợ khớp với dòng tiền dự kiến, nếu không DSCR dưới 1 buộc chủ đầu tư bù tiền túi hằng tháng.
+  - id: "m06-concepts-9"
+    title: "Khái niệm: Hệ số khả năng trả nợ"
+    tags: ["khái", "niệm", "hệ", "số", "khả", "năng", "trả", "nợ"]
+    text: |-
+      term_vi: Hệ số khả năng trả nợ
+      term_en: Debt Service Coverage Ratio (DSCR)
+      definition: DSCR = NOI / (Lãi + Gốc phải trả trong năm). Ngân hàng thường yêu cầu tối thiểu khoảng 1,2-1,3 (ngưỡng tham khảo, tùy ngân hàng).
+      why_it_matters: Kiểm tra trực tiếp dự án có tự trả nợ bằng dòng tiền hoạt động không. DSCR dưới 1 nghĩa là chủ đầu tư phải rút tiền túi bù mỗi năm.
+  - id: "m06-concepts-10"
+    title: "Khái niệm: Điểm đảo chiều dòng tiền"
+    tags: ["khái", "niệm", "điểm", "đảo", "chiều", "dòng", "tiền"]
+    text: |-
+      term_vi: Điểm đảo chiều dòng tiền
+      term_en: Cash-flow reversal / break-even year (discounted payback)
+      definition: 'Có hai khái niệm phải phân biệt: (a) năm đầu tiên dòng tiền ròng hằng năm (FCFE) chuyển từ âm sang dương, tức dự án ''tự nuôi được chính nó'' (đây là yêu cầu của prompt gốc); (b) năm tổng dòng tiền tích lũy (có hoặc không chiết khấu) bù lại vốn tự có ban đầu (payback, discounted payback).'
+      why_it_matters: '(a) cho biết tiền túi phải bù trong bao lâu và bao nhiêu (đỉnh âm tích lũy chính là vốn bổ sung thực sự cần có); (b) cho biết bao lâu mới thu hồi vốn. Hai mốc này có thể cách nhau nhiều năm (ví dụ dưới đây: đảo chiều năm 9, nhưng hoàn vốn chỉ nhờ bán tài sản năm 20).'
+  - id: "m06-concepts-11"
+    title: "Khái niệm: Lãi suất danh nghĩa và thực"
+    tags: ["khái", "niệm", "lãi", "suất", "danh", "nghĩa", "và", "thực"]
+    text: |-
+      term_vi: Lãi suất danh nghĩa và thực
+      term_en: Nominal vs real rates (Fisher equation)
+      definition: (1 + danh nghĩa) = (1 + thực) x (1 + lạm phát). Dòng tiền danh nghĩa chiết khấu bằng lãi danh nghĩa; dòng tiền thực (đã loại lạm phát) chiết khấu bằng lãi thực.
+      why_it_matters: Trộn hai hệ dẫn đến sai lớn khi kỳ hạn dài 20 năm. Trong prompt, Rf 6,5% và Rd 6,6% là danh nghĩa nên doanh thu, tăng giá, chi phí đều phải ở giá danh nghĩa.
+  - id: "m06-concepts-12"
+    title: "Khái niệm: Lãi suất phi rủi ro"
+    tags: ["khái", "niệm", "lãi", "suất", "phi", "rủi", "ro"]
+    text: |-
+      term_vi: Lãi suất phi rủi ro
+      term_en: Risk-free rate (Rf)
+      definition: 'Lý thuyết: lợi suất trái phiếu chính phủ có kỳ hạn khớp với thời gian đầu tư (vd 10 năm cho dự án 10 năm). Thực hành của prompt gốc: lãi suất tiết kiệm ngân hàng kỳ hạn dài. Hai cách đều dùng được MIỄN LÀ NHẤT QUÁN trong toàn bộ bài (CAPM, chi phí cơ hội, MIRR) và ghi rõ nguồn.'
+      why_it_matters: Rf là mỏ neo của CAPM. Lãi tiết kiệm có thể khác lợi suất trái phiếu chính phủ cùng kỳ hạn, và có thể phải gửi kỳ hạn ngắn rồi tái tục (rủi ro tái đầu tư); phần chênh lệch này làm Re lệch. Nếu dùng lãi tiết kiệm làm Rf thì ERP cũng nên hiệu chỉnh cùng cơ sở (ERP thường đo so với trái phiếu chính phủ). Số liệu thị trường VN xem m07, không bịa.
+  - id: "m06-concepts-13"
+    title: "Khái niệm: Beta theo loại tài sản (heuristic)"
+    tags: ["khái", "niệm", "beta", "theo", "loại", "tài", "sản", "heuristic"]
+    text: |-
+      term_vi: Beta theo loại tài sản (heuristic)
+      term_en: Asset beta heuristics
+      definition: 'Prompt gốc đề xuất: vàng, nhà ở xã hội 0,5-0,7; BĐS thương mại nội đô, quỹ, VN30 khoảng 1,0; đất nền tỉnh, cổ phiếu tăng trưởng nhỏ, tiền mã hóa 1,2-1,5. Đây là phán đoán kinh nghiệm CHƯA được kiểm chứng bằng hồi quy dữ liệu thị trường VN.'
+      why_it_matters: 'Beta thật đo bằng độ nhạy của lợi suất tài sản so với thị trường. BĐS trực tiếp ít giao dịch, giá thẩm định bị làm trơn nên beta đo được thường thấp giả tạo. Cách tốt hơn: dùng beta ngành/so sánh (công ty BĐS, REIT cùng loại) rồi un-lever và re-lever theo cấu trúc vốn dự án (công thức Hamada, xem m05 và finance-agent-skill m03). Agent phải ghi confidence thấp cho Beta lấy từ bảng heuristic và chạy độ nhạy Re theo beta.'
+  - id: "m06-concepts-14"
+    title: "Khái niệm: Đứng tên cá nhân so với doanh nghiệp"
+    tags: ["khái", "niệm", "đứng", "tên", "cá", "nhân", "so", "với", "doanh", "nghiệp"]
+    text: |-
+      term_vi: Đứng tên cá nhân so với doanh nghiệp
+      term_en: Personal vs corporate ownership
+      definition: 'Cá nhân: giả định T = 0% khiến lãi vay và khấu hao không còn là lá chắn thuế. Doanh nghiệp: T > 0 (ví dụ 20%) nên có lá chắn kép, nhưng lợi nhuận bị đánh thuế TNDN, và rút lợi nhuận về cá nhân có thể chịu thêm thuế.'
+      why_it_matters: 'Cần tách hai chuyện: (1) ''T=0'' ở prompt là giả định đơn giản hóa, trong thực tế thu nhập cho thuê và chuyển nhượng cá nhân tại VN có thể chịu thuế (xem sme_vn_guidance, cần xác nhận hiện hành); (2) đứng tên doanh nghiệp không tự động tốt hơn: chi phí thành lập, kế toán, thuế cổ tức, và nợ vay doanh nghiệp có thể bị ràng buộc. Phải tính cả hai bằng cùng mô hình rồi so NPV.'
+  - id: "m06-concepts-15"
+    title: "Khái niệm: Stress test dòng tiền"
+    tags: ["khái", "niệm", "stress", "test", "dòng", "tiền"]
+    text: |-
+      term_vi: Stress test dòng tiền
+      term_en: Cash-flow stress test
+      definition: 'Chạy lại mô hình với một hoặc nhiều cú sốc có thật: trống phòng/thất thoát 8-10% doanh thu, lãi vay thả nổi tăng, giá tài sản đi ngang hoặc giảm, thuế/phí thay đổi.'
+      why_it_matters: Dự báo gốc luôn quá lạc quan (optimism bias). Stress test cho biết biên an toàn và cần giữ bao nhiêu tiền mặt để không phải bán tài sản gấp (bán tháo đúng lúc thị trường xấu).
+  - id: "m06-concepts-16"
+    title: "Khái niệm: Quỹ dự phòng thanh khoản"
+    tags: ["khái", "niệm", "quỹ", "dự", "phòng", "thanh", "khoản"]
+    text: |-
+      term_vi: Quỹ dự phòng thanh khoản
+      term_en: Liquidity reserve
+      definition: 'Lượng tiền mặt/tương đương tiền giữ riêng để trả nợ và chi phí cố định khi dòng tiền dự án hụt. Một công thức thực dụng: thiếu hụt dòng tiền hằng tháng dưới kịch bản stress nhân số tháng muốn chịu được (tối thiểu 6-12 tháng).'
+      why_it_matters: Phá sản của nhà đầu tư dùng đòn bẩy thường là rủi ro thanh khoản chứ không phải rủi ro giá. Số tháng 6-12 là quy ước thực hành (độ tin cậy trung bình), không phải định luật.
+  - id: "m06-formulas-1"
+    title: "Công thức: m06_capm — Chi phí vốn chủ sở hữu theo CAPM"
+    tags: ["công", "thức", "m06_capm", "chi", "phí", "vốn", "chủ", "sở", "hữu", "theo", "capm"]
+    text: |-
+      id: m06_capm
+      name_vi: Chi phí vốn chủ sở hữu theo CAPM
+      name_en: Cost of equity (CAPM)
+      expression_latex: R_e = R_f + \beta \times ERP
+      expression_python: rf + beta * erp
+      excel: =Rf + Beta * ERP
+      variables:
+      - symbol: rf
+        meaning: Lãi suất phi rủi ro (cùng cơ sở trong toàn bài)
+        unit: tỷ lệ/năm (vd 0.065)
+      - symbol: beta
+        meaning: Hệ số beta của tài sản (levered, đã phản ánh đòn bẩy dự án)
+        unit: số thuần
+      - symbol: erp
+        meaning: Phần bù rủi ro thị trường kỳ vọng
+        unit: tỷ lệ/năm
+      when_to_use: Xác định tỷ suất sinh lời tối thiểu mà chủ sở hữu đòi hỏi; là tỷ suất chiết khấu của FCFE.
+      why_it_works: 'Nhà đầu tư luôn có lựa chọn không rủi ro (Rf). Muốn họ chấp nhận rủi ro hệ thống của tài sản thì phải bù thêm beta lần phần bù của cả thị trường. Sharpe (1964) và Lintner (1965) phát triển từ lý thuyết danh mục của Markowitz (1952): chỉ rủi ro không thể đa dạng hóa (beta) được thưởng.'
+      assumptions:
+      - Beta ổn định theo thời gian
+      - ERP và Rf cùng cơ sở (danh nghĩa, cùng đồng tiền)
+      - Beta phản ánh đúng đòn bẩy hiện tại của dự án
+      pitfalls:
+      - Lấy beta từ bảng heuristic (vàng 0,5-0,7; BĐS thương mại 1,0; đất nền 1,2-1,5) mà không ghi confidence thấp
+      - Dùng lãi tiết kiệm làm Rf nhưng ERP lại đo so với trái phiếu chính phủ
+      - Dùng Re của vốn không vay cho dự án vay đòn bẩy cao mà không re-lever beta
+      interpretation: Re là ngưỡng lợi suất vốn chủ tối thiểu. Equity IRR hoặc MIRR dưới Re nghĩa là chưa bù đủ rủi ro.
+      example:
+        inputs:
+          rf: 0.065
+          beta: 0.6
+          erp: 0.07
+        steps:
+        - Re = 0.065 + 0.6 x 0.07 = 0.065 + 0.042 = 0.107
+        result: Re = 10.7%/năm (beta 1.0 cho Re = 13.5%)
+  - id: "m06-formulas-2"
+    title: "Công thức: m06_wacc — Chi phí vốn bình quân gia quyền (có hoặc không thuế)"
+    tags: ["công", "thức", "m06_wacc", "chi", "phí", "vốn", "bình", "quân", "gia", "quyền", "có", "hoặc"]
+    text: |-
+      id: m06_wacc
+      name_vi: Chi phí vốn bình quân gia quyền (có hoặc không thuế)
+      name_en: WACC (with / without tax)
+      expression_latex: WACC = \frac{E}{V} R_e + \frac{D}{V} R_d (1 - T)
+      expression_python: e/v*re + d/v*rd*(1-t)
+      excel: =E/V*Re + D/V*Rd*(1-T)
+      variables:
+      - symbol: e
+        meaning: Vốn tự có
+        unit: triệu đồng
+      - symbol: d
+        meaning: Nợ vay
+        unit: triệu đồng
+      - symbol: v
+        meaning: Tổng vốn V = E + D
+        unit: triệu đồng
+      - symbol: re
+        meaning: Chi phí vốn chủ (CAPM)
+        unit: tỷ lệ/năm
+      - symbol: rd
+        meaning: Lãi vay trước thuế
+        unit: tỷ lệ/năm
+      - symbol: t
+        meaning: Thuế suất TNDN; cá nhân giả định 0
+        unit: tỷ lệ
+      when_to_use: Tỷ suất chiết khấu của FCFF (dòng tiền trước nợ). Cá nhân T = 0 thì WACC = E/V x Re + D/V x Rd.
+      why_it_works: Mỗi đồng vốn do một nhà cung cấp vốn bỏ ra và đòi lợi suất riêng; chi phí chung là bình quân theo tỷ trọng. Nợ được nhân (1-T) vì lãi vay tiết kiệm thuế. Dự án chỉ tạo giá trị khi sinh lời cao hơn mức bình quân này.
+      assumptions:
+      - Tỷ trọng D/V, E/V ổn định (cấu trúc vốn mục tiêu)
+      - Tỷ trọng theo giá trị thị trường/giá trị dự án, không theo sổ sách
+      pitfalls:
+      - Dự án trả nợ gốc đều thì D/V giảm dần theo thời gian, WACC với tỷ trọng cố định chỉ là xấp xỉ; vì vậy NPV theo FCFF và theo FCFE không bằng nhau chính xác
+      - Dùng WACC để chiết khấu dòng tiền vốn chủ (FCFE) là lỗi dùng sai cặp
+      - Quên (1 - T) cho nợ khi là doanh nghiệp, hoặc vẫn nhân (1 - T) cho cá nhân T = 0
+      interpretation: NPV(FCFF, WACC) > 0 nghĩa là tài sản tạo giá trị cho toàn bộ nhà cung cấp vốn; so sánh WACC với lợi suất vận hành thuần (NOI/giá mua) cộng tăng giá.
+      example:
+        inputs:
+          e: 500
+          d: 800
+          v: 1300
+          re: 0.107
+          rd: 0.066
+          t: 0.2
+        steps:
+        - E/V = 500/1300 = 0.38462; D/V = 0.61538
+        - Rd sau thuế = 0.066 x 0.8 = 0.0528
+        - WACC = 0.38462 x 0.107 + 0.61538 x 0.0528 = 0.041154 + 0.032492 = 0.073646
+        result: 'WACC = 7.3646% (T = 0: Rd sau thuế 6.6%, WACC = 8.1769%)'
+  - id: "m06-formulas-3"
+    title: "Công thức: m06_fisher — Phương trình Fisher (danh nghĩa và thực)"
+    tags: ["công", "thức", "m06_fisher", "phương", "trình", "fisher", "danh", "nghĩa", "và", "thực"]
+    text: |-
+      id: m06_fisher
+      name_vi: Phương trình Fisher (danh nghĩa và thực)
+      name_en: Fisher equation
+      expression_latex: 1 + i_{nom} = (1 + i_{real})(1 + \pi)
+      expression_python: (1+real)*(1+infl)-1
+      excel: =(1+Real)*(1+Infl)-1
+      variables:
+      - symbol: real
+        meaning: Lãi suất thực
+        unit: tỷ lệ/năm
+      - symbol: infl
+        meaning: Lạm phát kỳ vọng
+        unit: tỷ lệ/năm
+      when_to_use: 'Khi dữ liệu lẫn lộn giá thực và danh nghĩa: quy tất cả về một hệ trước khi chiết khấu.'
+      why_it_works: Tiền mất giá theo lạm phát; lãi danh nghĩa gồm phần bù sức mua và phần lãi thực. Công thức nhân (không phải cộng) vì lạm phát cũng làm giảm giá trị phần lãi.
+      assumptions:
+      - Lạm phát kỳ vọng ổn định trong kỳ hạn
+      pitfalls:
+      - Cộng đơn giản real + infl gây lệch nhỏ nhưng tích lũy qua 20 năm
+      - Dòng tiền thực nhưng chiết khấu bằng lãi danh nghĩa (hoặc ngược lại)
+      interpretation: Doanh thu tăng 5%/năm và tăng giá tài sản 4%/năm là danh nghĩa nếu đã gồm lạm phát; khi đó Rf, Rd, WACC phải danh nghĩa.
+      example:
+        inputs:
+          real: 0.04
+          infl: 0.03
+        steps:
+        - (1.04)(1.03) - 1 = 0.0712
+        result: Lãi danh nghĩa 7.12% (không phải 7%)
+  - id: "m06-formulas-4"
+    title: "Công thức: m06_interest_shield — Lá chắn thuế của lãi vay"
+    tags: ["công", "thức", "m06_interest_shield", "lá", "chắn", "thuế", "của", "lãi", "vay"]
+    text: |-
+      id: m06_interest_shield
+      name_vi: Lá chắn thuế của lãi vay
+      name_en: Interest tax shield
+      expression_latex: TS_{int,t} = r_d \times B_{t-1} \times T
+      expression_python: rd * b_prev * t
+      excel: =Rd * DuNoDauKy * T
+      variables:
+      - symbol: rd
+        meaning: Lãi vay trước thuế
+        unit: tỷ lệ/năm
+      - symbol: b_prev
+        meaning: Dư nợ đầu kỳ
+        unit: triệu đồng
+      - symbol: t
+        meaning: Thuế suất TNDN
+        unit: tỷ lệ
+      when_to_use: Doanh nghiệp (T > 0) có đủ thu nhập chịu thuế để hấp thụ khoản trừ.
+      why_it_works: Lãi là chi phí hợp lệ nên giảm thu nhập chịu thuế; mỗi đồng lãi tiết kiệm T đồng thuế. Cá nhân không có thu nhập chịu thuế để trừ nên T = 0.
+      assumptions:
+      - Có thu nhập chịu thuế đủ lớn (nếu lỗ, lá chắn bị hoãn sang năm sau, giá trị hiện tại thấp hơn)
+      - Không vướng trần chi phí lãi vay được trừ (cần xác nhận hiện hành)
+      pitfalls:
+      - Tính lá chắn khi doanh nghiệp đang lỗ và chưa dùng được
+      - Quên rằng lãi giảm dần theo dư nợ nên lá chắn giảm dần
+      interpretation: Năm 1 là lớn nhất với gốc đều. Cộng PV của lá chắn nợ cho thấy giá trị cấu trúc vốn (finance-agent-skill m04).
+      example:
+        inputs:
+          rd: 0.066
+          b_prev: 800
+          t: 0.2
+        steps:
+        - Lãi năm 1 = 800 x 0.066 = 52.8
+        - Lá chắn = 52.8 x 0.2 = 10.56
+        result: 10.56 triệu (năm 1)
+  - id: "m06-formulas-5"
+    title: "Công thức: m06_depreciation_shield — Khấu hao đường thẳng và lá chắn thuế khấu hao"
+    tags: ["công", "thức", "m06_depreciation_shield", "khấu", "hao", "đường", "thẳng", "và", "lá", "chắn", "thuế"]
+    text: |-
+      id: m06_depreciation_shield
+      name_vi: Khấu hao đường thẳng và lá chắn thuế khấu hao
+      name_en: Straight-line depreciation and tax shield
+      expression_latex: Dep = \frac{C - S}{N}; \quad TS_{dep} = Dep \times T
+      expression_python: (c - s_book) / n_dep * t
+      excel: =SLN(Cost,Salvage,Life)*T
+      variables:
+      - symbol: c
+        meaning: Nguyên giá có thể khấu hao (loại trừ đất)
+        unit: triệu đồng
+      - symbol: s_book
+        meaning: Giá trị thanh lý dự kiến theo sổ sách
+        unit: triệu đồng
+      - symbol: n_dep
+        meaning: Số năm khấu hao
+        unit: năm
+      - symbol: t
+        meaning: Thuế suất TNDN
+        unit: tỷ lệ
+      when_to_use: Cải thiện dòng tiền sau thuế của doanh nghiệp sở hữu tài sản cố định.
+      why_it_works: 'Khấu hao là chi phí kế toán không dùng tiền nên làm giảm thuế phải nộp nhưng không giảm tiền mặt: phần thuế tiết kiệm là tiền thật.'
+      assumptions:
+      - Thời gian khấu hao hợp lệ theo quy định
+      - Đất không được khấu hao
+      pitfalls:
+      - Khấu hao cả phần giá trị đất
+      - Nhầm lá chắn (Dep x T) với toàn bộ khấu hao
+      - Doanh nghiệp lỗ không dùng được ngay
+      interpretation: Khấu hao nhanh hơn thì lá chắn đến sớm hơn, PV lớn hơn; nhưng tổng lá chắn không đổi.
+      example:
+        inputs:
+          c: 1300
+          s_book: 0
+          n_dep: 20
+          t: 0.2
+        steps:
+        - Dep = 1300/20 = 65 mỗi năm
+        - Lá chắn = 65 x 0.2 = 13
+        result: '13 triệu mỗi năm (giả định đơn giản hóa theo prompt: khấu hao cả 1300)'
+  - id: "m06-formulas-6"
+    title: "Công thức: m06_debt_schedule — Lịch trả nợ: gốc đều và niên kim"
+    tags: ["công", "thức", "m06_debt_schedule", "lịch", "trả", "nợ", "gốc", "đều", "và", "niên", "kim"]
+    text: |-
+      id: m06_debt_schedule
+      name_vi: 'Lịch trả nợ: gốc đều và niên kim'
+      name_en: 'Amortization: equal principal vs annuity'
+      expression_latex: 'Equal: P_t = D/n,\ I_t = r B_{t-1};\quad Annuity: PMT = D \frac{r}{1-(1+r)^{-n}}'
+      expression_python: |-
+        i_eq = [(d - d / n * (k - 1)) * r for k in range(1, n + 1)]
+        pmt = d * r / (1 - (1 + r) ** (-n))
+        result = {'interest_equal_principal': i_eq, 'principal_equal': d / n, 'pmt_annuity': pmt}
+      excel: 'Gốc đều: =D/n; lãi: =DuNo*r; niên kim: =PMT(r,n,-D)'
+      variables:
+      - symbol: d
+        meaning: Số tiền vay
+        unit: triệu đồng
+      - symbol: r
+        meaning: Lãi suất theo kỳ
+        unit: tỷ lệ/kỳ
+      - symbol: n
+        meaning: Số kỳ
+        unit: kỳ
+      when_to_use: Dựng nghĩa vụ nợ từng năm cho FCFE và DSCR.
+      why_it_works: 'Gốc đều: dư nợ giảm đều nên lãi giảm tuyến tính. Niên kim: giải phương trình PV của chuỗi trả bằng D (finance-agent-skill m01).'
+      assumptions:
+      - 'Lãi cố định cả kỳ (thực tế VN thường cố định 1-3 năm đầu rồi thả nổi: cần xác nhận hợp đồng)'
+      - Không ân hạn gốc, không phạt trả nợ trước hạn
+      pitfalls:
+      - Trộn lãi theo năm với trả theo tháng (nên dùng r tháng = r năm / 12 khi trả tháng)
+      - Quên ân hạn gốc hoặc phí trả nợ trước hạn
+      interpretation: 'Với D = 800, r = 6.6%, n = 20: gốc đều trả 40 gốc + 52.8 lãi = 92.8 năm 1, còn 42.64 năm 20; tổng lãi 554.4. Niên kim theo năm 73.18 mỗi năm.'
+      example:
+        inputs:
+          d: 800
+          r: 0.066
+          n: 20
+        steps:
+        - Lãi năm 1 = 800 x 0.066 = 52.8; lãi năm 20 = 40 x 0.066 = 2.64
+        - Tổng lãi gốc đều = 554.4
+        - PMT niên kim năm = 800 x 0.066 / (1 - 1.066^-20) = 73.18
+        result: 'Gốc đều: tổng trả năm 1 = 92.8; niên kim: 73.18 mỗi năm'
+  - id: "m06-formulas-7"
+    title: "Công thức: m06_noi — Thu nhập hoạt động ròng (NOI)"
+    tags: ["công", "thức", "m06_noi", "thu", "nhập", "hoạt", "động", "ròng", "noi"]
+    text: |-
+      id: m06_noi
+      name_vi: Thu nhập hoạt động ròng (NOI)
+      name_en: Net Operating Income
+      expression_latex: NOI_t = Rev_t (1 - v - o)
+      expression_python: rev0 * (1 + g) ** (t - 1) * (1 - vacancy - opex)
+      excel: =Rev1*(1+g)^(t-1)*(1-trong-opex)
+      variables:
+      - symbol: rev0
+        meaning: Doanh thu thuê danh nghĩa năm 1 (12 x tiền thuê tháng)
+        unit: triệu đồng/năm
+      - symbol: g
+        meaning: Tăng trưởng doanh thu hằng năm
+        unit: tỷ lệ
+      - symbol: t
+        meaning: Năm thứ t (t >= 1)
+        unit: năm
+      - symbol: vacancy
+        meaning: Tỷ lệ trống/thất thoát/nợ khó đòi trên doanh thu
+        unit: tỷ lệ
+      - symbol: opex
+        meaning: Chi phí vận hành, bảo trì, thuế tài sản, quản lý trên doanh thu
+        unit: tỷ lệ
+      when_to_use: Luôn dùng NOI làm đầu vào dòng tiền thay cho doanh thu.
+      why_it_works: Chủ sở hữu chỉ giữ phần còn lại sau chi phí để vận hành tài sản; NOI là phép đo sản xuất tiền của chính tài sản, chuẩn trong BĐS và dự án.
+      assumptions:
+      - 'Tỷ lệ vacancy và opex là giả định minh họa (ví dụ dưới: tổng 15%) và phải thay bằng số thực từ thị trường/hợp đồng'
+      pitfalls:
+      - Dùng doanh thu thay NOI (lỗi 2 của prompt)
+      - Opex không tăng theo lạm phát trong khi doanh thu tăng
+      - Đặt vacancy 0% cho tài sản không có hợp đồng thuê dài hạn
+      interpretation: 'NOI chia giá mua là tỷ suất vốn hóa (cap rate, lợi suất thuần). Trong ví dụ: 45.9 / 1300 = 3.53%, thấp hơn lãi vay 6.6%, nên đòn bẩy làm dòng tiền hằng năm âm (đòn bẩy âm).'
+      example:
+        inputs:
+          rev0: 54
+          g: 0.05
+          t: 1
+          vacancy: 0.08
+          opex: 0.07
+        steps:
+        - Doanh thu năm 1 = 4.5 x 12 = 54
+        - NOI = 54 x (1 - 0.15) = 45.9
+        result: NOI năm 1 = 45.9 triệu (lợi suất thuần 3.53%)
+  - id: "m06-formulas-8"
+    title: "Công thức: m06_fcff — Dòng tiền tự do của toàn bộ vốn (FCFF)"
+    tags: ["công", "thức", "m06_fcff", "dòng", "tiền", "tự", "do", "của", "toàn", "bộ", "vốn", "fcff"]
+    text: |-
+      id: m06_fcff
+      name_vi: Dòng tiền tự do của toàn bộ vốn (FCFF)
+      name_en: Free Cash Flow to Firm (project)
+      expression_latex: FCFF_t = NOI_t (1 - T) + T \times Dep_t - CAPEX_t - \Delta NWC_t
+      expression_python: noi * (1 - t) + t * dep - capex - dnwc
+      excel: =NOI*(1-T)+T*Dep-CAPEX-dNWC
+      variables:
+      - symbol: noi
+        meaning: NOI năm t
+        unit: triệu đồng
+      - symbol: t
+        meaning: Thuế suất
+        unit: tỷ lệ
+      - symbol: dep
+        meaning: Khấu hao năm t
+        unit: triệu đồng
+      - symbol: capex
+        meaning: Chi đầu tư/cải tạo năm t
+        unit: triệu đồng
+      - symbol: dnwc
+        meaning: Tăng vốn lưu động (đặt cọc, tồn kho)
+        unit: triệu đồng
+      when_to_use: Đánh giá tài sản độc lập với cách tài trợ; chiết khấu bằng WACC.
+      why_it_works: 'EBIT(1-T) + Dep = (NOI - Dep)(1-T) + Dep = NOI(1-T) + T x Dep: thuế chỉ tính trên NOI sau khấu hao, nhưng khấu hao được cộng lại vì không dùng tiền. Không trừ lãi vì chi phí nợ đã nằm trong WACC.'
+      assumptions:
+      - Doanh nghiệp đủ thu nhập chịu thuế để dùng lá chắn; nếu EBIT âm ví dụ này giả định lỗ được bù từ thu nhập khác (lỗ chuyển sang năm sau là cách xử lý khác)
+      pitfalls:
+      - Trừ lãi vay trong FCFF rồi chiết khấu WACC (tính nợ hai lần)
+      - Quên CAPEX bảo trì lớn (sơn sửa, thay thiết bị) giữa kỳ
+      interpretation: 'Năm 1 ví dụ: 45.9 x 0.8 + 0.2 x 65 = 36.72 + 13 = 49.72. Cuối kỳ cộng giá trị thanh lý sau thuế.'
+      example:
+        inputs:
+          noi: 45.9
+          t: 0.2
+          dep: 65
+          capex: 0
+          dnwc: 0
+        steps:
+        - 45.9 x 0.8 = 36.72
+        - + 0.2 x 65 = 13
+        - FCFF1 = 49.72
+        result: FCFF năm 1 = 49.72 triệu
+  - id: "m06-formulas-9"
+    title: "Công thức: m06_fcfe — Dòng tiền tự do của vốn chủ (FCFE)"
+    tags: ["công", "thức", "m06_fcfe", "dòng", "tiền", "tự", "do", "của", "vốn", "chủ", "fcfe"]
+    text: |-
+      id: m06_fcfe
+      name_vi: Dòng tiền tự do của vốn chủ (FCFE)
+      name_en: Free Cash Flow to Equity (project)
+      expression_latex: FCFE_t = FCFF_t - I_t (1 - T) - P_t
+      expression_python: fcff - interest * (1 - t) - principal
+      excel: =FCFF - Lai*(1-T) - Goc
+      variables:
+      - symbol: fcff
+        meaning: FCFF năm t
+        unit: triệu đồng
+      - symbol: interest
+        meaning: Lãi vay năm t
+        unit: triệu đồng
+      - symbol: t
+        meaning: Thuế suất
+        unit: tỷ lệ
+      - symbol: principal
+        meaning: Gốc trả năm t
+        unit: triệu đồng
+      when_to_use: Đo dòng tiền thực sự chảy vào túi chủ đầu tư; chiết khấu bằng Re (CAPM). Cá nhân T = 0.
+      why_it_works: Chủ sở hữu là người nhận phần còn lại sau khi trả đủ nghĩa vụ cho chủ nợ. Lãi vay giảm thuế nên chỉ tốn I x (1-T) ròng.
+      assumptions:
+      - Lịch trả nợ cố định theo hợp đồng
+      - Đến năm cuối nợ được thanh toán hết (nếu còn nợ phải trừ)
+      pitfalls:
+      - Chiết khấu FCFE bằng WACC (lỗi 1 của prompt)
+      - Quên cộng giá trị thanh lý sau thuế vào năm cuối
+      - Quên vốn tự có năm 0 là âm (-E), và chi phí giao dịch/pháp lý ban đầu
+      interpretation: 'Năm 1 ví dụ: 49.72 - 52.8 x 0.8 - 40 = -32.52. Dòng âm kéo dài đến năm 8 nghĩa là chủ phải bù tiền túi mỗi năm.'
+      example:
+        inputs:
+          fcff: 49.72
+          interest: 52.8
+          t: 0.2
+          principal: 40
+        steps:
+        - 49.72 - 42.24 - 40 = -32.52
+        result: FCFE năm 1 = -32.52 triệu
+  - id: "m06-formulas-10"
+    title: "Công thức: m06_terminal_value — Giá trị thanh lý sau thuế cuối kỳ"
+    tags: ["công", "thức", "m06_terminal_value", "giá", "trị", "thanh", "lý", "sau", "thuế", "cuối", "kỳ"]
+    text: |-
+      id: m06_terminal_value
+      name_vi: Giá trị thanh lý sau thuế cuối kỳ
+      name_en: After-tax terminal (exit) value
+      expression_latex: TV = P_n (1-c) - T (P_n (1-c) - BV_n)
+      expression_python: v0 * (1 + g_price) ** n * (1 - sell_cost) - t * (v0 * (1 + g_price) ** n * (1 - sell_cost) - book_n)
+      excel: =P*(1-c)-T*(P*(1-c)-BV)
+      variables:
+      - symbol: v0
+        meaning: Giá mua ban đầu
+        unit: triệu đồng
+      - symbol: g_price
+        meaning: Tốc độ tăng giá tài sản hằng năm
+        unit: tỷ lệ
+      - symbol: n
+        meaning: Số năm nắm giữ
+        unit: năm
+      - symbol: sell_cost
+        meaning: Chi phí bán (môi giới, phí) trên giá bán
+        unit: tỷ lệ
+      - symbol: t
+        meaning: Thuế trên chênh lệch chuyển nhượng
+        unit: tỷ lệ
+      - symbol: book_n
+        meaning: Giá trị sổ sách còn lại sau khấu hao
+        unit: triệu đồng
+      when_to_use: Mọi dự án nắm giữ tài sản có giá trị bán lại; bắt buộc nếu mô hình giả định tài sản tăng giá.
+      why_it_works: Giá bán là dòng tiền thật cuối kỳ; thuế chỉ đánh trên phần lãi so với giá trị sổ sách (giá trị sổ càng thấp do khấu hao thì thuế càng lớn, nên lá chắn khấu hao một phần bị thu hồi khi bán).
+      assumptions:
+      - Giả định tăng giá tài sản là minh họa, không phải dự báo
+      - Giá bán tính bằng danh nghĩa
+      - Thuế chuyển nhượng cá nhân cần xác nhận hiện hành (xem sme_vn_guidance)
+      pitfalls:
+      - Bỏ qua TV dù có giả định tăng giá (lỗi 3 của prompt)
+      - Quên thuế/chi phí bán
+      - Giá bán không tính tới khả năng không bán được đúng hạn (thanh khoản BĐS thấp)
+      interpretation: 'Ví dụ: giá bán 2848.46, sau phí 2% còn 2791.49, giá trị sổ bằng 0 nên thuế 20% = 558.30, TV = 2233.19 triệu.'
+      example:
+        inputs:
+          v0: 1300
+          g_price: 0.04
+          n: 20
+          sell_cost: 0.02
+          t: 0.2
+          book_n: 0
+        steps:
+        - 1300 x 1.04^20 = 2848.46
+        - Sau phí 2% = 2791.49
+        - Thuế = 0.2 x (2791.49 - 0) = 558.30
+        - TV = 2233.19
+        result: TV = 2233.19 triệu (giả định minh họa, giá trị sổ bằng 0)
+  - id: "m06-formulas-11"
+    title: "Công thức: m06_npv — Giá trị hiện tại ròng"
+    tags: ["công", "thức", "m06_npv", "giá", "trị", "hiện", "tại", "ròng"]
+    text: |-
+      id: m06_npv
+      name_vi: Giá trị hiện tại ròng
+      name_en: Net Present Value
+      expression_latex: NPV = \sum_{t=0}^{n} \frac{CF_t}{(1+r)^t}
+      expression_python: sum(cf[t] / (1 + r) ** t for t in range(len(cf)))
+      excel: =CF0 + NPV(r, CF1:CFn)
+      variables:
+      - symbol: cf
+        meaning: Danh sách dòng tiền từ năm 0 (cf[0] là vốn bỏ ra, âm)
+        unit: triệu đồng
+      - symbol: r
+        meaning: WACC cho FCFF; Re cho FCFE
+        unit: tỷ lệ/năm
+      when_to_use: 'Tiêu chí quyết định chính: NPV lớn hơn 0 thì tạo giá trị.'
+      why_it_works: Quy mọi dòng tiền về hiện tại bằng chi phí cơ hội của vốn; NPV là số đồng giàu thêm (hoặc nghèo đi) tính bằng tiền hôm nay (finance-agent-skill m02).
+      assumptions:
+      - Dòng tiền cuối năm
+      - r không đổi
+      - 'Cặp đúng: FCFF với WACC; FCFE với Re'
+      pitfalls:
+      - Hàm NPV của Excel bắt đầu từ năm 1, phải cộng riêng năm 0
+      - Chiết khấu sai cặp
+      - Quên dòng tiền năm cuối (TV)
+      interpretation: 'Trong ví dụ: NPV(FCFF, WACC 7.36%) = -68.8; NPV(FCFE, Re 10.7%) = -240.9: cả hai âm, kết luận nhất quán (không đáng đầu tư theo giả định cơ sở).'
+      example:
+        inputs:
+          cf:
+          - -100
+          - 60
+          - 60
+          r: 0.1
+        steps:
+        - -100 + 60/1.1 + 60/1.21 = -100 + 54.545 + 49.587
+        result: NPV = 4.13
+  - id: "m06-formulas-12"
+    title: "Công thức: m06_irr — Tỷ suất hoàn vốn nội bộ"
+    tags: ["công", "thức", "m06_irr", "tỷ", "suất", "hoàn", "vốn", "nội", "bộ"]
+    text: |-
+      id: m06_irr
+      name_vi: Tỷ suất hoàn vốn nội bộ
+      name_en: Internal Rate of Return
+      expression_latex: \sum_{t=0}^{n} \frac{CF_t}{(1+IRR)^t} = 0
+      expression_python: |-
+        f = lambda x: sum(cf[t] / (1 + x) ** t for t in range(len(cf)))
+        lo, hi = -0.99, 1.0
+        for _ in range(200):
+            mid = (lo + hi) / 2
+            if f(lo) * f(mid) <= 0:
+                hi = mid
+            else:
+                lo = mid
+        result = (lo + hi) / 2
+      excel: =IRR(CF0:CFn)
+      variables:
+      - symbol: cf
+        meaning: Dòng tiền từ năm 0
+        unit: triệu đồng
+      when_to_use: Chẩn đoán nhanh lợi suất; so với WACC (cho FCFF) hoặc Re (cho FCFE).
+      why_it_works: Là lãi suất làm NPV = 0, tức lãi suất tối đa dự án chịu được.
+      assumptions:
+      - Dòng tiền đổi dấu một lần để có nghiệm duy nhất
+      - Ngầm giả định tái đầu tư ở chính IRR
+      pitfalls:
+      - Đa nghiệm khi dòng tiền đổi dấu nhiều lần (dòng tiền vốn chủ âm, dương, rồi có thể âm lại)
+      - IRR mù quy mô
+      interpretation: 'Ví dụ: IRR dự án (FCFF) = 6.95% thấp hơn WACC 7.36%; IRR vốn chủ (FCFE) = 7.74% thấp hơn Re 10.7%: cùng kết luận NPV âm.'
+      example:
+        inputs:
+          cf:
+          - -100
+          - 60
+          - 60
+        steps:
+        - Giải -100 + 60/(1+x) + 60/(1+x)^2 = 0
+        result: IRR = 13.07%
+  - id: "m06-formulas-13"
+    title: "Công thức: m06_mirr — IRR điều chỉnh (MIRR)"
+    tags: ["công", "thức", "m06_mirr", "irr", "điều", "chỉnh", "mirr"]
+    text: |-
+      id: m06_mirr
+      name_vi: IRR điều chỉnh (MIRR)
+      name_en: Modified IRR
+      expression_latex: MIRR = \left(\frac{FV(\text{dòng dương}, r_{rein})}{PV(\text{dòng âm}, r_{fin})}\right)^{1/n} - 1
+      expression_python: |-
+        n = len(cf) - 1
+        pos = sum(c * (1 + rein) ** (n - t) for t, c in enumerate(cf) if c > 0)
+        neg = sum(c / (1 + fin) ** t for t, c in enumerate(cf) if c < 0)
+        result = (pos / -neg) ** (1 / n) - 1
+      excel: =MIRR(CF0:CFn, fin, rein)
+      variables:
+      - symbol: cf
+        meaning: Dòng tiền (nên là FCFE khi so với Rf/Re)
+        unit: triệu đồng
+      - symbol: fin
+        meaning: 'Lãi suất tài trợ cho các dòng âm (vốn bù thêm của chủ: dùng Re, hoặc Rf nếu là tiền nhàn rỗi)'
+        unit: tỷ lệ/năm
+      - symbol: rein
+        meaning: Lãi suất tái đầu tư dòng dương (Rf hoặc WACC; prompt cho phép cả hai, phải chọn một và ghi rõ)
+        unit: tỷ lệ/năm
+      when_to_use: Khi dòng tiền vốn chủ đổi dấu (âm đầu kỳ, dương sau, hoặc có kỳ bù tiền); thay IRR đa nghiệm.
+      why_it_works: IRR ngầm cho rằng tiền thu về tái đầu tư ở chính IRR, phi thực tế; MIRR cố định giả định tái đầu tư ở mức thực tế (Rf/WACC) và vốn bù thêm ở chi phí vốn, nên luôn có đúng một nghiệm.
+      assumptions:
+      - Giả định tái đầu tư ở rein khả thi (với dòng tiền nhỏ lẻ thực tế gửi tiết kiệm là hợp lý)
+      pitfalls:
+      - So MIRR vốn chủ với WACC thay vì với Re hoặc Rf
+      - Đổi rein/fin giữa các phương án làm không so sánh được
+      - Quên rằng kết quả phụ thuộc giả định chọn
+      interpretation: 'So MIRR với (a) Rf: dự án có hơn gửi tiết kiệm không, (b) Re: có bù đủ rủi ro không. Ví dụ: MIRR vốn chủ (fin = Re 10.7%, rein = Rf 6.5%) = 7.77%: hơn Rf nhưng thấp hơn Re 10.7%.'
+      example:
+        inputs:
+          cf:
+          - -100
+          - 60
+          - 60
+          fin: 0.1
+          rein: 0.1
+        steps:
+        - 'FV dòng dương tại năm 2: 60 x 1.1 + 60 = 126'
+        - PV dòng âm = 100
+        - MIRR = (126/100)^(1/2) - 1
+        result: MIRR = 12.25%
+  - id: "m06-formulas-14"
+    title: "Công thức: m06_payback — Điểm đảo chiều và hoàn vốn có chiết khấu"
+    tags: ["công", "thức", "m06_payback", "điểm", "đảo", "chiều", "và", "hoàn", "vốn", "có", "chiết", "khấu"]
+    text: |-
+      id: m06_payback
+      name_vi: Điểm đảo chiều và hoàn vốn có chiết khấu
+      name_en: Cash-flow reversal year and discounted payback
+      expression_latex: 't^* = \min\{t: FCFE_t > 0\};\ DPP = \min\{t: \sum_{k \le t} FCFE_k/(1+r)^k \ge 0\}'
+      expression_python: |-
+        rev = next((t for t in range(1, len(cf)) if cf[t] > 0), None)
+        cum = 0
+        dpp = None
+        trough = 0
+        for t in range(len(cf)):
+            cum += cf[t] / (1 + r) ** t
+            trough = min(trough, cum)
+            if dpp is None and cum >= 0:
+                dpp = t
+        result = {'reversal_year': rev, 'discounted_payback_year': dpp, 'trough_pv': trough}
+      excel: Dùng cột dòng tiền, cột lũy kế (=SUM) và =MATCH(TRUE, INDEX(lũy kế>=0,0),0)
+      variables:
+      - symbol: cf
+        meaning: Dòng tiền vốn chủ năm 0..n
+        unit: triệu đồng
+      - symbol: r
+        meaning: Tỷ suất chiết khấu (Re)
+        unit: tỷ lệ/năm
+      when_to_use: Trả lời 'sau bao nhiêu năm dự án tự nuôi mình' và 'phải bù tiền túi tối đa bao nhiêu'.
+      why_it_works: Dòng dương sau chuỗi âm là mốc thanh khoản; giá trị âm lũy kế sâu nhất là nhu cầu vốn bổ sung thật (vốn tự có thực tế cần có = E + đỉnh âm bổ sung).
+      assumptions:
+      - Dòng tiền cuối năm
+      pitfalls:
+      - Nhầm điểm đảo chiều với hoàn vốn
+      - Bỏ qua dòng tiền tăng thêm không đều
+      interpretation: 'Ví dụ: FCFE hằng năm đổi dấu ở năm 9 (+1.9) nhưng tổng lũy kế vẫn âm đến cuối kỳ (đỉnh âm chưa chiết khấu -642.2 tại năm 9) và chỉ hoàn vốn nhờ bán tài sản năm 20.'
+      example:
+        inputs:
+          cf:
+          - -100
+          - -10
+          - 60
+          - 90
+          r: 0.1
+        steps:
+        - 'PV từng năm: -100, -9.09, 49.59, 67.62'
+        - 'Lũy kế PV: -100, -109.09, -59.50, +8.12'
+        - Dòng tiền năm đầu tiên dương là năm 2
+        result: reversal_year = 2; discounted_payback_year = 3; trough_pv = -109.09
+  - id: "m06-formulas-15"
+    title: "Công thức: m06_dscr — Hệ số khả năng trả nợ (DSCR)"
+    tags: ["công", "thức", "m06_dscr", "hệ", "số", "khả", "năng", "trả", "nợ", "dscr"]
+    text: |-
+      id: m06_dscr
+      name_vi: Hệ số khả năng trả nợ (DSCR)
+      name_en: Debt Service Coverage Ratio
+      expression_latex: DSCR_t = \frac{NOI_t}{I_t + P_t}
+      expression_python: noi / (interest + principal)
+      excel: =NOI/(Lai+Goc)
+      variables:
+      - symbol: noi
+        meaning: NOI năm t
+        unit: triệu đồng
+      - symbol: interest
+        meaning: Lãi vay năm t
+        unit: triệu đồng
+      - symbol: principal
+        meaning: Gốc phải trả năm t
+        unit: triệu đồng
+      when_to_use: Kiểm tra khả năng tự trả nợ; xin vay ngân hàng.
+      why_it_works: Tỷ số tiền có để trả nợ so với tiền phải trả; trên 1 là đủ, ngân hàng thường yêu cầu 1,2-1,3 để có đệm.
+      assumptions:
+      - Dùng NOI trước thuế (một số ngân hàng dùng EBITDA hoặc dòng tiền sau thuế)
+      pitfalls:
+      - Chỉ xét DSCR năm trung bình thay vì năm yếu nhất (năm 1 với gốc đều)
+      - DSCR dưới 1 nhưng dự án 'có lãi' nhờ tăng giá vẫn là rủi ro thanh khoản nghiêm trọng
+      interpretation: 'Ví dụ năm 1: 45.9 / 92.8 = 0.495: chưa đến một nửa nghĩa vụ trả nợ; DSCR chỉ vượt 1 từ năm 10 (1.03) khi NOI tăng 5%/năm đuổi kịp nghĩa vụ trả nợ giảm dần.'
+      example:
+        inputs:
+          noi: 45.9
+          interest: 52.8
+          principal: 40
+        steps:
+        - 45.9 / (52.8 + 40) = 45.9 / 92.8
+        result: DSCR năm 1 = 0.495
+  - id: "m06-formulas-16"
+    title: "Công thức: m06_stress — Stress test: sốc doanh thu, lãi vay, giá tài sản"
+    tags: ["công", "thức", "m06_stress", "stress", "test", "sốc", "doanh", "thu", "lãi", "vay", "giá", "tài"]
+    text: |-
+      id: m06_stress
+      name_vi: 'Stress test: sốc doanh thu, lãi vay, giá tài sản'
+      name_en: Stress test shocks
+      expression_latex: NOI^{stress} = Rev (1 - s)(1 - o);\ r_d^{stress} = r_d + \Delta r;\ g_P^{stress} = g_P - \Delta g
+      expression_python: rev * (1 - shock) * (1 - opex)
+      excel: 'Bảng kịch bản: =Rev*(1-Shock)*(1-Opex), chạy lại toàn mô hình bằng Data Table'
+      variables:
+      - symbol: rev
+        meaning: Doanh thu cơ sở
+        unit: triệu đồng/năm
+      - symbol: shock
+        meaning: Tỷ lệ thất thoát bổ sung (8-10% theo prompt)
+        unit: tỷ lệ
+      - symbol: opex
+        meaning: Tỷ lệ chi phí vận hành (đã gồm vacancy cơ sở)
+        unit: tỷ lệ
+      when_to_use: Trước khi kết luận; ít nhất 3 sốc riêng và 1 kịch bản kết hợp.
+      why_it_works: Một NPV duy nhất che độ bất định; stress test cho biết biến nào nhạy nhất và cần dự phòng bao nhiêu. Là phép nhạy từng biến rồi kết hợp (finance-agent-skill m02).
+      assumptions:
+      - Mức sốc là giả định minh họa theo prompt (8-10% doanh thu); thực tế phải dựa trên lịch sử trống phòng của loại tài sản và khu vực
+      pitfalls:
+      - Chỉ sốc doanh thu mà quên nợ thả nổi tăng
+      - Sốc giá tài sản không kèm kịch bản phải bán gấp
+      interpretation: 'Cần báo: NPV, MIRR, năm đảo chiều, DSCR năm 1, và thiếu hụt tiền mặt hằng năm dưới mỗi sốc.'
+      example:
+        inputs:
+          rev: 54
+          shock: 0.1
+          opex: 0.15
+        steps:
+        - NOI stress = 54 x 0.9 x 0.85 = 41.31 (so với cơ sở 45.9)
+        result: NOI năm 1 giảm 4.59 triệu, thiếu hụt trả nợ tăng từ 46.9 lên 51.49
+  - id: "m06-formulas-17"
+    title: "Công thức: m06_liquidity_reserve — Quỹ dự phòng thanh khoản tối thiểu"
+    tags: ["công", "thức", "m06_liquidity_reserve", "quỹ", "dự", "phòng", "thanh", "khoản", "tối", "thiểu"]
+    text: |-
+      id: m06_liquidity_reserve
+      name_vi: Quỹ dự phòng thanh khoản tối thiểu
+      name_en: Minimum liquidity reserve
+      expression_latex: Reserve = m \times \max(0,\ (DebtService^{stress} - NOI^{stress}) / 12)
+      expression_python: months * max(0, (debt_service - noi_stress) / 12)
+      excel: =Thang*MAX(0,(NoDenHan-NOIStress)/12)
+      variables:
+      - symbol: months
+        meaning: Số tháng muốn chịu được (6-12 là quy ước thực hành)
+        unit: tháng
+      - symbol: debt_service
+        meaning: Gốc + lãi phải trả năm (năm yếu nhất)
+        unit: triệu đồng/năm
+      - symbol: noi_stress
+        meaning: NOI dưới kịch bản stress
+        unit: triệu đồng/năm
+      when_to_use: Chốt số tiền mặt cần giữ ngoài vốn đầu tư để không bán gấp tài sản.
+      why_it_works: Rủi ro lớn nhất của đòn bẩy là thiếu thanh khoản trước khi tài sản kịp tăng giá. Quỹ đệm trả khoảng thiếu hụt trong thời gian chờ hồi phục.
+      assumptions:
+      - Thiếu hụt hằng tháng đều trong kỳ sốc
+      - Chưa tính chi phí sửa chữa lớn bất thường (cộng thêm 1-2 tháng doanh thu hoặc theo kế hoạch bảo trì)
+      pitfalls:
+      - Lấy năm trung bình thay vì năm đầu có nghĩa vụ nặng nhất
+      - Dự phòng nằm trong tài sản khó thanh khoản (cổ phiếu, BĐS khác)
+      interpretation: 'Ví dụ: thiếu hụt stress 51.49/năm = 4.29/tháng; quỹ 12 tháng = 51.49 triệu; tối thiểu 6 tháng = 25.75 triệu; cộng chi phí sửa chữa lớn nếu có. Giữ bằng tiền gửi/ngắn hạn.'
+      example:
+        inputs:
+          months: 12
+          debt_service: 92.8
+          noi_stress: 41.31
+        steps:
+        - (92.8 - 41.31)/12 = 4.29 mỗi tháng
+        - x 12 tháng = 51.49
+        result: 51.49 triệu cho 12 tháng; 25.75 triệu cho 6 tháng
+  - id: "m06-formulas-18"
+    title: "Công thức: m06_personal_vs_corp — So sánh đứng tên cá nhân và doanh nghiệp"
+    tags: ["công", "thức", "m06_personal_vs_corp", "so", "sánh", "đứng", "tên", "cá", "nhân", "và", "doanh", "nghiệp"]
+    text: |-
+      id: m06_personal_vs_corp
+      name_vi: So sánh đứng tên cá nhân và doanh nghiệp
+      name_en: Personal vs corporate comparison
+      expression_latex: \Delta NPV = NPV_{corp}(T) - NPV_{personal}(T_p)
+      expression_python: npv_corp - npv_personal
+      excel: Chạy hai bản mô hình với T khác nhau, trừ NPV
+      variables:
+      - symbol: npv_corp
+        meaning: NPV vốn chủ khi đứng tên doanh nghiệp (T, có khấu hao, thuế bán)
+        unit: triệu đồng
+      - symbol: npv_personal
+        meaning: NPV vốn chủ khi cá nhân (T = 0 giả định hoặc thuế cá nhân thực nếu xác nhận được)
+        unit: triệu đồng
+      when_to_use: Chọn hình thức sở hữu.
+      why_it_works: Hai cấu trúc khác nhau về thuế nên khác dòng tiền; chỉ so được khi mô hình giống hệt nhau về mọi giả định khác.
+      assumptions:
+      - Cùng giả định doanh thu, chi phí, giá, lãi vay
+      - Chi phí thành lập, kế toán, thuế cổ tức khi rút lợi nhuận phải thêm vào doanh nghiệp
+      pitfalls:
+      - So sánh khi doanh nghiệp không đủ thu nhập chịu thuế để dùng lá chắn
+      - Quên thuế thu nhập cá nhân thực tế của người dùng (T = 0 chỉ là giả định của prompt)
+      interpretation: 'Ví dụ (giả định minh họa): NPV vốn chủ doanh nghiệp -240.9; cá nhân T = 0 là -226.9; chênh lệch -14.0: lá chắn doanh nghiệp không đủ bù thuế 20% trên lãi bán tài sản trong ví dụ này, vì cá nhân được giả định miễn thuế. Kết quả đảo chiều nếu thuế cá nhân thực tế cao hơn giả định.'
+      example:
+        inputs:
+          npv_corp: -240.94
+          npv_personal: -226.94
+        steps:
+        - -240.94 - (-226.94) = -14.00
+        result: -14.00 triệu
+  - id: "m06-frameworks-1"
+    title: "Frameworks: m06_cfo_appraisal_playbook — Quy trình CFO 6 bước thẩm định tài sản có đòn bẩy (bản đã sửa lỗi)"
+    tags: ["frameworks", "m06_cfo_appraisal_playbook", "quy", "trình", "cfo", "bước", "thẩm", "định", "tài", "sản", "có", "đòn"]
+    text: |-
+      id: m06_cfo_appraisal_playbook
+      name_vi: Quy trình CFO 6 bước thẩm định tài sản có đòn bẩy (bản đã sửa lỗi)
+      name_en: 6-step CFO appraisal (corrected)
+      origin: Chuyển từ prompt CFO của chủ dự án (stock-analysist/prompt-danh-gia-dau-tu.md) sang quy trình có thể kiểm toán. Giữ 6 bước gốc nhưng sửa 7 lỗi logic và thêm bước 0 kiểm tra nhất quán trước khi tính.
+      components:
+      - 'Bước 0 (mới): intake 12 dữ liệu đầu vào + liệt kê giả định bị thiếu; chốt đơn vị, danh nghĩa/thực, cơ sở Rf'
+      - 'Bước 1: beta, Re (CAPM), Rd sau thuế, tỷ trọng, WACC'
+      - 'Bước 2: khấu hao, lá chắn lãi vay và khấu hao, lịch nợ (chỉ doanh nghiệp, cá nhân ghi rõ T = 0 là giả định)'
+      - 'Bước 3: NOI, FCFF, FCFE, TV, bảng năm 0, 1, 5, 10, cuối kỳ, điểm đảo chiều, DSCR'
+      - 'Bước 4: NPV (FCFF/WACC và FCFE/Re), IRR, MIRR so với Rf và Re'
+      - 'Bước 5: stress test (sốc doanh thu, lãi, giá) và điểm đảo chiều bị lùi'
+      - 'Bước 6: khuyến nghị CFO có điều kiện thay đổi + quỹ dự phòng + so sánh cá nhân/doanh nghiệp'
+      when_to_use: Mọi yêu cầu thẩm định mua tài sản hoặc dự án có vốn vay.
+      how_to_apply:
+      - Hỏi đủ 12 dữ liệu (xem procedure); không đủ thì nêu giả định minh họa và gắn nhãn
+      - Chọn một cặp nhất quán và tính bản đối chứng cặp còn lại để kiểm tra chéo
+      - Luôn có NOI, TV, và độ nhạy beta
+      - Báo cả điểm đảo chiều và hoàn vốn; ghi rõ khác nhau
+      how_to_read_results: 'NPV FCFF dương và NPV FCFE dương: làm. Một dương một âm: kiểm tra cấu trúc nợ (đòn bẩy âm khi lợi suất thuần thấp hơn lãi vay) trước khi kết luận. Cả hai âm: không làm trừ khi điều kiện thay đổi (giá mua, lãi, tăng giá) được xác nhận.'
+      pitfalls:
+      - Sao chép nguyên công thức dòng tiền của prompt gốc
+      - Kết luận từ một con số NPV duy nhất
+      example: 'Ví dụ chuẩn (vốn 1300, vay 800 ở 6.6%/20 năm gốc đều): xem worked_examples m06_we2 đến m06_we4.'
+  - id: "m06-frameworks-2"
+    title: "Frameworks: m06_levered_cashflow_consistency — Ma trận nhất quán: dòng tiền, chiết khấu, thuế, lạm phát"
+    tags: ["frameworks", "m06_levered_cashflow_consistency", "ma", "trận", "nhất", "quán", "dòng", "tiền", "chiết", "khấu", "thuế", "lạm"]
+    text: |-
+      id: m06_levered_cashflow_consistency
+      name_vi: 'Ma trận nhất quán: dòng tiền, chiết khấu, thuế, lạm phát'
+      name_en: Consistency matrix
+      origin: Tổng hợp từ nguyên tắc Fisher 1930 (tách đầu tư và tài trợ), Modigliani-Miller 1958, 1963 (thuế), thực hành DCF chuẩn.
+      components:
+      - Dòng tiền FCFF (trước nợ, sau thuế) dùng với WACC (nợ sau thuế)
+      - Dòng tiền FCFE (sau gốc lãi) dùng với Re (CAPM)
+      - Danh nghĩa với lãi suất danh nghĩa; thực với lãi suất thực
+      - Rf cùng cơ sở (trái phiếu chính phủ cùng kỳ hạn hoặc lãi tiết kiệm) cho CAPM, chi phí cơ hội, MIRR
+      - 'Thuế: cùng T trong WACC, FCFF, lá chắn, thuế thanh lý'
+      when_to_use: Mọi lần kiểm tra bảng tính của người khác hoặc trước khi nộp báo cáo.
+      how_to_apply:
+      - Viết ra 5 dòng nhất quán nêu trên cho mô hình
+      - Nếu một dòng không thỏa, sửa mô hình trước khi báo kết quả
+      how_to_read_results: Hai NPV (FCFF và FCFE) chỉ nên lệch nhau vừa phải; lệch lớn do cấu trúc nợ giảm dần (WACC tỷ trọng cố định là xấp xỉ), cần giải thích.
+      pitfalls:
+      - Báo NPV mà không nói cặp nào
+      - Dùng bảng beta không gắn confidence
+      example: 'Prompt gốc vi phạm dòng 1 và 2 cùng lúc: FCFE chiết khấu bằng WACC. Sửa xem m06_we2.'
+  - id: "m06-frameworks-3"
+    title: "Frameworks: m06_beta_selection — Chọn beta cho tài sản: heuristic, so sánh, độ nhạy"
+    tags: ["frameworks", "m06_beta_selection", "chọn", "beta", "cho", "tài", "sản", "heuristic", "so", "sánh", "độ", "nhạy"]
+    text: |-
+      id: m06_beta_selection
+      name_vi: 'Chọn beta cho tài sản: heuristic, so sánh, độ nhạy'
+      name_en: Beta selection ladder
+      origin: 'Thực hành định giá: beta hồi quy trực tiếp ưu tiên; thiếu dữ liệu thì dùng beta công ty so sánh un-lever/re-lever (Hamada 1972); cuối cùng là heuristic có gắn cờ.'
+      components:
+      - 'Mức 1: beta hồi quy của chính tài sản hoặc quỹ/chỉ số cùng loại (confidence cao nếu có dữ liệu đủ dài)'
+      - 'Mức 2: beta ngành/công ty so sánh, un-lever rồi re-lever theo D/E của dự án (confidence trung bình)'
+      - 'Mức 3: bảng heuristic của prompt (0,5-0,7; 1,0; 1,2-1,5) (confidence thấp)'
+      when_to_use: Mọi lần dùng CAPM cho tài sản chưa niêm yết.
+      how_to_apply:
+      - Thử mức 1 hoặc 2 trước; chỉ khi không có mới dùng mức 3 và nêu rõ
+      - Chạy Re với 3 giá trị beta (thấp, giữa, cao) để thấy độ nhạy
+      - 'Ghi vào báo cáo: beta nào, mức nào, vì sao'
+      how_to_read_results: Mỗi 0,1 beta thay đổi Re 0,7 điểm phần trăm (với ERP 7%). Nếu kết luận đổi dấu trong khoảng beta hợp lý, kết luận không bền.
+      pitfalls:
+      - Coi bảng heuristic như dữ liệu đã kiểm chứng
+      - Dùng beta thấp của tài sản ít giao dịch mà nghĩ rủi ro thấp (giá bị làm trơn)
+      - Dùng beta cùng với Rf và ERP khác cơ sở
+      example: Nhà ở xã hội beta 0.6 cho Re 10.7%; nếu dùng 1.0 thì Re 13.5%; NPV FCFE từ -240.9 xuống -372.0 (xem m06_we3).
+  - id: "m06-procedures-1"
+    title: "Quy trình: m06_p01_intake — Bảng 12 dữ liệu đầu vào cần hỏi hoặc giả định"
+    tags: ["quy", "trình", "m06_p01_intake", "bảng", "12", "dữ", "liệu", "đầu", "vào", "cần", "hỏi", "hoặc"]
+    text: |-
+      id: m06_p01_intake
+      name: Bảng 12 dữ liệu đầu vào cần hỏi hoặc giả định
+      steps:
+      - 1. Tổng vốn đầu tư V (giá mua + chi phí giao dịch, sửa chữa ban đầu, phí vay); tách giá trị đất và công trình để khấu hao
+      - 2. Vốn tự có E; nguồn của E (nếu E lấy từ tiền tiết kiệm sinh lãi thì đó là chi phí cơ hội)
+      - 3. Vốn vay D = V - E; ngân hàng, tỷ lệ cho vay, ân hạn gốc, phí trả nợ trước hạn
+      - '4. Lãi suất vay Rd: cố định mấy năm, sau đó thả nổi theo công thức nào (tiền gửi 12 tháng + biên); đây là biến sốc chính'
+      - 5. Thời gian đầu tư n và thời gian vay; kế hoạch thoát (bán ở năm nào, hay nắm giữ vô thời hạn)
+      - '6. Phương thức trả nợ: gốc đều hay niên kim, theo tháng hay năm'
+      - '7. Rf: chọn cơ sở (lợi suất trái phiếu chính phủ kỳ hạn tương ứng, hoặc lãi tiết kiệm) và ghi nguồn; ERP và nguồn'
+      - 8. Loại tài sản (để chọn beta qua m06_beta_selection) và thanh khoản/vị trí
+      - '9. Hình thức sở hữu: cá nhân (T = ?) hay doanh nghiệp (T, thời gian và phương pháp khấu hao); có đủ thu nhập chịu thuế để dùng lá chắn không'
+      - 10. Doanh thu thuê năm 1, tăng trưởng, tỷ lệ trống, thời gian cho thuê trống ban đầu
+      - '11. Chi phí vận hành: bảo trì, quản lý, thuế sử dụng đất, bảo hiểm, chi phí sửa chữa lớn giữa kỳ; vốn lưu động (đặt cọc)'
+      - 12. Tốc độ tăng giá tài sản, chi phí và thuế khi bán, lạm phát; danh nghĩa hay thực
+      - 'Nếu thiếu: không bịa, nêu ''giả định minh họa'' kèm giá trị và lý do, và đề nghị người dùng thay bằng số thực'
+      outputs: Bảng đầu vào đủ 12 dòng, mỗi dòng ghi nguồn (người dùng/giả định minh họa) và confidence.
+  - id: "m06-procedures-2"
+    title: "Quy trình: m06_p02_six_steps — 6 bước thẩm định từ đầu đến cuối (bản đã sửa)"
+    tags: ["quy", "trình", "m06_p02_six_steps", "bước", "thẩm", "định", "từ", "đầu", "đến", "cuối", "bản", "đã"]
+    text: |-
+      id: m06_p02_six_steps
+      name: 6 bước thẩm định từ đầu đến cuối (bản đã sửa)
+      steps:
+      - 'Bước 0: kiểm tra nhất quán (danh nghĩa/thực; Rf cùng cơ sở; đơn vị; T; chọn cặp FCFF-WACC và FCFE-Re) và cảnh báo nếu người dùng đưa công thức dòng tiền sai'
+      - 'Bước 1 (chi phí vốn): chọn beta theo m06_beta_selection, tính Re bằng m06_capm, Rd sau thuế = Rd x (1-T), tỷ trọng E/V, D/V, WACC bằng m06_wacc; nêu hai biến thể (có và không thuế nếu so sánh cá nhân/doanh nghiệp)'
+      - 'Bước 2 (thuế và khấu hao, doanh nghiệp): khấu hao hằng năm (loại đất); lá chắn lãi vay năm 1 và lá chắn khấu hao; giải thích khấu hao tiết kiệm tiền mặt dù không chi tiền; lịch nợ cả kỳ vay'
+      - 'Bước 3 (dòng tiền): NOI hằng năm; FCFF = NOI(1-T) + T x Dep; FCFE = FCFF - lãi(1-T) - gốc; TV sau thuế ở năm cuối; bảng các mốc năm 0, 1, 5, 10, cuối; điểm đảo chiều; DSCR; đỉnh âm lũy kế'
+      - 'Bước 4 (hiệu quả): NPV(FCFF, WACC); NPV(FCFE, Re); IRR dự án và vốn chủ; MIRR vốn chủ với fin và rein ghi rõ; so với Rf (giữ tiền gửi) và Re; PV lá chắn nợ nếu cần'
+      - 'Bước 5 (stress): sốc doanh thu 8-10%; lãi +2 điểm phần trăm; giá tài sản đi ngang hoặc giảm; kịch bản kết hợp; báo NPV, MIRR, năm đảo chiều, DSCR năm 1; tìm điểm hòa vốn của biến chính (tăng giá cần thiết để NPV = 0)'
+      - 'Bước 6 (khuyến nghị): kết luận làm/không làm/làm có điều kiện; liệt kê điều kiện thay đổi kết luận; quỹ dự phòng; so sánh cá nhân với doanh nghiệp; hành động tiếp theo (đàm phán giá, lãi cố định, tăng vốn tự có, đổi lịch trả nợ)'
+      outputs: 'Báo cáo gồm: bảng đầu vào; bảng chi phí vốn; bảng thuế và khấu hao; bảng dòng tiền các mốc năm; bảng NPV/IRR/MIRR; bảng stress; khuyến nghị có điều kiện; quỹ dự phòng; mục ''lỗi của cách tính cũ'' (nếu người dùng đưa công thức sai); nhãn data_reliability.'
+  - id: "m06-procedures-3"
+    title: "Quy trình: m06_p03_recommendation_format — Khuyến nghị CFO có điều kiện thay đổi"
+    tags: ["quy", "trình", "m06_p03_recommendation_format", "khuyến", "nghị", "cfo", "có", "điều", "kiện", "thay", "đổi"]
+    text: |-
+      id: m06_p03_recommendation_format
+      name: Khuyến nghị CFO có điều kiện thay đổi
+      steps:
+      - 'Câu kết luận một dòng (làm, không làm, làm có điều kiện) kèm số chính: NPV FCFF, NPV FCFE, MIRR so với Rf và Re'
+      - 'Ba điều kiện thay đổi kết luận, mỗi điều kiện có ngưỡng số (vd: giá mua giảm tới X, lãi vay cố định không quá Y, tăng giá tối thiểu Z%/năm)'
+      - Quỹ dự phòng tối thiểu (số triệu và số tháng) và nơi giữ
+      - So sánh đứng tên cá nhân với doanh nghiệp bằng cùng mô hình
+      - Những gì chưa biết hoặc cần xác nhận (thuế VN, lãi suất thả nổi, thanh khoản bán)
+      outputs: Hộp khuyến nghị có số, điều kiện, quỹ dự phòng, danh sách cần xác nhận.
+  - id: "m06-procedures-4"
+    title: "Quy trình: m06_p04_audit_prompt_formula — Kiểm toán nhanh một bảng dòng tiền đầu tư"
+    tags: ["quy", "trình", "m06_p04_audit_prompt_formula", "kiểm", "toán", "nhanh", "một", "bảng", "dòng", "tiền", "đầu", "tư"]
+    text: |-
+      id: m06_p04_audit_prompt_formula
+      name: Kiểm toán nhanh một bảng dòng tiền đầu tư
+      steps:
+      - 'Hỏi: dòng tiền này của ai (vốn chủ hay toàn bộ vốn)? Chiết khấu bằng gì? Phải khớp cặp'
+      - 'Hỏi: doanh thu hay NOI? Nếu doanh thu, thay bằng NOI'
+      - 'Hỏi: có giá trị thanh lý cuối kỳ không? Nếu có tăng giá thì phải có'
+      - 'Hỏi: danh nghĩa hay thực cả hai vế?'
+      - 'Hỏi: Rf lấy ở đâu, cùng kỳ hạn chưa?'
+      - 'Hỏi: beta lấy từ đâu, confidence'
+      - 'Hỏi: thuế cá nhân có thật là 0 không (thu nhập thuê, chuyển nhượng)?'
+      outputs: Danh sách lỗi và bản sửa, kèm chênh lệch NPV trước và sau sửa.
+  - id: "m06-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu dòng tiền đã trừ gốc và lãi (FCFE) thì chiết khấu bằng Re (CAPM); nếu chưa trừ (FCFF) thì chiết…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dòng", "tiền", "đã", "trừ", "gốc", "và", "lãi"]
+    text: |-
+      Nếu dòng tiền đã trừ gốc và lãi (FCFE) thì chiết khấu bằng Re (CAPM); nếu chưa trừ (FCFF) thì chiết khấu bằng WACC; không bao giờ trộn
+  - id: "m06-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu NPV(FCFF, WACC) lớn hơn 0 nhưng NPV(FCFE, Re) nhỏ hơn 0 thì tài sản tốt nhưng cấu trúc nợ quá n…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "npv", "fcff", "wacc", "lớn", "hơn", "nhưng", "fcfe"]
+    text: |-
+      Nếu NPV(FCFF, WACC) lớn hơn 0 nhưng NPV(FCFE, Re) nhỏ hơn 0 thì tài sản tốt nhưng cấu trúc nợ quá nặng; thử giảm vay, kéo dài kỳ hạn hoặc thương lượng lãi, rồi tính lại
+  - id: "m06-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu lợi suất thuần (NOI/V) thấp hơn lãi vay thì đòn bẩy âm: mỗi đồng vay làm giảm lợi suất vốn chủ …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "lợi", "suất", "thuần", "noi", "thấp", "hơn", "lãi"]
+    text: |-
+      Nếu lợi suất thuần (NOI/V) thấp hơn lãi vay thì đòn bẩy âm: mỗi đồng vay làm giảm lợi suất vốn chủ trừ khi tăng giá bù; cần nêu tăng giá hòa vốn
+  - id: "m06-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu DSCR năm 1 dưới 1 thì chủ đầu tư phải bù tiền túi hằng tháng: chỉ làm nếu quỹ dự phòng đủ và có…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dscr", "năm", "dưới", "thì", "chủ", "đầu", "tư"]
+    text: |-
+      Nếu DSCR năm 1 dưới 1 thì chủ đầu tư phải bù tiền túi hằng tháng: chỉ làm nếu quỹ dự phòng đủ và có nguồn thu nhập khác ổn định
+  - id: "m06-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu MIRR vốn chủ nhỏ hơn Rf thì giữ tiền gửi/trái phiếu chính phủ tốt hơn; nếu giữa Rf và Re thì hơ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "mirr", "vốn", "chủ", "nhỏ", "hơn", "rf", "thì"]
+    text: |-
+      Nếu MIRR vốn chủ nhỏ hơn Rf thì giữ tiền gửi/trái phiếu chính phủ tốt hơn; nếu giữa Rf và Re thì hơn tiết kiệm nhưng chưa bù đủ rủi ro; chỉ khi MIRR lớn hơn Re thì tạo giá trị
+  - id: "m06-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu mô hình giả định tài sản tăng giá thì bắt buộc có giá trị thanh lý sau thuế; nếu kết luận chỉ đ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "mô", "hình", "giả", "tài", "sản", "tăng", "giá"]
+    text: |-
+      Nếu mô hình giả định tài sản tăng giá thì bắt buộc có giá trị thanh lý sau thuế; nếu kết luận chỉ đúng khi tăng giá cao hơn ngưỡng hòa vốn thì nói rõ đây là cược vào giá
+  - id: "m06-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu kết luận đổi dấu khi beta đổi trong khoảng hợp lý thì kết luận không bền: báo là 'nhạy với beta…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "kết", "luận", "đổi", "dấu", "khi", "beta", "trong"]
+    text: |-
+      Nếu kết luận đổi dấu khi beta đổi trong khoảng hợp lý thì kết luận không bền: báo là 'nhạy với beta' và khuyến nghị thận trọng
+  - id: "m06-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu là cá nhân thì không tính lá chắn thuế nhưng phải hỏi/cảnh báo thuế thu nhập thuê và chuyển như…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "là", "cá", "nhân", "thì", "không", "tính", "lá"]
+    text: |-
+      Nếu là cá nhân thì không tính lá chắn thuế nhưng phải hỏi/cảnh báo thuế thu nhập thuê và chuyển nhượng cá nhân thực tế (cần xác nhận hiện hành) trước khi kết luận T = 0
+  - id: "m06-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu là doanh nghiệp và EBIT âm hoặc thấp thì lá chắn thuế chưa dùng được ngay: tính theo chuyển lỗ …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "là", "doanh", "nghiệp", "và", "ebit", "âm", "hoặc"]
+    text: |-
+      Nếu là doanh nghiệp và EBIT âm hoặc thấp thì lá chắn thuế chưa dùng được ngay: tính theo chuyển lỗ hoặc giả định doanh nghiệp có thu nhập khác, ghi rõ
+  - id: "m06-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu lãi vay thả nổi sau giai đoạn ưu đãi thì phải stress với lãi tăng ít nhất 2 điểm phần trăm; khô…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "lãi", "vay", "thả", "nổi", "sau", "giai", "đoạn"]
+    text: |-
+      Nếu lãi vay thả nổi sau giai đoạn ưu đãi thì phải stress với lãi tăng ít nhất 2 điểm phần trăm; không dùng lãi ưu đãi cho cả 20 năm
+  - id: "m06-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu quỹ dự phòng thanh khoản nhỏ hơn thiếu hụt 6 tháng dưới stress thì khuyến nghị giảm vay hoặc kh…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "quỹ", "dự", "phòng", "thanh", "khoản", "nhỏ", "hơn"]
+    text: |-
+      Nếu quỹ dự phòng thanh khoản nhỏ hơn thiếu hụt 6 tháng dưới stress thì khuyến nghị giảm vay hoặc không làm
+  - id: "m06-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu dữ liệu đầu vào là giả định chưa kiểm chứng thì gắn data_reliability illustrative và không đưa …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dữ", "liệu", "đầu", "vào", "là", "giả", "chưa"]
+    text: |-
+      Nếu dữ liệu đầu vào là giả định chưa kiểm chứng thì gắn data_reliability illustrative và không đưa khuyến nghị tuyệt đối
+  - id: "m06-benchmarks-1"
+    title: "Chuẩn so sánh: Lợi suất cho thuê thuần (NOI chia giá mua) của bất động sản nhà ở"
+    tags: ["chuẩn", "so", "sánh", "lợi", "suất", "cho", "thuê", "thuần", "noi", "chia", "giá", "mua"]
+    text: |-
+      metric: Lợi suất cho thuê thuần (NOI chia giá mua) của bất động sản nhà ở
+      value: thường vài phần trăm một năm (ví dụ minh họa 3,5%)
+      context: Thấp hơn lãi vay ngân hàng thì đòn bẩy âm; số cụ thể cần kiểm tra theo thị trường
+      confidence: low
+  - id: "m06-benchmarks-2"
+    title: "Chuẩn so sánh: DSCR yêu cầu của ngân hàng"
+    tags: ["chuẩn", "so", "sánh", "dscr", "yêu", "cầu", "của", "ngân", "hàng"]
+    text: |-
+      metric: DSCR yêu cầu của ngân hàng
+      value: khoảng 1,2-1,3 trở lên
+      context: Tham khảo, tùy ngân hàng và loại tín dụng
+      confidence: medium
+  - id: "m06-benchmarks-3"
+    title: "Chuẩn so sánh: Quỹ dự phòng thanh khoản"
+    tags: ["chuẩn", "so", "sánh", "quỹ", "dự", "phòng", "thanh", "khoản"]
+    text: |-
+      metric: Quỹ dự phòng thanh khoản
+      value: 6-12 tháng nghĩa vụ nợ hoặc thiếu hụt dưới stress
+      context: Quy ước thực hành tài chính cá nhân/doanh nghiệp nhỏ, không phải quy định
+      confidence: medium
+  - id: "m06-benchmarks-4"
+    title: "Chuẩn so sánh: Mức sốc doanh thu/trống phòng trong stress"
+    tags: ["chuẩn", "so", "sánh", "mức", "sốc", "doanh", "thu", "trống", "phòng", "trong", "stress"]
+    text: |-
+      metric: Mức sốc doanh thu/trống phòng trong stress
+      value: 8-10% doanh thu (theo prompt)
+      context: Minh họa; thay bằng lịch sử trống phòng thực tế của khu vực
+      confidence: low
+  - id: "m06-benchmarks-5"
+    title: "Chuẩn so sánh: Beta theo loại tài sản"
+    tags: ["chuẩn", "so", "sánh", "beta", "theo", "loại", "tài", "sản"]
+    text: |-
+      metric: Beta theo loại tài sản
+      value: 0,5-0,7 (vàng, nhà ở xã hội); khoảng 1,0 (BĐS thương mại, quỹ, VN30); 1,2-1,5 (đất nền tỉnh, cổ phiếu nhỏ, tiền mã hóa)
+      context: Heuristic của prompt gốc, chưa kiểm chứng bằng dữ liệu VN; ưu tiên beta ngành/so sánh
+      confidence: low
+  - id: "m06-benchmarks-6"
+    title: "Chuẩn so sánh: Phần bù rủi ro thị trường (ERP)"
+    tags: ["chuẩn", "so", "sánh", "phần", "bù", "rủi", "ro", "thị", "trường", "erp"]
+    text: |-
+      metric: Phần bù rủi ro thị trường (ERP)
+      value: 7,0% (ví dụ của prompt)
+      context: Đầu vào do người dùng/nguồn cung cấp; kiểm tra tại m07
+      confidence: low
+  - id: "m06-benchmarks-7"
+    title: "Chuẩn so sánh: Công thức CAPM và WACC trọng số theo giá trị"
+    tags: ["chuẩn", "so", "sánh", "công", "thức", "capm", "và", "wacc", "trọng", "số", "theo", "giá"]
+    text: |-
+      metric: Công thức CAPM và WACC trọng số theo giá trị
+      value: Re = Rf + beta x ERP; WACC = E/V x Re + D/V x Rd x (1-T)
+      context: Công thức chuẩn giáo trình (finance-agent-skill m03)
+      confidence: high
+  - id: "m06-pitfalls-1"
+    title: "Lỗi thường gặp: LỖI 1 (nghiêm trọng): công thức dòng tiền ròng của prompt, (Doanh thu - Lãi - Khấu hao) x (1-T) + K…"
+    tags: ["lỗi", "thường", "gặp", "nghiêm", "trọng", "công", "thức", "dòng", "tiền", "ròng", "của", "prompt"]
+    text: |-
+      LỖI 1 (nghiêm trọng): công thức dòng tiền ròng của prompt, (Doanh thu - Lãi - Khấu hao) x (1-T) + Khấu hao - Gốc, là dòng tiền của VỐN CHỦ sau trả gốc và lãi (FCFE) nhưng lại chiết khấu bằng WACC, vốn đã chứa chi phí nợ: không nhất quán, tính nợ hai lần và dùng mẫu số quá thấp. Sửa: FCFF (trước nợ) chiết khấu WACC, hoặc FCFE (sau nợ) chiết khấu Re (CAPM). Trong ví dụ, cách sai cho NPV -399.6 và IRR -0.6%; cách đúng FCFF -68.8, FCFE -240.9.
+  - id: "m06-pitfalls-2"
+    title: "Lỗi thường gặp: LỖI 2: dùng 'doanh thu' thay NOI/EBITDA; bỏ qua chi phí vận hành, bảo trì, thuế tài sản, quản lý, t…"
+    tags: ["lỗi", "thường", "gặp", "dùng", "doanh", "thu", "thay", "noi", "ebitda", "bỏ", "qua", "chi"]
+    text: |-
+      LỖI 2: dùng 'doanh thu' thay NOI/EBITDA; bỏ qua chi phí vận hành, bảo trì, thuế tài sản, quản lý, trống phòng. Sửa: NOI = doanh thu x (1 - vacancy - opex), mức mặc định minh họa 15% (phải thay bằng số thực).
+  - id: "m06-pitfalls-3"
+    title: "Lỗi thường gặp: LỖI 3: không có giá trị thanh lý/tăng giá tài sản cuối kỳ dù có giả định tăng giá 4%/năm; với BĐS đ…"
+    tags: ["lỗi", "thường", "gặp", "không", "có", "giá", "trị", "thanh", "lý", "tăng", "tài", "sản"]
+    text: |-
+      LỖI 3: không có giá trị thanh lý/tăng giá tài sản cuối kỳ dù có giả định tăng giá 4%/năm; với BĐS đây thường là nguồn lợi chính. Sửa: thêm TV sau chi phí bán và thuế vào dòng tiền năm cuối.
+  - id: "m06-pitfalls-4"
+    title: "Lỗi thường gặp: LỖI 4: trộn lãi danh nghĩa với thực/lạm phát. Rf 6,5% và Rd 6,6% là danh nghĩa nên tăng trưởng doan…"
+    tags: ["lỗi", "thường", "gặp", "trộn", "lãi", "danh", "nghĩa", "với", "thực", "lạm", "phát", "rf"]
+    text: |-
+      LỖI 4: trộn lãi danh nghĩa với thực/lạm phát. Rf 6,5% và Rd 6,6% là danh nghĩa nên tăng trưởng doanh thu, tăng giá và chi phí cũng phải ở giá danh nghĩa. Nếu có số liệu thực, chuyển bằng Fisher trước khi chiết khấu.
+  - id: "m06-pitfalls-5"
+    title: "Lỗi thường gặp: LỖI 5: Rf lấy lãi tiết kiệm thay vì lợi suất trái phiếu chính phủ kỳ hạn tương ứng. Cả hai cách đượ…"
+    tags: ["lỗi", "thường", "gặp", "rf", "lấy", "lãi", "tiết", "kiệm", "thay", "vì", "lợi", "suất"]
+    text: |-
+      LỖI 5: Rf lấy lãi tiết kiệm thay vì lợi suất trái phiếu chính phủ kỳ hạn tương ứng. Cả hai cách được chấp nhận nhưng phải nhất quán (CAPM, chi phí cơ hội, MIRR, ERP cùng cơ sở) và ghi nguồn. Lãi tiết kiệm có thể là kỳ hạn ngắn tái tục; trái phiếu chính phủ cùng kỳ hạn dự án phản ánh đúng hơn lãi phi rủi ro dài hạn. Không bịa số trái phiếu: lấy từ m07 hoặc người dùng.
+  - id: "m06-pitfalls-6"
+    title: "Lỗi thường gặp: LỖI 6: bảng beta theo loại tài sản chỉ là heuristic chưa kiểm chứng; confidence thấp. Ưu tiên beta …"
+    tags: ["lỗi", "thường", "gặp", "bảng", "beta", "theo", "loại", "tài", "sản", "chỉ", "là", "heuristic"]
+    text: |-
+      LỖI 6: bảng beta theo loại tài sản chỉ là heuristic chưa kiểm chứng; confidence thấp. Ưu tiên beta ngành hoặc công ty so sánh un-lever/re-lever, và chạy độ nhạy beta.
+  - id: "m06-pitfalls-7"
+    title: "Lỗi thường gặp: LỖI 7: trường hợp cá nhân T = 0% giả định không có thuế. Thực tế thu nhập cho thuê tài sản và chuyể…"
+    tags: ["lỗi", "thường", "gặp", "trường", "hợp", "cá", "nhân", "giả", "định", "không", "có", "thuế"]
+    text: |-
+      LỖI 7: trường hợp cá nhân T = 0% giả định không có thuế. Thực tế thu nhập cho thuê tài sản và chuyển nhượng BĐS của cá nhân tại VN có thể chịu thuế (cần xác nhận hiện hành). Nếu có thuế thật, T = 0 làm quá lạc quan dòng tiền cá nhân.
+  - id: "m06-pitfalls-8"
+    title: "Lỗi thường gặp: Dùng WACC tỷ trọng cố định cho dự án trả gốc đều: nợ giảm dần nên tỷ trọng D/V giảm; coi WACC là xấ…"
+    tags: ["lỗi", "thường", "gặp", "dùng", "wacc", "tỷ", "trọng", "cố", "định", "cho", "dự", "án"]
+    text: |-
+      Dùng WACC tỷ trọng cố định cho dự án trả gốc đều: nợ giảm dần nên tỷ trọng D/V giảm; coi WACC là xấp xỉ và kiểm tra chéo bằng FCFE/Re.
+  - id: "m06-pitfalls-9"
+    title: "Lỗi thường gặp: Khấu hao cả giá trị đất; đất không khấu hao. Prompt gốc khấu hao toàn bộ 1,3 tỷ vì đơn giản hóa."
+    tags: ["lỗi", "thường", "gặp", "khấu", "hao", "cả", "giá", "trị", "đất", "không", "prompt", "gốc"]
+    text: |-
+      Khấu hao cả giá trị đất; đất không khấu hao. Prompt gốc khấu hao toàn bộ 1,3 tỷ vì đơn giản hóa.
+  - id: "m06-pitfalls-10"
+    title: "Lỗi thường gặp: Hàm NPV Excel bỏ năm 0; hàm IRR/MIRR cần dòng tiền cùng kỳ (năm hoặc tháng)."
+    tags: ["lỗi", "thường", "gặp", "hàm", "npv", "excel", "bỏ", "năm", "irr", "mirr", "cần", "dòng"]
+    text: |-
+      Hàm NPV Excel bỏ năm 0; hàm IRR/MIRR cần dòng tiền cùng kỳ (năm hoặc tháng).
+  - id: "m06-pitfalls-11"
+    title: "Lỗi thường gặp: Quên chi phí giao dịch ban đầu (phí chuyển nhượng, công chứng, phí vay, sửa chữa) và vốn lưu động (…"
+    tags: ["lỗi", "thường", "gặp", "quên", "chi", "phí", "giao", "dịch", "ban", "đầu", "chuyển", "nhượng"]
+    text: |-
+      Quên chi phí giao dịch ban đầu (phí chuyển nhượng, công chứng, phí vay, sửa chữa) và vốn lưu động (tiền đặt cọc).
+  - id: "m06-pitfalls-12"
+    title: "Lỗi thường gặp: Dự báo lạc quan một chiều: không stress, không hòa vốn, không post-audit."
+    tags: ["lỗi", "thường", "gặp", "dự", "báo", "lạc", "quan", "một", "chiều", "không", "stress", "hòa"]
+    text: |-
+      Dự báo lạc quan một chiều: không stress, không hòa vốn, không post-audit.
+  - id: "m06-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Nhà đầu tư cá nhân mua BĐS cho thuê bằng vay ngân hàng: lợi suất thuê thuần thường thấp so với lãi …"
+    tags: ["lưu", "sme", "việt", "nam", "nhà", "đầu", "tư", "cá", "nhân", "mua", "bđs", "cho"]
+    text: |-
+      Nhà đầu tư cá nhân mua BĐS cho thuê bằng vay ngân hàng: lợi suất thuê thuần thường thấp so với lãi vay nên dòng tiền hằng năm có thể âm lâu; cần quỹ dự phòng và tăng giá để bù. Luôn tính điểm hòa vốn tăng giá.
+  - id: "m06-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: Thuế cho thuê và chuyển nhượng của cá nhân tại VN có thể gồm thuế GTGT và thuế TNCN trên doanh thu …"
+    tags: ["lưu", "sme", "việt", "nam", "thuế", "cho", "thuê", "và", "chuyển", "nhượng", "của", "cá"]
+    text: |-
+      Thuế cho thuê và chuyển nhượng của cá nhân tại VN có thể gồm thuế GTGT và thuế TNCN trên doanh thu cho thuê vượt một ngưỡng doanh thu năm, và thuế TNCN trên giá chuyển nhượng BĐS. Mức thuế, ngưỡng và cách khai thay đổi theo thời kỳ: CẦN XÁC NHẬN theo quy định hiện hành hoặc hỏi kế toán/thuế trước khi dùng T = 0.
+  - id: "m06-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Lãi vay ngân hàng VN thường cố định ưu đãi 1-3 năm rồi thả nổi theo lãi tiết kiệm cộng biên độ; hợp…"
+    tags: ["lưu", "sme", "việt", "nam", "lãi", "vay", "ngân", "hàng", "vn", "thường", "cố", "định"]
+    text: |-
+      Lãi vay ngân hàng VN thường cố định ưu đãi 1-3 năm rồi thả nổi theo lãi tiết kiệm cộng biên độ; hợp đồng cho vay 20 năm là điển hình. Stress lãi tăng 2-3 điểm phần trăm sau giai đoạn ưu đãi (số liệu hợp đồng cụ thể: xác nhận với ngân hàng).
+  - id: "m06-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Đứng tên doanh nghiệp: phải đủ thu nhập chịu thuế để dùng lá chắn; chi phí lãi vay được trừ có thể …"
+    tags: ["lưu", "sme", "việt", "nam", "đứng", "tên", "doanh", "nghiệp", "phải", "đủ", "thu", "nhập"]
+    text: |-
+      Đứng tên doanh nghiệp: phải đủ thu nhập chịu thuế để dùng lá chắn; chi phí lãi vay được trừ có thể bị khống chế theo quy định (cần xác nhận Nghị định hiện hành); rút tiền về cá nhân có thể chịu thêm thuế cổ tức; thêm chi phí kế toán, báo cáo thuế.
+  - id: "m06-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: Công cụ: Google Sheets/Excel là đủ cho mô hình 20 năm (cột năm, các dòng NOI, FCFF, FCFE); dùng Dat…"
+    tags: ["lưu", "sme", "việt", "nam", "công", "cụ", "google", "sheets", "excel", "là", "đủ", "cho"]
+    text: |-
+      Công cụ: Google Sheets/Excel là đủ cho mô hình 20 năm (cột năm, các dòng NOI, FCFF, FCFE); dùng Data Table hoặc cột kịch bản cho stress. Giá phần mềm kế toán SME xem cong-cu-quan-tri-doanh-nghiep-sme.md.
+  - id: "m06-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: Dữ liệu thị trường (lợi suất trái phiếu chính phủ, lãi tiết kiệm, ERP, giá thuê) lấy từ m07 hoặc ng…"
+    tags: ["lưu", "sme", "việt", "nam", "dữ", "liệu", "thị", "trường", "lợi", "suất", "trái", "phiếu"]
+    text: |-
+      Dữ liệu thị trường (lợi suất trái phiếu chính phủ, lãi tiết kiệm, ERP, giá thuê) lấy từ m07 hoặc nguồn có ngày tham chiếu; không nhớ số. Gắn data_reliability.
+  - id: "m06-case_lessons-1"
+    title: "Bài học case: Mua tài sản cho thuê 1,3 tỷ, vay 800 triệu 6,6%/20 năm gốc đều (ví dụ của prompt, dựng lại đúng)"
+    tags: ["bài", "học", "case", "mua", "tài", "sản", "cho", "thuê", "tỷ", "vay", "800", "triệu"]
+    text: |-
+      name: Mua tài sản cho thuê 1,3 tỷ, vay 800 triệu 6,6%/20 năm gốc đều (ví dụ của prompt, dựng lại đúng)
+      type: sme
+      setup: 'Vốn 1300 (tự có 500, vay 800), Rf 6,5%, ERP 7%, beta 0,6, thuế DN 20%, khấu hao đường thẳng 20 năm, doanh thu 4,5 triệu/tháng (54/năm) tăng 5%/năm, tài sản tăng giá 4%/năm. Giả định minh họa thêm: trống và vận hành 15%, phí bán 2%, giá trị sổ cuối kỳ bằng 0.'
+      key_calculations:
+      - Re 10.7%, WACC 7.3646%, lá chắn năm 1 = 10.56 + 13 = 23.56
+      - 'Cách sai trong prompt: FCFE chiết khấu WACC cho NPV -399.6 (không có NOI, không có thanh lý)'
+      - 'Cách đúng: FCFF năm 1 = 49.72, FCFE năm 1 = -32.52; TV = 2233.19; NPV(FCFF, WACC) = -68.8; NPV(FCFE, Re) = -240.9; IRR vốn chủ 7.74%; MIRR 7.77% (fin = Re, rein = Rf)'
+      - DSCR năm 1 = 0.495; đảo chiều năm 9; đỉnh âm lũy kế -642.2; tăng giá hòa vốn 7.17%/năm
+      lesson: 'Dự án có MIRR hơn gửi tiết kiệm 6,5% một chút nhưng thấp hơn Re 10.7% nên chưa bù đủ rủi ro; NPV vẫn âm. Giá trị đến từ cược tăng giá chứ không phải từ tiền thuê. Cải thiện: thương lượng giá mua, tăng vốn tự có, lãi cố định, hoặc chọn tài sản có lợi suất thuê cao hơn.'
+      data_reliability: illustrative
+  - id: "m06-worked_examples-1"
+    title: "Ví dụ có lời giải: m06_we1 — Chi phí vốn và lá chắn thuế của ví dụ trong prompt"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m06_we1", "chi", "phí", "vốn", "và", "lá", "chắn"]
+    text: |-
+      id: m06_we1
+      title: Chi phí vốn và lá chắn thuế của ví dụ trong prompt
+      inputs:
+        V: 1300
+        E: 500
+        D: 800
+        rf: 0.065
+        erp: 0.07
+        beta: 0.6
+        rd: 0.066
+        T: 0.2
+        dep_years: 20
+      steps:
+      - Re = 0.065 + 0.6 x 0.07 = 0.107 (beta 1.0 cho 0.135)
+      - E/V = 0.3846; D/V = 0.6154; Rd sau thuế = 0.066 x 0.8 = 0.0528
+      - 'WACC = 0.3846 x 0.107 + 0.6154 x 0.0528 = 0.073646 (T = 0: 0.081769; beta 1.0 doanh nghiệp: 0.084415)'
+      - Khấu hao = 1300/20 = 65; lá chắn khấu hao = 13
+      - Lãi năm 1 = 800 x 0.066 = 52.8; lá chắn lãi = 10.56; tổng lá chắn kép = 23.56
+      result: 'Re 10.7%, WACC 7.3646%, lá chắn kép năm 1 = 23.56 triệu. Giải thích: khấu hao không chi tiền nhưng giảm thuế 13 triệu tiền thật mỗi năm.'
+  - id: "m06-worked_examples-2"
+    title: "Ví dụ có lời giải: m06_we2 — Dựng bản ĐÚNG và so với cách sai trong prompt"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m06_we2", "dựng", "bản", "đúng", "và", "so", "với"]
+    text: |-
+      id: m06_we2
+      title: Dựng bản ĐÚNG và so với cách sai trong prompt
+      inputs:
+        rev0: 54
+        g: 0.05
+        vacancy_opex: 0.15
+        T: 0.2
+        dep: 65
+        debt: 800
+        rd: 0.066
+        principal: 40
+        price_growth: 0.04
+        sell_cost: 0.02
+        book_end: 0
+        Re: 0.107
+        WACC: 0.073646
+      steps:
+      - 'SAI (prompt): CF1 = (54 - 52.8 - 65) x 0.8 + 65 - 40 = -26.04; chuỗi -500 rồi -26.04, ... đến +80.1 năm 20, không có thanh lý; NPV tại WACC = -399.6; IRR = -0.62%'
+      - 'ĐÚNG: NOI1 = 54 x 0.85 = 45.9; FCFF1 = 45.9 x 0.8 + 13 = 49.72; FCFE1 = 49.72 - 52.8 x 0.8 - 40 = -32.52'
+      - Giá bán năm 20 = 1300 x 1.04^20 = 2848.46; sau phí 2% = 2791.49; thuế = 558.30; TV = 2233.19; FCFF20 = 2339.0; FCFE20 = 2296.9
+      - NPV(FCFF, WACC 7.3646%) = -68.8; IRR dự án = 6.95%
+      - NPV(FCFE, Re 10.7%) = -240.9; IRR vốn chủ = 7.74%; MIRR (fin = Re, rein = Rf 6.5%) = 7.77%; so với gửi tiết kiệm 500 x 1.065^20 = 1761.8
+      - 'Điểm đảo chiều: FCFE năm 9 = +1.9 (năm 1 -32.5, năm 5 -16.2, năm 10 +6.7); đỉnh âm lũy kế -642.2 tại năm 9 (vốn tự có thực tế cần có = 500 + 142.2 = 642.2 nếu không có nguồn khác)'
+      - 'DSCR: năm 1 = 0.495, năm 20 = 2.72'
+      result: 'Cách sai mắc hai lỗi ngược chiều (thiếu chi phí vận hành làm dòng tiền lạc quan; thiếu giá trị thanh lý và dùng sai cặp làm NPV âm nặng) nên cho NPV -399.6 không có ý nghĩa. Cách đúng: NPV -68.8 (FCFF/WACC) và -240.9 (FCFE/Re), hai kết quả cùng dấu nên kết luận nhất quán: dự án không đáng giá theo giả định cơ sở.'
+  - id: "m06-worked_examples-3"
+    title: "Ví dụ có lời giải: m06_we3 — Stress test và điểm hòa vốn tăng giá"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m06_we3", "stress", "test", "và", "điểm", "hòa", "vốn"]
+    text: |-
+      id: m06_we3
+      title: Stress test và điểm hòa vốn tăng giá
+      inputs:
+        base: ví dụ m06_we2
+        shocks:
+        - doanh thu -10%
+        - lãi vay 8.6%
+        - tăng giá 0%
+        - tăng giá 2%
+        - kết hợp (doanh thu -10%, lãi 8.6%, tăng giá 2%)
+        - beta 1.0
+      steps:
+      - 'Cơ sở: NPV FCFF -68.8; NPV FCFE -240.9; MIRR 7.77%; đảo chiều năm 9; DSCR1 0.495'
+      - 'Doanh thu -10%: -124.6 | -283.0 | MIRR 7.33% | năm 10 | DSCR 0.445'
+      - 'Lãi vay 8.6% (WACC 8.35%): -215.2 | -312.0 | MIRR 7.13% | năm 11 | DSCR 0.422'
+      - 'Tăng giá 0%: -361.9 | -399.9 | MIRR 4.61% | năm 9'
+      - 'Tăng giá 2%: -242.3 | -335.0 | MIRR 6.12% | năm 9'
+      - 'Kết hợp: -410.9 | -448.1 | MIRR 4.96% | năm 12 | DSCR 0.380'
+      - 'Beta 1.0 (Re 13.5%, WACC 8.44%): -227.7 | -372.0 | MIRR 7.84% | năm 9'
+      - 'Tăng giá hòa vốn (NPV FCFE = 0): 7.17% một năm (so với giả định 4%)'
+      - 'Quỹ dự phòng: thiếu hụt stress = 92.8 - 41.31 = 51.49 một năm = 4.29 một tháng; 12 tháng = 51.49; 6 tháng = 25.75'
+      result: 'Biến nhạy nhất là tăng giá tài sản và lãi vay. Dự án chỉ có NPV vốn chủ dương nếu giá tăng khoảng 7.2% một năm trong 20 năm, gần 1,8 lần giả định. Khuyến nghị CFO: không đầu tư ở giá và điều kiện này; nếu vẫn làm, giữ quỹ dự phòng 12 tháng khoảng 52 triệu và cố định lãi.'
+  - id: "m06-worked_examples-4"
+    title: "Ví dụ có lời giải: m06_we4 — So sánh đứng tên cá nhân với doanh nghiệp (T = 0 so với 20%)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m06_we4", "so", "sánh", "đứng", "tên", "cá", "nhân"]
+    text: |-
+      id: m06_we4
+      title: So sánh đứng tên cá nhân với doanh nghiệp (T = 0 so với 20%)
+      inputs:
+        T_personal: 0
+        T_corp: 0.2
+        same_other_inputs: true
+      steps:
+      - 'Cá nhân T = 0: WACC = 0.3846 x 0.107 + 0.6154 x 0.066 = 8.1769%; không có lá chắn lãi/khấu hao; thuế bán = 0 (giả định minh họa)'
+      - 'FCFE cá nhân: năm 1 = 45.9 - 52.8 - 40 = -46.9; năm 20 = 2864.8 (gồm giá bán sau phí 2791.49 không thuế); đảo chiều năm 10'
+      - NPV(FCFF, WACC 8.18%) = -71.6; NPV(FCFE, Re 10.7%) = -226.9; MIRR (fin = Re, rein = Rf) = 8.30%
+      - 'Doanh nghiệp: NPV FCFF -68.8; NPV FCFE -240.9; MIRR 7.77%; đảo chiều năm 9'
+      - 'Chênh lệch NPV vốn chủ: -240.9 - (-226.9) = -14.0'
+      result: 'Trong mô hình này doanh nghiệp có dòng tiền hằng năm tốt hơn (đảo chiều năm 9, năm 1 là -32.5 so với -46.9) nhờ lá chắn, nhưng thuế 20% trên lãi bán tài sản làm NPV tổng thấp hơn khoảng 14 triệu. Kết luận phụ thuộc giả định miễn thuế chuyển nhượng cá nhân (CẦN XÁC NHẬN hiện hành): nếu cá nhân thực tế bị thuế (thuê và chuyển nhượng), lợi thế cá nhân nhỏ lại hoặc đảo chiều. Cần chạy lại với thuế cá nhân thực.'
+  - id: "m06-worked_examples-5"
+    title: "Ví dụ có lời giải: m06_we5 — Lãi suất danh nghĩa so với thực và nhất quán Rf"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m06_we5", "lãi", "suất", "danh", "nghĩa", "so", "với"]
+    text: |-
+      id: m06_we5
+      title: Lãi suất danh nghĩa so với thực và nhất quán Rf
+      inputs:
+        real: 0.04
+        inflation: 0.03
+        rf_deposit: 0.065
+      steps:
+      - Lãi danh nghĩa = (1.04)(1.03) - 1 = 7.12%
+      - Nếu doanh thu tăng 5% là danh nghĩa (đã gồm lạm phát 3%), tăng thực = 1.05/1.03 - 1 = 1.94%
+      - 'Nếu bảng đầu vào dùng Rf 6.5% (danh nghĩa) nhưng chiết khấu dòng tiền thực thì sai; hoặc quy dòng tiền về danh nghĩa, hoặc đổi Rf về thực: 1.065/1.03 - 1 = 3.40%'
+      result: Chọn một hệ (danh nghĩa) và dùng nhất quán; ghi rõ cơ sở Rf (tiết kiệm hay trái phiếu chính phủ kỳ hạn tương ứng).
+  - id: "m06-practice_questions-1"
+    title: "Câu hỏi luyện tập: Vốn 1300, E 500, D 800 vay 6,6%, T 20%, beta 0,6, Rf 6,5%, ERP 7%. Tính Re và WACC."
+    tags: ["câu", "hỏi", "luyện", "tập", "vốn", "1300", "500", "800", "vay", "20", "beta", "rf"]
+    text: |-
+      q: Vốn 1300, E 500, D 800 vay 6,6%, T 20%, beta 0,6, Rf 6,5%, ERP 7%. Tính Re và WACC.
+      a: Re = 6.5% + 0.6 x 7% = 10.7%; WACC = 0.3846 x 10.7% + 0.6154 x 6.6% x 0.8 = 7.3646%.
+  - id: "m06-practice_questions-2"
+    title: "Câu hỏi luyện tập: Vì sao không được chiết khấu FCFE bằng WACC? Sửa thế nào?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "không", "được", "chiết", "khấu", "fcfe", "bằng"]
+    text: |-
+      q: Vì sao không được chiết khấu FCFE bằng WACC? Sửa thế nào?
+      a: WACC đã chứa chi phí nợ nên trừ gốc/lãi trong dòng tiền là tính nợ hai lần, và rủi ro vốn chủ cao hơn WACC. Dùng FCFF với WACC hoặc FCFE với Re.
+  - id: "m06-practice_questions-3"
+    title: "Câu hỏi luyện tập: Doanh thu 54 mỗi năm, vận hành và trống 15%. NOI bằng bao nhiêu? Lợi suất thuần trên giá 1300? So v…"
+    tags: ["câu", "hỏi", "luyện", "tập", "doanh", "thu", "54", "mỗi", "năm", "vận", "hành", "và"]
+    text: |-
+      q: Doanh thu 54 mỗi năm, vận hành và trống 15%. NOI bằng bao nhiêu? Lợi suất thuần trên giá 1300? So với lãi vay 6,6% nói gì?
+      a: 'NOI = 45.9; lợi suất 3.53%, thấp hơn lãi vay nên đòn bẩy âm: dòng tiền vốn chủ hằng năm âm đến khi NOI tăng.'
+  - id: "m06-practice_questions-4"
+    title: "Câu hỏi luyện tập: Nếu tài sản tăng giá 4%/năm trong 20 năm từ 1300, giá bán và giá trị sau phí 2% là bao nhiêu? Vì sa…"
+    tags: ["câu", "hỏi", "luyện", "tập", "nếu", "tài", "sản", "tăng", "giá", "năm", "trong", "20"]
+    text: |-
+      q: Nếu tài sản tăng giá 4%/năm trong 20 năm từ 1300, giá bán và giá trị sau phí 2% là bao nhiêu? Vì sao cần đưa vào dòng tiền?
+      a: 1300 x 1.04^20 = 2848.46; sau phí 2791.49 (trước thuế). Đây là phần lớn lợi nhuận nên bỏ thì NPV sai lệch.
+  - id: "m06-practice_questions-5"
+    title: "Câu hỏi luyện tập: Gốc đều 800 trong 20 năm ở 6,6%: tổng trả năm 1 và năm 20?"
+    tags: ["câu", "hỏi", "luyện", "tập", "gốc", "đều", "800", "trong", "20", "năm", "tổng", "trả"]
+    text: |-
+      q: 'Gốc đều 800 trong 20 năm ở 6,6%: tổng trả năm 1 và năm 20?'
+      a: 'Năm 1: 40 + 52.8 = 92.8; năm 20: 40 + 2.64 = 42.64.'
+  - id: "m06-practice_questions-6"
+    title: "Câu hỏi luyện tập: DSCR năm 1 trong ví dụ là bao nhiêu và nghĩa là gì?"
+    tags: ["câu", "hỏi", "luyện", "tập", "dscr", "năm", "trong", "ví", "dụ", "là", "bao", "nhiêu"]
+    text: |-
+      q: DSCR năm 1 trong ví dụ là bao nhiêu và nghĩa là gì?
+      a: '45.9 / 92.8 = 0.495: dự án chỉ trả được khoảng một nửa nghĩa vụ nợ năm đầu; phải bù tiền túi khoảng 46.9 (trước thuế).'
+  - id: "m06-practice_questions-7"
+    title: "Câu hỏi luyện tập: MIRR vốn chủ 7,77% so với Rf 6,5% và Re 10,7% nói gì?"
+    tags: ["câu", "hỏi", "luyện", "tập", "mirr", "vốn", "chủ", "77", "so", "với", "rf", "và"]
+    text: |-
+      q: MIRR vốn chủ 7,77% so với Rf 6,5% và Re 10,7% nói gì?
+      a: Hơn gửi tiết kiệm nhưng chưa bù đủ rủi ro (thấp hơn Re) nên NPV vốn chủ âm.
+  - id: "m06-practice_questions-8"
+    title: "Câu hỏi luyện tập: Rf nên dùng lãi tiết kiệm hay trái phiếu chính phủ?"
+    tags: ["câu", "hỏi", "luyện", "tập", "rf", "nên", "dùng", "lãi", "tiết", "kiệm", "hay", "trái"]
+    text: |-
+      q: Rf nên dùng lãi tiết kiệm hay trái phiếu chính phủ?
+      a: Cả hai được; lý thuyết ưu tiên trái phiếu chính phủ cùng kỳ hạn dự án. Quan trọng là nhất quán trong CAPM, chi phí cơ hội, MIRR và ERP cùng cơ sở, và ghi nguồn.
+  - id: "m06-practice_questions-9"
+    title: "Câu hỏi luyện tập: Bảng beta của prompt (vàng 0,5-0,7...) đáng tin đến đâu?"
+    tags: ["câu", "hỏi", "luyện", "tập", "bảng", "beta", "của", "prompt", "vàng", "đáng", "tin", "đến"]
+    text: |-
+      q: Bảng beta của prompt (vàng 0,5-0,7...) đáng tin đến đâu?
+      a: Chỉ là heuristic chưa kiểm chứng (confidence thấp). Nên dùng beta ngành/so sánh un-lever/re-lever và chạy độ nhạy.
+  - id: "m06-practice_questions-10"
+    title: "Câu hỏi luyện tập: Tăng giá tài sản cần là bao nhiêu mỗi năm để NPV vốn chủ của ví dụ bằng 0?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tăng", "giá", "tài", "sản", "cần", "là", "bao", "nhiêu"]
+    text: |-
+      q: Tăng giá tài sản cần là bao nhiêu mỗi năm để NPV vốn chủ của ví dụ bằng 0?
+      a: Khoảng 7.17% một năm (giả định cơ sở là 4%).
+  - id: "m06-practice_questions-11"
+    title: "Câu hỏi luyện tập: Cá nhân T = 0 có đúng với VN không?"
+    tags: ["câu", "hỏi", "luyện", "tập", "cá", "nhân", "có", "đúng", "với", "vn", "không"]
+    text: |-
+      q: Cá nhân T = 0 có đúng với VN không?
+      a: Chỉ là giả định đơn giản hóa; thu nhập cho thuê và chuyển nhượng cá nhân có thể chịu thuế (cần xác nhận hiện hành).
+  - id: "m06-practice_questions-12"
+    title: "Câu hỏi luyện tập: Quỹ dự phòng tối thiểu cho ví dụ dưới stress doanh thu -10%?"
+    tags: ["câu", "hỏi", "luyện", "tập", "quỹ", "dự", "phòng", "tối", "thiểu", "cho", "ví", "dụ"]
+    text: |-
+      q: Quỹ dự phòng tối thiểu cho ví dụ dưới stress doanh thu -10%?
+      a: Thiếu hụt = 92.8 - 41.31 = 51.49/năm; 12 tháng = 51.49 triệu; 6 tháng = 25.75 triệu.
+  - id: "m06-checklist-1"
+    title: "Checklist: Đã hỏi hoặc ghi giả định cho đủ 12 dữ liệu đầu vào chưa?"
+    tags: ["checklist", "đã", "hỏi", "hoặc", "ghi", "giả", "định", "cho", "đủ", "12", "dữ", "liệu"]
+    text: |-
+      Đã hỏi hoặc ghi giả định cho đủ 12 dữ liệu đầu vào chưa?
+  - id: "m06-checklist-2"
+    title: "Checklist: Dòng tiền là FCFF (chiết khấu WACC) hay FCFE (chiết khấu Re)? Cặp có khớp không?"
+    tags: ["checklist", "dòng", "tiền", "là", "fcff", "chiết", "khấu", "wacc", "hay", "fcfe", "re", "cặp"]
+    text: |-
+      Dòng tiền là FCFF (chiết khấu WACC) hay FCFE (chiết khấu Re)? Cặp có khớp không?
+  - id: "m06-checklist-3"
+    title: "Checklist: Có dùng NOI (đã trừ chi phí vận hành, trống phòng) thay vì doanh thu không?"
+    tags: ["checklist", "có", "dùng", "noi", "đã", "trừ", "chi", "phí", "vận", "hành", "trống", "phòng"]
+    text: |-
+      Có dùng NOI (đã trừ chi phí vận hành, trống phòng) thay vì doanh thu không?
+  - id: "m06-checklist-4"
+    title: "Checklist: Có giá trị thanh lý sau chi phí và thuế ở năm cuối nếu giả định tăng giá không?"
+    tags: ["checklist", "có", "giá", "trị", "thanh", "lý", "sau", "chi", "phí", "và", "thuế", "năm"]
+    text: |-
+      Có giá trị thanh lý sau chi phí và thuế ở năm cuối nếu giả định tăng giá không?
+  - id: "m06-checklist-5"
+    title: "Checklist: Danh nghĩa/thực nhất quán? Rf cùng cơ sở trong CAPM, MIRR, chi phí cơ hội?"
+    tags: ["checklist", "danh", "nghĩa", "thực", "nhất", "quán", "rf", "cùng", "cơ", "sở", "trong", "capm"]
+    text: |-
+      Danh nghĩa/thực nhất quán? Rf cùng cơ sở trong CAPM, MIRR, chi phí cơ hội?
+  - id: "m06-checklist-6"
+    title: "Checklist: Beta lấy từ đâu, đã gắn confidence và chạy độ nhạy chưa?"
+    tags: ["checklist", "beta", "lấy", "từ", "đâu", "đã", "gắn", "confidence", "và", "chạy", "độ", "nhạy"]
+    text: |-
+      Beta lấy từ đâu, đã gắn confidence và chạy độ nhạy chưa?
+  - id: "m06-checklist-7"
+    title: "Checklist: Thuế: cá nhân đã cảnh báo thuế thu nhập thuê/chuyển nhượng; doanh nghiệp đã xét đủ thu nhập chịu th…"
+    tags: ["checklist", "thuế", "cá", "nhân", "đã", "cảnh", "báo", "thu", "nhập", "thuê", "chuyển", "nhượng"]
+    text: |-
+      Thuế: cá nhân đã cảnh báo thuế thu nhập thuê/chuyển nhượng; doanh nghiệp đã xét đủ thu nhập chịu thuế và khấu hao đất?
+  - id: "m06-checklist-8"
+    title: "Checklist: Đã có điểm đảo chiều, hoàn vốn, đỉnh âm lũy kế, DSCR năm 1?"
+    tags: ["checklist", "đã", "có", "điểm", "đảo", "chiều", "hoàn", "vốn", "đỉnh", "âm", "lũy", "kế"]
+    text: |-
+      Đã có điểm đảo chiều, hoàn vốn, đỉnh âm lũy kế, DSCR năm 1?
+  - id: "m06-checklist-9"
+    title: "Checklist: Đã stress doanh thu, lãi, giá và kịch bản kết hợp; tìm ngưỡng hòa vốn?"
+    tags: ["checklist", "đã", "stress", "doanh", "thu", "lãi", "giá", "và", "kịch", "bản", "kết", "hợp"]
+    text: |-
+      Đã stress doanh thu, lãi, giá và kịch bản kết hợp; tìm ngưỡng hòa vốn?
+  - id: "m06-checklist-10"
+    title: "Checklist: Đã tính quỹ dự phòng thanh khoản và nơi giữ?"
+    tags: ["checklist", "đã", "tính", "quỹ", "dự", "phòng", "thanh", "khoản", "và", "nơi", "giữ"]
+    text: |-
+      Đã tính quỹ dự phòng thanh khoản và nơi giữ?
+  - id: "m06-checklist-11"
+    title: "Checklist: Khuyến nghị có điều kiện thay đổi và có nhãn data_reliability hoặc 'giả định minh họa'?"
+    tags: ["checklist", "khuyến", "nghị", "có", "điều", "kiện", "thay", "đổi", "và", "nhãn", "data_reliability", "hoặc"]
+    text: |-
+      Khuyến nghị có điều kiện thay đổi và có nhãn data_reliability hoặc 'giả định minh họa'?
+  - id: "m06-checklist-12"
+    title: "Checklist: Số liệu thị trường (Rf, ERP, lãi vay, thuế) có ngày tham chiếu và nguồn, hoặc ghi 'cần xác nhận'?"
+    tags: ["checklist", "số", "liệu", "thị", "trường", "rf", "erp", "lãi", "vay", "thuế", "có", "ngày"]
+    text: |-
+      Số liệu thị trường (Rf, ERP, lãi vay, thuế) có ngày tham chiếu và nguồn, hoặc ghi 'cần xác nhận'?
+  - id: "m06-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Sheet Inputs: 12 dữ liệu đầu vào; ô xanh là input, ô đen là công thức"
+    tags: ["mẫu", "excel", "sheets", "sheet", "inputs", "12", "dữ", "liệu", "đầu", "vào", "xanh", "là"]
+    text: |-
+      Sheet Inputs: 12 dữ liệu đầu vào; ô xanh là input, ô đen là công thức
+  - id: "m06-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Sheet Debt: cột năm, dư nợ đầu kỳ, lãi = dư nợ x Rd, gốc = D/n (hoặc PMT/PPMT/IPMT), dư nợ cuối kỳ"
+    tags: ["mẫu", "excel", "sheets", "sheet", "debt", "cột", "năm", "dư", "nợ", "đầu", "kỳ", "lãi"]
+    text: |-
+      Sheet Debt: cột năm, dư nợ đầu kỳ, lãi = dư nợ x Rd, gốc = D/n (hoặc PMT/PPMT/IPMT), dư nợ cuối kỳ
+  - id: "m06-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: Sheet CF: NOI, khấu hao, EBIT, thuế, FCFF, lãi sau thuế, gốc, FCFE, TV năm cuối, lũy kế, DSCR"
+    tags: ["mẫu", "excel", "sheets", "sheet", "cf", "noi", "khấu", "hao", "ebit", "thuế", "fcff", "lãi"]
+    text: |-
+      Sheet CF: NOI, khấu hao, EBIT, thuế, FCFF, lãi sau thuế, gốc, FCFE, TV năm cuối, lũy kế, DSCR
+  - id: "m06-excel_google_sheets_templates-4"
+    title: "Mẫu Excel/Sheets: Sheet Valuation: =NPV(r,năm1..n)+năm0 với r = WACC cho FCFF và r = Re cho FCFE; =IRR; =MIRR(dòng, R…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "valuation", "npv", "năm1", "năm0", "với", "wacc", "cho", "fcff"]
+    text: |-
+      Sheet Valuation: =NPV(r,năm1..n)+năm0 với r = WACC cho FCFF và r = Re cho FCFE; =IRR; =MIRR(dòng, Re hoặc Rf, Rf)
+  - id: "m06-excel_google_sheets_templates-5"
+    title: "Mẫu Excel/Sheets: Sheet Stress: bảng kịch bản gọi lại mô hình (Data Table) cho doanh thu, lãi, tăng giá, beta; Goal S…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "stress", "bảng", "kịch", "bản", "gọi", "lại", "mô", "hình"]
+    text: |-
+      Sheet Stress: bảng kịch bản gọi lại mô hình (Data Table) cho doanh thu, lãi, tăng giá, beta; Goal Seek tăng giá hòa vốn
+  - id: "m06-excel_google_sheets_templates-6"
+    title: "Mẫu Excel/Sheets: Sheet Check: kiểm tra FCFE = FCFF - lãi(1-T) - gốc; NPV FCFF và FCFE cùng dấu; Re > Rf; WACC < Re"
+    tags: ["mẫu", "excel", "sheets", "sheet", "check", "kiểm", "tra", "fcfe", "fcff", "lãi", "gốc", "npv"]
+    text: |-
+      Sheet Check: kiểm tra FCFE = FCFF - lãi(1-T) - gốc; NPV FCFF và FCFE cùng dấu; Re > Rf; WACC < Re
+  - id: "m06-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: stock-analysist/prompt-danh-gia-dau-tu.md (prompt gốc, chưa sửa lỗi); tham chiếu chéo mba-quan-tri-doanh-nghiep/3-financial-management/finance-agent-skill/modules/m01..m04

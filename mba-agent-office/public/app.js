@@ -39,7 +39,7 @@ const AV = {
   designer: { skin: '#e0a878', hair: '#c0508a', style: 'long', shirt: '#d48b7e' },
   marketing_expert: { skin: '#f2c9a0', hair: '#e8a33d', style: 'bun', glasses: true, shirt: '#e8a33d' },
   writer: { skin: '#f2c9a0', hair: '#e8a33d', style: 'bun', glasses: true, shirt: '#e8a33d' },
-  stock_analyst: { skin: '#e0b48a', hair: '#1f1f1f', style: 'short', glasses: true, shirt: '#2f9e6b' },
+  investor: { skin: '#e0b48a', hair: '#1f1f1f', style: 'short', glasses: true, shirt: '#2f9e6b' },
   accountant: { skin: '#f2c9a0', hair: '#5a3a22', style: 'long', shirt: '#c9892b' },
   ops: { skin: '#8d5a3b', hair: '#1a1a1a', style: 'short', shirt: '#d19a66' },
   planner: { skin: '#f5d6b8', hair: '#6b3f2a', style: 'long', shirt: '#d08aa0' },
@@ -475,6 +475,19 @@ function renderPerm(pending, allowed) {
   box.replaceChildren();
   for (const p of pending) {
     const d = document.createElement('div'); d.className = 'req';
+    if (p.mode === 'ask') {   // agent hỏi CEO một số liệu: ô nhập + Gửi / Bỏ qua (agent dùng giả định có nhãn)
+      const q = document.createElement('div'); q.textContent = `❓ ${p.agent} hỏi: ${p.question}`;
+      const inp = document.createElement('input'); inp.type = 'text'; inp.className = 'ask-in'; inp.placeholder = p.hint ? `Đề xuất: ${p.hint}` : 'Nhập số/đáp án chính xác…';
+      const send = document.createElement('button'); send.textContent = 'Gửi'; send.className = 'alt';
+      const skip = document.createElement('button'); skip.textContent = 'Bỏ qua (dùng giả định)'; skip.className = 'no';
+      const go = () => { if (inp.value.trim()) post('permission', { id: p.id, allow: true, answer: inp.value.trim() }); };
+      send.onclick = go; inp.onkeydown = (e) => { if (e.key === 'Enter') go(); };
+      skip.onclick = () => post('permission', { id: p.id, allow: false });
+      const btns = document.createElement('div'); btns.className = 'btns'; btns.append(send, skip);
+      d.append(q, inp, btns); box.append(d);
+      setTimeout(() => inp.focus(), 50);
+      continue;
+    }
     const t = document.createElement('div');
     const exec = p.mode === 'exec';
     t.append(document.createTextNode(`${exec ? '⌨' : p.mode === 'write' ? '✎' : '🔒'} ${p.agent} xin quyền ${p.action}: `));

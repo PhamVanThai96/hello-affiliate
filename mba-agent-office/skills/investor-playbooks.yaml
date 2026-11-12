@@ -1,0 +1,264 @@
+id: investor-playbooks
+title: "Đầu tư — playbook (quy trình giải quyết từng loại vấn đề)"
+summary: "Các playbook pb_* theo bộ định tuyến."
+agents: ["investor"]
+order: 60
+when: ["__chi_tra_cuu_bang_skill_search__"]
+sections:
+  - id: "pb-pb_technical_report"
+    title: "Playbook pb_technical_report — Phân tích kỹ thuật một mã .VN bằng công cụ có kiểm chứng, trình bày xác suất và vùng biến động, nêu…"
+    tags: ["pb_technical_report", "phân", "tích", "kỹ", "thuật", "một", "mã", "vn", "bằng", "công", "cụ", "có"]
+    text: |-
+      goal: Phân tích kỹ thuật một mã .VN bằng công cụ có kiểm chứng, trình bày xác suất và vùng biến động, nêu giới hạn từng thành phần
+      modules:
+      - m01
+      - m02
+      - m07
+      intake:
+      - Mã cổ phiếu dạng <MÃ>.VN (ví dụ MSN.VN); khung ngày duy nhất
+      - Có cho phép chạy lệnh trong terminal không; đã chạy --setup lần đầu chưa
+      - Mục đích sử dụng (nắm bối cảnh, quản trị rủi ro, hay kiểm tra lại tại một ngày quá khứ --as-of)
+      steps:
+      - Xin phép người dùng chạy lệnh; nếu thiếu môi trường, hỏi trước khi chạy python3 tools/stock_cli.py --setup (từ thư mục mba-agent-office, cần Internet)
+      - Chạy python3 tools/stock_cli.py <MÃ>.VN (thêm --no-chart nếu chỉ cần số, --as-of YYYY-MM-DD để kiểm tra lại quá khứ); nếu báo không đủ dữ liệu (dưới 80 phiên) thì dừng và báo
+      - 'Đọc JSON: as_of, close, trend_state, outlook (thiên hướng, xác suất đã hiệu chuẩn, vùng biến động), channel, support/resistance, volume_profile (VAH/VAL/POC), boxes, patterns, rule_filter, chart_path, validation, disclaimer'
+      - 'Diễn giải outlook: xác suất tăng 10 phiên gần nền ~50% nên coi là thiên hướng yếu; nhấn mạnh vùng biến động 80% (đã kiểm chứng phủ ~83%) để biết biên độ hợp lý'
+      - 'Diễn giải kênh: kênh gần nhất chứa 10 phiên kế tiếp ~77%; nếu giá ngoài biên trên thì ghi 57-67% là phá vỡ giả'
+      - 'Diễn giải Value Area/AMT: vị trí giá so với VAH/VAL/POC; nêu giá trị kiểm chứng (trên VAH tăng 10 phiên 55-56% nhỉnh nhẹ; dưới VAL không lợi thế; hồi về POC 41-50%)'
+      - 'Nến, hộp, hỗ trợ/kháng cự, rule_filter: chỉ liệt kê để MÔ TẢ kèm dòng validation; không biến thành tín hiệu mua/bán'
+      - Gắn bối cảnh ràng buộc VN (không bán khống, biên độ HOSE 7%/HNX 10%/UPCoM 15%, T+2) và liên kết sang pb_risk_check nếu người dùng cần kỷ luật vị thế
+      - 'Chèn biểu đồ bằng dòng ![Biểu đồ <MÃ>](<chart_path>) (hệ thống tự nhúng ảnh vào đúng 1 file báo cáo; không in đường dẫn) và kết luận ngắn: biên độ dự kiến, bối cảnh xu hướng, độ tin cậy từng thành phần'
+      sanity:
+      - Xác suất báo cáo nằm trong 0-1 và không vượt xa nền (47-59%); không diễn giải thành chắc chắn
+      - as_of khớp ngày dữ liệu cuối cùng; đơn vị giá nhất quán (VNĐ hoặc nghìn đồng)
+      - Mọi thành phần có kiểm chứng yếu (nến, hộp, hỗ trợ/kháng cự, rule_filter) phải kèm nhãn không có giá trị dự báo
+      - Không xuất hiện từ khóa MUA/BÁN/SHORT như lời khuyên trong câu trả lời
+      output: Báo cáo rpt_technical_analysis (tóm tắt điều hành, bảng chỉ số, bảng kiểm chứng, biểu đồ, cảnh báo) + đường dẫn biểu đồ
+      decision: Kết luận ở dạng điều kiện và vùng biến động; không có khuyến nghị mua/bán/giữ
+  - id: "pb-pb_company_valuation"
+    title: "Playbook pb_company_valuation — Phân tích và định giá toàn diện một doanh nghiệp (bản sửa của prompt-dinh-gia-doanh-nghiep) theo 4 …"
+    tags: ["pb_company_valuation", "phân", "tích", "và", "định", "giá", "toàn", "diện", "một", "doanh", "nghiệp", "bản"]
+    text: |-
+      goal: Phân tích và định giá toàn diện một doanh nghiệp (bản sửa của prompt-dinh-gia-doanh-nghiep) theo 4 phần, có market snapshot, chọn FCFF/FCFE/DDM đúng bản chất ngành, kèm độ nhạy và biên an toàn
+      modules:
+      - m03
+      - m04
+      - m05
+      - m07
+      intake:
+      - Tên doanh nghiệp/mã cổ phiếu, ngành (ngân hàng/tài chính, sản xuất, bán lẻ, BĐS, công nghệ)
+      - BCTC mới nhất (cân đối kế toán, kết quả kinh doanh, lưu chuyển tiền tệ, thuyết minh) 3-5 năm; số cổ phiếu pha loãng; nợ vay, tiền và tương đương
+      - 'Market snapshot tra lúc chạy: giá hiện tại, Rf (lợi suất trái phiếu chính phủ 10 năm), ERP, tỷ giá nếu cần, lạm phát và tăng trưởng GDP dài hạn — kèm nguồn và ngày'
+      - 'Beta: đo được, beta ngành hoặc khung Beta GIẢ ĐỊNH theo mức rủi ro'
+      steps:
+      - 'Phần 0, Market snapshot: ghi Rf, ERP, giá, ngày, nguồn; nếu không tra được thì hỏi hoặc dùng GIẢ ĐỊNH có nhãn (không hard-code)'
+      - 'Phần 1, Chất lượng tài sản và động lực cốt lõi: bóc tách BCTC; tìm kho báu ẩn (BĐS, khoản đầu tư giá gốc thấp, lợi nhuận giữ lại) và cục máu đông (nợ xấu VAMC, BĐS tồn đọng, hàng tồn, phải thu); tách lợi nhuận cốt lõi khỏi thu nhập bất thường một lần; ngân hàng xem NPL, LLR, CAR; sản xuất/BĐS xem tồn kho, ΔNWC, CapEx'
+      - 'Phần 2, Định giá nhanh multiples: dự phóng EPS và BVPS năm hiện tại và năm sau; chọn P/E, P/B mục tiêu theo chu kỳ ngành và rủi ro, GIẢI THÍCH vì sao chọn; tính giá hợp lý theo P/E và P/B; cảnh báo bẫy P/E (lợi nhuận bị méo vì trích lập dự phòng/bất thường) và bẫy P/B (tài sản vô hình)'
+      - 'Phần 3, Chọn mô hình dòng tiền: FCFF (phi tài chính) chiết khấu WACC; FCFE hoặc DDM (ngân hàng/tài chính, hoặc doanh nghiệp trả cổ tức đều) chiết khấu Re; không dùng FCFF cho ngân hàng'
+      - 'Phần 3, Chi phí vốn: Re = Rf + beta x ERP (+ phần bù quy mô/quốc gia nếu có cơ sở); WACC = E/V x Re + D/V x Rd x (1 - T) theo cơ cấu vốn thị trường/mục tiêu; không dùng con số cứng cho mọi doanh nghiệp'
+      - 'Phần 3, Dự phóng 5 năm: nêu rõ giả định tăng trưởng doanh thu/dòng tiền, biên lợi nhuận, CapEx, ΔNWC (hoặc tái đầu tư giữ CAR với ngân hàng); thận trọng, không tăng trưởng vô căn cứ'
+      - 'Phần 3, Terminal Value: Gordon TV = CF_{n+1} / (r - g) với g thấp hơn tăng trưởng danh nghĩa dài hạn và không vượt Rf; chiết khấu về hiện tại; nêu tỷ trọng PV(TV)/tổng'
+      - 'Từ giá trị đến giá cổ phiếu: FCFF thì EV - nợ ròng - thiểu số + tài sản phi hoạt động = vốn chủ rồi chia số cổ phiếu pha loãng; FCFE/DDM ra thẳng giá trị vốn chủ'
+      - 'Phần 4, Bảng độ nhạy 2 chiều: Re (hoặc WACC) thay đổi +-1% và +-2% x g thay đổi +-0,5% và +-1%; thêm kịch bản xấu nhất'
+      - 'Biên an toàn: (Giá trị nội tại kịch bản xấu - thị giá) / giá trị nội tại kịch bản xấu; nêu mức chấp nhận được cho người dùng quyết định'
+      - 'Đối chiếu chéo: giá trị nội tại với multiples; implied P/E và P/B của TV; lý giải chênh lệch'
+      sanity:
+      - Re/WACC > g và WACC nằm giữa Rd sau thuế và Re
+      - Tỷ trọng PV(TV) 70-80% là phổ biến; nếu trên 85% thì cảnh báo độ nhạy cực cao
+      - FCFF không chứa lãi vay; FCFE đã trừ lãi vay và nợ ròng thay đổi; không trộn cặp chiết khấu
+      - Số cổ phiếu pha loãng và nợ ròng khớp BCTC; đơn vị triệu/tỷ VNĐ nhất quán
+      - Giá trị nội tại không lệch quá xa multiples mà không giải thích được
+      output: Báo cáo rpt_company_valuation + rpt_sensitivity_matrix; tóm tắt điều hành, bảng giả định gắn nhãn, độ nhạy, biên an toàn, cảnh báo
+      decision: Trình bày khoảng giá trị tham chiếu (xấu/cơ sở/tốt) và biên an toàn; không đưa khuyến nghị mua/bán/giữ hay mục tiêu giá cá nhân
+  - id: "pb-pb_valuation_reconcile"
+    title: "Playbook pb_valuation_reconcile — Định giá doanh nghiệp/holding bằng nhiều phương pháp (SOTP, DCF, multiples), đối chiếu và giải thíc…"
+    tags: ["pb_valuation_reconcile", "định", "giá", "doanh", "nghiệp", "holding", "bằng", "nhiều", "phương", "pháp", "sotp", "dcf"]
+    text: |-
+      goal: Định giá doanh nghiệp/holding bằng nhiều phương pháp (SOTP, DCF, multiples), đối chiếu và giải thích chênh lệch; đầu vào lấy từ gói số liệu BCTC đã kiểm của kế toán (bài học từ hai báo cáo MSN lệch nhau 67.900 so với 79.919 đồng/cp)
+      modules:
+      - m03
+      - m04
+      - m05
+      intake:
+      - 'Gói số liệu BCTC đã kiểm từ #accountant (số cổ phiếu, nợ ròng, vốn chủ mẹ và thiểu số, tỷ lệ sở hữu, lợi nhuận cốt lõi, loại FCF); nếu chưa có thì hỏi #accountant, không tự đặt'
+      - 'Market snapshot tra lúc chạy: chạy python3 tools/stock_cli.py <MÃ>.VN --fundamentals (yfinance) cho giá, số cổ phiếu, P/E, P/B, EPS, BVPS, beta, nợ, tiền, thiểu số; đối chiếu thêm nguồn Việt Nam (CafeF/Vietstock) và BCTC; ghi nguồn + ngày và nêu chênh lệch giữa các nguồn (vd số cổ phiếu 1.460 triệu theo Yahoo so với 1.535 triệu theo trang Việt Nam; BVPS Yahoo là vốn chủ công ty mẹ, trang VN có thể gồm thiểu số)'
+      - 'Rf, ERP, lạm phát/GDP dài hạn: tra lúc chạy, không dùng số cứng'
+      steps:
+      - 'Bước 1, chuẩn hóa đầu vào: một bảng duy nhất ''Đầu vào dùng chung'' (số cổ phiếu, nợ ròng, tỷ lệ sở hữu, giá, Rf, ERP, beta) mà MỌI phương pháp đều dùng; khác nguồn thì chọn một và ghi lý do'
+      - 'Bước 2, SOTP: định giá từng mảng (EV/EBITDA hoặc P/E theo ngành, ghi cơ sở chọn bội số); phần của công ty mẹ = EV x tỷ lệ sở hữu theo BCTC (hoặc trừ lợi ích cổ đông thiểu số THEO TỪNG công ty con); tài sản niêm yết (vd cổ phần ngân hàng liên kết) cộng theo thị giá x tỷ lệ sở hữu, có thể trừ chiết khấu thanh khoản nhưng ghi rõ; trừ nợ ròng cấp công ty mẹ, không trừ hai lần'
+      - 'Bước 3, chiết khấu tập đoàn: chỉ áp khi có căn cứ (đòn bẩy, cấu trúc đa tầng); luôn chạy cả kịch bản 0% và 10% và hiển thị cả hai'
+      - 'Bước 4, DCF: xác định FCF trong BCTC là trước hay sau lãi vay; FCFF chiết khấu WACC, FCFE chiết khấu Re; trừ nợ ròng và THIỂU SỐ (tính theo từng công ty con, không số gộp tùy ý), cộng tài sản phi hoạt động; kiểm tra tỷ trọng PV(TV)'
+      - 'Bước 5, multiples: P/E và P/B dùng EPS và BVPS tính trên CÙNG số cổ phiếu và cùng phạm vi (công ty mẹ) với bước 1'
+      - 'Bước 6, bảng đối chiếu: giá/cổ phiếu của từng phương pháp cạnh nhau; chênh lệch tách theo nguyên nhân (Rf/WACC, nợ ròng, số cổ phiếu, thiểu số, tỷ lệ sở hữu, chiết khấu tập đoàn, bội số) với số đồng/cổ phiếu từng nguyên nhân'
+      - 'Bước 7, độ nhạy và biên an toàn: Re/WACC x g; Bear/Base/Bull phải đổi CÙNG bộ biến theo định nghĩa rõ, không gắn nhãn illustrative cho kết luận'
+      sanity:
+      - Mọi phương pháp dùng cùng số cổ phiếu, nợ ròng, tỷ lệ sở hữu, giá thị trường
+      - Không trừ hoặc cộng hai lần cùng một khoản (nợ ròng, thiểu số, tài sản liên kết)
+      - Khoảng giá giữa các phương pháp chênh quá 15% mà chưa giải thích được nguyên nhân thì KHÔNG kết luận một con số duy nhất
+      - Không có câu khuyến nghị mua/bán hay vùng giải ngân
+      output: Báo cáo định giá có bảng 'Đầu vào dùng chung', bảng giá theo phương pháp, bảng giải thích chênh lệch, độ nhạy, nhãn độ tin cậy từng số
+      decision: Khoảng giá trị tham chiếu theo phương pháp và điều kiện làm đổi kết luận; không khuyến nghị mua/bán/giữ
+  - id: "pb-pb_bank_valuation"
+    title: "Playbook pb_bank_valuation — Định giá ngân hàng/công ty tài chính bằng FCFE/DDM/P/B theo ROE, xử lý bẫy P/E do trích lập dự phòng"
+    tags: ["pb_bank_valuation", "định", "giá", "ngân", "hàng", "công", "ty", "tài", "chính", "bằng", "fcfe", "ddm"]
+    text: |-
+      goal: Định giá ngân hàng/công ty tài chính bằng FCFE/DDM/P/B theo ROE, xử lý bẫy P/E do trích lập dự phòng
+      modules:
+      - m05
+      - m04
+      - m03
+      intake:
+      - 'BCTC ngân hàng: thu nhập lãi thuần, NIM, CIR, chi phí dự phòng, lợi nhuận sau thuế, vốn chủ, tổng tài sản, tăng trưởng tín dụng'
+      - 'Chất lượng tài sản: NPL, nợ nhóm 2, LLR (tỷ lệ bao phủ nợ xấu), CAR, nợ xấu bán VAMC chưa xử lý, tài sản bảo đảm'
+      - Lịch sử cổ tức (tiền mặt hay cổ phiếu), kế hoạch tăng vốn, số cổ phiếu pha loãng
+      - Market snapshot (Rf, ERP, giá, ngày, nguồn) và beta
+      steps:
+      - 'Phân tích chất lượng tài sản: NPL, LLR, CAR, tỷ lệ nợ nhóm 2, chất lượng tài sản bảo đảm, thu nhập ngoài lãi có một lần hay không; đánh giá sức chống chịu nếu nợ xấu tăng'
+      - 'Chuẩn hóa lợi nhuận: tách chi phí dự phòng bất thường; nếu ngân hàng chủ động dọn nợ xấu thì EPS trước mắt méo; dự phóng lợi nhuận bình thường hóa và khả năng hoàn nhập dự phòng (GIẢ ĐỊNH, có điều kiện)'
+      - 'Chọn mô hình: FCFE (lợi nhuận - phần giữ lại để tăng trưởng tài sản có rủi ro và duy trì CAR) hoặc DDM nếu cổ tức tiền mặt đều; KHÔNG dùng FCFF'
+      - Re = Rf + beta x ERP (lấy Rf, ERP lúc chạy); chiết khấu FCFE/cổ tức bằng Re
+      - 'Dự phóng 5 năm: tăng trưởng tín dụng, NIM, CIR, chi phí tín dụng, ROE, tỷ lệ giữ lại; Terminal Value Gordon với g thận trọng'
+      - Cross-check P/B hợp lý = (ROE - g) / (Re - g); so với P/B thị trường và lịch sử; P/E dự phóng bình thường hóa
+      - Bảng độ nhạy Re x g và kịch bản chi phí tín dụng cao; biên an toàn
+      sanity:
+      - Tỷ lệ giữ lại đủ giữ CAR trên mức quy định; ROE kỳ vọng hợp lý so với lịch sử ngành
+      - Giá trị FCFE có P/B ngụ ý nằm trong vùng hợp lý so với ROE
+      - PV(TV) thường 70-80% tổng; nêu rõ nếu cao hơn
+      - Không có thành phần FCFF/WACC trong mô hình
+      output: Báo cáo rpt_bank_valuation (chất lượng tài sản, FCFE/DDM, P/B theo ROE, độ nhạy, biên an toàn)
+      decision: Khoảng giá trị tham chiếu theo kịch bản; không khuyến nghị mua/bán/giữ
+  - id: "pb-pb_relative_valuation"
+    title: "Playbook pb_relative_valuation — Định giá nhanh bằng multiples (P/E, P/B, EV/EBITDA) kèm lý do chọn multiple và cảnh báo bẫy chỉ số"
+    tags: ["pb_relative_valuation", "định", "giá", "nhanh", "bằng", "multiples", "ev", "ebitda", "kèm", "lý", "do", "chọn"]
+    text: |-
+      goal: Định giá nhanh bằng multiples (P/E, P/B, EV/EBITDA) kèm lý do chọn multiple và cảnh báo bẫy chỉ số
+      modules:
+      - m04
+      - m03
+      intake:
+      - EPS, BVPS, EBITDA, nợ ròng, số cổ phiếu (hiện tại và dự phóng 1-2 năm)
+      - Nhóm doanh nghiệp so sánh (cùng ngành, cùng quy mô, cùng chu kỳ) và multiple của họ (tra lúc chạy, ghi nguồn + ngày)
+      - Thị giá hiện tại (tra lúc chạy)
+      steps:
+      - 'Chuẩn hóa lợi nhuận: loại thu nhập bất thường; kiểm tra TTM so với dự phóng'
+      - 'Chọn multiple phù hợp bản chất: P/B (kèm ROE) cho ngân hàng; P/E cho doanh nghiệp lợi nhuận ổn định; EV/EBITDA khi nợ khác nhau giữa các công ty; P/B không có ý nghĩa với doanh nghiệp tài sản vô hình lớn'
+      - Chọn multiple mục tiêu = trung vị nhóm so sánh điều chỉnh theo tăng trưởng, ROE, rủi ro, đòn bẩy; GIẢI THÍCH lý do điều chỉnh
+      - Tính giá hợp lý = multiple x EPS (hoặc BVPS); với EV/EBITDA đi qua EV rồi nợ ròng
+      - Biểu diễn khoảng thấp-cơ sở-cao; so với thị giá và nêu mức chênh (rẻ hay đắt theo giả định)
+      - Cảnh báo bẫy P/E TTM cao do lợi nhuận tạm thấp, bẫy P/B với tài sản vô hình, multiple chu kỳ đỉnh/đáy
+      sanity:
+      - Multiple chọn nằm trong khoảng nhóm so sánh hoặc có lý do rõ ràng nếu nằm ngoài
+      - EV/EBITDA dùng EBITDA cùng kỳ, nợ ròng cùng ngày
+      - Đơn vị cổ phiếu (nghìn VNĐ hay VNĐ) nhất quán
+      output: Bảng multiples + giá hợp lý theo từng phương pháp (rpt_company_valuation phần 2) và bảng so sánh với thị giá
+      decision: Trạng thái định giá theo multiple (thấp/cao hơn tham chiếu) kèm điều kiện; không khuyến nghị giao dịch
+  - id: "pb-pb_project_appraisal"
+    title: "Playbook pb_project_appraisal — Thẩm định dự án đầu tư (BĐS, đất nền, tài sản) bản đã sửa lỗi của prompt-danh-gia-dau-tu — dòng tiề…"
+    tags: ["pb_project_appraisal", "thẩm", "định", "dự", "án", "đầu", "tư", "bđs", "đất", "nền", "tài", "sản"]
+    text: |-
+      goal: Thẩm định dự án đầu tư (BĐS, đất nền, tài sản) bản đã sửa lỗi của prompt-danh-gia-dau-tu — dòng tiền và tỷ lệ chiết khấu khớp nhau, không đếm đôi lá chắn thuế
+      modules:
+      - m06
+      - m05
+      - m07
+      intake:
+      - Tổng vốn đầu tư, vốn tự có, vốn vay, lãi vay trước thuế Rd, kỳ hạn, phương thức trả nợ (gốc đều/niên kim)
+      - Loại tài sản (nhà ở xã hội, đất nền, nhà xưởng, vàng, cổ phiếu...) để chọn Beta
+      - 'Hình thức đầu tư: cá nhân (T = 0 theo mô hình đơn giản) hay doanh nghiệp (thuế suất T, thời gian và phương pháp khấu hao); cần xác nhận thuế thực tế'
+      - Dòng tiền kỳ vọng (doanh thu vận hành, tăng trưởng, chi phí vận hành, tăng giá tài sản), giá trị thanh lý/bán
+      - 'Market snapshot tra lúc chạy: Rf (trái phiếu chính phủ 10 năm; KHÔNG dùng lãi suất tiết kiệm làm Rf), ERP, lãi suất vay hiện hành, phương án thay thế phi rủi ro'
+      steps:
+      - Chọn Beta theo khung tham chiếu GIẢ ĐỊNH (phòng thủ 0,5-0,7; trung bình 1,0; đầu cơ 1,2-1,5), giải thích; thay bằng beta đo được nếu có
+      - Re = Rf + beta x ERP (Rf, ERP tra lúc chạy); Rd sau thuế = Rd x (1 - T) với T = 0 nếu cá nhân; E/V, D/V theo giá trị đầu tư; WACC = E/V x Re + D/V x Rd(1 - T)
+      - 'Khấu hao (chỉ doanh nghiệp, chỉ phần tài sản khấu hao được; đất không khấu hao): đường thẳng = (Nguyên giá - giá trị thanh lý)/số năm; lá chắn thuế khấu hao = khấu hao x T; lá chắn thuế lãi vay = lãi vay x T (chỉ hiển thị để hiểu, nằm trong Rd sau thuế của WACC)'
+      - 'Chọn MỘT trong hai cách dòng tiền, đừng trộn. Cách A (FCFF): dòng tiền dự án = (Doanh thu - chi phí vận hành - khấu hao) x (1 - T) + khấu hao, KHÔNG trừ lãi vay và gốc, chiết khấu bằng WACC, NPV là giá trị dự án; sau đó trừ nợ vay để biết giá trị vốn chủ. Cách B (FCFE): dòng tiền vốn chủ = (Doanh thu - chi phí vận hành - lãi vay - khấu hao) x (1 - T) + khấu hao - gốc vay phải trả (+ vay mới), chiết khấu bằng Re, NPV là giá trị tạo ra cho vốn chủ'
+      - Lập bảng dòng tiền các mốc Năm 0, 1, 5, 10, năm cuối (hoặc toàn bộ năm nếu ngắn); xác định điểm đảo chiều năm dòng tiền ròng chuyển từ âm sang dương
+      - Tính NPV tại tỷ lệ chiết khấu khớp; tính MIRR với tỷ lệ tái đầu tư dòng dương bằng WACC hoặc Rf và tỷ lệ tài trợ dòng âm; so MIRR với phương án thay thế phi rủi ro
+      - 'Stress test: giả định thất thoát 8-10% doanh thu (trống/bảo trì), tăng lãi vay, giảm giá tài sản; tính lại NPV, MIRR, điểm hòa vốn dòng tiền bị đẩy lùi bao lâu'
+      - So sánh đứng tên cá nhân và doanh nghiệp (khác thuế, lá chắn thuế, chi phí tuân thủ) — mọi thuế cần xác nhận với kế toán thuế
+      - Quỹ dự phòng khẩn cấp tối thiểu = số tháng nghĩa vụ nợ + chi phí cố định (đề xuất 6-12 tháng, GIẢ ĐỊNH) theo kịch bản xấu; nêu điều kiện thanh khoản
+      sanity:
+      - Cặp dòng tiền và tỷ lệ chiết khấu đúng (FCFF-WACC hoặc FCFE-Re); không có lãi vay trong FCFF
+      - Tổng gốc trả bằng khoản vay; dư nợ cuối kỳ bằng 0; lãi từng năm = dư nợ đầu kỳ x Rd
+      - NPV>0 tương ứng IRR> tỷ lệ chiết khấu với dòng tiền thông thường; MIRR giữa chi phí tài trợ và IRR
+      - Giá trị cuối kỳ/thanh lý chịu thuế và chi phí giao dịch hợp lý; đất không khấu hao
+      output: Báo cáo rpt_project_appraisal (WACC/Re, lá chắn thuế, bảng dòng tiền, NPV/MIRR, stress test, quỹ dự phòng)
+      decision: Dự án tạo giá trị khi NPV>0 ở tỷ lệ chiết khấu khớp và vẫn chịu được stress test; nêu điều kiện; không đưa lời khuyên đầu tư cá nhân
+  - id: "pb-pb_full_stock_report"
+    title: "Playbook pb_full_stock_report — Báo cáo toàn diện một mã cổ phiếu — cơ bản, định giá, kỹ thuật bối cảnh, rủi ro — theo chuỗi có thứ…"
+    tags: ["pb_full_stock_report", "báo", "cáo", "toàn", "diện", "một", "mã", "cổ", "phiếu", "cơ", "bản", "định"]
+    text: |-
+      goal: Báo cáo toàn diện một mã cổ phiếu — cơ bản, định giá, kỹ thuật bối cảnh, rủi ro — theo chuỗi có thứ tự
+      modules:
+      - m03
+      - m04
+      - m05
+      - m01
+      - m07
+      intake:
+      - Mã cổ phiếu, ngành, khung thời gian quan tâm, rủi ro tối đa chấp nhận
+      - BCTC mới nhất; market snapshot (giá, Rf, ERP, ngày, nguồn); quyền chạy công cụ CLI
+      steps:
+      - 'Bước 1, market snapshot (pb_market_snapshot): ghi Rf, ERP, giá, ngày, nguồn'
+      - 'Bước 2, cơ bản (m03): chất lượng tài sản, chất lượng lợi nhuận, kho báu ẩn/cục máu đông; ngân hàng NPL/LLR/CAR'
+      - Bước 3, định giá tương đối nhanh (pb_relative_valuation)
+      - Bước 4, định giá nội tại (pb_company_valuation hoặc pb_bank_valuation) kèm độ nhạy và biên an toàn
+      - 'Bước 5, kỹ thuật bối cảnh (pb_technical_report): chạy CLI, chỉ lấy vùng biến động, kênh, Value Area làm bối cảnh; nhắc giới hạn kiểm chứng'
+      - 'Bước 6, rủi ro (pb_risk_check): kích thước vị thế theo rủi ro tối đa, ràng buộc VN, quỹ dự phòng'
+      - 'Bước 7, tổng hợp: bảng hợp nhất giá trị tham chiếu (multiples, nội tại), vùng biến động, rủi ro chính, điều kiện làm đổi kết luận, theo dõi tiếp theo'
+      - 'Bước 8, gửi #reviewer rà soát chéo trước khi trình bày; có thể nhờ #accountant xác nhận chất lượng lợi nhuận và #rag tìm nguồn'
+      sanity:
+      - Các phương pháp định giá không mâu thuẫn không giải thích được; chênh lệch có lý giải
+      - Phần kỹ thuật không được dùng làm cơ sở quyết định mua/bán trong tóm tắt điều hành
+      - Mọi số có thời hạn có nguồn và ngày
+      output: Báo cáo rpt_full_stock_report
+      decision: Không khuyến nghị mua/bán/giữ; tổng hợp giá trị tham chiếu, rủi ro và điều kiện thay đổi
+  - id: "pb-pb_risk_check"
+    title: "Playbook pb_risk_check — Rà soát rủi ro và kích thước vị thế theo kỷ luật, phù hợp ràng buộc thị trường VN (không dùng chỉ b…"
+    tags: ["pb_risk_check", "rà", "soát", "rủi", "ro", "và", "kích", "thước", "vị", "thế", "theo", "kỷ"]
+    text: |-
+      goal: Rà soát rủi ro và kích thước vị thế theo kỷ luật, phù hợp ràng buộc thị trường VN (không dùng chỉ báo kỹ thuật làm tín hiệu)
+      modules:
+      - m07
+      - m01
+      - m05
+      intake:
+      - Tổng vốn đầu tư, rủi ro tối đa chấp nhận mỗi vị thế (% vốn), khung thời gian
+      - Giá tham chiếu, mức cắt lỗ dự kiến theo logic kinh doanh hoặc theo biên độ biến động (ATR% từ CLI), mục tiêu tham chiếu
+      - Danh mục hiện có (mã, tỷ trọng, ngành) và nhu cầu thanh khoản
+      steps:
+      - Xác định rủi ro tối đa mỗi vị thế (ví dụ 1-2% vốn, GIẢ ĐỊNH theo khẩu vị) và mức mất tối đa chấp nhận trên giá (ví dụ không quá 7% từ giá vào, GIẢ ĐỊNH tham chiếu)
+      - Kích thước vị thế = (Vốn x rủi ro tối đa %) / (Giá vào - Giá cắt lỗ); quy đổi về lô giao dịch của sàn
+      - Tỷ lệ R:R = (Mục tiêu - Giá vào) / (Giá vào - Giá cắt lỗ); nêu nếu dưới 2 thì rủi ro không được bù; lưu ý mục tiêu/cắt lỗ là tham chiếu logic, không phải dự báo
+      - Đặt cắt lỗ theo vùng biến động (ATR% x sqrt(h) x k từ CLI) hoặc luận điểm cơ bản bị phá vỡ, không đặt sát hỗ trợ vì hỗ trợ không giữ giá tốt hơn ngẫu nhiên
+      - 'Kiểm tra ràng buộc VN: không bán khống (chỉ không mua/giảm tỷ trọng/đứng ngoài), biên độ giá ngày, thanh khoản T+2, rủi ro thanh khoản mã nhỏ'
+      - 'Đa dạng hóa: tương quan ngành, tỷ trọng tối đa mỗi mã/ngành; kiểm tra drawdown nếu mọi vị thế chạm cắt lỗ'
+      - Quỹ dự phòng thanh khoản ngoài thị trường; không dùng vốn vay quá khả năng
+      sanity:
+      - Tổng rủi ro các vị thế mở không vượt hạn mức tổng (GIẢ ĐỊNH, ví dụ vài % vốn)
+      - Kích thước vị thế nguyên lô, tiền cần dùng nhỏ hơn vốn khả dụng
+      - Giá cắt lỗ nằm trong biên độ giá ngày có thể thực hiện (lệnh có thể không khớp nếu giá giảm sàn)
+      output: Bảng vị thế (vốn, rủi ro, giá vào/cắt lỗ/mục tiêu tham chiếu, R:R, số cổ phiếu) và danh sách rủi ro (rpt_risk_check trong báo cáo toàn diện)
+      decision: Kỷ luật rủi ro, không phải khuyến nghị giao dịch; người dùng tự quyết
+  - id: "pb-pb_market_snapshot"
+    title: "Playbook pb_market_snapshot — Thu thập số thị trường có thời hạn (Rf, ERP, giá, EPS, tỷ giá, lạm phát, GDP) lúc chạy, ghi nguồn +…"
+    tags: ["pb_market_snapshot", "thu", "thập", "số", "thị", "trường", "có", "thời", "hạn", "rf", "erp", "giá"]
+    text: |-
+      goal: Thu thập số thị trường có thời hạn (Rf, ERP, giá, EPS, tỷ giá, lạm phát, GDP) lúc chạy, ghi nguồn + ngày, làm đầu vào cho định giá
+      modules:
+      - m07
+      - m05
+      intake:
+      - Mã cổ phiếu/tài sản cần số liệu; ngày tham chiếu
+      - Quyền truy cập Internet/công cụ tra cứu; hoặc số do người dùng cung cấp
+      steps:
+      - 'Tra Rf: lợi suất trái phiếu chính phủ kỳ hạn 10 năm (nguồn như HNX hoặc công ty chứng khoán), ghi ngày'
+      - Tra ERP của thị trường (nguồn như Damodaran hoặc bản nghiên cứu), ghi nguồn và năm; nếu không có thì để GIẢ ĐỊNH có nhãn và cho người dùng sửa
+      - Tra giá, EPS TTM, BVPS, số cổ phiếu lưu hành; công cụ CLI có thể cho close (yfinance, kiểm tra độ trễ)
+      - Tra lạm phát, tăng trưởng GDP dài hạn (để giới hạn g), tỷ giá và lãi suất vay thực tế nếu cần
+      - 'Lập bảng market snapshot: chỉ tiêu, giá trị, nguồn, ngày tra, nhãn (live_data hoặc GIẢ ĐỊNH); chỉ dùng trong phiên làm việc này, không ghi cứng vào skill'
+      sanity:
+      - Mỗi số có nguồn và ngày; không có số thị trường nào không rõ xuất xứ
+      - Rf là lợi suất trái phiếu chính phủ, không phải lãi suất tiết kiệm; ERP cùng cơ sở (nội tệ/ngoại tệ) với Rf
+      - Giá đã điều chỉnh hay chưa điều chỉnh được ghi rõ
+      output: Bảng market snapshot (rpt_market_snapshot trong báo cáo toàn diện) dùng làm đầu vào cho các playbook định giá

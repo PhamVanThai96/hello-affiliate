@@ -1,6 +1,8 @@
 // Dựng báo cáo HTML tự chứa (không cần file ngoài): chữ, bảng markdown, biểu đồ ```chart (SVG) và ảnh agent đã tạo.
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
+import katex from 'katex';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const PALETTE = ['#4f7cff', '#ff8a3d', '#2fb67c', '#c35bd6', '#e5484d', '#e0b300', '#18a0c8', '#8a8f98'];
@@ -82,6 +84,7 @@ export function chartSvg(spec) {
 const inline = (s) => esc(s)
   .replace(/`([^`]+)`/g, '<code>$1</code>')
   .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+  .replace(/(?<![\w*])\*([^*\s][^*]*?)\*(?![\w*])/g, '<i>$1</i>')
   .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|[\w./-]+\.html)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
 
 const cells = (line) => line.trim().replace(/^\||\|$/g, '').split('|').map((c) => c.trim());
@@ -93,7 +96,41 @@ function tableHtml(head, rows) {
 }
 
 // images: Map<đường dẫn | tên file, dataURI>; dùng để thay ![alt](path). used: Set đánh dấu ảnh đã chèn trong thân báo cáo.
+// ---------- Công thức toán (LaTeX -> MathML, dựng sẵn lúc tạo báo cáo) ----------
+// Báo cáo mở trong khung sandbox (không chạy script) nên KaTeX phải chạy ở phía server. Dùng đầu ra MathML (không cần phông/CSS ngoài),
+// trình duyệt hiện đại hiển thị trực tiếp. Hỗ trợ $$...$$, \[...\], $...$, \(...\). Chữ Việt trong \text{...} được giữ nguyên.
+export function texHtml(tex, display = false) {
+  const keep = [];
+  const safe = String(tex).replace(/\\(text|mathrm|textbf|mbox)\{([^{}]*[^\x00-\x7F][^{}]*)\}/g, (_, cmd, body) => { keep.push(body); return `\\${cmd}{@@T${keep.length - 1}@@}`; });
+  try {
+    const out = katex.renderToString(safe.trim(), { output: 'mathml', displayMode: display, throwOnError: false, strict: 'ignore', trust: false });
+    return out.replace(/@@T(\d+)@@/g, (_, n) => esc(keep[Number(n)] ?? ''));
+  } catch {
+    return `<code>${esc(tex)}</code>`;
+  }
+}
+
+const MATH_RE = /\$\$([\s\S]+?)\$\$|\\\[([\s\S]+?)\\\]|\\\(([\s\S]+?)\\\)|(?<![\\$])\$(?![\s$])([^$\n]+?)(?<![\s\\])\$(?![\d$])/g;
+
+// Thay công thức bằng ký hiệu giữ chỗ (tránh markdown làm hỏng _ * ...), dựng lại sau khi chuyển HTML. Bỏ qua khối mã ```...```.
+function extractMath(text) {
+  const store = [];
+  const parts = String(text ?? '').split(/(```[\s\S]*?```)/g);
+  const done = parts.map((p, i) => (i % 2 ? p : p.replace(MATH_RE, (m, d1, d2, i1, i2) => {
+    const display = d1 != null || d2 != null;
+    store.push(texHtml(d1 ?? d2 ?? i1 ?? i2, display));
+    return `@@M${store.length - 1}@@`;
+  })));
+  return { text: done.join(''), store };
+}
+
 export function mdHtml(text, images = new Map(), used = new Set()) {
+  const { text: t, store } = extractMath(text);
+  const html = mdHtmlRaw(t, images, used);
+  return store.length ? html.replace(/@@M(\d+)@@/g, (_, n) => store[Number(n)] ?? '') : html;
+}
+
+function mdHtmlRaw(text, images = new Map(), used = new Set()) {
   const lines = String(text ?? '').replace(/\r/g, '').split('\n');
   const out = [];
   let para = [], list = null;
@@ -110,7 +147,7 @@ export function mdHtml(text, images = new Map(), used = new Set()) {
         let svg = null;
         try { svg = chartSvg(JSON.parse(buf.join('\n'))); } catch { /* JSON sai: hiện như mã */ }
         out.push(svg ? `<figure class="chart">${svg}</figure>` : `<pre>${esc(buf.join('\n'))}</pre>`);
-      } else if (fence[1].toLowerCase() === 'panel') out.push(`<aside class="panel-hi">${mdHtml(buf.join('\n'), images, used)}</aside>`);
+      } else if (fence[1].toLowerCase() === 'panel') out.push(`<aside class="panel-hi">${mdHtmlRaw(buf.join('\n'), images, used)}</aside>`);
       else out.push(`<pre>${esc(buf.join('\n'))}</pre>`);
       continue;
     }
@@ -130,8 +167,9 @@ export function mdHtml(text, images = new Map(), used = new Set()) {
       else out.push(`<p><i>[Hình: ${esc(img[1] || key)}]</i></p>`);
       continue;
     }
-    const h = ln.match(/^(#{1,4})\s+(.*)$/);
-    if (h) { flush(); endList(); out.push(`<h${h[1].length + 2}>${inline(h[2])}</h${h[1].length + 2}>`); continue; }
+    if (/^\s*(-{3,}|\*{3,}|_{3,})\s*$/.test(ln)) { flush(); endList(); out.push('<hr>'); continue; }
+    const h = ln.match(/^(#{1,6})\s+(.*)$/);
+    if (h) { const lv = Math.min(h[1].length + 2, 6); flush(); endList(); out.push(`<h${lv}>${inline(h[2])}</h${lv}>`); continue; }
     const li = ln.match(/^\s*([-*•]|\d+[.)])\s+(.*)$/);
     if (li) {
       flush();
@@ -165,7 +203,7 @@ async function imageUri(file) {
   try {
     const sharp = (await import('sharp')).default;
     const png = ext === '.png';
-    const buf = await sharp(file).rotate().resize({ width: 1000, withoutEnlargement: true })[png ? 'png' : 'jpeg'](png ? {} : { quality: 85 }).toBuffer();
+    const buf = await sharp(file).rotate().resize({ width: 1500, withoutEnlargement: true })[png ? 'png' : 'jpeg'](png ? {} : { quality: 85 }).toBuffer();
     return `data:${png ? 'image/png' : 'image/jpeg'};base64,${buf.toString('base64')}`;
   } catch {
     return st.size <= 3 * 1024 * 1024 ? `data:${IMG_MIME[ext]};base64,${fs.readFileSync(file).toString('base64')}` : null;
@@ -186,45 +224,86 @@ export function csvRows(text) {
   return rows.filter((r) => r.some((x) => x.trim()));
 }
 
-const CSS = `body{font:15px/1.55 system-ui,Segoe UI,Arial,sans-serif;max-width:900px;margin:28px auto;padding:0 18px;color:#232834}
-h2{margin:0 0 4px}h3{margin:26px 0 8px;padding-top:6px;border-top:1px solid #e6e3da}h4,h5{margin:16px 0 6px}
-.meta{color:#6b7280;font-size:13px}.tw{overflow-x:auto;margin:10px 0}table{border-collapse:collapse;width:100%}
-th,td{border:1px solid #ddd;padding:6px 10px;text-align:left}th{background:#f1efe8}td.n{text-align:right;font-variant-numeric:tabular-nums}
-tbody tr:nth-child(even){background:#faf9f5}pre{white-space:pre-wrap;background:#f6f4ee;padding:12px;border-radius:8px}code{background:#f1efe8;padding:1px 5px;border-radius:4px}
-figure{margin:14px 0}figure img{max-width:100%;border-radius:10px;border:1px solid #e6e3da}figcaption{color:#6b7280;font-size:12.5px;margin-top:4px}
+export const CSS = `:root{--ink:#1f2633;--mut:#6b7280;--line:#e4e1d8;--bg:#f4f3ee;--card:#fff;--acc:#2f5bea;--acc2:#eaf0ff;--ok:#1f9d6b;--bad:#d1373f}
+*{box-sizing:border-box}body{font:15.5px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;max-width:960px;margin:0 auto;padding:24px 16px 56px;color:var(--ink);background:var(--bg)}
+.rh{background:linear-gradient(135deg,#1c2b4a,#2f5bea);color:#fff;border-radius:16px;padding:22px 26px;margin-bottom:18px;box-shadow:0 8px 24px rgba(31,43,74,.18)}
+.rh .kick{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin-bottom:6px}
+.rh h1{font-size:24px;line-height:1.3;margin:0 0 10px;font-weight:750}.rh .meta{color:rgba(255,255,255,.82);font-size:13px}.rh .meta b{color:#fff}
+.rh .meta a{color:#cfe0ff}.paper{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:8px 28px 26px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+h2{margin:0 0 4px}h3{font-size:19px;margin:30px 0 10px;padding:2px 0 2px 12px;border-left:4px solid var(--acc)}
+h4{font-size:17px;margin:24px 0 8px;padding-left:10px;border-left:3px solid #9db4f5}h5{font-size:16px;margin:22px 0 8px;color:#243b7a}h6{font-size:14.5px;margin:16px 0 6px;color:#3a4a73}
+p{margin:9px 0}ul,ol{margin:8px 0 8px;padding-left:24px}li{margin:4px 0}hr{border:0;border-top:1px dashed var(--line);margin:24px 0}
+.meta{color:var(--mut);font-size:13px}.tw{overflow-x:auto;margin:12px 0;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:14px}th,td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#eef1fa;color:#243b7a;font-weight:650;white-space:nowrap}tbody tr:last-child td{border-bottom:0}td.n{text-align:right;font-variant-numeric:tabular-nums}
+tbody tr:nth-child(even){background:#fafaf6}tbody tr:hover{background:#f1f5ff}
+pre{white-space:pre-wrap;background:#f6f4ee;padding:12px;border-radius:10px;font-size:13px}code{background:#f0eee6;padding:1px 6px;border-radius:5px;font-size:.9em}
+figure{margin:18px 0;text-align:center}figure img{max-width:100%;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 10px rgba(0,0,0,.06)}
+figcaption{color:var(--mut);font-size:13px;margin-top:6px}figure.chart svg{max-width:100%;height:auto;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.verdict,.sum{background:var(--acc2);border:1px solid #cddafc;border-left:5px solid var(--acc);border-radius:12px;padding:6px 18px 10px;margin:18px 0}
+.verdict h3,.verdict h4,.verdict h5,.verdict h6{border:0;padding:0;margin:8px 0 4px;color:#1d3fb0}.verdict p{margin:6px 0}
 .panel-hi{background:#0d2540;color:#fff;border:3px solid #ffc83d;border-radius:14px;padding:6px 20px 14px;margin:20px 0;box-shadow:0 6px 18px rgba(13,37,64,.3)}
 .panel-hi h3,.panel-hi h4{color:#ffc83d;border:0;margin:12px 0 6px}.panel-hi p{margin:8px 0}.panel-hi strong,.panel-hi b{color:#ffd978}
 .panel-hi table{background:#12345a;color:#fff}.panel-hi th{background:#1d4a7e;color:#fff;border-color:#3b6ba3}.panel-hi td{border-color:#3b6ba3}.panel-hi tbody tr:nth-child(even){background:#173f6a}
-.sum{background:#f3f7ee;border:1px solid #dbe7cc;border-radius:10px;padding:4px 16px}.st{font-size:12px;color:#fff;border-radius:99px;padding:1px 8px}
-.st.done{background:#2fb67c}.st.failed{background:#e5484d}.st.skipped{background:#8a8f98}.fail{color:#b42318}`;
+.st{font-size:11.5px;color:#fff;border-radius:99px;padding:1px 9px;vertical-align:middle}.st.done{background:var(--ok)}.st.failed{background:var(--bad)}.st.skipped{background:#8a8f98}.fail{color:#b42318}
+details.tasks{margin-top:26px;font-size:13.5px}details.tasks summary{cursor:pointer;color:var(--mut)}
+math{font-size:1.12em}math[display="block"]{display:block math;margin:.8em 0;padding:8px 12px;background:#f7f8fc;border-radius:8px;overflow-x:auto}
+@media(max-width:600px){.paper{padding:4px 14px 18px}.rh{padding:16px}.rh h1{font-size:20px}}
+@media print{body{background:#fff;padding:0}.paper,.rh{box-shadow:none}}`;
+
+// Bọc phần "Kết luận…" thành khung nổi bật; <p>---</p> (markdown cũ) thành đường kẻ.
+export function decorate(html) {
+  return html.replace(/<p>\s*-{3,}\s*<\/p>/g, '<hr>')
+    .replace(/(<h[3-6]>(?:<b>)?Kết luận[^<]*(?:<\/b>)?<\/h[3-6]>)([\s\S]*?)(?=<h[3-6]>|<hr>|<\/main>|$)/g, '<section class="verdict">$1$2</section>');
+}
+
+export function pageShell({ title, command, when, links = '', body }) {
+  return `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title || 'Báo cáo')}</title>
+<style>${CSS}</style>
+<header class="rh"><div class="kick">Báo cáo</div><h1>${esc(title || 'Báo cáo gửi CEO')}</h1><div class="meta"><b>Lệnh:</b> ${esc(command)} &nbsp;·&nbsp; ${esc(when)}${links ? `<br>${links}` : ''}</div></header>
+<main class="paper">
+${decorate(body)}
+</main>`;
+}
 
 // Trang HTML cho file markdown trong reports/ (bảng, biểu đồ ```chart, danh sách).
 export function mdPage(title, text) {
-  return `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><style>${CSS}</style>\n${mdHtml(text)}`;
+  return pageShell({ title, command: 'Tài liệu markdown', when: '', body: mdHtml(text) });
 }
+
+// Ảnh biểu đồ do công cụ phân tích tạo (thư mục tạm, không nằm trong reports/): nhận ra từ đường dẫn xuất hiện trong lời agent rồi nhúng thẳng vào báo cáo.
+export const CHART_DIR = path.join(os.tmpdir(), 'mba-stock-charts');
+const chartPaths = (text) => [...String(text ?? '').matchAll(/[^\s`()"'<>\[\]]+\.(?:png|jpe?g|webp)/gi)].map((m) => m[0])
+  .filter((f) => { try { return fs.realpathSync(f).startsWith(fs.realpathSync(CHART_DIR) + path.sep); } catch { return false; } });
 
 // ev: { text, tasks, details:[{agent,title,status,text}], artifacts:[đường dẫn file agent đã tạo] }
 export async function buildReport(ev, command, when, title = '') {
   const images = new Map(), used = new Set(), attach = [], tables = [];
-  for (const f of [...new Set(ev.artifacts || [])]) {
+  const mentioned = [ev.text, ...(ev.details || []).map((d) => d.text)].flatMap(chartPaths);
+  for (const f of [...new Set([...(ev.artifacts || []), ...mentioned])]) {
     const ext = path.extname(f).toLowerCase();
-    if (IMG_MIME[ext]) { const uri = await imageUri(f); if (uri) { images.set(f, uri); images.set(path.basename(f), uri); attach.push({ f, uri }); } }
-    else if (ext === '.csv') { try { tables.push({ f, rows: csvRows(fs.readFileSync(f, 'utf8').replace(/^\uFEFF/, '')).slice(0, 200) }); } catch { /* bỏ qua */ } }
+    if (IMG_MIME[ext]) { const uri = await imageUri(f); if (uri) { images.set(f, uri); images.set(path.basename(f), uri); attach.push({ f, uri, hero: mentioned.includes(f) }); } }
+    else if (ext === '.csv') { try { tables.push({ f, rows: csvRows(fs.readFileSync(f, 'utf8').replace(/^﻿/, '')).slice(0, 200) }); } catch { /* bỏ qua */ } }
   }
-  const detail = (ev.details || []).map((d) => `<h3>${esc(d.agent)} <span class="st ${esc(d.status)}">${esc(d.status)}</span></h3><div class="meta">${esc(d.title)}</div>${
-    d.status === 'done' ? mdHtml(d.text, images, used) : `<p class="fail">${esc(d.text)}</p>`}`).join('\n');
-  const summary = mdHtml(ev.text, images, used);
-  const left = attach.filter((a) => !used.has(a.f) && !used.has(path.basename(a.f)));
-  const files = left.map((a) => `<figure><img src="${a.uri}" alt=""><figcaption>${esc(a.f)}</figcaption></figure>`).join('')
+  // Dòng "file biểu đồ lưu tại <đường dẫn>" của agent chỉ là rác khi ảnh đã nhúng: bỏ đi (giữ dòng ![..](..) để chèn ảnh đúng chỗ).
+  const clean = (t) => String(t ?? '').split('\n').filter((l) => !(chartPaths(l).length && !/^\s*!\[/.test(l))).join('\n');
+  const failedSum = /^Không tổng hợp được/.test(ev.text || '') && (ev.details || []).some((d) => d.status === 'done');
+  const single = (ev.details || []).length === 1 && ev.details[0].status === 'done';
+  const detail = (ev.details || []).map((d) => `${single ? '' : `<h3>${esc(d.agent)} <span class="st ${esc(d.status)}">${esc(d.status)}</span></h3><div class="meta">${esc(d.title)}</div>`}${
+    d.status === 'done' ? mdHtml(clean(d.text), images, used) : `<p class="fail">${esc(d.text)}</p>`}`).join('\n');
+  const summary = failedSum ? '' : mdHtml(clean(ev.text), images, used);
+  const unused = (a) => !used.has(a.f) && !used.has(path.basename(a.f));
+  const hero = attach.filter((a) => a.hero && unused(a)), left = attach.filter((a) => !a.hero && unused(a));
+  const figs = (arr) => arr.map((a) => `<figure><img src="${a.uri}" alt="${esc(path.basename(a.f))}"></figure>`).join('');
+  const files = figs(left)
     + tables.filter((t) => t.rows.length > 1).map((t) => `<div class="meta">${esc(t.f)}</div>${tableHtml(t.rows[0], t.rows.slice(1))}`).join('');
   const rows = (ev.tasks || []).map((x) => `<tr><td>${esc(x.agent)}</td><td>${esc(x.title)}</td><td>${esc(x.status)}</td></tr>`).join('');
   // Liên kết kèm theo (vd Dashboard content): href tính từ gốc web ("reports/…") nên đổi sang đường dẫn tương đối trong thư mục reports.
   const links = (ev.links || []).filter((l) => l?.href).map((l) => `<a href="${esc(String(l.href).replace(/^reports\//, ''))}">${esc(l.label || l.href)}</a>`).join(' &nbsp;·&nbsp; ');
-  return `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title || 'Báo cáo')}</title>
-<style>${CSS}</style>
-<h2>${esc(title || 'Báo cáo gửi CEO')}</h2><p class="meta"><b>Lệnh:</b> ${esc(command)}<br>${esc(when)}</p>${links ? `<p class="meta">${links}</p>` : ''}
-<div class="sum">${summary}</div>
-${files ? `<h3>Hình ảnh &amp; dữ liệu đính kèm</h3>${files}` : ''}
+  const body = `${summary ? `<div class="sum">${summary}</div>` : ''}
+${hero.length ? `<h3>Biểu đồ</h3>${figs(hero)}` : ''}
 ${detail}
-<h3>Danh sách công việc</h3><div class="tw"><table><tr><th>Agent</th><th>Task</th><th>Trạng thái</th></tr>${rows}</table></div>`;
+${files ? `<h3>Hình ảnh &amp; dữ liệu đính kèm</h3>${files}` : ''}
+${rows && !single ? `<details class="tasks"><summary>Danh sách công việc (${(ev.tasks || []).length})</summary><div class="tw"><table><tr><th>Agent</th><th>Task</th><th>Trạng thái</th></tr>${rows}</table></div></details>` : ''}`;
+  return pageShell({ title, command, when, links, body });
 }

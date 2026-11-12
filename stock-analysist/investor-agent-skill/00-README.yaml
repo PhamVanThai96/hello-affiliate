@@ -1,0 +1,101 @@
+# 00-README.yaml — ĐIỂM VÀO. Agent mới: đọc file này TRƯỚC, rồi làm theo load_order.
+skill:
+  id: investor-agent-skill
+  version: 1.0
+  language: vi (thuật ngữ Anh trong ngoặc)
+  created: 2026-11-11
+  purpose: >
+    Bộ tri thức để agent "Investor" (nhà đầu tư / chuyên gia phân tích định giá và cổ phiếu, thuộc Phòng đầu tư)
+    phân tích cơ bản, định giá (tương đối, nội tại, ngân hàng), thẩm định dự án đầu tư (bất động sản, tài sản),
+    phân tích kỹ thuật CÓ KIỂM CHỨNG (kênh giá, Value Area/AMT, khối lượng) và quản trị rủi ro cho cổ phiếu Việt Nam.
+  source_material: >
+    Ba prompt gốc trong stock-analysist/ (prompt-stock-analyze.md, prompt-dinh-gia-doanh-nghiep.md, prompt-danh-gia-dau-tu.md)
+    đã được sửa lỗi và chắt lọc; kết quả kiểm chứng ngoài mẫu trong documents/VERIFICATION_FINDINGS.md; công cụ dev/cli.py.
+    Skill tự đủ (self-contained): agent không cần đọc lại các file gốc để làm việc.
+  portability: >
+    Chỉ gồm YAML (+ script Python tùy chọn tools/build_and_validate.py). Copy nguyên thư mục investor-agent-skill/
+    sang máy khác là dùng được. Không có đường dẫn tuyệt đối. Riêng công cụ phân tích kỹ thuật cần thư mục stock-analysist
+    và mba-agent-office/tools/stock_cli.py (xem tool_usage).
+  status_of_numbers: >
+    Skill KHÔNG chứa số thị trường có thời hạn (Rf, ERP, giá, EPS, tỷ giá, lãi suất). Mọi số như vậy phải tra lúc chạy
+    và ghi nguồn + ngày; xem 01-agent-profile.yaml mục principles.
+
+how_to_bootstrap:    # dành cho agent mới hoàn toàn
+  step_1: Đọc toàn bộ file này.
+  step_2: Đọc 01-agent-profile.yaml (vai trò, nguyên tắc, kết quả kiểm chứng kỹ thuật, quy trình trả lời, nhãn độ tin cậy) — BẮT BUỘC tuân thủ.
+  step_3: Đọc SCHEMA.yaml để hiểu cấu trúc các module.
+  step_4: Với mỗi yêu cầu của người dùng, dùng 02-decision-router.yaml để chọn module + playbook.
+  step_5: Nạp module cần dùng trong modules/ (đọc đầy đủ), tra công thức ở 06-formulas-index.yaml, chạy playbook ở 03-playbooks.yaml.
+  step_6: Trình bày kết quả theo 04-report-templates.yaml; tra thuật ngữ ở 05-glossary.yaml.
+  step_7: Nếu cần phân tích kỹ thuật một mã, chạy công cụ (xem tool_usage) sau khi người dùng cho phép lệnh; đọc JSON đầu ra, không tự vẽ lại bằng cảm quan.
+  note_on_context: >
+    Nếu giới hạn ngữ cảnh chặt: luôn nạp 00, 01, 02; chỉ nạp thêm module liên quan (router chỉ ra tối đa 3-4 module cho mỗi tình huống).
+
+tool_usage:
+  description: >
+    Công cụ phân tích kỹ thuật tự động cho mã .VN (dữ liệu yfinance). In kết quả dạng JSON và vẽ biểu đồ.
+    Các lệnh dưới đây chạy từ thư mục mba-agent-office (nơi có tools/stock_cli.py). Thư mục stock-analysist phải là thư mục anh em
+    của mba-agent-office (hoặc đặt biến môi trường STOCK_ANALYSIS_DIR).
+  permission_rule: >
+    Chạy lệnh trong terminal cần được người dùng cho phép. Trước khi chạy hoặc cài đặt, nói rõ lệnh nào, vì sao cần, và chờ đồng ý.
+    Lệnh --setup cần Internet và tạo thư mục .venv trong stock-analysist.
+  commands:
+    first_time_setup: "python3 tools/stock_cli.py --setup"
+    analyze_one: "python3 tools/stock_cli.py MSN.VN"
+    no_chart: "python3 tools/stock_cli.py HPG.VN --no-chart"
+    back_test_at_date: "python3 tools/stock_cli.py VRE.VN --as-of 2025-05-29"
+  output: >
+    JSON gồm ticker, as_of, close, trend_state, outlook (thiên hướng + xác suất đã hiệu chuẩn + vùng biến động), channel,
+    support/resistance, volume_profile (AMT), boxes, patterns (chỉ mô tả), rule_filter (nhãn luật), chart_path,
+    validation (kết quả kiểm chứng từng thành phần) và disclaimer. Biểu đồ là file tạm (không nằm trong reports/); báo cáo nhúng ảnh trực tiếp vào 1 file HTML duy nhất.
+  env_vars: "STOCK_ANALYSIS_DIR (mặc định ../stock-analysist), STOCK_ANALYSIS_PY (mặc định .venv/bin/python của stock-analysist), STOCK_ANALYSIS_OUT"
+  failure_handling:
+    - "Lỗi thiếu thư viện hoặc không thấy .venv: đề nghị chạy --setup, không tự cài khi chưa được phép."
+    - "Lỗi không đủ dữ liệu (dưới 80 phiên) hoặc mã sai định dạng: báo người dùng, thử đuôi .VN, không bịa số."
+    - "Không có Internet hoặc yfinance lỗi: nói rõ không phân tích kỹ thuật được; chuyển sang phần cơ bản/định giá nếu người dùng cung cấp số."
+
+load_order:
+  always: [00-README.yaml, 01-agent-profile.yaml, 02-decision-router.yaml]
+  on_demand: [03-playbooks.yaml, 04-report-templates.yaml, 05-glossary.yaml, 06-formulas-index.yaml, "modules/*.yaml"]
+  reference_only: [SCHEMA.yaml]
+
+file_index:
+  - {file: 00-README.yaml, role: Điểm vào, hướng dẫn nạp skill và chạy công cụ}
+  - {file: SCHEMA.yaml, role: Định nghĩa cấu trúc dữ liệu}
+  - {file: 01-agent-profile.yaml, role: Vai trò, phạm vi, nguyên tắc (gồm kết quả kiểm chứng kỹ thuật), workflow, disclaimer}
+  - {file: 02-decision-router.yaml, role: Định tuyến câu hỏi -> module/playbook, chuỗi module cho bài toán đa chiều}
+  - {file: 03-playbooks.yaml, role: Kịch bản end-to-end đã sửa lỗi từ 3 prompt gốc}
+  - {file: 04-report-templates.yaml, role: Mẫu báo cáo/bảng biểu đầu ra}
+  - {file: 05-glossary.yaml, role: Thuật ngữ Việt-Anh và ký hiệu}
+  - {file: 06-formulas-index.yaml, role: Registry mọi công thức (sinh tự động từ modules/, có biểu thức Python)}
+  - {file: modules/m01-technical-analysis-validated.yaml, role: "Phân tích kỹ thuật có kiểm chứng: kênh, nến, hộp, hỗ trợ/kháng cự, vùng biến động"}
+  - {file: modules/m02-auction-market-theory.yaml, role: "Value Area, POC, Volume Profile, kịch bản AMT"}
+  - {file: modules/m03-fundamental-analysis.yaml, role: "Chất lượng tài sản và lợi nhuận, BCTC doanh nghiệp và ngân hàng (NPL, LLR, CAR)"}
+  - {file: modules/m04-relative-valuation.yaml, role: "P/E, P/B, EV/EBITDA, chọn multiple, bẫy chỉ số"}
+  - {file: modules/m05-intrinsic-valuation.yaml, role: "FCFF, FCFE, DDM, WACC, CAPM, Terminal Value, độ nhạy, biên an toàn"}
+  - {file: modules/m06-project-investment-appraisal.yaml, role: "Thẩm định dự án/BĐS: lá chắn thuế, FCFF/FCFE, NPV, MIRR, stress test"}
+  - {file: modules/m07-market-data-vn-and-risk.yaml, role: "Dữ liệu thị trường VN, quy tắc giao dịch, quản trị rủi ro và vị thế"}
+
+maintenance:
+  validate: "python3 tools/build_and_validate.py   # kiểm tra YAML, trùng id, sinh lại 06-formulas-index.yaml"
+  update_rule: "Sửa module trong modules/, rồi chạy lại script để cập nhật 06-formulas-index.yaml. Khi có kết quả kiểm chứng mới, cập nhật principles trong 01-agent-profile.yaml và module m01/m02."
+  refresh_rule: >
+    Không lưu số thị trường có thời hạn trong skill. Nếu muốn ghi ví dụ minh họa thì gắn nhãn "GIẢ ĐỊNH MINH HỌA" kèm ngày.
+  data_quality_notes: >
+    Mỗi case_lessons có data_reliability (verified/illustrative/unverified). Số liệu doanh nghiệp thật và quy định thuế VN cần đối chiếu
+    báo cáo gốc. Xem known_data_caveats trong 01-agent-profile.yaml.
+
+conventions_for_calculation:
+  expression_python: >
+    Biểu thức hoặc đoạn code Python minh họa cách tính; tên biến khớp mục variables và example.inputs.
+    Một số công thức cần numpy/scipy hoặc nhiều dòng: coi là mã tham chiếu, không nhất thiết eval một dòng.
+  units: "Tiền: triệu hoặc tỷ VNĐ (nêu rõ). Tỷ lệ: viết thập phân trong code (0.12), hiển thị % trong báo cáo."
+  consistency: >
+    Dòng tiền và tỷ lệ chiết khấu phải khớp: FCFF chiết khấu bằng WACC (ra giá trị doanh nghiệp, trừ nợ ròng ra vốn chủ);
+    FCFE và cổ tức chiết khấu bằng Re (ra thẳng vốn chủ). Không trộn.
+  source_errors_found: >
+    Khi distill phát hiện lỗi trong prompt gốc: (1) trong prompt-danh-gia-dau-tu, dòng tiền đã trừ lãi vay và gốc (kiểu FCFE) nhưng lại
+    chiết khấu bằng WACC và vẫn cộng lá chắn thuế lãi vay vào WACC, gây đếm đôi; (2) lấy lãi suất tiết kiệm làm Rf; (3) ERP, Beta,
+    Rf, giá cố định cứng trong prompt; (4) trong prompt-dinh-gia-doanh-nghiep có số thị trường gắn thời điểm (Rf, kết quả STB/SHB)
+    và giới hạn g chưa nói rõ phải thấp hơn Rf/tăng trưởng danh nghĩa; (5) trong prompt-stock-analyze, điều kiện MUA dựa trên MA200,
+    hỗ trợ, đáy kênh, nến đã không vượt kiểm chứng và có nhãn SHORT/BÁN không khả thi ở VN. YAML đã sửa; ưu tiên YAML hơn prompt gốc.

@@ -1,0 +1,892 @@
+# m05-intrinsic-valuation.yaml - Tri thức định giá nội tại (FCFF/DCF, FCFE, DDM, thặng dư, TV, độ nhạy, biên an toàn)
+# Nguồn: stock-analysist/prompt-dinh-gia-doanh-nghiep.md (Phần 1 mục 3-4 và Phần 2), đối chiếu m10, m03, m08 của finance-agent-skill.
+# QUY ƯỚC DỮ LIỆU: mọi số liệu thị trường (Rf, ERP, beta, giá cổ phiếu, TV% của mã cụ thể) là GIẢ ĐỊNH MINH HỌA, không phải dữ liệu thị trường hiện hành.
+# Agent PHẢI tra lại số liệu thị trường bằng web_search/web_fetch lúc chạy (xem procedure m05_market_snapshot) và ghi nguồn + ngày.
+# Đơn vị ví dụ: tỷ VND cho giá trị doanh nghiệp, VND cho giá/cổ phiếu, % dạng số thập phân trong Python.
+
+id: "m05"
+name_vi: "Định giá nội tại (DCF, FCFE, DDM, thặng dư)"
+name_en: "Intrinsic Valuation (DCF, FCFE, DDM, Residual Income)"
+purpose: >
+  Ước lượng giá trị nội tại (intrinsic value) của một cổ phiếu/doanh nghiệp từ dòng tiền hoặc thu nhập tương lai được chiết khấu về hiện tại,
+  chọn đúng mô hình theo bản chất ngành (FCFF cho phi tài chính, FCFE/DDM/thặng dư cho ngân hàng và tài chính), kiểm soát rủi ro của Terminal Value,
+  lập bảng độ nhạy 2 biến và tính Biên an toàn (Margin of Safety) trước khi ra quyết định. Kết quả luôn là KHOẢNG giá trị kèm giả định, không phải một con số duy nhất.
+when_to_use:
+  - "Cần giá trị nội tại/cổ phiếu của doanh nghiệp phi tài chính (sản xuất, bán lẻ, công nghệ, BĐS) bằng DCF FCFF"
+  - "Cần định giá ngân hàng/công ty chứng khoán/bảo hiểm/tài chính tiêu dùng bằng FCFE, DDM hoặc Residual Income (không dùng FCFF)"
+  - "Doanh nghiệp trả cổ tức tiền mặt đều đặn và ổn định, muốn dùng DDM (Gordon hoặc 2-3 giai đoạn)"
+  - "Cần bảng độ nhạy Re/WACC x g, kịch bản cơ sở/xấu/tốt, Margin of Safety từ kịch bản xấu nhất"
+  - "Phải đánh giá báo cáo định giá của người khác: TV chiếm bao nhiêu %, g có vượt tăng trưởng danh nghĩa dài hạn, có chiết khấu sai tỷ lệ cho dòng tiền không"
+  - "Giá thị trường lệch xa kết quả P/E, P/B và cần kiểm chứng bằng nội tại (ví dụ lợi nhuận bị bóp bởi trích lập dự phòng một lần)"
+  - "Cần chọn Rf, beta, ERP, Re, WACC hợp lý theo thời điểm thay vì một con số cố định"
+prerequisites: ["m03"]
+related_modules:
+  - "m03: Phân tích cơ bản - chất lượng tài sản, chất lượng lợi nhuận, ROIC/ROE, nợ xấu/CAR của ngân hàng; cung cấp đầu vào dự phóng và chuẩn hóa BCTC"
+  - "m04: Định giá tương đối - P/E, P/B mục tiêu, EV/EBITDA; dùng để kiểm tra chéo kết quả nội tại và để chọn exit multiple cho TV"
+  - "m06: Thẩm định dự án đầu tư - cùng logic dòng tiền chiết khấu (NPV/IRR/MIRR) nhưng cho dự án thay vì cả doanh nghiệp"
+  - "m07: Dữ liệu thị trường VN và rủi ro - nguồn tra Rf (lợi suất trái phiếu chính phủ 10 năm), beta, ERP, lạm phát, GDP danh nghĩa"
+  - "finance-agent-skill m10: Corporate Valuation - DCF, Comps, Precedent, Football Field (tham chiếu, không lặp lại ở đây)"
+  - "finance-agent-skill m03: Cost of Capital - WACC, Ke (CAPM), Kd, relever beta (tham chiếu)"
+  - "finance-agent-skill m08: Risk and Return - CAPM, beta, ERP (tham chiếu)"
+
+concepts:
+  - term_vi: "Giá trị nội tại"
+    term_en: "Intrinsic Value"
+    definition: "Giá trị hiện tại của toàn bộ dòng tiền (hoặc thu nhập thặng dư) mà tài sản sẽ tạo ra cho chủ sở hữu, chiết khấu theo rủi ro của dòng tiền đó."
+    why_it_matters: >
+      Giá thị trường là kết quả của tâm lý và thanh khoản trong ngắn hạn; giá trị nội tại trả lời câu hỏi doanh nghiệp SINH RA bao nhiêu tiền cho cổ đông.
+      Nền tảng lịch sử: Irving Fisher (1930) giá trị là hiện giá tiền tương lai; John Burr Williams (1938, The Theory of Investment Value) đưa ra chiết khấu cổ tức;
+      Myron Gordon (1959) công thức tăng trưởng đều; Graham và Dodd (1934) đề xuất Margin of Safety; Ohlson (1995) hệ thống hóa mô hình thu nhập thặng dư.
+      Giá nội tại không đúng tuyệt đối, nhưng buộc người phân tích nói rõ giả định thay vì tin vào một cảm giác.
+  - term_vi: "Chọn mô hình theo bản chất ngành"
+    term_en: "Model selection by business nature"
+    definition: "Phi tài chính: FCFF chiết khấu bằng WACC ra EV rồi trừ nợ ròng. Ngân hàng/tài chính: FCFE, DDM hoặc Residual Income chiết khấu bằng Re ra thẳng giá trị vốn chủ."
+    why_it_matters: >
+      Với doanh nghiệp sản xuất, nợ vay là một nguồn vốn tài trợ dài hạn có thể tách khỏi hoạt động (nợ là cấu phần của vốn), nên đo năng lực tạo tiền TRƯỚC cấu trúc vốn (FCFF) rồi trừ nợ là hợp lý.
+      Với ngân hàng, tiền gửi và đi vay chính là nguyên liệu đầu vào của kinh doanh (như thép với nhà máy thép): lãi tiền gửi là chi phí hoạt động, vốn lưu động và nợ không tách được khỏi hoạt động,
+      nên EBIT, capex, ΔNWC, EV vô nghĩa. Dòng tiền thật sự thuộc về cổ đông là phần lợi nhuận SAU khi giữ lại vốn để duy trì hệ số an toàn vốn (CAR) khi tài sản có rủi ro (RWA) tăng, sau trích lập dự phòng.
+  - term_vi: "Quy tắc khớp dòng tiền với tỷ lệ chiết khấu"
+    term_en: "Cash flow - discount rate matching"
+    definition: "FCFF (thuộc cả chủ nợ và cổ đông) chiết khấu bằng WACC; FCFE, cổ tức, thu nhập thặng dư (thuộc cổ đông) chiết khấu bằng chi phí vốn chủ Re. Không trộn."
+    why_it_matters: >
+      Tỷ lệ chiết khấu là lợi suất đòi hỏi của chính nhóm nhận dòng tiền. WACC trộn chi phí nợ rẻ (có lá chắn thuế) nên thấp hơn Re; chiết khấu dòng tiền vốn chủ (đã trừ trả nợ) bằng WACC
+      sẽ đếm trùng lợi ích đòn bẩy và thổi phồng giá trị (xem worked example m05_ex6: chiết khấu cổ tức ngân hàng bằng 10,35% thay vì 13,1% làm giá tăng khoảng 61%).
+  - term_vi: "Dòng tiền tự do cho doanh nghiệp (FCFF)"
+    term_en: "Free Cash Flow to Firm"
+    definition: "FCFF = EBIT x (1 - t) + Khấu hao - CAPEX - ΔNWC. Tiền tạo ra cho mọi nhà cung cấp vốn sau thuế (tính như doanh nghiệp không vay)."
+    why_it_matters: >
+      Dùng tiền thay vì lợi nhuận kế toán vì lợi nhuận bị dồn tích, khấu hao chi phối; doanh nghiệp có lãi nhưng phải thu, tồn kho, capex tăng mạnh vẫn có thể cạn tiền.
+      Thuế tính trên EBIT vì lợi ích thuế của lãi vay đã nằm trong WACC (Kd x (1-t)); tính cả hai chỗ là đếm trùng.
+  - term_vi: "Dòng tiền tự do cho vốn chủ (FCFE)"
+    term_en: "Free Cash Flow to Equity"
+    definition: "FCFE = Lợi nhuận ròng + Khấu hao - CAPEX - ΔNWC + Vay ròng mới. Với ngân hàng: FCFE = Lợi nhuận ròng - (CAR mục tiêu x ΔRWA) (phần lợi nhuận phải giữ lại để duy trì vốn)."
+    why_it_matters: >
+      FCFE là tiền thực tế có thể chia cho cổ đông mà không làm yếu doanh nghiệp. Ngân hàng không chia hết lợi nhuận vì phải giữ vốn cho tăng trưởng tín dụng; theo nguyên lý bút toán sạch (clean surplus),
+      FCFE của ngân hàng bằng cổ tức có thể chia, nên FCFE và DDM cho cùng giá trị khi lượng giữ lại khớp lượng vốn cần thiết.
+  - term_vi: "Mô hình chiết khấu cổ tức (DDM)"
+    term_en: "Dividend Discount Model"
+    definition: "Giá cổ phiếu = tổng hiện giá cổ tức kỳ vọng. Gordon: P0 = D1/(Re-g); nhiều giai đoạn: cổ tức giai đoạn rõ + TV cổ tức."
+    why_it_matters: >
+      Phù hợp doanh nghiệp có chính sách cổ tức tiền mặt đều và dự báo được. Với doanh nghiệp không chia cổ tức tiền mặt (ví dụ nhiều ngân hàng VN trả cổ tức bằng cổ phiếu để giữ vốn), cổ tức tiền mặt thấp hơn FCFE;
+      khi đó dùng FCFE hoặc Residual Income để không đánh giá thấp. Cổ tức cổ phiếu không tạo ra tiền, chỉ pha loãng nên không phải dòng tiền cho cổ đông.
+  - term_vi: "Thu nhập thặng dư"
+    term_en: "Residual Income (RI) / Economic Profit"
+    definition: "RI_t = Lợi nhuận ròng_t - Re x Vốn chủ đầu kỳ_t = (ROE_t - Re) x BV_{t-1}. Giá trị cổ phần = BV0 + hiện giá mọi RI tương lai."
+    why_it_matters: >
+      Một doanh nghiệp chỉ tạo thêm giá trị khi ROE vượt chi phí vốn chủ. RI neo định giá vào giá trị sổ sách (đã có thật) rồi chỉ cộng phần giá trị TẠO THÊM,
+      nên ít phụ thuộc vào TV hơn DDM/FCFE (phần lớn giá trị đã nằm ở BV0) và rất hợp ngân hàng, bảo hiểm có sổ sách minh bạch. Bản chất là cùng một giá trị với DDM nếu bút toán sạch (worked example m05_ex2).
+  - term_vi: "Giá trị cuối kỳ"
+    term_en: "Terminal Value (TV)"
+    definition: "Hiện giá mọi dòng tiền sau năm dự phóng cuối. Gordon: TV = FCF_{n+1}/(r-g). Exit multiple: TV = chỉ tiêu năm n x bội số."
+    why_it_matters: >
+      Doanh nghiệp không chết sau năm 5; bỏ TV là bỏ phần giá trị thường chiếm 60-80% tổng. Vì mẫu số là (r - g) nhỏ, TV cực nhạy: r tăng 1-2% hoặc g giảm 0,5% có thể làm giá trị bốc hơi hàng chục %.
+      Vì thế bắt buộc tách rõ dự phóng ngắn hạn (5 năm) khỏi tăng trưởng vĩnh viễn, kiểm tra TV/EV, và chạy bảng độ nhạy.
+  - term_vi: "Tăng trưởng bền vững và tái đầu tư"
+    term_en: "Sustainable growth g = Reinvestment Rate x ROIC"
+    definition: "g = RR x ROIC (phi tài chính) hoặc g = (1 - payout) x ROE (vốn chủ). Tăng trưởng không miễn phí: phải giữ lại/tái đầu tư một phần dòng tiền."
+    why_it_matters: >
+      Giả định g dương nhưng capex bằng khấu hao và ΔNWC bằng 0 là tăng trưởng miễn phí, làm TV bị thổi phồng. Dùng g = RR x ROIC để suy ngược tỷ lệ tái đầu tư cần thiết,
+      từ đó chuẩn hóa FCFF năm TV = NOPAT_{n+1} x (1 - g/ROIC). ROIC dài hạn nên hội tụ về Re/WACC nếu ngành cạnh tranh (không có lợi thế cạnh tranh vĩnh viễn).
+  - term_vi: "Cầu nối EV sang giá/cổ phiếu"
+    term_en: "EV to equity value bridge"
+    definition: "Giá trị vốn chủ = EV - Nợ vay + Tiền và tương đương tiền - Lợi ích cổ đông thiểu số - Cổ phiếu ưu đãi + Đầu tư vào công ty liên kết/tài sản phi hoạt động. Giá/cổ phiếu = Giá trị vốn chủ / Số cổ phiếu pha loãng."
+    why_it_matters: >
+      FCFF chỉ cho giá trị hoạt động của cả doanh nghiệp (cho cả chủ nợ lẫn cổ đông). Cổ đông chỉ được phần còn lại sau khi chủ nợ và thiểu số lấy phần của họ.
+      Số cổ phiếu phải là số PHA LOÃNG (cổ phiếu thưởng ESOP, trái phiếu chuyển đổi), không phải số cổ phiếu lưu hành hiện tại, nếu không giá/cổ phiếu bị thổi phồng.
+  - term_vi: "Biên an toàn"
+    term_en: "Margin of Safety (MoS)"
+    definition: "MoS = (Giá trị nội tại - Giá thị trường) / Giá trị nội tại. Đề xuất bởi Benjamin Graham (The Intelligent Investor, 1949)."
+    why_it_matters: >
+      Mô hình có sai số lớn (giả định, g, Re). MoS là vùng đệm cho sai số đó. Chuẩn thực hành của agent: tính MoS không chỉ ở kịch bản cơ sở mà còn từ giá kịch bản xấu nhất (worst-case) của bảng độ nhạy.
+  - term_vi: "Rác vào, rác ra"
+    term_en: "Garbage In, Garbage Out (GIGO)"
+    definition: "Chất lượng đầu ra của mô hình không bao giờ cao hơn chất lượng giả định đầu vào."
+    why_it_matters: >
+      DCF dễ bị 'làm đẹp' bằng cách nhập tăng trưởng 30-50% liên tục 5-10 năm (kiểu kịch bản Bull-case của WeWork). 30% trong 10 năm nghĩa là doanh thu gấp khoảng 13,8 lần,
+      tức doanh nghiệp phải chiếm phần lớn thị trường; cần đối chiếu với quy mô thị trường (TAM) và biên lợi nhuận bền vững. Tăng trưởng ngắn hạn phải suy giảm dần về g vĩnh viễn.
+  - term_vi: "Ảnh chụp thị trường có ngày"
+    term_en: "Dated market snapshot"
+    definition: "Bộ số liệu thị trường (Rf, ERP, beta, lạm phát, GDP danh nghĩa, giá cổ phiếu) kèm nguồn và ngày tra cứu, dùng cho một lần định giá cụ thể."
+    why_it_matters: >
+      Lợi suất trái phiếu, ERP, giá cổ phiếu thay đổi theo ngày; một con số cố định (ví dụ Rf 4,58%) chỉ đúng tại thời điểm nó được ghi. Agent tra lúc chạy và ghi nguồn + ngày; nếu không tra được phải nêu rõ là giả định.
+
+formulas:
+  - id: "m05_capm_re"
+    name_vi: "Chi phí vốn chủ sở hữu theo CAPM"
+    name_en: "Cost of Equity (CAPM)"
+    expression_latex: "R_e = R_f + \\beta \\times ERP"
+    expression_python: "rf + beta * erp"
+    excel: "=rf + beta*erp"
+    variables:
+      - {symbol: "rf", meaning: "Lãi suất phi rủi ro, lợi suất trái phiếu chính phủ 10 năm cùng đồng tiền với dòng tiền", unit: "số thập phân/năm"}
+      - {symbol: "beta", meaning: "Hệ số beta vốn chủ (đã tính theo đòn bẩy hiện tại hoặc mục tiêu)", unit: "số"}
+      - {symbol: "erp", meaning: "Phần bù rủi ro thị trường (Equity Risk Premium), gồm cả phần bù rủi ro quốc gia nếu có", unit: "số thập phân"}
+    when_to_use: "Mọi mô hình vốn chủ (FCFE, DDM, RI) và là đầu vào của WACC."
+    why_it_works: >
+      Cổ đông chỉ chấp nhận rủi ro nếu được bù đắp: lợi suất tối thiểu = lợi suất an toàn + (mức rủi ro hệ thống của doanh nghiệp so với thị trường) x (phần bù mà thị trường trả cho rủi ro). Sharpe (1964) chứng minh chỉ rủi ro hệ thống (beta) được bù vì rủi ro riêng có thể đa dạng hóa.
+      Điều này cũng là lý do KHÔNG được dùng một con số cố định (ví dụ 10%) cho mọi doanh nghiệp: Re phụ thuộc Rf của thời điểm và beta của từng doanh nghiệp.
+    assumptions: ["Rf và ERP cùng đồng tiền và cùng kỳ hạn dài hạn", "Beta ổn định và ước tính đáng tin cậy (đủ dữ liệu, thanh khoản)"]
+    pitfalls:
+      - "Beta mẫu của cổ phiếu VN thanh khoản thấp thường nhiễu; cân nhắc dùng beta ngành đã relever theo đòn bẩy (xem m03 finance-agent-skill)"
+      - "Dùng Rf ngắn hạn (T-bill) cho dòng tiền dài hạn; Rf phải là kỳ hạn 10 năm"
+      - "Hạ thấp Re chủ quan để nâng giá nội tại (giá trị bị thổi phồng giả tạo)"
+    interpretation: "Doanh nghiệp đòn bẩy cao, chu kỳ mạnh, beta lớn thường có Re khoảng 13-15% trong bối cảnh VN (khoảng minh họa, phải tính lại theo ảnh chụp thị trường)."
+    example:
+      inputs: {rf: 0.04, beta: 1.1, erp: 0.07}
+      steps: ["Re = 0,04 + 1,1 x 0,07 = 0,117"]
+      result: "Re = 11,7% (số minh họa)"
+
+  - id: "m05_wacc"
+    name_vi: "Chi phí vốn bình quân gia quyền"
+    name_en: "WACC"
+    expression_latex: "WACC = \\frac{E}{V} R_e + \\frac{D}{V} R_d (1 - t)"
+    expression_python: "we * re + wd * kd * (1 - tax)"
+    excel: "=we*re + wd*kd*(1-tax)"
+    variables:
+      - {symbol: "we", meaning: "Tỷ trọng vốn chủ theo cơ cấu vốn mục tiêu (giá thị trường)", unit: "số thập phân"}
+      - {symbol: "wd", meaning: "Tỷ trọng nợ = 1 - we", unit: "số thập phân"}
+      - {symbol: "re", meaning: "Chi phí vốn chủ (CAPM)", unit: "số thập phân"}
+      - {symbol: "kd", meaning: "Chi phí nợ vay trước thuế (lãi suất vay dài hạn thực tế)", unit: "số thập phân"}
+      - {symbol: "tax", meaning: "Thuế suất biên (thuế TNDN)", unit: "số thập phân"}
+    when_to_use: "Tỷ lệ chiết khấu của FCFF phi tài chính. KHÔNG dùng cho FCFE/DDM/RI (dùng Re)."
+    why_it_works: "Nhà cung cấp vốn khác nhau đòi lợi suất khác nhau; WACC là chi phí trung bình mà doanh nghiệp phải trả cho mỗi đồng vốn. Lãi vay được khấu trừ thuế nên chi phí nợ ròng là kd x (1-t)."
+    assumptions: ["Tỷ trọng nợ/vốn chủ là cấu trúc mục tiêu dài hạn", "Beta đã khớp với đòn bẩy đó"]
+    pitfalls: ["Dùng tỷ trọng sổ sách thay vì thị trường/mục tiêu", "Giữ nguyên beta khi đổi cơ cấu vốn", "Trộn WACC danh nghĩa VND với dòng tiền thực hoặc USD"]
+    interpretation: "WACC phải lớn hơn g. Doanh nghiệp càng nhiều nợ và rủi ro, WACC cần cao hơn."
+    example:
+      inputs: {we: 0.7, re: 0.117, wd: 0.3, kd: 0.09, tax: 0.2}
+      steps: ["0,7 x 0,117 = 0,0819", "0,3 x 0,09 x 0,8 = 0,0216", "WACC = 0,0819 + 0,0216 = 0,1035"]
+      result: "WACC = 10,35% (số minh họa)"
+
+  - id: "m05_fcff"
+    name_vi: "Dòng tiền tự do cho doanh nghiệp"
+    name_en: "FCFF (NOPAT route)"
+    expression_latex: "FCFF = EBIT(1-t) + D\\&A - CAPEX - \\Delta NWC"
+    expression_python: "ebit * (1 - tax) + da - capex - dnwc"
+    excel: "=ebit*(1-tax)+da-capex-dnwc"
+    variables:
+      - {symbol: "ebit", meaning: "Lợi nhuận trước lãi vay và thuế từ hoạt động cốt lõi (đã loại thu nhập bất thường)", unit: "tỷ VND"}
+      - {symbol: "tax", meaning: "Thuế suất hiệu dụng trên EBIT", unit: "số thập phân"}
+      - {symbol: "da", meaning: "Khấu hao và phân bổ (khoản phi tiền mặt cộng lại)", unit: "tỷ VND"}
+      - {symbol: "capex", meaning: "Chi đầu tư tài sản cố định", unit: "tỷ VND"}
+      - {symbol: "dnwc", meaning: "Tăng vốn lưu động thuần (phải thu + tồn kho - phải trả)", unit: "tỷ VND"}
+    when_to_use: "Doanh nghiệp phi tài chính; chiết khấu bằng WACC ra EV."
+    why_it_works: "Bắt đầu từ lợi nhuận hoạt động sau thuế (NOPAT) như thể không vay, cộng lại khoản chi phí không ra tiền (khấu hao), trừ tiền thật bị kẹt vào tài sản dài hạn (CAPEX) và vốn lưu động. Phần còn lại là tiền có thể rút ra mà không làm yếu doanh nghiệp."
+    assumptions: ["EBIT chuẩn hóa, không chứa thu nhập bất thường", "ΔNWC phản ánh đúng chu kỳ tiền mặt"]
+    pitfalls: ["Trừ lãi vay hai lần (trong FCFF và trong WACC)", "Quên ΔNWC khi doanh thu tăng", "Cộng khấu hao mà không trừ capex tương ứng"]
+    interpretation: "FCFF âm ở giai đoạn tăng trưởng là bình thường nếu ROIC > WACC; FCFF âm kéo dài khi tăng trưởng đã bão hòa là dấu hiệu xấu."
+    example:
+      inputs: {ebit: 264, tax: 0.2, da: 88, capex: 121, dnwc: 30}
+      steps: ["NOPAT = 264 x 0,8 = 211,2", "FCFF = 211,2 + 88 - 121 - 30 = 148,2"]
+      result: "FCFF = 148,2 tỷ"
+
+  - id: "m05_fcff_from_cfo"
+    name_vi: "FCFF từ dòng tiền hoạt động"
+    name_en: "FCFF from CFO"
+    expression_latex: "FCFF = CFO + Interest(1-t) - CAPEX"
+    expression_python: "cfo + interest * (1 - tax) - capex"
+    excel: "=cfo+interest*(1-tax)-capex"
+    variables:
+      - {symbol: "cfo", meaning: "Dòng tiền thuần từ hoạt động kinh doanh (đã sau lãi vay nếu theo VAS gián tiếp)", unit: "tỷ VND"}
+      - {symbol: "interest", meaning: "Chi phí lãi vay đã trừ trong CFO", unit: "tỷ VND"}
+      - {symbol: "tax", meaning: "Thuế suất", unit: "số thập phân"}
+      - {symbol: "capex", meaning: "Chi đầu tư tài sản cố định", unit: "tỷ VND"}
+    when_to_use: "Cách kiểm tra chéo FCFF quá khứ từ báo cáo lưu chuyển tiền tệ."
+    why_it_works: "CFO đã trừ lãi vay (thuộc về chủ nợ) nên phải cộng lại phần lãi sau thuế để ra dòng tiền cho mọi nhà cung cấp vốn."
+    assumptions: ["Lãi vay được ghi nhận trong CFO (kiểm tra thuyết minh, VAS có thể xếp lãi vay vào hoạt động tài chính)"]
+    pitfalls: ["Cộng lãi vay khi lãi vay vốn nằm trong hoạt động tài chính (đếm trùng)"]
+    interpretation: "Dùng để kiểm tra chéo FCFF lịch sử trước khi dự phóng."
+    example:
+      inputs: {cfo: 250, interest: 40, tax: 0.2, capex: 150}
+      steps: ["FCFF = 250 + 40 x 0,8 - 150 = 132"]
+      result: "FCFF = 132 tỷ"
+
+  - id: "m05_fcfe"
+    name_vi: "Dòng tiền tự do cho vốn chủ (phi tài chính)"
+    name_en: "FCFE"
+    expression_latex: "FCFE = NI + D\\&A - CAPEX - \\Delta NWC + Net\\ Borrowing"
+    expression_python: "ni + da - capex - dnwc + net_borrowing"
+    excel: "=ni+da-capex-dnwc+net_borrowing"
+    variables:
+      - {symbol: "ni", meaning: "Lợi nhuận sau thuế", unit: "tỷ VND"}
+      - {symbol: "da", meaning: "Khấu hao", unit: "tỷ VND"}
+      - {symbol: "capex", meaning: "Chi đầu tư tài sản cố định", unit: "tỷ VND"}
+      - {symbol: "dnwc", meaning: "Tăng vốn lưu động", unit: "tỷ VND"}
+      - {symbol: "net_borrowing", meaning: "Vay mới trừ nợ gốc trả (có thể âm)", unit: "tỷ VND"}
+    when_to_use: "Doanh nghiệp có cơ cấu nợ ổn định, hoặc muốn định giá vốn chủ trực tiếp bằng Re."
+    why_it_works: "FCFE là tiền còn lại cho cổ đông SAU khi chủ nợ đã được trả lãi và gốc; do đó rủi ro cổ đông gánh lớn hơn và chiết khấu bằng Re, không phải WACC."
+    assumptions: ["Net borrowing dự phóng gắn với tỷ lệ nợ mục tiêu (ví dụ giữ tỷ lệ D/V không đổi)"]
+    pitfalls: ["Chiết khấu bằng WACC", "Dự phóng vay ròng không nhất quán với cấu trúc vốn mục tiêu làm Re không còn khớp"]
+    interpretation: "FCFE tăng nhờ vay thêm không tạo giá trị thực; kiểm tra bằng FCFF."
+    example:
+      inputs: {ni: 100, da: 20, capex: 35, dnwc: 8, net_borrowing: 15}
+      steps: ["FCFE = 100 + 20 - 35 - 8 + 15 = 92"]
+      result: "FCFE = 92 tỷ"
+
+  - id: "m05_fcfe_bank"
+    name_vi: "FCFE của ngân hàng (giữ vốn theo CAR)"
+    name_en: "Bank FCFE"
+    expression_latex: "FCFE_{bank} = NI - CAR_{target} \\times \\Delta RWA"
+    expression_python: "ni - car_target * delta_rwa"
+    excel: "=ni-car_target*delta_rwa"
+    variables:
+      - {symbol: "ni", meaning: "Lợi nhuận sau thuế (đã sau trích lập dự phòng rủi ro tín dụng)", unit: "tỷ VND"}
+      - {symbol: "car_target", meaning: "Hệ số an toàn vốn mục tiêu của ngân hàng (cao hơn mức tối thiểu quy định)", unit: "số thập phân"}
+      - {symbol: "delta_rwa", meaning: "Tăng tài sản có rủi ro (Risk-Weighted Assets) trong kỳ", unit: "tỷ VND"}
+    when_to_use: "Ngân hàng và tổ chức tín dụng khi không chia hoặc chia ít cổ tức tiền mặt."
+    why_it_works: "Ngân hàng chỉ có thể trả cổ đông phần lợi nhuận vượt quá lượng vốn cần giữ lại để duy trì CAR khi tăng trưởng tín dụng. ΔRWA x CAR chính là lượng vốn chủ cần thêm; nếu bút toán sạch thì bằng ΔBV, nên FCFE = cổ tức có thể chia."
+    assumptions: ["CAR mục tiêu ổn định", "ΔRWA gắn với tăng trưởng tín dụng dự phóng (cùng nguồn với giả định tăng trưởng lợi nhuận)", "Không phát hành thêm vốn trong giai đoạn dự phóng"]
+    pitfalls: ["Dùng FCFF cho ngân hàng", "Quên giữ vốn cho tăng trưởng nên FCFE bị thổi phồng", "Không trừ trích lập dự phòng khi nợ xấu tăng"]
+    interpretation: "FCFE/NI chính là tỷ lệ chia tối đa hợp lý; nếu tăng trưởng quá nhanh FCFE có thể âm, nghĩa là ngân hàng cần tăng vốn."
+    example:
+      inputs: {ni: 1000, car_target: 0.11, delta_rwa: 3000}
+      steps: ["Vốn cần giữ = 0,11 x 3000 = 330", "FCFE = 1000 - 330 = 670"]
+      result: "FCFE = 670 tỷ"
+
+  - id: "m05_gordon_tv"
+    name_vi: "Giá trị cuối kỳ theo Gordon"
+    name_en: "Terminal Value - Gordon Growth"
+    expression_latex: "TV_n = \\frac{FCF_{n+1}}{r - g}"
+    expression_python: "f_next / (r - g)"
+    excel: "=f_next/(r-g)"
+    variables:
+      - {symbol: "f_next", meaning: "Dòng tiền chuẩn hóa năm n+1 (FCFF, FCFE hoặc cổ tức)", unit: "đơn vị tiền"}
+      - {symbol: "r", meaning: "Tỷ lệ chiết khấu khớp với dòng tiền (WACC cho FCFF, Re cho FCFE/DDM)", unit: "số thập phân"}
+      - {symbol: "g", meaning: "Tốc độ tăng trưởng vĩnh viễn", unit: "số thập phân"}
+    when_to_use: "Mặc định cho TV của doanh nghiệp trưởng thành; kiểm tra chéo bằng exit multiple."
+    why_it_works: "Tổng cấp số nhân lùi vô hạn: F(1+g)/(1+r) + F(1+g)^2/(1+r)^2 + ... = F(1+g)/(r-g) khi r > g. Giá trị rất nhạy khi r gần g."
+    assumptions: ["r > g", "g không vượt tăng trưởng danh nghĩa dài hạn của nền kinh tế (thường 3,0-4,5% theo prompt gốc; khoảng này phải kiểm tra lại với lạm phát và GDP hiện hành)", "f_next đã chuẩn hóa (capex đủ nuôi g)"]
+    pitfalls: ["Dùng dòng tiền năm cuối chưa chuẩn hóa", "g quá cao so với GDP danh nghĩa", "Không kiểm tra PV(TV)/EV"]
+    interpretation: "Cảnh báo khi PV(TV)/EV > 70-80%: giá trị phụ thuộc quá nhiều vào giả định xa; bắt buộc chạy độ nhạy."
+    example:
+      inputs: {f_next: 242.406, r: 0.1035, g: 0.035}
+      steps: ["TV = 242,406 / (0,1035 - 0,035) = 242,406 / 0,0685 = 3538,8"]
+      result: "TV năm 5 ≈ 3.538,8 tỷ"
+
+  - id: "m05_tv_exit_multiple"
+    name_vi: "Giá trị cuối kỳ theo bội số thoái vốn"
+    name_en: "Terminal Value - Exit Multiple"
+    expression_latex: "TV_n = EBITDA_n \\times Multiple"
+    expression_python: "ebitda_n * multiple"
+    excel: "=ebitda_n*multiple"
+    variables:
+      - {symbol: "ebitda_n", meaning: "EBITDA năm cuối dự phóng", unit: "tỷ VND"}
+      - {symbol: "multiple", meaning: "Bội số EV/EBITDA của nhóm so sánh trưởng thành", unit: "lần"}
+    when_to_use: "Kiểm tra chéo TV Gordon hoặc khi ngành có giao dịch tham chiếu rõ."
+    why_it_works: "Thay vì giả định g, dùng giá mà thị trường trả cho doanh nghiệp tương tự tại thời điểm thoái vốn; nhưng mang tính vòng tròn vì bội số hiện tại phản ánh kỳ vọng của thị trường hiện tại."
+    assumptions: ["Bội số năm n tương đương bội số peer trưởng thành hiện tại"]
+    pitfalls: ["Dùng bội số của peer đang tăng nhanh", "Dùng multiple đỉnh chu kỳ", "Không kiểm tra g ngụ ý"]
+    interpretation: "Luôn tính g ngụ ý (m05_implied_g); nếu > tăng trưởng danh nghĩa dài hạn thì multiple quá cao."
+    example:
+      inputs: {ebitda_n: 499.357, multiple: 7.0}
+      steps: ["TV = 499,357 x 7,0 = 3495,5"]
+      result: "TV ≈ 3.495,5 tỷ"
+
+  - id: "m05_implied_g"
+    name_vi: "Tăng trưởng ngụ ý từ TV"
+    name_en: "Implied perpetual growth from TV"
+    expression_latex: "g = \\frac{TV \\cdot r - F_n}{TV + F_n}"
+    expression_python: "(tv * r - f_n) / (tv + f_n)"
+    excel: "=(tv*r-f_n)/(tv+f_n)"
+    variables:
+      - {symbol: "tv", meaning: "Giá trị cuối kỳ (từ exit multiple)", unit: "tỷ VND"}
+      - {symbol: "r", meaning: "Tỷ lệ chiết khấu", unit: "số thập phân"}
+      - {symbol: "f_n", meaning: "Dòng tiền năm n (chưa nhân 1+g)", unit: "tỷ VND"}
+    when_to_use: "Kiểm tra TV từ exit multiple có ngầm giả định g hợp lý không."
+    why_it_works: "Giải ngược từ TV = F_n(1+g)/(r-g) theo g."
+    assumptions: ["Dòng tiền năm n đã chuẩn hóa"]
+    pitfalls: ["Dùng dòng tiền chưa chuẩn hóa nên g ngụ ý sai"]
+    interpretation: "g ngụ ý nên nằm trong 2-4,5% (khoảng minh họa); vượt xa là dấu hiệu TV bị thổi phồng."
+    example:
+      inputs: {tv: 3495.5, r: 0.1035, f_n: 236.5}
+      steps: ["g = (3495,5 x 0,1035 - 236,5) / (3495,5 + 236,5) = 125,3 / 3732,0 ≈ 0,0336"]
+      result: "g ngụ ý ≈ 3,36% (hợp lý)"
+
+  - id: "m05_sustainable_g"
+    name_vi: "Tăng trưởng bền vững và FCFF chuẩn hóa cho TV"
+    name_en: "Sustainable growth and normalized terminal FCFF"
+    expression_latex: "g = RR \\times ROIC;\\quad FCFF_{n+1} = NOPAT_n (1+g)\\left(1 - \\frac{g}{ROIC}\\right)"
+    expression_python: "nopat_n * (1 + g) * (1 - g / roic)"
+    excel: "=nopat_n*(1+g)*(1-g/roic)"
+    variables:
+      - {symbol: "nopat_n", meaning: "NOPAT năm cuối dự phóng", unit: "tỷ VND"}
+      - {symbol: "g", meaning: "Tăng trưởng vĩnh viễn", unit: "số thập phân"}
+      - {symbol: "roic", meaning: "ROIC bền vững trên vốn đầu tư mới (nên hội tụ về gần WACC nếu cạnh tranh mạnh)", unit: "số thập phân"}
+    when_to_use: "Tính dòng tiền năm TV đúng bản chất, không copy năm cuối."
+    why_it_works: "Muốn tăng trưởng g thì phải tái đầu tư RR = g/ROIC của NOPAT; phần còn lại mới là dòng tiền tự do. ROIC càng thấp thì càng phải tái đầu tư nhiều."
+    assumptions: ["ROIC trên vốn đầu tư mới là hằng số", "Cấu trúc vốn ổn định"]
+    pitfalls: ["Để capex bằng khấu hao khi g > 0 (tăng trưởng miễn phí)", "ROIC bền vững cao hơn rất xa WACC mà không có moat"]
+    interpretation: "Nếu ROIC = WACC thì tăng trưởng không tạo thêm giá trị (TV chỉ phụ thuộc NOPAT, không phụ thuộc g)."
+    example:
+      inputs: {nopat_n: 305.5, g: 0.035, roic: 0.15}
+      steps: ["NOPAT_6 = 305,5 x 1,035 = 316,2", "RR = 0,035/0,15 = 23,3%", "FCFF_6 = 316,2 x (1 - 0,2333) = 242,4"]
+      result: "FCFF_{n+1} ≈ 242,4 tỷ (so với cách sao chép FCFF_5 x 1,035 = 244,8)"
+
+  - id: "m05_pv_dcf"
+    name_vi: "Hiện giá dòng tiền dự phóng và TV (có mid-year)"
+    name_en: "DCF present value with mid-year option"
+    expression_latex: "V_0 = \\sum_{t=1}^{n}\\frac{F_t}{(1+r)^{t-s}} + \\frac{TV_n}{(1+r)^{n-s}},\\ s = 0\\ \\text{hoặc}\\ 0{,}5"
+    expression_python: "sum(f / (1 + r) ** (i + 1 - s) for i, f in enumerate(flows)) + tv / (1 + r) ** (len(flows) - s)"
+    excel: "=NPV(r,flows)*(1+r)^s + tv/(1+r)^(n-s)"
+    variables:
+      - {symbol: "flows", meaning: "Danh sách dòng tiền năm 1..n", unit: "tỷ VND"}
+      - {symbol: "r", meaning: "WACC (FCFF) hoặc Re (FCFE/DDM)", unit: "số thập phân"}
+      - {symbol: "tv", meaning: "TV tại cuối năm n", unit: "tỷ VND"}
+      - {symbol: "s", meaning: "0 nếu quy ước cuối năm; 0,5 nếu dòng tiền phát sinh đều trong năm (mid-year)", unit: "năm"}
+    when_to_use: "Mọi DCF. Quy ước mặc định cuối năm; dùng mid-year khi dòng tiền phát sinh đều trong năm (bán lẻ, sản xuất)."
+    why_it_works: "Dòng tiền thực tế đến rải rác trong năm chứ không dồn vào 31/12; mid-year làm hiện giá cao hơn khoảng (1+r)^0,5 (4-5%). Với TV Gordon cũng dịch tương ứng (TV tại N-0,5); với exit multiple thì TV giữ tại cuối năm n."
+    assumptions: ["Dòng tiền phân bổ đều trong năm", "Ngày định giá là đầu năm dự phóng thứ 1"]
+    pitfalls: ["Trộn mid-year cho dòng tiền nhưng không nhất quán với TV", "Quên chiết khấu theo phần năm nếu ngày định giá giữa năm"]
+    interpretation: "Mid-year nâng EV khoảng 5% so với cuối năm khi r ≈ 10%; luôn ghi rõ quy ước."
+    example:
+      inputs: {flows: [148.2, 174.1, 201.7, 219.4, 236.5], r: 0.1035, tv: 3538.77, s: 0}
+      steps: ["Tổng PV dòng tiền năm 1-5 ≈ 719,9", "PV(TV) = 3538,77 / 1,1035^5 ≈ 2162,7", "EV ≈ 2882,6"]
+      result: "EV ≈ 2.882,6 tỷ (cuối năm); mid-year ≈ 3.028,1 (nhân (1+r)^0,5 cho cả TV Gordon)"
+
+  - id: "m05_equity_bridge"
+    name_vi: "Cầu nối EV sang giá trị vốn chủ và giá/cổ phiếu"
+    name_en: "EV to equity per share bridge"
+    expression_latex: "P = \\frac{EV - Debt + Cash - Minority - Pref + Associates}{Diluted\\ Shares}"
+    expression_python: "(ev - debt + cash - minority - pref + associates) * 1e9 / diluted_shares"
+    excel: "=(ev-debt+cash-minority-pref+assoc)*1e9/shares"
+    variables:
+      - {symbol: "ev", meaning: "Giá trị doanh nghiệp từ DCF", unit: "tỷ VND"}
+      - {symbol: "debt", meaning: "Tổng nợ vay có lãi (gồm lease tài chính nếu đã loại khỏi FCFF)", unit: "tỷ VND"}
+      - {symbol: "cash", meaning: "Tiền và đầu tư tài chính ngắn hạn", unit: "tỷ VND"}
+      - {symbol: "minority", meaning: "Lợi ích cổ đông thiểu số", unit: "tỷ VND"}
+      - {symbol: "pref", meaning: "Cổ phiếu ưu đãi", unit: "tỷ VND"}
+      - {symbol: "associates", meaning: "Đầu tư vào công ty liên kết/tài sản phi hoạt động chưa nằm trong FCFF", unit: "tỷ VND"}
+      - {symbol: "diluted_shares", meaning: "Số cổ phiếu pha loãng", unit: "cổ phiếu"}
+    when_to_use: "Sau mọi DCF FCFF để ra giá/cổ phiếu."
+    why_it_works: "EV thuộc cả chủ nợ và cổ đông; chủ nợ, thiểu số, ưu đãi đứng trước cổ đông phổ thông; tiền và tài sản phi hoạt động chưa nằm trong dòng tiền nên được cộng riêng."
+    assumptions: ["Nợ và tiền lấy ở thời điểm định giá gần nhất"]
+    pitfalls: ["Dùng số cổ phiếu lưu hành thay vì pha loãng", "Bỏ qua thiểu số trong tập đoàn có công ty con chưa sở hữu 100%", "Đếm trùng tiền khi EV đã tính tiền thừa"]
+    interpretation: "So sánh với giá thị trường để ra upside/downside và MoS."
+    example:
+      inputs: {ev: 3000, debt: 800, cash: 200, minority: 100, pref: 0, associates: 0, diluted_shares: 50000000}
+      steps: ["Equity = 3000 - 800 + 200 - 100 = 2300 tỷ", "Giá = 2300e9 / 50e6 = 46.000 VND/cp"]
+      result: "46.000 VND/cổ phiếu (số minh họa)"
+
+  - id: "m05_ddm_gordon"
+    name_vi: "DDM tăng trưởng đều (Gordon)"
+    name_en: "Gordon Growth DDM"
+    expression_latex: "P_0 = \\frac{D_0(1+g)}{R_e - g}"
+    expression_python: "d0 * (1 + g) / (re - g)"
+    excel: "=d0*(1+g)/(re-g)"
+    variables:
+      - {symbol: "d0", meaning: "Cổ tức tiền mặt/cổ phiếu năm vừa qua", unit: "VND/cp"}
+      - {symbol: "g", meaning: "Tăng trưởng cổ tức vĩnh viễn; thường g = (1 - payout) x ROE", unit: "số thập phân"}
+      - {symbol: "re", meaning: "Chi phí vốn chủ", unit: "số thập phân"}
+    when_to_use: "Doanh nghiệp trưởng thành, chính sách cổ tức ổn định (tiện ích, tiêu dùng thiết yếu, ngân hàng trả cổ tức tiền mặt đều)."
+    why_it_works: "Giá cổ phiếu là tổng hiện giá cổ tức; với cổ tức tăng đều g thì chuỗi vô hạn thu gọn thành D1/(Re-g)."
+    assumptions: ["Re > g", "Payout và ROE ổn định", "Không thay đổi lớn về cấu trúc vốn"]
+    pitfalls: ["Dùng cho doanh nghiệp không trả cổ tức tiền mặt", "g vượt tăng trưởng danh nghĩa", "Cổ tức cổ phiếu bị coi là cổ tức tiền mặt"]
+    interpretation: "Nhạy cực cao với (Re - g); luôn kèm bảng độ nhạy."
+    example:
+      inputs: {d0: 1000, g: 0.05, re: 0.131}
+      steps: ["D1 = 1000 x 1,05 = 1050", "P0 = 1050 / (0,131 - 0,05) = 12.963"]
+      result: "P0 ≈ 12.963 VND (số minh họa)"
+
+  - id: "m05_ddm_multistage"
+    name_vi: "DDM/FCFE nhiều giai đoạn"
+    name_en: "Multi-stage DDM / FCFE"
+    expression_latex: "P_0 = \\sum_{t=1}^{n}\\frac{D_t}{(1+R_e)^t} + \\frac{D_{n+1}/(R_e-g)}{(1+R_e)^n}"
+    expression_python: "sum(d / (1 + re) ** (i + 1) for i, d in enumerate(divs)) + (d_next / (re - g)) / (1 + re) ** len(divs)"
+    excel: "=NPV(re,divs)+(d_next/(re-g))/(1+re)^n"
+    variables:
+      - {symbol: "divs", meaning: "Cổ tức hoặc FCFE năm 1..n", unit: "VND/cp"}
+      - {symbol: "d_next", meaning: "Cổ tức/FCFE chuẩn hóa năm n+1 = (ROE_T - g) x BV_n (bút toán sạch)", unit: "VND/cp"}
+      - {symbol: "re", meaning: "Chi phí vốn chủ", unit: "số thập phân"}
+      - {symbol: "g", meaning: "Tăng trưởng vĩnh viễn", unit: "số thập phân"}
+    when_to_use: "Ngân hàng, doanh nghiệp đang tăng trưởng nhanh rồi chậm lại; payout tăng dần theo thời gian."
+    why_it_works: "Tách giai đoạn tăng trưởng cao (dự phóng chi tiết) khỏi giai đoạn bền vững (Gordon) cho phép payout phản ánh nhu cầu giữ vốn thực tế."
+    assumptions: ["Payout cuối kỳ khớp với g bền vững: payout = 1 - g/ROE_T"]
+    pitfalls: ["d_next lấy theo payout giai đoạn tăng trưởng (thấp) khiến TV bị đánh giá thấp", "ROE_T quá cao so với Re kéo dài"]
+    interpretation: "Kiểm tra PV(TV)/giá; thường 60-85% với ngân hàng (xem m05_ex2)."
+    example:
+      inputs: {divs: [680, 909, 1145, 1427, 1723], d_next: 3001.767, re: 0.131, g: 0.05}
+      steps: ["PV cổ tức 5 năm ≈ 3906,4", "TV = 3001,767 / 0,081 ≈ 37058,9; PV(TV) ≈ 20025,3", "P0 ≈ 3906,4 + 20025,3 = 23931,7"]
+      result: "P0 ≈ 23.932 VND/cp"
+
+  - id: "m05_residual_income"
+    name_vi: "Mô hình thu nhập thặng dư"
+    name_en: "Residual Income valuation"
+    expression_latex: "P_0 = BV_0 + \\sum_{t=1}^{n}\\frac{(ROE_t - R_e) BV_{t-1}}{(1+R_e)^t} + \\frac{(ROE_T - R_e) BV_n / (R_e - g)}{(1+R_e)^n}"
+    expression_python: "bv0 + sum(ri / (1 + re) ** (i + 1) for i, ri in enumerate(ris)) + (ri_next / (re - g)) / (1 + re) ** len(ris)"
+    excel: "=bv0+NPV(re,ris)+(ri_next/(re-g))/(1+re)^n"
+    variables:
+      - {symbol: "bv0", meaning: "Giá trị sổ sách/cổ phiếu hiện tại", unit: "VND/cp"}
+      - {symbol: "ris", meaning: "Thu nhập thặng dư từng năm = NI_t - Re x BV_{t-1}", unit: "VND/cp"}
+      - {symbol: "ri_next", meaning: "Thu nhập thặng dư năm n+1 = (ROE_T - Re) x BV_n", unit: "VND/cp"}
+      - {symbol: "re", meaning: "Chi phí vốn chủ", unit: "số thập phân"}
+      - {symbol: "g", meaning: "Tăng trưởng RI vĩnh viễn (bằng tăng trưởng sổ sách bền vững)", unit: "số thập phân"}
+    when_to_use: "Ngân hàng, bảo hiểm, công ty đầu tư; khi BCTC minh bạch và muốn giảm tỷ trọng TV."
+    why_it_works: "Lợi nhuận kế toán đã bao gồm cả chi phí nợ nhưng chưa trừ chi phí cơ hội của vốn chủ; trừ Re x BV thì phần còn lại là giá trị mới tạo ra. Cộng với BV0 (giá trị đã có) ra giá trị vốn chủ."
+    assumptions: ["Bút toán sạch: ΔBV = NI - cổ tức", "ROE_T, g nhất quán"]
+    pitfalls: ["Dùng BV đã bị méo (tài sản chưa trích lập đủ dự phòng)", "RI âm mãi nhưng vẫn giữ g dương"]
+    interpretation: "P/B lý thuyết bằng 1 + (hiện giá RI)/BV0; ROE > Re thì P/B > 1."
+    example:
+      inputs: {bv0: 20000, ris: [780, 659, 483, 394, 277], ri_next: 300.18, re: 0.131, g: 0.05}
+      steps: ["Tổng PV(RI năm 1-5) ≈ 1929,2", "ri_next = (0,14 - 0,131) x 33.353 = 300,2; TV phần RI = 300,2/0,081 = 3705,9; PV ≈ 2002,5", "P0 = 20000 + 1929,2 + 2002,5 ≈ 23931,7"]
+      result: "P0 ≈ 23.932 VND/cp (trùng DDM 2 giai đoạn)"
+
+  - id: "m05_justified_pb"
+    name_vi: "P/B hợp lý từ ROE, g, Re"
+    name_en: "Justified P/B"
+    expression_latex: "P/B = \\frac{ROE - g}{R_e - g}"
+    expression_python: "(roe - g) / (re - g)"
+    excel: "=(roe-g)/(re-g)"
+    variables:
+      - {symbol: "roe", meaning: "ROE bền vững", unit: "số thập phân"}
+      - {symbol: "g", meaning: "Tăng trưởng bền vững", unit: "số thập phân"}
+      - {symbol: "re", meaning: "Chi phí vốn chủ", unit: "số thập phân"}
+    when_to_use: "Cầu nối giữa nội tại và định giá tương đối cho ngân hàng (chọn P/B mục tiêu có căn cứ ở m04)."
+    why_it_works: "Suy ra từ DDM Gordon với payout = 1 - g/ROE: D1 = (ROE - g) x BV0."
+    assumptions: ["ROE và g ổn định"]
+    pitfalls: ["Áp dụng cho doanh nghiệp tăng trưởng cao, vốn vô hình"]
+    interpretation: "ROE > Re cho P/B > 1; ROE = Re cho P/B = 1."
+    example:
+      inputs: {roe: 0.14, g: 0.05, re: 0.131}
+      steps: ["P/B = (0,14 - 0,05) / (0,131 - 0,05) = 0,09 / 0,081 = 1,111"]
+      result: "P/B hợp lý ≈ 1,11 lần"
+
+  - id: "m05_tv_share"
+    name_vi: "Tỷ trọng giá trị cuối kỳ"
+    name_en: "PV(TV) share of value"
+    expression_latex: "Share = \\frac{PV(TV)}{EV\\ (hoặc\\ giá\\ trị\\ vốn\\ chủ)}"
+    expression_python: "pv_tv / total_value"
+    excel: "=pv_tv/total_value"
+    variables:
+      - {symbol: "pv_tv", meaning: "Hiện giá TV", unit: "đơn vị tiền"}
+      - {symbol: "total_value", meaning: "Tổng giá trị (EV hoặc vốn chủ) trước trừ nợ", unit: "đơn vị tiền"}
+    when_to_use: "Kiểm tra độ rủi ro giả định của mọi DCF/DDM."
+    why_it_works: "TV càng chiếm tỷ trọng lớn thì kết quả càng phụ thuộc g và r xa trong tương lai, nơi dự báo kém chắc chắn nhất."
+    assumptions: ["Cùng cơ sở: EV so với EV, vốn chủ so với vốn chủ"]
+    pitfalls: ["Chia PV(TV) cho giá trị vốn chủ sau khi trừ nợ (méo tỷ trọng)"]
+    interpretation: "Dưới 60-65% bình thường; 70-80% cảnh báo (bắt buộc độ nhạy); trên 80% phải đưa kết luận thận trọng hoặc kéo dài giai đoạn dự phóng."
+    example:
+      inputs: {pv_tv: 2162.67, total_value: 2882.6}
+      steps: ["Share = 2162,67 / 2882,6 = 0,750"]
+      result: "75,0% (vùng cảnh báo)"
+
+  - id: "m05_sensitivity_grid"
+    name_vi: "Bảng độ nhạy giá nội tại theo r x g"
+    name_en: "Sensitivity grid (r x g)"
+    expression_latex: "P(r, g) = \\frac{\\sum F_t/(1+r)^t + FCFF_{n+1}(g)/(r-g)/(1+r)^n - NetDebt}{Shares}"
+    expression_python: "[[(sum(f / (1 + w) ** (i + 1) for i, f in enumerate(flows)) + (nopat_n * (1 + g) * (1 - g / roic)) / (w - g) / (1 + w) ** len(flows) - net_debt) * 1e9 / shares for g in gs] for w in ws]"
+    excel: "Data Table hai biến (Data > What-If Analysis) hoặc lưới công thức tham chiếu ô r và ô g"
+    variables:
+      - {symbol: "flows", meaning: "FCFF năm 1..n (giữ cố định)", unit: "tỷ VND"}
+      - {symbol: "ws", meaning: "Danh sách tỷ lệ chiết khấu (gốc ±1%, ±2%)", unit: "số thập phân"}
+      - {symbol: "gs", meaning: "Danh sách g (gốc ±0,5%, ±1%)", unit: "số thập phân"}
+      - {symbol: "nopat_n", meaning: "NOPAT năm n", unit: "tỷ VND"}
+      - {symbol: "roic", meaning: "ROIC bền vững", unit: "số thập phân"}
+      - {symbol: "net_debt", meaning: "Nợ ròng (đã gồm thiểu số nếu có)", unit: "tỷ VND"}
+      - {symbol: "shares", meaning: "Cổ phiếu pha loãng", unit: "cổ phiếu"}
+    when_to_use: "Mọi báo cáo định giá; bắt buộc theo prompt gốc (Re/WACC ±1%, ±2% x g ±0,5%, ±1%)."
+    why_it_works: "Hai biến cùng nằm trong mẫu số (r - g) của TV nên tương tác phi tuyến; một bảng 2 chiều lộ ra vùng giá trị có thể chịu đựng thay vì một điểm duy nhất."
+    assumptions: ["FCFF dự phóng không đổi khi r, g đổi (chỉ TV đổi theo g và RR)", "Nếu muốn thử nghiệm cả giả định vận hành, dùng kịch bản riêng"]
+    pitfalls: ["Chỉ tăng/giảm một biến", "Lưới có điểm r <= g (lỗi chia cho 0 hoặc âm)", "Bỏ qua việc RR đổi theo g"]
+    interpretation: "Ô góc dưới trái (r cao, g thấp) là worst-case; ô góc trên phải là best-case. Chênh lệch worst/best lớn nghĩa là mô hình mong manh."
+    example:
+      inputs: {note: "Dùng dữ liệu worked example m05_ex1 (flows 5 năm, nopat_n 305,5, roic 0,15, net_debt 500, shares 100e6)"}
+      steps: ["WACC gốc 10,35%, g gốc 3,5%", "Giá nội tại ở lưới trung tâm = 23.826 VND", "Worst (12,35%, 2,5%) = 16.619; Best (8,35%, 4,5%) = 41.482"]
+      result: "Xem bảng 5x5 trong worked example m05_ex3"
+
+  - id: "m05_margin_of_safety"
+    name_vi: "Biên an toàn"
+    name_en: "Margin of Safety"
+    expression_latex: "MoS = \\frac{V - P}{V}"
+    expression_python: "(v - p) / v"
+    excel: "=(v-p)/v"
+    variables:
+      - {symbol: "v", meaning: "Giá trị nội tại (cơ sở hoặc worst-case)", unit: "VND/cp"}
+      - {symbol: "p", meaning: "Giá thị trường hiện tại (có ngày)", unit: "VND/cp"}
+    when_to_use: "Kết luận định giá; tính cho cả kịch bản cơ sở và worst-case."
+    why_it_works: "Graham: mua với mức chiết khấu đủ lớn để chịu sai số dự báo. Công thức chia cho V (không phải P) nên cho biết giá còn dư địa bao nhiêu % so với giá trị."
+    assumptions: ["V không bị thổi phồng", "P là giá giao dịch tại ngày định giá"]
+    pitfalls: ["Nhầm công thức upside = (V-P)/P", "Chỉ xét MoS từ kịch bản cơ sở"]
+    interpretation: "MoS cơ sở >= 25-30% là mức tham chiếu thận trọng (khoảng quy ước, không phải luật). MoS tại worst-case >= 0 nghĩa là ngay cả kịch bản xấu nhất giá vẫn không đắt."
+    example:
+      inputs: {v: 23826, p: 18000}
+      steps: ["MoS = (23826 - 18000) / 23826 = 0,2445"]
+      result: "MoS cơ sở ≈ 24,5%; worst-case 16.619: MoS = (16619 - 18000)/16619 = -8,3% (không có biên an toàn ở worst-case)"
+
+frameworks:
+  - id: "m05_model_selection_matrix"
+    name_vi: "Ma trận chọn mô hình định giá nội tại"
+    name_en: "Model Selection Matrix"
+    origin: "Thực hành Damodaran (NYU) và CFA Institute: mô hình phải phản ánh bản chất cấu trúc vốn của doanh nghiệp. Prompt gốc nhấn mạnh ngân hàng STB/SHB bắt buộc FCFE/DDM."
+    components:
+      - "Phi tài chính (sản xuất, bán lẻ, công nghệ, BĐS): FCFF, chiết khấu WACC, ra EV rồi trừ nợ ròng"
+      - "Ngân hàng, tài chính, bảo hiểm: FCFE/DDM/Residual Income, chiết khấu Re, ra thẳng giá trị vốn chủ"
+      - "Doanh nghiệp trả cổ tức tiền mặt đều: DDM (Gordon hoặc nhiều giai đoạn)"
+      - "Doanh nghiệp tăng trưởng cao, FCFF âm giai đoạn đầu: FCFF nhiều giai đoạn có tái đầu tư; xem xét kịch bản thay vì một điểm"
+      - "Bất động sản chu kỳ dự án: NAV theo dự án (m06) cùng với kiểm tra FCFF"
+    when_to_use: "Bước đầu tiên của mọi định giá, trước khi tải số liệu."
+    how_to_apply:
+      - "Xác định ngành và cách doanh nghiệp tạo tiền (nợ là nguyên liệu hay chỉ là nguồn vốn)"
+      - "Chọn mô hình chính và một mô hình kiểm tra chéo (ví dụ RI kiểm tra DDM; P/B hợp lý kiểm tra RI)"
+      - "Chọn tỷ lệ chiết khấu khớp (WACC cho FCFF, Re cho FCFE/DDM/RI)"
+      - "Ghi lý do chọn mô hình trong báo cáo"
+    how_to_read_results: "Hai mô hình cho kết quả cách biệt trên 25-30% thì kiểm tra lại giả định, không lấy trung bình mù quáng."
+    pitfalls: ["Dùng FCFF cho ngân hàng", "Dùng DDM cho doanh nghiệp không chia cổ tức tiền mặt", "Chiết khấu FCFE bằng WACC"]
+    example: "Ngân hàng thương mại không chia cổ tức tiền mặt: dùng FCFE (NI trừ vốn giữ lại cho ΔRWA x CAR) hoặc Residual Income, chiết khấu Re."
+
+  - id: "m05_dcf_fcff_two_stage"
+    name_vi: "DCF FCFF 2 giai đoạn (5 năm rõ + TV)"
+    name_en: "Two-stage FCFF DCF"
+    origin: "Chuẩn thực hành ngân hàng đầu tư; nền tảng Miller-Modigliani (1961) về giá trị doanh nghiệp là hiện giá dòng tiền."
+    components: ["Dự phóng 5 năm chi tiết (doanh thu, biên EBIT, thuế, D&A, CAPEX, ΔNWC)", "WACC từ CAPM, Kd, cơ cấu vốn mục tiêu", "TV chuẩn hóa (Gordon, kiểm tra exit multiple)", "Cầu nối EV sang giá/cổ phiếu", "Bảng độ nhạy và MoS"]
+    when_to_use: "Doanh nghiệp phi tài chính có dòng tiền dự báo được."
+    how_to_apply:
+      - "Dự phóng doanh thu (tăng trưởng giảm dần về g), biên EBIT, thuế, D&A, CAPEX, ΔNWC từ doanh thu"
+      - "Tính FCFF từng năm theo m05_fcff"
+      - "Tính WACC (m05_capm_re, m05_wacc)"
+      - "Tính FCFF chuẩn hóa năm n+1 (m05_sustainable_g) và TV (m05_gordon_tv); kiểm tra chéo bằng exit multiple và g ngụ ý"
+      - "Chiết khấu (m05_pv_dcf), cầu nối (m05_equity_bridge), kiểm tra TV% (m05_tv_share)"
+      - "Bảng độ nhạy (m05_sensitivity_grid) và kịch bản xấu/cơ sở/tốt, MoS"
+    how_to_read_results: "Báo cáo khoảng giá (worst đến base), không báo cáo một con số."
+    pitfalls: ["g vượt GDP danh nghĩa", "Biên EBIT tăng vô hạn", "Capex nhỏ hơn D&A vĩnh viễn"]
+    example: "m05_ex1: doanh nghiệp sản xuất, giá nội tại cơ sở 23.826 VND/cp; TV chiếm 75%."
+
+  - id: "m05_bank_valuation_framework"
+    name_vi: "Khung định giá ngân hàng (FCFE/DDM/RI + P/B)"
+    name_en: "Bank valuation framework"
+    origin: "Damodaran (Investment Valuation) và CFA: ngân hàng là doanh nghiệp mà nợ là nguyên liệu, nên dùng mô hình vốn chủ. Prompt gốc yêu cầu bóc tách NPL, LLR, CAR."
+    components: ["Chất lượng tài sản: NPL, LLR, nợ nhóm 2, trái phiếu doanh nghiệp, tài sản tái cơ cấu (VAMC)", "Vốn: CAR, tỷ lệ vốn cấp 1", "Dự phóng ROE từ NIM, chi phí tín dụng, CIR, đòn bẩy", "FCFE = NI - CAR x ΔRWA hoặc cổ tức tiền mặt", "Re từ CAPM", "RI và DDM kiểm tra chéo, P/B hợp lý"]
+    when_to_use: "Mọi định giá ngân hàng và công ty chứng khoán."
+    how_to_apply:
+      - "Chuẩn hóa lợi nhuận: loại thu nhập bất thường (thoái vốn, hoàn nhập dự phòng một lần); tách chi phí dự phòng bất thường"
+      - "Dự phóng RWA, vốn chủ, ROE theo năm; ΔBV = NI - cổ tức"
+      - "Tính FCFE hoặc cổ tức, chiết khấu Re"
+      - "TV bằng (ROE_T - g) x BV_n / (Re - g); kiểm tra bằng RI và P/B hợp lý"
+      - "Độ nhạy Re x g; kiểm tra NPL tăng và chi phí dự phòng làm ROE giảm bao nhiêu"
+    how_to_read_results: "P/B mục tiêu = giá nội tại / BV0; so với ROE bền vững và Re (P/B > 1 khi ROE > Re)."
+    pitfalls: ["Dùng P/E TTM khi dự phòng bị đẩy cao tạm thời (bẫy P/E)", "Bỏ qua tài sản tái cơ cấu chưa xử lý trong BV", "Chia cổ tức bằng cổ phiếu mà coi là dòng tiền"]
+    example: "m05_ex2: ngân hàng minh họa BVPS 20.000, ROE giảm dần 17% còn 14%, Re 13,1%, g 5%, giá nội tại 23.932 VND; P/B 1,20."
+
+  - id: "m05_scenario_framework"
+    name_vi: "Kịch bản cơ sở, xấu, tốt (thận trọng)"
+    name_en: "Base, bear, bull scenarios"
+    origin: "Thực hành phân tích đầu tư; đề cao nguyên tắc thận trọng của prompt gốc và Graham."
+    components: ["Cơ sở: giả định hợp lý, hội tụ về g", "Xấu: tăng trưởng thấp, biên thấp, Re cao hơn 1%, g thấp 1%", "Tốt: giả định cải thiện vừa phải, không cực đoan"]
+    when_to_use: "Kết luận định giá."
+    how_to_apply:
+      - "Đặt thông số vận hành (tăng trưởng, biên) và thông số tài chính (Re/WACC, g) cho từng kịch bản"
+      - "Tính giá nội tại từng kịch bản và TV%"
+      - "Gán xác suất chủ quan nếu muốn có giá trị kỳ vọng, nhưng ghi rõ"
+      - "MoS tính từ kịch bản xấu"
+    how_to_read_results: "Nếu giá thị trường nằm trên kịch bản cơ sở thì cổ phiếu đắt; nằm dưới kịch bản xấu thì biên an toàn rõ rệt."
+    pitfalls: ["Kịch bản tốt phi thực tế (tăng trưởng 30-50% kéo dài 5-10 năm)", "Chỉ đổi một thông số"]
+    example: "m05_ex3: xấu 13.125; cơ sở 23.826; tốt 32.423 VND/cp."
+
+  - id: "m05_tv_stress_framework"
+    name_vi: "Kiểm tra căng thẳng giá trị cuối kỳ"
+    name_en: "TV stress test"
+    origin: "Do TV thường chiếm 70-80% giá trị (prompt gốc), thực hành chuẩn là kiểm tra g ngụ ý, multiple ngụ ý và RR x ROIC."
+    components: ["PV(TV)/giá trị tổng", "Multiple ngụ ý của TV Gordon", "g ngụ ý của TV exit multiple", "g so với lạm phát và GDP danh nghĩa dài hạn", "g = RR x ROIC", "ROIC hội tụ về WACC"]
+    when_to_use: "Sau khi có TV, trước khi báo giá."
+    how_to_apply:
+      - "Tính PV(TV)/EV; nếu > 70-80% mở rộng giai đoạn dự phóng hoặc cảnh báo kết luận"
+      - "Tính EV/EBITDA ngụ ý TV rồi so với peer trưởng thành"
+      - "Tính g ngụ ý nếu dùng exit multiple"
+      - "Đảm bảo g <= tăng trưởng danh nghĩa dài hạn và RR = g/ROIC hợp lý"
+      - "Mô phỏng r +1%, g -0,5% xem giá giảm bao nhiêu %"
+    how_to_read_results: "Nếu r +1% và g -0,5% làm giá giảm hơn 25-30% thì mô hình mong manh; MoS phải lớn hơn."
+    pitfalls: ["Cho g bằng đúng r trừ rất nhỏ", "Capex bằng 0 trong TV"]
+    example: "m05_ex4: FCFF 100, r 10%, g 3% cho TV 1.471; r 11% còn 1.288 (-12,5%); r 12% còn 1.144 (-22,2%)."
+
+  - id: "m05_ep_pitfall_traps"
+    name_vi: "Bẫy chỉ số ngắn hạn P/E và P/B"
+    name_en: "P/E and P/B traps"
+    origin: "Phần 2 prompt gốc: bẫy P/E của ngân hàng trích lập dự phòng mạnh; bẫy P/B của công ty tài sản vô hình."
+    components: ["Bẫy P/E: EPS TTM bị bóp tạm thời do trích lập dự phòng, P/E quá khứ cao ảo", "Bẫy P/B: công ty asset-light, phần mềm, mạng lưới có P/B cao và vô nghĩa", "P/B có ý nghĩa với ngân hàng vì tài sản là tiền và khoản cho vay có tính thanh khoản"]
+    when_to_use: "Khi hệ số tương đối mâu thuẫn với nội tại."
+    how_to_apply:
+      - "Chuẩn hóa EPS (cộng lại phần dự phòng bất thường, trừ thu nhập một lần) rồi tính P/E dự phóng"
+      - "Dùng định giá nội tại để biết P/E dự phóng khi lợi nhuận bình thường hóa"
+      - "Không dùng P/B cho doanh nghiệp tài sản vô hình"
+    how_to_read_results: "Nếu P/E TTM cao nhưng P/E chuẩn hóa thấp và chất lượng tài sản cải thiện thì có thể rẻ."
+    pitfalls: ["Mua vì P/E thấp nhưng EPS bị phồng bởi hoàn nhập dự phòng một lần", "Bán vì P/E cao khi EPS đang bị bóp tạm thời"]
+    example: "Ví dụ gốc về STB (dự phòng tăng gấp hơn 6 lần nửa đầu 2026) chỉ là minh họa chưa kiểm chứng; agent phải tra BCTC thực tế trước khi kết luận."
+
+procedures:
+  - id: "m05_market_snapshot"
+    name: "Lập ảnh chụp thị trường có ngày (không hard-code)"
+    steps:
+      - "Bước 1: web_search/web_fetch lợi suất trái phiếu chính phủ 10 năm của đúng quốc gia và đồng tiền (VN: HNX/VBMA/Investing/Trading Economics); ghi giá trị, nguồn, ngày"
+      - "Bước 2: lấy ERP (Damodaran cập nhật hàng tháng cho từng quốc gia hoặc nguồn tương đương); nếu không có, nêu giả định kèm khoảng và lý do"
+      - "Bước 3: lấy beta của cổ phiếu (nguồn dữ liệu cổ phiếu), hoặc beta ngành (Damodaran) rồi relever theo D/E mục tiêu; ghi khoảng tin cậy"
+      - "Bước 4: lấy lạm phát và GDP danh nghĩa dài hạn để giới hạn g"
+      - "Bước 5: lấy giá cổ phiếu, số cổ phiếu lưu hành, nợ, tiền từ BCTC quý gần nhất; ghi ngày"
+      - "Bước 6: viết bảng Snapshot: tham số, giá trị, nguồn, ngày, độ tin cậy; không có nguồn thì ghi 'giả định'"
+    outputs: "Bảng Snapshot có ngày; không dùng số cố định như Rf 4,58% của prompt gốc trừ khi vừa xác minh."
+
+  - id: "m05_full_dcf_report"
+    name: "Báo cáo định giá FCFF từ đầu đến cuối (phi tài chính)"
+    steps:
+      - "Bước 0: lập snapshot (m05_market_snapshot); xác nhận ngành thuộc phi tài chính"
+      - "Bước 1: bóc BCTC mới nhất; chuẩn hóa EBIT (loại thu nhập bất thường), tính ROIC, vòng quay NWC, capex/doanh thu, D&A/doanh thu (m03)"
+      - "Bước 2: lập giả định 5 năm: tăng trưởng doanh thu (giảm dần), biên EBIT, thuế hiệu dụng, D&A, CAPEX, NWC (% doanh thu hoặc ΔDoanh thu). Mỗi giả định kèm căn cứ (lịch sử, ngành, công suất)"
+      - "Bước 3: bảng dự phóng 5 năm gồm doanh thu, EBIT, NOPAT, D&A, CAPEX, ΔNWC, FCFF (xem m05_ex1)"
+      - "Bước 4: WACC: Re (CAPM), Kd, cơ cấu mục tiêu, thuế; kiểm tra WACC > g"
+      - "Bước 5: TV: chọn g <= lạm phát và GDP danh nghĩa dài hạn; ROIC bền vững; FCFF chuẩn hóa = NOPAT x (1+g) x (1 - g/ROIC); TV Gordon; kiểm tra chéo bằng multiple ngụ ý và g ngụ ý nếu dùng exit multiple"
+      - "Bước 6: chiết khấu, tính EV; kiểm tra PV(TV)/EV; mid-year nếu có lý do"
+      - "Bước 7: cầu nối: trừ nợ ròng, thiểu số, ưu đãi, cộng tài sản phi hoạt động; chia số cổ phiếu pha loãng"
+      - "Bước 8: kịch bản xấu/cơ sở/tốt (giả định thận trọng); bảng độ nhạy 5x5 (WACC ±1%, ±2% x g ±0,5%, ±1%)"
+      - "Bước 9: MoS cơ sở và worst-case so với giá thị trường có ngày"
+      - "Bước 10: kết luận khoảng giá, rủi ro chính, các giả định nhạy nhất, điều kiện làm kết luận thay đổi; kiểm tra bằng Python và ghi lại"
+    outputs: "Báo cáo có: snapshot, bảng giả định, bảng dự phóng, WACC, TV, EV, giá/cổ phiếu, TV%, bảng độ nhạy, kịch bản, MoS, kết luận khoảng giá, rủi ro."
+
+  - id: "m05_bank_valuation_report"
+    name: "Báo cáo định giá ngân hàng/tài chính (FCFE, DDM, RI)"
+    steps:
+      - "Bước 0: snapshot; xác nhận không dùng FCFF/EV/WACC"
+      - "Bước 1: bóc BCTC: NPL, LLR, CAR, NIM, CIR, chi phí tín dụng, tăng trưởng tín dụng, tài sản tái cơ cấu, trái phiếu doanh nghiệp; chuẩn hóa lợi nhuận loại khoản bất thường"
+      - "Bước 2: giả định 5 năm: tăng trưởng RWA/tín dụng, ROE (từ NIM, chi phí tín dụng, CIR), chính sách cổ tức tiền mặt/cổ phiếu"
+      - "Bước 3: bảng BV, NI, cổ tức/FCFE (NI - CAR x ΔRWA hoặc ΔBV), RI từng năm"
+      - "Bước 4: Re = Rf + beta x ERP (beta ngân hàng nhiều khi 1,1-1,5 trong bối cảnh VN, phải xác minh)"
+      - "Bước 5: TV: (ROE_T - g) x BV_n / (Re - g); g neo (1 - payout) x ROE_T và <= tăng trưởng danh nghĩa dài hạn; ROE_T hội tụ về gần Re"
+      - "Bước 6: giá DDM/FCFE và RI (phải trùng nếu bút toán sạch; chênh là dấu hiệu lỗi); P/B ngụ ý"
+      - "Bước 7: độ nhạy Re x g và độ nhạy ROE (do chi phí dự phòng); kịch bản NPL xấu"
+      - "Bước 8: MoS và kết luận khoảng giá; tách rủi ro chất lượng tài sản và rủi ro lãi suất"
+    outputs: "Giá nội tại/cổ phiếu, P/B hợp lý, TV%, bảng độ nhạy, kịch bản, MoS, kết luận."
+
+  - id: "m05_tv_review"
+    name: "Rà soát TV và giả định của một báo cáo định giá"
+    steps:
+      - "Tính PV(TV)/EV; cảnh báo > 70-80%"
+      - "Kiểm tra g so với lạm phát + tăng trưởng thực dài hạn; g > tăng trưởng danh nghĩa là lỗi"
+      - "Kiểm tra g = RR x ROIC; capex năm TV >= D&A khi g > 0"
+      - "Tính multiple ngụ ý và g ngụ ý"
+      - "Kiểm tra dòng tiền - tỷ lệ chiết khấu khớp nhau"
+      - "Kiểm tra Re neo Rf, beta, ERP của đúng thời điểm"
+      - "Tìm các giả định tăng trưởng 30-50% kéo dài"
+    outputs: "Danh sách phát hiện (blocker, cảnh báo) và mức độ ảnh hưởng đến giá."
+
+  - id: "m05_sensitivity_and_mos"
+    name: "Lập bảng độ nhạy 5x5 và tính biên an toàn"
+    steps:
+      - "Bước 1: ws = [gốc-2%, gốc-1%, gốc, gốc+1%, gốc+2%]; gs = [g-1%, g-0,5%, g, g+0,5%, g+1%]; loại ô có r <= g"
+      - "Bước 2: dùng m05_sensitivity_grid hoặc Data Table; ghi rõ biến nào giữ cố định"
+      - "Bước 3: đánh dấu ô worst (r cao nhất, g thấp nhất) và best"
+      - "Bước 4: tính MoS cơ sở và MoS tại worst-case so với giá thị trường có ngày"
+      - "Bước 5: diễn giải: giá thị trường ứng với ô nào; xác suất hợp lý"
+    outputs: "Bảng 5x5, MoS cơ sở/worst-case, nhận định vùng giá."
+
+decision_rules:
+  - "Nếu doanh nghiệp là ngân hàng/tổ chức tín dụng/tài chính thì dùng FCFE, DDM hoặc Residual Income chiết khấu bằng Re; không dùng FCFF/EV/WACC."
+  - "Nếu doanh nghiệp phi tài chính thì ưu tiên FCFF chiết khấu WACC; sau đó trừ nợ ròng để ra giá trị vốn chủ."
+  - "Nếu doanh nghiệp trả cổ tức tiền mặt đều và ổn định thì có thể dùng DDM; nếu không trả cổ tức tiền mặt hoặc trả bằng cổ phiếu thì dùng FCFE/RI thay vì DDM."
+  - "Nếu dòng tiền là FCFF thì tỷ lệ chiết khấu là WACC; nếu là FCFE/cổ tức/RI thì là Re. Không trộn."
+  - "Nếu g >= r thì dừng: mô hình Gordon không hợp lệ; giảm g hoặc dùng mô hình nhiều giai đoạn."
+  - "Nếu g > lạm phát cộng tăng trưởng thực dài hạn của nền kinh tế (khoảng 3,0-4,5% trong prompt gốc, phải xác minh lại) thì hạ g xuống mức đó."
+  - "Nếu PV(TV)/EV trên 70-80% thì cảnh báo, kéo dài giai đoạn dự phóng, bắt buộc độ nhạy và hạ kết luận thận trọng; trên 80% không đưa kết luận một điểm."
+  - "Nếu g > 0 thì năm TV phải có capex lớn hơn D&A và ΔNWC dương (kiểm tra g = RR x ROIC)."
+  - "Nếu dự phóng có tăng trưởng 30-50% kéo dài 5-10 năm thì bác giả định (GIGO) hoặc hạ tăng trưởng dần về g và đối chiếu với TAM."
+  - "Nếu Re/WACC dùng số cố định cho mọi doanh nghiệp thì tính lại từ Rf thực tế, beta, ERP của thời điểm."
+  - "Nếu doanh nghiệp đòn bẩy cao, chu kỳ mạnh thì beta và Re phải cao hơn (khoảng 13-15% trong bối cảnh VN, cần xác minh)."
+  - "Nếu giá thị trường nằm trên giá cơ sở thì kết luận đắt; nếu giá thấp hơn worst-case thì có biên an toàn rõ rệt."
+  - "Nếu MoS tại worst-case âm thì không khuyến nghị mua mạnh; cần giá vào thấp hơn hoặc chờ."
+  - "Nếu P/E TTM cao do trích lập dự phòng hoặc khoản một lần thì chuẩn hóa EPS rồi so sánh với nội tại trước khi kết luận đắt."
+  - "Nếu P/B cao ở công ty tài sản vô hình thì không dùng P/B làm căn cứ; dùng nội tại và các chỉ số khác."
+  - "Nếu DDM và RI cho giá chênh nhau thì kiểm tra bút toán sạch (ΔBV = NI - cổ tức) và payout cuối kỳ."
+  - "Nếu không tra được số liệu thị trường (Rf, ERP, beta) thì ghi rõ 'giả định' và đưa khoảng, không trình bày như dữ liệu đã xác minh."
+  - "Nếu khoảng giá từ kịch bản xấu đến tốt quá rộng (tốt gấp hơn 2,5 lần xấu) thì kết luận mô hình có độ bất định cao; giảm kích thước vị thế."
+
+benchmarks:
+  - {metric: "g vĩnh viễn (VND danh nghĩa)", value: "2,0 đến 4,5%, không vượt tăng trưởng GDP danh nghĩa dài hạn", context: "Khoảng của prompt gốc (2-4,5%); phải kiểm tra lại với lạm phát và GDP hiện hành khi chạy", confidence: "medium"}
+  - {metric: "PV(TV)/EV cảnh báo", value: "Trên 70-80%", context: "Ngưỡng của prompt gốc, tham chiếu của thực hành DCF; bắt buộc độ nhạy", confidence: "medium"}
+  - {metric: "Re doanh nghiệp đòn bẩy cao/rủi ro", value: "Khoảng 13-15%", context: "Khoảng minh họa theo prompt gốc; phải tính lại từ Rf, beta, ERP", confidence: "low"}
+  - {metric: "Rf VN (lợi suất trái phiếu chính phủ 10 năm)", value: "Không hard-code; tra lúc chạy", context: "Prompt gốc ghi vùng khoảng 4,58% ở một thời điểm; chỉ là ví dụ", confidence: "low"}
+  - {metric: "MoS cơ sở tham chiếu", value: "Từ 25-30% trở lên", context: "Quy ước thận trọng theo Graham, không phải luật", confidence: "medium"}
+  - {metric: "Độ lệch giữa hai mô hình kiểm chéo", value: "Dưới 25-30%", context: "Quy ước thực hành; vượt ngưỡng phải rà soát giả định", confidence: "medium"}
+  - {metric: "Chênh giá khi dùng mid-year thay cuối năm", value: "Khoảng (1+r)^0,5 - 1, tức 4-5% với r khoảng 10%", context: "Tính toán, không phụ thuộc thị trường", confidence: "high"}
+
+pitfalls:
+  - "Garbage in, garbage out: tăng trưởng 30-50% kéo dài 5-10 năm; kịch bản tốt phi thực tế; không đối chiếu TAM"
+  - "Dùng FCFF/EV/WACC cho ngân hàng; hoặc dùng FCFE nhưng bỏ vốn giữ lại cho CAR"
+  - "Chiết khấu FCFE/cổ tức bằng WACC (giá phình ra); hoặc FCFF bằng Re (giá thấp đi)"
+  - "Dùng Re/WACC cố định (ví dụ 10%) cho mọi doanh nghiệp; không neo Rf, beta, ERP của thời điểm"
+  - "g vượt tăng trưởng danh nghĩa dài hạn hoặc g lớn gần bằng r"
+  - "Năm TV không chuẩn hóa: capex bằng khấu hao khi g > 0 (tăng trưởng miễn phí)"
+  - "Không kiểm tra PV(TV)/EV và không có bảng độ nhạy; báo một con số duy nhất"
+  - "Quên cầu nối EV sang vốn chủ hoặc dùng số cổ phiếu lưu hành thay vì pha loãng; bỏ thiểu số"
+  - "Nhìn dòng tiền danh nghĩa thô chưa chiết khấu để duyệt (cộng dòng tiền mà không dùng hiện giá)"
+  - "Mid-year không nhất quán với TV; quên ghi quy ước"
+  - "Dùng P/E TTM khi lợi nhuận bị méo (dự phòng, thoái vốn); dùng P/B cho công ty tài sản vô hình"
+  - "Hard-code số thị trường có thời hạn (Rf, ERP, giá, TV% của một mã) vào báo cáo mà không ghi ngày và nguồn"
+  - "Sửa giả định cho tới khi ra giá mong muốn (reverse engineering); thiếu kỷ luật thận trọng"
+  - "LỖI/ĐIỂM YẾU CỦA PROMPT GỐC ĐÃ ĐƯỢC SỬA: (1) hard-code Rf 4,58%, TV 76% STB, 74% SHB, 'trích lập gấp hơn 6 lần' và giá cụ thể 2026 như dữ kiện; nay xem là ví dụ minh họa chưa kiểm chứng, phải tra lại bằng snapshot có ngày; (2) khoảng g 3,0-4,5% mâu thuẫn với phạm vi 2-4,5% giữa mục 3 và Phần 2 và 'g không bao giờ lớn hơn GDP' mà không phân biệt GDP thực và danh nghĩa; nay quy ước g <= tăng trưởng danh nghĩa dài hạn và kiểm tra bằng RR x ROIC; (3) nói 'FCFE hoặc DDM' mà không giải thích khớp dòng tiền - tỷ lệ chiết khấu; nay có quy tắc rõ; (4) chưa nói rõ cầu nối EV sang giá/cổ phiếu, số cổ phiếu pha loãng, thiểu số; (5) Re 13-15% như đáp án cố định cho doanh nghiệp rủi ro; nay chỉ là khoảng tham chiếu, phải tính bằng CAPM; (6) MoS không có công thức; nay có công thức và quy tắc worst-case; (7) bảng độ nhạy chưa nêu RR thay đổi theo g; (8) chưa có bước chuẩn hóa TV và kiểm tra multiple/g ngụ ý."
+
+sme_vn_guidance:
+  - "SME chưa niêm yết: dùng FCFF/DCF nhưng thêm chiết khấu thanh khoản/quy mô (thường 10-30%, cần xác nhận theo mục đích) và kiểm tra bằng bội số giao dịch tương tự (m04)."
+  - "Dòng tiền SME biến động mạnh theo chủ sở hữu: chuẩn hóa chi phí lương chủ, chi phí cá nhân lẫn trong công ty, doanh thu không hóa đơn trước khi dự phóng (rủi ro pháp lý/thuế, cần xác nhận)."
+  - "Không có beta niêm yết: dùng beta ngành (Damodaran hoặc nhóm niêm yết cùng ngành) rồi relever theo D/E của SME; cộng thêm phần bù rủi ro quy mô/công ty nhỏ (size premium) có ghi chú; phải xác minh nguồn."
+  - "Rf VN và lãi vay ngân hàng: tra lợi suất trái phiếu chính phủ 10 năm và lãi suất cho vay trung dài hạn hiện hành lúc chạy (không dùng số trong tài liệu này)."
+  - "Dự phóng thận trọng: tăng trưởng doanh thu SME 5 năm thường nên dưới tăng trưởng lịch sử cao nhất; cần kiểm tra công suất, vốn lưu động và khả năng vay."
+  - "Dùng định giá nội tại để thương lượng khi bán công ty, gọi vốn hoặc chia cổ phần; báo cáo kèm bảng độ nhạy để đàm phán khoảng giá."
+  - "Thuế TNDN phổ thông tại VN 20% (cần xác nhận quy định và ưu đãi hiện hành); thuế chuyển nhượng vốn/cổ phiếu cần xác nhận theo quy định hiện hành."
+  - "Công cụ: Google Sheets/Excel với Data Table cho độ nhạy; có thể dùng Python để xác minh. Chi phí phần mềm thấp (Excel có sẵn); cần xác nhận khi báo giá dịch vụ định giá chuyên nghiệp."
+  - "Mua/đầu tư cổ phiếu niêm yết: dùng khoảng giá và MoS; không dùng giá nội tại như lời khuyên đầu tư cá nhân; agent phải ghi giới hạn và rủi ro."
+
+case_lessons:
+  - name: "Mô hình hóa doanh nghiệp sản xuất bằng FCFF (minh họa)"
+    type: "sme"
+    setup: "Công ty sản xuất giả định: doanh thu 2.000 tỷ, tăng trưởng giảm dần 10% còn 6%, biên EBIT 12% lên 13%, WACC 10,35%, g 3,5%, ROIC bền vững 15%, nợ ròng 500 tỷ, 100 triệu cổ phiếu."
+    key_calculations:
+      - "FCFF năm 1-5: 148,2; 174,1; 201,7; 219,4; 236,5 (tỷ)"
+      - "TV = 242,4 / 0,0685 = 3.538,8; PV(TV) = 2.162,7; PV FCFF = 719,9; EV = 2.882,6"
+      - "Giá vốn chủ = 2.382,6 tỷ; giá/cổ phiếu = 23.826 VND; TV% = 75,0%"
+    lesson: "Ngay cả giả định thận trọng vẫn cho TV chiếm 75%; do đó phải có bảng độ nhạy và MoS tại worst-case."
+    data_reliability: "illustrative"
+  - name: "Ngân hàng minh họa: DDM = Residual Income"
+    type: "sme"
+    setup: "Ngân hàng giả định BVPS 20.000, ROE giảm 17% còn 14% trong 5 năm, payout 20% lên 40%, Re 13,1%, g 5%."
+    key_calculations:
+      - "PV cổ tức 5 năm = 3.906,4; TV = 37.058,9; PV(TV) = 20.025,3; P0 = 23.931,7"
+      - "RI: BV0 20.000 + 1.929,2 + 2.001,3 = 23.931,7"
+      - "P/B = 1,20; TV%/giá = 83,7%"
+    lesson: "Hai phương pháp trùng khi bút toán sạch; ngân hàng cho TV% cao, cần độ nhạy Re x g và kiểm tra ROE dài hạn."
+    data_reliability: "illustrative"
+  - name: "WeWork: dựng tăng trưởng quá mức"
+    type: "failure"
+    setup: "Prompt gốc nhắc WeWork như ví dụ định giá ảo do kịch bản Bull-case tăng trưởng quá cao, và việc nhìn dòng tiền danh nghĩa thô chưa chiết khấu."
+    key_calculations: ["Tăng trưởng 30%/năm trong 10 năm làm doanh thu gấp 1,3^10 ≈ 13,8 lần"]
+    lesson: "Giá trị nội tại bị thổi phồng khi tăng trưởng cao kéo dài và biên bất khả thi; kiểm soát bằng TAM, ROIC bền vững, g <= GDP danh nghĩa. Chi tiết số liệu thực của WeWork không được xác minh trong tài liệu này."
+    data_reliability: "unverified"
+  - name: "Ngân hàng trích lập dự phòng mạnh (ví dụ STB, SHB trong prompt gốc)"
+    type: "sme"
+    setup: "Prompt gốc nêu STB đẩy trích lập dự phòng nửa đầu 2026 làm EPS giảm và P/E TTM cao; TV chiếm khoảng 76% STB, 74% SHB."
+    key_calculations: ["Các số 6 lần, 76%, 74% là số của prompt gốc, không xác minh được và không dùng làm dữ kiện"]
+    lesson: "Bẫy P/E: lợi nhuận bị bóp tạm thời không có nghĩa doanh nghiệp đắt; phải chuẩn hóa EPS và dùng nội tại; TV% cao của ngân hàng là đặc trưng nên cần độ nhạy. Agent phải tra BCTC thực tế."
+    data_reliability: "unverified"
+
+worked_examples:
+  - id: "m05_ex1"
+    name: "DCF FCFF doanh nghiệp sản xuất (giả định minh họa)"
+    inputs: {revenue0: 2000, growth: [0.10, 0.09, 0.08, 0.07, 0.06], ebit_margin: [0.12, 0.125, 0.13, 0.13, 0.13], tax: 0.2, da_pct: 0.04, capex_pct: 0.055, nwc_pct_delta_rev: 0.15, rf: 0.04, beta: 1.1, erp: 0.07, kd: 0.09, wd: 0.3, g: 0.035, roic: 0.15, net_debt: 500, shares_million: 100}
+    steps:
+      - "Re = 0,04 + 1,1 x 0,07 = 11,7%; WACC = 0,7 x 11,7% + 0,3 x 9% x 0,8 = 10,35%"
+      - "Năm 1: doanh thu 2.200; EBIT 264,0; NOPAT 211,2; D&A 88,0; CAPEX 121,0; ΔNWC 30,0; FCFF 148,2"
+      - "Năm 2: doanh thu 2.398,0; EBIT 299,8; NOPAT 239,8; D&A 95,9; CAPEX 131,9; ΔNWC 29,7; FCFF 174,1"
+      - "Năm 3: doanh thu 2.589,8; EBIT 336,7; NOPAT 269,3; D&A 103,6; CAPEX 142,4; ΔNWC 28,8; FCFF 201,7"
+      - "Năm 4: doanh thu 2.771,1; EBIT 360,2; NOPAT 288,2; D&A 110,8; CAPEX 152,4; ΔNWC 27,2; FCFF 219,4"
+      - "Năm 5: doanh thu 2.937,4; EBIT 381,9; NOPAT 305,5; D&A 117,5; CAPEX 161,6; ΔNWC 24,9; FCFF 236,5"
+      - "FCFF chuẩn hóa năm 6 = 305,5 x 1,035 x (1 - 0,035/0,15) = 242,4; TV = 242,4/0,0685 = 3.538,8"
+      - "PV FCFF 5 năm = 719,9; PV(TV) = 3.538,8 / 1,1035^5 = 2.162,7; EV = 2.882,6"
+      - "TV share = 75,0%; EV/EBITDA ngụ ý = 3.538,8 / 499,4 = 7,09x"
+      - "Giá vốn chủ = 2.882,6 - 500 = 2.382,6 tỷ; giá/cổ phiếu = 2.382,6e9 / 100e6 = 23.826 VND"
+      - "Mid-year (nhân (1+r)^0,5 cho EV): EV = 3.028,1; giá = 25.281 VND (+6,1%)"
+    result: "Giá nội tại cơ sở 23.826 VND/cổ phiếu (cuối năm) hoặc 25.281 (mid-year); TV chiếm 75%."
+
+  - id: "m05_ex2"
+    name: "Ngân hàng: DDM, Residual Income và FCFE cho cùng kết quả (giả định minh họa)"
+    inputs: {bv0: 20000, roe: [0.17, 0.16, 0.15, 0.145, 0.14], payout: [0.2, 0.25, 0.3, 0.35, 0.4], rf: 0.04, beta: 1.3, erp: 0.07, g: 0.05, roe_terminal: 0.14, car_target: 0.11}
+    steps:
+      - "Re = 0,04 + 1,3 x 0,07 = 13,1% (không dùng WACC cho ngân hàng)"
+      - "Năm 1: BV 20.000, NI 3.400, cổ tức 680, RI = 3.400 - 0,131 x 20.000 = 780, BV cuối 22.720"
+      - "Năm 2: NI 3.635, cổ tức 909, RI 659, BV cuối 25.446"
+      - "Năm 3: NI 3.817, cổ tức 1.145, RI 483, BV cuối 28.118"
+      - "Năm 4: NI 4.077, cổ tức 1.427, RI 394, BV cuối 30.768"
+      - "Năm 5: NI 4.308, cổ tức 1.723, RI 277, BV cuối 33.353"
+      - "FCFE năm 1 = NI - CAR x ΔRWA, trong đó ΔBV = 2.720 nên ΔRWA = 2.720/0,11 = 24.727 và FCFE = 3.400 - 0,11 x 24.727 = 680 = cổ tức"
+      - "Năm 6: payout cuối kỳ = 1 - 0,05/0,14 = 64,3%; D6 = (0,14 - 0,05) x 33.353 = 3.001,8; TV = 3.001,8/0,081 = 37.058,9"
+      - "DDM: PV cổ tức 3.906,4 + PV(TV) 20.025,3 = 23.931,7 VND"
+      - "RI: 20.000 + 1.929,2 + (3.705,9)/1,131^5 = 20.000 + 1.929,2 + 2.002,3 = 23.931,7 (trùng DDM) [TV phần RI = (0,14 - 0,131) x 33.353/0,081 = 3.705,9]"
+      - "P/B ngụ ý = 23.932 / 20.000 = 1,20; TV% = 20.025/23.932 = 83,7% (vùng cảnh báo)"
+    result: "Giá nội tại ≈ 23.932 VND/cp, P/B 1,20. DDM, FCFE và RI cho cùng kết quả nhờ bút toán sạch; TV chiếm 83,7%."
+
+  - id: "m05_ex3"
+    name: "Bảng độ nhạy 5x5, kịch bản và Margin of Safety cho m05_ex1"
+    inputs: {flows: [148.2, 174.1, 201.7, 219.4, 236.5], nopat5: 305.5, roic: 0.15, net_debt: 500, shares_million: 100, market_price: 18000}
+    steps:
+      - "Bảng (VND/cp; hàng WACC, cột g = 2,5%, 3,0%, 3,5%, 4,0%, 4,5%):"
+      - "WACC 8,35%: 32.483 | 34.121 | 36.083 | 38.480 | 41.482"
+      - "WACC 9,35%: 26.766 | 27.756 | 28.904 | 30.255 | 31.871"
+      - "WACC 10,35% (gốc): 22.514 | 23.130 | 23.826 | 24.622 | 25.544"
+      - "WACC 11,35%: 19.230 | 19.616 | 20.045 | 20.523 | 21.063"
+      - "WACC 12,35%: 16.619 | 16.859 | 17.121 | 17.407 | 17.722"
+      - "Worst-case (WACC 12,35%, g 2,5%) = 16.619; Best = 41.482; giá ô trung tâm 23.826"
+      - "Kịch bản: xấu (tăng trưởng 6-4%, biên 11%, WACC +1%, g 2,5%) = 13.125 (TV 69,2%); cơ sở 23.826 (75,0%); tốt (tăng trưởng 12-8%, biên 12,5-14%, WACC -0,5%, g 4%) = 32.423 (78,5%)"
+      - "Với giá thị trường minh họa 18.000: MoS cơ sở = (23.826 - 18.000)/23.826 = 24,5%; MoS tại worst-case bảng độ nhạy = (16.619 - 18.000)/16.619 = -8,3%; so với kịch bản xấu 13.125 là -37%"
+    result: "Giá 18.000 chỉ có MoS 24,5% ở kịch bản cơ sở, và âm ở worst-case. Kết luận thận trọng: hợp lý hoặc hơi rẻ, chưa đủ biên an toàn dày; chờ giá thấp hơn khoảng 16.000-17.000 hoặc xác minh thêm giả định."
+
+  - id: "m05_ex4"
+    name: "Tác động của Terminal Value và GIGO"
+    inputs: {fcff_next: 100, r: [0.10, 0.11, 0.12], g: [0.025, 0.03, 0.035]}
+    steps:
+      - "Giả sử FCFF năm n = 100 và FCFF năm n+1 = 100 x (1+g); TV = FCFF_n x (1+g)/(r - g)"
+      - "TV(r 10%, g 3,0%) = 100 x 1,03 / 0,07 = 1.471,4"
+      - "TV(r 10%, g 3,5%) = 100 x 1,035 / 0,065 = 1.592,3 (+8,2%)"
+      - "TV(r 10%, g 2,5%) = 100 x 1,025 / 0,075 = 1.366,7 (-7,1%)"
+      - "TV(r 11%, g 3,0%) = 100 x 1,03 / 0,08 = 1.287,5 (-12,5%)"
+      - "TV(r 12%, g 3,0%) = 100 x 1,03 / 0,09 = 1.144,4 (-22,2%)"
+      - "TV(r 11%, g 2,5%) = 100 x 1,025 / 0,085 = 1.205,9 (-18,0%)"
+      - "GIGO: tăng trưởng 30%/năm 10 năm làm doanh thu từ 2.000 lên 2.000 x 1,3^10 = 27.572 (gấp 13,8 lần); cần thị trường đủ lớn và biên bền vững"
+      - "Chuẩn hóa TV: năm 5 có NOPAT 305,5, g 3,5%: nếu ROIC 15% thì FCFF6 = 242,4; nếu ROIC 8% thì RR = 43,75% và FCFF6 = 177,9; nếu sao chép FCFF5 x 1,035 thì 244,8 (bỏ qua ROIC thấp làm TV phình lên 38% so với ROIC 8%)"
+    result: "r +1% và g -0,5% cùng lúc làm TV giảm khoảng 18%; r +2% giảm 22%. Tăng trưởng giả định phi thực tế hoặc ROIC không được kiểm tra làm TV sai lệch hai chữ số %."
+
+  - id: "m05_ex5"
+    name: "Cầu nối EV sang giá/cổ phiếu và kiểm tra TV exit multiple (giả định minh họa)"
+    inputs: {ev: 3000, debt: 800, cash: 200, minority: 100, diluted_shares: 50000000, ebitda5: 499.357, multiple: 7.0, fcff5: 236.5, wacc: 0.1035}
+    steps:
+      - "Giá vốn chủ = 3.000 - 800 + 200 - 100 = 2.300 tỷ; giá = 2.300e9/50e6 = 46.000 VND/cp"
+      - "Nếu dùng 55 triệu cổ phiếu pha loãng thay 50 triệu (ESOP, trái phiếu chuyển đổi): giá = 2.300e9/55e6 = 41.818 (-9,1%); dùng cổ phiếu lưu hành sai làm giá thổi phồng"
+      - "TV exit = 499,357 x 7,0 = 3.495,5; g ngụ ý = (3.495,5 x 0,1035 - 236,5)/(3.495,5 + 236,5) = 3,36%"
+      - "So với TV Gordon 3.538,8: chênh 1,2%; hai cách cho cùng kết luận, g ngụ ý 3,36% hợp lý"
+    result: "46.000 VND/cp (41.818 nếu có pha loãng 10%); TV exit multiple khớp TV Gordon với g ngụ ý 3,36%."
+
+  - id: "m05_ex6"
+    name: "Lỗi chiết khấu sai tỷ lệ: cổ tức ngân hàng bằng WACC thay vì Re"
+    inputs: {bank_from_ex2: true, wrong_rate: 0.1035, correct_re: 0.131}
+    steps:
+      - "Đúng (Re 13,1%): giá = 23.932 VND"
+      - "Sai (dùng 10,35%): giá = 38.520 VND (+61,0%)"
+      - "Độ nhạy Re x g của DDM ngân hàng: Re 14,1%: g 4% = 20.874, g 5% = 20.855; Re 15,1%: g 4% = 18.568, g 5% = 18.406"
+    result: "Dùng WACC thay Re làm giá phình 61%; ngay cả tăng Re thêm 2% đã kéo giá từ 23.932 xuống khoảng 18.400-18.600 (khoảng -22 đến -23%)."
+
+practice_questions:
+  - q: "Tính Re biết Rf = 4%, beta = 1,2, ERP = 7%. Tính WACC với tỷ trọng nợ 25%, kd = 8%, thuế 20%."
+    a: "Re = 0,04 + 1,2 x 0,07 = 12,4%. WACC = 0,75 x 12,4% + 0,25 x 8% x 0,8 = 9,3% + 1,6% = 10,9%."
+  - q: "FCFF dự phóng năm 6 là 120, WACC 10%, g 3%. Tính TV và PV nếu TV tại cuối năm 5."
+    a: "TV = 120/(0,10 - 0,03) = 1.714,3; PV = 1.714,3/1,1^5 = 1.064,4. Nếu 120 là FCFF năm 5 thì F6 = 123,6 và TV = 1.765,7."
+  - q: "Vì sao không dùng FCFF để định giá ngân hàng?"
+    a: "Nợ (tiền gửi) là nguyên liệu kinh doanh, không phải nguồn vốn tách khỏi hoạt động; EBIT, capex, ΔNWC, EV không có nghĩa. Dòng tiền thực cho cổ đông là lợi nhuận sau khi giữ vốn cho CAR và trích lập dự phòng, nên dùng FCFE/DDM/RI chiết khấu Re."
+  - q: "FCFF năm 1 là 104 và tăng đều 4%/năm mãi mãi, WACC 10%. Tính tổng giá trị, PV 5 năm đầu, PV(TV) và tỷ trọng TV."
+    a: "V0 = 104/(0,10 - 0,04) = 1.733,3. PV(năm 1-5) = 104 x [1 - (1,04/1,10)^5]/0,06 = 104 x (1 - 0,7501)/0,06 = 433,2. PV(TV) = 1.733,3 - 433,2 = 1.300,1; TV% = 75,0%. Dù dòng tiền tăng đều, TV vẫn chiếm 75% khi (r - g) nhỏ."
+  - q: "Giá nội tại cơ sở 40.000, worst-case 28.000, giá thị trường 33.000. Tính MoS cơ sở, MoS worst-case, kết luận."
+    a: "MoS cơ sở = (40.000 - 33.000)/40.000 = 17,5%; MoS worst-case = (28.000 - 33.000)/28.000 = -17,9%. Chưa đủ biên an toàn (dưới 25-30%) và worst-case âm: giá vào thận trọng hơn là khoảng 28.000-30.000."
+  - q: "Ngân hàng có BVPS 15.000, ROE bền vững 15%, g 5%, Re 13%. P/B hợp lý và giá?"
+    a: "P/B = (0,15 - 0,05)/(0,13 - 0,05) = 1,25; giá = 18.750 VND."
+  - q: "Một báo cáo định giá dùng WACC 9%, g 6%, FCFF 200 cho một công ty VN; bạn phản biện thế nào?"
+    a: "g 6% có thể vượt tăng trưởng danh nghĩa dài hạn (cần xác minh, khoảng 2-4,5%); (WACC - g) = 3% làm TV = 200 x 1,06/0,03 = 7.067 (35 lần FCFF) phình rất lớn. Yêu cầu hạ g, kiểm tra RR x ROIC, độ nhạy, và kiểm tra WACC có neo Rf, beta, ERP của thời điểm."
+  - q: "Tính FCFE ngân hàng: NI 2.000, CAR mục tiêu 12%, RWA đầu kỳ 40.000, tăng 15%."
+    a: "ΔRWA = 6.000; vốn giữ lại = 0,12 x 6.000 = 720; FCFE = 2.000 - 720 = 1.280 (64% NI)."
+
+checklist:
+  - "□ Đã chọn mô hình đúng ngành (FCFF phi tài chính; FCFE/DDM/RI ngân hàng/tài chính) và ghi lý do"
+  - "□ Dòng tiền khớp tỷ lệ chiết khấu (FCFF-WACC; FCFE/DDM/RI-Re)"
+  - "□ Đã lập snapshot thị trường có ngày: Rf 10 năm, ERP, beta, lạm phát, GDP danh nghĩa, giá cổ phiếu; ghi nguồn"
+  - "□ Re từ CAPM và neo Rf thực tế; không dùng số cố định cho mọi doanh nghiệp"
+  - "□ Dự phóng 5 năm có bảng chi tiết và giả định có căn cứ; không có tăng trưởng 30-50% kéo dài"
+  - "□ g <= tăng trưởng danh nghĩa dài hạn, r > g, g = RR x ROIC; năm TV chuẩn hóa"
+  - "□ Đã tính PV(TV)/EV và cảnh báo nếu > 70-80%; kiểm tra multiple/g ngụ ý"
+  - "□ Cầu nối EV sang vốn chủ: nợ ròng, thiểu số, ưu đãi, tài sản phi hoạt động; số cổ phiếu pha loãng"
+  - "□ Bảng độ nhạy 5x5 (Re/WACC ±1%, ±2% x g ±0,5%, ±1%) và kịch bản xấu/cơ sở/tốt"
+  - "□ MoS cơ sở và từ worst-case so với giá có ngày"
+  - "□ Lợi nhuận đã chuẩn hóa (loại khoản bất thường); đã tránh bẫy P/E và P/B"
+  - "□ Đã xác minh tính toán bằng Python; DDM = RI nếu ngân hàng; số liệu minh họa gắn nhãn 'giả định minh họa'"
+  - "□ Kết luận là khoảng giá kèm rủi ro, giả định nhạy nhất, miễn trừ trách nhiệm (không phải lời khuyên đầu tư cá nhân)"
+
+excel_google_sheets_templates:
+  - "Sheet Assumptions: Rf, ERP, beta, Re, Kd, thuế, tỷ trọng nợ, WACC, g, ROIC, nợ ròng, cổ phiếu pha loãng, ngày và nguồn (ô màu xanh = nhập)"
+  - "Sheet Projection: doanh thu, EBIT, NOPAT, D&A, CAPEX, ΔNWC, FCFF 5 năm; công thức tham chiếu Assumptions"
+  - "Sheet TV: FCFF chuẩn hóa = NOPAT x (1+g) x (1-g/ROIC); TV Gordon; multiple ngụ ý; g ngụ ý; PV(TV)/EV"
+  - "Sheet Valuation: =NPV(wacc,FCFF)+PV(TV); cầu nối; giá/cổ phiếu; mid-year dùng *(1+wacc)^0,5"
+  - "Sheet Sensitivity: Data > What-If Analysis > Data Table, ô hàng là g, ô cột là WACC; tô màu ô worst/best"
+  - "Sheet Bank: BV, NI, payout, cổ tức, RI, FCFE = NI - CAR x ΔRWA; kiểm tra DDM = RI"
+  - "Sheet Scenarios và MoS: ba kịch bản, giá thị trường có ngày, MoS cơ sở và worst-case"
+
+source_file: "stock-analysist/prompt-dinh-gia-doanh-nghiep.md (Phần 1 mục 3-4 và Phần 2)"

@@ -1,0 +1,718 @@
+# m04 - Định giá tương đối (distill từ prompt-dinh-gia-doanh-nghiep.md: Phần 1 mục 2 và Phần 2 lưu ý 3; tham chiếu chéo finance-agent-skill m10, m03)
+id: "m04"
+name_vi: "Định giá tương đối (multiples)"
+name_en: "Relative Valuation (Multiples)"
+purpose: >
+  Trả lời nhanh và có căn cứ câu hỏi 'cổ phiếu này đang Rẻ, Hợp lý hay Đắt so với lợi nhuận, giá trị sổ sách, doanh thu, EBITDA
+  của nó và so với các doanh nghiệp tương đồng?'. Module dạy chọn đúng multiple theo ngành, tính multiple đúng cách (TTM, forward,
+  chuẩn hóa), chọn multiple mục tiêu có lý do, chuyển từ EV về giá cổ phiếu, dựng bảng peers và football field, rồi kết luận bằng
+  một khoảng giá hợp lý kèm biên an toàn - không phải một con số duy nhất. Là bước định giá nhanh, dùng để đối chiếu chéo với DCF/FCFE/DDM (m05).
+when_to_use:
+  - "Người dùng hỏi 'mã X đang rẻ hay đắt?', 'P/E hợp lý của X là bao nhiêu?', 'P/B 1,5 của ngân hàng này có cao không?'."
+  - "Cần ước tính giá hợp lý bằng P/E hoặc P/B mục tiêu x EPS/BVPS dự phóng cho năm hiện tại và năm kế tiếp."
+  - "Cần định giá doanh nghiệp sản xuất, bán lẻ, công nghệ bằng EV/EBITDA, EV/Sales rồi quy về giá mỗi cổ phiếu."
+  - "Cần định giá ngân hàng/công ty tài chính: dùng P/B gắn với ROE, P/E chuẩn hóa, tránh EV."
+  - "Cần so sánh một cổ phiếu với nhóm peers (bảng so sánh), hoặc vẽ football field gộp nhiều phương pháp."
+  - "P/E TTM của một mã bỗng rất cao hoặc rất thấp và cần biết đó là tín hiệu thật hay méo mó do lợi nhuận bất thường, trích lập dự phòng, chu kỳ."
+  - "Cần chọn giữa multiple và DCF, hoặc cần đối chiếu kết quả hai cách."
+prerequisites:
+  - "m03 - Phân tích cơ bản: đọc BCTC, chất lượng lợi nhuận, chuẩn hóa lợi nhuận bất thường (đầu vào của EPS/BVPS/EBITDA sạch)"
+related_modules:
+  - "m03 - Phân tích cơ bản: cung cấp EPS, BVPS, ROE, nợ ròng, EBITDA đã điều chỉnh"
+  - "m05 - Định giá nội tại (DCF/FCFE/DDM): đối chiếu chéo; Re và g dùng chung. Công thức P/B và P/E hợp lý ở đây là dạng rút gọn của DDM/Gordon"
+  - "m07 - Dữ liệu thị trường VN và rủi ro: nguồn giá, vốn hóa, free float, thanh khoản, lãi suất phi rủi ro VN để chọn Re"
+  - "m06 - Thẩm định dự án: không liên quan trực tiếp; chỉ dùng khi định giá một dự án thay vì cổ phiếu"
+  - "Tham chiếu ngoài bộ skill: finance-agent-skill/modules/m10-corporate-valuation.yaml (comps, precedent transactions, football field) và m03-cost-of-capital.yaml (Re, WACC) - không chép lại, chỉ nối sang khi cần."
+  - "m01 - Phân tích kỹ thuật: kỹ thuật giúp chọn thời điểm vào/ra; multiple chỉ cho biết giá có 'đáng' hay không"
+
+concepts:
+  - term_vi: "Định giá tương đối"
+    term_en: "Relative Valuation"
+    definition: "Xác định giá trị cổ phiếu bằng cách so giá thị trường với một thước đo kinh tế (lợi nhuận, sổ sách, doanh thu, EBITDA) rồi so tỷ lệ đó với nhóm doanh nghiệp tương đồng hoặc với chính lịch sử của nó. Giá hợp lý = multiple mục tiêu x thước đo của doanh nghiệp."
+    why_it_matters: "DCF cần dự phóng 5-10 năm với hàng chục giả định, nhạy cực mạnh với Re và g (Terminal Value thường chiếm 70-80% giá trị theo prompt gốc). Multiple là cách 'hỏi thị trường': các tài sản tương tự đang được trả giá bao nhiêu cho 1 đồng lợi nhuận. Nhanh, ít giả định, nhưng thừa hưởng cả sự hợp lý lẫn sự điên rồ của thị trường - nếu cả nhóm peers đang bị định giá quá cao thì kết quả 'rẻ so với peers' vẫn có thể là đắt tuyệt đối. Vì vậy phải dùng cùng DCF chứ không thay thế."
+  - term_vi: "Hệ số giá trên thu nhập"
+    term_en: "Price-to-Earnings (P/E)"
+    definition: "P/E = Giá cổ phiếu / EPS. TTM (trailing twelve months) dùng EPS 4 quý gần nhất đã công bố; forward dùng EPS dự phóng 12 tháng tới hoặc năm tài chính tới."
+    why_it_matters: "Nghịch đảo của P/E là earnings yield (EPS/giá) - lợi suất lợi nhuận mà nhà đầu tư 'mua' mỗi đồng vốn bỏ ra, so được với lãi suất trái phiếu. TTM nhìn lùi và dễ bị bóp méo bởi khoản bất thường; forward nhìn tới nhưng phụ thuộc chất lượng dự phóng. Luôn nêu rõ đang dùng loại nào."
+  - term_vi: "Hệ số giá trên giá trị sổ sách"
+    term_en: "Price-to-Book (P/B)"
+    definition: "P/B = Giá / BVPS, BVPS = Vốn chủ sở hữu thuộc cổ đông công ty mẹ / số cổ phiếu lưu hành."
+    why_it_matters: "Phù hợp khi giá trị nằm ở bảng cân đối: ngân hàng, bảo hiểm, chứng khoán, bất động sản, doanh nghiệp nặng tài sản. Vô nghĩa với công ty phần mềm/asset-light (như Grab trong prompt gốc) vì giá trị là hiệu ứng mạng lưới, thương hiệu, dữ liệu - không nằm trong sổ sách. P/B hợp lý phụ thuộc ROE: ROE cao hơn chi phí vốn thì xứng đáng P/B > 1."
+  - term_vi: "Giá trị doanh nghiệp (EV) và hệ số EV/EBITDA, EV/Sales"
+    term_en: "Enterprise Value, EV/EBITDA, EV/Sales"
+    definition: "EV = Vốn hóa thị trường (số cổ phiếu pha loãng x giá) + Nợ vay - Tiền và tương đương tiền (+ Lợi ích cổ đông thiểu số + Cổ phiếu ưu đãi - Đầu tư tài chính/tài sản phi hoạt động). EV/EBITDA = EV / EBITDA; EV/Sales = EV / Doanh thu."
+    why_it_matters: "Vốn hóa chỉ là phần của cổ đông; hai công ty giống hệt nhau nhưng một công ty vay nhiều thì vốn hóa nhỏ hơn và P/E méo theo đòn bẩy. EV tính giá của cả hoạt động kinh doanh (cho cả chủ nợ và cổ đông) nên so sánh được giữa các công ty cấu trúc vốn khác nhau, cũng ít bị ảnh hưởng bởi khác biệt thuế và khấu hao khi dùng EBITDA. EV/Sales dùng cho doanh nghiệp chưa có lợi nhuận hoặc biên lợi nhuận bất thường tạm thời, nhưng bỏ qua hoàn toàn chất lượng biên lợi nhuận. Không dùng EV cho ngân hàng vì nợ (tiền gửi) là nguyên liệu kinh doanh, không phải nguồn vốn tài trợ."
+  - term_vi: "Cầu nối từ EV về vốn chủ sở hữu"
+    term_en: "EV-to-Equity Bridge"
+    definition: "Giá trị vốn chủ sở hữu của cổ đông công ty mẹ = EV - Nợ vay + Tiền - Lợi ích cổ đông thiểu số - Cổ phiếu ưu đãi + Tài sản phi hoạt động; chia cho số cổ phiếu pha loãng ra giá mỗi cổ phiếu."
+    why_it_matters: "Quên trừ nợ ròng là lỗi kinh điển làm giá hợp lý cao ảo (xem pitfall). Lợi ích cổ đông thiểu số phải trừ vì EBITDA hợp nhất tính 100% công ty con nhưng cổ đông mẹ chỉ sở hữu một phần. Phải dùng số cổ phiếu pha loãng (ESOP, trái phiếu chuyển đổi, chia thưởng sắp phát hành) vì EPS và giá/cp chỉ đúng với số cp sau pha loãng."
+  - term_vi: "PEG"
+    term_en: "Price/Earnings-to-Growth"
+    definition: "PEG = P/E / (tăng trưởng EPS kỳ vọng, tính bằng số %, vd 15% thì dùng 15). Quy ước phổ biến: PEG < 1 hấp dẫn, ~1 hợp lý, > 2 đắt."
+    why_it_matters: "Một công ty P/E 20 mà EPS tăng 25%/năm có thể rẻ hơn công ty P/E 10 mà EPS không tăng. PEG chuẩn hóa P/E theo tăng trưởng (phổ biến bởi Peter Lynch). Hạn chế: chỉ là quy tắc kinh nghiệm, nhạy với chất lượng dự báo tăng trưởng, vô nghĩa khi tăng trưởng âm hoặc rất nhỏ, và bỏ qua rủi ro và ROE."
+  - term_vi: "Tỷ suất cổ tức"
+    term_en: "Dividend Yield"
+    definition: "Dividend Yield = Cổ tức tiền mặt/cp một năm / Giá."
+    why_it_matters: "Cho biết dòng tiền thực nhận. Ở Việt Nam nhiều doanh nghiệp chia cổ tức bằng cổ phiếu (không có tiền về tay), nên phải tách cổ tức tiền mặt. Yield rất cao có thể là dấu hiệu giá giảm vì kỳ vọng cổ tức bị cắt."
+  - term_vi: "Multiple mục tiêu và nhóm so sánh"
+    term_en: "Target Multiple and Comparable Set (Peers)"
+    definition: "Multiple mục tiêu là hệ số áp vào chỉ tiêu dự phóng để ra giá hợp lý; thường lấy trung vị (median) của nhóm peers rồi điều chỉnh theo khác biệt về tăng trưởng, ROE, rủi ro, quy mô, thanh khoản, chu kỳ."
+    why_it_matters: "Prompt gốc bắt buộc 'giải thích lý do chọn hệ số'. Lý do để dùng trung vị thay vì trung bình: ít bị một peer cực đoan kéo lệch. Peers phải cùng mô hình kinh doanh, địa lý, quy mô và chu kỳ; peers kém tương đồng thì kết quả chỉ là con số trang trí."
+  - term_vi: "Lợi nhuận chuẩn hóa"
+    term_en: "Normalized Earnings"
+    definition: "Lợi nhuận đã loại khoản bất thường một lần (thoái vốn, đánh giá lại tài sản, trích lập/hoàn nhập dự phòng bất thường) và quy về mức trung bình chu kỳ."
+    why_it_matters: "Multiple chỉ có nghĩa khi mẫu số phản ánh năng lực kiếm tiền lặp lại được. Mẫu số sai thì multiple sai, dù phép chia đúng."
+
+formulas:
+  - id: "m04_pe"
+    name_vi: "P/E (TTM và forward) và earnings yield"
+    name_en: "Price/Earnings, trailing and forward"
+    expression_latex: "P/E = \\frac{P}{EPS}, \\quad EPS = \\frac{LNST_{me} - \\text{cổ tức ưu đãi}}{\\text{số cp bình quân pha loãng}}, \\quad \\text{Earnings yield} = \\frac{EPS}{P}"
+    expression_python: "pe = price / eps"
+    excel: "=B1/B2"
+    variables:
+      - {symbol: "price", meaning: "Giá cổ phiếu hiện tại", unit: "VND/cp"}
+      - {symbol: "eps", meaning: "EPS TTM (4 quý gần nhất) hoặc EPS dự phóng (forward), đã chuẩn hóa nếu cần", unit: "VND/cp"}
+    when_to_use: "Doanh nghiệp có lợi nhuận dương, ổn định, ngành không quá chu kỳ; so sánh nhanh với peers và với lịch sử."
+    why_it_works: "P/E là số năm lợi nhuận hiện tại để hoàn vốn nếu lợi nhuận không đổi. Phản ánh kỳ vọng tăng trưởng và rủi ro: tăng trưởng cao, rủi ro thấp thì thị trường chấp nhận P/E cao."
+    assumptions:
+      - "EPS đại diện cho năng lực kiếm tiền bền vững (đã loại bất thường)."
+      - "Số cổ phiếu dùng là số bình quân gia quyền/pha loãng, không phải số cp tại một thời điểm nếu có phát hành lớn giữa kỳ."
+    pitfalls:
+      - "EPS <= 0 thì P/E vô nghĩa (không báo P/E âm)."
+      - "TTM bị bóp méo bởi trích lập dự phòng đột biến hoặc lãi bất thường; xem framework m04_normalization."
+      - "P/E thấp ở đỉnh chu kỳ (lợi nhuận đỉnh) thường là bẫy, P/E cao ở đáy chu kỳ thường là cơ hội (xem m04_cycle_adjust)."
+      - "Khác chuẩn mực kế toán (VAS và IFRS) hoặc khác kỳ năm tài chính làm P/E không so sánh trực tiếp được."
+    interpretation: "Không có ngưỡng tuyệt đối. Đọc theo ba trục: so median peers, so lịch sử 3-5 năm của chính mã đó, so earnings yield với lợi suất trái phiếu chính phủ 10 năm. Lệch đáng kể mà không giải thích được bằng tăng trưởng/rủi ro thì phải tìm nguyên nhân trước khi kết luận rẻ hoặc đắt."
+    example:
+      inputs: {price: 52000, eps_ttm: 4000, eps_forward: 4600}
+      steps:
+        - "P/E TTM = 52000/4000 = 13,0x"
+        - "P/E forward = 52000/4600 = 11,3x"
+        - "Earnings yield forward = 4600/52000 = 8,85%"
+      result: "P/E TTM 13,0x; P/E forward 11,3x; earnings yield 8,85% (giả định minh họa)."
+  - id: "m04_pb"
+    name_vi: "P/B và BVPS"
+    name_en: "Price/Book and Book Value per Share"
+    expression_latex: "P/B = \\frac{P}{BVPS}, \\quad BVPS = \\frac{VCSH_{me}}{N}"
+    expression_python: "pb = price / bvps"
+    excel: "=B1/B2"
+    variables:
+      - {symbol: "price", meaning: "Giá cổ phiếu", unit: "VND/cp"}
+      - {symbol: "bvps", meaning: "Giá trị sổ sách mỗi cp = VCSH cổ đông mẹ / số cp lưu hành (đã trừ cp quỹ)", unit: "VND/cp"}
+    when_to_use: "Ngân hàng, bảo hiểm, chứng khoán, BĐS, công ty nặng tài sản có sổ sách phản ánh được giá trị tài sản (thanh khoản, giá trị thị trường gần giá sổ)."
+    why_it_works: "Sổ sách là 'tiền đã bỏ vào' công ty; P/B so giá với phần vốn thực. Với ngân hàng, tài sản là khoản cho vay và tiền thật nên sổ sách là mỏ neo giá trị đáng tin (prompt gốc: P/B là 'vị trọng tài tối cao' của ngân hàng như SHB), nhưng chỉ khi chất lượng tài sản được kiểm soát (nợ xấu đã dự phòng đủ)."
+    assumptions:
+      - "Giá trị sổ gần giá trị kinh tế của tài sản; chất lượng tài sản (nợ xấu, tồn kho, BĐS) đã được phản ánh đủ."
+    pitfalls:
+      - "Vô nghĩa với asset-light, phần mềm, công ty có tài sản vô hình lớn (giá trị không có trong sổ)."
+      - "Sổ sách bị thổi phồng nếu dự phòng thiếu hoặc BĐS ghi giá gốc cũ/đánh giá lại; ngân hàng có nợ xấu lớn mà dự phòng thấp thì BVPS cao ảo."
+      - "Dùng VCSH hợp nhất gồm cả lợi ích thiểu số thay vì phần cổ đông mẹ làm BVPS sai."
+    interpretation: "P/B < 1 chỉ là 'rẻ' khi ROE bền vững >= Re hoặc tài sản đáng tin; P/B < 1 kèm ROE < Re là hợp lý. Dùng cùng ROE (m04_pb_roe)."
+    example:
+      inputs: {price: 27000, bvps: 20000}
+      steps: ["P/B = 27000/20000 = 1,35x"]
+      result: "P/B 1,35x (giả định minh họa)."
+  - id: "m04_ps_evsales"
+    name_vi: "P/S và EV/Sales"
+    name_en: "Price/Sales and EV/Sales"
+    expression_latex: "P/S = \\frac{\\text{Vốn hóa}}{\\text{Doanh thu}}, \\quad EV/Sales = \\frac{EV}{\\text{Doanh thu}}"
+    expression_python: "evs = ev / sales; ps = market_cap / sales"
+    excel: "=B1/B2"
+    variables:
+      - {symbol: "ev", meaning: "Giá trị doanh nghiệp", unit: "tỷ VND"}
+      - {symbol: "market_cap", meaning: "Vốn hóa = giá x số cp pha loãng", unit: "tỷ VND"}
+      - {symbol: "sales", meaning: "Doanh thu thuần TTM hoặc dự phóng", unit: "tỷ VND"}
+    when_to_use: "Công ty tăng trưởng chưa có lợi nhuận, lợi nhuận đang ở đáy chu kỳ, hoặc so sánh các công ty cùng mô hình có biên lợi nhuận mục tiêu tương đương (bán lẻ, phần mềm giai đoạn đầu). Ưu tiên EV/Sales hơn P/S khi nợ đáng kể."
+    why_it_works: "Doanh thu ít bị bóp méo bởi kế toán và ít âm hơn lợi nhuận, nên luôn tính được. Giá trị công ty về dài hạn = doanh thu x biên lợi nhuận x multiple lợi nhuận, nên EV/Sales chỉ hợp lý khi biên tương đương."
+    assumptions: ["Biên lợi nhuận bình thường của các công ty so sánh tương tự nhau."]
+    pitfalls:
+      - "Bỏ qua biên lợi nhuận: công ty biên 3% và 25% có thể cùng EV/Sales nhưng giá trị khác xa nhau."
+      - "Doanh thu có thể bị thổi phồng (ghi nhận doanh thu gộp thay vì ròng, bán hàng hóa giá thấp lấy doanh thu). Prompt gốc nhắc bài học WeWork: định giá dựa trên doanh thu/tăng trưởng tưởng tượng chứ không dựa trên kinh tế đơn vị."
+    interpretation: "Chỉ so với peers cùng biên lợi nhuận và tăng trưởng; không dùng làm thước đo duy nhất để kết luận Rẻ/Đắt."
+    example:
+      inputs: {ev: 2380, sales: 3200}
+      steps: ["EV/Sales = 2380/3200 = 0,74x"]
+      result: "EV/Sales 0,74x (giả định minh họa, cùng doanh nghiệp ở ví dụ EV/EBITDA)."
+  - id: "m04_ev_ebitda"
+    name_vi: "EV, EV/EBITDA và cầu nối EV về giá mỗi cổ phiếu"
+    name_en: "EV, EV/EBITDA and EV-to-Equity bridge"
+    expression_latex: "EV = Cap + D - Cash + MI + Pref - NonOp, \\quad EV/EBITDA = \\frac{EV}{EBITDA}, \\quad P_{fair} = \\frac{EBITDA \\times M_{target} - D + Cash - MI - Pref + NonOp}{N_{diluted}}"
+    expression_python: "ev_fair = ebitda * target_multiple; equity_fair = ev_fair - debt + cash - minority - preferred + non_operating; price_fair = equity_fair * 1e9 / shares_diluted"
+    excel: "=(EBITDA*M - Nợ + Tiền - MI)*1E9/CP"
+    variables:
+      - {symbol: "ebitda", meaning: "EBITDA điều chỉnh bất thường, TTM hoặc forward", unit: "tỷ VND"}
+      - {symbol: "target_multiple", meaning: "EV/EBITDA mục tiêu (median peers đã điều chỉnh)", unit: "lần"}
+      - {symbol: "debt", meaning: "Nợ vay có lãi (ngắn + dài hạn, gồm cả thuê tài chính/thuê vận hành nếu EBITDA chưa trừ chi phí thuê, nhất quán với peers)", unit: "tỷ VND"}
+      - {symbol: "cash", meaning: "Tiền và tương đương tiền (và đầu tư tài chính ngắn hạn dễ chuyển đổi)", unit: "tỷ VND"}
+      - {symbol: "minority", meaning: "Lợi ích cổ đông thiểu số (giá trị sổ hoặc theo multiple)", unit: "tỷ VND"}
+      - {symbol: "preferred", meaning: "Cổ phiếu ưu đãi (nếu có)", unit: "tỷ VND"}
+      - {symbol: "non_operating", meaning: "Tài sản phi hoạt động (đầu tư công ty liên kết, BĐS đầu tư chưa vào EBITDA) nếu EBITDA không bao gồm", unit: "tỷ VND"}
+      - {symbol: "shares_diluted", meaning: "Số cổ phiếu pha loãng (cp lưu hành + ESOP + chuyển đổi, trừ cp quỹ)", unit: "cp"}
+    when_to_use: "Doanh nghiệp phi tài chính, nợ vay khác nhau giữa các công ty, cần so sánh độc lập với cấu trúc vốn và khấu hao (sản xuất, hạ tầng, viễn thông, bán lẻ). Không dùng cho ngân hàng/tài chính."
+    why_it_works: "EBITDA gần với dòng tiền hoạt động trước đầu tư, EV là giá của toàn bộ hoạt động. Tỷ lệ này không bị đòn bẩy và chính sách khấu hao bóp méo. Cầu nối từ EV về vốn chủ nhằm trả lại phần thuộc chủ nợ và thiểu số, vì EV là 'bánh' chung còn cổ đông mẹ chỉ ăn phần còn lại."
+    assumptions:
+      - "Peers có tỷ lệ capex/EBITDA và tăng trưởng tương tự (EBITDA chưa trừ capex; công ty nặng tài sản có capex cao thì cùng EV/EBITDA kém giá trị hơn)."
+      - "Nợ và tiền lấy cùng ngày với giá, EBITDA là TTM hoặc forward nhất quán với peers."
+    pitfalls:
+      - "Quên trừ nợ ròng hoặc lợi ích thiểu số: giá hợp lý bị thổi phồng."
+      - "Dùng số cp lưu hành thay cho số cp pha loãng."
+      - "Tính tiền gồm cả tiền bị phong tỏa/ký quỹ hoặc tiền không tự do dùng."
+      - "Peers khác chính sách thuê tài sản (IFRS 16) hoặc khác cách tính EBITDA (có/không gồm thu nhập tài chính) thì không so sánh được."
+    interpretation: "EV/EBITDA so với median peers đã điều chỉnh. Nếu rẻ hơn peers mà tăng trưởng, ROIC không kém thì có tiềm năng; nếu rẻ vì capex nặng/đáy chu kỳ thì không phải cơ hội."
+    example:
+      inputs: {ebitda: 400, target_multiple: 5.95, debt: 900, cash: 300, minority: 80, shares_diluted: 100000000}
+      steps:
+        - "EV mục tiêu = 400 x 5,95 = 2.380 tỷ"
+        - "Nợ ròng = 900 - 300 = 600 tỷ"
+        - "Vốn chủ = 2.380 - 600 - 80 = 1.700 tỷ"
+        - "Giá/cp = 1.700 x 1e9 / 100 triệu = 17.000 VND (nếu pha loãng 105 triệu cp thì 16.190 VND)"
+      result: "Giá hợp lý 17.000 VND/cp trên 100 triệu cp, 16.190 VND nếu pha loãng thành 105 triệu cp (giả định minh họa)."
+  - id: "m04_fair_price_pe_pb"
+    name_vi: "Giá hợp lý = multiple mục tiêu x EPS hoặc BVPS dự phóng"
+    name_en: "Fair price from target multiple"
+    expression_latex: "P_{fair} = M_{target} \\times EPS_{fwd}, \\quad P_{fair} = M_{target} \\times BVPS_{fwd}"
+    expression_python: "price_fair = target_multiple * metric_forward; margin_of_safety = (price_fair - price) / price_fair; upside = price_fair / price - 1"
+    excel: "=M*EPS_fwd"
+    variables:
+      - {symbol: "target_multiple", meaning: "P/E hoặc P/B mục tiêu", unit: "lần"}
+      - {symbol: "metric_forward", meaning: "EPS hoặc BVPS dự phóng (năm hiện tại hoặc năm tới)", unit: "VND/cp"}
+      - {symbol: "price", meaning: "Thị giá hiện tại", unit: "VND/cp"}
+    when_to_use: "Bước tính giá hợp lý cuối cùng sau khi đã chọn multiple mục tiêu và dự phóng EPS/BVPS."
+    why_it_works: "Đảo ngược định nghĩa của multiple. Dùng chỉ tiêu dự phóng vì giá hôm nay trả cho dòng lợi nhuận tương lai, không phải quá khứ; tuy nhiên multiple phải cùng loại với chỉ tiêu (multiple trailing của peers áp vào EPS trailing, multiple forward áp vào EPS forward) để khỏi lẫn."
+    assumptions: ["Multiple mục tiêu và chỉ tiêu cùng kỳ (TTM-TTM hoặc forward-forward).", "Chiết khấu giá hợp lý về hiện tại nếu dùng chỉ tiêu 2 năm tới (xem m04_eps_projection)."]
+    pitfalls:
+      - "Áp multiple trailing của peers vào EPS forward hoặc ngược lại làm lệch 1 chu kỳ tăng trưởng."
+      - "Lấy giá hợp lý là một điểm; phải báo khoảng bằng nhạy multiple +/- và kịch bản EPS thấp/cơ sở/cao."
+    interpretation: "Upside >= biên an toàn yêu cầu thì Rẻ; trong khoảng +/- biên thì Hợp lý; thấp hơn thì Đắt (xem decision_rules)."
+    example:
+      inputs: {target_multiple: 9.9, metric_forward: 4600, price: 52000}
+      steps:
+        - "Giá hợp lý = 9,9 x 4.600 = 45.540 VND"
+        - "Upside = 45.540/52.000 - 1 = -12,4% (thị giá cao hơn giá hợp lý)"
+      result: "Giá hợp lý 45.540 VND, thị giá 52.000 cao hơn 12,4% (giả định minh họa)."
+  - id: "m04_pb_roe"
+    name_vi: "P/B hợp lý theo ROE (justified P/B)"
+    name_en: "Justified P/B from ROE"
+    expression_latex: "P/B_{justified} = \\frac{ROE - g}{R_e - g}"
+    expression_python: "pb_justified = (roe - g) / (re - g)"
+    excel: "=(ROE-g)/(Re-g)"
+    variables:
+      - {symbol: "roe", meaning: "ROE bền vững (đã chuẩn hóa, dài hạn)", unit: "thập phân (0,17 = 17%)"}
+      - {symbol: "g", meaning: "Tăng trưởng dài hạn của lợi nhuận/cổ tức, bằng roe x tỷ lệ giữ lại", unit: "thập phân"}
+      - {symbol: "re", meaning: "Chi phí vốn chủ sở hữu (CAPM, xem m05 và finance m03)", unit: "thập phân"}
+    when_to_use: "Ngân hàng và tổ chức tài chính (ROE ổn định, tăng trưởng gắn với giữ lại lợi nhuận); công ty nặng tài sản có ROE ổn định."
+    why_it_works: "Suy từ DDM Gordon: P0 = D1/(Re - g), với D1 = EPS1 x (1 - b) và g = b x ROE. Chia hai vế cho BVPS0 và dùng EPS1/BVPS0 = ROE ta được P/B = (ROE - g)/(Re - g). Ý nghĩa kinh tế: nếu ROE = Re thì P/B = 1 (công ty không tạo thêm giá trị bằng tái đầu tư nên chỉ đáng giá sổ sách); ROE > Re thì P/B > 1; ROE < Re thì P/B < 1. Đây là lý do 'ngân hàng ROE 20% đáng P/B cao hơn ngân hàng ROE 10%'."
+    assumptions:
+      - "ROE, g, Re ổn định vô thời hạn; g < Re; g không vượt tăng trưởng danh nghĩa dài hạn của nền kinh tế (prompt gốc: neo 2%-4,5%; với ngân hàng đang tăng trưởng cao có thể dùng mô hình 2 giai đoạn thay vì ép g cao)."
+      - "Tăng trưởng g đạt được qua giữ lại lợi nhuận (không phát hành thêm vốn pha loãng)."
+    pitfalls:
+      - "Mẫu số Re - g nhỏ làm kết quả cực nhạy; thay đổi Re 1% có thể đổi P/B hợp lý 15-25%."
+      - "Dùng ROE đỉnh chu kỳ hoặc ROE bị thổi phồng bởi lãi bất thường."
+      - "Nếu ROE <= g thì P/B hợp lý <= 0 hoặc không có nghĩa; công thức chỉ đúng khi Re > g."
+    interpretation: "So P/B hợp lý với P/B thị trường; chênh lệch >10-15% mới có ý nghĩa. Luôn bảng nhạy ROE x Re."
+    example:
+      inputs: {roe: 0.17, g: 0.08, re: 0.14, bvps: 20000}
+      steps:
+        - "P/B = (0,17 - 0,08)/(0,14 - 0,08) = 0,09/0,06 = 1,50x"
+        - "Giá hợp lý = 1,5 x 20.000 = 30.000 VND"
+      result: "P/B hợp lý 1,50x, giá hợp lý 30.000 VND (giả định minh họa)."
+  - id: "m04_pe_justified"
+    name_vi: "P/E hợp lý theo tăng trưởng, payout và Re (justified P/E)"
+    name_en: "Justified P/E (Gordon)"
+    expression_latex: "P/E_{justified,\\ forward} = \\frac{payout}{R_e - g}, \\quad P/E_{justified,\\ trailing} = \\frac{payout \\times (1 + g)}{R_e - g}"
+    expression_python: "pe_trailing = payout * (1 + g) / (re - g); pe_forward = payout / (re - g)"
+    excel: "=payout*(1+g)/(Re-g)"
+    variables:
+      - {symbol: "payout", meaning: "Tỷ lệ chi trả cổ tức bằng tiền (cổ tức/LNST)", unit: "thập phân"}
+      - {symbol: "g", meaning: "Tăng trưởng bền vững của cổ tức", unit: "thập phân"}
+      - {symbol: "re", meaning: "Chi phí vốn chủ sở hữu", unit: "thập phân"}
+    when_to_use: "Công ty ổn định, trả cổ tức tiền mặt đều (đối chiếu với DDM) hoặc để kiểm tra tính hợp lý của P/E mục tiêu đã chọn từ peers."
+    why_it_works: "Từ P0 = D1/(Re - g) với D1 = payout x EPS1 nên P0/EPS1 = payout/(Re - g); nhân (1+g) để chuyển về EPS trailing. Cho thấy P/E tăng khi payout cao, tăng trưởng cao, rủi ro thấp - ba nguồn gốc của P/E, giúp giải thích vì sao peers P/E khác nhau."
+    assumptions: ["Tăng trưởng ổn định vĩnh viễn, payout không đổi, g < Re."]
+    pitfalls:
+      - "Công ty tăng trưởng cao dùng g cao vĩnh viễn sẽ cho P/E phi lý; dùng mô hình hai giai đoạn."
+      - "Payout phải là tiền mặt; cổ tức cổ phiếu không phải dòng tiền cho cổ đông."
+      - "Bản chất là công cụ kiểm tra thận trọng, không phải nguồn P/E duy nhất."
+    interpretation: "Nếu P/E mục tiêu chọn từ peers cao hơn nhiều P/E hợp lý theo Gordon mà không có lý do tăng trưởng vượt trội thì cần xem lại."
+    example:
+      inputs: {payout: 0.4, g: 0.06, re: 0.13}
+      steps:
+        - "P/E trailing = 0,4 x 1,06/(0,13 - 0,06) = 0,424/0,07 = 6,06x"
+      result: "P/E hợp lý khoảng 6,06x (giả định minh họa; thấp vì payout 40% và g 6% so Re 13%)."
+  - id: "m04_peg"
+    name_vi: "PEG"
+    name_en: "PEG ratio"
+    expression_latex: "PEG = \\frac{P/E}{g_{EPS}\\ (\\%)}"
+    expression_python: "peg = pe / (eps_growth_pct)"
+    excel: "=PE/(g*100)"
+    variables:
+      - {symbol: "pe", meaning: "P/E forward (ưu tiên) hoặc TTM", unit: "lần"}
+      - {symbol: "eps_growth_pct", meaning: "Tăng trưởng EPS kỳ vọng hằng năm, lấy số % (15 chứ không phải 0,15), thường CAGR 2-3 năm", unit: "%"}
+    when_to_use: "So sánh các công ty cùng ngành có tăng trưởng khác nhau; sàng lọc nhanh cổ phiếu tăng trưởng."
+    why_it_works: "P/E của công ty tăng trưởng nên cao hơn; chia cho tăng trưởng để so sánh công bằng. Quy ước: PEG ~1 tương ứng giá đã hợp lý cho tăng trưởng."
+    assumptions: ["Tăng trưởng EPS ổn định và dự báo được; chất lượng tăng trưởng giống nhau giữa các công ty."]
+    pitfalls:
+      - "Tăng trưởng thấp hoặc âm cho PEG vô nghĩa."
+      - "Tăng trưởng từ nền thấp hoặc một lần (phục hồi sau dọn dẹp) thổi phồng g và làm PEG đẹp giả."
+      - "Bỏ qua rủi ro, ROE và đòn bẩy."
+    interpretation: "PEG < 1 hấp dẫn, 1-2 trung tính, > 2 đắt; luôn xem như dấu hiệu sàng lọc, không phải kết luận."
+    example:
+      inputs: {pe: 11.3, eps_growth_pct: 15}
+      steps: ["PEG = 11,3/15 = 0,75"]
+      result: "PEG 0,75, nghiêng về hấp dẫn nếu tăng trưởng 15% là đáng tin (giả định minh họa)."
+  - id: "m04_dividend_yield"
+    name_vi: "Tỷ suất cổ tức"
+    name_en: "Dividend yield"
+    expression_latex: "DY = \\frac{DPS_{cash}}{P}"
+    expression_python: "dy = dps_cash / price"
+    excel: "=DPS/Gia"
+    variables:
+      - {symbol: "dps_cash", meaning: "Cổ tức tiền mặt/cp 12 tháng gần nhất hoặc dự kiến", unit: "VND/cp"}
+      - {symbol: "price", meaning: "Giá cổ phiếu", unit: "VND/cp"}
+    when_to_use: "Cổ phiếu phòng thủ, doanh nghiệp trả cổ tức tiền mặt đều (điện, nước, tiện ích, một số ngân hàng); so với lãi suất tiền gửi và trái phiếu."
+    why_it_works: "Phần lợi suất tiền thật nhà đầu tư nhận, không phụ thuộc kế toán."
+    assumptions: ["Cổ tức bền vững, được tài trợ từ dòng tiền tự do."]
+    pitfalls:
+      - "Yield cao bất thường do giá sụt vì kỳ vọng cắt cổ tức (bẫy yield)."
+      - "Gộp cả cổ tức cổ phiếu và thưởng vào DPS (không phải tiền)."
+      - "Bỏ qua thuế thu nhập từ cổ tức theo quy định hiện hành (cần xác nhận)."
+    interpretation: "So yield với lãi suất tiền gửi 12 tháng và lợi suất trái phiếu; yield sát lãi tiền gửi mà không có tăng trưởng thì kém hấp dẫn."
+    example:
+      inputs: {dps_cash: 1500, price: 30000}
+      steps: ["DY = 1500/30000 = 5,0%"]
+      result: "Tỷ suất cổ tức 5,0% (giả định minh họa)."
+  - id: "m04_target_multiple"
+    name_vi: "Multiple mục tiêu điều chỉnh từ trung vị peers"
+    name_en: "Peer-median target multiple with adjustments"
+    expression_latex: "M_{target} = Median(M_{peers}) \\times (1 + a_{growth} + a_{quality} + a_{risk} + a_{liquidity} + a_{cycle})"
+    expression_python: "import statistics; m_target = statistics.median(peer_multiples) * (1 + sum(adjustments))"
+    excel: "=MEDIAN(range)*(1+SUM(adj))"
+    variables:
+      - {symbol: "peer_multiples", meaning: "Danh sách multiple cùng loại và cùng kỳ của các peers", unit: "lần"}
+      - {symbol: "adjustments", meaning: "Các điều chỉnh % (vd -0,10 chiết khấu thanh khoản/quy mô, +0,10 tăng trưởng/ROE cao hơn)", unit: "thập phân"}
+    when_to_use: "Mọi lần chọn P/E, P/B, EV/EBITDA mục tiêu; kết quả phải kèm lý do từng điều chỉnh."
+    why_it_works: "Trung vị cho mức thị trường trả cho 'doanh nghiệp điển hình'; điều chỉnh phản ánh phần khác biệt có căn cứ. Giữ điều chỉnh nhỏ, có tên, có lý do để tránh việc 'chọn multiple cho ra giá mình muốn'."
+    assumptions: ["Có tối thiểu 4-5 peers đủ tương đồng; loại ngoại lai và công ty lỗ."]
+    pitfalls:
+      - "Tổng điều chỉnh vượt +/-30% nghĩa là peers không tương đồng - tìm peers khác."
+      - "Dùng trung bình khi có ngoại lai."
+    interpretation: "Báo ba mức: thấp (trung vị giảm), cơ sở, cao (trung vị tăng) thay cho một điểm."
+    example:
+      inputs: {peer_pe: [9.5, 11, 12.5, 10.2, 14], adjustments: [-0.10]}
+      steps: ["Trung vị = 11,0x", "Điều chỉnh -10% (thanh khoản thấp, quy mô nhỏ) -> 11,0 x 0,9 = 9,9x"]
+      result: "P/E mục tiêu 9,9x (giả định minh họa)."
+  - id: "m04_eps_bvps_projection"
+    name_vi: "Dự phóng EPS và BVPS 2 năm"
+    name_en: "EPS and BVPS projection (2 years)"
+    expression_latex: "EPS_{t+1} = EPS_t (1 + g_t), \\quad BVPS_{t+1} = BVPS_t + EPS_{t+1} \\times (1 - payout_{cash}) \\ (\\text{khi không phát hành thêm})"
+    expression_python: "eps1 = eps0 * (1 + g1); eps2 = eps1 * (1 + g2); bvps1 = bvps0 + eps1 * (1 - payout_cash); bvps2 = bvps1 + eps2 * (1 - payout_cash)"
+    excel: "=EPS0*(1+g1)"
+    variables:
+      - {symbol: "eps0", meaning: "EPS cơ sở đã chuẩn hóa (năm gần nhất hoặc TTM)", unit: "VND/cp"}
+      - {symbol: "g1, g2", meaning: "Tăng trưởng EPS năm 1 và năm 2, mỗi giả định phải gắn lý do (doanh thu, biên, chi phí dự phòng, thuế, số cp)", unit: "thập phân"}
+      - {symbol: "payout_cash", meaning: "Tỷ lệ chi cổ tức tiền mặt", unit: "thập phân"}
+      - {symbol: "bvps0", meaning: "BVPS gần nhất", unit: "VND/cp"}
+    when_to_use: "Mọi định giá multiple theo chỉ tiêu dự phóng."
+    why_it_works: "EPS tăng theo giả định vận hành (doanh thu x biên) chia số cp; BVPS tăng bằng phần giữ lại. Công thức BVPS bỏ qua phát hành cổ phiếu mới và chia cổ tức bằng cổ phiếu (phải điều chỉnh theo số cp mới)."
+    assumptions: ["Số cp không đổi hoặc đã điều chỉnh pha loãng/chia thưởng.", "Giả định tăng trưởng thận trọng, ghi rõ (kịch bản thấp/cơ sở/cao)."]
+    pitfalls:
+      - "Ngoại suy tăng trưởng hiện tại bất biến nhiều năm (lỗi 'Garbage In, Garbage Out' ở prompt gốc)."
+      - "Quên chia thưởng/phát hành làm EPS dự phóng không so được với EPS cũ."
+    interpretation: "Dự phóng năm 2 dùng để tính P/E forward 2 năm; giá hợp lý theo EPS năm 2 phải chiết khấu về hiện tại bằng Re (1 năm) nếu dùng."
+    example:
+      inputs: {eps0: 4000, g1: 0.15, g2: 0.12}
+      steps: ["EPS1 = 4.000 x 1,15 = 4.600", "EPS2 = 4.600 x 1,12 = 5.152"]
+      result: "EPS1 4.600; EPS2 5.152 (giả định minh họa)."
+
+frameworks:
+  - id: "m04_method_selection"
+    name_vi: "Chọn multiple phù hợp theo loại doanh nghiệp"
+    name_en: "Multiple selection by business type"
+    origin: "Thực hành định giá chuẩn của giới phân tích (sell-side, buy-side); chung quy bởi một nguyên tắc: multiple phải phản ánh cái tạo ra giá trị của mô hình kinh doanh đó. Prompt gốc nhấn mạnh ngân hàng dùng P/B và FCFE/DDM, doanh nghiệp sản xuất, bán lẻ, công nghệ ưu tiên FCFF."
+    components:
+      - "Ngân hàng, tài chính: P/B (gắn ROE), P/E chuẩn hóa; không dùng EV."
+      - "Sản xuất, bán lẻ, hạ tầng nặng tài sản: EV/EBITDA là chính, P/E phụ, P/B tham khảo."
+      - "BĐS: P/B (hoặc RNAV), P/E tham khảo; chú ý quỹ đất và chu kỳ bàn giao."
+      - "Công nghệ, phần mềm, asset-light: EV/Sales, EV/EBITDA, PEG; hạn chế P/B."
+      - "Chu kỳ (thép, hóa chất, cảng biển, dầu khí): P/B hoặc EV/EBITDA chuẩn hóa theo chu kỳ; không tin P/E đỉnh/đáy."
+      - "Tiện ích, cổ tức cao: dividend yield, P/E, EV/EBITDA."
+      - "Công ty lỗ: EV/Sales hoặc P/B hoặc đưa sang DCF (m05)."
+    when_to_use: "Bước đầu của mọi định giá multiple."
+    how_to_apply:
+      - "Xác định mô hình giá trị: giá trị nằm ở bảng cân đối (P/B), dòng lợi nhuận (P/E), dòng tiền hoạt động (EV/EBITDA), hay tăng trưởng doanh thu (EV/Sales)."
+      - "Chọn một multiple chính và 1-2 multiple đối chiếu; kết luận dựa trên chính, đối chiếu để kiểm tra chéo."
+      - "Nếu multiple chính và đối chiếu mâu thuẫn mạnh, tìm nguyên nhân (bất thường, chu kỳ, kế toán) trước khi kết luận."
+    how_to_read_results: "Nếu nhiều multiple cùng chỉ một hướng (cùng rẻ/cùng đắt) thì độ tin cậy cao hơn; mâu thuẫn là tín hiệu cần chuẩn hóa dữ liệu."
+    pitfalls:
+      - "Dùng P/B cho công ty asset-light; dùng EV cho ngân hàng; dùng P/E cho công ty lỗ."
+    example: "Ngân hàng thương mại: chính P/B-ROE, đối chiếu P/E chuẩn hóa. Doanh nghiệp thép: chính EV/EBITDA chuẩn hóa chu kỳ, đối chiếu P/B."
+  - id: "m04_normalization"
+    name_vi: "Chuẩn hóa lợi nhuận trước khi tính multiple (bẫy P/E TTM)"
+    name_en: "Earnings normalization (P/E TTM trap)"
+    origin: "Phụ lục kinh nghiệm: lợi nhuận kế toán chứa khoản không lặp lại. Prompt gốc nêu minh họa STB nửa đầu năm 2026: ngân hàng đẩy mạnh trích lập dự phòng (gấp hơn 6 lần) để dọn nợ xấu, LNST sụt, P/E TTM cao; người chỉ nhìn P/E đắt sẽ bỏ lỡ cơ hội nếu dự phòng sau đó được hoàn nhập. (Ví dụ minh họa, data_reliability unverified, không dùng làm dữ liệu thị trường.)"
+    components:
+      - "Lợi nhuận trước dự phòng (PPOP) và chi phí dự phòng: tách khỏi LNST."
+      - "Khoản bất thường: lãi/lỗ thoái vốn, đánh giá lại, bán công ty con, xử lý tài sản."
+      - "Hoàn nhập dự phòng tiềm năng (ngân hàng): ước theo tỷ lệ bao phủ nợ xấu và lịch sử thu hồi."
+      - "Chi phí tín dụng bình thường (credit cost) theo trung bình chu kỳ."
+    when_to_use: "Khi P/E TTM bất thường so lịch sử hoặc peers, khi LNST thay đổi >30% mà không do doanh thu, ngân hàng sau giai đoạn dọn nợ xấu."
+    how_to_apply:
+      - "Đọc thuyết minh BCTC và báo cáo KQKD để tìm khoản bất thường; ghi từng khoản kèm nguồn."
+      - "Tính LNST chuẩn hóa = LNST báo cáo + khoản bất thường làm giảm lợi nhuận - khoản bất thường làm tăng lợi nhuận (sau thuế, dùng thuế suất hiệu dụng)."
+      - "Với ngân hàng: thay chi phí dự phòng thực tế bằng mức bình thường theo chu kỳ (credit cost x dư nợ), ghi giả định; không tự cộng toàn bộ hoàn nhập vào EPS cơ sở."
+      - "Tính P/E trên EPS chuẩn hóa song song với TTM và báo cả hai."
+    how_to_read_results: "Nếu P/E TTM cao nhưng P/E chuẩn hóa nằm trong dải peers thì tín hiệu 'đắt' là ảo; ngược lại P/E TTM thấp nhờ lãi bất thường mà chuẩn hóa cao thì 'rẻ' là ảo."
+    pitfalls:
+      - "Chuẩn hóa quá lạc quan (coi mọi khoản dự phòng là bất thường) - phải kiểm chứng bằng chất lượng tài sản (NPL, LLR, nhóm 2, nợ tái cơ cấu)."
+      - "Chuẩn hóa tùy tiện để cho ra kết luận mong muốn."
+    example: "Xem worked example m04_ex_bank_normalized."
+  - id: "m04_cycle_adjust"
+    name_vi: "Điều chỉnh theo chu kỳ ngành"
+    name_en: "Cycle adjustment"
+    origin: "Quan sát lâu đời ở ngành chu kỳ (thép, hóa chất, vận tải biển, bất động sản): P/E thấp nhất ở đỉnh lợi nhuận và cao nhất ở đáy (Graham-Dodd đề xuất lợi nhuận trung bình nhiều năm; Shiller phổ biến CAPE)."
+    components:
+      - "Vị trí trong chu kỳ: đáy, phục hồi, đỉnh, suy thoái."
+      - "Lợi nhuận/EBITDA trung bình 5-7 năm (mid-cycle)."
+      - "P/B hoặc EV/EBITDA trung bình lịch sử."
+    when_to_use: "Doanh nghiệp chu kỳ; thị trường mà lợi nhuận biến động mạnh theo giá hàng hóa, lãi suất, thị trường BĐS."
+    how_to_apply:
+      - "Xác định giai đoạn chu kỳ bằng giá hàng hóa, spread, công suất, tồn kho ngành (ghi nguồn, ngày)."
+      - "Tính EPS/EBITDA mid-cycle = trung bình 5-7 năm hoặc biên mid-cycle x doanh thu hiện tại."
+      - "Áp multiple trung bình lịch sử lên chỉ tiêu mid-cycle; so với giá hiện tại."
+    how_to_read_results: "P/E thấp ở đỉnh chu kỳ là cảnh báo bán (thị trường đã trừ lợi nhuận về mức thấp); P/E cao ở đáy là cơ hội nếu lợi nhuận sắp phục hồi và bảng cân đối sống sót."
+    pitfalls:
+      - "Mua vì P/E thấp ở đỉnh chu kỳ."
+      - "Cho rằng đáy chu kỳ mãi là cấu trúc (thực ra chu kỳ có thể kéo dài)."
+    example: "Doanh nghiệp thép biên EBITDA 8%, trung bình chu kỳ 12%, năm nay 18% do giá cao: dùng 12% x doanh thu, không dùng 18%."
+  - id: "m04_peer_selection"
+    name_vi: "Chọn nhóm peers và bảng so sánh"
+    name_en: "Peer group and comps table"
+    origin: "Phương pháp trading comparables chuẩn trong phân tích tài chính (xem finance m10)."
+    components:
+      - "Tiêu chí: cùng ngành/mô hình kinh doanh, cùng thị trường, quy mô vốn hóa/doanh thu tương đương (0,3-3 lần), tăng trưởng, ROE/biên, đòn bẩy, thanh khoản."
+      - "Cột bảng: mã, vốn hóa, giá, EPS TTM, EPS fwd, P/E TTM, P/E fwd, BVPS, P/B, ROE, tăng trưởng EPS, EV/EBITDA (nếu phi tài chính), nợ ròng/EBITDA, thanh khoản/ngày, ngày và nguồn dữ liệu."
+      - "Thống kê: trung vị, trung bình, min, max; cả nhóm và mã đang xét."
+    when_to_use: "Bước 2 của quy trình định giá."
+    how_to_apply:
+      - "Dùng web_search/web_fetch lấy danh sách doanh nghiệp cùng ngành từ nguồn tin cậy (sở giao dịch, báo cáo công ty chứng khoán, trang dữ liệu); ghi nguồn và ngày truy cập cho mọi con số."
+      - "Lọc: loại công ty lỗ, vừa M&A lớn, hoặc đang bị hạn chế giao dịch, hoặc mô hình khác bản chất."
+      - "Chuẩn hóa: cùng kỳ (TTM-TTM), cùng chuẩn mực kế toán, cùng đơn vị tiền, loại bất thường."
+      - "Tính median, tính độ phân tán; nếu độ phân tán lớn (max/min > 3) thì cần peers hẹp hơn."
+    how_to_read_results: "Mã đang xét nằm ở quartile nào của peers; lệch có lý do (tăng trưởng/ROE khác) hay không."
+    pitfalls:
+      - "Lấy peers 'cho đủ số' khác mô hình."
+      - "Dữ liệu từ các nguồn khác ngày/khác định nghĩa (EPS cơ bản vs pha loãng, VCSH có/không thiểu số)."
+      - "Không ghi nguồn và ngày: dữ liệu thị trường hết hạn rất nhanh."
+    example: "Xem worked example m04_ex_peer_table_football."
+  - id: "m04_football_field"
+    name_vi: "Football field (biểu đồ sân bóng)"
+    name_en: "Football field chart"
+    origin: "Công cụ tổng hợp trong ngân hàng đầu tư: hiển thị nhiều phương pháp trên cùng một trục giá, mỗi phương pháp là một thanh từ thấp đến cao (xem finance m10)."
+    components:
+      - "Mỗi hàng: một phương pháp (P/E thấp-cao, P/B theo ROE, EV/EBITDA, DCF/DDM từ m05, 52 tuần)."
+      - "Mỗi thanh: [giá thấp, giá cao] từ nhạy multiple/giả định."
+      - "Đường dọc: thị giá hiện tại."
+      - "Vùng chồng nhau của các thanh: dải giá hợp lý."
+    when_to_use: "Bước tổng hợp cuối cùng và khi trình bày cho người dùng."
+    how_to_apply:
+      - "Với mỗi phương pháp tính giá thấp/cơ sở/cao bằng multiple thấp/cơ sở/cao và EPS/BVPS thấp/cơ sở/cao."
+      - "Vẽ (bảng text hoặc python matplotlib) và đánh dấu thị giá."
+      - "Xác định dải chồng nhau của ít nhất 2-3 phương pháp độc lập; coi đó là khoảng giá hợp lý."
+      - "Tính biên an toàn = (giá hợp lý thấp-cơ sở - thị giá)/giá hợp lý."
+    how_to_read_results: "Thị giá dưới đáy dải: Rẻ; trong dải: Hợp lý; trên đỉnh dải: Đắt. Thanh quá rộng nghĩa là kết quả không chắc chắn."
+    pitfalls:
+      - "Thanh dựng từ cùng một giả định lặp lại (không độc lập)."
+      - "Trình bày chỉ điểm giữa."
+    example: "Xem worked example m04_ex_peer_table_football."
+  - id: "m04_accounting_comparability"
+    name_vi: "Kiểm tra khả năng so sánh (kế toán, kỳ, loại EPS)"
+    name_en: "Comparability checks"
+    origin: "Thực hành thẩm tra dữ liệu khi so sánh công ty khác chuẩn mực (VAS và IFRS), khác kỳ báo cáo."
+    components:
+      - "Chuẩn mực kế toán (VAS vs IFRS; ví dụ khác ở thuê tài sản, ghi nhận doanh thu, đánh giá lại)."
+      - "Kỳ báo cáo: cuối năm 31/12 khác 30/6, 31/3 - lệch kỳ thì TTM so sánh thận trọng."
+      - "Số cp: cơ bản vs pha loãng; có/không cổ phiếu quỹ."
+      - "Hợp nhất: có/không lợi ích cổ đông thiểu số."
+      - "Loại tiền và đơn vị."
+    when_to_use: "Khi peers gồm công ty nước ngoài hoặc niêm yết đồng thời nhiều sàn; khi so sánh VN với khu vực."
+    how_to_apply: ["Lập danh sách khác biệt từng peers.", "Điều chỉnh về cùng chuẩn hoặc loại peers khó điều chỉnh.", "Ghi rõ các khác biệt còn lại trong báo cáo."]
+    how_to_read_results: "Nếu khác biệt kế toán giải thích phần lớn chênh multiple thì không kết luận rẻ/đắt dựa trên chênh lệch đó."
+    pitfalls: ["So P/E công ty VN (VAS) với công ty Mỹ (US GAAP) mà không ghi nhận khác biệt."]
+    example: "EBITDA công ty IFRS 16 không chứa chi phí thuê, EBITDA VAS chứa chi phí thuê: EV/EBITDA lệch có hệ thống."
+  - id: "m04_dilution_handling"
+    name_vi: "Xử lý pha loãng EPS và số cổ phiếu"
+    name_en: "Dilution handling"
+    origin: "Chuẩn kế toán EPS cơ bản và pha loãng (IAS 33 / VAS 30)."
+    components:
+      - "Cổ phiếu thưởng, chia tách (điều chỉnh hồi tố)."
+      - "ESOP, quyền chọn, trái phiếu chuyển đổi, phát hành riêng lẻ."
+      - "Cổ phiếu quỹ (trừ ra)."
+    when_to_use: "Mọi lần tính EPS, BVPS và giá mỗi cổ phiếu từ EV."
+    how_to_apply: ["Lấy số cp lưu hành cuối kỳ và kế hoạch phát hành đã được phê duyệt.", "Tính số cp pha loãng (treasury stock method nếu quyền chọn)." , "Điều chỉnh EPS lịch sử cho chia thưởng để so sánh được."]
+    how_to_read_results: "Pha loãng 5% nghĩa là giá hợp lý giảm khoảng 5% ở cùng EV."
+    pitfalls: ["Dùng EPS cũ chưa điều chỉnh cổ phiếu thưởng làm P/E cao ảo.", "Bỏ qua kế hoạch phát hành lớn."]
+    example: "Giá hợp lý trên 100 triệu cp là 17.000 VND; sau pha loãng 105 triệu cp còn khoảng 16.190 VND."
+
+procedures:
+  - id: "m04_proc_full_valuation"
+    name: "Quy trình định giá multiple từ đầu đến cuối"
+    steps:
+      - "1. Xác định mã, ngày định giá, loại hình (ngân hàng, sản xuất, công nghệ, BĐS, chu kỳ). Chọn multiple chính và đối chiếu theo m04_method_selection."
+      - "2. Thu thập dữ liệu công ty: BCTC mới nhất, EPS, BVPS, ROE, nợ vay, tiền, lợi ích thiểu số, số cp pha loãng, cổ tức. Ghi nguồn và ngày; nếu không có nguồn tin cậy thì nêu rõ 'chưa xác minh', không bịa."
+      - "3. Chuẩn hóa lợi nhuận theo m04_normalization: loại bất thường, tách dự phòng bất thường, đối chiếu chu kỳ."
+      - "4. Chọn peers theo m04_peer_selection bằng web_search/web_fetch; ghi nguồn + ngày truy cập; lập bảng peers và tính trung vị."
+      - "5. Chọn multiple mục tiêu theo m04_target_multiple: trung vị, điều chỉnh từng yếu tố (tăng trưởng, ROE, rủi ro, thanh khoản/quy mô, chu kỳ), ghi lý do; lập ba mức thấp-cơ sở-cao."
+      - "6. Dự phóng EPS/BVPS năm hiện tại và năm kế tiếp theo m04_eps_bvps_projection với giả định rõ và ba kịch bản."
+      - "7. Tính giá hợp lý theo từng multiple (m04_fair_price_pe_pb; với EV dùng cầu nối EV sang vốn chủ m04_ev_ebitda). Với ngân hàng thêm P/B hợp lý theo ROE (m04_pb_roe)."
+      - "8. Kiểm tra chéo: P/E hợp lý Gordon, PEG, dividend yield; đối chiếu DCF/FCFE/DDM của m05 nếu có."
+      - "9. Dựng football field và dải chồng nhau; tính biên an toàn (m04_football_field)."
+      - "10. Kết luận Rẻ/Hợp lý/Đắt theo decision_rules, nêu khoảng giá, biên an toàn, các giả định nhạy nhất, rủi ro. Kèm disclaimer: không phải khuyến nghị đầu tư cá nhân hóa."
+    outputs: "Báo cáo: bảng multiple hiện tại, bảng peers (nguồn, ngày), multiple mục tiêu và lý do, EPS/BVPS dự phóng và giả định, giá hợp lý theo từng phương pháp (thấp/cơ sở/cao), football field, kết luận Rẻ/Hợp lý/Đắt với biên an toàn, hạn chế dữ liệu."
+  - id: "m04_proc_bank_pb"
+    name_vi: "Định giá ngân hàng bằng P/B và ROE"
+    name: "Định giá ngân hàng bằng P/B-ROE"
+    steps:
+      - "1. Lấy BVPS cổ đông mẹ, ROE chuẩn hóa (loại bất thường, dùng dự phòng bình thường), NPL, LLR, CAR (từ m03)."
+      - "2. Chọn Re từ CAPM với Rf là lợi suất trái phiếu chính phủ 10 năm VN tại thời điểm định giá (nguồn m07, ghi ngày); không dùng 10% cố định cho mọi doanh nghiệp."
+      - "3. Chọn g bền vững = ROE x tỷ lệ giữ lại, giới hạn bởi tăng trưởng danh nghĩa dài hạn; ngân hàng tăng trưởng cao dùng mô hình 2 giai đoạn."
+      - "4. Tính P/B hợp lý = (ROE - g)/(Re - g); nhân BVPS ra giá hợp lý. Lập bảng nhạy ROE x Re."
+      - "5. Đối chiếu P/B của peers (cùng nhóm vốn nhà nước/tư nhân, quy mô), P/E chuẩn hóa."
+      - "6. Chiết khấu P/B hợp lý nếu chất lượng tài sản yếu (NPL, nợ nhóm 2 cao, LLR thấp) hoặc BVPS có thể bị ăn mòn bởi dự phòng còn thiếu."
+      - "7. Kết luận theo decision_rules."
+    outputs: "Bảng P/B hợp lý theo ROE-Re, giá hợp lý khoảng, so với P/B thị trường và peers."
+  - id: "m04_proc_ev_bridge"
+    name_vi: "Định giá doanh nghiệp phi tài chính bằng EV/EBITDA"
+    name: "Định giá phi tài chính bằng EV/EBITDA và cầu nối"
+    steps:
+      - "1. Tính EBITDA điều chỉnh (loại bất thường), TTM và forward."
+      - "2. Lấy nợ vay, tiền, lợi ích thiểu số, tài sản phi hoạt động, số cp pha loãng mới nhất."
+      - "3. Chọn peers và trung vị EV/EBITDA; điều chỉnh theo tăng trưởng, capex/EBITDA, thanh khoản; ba mức thấp-cơ sở-cao."
+      - "4. EV mục tiêu = EBITDA x multiple; cầu nối sang vốn chủ; chia cp pha loãng."
+      - "5. Đối chiếu với P/E và EV/Sales; kiểm tra tính hợp lý của vốn hóa hiện tại và EV hiện tại."
+    outputs: "Giá hợp lý theo thấp/cơ sở/cao và so với thị giá."
+  - id: "m04_proc_report"
+    name: "Báo cáo kết luận Rẻ/Hợp lý/Đắt"
+    steps:
+      - "1. Trình bày bảng: thị giá, multiple hiện tại (TTM, forward), multiple mục tiêu, giá hợp lý thấp-cơ sở-cao."
+      - "2. Nêu khoảng giá hợp lý và biên an toàn theo công thức (giá hợp lý cơ sở - thị giá)/giá hợp lý cơ sở."
+      - "3. Kết luận theo decision_rules, nêu rõ phụ thuộc giả định nào."
+      - "4. Nêu bẫy nhận diện được (bất thường, chu kỳ, kế toán, pha loãng) và hành động kiểm tra tiếp."
+      - "5. Disclaimer và ngày dữ liệu; mọi số thị trường kèm nguồn + ngày truy cập; số chưa xác minh gắn nhãn."
+    outputs: "Một báo cáo ngắn gọn, có bảng, đủ để người đọc kiểm tra lại từng giả định."
+
+decision_rules:
+  - "Nếu doanh nghiệp là ngân hàng/tài chính thì dùng P/B-ROE và P/E chuẩn hóa; không dùng EV/EBITDA."
+  - "Nếu doanh nghiệp asset-light hoặc tài sản vô hình lớn thì không dùng P/B làm kết luận chính; dùng EV/Sales, EV/EBITDA, PEG, DCF."
+  - "Nếu EPS TTM thay đổi mạnh (>30%) do dự phòng hoặc khoản bất thường thì phải chuẩn hóa trước khi kết luận từ P/E TTM, và báo cả hai con số."
+  - "Nếu ngành chu kỳ và lợi nhuận đang ở đỉnh thì không coi P/E thấp là rẻ; dùng lợi nhuận mid-cycle hoặc P/B/EV-EBITDA trung bình lịch sử."
+  - "Nếu ROE bền vững > Re thì P/B hợp lý > 1; nếu ROE < Re thì P/B < 1 là hợp lý, không phải rẻ."
+  - "Nếu thị giá thấp hơn giá hợp lý cơ sở từ 20% trở lên VÀ thấp hơn đáy dải football field thì 'Rẻ'; nếu giá nằm trong dải hợp lý (cơ sở +/-10%) thì 'Hợp lý'; nếu cao hơn đỉnh dải hoặc >10% so với cơ sở thì 'Đắt'. Ngưỡng 20% và 10% là quy ước mặc định cho cổ phiếu vốn hóa nhỏ vừa, nâng biên an toàn (vd 30-40%) với doanh nghiệp rủi ro cao hoặc dữ liệu kém."
+  - "Nếu các multiple độc lập cho tín hiệu mâu thuẫn thì không kết luận mạnh; tìm nguyên nhân và hạ độ tin cậy."
+  - "Nếu tổng điều chỉnh multiple vượt +/-30% so với trung vị thì xem lại nhóm peers."
+  - "Nếu peers đang cùng bị định giá quá cao (so với lịch sử và earnings yield vs trái phiếu) thì 'rẻ so với peers' không đủ để kết luận rẻ; đối chiếu DCF/earnings yield."
+  - "Nếu thiếu dữ liệu đáng tin về một biến chính (BVPS, nợ ròng, số cp pha loãng) thì dừng, nêu rõ thiếu gì, không điền số bịa."
+  - "Nếu peers < 4 hoặc độ phân tán max/min > 3 thì cảnh báo độ tin cậy thấp và mở rộng/thu hẹp nhóm."
+  - "Nếu so sánh khác chuẩn mực kế toán hoặc khác kỳ thì ghi chú, điều chỉnh hoặc loại khỏi trung vị."
+  - "Nếu kết luận dùng cho quyết định mua bán thật thì thêm disclaimer và khuyên đối chiếu thêm với m05 và rủi ro thanh khoản (m07)."
+
+benchmarks:
+  - {metric: "Quy ước PEG", value: "<1 hấp dẫn; ~1 hợp lý; >2 đắt", context: "Quy tắc kinh nghiệm phổ biến, không phải chuẩn khoa học", confidence: "medium"}
+  - {metric: "Trần g trong công thức Gordon", value: "2% - 4,5% (neo tăng trưởng danh nghĩa dài hạn), prompt gốc nêu 3,0% - 4,5%", context: "Giới hạn từ prompt gốc; giai đoạn tăng trưởng ngắn hạn cao hơn dùng mô hình 2 giai đoạn", confidence: "medium"}
+  - {metric: "Chi phí vốn chủ Re doanh nghiệp rủi ro cao/đòn bẩy cao", value: "13% - 15%", context: "Prompt gốc, phụ thuộc Rf tại thời điểm; phải tính lại bằng CAPM, không dùng số cố định cho mọi doanh nghiệp", confidence: "low"}
+  - {metric: "Rf Việt Nam (lợi suất TPCP 10 năm)", value: "Prompt gốc nêu khoảng 4,58% (vùng đỉnh gần 4 năm) tại thời điểm viết", context: "Số liệu thị trường có thời hạn, KHÔNG dùng lại; tra cứu số mới nhất khi định giá và ghi ngày (m07)", confidence: "low"}
+  - {metric: "Số peers tối thiểu cho trung vị", value: ">= 4-5 peers tương đồng", context: "Thực hành thống kê đơn giản", confidence: "medium"}
+  - {metric: "Biên an toàn tối thiểu mặc định", value: "20% so với giá hợp lý cơ sở (cao hơn nếu rủi ro/dữ liệu kém)", context: "Quy ước của skill, điều chỉnh theo khẩu vị rủi ro người dùng", confidence: "low"}
+  - {metric: "Không có ngưỡng P/E/P/B tuyệt đối", value: "Chỉ so với peers, lịch sử, tăng trưởng, ROE, Re", context: "Mọi con số trong ví dụ là giả định minh họa", confidence: "high"}
+
+pitfalls:
+  - "Bẫy P/E TTM: ngân hàng trích lập dự phòng đột biến để dọn nợ xấu (prompt gốc minh họa bằng STB nửa đầu 2026) làm LNST sụt và P/E TTM cao ảo; nhìn P/E 'đắt' mà bỏ qua có thể bỏ lỡ doanh nghiệp sắp hoàn nhập dự phòng. Ngược lại P/E TTM thấp do lãi bất thường là rẻ ảo."
+  - "Bẫy P/B: P/B cao và vô nghĩa với phần mềm, công nghệ, asset-light (prompt gốc minh họa Grab) vì giá trị ở hiệu ứng mạng lưới; P/B thấp của doanh nghiệp có sổ sách phình do tài sản kém chất lượng không phải rẻ."
+  - "Bẫy chu kỳ: P/E thấp ở đỉnh lợi nhuận, P/E cao ở đáy lợi nhuận; mua theo P/E thấp ở đỉnh chu kỳ."
+  - "So sánh khác chuẩn mực kế toán, khác kỳ báo cáo, khác định nghĩa EBITDA/EPS/VCSH mà không điều chỉnh."
+  - "EPS bị pha loãng hoặc chưa điều chỉnh chia thưởng; dùng số cp lưu hành thay cho pha loãng khi quy EV về giá/cp."
+  - "Quên cầu nối EV sang vốn chủ (nợ ròng, thiểu số): giá hợp lý bị thổi phồng."
+  - "Dùng EV hoặc EV/EBITDA cho ngân hàng."
+  - "Chọn peers không tương đồng hoặc cherry-pick peers để ra multiple mong muốn."
+  - "Trộn multiple trailing với chỉ tiêu forward (hoặc ngược lại)."
+  - "Chọn multiple mục tiêu rồi mới tìm lý do (reverse engineering); phải đi từ dữ liệu."
+  - "Kết luận bằng một con số điểm thay vì khoảng và biên an toàn; thiếu bảng nhạy."
+  - "Dùng lại số liệu thị trường (giá, P/E, Rf, nợ xấu) cũ hoặc hard-code trong ví dụ prompt gốc như dữ liệu hiện hành (STB/SHB/Grab/WeWork chỉ minh họa, data_reliability unverified)."
+  - "Quá tin 'rẻ so với peers' trong khi cả nhóm đang bị định giá cao; multiple chỉ là tương đối."
+  - "Bỏ qua thanh khoản và free float: cổ phiếu P/E thấp nhưng khối lượng giao dịch nhỏ khó thoát vị thế."
+  - "Ngoại suy tăng trưởng 30-50% nhiều năm vào EPS dự phóng (Garbage In, Garbage Out; bài học WeWork trong prompt gốc)."
+
+sme_vn_guidance:
+  - "Nhà đầu tư cá nhân VN thường chỉ có P/E và P/B từ bảng giá; hãy tự tính lại từ BCTC (EPS pha loãng, BVPS cổ đông mẹ) vì dữ liệu tổng hợp trên app có thể dùng EPS 4 quý gần nhất chưa chuẩn hóa hoặc VCSH gồm thiểu số."
+  - "Ngân hàng VN: ưu tiên P/B-ROE, kết hợp NPL, LLR, CAR, tỷ lệ nợ nhóm 2, nợ tái cơ cấu, giới hạn room ngoại; chú ý cổ tức bằng cổ phiếu làm loãng EPS mà không có tiền về tay."
+  - "Doanh nghiệp VN thanh khoản thấp, free float nhỏ, vốn hóa nhỏ: áp chiết khấu thanh khoản/quy mô vào multiple mục tiêu (thường 10-20% là quy ước tham khảo, cần tự cân nhắc) và nâng biên an toàn."
+  - "Dữ liệu peers lấy từ web_search/web_fetch (website HOSE/HNX, báo cáo công ty chứng khoán, trang dữ liệu tài chính uy tín, báo cáo thường niên). Luôn ghi nguồn và ngày; dữ liệu có thể trễ hoặc sai, đối chiếu ít nhất hai nguồn khi quyết định lớn."
+  - "Lãi suất phi rủi ro VN lấy từ lợi suất trái phiếu chính phủ 10 năm của HNX tại thời điểm định giá (m07); không dùng số cũ."
+  - "Thuế thu nhập cá nhân đối với cổ tức và chuyển nhượng, phí giao dịch, T+ settlement: đưa vào lợi suất thực nhận; quy định có thể thay đổi, cần xác nhận với nguồn pháp lý hiện hành."
+  - "Giới hạn công cụ: không có bảng sao kê chuyên nghiệp, có thể dùng Google Sheets (GOOGLEFINANCE hạn chế với mã VN), Excel và các trang dữ liệu miễn phí; kiểm tra định nghĩa từng chỉ tiêu."
+  - "Cảnh báo hành vi: nhà đầu tư lẻ dễ thấy 'P/E thấp' rồi mua; hãy kiểm tra chu kỳ, bất thường và chất lượng lợi nhuận trước."
+  - "Đây không phải khuyến nghị đầu tư cá nhân hóa; quyết định cuối thuộc nhà đầu tư, cần xét khẩu vị rủi ro và danh mục tổng thể."
+
+case_lessons:
+  - name: "Ngân hàng dọn nợ xấu: P/E TTM đắt nhưng P/E chuẩn hóa hợp lý (minh họa từ prompt gốc về STB)"
+    type: "sme"
+    setup: "Prompt gốc nêu hiện tượng một ngân hàng chủ động trích lập dự phòng gấp hơn 6 lần trong nửa đầu năm 2026 để dọn nợ xấu nội bảng, làm LNST giảm và P/E TTM tăng cao. Đây chỉ là minh họa định tính; số liệu cụ thể chưa được kiểm chứng."
+    key_calculations:
+      - "LNST TTM bị nén -> EPS thấp -> P/E TTM = Giá/EPS cao."
+      - "LNST chuẩn hóa (dự phòng bình thường) -> EPS chuẩn hóa cao hơn -> P/E chuẩn hóa thấp hơn nhiều (cơ chế minh họa, chưa có số kiểm chứng)."
+    lesson: "Không kết luận 'đắt' chỉ từ P/E TTM; chuẩn hóa dự phòng và cân nhắc hoàn nhập sau dọn dẹp, kèm kiểm tra chất lượng tài sản. Số trong prompt gốc không được dùng như dữ liệu hiện hành."
+    data_reliability: "unverified"
+  - name: "P/B vị trọng tài của ngân hàng (SHB) và vô nghĩa với asset-light (Grab) - minh họa prompt gốc"
+    type: "success"
+    setup: "Prompt gốc nêu: ngân hàng có tài sản là tiền và khoản vay thanh khoản nên P/B là thước đo chính; công ty công nghệ/asset-light có giá trị ở hiệu ứng mạng lưới nên P/B cao và vô nghĩa."
+    key_calculations: ["P/B ngân hàng hợp lý = (ROE - g)/(Re - g).", "Công ty asset-light: dùng EV/Sales, EV/EBITDA, PEG, DCF."]
+    lesson: "Chọn multiple theo nơi giá trị nằm; không áp P/B máy móc."
+    data_reliability: "unverified"
+  - name: "WeWork - định giá dựa trên tăng trưởng tưởng tượng (bài học từ prompt gốc)"
+    type: "failure"
+    setup: "Prompt gốc nêu WeWork vẽ kịch bản tăng trưởng quá cao để định giá; multiple dựa trên doanh thu/tăng trưởng (EV/Sales) không phản ánh kinh tế đơn vị."
+    key_calculations: ["EV/Sales cao chỉ hợp lý nếu biên lợi nhuận mục tiêu đủ lớn: EV/Sales = biên x EV/EBITDA-hay-EV/FCF tương ứng."]
+    lesson: "Không đưa tăng trưởng 30-50% nhiều năm vào EPS/doanh thu dự phóng; multiple trên doanh thu phải kèm biên và con đường đạt biên."
+    data_reliability: "unverified"
+
+worked_examples:
+  - id: "m04_ex_bank_pb_roe"
+    title: "Ngân hàng 'NH Minh họa A': giá hợp lý bằng P/B theo ROE (giả định minh họa)"
+    inputs:
+      bvps: 20000
+      roe: 0.17
+      g: 0.08
+      re: 0.14
+      price: 27000
+    steps:
+      - "Bối cảnh: ngân hàng giả định có BVPS 20.000 VND, ROE chuẩn hóa 17%, giữ lại 47% lợi nhuận nên g = ROE x b ~ 8%; Re 14% theo CAPM (giả định). Thị giá 27.000 VND."
+      - "P/B hợp lý = (0,17 - 0,08)/(0,14 - 0,08) = 0,09/0,06 = 1,50x"
+      - "Giá hợp lý = 1,50 x 20.000 = 30.000 VND"
+      - "P/B thị trường = 27.000/20.000 = 1,35x"
+      - "Upside = 30.000/27.000 - 1 = 11,1%; biên an toàn = (30.000 - 27.000)/30.000 = 10,0%"
+      - "Bảng nhạy: ROE 15%, g 8%, Re 14% -> P/B 1,17x -> giá 23.333; ROE 17%, g 8%, Re 15% -> 1,29x -> giá 25.714; ROE 17%, g 7%, Re 14% -> 1,43x -> giá 28.571."
+      - "Diễn giải: thị giá 27.000 nằm trong dải 23.333-30.000 của bảng nhạy; biên an toàn 10% mỏng hơn mặc định 20%."
+    result: "P/B hợp lý 1,50x, giá hợp lý 30.000 VND; thị giá 27.000 -> Hợp lý (biên an toàn 10% < 20%), không đủ để gọi Rẻ. Rất nhạy với ROE và Re."
+    data_reliability: "illustrative"
+  - id: "m04_ex_manufacturer_ev_ebitda"
+    title: "Doanh nghiệp sản xuất 'SX Minh họa B': EV/EBITDA và cầu nối về giá cp (giả định minh họa)"
+    inputs:
+      ebitda_bn: 400
+      peer_multiples: [6.2, 7.0, 7.8, 8.5, 6.8]
+      adjustment: -0.15
+      debt_bn: 900
+      cash_bn: 300
+      minority_bn: 80
+      shares_basic: 100000000
+      shares_diluted: 105000000
+      price: 14500
+    steps:
+      - "Bối cảnh: sản xuất giả định, EBITDA điều chỉnh 400 tỷ; 5 peers cùng ngành có EV/EBITDA 6,2; 7,0; 7,8; 8,5; 6,8."
+      - "Trung vị = 7,0x (sắp xếp 6,2; 6,8; 7,0; 7,8; 8,5)."
+      - "Điều chỉnh -15% (quy mô nhỏ, thanh khoản thấp, ít đa dạng hóa sản phẩm) -> 7,0 x 0,85 = 5,95x."
+      - "EV mục tiêu = 400 x 5,95 = 2.380 tỷ."
+      - "Nợ ròng = 900 - 300 = 600 tỷ."
+      - "Vốn chủ = 2.380 - 600 - 80 (thiểu số) = 1.700 tỷ."
+      - "Giá/cp trên 100 triệu cp = 1.700 x 1e9 / 1e8 = 17.000 VND; trên 105 triệu cp pha loãng = 16.190 VND."
+      - "Thị giá 14.500 -> upside = 16.190/14.500 - 1 = 11,7% (dùng pha loãng); biên an toàn = (16.190 - 14.500)/16.190 = 10,4%."
+      - "Đối chiếu: EV/EBITDA hiện tại = (14.500 x 105 triệu/1e9 + 600 + 80)/400 = (1.522,5 + 680)/400 = 5,51x, thấp hơn 5,95x mục tiêu."
+    result: "Giá hợp lý khoảng 16.190 VND/cp (pha loãng); thị giá 14.500 thấp hơn ~10% so với giá hợp lý -> nằm ở ngưỡng giữa Hợp lý và Rẻ; nếu bỏ cầu nối nợ ròng sẽ cho giá 23.800 VND/cp, sai lệch tới 47%."
+    data_reliability: "illustrative"
+  - id: "m04_ex_bank_normalized"
+    title: "Ngân hàng dọn nợ xấu: P/E TTM 24,3x nhưng P/E chuẩn hóa 11,2x (giả định minh họa)"
+    inputs:
+      price: 22000
+      shares: 1500000000
+      ppop_bn: 5200
+      provision_ttm_bn: 3500
+      normal_provision_bn: 1500
+      tax_rate: 0.2
+      bvps: 15000
+    steps:
+      - "Bối cảnh: ngân hàng giả định đang dọn nợ xấu; lợi nhuận trước dự phòng (PPOP) 5.200 tỷ; chi phí dự phòng TTM 3.500 tỷ (cao bất thường); thuế 20%; 1,5 tỷ cp; BVPS 15.000; giá 22.000."
+      - "LNST TTM = (5.200 - 3.500) x 0,8 = 1.700 x 0,8 = 1.360 tỷ; EPS TTM = 1.360/1,5 = 906,7 VND; P/E TTM = 22.000/906,7 = 24,3x."
+      - "Chuẩn hóa: dự phòng bình thường (credit cost trung bình chu kỳ) 1.500 tỷ. LNST chuẩn hóa = (5.200 - 1.500) x 0,8 = 3.700 x 0,8 = 2.960 tỷ; EPS chuẩn hóa = 1.973,3 VND; P/E chuẩn hóa = 22.000/1.973,3 = 11,1x."
+      - "ROE chuẩn hóa = 1.973,3/15.000 = 13,2%; P/B hiện tại = 22.000/15.000 = 1,47x."
+      - "Đối chiếu P/B hợp lý với Re 14% và g 7%: (0,1316 - 0,07)/(0,14 - 0,07) = 0,88x -> giá 13.200 VND. Vì ROE chuẩn hóa 13,2% < Re 14%, P/B 1,47x trông đắt, trái chiều với P/E chuẩn hóa 11,1x."
+      - "Diễn giải: hai multiple mâu thuẫn, kết quả phụ thuộc ROE bền vững và Re. Cần kiểm tra NPL, LLR, nợ nhóm 2 và độ tin cậy của mức dự phòng 'bình thường' (có thể đang bị đặt thấp) trước khi kết luận."
+    result: "P/E TTM 24,3x (đắt do dự phòng bất thường) so với P/E chuẩn hóa 11,1x; nhưng P/B-ROE cho giá hợp lý khoảng 13.200 nên giá 22.000 có thể đắt nếu ROE chuẩn hóa không vượt Re. Kết luận thận trọng: không kết luận Đắt chỉ từ P/E TTM và không kết luận Rẻ cho tới khi xác nhận chất lượng tài sản, ROE bền vững."
+    data_reliability: "illustrative"
+  - id: "m04_ex_peer_table_football"
+    title: "Bảng peers P/E, EPS dự phóng 2 năm, PEG, football field cho 'CP Minh họa C' (giả định minh họa)"
+    inputs:
+      price: 52000
+      eps_ttm: 4000
+      g1: 0.15
+      g2: 0.12
+      peer_pe: [9.5, 11.0, 12.5, 10.2, 14.0]
+      adjustment: -0.10
+      pb_range: [1.3, 1.5, 1.8]
+      bvps: 30000
+    steps:
+      - "Bối cảnh: cổ phiếu giả định thị giá 52.000 VND, EPS TTM 4.000 (đã chuẩn hóa, không có bất thường)."
+      - "Dự phóng: EPS năm 1 = 4.000 x 1,15 = 4.600; EPS năm 2 = 4.600 x 1,12 = 5.152 (giả định: doanh thu +10%, biên +1-2 điểm; ghi lý do khi dùng thật)."
+      - "P/E hiện tại: TTM = 52.000/4.000 = 13,0x; forward 1 năm = 52.000/4.600 = 11,3x; forward 2 năm = 52.000/5.152 = 10,1x."
+      - "PEG = 11,3/15 = 0,75."
+      - "Peers P/E: 9,5; 10,2; 11,0; 12,5; 14,0 -> trung vị 11,0x; chiết khấu 10% -> 9,9x."
+      - "Giá hợp lý theo P/E 9,9 x EPS năm 1 4.600 = 45.540 VND; theo EPS năm 2 chiết khấu về hiện tại với Re 13%: 9,9 x 5.152/1,13 = 45.136 VND (cùng cơ sở thận trọng)."
+      - "Giá theo P/B 1,3-1,5-1,8 x BVPS 30.000 = 39.000 - 45.000 - 54.000 VND."
+      - "Football field (thấp - cơ sở - cao): P/E ~ 8,9x/9,9x/10,9x x 4.600 = 40.940 - 45.540 - 50.140; P/B 39.000 - 45.000 - 54.000; vùng chồng nhau khoảng 40.900 - 50.100 quanh cơ sở ~45.000."
+      - "Thị giá 52.000 nằm trên đỉnh vùng chồng nhau (50.000) -> 'Đắt': thị giá cao hơn giá cơ sở 45.000 khoảng 15,6% (biên an toàn = (45.000 - 52.000)/45.000 = -15,6%)."
+    result: "Giá hợp lý cơ sở ~45.000 VND, dải ~40.900-50.100; thị giá 52.000 -> Đắt nhẹ. PEG 0,75 cho thấy không đắt về tăng trưởng nên khẳng định phụ thuộc vào việc EPS thực sự tăng 15%/12%; cần theo dõi và kiểm tra."
+    data_reliability: "illustrative"
+  - id: "m04_ex_justified_pe_check"
+    title: "Kiểm tra P/E mục tiêu bằng P/E Gordon (giả định minh họa)"
+    inputs: {payout: 0.4, g: 0.06, re: 0.13, peer_median: 11.0}
+    steps:
+      - "P/E hợp lý = 0,4 x 1,06/(0,13 - 0,06) = 0,424/0,07 = 6,06x"
+      - "P/E trung vị peers = 11,0x cao gần gấp đôi."
+      - "Giải thích: peers có tăng trưởng 12-15% trong giai đoạn đầu nên P/E cao hơn Gordon 1 giai đoạn; Gordon với g 6% vĩnh viễn thấp hơn thực tế."
+      - "Kết luận: chênh lệch này không phủ nhận P/E 9,9x nhưng nhắc rằng P/E >= 10x ngầm kỳ vọng tăng trưởng cao kéo dài; cần mô hình 2 giai đoạn hoặc kiểm tra bằng m05."
+    result: "P/E Gordon 6,06x là mốc thận trọng (sàn); P/E mục tiêu 9,9x đòi hỏi tăng trưởng cao hơn 6% trong nhiều năm."
+    data_reliability: "illustrative"
+
+practice_questions:
+  - q: "Ngân hàng có BVPS 20.000, ROE bền vững 15%, g 8%, Re 14%. Giá hợp lý theo P/B-ROE?"
+    a: "P/B = (0,15 - 0,08)/(0,14 - 0,08) = 0,07/0,06 = 1,167x; giá hợp lý = 1,167 x 20.000 = 23.333 VND."
+  - q: "Công ty có EBITDA 400 tỷ, EV/EBITDA mục tiêu 6,0x, nợ 900 tỷ, tiền 300 tỷ, thiểu số 80 tỷ, 100 triệu cp. Giá hợp lý/cp?"
+    a: "EV = 2.400; vốn chủ = 2.400 - 900 + 300 - 80 = 1.720 tỷ; giá = 1.720 x 1e9/1e8 = 17.200 VND."
+  - q: "EPS TTM 906,7 do dự phòng bất thường, EPS chuẩn hóa 1.973,3, giá 22.000. P/E TTM và chuẩn hóa?"
+    a: "24,3x và 11,1x; P/E TTM 'đắt' có thể là ảo, cần kiểm tra chất lượng tài sản."
+  - q: "Vì sao không dùng P/B cho công ty phần mềm?"
+    a: "Giá trị nằm ở tài sản vô hình (phần mềm, dữ liệu, hiệu ứng mạng lưới) không có trong sổ sách nên P/B không phản ánh; dùng EV/Sales, EV/EBITDA, PEG, DCF."
+  - q: "Công ty thép có P/E 5x trong năm lợi nhuận kỷ lục. Có nên kết luận rẻ?"
+    a: "Chưa. Lợi nhuận ở đỉnh chu kỳ; thị trường trả P/E thấp vì dự đoán lợi nhuận giảm. Phải dùng lợi nhuận mid-cycle hoặc P/B, EV/EBITDA trung bình lịch sử."
+  - q: "P/E 11,3x, tăng trưởng EPS 15%/năm. PEG? Diễn giải."
+    a: "PEG = 11,3/15 = 0,75 < 1, hấp dẫn nếu tăng trưởng đáng tin; là dấu hiệu sàng lọc."
+  - q: "Giá hợp lý cơ sở 45.000, thị giá 52.000. Biên an toàn?"
+    a: "(45.000 - 52.000)/45.000 = -15,6%: biên an toàn âm, giá cao hơn giá hợp lý."
+  - q: "P/E Gordon với payout 50%, g 5%, Re 12%?"
+    a: "P/E trailing = 0,5 x 1,05/(0,12 - 0,05) = 0,525/0,07 = 7,5x."
+  - q: "Giá hợp lý EV/EBITDA dùng 100 triệu cp lưu hành, nhưng có thêm 5 triệu cp ESOP sắp vesting. Sai ở đâu?"
+    a: "Phải dùng số pha loãng 105 triệu cp; dùng 100 triệu thổi phồng giá hợp lý khoảng 5%."
+  - q: "Tại sao dùng trung vị thay trung bình khi chọn multiple mục tiêu?"
+    a: "Trung vị ít bị một peer cực đoan kéo lệch, phản ánh doanh nghiệp điển hình tốt hơn."
+
+checklist:
+  - "Đã xác định loại hình và chọn multiple chính/đối chiếu đúng bản chất (ngân hàng P/B, phi tài chính EV/EBITDA, asset-light không P/B)?"
+  - "EPS/BVPS/EBITDA đã chuẩn hóa (bất thường, dự phòng, chu kỳ) và dùng số cổ phiếu pha loãng?"
+  - "Peers: có tối thiểu 4-5 công ty tương đồng, có nguồn + ngày truy cập, cùng kỳ/chuẩn mực/định nghĩa?"
+  - "Multiple mục tiêu có trung vị, điều chỉnh từng yếu tố kèm lý do, và ba mức thấp-cơ sở-cao?"
+  - "Multiple và chỉ tiêu cùng kỳ (trailing-trailing hoặc forward-forward)?"
+  - "EV -> vốn chủ đã trừ nợ ròng, thiểu số, ưu đãi; đã cộng tài sản phi hoạt động đúng chỗ?"
+  - "EPS/BVPS dự phóng 2 năm có giả định rõ, thận trọng, ba kịch bản?"
+  - "Ngân hàng: ROE, g, Re có ràng buộc g < Re, bảng nhạy ROE x Re, đã xét NPL/LLR/CAR?"
+  - "Đã đối chiếu P/E Gordon, PEG, dividend yield (tiền mặt) và DCF/FCFE/DDM m05?"
+  - "Đã dựng football field, dải chồng nhau, biên an toàn bằng công thức nêu rõ?"
+  - "Kết luận là khoảng giá + Rẻ/Hợp lý/Đắt + giả định nhạy nhất, không phải một điểm?"
+  - "Mọi số thị trường (giá, Rf, peers) có nguồn + ngày; số chưa xác minh gắn nhãn; có disclaimer không phải tư vấn cá nhân hóa?"
+
+excel_google_sheets_templates:
+  - "Sheet Peers: cột mã, vốn hóa, giá, EPS TTM, EPS fwd, P/E TTM, P/E fwd, BVPS, P/B, ROE, tăng trưởng EPS, EV/EBITDA, nguồn, ngày; dòng thống kê MEDIAN/AVERAGE/MIN/MAX."
+  - "Sheet TargetMultiple: median peers, cột điều chỉnh %, lý do, multiple thấp/cơ sở/cao (=MEDIAN(range)*(1+SUM(adj)))."
+  - "Sheet Projection: EPS0, g1, g2, EPS1=EPS0*(1+g1), BVPS1=BVPS0+EPS1*(1-payout)."
+  - "Sheet EVBridge: EBITDA, multiple, EV, nợ, tiền, thiểu số, ưu đãi, phi hoạt động, vốn chủ, cp pha loãng, giá/cp."
+  - "Sheet BankPB: ROE, g, Re, P/B=(ROE-g)/(Re-g), giá; bảng dữ liệu Data Table ROE x Re."
+  - "Sheet FootballField: các phương pháp x (thấp, cơ sở, cao); biểu đồ thanh xếp chồng với đường thị giá; dải chồng nhau (MAX của đáy, MIN của đỉnh)."
+
+source_file: "prompt-dinh-gia-doanh-nghiep.md (Phần 1 mục 2; Phần 2 lưu ý 3); tham chiếu chéo finance-agent-skill m10-corporate-valuation.yaml, m03-cost-of-capital.yaml"

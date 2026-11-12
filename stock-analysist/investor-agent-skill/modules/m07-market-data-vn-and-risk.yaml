@@ -1,0 +1,702 @@
+# m07 - Dữ liệu thị trường Việt Nam và quản trị rủi ro đầu tư. Distilled từ VERIFICATION_FINDINGS.md, 03_risk_management_framework.yaml, 04_chart_interpretation_heuristics.yaml, prompt-stock-analyze.md, prompt-dinh-gia-doanh-nghiep.md.
+# Quy ước: tỷ lệ % nhập dạng PHẦN TRĂM (vd 1 nghĩa 1%) trừ khi ghi rõ là "tỷ lệ 0-1"; giá tính VND/cổ phiếu; expression_python dùng đúng tên biến trong variables.
+# CẢNH BÁO NGUỒN: quy định sàn giao dịch, phí, thuế, room ngoại, margin trong file này là kiến thức nền có thể đã đổi -> mọi mục đánh dấu "cần xác nhận" PHẢI tra lại ở nguồn chính thức (HOSE, HNX, UBCKNN, công ty chứng khoán) vào lúc chạy. Không có số thị trường có thời hạn (lãi suất, Rf, P/E...) nào được hard-code ở đây.
+# Tham chiếu chéo (không chép): finance-agent-skill/modules/m08-risk-and-return.yaml (CAPM, beta, Markowitz, Sharpe, VaR) - dùng khi cần lý thuyết danh mục/Ke; file này tập trung vào bối cảnh thị trường VN, ảnh chụp thị trường có ngày, và quản trị rủi ro vị thế/giao dịch.
+id: "m07"
+name_vi: "Dữ liệu thị trường Việt Nam và quản trị rủi ro đầu tư"
+name_en: "Vietnam Market Data and Investment Risk Management"
+purpose: >
+  Cung cấp cho agent Investor (1) hiểu đúng cấu trúc và giới hạn của thị trường chứng khoán Việt Nam cùng dữ liệu yfinance mã .VN để không đưa ra tín hiệu không khả thi (vd SHORT) hay tin nhầm dữ liệu lỗi;
+  (2) giao thức lập "ảnh chụp thị trường có ngày" để tra và ghi nguồn Rf, lãi suất, ERP, beta, tỷ giá, CPI/GDP, P/E thị trường thay vì hard-code;
+  (3) bộ công cụ quản trị rủi ro vị thế (kích thước theo rủi ro % vốn và ATR, cắt lỗ, R:R, drawdown, margin, Kelly thận trọng, phá sản);
+  (4) chính sách đầu ra: phân tích tham khảo có kịch bản, xác suất, mức vô hiệu hóa và nhãn độ tin cậy, KHÔNG phải lời khuyên mua/bán/giữ cá nhân.
+when_to_use:
+  - "Người dùng hỏi biên độ giá, T+2, phiên ATO/ATC, lô chẵn/lẻ, room ngoại, margin, có bán khống được không"
+  - "Cần lấy dữ liệu giá cổ phiếu VN bằng yfinance và nghi ngờ dữ liệu thiếu/trễ/đã điều chỉnh"
+  - "Cần thêm Rf, ERP, beta, lãi suất, P/E thị trường vào một mô hình định giá (m05) và phải tra số hiện hành"
+  - "Hỏi 'mua bao nhiêu cổ phiếu', 'cắt lỗ ở đâu', 'tỷ lệ R:R có đủ không', 'nên để bao nhiêu % vốn một mã'"
+  - "Người dùng muốn dùng margin/đòn bẩy, hoặc đang trung bình giá xuống khi lỗ"
+  - "Người dùng đòi 'nên mua hay bán', 'giá mục tiêu bao nhiêu' -> áp dụng chính sách đầu ra và hỏi lại ngữ cảnh"
+  - "Trước khi kết luận bất kỳ phân tích nào (m01-m06) -> chạy quy trình kiểm tra rủi ro trước khi kết luận"
+prerequisites: ["m01"]
+related_modules:
+  - "m01: chỉ báo kỹ thuật đã kiểm chứng; ATR, vùng biến động, kênh giá; kết quả kiểm chứng cho thấy hướng giá khó dự báo, biên độ dự báo được"
+  - "m02: Auction Market Theory; phiên ATO/ATC và dữ liệu trong ngày không đảm bảo ở yfinance"
+  - "m03: phân tích cơ bản; bẫy P/E, P/B theo ngành"
+  - "m04: định giá tương đối; P/E thị trường VN cần ảnh chụp có ngày"
+  - "m05: định giá nội tại; Rf, ERP, beta, g không vượt GDP danh nghĩa lấy từ ảnh chụp thị trường của module này"
+  - "m06: thẩm định dự án; quỹ dự phòng và tách vốn kinh doanh khỏi vốn đầu tư tài chính"
+  - "finance-agent-skill m08: CAPM, beta, Sharpe, VaR, đa dạng hóa Markowitz (tham chiếu chéo, không chép)"
+concepts:
+  - term_vi: "Ba sàn giao dịch: HOSE, HNX, UPCoM"
+    term_en: "Trading venues HOSE / HNX / UPCoM"
+    definition: >
+      HOSE (Sở Giao dịch Chứng khoán TP.HCM) là sàn chính cho doanh nghiệp lớn, thanh khoản cao, gồm hầu hết cổ phiếu trong VN30 và VN-Index.
+      HNX (Hà Nội) là sàn cho doanh nghiệp vừa. UPCoM là thị trường giao dịch cho công ty đại chúng chưa niêm yết, thanh khoản mỏng và rủi ro cao hơn.
+    why_it_matters: >
+      Mỗi sàn có biên độ giá, quy tắc lô và mức thanh khoản khác nhau. Cùng một chiến lược cắt lỗ 7% có ý nghĩa khác nhau khi biên độ ngày chỉ là ±7% (HOSE) so với ±15% (UPCoM),
+      và cổ phiếu thanh khoản mỏng có thể không thoát được vị thế đúng giá cắt lỗ (trượt giá, giá kịch sàn nhiều phiên).
+  - term_vi: "Biên độ giá ngày"
+    term_en: "Daily price limit"
+    definition: >
+      Giá chỉ được dao động quanh giá tham chiếu trong biên: HOSE ±7%, HNX ±10%, UPCoM ±15% (cần xác nhận quy định hiện hành; ngày chào sàn và một số trường hợp đặc biệt có biên khác).
+      Giá trần = tham chiếu x (1+biên), giá sàn = tham chiếu x (1-biên), làm tròn theo bước giá.
+    why_it_matters: >
+      Giới hạn tối đa lỗ/lãi trong ngày nhưng cũng làm lệnh cắt lỗ có thể không khớp khi giá kịch sàn: rủi ro "kẹt hàng" nhiều phiên liên tiếp. Vì vậy mức lỗ thực tế có thể lớn hơn mức cắt lỗ dự kiến (gap risk).
+  - term_vi: "Lô giao dịch và bước giá"
+    term_en: "Trading lot and tick size"
+    definition: >
+      Lô chẵn: bội số của 100 cổ phiếu khớp ở sổ lệnh chính. Lô lẻ (1-99 cổ phiếu) giao dịch riêng, thanh khoản kém, giá có thể kém hơn (cần xác nhận cách khớp hiện hành).
+      Bước giá cổ phiếu trên HOSE thường 10 đồng (giá dưới 10.000), 50 đồng (10.000-49.950), 100 đồng (từ 50.000) - cần xác nhận; HNX/UPCoM thường 100 đồng.
+    why_it_matters: "Kích thước vị thế phải làm tròn xuống bội số 100; lệnh cắt lỗ phải đặt đúng bước giá; vốn nhỏ phải tính phần lẻ."
+  - term_vi: "Chu kỳ thanh toán T+2"
+    term_en: "T+2 settlement"
+    definition: >
+      Cổ phiếu mua ngày T về tài khoản vào chiều T+2 (khoảng chiều ngày làm việc thứ hai sau đó); thực tế thường nhắc tới "T+1,5" vì hàng về chiều T+2 có thể bán được trong buổi chiều T+2.
+      Quy định có thể đã thay đổi (có thảo luận rút ngắn chu kỳ thanh toán) - BẮT BUỘC xác nhận ở HOSE/VSDC/công ty chứng khoán trước khi tính toán.
+    why_it_matters: "Không thể bán ngay khi sai: một vị thế vừa mua bị 'khóa' khoảng hai ngày làm việc, nên cắt lỗ trong ngày mua không thực hiện được bằng cổ phiếu đó; rủi ro qua đêm/gap là bắt buộc phải chịu."
+  - term_vi: "Các phiên giao dịch ATO / liên tục / ATC và nghỉ trưa"
+    term_en: "Trading sessions: ATO, continuous matching, ATC, lunch break"
+    definition: >
+      Mẫu thường gặp trên HOSE: khớp lệnh định kỳ mở cửa ATO (khoảng 9:00-9:15), khớp lệnh liên tục (khoảng 9:15-11:30 và 13:00-14:30), nghỉ trưa 11:30-13:00, khớp lệnh định kỳ đóng cửa ATC (khoảng 14:30-14:45), sau đó có thể có giao dịch thỏa thuận. Giờ cụ thể và lệnh được phép có thể khác giữa các sàn và đã/đang thay đổi - cần xác nhận.
+    why_it_matters: "Giá đóng cửa hình thành ở ATC (một mức giá khớp định kỳ) nên dễ bị tác động; dữ liệu ngày dùng giá đóng cửa này. Nghỉ trưa tạo gap giữa phiên; dữ liệu nến trong ngày cần biết khung giờ để không đọc nhầm nến."
+  - term_vi: "Không bán khống cho nhà đầu tư cá nhân"
+    term_en: "No retail short selling"
+    definition: "Nhà đầu tư cá nhân không thể bán khống cổ phiếu cơ sở (cần xác nhận quy định hiện hành). Hành động khả thi chỉ gồm: mua, giữ, giảm tỷ trọng, bán hết, đứng ngoài. Phái sinh chỉ số (VN30F) có thể đánh hai chiều nhưng là sản phẩm khác, rủi ro đòn bẩy cao."
+    why_it_matters: "Một tín hiệu 'SHORT' hay 'BÁN KHỐNG' là không khả thi cho cổ phiếu VN cá nhân; agent chỉ dùng các nhãn như 'không mua / giảm tỷ trọng / đứng ngoài' và giải thích điều này. Kiểm chứng cũng cho thấy nhãn BÁN theo MA200 không có giá trị dự báo giảm."
+  - term_vi: "Room ngoại"
+    term_en: "Foreign ownership limit (foreign room)"
+    definition: "Tỷ lệ sở hữu nước ngoài tối đa của một cổ phiếu (mặc định chung khoảng 49%, ngân hàng thường thấp hơn, ngành có điều kiện khác; từng công ty có thể đặt riêng - cần xác nhận). Khi 'hết room', nhà đầu tư nước ngoài không mua thêm được."
+    why_it_matters: "Ảnh hưởng thanh khoản, định giá chênh lệch (premium khi hết room), dòng vốn ngoại. Tra tỷ lệ hiện tại trên báo cáo công ty/sàn, không suy diễn."
+  - term_vi: "Giao dịch ký quỹ (margin)"
+    term_en: "Margin trading"
+    definition: "Vay tiền công ty chứng khoán để mua cổ phiếu, thế chấp bằng chính cổ phiếu/tiền. Có tỷ lệ ký quỹ ban đầu, tỷ lệ duy trì, tỷ lệ cảnh báo/xử lý (call margin/force sell), danh mục cổ phiếu được margin và lãi suất do từng công ty quy định - cần xác nhận."
+    why_it_matters: "Đòn bẩy phóng đại cả lãi và lỗ và có thể buộc bán ở đáy (force sell) khi biên độ kịch sàn nhiều phiên; bài học LTCM trong m08. Với phần lớn người mới: tối đa là công cụ để hiểu rủi ro, không phải để tăng tỷ trọng."
+  - term_vi: "Chỉ số VN-Index, VN30 và rổ đại diện"
+    term_en: "VN-Index, VN30 and proxy basket"
+    definition: >
+      VN-Index (toàn bộ HOSE, vốn hóa) và VN30 (30 cổ phiếu lớn thanh khoản cao) là chỉ số thị trường. yfinance KHÔNG có mã ^VNINDEX ổn định.
+      Bộ công cụ outlook_v3 dùng rổ đại diện bình quân đều lợi suất ngày của VNM, FPT, MWG, STB, VCB, SSI, PNJ làm "thị trường chung", rồi đánh dấu thị trường trên/dưới MA200 để xác định chế độ.
+    why_it_matters: "Cần một thước đo thị trường để xác định chế độ (quán tính vs hồi quy) và tính beta. Rổ 7 mã tập trung ngân hàng/chứng khoán/tiêu dùng nên chỉ là xấp xỉ, KHÔNG thay thế VN-Index; khi trả lời phải ghi rõ đây là rổ đại diện."
+  - term_vi: "Đặc điểm dữ liệu yfinance cho mã .VN"
+    term_en: "yfinance data characteristics for .VN tickers"
+    definition: >
+      Giá được điều chỉnh (adjusted) theo cổ tức/tách cổ phiếu nên giá lịch sử có thể khác giá niêm yết; dữ liệu có thể trễ, thiếu phiên, thiếu khối lượng, trùng ngày; dữ liệu trong ngày (15m, 1h) không đảm bảo cho mã .VN;
+      cổ phiếu mới niêm yết có lịch sử ngắn nên MA200, ATR, beta kém tin cậy; giá cũ chưa điều chỉnh thưởng cổ phiếu có thể tạo nhảy giả.
+    why_it_matters: "Dữ liệu sai thì tính toán chính xác cũng vô nghĩa (garbage in, garbage out). Agent phải kiểm tra độ đủ dữ liệu, độ trễ và gắn data_reliability cho mọi kết luận kỹ thuật."
+  - term_vi: "Ảnh chụp thị trường có ngày"
+    term_en: "Dated market snapshot"
+    definition: "Bảng các thông số thị trường (Rf, lãi suất tiền gửi, ERP, beta, tỷ giá, CPI, GDP, P/E thị trường) được tra lúc chạy, mỗi dòng kèm nguồn, ngày dữ liệu, độ tin cậy; có hạn dùng."
+    why_it_matters: "Các số này đổi hàng ngày/tháng và mô hình định giá cực nhạy với chúng (TV phụ thuộc mẫu số Re - g). Hard-code số cũ khiến kết quả sai lặng lẽ; đây là điểm gây sai lầm lớn nhất khi 'agent trên máy khác' chạy lại nhiều tháng sau."
+  - term_vi: "Rủi ro trên mỗi giao dịch (Risk per trade)"
+    term_en: "Risk per trade (fixed fractional risk)"
+    definition: "Phần trăm vốn tối đa chấp nhận mất nếu lệnh chạm cắt lỗ (thường 0,5%-2% vốn đầu tư rủi ro). Khối lượng mua suy ra từ rủi ro này chia cho khoảng cách entry - stop."
+    why_it_matters: "Biến câu hỏi 'mua bao nhiêu' từ cảm tính thành tính toán. Đảm bảo một chuỗi thua liên tiếp không phá hủy vốn: lỗ 1% x 10 lần liên tiếp = khoảng -9,6% chứ không phải -50%."
+  - term_vi: "Tỷ lệ R:R và kỳ vọng toán"
+    term_en: "Reward-to-Risk and expectancy"
+    definition: "R:R = lợi nhuận tiềm năng chia cho rủi ro (entry - stop). Kỳ vọng (expectancy, tính theo R) = p*W - (1-p)*L. Hòa vốn win-rate = 1/(1+R:R)."
+    why_it_matters: "Chiến lược thắng 40% vẫn có thể có lời nếu R:R từ 2 trở lên; ngược lại thắng 70% mà R:R 0,3 vẫn lỗ. Con số win-rate không có nghĩa nếu thiếu R:R. Nhưng R:R lý thuyết dùng mục tiêu giá chủ quan: cần kiểm chứng win-rate thật bằng backtest/ghi nhận, không tự tin."
+  - term_vi: "Drawdown và bất đối xứng hồi phục"
+    term_en: "Drawdown and recovery asymmetry"
+    definition: "Drawdown là mức sụt từ đỉnh vốn. Để hồi lại mức đỉnh cần tăng 1/(1-d) - 1: lỗ 50% cần lãi 100%."
+    why_it_matters: "Lý do bảo toàn vốn là ưu tiên số 1: lỗ càng sâu, quãng đường hồi phục càng phi tuyến. Nền tảng cho giới hạn rủi ro mỗi lệnh và quy tắc không trung bình giá xuống."
+  - term_vi: "Tiêu chí Kelly và Kelly thận trọng"
+    term_en: "Kelly criterion and fractional Kelly"
+    definition: "Kelly (1956; Thorp phổ biến hóa) cho tỷ lệ vốn tối ưu để tối đa hóa tăng trưởng log dài hạn: f* = p - (1-p)/b với b = lợi/lỗ. Kelly thận trọng dùng 1/4 đến 1/2 f*."
+    why_it_matters: "Cho biết trần tỷ trọng về mặt lý thuyết khi có lợi thế; nhưng p và b ước lượng sai sẽ khiến Kelly đầy đủ mất vốn. Vì p,b chỉ là ước lượng yếu trên thị trường thực, chỉ dùng như trần tham chiếu, không như quy tắc."
+  - term_vi: "Quỹ dự phòng và vốn nhàn rỗi"
+    term_en: "Emergency fund and investable surplus"
+    definition: "Vốn đầu tư chỉ nên là tiền nhàn rỗi sau khi có quỹ dự phòng (thường 3-6 tháng chi tiêu - heuristics) và nghĩa vụ nợ."
+    why_it_matters: "Đầu tư bằng tiền cần dùng gấp buộc bán lỗ đúng lúc xấu; làm méo hành vi (tham lam, hoảng loạn)."
+  - term_vi: "Thiên kiến hành vi: FOMO, bắt đáy, trung bình giá xuống"
+    term_en: "Behavioural biases: FOMO, bottom-picking, averaging down"
+    definition: "FOMO: mua đuổi khi giá đã tăng mạnh vì sợ bỏ lỡ. Bắt đáy: mua khi giá giảm với niềm tin đáy đã tới. Trung bình giá xuống: mua thêm khi lỗ để hạ giá vốn."
+    why_it_matters: "Kiểm chứng trên 12 mã: mẫu hình nến đảo chiều tăng ở vùng giá thấp có lợi suất vượt nền âm (-0,74% và -0,82%), mua cạnh dưới hộp tích lũy cũng âm: 'bắt đáy' theo hình thức thường sai. Trung bình giá xuống dưới MA200 trái nguyên tắc bảo toàn vốn."
+  - term_vi: "Chính sách đầu ra phi khuyến nghị cá nhân"
+    term_en: "Non-advisory output policy"
+    definition: "Agent là công cụ phân tích tham khảo, không phải cố vấn đầu tư được cấp phép. Không nói 'hãy mua/bán/giữ' hay 'giá mục tiêu chắc chắn'; thay bằng kịch bản, xác suất định tính/định lượng có nguồn, mức vô hiệu hóa (invalidation) và nhãn độ tin cậy."
+    why_it_matters: "Tránh trách nhiệm tư vấn trái phép và tránh khiến người dùng ra quyết định tài chính thay vì dựa trên hoàn cảnh riêng (vốn, thời hạn, khẩu vị rủi ro) mà agent không biết. Cũng trung thực với kết quả kiểm chứng: dự báo hướng 10-20 phiên chỉ từ giá gần như là tung đồng xu."
+formulas:
+  - id: "m07_position_size_risk"
+    name_vi: "Số cổ phiếu theo rủi ro % vốn"
+    name_en: "Position size by fixed-fractional risk"
+    expression_latex: 'N = \left\lfloor \frac{C \cdot r/100}{E - S} \Big/ \text{lot} \right\rfloor \cdot \text{lot}'
+    expression_python: "math.floor((C * r / 100) / (E - S) / lot) * lot"
+    excel: "=FLOOR((C*r/100)/(E-S),lot)"
+    variables:
+      - {symbol: "C", meaning: "Vốn đầu tư (vốn được phép chịu rủi ro)", unit: "VND"}
+      - {symbol: "r", meaning: "Rủi ro tối đa mỗi lệnh", unit: "% vốn"}
+      - {symbol: "E", meaning: "Giá vào lệnh dự kiến", unit: "VND/cp"}
+      - {symbol: "S", meaning: "Giá cắt lỗ (stop), S < E", unit: "VND/cp"}
+      - {symbol: "lot", meaning: "Lô giao dịch", unit: "cổ phiếu (thường 100)"}
+    when_to_use: "Khi người dùng hỏi mua bao nhiêu cổ phiếu hoặc muốn giới hạn lỗ của một lệnh."
+    why_it_works: "Số tiền lỗ nếu chạm stop = N x (E - S). Đặt bằng C x r% rồi giải ngược N, nên mức lỗ tối đa cố định theo vốn bất kể giá hay độ biến động; mã biến động mạnh (stop xa) tự động nhận vị thế nhỏ hơn."
+    assumptions: ["Stop khớp đúng giá S (không gap/không kẹt kịch sàn)", "Chưa tính phí, thuế", "Vị thế không vượt giới hạn tỷ trọng một mã"]
+    pitfalls: ["Quên giới hạn tỷ trọng tối đa (vị thế có thể vượt 20-30% vốn khi stop rất chặt)", "Stop quá chặt dưới mức nhiễu ATR nên bị quét", "Dùng vốn vay làm C", "Quên làm tròn xuống lô 100"]
+    interpretation: "Kiểm tra thêm giá trị vị thế N x E chia C (tỷ trọng). Nếu tỷ trọng quá cao thì giảm N, không nới stop để 'cho vừa'."
+    example:
+      inputs: {C: 500000000, r: 1, E: 50000, S: 46500, lot: 100}
+      steps: ["Rủi ro cho phép = 500.000.000 x 1% = 5.000.000", "Khoảng cách = 50.000 - 46.500 = 3.500", "N thô = 5.000.000 / 3.500 = 1.428,6", "Làm tròn xuống lô 100 = 1.400 cp", "Giá trị vị thế = 1.400 x 50.000 = 70.000.000 = 14% vốn", "Lỗ nếu chạm stop = 1.400 x 3.500 = 4.900.000 = 0,98% vốn"]
+      result: "1.400 cổ phiếu, tỷ trọng 14% vốn, lỗ tối đa khoảng 0,98% vốn (giả định minh họa)"
+  - id: "m07_atr_stop"
+    name_vi: "Cắt lỗ theo ATR"
+    name_en: "ATR-based stop-loss"
+    expression_latex: 'S = E - k \cdot ATR'
+    expression_python: "E - k * ATR"
+    excel: "=E-k*ATR"
+    variables:
+      - {symbol: "E", meaning: "Giá vào lệnh", unit: "VND/cp"}
+      - {symbol: "ATR", meaning: "Average True Range (thường 14 phiên) cùng đơn vị giá", unit: "VND/cp"}
+      - {symbol: "k", meaning: "Hệ số nhân (thường 1,5-3)", unit: "lần"}
+    when_to_use: "Đặt stop thích nghi với biến động từng mã thay vì % cố định."
+    why_it_works: "ATR (Wilder 1978) đo biên độ dao động trung bình thực tế; stop ngoài k lần ATR nằm ngoài vùng nhiễu thông thường nên ít bị quét bởi dao động ngẫu nhiên. Kiểm chứng: vùng biến động dựa ATR% x sqrt(h) x k phủ thực tế 82,7% ngoài mẫu khi chọn vùng 80% - tức biên độ dự báo được dù hướng thì không."
+    assumptions: ["Biến động hiện tại đại diện cho tương lai gần", "Dữ liệu OHLC đủ và đã điều chỉnh"]
+    pitfalls: ["Stop theo ATR có thể xa hơn trần 7% của hệ thống; khi đó giảm kích thước vị thế chứ không nới mức tối đa", "ATR nhỏ sau giai đoạn đi ngang làm stop quá sát", "Không tính được stop trong ngày mua do T+2"]
+    interpretation: "Xem phần trăm khoảng cách (k x ATR / E). Cổ phiếu HOSE có biên độ ngày 7% nên ATR% thường 1-3% (tham khảo, cần tự tính từ dữ liệu)."
+    example:
+      inputs: {E: 50000, ATR: 1250, k: 2}
+      steps: ["k x ATR = 2 x 1.250 = 2.500", "S = 50.000 - 2.500 = 47.500", "Khoảng cách = 2.500 / 50.000 = 5,0%"]
+      result: "Stop 47.500 (cách entry 5,0%), nằm trong trần 7% (giả định minh họa)"
+  - id: "m07_risk_reward"
+    name_vi: "Tỷ lệ R:R và độ lệch stop"
+    name_en: "Reward-to-risk ratio"
+    expression_latex: 'RR = \frac{TP - E}{E - S}'
+    expression_python: "(TP - E) / (E - S)"
+    excel: "=(TP-E)/(E-S)"
+    variables:
+      - {symbol: "TP", meaning: "Giá mục tiêu chốt lời theo kịch bản", unit: "VND/cp"}
+      - {symbol: "E", meaning: "Giá vào", unit: "VND/cp"}
+      - {symbol: "S", meaning: "Giá cắt lỗ", unit: "VND/cp"}
+    when_to_use: "Sàng lọc kèo: loại kịch bản có tỷ lệ lợi/rủi ro kém (bộ lọc của hệ thống yêu cầu R:R tối thiểu 2,0)."
+    why_it_works: "Phép chia cho thấy mỗi 1 đồng rủi ro mong đợi bao nhiêu đồng lợi nhuận; khi R:R thấp, cần win-rate rất cao mới hòa vốn."
+    assumptions: ["TP là một kịch bản, không phải dự báo chắc chắn", "Chưa tính phí và thuế"]
+    pitfalls: ["Đặt TP lạc quan (kháng cự xa) để ép R:R đạt", "Bỏ qua việc 61-66% mức hỗ trợ cũ giữ được không hơn mức giá ngẫu nhiên 62-67% (kiểm chứng) nên stop dưới hỗ trợ không đáng tin tuyệt đối"]
+    interpretation: "R:R từ 2 trở lên là ngưỡng tham chiếu của hệ thống; 1-2 chấp nhận khi xác suất cao; dưới 1 hầu như không đáng. Luôn ghép với breakeven win-rate (công thức tiếp theo)."
+    example:
+      inputs: {TP: 57000, E: 50000, S: 46500}
+      steps: ["Reward = 57.000 - 50.000 = 7.000", "Risk = 50.000 - 46.500 = 3.500", "R:R = 7.000 / 3.500 = 2,0"]
+      result: "R:R = 2,0 (đạt ngưỡng sàng lọc)"
+  - id: "m07_breakeven_winrate"
+    name_vi: "Tỷ lệ thắng hòa vốn"
+    name_en: "Break-even win rate"
+    expression_latex: 'p_{BE} = \frac{1}{1 + RR}'
+    expression_python: "1 / (1 + RR)"
+    excel: "=1/(1+RR)"
+    variables:
+      - {symbol: "RR", meaning: "Tỷ lệ lợi/rủi ro trung bình mỗi lệnh", unit: "lần"}
+    when_to_use: "Cần biết tần suất thắng tối thiểu để chiến lược không lỗ."
+    why_it_works: "Hòa vốn khi p x RR = (1-p) x 1, giải ra p = 1/(1+RR)."
+    assumptions: ["Mọi lệnh thắng đúng RR, mọi lệnh thua đúng -1R", "Bỏ qua chi phí giao dịch (chi phí làm tăng p hòa vốn)"]
+    pitfalls: ["So p hòa vốn với win-rate ước lượng từ mẫu quá ít", "Quên rằng kiểm chứng chỉ ra tỷ lệ tăng sau tín hiệu thường 46-59% so với nền 50-53% - win-rate thực có thể không vượt hòa vốn"]
+    interpretation: "RR=2 -> 33,3%; RR=1,5 -> 40%; RR=1 -> 50%. Win-rate dự phóng phải vượt p hòa vốn một biên an toàn."
+    example:
+      inputs: {RR: 2}
+      steps: ["p = 1 / (1 + 2) = 0,3333"]
+      result: "33,3%"
+  - id: "m07_expectancy_R"
+    name_vi: "Kỳ vọng toán mỗi lệnh theo R"
+    name_en: "Expectancy per trade (in R)"
+    expression_latex: 'E[R] = p \cdot W - (1-p) \cdot L'
+    expression_python: "p * W - (1 - p) * L"
+    excel: "=p*W-(1-p)*L"
+    variables:
+      - {symbol: "p", meaning: "Xác suất thắng (tỷ lệ 0-1)", unit: "tỷ lệ"}
+      - {symbol: "W", meaning: "Lợi nhuận trung bình mỗi lệnh thắng, tính theo R", unit: "R"}
+      - {symbol: "L", meaning: "Lỗ trung bình mỗi lệnh thua, tính theo R (thường 1)", unit: "R"}
+    when_to_use: "Đánh giá một quy tắc giao dịch có lợi thế dương hay không trước khi cam kết vốn."
+    why_it_works: "Giá trị kỳ vọng là trung bình có trọng số xác suất (xem m08); với nhiều lệnh độc lập, lợi nhuận bình quân hội tụ về giá trị này (luật số lớn)."
+    assumptions: ["p, W, L ổn định và ước lượng từ mẫu đủ lớn, ngoài mẫu", "Các lệnh độc lập"]
+    pitfalls: ["Ước p từ vài lệnh gần đây", "Overfitting: hiệu chuẩn học từ giai đoạn trước không bền (tỷ lệ đúng từng năm 19%-86%)", "Bỏ qua phí/thuế/trượt giá"]
+    interpretation: "Dương nghĩa là có lợi thế lý thuyết; âm thì không nên giao dịch dù mô hình thấy hấp dẫn."
+    example:
+      inputs: {p: 0.45, W: 2, L: 1}
+      steps: ["0,45 x 2 = 0,90", "0,55 x 1 = 0,55", "Kỳ vọng = 0,90 - 0,55 = 0,35"]
+      result: "+0,35R mỗi lệnh (giả định minh họa; nếu p thật chỉ 0,33 thì kỳ vọng bằng 0)"
+  - id: "m07_drawdown_recovery"
+    name_vi: "Mức tăng cần để hồi phục sau drawdown"
+    name_en: "Gain required to recover from drawdown"
+    expression_latex: 'G = \frac{1}{1 - d} - 1'
+    expression_python: "1 / (1 - d) - 1"
+    excel: "=1/(1-d)-1"
+    variables:
+      - {symbol: "d", meaning: "Mức sụt giảm từ đỉnh (tỷ lệ 0-1)", unit: "tỷ lệ"}
+    when_to_use: "Giải thích tại sao cần giới hạn lỗ, hoặc đánh giá tác hại khi để lỗ sâu."
+    why_it_works: "Vốn còn lại (1-d) phải nhân với (1+G) để về 1; giải G = 1/(1-d) - 1. Đây là toán học của lãi gộp, không phải ý kiến."
+    assumptions: ["Không rút/nạp thêm vốn"]
+    pitfalls: ["Nhầm lỗ 50% bù bằng lãi 50%"]
+    interpretation: "10% -> 11,1%; 20% -> 25%; 30% -> 42,9%; 50% -> 100%."
+    example:
+      inputs: {d: 0.3}
+      steps: ["1 - 0,3 = 0,7", "1/0,7 = 1,4286", "G = 0,4286"]
+      result: "Cần lãi 42,9% để hồi về hòa vốn"
+  - id: "m07_kelly_fraction"
+    name_vi: "Tỷ lệ Kelly và Kelly thận trọng"
+    name_en: "Kelly fraction (fractional Kelly)"
+    expression_latex: 'f^{*} = p - \frac{1-p}{b}, \quad f = \lambda f^{*}'
+    expression_python: "max(0.0, p - (1 - p) / b) * lam"
+    excel: "=MAX(0,p-(1-p)/b)*lam"
+    variables:
+      - {symbol: "p", meaning: "Xác suất thắng (tỷ lệ 0-1)", unit: "tỷ lệ"}
+      - {symbol: "b", meaning: "Tỷ lệ lợi/lỗ mỗi lệnh (R:R)", unit: "lần"}
+      - {symbol: "lam", meaning: "Hệ số thận trọng (0,25 đến 0,5; 1 = Kelly đầy đủ)", unit: "tỷ lệ"}
+    when_to_use: "Chỉ để tham chiếu trần tỷ trọng rủi ro khi đã có thống kê p, b đáng tin; không dùng thay quy tắc rủi ro cố định."
+    why_it_works: "Tối đa hóa kỳ vọng log của vốn: p x ln(1 + b f) + (1-p) x ln(1 - f). Đạo hàm bằng 0 cho f* = p - (1-p)/b. Log phạt nặng lỗ nên Kelly tránh phá sản; nhưng Kelly đầy đủ có drawdown rất sâu khi p,b sai, nên dùng 1/4 đến 1/2."
+    assumptions: ["p và b biết chính xác và ổn định", "Chuỗi cược độc lập, có thể chia nhỏ tùy ý"]
+    pitfalls: ["p,b ước lượng quá lạc quan -> f* quá lớn -> mất vốn", "Kết quả bằng 0 khi không có lợi thế: đúng, đừng đặt cược", "f* là tỷ lệ vốn rủi ro tối đa theo mô hình cược nhị phân; mua cổ phiếu có stop thì dùng như trần rủi ro chứ không phải tỷ trọng"]
+    interpretation: "f* <= 0 -> không có lợi thế, không đầu tư theo quy tắc này. Dù f* lớn, giữ dưới trần rủi ro 1-2% mỗi lệnh của quy tắc fixed-fractional."
+    example:
+      inputs: {p: 0.45, b: 2, lam: 0.25}
+      steps: ["f* = 0,45 - 0,55/2 = 0,45 - 0,275 = 0,175", "f (1/4 Kelly) = 0,175 x 0,25 = 0,04375"]
+      result: "Kelly đầy đủ 17,5%; 1/4 Kelly 4,4% (giả định minh họa; với p=0,40 và b=1,5 thì f* = 0, không có lợi thế)"
+  - id: "m07_gambler_ruin"
+    name_vi: "Xác suất phá sản đơn giản (cược đều, hoàn trả 1:1)"
+    name_en: "Simple risk of ruin (even-payoff gambler's ruin)"
+    expression_latex: 'P_{ruin} \approx \left(\frac{1-p}{p}\right)^{n}, \quad n = \frac{1}{r}'
+    expression_python: "((1 - p) / p) ** (100 / r_pct) if p > 0.5 else 1.0"
+    excel: "=IF(p>0.5,((1-p)/p)^(100/r_pct),1)"
+    variables:
+      - {symbol: "p", meaning: "Xác suất thắng mỗi lệnh (R:R 1:1)", unit: "tỷ lệ"}
+      - {symbol: "r_pct", meaning: "Rủi ro cố định mỗi lệnh", unit: "% vốn"}
+    when_to_use: "Minh họa trực giác vì sao rủi ro mỗi lệnh nhỏ làm giảm mạnh khả năng cháy tài khoản."
+    why_it_works: "Bài toán gambler's ruin (Pascal, Huygens thế kỷ 17): với p > 0,5, xác suất bị đẩy hết n đơn vị về 0 là (q/p)^n. n = số đơn vị rủi ro trong vốn = 100/r_pct; r nhỏ -> n lớn -> xác suất ruin giảm theo hàm mũ."
+    assumptions: ["Mô hình xấp xỉ: R:R 1:1, lợi thế p > 0,5 ổn định, rủi ro đều trên vốn ban đầu, vốn không bị cạn trước", "Không có phí"]
+    pitfalls: ["Khi p <= 0,5 thì ruin gần như chắc chắn dài hạn (công thức trả 1)", "Thị trường thực không có p ổn định; chỉ dùng minh họa định tính"]
+    interpretation: "Với p=0,55: rủi ro 2% mỗi lệnh (n=50) cho ruin khoảng 0,004%; rủi ro 10% mỗi lệnh (n=10) cho ruin khoảng 13,4%."
+    example:
+      inputs: {p: 0.55, r_pct: 2}
+      steps: ["q/p = 0,45/0,55 = 0,8182", "n = 100/2 = 50", "0,8182^50 = 4,39e-05"]
+      result: "Xác suất ruin xấp xỉ 0,0044% (so với 13,4% khi r = 10%, n = 10)"
+  - id: "m07_margin_call_price"
+    name_vi: "Giá chạm ngưỡng xử lý margin"
+    name_en: "Margin call price"
+    expression_latex: 'P_{call} = \frac{L}{N (1 - m)}'
+    expression_python: "L / (N * (1 - m))"
+    excel: "=L/(N*(1-m))"
+    variables:
+      - {symbol: "L", meaning: "Dư nợ vay", unit: "VND"}
+      - {symbol: "N", meaning: "Số cổ phiếu nắm giữ", unit: "cổ phiếu"}
+      - {symbol: "m", meaning: "Tỷ lệ ký quỹ duy trì/ngưỡng xử lý do công ty chứng khoán quy định (tỷ lệ 0-1)", unit: "tỷ lệ"}
+    when_to_use: "Người dùng dự tính dùng margin và cần biết giá cổ phiếu giảm bao nhiêu thì bị gọi ký quỹ/bán giải chấp."
+    why_it_works: "Tỷ lệ vốn tự có = (P x N - L) / (P x N). Đặt bằng m rồi giải P. Đòn bẩy làm vốn tự có co lại nhanh hơn giá."
+    assumptions: ["Ngưỡng tính trên giá thị trường", "Bỏ qua lãi vay cộng dồn và phí (làm L tăng, P_call tăng)", "Tỷ lệ cụ thể do từng công ty quy định - cần xác nhận"]
+    pitfalls: ["Giá kịch sàn nhiều phiên khiến không bán được và lỗ vượt ngưỡng", "Danh mục margin có thể bị thu hẹp bất ngờ", "Lãi vay chạy mỗi ngày"]
+    interpretation: "So P_call với giá hiện tại để thấy 'đệm' giảm giá. Đệm càng mỏng càng gần force sell; một nhịp giảm kịch sàn 2-3 phiên có thể vượt đệm."
+    example:
+      inputs: {L: 150000000, N: 10000, m: 0.3}
+      steps: ["N x (1 - 0,3) = 10.000 x 0,7 = 7.000", "P_call = 150.000.000 / 7.000 = 21.428,6", "Nếu giá mua 30.000: giảm 28,6% thì chạm ngưỡng 30% (ví dụ: vay 50% giá trị, ngưỡng m = 30% giả định)"]
+      result: "Giá xử lý margin xấp xỉ 21.429 (cần giảm khoảng 28,6% từ 30.000)"
+  - id: "m07_price_limit"
+    name_vi: "Giá trần/sàn theo biên độ"
+    name_en: "Daily price ceiling and floor"
+    expression_latex: 'P_{ceil} = P_{ref}(1+b), \quad P_{floor} = P_{ref}(1-b)'
+    expression_python: "(Pref * (1 + b / 100), Pref * (1 - b / 100))"
+    excel: "=Pref*(1+b/100)"
+    variables:
+      - {symbol: "Pref", meaning: "Giá tham chiếu", unit: "VND/cp"}
+      - {symbol: "b", meaning: "Biên độ sàn (7, 10 hoặc 15 - cần xác nhận)", unit: "%"}
+    when_to_use: "Ước lượng tình huống xấu nhất trong một phiên và khả năng kẹt cắt lỗ khi kịch sàn."
+    why_it_works: "Trực tiếp từ định nghĩa biên độ; kết quả thực tế phải làm tròn theo bước giá của sàn (cần xác nhận)."
+    assumptions: ["Không tính làm tròn bước giá", "Không áp dụng cho ngày đặc biệt (chào sàn)"]
+    pitfalls: ["Quên rằng sàn UPCoM biên 15% làm lỗ một phiên lớn gấp đôi HOSE"]
+    interpretation: "Lỗ tối đa một phiên bằng đúng b%, nhưng nhiều phiên kịch sàn liên tiếp mới là rủi ro thanh khoản."
+    example:
+      inputs: {Pref: 25000, b: 7}
+      steps: ["Trần = 25.000 x 1,07 = 26.750", "Sàn = 25.000 x 0,93 = 23.250"]
+      result: "HOSE: trần 26.750, sàn 23.250 (chưa làm tròn bước giá)"
+  - id: "m07_vol_range"
+    name_vi: "Vùng biến động dự kiến theo ATR"
+    name_en: "ATR-based expected range"
+    expression_latex: 'Range\% = ATR\% \cdot \sqrt{h} \cdot k'
+    expression_python: "ATRp * math.sqrt(h) * k"
+    excel: "=ATRp*SQRT(h)*k"
+    variables:
+      - {symbol: "ATRp", meaning: "ATR chia giá đóng cửa", unit: "%"}
+      - {symbol: "h", meaning: "Số phiên", unit: "phiên"}
+      - {symbol: "k", meaning: "Hệ số theo độ tin cậy (khoảng 1,28 cho vùng 80% nếu phân phối chuẩn)", unit: "lần"}
+    when_to_use: "Mô tả vùng giá có thể dao động trong h phiên tới (kịch bản trên/dưới), không dự báo hướng."
+    why_it_works: "Biến động tích lũy tăng theo căn bậc hai của thời gian (bước đi ngẫu nhiên) nên ATR% x sqrt(h) là độ lệch chuẩn xấp xỉ sau h phiên; nhân k cho vùng tin cậy. Kiểm chứng ngoài mẫu: vùng 80% phủ thực tế 82,7%."
+    assumptions: ["Biến động ổn định trong h phiên", "Các phiên gần độc lập"]
+    pitfalls: ["Không dùng thay dự báo hướng (hướng 10-20 phiên gần như không dự báo được)", "Sự kiện (kết quả kinh doanh, tin) làm vùng thực tế rộng hơn"]
+    interpretation: "Ghi dạng khoảng, kèm nhãn độ tin cậy và thời điểm tính."
+    example:
+      inputs: {ATRp: 2.5, h: 10, k: 1.28}
+      steps: ["sqrt(10) = 3,1623", "2,5 x 3,1623 = 7,906", "7,906 x 1,28 = 10,12"]
+      result: "Vùng 80% khoảng ±10,1% sau 10 phiên (giả định minh họa)"
+  - id: "m07_real_rate"
+    name_vi: "Lãi suất thực từ lãi danh nghĩa và lạm phát"
+    name_en: "Real rate (Fisher)"
+    expression_latex: 'r_{real} = \frac{1 + r_{nom}}{1 + \pi} - 1'
+    expression_python: "((1 + r_nom / 100) / (1 + pi / 100) - 1) * 100"
+    excel: "=((1+r_nom/100)/(1+pi/100)-1)*100"
+    variables:
+      - {symbol: "r_nom", meaning: "Lãi suất danh nghĩa (vd lợi suất TPCP 10 năm lấy từ ảnh chụp thị trường)", unit: "%"}
+      - {symbol: "pi", meaning: "Lạm phát kỳ vọng/CPI (lấy từ ảnh chụp thị trường)", unit: "%"}
+    when_to_use: "So sánh tài sản rủi ro với mốc phi rủi ro theo sức mua, đặc biệt khi diễn giải Rf trong CAPM."
+    why_it_works: "Tiền thực mua được hàng hóa: Fisher (1930) tách lãi danh nghĩa thành phần bù lạm phát và lãi thực."
+    assumptions: ["Lạm phát ổn định trong kỳ"]
+    pitfalls: ["Trộn Rf danh nghĩa với dòng tiền thực (hoặc ngược lại)", "Dùng CPI một tháng thay vì kỳ vọng"]
+    interpretation: "Là con số minh họa phương pháp: ví dụ này dùng số giả định, KHÔNG phải số thị trường hiện hành."
+    example:
+      inputs: {r_nom: 5.0, pi: 3.5}
+      steps: ["1,05 / 1,035 = 1,01449", "r_real = 1,449%"]
+      result: "Khoảng 1,45% (số giả định minh họa, không phải số thị trường)"
+  - id: "m07_round_trip_cost"
+    name_vi: "Chi phí giao dịch vòng (mua rồi bán)"
+    name_en: "Round-trip transaction cost"
+    expression_latex: 'c = 2 f_{broker} + t_{sell}'
+    expression_python: "2 * fee + tax_sell"
+    excel: "=2*fee+tax_sell"
+    variables:
+      - {symbol: "fee", meaning: "Phí môi giới mỗi chiều (thay đổi theo công ty chứng khoán - cần xác nhận)", unit: "% giá trị"}
+      - {symbol: "tax_sell", meaning: "Thuế thu nhập cá nhân khi bán (hiện thường nhắc 0,1% giá trị bán - cần xác nhận)", unit: "% giá trị"}
+    when_to_use: "Đánh giá mức lãi tối thiểu để hòa vốn, đặc biệt với chiến lược giao dịch tần suất cao."
+    why_it_works: "Phí tính trên mỗi chiều mua và bán, thuế tính khi bán; tổng là mức giá phải tăng chỉ để hòa vốn."
+    assumptions: ["Không tính chênh lệch giá mua bán (spread) và trượt giá"]
+    pitfalls: ["Bỏ qua phí margin", "Bỏ qua trượt giá ở cổ phiếu thanh khoản thấp"]
+    interpretation: "Chi phí cố định này làm tăng p hòa vốn và làm giảm R:R thực tế; giao dịch càng thường xuyên càng bào mòn."
+    example:
+      inputs: {fee: 0.15, tax_sell: 0.1}
+      steps: ["2 x 0,15 = 0,30", "0,30 + 0,10 = 0,40"]
+      result: "0,40% giá trị (giả định minh họa; phí thật cần xác nhận)"
+frameworks:
+  - id: "m07_vn_market_microstructure_checklist"
+    name_vi: "Bảng ràng buộc cấu trúc thị trường Việt Nam"
+    name_en: "Vietnam market microstructure constraints"
+    origin: "Tổng hợp từ mục 'Ràng buộc thị trường Việt Nam cần nhớ' trong VERIFICATION_FINDINGS.md cùng quy định sàn (HOSE/HNX/UPCoM); các thông số có thể thay đổi theo quy định mới."
+    components:
+      - "Sàn: HOSE (biên ±7%), HNX (±10%), UPCoM (±15%) - cần xác nhận"
+      - "Lô 100 cổ phiếu; lô lẻ giao dịch riêng - cần xác nhận"
+      - "Bước giá theo vùng giá - cần xác nhận"
+      - "Thanh toán T+2 (thực tế T+1,5) - cần xác nhận quy định hiện hành"
+      - "Phiên ATO / liên tục / ATC, nghỉ trưa 11:30-13:00 - cần xác nhận"
+      - "Không bán khống cá nhân -> không có tín hiệu SHORT"
+      - "Room ngoại, margin, danh mục cổ phiếu được margin - cần xác nhận"
+    when_to_use: "Mỗi khi chuyển một tín hiệu phân tích thành mô tả hành động khả thi."
+    how_to_apply:
+      - "Kiểm tra mã thuộc sàn nào để biết biên độ và thanh khoản"
+      - "Đổi mọi tín hiệu 'bán khống' thành 'không mua / giảm tỷ trọng / đứng ngoài'"
+      - "Khi tính cắt lỗ, giả định có thể không khớp đúng giá (gap, kẹt sàn, T+2) và nhắc người dùng"
+      - "Với cổ phiếu hết room hoặc thanh khoản mỏng, ghi chú rủi ro thanh khoản"
+      - "Cảnh báo xác nhận quy định bằng nguồn chính thức nếu câu trả lời phụ thuộc vào chúng"
+    how_to_read_results: "Kết quả luôn có điều kiện: 'nếu quy định hiện hành vẫn như X'. Không khẳng định quy định mà chưa kiểm tra."
+    pitfalls: ["Dùng lại quy định cũ của nước khác (T+0, bán khống)", "Giả định cắt lỗ luôn khớp"]
+    example: "Mã HOSE giá 50.000, stop 46.500 (-7%): nếu phiên sau mở và kịch sàn (biên 7% từ tham chiếu 50.000 là 46.500) thì có thể không bán được ngay; kịch bản xấu còn nhiều phiên liên tiếp."
+  - id: "m07_market_proxy_basket"
+    name_vi: "Rổ cổ phiếu đại diện thay VN-Index"
+    name_en: "Market proxy basket"
+    origin: "Thiết kế trong dev/outlook_v3.py vì yfinance không có ^VNINDEX: lấy bình quân đều lợi suất ngày của VNM, FPT, MWG, STB, VCB, SSI, PNJ để suy ra 'thị trường chung' (VERIFICATION_FINDINGS)."
+    components: ["Rổ 7 mã: VNM, FPT, MWG, STB, VCB, SSI, PNJ", "Chỉ số = bình quân đều lợi suất ngày, tích lũy thành chuỗi giá", "Chế độ thị trường: trên/dưới MA200 của chuỗi này; động lượng 60 phiên"]
+    when_to_use: "Cần chế độ thị trường chung hoặc beta ước lượng trong môi trường chỉ có yfinance."
+    how_to_apply:
+      - "Tải giá điều chỉnh các mã trong rổ, kiểm tra đủ dữ liệu"
+      - "Tính lợi suất ngày, lấy trung bình đều, dựng chuỗi chỉ số"
+      - "So chuỗi với MA200: trên MA200 -> chế độ quán tính; dưới -> hồi quy (kiểm chứng: IC +0,10 và -0,13)"
+      - "Nếu cần beta, hồi quy lợi suất mã theo lợi suất rổ; ghi rõ đây là beta so với rổ, không phải VN-Index"
+    how_to_read_results: "Chế độ chỉ cho tham khảo bối cảnh; hiệu chuẩn học từ quá khứ không bền (tỷ lệ đúng từng năm 19%-86%), và chênh với nền 50,8% là không có ý nghĩa thống kê."
+    pitfalls: ["Rổ lệch ngành (ngân hàng, chứng khoán nhiều)", "Một mã thiếu dữ liệu làm lệch chuỗi", "Tin rằng chế độ thị trường dự báo được hướng"]
+    example: "Rổ 7 mã nằm trên MA200 -> ghi 'thị trường chung (rổ đại diện) trên MA200', diễn giải xu hướng đang có quán tính nhẹ, độ tin cậy thấp-trung bình."
+  - id: "m07_yfinance_data_quality_check"
+    name_vi: "Kiểm tra chất lượng dữ liệu yfinance mã .VN"
+    name_en: "yfinance data quality gate"
+    origin: "Rút từ lưu ý dữ liệu trong VERIFICATION_FINDINGS.md (giá điều chỉnh, trễ/thiếu, intraday không đảm bảo) và kinh nghiệm xử lý dữ liệu."
+    components: ["Độ dài lịch sử", "Phiên thiếu/trùng", "Ngày dữ liệu mới nhất", "Khối lượng bất thường", "Giá điều chỉnh vs niêm yết", "Dữ liệu trong ngày"]
+    when_to_use: "Trước mọi phép tính kỹ thuật hoặc beta dựa trên dữ liệu tải về."
+    how_to_apply:
+      - "Đếm số phiên: dưới ~200 phiên thì MA200 không tính được; dưới ~250 phiên thì beta/ATR kém tin cậy; cổ phiếu mới niêm yết gắn nhãn 'lịch sử ngắn'"
+      - "So ngày dữ liệu mới nhất với ngày hôm nay; trễ trên 1-2 phiên giao dịch thì ghi rõ hoặc tra nguồn khác"
+      - "Phát hiện nhảy giá >7% (HOSE) giữa hai phiên liền kề -> nghi tách/thưởng cổ phiếu chưa điều chỉnh hoặc lỗi dữ liệu"
+      - "Kiểm tra khối lượng bằng 0 hoặc thiếu nhiều ngày liên tiếp"
+      - "Không dùng dữ liệu trong ngày (15m, 1h) cho mã .VN làm kết luận; ghi 'chưa kiểm chứng'"
+      - "Gắn data_reliability cho kết luận: verified (đã kiểm chứng bằng nguồn thứ hai), illustrative, unverified"
+    how_to_read_results: "Không đạt cổng chất lượng -> hạ nhãn độ tin cậy hoặc từ chối kết luận kỹ thuật, nói rõ lý do."
+    pitfalls: ["Tin dữ liệu miễn phí tuyệt đối", "Đối chiếu giá điều chỉnh với giá niêm yết cũ"]
+    example: "Mã niêm yết 8 tháng trước: chỉ có khoảng 170 phiên -> báo 'không tính được MA200; beta lịch sử ngắn, độ tin cậy thấp'."
+  - id: "m07_market_snapshot_protocol"
+    name_vi: "Giao thức ảnh chụp thị trường có ngày"
+    name_en: "Dated market snapshot protocol"
+    origin: "Rút từ lưu ý 4 trong prompt-dinh-gia-doanh-nghiep.md (Rf phải neo vào lợi suất trái phiếu chính phủ 10 năm thực tế và Re phản ánh rủi ro; không dùng một con số cố định 10% cho mọi doanh nghiệp). Prompt có nhắc một mức Rf cụ thể từ một thời điểm - đó là số có thời hạn nên KHÔNG chép vào skill."
+    components:
+      - "Danh sách tham số: Rf (lợi suất TPCP 10 năm), lãi suất tiền gửi 12 tháng, ERP (phần bù rủi ro thị trường), beta ngành/mã, tỷ giá USD/VND, CPI, tăng trưởng GDP thực/danh nghĩa, P/E (và P/B) VN-Index/thị trường"
+      - "Mỗi dòng: giá trị, đơn vị, nguồn (URL/tên), ngày dữ liệu, ngày tra, độ tin cậy, hạn dùng"
+      - "Bảng nguồn tham khảo (cần xác nhận): Ngân hàng Nhà nước (lãi suất, tỷ giá); HNX bond (lợi suất TPCP); Investing (lợi suất trái phiếu); Tổng cục Thống kê (CPI, GDP); CafeF, Vietstock (P/E thị trường, tin tức); Damodaran (ERP quốc gia, dữ liệu beta ngành theo năm)"
+    when_to_use: "Mọi định giá (m05, m04), chiết khấu dự án (m06), so sánh tài sản với lãi suất, và bất kỳ nhận định nào phụ thuộc môi trường lãi suất/thị trường."
+    how_to_apply:
+      - "Bước 1 - Liệt kê tham số cần cho tác vụ hiện tại (không tra thừa)"
+      - "Bước 2 - Dùng web_search/web_fetch tra từng tham số; ưu tiên nguồn chính thức, đối chiếu tối thiểu hai nguồn với Rf và ERP"
+      - "Bước 3 - Ghi giá trị, nguồn, ngày dữ liệu (không phải ngày tra) và ngày tra vào bảng ảnh chụp"
+      - "Bước 4 - Nếu không tra được: dùng khoảng giả định hợp lý, gắn nhãn 'giả định minh họa - chưa kiểm chứng', và chạy phân tích độ nhạy thay vì một điểm"
+      - "Bước 5 - Kiểm tra tính hợp lý: Rf thực = Rf danh nghĩa so với CPI; g dài hạn không vượt tăng trưởng GDP danh nghĩa (thường neo khoảng 3,0%-4,5% theo prompt định giá, cần xác nhận); ERP thường trong khoảng 5%-8% theo m08, chạy độ nhạy"
+      - "Bước 6 - Ghi 'hạn dùng': Rf, lãi suất, tỷ giá nên tra lại nếu quá vài ngày/tuần; CPI/GDP theo kỳ công bố; beta, ERP theo kỳ cập nhật của nguồn"
+      - "Bước 7 - Trình bày bảng ảnh chụp ở đầu hoặc phụ lục báo cáo; nếu có nguồn mâu thuẫn, nêu cả hai"
+    how_to_read_results: "Mọi tham số không có nguồn và ngày thì không được dùng như dữ kiện. Báo cáo định giá chỉ có giá trị tại ngày chụp."
+    pitfalls: ["Hard-code số cũ trong skill hoặc prompt (rủi ro lớn nhất)", "Trộn Rf danh nghĩa với dòng tiền thực", "Dùng beta Mỹ không điều chỉnh cho VN", "Dùng ERP Mỹ cho thị trường VN mà không cộng phần bù rủi ro quốc gia", "Ghi ngày tra thay vì ngày dữ liệu"]
+    example: "Bảng mẫu (số để trống vì phụ thuộc lúc chạy): [Rf 10 năm | giá trị | nguồn | ngày dữ liệu | ngày tra | độ tin cậy]. Định giá doanh nghiệp tại ngày chụp dùng Re = Rf + beta x ERP (xem m08), kèm độ nhạy +/-1%-2%."
+  - id: "m07_risk_gate_before_conclusion"
+    name_vi: "Cổng rủi ro trước khi kết luận"
+    name_en: "Risk gate before any conclusion"
+    origin: "Kết hợp khung 03_risk_management_framework.yaml (bộ lọc xu hướng, vị trí, động lượng, R:R, stop tối đa 7%, bảo toàn vốn) với kết quả kiểm chứng cho thấy các bộ lọc này mang tính kỷ luật hơn là dự báo."
+    components: ["Bộ lọc xu hướng (giá so với MA200)", "Vị trí (gần hỗ trợ/kênh)", "Động lượng (RSI(14) dưới 65)", "Phá vỡ giả", "R:R tối thiểu 2,0", "Stop không quá 7%", "Quy tắc bảo toàn vốn"]
+    when_to_use: "Khi phân tích kỹ thuật dẫn đến một kịch bản hành động và cần biết kịch bản đó có đủ kỷ luật rủi ro."
+    how_to_apply:
+      - "Kiểm tra từng bộ lọc: nếu không đủ, nhãn mặc định là THEO DÕI thay vì hành động"
+      - "Tính SL_pct = (Close - SL)/Close x 100; nếu SL_pct > 7 thì điều chỉnh SL = Close x 0,93 hoặc bỏ kịch bản"
+      - "Tính R:R; dưới 2,0 -> THEO DÕI"
+      - "Giá thủng MA200 -> không trung bình giá xuống; giảm tỷ trọng là hướng hợp lý"
+      - "Xét thêm kiểm chứng: nhãn MUA/BÁN theo luật không thắng nền (đúng 47,6% ở 10 phiên); kênh v3 chứa 77% các phiên kế tiếp; 57-67% pha vượt biên là phá vỡ giả"
+    how_to_read_results: "Vượt cổng chỉ nghĩa là kịch bản có kỷ luật rủi ro, không nghĩa là có lợi thế dự báo. Luôn ghi nhãn độ tin cậy thấp-trung bình cho hướng giá."
+    pitfalls: ["Biến bộ lọc thành 'tín hiệu chắc chắn'", "Bỏ qua phá vỡ giả"]
+    example: "Giá trên MA200, chạm cạnh dưới kênh, RSI 48, R:R 2,2, stop 5% -> đủ kỷ luật; vẫn là kịch bản có điều kiện kèm mức vô hiệu hóa (đóng cửa dưới stop) và độ tin cậy thấp-trung bình."
+  - id: "m07_output_policy_framework"
+    name_vi: "Chính sách đầu ra: kịch bản thay vì khuyến nghị"
+    name_en: "Output policy - scenarios not recommendations"
+    origin: "Thiết kế cho agent Investor; điều chỉnh từ định dạng báo cáo trong prompt-stock-analyze.md (vốn có nhãn MUA/BÁN/THEO DÕI cùng vùng mua/chốt lời/cắt lỗ) để phù hợp phân tích tham khảo, đồng thời phản ánh kết quả kiểm chứng về giới hạn dự báo."
+    components:
+      - "Trạng thái hiện tại (dữ kiện, có ngày)"
+      - "Kịch bản cơ sở / tích cực / tiêu cực với điều kiện kích hoạt"
+      - "Xác suất định tính hoặc tần suất lịch sử có nguồn (không xác suất bịa)"
+      - "Mức vô hiệu hóa (invalidation): giá/điều kiện làm kịch bản sai"
+      - "Vùng giá tham khảo (không phải mệnh lệnh): hỗ trợ, kháng cự, vùng biến động"
+      - "Nhãn độ tin cậy: verified, illustrative, unverified + cao/trung bình/thấp"
+      - "Disclaimer"
+    when_to_use: "Mọi câu trả lời có thể bị hiểu là khuyến nghị đầu tư."
+    how_to_apply:
+      - "Đổi 'MUA/BÁN/GIỮ' thành mô tả: 'kịch bản có thể xem xét tích lũy nếu...', 'điều kiện kịch bản không còn nếu...'"
+      - "Không nêu 'giá mục tiêu' như chắc chắn: dùng 'vùng tham khảo' với điều kiện và xác suất"
+      - "Gắn disclaimer: phân tích mang tính tham khảo, dựa trên dữ liệu quá khứ, không phải lời khuyên đầu tư cá nhân; kết quả quá khứ không bảo đảm tương lai; người dùng tự chịu trách nhiệm quyết định"
+      - "Nếu người dùng ép 'nên mua hay không': trả lời khung quyết định (điều kiện nào thì hợp lý) và hỏi lại thông tin cá nhân hóa"
+      - "Hỏi lại khi thiếu: khẩu vị rủi ro, khung thời gian nắm giữ, tỷ trọng danh mục hiện tại, vốn nhàn rỗi và quỹ dự phòng, có dùng margin không, mục tiêu đầu tư"
+    how_to_read_results: "Người đọc nhận được 'bản đồ' kịch bản và rủi ro, tự quyết định; agent trung thực về giới hạn."
+    pitfalls: ["Giả vờ chắc chắn", "Dùng nhãn MUA/BÁN như lời khuyên", "Quên disclaimer khi đưa số cụ thể"]
+    example: "Thay 'Hành động: MUA, TP 57.000' bằng 'Kịch bản kỹ thuật cơ sở (độ tin cậy thấp-trung bình): giá tại cạnh dưới kênh, R:R lý thuyết 2,0 tới vùng 57.000; vô hiệu hóa nếu đóng cửa dưới 46.500; không phải khuyến nghị mua.'"
+  - id: "m07_behavioral_guardrails"
+    name_vi: "Rào chắn hành vi"
+    name_en: "Behavioural guardrails"
+    origin: "Kết hợp bảo toàn vốn (rule_1-3 trong 03_risk_management_framework.yaml) với kiểm chứng 'bắt đáy theo nến/hộp thường sai' (VERIFICATION_FINDINGS)."
+    components: ["FOMO", "Bắt đáy", "Trung bình giá xuống", "Không cắt lỗ theo hy vọng", "Quá tự tin sau chuỗi thắng", "Dùng margin"]
+    when_to_use: "Khi người dùng mô tả hành vi này hoặc hỏi về mua thêm khi lỗ."
+    how_to_apply:
+      - "FOMO: yêu cầu kế hoạch trước khi vào (kịch bản, stop, R:R); nếu giá đã chạy xa khỏi vùng mong muốn thì chờ"
+      - "Bắt đáy: nhắc bằng chứng - mẫu nến đảo chiều và mua cạnh dưới hộp có lợi suất vượt nền âm"
+      - "Trung bình giá xuống: không làm khi giá dưới MA200 hoặc khi luận điểm ban đầu đã sai; chỉ cân nhắc nếu quy tắc kế hoạch cho phép và tổng rủi ro vẫn dưới trần"
+      - "Cắt lỗ: stop viết trước khi vào; nếu chạm thì thực hiện theo kế hoạch"
+      - "Chuỗi thắng: không tăng r% rủi ro vì tự tin; giữ cố định"
+    how_to_read_results: "Hành vi nào vi phạm kế hoạch thì ghi nhận như một lỗi quy trình, không phải do thị trường."
+    pitfalls: ["Dạy đạo lý mà không đưa quy tắc cụ thể"]
+    example: "Người dùng lỗ 15% và muốn mua thêm gấp đôi để hạ giá vốn: kiểm tra giá so với MA200, luận điểm, tổng rủi ro; nếu giá dưới MA200 thì ghi rõ vì sao điều này trái quy tắc bảo toàn vốn."
+procedures:
+  - id: "m07_proc_risk_check"
+    name: "Kiểm tra rủi ro trước khi kết luận"
+    steps:
+      - "1. Xác định bối cảnh người dùng: mã (sàn nào), khung thời gian, vốn nhàn rỗi, khẩu vị rủi ro, có dùng margin không. Thiếu thì hỏi lại."
+      - "2. Kiểm tra chất lượng dữ liệu (m07_yfinance_data_quality_check); nếu không đạt thì hạ độ tin cậy."
+      - "3. Lập ảnh chụp thị trường có ngày nếu phân tích cần Rf, ERP, beta, lãi suất (m07_market_snapshot_protocol)."
+      - "4. Đối chiếu ràng buộc thị trường VN: biên độ, T+2, không bán khống, room ngoại, thanh khoản."
+      - "5. Tính vùng biến động (ATR) và stop theo ATR; so với trần 7%."
+      - "6. Tính R:R, p hòa vốn, kỳ vọng (nếu có thống kê); xét chi phí giao dịch."
+      - "7. Tính kích thước vị thế theo rủi ro % vốn; kiểm tra tỷ trọng một mã và tổng rủi ro mở (portfolio heat)."
+      - "8. Kiểm tra tương quan/đa dạng hóa: nhiều mã cùng ngành (ngân hàng, chứng khoán, BĐS) thực chất là một vị thế."
+      - "9. Kiểm tra margin: tính giá chạm ngưỡng xử lý và đệm giảm giá."
+      - "10. Chạy cổng rủi ro (m07_risk_gate_before_conclusion); không đạt -> nhãn THEO DÕI."
+      - "11. Viết đầu ra theo chính sách (kịch bản, mức vô hiệu hóa, độ tin cậy, disclaimer)."
+    outputs: "Bảng kiểm tra rủi ro (dữ liệu, thị trường VN, stop, R:R, vị thế, tỷ trọng, margin) và kết luận dạng kịch bản kèm nhãn độ tin cậy."
+  - id: "m07_proc_market_snapshot"
+    name: "Lập ảnh chụp thị trường có ngày"
+    steps:
+      - "1. Liệt kê tham số cần (Rf, lãi suất tiền gửi, ERP, beta, tỷ giá, CPI, GDP, P/E thị trường)."
+      - "2. Tra bằng web_search/web_fetch từ nguồn chính thức; ghi URL."
+      - "3. Ghi giá trị, ngày dữ liệu, ngày tra, độ tin cậy."
+      - "4. Đối chiếu với nguồn thứ hai cho Rf và ERP."
+      - "5. Kiểm tra hợp lý (Rf thực, g không vượt GDP danh nghĩa, ERP trong khoảng hợp lý) và chạy độ nhạy."
+      - "6. Đặt bảng vào báo cáo, ghi hạn dùng."
+    outputs: "Bảng ảnh chụp thị trường có nguồn và ngày; các tham số không tra được ghi rõ là giả định."
+  - id: "m07_proc_position_plan"
+    name: "Lập kế hoạch vị thế có kỷ luật"
+    steps:
+      - "1. Chọn khung thời gian và kịch bản (entry, vô hiệu hóa)."
+      - "2. Đặt stop theo ATR hoặc cấu trúc giá; giới hạn lỗ 7%."
+      - "3. Tính kích thước theo r% vốn, làm tròn xuống lô 100."
+      - "4. Tính R:R với mục tiêu theo kịch bản; nếu dưới 2,0 thì THEO DÕI."
+      - "5. Kiểm tra tỷ trọng một mã (trần tham chiếu), tổng rủi ro mở (heat = tổng các r%), tương quan."
+      - "6. Ghi kế hoạch bằng văn bản trước khi vào: entry, stop, kịch bản, điều kiện thoát."
+    outputs: "Kế hoạch vị thế (kích thước, stop, R:R, tỷ trọng) mang tính tham khảo."
+decision_rules:
+  - "Nếu câu hỏi yêu cầu SHORT/bán khống cổ phiếu VN cho cá nhân thì giải thích không khả thi và dùng 'không mua / giảm tỷ trọng / đứng ngoài'."
+  - "Nếu người dùng hỏi 'nên mua hay bán / giá mục tiêu' thì không đưa lời khuyên; đưa khung điều kiện và kịch bản, hỏi lại khẩu vị rủi ro, khung thời gian, tỷ trọng."
+  - "Nếu số liệu thị trường (Rf, ERP, lãi suất, P/E) cần cho tính toán thì tra lúc chạy với nguồn và ngày; nếu không tra được thì gắn 'giả định minh họa' và chạy độ nhạy."
+  - "Nếu quy định sàn (T+2, biên độ, lô, phí, thuế, margin, room ngoại) ảnh hưởng kết luận thì ghi 'cần xác nhận' và đề nghị đối chiếu nguồn chính thức."
+  - "Nếu dữ liệu yfinance không đủ (dưới 200 phiên, thiếu, trễ, nhảy giá lạ) thì hạ độ tin cậy hoặc từ chối chỉ báo phụ thuộc (MA200, beta)."
+  - "Nếu SL_pct tính ra lớn hơn 7% thì giảm kích thước vị thế hoặc từ chối kịch bản; không nới trần 7% của hệ thống."
+  - "Nếu R:R dưới 2,0 hoặc RSI(14) từ 65 trở lên hoặc phát hiện phá vỡ giả thì nhãn THEO DÕI thay vì kịch bản hành động."
+  - "Nếu giá thủng MA200 thì không khuyến khích trung bình giá xuống; giảm tỷ trọng/đứng ngoài là hướng phù hợp quy tắc bảo toàn vốn."
+  - "Nếu người dùng dùng margin thì tính giá chạm ngưỡng xử lý và nhắc rủi ro kẹt kịch sàn; khuyến nghị đệm đủ lớn."
+  - "Nếu nhiều mã cùng ngành/tương quan cao thì coi là một vị thế khi tính rủi ro tổng."
+  - "Nếu người dùng hỏi hướng giá 10-20 phiên chỉ từ giá thì nói rõ kiểm chứng cho thấy gần như không dự báo được (đúng ~52,0% so với nền 50,8%) nhưng biên độ biến động dự báo được (vùng 80% phủ 82,7%)."
+  - "Nếu người dùng muốn bắt đáy theo mẫu nến hoặc cạnh dưới hộp tích lũy thì nêu kiểm chứng (vượt nền âm) và đề nghị kịch bản có xác nhận và stop."
+  - "Nếu giá đóng cửa vượt biên trên kênh thì xét phá vỡ giả (57-67% quay lại trong kênh trong 5 phiên) trước khi coi là breakout."
+  - "Nếu vốn của người dùng là tiền cần dùng gấp hoặc chưa có quỹ dự phòng thì nhắc tách quỹ dự phòng trước khi đầu tư."
+benchmarks:
+  - {metric: "Biên độ giá ngày (HOSE / HNX / UPCoM)", value: "±7% / ±10% / ±15%", context: "Cần xác nhận quy định hiện hành", confidence: medium}
+  - {metric: "Lô giao dịch chuẩn", value: "100 cổ phiếu", context: "Cần xác nhận", confidence: medium}
+  - {metric: "Thanh toán", value: "T+2 (thực tế T+1,5)", context: "Cần xác nhận; có thể đã đổi", confidence: low}
+  - {metric: "Giờ nghỉ trưa", value: "11:30-13:00", context: "Theo VERIFICATION_FINDINGS; cần xác nhận", confidence: medium}
+  - {metric: "Rủi ro mỗi lệnh", value: "0,5%-2% vốn", context: "Heuristics tham chiếu; không phải quy định", confidence: medium}
+  - {metric: "Cắt lỗ tối đa theo hệ thống", value: "7% từ điểm mua", context: "Quy tắc trong 03_risk_management_framework.yaml", confidence: medium}
+  - {metric: "R:R tối thiểu của hệ thống", value: ">= 2,0", context: "Bộ lọc kỷ luật, không phải bảo đảm lợi thế", confidence: medium}
+  - {metric: "RSI(14) bộ lọc quá mua", value: "dưới 65 mới coi là còn dư địa", context: "Quy tắc hệ thống", confidence: medium}
+  - {metric: "Độ đúng hướng 10 phiên (nhãn cũ MUA/BÁN/THEO DÕI, ngoài mẫu 2020+)", value: "~47,6%", context: "Kiểm chứng 12 mã; kém đồng xu", confidence: high}
+  - {metric: "Độ đúng hướng 10 phiên (nhận định hiệu chuẩn v3)", value: "~52,0% so với nền 50,8%", context: "1.576 ngày; không khác biệt có ý nghĩa; theo năm 19%-86%", confidence: high}
+  - {metric: "Vùng biến động 80% (ATR% x sqrt(h) x k)", value: "phủ thực tế 82,7%", context: "Ngoài mẫu; dự báo biên độ tốt", confidence: high}
+  - {metric: "Kênh v3 chứa 10 phiên kế tiếp", value: "77% (bề rộng 15-17% giá); kênh cũ 31%", context: "Kiểm chứng 12 mã", confidence: high}
+  - {metric: "Phá vỡ giả khỏi biên kênh v3", value: "57-67% quay lại trong 5 phiên", context: "Giá đóng cửa vượt biên ~2% số ngày", confidence: high}
+  - {metric: "Mẫu nến Nhật", value: "mật độ 0,49 mẫu/ngày; không có giá trị dự báo bền", context: "Chỉ dùng mô tả", confidence: high}
+  - {metric: "Bắt đáy theo nến đảo chiều tăng ở vùng giá thấp", value: "vượt nền -0,74% (train), -0,82% (test)", context: "Bắt đáy theo nến thường sai", confidence: high}
+  - {metric: "Mua cạnh dưới hộp tích lũy", value: "vượt nền -1,11% (train), -0,77% (test); tăng 45-49%", context: "Quy tắc 'mua cạnh dưới hộp' sai trên dữ liệu", confidence: high}
+  - {metric: "Breakout hộp kèm khối lượng >= 2x TB20", value: "vượt nền +0,99% (train), +0,34% (test); tăng ~53-55%", context: "Nhỉnh hơn nền nhẹ; không kèm khối lượng thì không lợi thế", confidence: medium}
+  - {metric: "Hỗ trợ cực trị (>=3 lần chạm) giữ được", value: "61-66% so với mức ngẫu nhiên 62-67%", context: "Không tốt hơn mức giá ngẫu nhiên", confidence: high}
+  - {metric: "Đóng cửa trên VAH (AMT khung ngày)", value: "tăng 10 phiên 55-56%; +1,2% đến +1,5%", context: "Quán tính nhẹ, nhất quán 2 giai đoạn", confidence: medium}
+  - {metric: "Hồi về POC trong 10 phiên khi ngoài Value Area", value: "41-50%", context: "Coin flip; kịch bản mean reversion khung ngày không được ủng hộ", confidence: medium}
+  - {metric: "Số cổ phiếu cần để giảm phần lớn rủi ro riêng (thị trường Mỹ)", value: "khoảng 20-30 mã", context: "Số tham khảo từ m08; tại VN tập trung ngành nên không áp dụng nguyên si", confidence: low}
+  - {metric: "Quỹ dự phòng", value: "3-6 tháng chi tiêu", context: "Heuristics thông dụng, tùy hoàn cảnh", confidence: low}
+  - {metric: "Tăng trưởng vĩnh viễn g trong định giá", value: "không vượt tăng trưởng GDP quốc gia; thường neo 3,0%-4,5%", context: "Theo prompt định giá; cần xác nhận theo ảnh chụp thị trường", confidence: medium}
+pitfalls:
+  - "Hard-code lãi suất, Rf, ERP, P/E thị trường có thời hạn; luôn dùng ảnh chụp có ngày."
+  - "Đưa tín hiệu SHORT hoặc bán khống cho cổ phiếu cá nhân VN."
+  - "Coi nhãn MUA/BÁN theo bộ lọc (MA200, kênh, RSI) là lời khuyên hay dự báo hướng; kiểm chứng cho thấy gần như không dự báo được."
+  - "Dùng mẫu nến, hộp tích lũy, hỗ trợ/kháng cự cực trị làm tín hiệu vào/ra chắc chắn (kiểm chứng không ủng hộ)."
+  - "Bắt đáy; trung bình giá xuống khi giá dưới MA200."
+  - "Đặt stop mà không tính khả năng kịch sàn, gap, T+2."
+  - "Coi stop luôn khớp đúng giá."
+  - "Quên làm tròn xuống lô 100 hoặc quên bước giá khi đặt lệnh."
+  - "Dùng margin tăng tỷ trọng mà không tính giá xử lý margin và lãi vay."
+  - "Đa dạng hóa giả: nhiều mã cùng ngành tương quan cao."
+  - "Tin dữ liệu yfinance mà không kiểm tra độ trễ/thiếu/điều chỉnh; dùng dữ liệu intraday mã .VN."
+  - "Gọi rổ đại diện là VN-Index."
+  - "Ước lượng p và b từ mẫu nhỏ rồi dùng Kelly đầy đủ."
+  - "Quên chi phí giao dịch/thuế và trượt giá khi tính hòa vốn."
+  - "Giả vờ chắc chắn và thiếu disclaimer, nhãn độ tin cậy, mức vô hiệu hóa."
+sme_vn_guidance:
+  - "Chủ SME không nên đưa vốn lưu động hoặc tiền trả lương/thuế vào cổ phiếu hay margin; tách vốn nhàn rỗi sau quỹ dự phòng (xem m06)."
+  - "Tài khoản chứng khoán: mở ở công ty chứng khoán có giấy phép; phí giao dịch, phí margin, danh mục margin khác nhau - cần tra bảng phí hiện hành của từng công ty (cần xác nhận)."
+  - "Thuế: hiện thường nhắc thuế thu nhập cá nhân 0,1% giá trị bán cổ phiếu; cổ tức bằng tiền/cổ phiếu có quy định riêng - cần xác nhận với cơ quan thuế/công ty chứng khoán."
+  - "Nếu doanh nghiệp (pháp nhân) đầu tư chứng khoán thì hạch toán và thuế khác cá nhân - cần tham vấn kế toán (cần xác nhận)."
+  - "Dùng Google Sheets: ô nhập vốn, r%, entry, stop -> tự tính số cổ phiếu, R:R, tỷ trọng, tổng rủi ro mở; thêm ô 'ngày dữ liệu' cho mọi thông số thị trường."
+  - "Bắt đầu với vị thế nhỏ, rủi ro 0,5%-1% vốn mỗi lệnh khi chưa có sổ ghi chép kết quả."
+  - "Ghi nhật ký giao dịch: lý do, kịch bản, stop, kết quả; tự ước lượng p và R:R thật sau tối thiểu vài chục lệnh trước khi tin Kelly/kỳ vọng."
+case_lessons:
+  - name: "Kiểm chứng ngoài mẫu công cụ phân tích kỹ thuật trên 12 cổ phiếu Việt Nam"
+    type: "sme"
+    setup: "Tại mỗi ngày T chỉ dùng dữ liệu đến T, chấm bằng diễn biến thật 5/10/20 phiên sau; tách train (trước 2020) và test (từ 2020); 12 mã MSN, VRE, HPG, VNM, FPT, MWG, STB, VCB, SSI, PNJ, TCB, ACB; so với mức nền."
+    key_calculations:
+      - "Mũi tên cũ đúng ~47,6% ở 10 phiên (kém đồng xu)"
+      - "Nhận định v3 đúng ~52,0% trên 1.576 ngày vs nền 50,8%; tỷ lệ đúng từng năm 19%-86%"
+      - "Vùng biến động 80% phủ thực tế 82,7%"
+      - "Kênh cũ chứa 31%, kênh v3 chứa 77%"
+      - "Phá vỡ giả: 57-67% quay lại trong kênh trong 5 phiên"
+      - "Mua cạnh dưới hộp vượt nền -1,11% / -0,77%; bắt đáy nến vượt nền -0,74% / -0,82%"
+    lesson: "Giá trị của công cụ nằm ở đo biên độ rủi ro và kỷ luật quản trị vị thế, không phải ở dự báo hướng. Vì vậy agent trình bày kịch bản, vùng biến động, stop, R:R và độ tin cậy thay vì khuyến nghị."
+    data_reliability: "verified"
+  - name: "Minh họa vị thế 1% rủi ro: thua nhiều lần vẫn sống sót"
+    type: "illustrative"
+    setup: "Vốn 500 triệu; rủi ro 1% mỗi lệnh; chuỗi 10 lệnh thua liên tiếp (giả định minh họa)."
+    key_calculations:
+      - "Mỗi lệnh thua mất 1% vốn hiện tại: sau 10 lệnh vốn còn 0,99^10 = 0,9044, tức -9,56%"
+      - "Nếu rủi ro 10% mỗi lệnh: sau 10 lệnh còn 0,9^10 = 0,3487, tức -65,1%"
+      - "Cần lãi 1/0,3487 - 1 = 186,8% để hồi phục"
+    lesson: "Kích thước vị thế nhỏ là cơ chế sống sót khi p thực thấp hơn kỳ vọng; vì kiểm chứng cho thấy lợi thế dự báo rất mỏng nên kỷ luật quan trọng hơn độ chính xác dự báo."
+    data_reliability: "illustrative"
+  - name: "Margin và kẹt kịch sàn"
+    type: "failure"
+    setup: "Giả định nhà đầu tư vay 50% giá trị vị thế, ngưỡng xử lý 30% vốn tự có (số minh họa), cổ phiếu HOSE biên 7%."
+    key_calculations:
+      - "Giá xử lý = 21.429 khi mua ở 30.000: cần giảm 28,6%"
+      - "Kịch sàn 4 phiên liên tiếp: 0,93^4 = 0,748, tức giảm 25,2% - sát ngưỡng"
+    lesson: "Biên độ 7% khiến lỗ vượt dần qua nhiều phiên và có thể không thoát được; đòn bẩy làm vốn tự có mỏng nhanh. Bài học LTCM trong m08 áp dụng ở quy mô nhỏ."
+    data_reliability: "illustrative"
+worked_examples:
+  - name: "Kế hoạch vị thế đầy đủ cho một kịch bản giả định"
+    inputs: {C: 500000000, r: 1, E: 50000, S: 46500, TP: 57000, lot: 100, fee: 0.15, tax_sell: 0.1}
+    steps:
+      - "Khoảng cách stop = 50.000 - 46.500 = 3.500 (7,0% - đúng trần)"
+      - "N = floor(5.000.000 / 3.500 / 100) x 100 = 1.400 cp; giá trị 70 triệu = 14% vốn"
+      - "R:R = (57.000 - 50.000) / 3.500 = 2,0; p hòa vốn = 33,3%"
+      - "Chi phí vòng 0,40% giá trị: p hòa vốn thực tế cao hơn chút do phí"
+      - "Kết luận dạng kịch bản: đạt bộ lọc R:R tối thiểu, stop đúng trần 7%, kèm nhãn độ tin cậy thấp-trung bình và disclaimer"
+    result: "1.400 cp, R:R 2,0, lỗ tối đa khoảng 4,9 triệu (0,98% vốn), chưa tính phí và rủi ro gap"
+  - name: "Stop theo ATR và kích thước vị thế"
+    inputs: {C: 300000000, r: 0.75, E: 32000, ATR: 900, k: 2, lot: 100}
+    steps:
+      - "S = 32.000 - 2 x 900 = 30.200"
+      - "Khoảng cách = 1.800 (5,6%)"
+      - "Rủi ro cho phép = 300.000.000 x 0,75% = 2.250.000"
+      - "N thô = 2.250.000 / 1.800 = 1.250 cp; làm tròn xuống bội số 100 = 1.200 cp (1.250 không phải bội số của 100)"
+      - "Giá trị = 1.200 x 32.000 = 38,4 triệu = 12,8% vốn"
+    result: "Stop 30.200; mua 1.200 cp; tỷ trọng 12,8% vốn (giả định minh họa)"
+  - name: "Kỳ vọng, hòa vốn và Kelly thận trọng"
+    inputs: {p: 0.45, W: 2, L: 1, lam: 0.25}
+    steps:
+      - "Kỳ vọng = 0,45 x 2 - 0,55 x 1 = +0,35R"
+      - "p hòa vốn với RR=2 là 33,3%; p=0,45 vượt 11,7 điểm phần trăm"
+      - "f* = 0,45 - 0,55/2 = 0,175; 1/4 Kelly = 4,375%"
+      - "Phản biện: kiểm chứng thực tế cho tỷ lệ đúng 46-59% với nền 50-53% - nếu p thật 0,33 thì kỳ vọng = 0,33 x 2 - 0,67 = -0,01R (gần 0)"
+      - "Trần rủi ro thực tế vẫn dùng 1-2% mỗi lệnh dù Kelly cao hơn"
+    result: "+0,35R mỗi lệnh nếu p=0,45; p thật rất nhạy; Kelly 1/4 = 4,4% chỉ là trần tham chiếu"
+  - name: "Margin: giá xử lý và đệm giảm giá"
+    inputs: {L: 150000000, N: 10000, m: 0.3, P0: 30000}
+    steps:
+      - "P_call = 150.000.000 / (10.000 x 0,7) = 21.428,6"
+      - "Đệm giảm = 1 - 21.428,6/30.000 = 28,6%"
+      - "4 phiên kịch sàn HOSE liên tiếp: 30.000 x 0,93^4 = 22.442 - chỉ còn đệm khoảng 4,5% trước ngưỡng"
+    result: "Giá xử lý khoảng 21.429; 4 phiên kịch sàn đưa giá về ~22.442, sát ngưỡng (giả định minh họa)"
+  - name: "Bảng ảnh chụp thị trường (mẫu, KHÔNG phải số thật)"
+    inputs: {Rf_nominal: 5.0, CPI: 3.5, ERP: 7.0, beta: 1.2}
+    steps:
+      - "Dòng bắt buộc: giá trị, nguồn, ngày dữ liệu, ngày tra, độ tin cậy, hạn dùng"
+      - "Giả định minh họa: Re = 5,0 + 1,2 x 7,0 = 13,4%"
+      - "Rf thực = (1,05 / 1,035 - 1) = 1,45%"
+      - "Chạy độ nhạy: Re từ 12,4% đến 14,4% khi ERP ±1%/beta ±0,1 (giả định)"
+      - "Ghi chú: các số trên chỉ minh họa phương pháp; agent thật phải tra lại"
+    result: "Re = 13,4% (giả định minh họa) kèm độ nhạy; mọi số thật phải đến từ lúc chạy"
+practice_questions:
+  - q: "Vốn 400 triệu, rủi ro 1% mỗi lệnh, mua ở 40.000, stop 37.000. Mua tối đa bao nhiêu cổ phiếu (lô 100)? Tỷ trọng?"
+    a: "Rủi ro = 4.000.000; khoảng cách 3.000; N thô = 1.333; làm tròn 1.300 cp; giá trị 52 triệu = 13% vốn."
+  - q: "R:R = 1,5. Win-rate tối thiểu để hòa vốn? Nếu win-rate thực 45%, kỳ vọng mỗi lệnh?"
+    a: "p hòa vốn = 1/2,5 = 40%. Kỳ vọng = 0,45 x 1,5 - 0,55 = +0,125R."
+  - q: "Lỗ 40% cần lãi bao nhiêu để về hòa vốn?"
+    a: "1/0,6 - 1 = 66,7%."
+  - q: "Người dùng muốn 'short' cổ phiếu HPG vì thấy xu hướng giảm. Agent trả lời thế nào?"
+    a: "Cá nhân không bán khống cổ phiếu cơ sở (cần xác nhận); chỉ có thể không mua, giảm tỷ trọng hoặc đứng ngoài; có thể nêu kịch bản giảm và mức vô hiệu hóa; không khuyến nghị."
+  - q: "Cần Rf để tính Re. Có được dùng một con số 'Rf = 4,58%' nhớ từ prompt cũ không?"
+    a: "Không. Số có thời hạn; phải tra lợi suất TPCP 10 năm lúc chạy, ghi nguồn và ngày dữ liệu, đối chiếu hai nguồn."
+  - q: "Vay 200 triệu, giữ 8.000 cổ phiếu, ngưỡng xử lý 30%. Giá xử lý? Nếu mua ở 50.000, đệm giảm?"
+    a: "P_call = 200.000.000/(8.000 x 0,7) = 35.714; đệm = 1 - 35.714/50.000 = 28,6%."
+  - q: "ATR 14 phiên = 1.500, giá vào 60.000, k=2. Stop và % khoảng cách? Có vượt trần 7%?"
+    a: "S = 57.000; khoảng cách 5,0%; không vượt 7%."
+  - q: "Kênh v3 chứa 77% các phiên kế tiếp. Giá đóng cửa vượt biên trên. Nên diễn giải thế nào?"
+    a: "Không tự động là breakout: 57-67% trường hợp quay lại trong kênh trong 5 phiên (phá vỡ giả); nêu kịch bản breakout kèm khối lượng và xác nhận, và kịch bản phá vỡ giả."
+  - q: "Người dùng hỏi 'nên mua STB hôm nay không và giá mục tiêu?'"
+    a: "Không đưa lời khuyên hay giá mục tiêu chắc chắn. Đưa trạng thái có ngày, kịch bản, mức vô hiệu hóa, độ tin cậy và disclaimer; hỏi lại khẩu vị rủi ro, khung thời gian, tỷ trọng, có dùng margin không."
+  - q: "5 mã đều là ngân hàng, mỗi mã rủi ro 1%. Rủi ro tổng là bao nhiêu?"
+    a: "Về danh nghĩa 5%; nhưng vì tương quan cao nên hành xử như một vị thế rủi ro gần 5%: không có hiệu quả đa dạng hóa; cần giảm r% mỗi mã hoặc đa dạng ngành."
+checklist:
+  - "□ Đã xác định sàn của mã (HOSE/HNX/UPCoM) và biên độ giá tương ứng, đã ghi 'cần xác nhận' các quy định chưa kiểm tra"
+  - "□ Không có tín hiệu SHORT; chỉ dùng 'không mua / giảm tỷ trọng / đứng ngoài'"
+  - "□ Dữ liệu yfinance đã qua cổng chất lượng (đủ phiên, độ trễ, nhảy giá, khối lượng, giá điều chỉnh)"
+  - "□ Không dùng dữ liệu trong ngày mã .VN làm kết luận"
+  - "□ Nếu cần Rf/ERP/beta/lãi suất/P/E: đã lập ảnh chụp thị trường có nguồn và ngày dữ liệu; không hard-code"
+  - "□ Đã chạy độ nhạy cho tham số phụ thuộc ảnh chụp"
+  - "□ Stop đã tính (ATR hoặc cấu trúc), không vượt trần 7%, và có cảnh báo gap/kịch sàn/T+2"
+  - "□ R:R, p hòa vốn, chi phí giao dịch đã tính"
+  - "□ Kích thước vị thế theo r% vốn, làm tròn lô 100; kiểm tra tỷ trọng và tổng rủi ro mở"
+  - "□ Đã xét tương quan/ngành; đa dạng hóa thật không phải giả"
+  - "□ Nếu dùng margin: đã tính giá xử lý, đệm giảm giá, lãi vay"
+  - "□ Đã xét quỹ dự phòng và vốn nhàn rỗi; hỏi lại khẩu vị rủi ro, khung thời gian, tỷ trọng nếu thiếu"
+  - "□ Đầu ra là kịch bản kèm xác suất định tính/tần suất có nguồn, mức vô hiệu hóa, nhãn độ tin cậy, data_reliability"
+  - "□ Không có giá mục tiêu chắc chắn hay lời khuyên mua/bán/giữ; có disclaimer"
+  - "□ Công thức đã chạy python3 và số liệu minh họa gắn nhãn 'giả định minh họa'"
+excel_google_sheets_templates:
+  - "Sheet 'Position_Sizer': nhập C, r, E, S, lot -> N = ROUNDDOWN((C*r/100)/(E-S)/lot,0)*lot; tỷ trọng = N*E/C; lỗ tối đa = N*(E-S)."
+  - "Sheet 'RR_Expectancy': nhập TP, E, S, p, phí -> R:R, p hòa vốn = 1/(1+RR), kỳ vọng = p*RR-(1-p), cảnh báo nếu R:R < 2 hoặc SL% > 7."
+  - "Sheet 'Margin_Check': nhập L, N, m, P0 -> P_call = L/(N*(1-m)); đệm giảm = 1-P_call/P0; mô phỏng k phiên kịch sàn = P0*(1-b)^k."
+  - "Sheet 'Market_Snapshot': cột Tham số | Giá trị | Đơn vị | Nguồn (URL) | Ngày dữ liệu | Ngày tra | Độ tin cậy | Hạn dùng; ô tô đỏ khi ngày tra quá hạn."
+  - "Sheet 'Trade_Journal': ngày, mã, kịch bản, entry, stop, kích thước, kết quả theo R; tự tính p thực, R:R thực, kỳ vọng để so với giả định."
+source_file: "stock-analysist/documents/VERIFICATION_FINDINGS.md; stock-analysist/skills/references/03_risk_management_framework.yaml; stock-analysist/skills/references/04_chart_interpretation_heuristics.yaml; stock-analysist/prompt-stock-analyze.md; stock-analysist/prompt-dinh-gia-doanh-nghiep.md"

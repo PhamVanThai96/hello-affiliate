@@ -2,6 +2,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { sendReport } from './telegram.js';
 import { buildReport, mdPage } from './report.js';
 import { clearMemory, memorySize } from './memory.js';
 import { exportFile, formatsFor } from './export.js';
@@ -16,6 +17,7 @@ import { listPending, decide, listAllowed, revoke, grantRead } from './access.js
 import { authStatus, detect, discoverModel, lastModel, onModelFound, loginStart, loginInfo, loginCode, loginCancel } from './cli.js';
 import { templates } from './routing.js';
 import { skillsFor } from './skills.js';
+import { installShutdown } from './lifecycle.js';
 
 const dir = path.dirname(fileURLToPath(import.meta.url));
 const PORT = CONFIG.port;
@@ -143,7 +145,12 @@ function emit(event) {
   if (event.type === 'final') {
     // Dựng báo cáo (có ảnh/bảng/biểu đồ) rồi mới gửi sự kiện, bỏ phần chi tiết nặng khỏi luồng gửi trình duyệt.
     return saveReport(event).catch((e) => console.warn(`[report] ${e.message}`)).then((file) => {
-      if (file) event.file = file;
+      if (file) {
+        event.file = file;
+        // Tự gửi báo cáo sang bot Telegram (nếu đã cấu hình, xem telegram.js); chạy nền, lỗi chỉ ghi log, không ảnh hưởng báo cáo.
+        sendReport({ title: event.title, text: event.text, file: path.join(REPORTS, file) })
+          .then((ok) => ok && console.log(`[telegram] đã gửi báo cáo ${file}`)).catch((e) => console.warn(`[telegram] ${e.message}`));
+      }
       delete event.details; delete event.artifacts;
       history.push(event);
     });
@@ -465,7 +472,7 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(200).end('ok');
       return;
     }
-    if (url.pathname === '/permission') { res.writeHead(decide(b.id, b.allow === true, b.remember !== false) ? 200 : 404).end(); return; }
+    if (url.pathname === '/permission') { res.writeHead(decide(b.id, b.allow === true, b.remember !== false, b.answer) ? 200 : 404).end(); return; }
     if (url.pathname === '/revoke') { revoke(String(b.path), b.mode === 'write' ? 'write' : b.mode === 'exec' ? 'exec' : 'read'); res.writeHead(200).end('ok'); return; }
     if (url.pathname === '/online') {
       const cur = state[b.id]?.status;
@@ -502,6 +509,7 @@ function listen(port, tries = 0) {
   server.listen(port);
 }
 listen(PORT);
+installShutdown({ server });   // Ctrl+C / SIGTERM: dừng server + tiến trình con gọn trong ~1 giây (Ctrl+C lần 2: thoát ngay)
 // Model CLI đang dùng: ghi nhớ lại khi biết để dialog cấu hình hiển thị; chưa biết thì hỏi CLI một lượt ngắn sau khi khởi động.
 onModelFound(() => { agentsVer++; });
 if (CONFIG.mode === 'REAL' && CONFIG.connection === 'CLI' && !CONFIG.model) setTimeout(() => discoverModel(CONFIG.provider, CONFIG.cliCmd[CONFIG.provider]), 3000);

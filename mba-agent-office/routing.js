@@ -29,7 +29,7 @@ const TITLES = {
   analyst: 'Phân tích dữ liệu: {c}',
   designer: 'Thiết kế hình ảnh/giao diện: {c}',
   marketing_expert: 'Tư vấn marketing / viết content: {c}',
-  stock_analyst: 'Phân tích chứng khoán: {c}',
+  investor: 'Phân tích chứng khoán: {c}',
   accountant: 'Kế toán: {c}',
   reviewer: 'Rà soát và duyệt kết quả',
 };

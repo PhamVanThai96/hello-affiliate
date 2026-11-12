@@ -143,3 +143,17 @@ playbooks:
       - Rủi ro: stress test, VaR/Monte Carlo nếu cần
       - Giá trị doanh nghiệp tác động (pb_valuation)
     output: Báo cáo tích hợp theo mẫu rpt_integrated
+
+  pb_valuation_crosscheck:
+    goal: Kiểm tra chéo độc lập một định giá cổ phiếu/doanh nghiệp niêm yết do #investor lập (không lập báo cáo định giá song song)
+    modules: [m03, m10]
+    steps:
+      - Lấy giả định và kết quả của #investor (giá trị/cổ phiếu, WACC hoặc Re, g, dòng tiền, nợ ròng, thiểu số, số cổ phiếu)
+      - Tính lại bằng python giá trị chính và bảng độ nhạy; so sánh sai lệch với bản gốc
+      - Kiểm tra cặp chiết khấu (FCFF-WACC, FCFE/DDM-Re), g không vượt Rf, tỷ trọng PV(TV)
+      - Kiểm tra cầu nối EV sang vốn chủ - nợ ròng, thiểu số theo từng công ty con, tài sản liên kết, số cổ phiếu (lưu hành vs pha loãng), không tính hai lần
+      - Đối chiếu Rf, ERP, beta và giá thị trường với nguồn tra lúc chạy
+    sanity:
+      - Chênh lệch giữa kết quả của bạn và #investor được tách theo nguyên nhân bằng số đồng/cổ phiếu
+      - Không đưa khuyến nghị mua/bán/giữ
+    output: Bảng so sánh (bản gốc vs tính lại) kèm nguyên nhân chênh lệch và các điểm cần #investor sửa

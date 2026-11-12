@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
+import { trackChild } from './lifecycle.js';
 
 // Công cụ "run_command" cho agent: chạy lệnh trong thư mục dự án để đọc, chẩn đoán lỗi và tạo file mới.
 // Phân loại mỗi lệnh trước khi chạy:
@@ -155,6 +156,7 @@ export function execute(shell, { cwd, timeoutS = DEFAULT_TIMEOUT }) {
   return new Promise((resolve) => {
     const t0 = Date.now();
     const child = spawn('sh', ['-c', shell], { cwd, env: cleanEnv(), stdio: ['ignore', 'pipe', 'pipe'], detached: true });
+    trackChild(child);
     let out = '', err = '', outBytes = 0, timedOut = false, done = false;
     const kill = () => { try { process.kill(-child.pid, 'SIGKILL'); } catch { try { child.kill('SIGKILL'); } catch { /* đã thoát */ } } };
     const timer = setTimeout(() => { timedOut = true; kill(); }, limit);

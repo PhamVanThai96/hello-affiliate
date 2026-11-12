@@ -281,7 +281,7 @@ body.dropping #dropzone { display:flex; }
 #usDlg .usHead span, #memDlg .usHead span, #erDlg .usHead span, #idDlg .usHead span, #rpDlg .usHead span { flex:1; }
 #usDlg .usHead a, #memDlg .usHead a, #erDlg .usHead a, #idDlg .usHead a, #rpDlg .usHead a { font-size:12.5px; color:#2d6fa3; text-decoration:none; }
 #usDlg .usHead button, #memDlg .usHead button, #erDlg .usHead button, #idDlg .usHead button, #rpDlg .usHead button { height:32px; padding:0 14px; border-radius:10px; }
-#usFrame, #memFrame, #erFrame, #idFrame { flex:1; width:100%; border:0; min-height:0; }
+#usFrame, #memFrame, #erFrame, #idFrame, #rpFrame { flex:1; width:100%; border:0; min-height:0; }   /* #rpFrame: khung Báo cáo (mở khi bấm CEO/phòng máy chủ) phải lấp đầy hộp thoại */
 @media (prefers-color-scheme:dark){ #usDlg .usHead, #memDlg .usHead, #erDlg .usHead, #idDlg .usHead, #rpDlg .usHead { background:#1b222b; color:#e8edf2; border-bottom-color:#2b3541; } #usDlg .usHead a, #memDlg .usHead a, #erDlg .usHead a, #idDlg .usHead a, #rpDlg .usHead a { color:#7da2e0; } }
 .enzyBtns button.sec { background:#e6ebf3; color:#34517a; }
 
@@ -369,3 +369,5 @@ body.v3 #office { padding:0; overflow:hidden; min-width:0; }
 #viewSw { display:flex; gap:8px; }
 #viewSw button { flex:1; padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:transparent; cursor:pointer; }
 #viewSw button.on { background:#2d6fa3; color:#fff; border-color:#2d6fa3; }
+
+.req .ask-in { width:100%; box-sizing:border-box; margin-top:6px; height:32px; padding:0 8px; border:1px solid #efc662; border-radius:8px; font-size:12.5px; background:#fff; }

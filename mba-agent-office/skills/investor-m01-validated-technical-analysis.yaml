@@ -1,0 +1,1996 @@
+id: investor-m01
+title: "Đầu tư m01: Phân tích kỹ thuật có kiểm chứng"
+summary: "Trả lời trung thực câu hỏi 'chart của mã này đang nói gì và tôi nên làm gì với rủi ro?' bằng bộ công cụ định lượng đã được kiểm chứng ngoài mẫu: mô tả trạng thái xu hướng, kênh giá gần nhất, vùng biến động kỳ vọng (ATR cone), kích thước vị thế theo ATR, đồng thời chỉ rõ thành ph…"
+agents: ["investor"]
+order: 21
+when: ["phan tich ky thuat", "bieu do", "kenh gia", "kenh xu huong", "xu huong co phieu", "ho tro khang cu", "ma200", "rsi", "bollinger", "mau hinh nen", "vung bien dong", "hop tich luy", "breakout", "pha vo", "nen mua chua", "xu huong gia ma", "chart", "phan tich ky thuat co kiem chung", "validated technical analysis"]
+body_max: 3113
+sections:
+  - id: "m01-tong-quan"
+    title: "Tổng quan m01"
+    tags: ["m01", "phân", "tích", "kỹ", "thuật", "có", "kiểm", "chứng", "validated", "technical", "analysis"]
+    text: |-
+      Phân tích kỹ thuật có kiểm chứng (Validated Technical Analysis) — module m01
+
+      Mục đích: Trả lời trung thực câu hỏi 'chart của mã này đang nói gì và tôi nên làm gì với rủi ro?' bằng bộ công cụ định lượng đã được kiểm chứng ngoài mẫu: mô tả trạng thái xu hướng, kênh giá gần nhất, vùng biến động kỳ vọng (ATR cone), kích thước vị thế theo ATR, đồng thời chỉ rõ thành phần nào có giá trị (vùng biến động, kênh v3 như một khung mô tả) và thành phần nào KHÔNG có giá trị dự báo (mẫu hình nến, mua đáy hộp tích lũy, hỗ trợ/kháng cự cực trị, nhãn BÁN khi giá dưới MA200). Mục tiêu là agent khôn…
+
+      Dùng khi:
+      - Người dùng hỏi 'phân tích kỹ thuật mã HPG/MSN/VCB...', 'đang ở xu hướng nào', 'giá có thể lên/xuống bao nhiêu trong 10 phiên tới'.
+      - Người dùng hỏi 'có nên mua vì xuất hiện nến búa/nhấn chìm/sao mai?', 'giá chạm hỗ trợ có mua được không?', 'phá vỡ kênh có phải tín hiệu mua?'.
+      - Cần tính khối lượng mua theo mức rủi ro chấp nhận (% vốn), đặt mức cắt lỗ theo ATR, tính tỷ lệ R:R.
+      - Cần diễn giải đầu ra JSON của tools/stock_cli.py (trend_state, outlook, channel_edges_now, value_area, patterns_info_only, rule_filter...).
+      - Người dùng đưa một quy tắc kỹ thuật ('RSI < 30 thì mua', 'golden cross') và hỏi có đáng tin không: dùng phương pháp kiểm chứng của module này để trả lời.
+      - Cần kiểm tra lại công cụ tại một ngày quá khứ (--as-of) để minh hoạ cho người dùng.
+
+      Module liên quan: - 'm02 - Auction Market Theory: Value Area/POC/VAH/VAL chi tiết (module này chỉ dùng VA khung ngày 60 phiên)' - 'm03 - Phân tích cơ bản: kỹ thuật chỉ cho biết thời điểm/rủi ro, không cho biết giá trị; luôn ghép với cơ bản trước khi mua' - 'm04 - Định giá tương đối và m05 - Định giá nội tại: trả lời ''mua cái gì'', còn m01 chỉ hỗ trợ ''quy mô vị thế và mức vô hiệu hoá''' - 'm07 - Dữ liệu thị trườn…
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m01_atr_pct: ATR(14) và ATR phần trăm
+      - m01_rsi_wilder: RSI(14) làm trơn Wilder
+      - m01_mfi: Chỉ số dòng tiền MFI(14)
+      - m01_bollinger: Dải Bollinger (20, 2)
+      - m01_channel_offsets: Kênh hồi quy v3: đường giữa và biên phân vị
+      - m01_channel_type: Phân loại kênh theo độ dịch chuyển so với bề rộng
+      - m01_channel_window_threshold: Ngưỡng sóng đáng kể để chọn giai đoạn gần nhất
+      - m01_trend_score: Điểm xu hướng thuần, điều chỉnh chế độ và nhóm
+      - m01_outlook_decision: Quy tắc gán thiên hướng từ xác suất hiệu chuẩn
+      - m01_cone: Vùng biến động kỳ vọng (ATR cone)
+      - m01_cone_k: Hệ số k của vùng biến động
+      - m01_position_size: Kích thước vị thế theo ATR
+      - m01_risk_reward: Tỷ lệ Rủi ro/Lợi nhuận (R:R)
+      - m01_stop_cap: Trần cắt lỗ 7%
+      - m01_candle_geometry: Hình học nến: Doji, Hammer, Shooting Star
+      - m01_box_spread: Biên độ hộp tích lũy
+      - m01_vol_ratio: Tỷ lệ khối lượng so với TB20
+
+      Kho tra cứu của module: Khái niệm 14, Công thức 17, frameworks 11, Quy trình 5, Quy tắc quyết định 24, Chuẩn so sánh 18, Lỗi thường gặp 16, Lưu ý SME Việt Nam 9, Bài học case 8, Ví dụ có lời giải 5, Câu hỏi luyện tập 10, Checklist 12, Mẫu Excel/Sheets 5. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ DCF", "lỗi thường gặp định giá").
+  - id: "m01-concepts-1"
+    title: "Khái niệm: Kiểm chứng ngoài mẫu (walk-forward / out-of-sample)"
+    tags: ["khái", "niệm", "kiểm", "chứng", "ngoài", "mẫu", "walk", "forward", "out", "of", "sample"]
+    text: |-
+      term_vi: Kiểm chứng ngoài mẫu (walk-forward / out-of-sample)
+      term_en: Out-of-sample validation
+      definition: |
+        Tại mỗi ngày T chỉ dùng dữ liệu đến hết T để tạo tín hiệu, rồi chấm bằng diễn biến thật 5/10/20 phiên sau T. Dữ liệu chia train (trước 2020) và test (từ 2020); tín hiệu chỉ đáng tin nếu lợi thế so với mức nền (mọi ngày) tồn tại và CÙNG DẤU ở cả hai giai đoạn.
+      why_it_matters: |
+        Một quy tắc nhìn đẹp trên đồ thị quá khứ gần như luôn tìm được (vì ta nhìn lại sau khi biết kết quả). Chỉ khi quy tắc sống sót qua dữ liệu chưa từng dùng để thiết kế nó mới có chút bằng chứng. Ví dụ trong tài liệu: Hanging Man cho lợi suất vượt nền -0,65% (train) rồi +0,59% (test): đổi dấu nghĩa là nhiễu.
+  - id: "m01-concepts-2"
+    title: "Khái niệm: Mức nền (base rate)"
+    tags: ["khái", "niệm", "mức", "nền", "base", "rate"]
+    text: |-
+      term_vi: Mức nền (base rate)
+      term_en: Base rate
+      definition: Tần suất của sự kiện khi KHÔNG có tín hiệu (mọi ngày). Ví dụ xác suất giá cao hơn sau 10 phiên trên mọi ngày ~51-53% (bộ hiệu chuẩn dùng 0,5192).
+      why_it_matters: |
+        Cổ phiếu VN trong mẫu có xu hướng tăng nhẹ nên 'đúng 52%' chưa phải giỏi: nền 'luôn dự báo tăng' đã đạt 50,8%. Mọi tỷ lệ đúng phải so với nền, không so với 0. Sai lầm điển hình: thấy 'tăng sau tín hiệu 55%' mà quên nền 52%.
+  - id: "m01-concepts-3"
+    title: "Khái niệm: Nhận định hiệu chuẩn xác suất"
+    tags: ["khái", "niệm", "nhận", "định", "hiệu", "chuẩn", "xác", "suất"]
+    text: |-
+      term_vi: Nhận định hiệu chuẩn xác suất
+      term_en: Calibrated probabilistic outlook (outlook v3)
+      definition: |
+        Thay vì mũi tên dự báo, công cụ xuất: thiên hướng (NGHIÊNG TĂNG/NGHIÊNG GIẢM/CHƯA RÕ) + xác suất tăng 10 phiên đọc từ bảng tần suất lịch sử có điều kiện theo (chế độ thị trường, nhóm điểm xu hướng) + số mẫu n + vùng biến động kỳ vọng.
+      why_it_matters: |
+        Mũi tên cũ suy ra từ nhãn MUA/BÁN/THEO DÕI chỉ đúng ~47,6% ở 10 phiên (kém đồng xu). Bản v3 thành thật hơn: nếu xác suất lệch dưới 4,5 điểm % so với 50% hoặc nhóm ít hơn 300 mẫu thì gọi là CHƯA RÕ HƯỚNG. Với bảng hiệu chuẩn hiện hành, chỉ nhóm UP|4 (n=12.742, p_up=55,23%) vượt ngưỡng để ra NGHIÊNG TĂNG (nhẹ); các nhóm khác đều rơi vào CHƯA RÕ.
+  - id: "m01-concepts-4"
+    title: "Khái niệm: Chế độ thị trường chung"
+    tags: ["khái", "niệm", "chế", "độ", "thị", "trường", "chung"]
+    text: |-
+      term_vi: Chế độ thị trường chung
+      term_en: Market regime (UP / DOWN)
+      definition: |
+        Rổ đại diện VNM, FPT, MWG, STB, VCB, SSI, PNJ (trung bình đều lợi suất ngày, vì yfinance không có ^VNINDEX) được cộng dồn thành chỉ số; UP nếu chỉ số nằm trên MA200 của chính nó, DOWN nếu dưới.
+      why_it_matters: |
+        Giá trị dự báo của đặc trưng giá ĐỔI DẤU theo chế độ: thị trường trên MA200 -> quán tính (IC +0,10), dưới MA200 -> hồi quy (IC -0,13). Một luật cố định cho mọi giai đoạn sẽ sai ở giai đoạn trái chế độ (từng sai 2022/2026). Tuy nhiên hiệu chuẩn học từ giai đoạn trước không bền (tỷ lệ đúng từng năm 19%-86%) nên chế độ chỉ là bối cảnh, không phải bảo chứng.
+  - id: "m01-concepts-5"
+    title: "Khái niệm: Hệ số thông tin (IC)"
+    tags: ["khái", "niệm", "hệ", "số", "thông", "tin", "ic"]
+    text: |-
+      term_vi: Hệ số thông tin (IC)
+      term_en: Information Coefficient
+      definition: Tương quan (thường hạng) giữa điểm dự báo và lợi suất tương lai. IC ~0,05-0,1 là rất yếu; 0 là vô dụng; dấu âm nghĩa là tín hiệu đảo chiều.
+      why_it_matters: 'Cho thấy ''mạnh/yếu'' của tín hiệu một cách phi tuyệt đối. Nhớ: nguồn chỉ ghi IC +0,10 (chế độ UP) và -0,13 (chế độ DOWN), tức là ở mức yếu và không ổn định.'
+  - id: "m01-concepts-6"
+    title: "Khái niệm: Biên độ dao động trung bình thực (ATR) và vùng biến động"
+    tags: ["khái", "niệm", "biên", "độ", "dao", "động", "trung", "bình", "thực", "atr", "và", "vùng"]
+    text: |-
+      term_vi: Biên độ dao động trung bình thực (ATR) và vùng biến động
+      term_en: Average True Range / Expected move cone
+      definition: ATR(14) là trung bình 14 phiên của True Range = max(High-Low, |High-Close_trước|, |Low-Close_trước|). Vùng biến động h phiên = ± k x ATR% x sqrt(h), k=0,974 để phủ 80%.
+      why_it_matters: |
+        Biên độ (độ lớn của biến động) dự báo được vì biến động có tính tụ cụm (phiên biến động lớn thường kéo theo biến động lớn; tương quan ATR% với |lợi suất tương lai| ~0,22), còn hướng thì không. Kiểm chứng ngoài mẫu: vùng 80% phủ thực tế 82,7%. Đây là thành phần giá trị nhất của module để đặt mức cắt lỗ và kích thước vị thế.
+  - id: "m01-concepts-7"
+    title: "Khái niệm: Kênh giá v3"
+    tags: ["khái", "niệm", "kênh", "giá", "v3"]
+    text: |-
+      term_vi: Kênh giá v3
+      term_en: Recent-regime regression channel (v3)
+      definition: |
+        Kênh song song quanh đường hồi quy tuyến tính của giá đóng cửa trong GIAI ĐOẠN GẦN NHẤT (60-150 phiên); biên trên/dưới ở phân vị 99%/1% của phần dư High/Low.
+      why_it_matters: Là khung mô tả vùng giá hợp lý của giai đoạn gần nhất (chứa 10 phiên kế tiếp 77%, kênh cũ chỉ 31%). Không phải tín hiệu mua/bán.
+  - id: "m01-concepts-8"
+    title: "Khái niệm: Phá vỡ giả"
+    tags: ["khái", "niệm", "phá", "vỡ", "giả"]
+    text: |-
+      term_vi: Phá vỡ giả
+      term_en: False breakout
+      definition: Giá đóng cửa vượt biên trên kênh rồi quay lại trong kênh trong 5 phiên.
+      why_it_matters: 'Kiểm chứng: sau khi vượt biên trên kênh v3 (~2% số ngày), 57-67% quay lại trong 5 phiên và lợi suất 10 phiên không hơn nền. Vì vậy ''vượt biên'' không phải tín hiệu mua đuổi.'
+  - id: "m01-concepts-9"
+    title: "Khái niệm: Mẫu hình nến Nhật"
+    tags: ["khái", "niệm", "mẫu", "hình", "nến", "nhật"]
+    text: |-
+      term_vi: Mẫu hình nến Nhật
+      term_en: Japanese candlestick patterns (Steve Nison)
+      definition: Các hình dạng nến (Doji, Hammer, Shooting Star, Engulfing, Morning/Evening Star, Piercing, Dark Cloud, Tweezer, Window...) mô tả tâm lý một đến ba phiên.
+      why_it_matters: Nguồn gốc Nhật Bản (thị trường gạo, thế kỷ 18), Steve Nison phổ biến sang phương Tây (cuốn Japanese Candlestick Charting Techniques, 1991). Mô tả tâm lý đẹp nhưng kiểm chứng cho thấy KHÔNG có giá trị dự báo bền.
+  - id: "m01-concepts-10"
+    title: "Khái niệm: Hộp tích lũy"
+    tags: ["khái", "niệm", "hộp", "tích", "lũy"]
+    text: |-
+      term_vi: Hộp tích lũy
+      term_en: Consolidation box
+      definition: Cửa sổ >= 12 phiên có biên độ (HH-LL)/LL <= 8% (mở rộng thêm nếu còn <= 10%).
+      why_it_matters: Mô tả giai đoạn thị trường nghỉ. Quy tắc dân gian 'mua cạnh dưới hộp' bị kiểm chứng bác bỏ; chỉ 'breakout lên kèm khối lượng >= 2x TB20' có lợi thế nhỉnh nền nhẹ.
+  - id: "m01-concepts-11"
+    title: "Khái niệm: Hỗ trợ / kháng cự"
+    tags: ["khái", "niệm", "hỗ", "trợ", "kháng", "cự"]
+    text: |-
+      term_vi: Hỗ trợ / kháng cự
+      term_en: Support / Resistance zones
+      definition: Vùng được gom cụm (sai số <= 1,5%) từ các đỉnh/đáy cực trị fractal (order=5), vùng mạnh nếu >= 3 lần chạm.
+      why_it_matters: 'Là ''nơi giá từng đảo chiều'' (mô tả quá khứ), không phải điểm tựa đáng tin: tỷ lệ không thủng -3% trong 10 phiên sau chạm là 61-66% so với mức giá ngẫu nhiên 62-67%.'
+  - id: "m01-concepts-12"
+    title: "Khái niệm: Value Area khung ngày"
+    tags: ["khái", "niệm", "value", "area", "khung", "ngày"]
+    text: |-
+      term_vi: Value Area khung ngày
+      term_en: Value Area (VAH / VAL / POC) over 60 sessions
+      definition: 'Vùng chứa phần lớn khối lượng 60 phiên gần nhất (num_bins=40): POC là mức giá khối lượng lớn nhất, VAH/VAL là biên trên/dưới vùng giá trị.'
+      why_it_matters: Đóng cửa trên VAH có quán tính nhẹ (tăng 10 phiên 55-56%, lợi suất +1,2% đến +1,5% so với nền +0,5-0,9%), nhất quán ở cả 2 giai đoạn; dưới VAL không có lợi thế.
+  - id: "m01-concepts-13"
+    title: "Khái niệm: Điểm xu hướng thuần"
+    tags: ["khái", "niệm", "điểm", "xu", "hướng", "thuần"]
+    text: |-
+      term_vi: Điểm xu hướng thuần
+      term_en: Raw trend score
+      definition: 'Trung bình của bốn thành phần chuẩn hoá về [-1,1]: khoảng cách tới MA50, ROC20, ROC60, vị trí trong dải giá 60 phiên.'
+      why_it_matters: Gom bốn góc nhìn giá 'mạnh hay yếu' thành một số để phân nhóm (5 nhóm) và tra tần suất lịch sử; chiều dấu được đổi theo chế độ thị trường.
+  - id: "m01-concepts-14"
+    title: "Khái niệm: Ràng buộc thị trường Việt Nam"
+    tags: ["khái", "niệm", "ràng", "buộc", "thị", "trường", "việt", "nam"]
+    text: |-
+      term_vi: Ràng buộc thị trường Việt Nam
+      term_en: VN market constraints
+      definition: |
+        Nhà đầu tư cá nhân không bán khống; biên độ giá HOSE +-7%, HNX +-10%, UPCoM +-15%; chu kỳ thanh toán T+2 (thường T+1,5 thực tế); khớp lệnh định kỳ ATO/ATC; nghỉ trưa 11:30-13:00. yfinance: giá điều chỉnh, có thể trễ/thiếu, không có ^VNINDEX.
+      why_it_matters: Tín hiệu 'SHORT' không khả thi; chỉ có 'không mua / giảm tỷ trọng / đứng ngoài'. Biên độ giá giới hạn mức lỗ trong 1 phiên nhưng cũng có thể khiến lệnh cắt lỗ không khớp khi giá sàn.
+  - id: "m01-formulas-1"
+    title: "Công thức: m01_atr_pct — ATR(14) và ATR phần trăm"
+    tags: ["công", "thức", "m01_atr_pct", "atr", "14", "và", "phần", "trăm"]
+    text: |-
+      id: m01_atr_pct
+      name_vi: ATR(14) và ATR phần trăm
+      name_en: Average True Range and ATR%
+      expression_latex: TR_t=\max(H_t-L_t,\ |H_t-C_{t-1}|,\ |L_t-C_{t-1}|);\quad ATR=\frac{1}{n}\sum_{i=t-n+1}^{t}TR_i;\quad ATR\%=\frac{ATR}{C_t}
+      expression_python: float(np.mean([max(h[i]-l[i], abs(h[i]-c[i-1]), abs(l[i]-c[i-1])) for i in range(len(h)-n, len(h))]) / c[-1])
+      excel: =AVERAGE(TR_range)/Close  (TR = MAX(H-L, ABS(H-Cprev), ABS(L-Cprev)))
+      variables:
+      - symbol: h, l, c
+        meaning: Danh sách High, Low, Close theo thứ tự thời gian (dùng đủ n+1 phiên)
+        unit: VNĐ/cp
+      - symbol: n
+        meaning: Số phiên trung bình (chuẩn 14)
+        unit: phiên
+      when_to_use: Đo độ rộng biến động thường ngày để dựng vùng biến động, mức cắt lỗ theo ATR và kích thước vị thế.
+      why_it_works: |
+        Chỉ dùng High-Low sẽ bỏ sót gap qua đêm (giá mở cửa nhảy so với hôm trước). J. Welles Wilder (1978, cuốn New Concepts in Technical Trading Systems) thêm hai khoảng |H-Cprev|, |L-Cprev| để True Range bắt được cả gap. Chia cho giá đóng cửa để so sánh được giữa mã giá 20.000 và 200.000.
+      assumptions:
+      - Dữ liệu OHLC sạch, không thiếu phiên
+      - Mã tính ATR bằng trung bình đơn giản (SMA), giống outlook_v3.compute_features (rolling mean), khác bản làm trơn Wilder gốc
+      pitfalls:
+      - Dữ liệu yfinance .VN có thể thiếu/trễ làm TR sai
+      - ATR sau chuỗi nghỉ lễ dài hoặc phiên bất thường bị lệch
+      interpretation: ATR% 1-2% là cổ phiếu ít biến động, 3-4% là biến động lớn (ngưỡng tham chiếu tự đặt, không phải kết quả kiểm chứng).
+      example:
+        inputs:
+          h:
+          - 26500
+          - 26800
+          - 26700
+          - 26900
+          - 26600
+          l:
+          - 25900
+          - 26200
+          - 26100
+          - 26300
+          - 26000
+          c:
+          - 26300
+          - 26600
+          - 26400
+          - 26500
+          - 26100
+          n: 4
+        steps:
+        - TR phiên 2 = max(26800-26200=600, |26800-26300|=500, |26200-26300|=100) = 600; phiên 3, 4, 5 cũng bằng 600 (đã verify bằng Python)
+        - ATR(4) = 600; ATR% = 600/26100 = 2,30%
+        result: ATR% = 0,02299 (minh họa với n=4; thực tế n=14)
+  - id: "m01-formulas-2"
+    title: "Công thức: m01_rsi_wilder — RSI(14) làm trơn Wilder"
+    tags: ["công", "thức", "m01_rsi_wilder", "rsi", "14", "làm", "trơn", "wilder"]
+    text: |-
+      id: m01_rsi_wilder
+      name_vi: RSI(14) làm trơn Wilder
+      name_en: Relative Strength Index (Wilder smoothing)
+      expression_latex: RS=\frac{AvgGain}{AvgLoss};\quad RSI=100-\frac{100}{1+RS};\quad Avg_t=\frac{13\cdot Avg_{t-1}+x_t}{14}
+      expression_python: '(lambda d: float((100 - 100/(1 + d.clip(lower=0).ewm(alpha=1/14, min_periods=14, adjust=False).mean() / (-d.clip(upper=0)).ewm(alpha=1/14, min_periods=14, adjust=False).mean())).iloc[-1]))(pd.Series(closes).diff())'
+      excel: 'Tính AvgGain/AvgLoss đệ quy: =(Prev*13+Gain)/14; RSI =100-100/(1+AvgGain/AvgLoss)'
+      variables:
+      - symbol: closes
+        meaning: Chuỗi giá đóng cửa
+        unit: VNĐ/cp
+      when_to_use: Đo độ mạnh tương đối của các phiên tăng so với phiên giảm; trong công cụ chỉ dùng làm thông tin và bộ lọc nhãn (RSI < 65).
+      why_it_works: Wilder (1978) muốn một thước đo động lượng bị chặn trong 0-100 để so sánh giữa các mã; làm trơn kiểu đệ quy 1/14 cho trọng số giảm dần cho quá khứ, tránh nhảy giật khi một phiên cũ rời cửa sổ.
+      assumptions:
+      - Cài đặt trong code dùng pandas ewm(alpha=1/14, adjust=False, min_periods=14) (khởi tạo bằng giá trị đầu tiên, hơi khác cách seed SMA của Wilder gốc)
+      pitfalls:
+      - 'Ngưỡng quá mua/quá bán cổ điển (70/30) KHÔNG được kiểm chứng riêng trong tài liệu: không dùng làm tín hiệu vào/ra'
+      - Trong xu hướng mạnh RSI có thể ở vùng cao rất lâu (không có nghĩa phải giảm)
+      interpretation: Đọc RSI như mô tả động lượng. Tài liệu công cụ dùng RSI >= 65 để dán nhãn THEO DÕI (chống mua đuổi); đây là quy tắc kỷ luật, không phải tín hiệu dự báo đã kiểm chứng.
+      example:
+        inputs:
+          closes:
+          - 44
+          - 44.34
+          - 44.09
+          - 44.15
+          - 43.61
+          - 44.33
+          - 44.83
+          - 45.1
+          - 45.42
+          - 45.84
+          - 46.08
+          - 45.89
+          - 46.03
+          - 45.61
+          - 46.28
+        steps:
+        - 'Sau 14 thay đổi giá: AvgGain = 0,2938, AvgLoss = 0,0644'
+        - RS = 0,2938/0,0644 = 4,559
+        - RSI = 100 - 100/(1+4,559) = 82,0
+        result: RSI = 82,01 (dữ liệu giả định, đã verify bằng pandas)
+  - id: "m01-formulas-3"
+    title: "Công thức: m01_mfi — Chỉ số dòng tiền MFI(14)"
+    tags: ["công", "thức", "m01_mfi", "chỉ", "số", "dòng", "tiền", "mfi", "14"]
+    text: |-
+      id: m01_mfi
+      name_vi: Chỉ số dòng tiền MFI(14)
+      name_en: Money Flow Index
+      expression_latex: TP=\frac{H+L+C}{3};\ MF=TP\cdot V;\ MFR=\frac{\sum_{TP\uparrow}MF}{\sum_{TP\downarrow}MF};\ MFI=100-\frac{100}{1+MFR}
+      expression_python: '(lambda tp: 100 - 100/(1 + sum(tp[i]*v[i] for i in range(1, len(tp)) if tp[i] > tp[i-1]) / sum(tp[i]*v[i] for i in range(1, len(tp)) if tp[i] < tp[i-1])))([(a+b+d)/3 for a, b, d in zip(h, l, c)])'
+      excel: =100-100/(1+SUMIF(TPup,MF)/SUMIF(TPdown,MF)) trên cửa sổ 14 phiên
+      variables:
+      - symbol: h, l, c, v
+        meaning: High, Low, Close, Volume của cửa sổ n+1 phiên
+        unit: VNĐ/cp; cp
+      when_to_use: Mô tả dòng tiền vào/ra có tính khối lượng (RSI có trọng số khối lượng).
+      why_it_works: 'RSI chỉ nhìn giá. MFI (Gene Quong và Avrum Soudack) gắn thêm khối lượng: một phiên tăng với khối lượng lớn đóng góp nhiều hơn vào dòng tiền dương. Công thức giống RSI nhưng cộng tiền thay vì cộng điểm giá.'
+      assumptions:
+      - Khối lượng yfinance cho mã .VN đủ tin cậy (cần kiểm tra)
+      - Công cụ lọc bỏ phiên Volume = 0
+      pitfalls:
+      - 'Không có kiểm chứng riêng; chỉ dùng như thông tin (MFI >= 75: nhãn THEO DÕI quá mua; MFI < 70 trong điều kiện MUA)'
+      - Phiên TP không đổi không tính vào dòng dương hay âm
+      interpretation: Chỉ số 0-100; > 75 là dòng tiền nóng, < 30 là cạn; không phải tín hiệu có kiểm chứng.
+      example:
+        inputs:
+          h:
+          - 10.5
+          - 10.8
+          - 10.7
+          - 11.0
+          - 11.2
+          l:
+          - 10.0
+          - 10.3
+          - 10.2
+          - 10.6
+          - 10.9
+          c:
+          - 10.4
+          - 10.6
+          - 10.3
+          - 10.9
+          - 11.1
+          v:
+          - 1000
+          - 1500
+          - 1200
+          - 2000
+          - 1800
+        steps:
+        - TP = [10,300; 10,567; 10,400; 10,833; 11,067]
+        - Dòng dương (phiên 2, 4, 5) = 15.850 + 21.667 + 19.920 = 57.437
+        - Dòng âm (phiên 3) = 10,4 x 1.200 = 12.480
+        - MFR = 4,602; MFI = 100 - 100/5,602 = 82,15
+        result: MFI = 82,15 (cửa sổ minh họa 4 thay đổi; thực tế 14)
+  - id: "m01-formulas-4"
+    title: "Công thức: m01_bollinger — Dải Bollinger (20, 2)"
+    tags: ["công", "thức", "m01_bollinger", "dải", "bollinger", "20"]
+    text: |-
+      id: m01_bollinger
+      name_vi: Dải Bollinger (20, 2)
+      name_en: Bollinger Bands
+      expression_latex: Mid=SMA_{20}(C);\ Upper=Mid+2\sigma_{20};\ Lower=Mid-2\sigma_{20};\ \%B=\frac{C-Lower}{Upper-Lower}
+      expression_python: '(lambda s: (float(s.mean()), float(s.mean()+2*s.std()), float(s.mean()-2*s.std()), float((s.iloc[-1]-(s.mean()-2*s.std()))/(4*s.std()))))(pd.Series(closes).tail(20))'
+      excel: =AVERAGE(range) +/- 2*STDEV.S(range)
+      variables:
+      - symbol: closes
+        meaning: Giá đóng cửa 20 phiên gần nhất
+        unit: VNĐ/cp
+      when_to_use: Mô tả độ rộng dải biến động và vị trí giá trong dải (squeeze khi dải hẹp).
+      why_it_works: John Bollinger (đầu thập niên 1980) dùng độ lệch chuẩn để dải tự mở rộng khi biến động tăng và thu hẹp khi biến động giảm, khác với phần trăm cố định quanh trung bình động. Dùng độ lệch chuẩn mẫu (ddof=1) như pandas.
+      assumptions:
+      - Dùng độ lệch chuẩn mẫu (pandas std mặc định)
+      - Phân phối lợi suất không chuẩn nên '95% nằm trong dải' chỉ là xấp xỉ
+      pitfalls:
+      - Giá chạm dải trên không có nghĩa phải giảm (không được kiểm chứng)
+      - Squeeze báo sắp biến động nhưng KHÔNG báo hướng
+      interpretation: '%B > 1 là giá ngoài dải trên, < 0 ngoài dải dưới; dùng để mô tả, không làm tín hiệu vào lệnh.'
+      example:
+        inputs:
+          closes:
+          - 25000
+          - 25200
+          - 25100
+          - 25400
+          - 25300
+          - 25600
+          - 25500
+          - 25800
+          - 25700
+          - 25900
+          - 26000
+          - 25800
+          - 26100
+          - 26200
+          - 26000
+          - 26300
+          - 26100
+          - 26400
+          - 26500
+          - 26300
+        steps:
+        - Mid = 25.810; độ lệch chuẩn mẫu = 448,27
+        - Upper = 25.810 + 896,5 = 26.706,5; Lower = 24.913,5
+        - '%B = (26.300 - 24.913,5)/(4 x 448,27) = 0,773'
+        result: Mid 25.810; Upper 26.706,5; Lower 24.913,5; %B = 0,773 (dữ liệu giả định)
+  - id: "m01-formulas-5"
+    title: "Công thức: m01_channel_offsets — Kênh hồi quy v3: đường giữa và biên phân vị"
+    tags: ["công", "thức", "m01_channel_offsets", "kênh", "hồi", "quy", "v3", "đường", "giữa", "và", "biên", "phân"]
+    text: |-
+      id: m01_channel_offsets
+      name_vi: 'Kênh hồi quy v3: đường giữa và biên phân vị'
+      name_en: Recent-regime regression channel with quantile edges
+      expression_latex: C_t\approx a+bt;\ r_t^{H}=H_t-(a+bt);\ r_t^{L}=L_t-(a+bt);\ Upper=a+bt+Q_{0.99}(r^H);\ Lower=a+bt+Q_{0.01}(r^L)
+      expression_python: '(lambda fit: (float(np.quantile(np.array(high)-fit, q)), float(np.quantile(np.array(low)-fit, 1-q))))(np.polyval(np.polyfit(np.arange(len(close)), close, 1), np.arange(len(close))))'
+      excel: =SLOPE/INTERCEPT cho đường giữa; biên = PERCENTILE.INC(High-fit, 0.99) và PERCENTILE.INC(Low-fit, 0.01)
+      variables:
+      - symbol: close, high, low
+        meaning: Close/High/Low của giai đoạn gần nhất (60-150 phiên)
+        unit: VNĐ/cp
+      - symbol: q
+        meaning: Phân vị biên (0,99)
+        unit: '-'
+      when_to_use: Dựng kênh mô tả giai đoạn gần nhất cho đầu ra channel_edges_now.
+      why_it_works: |
+        Bản cũ nối hồi quy qua các đỉnh và các đáy riêng rẽ trên toàn bộ 12 tháng nên chạy xuyên nhiều giai đoạn khác nhau (kênh chứa 10 phiên kế tiếp chỉ 31%, báo 'phá vỡ' ~26% số ngày). Bản v3 chỉ hồi quy giai đoạn gần nhất, biên SONG SONG với đường giữa ở phân vị 99%/1% của phần dư (ôm sát đỉnh/đáy thật nhưng không bị một cú giật đơn lẻ kéo lệch) -> kênh bền hơn (77%).
+      assumptions:
+      - Xu hướng giai đoạn gần nhất xấp xỉ tuyến tính
+      - Biên song song (slope chung)
+      pitfalls:
+      - 'Kênh là mô tả sau-sự-kiện: hồi quy dùng cả dữ liệu hiện tại nên biên ''đẹp'' đã bao gồm hiệu ứng nhìn lại'
+      - Không phải tín hiệu vào lệnh (xem decision rules)
+      interpretation: Bề rộng kênh điển hình 15-17% giá. Lấy chênh lệch (Upper-Lower)/Close làm width_pct. Giá ở nửa trên/dưới kênh chỉ là vị trí tương đối.
+      example:
+        inputs:
+          close:
+          - 100
+          - 101
+          - 102
+          - 101
+          - 103
+          - 104
+          - 103
+          - 105
+          - 106
+          - 105
+          - 107
+          - 108
+          high:
+          - 101
+          - 102
+          - 103
+          - 102
+          - 104
+          - 105
+          - 104
+          - 106
+          - 107
+          - 106
+          - 108
+          - 109.5
+          low:
+          - 99
+          - 100
+          - 101
+          - 100
+          - 102
+          - 103
+          - 102
+          - 104
+          - 105
+          - 104
+          - 106
+          - 107
+          q: 0.99
+        steps:
+        - 'polyfit: slope b = 0,6748, intercept a = 100,038'
+        - 'Phần dư High: Q99 = +1,99; Phần dư Low: Q1 = -2,11'
+        - Upper = đường giữa + 1,99; Lower = đường giữa - 2,11
+        result: offset trên = +1,9915; offset dưới = -2,1092 (dữ liệu giả định)
+  - id: "m01-formulas-6"
+    title: "Công thức: m01_channel_type — Phân loại kênh theo độ dịch chuyển so với bề rộng"
+    tags: ["công", "thức", "m01_channel_type", "phân", "loại", "kênh", "theo", "độ", "dịch", "chuyển", "so", "với"]
+    text: |-
+      id: m01_channel_type
+      name_vi: Phân loại kênh theo độ dịch chuyển so với bề rộng
+      name_en: Channel classification
+      expression_latex: '|b\cdot(w-1)|<0.6\cdot(\text{offset}_{up}-\text{offset}_{low})\Rightarrow\text{Horizontal};\ b>0\Rightarrow\text{Ascending};\ b<0\Rightarrow\text{Descending}'
+      expression_python: '"Horizontal" if abs(slope*(w-1)) < 0.6*width else ("Ascending" if slope > 0 else "Descending")'
+      excel: =IF(ABS(b*(w-1))<0.6*width,"Đi ngang",IF(b>0,"Kênh tăng","Kênh giảm"))
+      variables:
+      - symbol: slope
+        meaning: Độ dốc hồi quy (giá/phiên)
+        unit: VNĐ/phiên
+      - symbol: w
+        meaning: Số phiên của kênh
+        unit: phiên
+      - symbol: width
+        meaning: Bề rộng kênh = offset trên - offset dưới
+        unit: VNĐ
+      when_to_use: Gán nhãn kênh tăng/giảm/đi ngang.
+      why_it_works: 'So độ trôi tổng của đường giữa với bề rộng: nếu cả kênh trôi ít hơn 60% bề rộng của nó thì xem là đi ngang. Cách cũ (|độ dốc|/giá < 0,03%/phiên) phụ thuộc đơn vị giá, không gắn với độ nhiễu của chính kênh.'
+      assumptions:
+      - Hồi quy đủ ổn định trong cửa sổ
+      pitfalls:
+      - Phân loại chỉ mô tả; thiên hướng sau 10 phiên rất yếu (kênh tăng +1,0%/54% tăng, kênh giảm +0,1%/52%, đi ngang +0,4%/50%)
+      interpretation: 'Kênh tăng chỉ có thiên hướng yếu: 54% tăng vs nền ~52%.'
+      example:
+        inputs:
+          slope: 0.6748
+          w: 12
+          width: 4.1007
+        steps:
+        - '|0,6748 x 11| = 7,42'
+        - 0,6 x 4,1007 = 2,46
+        - 7,42 > 2,46 và slope > 0 -> Ascending
+        result: Ascending (dữ liệu giả định)
+  - id: "m01-formulas-7"
+    title: "Công thức: m01_channel_window_threshold — Ngưỡng sóng đáng kể để chọn giai đoạn gần nhất"
+    tags: ["công", "thức", "m01_channel_window_threshold", "ngưỡng", "sóng", "đáng", "kể", "để", "chọn", "giai", "đoạn", "gần"]
+    text: |-
+      id: m01_channel_window_threshold
+      name_vi: Ngưỡng sóng đáng kể để chọn giai đoạn gần nhất
+      name_en: Swing threshold for channel window
+      expression_latex: thr=\max(0.08,\ 4\cdot ATR\%)
+      expression_python: max(0.08, 4.0*atr_pct)
+      excel: =MAX(0.08, 4*ATR%)
+      variables:
+      - symbol: atr_pct
+        meaning: ATR% hiện tại
+        unit: tỷ lệ
+      when_to_use: 'Xác định điểm bắt đầu giai đoạn: lùi từ hiện tại tới nhịp sóng gần nhất đảo chiều >= thr, rồi kẹp số phiên trong [60,150].'
+      why_it_works: Cổ phiếu biến động mạnh có sóng nhiễu lớn nên ngưỡng phải tăng theo ATR (4 lần), nhưng không dưới 8% để không coi dao động nhỏ là đổi giai đoạn. Tham số chọn bằng kiểm chứng ngoài mẫu trên 8 mã; hiệu quả chứa/bề rộng gần như không đổi khi tối thiểu 60 so với 30.
+      assumptions:
+      - Dùng giá đóng cửa tối đa 150 phiên gần nhất
+      pitfalls:
+      - Tham số kiểm chứng trên 8 mã ở 'dữ liệu chọn tham số', không bảo đảm bền ở mã mới
+      interpretation: ATR% 2,4% -> ngưỡng 9,6%; ATR% 1,5% -> ngưỡng 8%.
+      example:
+        inputs:
+          atr_pct: 0.024
+        steps:
+        - 4 x 0,024 = 0,096
+        - max(0,08; 0,096) = 0,096
+        result: ngưỡng = 9,6%
+  - id: "m01-formulas-8"
+    title: "Công thức: m01_trend_score — Điểm xu hướng thuần, điều chỉnh chế độ và nhóm"
+    tags: ["công", "thức", "m01_trend_score", "điểm", "xu", "hướng", "thuần", "điều", "chỉnh", "chế", "độ", "và"]
+    text: |-
+      id: m01_trend_score
+      name_vi: Điểm xu hướng thuần, điều chỉnh chế độ và nhóm
+      name_en: Raw trend score, regime-signed score, bucket
+      expression_latex: raw=\frac{clip(\frac{C/MA_{50}-1}{0.10})+clip(\frac{ROC_{20}}{0.10})+clip(\frac{ROC_{60}}{0.20})+2(pos_{60}-0.5)}{4};\ score=raw\cdot(\pm1);\ bucket\in\{0..4\}\ \text{theo biên}\ [-1.01,-0.45,-0.15,0.15,0.45,1.01]
+      expression_python: '(lambda cl: (cl(c_ma50/0.10) + cl(roc20/0.10) + cl(roc60/0.20) + (pos60-0.5)*2)/4)(lambda x: max(-1, min(1, x)))'
+      excel: =(MEDIAN(-1,1,x1)+MEDIAN(-1,1,x2)+MEDIAN(-1,1,x3)+(pos60-0.5)*2)/4  (x1=(C/MA50-1)/0.10; x2=ROC20/0.10; x3=ROC60/0.20)
+      variables:
+      - symbol: c_ma50
+        meaning: Giá/MA50 - 1
+        unit: tỷ lệ
+      - symbol: roc20, roc60
+        meaning: Lợi suất 20 và 60 phiên
+        unit: tỷ lệ
+      - symbol: pos60
+        meaning: (C - Low60)/(High60 - Low60)
+        unit: 0-1
+      when_to_use: Tính điểm để tra bảng tần suất hiệu chuẩn. Chế độ UP giữ dấu, chế độ DOWN đảo dấu (hồi quy).
+      why_it_works: Ghép khoảng cách tới trung bình, động lượng ngắn/dài và vị trí trong biên 60 phiên; chia cho ngưỡng 10%/10%/20% để các thành phần cùng thang [-1,1] và bị chặn để một giá trị cực đoan không át cả điểm. Đảo dấu ở chế độ DOWN phản ánh quan sát IC đổi dấu (+0,10 và -0,13).
+      assumptions:
+      - Trọng số bằng nhau (không tối ưu hoá để tránh quá khớp)
+      - Chế độ lấy từ rổ 7 mã, không phải VN-Index
+      pitfalls:
+      - Hiệu chuẩn học từ giai đoạn trước không bền (tỷ lệ đúng từng năm 19%-86%)
+      - Đảo dấu ở chế độ DOWN là kết quả thống kê, không phải lý thuyết chắc chắn
+      interpretation: 'Điểm càng cao ở chế độ UP, xác suất tăng 10 phiên càng nhích lên (nhóm 5: 55,2%) nhưng mức chênh nền chỉ 3,3 điểm %.'
+      example:
+        inputs:
+          c_ma50: 0.06
+          roc20: 0.04
+          roc60: 0.1
+          pos60: 0.8
+        steps:
+        - clip(0,06/0,10) = 0,6; clip(0,04/0,10) = 0,4; clip(0,10/0,20) = 0,5; (0,8-0,5) x 2 = 0,6
+        - raw = (0,6+0,4+0,5+0,6)/4 = 0,525
+        - 'Chế độ UP: score = +0,525 -> nhóm 5 (UP|4: p_up = 55,23%, n = 12.742); chế độ DOWN: score = -0,525 -> nhóm 1 (DOWN|0: p_up = 50,38%, n = 2.122)'
+        result: raw = 0,525
+  - id: "m01-formulas-9"
+    title: "Công thức: m01_outlook_decision — Quy tắc gán thiên hướng từ xác suất hiệu chuẩn"
+    tags: ["công", "thức", "m01_outlook_decision", "quy", "tắc", "gán", "thiên", "hướng", "từ", "xác", "suất", "hiệu"]
+    text: |-
+      id: m01_outlook_decision
+      name_vi: Quy tắc gán thiên hướng từ xác suất hiệu chuẩn
+      name_en: Outlook label from calibrated probability
+      expression_latex: dir=+1\ \text{nếu}\ p_{up}\ge0.545;\ dir=-1\ \text{nếu}\ p_{up}\le0.455;\ \text{ngược lại }0;\ \text{và cần}\ n\ge300;\ \text{mạnh nếu}\ |p_{up}-0.5|\ge0.09
+      expression_python: 0 if (n < 300 or p_up is None) else (1 if p_up >= 0.5 + 0.045 else (-1 if p_up <= 0.5 - 0.045 else 0))
+      excel: =IF(n<300,0,IF(p>=0.545,1,IF(p<=0.455,-1,0)))
+      variables:
+      - symbol: p_up
+        meaning: Tần suất tăng sau 10 phiên của nhóm
+        unit: 0-1
+      - symbol: n
+        meaning: Số mẫu nhóm
+        unit: mẫu
+      when_to_use: Đọc lại/giải thích trường outlook.direction.
+      why_it_works: Lệch dưới 4-5 điểm % so với 50% nằm trong nhiễu mẫu (và các cửa sổ 10 phiên chồng lấn nên số mẫu hiệu dụng ít hơn n nhiều); nên mặc định CHƯA RÕ. NEUTRAL_BAND = 0,045, MIN_BUCKET_N = 300, STRONG_BAND = 0,09 (hiếm khi đạt).
+      assumptions:
+      - 'Bảng hiệu chuẩn outlook_calibration.json: 48.083 mẫu, nền p_up 0,5192, cone_k80 = 0,974, 15 mã'
+      pitfalls:
+      - Ngay cả khi direction = +1, xác suất chỉ 55% (n=12.742 nhưng mẫu chồng lấn); tự tính sai số chuẩn nếu coi độc lập 0,44 điểm % và ~1,4 điểm % nếu số mẫu hiệu dụng ~n/10
+      interpretation: 'Với bảng hiện hành chỉ UP|4 cho NGHIÊNG TĂNG (nhẹ): UP|1 (46,5%) vẫn trong dải CHƯA RÕ; DOWN|2 (54,4%) và DOWN|4 (54,2%) cũng CHƯA RÕ vì dưới 54,5%.'
+      example:
+        inputs:
+          p_up: 0.5523
+          n: 12742
+        steps:
+        - n >= 300; p_up = 0,5523 >= 0,545 -> direction = +1
+        - Độ lệch 0,0523 < 0,09 -> không phải 'THIÊN HƯỚNG' mạnh
+        result: direction = +1 (NGHIÊNG TĂNG nhẹ)
+  - id: "m01-formulas-10"
+    title: "Công thức: m01_cone — Vùng biến động kỳ vọng (ATR cone)"
+    tags: ["công", "thức", "m01_cone", "vùng", "biến", "động", "kỳ", "vọng", "atr", "cone"]
+    text: |-
+      id: m01_cone
+      name_vi: Vùng biến động kỳ vọng (ATR cone)
+      name_en: Expected move cone
+      expression_latex: cone_h=C\cdot\left(1+\mu\pm k\cdot ATR\%\cdot\sqrt{h}\right);\ k=Q_{0.80}\left(\left|\frac{r_{t+h}}{ATR\%_t\sqrt{h}}\right|\right)=0.974
+      expression_python: (close*(1+drift-k*atr_pct*math.sqrt(h)), close*(1+drift+k*atr_pct*math.sqrt(h)))
+      excel: =Close*(1+drift-k*ATRpct*SQRT(h)) ; =Close*(1+drift+k*ATRpct*SQRT(h))
+      variables:
+      - symbol: close
+        meaning: Giá đóng cửa hiện tại
+        unit: VNĐ/cp
+      - symbol: drift
+        meaning: Lợi suất trung bình nhóm (mean_ret) hoặc 0
+        unit: tỷ lệ
+      - symbol: k
+        meaning: Hệ số phủ 80% (0,974)
+        unit: '-'
+      - symbol: atr_pct
+        meaning: ATR(14)/Close
+        unit: tỷ lệ
+      - symbol: h
+        meaning: Số phiên dự báo (10)
+        unit: phiên
+      when_to_use: Mọi lúc cần trả lời 'trong 10 phiên giá có thể dao động trong khoảng nào'; đặt mức cắt lỗ; kiểm tra rủi ro.
+      why_it_works: Lợi suất h phiên có độ lệch chuẩn tỷ lệ với sqrt(h) khi các phiên gần độc lập; nhân ATR% để chuẩn hoá theo biến động hiện tại; k chọn là phân vị 80% của |lợi suất chuẩn hoá| trong dữ liệu (48.083 mẫu) nên vùng phủ đúng 80% theo thực nghiệm, thay vì giả định phân phối chuẩn (z = 1,28).
+      assumptions:
+      - 'Biến động tương lai gần với biến động gần đây (kiểm chứng: vùng 80% phủ 82,7% ngoài mẫu)'
+      - Drift lịch sử của nhóm nhỏ so với bề rộng nên có thể đặt 0
+      pitfalls:
+      - Phủ 80% nghĩa là vẫn 20% thoát ra ngoài (có thể ở cả hai phía)
+      - Bỏ qua rủi ro biến cố (kết quả kinh doanh, tin tức, gap) khi biến động tăng đột ngột
+      - 'Phiên có giới hạn biên độ HOSE +-7%/ngày: vùng 10 phiên rộng hơn nhiều so với 1 phiên'
+      interpretation: 'Vùng không có ý nghĩa hướng: rộng gấp đôi sigma_h. Dùng để định mức cắt lỗ (ngoài nhiễu thông thường) và kỳ vọng thực tế về dao động.'
+      example:
+        inputs:
+          close: 26000
+          drift: 0.01342
+          k: 0.974
+          atr_pct: 0.024
+          h: 10
+        steps:
+        - sigma_h = 0,974 x 0,024 x sqrt(10) = 0,07392 (7,39%)
+        - Thấp = 26.000 x (1 + 0,01342 - 0,07392) = 24.427
+        - Cao = 26.000 x (1 + 0,01342 + 0,07392) = 28.271
+        result: 'Vùng 80% 10 phiên: 24.427 - 28.271 (giá giả định, nhóm UP|4)'
+  - id: "m01-formulas-11"
+    title: "Công thức: m01_cone_k — Hệ số k của vùng biến động"
+    tags: ["công", "thức", "m01_cone_k", "hệ", "số", "của", "vùng", "biến", "động"]
+    text: |-
+      id: m01_cone_k
+      name_vi: Hệ số k của vùng biến động
+      name_en: Cone coefficient calibration
+      expression_latex: k=Q_{0.80}\left(\left|\frac{r_{t+h}}{ATR\%_t\cdot\sqrt{h}}\right|\right)
+      expression_python: float(np.quantile(np.abs(np.array(fwd)/(atr_pct*np.sqrt(h))), 0.80))
+      excel: =PERCENTILE.INC(ABS(fwd/(ATRpct*SQRT(h))),0.8)
+      variables:
+      - symbol: fwd
+        meaning: Danh sách lợi suất thật h phiên sau (mẫu hiệu chuẩn)
+        unit: tỷ lệ
+      - symbol: atr_pct
+        meaning: ATR% tại ngày tín hiệu (ở đây dùng 1 giá trị cho ví dụ)
+        unit: tỷ lệ
+      - symbol: h
+        meaning: Số phiên
+        unit: phiên
+      when_to_use: Khi muốn hiệu chuẩn lại k cho thị trường/giai đoạn khác hoặc để hiểu 0,974 đến từ đâu.
+      why_it_works: 'Đo trực tiếp phân bố lợi suất chuẩn hoá thay vì giả định chuẩn; phân vị 80% bảo đảm 80% mẫu nằm trong +-k đơn vị (outlook_calibration.json: cone_k80 = 0,974).'
+      assumptions:
+      - Mỗi quan sát dùng ATR% của chính ngày đó; ví dụ này đơn giản hoá bằng 1 giá trị
+      pitfalls:
+      - Hiệu chuẩn trên giai đoạn biến động thấp sẽ cho k nhỏ rồi sai khi thị trường biến động mạnh
+      interpretation: 'k = 0,974 nhỏ hơn z chuẩn 1,28 vì phân phối thật có đỉnh nhọn: nhiều phiên rất nhỏ, ít phiên rất lớn (đuôi dày); xác suất thoát khỏi vùng là có thật.'
+      example:
+        inputs:
+          fwd:
+          - 0.03
+          - -0.05
+          - 0.01
+          - 0.08
+          - -0.02
+          - 0.04
+          - -0.07
+          - 0.0
+          - 0.02
+          - -0.01
+          atr_pct: 0.02
+          h: 10
+        steps:
+        - Chuẩn hoá |fwd|/(0,02 x 3,1623) ...
+        - Phân vị 80% = 0,854
+        result: k = 0,854 (mẫu 10 điểm giả định; bảng thật có 48.083 điểm cho 0,974)
+  - id: "m01-formulas-12"
+    title: "Công thức: m01_position_size — Kích thước vị thế theo ATR"
+    tags: ["công", "thức", "m01_position_size", "kích", "thước", "vị", "thế", "theo", "atr"]
+    text: |-
+      id: m01_position_size
+      name_vi: Kích thước vị thế theo ATR
+      name_en: ATR-based position sizing
+      expression_latex: shares=\left\lfloor\frac{Capital\cdot r}{m\cdot ATR\%\cdot P}\Big/ lot\right\rfloor\cdot lot
+      expression_python: math.floor(capital*risk_pct/(m*atr_pct*price)/lot)*lot
+      excel: =FLOOR(Von*RiskPct/(m*ATRpct*Gia), 100)
+      variables:
+      - symbol: capital
+        meaning: Tổng vốn đầu tư
+        unit: VNĐ
+      - symbol: risk_pct
+        meaning: Rủi ro tối đa mỗi lệnh (% vốn)
+        unit: tỷ lệ
+      - symbol: m
+        meaning: Số ATR đặt cắt lỗ (thường 2; tham số kỷ luật tự chọn, không phải kết quả kiểm chứng)
+        unit: lần ATR
+      - symbol: atr_pct
+        meaning: ATR%
+        unit: tỷ lệ
+      - symbol: price
+        meaning: Giá vào
+        unit: VNĐ/cp
+      - symbol: lot
+        meaning: 'Lô giao dịch (HOSE: 100 cp)'
+        unit: cp
+      when_to_use: 'Trước khi vào lệnh: xác định số cổ phiếu sao cho nếu chạm cắt lỗ thì mất đúng r% vốn.'
+      why_it_works: Vì hướng giá không dự báo được nhưng biên độ thì có, nên phương tiện kiểm soát được duy nhất là quy mô vị thế. Khoảng cắt lỗ m x ATR đặt ngoài nhiễu thông thường; số cổ phiếu = rủi ro tiền chia cho khoảng cắt lỗ trên mỗi cổ phiếu (ý tưởng 'volatility-based position sizing' phổ biến từ nhóm Turtle Traders thập niên 1980).
+      assumptions:
+      - Cắt lỗ khớp tại mức đặt (thực tế gap, giá sàn có thể trượt)
+      - Phí giao dịch, thuế bán chưa tính (cần xác nhận mức hiện hành)
+      pitfalls:
+      - 'Vị thế tính ra có thể chiếm quá lớn tỷ trọng danh mục: đặt thêm trần tỷ trọng (vd 20-25% vốn) — ngưỡng tự đặt'
+      - Giá sàn HOSE -7%/ngày có thể nằm dưới mức cắt lỗ nên lệnh không khớp
+      interpretation: Mã biến động càng lớn thì mua càng ít cổ phiếu; rủi ro tiền luôn bằng capital x r.
+      example:
+        inputs:
+          capital: 500000000
+          risk_pct: 0.01
+          m: 2
+          atr_pct: 0.024
+          price: 26000
+          lot: 100
+        steps:
+        - ATR = 26.000 x 0,024 = 624; khoảng cắt lỗ = 2 x 624 = 1.248 -> cắt lỗ 24.752
+        - Số cp = 5.000.000 / 1.248 = 4.006 -> làm tròn xuống lô 100 = 4.000
+        - Giá trị vị thế = 104.000.000 (20,8% vốn); lỗ tối đa ~ 4.000 x 1.248 = 4,99 triệu (~1% vốn)
+        result: 4.000 cp
+  - id: "m01-formulas-13"
+    title: "Công thức: m01_risk_reward — Tỷ lệ Rủi ro/Lợi nhuận (R:R)"
+    tags: ["công", "thức", "m01_risk_reward", "tỷ", "lệ", "rủi", "ro", "lợi", "nhuận"]
+    text: |-
+      id: m01_risk_reward
+      name_vi: Tỷ lệ Rủi ro/Lợi nhuận (R:R)
+      name_en: Risk-reward ratio
+      expression_latex: R:R=\frac{TP-Entry}{Entry-SL}
+      expression_python: (tp - entry) / (entry - sl)
+      excel: =(TP-Entry)/(Entry-SL)
+      variables:
+      - symbol: tp
+        meaning: Mục tiêu chốt lời
+        unit: VNĐ/cp
+      - symbol: entry
+        meaning: Giá vào
+        unit: VNĐ/cp
+      - symbol: sl
+        meaning: Cắt lỗ
+        unit: VNĐ/cp
+      when_to_use: 'Cân nhắc vào lệnh: công cụ yêu cầu R:R tới TP2 >= 2,0 mới dán nhãn MUA.'
+      why_it_works: Với xác suất thắng p và R:R = R, kỳ vọng mỗi lệnh = p x R - (1-p) (đơn vị rủi ro). Ở p ~50%, cần R > 1 để dương; R:R >= 2 cho biên an toàn. Vì xác suất kiểm chứng gần 50%, R:R là đòn bẩy đáng kể còn kiểm soát được.
+      assumptions:
+      - Mục tiêu và cắt lỗ đạt được theo thứ tự đơn giản
+      pitfalls:
+      - TP = cạnh trên kênh/kháng cự không đáng tin theo kiểm chứng (hỗ trợ/kháng cự không tốt hơn ngẫu nhiên)
+      - Chọn TP xa để 'làm đẹp' R:R
+      interpretation: R:R = 2 nghĩa là lợi nhuận mục tiêu gấp đôi rủi ro. Tài liệu không có kết quả mô phỏng giao dịch MUA đã công bố; không dùng R:R như bằng chứng tín hiệu tốt.
+      example:
+        inputs:
+          tp: 28500
+          entry: 26000
+          sl: 24752
+        steps:
+        - Reward = 28.500 - 26.000 = 2.500
+        - Risk = 26.000 - 24.752 = 1.248
+        - R:R = 2.500 / 1.248 = 2,003
+        result: R:R = 2,00
+  - id: "m01-formulas-14"
+    title: "Công thức: m01_stop_cap — Trần cắt lỗ 7%"
+    tags: ["công", "thức", "m01_stop_cap", "trần", "cắt", "lỗ"]
+    text: |-
+      id: m01_stop_cap
+      name_vi: Trần cắt lỗ 7%
+      name_en: Stop-loss cap (7%)
+      expression_latex: SL=\max\left(Entry-m\cdot ATR,\ 0.93\cdot Entry\right)
+      expression_python: max(entry - m*entry*atr_pct, 0.93*entry)
+      excel: =MAX(Entry-m*ATR, 0.93*Entry)
+      variables:
+      - symbol: entry
+        meaning: Giá vào
+        unit: VNĐ/cp
+      - symbol: m, atr_pct
+        meaning: Hệ số ATR và ATR%
+        unit: '-'
+      when_to_use: Khống chế khoảng cắt lỗ tối đa 7% từ giá vào (kỷ luật bảo toàn vốn của bộ lọc luật).
+      why_it_works: Giới hạn lỗ tối đa mỗi lệnh; số 7% khớp biên độ ngày HOSE (+-7%) nhưng là quy tắc kỷ luật, không phải kết quả thống kê. Nếu m x ATR vượt 7% thì giảm quy mô vị thế thay vì nới cắt lỗ.
+      assumptions:
+      - Nhà đầu tư thực sự cắt lỗ khi chạm
+      pitfalls:
+      - Cắt lỗ chặt hơn nhiễu 1-2 ATR thường bị quét; quy mô vị thế phải nhỏ lại tương ứng
+      interpretation: Với ATR% 2,4% và m = 2, khoảng cách 4,8% < 7% nên áp dụng ATR; với ATR% 4% thì 8% > 7% nên bị chặn tại 7%.
+      example:
+        inputs:
+          entry: 26000
+          m: 2
+          atr_pct: 0.024
+        steps:
+        - entry - m x ATR = 26.000 - 1.248 = 24.752
+        - 0,93 x 26.000 = 24.180
+        - max = 24.752
+        result: SL = 24.752 (không bị trần 7% chặn)
+  - id: "m01-formulas-15"
+    title: "Công thức: m01_candle_geometry — Hình học nến: Doji, Hammer, Shooting Star"
+    tags: ["công", "thức", "m01_candle_geometry", "hình", "học", "nến", "doji", "hammer", "shooting", "star"]
+    text: |-
+      id: m01_candle_geometry
+      name_vi: 'Hình học nến: Doji, Hammer, Shooting Star'
+      name_en: Candle geometry tests
+      expression_latex: body=|C-O|;\ range=H-L;\ br=\frac{body}{range};\ Doji:\ br<0.10;\ Hammer:\ low\_sh\ge2\cdot body\wedge up\_sh\le0.5\cdot body\wedge br<0.40
+      expression_python: '{"doji": (abs(c-o)/(h-l) < 0.10), "hammer": ((min(c,o)-l) >= 2*abs(c-o) and (h-max(c,o)) <= 0.5*abs(c-o) and abs(c-o)/(h-l) < 0.40)}'
+      excel: =ABS(C-O)/(H-L)
+      variables:
+      - symbol: o, h, l, c
+        meaning: Open, High, Low, Close của phiên
+        unit: VNĐ/cp
+      when_to_use: Chỉ để hiểu cách công cụ phát hiện mẫu hình (đầu ra patterns_info_only).
+      why_it_works: Quy các hình dạng nến thành điều kiện tỷ lệ thân/bóng nên phát hiện bằng thuật toán, không 'nhìn bằng mắt'. Với mô tả tâm lý (từ chối giá thấp/cao).
+      assumptions:
+      - Quy ước tỷ lệ là ước lượng, không có chuẩn thống nhất
+      pitfalls:
+      - 'Mật độ phát hiện 0,49 mẫu/ngày: gần một nửa số ngày có ''mẫu hình đảo chiều'' => quá nhiều để có ý nghĩa'
+      - Không có giá trị dự báo bền ở khung 10 phiên
+      interpretation: Chỉ mô tả. Không dùng làm tín hiệu.
+      example:
+        inputs:
+          o: 26000
+          h: 26400
+          l: 25300
+          c: 26300
+        steps:
+        - body = 300; range = 1.100; br = 0,273
+        - lower shadow = 26.000 - 25.300 = 700 >= 2 x 300 = 600 (đúng)
+        - upper shadow = 26.400 - 26.300 = 100 <= 0,5 x 300 = 150 (đúng); br < 0,40 (đúng)
+        result: Là Hammer (mô tả); không dùng làm tín hiệu mua
+  - id: "m01-formulas-16"
+    title: "Công thức: m01_box_spread — Biên độ hộp tích lũy"
+    tags: ["công", "thức", "m01_box_spread", "biên", "độ", "hộp", "tích", "lũy"]
+    text: |-
+      id: m01_box_spread
+      name_vi: Biên độ hộp tích lũy
+      name_en: Consolidation box spread
+      expression_latex: spread\%=\frac{HH-LL}{LL}\times100\le8;\ \text{vị trí trong hộp}=\frac{C-LL}{HH-LL}
+      expression_python: ((hh-ll)/ll*100, (close-ll)/(hh-ll))
+      excel: =(HH-LL)/LL*100
+      variables:
+      - symbol: hh, ll
+        meaning: High cao nhất và Low thấp nhất của cửa sổ >= 12 phiên
+        unit: VNĐ/cp
+      - symbol: close
+        meaning: Giá đóng cửa
+        unit: VNĐ/cp
+      when_to_use: Xác định hộp hiện tại và vị trí giá trong hộp (<= 25% = gần đáy hộp).
+      why_it_works: 'Giai đoạn giá nén hẹp trong 12 phiên là ''nghỉ''; vị trí 0-25% gọi là gần đáy. Kiểm chứng: mua vùng này kém nền 0,77-1,11%.'
+      assumptions:
+      - Hộp mở rộng nếu spread <= 10% (ngưỡng 8% + nới 2%)
+      pitfalls:
+      - Quy tắc 'mua đáy hộp khi có nến từ chối giá' (tài liệu cũ) bị kiểm chứng bác bỏ
+      interpretation: Chỉ dùng để mô tả; breakout lên + khối lượng >= 2x TB20 mới có lợi thế nhẹ.
+      example:
+        inputs:
+          hh: 27000
+          ll: 25200
+          close: 25500
+        steps:
+        - spread = (27.000-25.200)/25.200 = 7,14% <= 8% -> là hộp
+        - vị trí = (25.500-25.200)/1.800 = 0,167 (<= 25% -> gần đáy)
+        result: spread 7,14%; vị trí 16,7% (vùng 'mua đáy hộp' đã bị kiểm chứng bác bỏ)
+  - id: "m01-formulas-17"
+    title: "Công thức: m01_vol_ratio — Tỷ lệ khối lượng so với TB20"
+    tags: ["công", "thức", "m01_vol_ratio", "tỷ", "lệ", "khối", "lượng", "so", "với", "tb20"]
+    text: |-
+      id: m01_vol_ratio
+      name_vi: Tỷ lệ khối lượng so với TB20
+      name_en: Volume ratio
+      expression_latex: VR=\frac{V_t}{SMA_{20}(V)}
+      expression_python: volume / (sum(volumes20)/len(volumes20))
+      excel: =V/AVERAGE(V20)
+      variables:
+      - symbol: volume
+        meaning: Khối lượng phiên
+        unit: cp
+      - symbol: volumes20
+        meaning: Khối lượng 20 phiên
+        unit: cp
+      when_to_use: Xác nhận breakout (>= 2x), cảnh báo Volume Climax (>= 3x), xác nhận nến (>= 1,3x).
+      why_it_works: 'Giá phá vỡ mà không có khối lượng thường thiếu sự tham gia; kiểm chứng: breakout hộp có khối lượng >= 2x nhỉnh nền +0,99% (train)/+0,34% (test), còn không có khối lượng thì không lợi thế.'
+      assumptions:
+      - Khối lượng yfinance đáng tin cậy
+      pitfalls:
+      - Phiên đáo hạn/cơ cấu chỉ số có thể tạo khối lượng bất thường không mang ý nghĩa xu hướng
+      interpretation: '>= 2: đột biến; >= 3: cao trào (cảnh báo rủi ro kiệt sức).'
+      example:
+        inputs:
+          volume: 4000000
+          volumes20:
+          - 2000000
+          - 1900000
+          - 2100000
+          - 2000000
+        steps:
+        - TB = 2.000.000
+        - VR = 4.000.000/2.000.000 = 2,0
+        result: VR = 2,0 (rút gọn 4 phiên để minh họa)
+  - id: "m01-frameworks-1"
+    title: "Frameworks: m01_validation_method — Phương pháp kiểm chứng tín hiệu ngoài mẫu"
+    tags: ["frameworks", "m01_validation_method", "phương", "pháp", "kiểm", "chứng", "tín", "hiệu", "ngoài", "mẫu"]
+    text: |-
+      id: m01_validation_method
+      name_vi: Phương pháp kiểm chứng tín hiệu ngoài mẫu
+      name_en: Out-of-sample signal validation
+      origin: |
+        Dựa trên các script kiểm thử walk-forward đã chạy trong phiên 11/2026 (không còn trong repo; 12 mã MSN, VRE, HPG, VNM, FPT, MWG, STB, VCB, SSI, PNJ, TCB, ACB; dữ liệu 2010-2018 tuỳ mã đến 11/2026). Ra đời vì mũi tên cũ đúng 47,6% và nhiều quy tắc 'kinh nghiệm' (từ 407 chart 2019-2020) chưa từng được kiểm tra khách quan.
+      components:
+      - Tại ngày T chỉ dùng dữ liệu <= T để sinh tín hiệu (chống nhìn trước)
+      - Chấm bằng diễn biến thật 5/10/20 phiên sau
+      - Tách train (< 2020) và test (>= 2020)
+      - So với mức nền (mọi ngày); chỉ tin lợi thế cùng dấu ở cả 2 giai đoạn
+      - Báo số mẫu n; tránh kết luận với n nhỏ
+      when_to_use: Mỗi khi người dùng (hoặc tài liệu) khẳng định một quy tắc kỹ thuật 'hiệu quả'.
+      how_to_apply:
+      - Định nghĩa tín hiệu rõ ràng, thuật toán hoá (không phán đoán bằng mắt)
+      - Tính tỷ lệ tăng và lợi suất vượt nền trong train và test riêng
+      - So với nền cùng giai đoạn; kiểm tra số mẫu hiệu dụng (cửa sổ chồng lấn)
+      - 'Nếu lợi thế đổi dấu hoặc bằng không: coi là nhiễu'
+      how_to_read_results: 'Tín hiệu hữu ích cần: lợi thế nhất quán dấu train/test, đủ n, hiệu ứng đủ lớn để vượt phí và trượt giá. Hầu hết tín hiệu trong module này không đạt.'
+      pitfalls:
+      - Điều chỉnh tham số đến khi đẹp (quá khớp)
+      - Quên rằng 12 mã đều là mã thanh khoản lớn, kết quả có thể khác với mã nhỏ/UPCoM
+      - Kết quả quá khứ không bảo đảm tương lai
+      validation: 'Chính khung này tạo ra mọi con số kiểm chứng trong module. Kết luận tổng: hướng 10-20 phiên gần như không dự báo được từ giá; biên độ thì dự báo được.'
+      example: 'Hanging Man: vượt nền -0,65% (train) và +0,59% (test): đổi dấu -> không có tín hiệu. Rising Window: +0,75% rồi -0,60%: cũng nhiễu.'
+  - id: "m01-frameworks-2"
+    title: "Frameworks: m01_channel_v3 — Kênh giá v3 (giai đoạn gần nhất)"
+    tags: ["frameworks", "m01_channel_v3", "kênh", "giá", "v3", "giai", "đoạn", "gần", "nhất"]
+    text: |-
+      id: m01_channel_v3
+      name_vi: Kênh giá v3 (giai đoạn gần nhất)
+      name_en: Channel v3 (recent regime)
+      origin: 'Thay cho kênh hồi quy toàn bộ 12 tháng (compute_trend_channel_legacy). Lý do đổi: kiểm chứng ngoài mẫu cho thấy kênh cũ chứa 10 phiên kế tiếp chỉ ~31% và báo ''phá vỡ'' ~26% số ngày vì đường hồi quy xuyên qua nhiều giai đoạn khác nhau.'
+      components:
+      - 'Chọn giai đoạn: lùi tới nhịp sóng gần nhất đảo chiều >= max(8%, 4xATR%); kẹp trong [60,150] phiên'
+      - Đường giữa = hồi quy tuyến tính giá đóng cửa trong giai đoạn
+      - Biên trên = đường giữa + phân vị 99% của (High - đường hồi quy); biên dưới = + phân vị 1% của (Low - đường hồi quy)
+      - Trung trục (median_line) = trung bình hai biên; phân loại tăng/giảm/đi ngang theo độ trôi so với bề rộng
+      - Vẫn xuất điểm đỉnh/đáy fractal (argrelextrema order=5) để gom hỗ trợ/kháng cự
+      when_to_use: Mô tả vùng giá hợp lý của giai đoạn gần nhất, bối cảnh cho kịch bản và mức vô hiệu hoá.
+      how_to_apply:
+      - Đọc channel_edges_now (upper/lower/median) và channel.window, r2, width_pct, channel_type
+      - Tính vị trí giá trong kênh (C-Lower)/(Upper-Lower)
+      - 'Nếu giá ngoài biên trên: ghi nhận là vượt biên (khả năng phá vỡ giả 57-67%)'
+      - Chỉ dùng như khung tham chiếu, không đặt lệnh dựa trên 'chạm biên dưới'
+      how_to_read_results: 'Kênh chứa tới 77% 10 phiên kế tiếp với bề rộng 15-17% giá (hiệu quả chứa/bề rộng 5,8 so với 3,3 của kênh cũ). Thiên hướng theo loại kênh yếu: kênh tăng +1,0% (54% tăng), kênh giảm +0,1% (52%), đi ngang +0,4% (50%).'
+      pitfalls:
+      - Mô tả không phải tín hiệu
+      - Kênh dịch khi thêm dữ liệu mới (không 'đóng băng')
+      - Đừng nhầm 77% chứa với xác suất giá ở trong kênh vì còn phụ thuộc bề rộng 15-17% (rộng)
+      validation: 'Kênh cũ chứa 31% / báo phá vỡ ~26% ngày; kênh v3 chứa 77% (bề rộng 15-17%), hiệu quả chứa/bề rộng ~5,8 vs 3,3. Vượt biên trên (~2% số ngày): 57-67% quay lại trong 5 phiên; lợi suất 10 phiên không hơn nền. Loại kênh: tăng 54%/+1,0%; giảm 52%/+0,1%; đi ngang 50%/+0,4%.'
+      example: 'Ví dụ HPG giả định: close 26.000, kênh 24.300-28.100 (rộng 14,6%), nằm giữa kênh -> không có ''điểm tựa''; dùng vùng cone cho cắt lỗ.'
+  - id: "m01-frameworks-3"
+    title: "Frameworks: m01_outlook_v3 — Nhận định hiệu chuẩn xác suất + vùng biến động"
+    tags: ["frameworks", "m01_outlook_v3", "nhận", "định", "hiệu", "chuẩn", "xác", "suất", "vùng", "biến", "động"]
+    text: |-
+      id: m01_outlook_v3
+      name_vi: Nhận định hiệu chuẩn xác suất + vùng biến động
+      name_en: Calibrated outlook v3
+      origin: 'dev/outlook_v3.py thay mũi tên dự báo cũ. Lý do: mũi tên cũ (từ nhãn MUA/BÁN/THEO DÕI) chỉ đúng ~47,6% (10 phiên), riêng nhãn BÁN (giá < MA200) chiếm ~52% số nhận định nhưng giá vẫn tăng ~50%; đặc trưng giá đổi dấu theo chế độ thị trường.'
+      components:
+      - 'Chế độ thị trường: rổ 7 mã trên/dưới MA200 (UP/DOWN)'
+      - Điểm xu hướng thuần (4 thành phần) x dấu chế độ (UP +1, DOWN -1)
+      - 5 nhóm điểm theo biên [-1,01; -0,45; -0,15; 0,15; 0,45; 1,01]
+      - 'Bảng tần suất lịch sử có điều kiện: (chế độ, nhóm) -> p_up, mean_ret, n'
+      - 'Gán nhãn: NGHIÊNG TĂNG/GIẢM nếu |p_up - 0,5| >= 0,045 và n >= 300; THIÊN HƯỚNG nếu >= 0,09; ngược lại CHƯA RÕ'
+      - 'Vùng biến động: close x (1 + drift +- k x ATR% x sqrt(10))'
+      when_to_use: Mọi lần cần câu trả lời có xác suất về 10 phiên tới.
+      how_to_apply:
+      - Đọc outlook.regime, score, p_up, n, mean_ret, cone_low/cone_high, sigma_h_pct
+      - 'Báo: ''xác suất tăng 10 phiên theo tần suất lịch sử ~X% (n=...), gần ngang nền 52%'''
+      - Luôn kèm vùng biến động 80% và cảnh báo 20% thoát vùng
+      - 'Nếu label = CHƯA RÕ HƯỚNG: nói thẳng rằng giá không cho biết hướng'
+      how_to_read_results: 'Hướng 10 phiên đúng ~52,0% trên 1.576 ngày có nhận định (nền ''luôn tăng'' 50,8%): không khác biệt có ý nghĩa. Xác suất tăng theo nhóm chỉ dao động 47-59%. Vùng 80% phủ 82,7% ngoài mẫu.'
+      pitfalls:
+      - Hiệu chuẩn học từ giai đoạn trước không bền (tỷ lệ đúng từng năm 19%-86%)
+      - Bảng hiệu chuẩn hiện hành tính trên mọi năm đến 2026 nên kiểm tra lại quá khứ bằng --as-of là TRONG MẪU, không phải bằng chứng
+      - Chế độ thị trường từ rổ 7 mã, không phải VN-Index
+      validation: Mũi tên cũ 47,6% (kém đồng xu); v3 52,0% (nền 50,8%), vùng 80% phủ 82,7%. IC +0,10 (UP), -0,13 (DOWN).
+      example: Raw 0,525, chế độ UP -> nhóm 5 -> p_up 55,2% (n=12.742) -> NGHIÊNG TĂNG (nhẹ); cùng điểm ở chế độ DOWN -> nhóm 1 -> 50,4% -> CHƯA RÕ.
+  - id: "m01-frameworks-4"
+    title: "Frameworks: m01_trend_state — Trạng thái xu hướng (mô tả khách quan)"
+    tags: ["frameworks", "m01_trend_state", "trạng", "thái", "xu", "hướng", "mô", "tả", "khách", "quan"]
+    text: |-
+      id: m01_trend_state
+      name_vi: Trạng thái xu hướng (mô tả khách quan)
+      name_en: Trend state
+      origin: 'outlook_v3.trend_state: mô tả, không dự báo.'
+      components:
+      - 'TĂNG: giá > MA50 > MA200'
+      - 'GIẢM: giá < MA50 < MA200'
+      - 'PHỤC HỒI / HỖN HỢP: giá trên MA50 nhưng chưa xếp hàng tăng'
+      - 'YẾU / HỖN HỢP: giá dưới MA50'
+      - 'KHÔNG ĐỦ DỮ LIỆU: thiếu MA'
+      - Kèm roc20_pct (lợi suất 20 phiên %) và pos60_pct (vị trí trong biên 60 phiên %)
+      when_to_use: 'Mở đầu mọi báo cáo: giá đang ở đâu so với MA50/MA200.'
+      how_to_apply:
+      - Đọc trend_state.structure, ma50, ma200, roc20_pct, pos60_pct
+      - Báo đây là trạng thái hiện tại, không phải dự báo
+      how_to_read_results: Cấu trúc TĂNG chỉ có nghĩa giá đang mạnh; không có nghĩa tiếp tục tăng (xác suất nhóm UP|4 chỉ 55%).
+      pitfalls:
+      - Đồng nhất 'dưới MA200 = BÁN' (sai)
+      validation: 'Nhãn BÁN (giá < MA200): sau đó tỷ lệ tăng vẫn ~50%: không có giá trị dự báo. Trạng thái xu hướng chỉ để mô tả.'
+      example: Close 26.000 > MA50 25.200 > MA200 23.800 -> TĂNG (giá > MA50 > MA200).
+  - id: "m01-frameworks-5"
+    title: "Frameworks: m01_indicators — Chỉ báo MA, RSI Wilder, MFI, Bollinger (và MA9/26)"
+    tags: ["frameworks", "m01_indicators", "chỉ", "báo", "ma", "rsi", "wilder", "mfi", "bollinger", "và", "ma9", "26"]
+    text: |-
+      id: m01_indicators
+      name_vi: Chỉ báo MA, RSI Wilder, MFI, Bollinger (và MA9/26)
+      name_en: Indicator set
+      origin: 'compute_indicators trong stock_analysis_script: MA9, MA26 (golden/death cross), MA50, MA200, RSI14 Wilder, MFI14, Bollinger (20,2), Volume SMA20 và VOL_RATIO.'
+      components:
+      - 'MA20/50/200: xu hướng ngắn/trung/dài; MA9/MA26 giao cắt (golden/death cross)'
+      - RSI(14) Wilder; MFI(14)
+      - Bollinger (20,2); VOL_RATIO = V/SMA20(V)
+      when_to_use: Mô tả bối cảnh và dùng làm bộ lọc kỷ luật; không làm tín hiệu độc lập.
+      how_to_apply:
+      - Đọc indicators.rsi14, mfi14, vol_ratio, long_term (Tăng/Giảm theo MA200)
+      - 'Diễn giải: RSI >= 65 hoặc MFI >= 75 => đừng mua đuổi (kỷ luật)'
+      how_to_read_results: Không chỉ báo nào có kiểm chứng riêng trong tài liệu (ngoài MA200 trong nhãn BÁN và VA); nói rõ.
+      pitfalls:
+      - Golden/Death cross MA9/26 chưa được kiểm chứng
+      - Ngưỡng 70/30 của RSI chưa được kiểm chứng
+      validation: 'Không có kiểm chứng riêng cho RSI/MFI/Bollinger/MA cross trong VERIFICATION_FINDINGS. Chỉ nhãn BÁN (dựa trên MA200) bị kiểm chứng: ~50% tăng sau.'
+      example: 'RSI 58, MFI 52, VOL_RATIO 0,9: không quá mua; không có ''tín hiệu'' nào.'
+  - id: "m01-frameworks-6"
+    title: "Frameworks: m01_candlestick_library — Thư viện mẫu hình nến Nhật (Steve Nison) - chỉ mô tả"
+    tags: ["frameworks", "m01_candlestick_library", "thư", "viện", "mẫu", "hình", "nến", "nhật", "steve", "nison", "chỉ", "mô"]
+    text: |-
+      id: m01_candlestick_library
+      name_vi: Thư viện mẫu hình nến Nhật (Steve Nison) - chỉ mô tả
+      name_en: Candlestick pattern library (info only)
+      origin: 'Steve Nison, Japanese Candlestick Charting Techniques (1991): đưa phân tích nến Nhật vào phương Tây. Công cụ cài: Doji, Hammer, Inverted Hammer, Shooting Star, Hanging Man, Bullish/Bearish Engulfing, Piercing Line, Dark Cloud Cover, Tweezer Top/Bottom, Windows (Gap Up/Down), Morning/Evening Star, kèm xác nhận khối lượng (>= 1,3x TB20).'
+      components:
+      - 'Hình học: body = |C-O|, range = H-L, body_ratio, upper/lower shadow'
+      - 'Doji: body_ratio < 0,10'
+      - 'Hammer/Shooting Star: bóng >= 2x thân, bóng ngược <= 0,5x thân, body_ratio < 0,40'
+      - 'Engulfing: nến sau nuốt thân nến trước ngược chiều; Morning/Evening Star: cụm 3 nến'
+      - 'Xác nhận khối lượng: vol_surge khi VOL_RATIO >= 1,3'
+      when_to_use: Chỉ để mô tả tâm lý phiên gần đây khi người dùng hỏi; luôn kèm cảnh báo kiểm chứng.
+      how_to_apply:
+      - Đọc patterns_info_only (5 mẫu cuối), nêu tên + mô tả tâm lý
+      - 'Nói rõ: không có giá trị dự báo bền; không dùng làm tín hiệu vào/ra'
+      how_to_read_results: 'Mật độ 0,49 mẫu/ngày: gần nửa số ngày có ''mẫu hình đảo chiều'' nên sự xuất hiện không mang thông tin.'
+      pitfalls:
+      - Tuyên bố 'confluence nâng xác suất thắng từ 50% lên 75-80%' trong skills/references/02 KHÔNG có bằng chứng và bị bác bỏ bởi kiểm chứng
+      - Cắt lỗ theo nến búa vì tin nó đảo chiều
+      validation: 'Tỷ lệ tăng 10 phiên 0,46-0,60 so với nền 0,51-0,53; lợi suất vượt nền đổi dấu train/test (Hanging Man -0,65%/+0,59%, Rising Window +0,75%/-0,60%). Bullish reversal ở vùng giá thấp (dưới MA50, sát đáy 20 phiên): vượt nền -0,74% (train), -0,82% (test): bắt đáy theo nến SAI. Bearish reversal ở vùng giá cao: giá vẫn có xu hướng tăng tiếp (vượt nền 0 đến +0,8%): nến đảo chiều giảm không báo đỉnh.'
+      example: 'Phiên có Hammer ở sát đáy 20 phiên: kỳ vọng dân gian là bật lên; số liệu cho thấy vượt nền âm ~0,8% cho 10 phiên sau.'
+  - id: "m01-frameworks-7"
+    title: "Frameworks: m01_consolidation_box — Hộp tích lũy"
+    tags: ["frameworks", "m01_consolidation_box", "hộp", "tích", "lũy"]
+    text: |-
+      id: m01_consolidation_box
+      name_vi: Hộp tích lũy
+      name_en: Consolidation box
+      origin: Từ hộp cam trong 407 biểu đồ thực chiến 2019-2020 (skills/references/04). Tự động hoá bằng detect_consolidation_boxes (min 12 phiên, spread <= 8%, nới tới 10%).
+      components:
+      - Cửa sổ 12 phiên trở lên có spread <= 8%; mở rộng khi spread <= 10%
+      - top, bottom, spread_pct, start/end date, is_current
+      - 'Vị trí giá: <= 25% biên độ = gần đáy hộp'
+      when_to_use: Mô tả giai đoạn đi ngang; kiểm tra điều kiện breakout kèm khối lượng.
+      how_to_apply:
+      - Đọc boxes_recent; nếu is_current thì tính vị trí giá trong hộp
+      - KHÔNG mua cạnh dưới vì nến búa (quy tắc dân gian đã bị bác bỏ)
+      - Nếu giá breakout lên kèm VOL_RATIO >= 2 thì ghi nhận lợi thế nhẹ nhưng không chắc chắn
+      how_to_read_results: Khối lượng thường cạn dần cuối hộp (quan sát dân gian chưa kiểm chứng).
+      pitfalls:
+      - Quy tắc swing 'mua đáy hộp, bán đỉnh hộp' trong skills/references/04 bị bác bỏ
+      validation: 'Mua gần đáy hộp (<= 25% biên độ): vượt nền -0,77% (test), -1,11% (train), tỷ lệ tăng 45-49%. Breakout lên + khối lượng >= 2x TB20: +0,99% (train), +0,34% (test), tỷ lệ tăng ~53-55% (n=198-302): nhỉnh nền nhẹ. Breakout không kèm khối lượng: không lợi thế (+0,50%/-0,20%). Breakdown (thủng đáy): không nhất quán (-1,24% train, -0,29% test).'
+      example: 'Hộp 25.200-27.000 (spread 7,14%), giá 25.500 gần đáy 16,7%: KHÔNG phải điểm mua.'
+  - id: "m01-frameworks-8"
+    title: "Frameworks: m01_support_resistance — Hỗ trợ / kháng cự từ cực trị"
+    tags: ["frameworks", "m01_support_resistance", "hỗ", "trợ", "kháng", "cự", "từ", "cực", "trị"]
+    text: |-
+      id: m01_support_resistance
+      name_vi: Hỗ trợ / kháng cự từ cực trị
+      name_en: Support / resistance clustering
+      origin: 'find_support_resistance: gom cụm đỉnh/đáy fractal (argrelextrema order=5) với dung sai 1,5%; đếm số lần chạm; chọn vùng gần nhất so với giá.'
+      components:
+      - 'support_zones/resistance_zones: {level, touches}'
+      - strongest_support/resistance (nhiều chạm nhất), nearest_support/resistance (gần giá nhất)
+      when_to_use: Mô tả nơi giá từng đảo chiều; tham khảo mức vô hiệu hoá.
+      how_to_apply:
+      - Đọc support_resistance.nearest_* và touches
+      - Nêu rõ đây là 'nơi giá từng đảo chiều', không phải điểm tựa đáng tin
+      how_to_read_results: Vùng >= 3 chạm giữ giá không tốt hơn mức giá ngẫu nhiên.
+      pitfalls:
+      - Hiện tượng 'hỗ trợ cứng nếu >= 3 lần chạm' trong skills/references/04 không được kiểm chứng ủng hộ
+      validation: 'Chạm hỗ trợ mạnh (>= 3 chạm) rồi giữ: tỷ lệ không thủng -3% trong 10 phiên 61-66% so với mức ngẫu nhiên 62-67%; lợi suất 10 phiên sau chạm -0,15% (nền +0,6-0,9%).'
+      example: 'Giá 25.100 chạm vùng hỗ trợ 25.000 (4 chạm): không dùng làm lý do mua; chỉ làm mốc đánh giá lại.'
+  - id: "m01-frameworks-9"
+    title: "Frameworks: m01_value_area_daily — Value Area khung ngày (60 phiên)"
+    tags: ["frameworks", "m01_value_area_daily", "value", "area", "khung", "ngày", "60", "phiên"]
+    text: |-
+      id: m01_value_area_daily
+      name_vi: Value Area khung ngày (60 phiên)
+      name_en: Daily Value Area (AMT)
+      origin: 'Từ Auction Market Theory (dev/auction_market_theory.py); cli.py tính compute_volume_profile(60 phiên cuối, num_bins=40): POC, VAH, VAL, vị trí giá.'
+      components:
+      - 'POC: mức giá khối lượng lớn nhất'
+      - 'VAH/VAL: biên trên/dưới Value Area'
+      - 'position: trên VAH / dưới VAL / trong Value Area'
+      when_to_use: Mô tả vị trí giá so với vùng giá trị 60 phiên; chi tiết lý thuyết ở m02.
+      how_to_apply:
+      - Đọc value_area.poc/vah/val/position
+      - 'Nếu trên VAH: ghi nhận quán tính nhẹ (không phải tín hiệu mua chắc chắn)'
+      - 'Dưới VAL: không coi là điểm mua đảo chiều'
+      how_to_read_results: Chỉ trên VAH có lợi thế nhẹ nhất quán cả 2 giai đoạn.
+      pitfalls:
+      - Kịch bản A (D-shape mean reversion về POC) không được ủng hộ trên khung ngày
+      - Tín hiệu vào lệnh AMT chỉ sinh với dữ liệu trong ngày (15m...), chưa kiểm chứng và yfinance .VN không bảo đảm dữ liệu trong ngày
+      validation: 'Đóng cửa trên VAH: tăng 10 phiên 55-56%, lợi suất +1,2% đến +1,5% (nền ~+0,5-0,9%), nhất quán 2 giai đoạn. Dưới VAL: tăng 48-52%, +0,0% đến +0,1% (không lợi thế). Hồi về POC trong 10 phiên khi ngoài VA: 41-50% (coin flip).'
+      example: 'Giá 26.800 > VAH 26.600: quán tính nhẹ (55-56%), vẫn phải đặt cắt lỗ.'
+  - id: "m01-frameworks-10"
+    title: "Frameworks: m01_rule_filter_label — Bộ lọc luật MUA/BÁN/THEO DÕI (rule_filter)"
+    tags: ["frameworks", "m01_rule_filter_label", "bộ", "lọc", "luật", "mua", "bán", "theo", "dõi", "rule_filter"]
+    text: |-
+      id: m01_rule_filter_label
+      name_vi: Bộ lọc luật MUA/BÁN/THEO DÕI (rule_filter)
+      name_en: Rule-based label (generate_recommendation_v2)
+      origin: 'Luật kỷ luật v2.0 (skills/references/03): MUA nếu giá > MA200 + gần hỗ trợ/cạnh dưới kênh (<= 3,5%) hoặc đáy hộp + RSI < 65 + MFI < 70 + R:R TP2 >= 2; BÁN nếu giá < MA200; còn lại THEO DÕI (kèm cảnh báo phân phối, volume climax >= 3x, vượt biên kênh).'
+      components:
+      - 'action: MUA/BÁN/THEO DÕI; reasons'
+      - entry_zone (+-1%), TP1 (median), TP2 (biên trên/kháng cự), SL (<= 7%), R:R
+      - is_breakout, distribution_warning, volume_climax, fib_levels
+      when_to_use: 'Chỉ trình bày như thông tin; không phải tín hiệu có bằng chứng (note trong JSON: ''Nhãn luật chưa chứng minh khả năng dự báo'').'
+      how_to_apply:
+      - Đọc rule_filter.label và reasons; cho biết nó là kỷ luật quản trị, không phải dự báo
+      - 'Nhãn BÁN: dịch thành ''không mua/giảm tỷ trọng nếu muốn'', không phải bán khống'
+      how_to_read_results: Điều kiện vị trí của nhãn MUA (gần hỗ trợ/đáy hộp) lại là hai thành phần bị kiểm chứng bác bỏ; kết quả mô phỏng giao dịch MUA (SL/TP1/TP2/20 phiên) được hẹn ở 'mục cập nhật cuối' của tài liệu kiểm chứng nhưng mục đó CHƯA CÓ.
+      pitfalls:
+      - Coi MUA là khuyến nghị
+      - Coi BÁN là tín hiệu giảm ngắn hạn
+      validation: 'Nhãn BÁN (giá < MA200): sau đó tỷ lệ tăng vẫn ~50%: không có giá trị dự báo. Nhãn MUA: chưa có kết quả mô phỏng công bố (unverified).'
+      example: 'Giá dưới MA200 -> BÁN, sau 10 phiên vẫn ~50% tăng/giảm: đừng hoảng bán chỉ vì nhãn.'
+  - id: "m01-frameworks-11"
+    title: "Frameworks: m01_position_risk — Khung quản trị vị thế theo ATR"
+    tags: ["frameworks", "m01_position_risk", "khung", "quản", "trị", "vị", "thế", "theo", "atr"]
+    text: |-
+      id: m01_position_risk
+      name_vi: Khung quản trị vị thế theo ATR
+      name_en: ATR position-risk framework
+      origin: 'Gói kỷ luật (skills/references/03: lỗ tối đa 7%, R:R >= 2, bảo vệ vốn là số 1) cộng quy mô vị thế theo ATR (suy ra từ kết quả kiểm chứng: biên độ dự báo được, hướng không).'
+      components:
+      - 'Rủi ro mỗi lệnh (% vốn): 0,5-1% (khuyến nghị, tham số kỷ luật tự đặt)'
+      - Cắt lỗ = entry - m x ATR (m ~2), không quá 7%
+      - Số cp = vốn x r / (m x ATR% x giá), làm tròn lô 100
+      - Trần tỷ trọng một mã (vd <= 20-25% vốn; tham số tự đặt)
+      - Kiểm tra R:R >= 2
+      when_to_use: Mọi quyết định mua; đặc biệt khi người dùng muốn 'mua theo tín hiệu'.
+      how_to_apply:
+      - Tính ATR% từ outlook.sigma_h_pct hoặc chỉ báo
+      - Tính khoảng cắt lỗ và số cổ phiếu; đổi sang tiền để người dùng thấy lỗ tối đa
+      - Kiểm tra giá sàn 1 phiên (HOSE -7%) so với cắt lỗ
+      how_to_read_results: Mất mát tối đa lý thuyết = vốn x r; thực tế có thể lớn hơn khi gap vượt sàn hoặc không bán được ngay (T+2).
+      pitfalls:
+      - Không bình quân giá xuống khi giá dưới MA200 (kỷ luật; không phải kết quả kiểm chứng)
+      - Nới cắt lỗ để tránh bị quét thay vì giảm vị thế
+      validation: Biên độ dự báo tốt (vùng 80% phủ 82,7%); đây là phần có bằng chứng ủng hộ. Mức m và r là tham số kỷ luật, chưa kiểm chứng tối ưu.
+      example: 'Vốn 500 triệu, r 1%, ATR% 2,4%, giá 26.000: 4.000 cp, cắt lỗ 24.752, lỗ tối đa ~5 triệu.'
+  - id: "m01-procedures-1"
+    title: "Quy trình: m01_proc_full_analysis — Quy trình đầu-cuối phân tích kỹ thuật một mã"
+    tags: ["quy", "trình", "m01_proc_full_analysis", "đầu", "cuối", "phân", "tích", "kỹ", "thuật", "một", "mã"]
+    text: |-
+      id: m01_proc_full_analysis
+      name: Quy trình đầu-cuối phân tích kỹ thuật một mã
+      steps:
+      - 'Bước 0: xác nhận mã (đuôi .VN, vd HPG.VN) và mục đích của người dùng (mô tả, rủi ro vị thế, hay ''có nên mua'').'
+      - 'Bước 1: xin phép người dùng chạy lệnh (cần quyền chạy Python và Internet). Từ thư mục mba-agent-office chạy: python3 tools/stock_cli.py <MÃ>.VN (thêm --no-chart nếu chỉ cần số liệu; --as-of YYYY-MM-DD để kiểm tra tại quá khứ). Lần đầu: python3 tools/stock_cli.py --setup (tạo .venv và cài thư viện, cần Internet) hoặc đặt STOCK_ANALYSIS_DIR/STOCK_ANALYSIS_PY.'
+      - 'Bước 2: đọc JSON theo thứ tự: ticker/as_of/close/bars -> trend_state -> outlook -> channel/channel_edges_now -> support_resistance -> value_area -> boxes_recent -> patterns_info_only -> rule_filter -> indicators -> validation -> chart_path.'
+      - 'Bước 3: viết phần ''trạng thái'' (khách quan): cấu trúc MA, ROC20, vị trí trong biên 60 phiên, vị trí trong kênh, vị trí so với Value Area.'
+      - 'Bước 4: viết phần ''nhận định xác suất'': p_up (n), nền ~52%, label (nhiều khả năng CHƯA RÕ), vùng biến động 80% (cone_low-cone_high), nhấn 20% thoát vùng.'
+      - 'Bước 5: với mỗi thành phần nêu ngắn gọn ''kiểm chứng nói gì'' (lấy từ trường validation) và hạ cấp thành mô tả khi không có giá trị dự báo.'
+      - 'Bước 6: dựng kịch bản có điều kiện (không phán): Kịch bản chính (vd giữ trong kênh), kịch bản xấu, và mức vô hiệu hoá (vd đóng cửa dưới cắt lỗ ATR hoặc dưới biên dưới kênh).'
+      - 'Bước 7: nếu người dùng muốn mua: tính cắt lỗ m x ATR (<= 7%), số cổ phiếu theo r% vốn, R:R; nhắc giới hạn VN (không bán khống, T+2, biên độ ngày).'
+      - 'Bước 8: chèn biểu đồ vào báo cáo bằng một dòng ![Biểu đồ <MÃ> khung ngày](<chart_path>) (không in đường dẫn file, không tạo thêm file nào khác) và disclaimer; nói rõ ngày as_of và nguồn yfinance.'
+      outputs: 'Báo cáo ngắn: trạng thái, xác suất + vùng biến động, kịch bản, mức vô hiệu hoá, kích thước vị thế, rủi ro và giới hạn.'
+  - id: "m01-procedures-2"
+    title: "Quy trình: m01_proc_read_json — Cách đọc từng trường JSON của stock_cli"
+    tags: ["quy", "trình", "m01_proc_read_json", "cách", "đọc", "từng", "trường", "json", "của", "stock_cli"]
+    text: |-
+      id: m01_proc_read_json
+      name: Cách đọc từng trường JSON của stock_cli
+      steps:
+      - 'trend_state.structure: TĂNG/GIẢM/PHỤC HỒI-HỖN HỢP/YẾU-HỖN HỢP; ma50, ma200, roc20_pct, pos60_pct: mô tả khách quan.'
+      - 'outlook: direction (-1/0/+1), label, regime (UP/DOWN/UNKNOWN), p_up, n, score/raw_score, mean_ret, horizon (10), cone_low/cone_high, sigma_h_pct, market_roc60, reason, caveat. Nếu có ''error'' thì chế độ thị trường không tải được (xem procedure lỗi).'
+      - 'channel: valid, channel_type, window, r2, width_pct, upper_slope/lower_slope; channel_edges_now: upper/lower/median hiện tại (null nếu kênh không hợp lệ).'
+      - 'support_resistance: support_zones/resistance_zones, strongest_*, nearest_* (level, touches).'
+      - 'value_area: window 60, poc, vah, val, position (trên VAH/dưới VAL/trong Value Area).'
+      - 'boxes_recent: 3 hộp gần nhất (top, bottom, spread_pct, is_current).'
+      - 'patterns_info_only: 5 mẫu nến gần nhất (chỉ mô tả; vol_surge).'
+      - 'rule_filter: label (MUA/BÁN/THEO DÕI), reasons, note ''chưa chứng minh khả năng dự báo''.'
+      - 'indicators: rsi14, mfi14, vol_ratio, long_term.'
+      - 'validation: 6 câu kiểm chứng (outlook, channel, candles, boxes, support_resistance, value_area) để trích dẫn.'
+      - 'chart_path: ảnh PNG biểu đồ (null khi --no-chart); disclaimer: luôn nhắc lại cuối báo cáo.'
+      outputs: Bản đồ trường dữ liệu để agent trích dẫn đúng số liệu.
+  - id: "m01-procedures-3"
+    title: "Quy trình: m01_proc_as_of — Kiểm tra lại tại ngày quá khứ (--as-of) và giải thích đúng"
+    tags: ["quy", "trình", "m01_proc_as_of", "kiểm", "tra", "lại", "tại", "ngày", "quá", "khứ", "as", "of"]
+    text: |-
+      id: m01_proc_as_of
+      name: Kiểm tra lại tại ngày quá khứ (--as-of) và giải thích đúng
+      steps:
+      - 'Chạy: python3 tools/stock_cli.py VRE.VN --as-of 2025-05-29 (chỉ dùng dữ liệu <= ngày đó, tail 300 phiên).'
+      - So sánh outlook và vùng biến động với diễn biến thật 10 phiên sau (người dùng hoặc agent tra giá).
+      - 'Giải thích: một lần kiểm tra không chứng minh gì; vùng 80% sẽ sót 1 trên 5 trường hợp; hướng ~50/50.'
+      - 'Nhớ cảnh báo: bảng hiệu chuẩn outlook_calibration.json học trên mọi năm đến 2026 nên kiểm tra tại ngày quá khứ là trong mẫu cho xác suất p_up; vùng biến động vẫn có ý nghĩa tham khảo.'
+      - 'Nếu muốn kiểm chứng đúng nghĩa: dựng lại phép kiểm thử ngoài mẫu (hiệu chuẩn đến 2019 bằng dev/calibrate_outlook.py --end-year 2019, chấm từ 2020); không dùng --as-of để kiểm chứng xác suất vì bảng hiện hành học trên mọi năm.'
+      outputs: Bài minh họa trung thực; không dùng để quảng cáo công cụ.
+  - id: "m01-procedures-4"
+    title: "Quy trình: m01_proc_errors — Xử lý lỗi dữ liệu và công cụ"
+    tags: ["quy", "trình", "m01_proc_errors", "xử", "lý", "lỗi", "dữ", "liệu", "và", "công", "cụ"]
+    text: |-
+      id: m01_proc_errors
+      name: Xử lý lỗi dữ liệu và công cụ
+      steps:
+      - Mã sai hoặc yfinance trả rỗng -> báo lỗi 'Không tải được dữ liệu', gợi ý kiểm tra mã (vd HPG.VN) và thử lại; không bịa số.
+      - Dưới 80 phiên dữ liệu -> công cụ báo 'Không đủ dữ liệu'; nói rõ giới hạn.
+      - outlook.error hoặc không tải được rổ thị trường (regime UNKNOWN) -> vẫn dùng trend_state/channel nhưng nêu rõ thiếu nhận định hiệu chuẩn.
+      - Lỗi thư viện/venv -> đề xuất python3 tools/stock_cli.py --setup (cần Internet, cần người dùng cho phép).
+      - 'Dữ liệu trễ/thiếu phiên: kiểm tra as_of so với ngày hôm nay; yfinance dùng giá điều chỉnh có thể lệch sàn.'
+      - 'Phiên trong ngày: công cụ chỉ chạy khung ngày; không suy diễn intraday.'
+      - 'Không chạy được lệnh (người dùng không cho phép): chuyển sang phân tích định tính dựa trên dữ liệu người dùng cung cấp và nói rõ không có số liệu từ công cụ.'
+      outputs: Phản hồi trung thực kèm hướng khắc phục; không bao giờ thay thế dữ liệu thiếu bằng số bịa.
+  - id: "m01-procedures-5"
+    title: "Quy trình: m01_proc_position_plan — Lập kế hoạch vị thế theo ATR"
+    tags: ["quy", "trình", "m01_proc_position_plan", "lập", "kế", "hoạch", "vị", "thế", "theo", "atr"]
+    text: |-
+      id: m01_proc_position_plan
+      name: Lập kế hoạch vị thế theo ATR
+      steps:
+      - Hỏi vốn dành cho mã, mức rủi ro chấp nhận mỗi lệnh r (mặc định gợi ý 0,5-1% vốn).
+      - Lấy ATR% (từ outlook.sigma_h_pct/ (k x sqrt(10)) hoặc chỉ báo); giá vào = close.
+      - Cắt lỗ = max(close - 2xATR, 0,93 x close).
+      - Số cp = floor(vốn x r / (m x ATR% x giá) / 100) x 100; kiểm tra trần tỷ trọng.
+      - Tính R:R với mục tiêu người dùng chọn; nếu R:R < 2 hoặc mục tiêu dựa kháng cự/ cạnh kênh thì nói rõ độ tin cậy thấp.
+      - Nhắc T+2 và biên độ ngày; trình bày mức lỗ tối đa lý thuyết bằng tiền.
+      outputs: 'Bảng: giá vào, cắt lỗ, số cp, giá trị vị thế, lỗ tối đa, R:R.'
+  - id: "m01-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu người dùng hỏi 'giá mã X 10 phiên nữa lên hay xuống?' thì trả lời 'không dự báo được hướng từ g…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "người", "dùng", "hỏi", "giá", "mã", "10", "phiên"]
+    text: |-
+      Nếu người dùng hỏi 'giá mã X 10 phiên nữa lên hay xuống?' thì trả lời 'không dự báo được hướng từ giá'; đưa xác suất tăng (~50-55%, gần nền 52%) kèm vùng biến động 80%, không phán chắc chắn.
+  - id: "m01-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu outlook.label = CHƯA RÕ HƯỚNG (|p_up-0,5| < 4,5 điểm % hoặc n < 300) thì nói thẳng 'chưa có thi…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "outlook", "label", "chưa", "rõ", "hướng", "p_up", "điểm"]
+    text: |-
+      Nếu outlook.label = CHƯA RÕ HƯỚNG (|p_up-0,5| < 4,5 điểm % hoặc n < 300) thì nói thẳng 'chưa có thiên hướng' và chỉ báo cáo vùng biến động, mức vô hiệu hoá và kích thước vị thế.
+  - id: "m01-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu outlook.label = NGHIÊNG TĂNG (nhẹ) thì ghi: xác suất ~55% (n lớn nhưng cửa sổ chồng lấn), chênh…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "outlook", "label", "nghiêng", "tăng", "nhẹ", "thì", "ghi"]
+    text: |-
+      Nếu outlook.label = NGHIÊNG TĂNG (nhẹ) thì ghi: xác suất ~55% (n lớn nhưng cửa sổ chồng lấn), chênh nền ~3 điểm %, không phải tín hiệu mua; hiệu chuẩn không bền theo năm (19%-86%).
+  - id: "m01-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu có nến đảo chiều tăng (Hammer, Bullish Engulfing, Morning Star...) ở gần đáy hộp/đáy 20 phiên t…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "có", "nến", "đảo", "chiều", "tăng", "hammer", "bullish"]
+    text: |-
+      Nếu có nến đảo chiều tăng (Hammer, Bullish Engulfing, Morning Star...) ở gần đáy hộp/đáy 20 phiên thì KHÔNG mua chỉ vì nến: kiểm chứng cho vượt nền -0,74% (train)/-0,82% (test); mua đáy theo nến thường sai (giá tiếp tục giảm).
+  - id: "m01-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu có nến đảo chiều giảm (Shooting Star, Evening Star, Bearish Engulfing) ở vùng giá cao thì KHÔNG…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "có", "nến", "đảo", "chiều", "giảm", "shooting", "star"]
+    text: |-
+      Nếu có nến đảo chiều giảm (Shooting Star, Evening Star, Bearish Engulfing) ở vùng giá cao thì KHÔNG bán chỉ vì nến: giá vẫn có xu hướng tăng tiếp (vượt nền 0 đến +0,8%).
+  - id: "m01-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu giá đang gần đáy hộp tích lũy (<= 25% biên độ) thì không có lý do 'mua cạnh dưới hộp': vượt nền…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "đang", "gần", "đáy", "hộp", "tích", "lũy"]
+    text: |-
+      Nếu giá đang gần đáy hộp tích lũy (<= 25% biên độ) thì không có lý do 'mua cạnh dưới hộp': vượt nền -0,77% (test)/-1,11% (train), tỷ lệ tăng 45-49%.
+  - id: "m01-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu giá breakout lên khỏi hộp kèm khối lượng >= 2x TB20 thì lợi thế chỉ nhỉnh nền (+0,34% đến +0,99…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "breakout", "lên", "khỏi", "hộp", "kèm", "khối"]
+    text: |-
+      Nếu giá breakout lên khỏi hộp kèm khối lượng >= 2x TB20 thì lợi thế chỉ nhỉnh nền (+0,34% đến +0,99%, tăng ~53-55%): chỉ là yếu tố phụ, vẫn cần cắt lỗ; nếu không kèm khối lượng thì không có lợi thế.
+  - id: "m01-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu giá thủng đáy hộp (breakdown) thì không coi là tín hiệu bán/bán khống chắc chắn: kết quả không …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "thủng", "đáy", "hộp", "breakdown", "thì", "không"]
+    text: |-
+      Nếu giá thủng đáy hộp (breakdown) thì không coi là tín hiệu bán/bán khống chắc chắn: kết quả không nhất quán (-1,24% train, -0,29% test).
+  - id: "m01-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu giá đóng cửa vượt biên trên kênh v3 thì cảnh báo phá vỡ giả: 57-67% quay lại trong kênh trong 5…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "đóng", "cửa", "vượt", "biên", "trên", "kênh"]
+    text: |-
+      Nếu giá đóng cửa vượt biên trên kênh v3 thì cảnh báo phá vỡ giả: 57-67% quay lại trong kênh trong 5 phiên; lợi suất 10 phiên không hơn nền: chờ khối lượng và phiên đóng cửa tiếp theo, không mua đuổi.
+  - id: "m01-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu giá chạm biên dưới kênh hoặc vùng hỗ trợ (>= 3 chạm) thì không coi là điểm mua đáng tin: hỗ trợ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "chạm", "biên", "dưới", "kênh", "hoặc", "vùng"]
+    text: |-
+      Nếu giá chạm biên dưới kênh hoặc vùng hỗ trợ (>= 3 chạm) thì không coi là điểm mua đáng tin: hỗ trợ không giữ giá tốt hơn mức ngẫu nhiên (61-66% so với 62-67%).
+  - id: "m01-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu nhãn rule_filter = BÁN (giá < MA200) thì không coi là tín hiệu bán ngắn hạn: sau đó tỷ lệ tăng …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "nhãn", "rule_filter", "bán", "giá", "ma200", "thì", "không"]
+    text: |-
+      Nếu nhãn rule_filter = BÁN (giá < MA200) thì không coi là tín hiệu bán ngắn hạn: sau đó tỷ lệ tăng vẫn ~50%; nói: không nên mua mới trong xu hướng giảm dài hạn, không phải 'phải bán ngay'.
+  - id: "m01-decision_rules-12"
+    title: "Quy tắc quyết định: Nếu nhãn rule_filter = MUA thì trình bày là 'điều kiện kỷ luật được thỏa' (MA200, RSI < 65, R:R >= …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "nhãn", "rule_filter", "mua", "thì", "trình", "bày", "là"]
+    text: |-
+      Nếu nhãn rule_filter = MUA thì trình bày là 'điều kiện kỷ luật được thỏa' (MA200, RSI < 65, R:R >= 2), nhắc rằng vị trí gần hỗ trợ/đáy hộp chưa được kiểm chứng và chưa có kết quả mô phỏng giao dịch.
+  - id: "m01-decision_rules-13"
+    title: "Quy tắc quyết định: Nếu giá đóng cửa > VAH 60 phiên thì ghi quán tính nhẹ (tăng 10 phiên 55-56%, lợi suất +1,2% đến +1,…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "đóng", "cửa", "vah", "60", "phiên", "thì"]
+    text: |-
+      Nếu giá đóng cửa > VAH 60 phiên thì ghi quán tính nhẹ (tăng 10 phiên 55-56%, lợi suất +1,2% đến +1,5% so với nền +0,5-0,9%); lợi thế nhỏ, vẫn cần cắt lỗ.
+  - id: "m01-decision_rules-14"
+    title: "Quy tắc quyết định: Nếu giá < VAL thì không coi là điểm mua đảo chiều (48-52% tăng); nếu giá ngoài Value Area thì không…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "val", "thì", "không", "coi", "là", "điểm"]
+    text: |-
+      Nếu giá < VAL thì không coi là điểm mua đảo chiều (48-52% tăng); nếu giá ngoài Value Area thì không kỳ vọng hồi về POC (41-50%, coin flip).
+  - id: "m01-decision_rules-15"
+    title: "Quy tắc quyết định: Nếu loại kênh là kênh tăng/giảm/đi ngang thì chỉ ghi thiên hướng rất yếu (54%/52%/50% tăng sau 10 p…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "loại", "kênh", "là", "tăng", "giảm", "đi", "ngang"]
+    text: |-
+      Nếu loại kênh là kênh tăng/giảm/đi ngang thì chỉ ghi thiên hướng rất yếu (54%/52%/50% tăng sau 10 phiên); không dùng để chọn hướng.
+  - id: "m01-decision_rules-16"
+    title: "Quy tắc quyết định: Nếu RSI >= 65 hoặc MFI >= 75 thì khuyên không mua đuổi như một kỷ luật (không phải dự báo đảo chiều…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "rsi", "65", "hoặc", "mfi", "75", "thì", "khuyên"]
+    text: |-
+      Nếu RSI >= 65 hoặc MFI >= 75 thì khuyên không mua đuổi như một kỷ luật (không phải dự báo đảo chiều); RSI/MFI không có kiểm chứng riêng.
+  - id: "m01-decision_rules-17"
+    title: "Quy tắc quyết định: Nếu vol_ratio >= 3 (Volume Climax) thì cảnh báo biến động lớn/rung lắc (rủi ro), không nói hướng."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "vol_ratio", "volume", "climax", "thì", "cảnh", "báo", "biến"]
+    text: |-
+      Nếu vol_ratio >= 3 (Volume Climax) thì cảnh báo biến động lớn/rung lắc (rủi ro), không nói hướng.
+  - id: "m01-decision_rules-18"
+    title: "Quy tắc quyết định: Nếu người dùng muốn mua một mã thì bắt buộc đi kèm: mức cắt lỗ (m x ATR, <= 7%), số cổ phiếu theo r…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "người", "dùng", "muốn", "mua", "một", "mã", "thì"]
+    text: |-
+      Nếu người dùng muốn mua một mã thì bắt buộc đi kèm: mức cắt lỗ (m x ATR, <= 7%), số cổ phiếu theo r% vốn, mức vô hiệu hoá, R:R; nếu thiếu thì không nói 'nên mua'.
+  - id: "m01-decision_rules-19"
+    title: "Quy tắc quyết định: Nếu giá nằm dưới MA200 thì không bình quân giá xuống (kỷ luật bảo vệ vốn, không phải kết quả kiểm c…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "nằm", "dưới", "ma200", "thì", "không", "bình"]
+    text: |-
+      Nếu giá nằm dưới MA200 thì không bình quân giá xuống (kỷ luật bảo vệ vốn, không phải kết quả kiểm chứng).
+  - id: "m01-decision_rules-20"
+    title: "Quy tắc quyết định: Nếu người dùng đòi 'SHORT/bán khống' thì từ chối nhẹ nhàng: nhà đầu tư cá nhân VN không bán khống; …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "người", "dùng", "đòi", "short", "bán", "khống", "thì"]
+    text: |-
+      Nếu người dùng đòi 'SHORT/bán khống' thì từ chối nhẹ nhàng: nhà đầu tư cá nhân VN không bán khống; chỉ có không mua/giảm tỷ trọng/đứng ngoài.
+  - id: "m01-decision_rules-21"
+    title: "Quy tắc quyết định: Nếu cắt lỗ dưới giá sàn 1 phiên (HOSE -7%, HNX -10%, UPCoM -15%) hoặc lệnh có thể không khớp thì gi…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "cắt", "lỗ", "dưới", "giá", "sàn", "phiên", "hose"]
+    text: |-
+      Nếu cắt lỗ dưới giá sàn 1 phiên (HOSE -7%, HNX -10%, UPCoM -15%) hoặc lệnh có thể không khớp thì giảm vị thế thay vì tin vào cắt lỗ; lưu ý T+2 khiến không thể bán ngay trong những phiên đầu.
+  - id: "m01-decision_rules-22"
+    title: "Quy tắc quyết định: Nếu người dùng trích một quy tắc kỹ thuật khác (golden cross, RSI 30/70, mô hình giá) thì nói chưa …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "người", "dùng", "trích", "một", "kỹ", "thuật", "khác"]
+    text: |-
+      Nếu người dùng trích một quy tắc kỹ thuật khác (golden cross, RSI 30/70, mô hình giá) thì nói chưa có kiểm chứng ngoài mẫu trong tài liệu; đề xuất kiểm tra bằng khung validation trước khi dùng.
+  - id: "m01-decision_rules-23"
+    title: "Quy tắc quyết định: Nếu dữ liệu yfinance trễ/thiếu/ không đủ 80 phiên thì không đưa kết luận định lượng; báo lỗi và xin…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dữ", "liệu", "yfinance", "trễ", "thiếu", "không", "đủ"]
+    text: |-
+      Nếu dữ liệu yfinance trễ/thiếu/ không đủ 80 phiên thì không đưa kết luận định lượng; báo lỗi và xin người dùng dữ liệu bổ sung.
+  - id: "m01-decision_rules-24"
+    title: "Quy tắc quyết định: Nếu người dùng yêu cầu khuyến nghị cá nhân hoá hoặc 'chắc chắn lời' thì từ chối đưa phán đoán chắc …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "người", "dùng", "yêu", "cầu", "khuyến", "nghị", "cá"]
+    text: |-
+      Nếu người dùng yêu cầu khuyến nghị cá nhân hoá hoặc 'chắc chắn lời' thì từ chối đưa phán đoán chắc chắn; nói rõ không phải khuyến nghị đầu tư, đưa xác suất, vùng biến động và quản trị rủi ro.
+  - id: "m01-benchmarks-1"
+    title: "Chuẩn so sánh: Mũi tên hướng cũ (10 phiên, ngoài mẫu 2020+)"
+    tags: ["chuẩn", "so", "sánh", "mũi", "tên", "hướng", "cũ", "10", "phiên", "ngoài", "mẫu", "2020"]
+    text: |-
+      metric: Mũi tên hướng cũ (10 phiên, ngoài mẫu 2020+)
+      value: đúng ~47,6%
+      context: 12 mã; kém đồng xu
+      confidence: high
+  - id: "m01-benchmarks-2"
+    title: "Chuẩn so sánh: Nhận định hiệu chuẩn v3 (10 phiên)"
+    tags: ["chuẩn", "so", "sánh", "nhận", "định", "hiệu", "v3", "10", "phiên"]
+    text: |-
+      metric: Nhận định hiệu chuẩn v3 (10 phiên)
+      value: đúng ~52,0% trên 1.576 ngày có nhận định; nền 'luôn tăng' 50,8%
+      context: không khác biệt có ý nghĩa; xác suất theo nhóm dao động 47-59%
+      confidence: high
+  - id: "m01-benchmarks-3"
+    title: "Chuẩn so sánh: Bảng hiệu chuẩn hiện hành: p_up theo (chế độ|nhóm)"
+    tags: ["chuẩn", "so", "sánh", "bảng", "hiệu", "hiện", "hành", "p_up", "theo", "chế", "độ", "nhóm"]
+    text: |-
+      metric: 'Bảng hiệu chuẩn hiện hành: p_up theo (chế độ|nhóm)'
+      value: 'UP: 49,2/46,5/51,3/50,7/55,2%; DOWN: 50,4/52,6/54,4/52,7/54,2%'
+      context: outlook_calibration.json, 48.083 mẫu, 15 mã, nền 0,5192; nhóm 0..4; n từ 1.663 đến 12.742
+      confidence: medium
+  - id: "m01-benchmarks-4"
+    title: "Chuẩn so sánh: Hệ số thông tin IC"
+    tags: ["chuẩn", "so", "sánh", "hệ", "số", "thông", "tin", "ic"]
+    text: |-
+      metric: Hệ số thông tin IC
+      value: +0,10 (thị trường trên MA200); -0,13 (dưới MA200)
+      context: đổi dấu theo chế độ, hiệu chuẩn không bền (đúng từng năm 19%-86%)
+      confidence: medium
+  - id: "m01-benchmarks-5"
+    title: "Chuẩn so sánh: Vùng biến động 80% (k = 0,974)"
+    tags: ["chuẩn", "so", "sánh", "vùng", "biến", "động", "80", "974"]
+    text: |-
+      metric: Vùng biến động 80% (k = 0,974)
+      value: phủ thực tế 82,7% ngoài mẫu
+      context: ATR% x sqrt(h) x k; tương quan ATR% với |lợi suất tương lai| ~0,22
+      confidence: high
+  - id: "m01-benchmarks-6"
+    title: "Chuẩn so sánh: Kênh cũ vs kênh v3 chứa 10 phiên kế tiếp"
+    tags: ["chuẩn", "so", "sánh", "kênh", "cũ", "vs", "v3", "chứa", "10", "phiên", "kế", "tiếp"]
+    text: |-
+      metric: Kênh cũ vs kênh v3 chứa 10 phiên kế tiếp
+      value: 31% vs 77%; bề rộng 15-17% giá; hiệu quả 3,3 vs 5,8
+      context: kênh cũ báo phá vỡ ~26% số ngày
+      confidence: high
+  - id: "m01-benchmarks-7"
+    title: "Chuẩn so sánh: Vượt biên trên kênh v3 (~2% số ngày)"
+    tags: ["chuẩn", "so", "sánh", "vượt", "biên", "trên", "kênh", "v3", "số", "ngày"]
+    text: |-
+      metric: Vượt biên trên kênh v3 (~2% số ngày)
+      value: 57-67% quay lại trong kênh sau 5 phiên
+      context: lợi suất 10 phiên sau không hơn nền
+      confidence: high
+  - id: "m01-benchmarks-8"
+    title: "Chuẩn so sánh: Loại kênh -> sau 10 phiên"
+    tags: ["chuẩn", "so", "sánh", "loại", "kênh", "sau", "10", "phiên"]
+    text: |-
+      metric: Loại kênh -> sau 10 phiên
+      value: tăng +1,0% (54% tăng); giảm +0,1% (52%); đi ngang +0,4% (50%)
+      context: thiên hướng yếu
+      confidence: medium
+  - id: "m01-benchmarks-9"
+    title: "Chuẩn so sánh: Mẫu hình nến Nhật"
+    tags: ["chuẩn", "so", "sánh", "mẫu", "hình", "nến", "nhật"]
+    text: |-
+      metric: Mẫu hình nến Nhật
+      value: tỷ lệ tăng 10 phiên 0,46-0,60 vs nền 0,51-0,53; mật độ 0,49 mẫu/ngày
+      context: không dự báo bền; lợi suất vượt nền đổi dấu train/test
+      confidence: high
+  - id: "m01-benchmarks-10"
+    title: "Chuẩn so sánh: Bullish reversal ở vùng giá thấp"
+    tags: ["chuẩn", "so", "sánh", "bullish", "reversal", "vùng", "giá", "thấp"]
+    text: |-
+      metric: Bullish reversal ở vùng giá thấp
+      value: vượt nền -0,74% (train), -0,82% (test)
+      context: dưới MA50, sát đáy 20 phiên
+      confidence: high
+  - id: "m01-benchmarks-11"
+    title: "Chuẩn so sánh: Mua gần đáy hộp (<= 25% biên độ)"
+    tags: ["chuẩn", "so", "sánh", "mua", "gần", "đáy", "hộp", "25", "biên", "độ"]
+    text: |-
+      metric: Mua gần đáy hộp (<= 25% biên độ)
+      value: vượt nền -1,11% (train), -0,77% (test); tăng 45-49%
+      context: 'hộp: cửa sổ 12 phiên biên độ <= 8%'
+      confidence: high
+  - id: "m01-benchmarks-12"
+    title: "Chuẩn so sánh: Breakout hộp + khối lượng >= 2x TB20"
+    tags: ["chuẩn", "so", "sánh", "breakout", "hộp", "khối", "lượng", "2x", "tb20"]
+    text: |-
+      metric: Breakout hộp + khối lượng >= 2x TB20
+      value: +0,99% (train), +0,34% (test); tăng ~53-55%; n = 198-302
+      context: 'không kèm khối lượng: +0,50%/-0,20%'
+      confidence: medium
+  - id: "m01-benchmarks-13"
+    title: "Chuẩn so sánh: Chạm hỗ trợ mạnh (>= 3 chạm) rồi giữ"
+    tags: ["chuẩn", "so", "sánh", "chạm", "hỗ", "trợ", "mạnh", "rồi", "giữ"]
+    text: |-
+      metric: Chạm hỗ trợ mạnh (>= 3 chạm) rồi giữ
+      value: 'không thủng -3%/10 phiên: 61-66% (ngẫu nhiên 62-67%); lợi suất -0,15% (nền +0,6-0,9%)'
+      context: không tốt hơn mức ngẫu nhiên
+      confidence: high
+  - id: "m01-benchmarks-14"
+    title: "Chuẩn so sánh: Đóng cửa trên VAH (60 phiên)"
+    tags: ["chuẩn", "so", "sánh", "đóng", "cửa", "trên", "vah", "60", "phiên"]
+    text: |-
+      metric: Đóng cửa trên VAH (60 phiên)
+      value: tăng 10 phiên 55-56%; +1,2% đến +1,5% (nền +0,5-0,9%)
+      context: 'nhất quán 2 giai đoạn; dưới VAL: 48-52%, +0,0% đến +0,1%'
+      confidence: medium
+  - id: "m01-benchmarks-15"
+    title: "Chuẩn so sánh: Hồi về POC trong 10 phiên khi ngoài VA"
+    tags: ["chuẩn", "so", "sánh", "hồi", "về", "poc", "trong", "10", "phiên", "khi", "ngoài", "va"]
+    text: |-
+      metric: Hồi về POC trong 10 phiên khi ngoài VA
+      value: 41-50%
+      context: coin flip; kịch bản D-shape không được ủng hộ
+      confidence: high
+  - id: "m01-benchmarks-16"
+    title: "Chuẩn so sánh: Nhãn BÁN (giá < MA200)"
+    tags: ["chuẩn", "so", "sánh", "nhãn", "bán", "giá", "ma200"]
+    text: |-
+      metric: Nhãn BÁN (giá < MA200)
+      value: sau đó tăng ~50%
+      context: chiếm ~52% số nhận định; không có giá trị dự báo
+      confidence: high
+  - id: "m01-benchmarks-17"
+    title: "Chuẩn so sánh: Kết quả mô phỏng giao dịch MUA (SL/TP1/20 phiên), ngoài mẫu 2020+, 244 lần/12 mã"
+    tags: ["chuẩn", "so", "sánh", "kết", "quả", "mô", "phỏng", "giao", "dịch", "mua", "sl", "tp1"]
+    text: |-
+      metric: Kết quả mô phỏng giao dịch MUA (SL/TP1/20 phiên), ngoài mẫu 2020+, 244 lần/12 mã
+      value: 'tăng 10 phiên 61,1%; lợi suất TB +1,3% (THEO DÕI +0,73%, BÁN +0,31%); mô phỏng: thắng 55%, +0,73%/lệnh trước phí; TP2 không bao giờ chạm'
+      context: mẫu dồn cụm theo thời gian, sau phí và thuế bán lợi thế mỏng, chưa kết luận chắc (VERIFICATION_FINDINGS mục 7)
+      confidence: low
+  - id: "m01-benchmarks-18"
+    title: "Chuẩn so sánh: Giới hạn biên độ ngày"
+    tags: ["chuẩn", "so", "sánh", "giới", "hạn", "biên", "độ", "ngày"]
+    text: |-
+      metric: Giới hạn biên độ ngày
+      value: HOSE +-7%, HNX +-10%, UPCoM +-15%; T+2
+      context: ràng buộc thị trường VN
+      confidence: high
+  - id: "m01-pitfalls-1"
+    title: "Lỗi thường gặp: Mua đáy vì nến búa/nhấn chìm: kiểm chứng cho vượt nền âm ~0,7-0,8%/10 phiên."
+    tags: ["lỗi", "thường", "gặp", "mua", "đáy", "vì", "nến", "búa", "nhấn", "chìm", "kiểm", "chứng"]
+    text: |-
+      Mua đáy vì nến búa/nhấn chìm: kiểm chứng cho vượt nền âm ~0,7-0,8%/10 phiên.
+  - id: "m01-pitfalls-2"
+    title: "Lỗi thường gặp: Bán vì nến sao băng/nhấn chìm giảm ở vùng cao: giá vẫn tăng tiếp."
+    tags: ["lỗi", "thường", "gặp", "bán", "vì", "nến", "sao", "băng", "nhấn", "chìm", "giảm", "vùng"]
+    text: |-
+      Bán vì nến sao băng/nhấn chìm giảm ở vùng cao: giá vẫn tăng tiếp.
+  - id: "m01-pitfalls-3"
+    title: "Lỗi thường gặp: Mua cạnh dưới hộp tích lũy hoặc ở vùng hỗ trợ >= 3 chạm: không tốt hơn ngẫu nhiên."
+    tags: ["lỗi", "thường", "gặp", "mua", "cạnh", "dưới", "hộp", "tích", "lũy", "hoặc", "vùng", "hỗ"]
+    text: |-
+      Mua cạnh dưới hộp tích lũy hoặc ở vùng hỗ trợ >= 3 chạm: không tốt hơn ngẫu nhiên.
+  - id: "m01-pitfalls-4"
+    title: "Lỗi thường gặp: Mua đuổi khi giá vượt biên kênh: 57-67% phá vỡ giả."
+    tags: ["lỗi", "thường", "gặp", "mua", "đuổi", "khi", "giá", "vượt", "biên", "kênh", "57", "67"]
+    text: |-
+      Mua đuổi khi giá vượt biên kênh: 57-67% phá vỡ giả.
+  - id: "m01-pitfalls-5"
+    title: "Lỗi thường gặp: Hiểu nhãn BÁN (giá < MA200) là tín hiệu bán ngắn hạn: giá vẫn tăng ~50%."
+    tags: ["lỗi", "thường", "gặp", "hiểu", "nhãn", "bán", "giá", "ma200", "là", "tín", "hiệu", "ngắn"]
+    text: |-
+      Hiểu nhãn BÁN (giá < MA200) là tín hiệu bán ngắn hạn: giá vẫn tăng ~50%.
+  - id: "m01-pitfalls-6"
+    title: "Lỗi thường gặp: So tỷ lệ đúng với 0 hoặc 50% mà quên mức nền (51-53%); coi 52% là thành tích."
+    tags: ["lỗi", "thường", "gặp", "so", "tỷ", "lệ", "đúng", "với", "hoặc", "50", "mà", "quên"]
+    text: |-
+      So tỷ lệ đúng với 0 hoặc 50% mà quên mức nền (51-53%); coi 52% là thành tích.
+  - id: "m01-pitfalls-7"
+    title: "Lỗi thường gặp: Phán chắc chắn về hướng giá 10-20 phiên; thiếu xác suất và vùng biến động."
+    tags: ["lỗi", "thường", "gặp", "phán", "chắc", "chắn", "về", "hướng", "giá", "10", "20", "phiên"]
+    text: |-
+      Phán chắc chắn về hướng giá 10-20 phiên; thiếu xác suất và vùng biến động.
+  - id: "m01-pitfalls-8"
+    title: "Lỗi thường gặp: Quá khớp tham số (đẹp trên quá khứ); quên train/test."
+    tags: ["lỗi", "thường", "gặp", "quá", "khớp", "tham", "số", "đẹp", "trên", "khứ", "quên", "train"]
+    text: |-
+      Quá khớp tham số (đẹp trên quá khứ); quên train/test.
+  - id: "m01-pitfalls-9"
+    title: "Lỗi thường gặp: Tin vào các tuyên bố trong skills/references (VD 'confluence nâng xác suất thắng lên 75-80%', 'hỗ t…"
+    tags: ["lỗi", "thường", "gặp", "tin", "vào", "các", "tuyên", "bố", "trong", "skills", "references", "vd"]
+    text: |-
+      Tin vào các tuyên bố trong skills/references (VD 'confluence nâng xác suất thắng lên 75-80%', 'hỗ trợ cứng nếu >= 3 chạm', 'mua đáy hộp khi có nến từ chối giá'): không có bằng chứng hoặc bị bác bỏ.
+  - id: "m01-pitfalls-10"
+    title: "Lỗi thường gặp: Dùng --as-of rồi coi là chứng minh: bảng hiệu chuẩn là trong mẫu; một ví dụ không chứng minh gì."
+    tags: ["lỗi", "thường", "gặp", "dùng", "as", "of", "rồi", "coi", "là", "chứng", "minh", "bảng"]
+    text: |-
+      Dùng --as-of rồi coi là chứng minh: bảng hiệu chuẩn là trong mẫu; một ví dụ không chứng minh gì.
+  - id: "m01-pitfalls-11"
+    title: "Lỗi thường gặp: Bỏ qua bề rộng kênh: 77% chứa là với kênh rộng 15-17% giá."
+    tags: ["lỗi", "thường", "gặp", "bỏ", "qua", "bề", "rộng", "kênh", "77", "chứa", "là", "với"]
+    text: |-
+      Bỏ qua bề rộng kênh: 77% chứa là với kênh rộng 15-17% giá.
+  - id: "m01-pitfalls-12"
+    title: "Lỗi thường gặp: Đặt cắt lỗ theo nến/kháng cự thay vì theo ATR; không tính giá sàn HOSE hay T+2."
+    tags: ["lỗi", "thường", "gặp", "đặt", "cắt", "lỗ", "theo", "nến", "kháng", "cự", "thay", "vì"]
+    text: |-
+      Đặt cắt lỗ theo nến/kháng cự thay vì theo ATR; không tính giá sàn HOSE hay T+2.
+  - id: "m01-pitfalls-13"
+    title: "Lỗi thường gặp: Đề xuất bán khống cho nhà đầu tư cá nhân VN."
+    tags: ["lỗi", "thường", "gặp", "đề", "xuất", "bán", "khống", "cho", "nhà", "đầu", "tư", "cá"]
+    text: |-
+      Đề xuất bán khống cho nhà đầu tư cá nhân VN.
+  - id: "m01-pitfalls-14"
+    title: "Lỗi thường gặp: Bỏ qua cơ bản và định giá: kỹ thuật chỉ giúp quy mô vị thế và mức vô hiệu hoá."
+    tags: ["lỗi", "thường", "gặp", "bỏ", "qua", "cơ", "bản", "và", "định", "giá", "kỹ", "thuật"]
+    text: |-
+      Bỏ qua cơ bản và định giá: kỹ thuật chỉ giúp quy mô vị thế và mức vô hiệu hoá.
+  - id: "m01-pitfalls-15"
+    title: "Lỗi thường gặp: Dùng dữ liệu yfinance trễ/thiếu như dữ liệu thời gian thực; nhầm giá điều chỉnh với giá khớp thật."
+    tags: ["lỗi", "thường", "gặp", "dùng", "dữ", "liệu", "yfinance", "trễ", "thiếu", "như", "thời", "gian"]
+    text: |-
+      Dùng dữ liệu yfinance trễ/thiếu như dữ liệu thời gian thực; nhầm giá điều chỉnh với giá khớp thật.
+  - id: "m01-pitfalls-16"
+    title: "Lỗi thường gặp: Tự tính lại kênh bằng phương pháp cũ (compute_trend_channel_legacy) rồi báo 'phá vỡ' (chỉ chứa 31%)."
+    tags: ["lỗi", "thường", "gặp", "tự", "tính", "lại", "kênh", "bằng", "phương", "pháp", "cũ", "compute_trend_channel_legacy"]
+    text: |-
+      Tự tính lại kênh bằng phương pháp cũ (compute_trend_channel_legacy) rồi báo 'phá vỡ' (chỉ chứa 31%).
+  - id: "m01-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Đối tượng: nhà đầu tư cá nhân VN (không phải SME doanh nghiệp). Không bán khống: mọi 'tín hiệu giảm…"
+    tags: ["lưu", "sme", "việt", "nam", "đối", "tượng", "nhà", "đầu", "tư", "cá", "nhân", "vn"]
+    text: |-
+      Đối tượng: nhà đầu tư cá nhân VN (không phải SME doanh nghiệp). Không bán khống: mọi 'tín hiệu giảm' chỉ chuyển thành không mua mới/giảm tỷ trọng/đứng ngoài.
+  - id: "m01-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: Biên độ giá: HOSE +-7%, HNX +-10%, UPCoM +-15%. Cắt lỗ lệnh chờ có thể không khớp khi giá sàn; giảm…"
+    tags: ["lưu", "sme", "việt", "nam", "biên", "độ", "giá", "hose", "hnx", "10", "upcom", "15"]
+    text: |-
+      Biên độ giá: HOSE +-7%, HNX +-10%, UPCoM +-15%. Cắt lỗ lệnh chờ có thể không khớp khi giá sàn; giảm vị thế thay vì kỳ vọng khớp đúng mức.
+  - id: "m01-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Chu kỳ thanh toán T+2 (thường T+1,5 thực tế): cổ phiếu mới mua chưa bán được ngay; không thể cắt lỗ…"
+    tags: ["lưu", "sme", "việt", "nam", "chu", "kỳ", "thanh", "toán", "thường", "thực", "tế", "cổ"]
+    text: |-
+      Chu kỳ thanh toán T+2 (thường T+1,5 thực tế): cổ phiếu mới mua chưa bán được ngay; không thể cắt lỗ trong những phiên đầu. Cần xác nhận quy định hiện hành của công ty chứng khoán.
+  - id: "m01-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Phiên khớp lệnh định kỳ ATO/ATC; nghỉ trưa 11:30-13:00. Công cụ chỉ dùng khung ngày."
+    tags: ["lưu", "sme", "việt", "nam", "phiên", "khớp", "lệnh", "định", "kỳ", "ato", "atc", "nghỉ"]
+    text: |-
+      Phiên khớp lệnh định kỳ ATO/ATC; nghỉ trưa 11:30-13:00. Công cụ chỉ dùng khung ngày.
+  - id: "m01-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: yfinance: giá điều chỉnh, có thể trễ/thiếu, không có ^VNINDEX (dùng rổ 7 mã); luôn đối chiếu với gi…"
+    tags: ["lưu", "sme", "việt", "nam", "yfinance", "giá", "điều", "chỉnh", "có", "thể", "trễ", "thiếu"]
+    text: |-
+      yfinance: giá điều chỉnh, có thể trễ/thiếu, không có ^VNINDEX (dùng rổ 7 mã); luôn đối chiếu với giá trên ứng dụng chứng khoán trước khi đặt lệnh.
+  - id: "m01-sme_vn_guidance-6"
+    title: "Lưu ý SME Việt Nam: Phí giao dịch và thuế bán chứng khoán: chưa có trong tài liệu nguồn; cần xác nhận mức hiện hành trư…"
+    tags: ["lưu", "sme", "việt", "nam", "phí", "giao", "dịch", "và", "thuế", "bán", "chứng", "khoán"]
+    text: |-
+      Phí giao dịch và thuế bán chứng khoán: chưa có trong tài liệu nguồn; cần xác nhận mức hiện hành trước khi tính R:R sau phí.
+  - id: "m01-sme_vn_guidance-7"
+    title: "Lưu ý SME Việt Nam: Mã UPCoM/thanh khoản thấp: kiểm chứng chỉ trên 12 mã thanh khoản lớn; kết luận có thể không áp dụng…"
+    tags: ["lưu", "sme", "việt", "nam", "mã", "upcom", "thanh", "khoản", "thấp", "kiểm", "chứng", "chỉ"]
+    text: |-
+      Mã UPCoM/thanh khoản thấp: kiểm chứng chỉ trên 12 mã thanh khoản lớn; kết luận có thể không áp dụng cho mã nhỏ.
+  - id: "m01-sme_vn_guidance-8"
+    title: "Lưu ý SME Việt Nam: Công cụ gọi bằng: python3 tools/stock_cli.py <MÃ>.VN từ thư mục mba-agent-office; cần Python, kết n…"
+    tags: ["lưu", "sme", "việt", "nam", "công", "cụ", "gọi", "bằng", "python3", "tools", "stock_cli", "py"]
+    text: |-
+      Công cụ gọi bằng: python3 tools/stock_cli.py <MÃ>.VN từ thư mục mba-agent-office; cần Python, kết nối Internet; cần người dùng cho phép chạy lệnh.
+  - id: "m01-sme_vn_guidance-9"
+    title: "Lưu ý SME Việt Nam: Không khuyến nghị cá nhân hoá: luôn có disclaimer và xác suất/vùng biến động."
+    tags: ["lưu", "sme", "việt", "nam", "không", "khuyến", "nghị", "cá", "nhân", "hoá", "luôn", "có"]
+    text: |-
+      Không khuyến nghị cá nhân hoá: luôn có disclaimer và xác suất/vùng biến động.
+  - id: "m01-case_lessons-1"
+    title: "Bài học case: Kiểm chứng ngoài mẫu hướng giá 10 phiên (mũi tên cũ vs nhận định v3)"
+    tags: ["bài", "học", "case", "kiểm", "chứng", "ngoài", "mẫu", "hướng", "giá", "10", "phiên", "mũi"]
+    text: |-
+      name: Kiểm chứng ngoài mẫu hướng giá 10 phiên (mũi tên cũ vs nhận định v3)
+      type: success
+      setup: 12 mã (MSN, VRE, HPG, VNM, FPT, MWG, STB, VCB, SSI, PNJ, TCB, ACB), tại mỗi ngày T chỉ dùng dữ liệu <= T, chấm 5/10/20 phiên sau, train < 2020, test >= 2020.
+      key_calculations:
+      - 'Mũi tên cũ: đúng ~47,6% (10 phiên, 2020+)'
+      - 'Nhận định v3: đúng ~52,0% trên 1.576 ngày; nền ''luôn tăng'' 50,8%'
+      - Xác suất theo nhóm 47-59%; vùng biến động 80% phủ 82,7%
+      - IC +0,10 (UP) và -0,13 (DOWN); tỷ lệ đúng từng năm 19%-86%
+      lesson: Hướng 10-20 phiên gần như không dự báo được từ giá; biên độ dự báo được. Vì vậy công cụ chuyển từ mũi tên sang xác suất + vùng biến động.
+      data_reliability: verified
+  - id: "m01-case_lessons-2"
+    title: "Bài học case: Kênh giá cũ (12 tháng) vs kênh v3 (giai đoạn gần nhất)"
+    tags: ["bài", "học", "case", "kênh", "giá", "cũ", "12", "tháng", "vs", "v3", "giai", "đoạn"]
+    text: |-
+      name: Kênh giá cũ (12 tháng) vs kênh v3 (giai đoạn gần nhất)
+      type: success
+      setup: Cùng bộ 12 mã; đo tỷ lệ kênh chứa 10 phiên kế tiếp và tần suất báo phá vỡ.
+      key_calculations:
+      - 'Kênh cũ: chứa 31%, báo phá vỡ ~26% số ngày'
+      - 'Kênh v3: chứa 77% với bề rộng 15-17% giá; hiệu quả chứa/bề rộng ~5,8 vs 3,3'
+      - 'Vượt biên trên (~2% số ngày): 57-67% quay lại trong 5 phiên'
+      lesson: Đổi từ hồi quy xuyên nhiều giai đoạn sang giai đoạn gần nhất cải thiện mạnh độ bao phủ; nhưng 'vượt biên' vẫn không là tín hiệu mua.
+      data_reliability: verified
+  - id: "m01-case_lessons-3"
+    title: "Bài học case: Mẫu hình nến Nhật không có giá trị dự báo"
+    tags: ["bài", "học", "case", "mẫu", "hình", "nến", "nhật", "không", "có", "giá", "trị", "dự"]
+    text: |-
+      name: Mẫu hình nến Nhật không có giá trị dự báo
+      type: failure
+      setup: Quét toàn bộ mẫu nến Nison trên 12 mã, đo tỷ lệ tăng và lợi suất vượt nền 10 phiên.
+      key_calculations:
+      - Mật độ 0,49 mẫu/ngày
+      - Tỷ lệ tăng 0,46-0,60 so nền 0,51-0,53
+      - 'Hanging Man: -0,65% (train) / +0,59% (test); Rising Window: +0,75% / -0,60%'
+      - 'Bullish reversal ở vùng thấp: -0,74% (train) / -0,82% (test)'
+      lesson: 'Lợi suất vượt nền đổi dấu giữa hai giai đoạn: nhiễu. Chỉ dùng nến để mô tả.'
+      data_reliability: verified
+  - id: "m01-case_lessons-4"
+    title: "Bài học case: Hộp tích lũy: mua đáy hộp vs breakout có khối lượng"
+    tags: ["bài", "học", "case", "hộp", "tích", "lũy", "mua", "đáy", "vs", "breakout", "có", "khối"]
+    text: |-
+      name: 'Hộp tích lũy: mua đáy hộp vs breakout có khối lượng'
+      type: failure
+      setup: Hộp = cửa sổ 12 phiên biên độ <= 8%.
+      key_calculations:
+      - 'Mua gần đáy hộp (<= 25%): -0,77% (test), -1,11% (train), tăng 45-49%'
+      - 'Breakout + khối lượng >= 2x TB20: +0,99% (train), +0,34% (test), tăng ~53-55% (n=198-302)'
+      - 'Breakdown: -1,24% (train), -0,29% (test): không nhất quán'
+      lesson: '''Mua cạnh dưới hộp'' sai trên dữ liệu; breakout có khối lượng chỉ nhỉnh nền nhẹ.'
+      data_reliability: verified
+  - id: "m01-case_lessons-5"
+    title: "Bài học case: Hỗ trợ/kháng cự cực trị (>= 3 lần chạm)"
+    tags: ["bài", "học", "case", "hỗ", "trợ", "kháng", "cự", "cực", "trị", "lần", "chạm"]
+    text: |-
+      name: Hỗ trợ/kháng cự cực trị (>= 3 lần chạm)
+      type: failure
+      setup: Gom cụm đỉnh/đáy fractal; đo tỷ lệ không thủng -3% trong 10 phiên sau khi chạm hỗ trợ mạnh.
+      key_calculations:
+      - 61-66% giữ so với mức giá ngẫu nhiên 62-67%
+      - Lợi suất 10 phiên sau chạm hỗ trợ -0,15% (nền +0,6-0,9%)
+      lesson: Đó là 'nơi giá từng đảo chiều' chứ không phải điểm tựa đáng tin.
+      data_reliability: verified
+  - id: "m01-case_lessons-6"
+    title: "Bài học case: Value Area khung ngày: trên VAH, dưới VAL, hồi về POC"
+    tags: ["bài", "học", "case", "value", "area", "khung", "ngày", "trên", "vah", "dưới", "val", "hồi"]
+    text: |-
+      name: 'Value Area khung ngày: trên VAH, dưới VAL, hồi về POC'
+      type: success
+      setup: Value Area 60 phiên trước, num_bins=40.
+      key_calculations:
+      - 'Trên VAH: tăng 10 phiên 55-56%, +1,2% đến +1,5% (nền +0,5-0,9%)'
+      - 'Dưới VAL: 48-52%, +0,0% đến +0,1%'
+      - 'Hồi về POC trong 10 phiên khi ngoài VA: 41-50%'
+      lesson: Chỉ quán tính trên VAH có lợi thế nhẹ nhất quán; dưới VAL và hồi về POC không được ủng hộ.
+      data_reliability: verified
+  - id: "m01-case_lessons-7"
+    title: "Bài học case: Nhãn BÁN khi giá < MA200"
+    tags: ["bài", "học", "case", "nhãn", "bán", "khi", "giá", "ma200"]
+    text: |-
+      name: Nhãn BÁN khi giá < MA200
+      type: failure
+      setup: Nhãn BÁN của generate_recommendation_v2 chiếm ~52% số nhận định.
+      key_calculations:
+      - Sau nhãn BÁN, tỷ lệ tăng vẫn ~50%
+      lesson: Giá dưới MA200 là mô tả xu hướng dài hạn, không phải tín hiệu bán ngắn hạn.
+      data_reliability: verified
+  - id: "m01-case_lessons-8"
+    title: "Bài học case: Minh họa HPG giả định: đọc kết quả CLI trung thực"
+    tags: ["bài", "học", "case", "minh", "họa", "hpg", "giả", "định", "đọc", "kết", "quả", "cli"]
+    text: |-
+      name: 'Minh họa HPG giả định: đọc kết quả CLI trung thực'
+      type: sme
+      setup: Nhà đầu tư cá nhân hỏi 'HPG có nên mua?'. Số liệu minh họa (không phải số thật).
+      key_calculations:
+      - Close 26.000, chế độ UP, điểm 0,30 -> nhóm 4 (UP|3) p_up 50,66% n 6.344 -> CHƯA RÕ
+      - 'Cone 80% 10 phiên: 24.295-28.139 (ATR% 2,4%)'
+      - 'Vị thế 500 triệu, rủi ro 1%: 4.000 cp, cắt lỗ 24.752'
+      lesson: 'Trả lời thành thật: hướng chưa rõ; chỉ quản trị biên độ và quy mô vị thế.'
+      data_reliability: illustrative
+  - id: "m01-worked_examples-1"
+    title: "Ví dụ có lời giải: m01_ex_atr_cone — Tính vùng biến động 10 phiên"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m01_ex_atr_cone", "tính", "vùng", "biến", "động", "10", "phiên"]
+    text: |-
+      id: m01_ex_atr_cone
+      name: Tính vùng biến động 10 phiên
+      data_reliability: illustrative
+      inputs:
+        close: 26000
+        atr_pct: 0.024
+        k: 0.974
+        h: 10
+        drift_nhom_UP4: 0.01342
+      steps:
+      - sigma_h = 0,024 x sqrt(10) x 0,974 = 0,0739 (7,39%)
+      - 'Với drift = 0: thấp = 26.000 x (1 - 0,0739) = 24.078; cao = 26.000 x (1 + 0,0739) = 27.922'
+      - 'Với drift nhóm UP|4 = +1,342%: thấp 24.427; cao 28.271'
+      result: Vùng 80% 10 phiên khoảng 24.100-27.900 (không drift) hoặc 24.427-28.271 (có drift); chênh drift nhỏ so với bề rộng.
+      interpretation: Chiều rộng ±7,4% tức khoảng ±1.920 đồng quanh 26.000; một phiên HOSE biến động tối đa ±7%, nên vùng 10 phiên không phải đảm bảo.
+  - id: "m01-worked_examples-2"
+    title: "Ví dụ có lời giải: m01_ex_position_size — Kích thước vị thế theo ATR"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m01_ex_position_size", "kích", "thước", "vị", "thế", "theo", "atr"]
+    text: |-
+      id: m01_ex_position_size
+      name: Kích thước vị thế theo ATR
+      data_reliability: illustrative
+      inputs:
+        capital: 500000000
+        risk_pct: 0.01
+        m: 2
+        atr_pct: 0.024
+        price: 26000
+        lot: 100
+        target: 28500
+      steps:
+      - ATR = 26.000 x 0,024 = 624 đồng; khoảng cắt lỗ = 2 x 624 = 1.248; cắt lỗ = 24.752 (4,8% < 7% nên không bị chặn)
+      - Rủi ro tiền = 500.000.000 x 1% = 5.000.000
+      - Số cp = 5.000.000/1.248 = 4.006 -> lô 100 -> 4.000 cp; giá trị 104.000.000 (20,8% vốn)
+      - Lỗ nếu chạm cắt lỗ ~ 4.000 x 1.248 = 4.992.000 (~1% vốn)
+      - R:R tới 28.500 = 2.500/1.248 = 2,003
+      result: Mua 4.000 cp, cắt lỗ 24.752, R:R = 2,0 (mục tiêu 28.500 chỉ là giả định)
+      interpretation: Vị thế 20,8% vốn nằm trong trần 20-25% tự đặt; nếu ATR% tăng gấp đôi thì số cp giảm một nửa.
+  - id: "m01-worked_examples-3"
+    title: "Ví dụ có lời giải: m01_ex_read_cli — Đọc một đầu ra CLI mẫu (HPG.VN, số giả định minh họa)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m01_ex_read_cli", "đọc", "một", "đầu", "ra", "cli", "mẫu"]
+    text: |-
+      id: m01_ex_read_cli
+      name: Đọc một đầu ra CLI mẫu (HPG.VN, số giả định minh họa)
+      data_reliability: illustrative
+      inputs:
+        cli_sample: |
+          {"ticker":"HPG.VN","as_of":"2026-11-10","close":26000,"bars":251,
+           "trend_state":{"structure":"TĂNG (giá > MA50 > MA200)","ma50":25200,"ma200":23800,"roc20_pct":4.0,"pos60_pct":68},
+           "outlook":{"direction":0,"label":"CHƯA RÕ HƯỚNG","regime":"UP","p_up":0.5066,"n":6344,"score":0.30,"mean_ret":0.00833,"horizon":10,"cone_low":24295,"cone_high":28139,"sigma_h_pct":7.39},
+           "channel":{"channel_type":"Ascending (Kênh tăng)","window":90,"width_pct":14.6},
+           "channel_edges_now":{"upper":28100,"lower":24300,"median":26200},
+           "support_resistance":{"nearest_support":{"level":25100,"touches":4},"nearest_resistance":{"level":27200,"touches":3}},
+           "value_area":{"window":60,"poc":25800,"vah":26600,"val":25000,"position":"trong Value Area"},
+           "patterns_info_only":[{"pattern":"Hammer"}],
+           "rule_filter":{"label":"THEO DÕI","reasons":["Giá đang lơ lửng giữa kênh"]}}
+      steps:
+      - 'Trạng thái: giá 26.000 > MA50 25.200 > MA200 23.800 -> cấu trúc TĂNG; ROC20 +4%; vị trí 68% biên 60 phiên.'
+      - 'Nhận định: regime UP, score 0,30 -> nhóm 4 (UP|3): p_up 50,66% (n=6.344). |0,5066 - 0,5| = 0,0066 < 0,045 -> direction 0 = CHƯA RÕ. So nền 52%: không khác.'
+      - 'Vùng biến động: 24.295-28.139 (sigma_h 7,39%; drift +0,833%): kiểm tra 26.000 x (1+0,00833-0,0739) = 24.295 và x (1+0,00833+0,0739) = 28.139.'
+      - 'Kênh: tăng, rộng 14,6% (gần khoảng 15-17% điển hình); giá 26.000 ở vị trí (26.000-24.300)/(28.100-24.300) = 44,7% -> gần giữa kênh, không có biên nào gần.'
+      - 'Hỗ trợ/kháng cự: 25.100 (4 chạm), 27.200 (3 chạm): chỉ là nơi giá từng đảo chiều.'
+      - 'Value Area: trong vùng giá trị -> không có quán tính; 26.000 gần POC 25.800.'
+      - 'Nến Hammer: mô tả; không dùng làm tín hiệu (kiểm chứng: không dự báo).'
+      - 'Nhãn luật THEO DÕI: không thuận cũng không nghịch.'
+      result: 'Báo cáo trung thực: ''Xu hướng đang tăng, nhưng hướng 10 phiên tới không rõ (50,7%, như tung đồng xu). Vùng dao động 80% khoảng 24.300-28.100. Mức vô hiệu hoá của kịch bản tích cực: đóng cửa dưới 24.752 (2 ATR).'''
+      interpretation: Không có điểm mua rõ; hướng không có thiên hướng; hãy bàn về kích thước vị thế và kế hoạch chứ không bàn 'mua hay bán ngay'.
+  - id: "m01-worked_examples-4"
+    title: "Ví dụ có lời giải: m01_ex_channel_old_new — So sánh kênh cũ (toàn bộ 12 tháng) và kênh v3 (dữ liệu tổng hợp)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m01_ex_channel_old_new", "so", "sánh", "kênh", "cũ", "toàn", "bộ"]
+    text: |-
+      id: m01_ex_channel_old_new
+      name: So sánh kênh cũ (toàn bộ 12 tháng) và kênh v3 (dữ liệu tổng hợp)
+      data_reliability: illustrative
+      inputs:
+        du_lieu: 'Chuỗi tổng hợp seed numpy 7: 150 phiên tăng 20.000->34.000, sau đó 100 phiên giảm nhẹ 34.000->31.000, nhiễu 1,2% giá đóng cửa; T = phiên 230; đo 10 phiên kế tiếp'
+      steps:
+      - 'Kênh hồi quy toàn bộ 230 phiên (kiểu cũ): độ dốc +59 đồng/phiên (do đa số dữ liệu là xu hướng tăng), bề rộng 25,7% giá; 6/10 phiên kế tiếp nằm trong kênh (60%).'
+      - 'Kênh v3 hồi quy 90 phiên cuối: độ dốc -27 đồng/phiên (giai đoạn giảm nhẹ), bề rộng 7,2% giá; 10/10 phiên kế tiếp nằm trong kênh.'
+      - 'Kênh 60 phiên cuối: độ dốc -34 đồng/phiên, bề rộng 5,9%; 9/10 phiên kế tiếp nằm trong kênh.'
+      result: Kênh toàn bộ lệch hướng (độ dốc dương trong khi giai đoạn hiện tại đang giảm) và rộng gấp 3,5 lần; kênh gần nhất vừa sát vừa đúng hướng.
+      interpretation: 'Chỉ minh họa cơ chế một mẫu tổng hợp. Bằng chứng thật: kênh cũ chứa 31%, v3 chứa 77% (12 mã).'
+  - id: "m01-worked_examples-5"
+    title: "Ví dụ có lời giải: m01_ex_outlook_regime — Cùng điểm xu hướng, hai chế độ thị trường"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m01_ex_outlook_regime", "cùng", "điểm", "xu", "hướng", "hai", "chế"]
+    text: |-
+      id: m01_ex_outlook_regime
+      name: Cùng điểm xu hướng, hai chế độ thị trường
+      data_reliability: illustrative
+      inputs:
+        c_ma50: 0.06
+        roc20: 0.04
+        roc60: 0.1
+        pos60: 0.8
+      steps:
+      - raw = 0,525 (xem m01_trend_score)
+      - 'Chế độ UP: score +0,525 -> nhóm 5 (UP|4): p_up 55,23% (n=12.742) -> NGHIÊNG TĂNG (nhẹ)'
+      - 'Chế độ DOWN: score -0,525 -> nhóm 1 (DOWN|0): p_up 50,38% (n=2.122) -> CHƯA RÕ'
+      - 'Sai số: p_up 55,23% - nền 51,92% = 3,31 điểm %; sai số chuẩn nếu mẫu độc lập 0,44 điểm % (tự tính), nếu số mẫu hiệu dụng ~n/10 thì ~1,4 điểm %'
+      result: Một giá mạnh có thể là 'nghiêng tăng nhẹ' ở thị trường tốt và 'chưa rõ' ở thị trường xấu.
+      interpretation: 'Dấu thiên hướng phụ thuộc chế độ; không bền theo năm (19%-86%): không nên đặt cược lớn.'
+  - id: "m01-practice_questions-1"
+    title: "Câu hỏi luyện tập: Mã giá 40.000, ATR% 3%, k = 0,974, h = 10, drift = 0. Vùng biến động 80% 10 phiên là gì?"
+    tags: ["câu", "hỏi", "luyện", "tập", "mã", "giá", "40", "000", "atr", "974", "10", "drift"]
+    text: |-
+      q: Mã giá 40.000, ATR% 3%, k = 0,974, h = 10, drift = 0. Vùng biến động 80% 10 phiên là gì?
+      a: sigma_h = 0,03 x sqrt(10) x 0,974 = 0,0924 (9,24%); vùng 40.000 x (1 -/+ 0,0924) = 36.304 đến 43.696. Còn ~20% khả năng thoát ra ngoài.
+  - id: "m01-practice_questions-2"
+    title: "Câu hỏi luyện tập: Vốn 200 triệu, rủi ro 0,5%/lệnh, giá 50.000, ATR% 2%, m = 2. Mua bao nhiêu cp? Lỗ tối đa lý thuyết?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vốn", "200", "triệu", "rủi", "ro", "lệnh", "giá", "50"]
+    text: |-
+      q: Vốn 200 triệu, rủi ro 0,5%/lệnh, giá 50.000, ATR% 2%, m = 2. Mua bao nhiêu cp? Lỗ tối đa lý thuyết?
+      a: Rủi ro tiền = 1.000.000; khoảng cắt lỗ = 2 x 0,02 x 50.000 = 2.000; số cp = 500 (đã chia hết lô 100); cắt lỗ 48.000; giá trị vị thế 25 triệu (12,5% vốn); lỗ lý thuyết 1 triệu.
+  - id: "m01-practice_questions-3"
+    title: "Câu hỏi luyện tập: Thị trường chung DOWN, raw score = -0,30. Nhóm nào? Có thiên hướng không?"
+    tags: ["câu", "hỏi", "luyện", "tập", "thị", "trường", "chung", "down", "raw", "score", "30", "nhóm"]
+    text: |-
+      q: Thị trường chung DOWN, raw score = -0,30. Nhóm nào? Có thiên hướng không?
+      a: 'score = +0,30 (đảo dấu) -> nhóm 4 (0,15-0,45) = DOWN|3: p_up 52,65% (n=2.095), nằm trong dải 0,455-0,545 -> CHƯA RÕ.'
+  - id: "m01-practice_questions-4"
+    title: "Câu hỏi luyện tập: Nhóm có p_up = 53%, n = 250. Thiên hướng gì?"
+    tags: ["câu", "hỏi", "luyện", "tập", "nhóm", "có", "p_up", "53", "250", "thiên", "hướng", "gì"]
+    text: |-
+      q: Nhóm có p_up = 53%, n = 250. Thiên hướng gì?
+      a: CHƯA RÕ vì n < 300 (MIN_BUCKET_N) và |0,53-0,5| = 0,03 < 0,045.
+  - id: "m01-practice_questions-5"
+    title: "Câu hỏi luyện tập: Giá xuất hiện nến Hammer sát đáy 20 phiên, dưới MA50. Có nên mua không?"
+    tags: ["câu", "hỏi", "luyện", "tập", "giá", "xuất", "hiện", "nến", "hammer", "sát", "đáy", "20"]
+    text: |-
+      q: Giá xuất hiện nến Hammer sát đáy 20 phiên, dưới MA50. Có nên mua không?
+      a: 'Không nên chỉ vì nến: bullish reversal ở vùng giá thấp vượt nền -0,74% (train)/-0,82% (test), bắt đáy theo nến thường sai. Chỉ mô tả; nếu muốn mua phải dựa vào luận điểm cơ bản và quản trị rủi ro.'
+  - id: "m01-practice_questions-6"
+    title: "Câu hỏi luyện tập: Giá đóng cửa vượt biên trên kênh v3. Chiến lược mua đuổi có hợp lý không?"
+    tags: ["câu", "hỏi", "luyện", "tập", "giá", "đóng", "cửa", "vượt", "biên", "trên", "kênh", "v3"]
+    text: |-
+      q: Giá đóng cửa vượt biên trên kênh v3. Chiến lược mua đuổi có hợp lý không?
+      a: 'Không: 57-67% quay lại trong kênh trong 5 phiên, lợi suất 10 phiên sau không hơn nền. Chờ khối lượng và phiên xác nhận.'
+  - id: "m01-practice_questions-7"
+    title: "Câu hỏi luyện tập: Nhãn rule_filter = BÁN vì giá < MA200. Nhà đầu tư đang giữ cổ phiếu nên làm gì?"
+    tags: ["câu", "hỏi", "luyện", "tập", "nhãn", "rule_filter", "bán", "vì", "giá", "ma200", "nhà", "đầu"]
+    text: |-
+      q: Nhãn rule_filter = BÁN vì giá < MA200. Nhà đầu tư đang giữ cổ phiếu nên làm gì?
+      a: Nhãn không có giá trị dự báo ngắn hạn (sau đó vẫn tăng ~50%). Không bán chỉ vì nhãn; xem lại luận điểm đầu tư và kích thước vị thế/cắt lỗ; không mua thêm bình quân giá xuống dưới MA200 (kỷ luật).
+  - id: "m01-practice_questions-8"
+    title: "Câu hỏi luyện tập: Tại sao vùng biến động dự báo tốt hơn hướng giá?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tại", "sao", "vùng", "biến", "động", "dự", "báo", "tốt"]
+    text: |-
+      q: Tại sao vùng biến động dự báo tốt hơn hướng giá?
+      a: Biến động có tính tụ cụm (tương quan ATR% với |lợi suất tương lai| ~0,22) nên biên độ gần đây dự báo biên độ sắp tới; hướng giá gần như bước ngẫu nhiên (IC 0,05-0,1, đổi dấu theo chế độ). Vùng 80% phủ 82,7% ngoài mẫu.
+  - id: "m01-practice_questions-9"
+    title: "Câu hỏi luyện tập: Người dùng muốn bán khống mã đang giảm. Trả lời thế nào?"
+    tags: ["câu", "hỏi", "luyện", "tập", "người", "dùng", "muốn", "bán", "khống", "mã", "đang", "giảm"]
+    text: |-
+      q: Người dùng muốn bán khống mã đang giảm. Trả lời thế nào?
+      a: Nhà đầu tư cá nhân VN không bán khống; 'SHORT' không khả thi. Chỉ có không mua/giảm tỷ trọng/đứng ngoài. Hơn nữa nhãn giảm không dự báo được hướng ngắn hạn.
+  - id: "m01-practice_questions-10"
+    title: "Câu hỏi luyện tập: Chạy --as-of 2025-05-29 và diễn biến sau đó khớp vùng 80%. Có chứng minh công cụ đúng không?"
+    tags: ["câu", "hỏi", "luyện", "tập", "chạy", "as", "of", "2025", "05", "29", "và", "diễn"]
+    text: |-
+      q: Chạy --as-of 2025-05-29 và diễn biến sau đó khớp vùng 80%. Có chứng minh công cụ đúng không?
+      a: Không. Một mẫu không chứng minh gì; vùng 80% vẫn có 20% sót; và bảng hiệu chuẩn p_up tính trên mọi năm nên đó là trong mẫu.
+  - id: "m01-checklist-1"
+    title: "Checklist: Đã xác nhận mã (.VN), ngày as_of và nguồn dữ liệu (yfinance, có thể trễ)?"
+    tags: ["checklist", "đã", "xác", "nhận", "mã", "vn", "ngày", "as_of", "và", "nguồn", "dữ", "liệu"]
+    text: |-
+      Đã xác nhận mã (.VN), ngày as_of và nguồn dữ liệu (yfinance, có thể trễ)?
+  - id: "m01-checklist-2"
+    title: "Checklist: Đã xin phép người dùng trước khi chạy lệnh/cài thư viện?"
+    tags: ["checklist", "đã", "xin", "phép", "người", "dùng", "trước", "khi", "chạy", "lệnh", "cài", "thư"]
+    text: |-
+      Đã xin phép người dùng trước khi chạy lệnh/cài thư viện?
+  - id: "m01-checklist-3"
+    title: "Checklist: Đã báo xác suất tăng 10 phiên kèm n và so với nền ~52%, không phán chắc chắn?"
+    tags: ["checklist", "đã", "báo", "xác", "suất", "tăng", "10", "phiên", "kèm", "và", "so", "với"]
+    text: |-
+      Đã báo xác suất tăng 10 phiên kèm n và so với nền ~52%, không phán chắc chắn?
+  - id: "m01-checklist-4"
+    title: "Checklist: Đã kèm vùng biến động 80% và nhắc 20% thoát vùng?"
+    tags: ["checklist", "đã", "kèm", "vùng", "biến", "động", "80", "và", "nhắc", "20", "thoát"]
+    text: |-
+      Đã kèm vùng biến động 80% và nhắc 20% thoát vùng?
+  - id: "m01-checklist-5"
+    title: "Checklist: Đã hạ cấp mẫu hình nến, hỗ trợ/kháng cự, hộp tích lũy, nhãn BÁN về 'mô tả' kèm số liệu kiểm chứng?"
+    tags: ["checklist", "đã", "hạ", "cấp", "mẫu", "hình", "nến", "hỗ", "trợ", "kháng", "cự", "hộp"]
+    text: |-
+      Đã hạ cấp mẫu hình nến, hỗ trợ/kháng cự, hộp tích lũy, nhãn BÁN về 'mô tả' kèm số liệu kiểm chứng?
+  - id: "m01-checklist-6"
+    title: "Checklist: Nếu vượt biên kênh: đã cảnh báo phá vỡ giả 57-67%?"
+    tags: ["checklist", "nếu", "vượt", "biên", "kênh", "đã", "cảnh", "báo", "phá", "vỡ", "giả", "57"]
+    text: |-
+      Nếu vượt biên kênh: đã cảnh báo phá vỡ giả 57-67%?
+  - id: "m01-checklist-7"
+    title: "Checklist: Nếu người dùng muốn mua: đã có cắt lỗ theo m x ATR (<= 7%), số cp theo % vốn, R:R, mức vô hiệu hoá?"
+    tags: ["checklist", "nếu", "người", "dùng", "muốn", "mua", "đã", "có", "cắt", "lỗ", "theo", "atr"]
+    text: |-
+      Nếu người dùng muốn mua: đã có cắt lỗ theo m x ATR (<= 7%), số cp theo % vốn, R:R, mức vô hiệu hoá?
+  - id: "m01-checklist-8"
+    title: "Checklist: Đã nhắc giới hạn VN: không bán khống, biên độ ngày, T+2?"
+    tags: ["checklist", "đã", "nhắc", "giới", "hạn", "vn", "không", "bán", "khống", "biên", "độ", "ngày"]
+    text: |-
+      Đã nhắc giới hạn VN: không bán khống, biên độ ngày, T+2?
+  - id: "m01-checklist-9"
+    title: "Checklist: Đã nêu rõ nhãn MUA/BÁN chưa chứng minh dự báo và chưa có mô phỏng giao dịch MUA?"
+    tags: ["checklist", "đã", "nêu", "rõ", "nhãn", "mua", "bán", "chưa", "chứng", "minh", "dự", "báo"]
+    text: |-
+      Đã nêu rõ nhãn MUA/BÁN chưa chứng minh dự báo và chưa có mô phỏng giao dịch MUA?
+  - id: "m01-checklist-10"
+    title: "Checklist: Đã đính kèm chart_path và disclaimer?"
+    tags: ["checklist", "đã", "đính", "kèm", "chart_path", "và", "disclaimer"]
+    text: |-
+      Đã đính kèm chart_path và disclaimer?
+  - id: "m01-checklist-11"
+    title: "Checklist: Đã kiểm tra dữ liệu (đủ >= 80 phiên, không thiếu phiên bất thường)?"
+    tags: ["checklist", "đã", "kiểm", "tra", "dữ", "liệu", "đủ", "80", "phiên", "không", "thiếu", "bất"]
+    text: |-
+      Đã kiểm tra dữ liệu (đủ >= 80 phiên, không thiếu phiên bất thường)?
+  - id: "m01-checklist-12"
+    title: "Checklist: Đã tránh dùng số bịa; mọi số lấy từ JSON hoặc VERIFICATION_FINDINGS?"
+    tags: ["checklist", "đã", "tránh", "dùng", "số", "bịa", "mọi", "lấy", "từ", "json", "hoặc", "verification_findings"]
+    text: |-
+      Đã tránh dùng số bịa; mọi số lấy từ JSON hoặc VERIFICATION_FINDINGS?
+  - id: "m01-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Sheet ATR: cột Date, High, Low, Close, TR = MAX(H-L, ABS(H-Close_prev), ABS(L-Close_prev)), ATR14 =…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "atr", "cột", "date", "high", "low", "close", "tr", "max"]
+    text: |-
+      Sheet ATR: cột Date, High, Low, Close, TR = MAX(H-L, ABS(H-Close_prev), ABS(L-Close_prev)), ATR14 = AVERAGE(14 dòng TR), ATR% = ATR14/Close.
+  - id: "m01-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Sheet Vùng biến động: Close, ATR%, k = 0,974, h = 10, Low = Close*(1+drift-k*ATR%*SQRT(h)), High = …"
+    tags: ["mẫu", "excel", "sheets", "sheet", "vùng", "biến", "động", "close", "atr", "974", "10", "low"]
+    text: |-
+      Sheet Vùng biến động: Close, ATR%, k = 0,974, h = 10, Low = Close*(1+drift-k*ATR%*SQRT(h)), High = Close*(1+drift+k*ATR%*SQRT(h)).
+  - id: "m01-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: Sheet Kích thước vị thế: Vốn, r%, m, ATR%, Giá -> Cắt lỗ = MAX(Giá - m*Giá*ATR%, 0,93*Giá); Số cp =…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "kích", "thước", "vị", "thế", "vốn", "atr", "giá", "cắt"]
+    text: |-
+      Sheet Kích thước vị thế: Vốn, r%, m, ATR%, Giá -> Cắt lỗ = MAX(Giá - m*Giá*ATR%, 0,93*Giá); Số cp = FLOOR(Vốn*r/(Giá-Cắt lỗ),100); R:R = (TP-Giá)/(Giá-Cắt lỗ).
+  - id: "m01-excel_google_sheets_templates-4"
+    title: "Mẫu Excel/Sheets: Sheet Kênh: SLOPE/INTERCEPT trên Close 90 phiên; phần dư High/Low; PERCENTILE.INC(0,99) và (0,01) c…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "kênh", "slope", "intercept", "trên", "close", "90", "phiên", "phần"]
+    text: |-
+      Sheet Kênh: SLOPE/INTERCEPT trên Close 90 phiên; phần dư High/Low; PERCENTILE.INC(0,99) và (0,01) cho biên.
+  - id: "m01-excel_google_sheets_templates-5"
+    title: "Mẫu Excel/Sheets: Sheet Nhật ký kiểm chứng: Ngày tín hiệu, tín hiệu, giá, giá sau 10 phiên, lợi suất, nền cùng giai đ…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "nhật", "ký", "kiểm", "chứng", "ngày", "tín", "hiệu", "giá"]
+    text: |-
+      Sheet Nhật ký kiểm chứng: Ngày tín hiệu, tín hiệu, giá, giá sau 10 phiên, lợi suất, nền cùng giai đoạn, vượt nền; tách train/test.
+  - id: "m01-data_reliability"
+    title: "Data reliability"
+    tags: ["data", "reliability"]
+    text: |-
+      Số liệu kiểm chứng (mọi tỷ lệ, lợi suất vượt nền, độ phủ vùng biến động) trích nguyên văn VERIFICATION_FINDINGS.md (do các script kiểm thử walk-forward đã gỡ khỏi repo sinh ra; KHÔNG chạy lại trong module này) -> 'verified' theo tài liệu. Bảng p_up theo (chế độ|nhóm) và cone_k80 = 0,974 lấy từ outlook_calibration.json. Mọi ví dụ giá HPG/MSN, kênh tổng hợp và vị thế là 'illustrative' (giả định hoặc tính lại bằng python3). Các tuyên bố trong skills/references (confluence 75-80%, hỗ trợ cứng >= 3 chạm, mua đáy hộp với nến từ chối giá) là 'unverified' và bị bác bỏ. Điểm còn thiếu: kiểm chứng riêng RSI/MFI/Bollinger/MA cross, dữ liệu trong ngày (AMT 15m).
+  - id: "m01-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: stock-analysist/documents/VERIFICATION_FINDINGS.md; stock-analysist/dev/outlook_v3.py; stock-analysist/dev/stock_analysis_script.py; stock-analysist/dev/cli.py; mba-agent-office/tools/stock_cli.py; stock-analysist/skills/references/*.yaml; stock-analysist/dev/outlook_calibration.json

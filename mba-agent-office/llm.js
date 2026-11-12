@@ -4,7 +4,7 @@ import { record } from './usage.js';
 
 // Giao diện chung cho Claude / GPT / Gemini: gửi system + user, hỗ trợ vòng lặp gọi công cụ.
 // tools: [{ name, description, parameters (JSON Schema) }]; handlers: { [name]: async (args) => kết quả }
-const MAX_STEPS = 6;
+const MAX_STEPS = 10;   // agent tra cứu nhiều (Investor/Kế toán: công cụ chứng khoán + web + skill) cần hơn 6 lượt; lượt cuối luôn buộc trả lời bằng văn bản
 const LIMIT_MSG = 'Không hoàn tất được sau nhiều bước.';
 const FINAL_NOTE = '[Hệ thống] Đây là lượt cuối được gọi công cụ. Sau lượt này hãy trả lời NGAY bằng thông tin đã thu thập, nêu rõ phần nào chưa xác thực.';
 const track = (ai, u) => record({ provider: ai.provider, model: ai.model, via: 'api', agent: ai.agentId, ...u });
@@ -58,6 +58,27 @@ async function gpt({ system, user, tools, handlers, max, ai }) {
   return LIMIT_MSG;
 }
 
+// Một số model (Gemini flash) thỉnh thoảng viết lệnh gọi công cụ thành VĂN BẢN (<invoke ...> {"tool":"x","args":{...}}) thay vì functionCall thật:
+// nếu không xử lý, văn bản đó thành "kết quả" của agent (báo cáo STB 12/11/2026: cả 4 agent chỉ trả lệnh gọi công cụ). Nhận ra và thực thi như lệnh thật.
+export function pseudoCalls(text, handlers) {
+  const t = String(text || ''), out = [];
+  let rest = t;
+  for (let i = t.indexOf('{'); i >= 0; i = t.indexOf('{', i + 1)) {
+    let depth = 0, j = i, inStr = false, esc = false;
+    for (; j < t.length; j++) {
+      const c = t[j];
+      if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === '"') inStr = false; }
+      else if (c === '"') inStr = true; else if (c === '{') depth++; else if (c === '}' && --depth === 0) break;
+    }
+    if (depth !== 0) break;
+    try {
+      const o = JSON.parse(t.slice(i, j + 1)), name = o.tool || o.name;
+      if (typeof name === 'string' && handlers[name]) { out.push({ name, args: o.args || o.arguments || o.parameters || {} }); rest = rest.replace(t.slice(i, j + 1), ''); i = j; }
+    } catch { /* không phải JSON lệnh */ }
+  }
+  return rest.replace(/<\/?invoke[^>]*>/g, '').trim().length < 300 ? out : [];   // còn nhiều văn bản khác = đó là câu trả lời thật
+}
+
 const upperTypes = (s) => {
   if (Array.isArray(s)) return s.map(upperTypes);
   if (s && typeof s === 'object') return Object.fromEntries(Object.entries(s).map(([k, v]) => [k, k === 'type' && typeof v === 'string' ? v.toUpperCase() : upperTypes(v)]));
@@ -74,14 +95,35 @@ async function gemini({ system, user, tools, handlers, max, ai }) {
         systemInstruction: { parts: [{ text: system }] }, contents,
         // Model có "thinking" tính cả token suy nghĩ vào giới hạn, nên để dư.
         generationConfig: { maxOutputTokens: Math.max(max * 4, 1024) },
-        ...(decl.length ? { tools: [{ functionDeclarations: decl }] } : {}),
+        ...(decl.length && i < MAX_STEPS - 1 ? { tools: [{ functionDeclarations: decl }] } : {}),   // lượt cuối không cấp công cụ: buộc trả lời bằng văn bản
       }, ai.provider);
     const gu = data.usageMetadata || {};
     track(ai, { input: gu.promptTokenCount, cached: gu.cachedContentTokenCount, output: (gu.candidatesTokenCount || 0) + (gu.thoughtsTokenCount || 0) });
     const content = data.candidates?.[0]?.content;
     const parts = content?.parts || [];
     const calls = parts.filter((p) => p.functionCall);
-    if (!calls.length) return parts.filter((p) => p.text && !p.thought).map((p) => p.text).join('');
+    if (!calls.length) {
+      let text = parts.filter((p) => p.text && !p.thought).map((p) => p.text).join(''), pushed = false;
+      // Bị cắt vì hết giới hạn đầu ra: xin viết tiếp (tối đa 2 lần) rồi nối lại, thay vì trả bản cụt.
+      for (let k = 0, cut = data.candidates?.[0]?.finishReason === 'MAX_TOKENS'; cut && k < 2; k++) {
+        pushed = true;
+        contents.push(content, { role: 'user', parts: [{ text: 'Câu trả lời bị cắt dở. Hãy viết tiếp NGAY từ chỗ bị cắt, không lặp lại phần đã viết, không gọi công cụ.' }] });
+        const more = await post(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(ai.model)}:generateContent`, { 'x-goog-api-key': ai.apiKey },
+          { systemInstruction: { parts: [{ text: system }] }, contents, generationConfig: { maxOutputTokens: Math.max(max * 4, 1024) } }, ai.provider);
+        const mc = more.candidates?.[0]?.content;
+        text += (mc?.parts || []).filter((p) => p.text && !p.thought).map((p) => p.text).join('');
+        contents.push(mc || { role: 'model', parts: [{ text: '' }] });
+        cut = more.candidates?.[0]?.finishReason === 'MAX_TOKENS';
+        track(ai, { input: more.usageMetadata?.promptTokenCount, output: (more.usageMetadata?.candidatesTokenCount || 0) + (more.usageMetadata?.thoughtsTokenCount || 0) });
+      }
+      const fake = i < MAX_STEPS - 1 ? pseudoCalls(text, handlers) : [];
+      if (!fake.length) return pseudoCalls(text, handlers).length ? text.replace(/<\/?invoke[^>]*>/g, '').replace(/\{\s*"tool"[\s\S]*$/, '').trim() || LIMIT_MSG : text;
+      if (!pushed) contents.push(content);
+      const out = [];
+      for (const c of fake) out.push({ tool: c.name, result: await handlers[c.name](c.args) });
+      contents.push({ role: 'user', parts: [{ text: `Kết quả công cụ (đã chạy): ${JSON.stringify(out)}\nHãy dùng kết quả này để tiếp tục, gọi tiếp công cụ nếu cần, rồi trả lời cuối cùng bằng văn bản (không viết lệnh gọi công cụ thành văn bản).` }] });
+      continue;
+    }
     contents.push(content);
     const replies = [];
     for (const { functionCall: f } of calls) {

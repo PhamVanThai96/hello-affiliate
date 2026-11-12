@@ -1,0 +1,72 @@
+# 02-decision-router.yaml — Định tuyến: câu hỏi/tình huống -> module + playbook
+# module ids: m01 phân tích kỹ thuật có kiểm chứng, m02 Auction Market Theory, m03 phân tích cơ bản, m04 định giá tương đối,
+# m05 định giá nội tại, m06 thẩm định dự án đầu tư, m07 dữ liệu thị trường VN và rủi ro.
+routes:
+  - id: r_technical_single
+    triggers: [phân tích kỹ thuật, biểu đồ, kênh giá, kênh xu hướng, xu hướng cổ phiếu, hỗ trợ kháng cự, MA200, RSI, Bollinger, mẫu hình nến, vùng biến động, hộp tích lũy, breakout, phá vỡ, nên mua chưa, xu hướng giá mã, chart]
+    modules: [m01, m02, m07]
+    playbook: pb_technical_report
+  - id: r_auction_market
+    triggers: [Value Area, POC, VAH, VAL, volume profile, hồ sơ khối lượng, Auction Market Theory, AMT, cân bằng giá trị, giá trị công bằng theo khối lượng, phân bổ khối lượng theo giá, IB initial balance, nến ngày D-shape]
+    modules: [m02, m01, m07]
+    playbook: pb_technical_report
+  - id: r_fundamental
+    triggers: [phân tích cơ bản, chất lượng lợi nhuận, lợi nhuận bất thường, kho báu ẩn, nợ xấu VAMC, bất động sản tồn đọng, thoái vốn, hàng tồn kho, khoản phải thu, capex, thuyết minh BCTC, chất lượng tài sản, đọc báo cáo tài chính cổ phiếu, NPL, LLR, CAR, tỷ lệ bao phủ nợ xấu, hệ số an toàn vốn]
+    modules: [m03, m07]
+    playbook: pb_full_stock_report
+  - id: r_relative_valuation
+    triggers: [P/E, P/B, EV/EBITDA, định giá nhanh, định giá tương đối, multiple, hệ số định giá, giá hợp lý theo P/E, EPS dự phóng, BVPS, rẻ hay đắt, so sánh cùng ngành, bẫy P/E, bẫy P/B, PEG]
+    modules: [m04, m03]
+    playbook: pb_relative_valuation
+  - id: r_intrinsic_valuation
+    triggers: [DCF, FCFF, FCFE, DDM, chiết khấu cổ tức, giá trị nội tại, terminal value, giá trị vĩnh cửu, WACC, CAPM, Re, chi phí vốn chủ, beta, Rf, ERP, tăng trưởng vĩnh viễn, độ nhạy, biên an toàn, margin of safety, định giá doanh nghiệp, giá mục tiêu]
+    modules: [m05, m03, m04, m07]
+    playbook: pb_company_valuation
+  - id: r_bank_valuation
+    triggers: [định giá ngân hàng, cổ phiếu ngân hàng, STB, SHB, VCB, TCB, ACB, MBB, P/B ngân hàng, ROE ngân hàng, trích lập dự phòng, NIM, CIR, CASA, hoàn nhập dự phòng, residual income ngân hàng, FCFE ngân hàng]
+    modules: [m05, m04, m03]
+    playbook: pb_bank_valuation
+  - id: r_project_appraisal
+    triggers: [thẩm định dự án, đầu tư bất động sản, đất nền, nhà ở xã hội, căn hộ cho thuê, mua nhà đầu tư, NPV dự án, MIRR, lá chắn thuế, khấu hao, vay đòn bẩy mua tài sản, trả nợ gốc đều, đầu tư cá nhân hay doanh nghiệp, stress test dòng tiền, quỹ dự phòng khẩn cấp, vàng, nhà xưởng]
+    modules: [m06, m05, m07]
+    playbook: pb_project_appraisal
+  - id: r_risk_position
+    triggers: [quản trị rủi ro, cắt lỗ, stop loss, take profit, R:R, tỷ lệ rủi ro lợi nhuận, kích thước vị thế, tỷ trọng, phân bổ vốn, danh mục, rủi ro tối đa mỗi lệnh, drawdown, đa dạng hóa, bán khống, ATR, vùng biến động giá]
+    modules: [m07, m01, m05]
+    playbook: pb_risk_check
+  - id: r_market_data_macro
+    triggers: [lãi suất phi rủi ro, trái phiếu chính phủ 10 năm, ERP, phần bù rủi ro, lạm phát, GDP, tỷ giá, lãi suất tiết kiệm, VN-Index, dữ liệu thị trường, biên độ giá, HOSE HNX UPCoM, T+2, phiên ATO ATC, nguồn dữ liệu, yfinance]
+    modules: [m07, m05]
+    playbook: pb_market_snapshot
+  - id: r_full_report
+    triggers: [báo cáo toàn diện, phân tích tổng hợp một mã, đánh giá cổ phiếu, phân tích cổ phiếu toàn diện, báo cáo đầu tư, investment memo, một mã đáng đầu tư không, review mã, phân tích mã]
+    modules: [m03, m04, m05, m01, m07]
+    playbook: pb_full_stock_report
+  - id: r_concept_qa
+    triggers: [là gì, giải thích, tại sao, khác nhau, lịch sử, ai tạo ra, ý nghĩa, khi nào dùng, FCFF khác FCFE, P/E khác P/B]
+    modules: []   # chọn theo chủ đề; xem trường why_it_matters của concepts trong module liên quan
+    playbook: null
+
+chaining_rules:   # bài toán đa chiều: thứ tự gọi module
+  - when: "Báo cáo toàn diện một mã cổ phiếu"
+    chain: [m07 market snapshot (Rf, ERP, giá, tỷ giá có nguồn và ngày), m03 phân tích cơ bản và chất lượng lợi nhuận, m04 định giá nhanh bằng multiples, m05 định giá nội tại FCFF/FCFE/DDM + độ nhạy, m01/m02 phân tích kỹ thuật bằng CLI (chỉ để định bối cảnh biến động), m07 quản trị rủi ro và tổng hợp]
+  - when: "Định giá doanh nghiệp phi tài chính"
+    chain: [m03 làm sạch lợi nhuận và dòng tiền, m07 tra Rf/ERP, m05 FCFF + WACC + Terminal Value, m04 đối chiếu multiples, m05 bảng độ nhạy và biên an toàn]
+  - when: "Định giá ngân hàng hoặc công ty tài chính"
+    chain: [m03 NPL/LLR/CAR/chất lượng lợi nhuận và trích lập, m07 tra Rf/ERP, m05 FCFE/DDM với Re, m04 P/B theo ROE và P/E dự phóng, m05 bảng độ nhạy Re x g]
+  - when: "Thẩm định dự án đầu tư có vay (BĐS, tài sản)"
+    chain: [m07 tra Rf/ERP và lãi vay hiện hành, m06 chọn Beta và tính WACC/Re, m06 lá chắn thuế và dòng tiền (FCFF hoặc FCFE đúng cặp chiết khấu), m06 NPV/MIRR, m06 stress test và quỹ dự phòng, m07 đối chiếu phương án thay thế phi rủi ro]
+  - when: "Câu hỏi 'cổ phiếu X có nên mua không'"
+    chain: [m07 nhắc giới hạn không khuyến nghị cá nhân, m03 + m05 để đưa giá trị tham chiếu theo giả định, m01 cho vùng biến động và bối cảnh, m07 khung rủi ro; trả lời bằng kịch bản/điều kiện, không bằng lời khuyên mua/bán]
+  - when: "Phân tích kỹ thuật một mã"
+    chain: [m07 xác nhận quyền chạy lệnh và mã .VN, m01 chạy CLI và đọc JSON, m02 diễn giải Value Area, m01 gắn nhãn kiểm chứng cho từng thành phần, m07 khung rủi ro và ràng buộc VN]
+  - when: "Đầu tư đất nền hoặc bất động sản"
+    chain: [m06 loại tài sản và Beta, đất không khấu hao nên chỉ công trình mới có lá chắn thuế khấu hao, m06 FCFE hoặc FCFF theo cách vay, m07 thanh khoản và dự phòng, m05 độ nhạy theo Re và tăng trưởng giá]
+
+clarifying_questions_default:   # hỏi khi thiếu
+  - Mã cổ phiếu (hoặc loại tài sản) và mục tiêu phân tích (định giá, kỹ thuật, thẩm định dự án, báo cáo tổng hợp)?
+  - Khung thời gian đầu tư và mức chịu rủi ro (ví dụ rủi ro tối đa mỗi vị thế)?
+  - Có số liệu BCTC mới nhất (P&L, Balance Sheet, Cash Flow, thuyết minh) hoặc cho phép tra từ nguồn công bố không?
+  - Doanh nghiệp thuộc nhóm nào (ngân hàng/tài chính, sản xuất, bán lẻ, bất động sản, công nghệ) để chọn FCFE/FCFF/DDM?
+  - Với dự án đầu tư: vốn tự có, vốn vay, lãi vay, kỳ hạn, cách trả nợ, hình thức cá nhân hay doanh nghiệp, loại tài sản?
+  - Có cho phép chạy công cụ phân tích kỹ thuật (python3 tools/stock_cli.py) trong máy không?

@@ -1,0 +1,1501 @@
+# 06-formulas-index.yaml — SINH TỰ ĐỘNG bởi tools/build_and_validate.py từ modules/*.yaml. Không sửa tay.
+total: 118
+formulas:
+- id: m01_atr_pct
+  module: m01
+  name_vi: ATR(14) và ATR phần trăm
+  name_en: Average True Range and ATR%
+  expression_latex: TR_t=\max(H_t-L_t,\ |H_t-C_{t-1}|,\ |L_t-C_{t-1}|);\quad ATR=\frac{1}{n}\sum_{i=t-n+1}^{t}TR_i;\quad ATR\%=\frac{ATR}{C_t}
+  expression_python: float(np.mean([max(h[i]-l[i], abs(h[i]-c[i-1]), abs(l[i]-c[i-1])) for i in range(len(h)-n, len(h))])
+    / c[-1])
+  excel: =AVERAGE(TR_range)/Close  (TR = MAX(H-L, ABS(H-Cprev), ABS(L-Cprev)))
+  variables:
+  - h, l, c
+  - n
+  when_to_use: Đo độ rộng biến động thường ngày để dựng vùng biến động, mức cắt lỗ theo ATR và kích thước vị thế.
+- id: m01_rsi_wilder
+  module: m01
+  name_vi: RSI(14) làm trơn Wilder
+  name_en: Relative Strength Index (Wilder smoothing)
+  expression_latex: RS=\frac{AvgGain}{AvgLoss};\quad RSI=100-\frac{100}{1+RS};\quad Avg_t=\frac{13\cdot Avg_{t-1}+x_t}{14}
+  expression_python: '(lambda d: float((100 - 100/(1 + d.clip(lower=0).ewm(alpha=1/14, min_periods=14, adjust=False).mean()
+    / (-d.clip(upper=0)).ewm(alpha=1/14, min_periods=14, adjust=False).mean())).iloc[-1]))(pd.Series(closes).diff())'
+  excel: 'Tính AvgGain/AvgLoss đệ quy: =(Prev*13+Gain)/14; RSI =100-100/(1+AvgGain/AvgLoss)'
+  variables:
+  - closes
+  when_to_use: Đo độ mạnh tương đối của các phiên tăng so với phiên giảm; trong công cụ chỉ dùng làm thông tin và bộ lọc nhãn
+    (RSI < 65).
+- id: m01_mfi
+  module: m01
+  name_vi: Chỉ số dòng tiền MFI(14)
+  name_en: Money Flow Index
+  expression_latex: TP=\frac{H+L+C}{3};\ MF=TP\cdot V;\ MFR=\frac{\sum_{TP\uparrow}MF}{\sum_{TP\downarrow}MF};\ MFI=100-\frac{100}{1+MFR}
+  expression_python: '(lambda tp: 100 - 100/(1 + sum(tp[i]*v[i] for i in range(1, len(tp)) if tp[i] > tp[i-1]) / sum(tp[i]*v[i]
+    for i in range(1, len(tp)) if tp[i] < tp[i-1])))([(a+b+d)/3 for a, b, d in zip(h, l, c)])'
+  excel: =100-100/(1+SUMIF(TPup,MF)/SUMIF(TPdown,MF)) trên cửa sổ 14 phiên
+  variables:
+  - h, l, c, v
+  when_to_use: Mô tả dòng tiền vào/ra có tính khối lượng (RSI có trọng số khối lượng).
+- id: m01_bollinger
+  module: m01
+  name_vi: Dải Bollinger (20, 2)
+  name_en: Bollinger Bands
+  expression_latex: Mid=SMA_{20}(C);\ Upper=Mid+2\sigma_{20};\ Lower=Mid-2\sigma_{20};\ \%B=\frac{C-Lower}{Upper-Lower}
+  expression_python: '(lambda s: (float(s.mean()), float(s.mean()+2*s.std()), float(s.mean()-2*s.std()), float((s.iloc[-1]-(s.mean()-2*s.std()))/(4*s.std()))))(pd.Series(closes).tail(20))'
+  excel: =AVERAGE(range) +/- 2*STDEV.S(range)
+  variables:
+  - closes
+  when_to_use: Mô tả độ rộng dải biến động và vị trí giá trong dải (squeeze khi dải hẹp).
+- id: m01_channel_offsets
+  module: m01
+  name_vi: 'Kênh hồi quy v3: đường giữa và biên phân vị'
+  name_en: Recent-regime regression channel with quantile edges
+  expression_latex: C_t\approx a+bt;\ r_t^{H}=H_t-(a+bt);\ r_t^{L}=L_t-(a+bt);\ Upper=a+bt+Q_{0.99}(r^H);\ Lower=a+bt+Q_{0.01}(r^L)
+  expression_python: '(lambda fit: (float(np.quantile(np.array(high)-fit, q)), float(np.quantile(np.array(low)-fit, 1-q))))(np.polyval(np.polyfit(np.arange(len(close)),
+    close, 1), np.arange(len(close))))'
+  excel: =SLOPE/INTERCEPT cho đường giữa; biên = PERCENTILE.INC(High-fit, 0.99) và PERCENTILE.INC(Low-fit, 0.01)
+  variables:
+  - close, high, low
+  - q
+  when_to_use: Dựng kênh mô tả giai đoạn gần nhất cho đầu ra channel_edges_now.
+- id: m01_channel_type
+  module: m01
+  name_vi: Phân loại kênh theo độ dịch chuyển so với bề rộng
+  name_en: Channel classification
+  expression_latex: '|b\cdot(w-1)|<0.6\cdot(\text{offset}_{up}-\text{offset}_{low})\Rightarrow\text{Horizontal};\ b>0\Rightarrow\text{Ascending};\
+    b<0\Rightarrow\text{Descending}'
+  expression_python: '"Horizontal" if abs(slope*(w-1)) < 0.6*width else ("Ascending" if slope > 0 else "Descending")'
+  excel: =IF(ABS(b*(w-1))<0.6*width,"Đi ngang",IF(b>0,"Kênh tăng","Kênh giảm"))
+  variables:
+  - slope
+  - w
+  - width
+  when_to_use: Gán nhãn kênh tăng/giảm/đi ngang.
+- id: m01_channel_window_threshold
+  module: m01
+  name_vi: Ngưỡng sóng đáng kể để chọn giai đoạn gần nhất
+  name_en: Swing threshold for channel window
+  expression_latex: thr=\max(0.08,\ 4\cdot ATR\%)
+  expression_python: max(0.08, 4.0*atr_pct)
+  excel: =MAX(0.08, 4*ATR%)
+  variables:
+  - atr_pct
+  when_to_use: 'Xác định điểm bắt đầu giai đoạn: lùi từ hiện tại tới nhịp sóng gần nhất đảo chiều >= thr, rồi kẹp số phiên
+    trong [60,150].'
+- id: m01_trend_score
+  module: m01
+  name_vi: Điểm xu hướng thuần, điều chỉnh chế độ và nhóm
+  name_en: Raw trend score, regime-signed score, bucket
+  expression_latex: raw=\frac{clip(\frac{C/MA_{50}-1}{0.10})+clip(\frac{ROC_{20}}{0.10})+clip(\frac{ROC_{60}}{0.20})+2(pos_{60}-0.5)}{4};\
+    score=raw\cdot(\pm1);\ bucket\in\{0..4\}\ \text{theo biên}\ [-1.01,-0.45,-0.15,0.15,0.45,1.01]
+  expression_python: '(lambda cl: (cl(c_ma50/0.10) + cl(roc20/0.10) + cl(roc60/0.20) + (pos60-0.5)*2)/4)(lambda x: max(-1,
+    min(1, x)))'
+  excel: =(MEDIAN(-1,1,x1)+MEDIAN(-1,1,x2)+MEDIAN(-1,1,x3)+(pos60-0.5)*2)/4  (x1=(C/MA50-1)/0.10; x2=ROC20/0.10; x3=ROC60/0.20)
+  variables:
+  - c_ma50
+  - roc20, roc60
+  - pos60
+  when_to_use: Tính điểm để tra bảng tần suất hiệu chuẩn. Chế độ UP giữ dấu, chế độ DOWN đảo dấu (hồi quy).
+- id: m01_outlook_decision
+  module: m01
+  name_vi: Quy tắc gán thiên hướng từ xác suất hiệu chuẩn
+  name_en: Outlook label from calibrated probability
+  expression_latex: dir=+1\ \text{nếu}\ p_{up}\ge0.545;\ dir=-1\ \text{nếu}\ p_{up}\le0.455;\ \text{ngược lại }0;\ \text{và
+    cần}\ n\ge300;\ \text{mạnh nếu}\ |p_{up}-0.5|\ge0.09
+  expression_python: 0 if (n < 300 or p_up is None) else (1 if p_up >= 0.5 + 0.045 else (-1 if p_up <= 0.5 - 0.045 else 0))
+  excel: =IF(n<300,0,IF(p>=0.545,1,IF(p<=0.455,-1,0)))
+  variables:
+  - p_up
+  - n
+  when_to_use: Đọc lại/giải thích trường outlook.direction.
+- id: m01_cone
+  module: m01
+  name_vi: Vùng biến động kỳ vọng (ATR cone)
+  name_en: Expected move cone
+  expression_latex: cone_h=C\cdot\left(1+\mu\pm k\cdot ATR\%\cdot\sqrt{h}\right);\ k=Q_{0.80}\left(\left|\frac{r_{t+h}}{ATR\%_t\sqrt{h}}\right|\right)=0.974
+  expression_python: (close*(1+drift-k*atr_pct*math.sqrt(h)), close*(1+drift+k*atr_pct*math.sqrt(h)))
+  excel: =Close*(1+drift-k*ATRpct*SQRT(h)) ; =Close*(1+drift+k*ATRpct*SQRT(h))
+  variables:
+  - close
+  - drift
+  - k
+  - atr_pct
+  - h
+  when_to_use: Mọi lúc cần trả lời 'trong 10 phiên giá có thể dao động trong khoảng nào'; đặt mức cắt lỗ; kiểm tra rủi ro.
+- id: m01_cone_k
+  module: m01
+  name_vi: Hệ số k của vùng biến động
+  name_en: Cone coefficient calibration
+  expression_latex: k=Q_{0.80}\left(\left|\frac{r_{t+h}}{ATR\%_t\cdot\sqrt{h}}\right|\right)
+  expression_python: float(np.quantile(np.abs(np.array(fwd)/(atr_pct*np.sqrt(h))), 0.80))
+  excel: =PERCENTILE.INC(ABS(fwd/(ATRpct*SQRT(h))),0.8)
+  variables:
+  - fwd
+  - atr_pct
+  - h
+  when_to_use: Khi muốn hiệu chuẩn lại k cho thị trường/giai đoạn khác hoặc để hiểu 0,974 đến từ đâu.
+- id: m01_position_size
+  module: m01
+  name_vi: Kích thước vị thế theo ATR
+  name_en: ATR-based position sizing
+  expression_latex: shares=\left\lfloor\frac{Capital\cdot r}{m\cdot ATR\%\cdot P}\Big/ lot\right\rfloor\cdot lot
+  expression_python: math.floor(capital*risk_pct/(m*atr_pct*price)/lot)*lot
+  excel: =FLOOR(Von*RiskPct/(m*ATRpct*Gia), 100)
+  variables:
+  - capital
+  - risk_pct
+  - m
+  - atr_pct
+  - price
+  - lot
+  when_to_use: 'Trước khi vào lệnh: xác định số cổ phiếu sao cho nếu chạm cắt lỗ thì mất đúng r% vốn.'
+- id: m01_risk_reward
+  module: m01
+  name_vi: Tỷ lệ Rủi ro/Lợi nhuận (R:R)
+  name_en: Risk-reward ratio
+  expression_latex: R:R=\frac{TP-Entry}{Entry-SL}
+  expression_python: (tp - entry) / (entry - sl)
+  excel: =(TP-Entry)/(Entry-SL)
+  variables:
+  - tp
+  - entry
+  - sl
+  when_to_use: 'Cân nhắc vào lệnh: công cụ yêu cầu R:R tới TP2 >= 2,0 mới dán nhãn MUA.'
+- id: m01_stop_cap
+  module: m01
+  name_vi: Trần cắt lỗ 7%
+  name_en: Stop-loss cap (7%)
+  expression_latex: SL=\max\left(Entry-m\cdot ATR,\ 0.93\cdot Entry\right)
+  expression_python: max(entry - m*entry*atr_pct, 0.93*entry)
+  excel: =MAX(Entry-m*ATR, 0.93*Entry)
+  variables:
+  - entry
+  - m, atr_pct
+  when_to_use: Khống chế khoảng cắt lỗ tối đa 7% từ giá vào (kỷ luật bảo toàn vốn của bộ lọc luật).
+- id: m01_candle_geometry
+  module: m01
+  name_vi: 'Hình học nến: Doji, Hammer, Shooting Star'
+  name_en: Candle geometry tests
+  expression_latex: body=|C-O|;\ range=H-L;\ br=\frac{body}{range};\ Doji:\ br<0.10;\ Hammer:\ low\_sh\ge2\cdot body\wedge
+    up\_sh\le0.5\cdot body\wedge br<0.40
+  expression_python: '{"doji": (abs(c-o)/(h-l) < 0.10), "hammer": ((min(c,o)-l) >= 2*abs(c-o) and (h-max(c,o)) <= 0.5*abs(c-o)
+    and abs(c-o)/(h-l) < 0.40)}'
+  excel: =ABS(C-O)/(H-L)
+  variables:
+  - o, h, l, c
+  when_to_use: Chỉ để hiểu cách công cụ phát hiện mẫu hình (đầu ra patterns_info_only).
+- id: m01_box_spread
+  module: m01
+  name_vi: Biên độ hộp tích lũy
+  name_en: Consolidation box spread
+  expression_latex: spread\%=\frac{HH-LL}{LL}\times100\le8;\ \text{vị trí trong hộp}=\frac{C-LL}{HH-LL}
+  expression_python: ((hh-ll)/ll*100, (close-ll)/(hh-ll))
+  excel: =(HH-LL)/LL*100
+  variables:
+  - hh, ll
+  - close
+  when_to_use: Xác định hộp hiện tại và vị trí giá trong hộp (<= 25% = gần đáy hộp).
+- id: m01_vol_ratio
+  module: m01
+  name_vi: Tỷ lệ khối lượng so với TB20
+  name_en: Volume ratio
+  expression_latex: VR=\frac{V_t}{SMA_{20}(V)}
+  expression_python: volume / (sum(volumes20)/len(volumes20))
+  excel: =V/AVERAGE(V20)
+  variables:
+  - volume
+  - volumes20
+  when_to_use: Xác nhận breakout (>= 2x), cảnh báo Volume Climax (>= 3x), xác nhận nến (>= 1,3x).
+- id: m02_volume_allocation
+  module: m02
+  name_vi: Phân bổ khối lượng nến vào tầng giá theo tỷ lệ chồng lấp
+  name_en: Candle volume allocation by price overlap
+  expression_latex: V_{b} = \sum_{c} V_c \cdot \frac{\max\left(0,\ \min(H_c, e_{b+1}) - \max(L_c, e_b)\right)}{H_c - L_c}
+  expression_python: vol * max(0.0, min(hi, bin_hi) - max(lo, bin_lo)) / (hi - lo)
+  excel: =Vol*MAX(0,MIN(High,BinHi)-MAX(Low,BinLo))/(High-Low)
+  variables:
+  - vol
+  - lo, hi
+  - bin_lo, bin_hi
+  when_to_use: Dựng Volume Profile từ dữ liệu OHLCV khi không có dữ liệu tick.
+- id: m02_value_area
+  module: m02
+  name_vi: POC, Value Area (VAH/VAL) bằng mở rộng từ POC
+  name_en: POC and Value Area expansion algorithm
+  expression_latex: POC = \arg\max_b V_b;\quad \text{mở rộng } [l, r] \text{ từ } POC \text{ cho tới } \frac{\sum_{b=l}^{r}
+    V_b}{\sum V} \ge 0.70
+  expression_python: "def value_area(bin_volume, edges, pct=0.70):\n    n = len(bin_volume); poc = max(range(n), key=lambda\
+    \ i: (bin_volume[i], -i))\n    left = right = poc; inc = bin_volume[poc]; tot = sum(bin_volume)\n    while tot > 0 and\
+    \ inc / tot < pct and (left > 0 or right < n - 1):\n        lv = bin_volume[left - 1] if left > 0 else -1.0\n        rv\
+    \ = bin_volume[right + 1] if right < n - 1 else -1.0\n        if rv >= lv: right += 1; inc += bin_volume[right]\n    \
+    \    else: left -= 1; inc += bin_volume[left]\n    return {'poc': (edges[poc] + edges[poc + 1]) / 2, 'vah': edges[right\
+    \ + 1], 'val': edges[left], 'pct': inc / tot}\n"
+  excel: Không có hàm sẵn; dùng cột POC = INDEX(giá, MATCH(MAX(vol), vol, 0)) rồi cộng dần bin lớn hơn hai bên thủ công.
+  variables:
+  - bin_volume
+  - edges
+  - pct
+  when_to_use: Xác định vùng giá trị và biên VAH/VAL của một cửa sổ quan sát.
+- id: m02_tpo_count
+  module: m02
+  name_vi: Đếm TPO theo tầng giá và Single Prints
+  name_en: TPO count per price level and single prints
+  expression_latex: T_b = \sum_{p} \mathbb{1}\left[ L_p \le e_{b+1}\ \wedge\ H_p \ge e_b \right],\quad \text{Single Print}
+    \iff T_b = 1
+  expression_python: sum(1 for lo_p, hi_p in periods if (lo_p <= bin_hi and hi_p >= bin_lo))
+  excel: =COUNTIFS(Low_range,"<="&BinHi,High_range,">="&BinLo)
+  variables:
+  - periods
+  - bin_lo, bin_hi
+  when_to_use: Đo thời gian giá lưu lại từng vùng giá, phát hiện Single Prints.
+- id: m02_vwap
+  module: m02
+  name_vi: VWAP phiên (reset mỗi phiên)
+  name_en: Session VWAP
+  expression_latex: TP_t = \frac{H_t + L_t + C_t}{3},\quad VWAP_t = \frac{\sum_{i \le t} TP_i V_i}{\sum_{i \le t} V_i}
+  expression_python: sum(t * v for t, v in zip(tp, vol)) / sum(vol)
+  excel: =SUMPRODUCT(TP_range,Vol_range)/SUM(Vol_range)  (tích lũy từ nến đầu phiên đến nến hiện tại)
+  variables:
+  - tp
+  - vol
+  when_to_use: Chỉ với dữ liệu trong ngày (1m-60m). Đánh giá giá hiện tại đắt/rẻ so với giá bình quân phiên.
+- id: m02_vwap_sigma
+  module: m02
+  name_vi: Độ lệch chuẩn VWAP có trọng số khối lượng (dải sigma)
+  name_en: Volume-weighted standard deviation of VWAP (running)
+  expression_latex: \sigma_t = \sqrt{\frac{\sum_{i \le t} V_i\,(TP_i - VWAP_i)^2}{\sum_{i \le t} V_i}},\quad Band_k = VWAP_t
+    \pm k\,\sigma_t
+  expression_python: "def vwap_sigma(tp, vol):\n    cv = ctp = cd = 0.0; out = []\n    for t, v in zip(tp, vol):\n       \
+    \ cv += v; ctp += t * v; vw = ctp / cv\n        cd += (t - vw) ** 2 * v\n        out.append((vw, (cd / cv) ** 0.5))\n\
+    \    return out\n"
+  excel: 'Dùng cột phụ: Dev2Vol = (TP - VWAP_t)^2 * Vol, cộng dồn rồi chia cộng dồn Vol, lấy căn.'
+  variables:
+  - tp
+  - vol
+  - k
+  when_to_use: Vẽ dải quanh VWAP trong ngày để đánh dấu vùng 'quá đà'.
+- id: m02_weighted_skew_kurt
+  module: m02
+  name_vi: Skewness và excess kurtosis có trọng số khối lượng của profile
+  name_en: Volume-weighted skewness and excess kurtosis of the profile
+  expression_latex: w_b = \frac{V_b}{\sum V},\ \mu = \sum w_b\, b,\ \sigma^2 = \sum w_b (b-\mu)^2,\ S = \sum w_b \left(\frac{b-\mu}{\sigma}\right)^3,\
+    K = \sum w_b \left(\frac{b-\mu}{\sigma}\right)^4 - 3
+  expression_python: '(lambda w, i: (lambda m: (lambda s: (m, s, sum(w * ((i - m) / s) ** 3), sum(w * ((i - m) / s) ** 4)
+    - 3.0))((sum(w * (i - m) ** 2)) ** 0.5))(sum(i * w)))(np.array(bin_volume, float) / np.sum(bin_volume), np.arange(len(bin_volume)))
+
+    '
+  excel: 'Dùng SUMPRODUCT: mu = SUMPRODUCT(idx,w); sigma = SQRT(SUMPRODUCT(w,(idx-mu)^2)); S = SUMPRODUCT(w,((idx-mu)/sigma)^3);
+    K = SUMPRODUCT(w,((idx-mu)/sigma)^4)-3.'
+  variables:
+  - bin_volume
+  - w
+  when_to_use: Phân loại hình D/P/b một cách tái lập được.
+- id: m03_core_net_income
+  module: m03
+  name_vi: Lợi nhuận sau thuế cốt lõi (chuẩn hóa)
+  name_en: Core (normalized) Net Income
+  expression_latex: \text{NI}_{core} = (\text{EBT} - G_{one} + L_{one}) \times (1 - t)
+  expression_python: (ebt - nonrecurring_gain + nonrecurring_loss) * (1 - tax_rate)
+  excel: =(EBT-LaiMotLan+LoMotLan)*(1-ThueSuat)
+  variables:
+  - ebt
+  - nonrecurring_gain
+  - nonrecurring_loss
+  - tax_rate
+  when_to_use: Mọi lần dùng EPS, ROE, P/E làm đầu vào định giá. Chạy trước m04 và m05.
+- id: m03_core_share
+  module: m03
+  name_vi: Tỷ trọng lợi nhuận cốt lõi
+  name_en: Core Earnings Share
+  expression_latex: \text{Core share} = \frac{\text{NI}_{core}}{\text{NI}_{reported}}
+  expression_python: core_ni / reported_ni
+  excel: =LNCotLoi/LNBaoCao
+  variables:
+  - core_ni
+  - reported_ni
+  when_to_use: Một con số đo 'lãi nhờ đâu' để chấm điểm scorecard.
+- id: m03_tax_rate_check
+  module: m03
+  name_vi: Thuế suất thực tế
+  name_en: Effective Tax Rate
+  expression_latex: \text{ETR} = \frac{\text{Tax expense}}{\text{EBT}}
+  expression_python: tax_expense / ebt
+  excel: =ChiPhiThue/EBT
+  variables:
+  - tax_expense
+  - ebt
+  when_to_use: Kiểm tra lợi nhuận có được tăng nhờ thuế suất thấp tạm thời (ưu đãi sắp hết, thuế hoãn lại) hay không.
+- id: m03_roe
+  module: m03
+  name_vi: Tỷ suất sinh lời trên vốn chủ sở hữu
+  name_en: Return on Equity (average equity)
+  expression_latex: \text{ROE} = \frac{\text{NI}}{(E_{open}+E_{close})/2}
+  expression_python: net_income / ((equity_open + equity_close) / 2)
+  excel: =LNST/AVERAGE(VCSDauKy,VCSCuoiKy)
+  variables:
+  - net_income
+  - equity_open
+  - equity_close
+  when_to_use: Đo hiệu quả dùng vốn cổ đông; là trục chính của P/B hợp lý (m04) và của bank analysis.
+- id: m03_dupont3
+  module: m03
+  name_vi: Phân rã DuPont 3 thành phần
+  name_en: DuPont 3-step decomposition
+  expression_latex: \text{ROE} = \frac{\text{NI}}{\text{Rev}} \times \frac{\text{Rev}}{\text{Avg Assets}} \times \frac{\text{Avg
+    Assets}}{\text{Avg Equity}}
+  expression_python: net_income / revenue * revenue / avg_assets * avg_assets / avg_equity
+  excel: =(LNST/DoanhThu)*(DoanhThu/TSBinhQuan)*(TSBinhQuan/VCSBinhQuan)
+  variables:
+  - net_income
+  - revenue
+  - avg_assets
+  - avg_equity
+  when_to_use: Khi ROE cao hoặc thay đổi và cần biết do biên, vòng quay hay đòn bẩy.
+- id: m03_invested_capital
+  module: m03
+  name_vi: Vốn đầu tư
+  name_en: Invested Capital
+  expression_latex: IC = D_{ST} + D_{LT} + E - \text{Cash}
+  expression_python: debt_total + equity - cash
+  excel: =NoVay+VCSH-Tien
+  variables:
+  - debt_total
+  - equity
+  - cash
+  when_to_use: Mẫu số của ROIC cho doanh nghiệp phi tài chính.
+- id: m03_roic
+  module: m03
+  name_vi: Tỷ suất sinh lời trên vốn đầu tư
+  name_en: Return on Invested Capital (ROIC)
+  expression_latex: \text{ROIC} = \frac{EBIT_{core}\,(1-t)}{(IC_{open}+IC_{close})/2}
+  expression_python: ebit_core * (1 - tax_rate) / ((ic_open + ic_close) / 2)
+  excel: =EBITCotLoi*(1-ThueSuat)/AVERAGE(ICDauKy,ICCuoiKy)
+  variables:
+  - ebit_core
+  - tax_rate
+  - ic_open
+  - ic_close
+  when_to_use: Doanh nghiệp phi tài chính khi so ROIC với chi phí vốn bình quân (WACC, m05) để biết có tạo giá trị hay không.
+- id: m03_cfo_ni
+  module: m03
+  name_vi: Hệ số chuyển hóa lợi nhuận thành tiền
+  name_en: Cash Conversion (CFO / Net Income)
+  expression_latex: \text{CFO/NI} = \frac{\text{CFO}}{\text{NI}}
+  expression_python: cfo / net_income
+  excel: =CFO/LNST
+  variables:
+  - cfo
+  - net_income
+  when_to_use: Kiểm tra lãi có về tiền không; nên tính cộng dồn 3 năm để tránh nhiễu mùa vụ và kỳ chuyển đổi.
+- id: m03_accruals
+  module: m03
+  name_vi: Tỷ lệ dồn tích (Sloan)
+  name_en: Accruals Ratio (balance-sheet / cash-flow method)
+  expression_latex: A = \frac{\text{NI} - \text{CFO}}{(TA_{open}+TA_{close})/2}
+  expression_python: (net_income - cfo) / ((assets_open + assets_close) / 2)
+  excel: =(LNST-CFO)/AVERAGE(TSDauKy,TSCuoiKy)
+  variables:
+  - net_income
+  - cfo
+  - assets_open
+  - assets_close
+  when_to_use: Chuẩn hóa mức 'lãi nằm trên giấy' theo quy mô tài sản để so các doanh nghiệp khác nhau.
+- id: m03_delta_nwc
+  module: m03
+  name_vi: Biến động vốn lưu động hoạt động ròng
+  name_en: Change in Operating Net Working Capital (ΔNWC)
+  expression_latex: \Delta NWC = (AR_1 + Inv_1 + OCA_1 - AP_1 - OCL_1) - (AR_0 + Inv_0 + OCA_0 - AP_0 - OCL_0)
+  expression_python: (ar1 + inv1 + oca1 - ap1 - ocl1) - (ar0 + inv0 + oca0 - ap0 - ocl0)
+  excel: =(PT1+HTK1+TSNHK1-PTra1-NNHK1)-(PT0+HTK0+TSNHK0-PTra0-NNHK0)
+  variables:
+  - ar1
+  - inv1
+  - oca1
+  - ap1
+  - ocl1
+  - ar0
+  - inv0
+  - oca0
+  - ap0
+  - ocl0
+  when_to_use: Giải thích vì sao lãi không thành tiền và đo vốn bị chiếm dụng khi tăng trưởng (sản xuất, bán lẻ, BĐS, phân
+    phối).
+- id: m03_fcf
+  module: m03
+  name_vi: Dòng tiền tự do (từ BCTC, trước khi định giá)
+  name_en: Free Cash Flow (reported basis)
+  expression_latex: \text{FCF} = \text{CFO} - \text{CapEx}
+  expression_python: cfo - capex
+  excel: =CFO-CapEx
+  variables:
+  - cfo
+  - capex
+  when_to_use: Ước lượng tiền thực sự còn lại cho cổ đông và chủ nợ sau khi duy trì hoặc mở rộng cơ sở. Đầu vào thô cho FCFF/FCFE
+    ở m05.
+- id: m03_ccc
+  module: m03
+  name_vi: Chu kỳ chuyển đổi tiền mặt (rút gọn)
+  name_en: Cash Conversion Cycle (compact)
+  expression_latex: \text{CCC} = 365\left(\frac{\overline{Inv}}{COGS} + \frac{\overline{AR}}{Rev} - \frac{\overline{AP}}{COGS}\right)
+  expression_python: 365 * (avg_inventory / cogs + avg_ar / revenue - avg_ap / cogs)
+  excel: =365*(HTKBQ/GiaVon+PTBQ/DoanhThu-PTraBQ/GiaVon)
+  variables:
+  - avg_inventory
+  - avg_ar
+  - avg_ap
+  - cogs
+  - revenue
+  when_to_use: 'Sản xuất, bán lẻ, phân phối. Công thức đầy đủ, giải thích DIO/DSO/DPO, ví dụ Apple: xem skill kế toán m06
+    và finance m05, không lặp lại ở đây.'
+- id: m03_icr_total
+  module: m03
+  name_vi: Khả năng trả lãi (gồm lãi vốn hóa)
+  name_en: Interest Coverage incl. capitalized interest
+  expression_latex: \text{ICR} = \frac{EBIT}{I_{expensed} + I_{capitalized}}
+  expression_python: ebit / (interest_expensed + interest_capitalized)
+  excel: =EBIT/(LaiVayChiPhi+LaiVayVonHoa)
+  variables:
+  - ebit
+  - interest_expensed
+  - interest_capitalized
+  when_to_use: Mọi doanh nghiệp có vay, đặc biệt bất động sản, xây dựng, hạ tầng (vốn hóa lãi vay là phổ biến).
+- id: m03_net_debt_ebitda
+  module: m03
+  name_vi: Nợ ròng trên EBITDA
+  name_en: Net Debt / EBITDA
+  expression_latex: \frac{D - \text{Cash}}{EBIT + D\&A}
+  expression_python: (debt_total - cash) / (ebit + depreciation)
+  excel: =(NoVay-Tien)/(EBIT+KhauHao)
+  variables:
+  - debt_total
+  - cash
+  - ebit
+  - depreciation
+  when_to_use: Đòn bẩy doanh nghiệp phi tài chính; so với đối thủ và hạn mức (covenant).
+- id: m03_altman_z2
+  module: m03
+  name_vi: Điểm Z'' của Altman (thị trường mới nổi, phi sản xuất)
+  name_en: Altman Z''-Score (emerging markets / non-manufacturers variant)
+  expression_latex: Z'' = 6.56\,\frac{WC}{TA} + 3.26\,\frac{RE}{TA} + 6.72\,\frac{EBIT}{TA} + 1.05\,\frac{BE}{TL}
+  expression_python: 6.56 * (working_capital / total_assets) + 3.26 * (retained_earnings / total_assets) + 6.72 * (ebit /
+    total_assets) + 1.05 * (book_equity / total_liabilities)
+  excel: =6.56*(VLD/TS)+3.26*(LNGiuLai/TS)+6.72*(EBIT/TS)+1.05*(VCSH/NoPhaiTra)
+  variables:
+  - working_capital
+  - retained_earnings
+  - ebit
+  - book_equity
+  - total_assets
+  - total_liabilities
+  when_to_use: Sàng lọc nhanh nguy cơ kiệt quệ tài chính doanh nghiệp phi tài chính; chỉ là tín hiệu phụ.
+- id: m03_reinvestment_rate
+  module: m03
+  name_vi: Tỷ lệ tái đầu tư
+  name_en: Reinvestment Rate
+  expression_latex: \text{RR} = \frac{\text{CapEx} - D\&A + \Delta NWC}{NOPAT}
+  expression_python: (capex - depreciation + delta_nwc) / nopat
+  excel: =(CapEx-KhauHao+DeltaNWC)/NOPAT
+  variables:
+  - capex
+  - depreciation
+  - delta_nwc
+  - nopat
+  when_to_use: Biết doanh nghiệp giữ lại bao nhiêu phần NOPAT để tăng trưởng; cầu nối sang m05 (g = RR x ROIC).
+- id: m03_lease_adj_leverage
+  module: m03
+  name_vi: Đòn bẩy điều chỉnh thuê dài hạn
+  name_en: Lease-adjusted Leverage (Debt+Lease)/EBITDAR
+  expression_latex: \frac{D + PV_{lease}}{EBITDA + Rent}
+  expression_python: (debt_total + lease_pv) / (ebitda + rent)
+  excel: =(NoVay+PVThue)/(EBITDA+TienThue)
+  variables:
+  - debt_total
+  - lease_pv
+  - ebitda
+  - rent
+  when_to_use: 'Bán lẻ, F&B, chuỗi cửa hàng, vận tải: nơi thuê mặt bằng là nghĩa vụ lớn nhưng nằm ngoài nợ vay theo VAS.'
+- id: m03_inventory_provision_gap
+  module: m03
+  name_vi: Thiếu hụt dự phòng hàng tồn kho
+  name_en: Inventory Provision Gap
+  expression_latex: \text{Gap} = \max(0,\ Inv_{aged} \times p_{req} - Prov_{booked})
+  expression_python: max(0, aged_inventory * required_pct - booked_provision)
+  excel: =MAX(0,HTKQuaHan*TyLeCan-DuPhongDaTrich)
+  variables:
+  - aged_inventory
+  - required_pct
+  - booked_provision
+  when_to_use: Doanh nghiệp bán lẻ, thời trang, sản xuất, bất động sản có tồn kho phình to.
+- id: m03_adj_bvps
+  module: m03
+  name_vi: Giá trị sổ sách mỗi cổ phiếu điều chỉnh kho báu ẩn
+  name_en: Hidden-asset adjusted BVPS (RNAV-lite)
+  expression_latex: BVPS_{adj} = \frac{E + (MV - BV)(1-t)(1-h)}{N}
+  expression_python: (equity + (market_value - book_value) * (1 - tax_rate) * (1 - haircut)) * 1000 / shares
+  excel: =(VCSH+(GiaTriThiTruong-GiaSoSach)*(1-ThueSuat)*(1-Haircut))*1000/SoCP
+  variables:
+  - equity
+  - market_value
+  - book_value
+  - tax_rate
+  - haircut
+  - shares
+  when_to_use: Bất động sản, công ty sở hữu quỹ đất hoặc khoản đầu tư ghi theo giá gốc lâu năm; công ty holding.
+- id: m03_npl_ratio
+  module: m03
+  name_vi: Tỷ lệ nợ xấu
+  name_en: NPL Ratio
+  expression_latex: \text{NPL} = \frac{\text{Nợ nhóm 3, 4, 5}}{\text{Tổng dư nợ cho vay khách hàng}}
+  expression_python: npl / loans
+  excel: =NoXau/DuNo
+  variables:
+  - npl
+  - loans
+  when_to_use: Mọi phân tích ngân hàng; chỉ tiêu đầu tiên của chất lượng tài sản.
+- id: m03_llr
+  module: m03
+  name_vi: Tỷ lệ bao phủ nợ xấu
+  name_en: Loan Loss Reserve coverage (LLR)
+  expression_latex: \text{LLR} = \frac{\text{Dự phòng rủi ro tín dụng}}{\text{Nợ xấu}}
+  expression_python: reserves / npl
+  excel: =DuPhong/NoXau
+  variables:
+  - reserves
+  - npl
+  when_to_use: Đánh giá đệm hấp thụ tổn thất.
+- id: m03_adj_npl
+  module: m03
+  name_vi: Tỷ lệ nợ xấu điều chỉnh gồm VAMC
+  name_en: Adjusted NPL incl. VAMC special bonds
+  expression_latex: \text{NPL}_{adj} = \frac{NPL + VAMC}{Loans + VAMC}
+  expression_python: (npl + vamc_bonds) / (loans + vamc_bonds)
+  excel: =(NoXau+TPVAMC)/(DuNo+TPVAMC)
+  variables:
+  - npl
+  - vamc_bonds
+  - loans
+  when_to_use: Ngân hàng đã bán nợ cho VAMC (trái phiếu đặc biệt chưa trích đủ).
+- id: m03_npl_stress_hit
+  module: m03
+  name_vi: Kiểm tra sức chịu đựng nợ xấu (tác động lên lợi nhuận)
+  name_en: 'NPL stress: extra provisioning as share of net income'
+  expression_latex: \text{Hit} = \frac{\max(0,\ NPL + m \cdot G2 - Res)(1-t)}{NI}
+  expression_python: max(0, npl + migrate_pct * group2 - reserves) * (1 - tax_rate) / net_income
+  excel: =MAX(0,NoXau+TyLeChuyen*No2-DuPhong)*(1-Thue)/LNST
+  variables:
+  - npl
+  - migrate_pct
+  - group2
+  - reserves
+  - tax_rate
+  - net_income
+  when_to_use: Đo độ nhạy lợi nhuận và vốn chủ với diễn biến nợ nhóm 2 chuyển xấu để bao phủ 100 phần trăm.
+- id: m03_car
+  module: m03
+  name_vi: Hệ số an toàn vốn
+  name_en: Capital Adequacy Ratio (CAR)
+  expression_latex: \text{CAR} = \frac{\text{Vốn cấp 1} + \text{Vốn cấp 2}}{\text{Tài sản có rủi ro (RWA)}}
+  expression_python: (tier1 + tier2) / rwa
+  excel: =(Von1+Von2)/RWA
+  variables:
+  - tier1
+  - tier2
+  - rwa
+  when_to_use: Đánh giá khả năng hấp thụ tổn thất và dư địa tăng trưởng tín dụng.
+- id: m03_nim
+  module: m03
+  name_vi: Biên lãi ròng
+  name_en: Net Interest Margin (NIM)
+  expression_latex: \text{NIM} = \frac{NII}{\overline{IEA}}
+  expression_python: nii / avg_iea
+  excel: =NII/TSSinhLaiBinhQuan
+  variables:
+  - nii
+  - avg_iea
+  when_to_use: Đo khả năng kiếm chênh lệch lãi suất cốt lõi.
+- id: m03_cir
+  module: m03
+  name_vi: Tỷ lệ chi phí trên thu nhập
+  name_en: Cost-to-Income Ratio (CIR)
+  expression_latex: \text{CIR} = \frac{\text{Opex}}{NII + \text{Non-interest income}}
+  expression_python: opex / (nii + non_interest_income)
+  excel: =ChiPhiHD/(NII+ThuNhapNgoaiLai)
+  variables:
+  - opex
+  - nii
+  - non_interest_income
+  when_to_use: Đo hiệu quả vận hành; so cùng nhóm ngân hàng.
+- id: m03_ppop
+  module: m03
+  name_vi: Lợi nhuận trước dự phòng
+  name_en: Pre-Provision Operating Profit (PPOP)
+  expression_latex: \text{PPOP} = NII + \text{Non-int. income} - \text{Opex}
+  expression_python: nii + non_interest_income - opex
+  excel: =NII+ThuNhapNgoaiLai-ChiPhiHD
+  variables:
+  - nii
+  - non_interest_income
+  - opex
+  when_to_use: Tách năng lực kiếm tiền của ngân hàng khỏi chu kỳ trích lập; kiểm tra bẫy P/E trích lập mạnh.
+- id: m03_credit_cost
+  module: m03
+  name_vi: Chi phí tín dụng
+  name_en: Credit Cost
+  expression_latex: \text{Credit cost} = \frac{\text{Provision expense}}{\overline{Loans}}
+  expression_python: provision_expense / avg_loans
+  excel: =ChiPhiDuPhong/DuNoBinhQuan
+  variables:
+  - provision_expense
+  - avg_loans
+  when_to_use: Đo tổn thất tín dụng hằng năm; chuẩn hóa EPS.
+- id: m03_bank_roa
+  module: m03
+  name_vi: Tỷ suất sinh lời trên tài sản (ngân hàng)
+  name_en: ROA (bank)
+  expression_latex: \text{ROA} = \frac{NI}{\overline{TA}}
+  expression_python: net_income / avg_assets
+  excel: =LNST/TSBinhQuan
+  variables:
+  - net_income
+  - avg_assets
+  when_to_use: Bổ sung ROE; ROE ngân hàng chịu ảnh hưởng của đòn bẩy rất cao (EM gần 12 lần hoặc hơn).
+- id: m03_casa
+  module: m03
+  name_vi: Tỷ lệ tiền gửi không kỳ hạn (CASA)
+  name_en: CASA ratio
+  expression_latex: \text{CASA} = \frac{\text{Current + Savings (demand) deposits}}{\text{Customer deposits}}
+  expression_python: casa_deposits / total_deposits
+  excel: =TienGuiKhongKyHan/TongTienGui
+  variables:
+  - casa_deposits
+  - total_deposits
+  when_to_use: Đánh giá chi phí vốn và độ bền của nguồn vốn.
+- id: m03_ldr
+  module: m03
+  name_vi: Tỷ lệ cho vay trên tiền gửi (thô)
+  name_en: Loan-to-Deposit Ratio (raw)
+  expression_latex: \text{LDR} = \frac{Loans}{Deposits}
+  expression_python: loans / deposits
+  excel: =DuNo/TienGui
+  variables:
+  - loans
+  - deposits
+  when_to_use: Sàng lọc áp lực thanh khoản và dư địa tăng tín dụng.
+- id: m03_normalized_bank_eps
+  module: m03
+  name_vi: EPS ngân hàng chuẩn hóa chi phí tín dụng
+  name_en: Normalized Bank EPS
+  expression_latex: EPS_{norm} = \frac{(PPOP - cc_{norm}\cdot \overline{L})(1-t)}{N}
+  expression_python: (ppop - normal_credit_cost * avg_loans) * (1 - tax_rate) * 1000 / shares
+  excel: =(PPOP-CPTDBinhThuong*DuNoBQ)*(1-Thue)*1000/SoCP
+  variables:
+  - ppop
+  - normal_credit_cost
+  - avg_loans
+  - tax_rate
+  - shares
+  when_to_use: Ngân hàng đang trích lập bất thường (cao hoặc thấp) trước khi dùng P/E (m04) hoặc FCFE/DDM (m05).
+- id: m03_scorecard_score
+  module: m03
+  name_vi: Điểm tổng ma trận chất lượng
+  name_en: Quality Scorecard total score
+  expression_latex: \text{Score} = \sum_i w_i s_i,\quad s_i\in\{0,\ 0.5,\ 1\}
+  expression_python: sum(w * s for w, s in zip(weights, scores))
+  excel: =SUMPRODUCT(TrongSo,DiemTieuChi)
+  variables:
+  - weights
+  - scores
+  when_to_use: Chốt kết luận chất lượng cho từng doanh nghiệp theo cùng thang đo; so sánh chéo đối thủ.
+- id: m03_peer_rank
+  module: m03
+  name_vi: Thứ hạng phân vị so với đối thủ
+  name_en: Peer percentile rank
+  expression_latex: '\text{Rank} = \frac{\#\{p \in Peers: p \le x\}}{|Peers|}'
+  expression_python: sum(map(metric.__ge__, peers)) / len(peers)
+  excel: =PERCENTRANK.INC(NhomDoiThu,GiaTri)
+  variables:
+  - metric
+  - peers
+  when_to_use: 'Tương đối hóa mọi chỉ tiêu: ROE 15 phần trăm tốt hay xấu tùy ngành; xếp hạng trong nhóm đối thủ cho biết vị
+    trí.'
+- id: m04_pe
+  module: m04
+  name_vi: P/E (TTM và forward) và earnings yield
+  name_en: Price/Earnings, trailing and forward
+  expression_latex: P/E = \frac{P}{EPS}, \quad EPS = \frac{LNST_{me} - \text{cổ tức ưu đãi}}{\text{số cp bình quân pha loãng}},
+    \quad \text{Earnings yield} = \frac{EPS}{P}
+  expression_python: pe = price / eps
+  excel: =B1/B2
+  variables:
+  - price
+  - eps
+  when_to_use: Doanh nghiệp có lợi nhuận dương, ổn định, ngành không quá chu kỳ; so sánh nhanh với peers và với lịch sử.
+- id: m04_pb
+  module: m04
+  name_vi: P/B và BVPS
+  name_en: Price/Book and Book Value per Share
+  expression_latex: P/B = \frac{P}{BVPS}, \quad BVPS = \frac{VCSH_{me}}{N}
+  expression_python: pb = price / bvps
+  excel: =B1/B2
+  variables:
+  - price
+  - bvps
+  when_to_use: Ngân hàng, bảo hiểm, chứng khoán, BĐS, công ty nặng tài sản có sổ sách phản ánh được giá trị tài sản (thanh
+    khoản, giá trị thị trường gần giá sổ).
+- id: m04_ps_evsales
+  module: m04
+  name_vi: P/S và EV/Sales
+  name_en: Price/Sales and EV/Sales
+  expression_latex: P/S = \frac{\text{Vốn hóa}}{\text{Doanh thu}}, \quad EV/Sales = \frac{EV}{\text{Doanh thu}}
+  expression_python: evs = ev / sales; ps = market_cap / sales
+  excel: =B1/B2
+  variables:
+  - ev
+  - market_cap
+  - sales
+  when_to_use: Công ty tăng trưởng chưa có lợi nhuận, lợi nhuận đang ở đáy chu kỳ, hoặc so sánh các công ty cùng mô hình có
+    biên lợi nhuận mục tiêu tương đương (bán lẻ, phần mềm giai đoạn đầu). Ưu tiên EV/Sales hơn P/S khi nợ đáng kể.
+- id: m04_ev_ebitda
+  module: m04
+  name_vi: EV, EV/EBITDA và cầu nối EV về giá mỗi cổ phiếu
+  name_en: EV, EV/EBITDA and EV-to-Equity bridge
+  expression_latex: EV = Cap + D - Cash + MI + Pref - NonOp, \quad EV/EBITDA = \frac{EV}{EBITDA}, \quad P_{fair} = \frac{EBITDA
+    \times M_{target} - D + Cash - MI - Pref + NonOp}{N_{diluted}}
+  expression_python: ev_fair = ebitda * target_multiple; equity_fair = ev_fair - debt + cash - minority - preferred + non_operating;
+    price_fair = equity_fair * 1e9 / shares_diluted
+  excel: =(EBITDA*M - Nợ + Tiền - MI)*1E9/CP
+  variables:
+  - ebitda
+  - target_multiple
+  - debt
+  - cash
+  - minority
+  - preferred
+  - non_operating
+  - shares_diluted
+  when_to_use: Doanh nghiệp phi tài chính, nợ vay khác nhau giữa các công ty, cần so sánh độc lập với cấu trúc vốn và khấu
+    hao (sản xuất, hạ tầng, viễn thông, bán lẻ). Không dùng cho ngân hàng/tài chính.
+- id: m04_fair_price_pe_pb
+  module: m04
+  name_vi: Giá hợp lý = multiple mục tiêu x EPS hoặc BVPS dự phóng
+  name_en: Fair price from target multiple
+  expression_latex: P_{fair} = M_{target} \times EPS_{fwd}, \quad P_{fair} = M_{target} \times BVPS_{fwd}
+  expression_python: price_fair = target_multiple * metric_forward; margin_of_safety = (price_fair - price) / price_fair;
+    upside = price_fair / price - 1
+  excel: =M*EPS_fwd
+  variables:
+  - target_multiple
+  - metric_forward
+  - price
+  when_to_use: Bước tính giá hợp lý cuối cùng sau khi đã chọn multiple mục tiêu và dự phóng EPS/BVPS.
+- id: m04_pb_roe
+  module: m04
+  name_vi: P/B hợp lý theo ROE (justified P/B)
+  name_en: Justified P/B from ROE
+  expression_latex: P/B_{justified} = \frac{ROE - g}{R_e - g}
+  expression_python: pb_justified = (roe - g) / (re - g)
+  excel: =(ROE-g)/(Re-g)
+  variables:
+  - roe
+  - g
+  - re
+  when_to_use: Ngân hàng và tổ chức tài chính (ROE ổn định, tăng trưởng gắn với giữ lại lợi nhuận); công ty nặng tài sản có
+    ROE ổn định.
+- id: m04_pe_justified
+  module: m04
+  name_vi: P/E hợp lý theo tăng trưởng, payout và Re (justified P/E)
+  name_en: Justified P/E (Gordon)
+  expression_latex: P/E_{justified,\ forward} = \frac{payout}{R_e - g}, \quad P/E_{justified,\ trailing} = \frac{payout \times
+    (1 + g)}{R_e - g}
+  expression_python: pe_trailing = payout * (1 + g) / (re - g); pe_forward = payout / (re - g)
+  excel: =payout*(1+g)/(Re-g)
+  variables:
+  - payout
+  - g
+  - re
+  when_to_use: Công ty ổn định, trả cổ tức tiền mặt đều (đối chiếu với DDM) hoặc để kiểm tra tính hợp lý của P/E mục tiêu
+    đã chọn từ peers.
+- id: m04_peg
+  module: m04
+  name_vi: PEG
+  name_en: PEG ratio
+  expression_latex: PEG = \frac{P/E}{g_{EPS}\ (\%)}
+  expression_python: peg = pe / (eps_growth_pct)
+  excel: =PE/(g*100)
+  variables:
+  - pe
+  - eps_growth_pct
+  when_to_use: So sánh các công ty cùng ngành có tăng trưởng khác nhau; sàng lọc nhanh cổ phiếu tăng trưởng.
+- id: m04_dividend_yield
+  module: m04
+  name_vi: Tỷ suất cổ tức
+  name_en: Dividend yield
+  expression_latex: DY = \frac{DPS_{cash}}{P}
+  expression_python: dy = dps_cash / price
+  excel: =DPS/Gia
+  variables:
+  - dps_cash
+  - price
+  when_to_use: Cổ phiếu phòng thủ, doanh nghiệp trả cổ tức tiền mặt đều (điện, nước, tiện ích, một số ngân hàng); so với lãi
+    suất tiền gửi và trái phiếu.
+- id: m04_target_multiple
+  module: m04
+  name_vi: Multiple mục tiêu điều chỉnh từ trung vị peers
+  name_en: Peer-median target multiple with adjustments
+  expression_latex: M_{target} = Median(M_{peers}) \times (1 + a_{growth} + a_{quality} + a_{risk} + a_{liquidity} + a_{cycle})
+  expression_python: import statistics; m_target = statistics.median(peer_multiples) * (1 + sum(adjustments))
+  excel: =MEDIAN(range)*(1+SUM(adj))
+  variables:
+  - peer_multiples
+  - adjustments
+  when_to_use: Mọi lần chọn P/E, P/B, EV/EBITDA mục tiêu; kết quả phải kèm lý do từng điều chỉnh.
+- id: m04_eps_bvps_projection
+  module: m04
+  name_vi: Dự phóng EPS và BVPS 2 năm
+  name_en: EPS and BVPS projection (2 years)
+  expression_latex: EPS_{t+1} = EPS_t (1 + g_t), \quad BVPS_{t+1} = BVPS_t + EPS_{t+1} \times (1 - payout_{cash}) \ (\text{khi
+    không phát hành thêm})
+  expression_python: eps1 = eps0 * (1 + g1); eps2 = eps1 * (1 + g2); bvps1 = bvps0 + eps1 * (1 - payout_cash); bvps2 = bvps1
+    + eps2 * (1 - payout_cash)
+  excel: =EPS0*(1+g1)
+  variables:
+  - eps0
+  - g1, g2
+  - payout_cash
+  - bvps0
+  when_to_use: Mọi định giá multiple theo chỉ tiêu dự phóng.
+- id: m05_capm_re
+  module: m05
+  name_vi: Chi phí vốn chủ sở hữu theo CAPM
+  name_en: Cost of Equity (CAPM)
+  expression_latex: R_e = R_f + \beta \times ERP
+  expression_python: rf + beta * erp
+  excel: =rf + beta*erp
+  variables:
+  - rf
+  - beta
+  - erp
+  when_to_use: Mọi mô hình vốn chủ (FCFE, DDM, RI) và là đầu vào của WACC.
+- id: m05_wacc
+  module: m05
+  name_vi: Chi phí vốn bình quân gia quyền
+  name_en: WACC
+  expression_latex: WACC = \frac{E}{V} R_e + \frac{D}{V} R_d (1 - t)
+  expression_python: we * re + wd * kd * (1 - tax)
+  excel: =we*re + wd*kd*(1-tax)
+  variables:
+  - we
+  - wd
+  - re
+  - kd
+  - tax
+  when_to_use: Tỷ lệ chiết khấu của FCFF phi tài chính. KHÔNG dùng cho FCFE/DDM/RI (dùng Re).
+- id: m05_fcff
+  module: m05
+  name_vi: Dòng tiền tự do cho doanh nghiệp
+  name_en: FCFF (NOPAT route)
+  expression_latex: FCFF = EBIT(1-t) + D\&A - CAPEX - \Delta NWC
+  expression_python: ebit * (1 - tax) + da - capex - dnwc
+  excel: =ebit*(1-tax)+da-capex-dnwc
+  variables:
+  - ebit
+  - tax
+  - da
+  - capex
+  - dnwc
+  when_to_use: Doanh nghiệp phi tài chính; chiết khấu bằng WACC ra EV.
+- id: m05_fcff_from_cfo
+  module: m05
+  name_vi: FCFF từ dòng tiền hoạt động
+  name_en: FCFF from CFO
+  expression_latex: FCFF = CFO + Interest(1-t) - CAPEX
+  expression_python: cfo + interest * (1 - tax) - capex
+  excel: =cfo+interest*(1-tax)-capex
+  variables:
+  - cfo
+  - interest
+  - tax
+  - capex
+  when_to_use: Cách kiểm tra chéo FCFF quá khứ từ báo cáo lưu chuyển tiền tệ.
+- id: m05_fcfe
+  module: m05
+  name_vi: Dòng tiền tự do cho vốn chủ (phi tài chính)
+  name_en: FCFE
+  expression_latex: FCFE = NI + D\&A - CAPEX - \Delta NWC + Net\ Borrowing
+  expression_python: ni + da - capex - dnwc + net_borrowing
+  excel: =ni+da-capex-dnwc+net_borrowing
+  variables:
+  - ni
+  - da
+  - capex
+  - dnwc
+  - net_borrowing
+  when_to_use: Doanh nghiệp có cơ cấu nợ ổn định, hoặc muốn định giá vốn chủ trực tiếp bằng Re.
+- id: m05_fcfe_bank
+  module: m05
+  name_vi: FCFE của ngân hàng (giữ vốn theo CAR)
+  name_en: Bank FCFE
+  expression_latex: FCFE_{bank} = NI - CAR_{target} \times \Delta RWA
+  expression_python: ni - car_target * delta_rwa
+  excel: =ni-car_target*delta_rwa
+  variables:
+  - ni
+  - car_target
+  - delta_rwa
+  when_to_use: Ngân hàng và tổ chức tín dụng khi không chia hoặc chia ít cổ tức tiền mặt.
+- id: m05_gordon_tv
+  module: m05
+  name_vi: Giá trị cuối kỳ theo Gordon
+  name_en: Terminal Value - Gordon Growth
+  expression_latex: TV_n = \frac{FCF_{n+1}}{r - g}
+  expression_python: f_next / (r - g)
+  excel: =f_next/(r-g)
+  variables:
+  - f_next
+  - r
+  - g
+  when_to_use: Mặc định cho TV của doanh nghiệp trưởng thành; kiểm tra chéo bằng exit multiple.
+- id: m05_tv_exit_multiple
+  module: m05
+  name_vi: Giá trị cuối kỳ theo bội số thoái vốn
+  name_en: Terminal Value - Exit Multiple
+  expression_latex: TV_n = EBITDA_n \times Multiple
+  expression_python: ebitda_n * multiple
+  excel: =ebitda_n*multiple
+  variables:
+  - ebitda_n
+  - multiple
+  when_to_use: Kiểm tra chéo TV Gordon hoặc khi ngành có giao dịch tham chiếu rõ.
+- id: m05_implied_g
+  module: m05
+  name_vi: Tăng trưởng ngụ ý từ TV
+  name_en: Implied perpetual growth from TV
+  expression_latex: g = \frac{TV \cdot r - F_n}{TV + F_n}
+  expression_python: (tv * r - f_n) / (tv + f_n)
+  excel: =(tv*r-f_n)/(tv+f_n)
+  variables:
+  - tv
+  - r
+  - f_n
+  when_to_use: Kiểm tra TV từ exit multiple có ngầm giả định g hợp lý không.
+- id: m05_sustainable_g
+  module: m05
+  name_vi: Tăng trưởng bền vững và FCFF chuẩn hóa cho TV
+  name_en: Sustainable growth and normalized terminal FCFF
+  expression_latex: g = RR \times ROIC;\quad FCFF_{n+1} = NOPAT_n (1+g)\left(1 - \frac{g}{ROIC}\right)
+  expression_python: nopat_n * (1 + g) * (1 - g / roic)
+  excel: =nopat_n*(1+g)*(1-g/roic)
+  variables:
+  - nopat_n
+  - g
+  - roic
+  when_to_use: Tính dòng tiền năm TV đúng bản chất, không copy năm cuối.
+- id: m05_pv_dcf
+  module: m05
+  name_vi: Hiện giá dòng tiền dự phóng và TV (có mid-year)
+  name_en: DCF present value with mid-year option
+  expression_latex: V_0 = \sum_{t=1}^{n}\frac{F_t}{(1+r)^{t-s}} + \frac{TV_n}{(1+r)^{n-s}},\ s = 0\ \text{hoặc}\ 0{,}5
+  expression_python: sum(f / (1 + r) ** (i + 1 - s) for i, f in enumerate(flows)) + tv / (1 + r) ** (len(flows) - s)
+  excel: =NPV(r,flows)*(1+r)^s + tv/(1+r)^(n-s)
+  variables:
+  - flows
+  - r
+  - tv
+  - s
+  when_to_use: Mọi DCF. Quy ước mặc định cuối năm; dùng mid-year khi dòng tiền phát sinh đều trong năm (bán lẻ, sản xuất).
+- id: m05_equity_bridge
+  module: m05
+  name_vi: Cầu nối EV sang giá trị vốn chủ và giá/cổ phiếu
+  name_en: EV to equity per share bridge
+  expression_latex: P = \frac{EV - Debt + Cash - Minority - Pref + Associates}{Diluted\ Shares}
+  expression_python: (ev - debt + cash - minority - pref + associates) * 1e9 / diluted_shares
+  excel: =(ev-debt+cash-minority-pref+assoc)*1e9/shares
+  variables:
+  - ev
+  - debt
+  - cash
+  - minority
+  - pref
+  - associates
+  - diluted_shares
+  when_to_use: Sau mọi DCF FCFF để ra giá/cổ phiếu.
+- id: m05_ddm_gordon
+  module: m05
+  name_vi: DDM tăng trưởng đều (Gordon)
+  name_en: Gordon Growth DDM
+  expression_latex: P_0 = \frac{D_0(1+g)}{R_e - g}
+  expression_python: d0 * (1 + g) / (re - g)
+  excel: =d0*(1+g)/(re-g)
+  variables:
+  - d0
+  - g
+  - re
+  when_to_use: Doanh nghiệp trưởng thành, chính sách cổ tức ổn định (tiện ích, tiêu dùng thiết yếu, ngân hàng trả cổ tức tiền
+    mặt đều).
+- id: m05_ddm_multistage
+  module: m05
+  name_vi: DDM/FCFE nhiều giai đoạn
+  name_en: Multi-stage DDM / FCFE
+  expression_latex: P_0 = \sum_{t=1}^{n}\frac{D_t}{(1+R_e)^t} + \frac{D_{n+1}/(R_e-g)}{(1+R_e)^n}
+  expression_python: sum(d / (1 + re) ** (i + 1) for i, d in enumerate(divs)) + (d_next / (re - g)) / (1 + re) ** len(divs)
+  excel: =NPV(re,divs)+(d_next/(re-g))/(1+re)^n
+  variables:
+  - divs
+  - d_next
+  - re
+  - g
+  when_to_use: Ngân hàng, doanh nghiệp đang tăng trưởng nhanh rồi chậm lại; payout tăng dần theo thời gian.
+- id: m05_residual_income
+  module: m05
+  name_vi: Mô hình thu nhập thặng dư
+  name_en: Residual Income valuation
+  expression_latex: P_0 = BV_0 + \sum_{t=1}^{n}\frac{(ROE_t - R_e) BV_{t-1}}{(1+R_e)^t} + \frac{(ROE_T - R_e) BV_n / (R_e
+    - g)}{(1+R_e)^n}
+  expression_python: bv0 + sum(ri / (1 + re) ** (i + 1) for i, ri in enumerate(ris)) + (ri_next / (re - g)) / (1 + re) **
+    len(ris)
+  excel: =bv0+NPV(re,ris)+(ri_next/(re-g))/(1+re)^n
+  variables:
+  - bv0
+  - ris
+  - ri_next
+  - re
+  - g
+  when_to_use: Ngân hàng, bảo hiểm, công ty đầu tư; khi BCTC minh bạch và muốn giảm tỷ trọng TV.
+- id: m05_justified_pb
+  module: m05
+  name_vi: P/B hợp lý từ ROE, g, Re
+  name_en: Justified P/B
+  expression_latex: P/B = \frac{ROE - g}{R_e - g}
+  expression_python: (roe - g) / (re - g)
+  excel: =(roe-g)/(re-g)
+  variables:
+  - roe
+  - g
+  - re
+  when_to_use: Cầu nối giữa nội tại và định giá tương đối cho ngân hàng (chọn P/B mục tiêu có căn cứ ở m04).
+- id: m05_tv_share
+  module: m05
+  name_vi: Tỷ trọng giá trị cuối kỳ
+  name_en: PV(TV) share of value
+  expression_latex: Share = \frac{PV(TV)}{EV\ (hoặc\ giá\ trị\ vốn\ chủ)}
+  expression_python: pv_tv / total_value
+  excel: =pv_tv/total_value
+  variables:
+  - pv_tv
+  - total_value
+  when_to_use: Kiểm tra độ rủi ro giả định của mọi DCF/DDM.
+- id: m05_sensitivity_grid
+  module: m05
+  name_vi: Bảng độ nhạy giá nội tại theo r x g
+  name_en: Sensitivity grid (r x g)
+  expression_latex: P(r, g) = \frac{\sum F_t/(1+r)^t + FCFF_{n+1}(g)/(r-g)/(1+r)^n - NetDebt}{Shares}
+  expression_python: '[[(sum(f / (1 + w) ** (i + 1) for i, f in enumerate(flows)) + (nopat_n * (1 + g) * (1 - g / roic)) /
+    (w - g) / (1 + w) ** len(flows) - net_debt) * 1e9 / shares for g in gs] for w in ws]'
+  excel: Data Table hai biến (Data > What-If Analysis) hoặc lưới công thức tham chiếu ô r và ô g
+  variables:
+  - flows
+  - ws
+  - gs
+  - nopat_n
+  - roic
+  - net_debt
+  - shares
+  when_to_use: Mọi báo cáo định giá; bắt buộc theo prompt gốc (Re/WACC ±1%, ±2% x g ±0,5%, ±1%).
+- id: m05_margin_of_safety
+  module: m05
+  name_vi: Biên an toàn
+  name_en: Margin of Safety
+  expression_latex: MoS = \frac{V - P}{V}
+  expression_python: (v - p) / v
+  excel: =(v-p)/v
+  variables:
+  - v
+  - p
+  when_to_use: Kết luận định giá; tính cho cả kịch bản cơ sở và worst-case.
+- id: m06_capm
+  module: m06
+  name_vi: Chi phí vốn chủ sở hữu theo CAPM
+  name_en: Cost of equity (CAPM)
+  expression_latex: R_e = R_f + \beta \times ERP
+  expression_python: rf + beta * erp
+  excel: =Rf + Beta * ERP
+  variables:
+  - rf
+  - beta
+  - erp
+  when_to_use: Xác định tỷ suất sinh lời tối thiểu mà chủ sở hữu đòi hỏi; là tỷ suất chiết khấu của FCFE.
+- id: m06_wacc
+  module: m06
+  name_vi: Chi phí vốn bình quân gia quyền (có hoặc không thuế)
+  name_en: WACC (with / without tax)
+  expression_latex: WACC = \frac{E}{V} R_e + \frac{D}{V} R_d (1 - T)
+  expression_python: e/v*re + d/v*rd*(1-t)
+  excel: =E/V*Re + D/V*Rd*(1-T)
+  variables:
+  - e
+  - d
+  - v
+  - re
+  - rd
+  - t
+  when_to_use: Tỷ suất chiết khấu của FCFF (dòng tiền trước nợ). Cá nhân T = 0 thì WACC = E/V x Re + D/V x Rd.
+- id: m06_fisher
+  module: m06
+  name_vi: Phương trình Fisher (danh nghĩa và thực)
+  name_en: Fisher equation
+  expression_latex: 1 + i_{nom} = (1 + i_{real})(1 + \pi)
+  expression_python: (1+real)*(1+infl)-1
+  excel: =(1+Real)*(1+Infl)-1
+  variables:
+  - real
+  - infl
+  when_to_use: 'Khi dữ liệu lẫn lộn giá thực và danh nghĩa: quy tất cả về một hệ trước khi chiết khấu.'
+- id: m06_interest_shield
+  module: m06
+  name_vi: Lá chắn thuế của lãi vay
+  name_en: Interest tax shield
+  expression_latex: TS_{int,t} = r_d \times B_{t-1} \times T
+  expression_python: rd * b_prev * t
+  excel: =Rd * DuNoDauKy * T
+  variables:
+  - rd
+  - b_prev
+  - t
+  when_to_use: Doanh nghiệp (T > 0) có đủ thu nhập chịu thuế để hấp thụ khoản trừ.
+- id: m06_depreciation_shield
+  module: m06
+  name_vi: Khấu hao đường thẳng và lá chắn thuế khấu hao
+  name_en: Straight-line depreciation and tax shield
+  expression_latex: Dep = \frac{C - S}{N}; \quad TS_{dep} = Dep \times T
+  expression_python: (c - s_book) / n_dep * t
+  excel: =SLN(Cost,Salvage,Life)*T
+  variables:
+  - c
+  - s_book
+  - n_dep
+  - t
+  when_to_use: Cải thiện dòng tiền sau thuế của doanh nghiệp sở hữu tài sản cố định.
+- id: m06_debt_schedule
+  module: m06
+  name_vi: 'Lịch trả nợ: gốc đều và niên kim'
+  name_en: 'Amortization: equal principal vs annuity'
+  expression_latex: 'Equal: P_t = D/n,\ I_t = r B_{t-1};\quad Annuity: PMT = D \frac{r}{1-(1+r)^{-n}}'
+  expression_python: 'i_eq = [(d - d / n * (k - 1)) * r for k in range(1, n + 1)]
+
+    pmt = d * r / (1 - (1 + r) ** (-n))
+
+    result = {''interest_equal_principal'': i_eq, ''principal_equal'': d / n, ''pmt_annuity'': pmt}'
+  excel: 'Gốc đều: =D/n; lãi: =DuNo*r; niên kim: =PMT(r,n,-D)'
+  variables:
+  - d
+  - r
+  - n
+  when_to_use: Dựng nghĩa vụ nợ từng năm cho FCFE và DSCR.
+- id: m06_noi
+  module: m06
+  name_vi: Thu nhập hoạt động ròng (NOI)
+  name_en: Net Operating Income
+  expression_latex: NOI_t = Rev_t (1 - v - o)
+  expression_python: rev0 * (1 + g) ** (t - 1) * (1 - vacancy - opex)
+  excel: =Rev1*(1+g)^(t-1)*(1-trong-opex)
+  variables:
+  - rev0
+  - g
+  - t
+  - vacancy
+  - opex
+  when_to_use: Luôn dùng NOI làm đầu vào dòng tiền thay cho doanh thu.
+- id: m06_fcff
+  module: m06
+  name_vi: Dòng tiền tự do của toàn bộ vốn (FCFF)
+  name_en: Free Cash Flow to Firm (project)
+  expression_latex: FCFF_t = NOI_t (1 - T) + T \times Dep_t - CAPEX_t - \Delta NWC_t
+  expression_python: noi * (1 - t) + t * dep - capex - dnwc
+  excel: =NOI*(1-T)+T*Dep-CAPEX-dNWC
+  variables:
+  - noi
+  - t
+  - dep
+  - capex
+  - dnwc
+  when_to_use: Đánh giá tài sản độc lập với cách tài trợ; chiết khấu bằng WACC.
+- id: m06_fcfe
+  module: m06
+  name_vi: Dòng tiền tự do của vốn chủ (FCFE)
+  name_en: Free Cash Flow to Equity (project)
+  expression_latex: FCFE_t = FCFF_t - I_t (1 - T) - P_t
+  expression_python: fcff - interest * (1 - t) - principal
+  excel: =FCFF - Lai*(1-T) - Goc
+  variables:
+  - fcff
+  - interest
+  - t
+  - principal
+  when_to_use: Đo dòng tiền thực sự chảy vào túi chủ đầu tư; chiết khấu bằng Re (CAPM). Cá nhân T = 0.
+- id: m06_terminal_value
+  module: m06
+  name_vi: Giá trị thanh lý sau thuế cuối kỳ
+  name_en: After-tax terminal (exit) value
+  expression_latex: TV = P_n (1-c) - T (P_n (1-c) - BV_n)
+  expression_python: v0 * (1 + g_price) ** n * (1 - sell_cost) - t * (v0 * (1 + g_price) ** n * (1 - sell_cost) - book_n)
+  excel: =P*(1-c)-T*(P*(1-c)-BV)
+  variables:
+  - v0
+  - g_price
+  - n
+  - sell_cost
+  - t
+  - book_n
+  when_to_use: Mọi dự án nắm giữ tài sản có giá trị bán lại; bắt buộc nếu mô hình giả định tài sản tăng giá.
+- id: m06_npv
+  module: m06
+  name_vi: Giá trị hiện tại ròng
+  name_en: Net Present Value
+  expression_latex: NPV = \sum_{t=0}^{n} \frac{CF_t}{(1+r)^t}
+  expression_python: sum(cf[t] / (1 + r) ** t for t in range(len(cf)))
+  excel: =CF0 + NPV(r, CF1:CFn)
+  variables:
+  - cf
+  - r
+  when_to_use: 'Tiêu chí quyết định chính: NPV lớn hơn 0 thì tạo giá trị.'
+- id: m06_irr
+  module: m06
+  name_vi: Tỷ suất hoàn vốn nội bộ
+  name_en: Internal Rate of Return
+  expression_latex: \sum_{t=0}^{n} \frac{CF_t}{(1+IRR)^t} = 0
+  expression_python: "f = lambda x: sum(cf[t] / (1 + x) ** t for t in range(len(cf)))\nlo, hi = -0.99, 1.0\nfor _ in range(200):\n\
+    \    mid = (lo + hi) / 2\n    if f(lo) * f(mid) <= 0:\n        hi = mid\n    else:\n        lo = mid\nresult = (lo + hi)\
+    \ / 2"
+  excel: =IRR(CF0:CFn)
+  variables:
+  - cf
+  when_to_use: Chẩn đoán nhanh lợi suất; so với WACC (cho FCFF) hoặc Re (cho FCFE).
+- id: m06_mirr
+  module: m06
+  name_vi: IRR điều chỉnh (MIRR)
+  name_en: Modified IRR
+  expression_latex: MIRR = \left(\frac{FV(\text{dòng dương}, r_{rein})}{PV(\text{dòng âm}, r_{fin})}\right)^{1/n} - 1
+  expression_python: 'n = len(cf) - 1
+
+    pos = sum(c * (1 + rein) ** (n - t) for t, c in enumerate(cf) if c > 0)
+
+    neg = sum(c / (1 + fin) ** t for t, c in enumerate(cf) if c < 0)
+
+    result = (pos / -neg) ** (1 / n) - 1'
+  excel: =MIRR(CF0:CFn, fin, rein)
+  variables:
+  - cf
+  - fin
+  - rein
+  when_to_use: Khi dòng tiền vốn chủ đổi dấu (âm đầu kỳ, dương sau, hoặc có kỳ bù tiền); thay IRR đa nghiệm.
+- id: m06_payback
+  module: m06
+  name_vi: Điểm đảo chiều và hoàn vốn có chiết khấu
+  name_en: Cash-flow reversal year and discounted payback
+  expression_latex: 't^* = \min\{t: FCFE_t > 0\};\ DPP = \min\{t: \sum_{k \le t} FCFE_k/(1+r)^k \ge 0\}'
+  expression_python: "rev = next((t for t in range(1, len(cf)) if cf[t] > 0), None)\ncum = 0\ndpp = None\ntrough = 0\nfor\
+    \ t in range(len(cf)):\n    cum += cf[t] / (1 + r) ** t\n    trough = min(trough, cum)\n    if dpp is None and cum >=\
+    \ 0:\n        dpp = t\nresult = {'reversal_year': rev, 'discounted_payback_year': dpp, 'trough_pv': trough}"
+  excel: Dùng cột dòng tiền, cột lũy kế (=SUM) và =MATCH(TRUE, INDEX(lũy kế>=0,0),0)
+  variables:
+  - cf
+  - r
+  when_to_use: Trả lời 'sau bao nhiêu năm dự án tự nuôi mình' và 'phải bù tiền túi tối đa bao nhiêu'.
+- id: m06_dscr
+  module: m06
+  name_vi: Hệ số khả năng trả nợ (DSCR)
+  name_en: Debt Service Coverage Ratio
+  expression_latex: DSCR_t = \frac{NOI_t}{I_t + P_t}
+  expression_python: noi / (interest + principal)
+  excel: =NOI/(Lai+Goc)
+  variables:
+  - noi
+  - interest
+  - principal
+  when_to_use: Kiểm tra khả năng tự trả nợ; xin vay ngân hàng.
+- id: m06_stress
+  module: m06
+  name_vi: 'Stress test: sốc doanh thu, lãi vay, giá tài sản'
+  name_en: Stress test shocks
+  expression_latex: NOI^{stress} = Rev (1 - s)(1 - o);\ r_d^{stress} = r_d + \Delta r;\ g_P^{stress} = g_P - \Delta g
+  expression_python: rev * (1 - shock) * (1 - opex)
+  excel: 'Bảng kịch bản: =Rev*(1-Shock)*(1-Opex), chạy lại toàn mô hình bằng Data Table'
+  variables:
+  - rev
+  - shock
+  - opex
+  when_to_use: Trước khi kết luận; ít nhất 3 sốc riêng và 1 kịch bản kết hợp.
+- id: m06_liquidity_reserve
+  module: m06
+  name_vi: Quỹ dự phòng thanh khoản tối thiểu
+  name_en: Minimum liquidity reserve
+  expression_latex: Reserve = m \times \max(0,\ (DebtService^{stress} - NOI^{stress}) / 12)
+  expression_python: months * max(0, (debt_service - noi_stress) / 12)
+  excel: =Thang*MAX(0,(NoDenHan-NOIStress)/12)
+  variables:
+  - months
+  - debt_service
+  - noi_stress
+  when_to_use: Chốt số tiền mặt cần giữ ngoài vốn đầu tư để không bán gấp tài sản.
+- id: m06_personal_vs_corp
+  module: m06
+  name_vi: So sánh đứng tên cá nhân và doanh nghiệp
+  name_en: Personal vs corporate comparison
+  expression_latex: \Delta NPV = NPV_{corp}(T) - NPV_{personal}(T_p)
+  expression_python: npv_corp - npv_personal
+  excel: Chạy hai bản mô hình với T khác nhau, trừ NPV
+  variables:
+  - npv_corp
+  - npv_personal
+  when_to_use: Chọn hình thức sở hữu.
+- id: m07_position_size_risk
+  module: m07
+  name_vi: Số cổ phiếu theo rủi ro % vốn
+  name_en: Position size by fixed-fractional risk
+  expression_latex: N = \left\lfloor \frac{C \cdot r/100}{E - S} \Big/ \text{lot} \right\rfloor \cdot \text{lot}
+  expression_python: math.floor((C * r / 100) / (E - S) / lot) * lot
+  excel: =FLOOR((C*r/100)/(E-S),lot)
+  variables:
+  - C
+  - r
+  - E
+  - S
+  - lot
+  when_to_use: Khi người dùng hỏi mua bao nhiêu cổ phiếu hoặc muốn giới hạn lỗ của một lệnh.
+- id: m07_atr_stop
+  module: m07
+  name_vi: Cắt lỗ theo ATR
+  name_en: ATR-based stop-loss
+  expression_latex: S = E - k \cdot ATR
+  expression_python: E - k * ATR
+  excel: =E-k*ATR
+  variables:
+  - E
+  - ATR
+  - k
+  when_to_use: Đặt stop thích nghi với biến động từng mã thay vì % cố định.
+- id: m07_risk_reward
+  module: m07
+  name_vi: Tỷ lệ R:R và độ lệch stop
+  name_en: Reward-to-risk ratio
+  expression_latex: RR = \frac{TP - E}{E - S}
+  expression_python: (TP - E) / (E - S)
+  excel: =(TP-E)/(E-S)
+  variables:
+  - TP
+  - E
+  - S
+  when_to_use: 'Sàng lọc kèo: loại kịch bản có tỷ lệ lợi/rủi ro kém (bộ lọc của hệ thống yêu cầu R:R tối thiểu 2,0).'
+- id: m07_breakeven_winrate
+  module: m07
+  name_vi: Tỷ lệ thắng hòa vốn
+  name_en: Break-even win rate
+  expression_latex: p_{BE} = \frac{1}{1 + RR}
+  expression_python: 1 / (1 + RR)
+  excel: =1/(1+RR)
+  variables:
+  - RR
+  when_to_use: Cần biết tần suất thắng tối thiểu để chiến lược không lỗ.
+- id: m07_expectancy_R
+  module: m07
+  name_vi: Kỳ vọng toán mỗi lệnh theo R
+  name_en: Expectancy per trade (in R)
+  expression_latex: E[R] = p \cdot W - (1-p) \cdot L
+  expression_python: p * W - (1 - p) * L
+  excel: =p*W-(1-p)*L
+  variables:
+  - p
+  - W
+  - L
+  when_to_use: Đánh giá một quy tắc giao dịch có lợi thế dương hay không trước khi cam kết vốn.
+- id: m07_drawdown_recovery
+  module: m07
+  name_vi: Mức tăng cần để hồi phục sau drawdown
+  name_en: Gain required to recover from drawdown
+  expression_latex: G = \frac{1}{1 - d} - 1
+  expression_python: 1 / (1 - d) - 1
+  excel: =1/(1-d)-1
+  variables:
+  - d
+  when_to_use: Giải thích tại sao cần giới hạn lỗ, hoặc đánh giá tác hại khi để lỗ sâu.
+- id: m07_kelly_fraction
+  module: m07
+  name_vi: Tỷ lệ Kelly và Kelly thận trọng
+  name_en: Kelly fraction (fractional Kelly)
+  expression_latex: f^{*} = p - \frac{1-p}{b}, \quad f = \lambda f^{*}
+  expression_python: max(0.0, p - (1 - p) / b) * lam
+  excel: =MAX(0,p-(1-p)/b)*lam
+  variables:
+  - p
+  - b
+  - lam
+  when_to_use: Chỉ để tham chiếu trần tỷ trọng rủi ro khi đã có thống kê p, b đáng tin; không dùng thay quy tắc rủi ro cố
+    định.
+- id: m07_gambler_ruin
+  module: m07
+  name_vi: Xác suất phá sản đơn giản (cược đều, hoàn trả 1:1)
+  name_en: Simple risk of ruin (even-payoff gambler's ruin)
+  expression_latex: P_{ruin} \approx \left(\frac{1-p}{p}\right)^{n}, \quad n = \frac{1}{r}
+  expression_python: ((1 - p) / p) ** (100 / r_pct) if p > 0.5 else 1.0
+  excel: =IF(p>0.5,((1-p)/p)^(100/r_pct),1)
+  variables:
+  - p
+  - r_pct
+  when_to_use: Minh họa trực giác vì sao rủi ro mỗi lệnh nhỏ làm giảm mạnh khả năng cháy tài khoản.
+- id: m07_margin_call_price
+  module: m07
+  name_vi: Giá chạm ngưỡng xử lý margin
+  name_en: Margin call price
+  expression_latex: P_{call} = \frac{L}{N (1 - m)}
+  expression_python: L / (N * (1 - m))
+  excel: =L/(N*(1-m))
+  variables:
+  - L
+  - N
+  - m
+  when_to_use: Người dùng dự tính dùng margin và cần biết giá cổ phiếu giảm bao nhiêu thì bị gọi ký quỹ/bán giải chấp.
+- id: m07_price_limit
+  module: m07
+  name_vi: Giá trần/sàn theo biên độ
+  name_en: Daily price ceiling and floor
+  expression_latex: P_{ceil} = P_{ref}(1+b), \quad P_{floor} = P_{ref}(1-b)
+  expression_python: (Pref * (1 + b / 100), Pref * (1 - b / 100))
+  excel: =Pref*(1+b/100)
+  variables:
+  - Pref
+  - b
+  when_to_use: Ước lượng tình huống xấu nhất trong một phiên và khả năng kẹt cắt lỗ khi kịch sàn.
+- id: m07_vol_range
+  module: m07
+  name_vi: Vùng biến động dự kiến theo ATR
+  name_en: ATR-based expected range
+  expression_latex: Range\% = ATR\% \cdot \sqrt{h} \cdot k
+  expression_python: ATRp * math.sqrt(h) * k
+  excel: =ATRp*SQRT(h)*k
+  variables:
+  - ATRp
+  - h
+  - k
+  when_to_use: Mô tả vùng giá có thể dao động trong h phiên tới (kịch bản trên/dưới), không dự báo hướng.
+- id: m07_real_rate
+  module: m07
+  name_vi: Lãi suất thực từ lãi danh nghĩa và lạm phát
+  name_en: Real rate (Fisher)
+  expression_latex: r_{real} = \frac{1 + r_{nom}}{1 + \pi} - 1
+  expression_python: ((1 + r_nom / 100) / (1 + pi / 100) - 1) * 100
+  excel: =((1+r_nom/100)/(1+pi/100)-1)*100
+  variables:
+  - r_nom
+  - pi
+  when_to_use: So sánh tài sản rủi ro với mốc phi rủi ro theo sức mua, đặc biệt khi diễn giải Rf trong CAPM.
+- id: m07_round_trip_cost
+  module: m07
+  name_vi: Chi phí giao dịch vòng (mua rồi bán)
+  name_en: Round-trip transaction cost
+  expression_latex: c = 2 f_{broker} + t_{sell}
+  expression_python: 2 * fee + tax_sell
+  excel: =2*fee+tax_sell
+  variables:
+  - fee
+  - tax_sell
+  when_to_use: Đánh giá mức lãi tối thiểu để hòa vốn, đặc biệt với chiến lược giao dịch tần suất cao.

@@ -145,7 +145,96 @@ def compute_indicators(df: pd.DataFrame) -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 # 3. Kênh Xu hướng Toán học & Đường Trung trục (Median Line)
 # ---------------------------------------------------------------------------
-def compute_trend_channel(df: pd.DataFrame, order: int = 5) -> dict:
+# Tham số kênh v3 (chọn bằng kiểm chứng ngoài mẫu trên 8 mã, xem documents/VERIFICATION_FINDINGS.md):
+CHANNEL_QUANTILE = 0.99      # biên trên/dưới = phân vị 99%/1% của (High/Low - đường hồi quy) -> kênh ôm sát đỉnh/đáy thật
+CHANNEL_MIN_BARS, CHANNEL_MAX_BARS = 60, 150   # >= 60 phiên để kênh đủ dài, dễ đọc (kiểm chứng: hiệu quả chứa/bề rộng gần như không đổi so với 30)
+CHANNEL_SWING_MULT, CHANNEL_SWING_MIN = 4.0, 0.08   # ngưỡng "sóng đáng kể" = max(8%, 4 x ATR%)
+
+
+def _atr_pct(df: pd.DataFrame, n: int = 14) -> float:
+    c = df["Close"]
+    tr = pd.concat([df["High"] - df["Low"], (df["High"] - c.shift()).abs(), (df["Low"] - c.shift()).abs()], axis=1).max(axis=1)
+    return float(tr.rolling(n).mean().iloc[-1] / c.iloc[-1])
+
+
+def _channel_window(df: pd.DataFrame) -> int:
+    """Chọn số phiên của GIAI ĐOẠN GẦN NHẤT: lùi từ hiện tại tới điểm bắt đầu nhịp sóng đáng kể gần nhất
+    (đảo chiều >= max(8%, 4*ATR%)), kẹp trong [60, 150] phiên. Không dùng cả 12 tháng như bản cũ."""
+    c = df["Close"].values[-CHANNEL_MAX_BARS:]
+    n = len(c)
+    thr = max(CHANNEL_SWING_MIN, CHANNEL_SWING_MULT * (_atr_pct(df) if n > 15 else 0.02))
+    ext_hi = ext_lo = c[-1]
+    start = 0
+    for i in range(n - 1, -1, -1):
+        ext_hi, ext_lo = max(ext_hi, c[i]), min(ext_lo, c[i])
+        if (ext_hi / c[i] - 1 >= thr and c[-1] >= c[i]) or (c[i] / ext_lo - 1 >= thr and c[-1] <= c[i]):
+            start = i
+            break
+    return int(np.clip(n - start, CHANNEL_MIN_BARS, CHANNEL_MAX_BARS))
+
+
+def compute_trend_channel(df: pd.DataFrame, order: int = 5, method: str = "regression") -> dict:
+    """
+    KÊNH XU HƯỚNG v3 (thay cho bản hồi quy toàn bộ 12 tháng; bản cũ vẫn có ở compute_trend_channel_legacy).
+
+    Vì sao đổi: kiểm chứng ngoài mẫu cho thấy kênh cũ chỉ chứa được ~33% số phiên kế tiếp và báo "phá vỡ kênh" ở 37% số ngày
+    (vì đường hồi quy chạy xuyên cả những giai đoạn khác nhau). Kênh mới:
+      1. chỉ dùng giai đoạn gần nhất (xem _channel_window),
+      2. đường giữa = hồi quy tuyến tính của giá đóng cửa trong giai đoạn đó,
+      3. biên trên/dưới SONG SONG với đường giữa, đặt ở phân vị 99%/1% của phần dư High/Low (ôm sát đỉnh/đáy thực),
+      4. vẫn trả về các điểm đỉnh/đáy cực trị (argrelextrema) để gom vùng hỗ trợ/kháng cự.
+    Các mảng *_line có độ dài = len(df); phần trước giai đoạn kênh là NaN (không vẽ).
+    """
+    if method == "legacy":
+        return compute_trend_channel_legacy(df, order=order)
+    highs = df["High"].values
+    lows = df["Low"].values
+    n = len(df)
+    peak_idx = np.unique(argrelextrema(highs, np.greater_equal, order=order)[0])
+    trough_idx = np.unique(argrelextrema(lows, np.less_equal, order=order)[0])
+    result = {"peak_idx": peak_idx.tolist(), "trough_idx": trough_idx.tolist()}
+    if n < CHANNEL_MIN_BARS + 5:
+        result.update({"valid": False, "channel_type": "Không đủ dữ liệu để thiết lập kênh giá"})
+        return result
+    w = _channel_window(df)
+    s = n - w
+    x = np.arange(s, n)
+    close = df["Close"].values[s:]
+    slope, intercept = np.polyfit(x, close, 1)
+    fit = intercept + slope * x
+    q = CHANNEL_QUANTILE
+    up_off = float(np.quantile(highs[s:] - fit, q))
+    lo_off = float(np.quantile(lows[s:] - fit, 1 - q))
+    xs = np.arange(n)
+    mid_full = intercept + slope * xs
+    upper_line = np.where(xs >= s, mid_full + up_off, np.nan)
+    lower_line = np.where(xs >= s, mid_full + lo_off, np.nan)
+    median_line = np.where(xs >= s, mid_full + (up_off + lo_off) / 2, np.nan)
+    ss_res = float(((close - fit) ** 2).sum())
+    ss_tot = float(((close - close.mean()) ** 2).sum()) or 1e-9
+    r2 = 1 - ss_res / ss_tot
+    width_now = (up_off - lo_off)
+    drift_total = slope * (w - 1)
+    # phân loại: độ dịch chuyển tổng của đường hồi quy so với bề rộng kênh
+    if abs(drift_total) < 0.6 * width_now:
+        channel_type = "Horizontal (Đi ngang / Tích lũy)"
+    elif slope > 0:
+        channel_type = "Ascending (Kênh tăng)"
+    else:
+        channel_type = "Descending (Kênh giảm)"
+    result.update({
+        "upper_slope": float(slope), "upper_intercept": float(intercept + up_off),
+        "lower_slope": float(slope), "lower_intercept": float(intercept + lo_off),
+        "upper_line": upper_line.tolist(), "lower_line": lower_line.tolist(), "median_line": median_line.tolist(),
+        "is_parallel": True, "slope_diff_ratio": 0.0, "channel_type": channel_type,
+        "window": int(w), "start_idx": int(s), "r2": round(float(r2), 3),
+        "width_pct": round(float(width_now / df["Close"].iloc[-1] * 100), 2), "method": "regression_recent_regime",
+        "valid": True,
+    })
+    return result
+
+
+def compute_trend_channel_legacy(df: pd.DataFrame, order: int = 5) -> dict:
     """
     Xác định kênh xu hướng tuyến tính bằng argrelextrema + polyfit,
     đồng thời tính đường trung trục (Median Line).
@@ -534,7 +623,7 @@ def generate_recommendation_v2(df_ind: pd.DataFrame, channel: dict, sr: dict, bo
 
     # Phát hiện trạng thái BREAKOUT: giá đã phá vỡ hẳn lên trên biên trên kênh (không còn
     # "lơ lửng giữa kênh" như logic mặc định vẫn diễn giải). Ngưỡng 3% để tránh nhiễu.
-    is_breakout = bool(channel_valid and upper_edge and close > upper_edge * 1.03)
+    is_breakout = bool(channel_valid and upper_edge and close > upper_edge)   # kênh v3 ôm sát đỉnh -> vượt biên là đủ (ngưỡng 3% cũ khiến không bao giờ kích hoạt)
 
     # Tính đà tăng của nhịp sóng gần nhất (đáy -> đỉnh trong 15 phiên) để nhận diện parabolic
     # move. Dùng biên độ đáy-đỉnh của cả nhịp thay vì so với giá đóng cửa N phiên trước, vì nếu
@@ -589,7 +678,7 @@ def generate_recommendation_v2(df_ind: pd.DataFrame, channel: dict, sr: dict, bo
         close_arr = df_ind["Close"].values
         search_start = max(0, len(df_ind) - 1 - lookback_n)
         for i in range(search_start, len(df_ind)):
-            if close_arr[i] > upper_arr[i] * 1.03:
+            if close_arr[i] > upper_arr[i]:
                 breakout_idx = i
                 break
 
@@ -615,7 +704,7 @@ def generate_recommendation_v2(df_ind: pd.DataFrame, channel: dict, sr: dict, bo
     # Điều kiện MUA
     buy_condition = (
         above_ma200 is True and
-        (near_support or near_lower_channel or (in_box and close <= current_box["bottom"] * 1.03)) and
+        (near_support or near_lower_channel) and   # (đã bỏ nhánh "mua gần đáy hộp tích lũy": kiểm chứng cho thấy kém nền ~0,8-1,1%/10 phiên)
         (rsi is not None and rsi < 65) and
         (mfi is None or mfi < 70)
     )
@@ -664,7 +753,7 @@ def generate_recommendation_v2(df_ind: pd.DataFrame, channel: dict, sr: dict, bo
             reasons.append("Giá nằm trên MA200 - Xu hướng tăng dài hạn được xác nhận")
             reasons.append("Giá pullback kiểm định thành công vùng hỗ trợ / cạnh dưới kênh")
             if recent_bullish_pattern:
-                reasons.append(f"Mô hình nến xác nhận: {recent_bullish_pattern['pattern']}")
+                reasons.append(f"(Thông tin) Mô hình nến gần nhất: {recent_bullish_pattern['pattern']} - kiểm chứng ngoài mẫu cho thấy mẫu hình nến KHÔNG có giá trị dự báo, không dùng làm xác nhận")
             if mfi and mfi < 40:
                 reasons.append(f"Dòng tiền MFI={mfi:.1f} ở vùng tích lũy an toàn")
             reasons.append(f"Tỷ lệ R:R mục tiêu 2 đạt 1:{rr2} (vượt ngưỡng chuẩn 1:2)")
@@ -691,8 +780,9 @@ def generate_recommendation_v2(df_ind: pd.DataFrame, channel: dict, sr: dict, bo
         elif is_breakout:
             action = "THEO DÕI"
             reasons.append(
-                f"Giá đã phá vỡ khỏi kênh xu hướng cũ (đóng cửa {close:,.0f} > biên trên {upper_edge:,.0f}) "
-                f"-> kênh/hộp tích lũy cũ không còn là điểm tựa cho quyết định ngắn hạn"
+                f"Giá đóng cửa {close:,.0f} vượt biên trên của kênh gần nhất ({upper_edge:,.0f}). Kiểm chứng lịch sử: "
+                f"khoảng 60-75% trường hợp giá quay lại trong kênh trong 5 phiên (phá vỡ giả) và lợi suất 10 phiên sau không tốt hơn "
+                f"mức nền -> chờ xác nhận bằng khối lượng và phiên đóng cửa kế tiếp, không coi là tín hiệu mua"
             )
         elif rsi and rsi >= 65:
             action = "THEO DÕI"
@@ -997,12 +1087,20 @@ def plot_advanced_chart(df_ind: pd.DataFrame, channel: dict, sr: dict, boxes: li
         action = rec.get("action", "THEO DÕI")
         colors = {"MUA": "darkgreen", "BÁN": "red", "THEO DÕI": "#fbc02d"}
         text_color = "black" if action == "THEO DÕI" else "white"
-        label = f"KHUYẾN NGHỊ: {action}"
+        label = f"BỘ LỌC LUẬT (kỹ thuật): {action}"
         # Chú thích khung thời gian (interval) của biểu đồ & thời điểm tạo khuyến nghị,
         # giúp người xem biết khuyến nghị này áp dụng cho khung nào và còn mới hay cũ.
         tf_label = interval or "N/A"
         created_at = datetime.now().strftime("%d/%m/%Y %H:%M")
         label += f"   |   Khung thời gian: {tf_label}   |   Tạo lúc: {created_at}"
+        ol = rec.get("outlook")
+        if ol:
+            ts = ol.get("trend_state") or {}
+            label += (f"\n▶ NHẬN ĐỊNH HIỆU CHUẨN: {ol['label']}"
+                      + (f" | P(tăng {ol['horizon']} phiên)≈{ol['p_up']*100:.0f}% (n={ol['n']})" if ol.get("p_up") is not None else "")
+                      + f" | Biến động ±{ol.get('sigma_h_pct', 0):.1f}%/{ol['horizon']} phiên")
+            label += f"\n▶ Trạng thái xu hướng: {ts.get('structure', 'n/a')} | Đà 20 phiên {ts.get('roc20_pct', 'n/a')}% | Vị trí trong biên 60 phiên {ts.get('pos60_pct', 'n/a')}%"
+            label += "\n▶ Lưu ý: hướng giá 10-20 phiên khó dự báo (xác suất gần 50%); nhãn MUA/BÁN chưa được kiểm chứng và KHÔNG phải khuyến nghị đầu tư."
         if rec.get("reasons"):
             for r in rec["reasons"][:3]:
                 wrapped = textwrap.fill(r, width=150)
@@ -1019,7 +1117,7 @@ def plot_advanced_chart(df_ind: pd.DataFrame, channel: dict, sr: dict, boxes: li
         )
 
     clean_tk = ticker.split(".")[0]
-    ax1.set_title(f"{clean_tk} - Phân tích Kỹ thuật Định lượng, Kênh Xu hướng & Nến Nhật (v2.0)", fontsize=13, fontweight="bold")
+    ax1.set_title(f"{clean_tk} - Phân tích Kỹ thuật Định lượng, Kênh Xu hướng & Nến Nhật (v3.0)", fontsize=13, fontweight="bold")
     # Chú giải (legend) đặt gọn ở hàng riêng `ax_legend` phía dưới cùng (dạng ngang
     # nhiều cột, nhãn đã rút gọn) thay vì bên phải ax1 như trước - giải phóng chiều
     # ngang cho vùng nến, tránh biểu đồ bị nén khi ảnh xuất ra có nhiều overlay AMT.
@@ -1054,7 +1152,24 @@ def plot_advanced_chart(df_ind: pd.DataFrame, channel: dict, sr: dict, boxes: li
     curr_y = float(df_ind.iloc[-1]["Close"])
     action = rec.get("action", "THEO DÕI") if rec else "THEO DÕI"
 
-    if action == "MUA":
+    ol = rec.get("outlook") if rec else None
+    if ol and ol.get("cone_high"):
+        # v3: thay mũi tên "dự báo" theo luật bằng (1) vùng biến động kỳ vọng 80% (cone ATR, đã kiểm chứng độ phủ ~80-84%)
+        # và (2) mũi tên thiên hướng NGẮN, màu theo xác suất đã hiệu chuẩn; "CHƯA RÕ" -> mũi tên ngang xám.
+        h = int(ol.get("horizon", 10))
+        tx = curr_x + h
+        col = {1: "#2e7d32", -1: "#c62828", 0: "#616161"}[ol["direction"]]
+        ax1.fill([curr_x, tx, tx], [curr_y, ol["cone_high"], ol["cone_low"]], color=col, alpha=0.10, zorder=3)
+        ax1.plot([curr_x, tx], [curr_y, ol["cone_high"]], color=col, lw=0.8, ls="--", zorder=4)
+        ax1.plot([curr_x, tx], [curr_y, ol["cone_low"]], color=col, lw=0.8, ls="--", zorder=4)
+        mid = curr_y * (1 + (ol.get("mean_ret") or 0.0)) if ol["direction"] != 0 else curr_y
+        ax1.annotate("", xy=(tx, mid), xytext=(curr_x, curr_y),
+                     arrowprops=dict(facecolor=col, edgecolor=col, arrowstyle="-|>", mutation_scale=16, linewidth=2.0), zorder=8)
+        p_txt = f"P(tăng {h} phiên)≈{ol['p_up']*100:.0f}%" if ol.get("p_up") is not None else "P: n/a"
+        ax1.text(tx, ol["cone_high"] * 1.008, f"{ol['label']}\n{p_txt}\nVùng 80%: {ol['cone_low']:,.0f} – {ol['cone_high']:,.0f}",
+                 fontsize=7.8, fontweight="bold", color=col, ha="center", va="bottom",
+                 bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor=col, alpha=0.92), zorder=9)
+    elif action == "MUA":
         # Mũi tên xanh lá cây hướng lên mục tiêu TP2 hoặc TP1
         target_y = rec.get("tp2") or (channel["upper_line"][-1] if channel.get("valid") else curr_y * 1.12)
         target_x = curr_x + 8
@@ -1254,7 +1369,7 @@ def run_stock_analysis_skill(ticker: str, period: str = "12mo", interval: str = 
                               output_dir: str = None, session_file: str = None,
                               candle_order: int = 5, lookback: int = 8,
                               indicators: list = None, tpo_bar_minutes: int = 15,
-                              num_bins: int = 60) -> dict:
+                              num_bins: int = 60, send_telegram: bool = True, df_override=None) -> dict:
     """
     Chạy toàn bộ pipeline phân tích kỹ thuật v2.0 cho một mã cổ phiếu.
 
@@ -1290,7 +1405,7 @@ def run_stock_analysis_skill(ticker: str, period: str = "12mo", interval: str = 
     period = amt.resolve_period_for_interval(period, interval)
 
     # 1. Tải dữ liệu & tính chỉ báo
-    df = fetch_stock_data(ticker, period=period, interval=interval)
+    df = df_override if df_override is not None else fetch_stock_data(ticker, period=period, interval=interval)
     df_ind = compute_indicators(df)
 
     # 2. Kênh giá & Hộp tích lũy
@@ -1303,6 +1418,14 @@ def run_stock_analysis_skill(ticker: str, period: str = "12mo", interval: str = 
     # 4. Hỗ trợ / Kháng cự & Khuyến nghị mục tiêu kép
     sr = find_support_resistance(df, channel)
     rec = generate_recommendation_v2(df_ind, channel, sr, boxes, patterns)
+
+    # 4a. Nhận định thiên hướng có hiệu chuẩn xác suất + vùng biến động (outlook_v3) - thay cho mũi tên theo luật.
+    try:
+        import outlook_v3 as o3
+        rec["outlook"] = o3.build_outlook(df)
+    except Exception as exc:  # noqa: BLE001 - thiếu file hiệu chuẩn/dữ liệu thị trường không làm hỏng biểu đồ
+        rec["outlook"] = None
+        rec["reasons"] = list(rec.get("reasons", [])) + [f"(Chưa tính được nhận định hiệu chuẩn outlook_v3: {exc})"]
 
     # 4b. Bộ ba công cụ Auction Market Theory (AMT): TPO / Session Volume Profile / VWAP+Bands
     # (chỉ tính khi người dùng chọn ở UI qua checkbox "indicators"; gộp nhận định vào rec).
@@ -1349,9 +1472,9 @@ def run_stock_analysis_skill(ticker: str, period: str = "12mo", interval: str = 
     with open(session_file, "w", encoding="utf-8") as f:
         json.dump(session_state, f, ensure_ascii=False, indent=2)
 
-    # Send notification to Telegram
-    telegram_script.send_stock_charts()
-
+    # Send notification to Telegram (tắt được bằng send_telegram=False hoặc biến môi trường STOCK_NO_TELEGRAM=1)
+    if send_telegram and not os.environ.get("STOCK_NO_TELEGRAM"):
+        telegram_script.send_stock_charts(output_dir=output_dir)
 
     return {
         "ticker": ticker,
@@ -1396,7 +1519,8 @@ def run_batch_analysis(config_file: str = None) -> dict:
         except Exception as e:
             errors[tk] = str(e)
     # Send notification to Telegram
-    telegram_script.send_stock_charts()
+    if not os.environ.get("STOCK_NO_TELEGRAM"):
+        telegram_script.send_stock_charts()
 
     results["_errors"] = errors
     return results
@@ -1426,5 +1550,6 @@ if __name__ == "__main__":
             print("Các mã lỗi:", batch["_errors"])
 
     # Send notification to Telegram
-    telegram_script.send_stock_charts()
+    if not os.environ.get("STOCK_NO_TELEGRAM"):
+        telegram_script.send_stock_charts()
     

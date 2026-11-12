@@ -1,0 +1,1038 @@
+id: investor-m02
+title: "Đầu tư m02: Lý thuyết đấu giá thị trường (AMT): Volume Profile, TPO, VWAP"
+summary: "Trả lời câu hỏi \"giá hiện tại đang ở đâu so với vùng mà thị trường đã chấp nhận giao dịch nhiều nhất, và cấu trúc khối lượng-theo-giá đang cân bằng hay mất cân bằng?\". Module dạy dựng và đọc Volume Profile (POC, Value Area 70%, VAH/VAL, HVN/LVN), TPO/Market Profile (Single Print…"
+agents: ["investor"]
+order: 22
+when: ["value area", "poc", "vah", "val", "volume profile", "ho so khoi luong", "auction market theory", "amt", "can bang gia tri", "gia tri cong bang theo khoi luong", "phan bo khoi luong theo gia", "ib initial balance", "nen ngay d-shape", "ly thuyet dau gia thi truong (amt): volume profile, tpo, vwap", "auction market theory (amt): volume profile, tpo, vwap"]
+body_max: 2722
+sections:
+  - id: "m02-tong-quan"
+    title: "Tổng quan m02"
+    tags: ["m02", "lý", "thuyết", "đấu", "giá", "thị", "trường", "amt", "volume", "profile", "tpo", "vwap"]
+    text: |-
+      Lý thuyết đấu giá thị trường (AMT): Volume Profile, TPO, VWAP (Auction Market Theory (AMT): Volume Profile, TPO, VWAP) — module m02
+
+      Mục đích: Trả lời câu hỏi "giá hiện tại đang ở đâu so với vùng mà thị trường đã chấp nhận giao dịch nhiều nhất, và cấu trúc khối lượng-theo-giá đang cân bằng hay mất cân bằng?". Module dạy dựng và đọc Volume Profile (POC, Value Area 70%, VAH/VAL, HVN/LVN), TPO/Market Profile (Single Prints), hình dạng phân phối D/P/b bằng weighted moments, Daily VWAP với dải sigma, và hai kịch bản A (mean reversion) / B (breakout được chấp nhận). Quan trọng hơn: module ghi rõ kết quả kiểm chứng trên dữ liệu VN (chỉ quán …
+
+      Dùng khi:
+      - Người dùng hỏi 'vùng giá trị / POC / VAH / VAL của mã X ở đâu?', 'giá đang nằm trong hay ngoài Value Area?'.
+      - Cần xác định vùng giá có thanh khoản dày (HVN, kháng cự/hỗ trợ tiềm năng) và vùng giá mỏng (LVN, giá dễ chạy nhanh).
+      - Người dùng hỏi thị trường đang cân bằng (đi ngang) hay mất cân bằng (xu hướng), hình dạng D/P/b nghĩa là gì.
+      - Người dùng hỏi VWAP là gì, có nên 'mua dưới VWAP-2 sigma, bán trên VWAP+2 sigma' không.
+      - Người dùng muốn dùng breakout khỏi Value Area làm tín hiệu mua/bán, hoặc 'giá sẽ hồi về POC' như một luận điểm.
+      - Cần tự dựng Volume Profile/VWAP từ dữ liệu OHLCV (Excel/Python) và hiểu giới hạn của dữ liệu nến.
+
+      Nên nắm trước: - 'm01 - Phân tích kỹ thuật đã kiểm chứng: cần biết cách đọc kết quả backtest và nền so sánh (base rate) trước khi tin một tín hiệu'
+
+      Module liên quan: - 'm01 - Phân tích kỹ thuật đã kiểm chứng: cùng triết lý ''tín hiệu phải hơn nền ngẫu nhiên''; vùng hỗ trợ/kháng cự cực trị cũng KHÔNG hơn mức ngẫu nhiên' - 'm07 - Dữ liệu thị trường VN và rủi ro: ràng buộc dữ liệu yfinance, ATO/ATC, biên độ giá, không bán khống, thanh khoản' - 'm04 - Định giá tương đối và m05 - Định giá nội tại: AMT chỉ nói về ''giá trị theo giao dịch'' (value area), KHÔNG phải …
+
+      Công thức (tra chi tiết bằng skill_search("<id>")):
+      - m02_volume_allocation: Phân bổ khối lượng nến vào tầng giá theo tỷ lệ chồng lấp
+      - m02_value_area: POC, Value Area (VAH/VAL) bằng mở rộng từ POC
+      - m02_tpo_count: Đếm TPO theo tầng giá và Single Prints
+      - m02_vwap: VWAP phiên (reset mỗi phiên)
+      - m02_vwap_sigma: Độ lệch chuẩn VWAP có trọng số khối lượng (dải sigma)
+      - m02_weighted_skew_kurt: Skewness và excess kurtosis có trọng số khối lượng của prof…
+
+      Kho tra cứu của module: Khái niệm 11, Công thức 6, frameworks 5, Quy trình 3, Quy tắc quyết định 11, Chuẩn so sánh 9, Lỗi thường gặp 13, Lưu ý SME Việt Nam 5, Bài học case 2, Ví dụ có lời giải 4, Câu hỏi luyện tập 10, Checklist 11, Mẫu Excel/Sheets 4. Tra bằng skill_search với từ khoá chủ đề (vd "ví dụ DCF", "lỗi thường gặp định giá").
+  - id: "m02-concepts-1"
+    title: "Khái niệm: Lý thuyết đấu giá thị trường"
+    tags: ["khái", "niệm", "lý", "thuyết", "đấu", "giá", "thị", "trường"]
+    text: |-
+      term_vi: Lý thuyết đấu giá thị trường
+      term_en: Auction Market Theory (AMT)
+      definition: |
+        Quan điểm coi thị trường là một quá trình đấu giá liên tục nhằm tìm mức giá khiến cả người mua và người bán sẵn sàng giao dịch nhiều nhất (giá trị công bằng, fair value). Giá chạy khỏi vùng đó để "thăm dò" (price discovery); nếu người tham gia chấp nhận giá mới (giao dịch tiếp tục diễn ra ở đó) thì vùng giá trị dịch chuyển (mất cân bằng, xu hướng); nếu bị từ chối (giá quay lại nhanh) thì thị trường trở về vùng cũ (cân bằng).
+      why_it_matters: |
+        Nguồn gốc: Peter Steidlmayer, nhà giao dịch tại Chicago Board of Trade (CBOT), phát triển Market Profile vào thập kỷ 1980 để nhìn "cấu trúc" của phiên giao dịch thay vì chỉ nhìn chuỗi giá; J. Dalton sau đó hệ thống hóa trong sách "Mind over Markets". Vấn đề nó giải quyết: biểu đồ nến chỉ cho thấy giá theo thời gian, không cho thấy giá nào được chấp nhận. AMT trả lời bằng phân phối giao dịch theo mức giá, từ đó định nghĩa hai trạng thái: cân bằng và mất cân bằng. Lưu ý: đây là khung diễn giải gốc từ thị trường hợp đồng tương lai có dữ liệu tick/trong ngày; áp lên cổ phiếu VN khung ngày là một phép xấp xỉ (xem pitfalls).
+  - id: "m02-concepts-2"
+    title: "Khái niệm: Hồ sơ khối lượng theo giá"
+    tags: ["khái", "niệm", "hồ", "sơ", "khối", "lượng", "theo", "giá"]
+    text: |-
+      term_vi: Hồ sơ khối lượng theo giá
+      term_en: Volume Profile (Session Volume Profile, SVP)
+      definition: |
+        Biểu đồ cột ngang thể hiện tổng khối lượng giao dịch tại từng tầng giá (bin) trong một khoảng quan sát. Trục tung là giá, độ dài cột là khối lượng.
+      why_it_matters: |
+        Cho thấy giá nào đã được "bỏ phiếu bằng tiền" nhiều nhất. Khối lượng dày ở đâu thì nhiều người có vị thế ở đó nên giá thường bị hút/cản tại đó. Giới hạn của code nguồn: chỉ có OHLCV theo nến, không có tick nên khối lượng mỗi nến được phân bổ theo tỷ lệ chồng lấp khoảng [Low, High] (giả định khối lượng trải đều trong biên độ nến).
+  - id: "m02-concepts-3"
+    title: "Khái niệm: Điểm kiểm soát"
+    tags: ["khái", "niệm", "điểm", "kiểm", "soát"]
+    text: |-
+      term_vi: Điểm kiểm soát
+      term_en: Point of Control (POC)
+      definition: Tâm giá của tầng giá (bin) có khối lượng (hoặc số lần chạm TPO) lớn nhất trong profile.
+      why_it_matters: Là mức 'giá chấp nhận nhiều nhất'. Dùng làm tâm của Value Area và là mốc kỳ vọng hồi về trong kịch bản A; tuy vậy dữ liệu VN khung ngày cho thấy xác suất hồi về POC chỉ ngang tung đồng xu.
+  - id: "m02-concepts-4"
+    title: "Khái niệm: Vùng giá trị"
+    tags: ["khái", "niệm", "vùng", "giá", "trị"]
+    text: |-
+      term_vi: Vùng giá trị
+      term_en: Value Area (VA), VAH, VAL
+      definition: |
+        Dải giá chứa 70% tổng khối lượng, dựng bằng cách mở rộng từ POC ra hai phía. VAH (Value Area High) là biên trên, VAL (Value Area Low) là biên dưới.
+      why_it_matters: |
+        Con số 70% xấp xỉ một độ lệch chuẩn quanh trung bình trong phân phối chuẩn (khoảng 68%), nên Value Area có thể hiểu là "vùng giá thị trường coi là bình thường". Giá ra ngoài VA là sự kiện đáng chú ý: hoặc bị từ chối (quay lại) hoặc được chấp nhận (xu hướng mới). Tham số 70% là quy ước chung của Market Profile, không phải hằng số tự nhiên.
+  - id: "m02-concepts-5"
+    title: "Khái niệm: Nút khối lượng cao/thấp"
+    tags: ["khái", "niệm", "nút", "khối", "lượng", "cao", "thấp"]
+    text: |-
+      term_vi: Nút khối lượng cao/thấp
+      term_en: High Volume Node (HVN) / Low Volume Node (LVN)
+      definition: |
+        Theo code nguồn: HVN là bin có khối lượng lớn hơn (trung bình bin + 1 độ lệch chuẩn của các bin) và không phải POC; LVN là bin có khối lượng nhỏ hơn (trung bình bin - 1 độ lệch chuẩn, sàn ở 0).
+      why_it_matters: HVN là nơi giá 'đi chậm', tiềm năng hỗ trợ/kháng cự. LVN là vùng bị từ chối hoặc ít được chấp nhận nên giá dễ chạy nhanh qua. Ngưỡng 1 sigma là lựa chọn của code, chưa được backtest.
+  - id: "m02-concepts-6"
+    title: "Khái niệm: Hồ sơ TPO / Market Profile"
+    tags: ["khái", "niệm", "hồ", "sơ", "tpo", "market", "profile"]
+    text: |-
+      term_vi: Hồ sơ TPO / Market Profile
+      term_en: Time Price Opportunity (TPO) Profile
+      definition: |
+        Mỗi chu kỳ thời gian (mặc định 30 phút, mỗi chu kỳ một 'chữ cái') cộng 1 lượt cho mọi tầng giá mà giá đã đi qua trong chu kỳ đó. Không nhân với khối lượng.
+      why_it_matters: |
+        Đo "thời gian giá ở lại" thay vì "tiền giao dịch". Khác Volume Profile ở chỗ một phiên khối lượng khổng lồ trong thời gian ngắn không làm lệch TPO. Trên khung ngày, mỗi nến là một chu kỳ nên TPO thực chất là Range Profile (đếm số phiên đã chạm mỗi mức giá), không phải TPO trong ngày của Steidlmayer.
+  - id: "m02-concepts-7"
+    title: "Khái niệm: Single Print"
+    tags: ["khái", "niệm", "single", "print"]
+    text: |-
+      term_vi: Single Print
+      term_en: Single Prints
+      definition: Tầng giá chỉ được chạm đúng 1 lần (count = 1) trong toàn vùng quét.
+      why_it_matters: Giá quét qua rất nhanh, thị trường từ chối mức giá đó. Single Prints ở biên trên gợi ý Selling Tail, ở biên dưới gợi ý Buying Tail; có thể thành hỗ trợ/kháng cự nhưng điều này chưa được kiểm chứng riêng.
+  - id: "m02-concepts-8"
+    title: "Khái niệm: Cân bằng và mất cân bằng"
+    tags: ["khái", "niệm", "cân", "bằng", "và", "mất"]
+    text: |-
+      term_vi: Cân bằng và mất cân bằng
+      term_en: Balance vs Imbalance
+      definition: |
+        Cân bằng: giá dao động trong một dải, phân phối đối xứng quanh POC (D-shape). Mất cân bằng: giá rời dải và vùng giá trị dịch chuyển, phân phối lệch (P-shape khối lượng dồn phía trên, b-shape dồn phía dưới).
+      why_it_matters: 'Quyết định chiến lược: cân bằng thì lý thuyết ưu tiên mean reversion (kịch bản A), mất cân bằng thì ưu tiên theo xu hướng (kịch bản B). Bằng chứng VN trên khung ngày ủng hộ B nhẹ, không ủng hộ A.'
+  - id: "m02-concepts-9"
+    title: "Khái niệm: Giá trung bình theo khối lượng trong phiên"
+    tags: ["khái", "niệm", "giá", "trung", "bình", "theo", "khối", "lượng", "trong", "phiên"]
+    text: |-
+      term_vi: Giá trung bình theo khối lượng trong phiên
+      term_en: Daily (Session) VWAP
+      definition: Giá trung bình có trọng số khối lượng của Typical Price (High+Low+Close)/3, tích lũy từ đầu phiên và reset mỗi phiên.
+      why_it_matters: 'Phản ánh giá vốn bình quân của người giao dịch trong phiên: mua dưới VWAP là mua rẻ hơn mặt bằng ngày. Tổ chức dùng làm chuẩn thực thi lệnh. Chỉ có ý nghĩa với dữ liệu trong ngày; với nến ngày thì VWAP phiên chỉ còn là Typical Price.'
+  - id: "m02-concepts-10"
+    title: "Khái niệm: Dải độ lệch chuẩn quanh VWAP"
+    tags: ["khái", "niệm", "dải", "độ", "lệch", "chuẩn", "quanh", "vwap"]
+    text: |-
+      term_vi: Dải độ lệch chuẩn quanh VWAP
+      term_en: VWAP Standard Deviation Bands (±1σ, ±2σ, ±3σ)
+      definition: Độ lệch chuẩn có trọng số khối lượng của Typical Price quanh VWAP, tích lũy cùng nhịp với VWAP; vẽ VWAP ± k·σ.
+      why_it_matters: Đo mức 'quá đà' của giá so với giá bình quân phiên. Nếu giá phân phối gần chuẩn thì ±2σ chứa ~95%, chạm ngoài dải là hiếm. Trên thực tế giá có đuôi dày và xu hướng trong ngày nên chạm ±2σ không đảm bảo đảo chiều.
+  - id: "m02-concepts-11"
+    title: "Khái niệm: Hình dạng D / P / b"
+    tags: ["khái", "niệm", "hình", "dạng"]
+    text: |-
+      term_vi: Hình dạng D / P / b
+      term_en: Profile Shapes (D-shape, P-shape, b-shape)
+      definition: |
+        Phân loại theo skewness và excess kurtosis có trọng số khối lượng của chỉ số tầng giá. D: |skew| < 0.5 và |kurt| < 1.0. P: skew <= -0.5 (đuôi dài về phía giá thấp, khối lượng dồn ở giá cao). b: skew >= 0.5 (khối lượng dồn ở giá thấp). Trung gian: nằm giữa. Không đủ dữ liệu: ít hơn 8 bin có khối lượng.
+      why_it_matters: Biến nhận xét thị giác 'trông giống chữ P' thành số đo tái lập được (deterministic, không Monte Carlo). Ngưỡng 0.5/1.0 là điểm khởi đầu theo tài liệu AMT, code ghi rõ cần backtest; chưa có backtest riêng cho hình dạng trên dữ liệu VN.
+  - id: "m02-formulas-1"
+    title: "Công thức: m02_volume_allocation — Phân bổ khối lượng nến vào tầng giá theo tỷ lệ chồng lấp"
+    tags: ["công", "thức", "m02_volume_allocation", "phân", "bổ", "khối", "lượng", "nến", "vào", "tầng", "giá", "theo"]
+    text: |-
+      id: m02_volume_allocation
+      name_vi: Phân bổ khối lượng nến vào tầng giá theo tỷ lệ chồng lấp
+      name_en: Candle volume allocation by price overlap
+      expression_latex: V_{b} = \sum_{c} V_c \cdot \frac{\max\left(0,\ \min(H_c, e_{b+1}) - \max(L_c, e_b)\right)}{H_c - L_c}
+      expression_python: vol * max(0.0, min(hi, bin_hi) - max(lo, bin_lo)) / (hi - lo)
+      excel: =Vol*MAX(0,MIN(High,BinHi)-MAX(Low,BinLo))/(High-Low)
+      variables:
+      - symbol: vol
+        meaning: Khối lượng của một nến
+        unit: cổ phiếu
+      - symbol: lo, hi
+        meaning: Low và High của nến
+        unit: VND
+      - symbol: bin_lo, bin_hi
+        meaning: Biên dưới/trên của tầng giá b; biên chia đều bằng np.linspace(min Low, max High, num_bins+1)
+        unit: VND
+      when_to_use: Dựng Volume Profile từ dữ liệu OHLCV khi không có dữ liệu tick.
+      why_it_works: |
+        Trong một nến, giá thực sự đã đi qua toàn bộ dải [Low, High] chứ không chỉ nằm ở giá đóng cửa. Gán cả khối lượng vào bin của Close sẽ làm profile lởm chởm và lệch về giá đóng. Chia theo tỷ lệ chồng lấp là giả định khối lượng trải đều theo giá trong nến, xấp xỉ trung tính nhất khi thiếu dữ liệu tick. Tổng khối lượng được bảo toàn.
+      assumptions:
+      - Khối lượng trải đều theo giá trong biên độ nến (thực tế thường dồn ở giá mở/đóng).
+      - Nến có hi == lo thì gán toàn bộ khối lượng vào một bin gần nhất.
+      - Số bin do người dùng chọn (mặc định 60; kiểm chứng AMT dùng 40) làm thay đổi POC/VAH/VAL.
+      pitfalls:
+      - Số bin quá ít làm VA thô; quá nhiều (so với số nến) làm profile nhiễu và nhiều bin chỉ có 1 nến đóng góp.
+      - Khoảng giá phụ thuộc max High/min Low của cả cửa sổ nên một nến ngoại lai kéo giãn toàn bộ bin.
+      interpretation: Kết quả là mảng bin_volume; tổng bằng tổng khối lượng đầu vào (kiểm tra bảo toàn).
+      example:
+        inputs:
+          vol: 1000
+          lo: 103
+          hi: 107
+          bin_lo: 104
+          bin_hi: 105
+        steps:
+        - overlap = min(107,105) - max(103,104) = 105 - 104 = 1
+        - tỷ lệ = 1 / (107 - 103) = 0.25
+        - Khối lượng vào bin [104,105] = 1000 x 0.25 = 250
+        result: 250 (đã khớp với bảng worked_example m02_we1)
+  - id: "m02-formulas-2"
+    title: "Công thức: m02_value_area — POC, Value Area (VAH/VAL) bằng mở rộng từ POC"
+    tags: ["công", "thức", "m02_value_area", "poc", "value", "area", "vah", "val", "bằng", "mở", "rộng", "từ"]
+    text: |-
+      id: m02_value_area
+      name_vi: POC, Value Area (VAH/VAL) bằng mở rộng từ POC
+      name_en: POC and Value Area expansion algorithm
+      expression_latex: POC = \arg\max_b V_b;\quad \text{mở rộng } [l, r] \text{ từ } POC \text{ cho tới } \frac{\sum_{b=l}^{r} V_b}{\sum V} \ge 0.70
+      expression_python: |
+        def value_area(bin_volume, edges, pct=0.70):
+            n = len(bin_volume); poc = max(range(n), key=lambda i: (bin_volume[i], -i))
+            left = right = poc; inc = bin_volume[poc]; tot = sum(bin_volume)
+            while tot > 0 and inc / tot < pct and (left > 0 or right < n - 1):
+                lv = bin_volume[left - 1] if left > 0 else -1.0
+                rv = bin_volume[right + 1] if right < n - 1 else -1.0
+                if rv >= lv: right += 1; inc += bin_volume[right]
+                else: left -= 1; inc += bin_volume[left]
+            return {'poc': (edges[poc] + edges[poc + 1]) / 2, 'vah': edges[right + 1], 'val': edges[left], 'pct': inc / tot}
+      excel: Không có hàm sẵn; dùng cột POC = INDEX(giá, MATCH(MAX(vol), vol, 0)) rồi cộng dần bin lớn hơn hai bên thủ công.
+      variables:
+      - symbol: bin_volume
+        meaning: Khối lượng từng bin (từ thấp lên cao)
+        unit: cổ phiếu
+      - symbol: edges
+        meaning: Mảng biên bin, độ dài num_bins+1
+        unit: VND
+      - symbol: pct
+        meaning: Tỷ lệ Value Area
+        unit: '0.70'
+      when_to_use: Xác định vùng giá trị và biên VAH/VAL của một cửa sổ quan sát.
+      why_it_works: |
+        Thuật toán CBOT: bắt đầu từ bin đông nhất (POC), mỗi bước nhận thêm bên (trên hoặc dưới) có khối lượng bin kế cận lớn hơn, lặp tới khi đạt 70% tổng. Làm vậy luôn cho vùng liên tục, nhỏ nhất xung quanh POC chứa >= 70% khối lượng, vì lần nào cũng lấy phần giàu nhất kế bên. Code nguồn mở rộng từng bin một (không nhận 2 bin cùng lúc như bản gốc của Market Profile nên kết quả có thể lệch nhẹ so với phần mềm khác).
+      assumptions:
+      - Cân hòa (hai bên bằng nhau) thì code chọn bên trên (rv >= lv).
+      - 'Ba đối tượng trả về: POC là tâm bin; VAH = biên trên của bin cao nhất trong VA; VAL = biên dưới của bin thấp nhất.'
+      - Nếu có nhiều bin cùng khối lượng lớn nhất, np.argmax trả bin có chỉ số nhỏ nhất (giá thấp nhất).
+      pitfalls:
+      - 'Tỷ lệ thực tế thường vượt 70% (vì bin rời rạc): ví dụ 71.4% trong worked example; đọc value_area_pct_actual.'
+      - Profile hai đỉnh (bimodal) vẫn cho một VA liên tục, che mất hai vùng giá trị riêng.
+      - Cùng một dữ liệu, đổi num_bins hoặc độ dài cửa sổ làm đổi VAH/VAL; luôn ghi tham số.
+      interpretation: |
+        Giá đóng cửa trong [VAL, VAH]: cân bằng/chấp nhận. Trên VAH: đang thăm dò phía trên (xem decision_rules, có quán tính nhẹ). Dưới VAL: KHÔNG phải điểm mua đảo chiều theo kiểm chứng. Độ rộng VA so với giá phản ánh biến động: VA hẹp nghĩa là khối lượng dồn rất tập trung.
+      example:
+        inputs:
+          bin_volume:
+          - 100
+          - 100
+          - 250
+          - 500
+          - 525
+          - 525
+          - 450
+          - 200
+          - 75
+          - 75
+          edges: 100..110 bước 1
+        steps:
+        - 'POC: max = 525 ở bin 4 và bin 5; chọn bin 4 (chỉ số nhỏ) => POC = 104.5. Tổng = 2800, bắt đầu inc = 525 (18.75%).'
+        - 'So left bin 3 (500) với right bin 5 (525): chọn phải => inc = 1050 (37.5%).'
+        - 'So left bin 3 (500) với right bin 6 (450): chọn trái => inc = 1550 (55.4%).'
+        - 'So left bin 2 (250) với right bin 6 (450): chọn phải => inc = 2000 (71.4% >= 70%) dừng.'
+        - VA gồm bin 3..6 => VAL = 103, VAH = 107.
+        result: POC 104.5; VAL 103; VAH 107; value_area_pct_actual = 0.7143
+  - id: "m02-formulas-3"
+    title: "Công thức: m02_tpo_count — Đếm TPO theo tầng giá và Single Prints"
+    tags: ["công", "thức", "m02_tpo_count", "đếm", "tpo", "theo", "tầng", "giá", "và", "single", "prints"]
+    text: |-
+      id: m02_tpo_count
+      name_vi: Đếm TPO theo tầng giá và Single Prints
+      name_en: TPO count per price level and single prints
+      expression_latex: T_b = \sum_{p} \mathbb{1}\left[ L_p \le e_{b+1}\ \wedge\ H_p \ge e_b \right],\quad \text{Single Print} \iff T_b = 1
+      expression_python: sum(1 for lo_p, hi_p in periods if (lo_p <= bin_hi and hi_p >= bin_lo))
+      excel: =COUNTIFS(Low_range,"<="&BinHi,High_range,">="&BinLo)
+      variables:
+      - symbol: periods
+        meaning: 'Danh sách (Low, High) theo từng chu kỳ TPO (khung ngày: mỗi nến một chu kỳ)'
+        unit: VND
+      - symbol: bin_lo, bin_hi
+        meaning: Biên của tầng giá
+        unit: VND
+      when_to_use: Đo thời gian giá lưu lại từng vùng giá, phát hiện Single Prints.
+      why_it_works: |
+        Mỗi chu kỳ chỉ bỏ 1 phiếu cho mỗi mức giá nó đi qua, bất kể khối lượng, nên TPO đo "sự chấp nhận theo thời gian" độc lập với khối lượng. Hai profile (khối lượng và thời gian) trùng nhau thì vùng giá trị đáng tin hơn.
+      assumptions:
+      - Code nguồn dùng start_idx/end_idx từ searchsorted, nghĩa là bin chứa Low đến bin chứa High đều được +1 (tương đương điều kiện chồng lấp, sai khác nhỏ ở biên đúng bằng).
+      - 'Khung ngày: mỗi nến là một chu kỳ nên T_b là số phiên đã chạm mức giá b (Range Profile).'
+      pitfalls:
+      - Đừng gọi đây là 'TPO intraday' khi tính từ nến ngày.
+      - Single Prints ở khung ngày thường nằm ở đỉnh/đáy cửa sổ đơn giản vì chỉ 1 nến chạm tới, không nhất thiết là 'từ chối giá'.
+      interpretation: 'T_b lớn: giá lưu lại lâu. T_b = 1: vùng thoáng; ở biên trên có thể là Selling Tail, biên dưới là Buying Tail (code dùng ngưỡng giữa khoảng giá để phân loại khi vẽ).'
+      example:
+        inputs:
+          periods: 5 nến của worked_example m02_we1; 10 bin rộng 1
+        steps:
+        - Bin [104,105] được chạm bởi nến (100-104),(102-106),(103-107),(104-108) = 4 lượt (nến 1 chạm đúng biên 104 nên được đếm theo code searchsorted).
+        - 'Bin [100,101]: chỉ nến 1 => Single Print; bin [101,102] chỉ nến 1; bin [109,110] chỉ nến 5.'
+        result: bin_count = [1,1,2,3,4,3,4,3,2,1]; TPO POC = 104.5 (bin 4, hòa với bin 6, chọn bin nhỏ hơn); Single Prints ở 100.5, 101.5, 109.5
+  - id: "m02-formulas-4"
+    title: "Công thức: m02_vwap — VWAP phiên (reset mỗi phiên)"
+    tags: ["công", "thức", "m02_vwap", "vwap", "phiên", "reset", "mỗi"]
+    text: |-
+      id: m02_vwap
+      name_vi: VWAP phiên (reset mỗi phiên)
+      name_en: Session VWAP
+      expression_latex: TP_t = \frac{H_t + L_t + C_t}{3},\quad VWAP_t = \frac{\sum_{i \le t} TP_i V_i}{\sum_{i \le t} V_i}
+      expression_python: sum(t * v for t, v in zip(tp, vol)) / sum(vol)
+      excel: =SUMPRODUCT(TP_range,Vol_range)/SUM(Vol_range)  (tích lũy từ nến đầu phiên đến nến hiện tại)
+      variables:
+      - symbol: tp
+        meaning: Typical Price từng nến trong phiên đến thời điểm t
+        unit: VND
+      - symbol: vol
+        meaning: Khối lượng từng nến
+        unit: cổ phiếu
+      when_to_use: Chỉ với dữ liệu trong ngày (1m-60m). Đánh giá giá hiện tại đắt/rẻ so với giá bình quân phiên.
+      why_it_works: |
+        Trung bình có trọng số khối lượng chính là giá vốn bình quân của toàn bộ lượng cổ phiếu đã khớp trong phiên. Nến có khối lượng lớn kéo VWAP về phía nó, khác với đường trung bình giá đơn thuần.
+      assumptions:
+      - Reset khi sang ngày dương lịch mới (groupby theo date).
+      - Dùng Typical Price của nến thay cho giá từng lệnh nên là xấp xỉ.
+      - Khối lượng bằng 0 thì VWAP phiên là NaN (code thay 0 bằng NaN).
+      pitfalls:
+      - 'Với nến ngày: mỗi phiên 1 nến nên VWAP = Typical Price, vô nghĩa; code tự bỏ qua và ghi cảnh báo trong notes.'
+      - Khoảng nghỉ trưa 11:30-13:00 và ATO/ATC của HOSE tạo khối lượng dồn cục làm méo VWAP; kiểm tra cách tách phiên.
+      - VWAP là chỉ báo trễ, càng về cuối phiên càng ít nhạy.
+      interpretation: 'Giá > VWAP: người mua trong phiên đang có lãi trung bình (nghiêng mua). Giá < VWAP: nghiêng bán. Không có ngưỡng thống kê chuẩn cho tín hiệu.'
+      example:
+        inputs:
+          tp:
+          - 100.0
+          - 101.6667
+          - 102.6667
+          vol:
+          - 1000
+          - 3000
+          - 1000
+        steps:
+        - 'Nến 2: (100 x 1000 + 101.6667 x 3000) / 4000 = 405000/4000 = 101.25'
+        - 'Nến 3: (405000 + 102.6667 x 1000 ... tổng 100000 + 305000 + 102666.7) / 5000 = 507666.7/5000 = 101.5333'
+        result: VWAP sau nến 2 = 101.25; sau nến 3 = 101.5333 (khớp output compute_session_vwap_bands)
+  - id: "m02-formulas-5"
+    title: "Công thức: m02_vwap_sigma — Độ lệch chuẩn VWAP có trọng số khối lượng (dải sigma)"
+    tags: ["công", "thức", "m02_vwap_sigma", "độ", "lệch", "chuẩn", "vwap", "có", "trọng", "số", "khối", "lượng"]
+    text: |-
+      id: m02_vwap_sigma
+      name_vi: Độ lệch chuẩn VWAP có trọng số khối lượng (dải sigma)
+      name_en: Volume-weighted standard deviation of VWAP (running)
+      expression_latex: \sigma_t = \sqrt{\frac{\sum_{i \le t} V_i\,(TP_i - VWAP_i)^2}{\sum_{i \le t} V_i}},\quad Band_k = VWAP_t \pm k\,\sigma_t
+      expression_python: |
+        def vwap_sigma(tp, vol):
+            cv = ctp = cd = 0.0; out = []
+            for t, v in zip(tp, vol):
+                cv += v; ctp += t * v; vw = ctp / cv
+                cd += (t - vw) ** 2 * v
+                out.append((vw, (cd / cv) ** 0.5))
+            return out
+      excel: 'Dùng cột phụ: Dev2Vol = (TP - VWAP_t)^2 * Vol, cộng dồn rồi chia cộng dồn Vol, lấy căn.'
+      variables:
+      - symbol: tp
+        meaning: Typical Price từng nến trong phiên
+        unit: VND
+      - symbol: vol
+        meaning: Khối lượng từng nến
+        unit: cổ phiếu
+      - symbol: k
+        meaning: Hệ số dải (1, 2, 3)
+        unit: lần sigma
+      when_to_use: Vẽ dải quanh VWAP trong ngày để đánh dấu vùng 'quá đà'.
+      why_it_works: |
+        Phương sai có trọng số khối lượng đo độ phân tán giá quanh giá trung bình theo cùng trọng số của VWAP. Dải ±k sigma là cách chuẩn hóa mức lệch giống z-score: nếu giá phân phối gần chuẩn thì ±1/±2/±3 sigma chứa khoảng 68/95/99.7%.
+      assumptions:
+      - Độ lệch được tính so với VWAP TẠI THỜI ĐIỂM từng nến (running) rồi cộng dồn, không phải độ lệch so với VWAP cuối cùng; sigma này thường nhỏ hơn sigma 'sách giáo khoa' tính lại so với VWAP cuối.
+      - Giá không phân phối chuẩn, có đuôi dày và xu hướng trong ngày nên xác suất chạm ±2 sigma lớn hơn 5%.
+      pitfalls:
+      - Nến đầu phiên cho sigma = 0 (dải trùng VWAP).
+      - 'Đừng coi chạm +2 sigma là tín hiệu bán: trong phiên xu hướng giá có thể bám dải nhiều giờ.'
+      interpretation: 'Dải +2/+3 sigma: giá bị kéo xa giá vốn bình quân. Dùng như cảnh báo mức quá đà, KHÔNG như điểm đảo chiều đã được chứng minh.'
+      example:
+        inputs:
+          tp:
+          - 100.0
+          - 101.6667
+          - 102.6667
+          vol:
+          - 1000
+          - 3000
+          - 1000
+        steps:
+        - 'Nến 1: VWAP 100, dev = 0, sigma = 0.'
+        - 'Nến 2: VWAP 101.25; dev2*vol = (101.6667 - 101.25)^2 x 3000 = 520.83; sigma = sqrt(520.83/4000) = 0.3608; +1 sigma = 101.6108'
+        - 'Nến 3: VWAP 101.5333; dev2*vol = (102.6667 - 101.5333)^2 x 1000 = 1284.4; cộng dồn 1805.2/5000 = 0.3611; sigma = 0.6009; +1 sigma = 102.1342'
+        result: sigma = [0, 0.3608, 0.6009]; +1 sigma = [100, 101.6108, 102.1342] (khớp code)
+  - id: "m02-formulas-6"
+    title: "Công thức: m02_weighted_skew_kurt — Skewness và excess kurtosis có trọng số khối lượng của profile"
+    tags: ["công", "thức", "m02_weighted_skew_kurt", "skewness", "và", "excess", "kurtosis", "có", "trọng", "số", "khối", "lượng"]
+    text: |-
+      id: m02_weighted_skew_kurt
+      name_vi: Skewness và excess kurtosis có trọng số khối lượng của profile
+      name_en: Volume-weighted skewness and excess kurtosis of the profile
+      expression_latex: w_b = \frac{V_b}{\sum V},\ \mu = \sum w_b\, b,\ \sigma^2 = \sum w_b (b-\mu)^2,\ S = \sum w_b \left(\frac{b-\mu}{\sigma}\right)^3,\ K = \sum w_b \left(\frac{b-\mu}{\sigma}\right)^4 - 3
+      expression_python: |
+        (lambda w, i: (lambda m: (lambda s: (m, s, sum(w * ((i - m) / s) ** 3), sum(w * ((i - m) / s) ** 4) - 3.0))((sum(w * (i - m) ** 2)) ** 0.5))(sum(i * w)))(np.array(bin_volume, float) / np.sum(bin_volume), np.arange(len(bin_volume)))
+      excel: 'Dùng SUMPRODUCT: mu = SUMPRODUCT(idx,w); sigma = SQRT(SUMPRODUCT(w,(idx-mu)^2)); S = SUMPRODUCT(w,((idx-mu)/sigma)^3); K = SUMPRODUCT(w,((idx-mu)/sigma)^4)-3.'
+      variables:
+      - symbol: bin_volume
+        meaning: Khối lượng từng bin xếp từ giá thấp tới cao; chỉ số bin là biến ngẫu nhiên
+        unit: cổ phiếu
+      - symbol: w
+        meaning: Trọng số = khối lượng bin / tổng khối lượng
+        unit: tỷ lệ
+      when_to_use: Phân loại hình D/P/b một cách tái lập được.
+      why_it_works: |
+        Coi profile là phân phối xác suất của 'giá được giao dịch'. Skewness đo độ bất đối xứng: khối lượng dồn ở bin cao thì đuôi kéo về phía thấp nên skew ÂM (P-shape); dồn ở bin thấp thì skew DƯƠNG (b-shape). Kurtosis dư đo độ nhọn so với phân phối chuẩn (Fisher, chuẩn = 0). Tính trực tiếp, không Monte Carlo, nên cùng dữ liệu luôn cho cùng kết quả.
+      assumptions:
+      - Chỉ số bin cách đều nên skew/kurt không đổi nếu đổi đơn vị giá.
+      - Cần tối thiểu 8 bin có dữ liệu (min_bins_with_data=8), nếu không trả KHONG_DU_DU_LIEU.
+      - 'Ngưỡng: D khi |skew| < 0.5 và |kurt| < 1.0; P khi skew <= -0.5; b khi skew >= 0.5; còn lại TRUNG_GIAN.'
+      pitfalls:
+      - 'Hình dạng phụ thuộc cửa sổ: cửa sổ ngắn trong xu hướng sẽ luôn ra P hoặc b một cách tầm thường.'
+      - Std = 0 thì code trả skew = 0, kurt = 0.
+      - Ngưỡng 0.5/1.0 chưa backtest trên dữ liệu VN; coi là nhãn mô tả, không phải bộ lọc có lợi thế.
+      interpretation: 'Skew gần 0 và kurt gần 0: cân bằng. Skew <= -0.5: dồn về giá cao. Skew >= +0.5: dồn về giá thấp.'
+      example:
+        inputs:
+          bin_volume:
+          - 50
+          - 50
+          - 100
+          - 200
+          - 400
+          - 900
+          - 1200
+          - 1400
+        steps:
+        - w = V/4300; mu = sum(i x w) = 5.5698
+        - sigma = sqrt(sum(w (i-mu)^2)) = 1.4906
+        - S = -1.3255; K = 1.8666
+        - S <= -0.5 nên P_SHAPE (khối lượng dồn ở bin cao)
+        result: mu 5.5698; sigma 1.4906; skew -1.3255; excess kurt 1.8666 => P_SHAPE
+  - id: "m02-frameworks-1"
+    title: "Frameworks: m02_volume_profile_construction — Dựng và đọc Volume Profile"
+    tags: ["frameworks", "m02_volume_profile_construction", "dựng", "và", "đọc", "volume", "profile"]
+    text: |-
+      id: m02_volume_profile_construction
+      name_vi: Dựng và đọc Volume Profile
+      name_en: Building and reading a Volume Profile
+      origin: |
+        Volume Profile là phiên bản theo khối lượng của Market Profile (Steidlmayer, CBOT, thập kỷ 1980). Market Profile gốc đếm thời gian; khi dữ liệu khối lượng sẵn có, các nhà giao dịch thêm biến thể theo khối lượng để đo "tiền" thay vì "thời gian".
+      components:
+      - 'Khoảng quan sát (cửa sổ): vd 60 phiên (khung kiểm chứng) hoặc một phiên.'
+      - 'Số bin (num_bins): code mặc định 60; kiểm chứng VERIFICATION dùng 40.'
+      - POC, Value Area 70%, VAH, VAL.
+      - 'HVN: bin > mean + 1 std (không phải POC); LVN: bin < mean - 1 std.'
+      when_to_use: Cần bản đồ vùng giá được chấp nhận trong một giai đoạn.
+      how_to_apply:
+      - Lấy OHLCV, xác định min Low và max High của cửa sổ.
+      - Chia khoảng giá thành num_bins tầng đều nhau, phân bổ khối lượng từng nến theo m02_volume_allocation.
+      - Tìm POC, mở rộng Value Area tới 70% (m02_value_area).
+      - Tìm HVN/LVN; tính shape bằng m02_weighted_skew_kurt.
+      - So giá đóng cửa hiện tại với VAL/VAH/POC rồi áp dụng decision_rules.
+      how_to_read_results: |
+        Giá trong VA là vùng chấp nhận. HVN là nơi giá bị cản chậm; LVN là vùng chạy nhanh. Quan trọng: đây là mô tả cấu trúc quá khứ, lợi thế dự báo duy nhất có bằng chứng là quán tính nhẹ khi đóng cửa trên VAH.
+      pitfalls:
+      - Khối lượng nến được giả định trải đều nên profile chỉ là xấp xỉ.
+      - Cửa sổ khác nhau cho VA khác nhau; ghi rõ cửa sổ và số bin trong báo cáo.
+      example: Xem worked_examples m02_we1.
+  - id: "m02-frameworks-2"
+    title: "Frameworks: m02_tpo_market_profile — TPO / Market Profile và Single Prints"
+    tags: ["frameworks", "m02_tpo_market_profile", "tpo", "market", "profile", "và", "single", "prints"]
+    text: |-
+      id: m02_tpo_market_profile
+      name_vi: TPO / Market Profile và Single Prints
+      name_en: TPO / Market Profile and Single Prints
+      origin: 'Peter Steidlmayer, CBOT, thập kỷ 1980: mỗi 30 phút một chữ cái (A, B, C...) đánh dấu các mức giá đã chạm, xếp thành hình quả chuông biểu diễn phân phối thời gian-giá. J. Dalton hệ thống hóa trong ''Mind over Markets''.'
+      components:
+      - Chu kỳ TPO (tpo_bar_minutes = 30 mặc định).
+      - Bin_count theo m02_tpo_count; TPO POC; TPO Value Area 70% (cùng thuật toán mở rộng).
+      - 'Single Prints: bin count = 1.'
+      when_to_use: Cần xem sự chấp nhận theo THỜI GIAN, đối chiếu với Volume Profile.
+      how_to_apply:
+      - 'Intraday: nhóm nến theo floor(30 phút), mỗi nhóm lấy min Low/max High, cộng 1 cho mọi bin trong dải.'
+      - 'Khung ngày: mỗi nến là 1 chu kỳ => Range Profile theo số phiên.'
+      - Tìm POC và VA như Volume Profile nhưng trên bin_count.
+      - Đánh dấu Single Prints; biên trên = Selling Tail, biên dưới = Buying Tail.
+      how_to_read_results: TPO VA và Volume VA trùng nhau thì vùng giá trị được xác nhận bởi cả thời gian và tiền. TPO khung ngày không có lợi thế dự báo đã kiểm chứng.
+      pitfalls:
+      - TPO khung ngày = range profile; không tuyên bố đã dùng Market Profile chuẩn.
+      - Single Prints khung ngày thường chỉ là mép cửa sổ.
+      example: Xem worked_examples m02_we1 (bin_count và Single Prints).
+  - id: "m02-frameworks-3"
+    title: "Frameworks: m02_value_area_framework — Value Area, cân bằng và mất cân bằng"
+    tags: ["frameworks", "m02_value_area_framework", "value", "area", "cân", "bằng", "và", "mất"]
+    text: |-
+      id: m02_value_area_framework
+      name_vi: Value Area, cân bằng và mất cân bằng
+      name_en: Value Area and balance/imbalance
+      origin: 'Steidlmayer/CBOT (1980s) và Dalton: Value Area 70% xấp xỉ một độ lệch chuẩn của phân phối chuẩn; giá ra khỏi VA là lúc thị trường ''thăm dò'' giá mới.'
+      components:
+      - 'Trạng thái giá hiện tại: trong VA, trên VAH, dưới VAL.'
+      - Hình dạng profile D/P/b.
+      - Khối lượng xác nhận (VOL_RATIO so với SMA20 khối lượng).
+      when_to_use: Phân loại trạng thái thị trường trước khi chọn cách hành xử.
+      how_to_apply:
+      - Dựng VA từ 60 phiên TRƯỚC (không gồm phiên đang xét để tránh nhìn trước, đúng cách backtest).
+      - So sánh giá đóng cửa với VAH/VAL.
+      - Kèm điều kiện khối lượng nếu muốn xác nhận 'được chấp nhận' (code dùng VOL_RATIO >= 1.5).
+      how_to_read_results: |
+        Trên VAH: thị trường đang trả giá cao hơn giá trị cũ; dữ liệu VN: tăng 10 phiên sau 55-56% so với nền 51-53%. Dưới VAL: không lợi thế (48-52%). Trong VA: thông tin chủ yếu là mô tả.
+      pitfalls:
+      - 'Không đánh đồng ''trên VAH'' với ''mua bắt buộc'': xác suất chỉ cao hơn nền khoảng 3-4 điểm phần trăm.'
+      - Tín hiệu kịch bản B dùng khối lượng gấp 1.5 lần SMA20 là ngưỡng của code, chưa backtest riêng.
+      example: Giá đóng cửa 107.5 khi VAH = 107 (60 phiên trước) => trạng thái 'trên VA', ưu thế quán tính nhẹ, cần kết hợp quản trị rủi ro.
+  - id: "m02-frameworks-4"
+    title: "Frameworks: m02_shapes_dpb — Hình dạng D, P, b của profile"
+    tags: ["frameworks", "m02_shapes_dpb", "hình", "dạng", "của", "profile"]
+    text: |-
+      id: m02_shapes_dpb
+      name_vi: Hình dạng D, P, b của profile
+      name_en: D, P and b profile shapes
+      origin: 'Dalton (''Mind over Markets''): các phiên có hình D (cân bằng), P (short-covering/tăng) và b (long-liquidation/giảm). Code nguồn lượng hóa bằng weighted moments thay vì mắt nhìn.'
+      components:
+      - 'D_SHAPE: |skew| < 0.5 và |kurt| < 1.0.'
+      - 'P_SHAPE: skew <= -0.5.'
+      - 'B_SHAPE: skew >= 0.5.'
+      - 'TRUNG_GIAN: còn lại. KHONG_DU_DU_LIEU: < 8 bin có dữ liệu.'
+      when_to_use: Gán nhãn cấu trúc cho profile; quyết định kịch bản A hay B.
+      how_to_apply:
+      - Tính bin_volume rồi m02_weighted_skew_kurt.
+      - Tra bảng ngưỡng để ra nhãn.
+      - 'P hoặc b: kiểm tra Single Prints phía đuôi và khối lượng.'
+      how_to_read_results: |
+        D: đi ngang quanh POC. P: khối lượng dồn ở giá cao; có thể phân phối (distribution) ở đỉnh hoặc breakout tăng được chấp nhận. b: dồn ở giá thấp; có thể gom hàng (accumulation) hoặc breakdown giảm. Nhãn chỉ mô tả, chưa kiểm chứng giá trị dự báo.
+      pitfalls:
+      - Cửa sổ nằm trong xu hướng thì hình P/b gần như tất yếu.
+      - Ngưỡng 0.5/1.0 là điểm khởi đầu, cần backtest.
+      example: Bin_volume = [50,50,100,200,400,900,1200,1400] cho skew -1.33 => P_SHAPE.
+  - id: "m02-frameworks-5"
+    title: "Frameworks: m02_scenarios_ab — Kịch bản A (mean reversion) và B (breakout được chấp nhận)"
+    tags: ["frameworks", "m02_scenarios_ab", "kịch", "bản", "mean", "reversion", "và", "breakout", "được", "chấp", "nhận"]
+    text: |-
+      id: m02_scenarios_ab
+      name_vi: Kịch bản A (mean reversion) và B (breakout được chấp nhận)
+      name_en: Scenario A (mean reversion in balance) and Scenario B (accepted breakout)
+      origin: 'Khung hai kịch bản trong prompt AMT của tác giả code: kịch bản A xuất phát từ ý tưởng ''giá bị từ chối ở rìa VA sẽ quay về POC''; kịch bản B xuất phát từ ý tưởng ''phá VA kèm khối lượng là mất cân bằng và được chấp nhận''.'
+      components:
+      - 'Điều kiện A SHORT: shape = D, close > VAH, close > VWAP+2σ (hoặc +3σ), nến Shooting Star (râu trên > 2 lần thân, râu dưới < 0.5 lần thân). Target 1: VWAP; target 2: POC.'
+      - 'Điều kiện A LONG: shape = D, close < VAL, close < VWAP-2σ (hoặc -3σ), nến Hammer (râu dưới > 2 lần thân, râu trên < 0.5 lần thân). Target 1: VWAP; target 2: POC.'
+      - 'Điều kiện B LONG_TREND: shape khác D, close > VAH và VOL_RATIO >= 1.5. B SHORT_TREND: close < VAL và VOL_RATIO >= 1.5.'
+      - Chỉ sinh tín hiệu khi có đủ Volume Profile và VWAP (nghĩa là dữ liệu intraday).
+      when_to_use: Chỉ như khung kiểm tra ý tưởng với dữ liệu trong ngày đáng tin cậy; hiện CHƯA kiểm chứng.
+      how_to_apply:
+      - Xác nhận có dữ liệu intraday đầy đủ cho mã (yfinance .VN không đảm bảo).
+      - Tính profile và VWAP+dải; xác định shape.
+      - Chỉ áp dụng khi điều kiện đủ; nếu không, trả mô tả cấu trúc không có entry_signal.
+      - Ở thị trường VN bỏ mọi hành động SHORT (không bán khống cổ phiếu cơ sở); SHORT_TREND chỉ còn nghĩa là 'tránh mua/đứng ngoài/giảm tỷ trọng'.
+      how_to_read_results: |
+        Bằng chứng trên khung ngày: kịch bản A (hồi về POC khi giá ngoài VA) chỉ đúng 41-50% trong 10 phiên, tức không hơn tung đồng xu nên không được ủng hộ; kịch bản B có quán tính nhẹ (trên VAH tăng 10 phiên 55-56%). Tín hiệu trong ngày hoàn toàn chưa kiểm chứng.
+      pitfalls:
+      - Điều kiện A SHORT quá chặt (ba điều kiện đồng thời) nên rất hiếm, càng khó kiểm chứng.
+      - Kịch bản B code nhận cả P_SHAPE/B_SHAPE/TRUNG_GIAN; không yêu cầu hình dạng phải khớp hướng breakout.
+      - SHORT không thực hiện được ở VN.
+      example: Nến trong ngày đóng 112 khi VAH = 110, VOL_RATIO = 1.8, shape = P => B LONG_TREND (theo code), nhưng với cảnh báo chưa kiểm chứng trong ngày.
+  - id: "m02-procedures-1"
+    title: "Quy trình: m02_read_value_area_from_cli — Đọc Value Area/POC của một mã từ đầu ra stock_cli.py"
+    tags: ["quy", "trình", "m02_read_value_area_from_cli", "đọc", "value", "area", "poc", "của", "một", "mã", "từ", "đầu"]
+    text: |-
+      id: m02_read_value_area_from_cli
+      name: Đọc Value Area/POC của một mã từ đầu ra stock_cli.py
+      steps:
+      - Chạy lệnh python3 tools/stock_cli.py <MÃ>.VN (ví dụ python3 tools/stock_cli.py FPT.VN) và lấy trường value_area trong đầu ra. Tên các khóa con (poc, vah, val, shape...) là giả định theo auction_market_theory.py; xác nhận lại với đầu ra thực tế vì tool này không nằm trong repo nguồn đã đọc.
+      - Ghi rõ cửa sổ (số phiên) và num_bins mà tool dùng; nếu không rõ thì nêu rằng chưa biết tham số.
+      - 'So sánh giá đóng cửa mới nhất với VAL, POC, VAH: ba trạng thái (dưới VAL, trong VA, trên VAH).'
+      - Tính khoảng cách phần trăm từ giá đến POC, VAH, VAL và độ rộng VA / giá.
+      - Đọc nhãn shape (D/P/b/TRUNG_GIAN/KHONG_DU_DU_LIEU) chỉ như mô tả; nếu KHONG_DU_DU_LIEU thì không kết luận.
+      - 'Áp dụng decision_rules: trên VAH là quán tính nhẹ (55-56%), dưới VAL không có lợi thế, không tin vào luận điểm hồi về POC.'
+      - 'Báo cáo kèm giới hạn: khung ngày, TPO là range profile, VWAP không áp dụng, tín hiệu intraday chưa kiểm chứng.'
+      outputs: Một đoạn mô tả vị trí giá so với Value Area, cùng mức hỗ trợ/kháng cự tham khảo (HVN), và lời cảnh báo độ tin cậy; không đưa ra lệnh mua bán chắc chắn.
+  - id: "m02-procedures-2"
+    title: "Quy trình: m02_build_profile_manual — Dựng Volume Profile từ OHLCV (Excel/Python)"
+    tags: ["quy", "trình", "m02_build_profile_manual", "dựng", "volume", "profile", "từ", "ohlcv", "excel", "python"]
+    text: |-
+      id: m02_build_profile_manual
+      name: Dựng Volume Profile từ OHLCV (Excel/Python)
+      steps:
+      - Lấy bảng OHLCV khung ngày hoặc trong ngày, loại nến Volume <= 0.
+      - Chọn num_bins (40 hoặc 60), tính edges bằng linspace(min Low, max High, num_bins+1).
+      - 'Với từng nến và từng bin: tính overlap, cộng vol x overlap/(High-Low).'
+      - Kiểm tra tổng bin_volume bằng tổng Volume (bảo toàn).
+      - POC = bin lớn nhất; mở rộng VA tới 70%; ghi VAH/VAL, tỷ lệ thực tế.
+      - Tính HVN/LVN và skew/kurt; gán nhãn shape.
+      outputs: Bảng bin (giá, khối lượng, số TPO) và các mốc POC, VAH, VAL, shape.
+  - id: "m02-procedures-3"
+    title: "Quy trình: m02_vwap_intraday_check — Kiểm tra điều kiện dùng VWAP"
+    tags: ["quy", "trình", "m02_vwap_intraday_check", "kiểm", "tra", "điều", "kiện", "dùng", "vwap"]
+    text: |-
+      id: m02_vwap_intraday_check
+      name: Kiểm tra điều kiện dùng VWAP
+      steps:
+      - Xác nhận dữ liệu có nhiều nến trong cùng một ngày (interval 1m-60m); nếu chỉ có nến ngày thì dừng, VWAP phiên suy biến.
+      - 'Kiểm tra độ phủ dữ liệu: yfinance giới hạn period (15m tối đa 60d, 60m tối đa 730d) và không đảm bảo có dữ liệu cho mã .VN.'
+      - Kiểm tra xử lý ATO/ATC, nghỉ trưa 11:30-13:00 và biên độ giá khi tách phiên.
+      - Nếu đạt, tính VWAP và dải sigma bằng m02_vwap và m02_vwap_sigma.
+      - Báo cáo rằng tín hiệu dựa vào dải sigma trong ngày chưa kiểm chứng.
+      outputs: Quyết định dùng/không dùng VWAP kèm lý do.
+  - id: "m02-decision_rules-1"
+    title: "Quy tắc quyết định: Nếu giá đóng cửa vượt VAH (Value Area dựng từ 60 phiên trước) thì ghi nhận quán tính nhẹ (tăng 10 p…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "đóng", "cửa", "vượt", "vah", "value", "area"]
+    text: |-
+      Nếu giá đóng cửa vượt VAH (Value Area dựng từ 60 phiên trước) thì ghi nhận quán tính nhẹ (tăng 10 phiên 55-56% so với nền 51-53%, lợi suất 10 phiên khoảng +1.2% đến +1.5% so với nền +0.5% đến +0.9%) và dùng làm một yếu tố bổ sung, không phải tín hiệu mua độc lập.
+  - id: "m02-decision_rules-2"
+    title: "Quy tắc quyết định: Nếu giá đóng cửa dưới VAL thì KHÔNG coi là điểm mua đảo chiều (tăng 48-52%, lợi suất +0.0% đến +0.1…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "đóng", "cửa", "dưới", "val", "thì", "không"]
+    text: |-
+      Nếu giá đóng cửa dưới VAL thì KHÔNG coi là điểm mua đảo chiều (tăng 48-52%, lợi suất +0.0% đến +0.1%, không hơn nền).
+  - id: "m02-decision_rules-3"
+    title: "Quy tắc quyết định: Nếu luận điểm là 'giá ngoài Value Area sẽ hồi về POC' (kịch bản A) thì KHÔNG dựa vào nó trên khung …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "luận", "điểm", "là", "giá", "ngoài", "value", "area"]
+    text: |-
+      Nếu luận điểm là 'giá ngoài Value Area sẽ hồi về POC' (kịch bản A) thì KHÔNG dựa vào nó trên khung ngày: xác suất hồi về POC trong 10 phiên chỉ 41-50%.
+  - id: "m02-decision_rules-4"
+    title: "Quy tắc quyết định: Nếu dữ liệu chỉ là nến ngày thì không tính/không diễn giải VWAP và dải sigma; nói rõ lý do."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "dữ", "liệu", "chỉ", "là", "nến", "ngày", "thì"]
+    text: |-
+      Nếu dữ liệu chỉ là nến ngày thì không tính/không diễn giải VWAP và dải sigma; nói rõ lý do.
+  - id: "m02-decision_rules-5"
+    title: "Quy tắc quyết định: Nếu người dùng muốn tín hiệu vào lệnh intraday (kịch bản A/B) thì nói rõ chưa kiểm chứng và dữ liệu…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "người", "dùng", "muốn", "tín", "hiệu", "vào", "lệnh"]
+    text: |-
+      Nếu người dùng muốn tín hiệu vào lệnh intraday (kịch bản A/B) thì nói rõ chưa kiểm chứng và dữ liệu intraday mã .VN qua yfinance không được đảm bảo; yêu cầu nguồn dữ liệu trong ngày đáng tin cậy trước.
+  - id: "m02-decision_rules-6"
+    title: "Quy tắc quyết định: Nếu tín hiệu tự động là SHORT hoặc SHORT_TREND thì không đề xuất bán khống (VN không cho bán khống …"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "tín", "hiệu", "tự", "động", "là", "short", "hoặc"]
+    text: |-
+      Nếu tín hiệu tự động là SHORT hoặc SHORT_TREND thì không đề xuất bán khống (VN không cho bán khống cổ phiếu cơ sở); diễn giải thành 'không mua/giảm tỷ trọng/đứng ngoài'.
+  - id: "m02-decision_rules-7"
+    title: "Quy tắc quyết định: Nếu shape = KHONG_DU_DU_LIEU (ít hơn 8 bin có dữ liệu) thì không kết luận hình dạng; mở rộng cửa sổ…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "shape", "khong_du_du_lieu", "ít", "hơn", "bin", "có", "dữ"]
+    text: |-
+      Nếu shape = KHONG_DU_DU_LIEU (ít hơn 8 bin có dữ liệu) thì không kết luận hình dạng; mở rộng cửa sổ hoặc giảm num_bins.
+  - id: "m02-decision_rules-8"
+    title: "Quy tắc quyết định: Nếu shape = P hoặc b và cửa sổ nằm trong xu hướng rõ thì coi nhãn là hệ quả của xu hướng, không phả…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "shape", "hoặc", "và", "cửa", "sổ", "nằm", "trong"]
+    text: |-
+      Nếu shape = P hoặc b và cửa sổ nằm trong xu hướng rõ thì coi nhãn là hệ quả của xu hướng, không phải thông tin độc lập.
+  - id: "m02-decision_rules-9"
+    title: "Quy tắc quyết định: Nếu Volume Profile và TPO cho cùng vùng VA thì độ tin cậy mô tả cao hơn, nhưng vẫn không nâng thành…"
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "volume", "profile", "và", "tpo", "cho", "cùng", "vùng"]
+    text: |-
+      Nếu Volume Profile và TPO cho cùng vùng VA thì độ tin cậy mô tả cao hơn, nhưng vẫn không nâng thành lợi thế dự báo.
+  - id: "m02-decision_rules-10"
+    title: "Quy tắc quyết định: Nếu giá nằm trong VA thì báo là 'trạng thái cân bằng/chấp nhận', không kết luận hướng đi."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "giá", "nằm", "trong", "va", "thì", "báo", "là"]
+    text: |-
+      Nếu giá nằm trong VA thì báo là 'trạng thái cân bằng/chấp nhận', không kết luận hướng đi.
+  - id: "m02-decision_rules-11"
+    title: "Quy tắc quyết định: Nếu báo cáo bất kỳ mốc VAH/VAL/POC nào thì kèm cửa sổ và num_bins đã dùng."
+    tags: ["quy", "tắc", "quyết", "định", "nếu", "báo", "cáo", "bất", "kỳ", "mốc", "vah", "val"]
+    text: |-
+      Nếu báo cáo bất kỳ mốc VAH/VAL/POC nào thì kèm cửa sổ và num_bins đã dùng.
+  - id: "m02-benchmarks-1"
+    title: "Chuẩn so sánh: Xác suất tăng 10 phiên sau khi đóng cửa trên VAH (VA 60 phiên trước, num_bins=40)"
+    tags: ["chuẩn", "so", "sánh", "xác", "suất", "tăng", "10", "phiên", "sau", "khi", "đóng", "cửa"]
+    text: |-
+      metric: Xác suất tăng 10 phiên sau khi đóng cửa trên VAH (VA 60 phiên trước, num_bins=40)
+      value: 55-56%
+      context: Nền chung khoảng 51-53%; nhất quán ở cả 2 giai đoạn kiểm chứng (VERIFICATION_FINDINGS mục 6)
+      confidence: medium
+  - id: "m02-benchmarks-2"
+    title: "Chuẩn so sánh: Lợi suất 10 phiên sau khi đóng cửa trên VAH"
+    tags: ["chuẩn", "so", "sánh", "lợi", "suất", "10", "phiên", "sau", "khi", "đóng", "cửa", "trên"]
+    text: |-
+      metric: Lợi suất 10 phiên sau khi đóng cửa trên VAH
+      value: +1.2% đến +1.5%
+      context: Nền khoảng +0.5% đến +0.9%
+      confidence: medium
+  - id: "m02-benchmarks-3"
+    title: "Chuẩn so sánh: Xác suất tăng 10 phiên khi đóng cửa dưới VAL"
+    tags: ["chuẩn", "so", "sánh", "xác", "suất", "tăng", "10", "phiên", "khi", "đóng", "cửa", "dưới"]
+    text: |-
+      metric: Xác suất tăng 10 phiên khi đóng cửa dưới VAL
+      value: 48-52%
+      context: Lợi suất +0.0% đến +0.1%; không có lợi thế, không phải điểm mua đảo chiều
+      confidence: medium
+  - id: "m02-benchmarks-4"
+    title: "Chuẩn so sánh: Xác suất hồi về POC trong 10 phiên khi giá ngoài Value Area"
+    tags: ["chuẩn", "so", "sánh", "xác", "suất", "hồi", "về", "poc", "trong", "10", "phiên", "khi"]
+    text: |-
+      metric: Xác suất hồi về POC trong 10 phiên khi giá ngoài Value Area
+      value: 41-50%
+      context: Ngang tung đồng xu; kịch bản A không được ủng hộ trên khung ngày
+      confidence: medium
+  - id: "m02-benchmarks-5"
+    title: "Chuẩn so sánh: Tín hiệu vào lệnh AMT trong ngày (kịch bản A/B)"
+    tags: ["chuẩn", "so", "sánh", "tín", "hiệu", "vào", "lệnh", "amt", "trong", "ngày", "kịch", "bản"]
+    text: |-
+      metric: Tín hiệu vào lệnh AMT trong ngày (kịch bản A/B)
+      value: chưa kiểm chứng
+      context: yfinance mã .VN không đảm bảo dữ liệu intraday
+      confidence: low
+  - id: "m02-benchmarks-6"
+    title: "Chuẩn so sánh: Tỷ lệ Value Area"
+    tags: ["chuẩn", "so", "sánh", "tỷ", "lệ", "value", "area"]
+    text: |-
+      metric: Tỷ lệ Value Area
+      value: 70%
+      context: Quy ước Market Profile, xấp xỉ 1 độ lệch chuẩn (68%) của phân phối chuẩn; tỷ lệ thực tế thường hơi lớn hơn do bin rời rạc
+      confidence: high
+  - id: "m02-benchmarks-7"
+    title: "Chuẩn so sánh: Ngưỡng hình dạng profile (skew/kurt)"
+    tags: ["chuẩn", "so", "sánh", "ngưỡng", "hình", "dạng", "profile", "skew", "kurt"]
+    text: |-
+      metric: Ngưỡng hình dạng profile (skew/kurt)
+      value: '|skew| < 0.5 và |kurt| < 1.0 cho D; skew <= -0.5 cho P; skew >= 0.5 cho b; tối thiểu 8 bin có dữ liệu'
+      context: Ngưỡng khởi đầu của code, theo tài liệu AMT, chưa backtest trên dữ liệu VN
+      confidence: low
+  - id: "m02-benchmarks-8"
+    title: "Chuẩn so sánh: Ngưỡng xác nhận kịch bản B"
+    tags: ["chuẩn", "so", "sánh", "ngưỡng", "xác", "nhận", "kịch", "bản"]
+    text: |-
+      metric: Ngưỡng xác nhận kịch bản B
+      value: VOL_RATIO >= 1.5 (khối lượng gấp 1.5 lần SMA20)
+      context: Tham số của code, chưa backtest
+      confidence: low
+  - id: "m02-benchmarks-9"
+    title: "Chuẩn so sánh: Giới hạn dữ liệu intraday yfinance"
+    tags: ["chuẩn", "so", "sánh", "giới", "hạn", "dữ", "liệu", "intraday", "yfinance"]
+    text: |-
+      metric: Giới hạn dữ liệu intraday yfinance
+      value: '1m: 7 ngày; 2m/5m/15m/30m/90m: 60 ngày; 60m/1h: 730 ngày'
+      context: Theo hằng số INTRADAY_MAX_PERIOD của code
+      confidence: medium
+  - id: "m02-pitfalls-1"
+    title: "Lỗi thường gặp: Dùng TPO trên nến ngày rồi gọi là Market Profile: thực chất chỉ là range profile (mỗi nến một chu k…"
+    tags: ["lỗi", "thường", "gặp", "dùng", "tpo", "trên", "nến", "ngày", "rồi", "gọi", "là", "market"]
+    text: |-
+      Dùng TPO trên nến ngày rồi gọi là Market Profile: thực chất chỉ là range profile (mỗi nến một chu kỳ), khác TPO trong ngày của Steidlmayer.
+  - id: "m02-pitfalls-2"
+    title: "Lỗi thường gặp: Tính VWAP và dải sigma trên nến ngày: mỗi phiên chỉ một nến nên VWAP = Typical Price, sigma = 0; vô…"
+    tags: ["lỗi", "thường", "gặp", "tính", "vwap", "và", "dải", "sigma", "trên", "nến", "ngày", "mỗi"]
+    text: |-
+      Tính VWAP và dải sigma trên nến ngày: mỗi phiên chỉ một nến nên VWAP = Typical Price, sigma = 0; vô nghĩa (code tự bỏ qua kèm cảnh báo).
+  - id: "m02-pitfalls-3"
+    title: "Lỗi thường gặp: Tin vào kịch bản A (mean reversion về POC) trên khung ngày: dữ liệu VN cho thấy chỉ 41-50%, không h…"
+    tags: ["lỗi", "thường", "gặp", "tin", "vào", "kịch", "bản", "mean", "reversion", "về", "poc", "trên"]
+    text: |-
+      Tin vào kịch bản A (mean reversion về POC) trên khung ngày: dữ liệu VN cho thấy chỉ 41-50%, không hơn tung đồng xu.
+  - id: "m02-pitfalls-4"
+    title: "Lỗi thường gặp: Coi việc đóng dưới VAL là điểm mua đảo chiều: bằng chứng cho thấy không có lợi thế (48-52%)."
+    tags: ["lỗi", "thường", "gặp", "coi", "việc", "đóng", "dưới", "val", "là", "điểm", "mua", "đảo"]
+    text: |-
+      Coi việc đóng dưới VAL là điểm mua đảo chiều: bằng chứng cho thấy không có lợi thế (48-52%).
+  - id: "m02-pitfalls-5"
+    title: "Lỗi thường gặp: Phóng đại lợi thế phía trên VAH: chỉ cao hơn nền khoảng 3-4 điểm phần trăm; dùng làm yếu tố phụ."
+    tags: ["lỗi", "thường", "gặp", "phóng", "đại", "lợi", "thế", "phía", "trên", "vah", "chỉ", "cao"]
+    text: |-
+      Phóng đại lợi thế phía trên VAH: chỉ cao hơn nền khoảng 3-4 điểm phần trăm; dùng làm yếu tố phụ.
+  - id: "m02-pitfalls-6"
+    title: "Lỗi thường gặp: Dựng Value Area gồm cả nến hiện tại (nhìn trước, look-ahead) rồi kết luận giá 'ra khỏi' VA: kiểm ch…"
+    tags: ["lỗi", "thường", "gặp", "dựng", "value", "area", "gồm", "cả", "nến", "hiện", "tại", "nhìn"]
+    text: |-
+      Dựng Value Area gồm cả nến hiện tại (nhìn trước, look-ahead) rồi kết luận giá 'ra khỏi' VA: kiểm chứng dùng 60 phiên TRƯỚC.
+  - id: "m02-pitfalls-7"
+    title: "Lỗi thường gặp: Quên rằng khối lượng nến được phân bổ giả định trải đều; Up/Down Volume khi vẽ chỉ là quy ước trên/…"
+    tags: ["lỗi", "thường", "gặp", "quên", "rằng", "khối", "lượng", "nến", "được", "phân", "bổ", "giả"]
+    text: |-
+      Quên rằng khối lượng nến được phân bổ giả định trải đều; Up/Down Volume khi vẽ chỉ là quy ước trên/dưới POC, không phải up-tick/down-tick thực.
+  - id: "m02-pitfalls-8"
+    title: "Lỗi thường gặp: Đổi num_bins/cửa sổ mà không ghi: POC/VAH/VAL thay đổi theo tham số."
+    tags: ["lỗi", "thường", "gặp", "đổi", "num_bins", "cửa", "sổ", "mà", "không", "ghi", "poc", "vah"]
+    text: |-
+      Đổi num_bins/cửa sổ mà không ghi: POC/VAH/VAL thay đổi theo tham số.
+  - id: "m02-pitfalls-9"
+    title: "Lỗi thường gặp: Sigma của code là running (độ lệch so với VWAP tại từng thời điểm) nên thường nhỏ hơn sigma tính lạ…"
+    tags: ["lỗi", "thường", "gặp", "sigma", "của", "code", "là", "running", "độ", "lệch", "so", "với"]
+    text: |-
+      Sigma của code là running (độ lệch so với VWAP tại từng thời điểm) nên thường nhỏ hơn sigma tính lại so với VWAP cuối phiên.
+  - id: "m02-pitfalls-10"
+    title: "Lỗi thường gặp: Đề xuất SHORT/bán khống ở VN: không thực hiện được; bỏ tín hiệu SHORT."
+    tags: ["lỗi", "thường", "gặp", "đề", "xuất", "short", "bán", "khống", "vn", "không", "thực", "hiện"]
+    text: |-
+      Đề xuất SHORT/bán khống ở VN: không thực hiện được; bỏ tín hiệu SHORT.
+  - id: "m02-pitfalls-11"
+    title: "Lỗi thường gặp: Bỏ qua đặc thù VN: ATO/ATC dồn khối lượng, nghỉ trưa 11:30-13:00 chia đôi phiên, biên độ giá (HOSE …"
+    tags: ["lỗi", "thường", "gặp", "bỏ", "qua", "đặc", "thù", "vn", "ato", "atc", "dồn", "khối"]
+    text: |-
+      Bỏ qua đặc thù VN: ATO/ATC dồn khối lượng, nghỉ trưa 11:30-13:00 chia đôi phiên, biên độ giá (HOSE ±7%, HNX ±10%, UPCoM ±15%; cần xác nhận với quy định hiện hành) cắt xu hướng trong ngày.
+  - id: "m02-pitfalls-12"
+    title: "Lỗi thường gặp: Nhầm Value Area (vùng giá trị theo giao dịch) với giá trị nội tại doanh nghiệp: hai khái niệm khác …"
+    tags: ["lỗi", "thường", "gặp", "nhầm", "value", "area", "vùng", "giá", "trị", "theo", "giao", "dịch"]
+    text: |-
+      Nhầm Value Area (vùng giá trị theo giao dịch) với giá trị nội tại doanh nghiệp: hai khái niệm khác nhau hoàn toàn.
+  - id: "m02-pitfalls-13"
+    title: "Lỗi thường gặp: Đưa nhãn hình dạng D/P/b làm kết luận mua/bán: nhãn chưa được kiểm chứng giá trị dự báo."
+    tags: ["lỗi", "thường", "gặp", "đưa", "nhãn", "hình", "dạng", "làm", "kết", "luận", "mua", "bán"]
+    text: |-
+      Đưa nhãn hình dạng D/P/b làm kết luận mua/bán: nhãn chưa được kiểm chứng giá trị dự báo.
+  - id: "m02-sme_vn_guidance-1"
+    title: "Lưu ý SME Việt Nam: Nhà đầu tư cá nhân/chủ SME dùng AMT nên coi nó là công cụ MÔ TẢ vùng giá đã được chấp nhận, không p…"
+    tags: ["lưu", "sme", "việt", "nam", "nhà", "đầu", "tư", "cá", "nhân", "chủ", "dùng", "amt"]
+    text: |-
+      Nhà đầu tư cá nhân/chủ SME dùng AMT nên coi nó là công cụ MÔ TẢ vùng giá đã được chấp nhận, không phải hệ thống ra quyết định mua bán.
+  - id: "m02-sme_vn_guidance-2"
+    title: "Lưu ý SME Việt Nam: Công cụ dựng được bằng Excel/Google Sheets từ dữ liệu OHLCV ngày (miễn phí từ các nguồn công khai; …"
+    tags: ["lưu", "sme", "việt", "nam", "công", "cụ", "dựng", "được", "bằng", "excel", "google", "sheets"]
+    text: |-
+      Công cụ dựng được bằng Excel/Google Sheets từ dữ liệu OHLCV ngày (miễn phí từ các nguồn công khai; cần xác nhận độ phủ dữ liệu); với dữ liệu trong ngày cần nguồn trả phí/broker, chi phí cần xác nhận.
+  - id: "m02-sme_vn_guidance-3"
+    title: "Lưu ý SME Việt Nam: Với doanh nghiệp tham gia thị trường vốn (mua cổ phiếu quỹ, đầu tư tài chính ngắn hạn), dùng VA như…"
+    tags: ["lưu", "sme", "việt", "nam", "với", "doanh", "nghiệp", "tham", "gia", "thị", "trường", "vốn"]
+    text: |-
+      Với doanh nghiệp tham gia thị trường vốn (mua cổ phiếu quỹ, đầu tư tài chính ngắn hạn), dùng VA như một tham chiếu giá hợp lý theo giao dịch kèm phân tích cơ bản (m03-m05), không thay thế định giá.
+  - id: "m02-sme_vn_guidance-4"
+    title: "Lưu ý SME Việt Nam: Thanh khoản mã nhỏ (UPCoM, midcap thấp): volume profile nhiễu do ít giao dịch; hạn chế dùng."
+    tags: ["lưu", "sme", "việt", "nam", "thanh", "khoản", "mã", "nhỏ", "upcom", "midcap", "thấp", "volume"]
+    text: |-
+      Thanh khoản mã nhỏ (UPCoM, midcap thấp): volume profile nhiễu do ít giao dịch; hạn chế dùng.
+  - id: "m02-sme_vn_guidance-5"
+    title: "Lưu ý SME Việt Nam: VWAP có ích cho lệnh lớn: chia nhỏ lệnh và so giá khớp với VWAP phiên để đánh giá chất lượng thực t…"
+    tags: ["lưu", "sme", "việt", "nam", "vwap", "có", "ích", "cho", "lệnh", "lớn", "chia", "nhỏ"]
+    text: |-
+      VWAP có ích cho lệnh lớn: chia nhỏ lệnh và so giá khớp với VWAP phiên để đánh giá chất lượng thực thi (cần dữ liệu trong ngày).
+  - id: "m02-case_lessons-1"
+    title: "Bài học case: Kiểm chứng AMT khung ngày trên cổ phiếu VN"
+    tags: ["bài", "học", "case", "kiểm", "chứng", "amt", "khung", "ngày", "trên", "cổ", "phiếu", "vn"]
+    text: |-
+      name: Kiểm chứng AMT khung ngày trên cổ phiếu VN
+      type: sme
+      setup: |
+        Backtest trong VERIFICATION_FINDINGS mục 6: Value Area dựng từ 60 phiên trước (num_bins = 40), xét hành vi 10 phiên sau khi giá đóng cửa ngoài VA, trên hai giai đoạn dữ liệu. Chi tiết mẫu/giai đoạn không có trong file nên không ghi thêm.
+      key_calculations:
+      - 'Trên VAH: tăng 10 phiên 55-56%, lợi suất +1.2% đến +1.5% (nền +0.5% đến +0.9%).'
+      - 'Dưới VAL: tăng 48-52%, lợi suất +0.0% đến +0.1%.'
+      - 'Hồi về POC trong 10 phiên khi giá ngoài VA: 41-50%.'
+      lesson: |
+        Chỉ có quán tính nhẹ phía trên VAH; kịch bản mean reversion (A) không được ủng hộ. Lý do hợp lý (suy luận, chưa kiểm chứng): cổ phiếu VN có xu hướng momentum và không bán khống nên giá dưới VAL không bị "mua bắt đáy" mạnh. Cần giữ AMT ở vai trò mô tả.
+      data_reliability: verified
+  - id: "m02-case_lessons-2"
+    title: "Bài học case: Profile 5 nến minh họa"
+    tags: ["bài", "học", "case", "profile", "nến", "minh", "họa"]
+    text: |-
+      name: Profile 5 nến minh họa
+      type: sme
+      setup: Profile tự thiết kế để tính tay POC/VAH/VAL, TPO, shape (xem worked_examples m02_we1).
+      key_calculations:
+      - bin_volume = [100,100,250,500,525,525,450,200,75,75]; POC 104.5; VA 103-107 (71.4%).
+      lesson: Giúp agent mới hiểu thuật toán và quy tắc hòa; số là giả định minh họa, không phải mã thật.
+      data_reliability: illustrative
+  - id: "m02-worked_examples-1"
+    title: "Ví dụ có lời giải: m02_we1 — Dựng Volume Profile và TPO từ 5 nến (giả định minh họa)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m02_we1", "dựng", "volume", "profile", "và", "tpo", "từ"]
+    text: |-
+      id: m02_we1
+      title: Dựng Volume Profile và TPO từ 5 nến (giả định minh họa)
+      inputs:
+        candles: '(Low, High, Volume): (100,104,400), (102,106,600), (103,107,1000), (104,108,500), (106,110,300)'
+        num_bins: 10
+        price_range: 100 đến 110, mỗi bin rộng 1
+      steps:
+      - 'Nến 1 (100-104, 400): chồng lấp 4 bin 0-3, mỗi bin 400 x 1/4 = 100.'
+      - 'Nến 2 (102-106, 600): bin 2-5, mỗi bin 150.'
+      - 'Nến 3 (103-107, 1000): bin 3-6, mỗi bin 250.'
+      - 'Nến 4 (104-108, 500): bin 4-7, mỗi bin 125.'
+      - 'Nến 5 (106-110, 300): bin 6-9, mỗi bin 75.'
+      - 'Cộng: bin0 = 100; bin1 = 100; bin2 = 100 + 150 = 250; bin3 = 100 + 150 + 250 = 500; bin4 = 150 + 250 + 125 = 525; bin5 = 525; bin6 = 250 + 125 + 75 = 450; bin7 = 125 + 75 = 200; bin8 = 75; bin9 = 75. Tổng 2800 = 400+600+1000+500+300 (bảo toàn).'
+      - 'POC: bin 4 và 5 cùng 525, argmax lấy bin 4 => POC = 104.5.'
+      - 'Value Area: 525 (18.75%) -> +525 phải = 1050 -> +500 trái = 1550 -> +450 phải = 2000 = 71.4% >= 70% dừng; VA = bin 3..6 => VAL = 103, VAH = 107.'
+      - 'HVN: mean bin = 280, std = 188.0 (np.std tổng thể); ngưỡng HVN = 468.0 => bin 3 (500) và bin 5 (525) là HVN (bin 4 là POC nên loại). Giá HVN = 103.5 và 105.5. LVN: ngưỡng 92.0 => bin 8 và 9 (75) = 108.5 và 109.5.'
+      - 'TPO (mỗi nến 1 chu kỳ): bin_count = [1,1,2,3,4,3,4,3,2,1]; TPO POC = 104.5 (hòa với bin 6, chọn bin nhỏ); TPO VA = 103 đến 108; Single Prints ở 100.5, 101.5, 109.5.'
+      - 'Shape: skew = 0.0166, excess kurt = -0.1576 => D_SHAPE theo ngưỡng (nhưng chỉ có 5 nến, 10 bin, mẫu quá nhỏ để tin).'
+      result: POC 104.5; VAL 103; VAH 107 (71.4%); HVN 103.5 và 105.5; LVN 108.5 và 109.5; D_SHAPE (skew 0.017, kurt -0.158)
+  - id: "m02-worked_examples-2"
+    title: "Ví dụ có lời giải: m02_we2 — VWAP và dải sigma trong ngày, reset khi sang phiên mới (giả định minh họa)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m02_we2", "vwap", "và", "dải", "sigma", "trong", "ngày"]
+    text: |-
+      id: m02_we2
+      title: VWAP và dải sigma trong ngày, reset khi sang phiên mới (giả định minh họa)
+      inputs:
+        bars: 'Phiên 5/1: (H,L,C,V) = (101,99,100,1000), (103,100,102,3000), (104,101,103,1000); phiên 6/1: (50,48,49,500)'
+      steps:
+      - 'Typical Price: 100; 101.6667; 102.6667.'
+      - VWAP nến 1 = 100; nến 2 = (100x1000 + 101.6667x3000)/4000 = 101.25; nến 3 = (405000 + 102666.7)/5000 = 101.5333.
+      - 'Sigma running: nến 1 = 0; nến 2 = sqrt(520.83/4000) = 0.3608; nến 3 = sqrt(1805.2/5000) = 0.6009.'
+      - '+1 sigma: 100; 101.6108; 102.1342. +2 sigma nến 2 = 101.25 + 2x0.3608 = 101.9717.'
+      - 'Sang phiên 6/1 (ngày mới): cộng dồn reset; nến duy nhất có VWAP = Typical Price = 49, sigma = 0.'
+      result: VWAP = [100, 101.25, 101.5333]; sigma = [0, 0.3608, 0.6009]; phiên mới reset VWAP = 49
+  - id: "m02-worked_examples-3"
+    title: "Ví dụ có lời giải: m02_we3 — Phân loại hình P-shape bằng weighted moments (giả định minh họa)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m02_we3", "phân", "loại", "hình", "shape", "bằng", "weighted"]
+    text: |-
+      id: m02_we3
+      title: Phân loại hình P-shape bằng weighted moments (giả định minh họa)
+      inputs:
+        bin_volume: '[50, 50, 100, 200, 400, 900, 1200, 1400]'
+      steps:
+      - Tổng = 50+50+100+200+400+900+1200+1400 = 4300; w = V/4300.
+      - 'mu = sum(i x w) = 5.5698 (chỉ số bin trung bình, gần cuối: khối lượng dồn ở giá cao).'
+      - sigma = 1.4906.
+      - 'Skew = -1.3255 (<= -0.5: đuôi dài về giá thấp) và excess kurt = 1.8666.'
+      - Có 8 bin có dữ liệu (đủ ngưỡng tối thiểu 8) => P_SHAPE.
+      result: 'P_SHAPE: skew -1.3255; kurt 1.8666; diễn giải: khối lượng dồn ở vùng giá cao, có thể phân phối ở đỉnh hoặc breakout tăng được chấp nhận; chỉ là mô tả.'
+  - id: "m02-worked_examples-4"
+    title: "Ví dụ có lời giải: m02_we4 — Đọc vị trí giá so với Value Area và ra kết luận theo bằng chứng (giả định minh họa)"
+    tags: ["ví", "dụ", "có", "lời", "giải", "m02_we4", "đọc", "vị", "trí", "giá", "so", "với"]
+    text: |-
+      id: m02_we4
+      title: Đọc vị trí giá so với Value Area và ra kết luận theo bằng chứng (giả định minh họa)
+      inputs:
+        VAL: 103
+        POC: 104.5
+        VAH: 107
+        close_hom_nay: 108
+        khung: ngày, VA dựng từ 60 phiên trước, num_bins = 40
+      steps:
+      - 'Vị trí: 108 > VAH 107 => trạng thái ''trên VA'' (vượt 0.93% so với VAH).'
+      - 'Tra decision_rules: đóng cửa trên VAH => quán tính nhẹ, tăng 10 phiên 55-56% (nền 51-53%).'
+      - Kịch bản A (hồi về POC 104.5, tức -3.2%) chỉ 41-50% nên KHÔNG dùng làm luận điểm.
+      - 'VWAP: không có vì chỉ dùng nến ngày.'
+      - 'Kết luận: yếu tố hỗ trợ nhẹ cho kịch bản tăng, không phải tín hiệu độc lập; kết hợp cơ bản, quản trị rủi ro (cắt lỗ) và m01.'
+      result: 'Trên VAH: lợi thế thống kê nhỏ (khoảng 3-4 điểm phần trăm so với nền); không dùng kịch bản hồi về POC.'
+  - id: "m02-practice_questions-1"
+    title: "Câu hỏi luyện tập: Với bin_volume = [100,100,250,500,525,525,450,200,75,75], edges 100..110, POC và Value Area 70% là …"
+    tags: ["câu", "hỏi", "luyện", "tập", "với", "bin_volume", "100", "250", "500", "525", "450", "200"]
+    text: |-
+      q: Với bin_volume = [100,100,250,500,525,525,450,200,75,75], edges 100..110, POC và Value Area 70% là gì?
+      a: 'POC = 104.5 (bin 4 hòa với bin 5, chọn chỉ số nhỏ). Mở rộng: 525 -> 1050 -> 1550 -> 2000 (71.4%). VAL = 103, VAH = 107.'
+  - id: "m02-practice_questions-2"
+    title: "Câu hỏi luyện tập: Vì sao chia khối lượng nến theo tỷ lệ chồng lấp thay vì gán toàn bộ vào bin của giá đóng cửa?"
+    tags: ["câu", "hỏi", "luyện", "tập", "vì", "sao", "chia", "khối", "lượng", "nến", "theo", "tỷ"]
+    text: |-
+      q: Vì sao chia khối lượng nến theo tỷ lệ chồng lấp thay vì gán toàn bộ vào bin của giá đóng cửa?
+      a: Giá đã đi qua toàn bộ [Low, High] trong nến; gán vào Close làm profile lệch và lởm chởm. Chia theo chồng lấp giả định khối lượng trải đều, bảo toàn tổng khối lượng, là xấp xỉ trung tính khi không có tick.
+  - id: "m02-practice_questions-3"
+    title: "Câu hỏi luyện tập: Tại sao VWAP phiên trên nến ngày vô nghĩa?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tại", "sao", "vwap", "phiên", "trên", "nến", "ngày", "vô"]
+    text: |-
+      q: Tại sao VWAP phiên trên nến ngày vô nghĩa?
+      a: 'Mỗi phiên chỉ một nến nên cộng dồn chỉ có một điểm: VWAP = Typical Price và sigma = 0. Code bỏ qua và ghi cảnh báo trong notes.'
+  - id: "m02-practice_questions-4"
+    title: "Câu hỏi luyện tập: Dữ liệu VN cho thấy gì về kịch bản A (hồi về POC)?"
+    tags: ["câu", "hỏi", "luyện", "tập", "dữ", "liệu", "vn", "cho", "thấy", "gì", "về", "kịch"]
+    text: |-
+      q: Dữ liệu VN cho thấy gì về kịch bản A (hồi về POC)?
+      a: Khi giá ngoài Value Area, xác suất hồi về POC trong 10 phiên chỉ 41-50% (như tung đồng xu), nên kịch bản mean reversion không được ủng hộ trên khung ngày.
+  - id: "m02-practice_questions-5"
+    title: "Câu hỏi luyện tập: Đóng cửa trên VAH có phải tín hiệu mua mạnh không?"
+    tags: ["câu", "hỏi", "luyện", "tập", "đóng", "cửa", "trên", "vah", "có", "phải", "tín", "hiệu"]
+    text: |-
+      q: Đóng cửa trên VAH có phải tín hiệu mua mạnh không?
+      a: 'Không. Chỉ có quán tính nhẹ: tăng 10 phiên 55-56% so với nền 51-53% và lợi suất +1.2% đến +1.5% so với nền +0.5% đến +0.9%. Là yếu tố phụ, không độc lập.'
+  - id: "m02-practice_questions-6"
+    title: "Câu hỏi luyện tập: Tín hiệu SHORT từ kịch bản A xử lý thế nào ở VN?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tín", "hiệu", "short", "từ", "kịch", "bản", "xử", "lý"]
+    text: |-
+      q: Tín hiệu SHORT từ kịch bản A xử lý thế nào ở VN?
+      a: Không thực hiện vì không bán khống cổ phiếu cơ sở; diễn giải thành 'không mua/đứng ngoài/giảm tỷ trọng'. Ngoài ra tín hiệu intraday chưa kiểm chứng.
+  - id: "m02-practice_questions-7"
+    title: "Câu hỏi luyện tập: TPO trên khung ngày khác TPO của Steidlmayer thế nào?"
+    tags: ["câu", "hỏi", "luyện", "tập", "tpo", "trên", "khung", "ngày", "khác", "của", "steidlmayer", "thế"]
+    text: |-
+      q: TPO trên khung ngày khác TPO của Steidlmayer thế nào?
+      a: Mỗi nến ngày là một chu kỳ nên là range profile (đếm số phiên đã chạm từng mức giá), không phải nhiều chữ cái 30 phút trong một phiên.
+  - id: "m02-practice_questions-8"
+    title: "Câu hỏi luyện tập: Skew âm của profile nói lên điều gì?"
+    tags: ["câu", "hỏi", "luyện", "tập", "skew", "âm", "của", "profile", "nói", "lên", "điều", "gì"]
+    text: |-
+      q: Skew âm của profile nói lên điều gì?
+      a: 'Khối lượng dồn ở bin giá cao, đuôi mỏng kéo về giá thấp: P-shape (skew <= -0.5). Skew dương mạnh là b-shape (dồn ở giá thấp).'
+  - id: "m02-practice_questions-9"
+    title: "Câu hỏi luyện tập: Value Area 70% gắn với khái niệm thống kê nào?"
+    tags: ["câu", "hỏi", "luyện", "tập", "value", "area", "70", "gắn", "với", "khái", "niệm", "thống"]
+    text: |-
+      q: Value Area 70% gắn với khái niệm thống kê nào?
+      a: Xấp xỉ 1 độ lệch chuẩn quanh trung bình của phân phối chuẩn (khoảng 68%); là quy ước của Market Profile, không phải hằng số tự nhiên.
+  - id: "m02-practice_questions-10"
+    title: "Câu hỏi luyện tập: Nêu ba điều kiện của yfinance/VN khiến tín hiệu AMT trong ngày chưa đáng tin."
+    tags: ["câu", "hỏi", "luyện", "tập", "nêu", "ba", "điều", "kiện", "của", "yfinance", "vn", "khiến"]
+    text: |-
+      q: Nêu ba điều kiện của yfinance/VN khiến tín hiệu AMT trong ngày chưa đáng tin.
+      a: Dữ liệu intraday mã .VN không được yfinance đảm bảo; giới hạn thời gian (15m tối đa 60 ngày); đặc thù ATO/ATC, nghỉ trưa 11:30-13:00 và biên độ giá làm méo VWAP/profile; ngoài ra chưa có backtest.
+  - id: "m02-checklist-1"
+    title: "Checklist: □ Đã ghi rõ khung thời gian, cửa sổ (số phiên) và num_bins khi báo VAH/VAL/POC."
+    tags: ["checklist", "đã", "ghi", "rõ", "khung", "thời", "gian", "cửa", "sổ", "số", "phiên", "và"]
+    text: |-
+      □ Đã ghi rõ khung thời gian, cửa sổ (số phiên) và num_bins khi báo VAH/VAL/POC.
+  - id: "m02-checklist-2"
+    title: "Checklist: □ Value Area dựng từ dữ liệu TRƯỚC thời điểm xét (không nhìn trước)."
+    tags: ["checklist", "value", "area", "dựng", "từ", "dữ", "liệu", "trước", "thời", "điểm", "xét", "không"]
+    text: |-
+      □ Value Area dựng từ dữ liệu TRƯỚC thời điểm xét (không nhìn trước).
+  - id: "m02-checklist-3"
+    title: "Checklist: □ Đã kiểm tra tổng bin_volume bằng tổng Volume đầu vào."
+    tags: ["checklist", "đã", "kiểm", "tra", "tổng", "bin_volume", "bằng", "volume", "đầu", "vào"]
+    text: |-
+      □ Đã kiểm tra tổng bin_volume bằng tổng Volume đầu vào.
+  - id: "m02-checklist-4"
+    title: "Checklist: □ Đã nêu tỷ lệ Value Area thực tế (value_area_pct_actual), không chỉ nói 70%."
+    tags: ["checklist", "đã", "nêu", "tỷ", "lệ", "value", "area", "thực", "tế", "value_area_pct_actual", "không", "chỉ"]
+    text: |-
+      □ Đã nêu tỷ lệ Value Area thực tế (value_area_pct_actual), không chỉ nói 70%.
+  - id: "m02-checklist-5"
+    title: "Checklist: □ Khung ngày: đã nói TPO là range profile; không tính VWAP và dải sigma."
+    tags: ["checklist", "khung", "ngày", "đã", "nói", "tpo", "là", "range", "profile", "không", "tính", "vwap"]
+    text: |-
+      □ Khung ngày: đã nói TPO là range profile; không tính VWAP và dải sigma.
+  - id: "m02-checklist-6"
+    title: "Checklist: □ Chỉ dùng VWAP khi có dữ liệu trong ngày đủ tin cậy; đã nêu giới hạn yfinance."
+    tags: ["checklist", "chỉ", "dùng", "vwap", "khi", "có", "dữ", "liệu", "trong", "ngày", "đủ", "tin"]
+    text: |-
+      □ Chỉ dùng VWAP khi có dữ liệu trong ngày đủ tin cậy; đã nêu giới hạn yfinance.
+  - id: "m02-checklist-7"
+    title: "Checklist: □ Đã nêu bằng chứng: trên VAH 55-56% vs nền 51-53%; dưới VAL không lợi thế; hồi về POC 41-50%."
+    tags: ["checklist", "đã", "nêu", "bằng", "chứng", "trên", "vah", "55", "56", "vs", "nền", "51"]
+    text: |-
+      □ Đã nêu bằng chứng: trên VAH 55-56% vs nền 51-53%; dưới VAL không lợi thế; hồi về POC 41-50%.
+  - id: "m02-checklist-8"
+    title: "Checklist: □ Không đề xuất SHORT/bán khống; diễn giải thành đứng ngoài/giảm tỷ trọng."
+    tags: ["checklist", "không", "đề", "xuất", "short", "bán", "khống", "diễn", "giải", "thành", "đứng", "ngoài"]
+    text: |-
+      □ Không đề xuất SHORT/bán khống; diễn giải thành đứng ngoài/giảm tỷ trọng.
+  - id: "m02-checklist-9"
+    title: "Checklist: □ Đã gắn nhãn 'chưa kiểm chứng' cho mọi tín hiệu kịch bản A/B trong ngày và nhãn shape D/P/b."
+    tags: ["checklist", "đã", "gắn", "nhãn", "chưa", "kiểm", "chứng", "cho", "mọi", "tín", "hiệu", "kịch"]
+    text: |-
+      □ Đã gắn nhãn 'chưa kiểm chứng' cho mọi tín hiệu kịch bản A/B trong ngày và nhãn shape D/P/b.
+  - id: "m02-checklist-10"
+    title: "Checklist: □ Đã nhắc cân nhắc ATO/ATC, nghỉ trưa 11:30-13:00, biên độ giá khi diễn giải."
+    tags: ["checklist", "đã", "nhắc", "cân", "ato", "atc", "nghỉ", "trưa", "11", "30", "13", "00"]
+    text: |-
+      □ Đã nhắc cân nhắc ATO/ATC, nghỉ trưa 11:30-13:00, biên độ giá khi diễn giải.
+  - id: "m02-checklist-11"
+    title: "Checklist: □ Đã kết hợp với phân tích cơ bản/định giá và quản trị rủi ro, không dùng AMT độc lập."
+    tags: ["checklist", "đã", "kết", "hợp", "với", "phân", "tích", "cơ", "bản", "định", "giá", "và"]
+    text: |-
+      □ Đã kết hợp với phân tích cơ bản/định giá và quản trị rủi ro, không dùng AMT độc lập.
+  - id: "m02-excel_google_sheets_templates-1"
+    title: "Mẫu Excel/Sheets: Sheet 'Bins': cột A chỉ số bin; B biên dưới = MinLow + (A-1)*(MaxHigh-MinLow)/N; C biên trên; D tâm…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "bins", "cột", "chỉ", "số", "bin", "biên", "dưới", "minlow"]
+    text: |-
+      Sheet 'Bins': cột A chỉ số bin; B biên dưới = MinLow + (A-1)*(MaxHigh-MinLow)/N; C biên trên; D tâm bin = (B+C)/2.
+  - id: "m02-excel_google_sheets_templates-2"
+    title: "Mẫu Excel/Sheets: Sheet 'Alloc': với mỗi nến (hàng) x bin (cột) công thức =IF(Vol>0, Vol*MAX(0,MIN(High,BinHi)-MAX(Lo…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "alloc", "với", "mỗi", "nến", "hàng", "bin", "cột", "công"]
+    text: |-
+      Sheet 'Alloc': với mỗi nến (hàng) x bin (cột) công thức =IF(Vol>0, Vol*MAX(0,MIN(High,BinHi)-MAX(Low,BinLo))/(High-Low), 0); cột tổng theo bin = bin_volume.
+  - id: "m02-excel_google_sheets_templates-3"
+    title: "Mẫu Excel/Sheets: Sheet 'VA': POC = INDEX(tâm_bin, MATCH(MAX(bin_volume), bin_volume, 0)); mở rộng thủ công bằng cột …"
+    tags: ["mẫu", "excel", "sheets", "sheet", "va", "poc", "index", "tâm_bin", "match", "max", "bin_volume", "mở"]
+    text: |-
+      Sheet 'VA': POC = INDEX(tâm_bin, MATCH(MAX(bin_volume), bin_volume, 0)); mở rộng thủ công bằng cột cộng dồn chọn bên lớn hơn tới khi >= 70% tổng.
+  - id: "m02-excel_google_sheets_templates-4"
+    title: "Mẫu Excel/Sheets: Sheet 'VWAP' (dữ liệu trong ngày): cột Typical Price; cột cộng dồn TP*Vol và Vol theo từng ngày (SU…"
+    tags: ["mẫu", "excel", "sheets", "sheet", "vwap", "dữ", "liệu", "trong", "ngày", "cột", "typical", "price"]
+    text: |-
+      Sheet 'VWAP' (dữ liệu trong ngày): cột Typical Price; cột cộng dồn TP*Vol và Vol theo từng ngày (SUMIFS theo ngày); VWAP = cộng dồn TP*Vol / cộng dồn Vol; cột Dev2Vol = (TP - VWAP)^2 * Vol để tính sigma.
+  - id: "m02-nguon"
+    title: "Nguồn"
+    tags: ["nguồn"]
+    text: |-
+      source_file: stock-analysist/dev/auction_market_theory.py; stock-analysist/documents/VERIFICATION_FINDINGS.md (mục 6)

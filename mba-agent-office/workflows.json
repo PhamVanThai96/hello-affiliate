@@ -2,9 +2,101 @@
   "_ghi_chu": "Mỗi quy trình: keywords (không dấu, khớp theo thứ tự quy trình từ trên xuống) → steps (chạy lần lượt, mỗi bước nhận kết quả bước trước). Bước có thể là id agent hoặc {agent, when:[từ khoá]} (chỉ chạy nếu yêu cầu có từ khoá). Mảng lồng nhau = chạy song song. Không khớp quy trình nào thì Quản Lí tự lập kế hoạch bằng AI.",
   "workflows": [
     {
+      "id": "stocks",
+      "name": "Phân tích cổ phiếu, định giá & đầu tư",
+      "when": "phân tích cổ phiếu/doanh nghiệp niêm yết, định giá doanh nghiệp/cổ phiếu (P/E, P/B, DCF, FCFE, SOTP), thẩm định đầu tư, phân tích kỹ thuật có kiểm chứng (không khuyến nghị mua/bán)",
+      "keywords": [
+        "chung khoan",
+        "co phieu",
+        "ma co phieu",
+        "phan tich co phieu",
+        "dinh gia co phieu",
+        "vn-index",
+        "vnindex",
+        "hose",
+        "hnx",
+        "upcom",
+        "p/e",
+        "p/b",
+        "phan tich ky thuat",
+        "phan tich co ban",
+        "danh muc dau tu",
+        "ma ck",
+        "tho truong chung khoan",
+        "thi truong chung khoan",
+        "danh gia co phieu",
+        "dinh gia ngan hang",
+        "dcf co phieu",
+        "danh gia dau tu",
+        "tham dinh dau tu",
+        "kenh gia",
+        "value area",
+        "volume profile",
+        "vah",
+        "poc",
+        "dinh gia doanh nghiep",
+        "dinh gia cong ty",
+        "dinh gia dn",
+        "dinh gia",
+        "sotp",
+        "gia tri noi tai",
+        "dinh gia masan",
+        "gia hop ly co phieu"
+      ],
+      "steps": [
+        {
+          "agent": "accountant",
+          "when": [
+            "dinh gia",
+            "dcf",
+            "sotp",
+            "gia tri noi tai",
+            "bao cao tai chinh",
+            "bctc",
+            "tham dinh",
+            "chat luong loi nhuan"
+          ],
+          "title": "Kế toán: chuẩn bị gói số liệu BCTC đã kiểm (nợ ròng, số cổ phiếu, vốn chủ mẹ/thiểu số, tỷ lệ sở hữu, lợi nhuận cốt lõi, loại dòng tiền) cho: {c}"
+        },
+        "investor",
+        {
+          "agent": "financial_expert",
+          "when": [
+            "dinh gia",
+            "dcf",
+            "sotp",
+            "gia tri noi tai",
+            "wacc"
+          ],
+          "title": "Tài chính: kiểm tra chéo độc lập định giá của #investor (tính lại, đối chiếu giả định, giải thích chênh lệch) cho: {c}"
+        },
+        "reviewer"
+      ],
+      "titles": {
+        "investor": "Phân tích chứng khoán: {c}",
+        "reviewer": "Rà soát số liệu, giả định, định giá và mức độ khớp giữa các phương pháp của #investor (kiểm tra không có khuyến nghị mua/bán cá nhân)"
+      },
+      "template": "Phân tích chứng khoán: [mã/ngành, mục tiêu, khung thời gian, dữ liệu có sẵn]",
+      "unless": [
+        "startup",
+        "sme",
+        "chua niem yet",
+        "khong niem yet",
+        "quan ca phe",
+        "nha hang",
+        "cua hang",
+        "shop online",
+        "tiem",
+        "du an moi",
+        "m&a",
+        "sap nhap",
+        "mua lai doanh nghiep"
+      ]
+    },
+    {
       "id": "finance",
       "name": "Tư vấn tài chính doanh nghiệp",
-      "when": "NPV/IRR, WACC, cơ cấu vốn, phân tích báo cáo tài chính, vốn lưu động, cổ tức, định giá, M&A, giá trị thời gian của tiền",
+      "when": "NPV/IRR, WACC, cơ cấu vốn, phân tích báo cáo tài chính, vốn lưu động, cổ tức, định giá doanh nghiệp CHƯA niêm yết/SME/dự án, M&A, giá trị thời gian của tiền (định giá cổ phiếu/doanh nghiệp niêm yết thuộc quy trình chứng khoán)",
       "keywords": [
         "tai chinh doanh nghiep",
         "phan tich tai chinh",
@@ -36,7 +128,8 @@
         "gia tri thoi gian cua tien",
         "lai suat thuc",
         "lai kep",
-        "tra gop"
+        "tra gop",
+        "dinh gia"
       ],
       "steps": [
         "financial_expert",
@@ -47,40 +140,6 @@
         "reviewer": "Rà soát giả định, phép tính và kết luận của #financial_expert"
       },
       "template": "Tư vấn tài chính: [mô tả bài toán — vốn đầu tư, dòng tiền, lãi suất/WACC, số liệu có sẵn]"
-    },
-    {
-      "id": "stocks",
-      "name": "Phân tích chứng khoán & đầu tư",
-      "when": "phân tích cổ phiếu/doanh nghiệp niêm yết, định giá cổ phiếu, P/E, P/B, phân tích kỹ thuật, ngành, danh mục đầu tư (không khuyến nghị mua/bán)",
-      "keywords": [
-        "chung khoan",
-        "co phieu",
-        "ma co phieu",
-        "phan tich co phieu",
-        "dinh gia co phieu",
-        "vn-index",
-        "vnindex",
-        "hose",
-        "hnx",
-        "upcom",
-        "p/e",
-        "p/b",
-        "phan tich ky thuat",
-        "phan tich co ban",
-        "danh muc dau tu",
-        "ma ck",
-        "tho truong chung khoan",
-        "thi truong chung khoan"
-      ],
-      "steps": [
-        "stock_analyst",
-        "reviewer"
-      ],
-      "titles": {
-        "stock_analyst": "Phân tích chứng khoán: {c}",
-        "reviewer": "Rà soát số liệu, giả định, định giá của #stock_analyst và kiểm tra không có khuyến nghị mua/bán"
-      },
-      "template": "Phân tích chứng khoán: [mã/ngành, mục tiêu, khung thời gian, dữ liệu có sẵn]"
     },
     {
       "id": "accounting",

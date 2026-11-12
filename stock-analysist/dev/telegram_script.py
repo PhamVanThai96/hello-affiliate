@@ -10,7 +10,8 @@ import requests
 
 # Lấy thư mục hiện tại của file script và trỏ vào thư mục 'output' cùng cấp
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TOKEN_FILE = os.path.join(BASE_DIR, "dev", "key", "tele-bot-token.json")
+# BASE_DIR đang là thư mục dev/ nên file token nằm ở dev/key/ (bản cũ nối thêm "dev" lần nữa -> sai đường dẫn).
+TOKEN_FILE = os.path.join(BASE_DIR, "key", "tele-bot-token.json")
 # OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 OUTPUT_DIR = "/tmp/output"
 
@@ -40,8 +41,8 @@ def load_telegram_config():
         print(f"❌ Lỗi khi đọc file cấu hình: {e}")
         return token, chat_id
 
-def send_stock_charts():
-    """Quét thư mục output, gửi tất cả ảnh PNG qua Telegram và xóa sau khi gửi"""
+def send_stock_charts(output_dir=None):
+    """Quét thư mục output (mặc định /tmp/output; truyền output_dir để gửi đúng thư mục vừa xuất), gửi ảnh PNG qua Telegram và xóa sau khi gửi"""
     token, chat_id = load_telegram_config()
     if not token or not chat_id:
         print("❌ Không tìm thấy Token hoặc Chat ID hợp lệ.")
@@ -52,7 +53,7 @@ def send_stock_charts():
 
     
     # Tìm tất cả các file .png trong thư mục output
-    search_path = os.path.join(OUTPUT_DIR, "*.png")
+    search_path = os.path.join(output_dir or OUTPUT_DIR, "*.png")
     image_files = glob.glob(search_path)
     
     if not image_files:

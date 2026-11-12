@@ -144,7 +144,7 @@ const MOCK = {
   designer: () => 'Đề xuất bố cục 2 cột, tông màu dịu, ưu tiên đọc nhanh.',
   marketing_expert: () => 'Kịch bản TikTok 30s: hook 3s đầu, 4 cảnh, CTA cuối + caption Facebook 100 từ, 5 hashtag.',
   writer: () => 'Đã viết xong nội dung chính và tiêu đề.',
-  stock_analyst: () => 'Phân tích tham khảo: định giá theo P/E và DCF cho kết quả khoảng giá, nêu rõ giả định; không phải khuyến nghị mua/bán.',
+  investor: () => 'Phân tích tham khảo: định giá theo P/E và DCF cho kết quả khoảng giá, nêu rõ giả định; không phải khuyến nghị mua/bán.',
   accountant: () => 'Đã định khoản và kiểm tra cân đối: Tài sản = Nợ phải trả + Vốn chủ.',
   ops: () => 'Dịch vụ đã khởi động đủ, cleanup xác nhận. Sẵn sàng bàn giao.',
   reviewer: () => 'Đã duyệt. Kết quả đạt yêu cầu.',
@@ -206,6 +206,8 @@ const TOOL_DEFS = [
     parameters: { type: 'object', properties: { query: { type: 'string', description: 'Từ khoá, nên kèm năm/tháng hiện tại' } }, required: ['query'] } },
   { name: 'web_fetch', description: 'Tải một trang web: trả về tiêu đề, mô tả, giá/thông tin sản phẩm có cấu trúc và phần nội dung chính (khoảng 6000 ký tự đầu, có totalChars). Website chậm thì tự thử lại; nên tải từng trang sản phẩm thay vì trang chủ.',
     parameters: { type: 'object', properties: { url: { type: 'string' } }, required: ['url'] } },
+  { name: 'ask_user', description: 'Hỏi CEO (người dùng) một số liệu/xác nhận khi KHÔNG tra cứu được hoặc không chắc chắn (vd P/E, số cổ phiếu, Rf của một mã). Task tạm dừng đến khi CEO trả lời hoặc bỏ qua. Gộp nhiều mục vào MỘT câu hỏi, tối đa 3 lần mỗi việc, kèm giá trị đề xuất; không hỏi điều tự tra được.',
+    parameters: { type: 'object', properties: { question: { type: 'string', description: 'Câu hỏi ngắn, nêu rõ mục cần (đơn vị, kỳ, nguồn nên xem)' }, suggested: { type: 'string', description: 'Giá trị/giả định đề xuất nếu CEO bỏ qua (tuỳ chọn)' } }, required: ['question'] } },
   { name: 'ask_colleague', description: 'Hỏi nhanh một đồng nghiệp và nhận câu trả lời.',
     parameters: { type: 'object', properties: { to: { type: 'string', enum: IDS }, question: { type: 'string' } }, required: ['to', 'question'] } },
 ];
@@ -339,6 +341,7 @@ export async function work(agent, ctx) {
         skill_search: async (i) => { ctx.think?.(`Tra kỹ năng: ${i?.query}`); const r = searchSkills(agent, i?.query, i?.limit); return r.length ? { results: r.map(({ score, ...x }) => x) } : { results: [], note: 'Không có mục khớp, thử từ khoá khác.' }; },
         web_search: async (i) => { ctx.think?.(`Tìm web: ${i.query}`); return webSearch(i.query); },
         web_fetch: async (i) => { ctx.think?.(`Đọc trang: ${i.url}`); return webFetch(i.url); },
+        ask_user: (i) => ctx.tools.askUser(i),
         ask_colleague: async (i) => ({ answer: await ctx.ask(String(i.to), String(i.question)) }),
       },
     });

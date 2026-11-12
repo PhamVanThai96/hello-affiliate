@@ -8,7 +8,9 @@ const clip = (s, n = MAX_LABEL) => { s = String(s ?? '').replace(/\s+/g, ' ').tr
 const PLACE_OF_ROOM = { 'Phòng giám đốc': 'director', 'Ban điều hành': 'meeting', 'Phòng nghiên cứu': 'library' };
 // Số bàn (đánh số như nhãn "Bàn n" trong văn phòng) cho agent không có nơi riêng, theo thứ tự trong phòng; thiếu thì rải đều
 // Riêng từng agent (ưu tiên hơn phòng): signal (Thu thập tín hiệu) đứng cạnh bàn bida
-const PLACE_OF_AGENT = {};
+const PLACE_OF_AGENT = { designer: 'lounge' };   // Thiết kế ngồi sofa ở khu thư giãn
+// Bàn cố định (số bàn như nhãn "Bàn n") cho agent ngồi bàn làm việc; ưu tiên hơn việc rải đều theo phòng
+const DESK_OF_AGENT = { investor: 3, marketing_expert: 5 };
 const placeOf = (a) => PLACE_OF_AGENT[a.id] || PLACE_OF_ROOM[a.room] || '';
 const DESKS_OF_ROOM = {};
 const ENGINE_STATUS = { working: 'work', waiting: 'wait' };   // còn lại (idle/offline/error) = 'rest'
@@ -73,7 +75,7 @@ export function startBridge({ applyMsg, setConn }) {
     list.forEach((a, i) => {
       let s = sessions.get(a.id);
       if (!s) { s = sessionOf(a, i); sessions.set(a.id, s); }
-      { const ids = groups.get(placeOf(a)) || []; s.seat = Math.max(0, ids.indexOf(a.id)); s.seatOf = ids.length || 1; s.deskNo = DESKS_OF_ROOM[a.room]?.[s.seat] || 0; }
+      { const ids = groups.get(placeOf(a)) || []; s.seat = Math.max(0, ids.indexOf(a.id)); s.seatOf = ids.length || 1; s.deskNo = DESK_OF_AGENT[a.id] || DESKS_OF_ROOM[a.room]?.[s.seat] || 0; }
       s.name = a.name || a.id; s.title = s.name; s.dir = `~/${a.room || 'Văn phòng'}`; s.role = a.role || ''; s.place = placeOf(a);
       const st = info?.[a.id]?.status || a.status; if (st) s.status = ENGINE_STATUS[st] || 'rest';
     });

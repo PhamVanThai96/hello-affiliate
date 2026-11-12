@@ -56,7 +56,7 @@ const covered = (c, mode = 'read') => (mode === 'read' && sessionRead.has(c))
   || (mode === 'write' ? allowedWrite : allowed).some((a) => c === a || c.startsWith(a + path.sep));
 
 export const listAllowed = () => [...allowed.map((p) => ({ path: p, mode: 'read' })), ...allowedWrite.map((p) => ({ path: p, mode: 'write' })), ...allowedCmd.map((c) => ({ path: c, mode: 'exec' }))];
-export const listPending = () => [...pending.values()].map(({ resolve, ...p }) => p);
+export const listPending = () => [...pending.values()].map(({ resolve, timer, ...p }) => p);
 
 export function revoke(p, mode = 'read') {
   if (mode === 'exec') allowedCmd = allowedCmd.filter((a) => a !== p);
@@ -66,10 +66,11 @@ export function revoke(p, mode = 'read') {
 }
 
 // remember: với lệnh (exec) người dùng chọn "lần này" hoặc "luôn cho phép lệnh này"; quyền đọc/ghi file luôn được ghi nhớ như trước.
-export function decide(id, allow, remember = true) {
+export function decide(id, allow, remember = true, answer = '') {
   const req = pending.get(id);
   if (!req) return false;
   pending.delete(id);
+  if (req.mode === 'ask') { clearTimeout(req.timer); req.resolve(allow && String(answer).trim() ? String(answer).trim().slice(0, 2000) : null); return true; }
   if (allow && req.mode === 'exec') {
     if (remember && !allowedCmd.includes(req.command)) { allowedCmd.push(req.command); save(); }
   } else if (allow && !covered(req.path, req.mode)) {
@@ -92,6 +93,23 @@ async function ensureAccess(agent, p, action, onEvent, mode = 'read', c = canon(
   onEvent?.({ type: 'status', id: agent.id, status: 'working' });
   onEvent?.({ type: 'log', from: 'Hệ thống', text: `${granted ? 'Đã cho phép (ghi nhớ)' : 'Đã từ chối'}: ${c}` });
   return granted ? c : null;
+}
+
+// Agent hỏi người dùng khi thiếu hoặc không chắc một số liệu (vd P/E của MSN): task tạm dừng, giao diện hiện ô nhập; trả lời null nếu bỏ qua/hết giờ.
+const ASK_WAIT_MS = 15 * 60 * 1000;
+async function askUser(agent, input, onEvent) {
+  const question = String(input?.question ?? '').trim().slice(0, 600);
+  if (!question) return { error: 'Thiếu nội dung câu hỏi (question).' };
+  const id = `ask${++seq}`;
+  onEvent?.({ type: 'status', id: agent.id, status: 'waiting' });
+  const answer = await new Promise((resolve) => {
+    const timer = setTimeout(() => { pending.delete(id); resolve(null); }, ASK_WAIT_MS);
+    pending.set(id, { id, agent: agent.name, mode: 'ask', action: 'hỏi', question, hint: String(input?.suggested ?? '').slice(0, 200), resolve, timer });
+    onEvent?.({ type: 'log', from: agent.name, text: `Hỏi CEO: ${question}` });
+  });
+  onEvent?.({ type: 'status', id: agent.id, status: 'working' });
+  onEvent?.({ type: 'log', from: 'Hệ thống', text: answer ? `CEO trả lời: ${answer}` : 'CEO bỏ qua câu hỏi' });
+  return answer ? { answer, source: 'người dùng cung cấp' } : { answer: null, note: 'Người dùng chưa trả lời: dùng giả định có nhãn GIẢ ĐỊNH và nêu rõ số này chưa kiểm chứng.' };
 }
 
 // Xin phép chạy một lệnh cụ thể (không phải đường dẫn): người dùng thấy đúng câu lệnh, thư mục chạy và lý do cần xin.
@@ -134,6 +152,7 @@ export function toolsFor(agent, onEvent) {
   // Ghi: tạo file MỚI trong thư mục dự án/reports thì tự làm; ghi đè file có sẵn hoặc ghi ra ngoài thì xin quyền (và sao lưu .bak).
   const writeAccess = async (p, action, c, exists) => (!exists && autoCreate(c) ? c : ensureAccess(agent, p, action, onEvent, 'write', c));
   return {
+    askUser: (input) => askUser(agent, input, onEvent),
     async readFile(p) {
       if (secretLike(canon(p))) return { error: 'File chứa thông tin bí mật, agent không được đọc.' };
       const c = await readAccess(p, 'đọc file');

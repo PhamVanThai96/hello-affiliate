@@ -153,7 +153,7 @@
     var is3 = v === '3d';
     o3.hidden = !is3; document.getElementById('stage').hidden = is3; document.getElementById('legend').hidden = is3;
     document.body.classList.toggle('v3', is3);
-    if (is3) { if (!fr.getAttribute('src')) fr.src = 'office3d/?v=24caf593'; } else fr.removeAttribute('src');
+    if (is3) { if (!fr.getAttribute('src')) fr.src = 'office3d/?v=8e654aff'; } else fr.removeAttribute('src');
     Array.prototype.forEach.call(sw.children, function (b) { b.classList.toggle('on', b.dataset.v === v); });
     try { localStorage.setItem('ao.view3', v); } catch (e) { /* bỏ qua */ }
   }

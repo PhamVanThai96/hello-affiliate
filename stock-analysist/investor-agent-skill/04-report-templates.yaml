@@ -1,0 +1,129 @@
+# 04-report-templates.yaml — Mẫu báo cáo/bảng biểu đầu ra chuẩn của Investor Agent
+common_structure:   # gọn: bỏ mục rỗng, mỗi thông tin xuất hiện đúng một lần (xem report_rules trong 01-agent-profile.yaml)
+  - "1. Kết luận tham chiếu (3-5 dòng: con số chính, rủi ro chính; KHÔNG khuyến nghị mua/bán/giữ)"
+  - "2. Dữ liệu đầu vào (bảng: số, đơn vị, nguồn + ngày, nhãn VERIFIED/GIẢ ĐỊNH/CHƯA KIỂM CHỨNG)"
+  - "3. Phương pháp + công thức + chú thích ký hiệu (vì sao chọn; cặp dòng tiền - tỷ lệ chiết khấu)"
+  - "4. Tính toán từng bước: công thức chữ -> thay số -> kết quả có đơn vị (đánh số bước)"
+  - "5. Độ nhạy / kịch bản / biên an toàn (chỉ khi cần cho kết luận)"
+  - "6. Điều kiện làm đổi kết luận + giới hạn dữ liệu"
+  - "7. Thông tin còn thiếu cần người dùng bổ sung (nếu có)"
+  - "Cuối báo cáo: đúng một dòng disclaimer."
+
+confidence_block:   # tùy chọn: chỉ dùng khi nhiều số có độ tin cậy khác nhau; ưu tiên gộp nhãn vào cột của bảng dữ liệu đầu vào
+  columns: [Thành phần, Nhãn độ tin cậy, Nguồn/kiểm chứng, Ghi chú]
+  note: "Disclaimer một dòng: phân tích tham khảo, không phải khuyến nghị mua/bán/giữ."
+
+templates:
+  rpt_technical_analysis:
+    title: Báo cáo phân tích kỹ thuật (có kiểm chứng)
+    tables:
+      - name: Tổng quan mã
+        columns: [Mã, Ngày dữ liệu (as_of), Giá đóng cửa, Trạng thái xu hướng, Nguồn dữ liệu]
+      - name: Nhận định xác suất và vùng biến động
+        columns: [Chân trời (phiên), Thiên hướng, Xác suất tăng lịch sử, Vùng biến động 80% dưới, Vùng biến động 80% trên, Ghi chú nền]
+      - name: Kênh giá
+        columns: [Biên dưới, Biên trên, Bề rộng % giá, Vị trí giá trong kênh, Cảnh báo phá vỡ giả]
+      - name: Value Area (AMT)
+        columns: [VAL, POC, VAH, Vị trí giá, Kiểm chứng tương ứng]
+      - name: Thành phần chỉ mô tả
+        columns: [Thành phần (nến, hộp, hỗ trợ/kháng cự, nhãn luật), Phát hiện, Kết quả kiểm chứng, Cách dùng]
+      - name: Kiểm chứng ngoài mẫu
+        columns: [Thành phần, Tỷ lệ đúng/phủ, Nền so sánh, Kết luận]
+    sections:
+      - Tóm tắt điều hành (biên độ dự kiến và bối cảnh, không hướng chắc chắn)
+      - Biểu đồ — chèn bằng ![Biểu đồ <MÃ>](<chart_path>), không in đường dẫn
+      - Cảnh báo ràng buộc VN (không bán khống, biên độ, T+2)
+      - Disclaimer từ trường disclaimer của JSON
+  rpt_company_valuation:
+    title: Báo cáo phân tích và định giá doanh nghiệp (4 phần)
+    tables:
+      - name: Market snapshot
+        columns: [Chỉ tiêu (Rf, ERP, giá, tỷ giá), Giá trị, Nguồn, Ngày tra, Nhãn]
+      - name: Chất lượng tài sản và lợi nhuận
+        columns: [Hạng mục, Số liệu, Đánh giá (kho báu ẩn / cục máu đông / bình thường), Tác động đến định giá]
+      - name: Định giá tương đối
+        columns: [Phương pháp, Chỉ số nền (EPS/BVPS/EBITDA), Multiple mục tiêu, Lý do chọn, Giá hợp lý, Chênh so thị giá]
+      - name: Giả định dòng tiền
+        columns: [Giả định, Giá trị, Cơ sở, Nhãn (GIẢ ĐỊNH/VERIFIED)]
+      - name: Dự phóng 5 năm
+        columns: [Năm, Doanh thu hoặc lợi nhuận, CapEx, ΔNWC, FCFF hoặc FCFE, Hệ số chiết khấu, PV]
+      - name: Giá trị nội tại
+        columns: [PV dòng tiền 5 năm, PV Terminal Value, Tỷ trọng TV, Giá trị doanh nghiệp (EV) hoặc vốn chủ, Nợ ròng, Số cổ phiếu pha loãng, Giá trị/cổ phiếu]
+      - name: Biên an toàn
+        columns: [Kịch bản, Giá trị nội tại, Thị giá, Biên an toàn %]
+  rpt_sensitivity_matrix:
+    title: Bảng độ nhạy giá trị nội tại theo chi phí vốn và tăng trưởng vĩnh viễn
+    tables:
+      - name: Ma trận Re (hoặc WACC) x g
+        columns: ["Re hoặc WACC \\ g", g - 1%, g - 0,5%, g cơ sở, g + 0,5%, g + 1%]
+        rows_hint: "Re - 2%, Re - 1%, Re cơ sở, Re + 1%, Re + 2% (5 hàng)"
+      - name: Kịch bản xấu nhất
+        columns: [Re kịch bản xấu, g kịch bản xấu, Giá trị nội tại, So với thị giá, Nhận định biên an toàn]
+    notes: "Tô đậm ô cơ sở; nhận xét vì sao Terminal Value làm giá trị nhạy với mẫu số (Re - g)."
+  rpt_bank_valuation:
+    title: Báo cáo định giá ngân hàng (FCFE / DDM / P/B theo ROE)
+    tables:
+      - name: Chất lượng tài sản và vốn
+        columns: [Chỉ tiêu (NPL, nợ nhóm 2, LLR, CAR), Giá trị kỳ trước, Giá trị kỳ này, Xu hướng, Nhận định]
+      - name: Chuẩn hóa lợi nhuận
+        columns: [Hạng mục, Số báo cáo, Điều chỉnh, Số bình thường hóa, Lý do]
+      - name: Dự phóng FCFE hoặc cổ tức
+        columns: [Năm, Tăng trưởng tín dụng, ROE, Lợi nhuận, Phần giữ lại duy trì CAR, FCFE hoặc cổ tức, PV theo Re]
+      - name: Giá trị vốn chủ và P/B ngụ ý
+        columns: [PV 5 năm, PV TV, Tỷ trọng TV, Vốn chủ, Giá trị/cổ phiếu, P/B ngụ ý, P/B hợp lý (ROE-g)/(Re-g)]
+      - name: Ma trận Re x g
+        columns: ["Re \\ g", g thấp, g cơ sở, g cao]
+  rpt_project_appraisal:
+    title: Báo cáo thẩm định dự án đầu tư (BĐS, tài sản)
+    tables:
+      - name: Chi phí vốn
+        columns: [Thành phần, Giá trị, Tỷ trọng, Chi phí trước thuế, Chi phí sau thuế, Đóng góp WACC]
+      - name: Lá chắn thuế năm 1
+        columns: [Nguồn lá chắn (lãi vay, khấu hao), Chi phí, Thuế suất T, Tiền thuế tiết kiệm]
+      - name: Dòng tiền dự án (FCFF hoặc FCFE)
+        columns: [Năm, Doanh thu, Chi phí vận hành, Khấu hao, Lãi vay, Thuế, Dòng tiền trước nợ gốc, Gốc vay, Dòng tiền ròng, Hệ số chiết khấu, PV]
+      - name: Chỉ số quyết định
+        columns: [NPV, IRR, MIRR, So với Rf, Năm đảo chiều dòng tiền, Payback]
+      - name: Stress test
+        columns: [Kịch bản (thất thoát doanh thu, lãi vay tăng, giá tài sản giảm), NPV, MIRR, Điểm đảo chiều dịch bao lâu]
+      - name: So sánh cá nhân và doanh nghiệp
+        columns: [Tiêu chí, Cá nhân (T=0), Doanh nghiệp (T>0), Nhận xét]
+      - name: Quỹ dự phòng
+        columns: [Khoản, Số tháng, Giá trị, Cơ sở]
+  rpt_relative_valuation:
+    title: Báo cáo định giá tương đối (multiples)
+    tables:
+      - name: Nhóm so sánh
+        columns: [Mã, P/E, P/B, EV/EBITDA, ROE, Tăng trưởng, Ngày tra]
+      - name: Kết quả định giá
+        columns: [Phương pháp, Multiple mục tiêu, Lý do điều chỉnh, Giá hợp lý thấp, Cơ sở, Cao]
+  rpt_market_snapshot:
+    title: Market snapshot (số thị trường có thời hạn)
+    tables:
+      - name: Số thị trường
+        columns: [Chỉ tiêu, Giá trị, Nguồn, Ngày tra, Nhãn (live_data hoặc GIẢ ĐỊNH)]
+  rpt_risk_check:
+    title: Báo cáo rà soát rủi ro và vị thế
+    tables:
+      - name: Kích thước vị thế
+        columns: [Vốn, Rủi ro tối đa %, Giá vào tham chiếu, Giá cắt lỗ, Mục tiêu tham chiếu, R:R, Số cổ phiếu, Rủi ro tiền]
+      - name: Ràng buộc thị trường VN
+        columns: [Ràng buộc, Tác động, Cách xử lý]
+      - name: Danh mục tập trung
+        columns: [Nhóm ngành, Tỷ trọng, Tương quan, Mức tập trung]
+  rpt_full_stock_report:
+    title: Báo cáo toàn diện một mã cổ phiếu
+    sections:
+      - Tóm tắt điều hành (giá trị tham chiếu, rủi ro chính, độ tin cậy; không khuyến nghị)
+      - Market snapshot (rpt_market_snapshot)
+      - Phân tích cơ bản (chất lượng tài sản và lợi nhuận)
+      - Định giá tương đối (rpt_relative_valuation)
+      - Định giá nội tại và độ nhạy (rpt_company_valuation, rpt_sensitivity_matrix hoặc rpt_bank_valuation)
+      - Bối cảnh kỹ thuật (rpt_technical_analysis rút gọn)
+      - Rủi ro và vị thế (rpt_risk_check)
+      - Khối độ tin cậy và disclaimer
+    tables:
+      - name: Tổng hợp giá trị tham chiếu
+        columns: [Phương pháp, Thấp, Cơ sở, Cao, Thị giá, Chênh lệch, Độ tin cậy]
+      - name: Điều kiện làm đổi kết luận
+        columns: [Yếu tố, Hiện tại, Ngưỡng, Tác động đến giá trị tham chiếu]

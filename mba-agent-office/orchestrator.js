@@ -104,6 +104,7 @@ export function createOrchestrator({ emit, state }) {
             }
             return r;
           },
+          askUser: async (i) => { think(a.id, `Hỏi CEO: ${short(String(i?.question ?? ''), 80)}`, String(i?.question ?? '')); const r = await raw.askUser(i); think(a.id, r.answer ? `CEO trả lời: ${short(r.answer, 60)}` : 'CEO chưa trả lời'); return r; },
           listDir: async (p) => { think(a.id, `Xem thư mục ${p}`); const r = await raw.listDir(p); think(a.id, r.error ? `Không xem được: ${r.error}` : `Thấy ${r.entries.length} mục`); return r; },
         };
         try {
@@ -113,6 +114,8 @@ export function createOrchestrator({ emit, state }) {
             tools,
             ask: (to, q) => consult(a, to, q, command),
           });
+          // Đầu ra chỉ là lệnh gọi công cụ chưa chạy / báo hết bước: không phải kết quả, đừng để bước sau và bước duyệt xử lý như đã xong.
+          if (/^\s*(<invoke\b|\{\s*"tool"\s*:)/.test(String(text)) || String(text).trim() === 'Không hoàn tất được sau nhiều bước.') throw new Error('Agent chưa trả được kết quả (chỉ có lệnh gọi công cụ hoặc hết bước).');
           think(a.id, 'Hoàn thành, gửi báo cáo cho Quản Lí ✓', text);
           setStatus(a.id, 'idle', text);
           msg(a.id, CEO, 'report', short(text, 140));

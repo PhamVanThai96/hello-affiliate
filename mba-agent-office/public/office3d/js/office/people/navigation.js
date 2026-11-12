@@ -238,7 +238,7 @@ export function setup() {
     coffee: [...SOFA, ...DINING, spotAt(11.45, -6.75, Math.PI, 'PA4'), spotAt(10.35, -6.75, Math.PI, 'PA2')],
     meeting: [...MEET_SEATS, spotAt(2.55, -4.7, -Math.PI / 2, 'MTi'), spotAt(2.6, -5.6, -Math.PI / 2, 'MTb'), spotAt(2.55, -6.5, -Math.PI / 2, 'MTb'), spotAt(-2.2, -6.6, Math.PI / 2, 'MTw'),
       spotAt(-2.2, -4.5, Math.PI / 2, 'MTf')],
-    director: [spotAt(-5.95, -4.95, Math.PI, 'DRc', true), spotAt(-4.85, -4.95, Math.PI, 'DRc', true)],
+    director: [spotAt(-5.4, -6.75, 0, 'DRs', true)],   // (CEO: ghế da đen sau bàn giám đốc, cạnh cửa sổ)
     brief: [spotAt(-1.75, -7.2, faceTo(-1.75, -7.2, 0.2, -5.6), 'MTw'), spotAt(2.35, -6.9, faceTo(2.35, -6.9, 0.2, -5.6), 'MTb')],
     wc: [spotAt(-7.3, 6.1, Math.PI / 2, 'ST1', false, { stall: 0 }), spotAt(-7.3, 7.4, Math.PI / 2, 'ST2', false, { stall: 1 })],
     sink: [spotAt(-7.25, 8.5, -Math.PI / 2, 'WCs')],

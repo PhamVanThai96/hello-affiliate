@@ -1,0 +1,1271 @@
+# m03 - Phân tích cơ bản doanh nghiệp niêm yết (distill từ stock-analysist/prompt-dinh-gia-doanh-nghiep.md, Phần 1 mục 1 và Phần 2)
+# Quy ước: số liệu trong ví dụ là GIẢ ĐỊNH MINH HỌA (data_reliability: illustrative). Không hard-code số thị trường có thời hạn
+# (lãi suất, EPS, P/E, giá cổ phiếu của mã cụ thể): luôn tra cứu lúc chạy theo procedure m03_market_snapshot và ghi nguồn + ngày.
+id: "m03"
+name_vi: "Phân tích cơ bản doanh nghiệp niêm yết"
+name_en: "Fundamental Analysis of Listed Companies"
+purpose: >
+  Biến báo cáo tài chính (BCTC) mới nhất của một doanh nghiệp niêm yết thành nhận định có căn cứ về CHẤT LƯỢNG tài sản, lợi nhuận và dòng tiền
+  trước khi định giá: lợi nhuận cốt lõi hay một lần, tiền có về túi không, đâu là 'kho báu ẩn' và đâu là 'cục máu đông', ngành này phải soi chỉ số nào,
+  có cờ đỏ nào, so với đối thủ ra sao. Đầu ra là ma trận chấm điểm chất lượng (Quality scorecard), bảng lợi nhuận đã chuẩn hóa và danh sách điều chỉnh
+  làm đầu vào cho m04 (định giá tương đối) và m05 (định giá nội tại). Module này KHÔNG đưa ra giá mục tiêu; nó quyết định số liệu nào đủ tin để đưa vào mô hình.
+when_to_use:
+  - "Người dùng hỏi 'cổ phiếu mã X có tốt không?', 'lãi tăng mạnh có bền không?', 'BCTC quý này có điểm đáng ngờ nào?' trước khi định giá."
+  - "Chuẩn bị đầu vào cho định giá: cần EPS/ROE/FCF đã chuẩn hóa thay vì số báo cáo thô (m04, m05)."
+  - "Phân tích ngân hàng: NPL, tỷ lệ bao phủ nợ xấu (LLR), CAR, NIM, CASA, chi phí tín dụng, nợ nhóm 2, trái phiếu VAMC, ROE/ROA."
+  - "Phân tích doanh nghiệp sản xuất, bất động sản, bán lẻ: hàng tồn kho, phải thu (ΔNWC), CapEx, chu kỳ tiền (CCC), đòn bẩy, khả năng trả lãi (ICR)."
+  - "Doanh nghiệp công nghệ hoặc tài sản vô hình (asset-light): cách đọc P/B, vốn hóa chi phí phát triển, chất lượng doanh thu."
+  - "Phát hiện cờ đỏ: lãi dương mà CFO âm, phải thu và tồn kho tăng nhanh hơn doanh thu, lãi nhờ thanh lý tài sản, kiểm toán ngoại trừ, giao dịch bên liên quan."
+  - "So sánh hai hay nhiều doanh nghiệp cùng ngành (peer comparison) bằng cùng một bộ thước đo đã chuẩn hóa."
+  - "Tìm 'kho báu ẩn' (đất, bất động sản ghi theo giá gốc, khoản đầu tư công ty liên kết, quỹ dự phòng dư) và 'cục máu đông' (tồn kho ứ đọng, nợ xấu chưa trích đủ, phải thu quá hạn, dự án đình trệ)."
+prerequisites:
+  - "Biết đọc ba báo cáo (bảng cân đối, kết quả kinh doanh, lưu chuyển tiền tệ) và mã số VAS; tỷ số cơ bản: xem skill kế toán m06 và m01."
+related_modules:
+  - "m04 - Định giá tương đối: nhận EPS/BVPS đã chuẩn hóa từ module này; P/E, P/B chỉ có nghĩa khi lợi nhuận và vốn chủ đã được làm sạch (bẫy P/E của ngân hàng trích lập mạnh)."
+  - "m05 - Định giá nội tại: nhận ROIC, tái đầu tư, FCF chuẩn hóa để dựng FCFF/FCFE/DDM; ngân hàng dùng FCFE hoặc DDM chứ không dùng FCFF."
+  - "m06 - Thẩm định dự án đầu tư: CapEx và tái đầu tư của doanh nghiệp được nhìn như chuỗi dự án."
+  - "m07 - Dữ liệu thị trường VN và rủi ro: nguồn dữ liệu, độ trễ, quy trình ảnh chụp thị trường có ngày, rủi ro thanh khoản và giao dịch."
+  - "m01, m02 - Phân tích kỹ thuật và thị trường đấu giá: chỉ dùng cho thời điểm vào lệnh; không thay thế kết luận cơ bản."
+  - "Skill tài chính m05-financial-statement-analysis (finance-agent-skill): bộ tỷ số, DuPont, Quality of Earnings tổng quát. Module này KHÔNG chép lại mà thêm quy trình thu thập, chuẩn hóa, kho báu và cục máu đông, đặc thù ngân hàng, scorecard."
+  - "Skill kế toán m06-financial-ratios và m01-financial-accounting (accounting-agent-skill): ánh xạ mã số BCTC VAS, chính sách kế toán làm méo tỷ số, window dressing, nợ ngoài bảng."
+
+concepts:
+  - term_vi: "Phân tích cơ bản"
+    term_en: "Fundamental Analysis"
+    definition: "Đánh giá giá trị và chất lượng của doanh nghiệp từ BCTC, mô hình kinh doanh, ngành và quản trị, độc lập với biến động giá ngắn hạn."
+    why_it_matters: "Giá là cái bạn trả, giá trị là cái bạn nhận (Benjamin Graham và David Dodd, Security Analysis, 1934, đặt nền móng sau cuộc khủng hoảng 1929). Nếu số liệu đầu vào sai về bản chất (lãi giả, nợ xấu ẩn) thì mọi mô hình định giá phía sau đều vô nghĩa (Garbage In, Garbage Out)."
+  - term_vi: "Chất lượng lợi nhuận"
+    term_en: "Quality of Earnings (QoE)"
+    definition: "Mức độ lợi nhuận kế toán phản ánh năng lực tạo tiền lặp lại được từ hoạt động cốt lõi."
+    why_it_matters: "Hai doanh nghiệp cùng báo lãi 100 tỷ có thể khác nhau hoàn toàn: một bên 100 tỷ từ bán hàng thu tiền đều, một bên 70 tỷ từ bán đất một lần cộng phải thu chưa thu. Nhà đầu tư trả giá cho dòng lợi nhuận bền vững, nên phải tách phần lặp lại khỏi phần một lần."
+  - term_vi: "Lợi nhuận cốt lõi và thu nhập bất thường"
+    term_en: "Core (recurring) earnings vs non-recurring items"
+    definition: "Lợi nhuận cốt lõi đến từ hoạt động kinh doanh chính, lặp lại hằng năm. Bất thường gồm lãi thanh lý tài sản, hoàn nhập dự phòng lớn, lãi đánh giá lại, thoái vốn, bồi thường, thu nhập khác một lần, và cũng gồm khoản lỗ một lần (phạt, xóa sổ)."
+    why_it_matters: "EPS dùng để nhân với P/E phải là EPS bền vững; nhân P/E 12 lần cho lãi một lần tạo ra giá trị ảo. Ngược lại, lỗ một lần làm P/E trông đắt giả. Chuẩn hóa hai chiều (cộng lại lỗ một lần, trừ đi lãi một lần), kèm tác động thuế."
+  - term_vi: "Dòng tiền so với lợi nhuận (CFO/NI) và dồn tích"
+    term_en: "Cash conversion and accruals"
+    definition: "Lợi nhuận kế toán = dòng tiền hoạt động + khoản dồn tích (accruals). Dồn tích lớn kéo dài nghĩa là lợi nhuận đang 'nằm trên giấy' (phải thu, tồn kho)."
+    why_it_matters: "Richard Sloan (1996, The Accounting Review) cho thấy cổ phiếu có dồn tích cao thường cho lợi suất thấp hơn về sau vì thị trường định giá quá cao phần lợi nhuận không có tiền. Enron cũng là minh chứng lợi nhuận đẹp nhưng dòng tiền không đi cùng."
+  - term_vi: "Kho báu ẩn"
+    term_en: "Hidden assets / hidden value"
+    definition: "Tài sản có giá trị thị trường hoặc giá trị sử dụng cao hơn giá ghi sổ nhiều: quỹ đất mua giá thấp, bất động sản ghi theo giá gốc, khoản đầu tư vào công ty liên kết niêm yết, thương hiệu tạo nội bộ, quỹ dự phòng trích dư có thể hoàn nhập, lợi nhuận giữ lại chưa chia (tiền mặt dư)."
+    why_it_matters: "VAS ghi nhận theo giá gốc trừ khấu hao nên giá trị bị tích lũy ngầm. Phát hiện sớm giúp xác định giá trị thật của vốn chủ (RNAV, BVPS điều chỉnh). Nhưng phải chiết khấu cho tính thanh khoản, thời gian hiện thực hóa, pháp lý và thuế; giá thẩm định không phải giá bán."
+  - term_vi: "Cục máu đông"
+    term_en: "Value traps / clots on the balance sheet"
+    definition: "Tài sản bị mắc kẹt, mất khả năng quay thành tiền: bất động sản tồn đọng, dự án dở dang chậm, nợ xấu chưa xử lý (kể cả trái phiếu đặc biệt VAMC chưa trích đủ), phải thu quá hạn, hàng tồn lỗi thời."
+    why_it_matters: "Chúng ăn vốn, ăn lãi vay và có thể buộc phải trích dự phòng làm mất lợi nhuận sau này. Ví dụ prompt gốc nhắc đến nợ xấu VAMC, bất động sản tồn đọng, nhưng giá trị 'cục máu đông' chỉ biết sau khi đọc thuyết minh và so với quy mô vốn chủ."
+  - term_vi: "Đặc thù ngành quyết định thước đo"
+    term_en: "Sector-specific lens"
+    definition: "Ngân hàng: nợ vay (tiền gửi) là nguyên liệu kinh doanh nên EBITDA, FCFF, D/E vô nghĩa; phải đọc NPL, LLR, CAR, NIM, CASA, chi phí tín dụng. Sản xuất, bán lẻ, BĐS: vốn lưu động, CapEx và đòn bẩy là trọng tâm. Công nghệ: tài sản vô hình, nên P/B thường vô nghĩa."
+    why_it_matters: "Chọn sai thước đo dẫn đến kết luận sai: dùng ICR cho ngân hàng, hoặc dùng P/B làm trọng tài cho công ty phần mềm, đều chệch hướng. Phần 2 prompt gốc nhấn mạnh: ngân hàng dùng FCFE/DDM, không dùng FCFF."
+  - term_vi: "Bẫy P/E của ngân hàng trích lập mạnh"
+    term_en: "Provisioning-driven P/E trap"
+    definition: "Khi ngân hàng chủ động tăng trích lập dự phòng để dọn nợ xấu, lợi nhuận sau thuế tạm giảm mạnh, EPS giảm, P/E quá khứ (TTM) cao vọt dù lợi nhuận trước dự phòng vẫn tăng và dự phòng có thể hoàn nhập về sau."
+    why_it_matters: "Phải tách lợi nhuận trước dự phòng (PPOP) khỏi chi phí dự phòng và chuẩn hóa chi phí tín dụng về mức bình thường mới nhận định được giá rẻ hay đắt. Đây chỉ là logic phân tích; mức tăng cụ thể của một mã trong prompt gốc (dự phòng gấp trên 6 lần) là minh họa chưa kiểm chứng."
+  - term_vi: "Biên an toàn của chất lượng"
+    term_en: "Margin of safety (quality dimension)"
+    definition: "Phần đệm giữa kịch bản thận trọng của số liệu đã chuẩn hóa và kịch bản số liệu báo cáo."
+    why_it_matters: "Benjamin Graham: biên an toàn là cốt lõi của đầu tư. Khi chất lượng lợi nhuận thấp, biên an toàn phải rộng hơn: dùng số chuẩn hóa thấp hơn số báo cáo cho định giá."
+  - term_vi: "Ảnh chụp thị trường có ngày"
+    term_en: "Dated market snapshot"
+    definition: "Bộ số liệu thị trường (giá, vốn hóa, P/E TTM, lãi suất trái phiếu chính phủ 10 năm, tỷ giá) tra cứu tại thời điểm chạy, ghi kèm nguồn và ngày lấy."
+    why_it_matters: "Số thị trường hết hạn rất nhanh. Prompt gốc ghi cứng mức lãi suất và một số P/E cụ thể gắn với thời điểm viết; agent chạy ở thời điểm khác mà dùng lại sẽ sai. Quy tắc: không bao giờ dùng số thị trường từ trí nhớ hoặc từ file khác, luôn tra cứu và ghi 'nguồn, ngày'."
+  - term_vi: "Hợp nhất và riêng lẻ"
+    term_en: "Consolidated vs standalone statements"
+    definition: "BCTC hợp nhất gồm công ty mẹ và công ty con; riêng lẻ chỉ gồm công ty mẹ."
+    why_it_matters: "Định giá, ROE, EPS phải dùng số hợp nhất (phần của cổ đông công ty mẹ, trừ lợi ích cổ đông không kiểm soát) trừ khi có lý do khác; dữ liệu nguồn thường lẫn hai loại, gây sai lệch lớn với tập đoàn."
+  - term_vi: "Kiểm toán và soát xét"
+    term_en: "Audited vs reviewed vs unaudited"
+    definition: "BCTC năm có kiểm toán; BCTC bán niên có soát xét; quý thường chưa kiểm toán. Ý kiến kiểm toán gồm chấp nhận toàn phần, ngoại trừ, trái ngược, từ chối."
+    why_it_matters: "Số chưa kiểm toán có thể thay đổi; ý kiến ngoại trừ hoặc từ chối là cờ đỏ về độ tin cậy của toàn bộ số liệu. Luôn ghi trạng thái kiểm toán của kỳ đang phân tích."
+
+formulas:
+  # ---------- A. Chuẩn hóa lợi nhuận và chất lượng lợi nhuận ----------
+  - id: "m03_core_net_income"
+    name_vi: "Lợi nhuận sau thuế cốt lõi (chuẩn hóa)"
+    name_en: "Core (normalized) Net Income"
+    expression_latex: '\text{NI}_{core} = (\text{EBT} - G_{one} + L_{one}) \times (1 - t)'
+    expression_python: '(ebt - nonrecurring_gain + nonrecurring_loss) * (1 - tax_rate)'
+    excel: "=(EBT-LaiMotLan+LoMotLan)*(1-ThueSuat)"
+    variables:
+      - {symbol: "ebt", meaning: "Lợi nhuận trước thuế báo cáo (mã 50)", unit: "triệu VNĐ"}
+      - {symbol: "nonrecurring_gain", meaning: "Thu nhập bất thường một lần cần loại (thanh lý tài sản, thoái vốn, hoàn nhập dự phòng lớn, lãi đánh giá lại)", unit: "triệu VNĐ"}
+      - {symbol: "nonrecurring_loss", meaning: "Chi phí bất thường một lần cần cộng lại (phạt, xóa sổ, lỗ thoái vốn)", unit: "triệu VNĐ"}
+      - {symbol: "tax_rate", meaning: "Thuế suất thu nhập doanh nghiệp danh nghĩa áp cho điều chỉnh (kiểm tra thuyết minh thuế, cần xác nhận mức hiện hành)", unit: "tỷ lệ"}
+    when_to_use: "Mọi lần dùng EPS, ROE, P/E làm đầu vào định giá. Chạy trước m04 và m05."
+    why_it_works: "Giá trị cổ phiếu dựa trên dòng lợi nhuận kỳ vọng lặp lại. Bỏ phần một lần ra khỏi lợi nhuận trước thuế rồi tính lại thuế cho phần còn lại để đo năng lực kiếm tiền thường xuyên. Điều chỉnh hai chiều vì lỗ một lần cũng che mờ lợi nhuận bình thường."
+    assumptions: ["Các khoản bất thường được xác định chính xác từ thuyết minh (không phỏng đoán)", "Thuế suất áp cho điều chỉnh xấp xỉ thuế suất biên"]
+    pitfalls:
+      - "Chỉ loại lãi bất thường mà quên cộng lại lỗ bất thường (chuẩn hóa một chiều có chủ đích)."
+      - "Coi mọi khoản 'thu nhập khác' là bất thường: một số doanh nghiệp có thu nhập khác lặp lại hằng năm (bán phế liệu, tiền phạt hợp đồng); kiểm tra nhiều năm."
+      - "Doanh nghiệp bất động sản chuyển nhượng dự án và doanh nghiệp tài chính có thu nhập đầu tư thường xuyên có thể là hoạt động cốt lõi; phụ thuộc mô hình kinh doanh."
+      - "Quên lợi ích cổ đông không kiểm soát khi tính EPS cho cổ đông công ty mẹ."
+    interpretation: "So với lợi nhuận báo cáo: tỷ lệ dưới 70 phần trăm là cờ đỏ về chất lượng; 70-90 phần trăm cờ vàng; từ 90 phần trăm trở lên tốt (ngưỡng tham chiếu, confidence low)."
+    example:
+      inputs: {ebt: 13800, nonrecurring_gain: 4000, nonrecurring_loss: 400, tax_rate: 0.2}
+      steps: ["Cốt lõi trước thuế = 13.800 - 4.000 + 400 = 10.200", "LNST cốt lõi = 10.200 x 0,8 = 8.160 (so với báo cáo 11.040)"]
+      result: "8.160 triệu (Cơ khí An Phát, ví dụ 1)"
+  - id: "m03_core_share"
+    name_vi: "Tỷ trọng lợi nhuận cốt lõi"
+    name_en: "Core Earnings Share"
+    expression_latex: '\text{Core share} = \frac{\text{NI}_{core}}{\text{NI}_{reported}}'
+    expression_python: 'core_ni / reported_ni'
+    excel: "=LNCotLoi/LNBaoCao"
+    variables:
+      - {symbol: "core_ni", meaning: "Lợi nhuận sau thuế cốt lõi", unit: "triệu VNĐ"}
+      - {symbol: "reported_ni", meaning: "Lợi nhuận sau thuế báo cáo", unit: "triệu VNĐ"}
+    when_to_use: "Một con số đo 'lãi nhờ đâu' để chấm điểm scorecard."
+    why_it_works: "Tỷ lệ càng thấp, lãi càng dựa vào sự kiện một lần, dự báo lãi năm sau từ lãi năm nay càng sai."
+    assumptions: ["Reported_ni dương"]
+    pitfalls: ["Khi reported_ni rất nhỏ hoặc âm thì tỷ lệ vô nghĩa; mô tả bằng số tuyệt đối"]
+    interpretation: "Dưới 0,7 cờ đỏ; 0,7-0,9 cờ vàng; từ 0,9 tốt (ngưỡng minh họa)."
+    example:
+      inputs: {core_ni: 8160, reported_ni: 11040}
+      steps: ["8.160 / 11.040 = 0,739"]
+      result: "73,9 phần trăm (cờ vàng, sát cờ đỏ)"
+  - id: "m03_tax_rate_check"
+    name_vi: "Thuế suất thực tế"
+    name_en: "Effective Tax Rate"
+    expression_latex: '\text{ETR} = \frac{\text{Tax expense}}{\text{EBT}}'
+    expression_python: 'tax_expense / ebt'
+    excel: "=ChiPhiThue/EBT"
+    variables:
+      - {symbol: "tax_expense", meaning: "Chi phí thuế TNDN (hiện hành và hoãn lại)", unit: "triệu VNĐ"}
+      - {symbol: "ebt", meaning: "Lợi nhuận trước thuế", unit: "triệu VNĐ"}
+    when_to_use: "Kiểm tra lợi nhuận có được tăng nhờ thuế suất thấp tạm thời (ưu đãi sắp hết, thuế hoãn lại) hay không."
+    why_it_works: "Lợi nhuận sau thuế chịu ảnh hưởng của thuế; thuế suất thực tế thấp bất thường làm EPS tăng mà EBT không tăng."
+    assumptions: ["EBT dương"]
+    pitfalls: ["Ưu đãi thuế có thời hạn; ETR kỳ này không chắc lặp lại", "Thu nhập miễn thuế (cổ tức từ công ty con) làm ETR thấp hợp lệ"]
+    interpretation: "Lệch xa thuế suất danh nghĩa (cần xác nhận mức hiện hành) thì tìm lý do trong thuyết minh trước khi dự phóng."
+    example:
+      inputs: {tax_expense: 2760, ebt: 13800}
+      steps: ["2.760 / 13.800 = 0,20"]
+      result: "ETR = 20 phần trăm (khớp thuế suất danh nghĩa giả định)"
+  - id: "m03_roe"
+    name_vi: "Tỷ suất sinh lời trên vốn chủ sở hữu"
+    name_en: "Return on Equity (average equity)"
+    expression_latex: '\text{ROE} = \frac{\text{NI}}{(E_{open}+E_{close})/2}'
+    expression_python: 'net_income / ((equity_open + equity_close) / 2)'
+    excel: "=LNST/AVERAGE(VCSDauKy,VCSCuoiKy)"
+    variables:
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế thuộc cổ đông công ty mẹ (dùng bản cốt lõi để so, bản báo cáo để đối chiếu)", unit: "triệu VNĐ"}
+      - {symbol: "equity_open", meaning: "Vốn chủ sở hữu đầu kỳ (thuộc cổ đông mẹ)", unit: "triệu VNĐ"}
+      - {symbol: "equity_close", meaning: "Vốn chủ sở hữu cuối kỳ", unit: "triệu VNĐ"}
+    when_to_use: "Đo hiệu quả dùng vốn cổ đông; là trục chính của P/B hợp lý (m04) và của bank analysis."
+    why_it_works: "Nhà đầu tư là chủ sở hữu nên hỏi một đồng vốn của họ đẻ ra bao nhiêu. Lấy vốn bình quân vì lợi nhuận là dòng chảy cả kỳ (xem skill kế toán m06 về bình quân)."
+    assumptions: ["Vốn chủ không biến động bất thường do phát hành lớn cuối kỳ"]
+    pitfalls: ["ROE cao do đòn bẩy (EM) không phải do hiệu quả: tách bằng DuPont", "Vốn chủ nhỏ do mua lại cổ phiếu hoặc lỗ lũy kế làm ROE nhìn cao giả", "ROE cao một năm do lãi bất thường: dùng bản cốt lõi"]
+    interpretation: "So với chi phí vốn chủ (m05) và với trung vị đối thủ cùng ngành lúc chạy. ROE bền vững trên chi phí vốn chủ nghĩa là tạo giá trị."
+    example:
+      inputs: {net_income: 8160, equity_open: 40000, equity_close: 48040}
+      steps: ["Vốn bình quân = (40.000 + 48.040)/2 = 44.020", "ROE cốt lõi = 8.160 / 44.020 = 18,54 phần trăm", "ROE báo cáo = 11.040 / 44.020 = 25,08 phần trăm"]
+      result: "ROE cốt lõi 18,5 phần trăm (báo cáo 25,1 phần trăm, chênh 6,5 điểm do lãi một lần)"
+  - id: "m03_dupont3"
+    name_vi: "Phân rã DuPont 3 thành phần"
+    name_en: "DuPont 3-step decomposition"
+    expression_latex: '\text{ROE} = \frac{\text{NI}}{\text{Rev}} \times \frac{\text{Rev}}{\text{Avg Assets}} \times \frac{\text{Avg Assets}}{\text{Avg Equity}}'
+    expression_python: 'net_income / revenue * revenue / avg_assets * avg_assets / avg_equity'
+    excel: "=(LNST/DoanhThu)*(DoanhThu/TSBinhQuan)*(TSBinhQuan/VCSBinhQuan)"
+    variables:
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế (nên dùng cốt lõi)", unit: "triệu VNĐ"}
+      - {symbol: "revenue", meaning: "Doanh thu thuần", unit: "triệu VNĐ"}
+      - {symbol: "avg_assets", meaning: "Tổng tài sản bình quân", unit: "triệu VNĐ"}
+      - {symbol: "avg_equity", meaning: "Vốn chủ sở hữu bình quân", unit: "triệu VNĐ"}
+    when_to_use: "Khi ROE cao hoặc thay đổi và cần biết do biên, vòng quay hay đòn bẩy."
+    why_it_works: "Phát triển trong DuPont (thập niên 1910-1920, gắn với Donaldson Brown) để quy trách nhiệm: biên lợi nhuận (bán giá tốt), vòng quay tài sản (dùng tài sản hiệu quả), đòn bẩy (cấu trúc vốn). Ba nhân tử triệt tiêu nhau nên tích bằng ROE nhưng mỗi mảnh cho một hành động khác nhau."
+    assumptions: ["Dùng cùng quy ước bình quân cho tử và mẫu"]
+    pitfalls: ["Ngân hàng: tài sản và doanh thu có ý nghĩa khác; dùng ROA, ROE và NIM (xem công thức ngân hàng)", "Đòn bẩy cao làm ROE đẹp nhưng tăng rủi ro"]
+    interpretation: "ROE tăng chủ yếu nhờ biên và vòng quay thì chất lượng cao; nhờ EM thì rủi ro cao hơn."
+    example:
+      inputs: {net_income: 8160, revenue: 120000, avg_assets: 86770, avg_equity: 44020}
+      steps: ["Biên = 8.160/120.000 = 6,80 phần trăm", "Vòng quay = 120.000/86.770 = 1,383", "EM = 86.770/44.020 = 1,971", "Tích = 18,54 phần trăm"]
+      result: "ROE cốt lõi 18,5 phần trăm = 6,8 phần trăm x 1,383 x 1,971"
+  - id: "m03_invested_capital"
+    name_vi: "Vốn đầu tư"
+    name_en: "Invested Capital"
+    expression_latex: 'IC = D_{ST} + D_{LT} + E - \text{Cash}'
+    expression_python: 'debt_total + equity - cash'
+    excel: "=NoVay+VCSH-Tien"
+    variables:
+      - {symbol: "debt_total", meaning: "Tổng nợ vay ngắn hạn và dài hạn (có lãi)", unit: "triệu VNĐ"}
+      - {symbol: "equity", meaning: "Vốn chủ sở hữu (gồm lợi ích cổ đông không kiểm soát nếu NOPAT là toàn bộ)", unit: "triệu VNĐ"}
+      - {symbol: "cash", meaning: "Tiền và đầu tư tài chính ngắn hạn dễ chuyển (tiền dư ngoài vốn lưu động hoạt động)", unit: "triệu VNĐ"}
+    when_to_use: "Mẫu số của ROIC cho doanh nghiệp phi tài chính."
+    why_it_works: "Vốn thực dùng cho hoạt động kinh doanh là nguồn tài trợ trừ tiền nhàn rỗi không tham gia tạo lợi nhuận hoạt động."
+    assumptions: ["Tiền không phục vụ hoạt động (không ký quỹ bắt buộc)"]
+    pitfalls: ["Không áp cho ngân hàng", "Tiền gửi ký quỹ và tiền bị phong tỏa không được trừ", "Nợ thuê (lease) ngoài bảng làm IC thấp giả (xem lease-adjusted leverage)"]
+    interpretation: "Dùng giá trị bình quân đầu và cuối kỳ cho ROIC."
+    example:
+      inputs: {debt_total: 30000, equity: 48040, cash: 7040}
+      steps: ["30.000 + 48.040 - 7.040 = 71.000 (cuối kỳ; đầu kỳ 27.000 + 40.000 - 6.000 = 61.000)"]
+      result: "IC cuối kỳ = 71.000 triệu"
+  - id: "m03_roic"
+    name_vi: "Tỷ suất sinh lời trên vốn đầu tư"
+    name_en: "Return on Invested Capital (ROIC)"
+    expression_latex: '\text{ROIC} = \frac{EBIT_{core}\,(1-t)}{(IC_{open}+IC_{close})/2}'
+    expression_python: 'ebit_core * (1 - tax_rate) / ((ic_open + ic_close) / 2)'
+    excel: "=EBITCotLoi*(1-ThueSuat)/AVERAGE(ICDauKy,ICCuoiKy)"
+    variables:
+      - {symbol: "ebit_core", meaning: "EBIT hoạt động cốt lõi (đã loại thu nhập, chi phí bất thường và thu nhập tài chính)", unit: "triệu VNĐ"}
+      - {symbol: "tax_rate", meaning: "Thuế suất áp cho NOPAT", unit: "tỷ lệ"}
+      - {symbol: "ic_open", meaning: "Vốn đầu tư đầu kỳ", unit: "triệu VNĐ"}
+      - {symbol: "ic_close", meaning: "Vốn đầu tư cuối kỳ", unit: "triệu VNĐ"}
+    when_to_use: "Doanh nghiệp phi tài chính khi so ROIC với chi phí vốn bình quân (WACC, m05) để biết có tạo giá trị hay không."
+    why_it_works: "ROE bị đòn bẩy che; ROIC đo thuần hiệu quả kinh doanh bất kể cách tài trợ. Chỉ khi ROIC lớn hơn WACC thì tăng trưởng mới làm tăng giá trị (nền tảng của mô hình Stern Stewart EVA, thập niên 1980-1990)."
+    assumptions: ["EBIT cốt lõi đã sạch", "WACC được lấy lúc chạy từ m05 theo ảnh chụp thị trường có ngày"]
+    pitfalls: ["Không chuẩn hóa EBIT thì ROIC bị thổi phồng", "Bỏ qua tài sản thuê ngoài bảng", "So ROIC với một con số WACC cố định ghi nhớ thay vì tính theo ảnh chụp thị trường"]
+    interpretation: "ROIC - WACC dương và bền: tạo giá trị. Ngưỡng điểm scorecard: trên 3 điểm phần trăm xanh; 0-3 vàng; âm đỏ (tham chiếu)."
+    example:
+      inputs: {ebit_core: 12000, tax_rate: 0.2, ic_open: 61000, ic_close: 71000}
+      steps: ["NOPAT = 12.000 x 0,8 = 9.600", "IC bình quân = (61.000 + 71.000)/2 = 66.000", "ROIC = 9.600/66.000 = 14,55 phần trăm"]
+      result: "ROIC 14,5 phần trăm (so với WACC lấy từ m05 lúc chạy)"
+  - id: "m03_cfo_ni"
+    name_vi: "Hệ số chuyển hóa lợi nhuận thành tiền"
+    name_en: "Cash Conversion (CFO / Net Income)"
+    expression_latex: '\text{CFO/NI} = \frac{\text{CFO}}{\text{NI}}'
+    expression_python: 'cfo / net_income'
+    excel: "=CFO/LNST"
+    variables:
+      - {symbol: "cfo", meaning: "Lưu chuyển tiền thuần từ hoạt động kinh doanh", unit: "triệu VNĐ"}
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế", unit: "triệu VNĐ"}
+    when_to_use: "Kiểm tra lãi có về tiền không; nên tính cộng dồn 3 năm để tránh nhiễu mùa vụ và kỳ chuyển đổi."
+    why_it_works: "Lợi nhuận bị chi phối bởi quy tắc dồn tích; CFO ít bị can thiệp hơn. Hệ số dưới 1 kéo dài nghĩa là lãi chuyển thành phải thu, tồn kho thay vì tiền."
+    assumptions: ["Doanh nghiệp không trong giai đoạn mở rộng tăng vốn lưu động hợp lý", "CFO không bị bóp méo do phân loại lưu chuyển (lãi vay, đầu tư)"]
+    pitfalls: ["Doanh nghiệp tăng trưởng nhanh có CFO/NI thấp hợp lý trong ngắn hạn, hỏi vốn lưu động tăng có tương xứng doanh thu không", "Ngân hàng và bất động sản: CFO thay đổi bản chất (cho vay là CFO hay CFI)", "Phân loại lãi vay trong CFO hay CFF khác nhau giữa doanh nghiệp"]
+    interpretation: "Cộng dồn 3 năm: từ 0,9 xanh; 0,6-0,9 vàng; dưới 0,6 đỏ (tham chiếu). Lãi dương mà CFO âm nhiều năm liên tiếp là cờ đỏ nghiêm trọng."
+    example:
+      inputs: {cfo: 5540, net_income: 11040}
+      steps: ["5.540 / 11.040 = 0,502", "Theo lợi nhuận cốt lõi: 5.540 / 8.160 = 0,679"]
+      result: "0,50 (chỉ một nửa lãi báo cáo thành tiền; một phần lãi là lãi thanh lý không nằm trong CFO)"
+  - id: "m03_accruals"
+    name_vi: "Tỷ lệ dồn tích (Sloan)"
+    name_en: "Accruals Ratio (balance-sheet / cash-flow method)"
+    expression_latex: 'A = \frac{\text{NI} - \text{CFO}}{(TA_{open}+TA_{close})/2}'
+    expression_python: '(net_income - cfo) / ((assets_open + assets_close) / 2)'
+    excel: "=(LNST-CFO)/AVERAGE(TSDauKy,TSCuoiKy)"
+    variables:
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế", unit: "triệu VNĐ"}
+      - {symbol: "cfo", meaning: "Dòng tiền từ hoạt động kinh doanh", unit: "triệu VNĐ"}
+      - {symbol: "assets_open", meaning: "Tổng tài sản đầu kỳ", unit: "triệu VNĐ"}
+      - {symbol: "assets_close", meaning: "Tổng tài sản cuối kỳ", unit: "triệu VNĐ"}
+    when_to_use: "Chuẩn hóa mức 'lãi nằm trên giấy' theo quy mô tài sản để so các doanh nghiệp khác nhau."
+    why_it_works: "Sloan (1996) dùng dồn tích chia cho tài sản bình quân để so sánh chéo doanh nghiệp. Dồn tích cao dự báo lợi nhuận kỳ sau suy giảm vì phần lãi chưa có tiền hay bị đảo ngược."
+    assumptions: ["Dồn tích do kế toán chứ không do tăng trưởng thật"]
+    pitfalls: ["Doanh nghiệp tăng trưởng thật cần vốn lưu động nên dồn tích dương hợp lý", "Ngân hàng không áp dụng"]
+    interpretation: "Dưới 5 phần trăm xanh; 5-10 vàng; trên 10 đỏ (tham chiếu Sloan, ngưỡng cần kiểm chứng cho VN, confidence low)."
+    example:
+      inputs: {net_income: 11040, cfo: 5540, assets_open: 80000, assets_close: 93540}
+      steps: ["NI - CFO = 5.500", "TS bình quân = 86.770", "5.500 / 86.770 = 6,34 phần trăm"]
+      result: "6,3 phần trăm (cờ vàng)"
+  - id: "m03_delta_nwc"
+    name_vi: "Biến động vốn lưu động hoạt động ròng"
+    name_en: "Change in Operating Net Working Capital (ΔNWC)"
+    expression_latex: '\Delta NWC = (AR_1 + Inv_1 + OCA_1 - AP_1 - OCL_1) - (AR_0 + Inv_0 + OCA_0 - AP_0 - OCL_0)'
+    expression_python: '(ar1 + inv1 + oca1 - ap1 - ocl1) - (ar0 + inv0 + oca0 - ap0 - ocl0)'
+    excel: "=(PT1+HTK1+TSNHK1-PTra1-NNHK1)-(PT0+HTK0+TSNHK0-PTra0-NNHK0)"
+    variables:
+      - {symbol: "ar1", meaning: "Phải thu khách hàng cuối kỳ", unit: "triệu VNĐ"}
+      - {symbol: "inv1", meaning: "Hàng tồn kho cuối kỳ", unit: "triệu VNĐ"}
+      - {symbol: "oca1", meaning: "Tài sản ngắn hạn hoạt động khác cuối kỳ (trả trước, thuế phải thu)", unit: "triệu VNĐ"}
+      - {symbol: "ap1", meaning: "Phải trả nhà cung cấp cuối kỳ", unit: "triệu VNĐ"}
+      - {symbol: "ocl1", meaning: "Nợ ngắn hạn hoạt động khác không có lãi cuối kỳ (người mua trả trước, chi phí phải trả)", unit: "triệu VNĐ"}
+      - {symbol: "ar0", meaning: "Phải thu đầu kỳ", unit: "triệu VNĐ"}
+      - {symbol: "inv0", meaning: "Hàng tồn kho đầu kỳ", unit: "triệu VNĐ"}
+      - {symbol: "oca0", meaning: "Tài sản ngắn hạn hoạt động khác đầu kỳ", unit: "triệu VNĐ"}
+      - {symbol: "ap0", meaning: "Phải trả NCC đầu kỳ", unit: "triệu VNĐ"}
+      - {symbol: "ocl0", meaning: "Nợ ngắn hạn hoạt động khác đầu kỳ", unit: "triệu VNĐ"}
+    when_to_use: "Giải thích vì sao lãi không thành tiền và đo vốn bị chiếm dụng khi tăng trưởng (sản xuất, bán lẻ, BĐS, phân phối)."
+    why_it_works: "Tăng phải thu và tồn kho là tiền đã chi nhưng chưa thu về; nhà cung cấp và khách trả trước tài trợ ngược lại. Tổng ròng là tiền hoạt động bị giữ lại trong chu kỳ."
+    assumptions: ["Chỉ tính khoản hoạt động, không gồm tiền và nợ vay có lãi", "Ghi rõ có gồm người mua trả trước (bất động sản) hay không"]
+    pitfalls: ["Lẫn các khoản không hoạt động (phải thu cho vay, đầu tư)", "BĐS: người mua trả trước lớn làm ΔNWC âm nhưng là nghĩa vụ giao nhà, không phải nguồn vốn miễn phí"]
+    interpretation: "ΔNWC lớn hơn tăng doanh thu theo tỷ lệ là dấu hiệu hiệu quả vốn lưu động xấu đi. CFO ≈ NI + khấu hao - lãi bất thường - ΔNWC."
+    example:
+      inputs: {ar1: 18000, inv1: 21000, oca1: 1000, ap1: 12000, ocl1: 3500, ar0: 14000, inv0: 16000, oca0: 1000, ap0: 10000, ocl0: 3000}
+      steps: ["NWC đầu = 14.000 + 16.000 + 1.000 - 10.000 - 3.000 = 18.000", "NWC cuối = 18.000 + 21.000 + 1.000 - 12.000 - 3.500 = 24.500", "ΔNWC = 6.500"]
+      result: "ΔNWC = +6.500 triệu (tiền bị giữ lại; AR +28,6 phần trăm, tồn kho +31,3 phần trăm so với doanh thu +20 phần trăm)"
+  - id: "m03_fcf"
+    name_vi: "Dòng tiền tự do (từ BCTC, trước khi định giá)"
+    name_en: "Free Cash Flow (reported basis)"
+    expression_latex: '\text{FCF} = \text{CFO} - \text{CapEx}'
+    expression_python: 'cfo - capex'
+    excel: "=CFO-CapEx"
+    variables:
+      - {symbol: "cfo", meaning: "Dòng tiền từ hoạt động kinh doanh", unit: "triệu VNĐ"}
+      - {symbol: "capex", meaning: "Chi mua sắm TSCĐ và xây dựng cơ bản (gộp bảo trì và mở rộng)", unit: "triệu VNĐ"}
+    when_to_use: "Ước lượng tiền thực sự còn lại cho cổ đông và chủ nợ sau khi duy trì hoặc mở rộng cơ sở. Đầu vào thô cho FCFF/FCFE ở m05."
+    why_it_works: "Lợi nhuận chưa trừ chi tiêu vốn; FCF bắt phần doanh nghiệp phải tái đầu tư. Thương vụ bán tài sản không nằm trong FCF (là dòng tiền đầu tư một lần)."
+    assumptions: ["CapEx đã phân biệt bảo trì và mở rộng khi cần so sánh", "Không cộng tiền thanh lý TSCĐ vào FCF"]
+    pitfalls: ["FCF âm khi đang đầu tư mạnh có thể tốt nếu ROIC cao; FCF dương do cắt giảm bảo trì không bền", "Cổ phiếu có FCF dương nhờ thu tiền trả trước (BĐS) chưa chắc bền"]
+    interpretation: "FCF/NI bền trên 0,7 là tốt; âm kéo dài đòi hỏi nguồn tài trợ rõ ràng."
+    example:
+      inputs: {cfo: 5540, capex: 9000}
+      steps: ["5.540 - 9.000 = -3.460"]
+      result: "FCF = -3.460 triệu (nợ vay ngắn hạn tăng 5.000 tài trợ phần thiếu hụt và cổ tức)"
+  - id: "m03_ccc"
+    name_vi: "Chu kỳ chuyển đổi tiền mặt (rút gọn)"
+    name_en: "Cash Conversion Cycle (compact)"
+    expression_latex: '\text{CCC} = 365\left(\frac{\overline{Inv}}{COGS} + \frac{\overline{AR}}{Rev} - \frac{\overline{AP}}{COGS}\right)'
+    expression_python: '365 * (avg_inventory / cogs + avg_ar / revenue - avg_ap / cogs)'
+    excel: "=365*(HTKBQ/GiaVon+PTBQ/DoanhThu-PTraBQ/GiaVon)"
+    variables:
+      - {symbol: "avg_inventory", meaning: "Hàng tồn kho bình quân", unit: "triệu VNĐ"}
+      - {symbol: "avg_ar", meaning: "Phải thu bình quân", unit: "triệu VNĐ"}
+      - {symbol: "avg_ap", meaning: "Phải trả NCC bình quân", unit: "triệu VNĐ"}
+      - {symbol: "cogs", meaning: "Giá vốn hàng bán cả năm", unit: "triệu VNĐ"}
+      - {symbol: "revenue", meaning: "Doanh thu thuần cả năm", unit: "triệu VNĐ"}
+    when_to_use: "Sản xuất, bán lẻ, phân phối. Công thức đầy đủ, giải thích DIO/DSO/DPO, ví dụ Apple: xem skill kế toán m06 và finance m05, không lặp lại ở đây."
+    why_it_works: "Đếm số ngày một đồng vốn nằm trong chu kỳ hàng-tiền-hàng trừ phần nhà cung cấp tài trợ."
+    assumptions: ["Dùng cùng quy ước bình quân; doanh nghiệp mùa vụ cần bình quân 4 quý"]
+    pitfalls: ["CCC âm của doanh nghiệp lớn không áp cho SME", "Dùng giá trị cuối kỳ khi tăng trưởng nhanh làm CCC lệch"]
+    interpretation: "Quan trọng là xu hướng và so với đối thủ cùng ngành: CCC dài ra khi doanh thu tăng là cờ vàng."
+    example:
+      inputs: {avg_inventory: 18500, avg_ar: 16000, avg_ap: 11000, cogs: 96000, revenue: 120000}
+      steps: ["DIO = 18.500/96.000 x 365 = 70,3", "DSO = 16.000/120.000 x 365 = 48,7", "DPO = 11.000/96.000 x 365 = 41,8", "CCC = 70,3 + 48,7 - 41,8 = 77,2"]
+      result: "CCC = 77,2 ngày"
+  - id: "m03_icr_total"
+    name_vi: "Khả năng trả lãi (gồm lãi vốn hóa)"
+    name_en: "Interest Coverage incl. capitalized interest"
+    expression_latex: '\text{ICR} = \frac{EBIT}{I_{expensed} + I_{capitalized}}'
+    expression_python: 'ebit / (interest_expensed + interest_capitalized)'
+    excel: "=EBIT/(LaiVayChiPhi+LaiVayVonHoa)"
+    variables:
+      - {symbol: "ebit", meaning: "EBIT cốt lõi", unit: "triệu hoặc tỷ VNĐ"}
+      - {symbol: "interest_expensed", meaning: "Lãi vay đã ghi vào chi phí tài chính", unit: "cùng đơn vị"}
+      - {symbol: "interest_capitalized", meaning: "Lãi vay đã vốn hóa vào dự án dở dang, TSCĐ (thuyết minh)", unit: "cùng đơn vị"}
+    when_to_use: "Mọi doanh nghiệp có vay, đặc biệt bất động sản, xây dựng, hạ tầng (vốn hóa lãi vay là phổ biến)."
+    why_it_works: "Lãi vốn hóa vẫn là tiền phải trả cho chủ nợ dù không vào chi phí kỳ này. Bỏ qua làm ICR đẹp giả và lợi nhuận thổi phồng."
+    assumptions: ["Thuyết minh nêu số lãi vay vốn hóa"]
+    pitfalls: ["Dùng ICR chỉ với lãi đã ghi chi phí", "EBIT chưa chuẩn hóa", "Ngân hàng: không áp dụng"]
+    interpretation: "Trên 5 xanh; 2,5-5 vàng; dưới 2,5 đỏ (tham chiếu); dưới 1 là EBIT không đủ trả lãi."
+    example:
+      inputs: {ebit: 300, interest_expensed: 100, interest_capitalized: 250}
+      steps: ["Chỉ lãi ghi chi phí: 300/100 = 3,0", "Gồm lãi vốn hóa: 300/(100 + 250) = 0,857"]
+      result: "ICR đúng = 0,86 (BĐS Sông Hương, tỷ VNĐ); số 3,0 che giấu áp lực"
+  - id: "m03_net_debt_ebitda"
+    name_vi: "Nợ ròng trên EBITDA"
+    name_en: "Net Debt / EBITDA"
+    expression_latex: '\frac{D - \text{Cash}}{EBIT + D\&A}'
+    expression_python: '(debt_total - cash) / (ebit + depreciation)'
+    excel: "=(NoVay-Tien)/(EBIT+KhauHao)"
+    variables:
+      - {symbol: "debt_total", meaning: "Tổng nợ vay có lãi", unit: "triệu VNĐ"}
+      - {symbol: "cash", meaning: "Tiền và tương đương tiền", unit: "triệu VNĐ"}
+      - {symbol: "ebit", meaning: "EBIT cốt lõi", unit: "triệu VNĐ"}
+      - {symbol: "depreciation", meaning: "Khấu hao và phân bổ", unit: "triệu VNĐ"}
+    when_to_use: "Đòn bẩy doanh nghiệp phi tài chính; so với đối thủ và hạn mức (covenant)."
+    why_it_works: "Ước lượng số năm EBITDA cần để trả hết nợ ròng nếu không đầu tư thêm."
+    assumptions: ["EBITDA ổn định; ngành chu kỳ cần dùng EBITDA bình quân chu kỳ"]
+    pitfalls: ["BĐS: dùng nợ ròng trên vốn chủ thay thế vì EBITDA biến động theo bàn giao", "Không áp cho ngân hàng"]
+    interpretation: "Dưới 2 xanh; 2-3,5 vàng; trên 3,5 đỏ (tham chiếu chung, ngành hạ tầng chịu mức cao hơn)."
+    example:
+      inputs: {debt_total: 30000, cash: 7040, ebit: 12000, depreciation: 5000}
+      steps: ["Nợ ròng = 30.000 - 7.040 = 22.960", "EBITDA = 17.000", "22.960/17.000 = 1,35"]
+      result: "1,35 lần"
+  - id: "m03_altman_z2"
+    name_vi: "Điểm Z'' của Altman (thị trường mới nổi, phi sản xuất)"
+    name_en: "Altman Z''-Score (emerging markets / non-manufacturers variant)"
+    expression_latex: "Z'' = 6.56\\,\\frac{WC}{TA} + 3.26\\,\\frac{RE}{TA} + 6.72\\,\\frac{EBIT}{TA} + 1.05\\,\\frac{BE}{TL}"
+    expression_python: '6.56 * (working_capital / total_assets) + 3.26 * (retained_earnings / total_assets) + 6.72 * (ebit / total_assets) + 1.05 * (book_equity / total_liabilities)'
+    excel: "=6.56*(VLD/TS)+3.26*(LNGiuLai/TS)+6.72*(EBIT/TS)+1.05*(VCSH/NoPhaiTra)"
+    variables:
+      - {symbol: "working_capital", meaning: "Tài sản ngắn hạn - nợ ngắn hạn", unit: "triệu VNĐ"}
+      - {symbol: "retained_earnings", meaning: "Lợi nhuận chưa phân phối (lũy kế)", unit: "triệu VNĐ"}
+      - {symbol: "ebit", meaning: "EBIT", unit: "triệu VNĐ"}
+      - {symbol: "book_equity", meaning: "Vốn chủ sở hữu ghi sổ", unit: "triệu VNĐ"}
+      - {symbol: "total_assets", meaning: "Tổng tài sản", unit: "triệu VNĐ"}
+      - {symbol: "total_liabilities", meaning: "Tổng nợ phải trả", unit: "triệu VNĐ"}
+    when_to_use: "Sàng lọc nhanh nguy cơ kiệt quệ tài chính doanh nghiệp phi tài chính; chỉ là tín hiệu phụ."
+    why_it_works: "Edward Altman (1968) dùng phân tích phân biệt đa biến cho 5 tỷ số dự báo phá sản; biến thể Z'' (1995) bỏ doanh thu trên tài sản và dùng vốn chủ sổ sách để giảm ảnh hưởng ngành và áp cho phi sản xuất, thị trường mới nổi."
+    assumptions: ["Hệ số hồi quy từ mẫu doanh nghiệp Mỹ; chưa kiểm chứng cho doanh nghiệp niêm yết Việt Nam"]
+    pitfalls: ["Không áp cho ngân hàng, bảo hiểm, chứng khoán", "Hằng số hiệu chỉnh cho thị trường mới nổi (nếu cộng) làm lệch ngưỡng: ghi rõ dùng bản có hay không", "Bất động sản có vốn lưu động rất khác"]
+    interpretation: "Ngưỡng tham chiếu (cần kiểm chứng): trên 2,6 vùng an toàn; 1,1-2,6 vùng xám; dưới 1,1 vùng nguy hiểm. Confidence low cho VN."
+    example:
+      inputs: {working_capital: 14540, retained_earnings: 18040, ebit: 12000, book_equity: 48040, total_assets: 93540, total_liabilities: 45500}
+      steps: ["X1 = 0,1554; X2 = 0,1929; X3 = 0,1283; X4 = 1,0558", "Z'' = 6,56 x 0,1554 + 3,26 x 0,1929 + 6,72 x 0,1283 + 1,05 x 1,0558 = 3,62"]
+      result: "Z'' = 3,62 (vùng an toàn)"
+  - id: "m03_reinvestment_rate"
+    name_vi: "Tỷ lệ tái đầu tư"
+    name_en: "Reinvestment Rate"
+    expression_latex: '\text{RR} = \frac{\text{CapEx} - D\&A + \Delta NWC}{NOPAT}'
+    expression_python: '(capex - depreciation + delta_nwc) / nopat'
+    excel: "=(CapEx-KhauHao+DeltaNWC)/NOPAT"
+    variables:
+      - {symbol: "capex", meaning: "Chi đầu tư TSCĐ", unit: "triệu VNĐ"}
+      - {symbol: "depreciation", meaning: "Khấu hao", unit: "triệu VNĐ"}
+      - {symbol: "delta_nwc", meaning: "Biến động vốn lưu động hoạt động", unit: "triệu VNĐ"}
+      - {symbol: "nopat", meaning: "Lợi nhuận hoạt động sau thuế cốt lõi", unit: "triệu VNĐ"}
+    when_to_use: "Biết doanh nghiệp giữ lại bao nhiêu phần NOPAT để tăng trưởng; cầu nối sang m05 (g = RR x ROIC)."
+    why_it_works: "Tăng trưởng không miễn phí: phải đầu tư vốn ròng. Tăng trưởng bền vững xấp xỉ tái đầu tư nhân ROIC (Damodaran, Investment Valuation)."
+    assumptions: ["ROIC trên vốn mới bằng ROIC hiện tại"]
+    pitfalls: ["Tái đầu tư lớn mà ROIC thấp thì tăng trưởng phá hủy giá trị", "Một năm đột biến không đại diện"]
+    interpretation: "RR trên 100 phần trăm nghĩa là cần vốn ngoài (vay hoặc phát hành). Tăng trưởng hàm ý g = RR x ROIC chỉ để kiểm tra tính hợp lý."
+    example:
+      inputs: {capex: 9000, depreciation: 5000, delta_nwc: 6500, nopat: 9600}
+      steps: ["(9.000 - 5.000 + 6.500)/9.600 = 1,094", "Tăng trưởng hàm ý = 1,094 x 14,55 phần trăm = 15,9 phần trăm"]
+      result: "RR = 109 phần trăm (cần vay thêm)"
+  - id: "m03_lease_adj_leverage"
+    name_vi: "Đòn bẩy điều chỉnh thuê dài hạn"
+    name_en: "Lease-adjusted Leverage (Debt+Lease)/EBITDAR"
+    expression_latex: '\frac{D + PV_{lease}}{EBITDA + Rent}'
+    expression_python: '(debt_total + lease_pv) / (ebitda + rent)'
+    excel: "=(NoVay+PVThue)/(EBITDA+TienThue)"
+    variables:
+      - {symbol: "debt_total", meaning: "Nợ vay có lãi", unit: "triệu VNĐ"}
+      - {symbol: "lease_pv", meaning: "Giá trị hiện tại cam kết thuê hoạt động (thuyết minh) hoặc ước lượng bội số tiền thuê (ghi rõ phương pháp)", unit: "triệu VNĐ"}
+      - {symbol: "ebitda", meaning: "EBITDA theo VAS (đã trừ tiền thuê)", unit: "triệu VNĐ"}
+      - {symbol: "rent", meaning: "Chi phí thuê hoạt động trong kỳ", unit: "triệu VNĐ"}
+    when_to_use: "Bán lẻ, F&B, chuỗi cửa hàng, vận tải: nơi thuê mặt bằng là nghĩa vụ lớn nhưng nằm ngoài nợ vay theo VAS."
+    why_it_works: "Thuê dài hạn có tính chất nợ (cam kết trả cố định). IFRS 16 đưa lên bảng; VAS có thể chưa (cần xác nhận). EBITDAR cộng lại tiền thuê để nhất quán với nợ thuê được cộng vào."
+    assumptions: ["PV cam kết thuê ước lượng hợp lý"]
+    pitfalls: ["So doanh nghiệp theo IFRS 16 với doanh nghiệp VAS không điều chỉnh", "Chiết khấu thuê tùy ý"]
+    interpretation: "Dùng để so cùng ngành; tăng nhanh khi mở cửa hàng là bình thường nhưng doanh thu cửa hàng cũ phải tăng."
+    example:
+      inputs: {debt_total: 30000, lease_pv: 36000, ebitda: 26000, rent: 24000}
+      steps: ["(30.000 + 36.000)/(26.000 + 24.000) = 66.000/50.000 = 1,32"]
+      result: "1,32 lần (so với nợ ròng/EBITDA thuần 0,82 chưa gồm thuê)"
+  - id: "m03_inventory_provision_gap"
+    name_vi: "Thiếu hụt dự phòng hàng tồn kho"
+    name_en: "Inventory Provision Gap"
+    expression_latex: '\text{Gap} = \max(0,\ Inv_{aged} \times p_{req} - Prov_{booked})'
+    expression_python: 'max(0, aged_inventory * required_pct - booked_provision)'
+    excel: "=MAX(0,HTKQuaHan*TyLeCan-DuPhongDaTrich)"
+    variables:
+      - {symbol: "aged_inventory", meaning: "Hàng tồn quá hạn, chậm luân chuyển theo thuyết minh hoặc bảng tuổi hàng", unit: "triệu VNĐ"}
+      - {symbol: "required_pct", meaning: "Tỷ lệ dự phòng hợp lý theo chính sách thận trọng hoặc đối thủ (giả định)", unit: "tỷ lệ"}
+      - {symbol: "booked_provision", meaning: "Dự phòng giảm giá HTK đã trích (TK 2294)", unit: "triệu VNĐ"}
+    when_to_use: "Doanh nghiệp bán lẻ, thời trang, sản xuất, bất động sản có tồn kho phình to."
+    why_it_works: "Tồn kho chậm bán làm giá trị thực hiện được thấp hơn giá sổ; trích chậm đẩy lợi nhuận hiện tại cao hơn thực tế và dồn lỗ cho kỳ sau."
+    assumptions: ["Có số liệu tuổi hàng; tỷ lệ dự phòng thận trọng hợp lý"]
+    pitfalls: ["Giả định tỷ lệ tùy tiện: ghi rõ là giả định", "Không điều chỉnh thuế khi tính tác động lên LNST"]
+    interpretation: "Gap nhân (1 - thuế suất) là lợi nhuận cần điều chỉnh giảm; gap lớn so với lợi nhuận trước thuế là cục máu đông."
+    example:
+      inputs: {aged_inventory: 9000, required_pct: 0.5, booked_provision: 500}
+      steps: ["9.000 x 0,5 = 4.500", "4.500 - 500 = 4.000", "Tác động LNST = 4.000 x 0,8 = 3.200 (13.600 xuống 10.400)"]
+      result: "Gap = 4.000 triệu (29,4 phần trăm lợi nhuận trước thuế)"
+  - id: "m03_adj_bvps"
+    name_vi: "Giá trị sổ sách mỗi cổ phiếu điều chỉnh kho báu ẩn"
+    name_en: "Hidden-asset adjusted BVPS (RNAV-lite)"
+    expression_latex: "BVPS_{adj} = \\frac{E + (MV - BV)(1-t)(1-h)}{N}"
+    expression_python: '(equity + (market_value - book_value) * (1 - tax_rate) * (1 - haircut)) * 1000 / shares'
+    excel: "=(VCSH+(GiaTriThiTruong-GiaSoSach)*(1-ThueSuat)*(1-Haircut))*1000/SoCP"
+    variables:
+      - {symbol: "equity", meaning: "Vốn chủ sở hữu ghi sổ", unit: "tỷ VNĐ"}
+      - {symbol: "market_value", meaning: "Giá trị thị trường tài sản (thẩm định độc lập hoặc giao dịch tương đương, ghi nguồn)", unit: "tỷ VNĐ"}
+      - {symbol: "book_value", meaning: "Giá sổ của tài sản đó", unit: "tỷ VNĐ"}
+      - {symbol: "tax_rate", meaning: "Thuế suất áp cho chênh lệch khi hiện thực hóa", unit: "tỷ lệ"}
+      - {symbol: "haircut", meaning: "Chiết khấu cho thanh khoản, thời gian, pháp lý", unit: "tỷ lệ"}
+      - {symbol: "shares", meaning: "Số cổ phiếu lưu hành", unit: "triệu cổ phiếu"}
+    when_to_use: "Bất động sản, công ty sở hữu quỹ đất hoặc khoản đầu tư ghi theo giá gốc lâu năm; công ty holding."
+    why_it_works: "VAS ghi nhận theo giá gốc nên giá trị nằm ngoài sổ. Chuyển chênh lệch sau thuế vào vốn chủ để tính giá trị sổ sách điều chỉnh. Haircut bảo vệ khỏi việc tin giá thẩm định như giá bán. Đơn vị: tỷ VNĐ x 1000 / triệu cổ phiếu = đồng mỗi cổ phiếu."
+    assumptions: ["Giá trị thị trường được kiểm chứng độc lập", "Hiện thực hóa được trong khung thời gian hợp lý"]
+    pitfalls: ["Dùng giá chào bán hoặc kỳ vọng thay cho giá giao dịch", "Quên thuế, chi phí đền bù, tiền sử dụng đất, nghĩa vụ hoàn thiện", "Tính hai lần khi dự phóng dòng tiền đã có khoản này (m05)"]
+    interpretation: "Đưa ra hai bản: không haircut (trần) và có haircut (thận trọng); dùng bản thận trọng cho định giá và nêu rõ phần còn lại là tiềm năng."
+    example:
+      inputs: {equity: 2900, market_value: 4500, book_value: 2500, tax_rate: 0.2, haircut: 0.3, shares: 200}
+      steps: ["Chênh lệch = 2.000; sau thuế = 1.600; sau haircut 30 phần trăm = 1.120", "Vốn chủ điều chỉnh = 4.020", "BVPS điều chỉnh = 4.020 x 1000/200 = 20.100 đồng (sổ 14.500; không haircut 22.500)"]
+      result: "20.100 đồng/cp (giả định minh họa)"
+  # ---------- B. Ngân hàng ----------
+  - id: "m03_npl_ratio"
+    name_vi: "Tỷ lệ nợ xấu"
+    name_en: "NPL Ratio"
+    expression_latex: '\text{NPL} = \frac{\text{Nợ nhóm 3, 4, 5}}{\text{Tổng dư nợ cho vay khách hàng}}'
+    expression_python: 'npl / loans'
+    excel: "=NoXau/DuNo"
+    variables:
+      - {symbol: "npl", meaning: "Nợ xấu nội bảng (nhóm 3-5) theo thuyết minh", unit: "tỷ VNĐ"}
+      - {symbol: "loans", meaning: "Tổng dư nợ cho vay khách hàng (trước dự phòng)", unit: "tỷ VNĐ"}
+    when_to_use: "Mọi phân tích ngân hàng; chỉ tiêu đầu tiên của chất lượng tài sản."
+    why_it_works: "Tài sản của ngân hàng là khoản cho vay; NPL cho biết phần tài sản không còn sinh lãi hay mất vốn. Nguyên liệu kinh doanh là tiền gửi nên lỗ tín dụng ăn thẳng vào vốn chủ vốn mỏng."
+    assumptions: ["Phân loại nhóm nợ đúng quy định (cần xác nhận văn bản hiện hành)", "Không có chuyển nhóm nhân tạo trước ngày báo cáo"]
+    pitfalls: ["NPL đẹp nhờ bán nợ cho VAMC, tái cấu trúc, đảo nợ: xem công thức NPL điều chỉnh", "Chỉ nhìn NPL mà quên nợ nhóm 2 (nợ cần chú ý) và nợ tái cấu trúc"]
+    interpretation: "Ngưỡng giám sát phổ biến nhắc tới là 3 phần trăm (cần xác nhận). Dưới 2 xanh; 2-3 vàng; trên 3 đỏ (tham chiếu); luôn so xu hướng và đối thủ cùng nhóm."
+    example:
+      inputs: {npl: 4000, loans: 200000}
+      steps: ["4.000/200.000 = 2,0 phần trăm"]
+      result: "NPL = 2,0 phần trăm (NH Phương Nam, tỷ VNĐ, giả định minh họa)"
+  - id: "m03_llr"
+    name_vi: "Tỷ lệ bao phủ nợ xấu"
+    name_en: "Loan Loss Reserve coverage (LLR)"
+    expression_latex: '\text{LLR} = \frac{\text{Dự phòng rủi ro tín dụng}}{\text{Nợ xấu}}'
+    expression_python: 'reserves / npl'
+    excel: "=DuPhong/NoXau"
+    variables:
+      - {symbol: "reserves", meaning: "Số dư dự phòng rủi ro cho vay khách hàng", unit: "tỷ VNĐ"}
+      - {symbol: "npl", meaning: "Nợ xấu nội bảng", unit: "tỷ VNĐ"}
+    when_to_use: "Đánh giá đệm hấp thụ tổn thất."
+    why_it_works: "Nếu toàn bộ nợ xấu mất sạch thì dự phòng có đủ che không. Bao phủ 100 phần trăm nghĩa là không cần trích thêm từ lợi nhuận tương lai (chưa kể tài sản bảo đảm)."
+    assumptions: ["Dự phòng tách biệt khỏi dự phòng chung và dự phòng nợ nhóm 2 nếu thuyết minh có"]
+    pitfalls: ["LLR cao nhờ NPL thấp giả (nợ chuyển nhóm), kiểm tra cùng nợ nhóm 2", "Dự phòng ghi nhận nhưng giá trị tài sản bảo đảm (đất) có thể đang quá cao", "Không tính trái phiếu VAMC chưa trích đủ"]
+    interpretation: "Từ 100 phần trăm xanh; 70-100 vàng; dưới 70 đỏ (tham chiếu, confidence low). Cần xem cả tài sản bảo đảm."
+    example:
+      inputs: {reserves: 3400, npl: 4000}
+      steps: ["3.400/4.000 = 85 phần trăm"]
+      result: "LLR = 85 phần trăm"
+  - id: "m03_adj_npl"
+    name_vi: "Tỷ lệ nợ xấu điều chỉnh gồm VAMC"
+    name_en: "Adjusted NPL incl. VAMC special bonds"
+    expression_latex: '\text{NPL}_{adj} = \frac{NPL + VAMC}{Loans + VAMC}'
+    expression_python: '(npl + vamc_bonds) / (loans + vamc_bonds)'
+    excel: "=(NoXau+TPVAMC)/(DuNo+TPVAMC)"
+    variables:
+      - {symbol: "npl", meaning: "Nợ xấu nội bảng", unit: "tỷ VNĐ"}
+      - {symbol: "vamc_bonds", meaning: "Dư nợ gốc trái phiếu đặc biệt VAMC chưa thu hồi hoặc xử lý", unit: "tỷ VNĐ"}
+      - {symbol: "loans", meaning: "Dư nợ cho vay khách hàng", unit: "tỷ VNĐ"}
+    when_to_use: "Ngân hàng đã bán nợ cho VAMC (trái phiếu đặc biệt chưa trích đủ)."
+    why_it_works: "Bán nợ cho VAMC chuyển khoản nợ ra khỏi NPL nội bảng nhưng ngân hàng vẫn gánh rủi ro đến khi thu hồi; trái phiếu đặc biệt phải trích dự phòng hằng năm. Cộng lại cho tỷ lệ gần bản chất hơn."
+    assumptions: ["Số liệu VAMC có trong thuyết minh (không phải bank nào cũng công bố đầy đủ)"]
+    pitfalls: ["Chỉ dùng NPL nội bảng", "Cộng tay hai lần nếu đã tính trong nợ xấu"]
+    interpretation: "Chênh lệch giữa NPL và NPL điều chỉnh càng lớn càng cần cảnh giác; kết hợp LLR điều chỉnh (dự phòng gồm phần trích cho trái phiếu đặc biệt)."
+    example:
+      inputs: {npl: 4000, vamc_bonds: 3000, loans: 200000}
+      steps: ["(4.000 + 3.000)/(200.000 + 3.000) = 3,45 phần trăm", "LLR điều chỉnh = (3.400 + 1.500)/(4.000 + 3.000) = 70 phần trăm"]
+      result: "NPL điều chỉnh = 3,45 phần trăm (so với 2,0 phần trăm báo cáo)"
+  - id: "m03_npl_stress_hit"
+    name_vi: "Kiểm tra sức chịu đựng nợ xấu (tác động lên lợi nhuận)"
+    name_en: "NPL stress: extra provisioning as share of net income"
+    expression_latex: '\text{Hit} = \frac{\max(0,\ NPL + m \cdot G2 - Res)(1-t)}{NI}'
+    expression_python: 'max(0, npl + migrate_pct * group2 - reserves) * (1 - tax_rate) / net_income'
+    excel: "=MAX(0,NoXau+TyLeChuyen*No2-DuPhong)*(1-Thue)/LNST"
+    variables:
+      - {symbol: "npl", meaning: "Nợ xấu hiện tại", unit: "tỷ VNĐ"}
+      - {symbol: "migrate_pct", meaning: "Tỷ lệ nợ nhóm 2 giả định chuyển xấu (kịch bản, ghi rõ giả định)", unit: "tỷ lệ"}
+      - {symbol: "group2", meaning: "Dư nợ nhóm 2 (cần chú ý)", unit: "tỷ VNĐ"}
+      - {symbol: "reserves", meaning: "Dự phòng hiện có", unit: "tỷ VNĐ"}
+      - {symbol: "tax_rate", meaning: "Thuế suất", unit: "tỷ lệ"}
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế năm", unit: "tỷ VNĐ"}
+    when_to_use: "Đo độ nhạy lợi nhuận và vốn chủ với diễn biến nợ nhóm 2 chuyển xấu để bao phủ 100 phần trăm."
+    why_it_works: "Quy đổi sang bao nhiêu phần lợi nhuận một năm phải dùng để trích đủ dự phòng, biến nợ nhóm 2 trừu tượng thành rủi ro lợi nhuận cụ thể."
+    assumptions: ["Mục tiêu bao phủ 100 phần trăm; tài sản bảo đảm không được tính", "Kịch bản chuyển xấu là giả định"]
+    pitfalls: ["Chọn kịch bản không có căn cứ", "Quên tác động lên CAR và vốn"]
+    interpretation: "Hit trên 30 phần trăm lợi nhuận năm: lợi nhuận mong manh trước chu kỳ xấu đi."
+    example:
+      inputs: {npl: 4000, migrate_pct: 0.3, group2: 5000, reserves: 3400, tax_rate: 0.2, net_income: 3904}
+      steps: ["NPL kịch bản = 4.000 + 0,3 x 5.000 = 5.500 (2,75 phần trăm; LLR 61,8 phần trăm)", "Cần thêm 5.500 - 3.400 = 2.100", "Sau thuế 1.680; chia NI 3.904 = 43,0 phần trăm"]
+      result: "43 phần trăm lợi nhuận năm (kịch bản minh họa)"
+  - id: "m03_car"
+    name_vi: "Hệ số an toàn vốn"
+    name_en: "Capital Adequacy Ratio (CAR)"
+    expression_latex: '\text{CAR} = \frac{\text{Vốn cấp 1} + \text{Vốn cấp 2}}{\text{Tài sản có rủi ro (RWA)}}'
+    expression_python: '(tier1 + tier2) / rwa'
+    excel: "=(Von1+Von2)/RWA"
+    variables:
+      - {symbol: "tier1", meaning: "Vốn cấp 1 (sau các khoản khấu trừ theo quy định)", unit: "tỷ VNĐ"}
+      - {symbol: "tier2", meaning: "Vốn cấp 2 (có giới hạn)", unit: "tỷ VNĐ"}
+      - {symbol: "rwa", meaning: "Tổng tài sản có rủi ro (tín dụng, thị trường, hoạt động)", unit: "tỷ VNĐ"}
+    when_to_use: "Đánh giá khả năng hấp thụ tổn thất và dư địa tăng trưởng tín dụng."
+    why_it_works: "Ủy ban Basel (hiệp ước Basel I năm 1988) đưa ra để buộc ngân hàng giữ vốn tương xứng rủi ro tài sản. CAR thấp giới hạn tăng trưởng và buộc tăng vốn; cổ đông bị pha loãng."
+    assumptions: ["Tính theo phương pháp mà ngân hàng công bố (Basel II VN, cần xác nhận văn bản hiện hành)", "Tuân thủ mức tối thiểu theo quy định (thường nhắc 8 phần trăm, cần xác nhận)"]
+    pitfalls: ["CAR đẹp nhờ vốn cấp 2 và nợ thứ cấp thay vì vốn cấp 1", "Dư địa CAR không bằng dư địa tăng trưởng nếu LDR đã cao"]
+    interpretation: "Quan trọng là đệm trên mức tối thiểu và chất lượng vốn: đệm trên 3 điểm phần trăm xanh; 1,5-3 vàng; dưới 1,5 đỏ (tham chiếu)."
+    example:
+      inputs: {tier1: 22000, tier2: 3000, rwa: 230000}
+      steps: ["(22.000 + 3.000)/230.000 = 10,87 phần trăm", "Đệm trên mức 8 phần trăm = 2,87 điểm"]
+      result: "CAR = 10,87 phần trăm"
+  - id: "m03_nim"
+    name_vi: "Biên lãi ròng"
+    name_en: "Net Interest Margin (NIM)"
+    expression_latex: '\text{NIM} = \frac{NII}{\overline{IEA}}'
+    expression_python: 'nii / avg_iea'
+    excel: "=NII/TSSinhLaiBinhQuan"
+    variables:
+      - {symbol: "nii", meaning: "Thu nhập lãi thuần", unit: "tỷ VNĐ"}
+      - {symbol: "avg_iea", meaning: "Tài sản sinh lãi bình quân (cho vay, chứng khoán, liên ngân hàng)", unit: "tỷ VNĐ"}
+    when_to_use: "Đo khả năng kiếm chênh lệch lãi suất cốt lõi."
+    why_it_works: "Ngân hàng là doanh nghiệp bán chênh lệch giữa lãi cho vay và lãi huy động; NIM chuẩn hóa chênh lệch theo quy mô tài sản."
+    assumptions: ["Cùng định nghĩa tài sản sinh lãi khi so các ngân hàng"]
+    pitfalls: ["Định nghĩa mẫu số khác nhau giữa ngân hàng", "NIM cao do cho vay phân khúc rủi ro (tín dụng tiêu dùng) đi kèm chi phí tín dụng cao"]
+    interpretation: "Đọc NIM cùng chi phí tín dụng: NIM trừ chi phí tín dụng trên dư nợ là lợi nhuận kinh tế thật."
+    example:
+      inputs: {nii: 9180, avg_iea: 255000}
+      steps: ["9.180/255.000 = 3,60 phần trăm"]
+      result: "NIM = 3,6 phần trăm"
+  - id: "m03_cir"
+    name_vi: "Tỷ lệ chi phí trên thu nhập"
+    name_en: "Cost-to-Income Ratio (CIR)"
+    expression_latex: '\text{CIR} = \frac{\text{Opex}}{NII + \text{Non-interest income}}'
+    expression_python: 'opex / (nii + non_interest_income)'
+    excel: "=ChiPhiHD/(NII+ThuNhapNgoaiLai)"
+    variables:
+      - {symbol: "opex", meaning: "Chi phí hoạt động (nhân sự, quản lý, khấu hao), chưa gồm dự phòng", unit: "tỷ VNĐ"}
+      - {symbol: "nii", meaning: "Thu nhập lãi thuần", unit: "tỷ VNĐ"}
+      - {symbol: "non_interest_income", meaning: "Thu nhập ngoài lãi (phí, ngoại hối, chứng khoán, thu hồi nợ đã xóa)", unit: "tỷ VNĐ"}
+    when_to_use: "Đo hiệu quả vận hành; so cùng nhóm ngân hàng."
+    why_it_works: "Một đồng thu nhập tốn bao nhiêu đồng chi phí vận hành."
+    assumptions: ["Thu nhập ngoài lãi sạch (tách khoản bất thường)"]
+    pitfalls: ["CIR thấp nhờ thu nhập bất thường (thu nợ đã xóa lớn)", "Cắt đầu tư công nghệ làm CIR đẹp ngắn hạn"]
+    interpretation: "So với đối thủ lúc chạy; xu hướng giảm tốt nếu không cắt giảm đầu tư."
+    example:
+      inputs: {opex: 4300, nii: 9180, non_interest_income: 2500}
+      steps: ["4.300/(9.180 + 2.500) = 36,8 phần trăm"]
+      result: "CIR = 36,8 phần trăm"
+  - id: "m03_ppop"
+    name_vi: "Lợi nhuận trước dự phòng"
+    name_en: "Pre-Provision Operating Profit (PPOP)"
+    expression_latex: '\text{PPOP} = NII + \text{Non-int. income} - \text{Opex}'
+    expression_python: 'nii + non_interest_income - opex'
+    excel: "=NII+ThuNhapNgoaiLai-ChiPhiHD"
+    variables:
+      - {symbol: "nii", meaning: "Thu nhập lãi thuần", unit: "tỷ VNĐ"}
+      - {symbol: "non_interest_income", meaning: "Thu nhập ngoài lãi", unit: "tỷ VNĐ"}
+      - {symbol: "opex", meaning: "Chi phí hoạt động", unit: "tỷ VNĐ"}
+    when_to_use: "Tách năng lực kiếm tiền của ngân hàng khỏi chu kỳ trích lập; kiểm tra bẫy P/E trích lập mạnh."
+    why_it_works: "Dự phòng là chi phí theo chu kỳ có thể tăng giảm mạnh; PPOP là 'lợi nhuận thô' chưa bị chu kỳ tín dụng chi phối. PPOP chia dự phòng cho biết ngân hàng gánh được bao nhiêu lần chi phí dự phòng."
+    assumptions: ["Thu nhập ngoài lãi sạch"]
+    pitfalls: ["Bỏ qua dự phòng là chi phí thật dài hạn", "PPOP tăng nhờ thu hồi nợ đã xóa không bền"]
+    interpretation: "PPOP/dự phòng (độ che phủ) trên 2 lần tạm đủ đệm; PPOP tăng trong khi LNST giảm là dấu hiệu ngân hàng đang dọn dẹp."
+    example:
+      inputs: {nii: 9180, non_interest_income: 2500, opex: 4300}
+      steps: ["9.180 + 2.500 - 4.300 = 7.380", "Độ che phủ = 7.380 / 2.500 = 2,95 lần"]
+      result: "PPOP = 7.380 tỷ (tăng 11,8 phần trăm so với năm trước 6.600)"
+  - id: "m03_credit_cost"
+    name_vi: "Chi phí tín dụng"
+    name_en: "Credit Cost"
+    expression_latex: '\text{Credit cost} = \frac{\text{Provision expense}}{\overline{Loans}}'
+    expression_python: 'provision_expense / avg_loans'
+    excel: "=ChiPhiDuPhong/DuNoBinhQuan"
+    variables:
+      - {symbol: "provision_expense", meaning: "Chi phí dự phòng rủi ro tín dụng trong kỳ", unit: "tỷ VNĐ"}
+      - {symbol: "avg_loans", meaning: "Dư nợ bình quân", unit: "tỷ VNĐ"}
+    when_to_use: "Đo tổn thất tín dụng hằng năm; chuẩn hóa EPS."
+    why_it_works: "Tỷ lệ chuẩn hóa chi phí rủi ro theo quy mô cho vay; xu hướng cao nhiều năm cho thấy rủi ro khẩu vị."
+    assumptions: ["Chi phí dự phòng chỉ cho tín dụng, nếu gồm dự phòng khác thì tách"]
+    pitfalls: ["Thời điểm trích lập (trích gấp để dọn nợ xấu) làm một năm lệch lớn", "Coi mức thấp bất thường là bền"]
+    interpretation: "Dùng khoảng trung bình nhiều năm (kịch bản bình thường) cho chuẩn hóa; không dùng số đỉnh hoặc đáy."
+    example:
+      inputs: {provision_expense: 2500, avg_loans: 190000}
+      steps: ["2.500/190.000 = 1,32 phần trăm (năm trước 800/190.000 ≈ 0,42 phần trăm)"]
+      result: "Chi phí tín dụng 1,32 phần trăm"
+  - id: "m03_bank_roa"
+    name_vi: "Tỷ suất sinh lời trên tài sản (ngân hàng)"
+    name_en: "ROA (bank)"
+    expression_latex: '\text{ROA} = \frac{NI}{\overline{TA}}'
+    expression_python: 'net_income / avg_assets'
+    excel: "=LNST/TSBinhQuan"
+    variables:
+      - {symbol: "net_income", meaning: "Lợi nhuận sau thuế", unit: "tỷ VNĐ"}
+      - {symbol: "avg_assets", meaning: "Tổng tài sản bình quân", unit: "tỷ VNĐ"}
+    when_to_use: "Bổ sung ROE; ROE ngân hàng chịu ảnh hưởng của đòn bẩy rất cao (EM gần 12 lần hoặc hơn)."
+    why_it_works: "ROE = ROA x EM; ROA cho biết hiệu quả thuần, EM cho biết đòn bẩy. ROE cao chỉ nhờ vốn mỏng thì dễ vỡ."
+    assumptions: ["Dùng ROE của m03_roe cho cổ đông"]
+    pitfalls: ["So ROA giữa ngân hàng khác mô hình (bán lẻ, doanh nghiệp, tiêu dùng) cần cẩn thận"]
+    interpretation: "ROA và ROE của ngân hàng đọc kèm NIM, chi phí tín dụng và CAR; ROE bền là điều kiện để P/B cao (m04)."
+    example:
+      inputs: {net_income: 3904, avg_assets: 275000}
+      steps: ["3.904/275.000 = 1,42 phần trăm", "ROE = 3.904/22.000 = 17,7 phần trăm; EM = 275.000/22.000 = 12,5"]
+      result: "ROA 1,42 phần trăm, ROE 17,7 phần trăm"
+  - id: "m03_casa"
+    name_vi: "Tỷ lệ tiền gửi không kỳ hạn (CASA)"
+    name_en: "CASA ratio"
+    expression_latex: '\text{CASA} = \frac{\text{Current + Savings (demand) deposits}}{\text{Customer deposits}}'
+    expression_python: 'casa_deposits / total_deposits'
+    excel: "=TienGuiKhongKyHan/TongTienGui"
+    variables:
+      - {symbol: "casa_deposits", meaning: "Tiền gửi không kỳ hạn và tiền gửi tiết kiệm không kỳ hạn", unit: "tỷ VNĐ"}
+      - {symbol: "total_deposits", meaning: "Tổng tiền gửi khách hàng", unit: "tỷ VNĐ"}
+    when_to_use: "Đánh giá chi phí vốn và độ bền của nguồn vốn."
+    why_it_works: "CASA có lãi suất thấp nên hạ chi phí vốn và giúp NIM; nhưng cũng nhạy với cạnh tranh sản phẩm thanh toán."
+    assumptions: ["Định nghĩa CASA giống nhau giữa các ngân hàng (kiểm tra thuyết minh)"]
+    pitfalls: ["CASA cao do tiền gửi tổ chức mang tính tạm thời, đáo hạn cuối quý"]
+    interpretation: "CASA tăng dần và ổn định tốt hơn dao động; so đối thủ lúc chạy."
+    example:
+      inputs: {casa_deposits: 63000, total_deposits: 210000}
+      steps: ["63.000/210.000 = 30 phần trăm"]
+      result: "CASA = 30 phần trăm"
+  - id: "m03_ldr"
+    name_vi: "Tỷ lệ cho vay trên tiền gửi (thô)"
+    name_en: "Loan-to-Deposit Ratio (raw)"
+    expression_latex: '\text{LDR} = \frac{Loans}{Deposits}'
+    expression_python: 'loans / deposits'
+    excel: "=DuNo/TienGui"
+    variables:
+      - {symbol: "loans", meaning: "Dư nợ cho vay khách hàng", unit: "tỷ VNĐ"}
+      - {symbol: "deposits", meaning: "Tiền gửi khách hàng", unit: "tỷ VNĐ"}
+    when_to_use: "Sàng lọc áp lực thanh khoản và dư địa tăng tín dụng."
+    why_it_works: "Cho vay cao hơn tiền gửi nghĩa là phụ thuộc vốn liên ngân hàng, giấy tờ có giá, tăng rủi ro thanh khoản."
+    assumptions: ["Quy định LDR chính thức tính theo công thức khác (có nguồn khác, hệ số)", "Cần xác nhận văn bản hiện hành"]
+    pitfalls: ["Tỷ lệ này khác tỷ lệ pháp quy"]
+    interpretation: "Trên 90-95 phần trăm cần kiểm tra cấu trúc nguồn vốn; chỉ là tham chiếu."
+    example:
+      inputs: {loans: 200000, deposits: 210000}
+      steps: ["200.000/210.000 = 95,2 phần trăm"]
+      result: "LDR thô 95,2 phần trăm"
+  - id: "m03_normalized_bank_eps"
+    name_vi: "EPS ngân hàng chuẩn hóa chi phí tín dụng"
+    name_en: "Normalized Bank EPS"
+    expression_latex: "EPS_{norm} = \\frac{(PPOP - cc_{norm}\\cdot \\overline{L})(1-t)}{N}"
+    expression_python: '(ppop - normal_credit_cost * avg_loans) * (1 - tax_rate) * 1000 / shares'
+    excel: "=(PPOP-CPTDBinhThuong*DuNoBQ)*(1-Thue)*1000/SoCP"
+    variables:
+      - {symbol: "ppop", meaning: "Lợi nhuận trước dự phòng", unit: "tỷ VNĐ"}
+      - {symbol: "normal_credit_cost", meaning: "Chi phí tín dụng bình thường (trung bình chu kỳ nhiều năm hoặc giả định ghi rõ)", unit: "tỷ lệ"}
+      - {symbol: "avg_loans", meaning: "Dư nợ bình quân", unit: "tỷ VNĐ"}
+      - {symbol: "tax_rate", meaning: "Thuế suất", unit: "tỷ lệ"}
+      - {symbol: "shares", meaning: "Số cổ phiếu lưu hành", unit: "triệu cổ phiếu"}
+    when_to_use: "Ngân hàng đang trích lập bất thường (cao hoặc thấp) trước khi dùng P/E (m04) hoặc FCFE/DDM (m05)."
+    why_it_works: "Khử cú sốc dự phòng để P/E phản ánh sức sinh lời thông thường, tránh bẫy P/E (mục concepts) và cũng tránh khen ngân hàng trích lập thấp bất thường."
+    assumptions: ["Chi phí tín dụng bình thường hợp lý và có thể kiểm chứng", "Không có lợi nhuận bất thường khác trong PPOP"]
+    pitfalls: ["Chọn chi phí tín dụng quá thấp để làm đẹp EPS", "Quên rằng nợ xấu chưa dọn xong có thể cần trích thêm"]
+    interpretation: "So EPS chuẩn hóa với EPS báo cáo: chênh lệch lớn nghĩa là P/E báo cáo gây hiểu lầm; luôn nêu giả định chi phí tín dụng."
+    example:
+      inputs: {ppop: 7380, normal_credit_cost: 0.01, avg_loans: 190000, tax_rate: 0.2, shares: 2000}
+      steps: ["Dự phòng bình thường = 1,0 phần trăm x 190.000 = 1.900", "LNST chuẩn hóa = (7.380 - 1.900) x 0,8 = 4.384", "EPS = 4.384 x 1000/2000 = 2.192 đồng (báo cáo 1.952; năm trước 2.320)"]
+      result: "EPS chuẩn hóa 2.192 đồng/cp (giả định minh họa)"
+  # ---------- C. Chấm điểm và so sánh ----------
+  - id: "m03_scorecard_score"
+    name_vi: "Điểm tổng ma trận chất lượng"
+    name_en: "Quality Scorecard total score"
+    expression_latex: '\text{Score} = \sum_i w_i s_i,\quad s_i\in\{0,\ 0.5,\ 1\}'
+    expression_python: 'sum(w * s for w, s in zip(weights, scores))'
+    excel: "=SUMPRODUCT(TrongSo,DiemTieuChi)"
+    variables:
+      - {symbol: "weights", meaning: "Danh sách trọng số các tiêu chí (tổng 100)", unit: "điểm"}
+      - {symbol: "scores", meaning: "Danh sách điểm từng tiêu chí: 0 đỏ, 0,5 vàng, 1 xanh", unit: "hệ số"}
+    when_to_use: "Chốt kết luận chất lượng cho từng doanh nghiệp theo cùng thang đo; so sánh chéo đối thủ."
+    why_it_works: "Một con số duy nhất ép agent cân nhắc đồng đều mọi mặt thay vì khen một chỉ số đẹp. Trọng số phản ánh mức nghiêm trọng khi chỉ tiêu xấu."
+    assumptions: ["Ngưỡng từng tiêu chí được chọn trước lúc chạy (không chọn sau khi biết kết quả)", "Dữ liệu đủ cho tiêu chí; thiếu dữ liệu ghi rõ và tính 0,5 kèm cờ"]
+    pitfalls: ["Điểm cao không đồng nghĩa mua; điểm chỉ đo chất lượng, chưa gồm định giá", "Bỏ qua các điều kiện loại trừ (knockout) khi điểm cao"]
+    interpretation: "A từ 80; B 65-80; C 50-65; D dưới 50 (xem framework scorecard). Điều kiện loại trừ giới hạn xếp hạng tối đa C."
+    example:
+      inputs: {weights: [10, 10, 5, 10, 5, 10, 10, 5, 10, 10, 10, 5], scores: [0.5, 0.0, 0.5, 1.0, 0.5, 1.0, 1.0, 1.0, 0.5, 0.5, 0.5, 0.0]}
+      steps: ["Tính tổng w x s theo 12 tiêu chí của scorecard phi ngân hàng"]
+      result: "60 điểm (hạng C) cho Cơ khí An Phát (ví dụ 1; điểm từng tiêu chí giải thích trong worked_examples)"
+  - id: "m03_peer_rank"
+    name_vi: "Thứ hạng phân vị so với đối thủ"
+    name_en: "Peer percentile rank"
+    expression_latex: '\text{Rank} = \frac{\#\{p \in Peers: p \le x\}}{|Peers|}'
+    expression_python: 'sum(map(metric.__ge__, peers)) / len(peers)'
+    excel: "=PERCENTRANK.INC(NhomDoiThu,GiaTri)"
+    variables:
+      - {symbol: "metric", meaning: "Giá trị chỉ tiêu của doanh nghiệp đang xét", unit: "tùy chỉ tiêu"}
+      - {symbol: "peers", meaning: "Danh sách giá trị cùng chỉ tiêu của nhóm đối thủ (cùng ngành, quy mô, chuẩn kế toán, cùng kỳ)", unit: "tùy chỉ tiêu"}
+    when_to_use: "Tương đối hóa mọi chỉ tiêu: ROE 15 phần trăm tốt hay xấu tùy ngành; xếp hạng trong nhóm đối thủ cho biết vị trí."
+    why_it_works: "Chuẩn của chỉ số thay đổi theo ngành, chu kỳ, thời điểm. Xếp hạng phân vị tránh phụ thuộc ngưỡng cứng cố định."
+    assumptions: ["Nhóm peer có ít nhất 4-5 doanh nghiệp so sánh được", "Chỉ tiêu tính cùng định nghĩa và cùng kỳ"]
+    pitfalls: ["Peer nhỏ hoặc khác mô hình (ngân hàng quốc doanh và ngân hàng cổ phần tư nhân)", "Chiều chỉ tiêu: với NPL, thấp tốt nên đảo thứ hạng"]
+    interpretation: "Từ 0,75 trở lên nhóm đầu; dưới 0,25 nhóm cuối (với chỉ tiêu cao là tốt)."
+    example:
+      inputs: {metric: 0.185, peers: [0.10, 0.12, 0.15, 0.18, 0.21, 0.24]}
+      steps: ["Có 4 đối thủ có giá trị không lớn hơn 0,185 (0,10; 0,12; 0,15; 0,18)", "4/6 = 0,667"]
+      result: "Phân vị 0,67 (giá trị peer là giả định minh họa)"
+
+frameworks:
+  - id: "m03_earnings_normalization_bridge"
+    name_vi: "Cầu nối chuẩn hóa lợi nhuận (Reported to Core)"
+    name_en: "Earnings Normalization Bridge"
+    origin: "Thực hành của nhà phân tích sell-side và buy-side (chuẩn hóa EPS 'adjusted/underlying'); nền tảng lý thuyết từ Graham và Dodd (1934) về 'earning power' tức sức sinh lời bình thường thay vì lợi nhuận một năm."
+    components:
+      - "Bước 1 - Lợi nhuận trước thuế báo cáo (mã 50)."
+      - "Bước 2 - Loại thu nhập bất thường: lãi thanh lý TSCĐ và bất động sản, lãi thoái vốn công ty con/liên kết, hoàn nhập dự phòng lớn, lãi đánh giá lại, thu nhập khác một lần, trợ cấp một lần."
+      - "Bước 3 - Cộng lại chi phí bất thường: phạt thuế và vi phạm, xóa sổ tài sản, lỗ thoái vốn, chi phí tái cơ cấu một lần, trích lập dự phòng đột biến (nếu thật sự một lần)."
+      - "Bước 4 - Điều chỉnh thuế theo thuế suất biên cho các khoản trên rồi trừ lợi ích cổ đông không kiểm soát."
+      - "Bước 5 - Ra EPS cốt lõi; so với EPS báo cáo bằng tỷ lệ cốt lõi (core share); ghi ba năm liền để thấy xu hướng."
+      - "Bước 6 - Xác định khoản mà 'một lần' thực ra lặp lại (ví dụ bán đất mỗi năm là mô hình kinh doanh bất động sản chứ không phải bất thường)."
+    when_to_use: "Mọi lần trước khi nhân EPS với P/E hoặc dùng làm cơ sở dự phóng (m04, m05)."
+    how_to_apply:
+      - "Lấy bảng KQKD và thuyết minh 'thu nhập khác', 'chi phí khác', 'thu nhập và chi phí tài chính', 'lãi lỗ từ công ty liên kết'."
+      - "Lập bảng 3 năm, mỗi khoản một dòng với số liệu và nguồn (trang thuyết minh)."
+      - "Phân loại: bất thường chắc chắn, bất thường nghi ngờ (lặp lại?), cốt lõi."
+      - "Chạy m03_core_net_income cho bản thận trọng (loại hết nghi ngờ) và bản cơ sở (chỉ loại chắc chắn); báo cáo cả hai."
+    how_to_read_results: "Core share trên 90 phần trăm: lợi nhuận sạch; 70-90: dùng bản cơ sở và nêu rõ khoản điều chỉnh; dưới 70: không dùng EPS báo cáo cho định giá, cảnh báo người dùng."
+    pitfalls: ["Chuẩn hóa chọn lọc (chỉ loại lãi, giữ lỗ)", "Điều chỉnh không kèm bằng chứng từ thuyết minh", "Quên rằng hoàn nhập dự phòng ngân hàng là có điều kiện lặp lại (xem bẫy P/E)"]
+    example: "Cơ khí An Phát: lãi thanh lý đất 4.000 (bán cho bên liên quan) và chi phí phạt 400 một lần. Cốt lõi 8.160 so với 11.040 (73,9 phần trăm)."
+  - id: "m03_quality_scorecard_nonbank"
+    name_vi: "Ma trận chấm điểm chất lượng doanh nghiệp phi tài chính (12 tiêu chí)"
+    name_en: "Quality Scorecard (non-financial companies)"
+    origin: "Tự thiết kế cho bộ skill này, tổng hợp từ các hệ thống chấm điểm quen thuộc (Piotroski F-Score 2000, Altman Z, Beneish M-Score 1999, Sloan 1996). Không phải mô hình chuẩn công bố; trọng số và ngưỡng là quy ước làm việc, có thể hiệu chỉnh khi đối chiếu với lịch sử VN (confidence low)."
+    components:
+      - "EQ1 (10 điểm) Core share (LNST cốt lõi/báo cáo) - xanh từ 0,9; vàng 0,7-0,9; đỏ dưới 0,7."
+      - "EQ2 (10 điểm) CFO/NI cộng dồn 3 năm - xanh từ 0,9; vàng 0,6-0,9; đỏ dưới 0,6."
+      - "EQ3 (5 điểm) Dồn tích (m03_accruals) - xanh dưới 5 phần trăm; vàng 5-10; đỏ trên 10."
+      - "PR1 (10 điểm) ROIC trừ WACC (WACC từ m05 theo ảnh chụp thị trường có ngày) - xanh trên +3 điểm phần trăm; vàng 0 đến +3; đỏ âm."
+      - "PR2 (5 điểm) Biên lợi nhuận gộp 3 năm - xanh nếu giảm không quá 1 điểm hoặc tăng; vàng giảm 1-3 điểm; đỏ giảm trên 3 điểm."
+      - "BS1 (10 điểm) Nợ ròng/EBITDA (BĐS: nợ ròng/vốn chủ) - xanh dưới 2 (BĐS dưới 0,6); vàng 2-3,5 (0,6-1,0); đỏ trên 3,5 (trên 1,0); công ty có tiền ròng được tính xanh."
+      - "BS2 (10 điểm) ICR gồm lãi vốn hóa - xanh từ 5; vàng 2,5-5; đỏ dưới 2,5."
+      - "BS3 (5 điểm) Altman Z'' - xanh trên 2,6; vàng 1,1-2,6; đỏ dưới 1,1 (không dùng cho BĐS: thay bằng nợ ngắn hạn đến hạn so với tiền và dòng thu)."
+      - "WC1 (10 điểm) Tăng phải thu và tồn kho so với tăng doanh thu - xanh nếu chênh không quá +5 điểm phần trăm; vàng +5 đến +15; đỏ trên +15; kèm CCC xu hướng."
+      - "AQ1 (10 điểm) Tỷ trọng tồn kho và phải thu quá hạn trên tổng, và độ thiếu hụt dự phòng - xanh dưới 5 phần trăm và gap nhỏ; vàng 5-15; đỏ trên 15 hoặc gap trên 20 phần trăm lợi nhuận trước thuế."
+      - "GV1 (10 điểm) Minh bạch và quản trị - xanh: kiểm toán chấp nhận toàn phần, không điều chỉnh hồi tố, giao dịch bên liên quan nhỏ và rõ ràng; vàng: nhấn mạnh vấn đề (emphasis of matter) hoặc giao dịch bên liên quan đáng kể; đỏ: ngoại trừ, trái ngược, từ chối hoặc điều chỉnh hồi tố trọng yếu."
+      - "FCF1 (5 điểm) FCF 3 năm - xanh dương liên tục hoặc âm có lý do đầu tư ROIC cao; vàng âm một năm; đỏ âm liên tục không có nguồn tài trợ rõ ràng."
+      - "Tổng điểm = tổng trọng số x (1 xanh, 0,5 vàng, 0 đỏ). Xếp hạng: A từ 80; B 65-80; C 50-65; D dưới 50."
+      - "Điều kiện loại trừ (knockout) giới hạn tối đa hạng C: kiểm toán trái ngược hoặc từ chối; lãi dương mà CFO âm 3 năm liên tiếp; điều chỉnh hồi tố trọng yếu; ICR dưới 1 hai năm; giao dịch bên liên quan chưa công bố đầy đủ."
+    when_to_use: "Kết luận chất lượng cuối bước phân tích cơ bản, trước khi quyết định có định giá tiếp hay cần thêm dữ liệu."
+    how_to_apply:
+      - "Tính từng chỉ tiêu bằng công thức m03; ghi nguồn số và kỳ."
+      - "Gán xanh, vàng, đỏ trước khi nhìn tổng; thiếu dữ liệu thì gán vàng và đánh dấu 'thiếu dữ liệu' trong báo cáo."
+      - "Cộng điểm bằng m03_scorecard_score; kiểm tra knockout; ghi hạng."
+      - "Báo cáo kèm 3 điểm mạnh và 3 điểm yếu, và điều chỉnh đề xuất cho m04, m05 (EPS chuẩn hóa, vốn chủ điều chỉnh)."
+    how_to_read_results: "A và B: đủ chất lượng đưa vào định giá với số chuẩn hóa. C: định giá nhưng nâng biên an toàn và nêu rõ rủi ro chất lượng. D: khuyến nghị không định giá bằng mô hình thông thường; ưu tiên làm rõ nghi vấn."
+    pitfalls: ["Điểm cao mà bỏ qua knockout", "Dùng ngưỡng đã điều chỉnh sau khi thấy kết quả", "So điểm giữa ngành khác nhau mà không đọc phụ chú ngành (m03_sector_lens_matrix)", "Hiểu điểm là khuyến nghị mua bán"]
+    example: "Cơ khí An Phát (ví dụ 1): 60 điểm, hạng C: lãi cốt lõi 74 phần trăm, CFO/NI 0,50, FCF âm, giao dịch bên liên quan; ROIC và đòn bẩy tốt."
+  - id: "m03_quality_scorecard_bank"
+    name_vi: "Ma trận chấm điểm chất lượng ngân hàng (11 tiêu chí)"
+    name_en: "Quality Scorecard (banks)"
+    origin: "Tự thiết kế, dựa trên khung CAMELS của cơ quan giám sát Mỹ (Uniform Financial Institutions Rating System, 1979) với các chỉ số phổ biến ở thị trường VN. Ngưỡng là quy ước làm việc cần hiệu chỉnh theo nhóm đối thủ lúc chạy (confidence low)."
+    components:
+      - "B1 (12 điểm) NPL nội bảng - xanh dưới 2 phần trăm; vàng 2-3; đỏ trên 3 (ngưỡng 3 phần trăm thường nhắc là giám sát, cần xác nhận)."
+      - "B2 (12 điểm) LLR (bao phủ nợ xấu) - xanh từ 100 phần trăm; vàng 70-100; đỏ dưới 70."
+      - "B3 (10 điểm) Chất lượng tài sản mở rộng: NPL điều chỉnh gồm VAMC, nợ nhóm 2, nợ tái cấu trúc - xanh nếu tổng dưới 4 phần trăm dư nợ; vàng 4-7; đỏ trên 7 (tham chiếu)."
+      - "B4 (12 điểm) CAR và chất lượng vốn - xanh nếu đệm trên mức tối thiểu trên 3 điểm và vốn cấp 1 chiếm phần lớn; vàng 1,5-3; đỏ dưới 1,5."
+      - "B5 (8 điểm) NIM - xanh: ổn định hoặc tăng và tương xứng rủi ro; vàng: giảm dưới 0,3 điểm; đỏ: giảm trên 0,3 điểm hoặc cao do cho vay rủi ro không có bù chi phí tín dụng."
+      - "B6 (8 điểm) CIR - xanh dưới trung vị peer; vàng quanh trung vị; đỏ trên trung vị 5 điểm trở lên."
+      - "B7 (8 điểm) Độ che phủ PPOP so với chi phí dự phòng (PPOP/dự phòng) - xanh trên 2 lần; vàng 1,3-2; đỏ dưới 1,3."
+      - "B8 (8 điểm) ROE cốt lõi bền vững (3 năm) - xanh trên trung vị peer và trên chi phí vốn chủ; vàng quanh trung vị; đỏ dưới."
+      - "B9 (6 điểm) CASA và cơ cấu nguồn vốn - xanh trên trung vị peer; vàng gần; đỏ dưới trung vị 5 điểm."
+      - "B10 (6 điểm) LDR thô và phụ thuộc vốn liên ngân hàng - xanh dưới 90 phần trăm; vàng 90-100; đỏ trên 100."
+      - "B11 (10 điểm) Quản trị: tập trung tín dụng khách hàng lớn và bên liên quan, cho vay bất động sản, trái phiếu doanh nghiệp, ý kiến kiểm toán - xanh: công bố rõ và mức tập trung thấp; vàng: có tập trung hoặc nhấn mạnh; đỏ: ngoại trừ hoặc tập trung lớn không minh bạch."
+      - "Xếp hạng giống phi tài chính: A từ 80; B 65-80; C 50-65; D dưới 50. Knockout: ý kiến kiểm toán trái ngược hoặc từ chối; CAR dưới mức tối thiểu; bị kiểm soát đặc biệt; điều chỉnh hồi tố trọng yếu."
+    when_to_use: "Mọi ngân hàng niêm yết, thay cho scorecard phi tài chính (không dùng EBITDA, FCFF, ICR, Z-score)."
+    how_to_apply:
+      - "Thu thập thuyết minh chất lượng tín dụng: phân loại nợ nhóm 1-5, nợ tái cấu trúc, VAMC, dự phòng, tập trung tín dụng."
+      - "Chạy công thức ngân hàng m03 (NPL, LLR, NPL điều chỉnh, CAR, NIM, CIR, PPOP, chi phí tín dụng, ROE, ROA, CASA, LDR)."
+      - "Chấm điểm; tính EPS chuẩn hóa (m03_normalized_bank_eps) cho m04; chuyển FCFE/DDM sang m05."
+    how_to_read_results: "Ngân hàng có LLR thấp mà ROE cao thường đang trì hoãn trích lập: ROE cốt lõi nên tính lại sau chuẩn hóa. Ngân hàng đang trích lập mạnh nhưng PPOP tăng, CAR đệm đủ thì có thể là cơ hội (bẫy P/E)."
+    pitfalls: ["Dùng thước đo doanh nghiệp thường", "So NPL giữa ngân hàng khác quy mô và mô hình mà không xét nợ nhóm 2 và VAMC", "Dùng ROE của một năm trích lập thấp bất thường"]
+    example: "NH Phương Nam (ví dụ 2): NPL 2,0 phần trăm, LLR 85 phần trăm, NPL điều chỉnh 3,45 phần trăm, CAR 10,87 phần trăm, CIR 36,8 phần trăm."
+  - id: "m03_bank_camels_lens"
+    name_vi: "Khung CAMELS cho ngân hàng"
+    name_en: "CAMELS framework"
+    origin: "Hệ thống xếp hạng ngân hàng thống nhất của cơ quan giám sát Hoa Kỳ (UFIRS, 1979): Capital, Asset quality, Management, Earnings, Liquidity, Sensitivity (S thêm năm 1996). Ra đời để cơ quan thanh tra có một thang đánh giá chung cho các ngân hàng."
+    components:
+      - "C (Vốn): CAR, vốn cấp 1, đòn bẩy, kế hoạch tăng vốn."
+      - "A (Chất lượng tài sản): NPL, LLR, nợ nhóm 2, VAMC, tái cấu trúc, tập trung."
+      - "M (Quản trị): chất lượng ban điều hành, kiểm toán, giao dịch bên liên quan, minh bạch."
+      - "E (Thu nhập): NIM, CIR, chi phí tín dụng, ROA, ROE, tỷ trọng thu nhập ngoài lãi."
+      - "L (Thanh khoản): LDR, CASA, phụ thuộc liên ngân hàng, giấy tờ có giá."
+      - "S (Nhạy cảm thị trường): chênh lệch kỳ hạn, rủi ro lãi suất, ngoại hối, danh mục chứng khoán."
+    when_to_use: "Cấu trúc báo cáo ngân hàng cho người dùng; mỗi mục tương ứng một nhóm công thức m03."
+    how_to_apply: ["Mỗi chữ cái: 2-4 chỉ tiêu, nêu số, so peer, nhận định xanh vàng đỏ", "Kết hợp vào scorecard ngân hàng"]
+    how_to_read_results: "Điểm yếu ở A hoặc C quan trọng hơn điểm mạnh ở E vì tổn thất tín dụng ăn vào vốn."
+    pitfalls: ["Chỉ liệt kê chỉ số mà không kết luận", "Bỏ M vì khó định lượng: hãy đọc kiểm toán và bên liên quan"]
+    example: "Báo cáo ngân hàng nên có 6 đề mục C-A-M-E-L-S, mỗi mục tối đa 5 dòng số liệu cộng một câu nhận định."
+  - id: "m03_hidden_treasure_and_clots_map"
+    name_vi: "Bản đồ kho báu ẩn và cục máu đông"
+    name_en: "Hidden Treasure and Clot Map"
+    origin: "Phương pháp phân tích tài sản ròng điều chỉnh (adjusted net asset value) của Graham và Dodd (1934) và thực hành 'sum-of-the-parts' của các quỹ giá trị; prompt gốc của bộ skill nhấn mạnh nhận diện các mục này để tìm thứ thị trường bỏ sót."
+    components:
+      - "Kho báu (giá trị cao hơn sổ): quỹ đất và bất động sản ghi giá gốc; khoản đầu tư công ty liên kết niêm yết (so giá thị trường); thương hiệu, giấy phép tạo nội bộ; tiền mặt dư và lợi nhuận giữ lại chưa chia; quỹ dự phòng trích dư có thể hoàn nhập; thương vụ thoái vốn M&A có lãi chưa ghi nhận; khoản phải thu bồi thường có khả năng thu."
+      - "Cục máu đông (giá trị thực thấp hơn sổ hoặc bị kẹt): bất động sản, dự án dở dang tồn đọng; nợ xấu chưa xử lý và trái phiếu đặc biệt VAMC; phải thu quá hạn; hàng tồn lỗi thời; khoản đầu tư công ty liên kết lỗ; lợi thế thương mại cao sau M&A; nợ bảo lãnh ngoài bảng; tài sản bảo đảm định giá quá cao."
+      - "Với mỗi mục: số liệu sổ, giá trị ước tính thực (kèm nguồn), chênh lệch, thuế và chi phí hiện thực hóa, thời gian, xác suất, tác động lên vốn chủ và EPS."
+    when_to_use: "Doanh nghiệp bất động sản, holding, ngân hàng sau tái cơ cấu, doanh nghiệp có tài sản lâu năm ghi giá gốc."
+    how_to_apply:
+      - "Đọc bảng cân đối và các thuyết minh về hàng tồn kho (bất động sản dở dang), đầu tư tài chính dài hạn, tài sản cố định, phải thu, dự phòng, trái phiếu VAMC."
+      - "Lập bảng 'sổ - thực' từng dòng; với kho báu ghi nguồn ước tính (thẩm định, giao dịch tương đương, giá niêm yết)."
+      - "Áp thuế, chi phí, haircut (m03_adj_bvps) cho kho báu; áp dự phòng bổ sung (m03_inventory_provision_gap, m03_npl_stress_hit) cho cục máu đông."
+      - "Chuyển bản điều chỉnh sang m04 (P/B điều chỉnh) và m05 (RNAV, kịch bản)."
+    how_to_read_results: "Kho báu chỉ tính khi có đường hiện thực hóa rõ và thời gian dự kiến; cục máu đông ưu tiên tính trước vì ảnh hưởng chắc chắn hơn. Cân đối: ròng kho báu trừ cục máu đông là điều chỉnh vốn chủ."
+    pitfalls: ["Dùng giá chào bán", "Quên chi phí và thuế", "Chỉ tìm kho báu, bỏ qua cục máu đông (thiên lệch xác nhận)", "Đếm hai lần giá trị đã có trong dự phóng DCF"]
+    example: "BĐS Sông Hương (ví dụ 4): quỹ đất sổ 2.500, ước tính thị trường 4.500, sau thuế và haircut 30 phần trăm cộng 1.120 vào vốn chủ; tồn kho 1.200 (20 phần trăm) bán chậm trên 24 tháng là cục máu đông với chi phí vốn khoảng 108/năm."
+  - id: "m03_sector_lens_matrix"
+    name_vi: "Ma trận thước đo theo ngành"
+    name_en: "Sector Lens Matrix"
+    origin: "Thực hành phân tích theo ngành: mô hình kinh doanh khác nhau thì bảng cân đối và chỉ số quan trọng khác nhau. Phần 2 của prompt gốc nhấn mạnh phân biệt bản chất ngành (ngân hàng dùng FCFE hoặc DDM; sản xuất, bán lẻ, công nghệ ưu tiên FCFF)."
+    components:
+      - "Ngân hàng, tài chính: NPL, LLR, nợ nhóm 2, VAMC, CAR, NIM, CASA, CIR, chi phí tín dụng, ROA, ROE, LDR. Bỏ: EBITDA, FCFF, ICR, Z-score, CCC. Mô hình định giá: P/B theo ROE, FCFE hoặc DDM (m05)."
+      - "Sản xuất: hàng tồn kho (nguyên liệu, thành phẩm), phải thu, ΔNWC, CapEx bảo trì và mở rộng, công suất sử dụng, CCC, biên gộp theo giá nguyên liệu, nợ ròng/EBITDA, ICR. Định giá: FCFF, EV/EBITDA, P/E theo chu kỳ."
+      - "Bất động sản: tồn kho dự án dở dang, quỹ đất và pháp lý, người mua trả trước, tiến độ bàn giao, lãi vay vốn hóa, nợ ròng/vốn chủ, dòng tiền theo dự án, trái phiếu doanh nghiệp đến hạn. Định giá: RNAV, P/B điều chỉnh."
+      - "Bán lẻ, F&B: doanh thu cửa hàng cũ (same-store sales), tồn kho và tuổi hàng, CCC, nợ thuê (lease-adjusted leverage), CapEx cửa hàng mới, hoàn vốn cửa hàng. Định giá: EV/EBITDA, FCFF."
+      - "Công nghệ, tài sản vô hình: doanh thu định kỳ và chất lượng, chi phí vốn hóa phát triển phần mềm, tỷ lệ giữ chân khách hàng, biên gộp, tiền mặt và runway, hiệu ứng mạng lưới. P/B thường vô nghĩa vì giá trị là tài sản vô hình không nằm trên sổ; dùng P/S, EV/Sales, DCF dài hạn thận trọng."
+      - "Tiện ích, năng lượng, hạ tầng: tài sản kiểm soát có quy định giá, đòn bẩy cao hợp lý, CapEx lớn, dòng tiền ổn định; DDM, FCFF."
+    when_to_use: "Chọn đúng bộ chỉ số và mô hình trước khi tính toán."
+    how_to_apply: ["Xác định ngành từ mô hình thu nhập (không chỉ mã ngành)", "Chọn hàng tương ứng trong ma trận", "Ghi lý do bỏ các chỉ số không phù hợp trong báo cáo"]
+    how_to_read_results: "Báo cáo phải nêu rõ 'ngành này tôi dùng thước đo nào và vì sao'."
+    pitfalls: ["Doanh nghiệp đa ngành (holding) cần tách phần", "Công ty tài chính tiêu dùng khác ngân hàng thương mại về rủi ro và NIM"]
+    example: "Ngân hàng không dùng FCFF vì tiền gửi là nguyên liệu kinh doanh chứ không phải cấu phần vốn tài trợ; dòng tiền cho cổ đông là sau khi trừ phần giữ lại để trích lập và duy trì CAR."
+  - id: "m03_asset_light_tech_lens"
+    name_vi: "Ống kính cho công nghệ và tài sản vô hình"
+    name_en: "Intangibles and Asset-light Lens"
+    origin: "Baruch Lev và Feng Gu (The End of Accounting, 2016) lập luận BCTC truyền thống đo kém tài sản vô hình; Aswath Damodaran đề xuất vốn hóa R&D và điều chỉnh chỉ số cho doanh nghiệp công nghệ."
+    components:
+      - "Chi tiêu R&D, marketing thu hút khách hàng, phát triển phần mềm bị tính vào chi phí kỳ này nên lợi nhuận thấp và vốn chủ thấp, dẫn đến ROE, P/B đo sai."
+      - "Điều chỉnh: vốn hóa chi phí R&D theo vòng đời (giả định số năm khấu hao), tính lại EBIT và vốn đầu tư."
+      - "Chất lượng doanh thu: doanh thu định kỳ, tỷ lệ giữ chân, doanh thu theo hợp đồng, tập trung khách hàng, ghi nhận doanh thu sớm."
+      - "Chi phí trả bằng cổ phiếu (SBC) cần trừ khỏi EBITDA điều chỉnh; không nên chấp nhận EBITDA điều chỉnh bỏ SBC."
+      - "Runway tiền mặt và tốc độ đốt tiền với công ty chưa có lãi."
+    when_to_use: "Công ty phần mềm, nền tảng, thương mại điện tử, doanh nghiệp asset-light. Cách chọn mô hình dùng m04 và m05."
+    how_to_apply: ["Xác định phần chi phí thực chất là đầu tư", "Tính lại ROIC và biên sau vốn hóa (chỉ để so, ghi rõ giả định)", "Kiểm tra hiệu ứng mạng lưới có dẫn đến biên tăng theo quy mô không"]
+    how_to_read_results: "P/B cao không tự động là đắt; xem ROIC sau điều chỉnh và độ bền lợi thế. Ngược lại tài sản vô hình lớn do M&A (lợi thế thương mại) là rủi ro ghi giảm."
+    pitfalls: ["Chấp nhận mọi 'chỉ số điều chỉnh' do doanh nghiệp tự định nghĩa", "Dùng P/B làm trọng tài", "Cho nhận định hiệu ứng mạng lưới mà không có số liệu giữ chân khách hàng"]
+    example: "Ví dụ prompt gốc nhắc tới Grab như công ty asset-light mà P/B cao thường vô nghĩa; dữ liệu cụ thể của công ty này không được kiểm chứng trong module này (unverified)."
+  - id: "m03_red_flag_taxonomy"
+    name_vi: "Phân loại cờ đỏ BCTC"
+    name_en: "Red Flag Taxonomy"
+    origin: "Tổng hợp từ nghiên cứu về gian lận và thao túng lợi nhuận: Beneish (1999) M-Score; Sloan (1996) dồn tích; vụ Enron (2001), WeWork (2019, kịch bản tăng trưởng và EBITDA điều chỉnh chưa kiểm chứng trong repo này); khung Schilit về 'financial shenanigans'."
+    components:
+      - "Lợi nhuận: lãi tăng mạnh nhờ khoản một lần; lãi tăng mà CFO giảm; thuế suất thực tế thấp bất thường; doanh thu cuối quý tăng đột biến."
+      - "Bảng cân đối: phải thu và tồn kho tăng nhanh hơn doanh thu; dự phòng giảm khi phải thu tăng; vốn hóa chi phí bất thường; tài sản vô hình tăng nhanh; nợ ngắn hạn tái phân loại sang dài hạn."
+      - "Dòng tiền: CFO âm 2-3 năm trong khi lãi dương; vay ngắn hạn tài trợ TSCĐ; FCF âm liên tục không có đường tài trợ."
+      - "Quản trị và kiểm toán: ý kiến ngoại trừ, nhấn mạnh vấn đề, đổi kiểm toán viên, điều chỉnh hồi tố, giao dịch bên liên quan lớn, cổ đông lớn cầm cố cổ phiếu, thay lãnh đạo tài chính liên tục."
+      - "Ngân hàng: NPL giảm đột ngột nhờ bán VAMC; LLR giảm; nợ nhóm 2 và tái cấu trúc tăng; cho vay tập trung bên liên quan; trái phiếu doanh nghiệp bất động sản lớn; CAR đẹp nhờ vốn cấp 2."
+      - "Bất động sản: ICR gồm lãi vốn hóa dưới 1; người mua trả trước dùng trả nợ; tồn kho tăng liên tục; trái phiếu đáo hạn dày."
+      - "Xếp độ nặng: đỏ nặng (knockout), đỏ, vàng; mỗi cờ cần bằng chứng và nguồn."
+    when_to_use: "Sàng lọc và kiểm tra chéo bất kỳ khi nào đọc BCTC."
+    how_to_apply: ["Duyệt từng nhóm; ghi cờ cùng số liệu bằng chứng", "Gắn cờ vào scorecard (tiêu chí tương ứng) và knockout", "Không kết luận gian lận: chỉ báo cáo bất thường và đề xuất kiểm tra thêm"]
+    how_to_read_results: "Nhiều cờ vàng cộng dồn nguy hiểm hơn một cờ vàng đơn lẻ. Một cờ đỏ nặng đủ hạ xếp hạng và yêu cầu dừng định giá."
+    pitfalls: ["Gắn nhãn gian lận khi chưa có bằng chứng", "Bỏ cờ vì cổ phiếu đang tăng giá", "Không phân biệt cờ do tăng trưởng thật và cờ do thao túng"]
+    example: "Cơ khí An Phát: 3 cờ vàng (core share 74 phần trăm, AR và tồn kho tăng nhanh hơn doanh thu, CFO/NI 0,50) và 1 điểm quản trị (bán đất cho bên liên quan)."
+  - id: "m03_peer_comparison_method"
+    name_vi: "Phương pháp so sánh với đối thủ cùng ngành"
+    name_en: "Peer Comparison Method"
+    origin: "Thực hành so sánh nhóm công ty tương đồng (comparable companies) trong phân tích cổ phiếu; ở đây dùng cho chất lượng, không cho định giá (định giá ở m04)."
+    components:
+      - "Chọn peer: cùng mô hình kinh doanh, quy mô tài sản và doanh thu tương đương, cùng chuẩn kế toán (VAS hay IFRS), cùng loại hợp nhất, 4-8 doanh nghiệp."
+      - "Chỉ tiêu: chọn theo ma trận ngành (m03_sector_lens_matrix)."
+      - "Bảng: doanh nghiệp và peer theo cột; chỉ số theo hàng; kèm trung vị và phân vị (m03_peer_rank)."
+      - "Chuẩn hóa: cùng kỳ, cùng định nghĩa, cùng điều chỉnh bất thường cho mọi peer."
+      - "Nhận định: điểm mạnh yếu tương đối và lý do (không chỉ liệt kê)."
+    when_to_use: "Khi cần biết số liệu của doanh nghiệp là tốt hay xấu so với nhóm."
+    how_to_apply: ["Thu thập dữ liệu peer bằng cùng quy trình nguồn (m03_data_collection)", "Chuẩn hóa từng peer cùng cách", "Tính trung vị và phân vị, ghi nguồn và ngày", "Giải thích lệch lớn bằng mô hình kinh doanh khác nhau, không phải chất lượng"]
+    how_to_read_results: "Xếp trên trung vị ở chất lượng lợi nhuận và dòng tiền quan trọng hơn ở tăng trưởng. Tìm 'lý do' đằng sau khoảng cách."
+    pitfalls: ["Chọn peer thuận lợi (cherry-picking)", "So số hợp nhất với số riêng lẻ", "Dùng dữ liệu khác kỳ báo cáo", "Peer có sự kiện bất thường làm lệch trung vị"]
+    example: "So ROE cốt lõi 18,5 phần trăm của An Phát với trung vị peer (giá trị peer là giả định) cho phân vị 0,67, nhưng CFO/NI thấp hơn trung vị: chất lượng tiền chưa theo kịp."
+  - id: "m03_market_snapshot_protocol"
+    name_vi: "Giao thức ảnh chụp thị trường có ngày"
+    name_en: "Dated Market Snapshot Protocol"
+    origin: "Quy ước kỷ luật dữ liệu của bộ skill: tách số cơ bản (từ BCTC, có kỳ) khỏi số thị trường (có ngày), vì prompt gốc ghi cứng lãi suất và P/E mà các số này hết hạn nhanh."
+    components:
+      - "Khung dữ liệu: giá và khối lượng, vốn hóa, số cổ phiếu lưu hành, P/E TTM, P/B, lợi suất trái phiếu chính phủ 10 năm, tỷ giá, lãi suất tham chiếu ngành, P/E và P/B peer."
+      - "Mỗi số có: nguồn (URL, tên dịch vụ), ngày giờ lấy, đơn vị, ghi chú (đã điều chỉnh chia tách cổ phiếu chưa)."
+      - "Thứ tự nguồn: công bố chính thức (HOSE, HNX, UPCoM, Ngân hàng Nhà nước, Kho bạc, công ty), dịch vụ dữ liệu (CafeF, Vietstock, FiinPro nếu có), yfinance (có thể thiếu hoặc sai với mã .VN, chỉ dùng đối chiếu)."
+      - "Nhãn độ tin cậy: verified (có nguồn chính thức, ngày), unverified (từ một nguồn thứ cấp), illustrative (giả định)."
+    when_to_use: "Trước mọi số liệu thị trường dùng trong báo cáo; bắt buộc khi dùng sang m04, m05."
+    how_to_apply: ["Dùng công cụ web_search hoặc web_fetch để tra cứu lúc chạy", "Lưu vào bảng 'Market snapshot' ở đầu báo cáo", "Nếu không tra cứu được: ghi 'thiếu dữ liệu, cần người dùng cung cấp' và không dùng trí nhớ", "Không chép số từ file prompt gốc hay ví dụ minh họa của module này"]
+    how_to_read_results: "Kết luận được hiểu 'tại thời điểm snapshot'; số quá 1 ngày giao dịch phải ghi rõ độ trễ."
+    pitfalls: ["Dùng lãi suất trái phiếu từ bài viết cũ", "Giá đóng cửa phiên trước tưởng là giá hiện tại", "Quên điều chỉnh khi doanh nghiệp chia thưởng, phát hành thêm"]
+    example: "Bảng snapshot: Giá | Nguồn | Ngày giờ | Ghi chú. Lợi suất TPCP 10 năm | nguồn | ngày. Nếu thiếu dòng nào thì định giá phải ghi giả định thay thế."
+
+procedures:
+  - id: "m03_full_workflow"
+    name: "Quy trình phân tích cơ bản đầy đủ từ đầu đến cuối"
+    steps:
+      - "1. Xác định mục tiêu và phạm vi: mã cổ phiếu, ngành (ngân hàng, sản xuất, bất động sản, bán lẻ, công nghệ), kỳ phân tích, người dùng cần gì (kiểm tra chất lượng hay để định giá)."
+      - "2. Chụp ảnh thị trường có ngày (m03_market_snapshot): giá, vốn hóa, số cổ phiếu, lợi suất TPCP 10 năm, P/E, P/B."
+      - "3. Thu thập BCTC theo m03_data_collection: ít nhất 3 năm và kỳ gần nhất, hợp nhất; ghi nguồn, ngày công bố, trạng thái kiểm toán."
+      - "4. Làm sạch: đối chiếu hai nguồn, kiểm tra cân đối bảng cân đối, kiểm tra khớp tiền giữa lưu chuyển tiền tệ và bảng cân đối."
+      - "5. Chuẩn hóa lợi nhuận (m03_normalize_earnings): cầu nối từ báo cáo sang cốt lõi."
+      - "6. Chất lượng lợi nhuận: CFO/NI 3 năm, dồn tích, ΔNWC, FCF."
+      - "7. Chọn ống kính ngành (m03_sector_lens_matrix) và chạy bộ chỉ số tương ứng (ngân hàng: m03_bank_analysis; còn lại: m03_nonbank_by_sector)."
+      - "8. Kho báu và cục máu đông (m03_hidden_treasure_clots): lập bản đồ sổ - thực."
+      - "9. Cờ đỏ (m03_red_flag_taxonomy): duyệt từng nhóm, ghi bằng chứng."
+      - "10. So sánh đối thủ (m03_peer_comparison_method)."
+      - "11. Chấm điểm scorecard phù hợp (phi tài chính hay ngân hàng), kiểm tra knockout, xếp hạng."
+      - "12. Tổng hợp: điều chỉnh đề xuất cho m04 và m05 (EPS và BVPS chuẩn hóa, vốn chủ điều chỉnh, ROIC, tái đầu tư), điều kiện khiến kết luận thay đổi, danh sách dữ liệu còn thiếu."
+      - "13. Báo cáo theo mẫu: kết luận một câu, bảng ảnh chụp thị trường, bảng lợi nhuận chuẩn hóa, bảng chỉ số cùng peer, scorecard, kho báu và cục máu đông, cờ đỏ, giả định và hạn chế, nhãn độ tin cậy, tuyên bố không phải khuyến nghị đầu tư."
+    outputs: "Báo cáo phân tích cơ bản kèm scorecard và gói điều chỉnh đầu vào cho định giá."
+  - id: "m03_data_collection"
+    name: "Thu thập và đối chiếu BCTC mới nhất"
+    steps:
+      - "1. Tìm báo cáo trên trang quan hệ nhà đầu tư của công ty và hệ thống công bố thông tin của sàn (HOSE, HNX): ưu tiên bản chính thức PDF có kiểm toán/soát xét; ghi tên file, ngày công bố, kỳ và trạng thái kiểm toán."
+      - "2. Tải dữ liệu từ yfinance (financials, balance_sheet, cashflow) cho mã có đuôi .VN chỉ để so khớp nhanh: có thể thiếu năm, thiếu mục, sai đơn vị hoặc lệch kỳ; KHÔNG dùng làm nguồn duy nhất."
+      - "3. Đối chiếu với CafeF, Vietstock hoặc dịch vụ dữ liệu; kiểm tra các mục chính (doanh thu, LNST, tổng tài sản, vốn chủ, CFO) khớp trong sai số làm tròn; nếu lệch: truy về bản PDF gốc."
+      - "4. Dùng web_search để tìm công bố mới nhất, web_fetch để đọc trang nguồn; ghi URL và ngày truy cập."
+      - "5. Chọn hợp nhất; ghi riêng nếu cần so sánh; lưu ý lợi ích cổ đông không kiểm soát."
+      - "6. Ghi đơn vị (đồng, triệu, tỷ) và kỳ (năm, quý, TTM); với TTM, nêu cách ghép quý."
+      - "7. Đọc thuyết minh: thu nhập khác và chi phí khác, đầu tư, hàng tồn kho, phải thu, dự phòng, nợ vay, bên liên quan, sự kiện sau ngày kết thúc kỳ; với ngân hàng thêm phân loại nợ, VAMC, tái cấu trúc, tập trung tín dụng."
+      - "8. Kiểm tra nội bộ: bảng cân đối cân (tài sản = nợ + vốn chủ); tiền cuối kỳ trên lưu chuyển tiền tệ khớp bảng cân đối; lợi nhuận khớp giữa các báo cáo."
+      - "9. Dán nhãn độ tin cậy từng bộ số (verified, unverified, illustrative); số không kiểm chứng được ghi rõ."
+    outputs: "Bảng dữ liệu BCTC 3-5 năm có nguồn, ngày, trạng thái kiểm toán; danh sách sai lệch giữa nguồn."
+  - id: "m03_normalize_earnings"
+    name: "Chuẩn hóa lợi nhuận và đánh giá chất lượng lợi nhuận"
+    steps:
+      - "1. Liệt kê khoản bất thường từ thuyết minh theo m03_earnings_normalization_bridge; phân loại chắc chắn, nghi ngờ, cốt lõi."
+      - "2. Tính LNST cốt lõi hai bản (cơ sở, thận trọng) bằng m03_core_net_income; tính core share."
+      - "3. Tính CFO/NI 1 năm và 3 năm cộng dồn; accruals; ΔNWC; FCF."
+      - "4. Kiểm tra thuế suất thực tế; kiểm tra dự phòng (HTK, phải thu, tín dụng) so với tuổi nợ."
+      - "5. Giải thích chênh lệch lãi và tiền: do ΔNWC, khấu hao, bất thường, CapEx, thuế."
+      - "6. Kết luận: lợi nhuận bền vững hay không, và EPS nào dùng cho m04, m05."
+    outputs: "Bảng cầu nối reported to core, chỉ số chất lượng, kết luận."
+  - id: "m03_bank_analysis"
+    name: "Phân tích ngân hàng theo CAMELS"
+    steps:
+      - "1. Lấy BCTC hợp nhất; thuyết minh phân loại nợ (nhóm 1-5), nợ tái cấu trúc, dự phòng, trái phiếu VAMC, tập trung tín dụng và bên liên quan, cơ cấu cho vay (bất động sản, trái phiếu doanh nghiệp)."
+      - "2. Chất lượng tài sản: NPL, LLR, nợ nhóm 2, NPL điều chỉnh gồm VAMC; stress nợ nhóm 2 chuyển xấu bằng m03_npl_stress_hit."
+      - "3. Vốn: CAR hiện hành so với tối thiểu, vốn cấp 1, kế hoạch tăng vốn; tính đệm."
+      - "4. Thu nhập: NIM, CIR, PPOP, chi phí tín dụng, ROA, ROE (DuPont ngân hàng: ROE = ROA x EM)."
+      - "5. Thanh khoản và nguồn vốn: CASA, LDR thô, phụ thuộc liên ngân hàng."
+      - "6. Chuẩn hóa EPS (m03_normalized_bank_eps) với chi phí tín dụng bình thường; nêu bẫy P/E nếu ngân hàng đang trích lập bất thường."
+      - "7. Chấm điểm scorecard ngân hàng; so peer; kết luận."
+      - "8. Chuyển giao: định giá bằng P/B theo ROE và FCFE hoặc DDM (m04, m05); không dùng FCFF."
+    outputs: "Báo cáo ngân hàng theo C-A-M-E-L-S kèm EPS chuẩn hóa và điểm chất lượng."
+  - id: "m03_nonbank_by_sector"
+    name: "Phân tích doanh nghiệp phi tài chính theo ngành"
+    steps:
+      - "1. Chọn hàng ngành trong m03_sector_lens_matrix."
+      - "2. Sản xuất: tính CCC (m03_ccc), tăng tồn kho và phải thu so doanh thu, ΔNWC, CapEx bảo trì và mở rộng, công suất, biên gộp theo nguyên liệu, nợ ròng/EBITDA, ICR."
+      - "3. Bất động sản: bóc tồn kho dự án, người mua trả trước, quỹ đất, lãi vốn hóa, ICR đúng (m03_icr_total), nợ ròng/vốn chủ, trái phiếu đáo hạn; điều chỉnh kho báu (m03_adj_bvps) và cục máu đông."
+      - "4. Bán lẻ, F&B: tuổi hàng và dự phòng (m03_inventory_provision_gap), doanh thu cửa hàng cũ, nợ thuê (m03_lease_adj_leverage), hoàn vốn cửa hàng, CCC."
+      - "5. Công nghệ, tài sản vô hình: dùng m03_asset_light_tech_lens; không dùng P/B làm trọng tài."
+      - "6. Tính ROIC (m03_roic), tái đầu tư (m03_reinvestment_rate), FCF, Z'' (không cho BĐS)."
+      - "7. Chấm điểm scorecard phi tài chính, so peer."
+    outputs: "Bộ chỉ số theo ngành, ROIC và tái đầu tư để chuyển cho m05."
+  - id: "m03_hidden_treasure_clots"
+    name: "Lập bản đồ kho báu ẩn và cục máu đông"
+    steps:
+      - "1. Lập danh mục tài sản có khả năng lệch sổ - thực: đất, bất động sản, đầu tư tài chính dài hạn, tài sản cố định cũ, tiền dư; và nghĩa vụ ngầm: bảo lãnh, kiện tụng, nợ thuế."
+      - "2. Với mỗi dòng: giá sổ, giá thị trường ước tính, nguồn ước tính, ngày, độ tin cậy."
+      - "3. Kho báu: áp thuế, chi phí, haircut (m03_adj_bvps); ghi thời gian và điều kiện hiện thực hóa."
+      - "4. Cục máu đông: áp dự phòng bổ sung (m03_inventory_provision_gap, m03_npl_stress_hit), chi phí vốn bị kẹt (giá trị x lãi suất vay)."
+      - "5. Tổng hợp vốn chủ điều chỉnh = vốn chủ sổ + kho báu ròng - cục máu đông ròng; tính BVPS điều chỉnh."
+      - "6. Đưa kết quả sang m04, m05 theo bản thận trọng; ghi rõ phần chưa chắc chắn."
+    outputs: "Bảng sổ - thực, vốn chủ và BVPS điều chỉnh."
+  - id: "m03_market_snapshot"
+    name: "Tạo ảnh chụp thị trường có ngày"
+    steps:
+      - "1. Liệt kê số cần cho phân tích; chỉ tra cứu những số thật sự dùng."
+      - "2. Tra cứu bằng web_search hoặc web_fetch tại nguồn ưu tiên (xem m03_market_snapshot_protocol); lưu URL, ngày giờ."
+      - "3. Kiểm tra chéo ít nhất hai nguồn cho số quan trọng (giá, lợi suất TPCP)."
+      - "4. Lập bảng Snapshot với cột Số | Giá trị | Nguồn | Ngày giờ | Độ tin cậy."
+      - "5. Nếu không tra cứu được: ghi thiếu và dừng phần phụ thuộc; không điền số từ trí nhớ."
+    outputs: "Bảng snapshot đặt đầu báo cáo và truyền cho m04, m05, m07."
+
+decision_rules:
+  - "Nếu core share (LNST cốt lõi/báo cáo) dưới 0,7 thì KHÔNG dùng EPS báo cáo làm đầu vào định giá; dùng EPS cốt lõi và nêu rõ khoản điều chỉnh."
+  - "Nếu lãi dương mà CFO âm 3 năm liên tiếp thì áp knockout: xếp hạng tối đa C, yêu cầu giải thích bằng ΔNWC và nguồn tài trợ trước khi định giá."
+  - "Nếu phải thu và tồn kho tăng nhanh hơn doanh thu trên 15 điểm phần trăm thì kiểm tra tuổi hàng, tuổi nợ, dự phòng; tính inventory provision gap trước khi kết luận lợi nhuận."
+  - "Nếu doanh nghiệp là ngân hàng thì dùng bộ chỉ số ngân hàng (NPL, LLR, CAR, NIM, CASA, CIR, chi phí tín dụng) và định giá bằng FCFE hoặc DDM; KHÔNG dùng FCFF, EBITDA, ICR, Z-score."
+  - "Nếu EPS ngân hàng giảm mạnh trong khi PPOP tăng và đệm CAR đủ thì kiểm tra bẫy P/E: chuẩn hóa chi phí tín dụng trước khi kết luận đắt hay rẻ."
+  - "Nếu NPL báo cáo thấp nhưng nợ nhóm 2, nợ tái cấu trúc hoặc VAMC cao thì dùng NPL điều chỉnh và chạy stress; không dựa vào NPL nội bảng."
+  - "Nếu LLR dưới 70 phần trăm và chi phí tín dụng thấp bất thường thì coi ROE hiện tại không bền; tính lại ROE sau trích lập chuẩn."
+  - "Nếu ICR chỉ đẹp khi bỏ lãi vay vốn hóa (bất động sản, hạ tầng) thì dùng ICR gồm lãi vốn hóa và nêu cờ đỏ nếu dưới 2,5."
+  - "Nếu doanh nghiệp thuê dài hạn nhiều (bán lẻ, F&B) thì tính lease-adjusted leverage khi so với đối thủ hoặc IFRS."
+  - "Nếu doanh nghiệp công nghệ hoặc tài sản vô hình thì không dùng P/B làm trọng tài; đọc chất lượng doanh thu, biên gộp, giữ chân khách hàng."
+  - "Nếu kiểm toán ngoại trừ, trái ngược, từ chối hoặc có điều chỉnh hồi tố trọng yếu thì dừng định giá thông thường, báo cáo cờ đỏ và đề nghị làm rõ trước."
+  - "Nếu hai nguồn dữ liệu BCTC lệch nhau trên ngưỡng làm tròn thì truy về PDF chính thức; nếu không truy được thì gắn nhãn unverified và nêu ảnh hưởng đến kết luận."
+  - "Nếu cần số thị trường (giá, lãi suất, P/E) thì tra cứu lúc chạy theo m03_market_snapshot và ghi nguồn, ngày; không dùng số từ ví dụ minh họa hay prompt gốc."
+  - "Nếu kho báu ẩn chiếm trên 30 phần trăm giá trị đề xuất thì áp haircut lớn hơn và yêu cầu đường hiện thực hóa cụ thể; không đưa phần chưa chắc chắn vào kịch bản cơ sở."
+  - "Nếu điểm scorecard dưới 50 hoặc dính knockout thì kết luận chất lượng thấp và khuyến nghị tăng biên an toàn hoặc không định giá bằng mô hình thông thường."
+  - "Nếu peer không cùng mô hình kinh doanh hoặc chuẩn kế toán thì không dùng trung vị chung; tách nhóm hoặc điều chỉnh."
+  - "Nếu doanh nghiệp tăng trưởng nhanh và CFO/NI thấp thì phân biệt ΔNWC hợp lý (doanh thu tăng tương ứng) với ΔNWC xấu (tăng vượt doanh thu), kiểm tra ROIC trên vốn mới."
+
+benchmarks:
+  - {metric: "Core share (LNST cốt lõi/báo cáo)", value: "xanh từ 0,9; vàng 0,7-0,9; đỏ dưới 0,7", context: "Ngưỡng làm việc của module cho scorecard", confidence: "low"}
+  - {metric: "CFO/NI cộng dồn 3 năm", value: "xanh từ 0,9; vàng 0,6-0,9; đỏ dưới 0,6", context: "Doanh nghiệp tăng trưởng nhanh cần đọc cùng ΔNWC", confidence: "low"}
+  - {metric: "Dồn tích (NI-CFO)/tài sản bình quân", value: "xanh dưới 5 phần trăm; đỏ trên 10 phần trăm", context: "Phỏng theo Sloan 1996 (nghiên cứu Mỹ), chưa kiểm chứng cho VN", confidence: "low"}
+  - {metric: "ROIC trừ WACC", value: "xanh trên +3 điểm phần trăm; đỏ âm", context: "WACC lấy từ m05 lúc chạy, không dùng số cố định", confidence: "medium"}
+  - {metric: "Nợ ròng/EBITDA (phi tài chính)", value: "xanh dưới 2; đỏ trên 3,5", context: "Ngành hạ tầng, tiện ích chịu mức cao hơn", confidence: "low"}
+  - {metric: "ICR gồm lãi vốn hóa", value: "xanh từ 5; đỏ dưới 2,5", context: "Bất động sản, hạ tầng chú ý đặc biệt", confidence: "low"}
+  - {metric: "Altman Z'' (thị trường mới nổi)", value: "an toàn trên 2,6; xám 1,1-2,6; nguy hiểm dưới 1,1", context: "Altman 1995; chưa kiểm chứng doanh nghiệp niêm yết VN; không áp cho tài chính", confidence: "low"}
+  - {metric: "NPL ngân hàng", value: "xanh dưới 2 phần trăm; đỏ trên 3 phần trăm", context: "Mức 3 phần trăm thường được nhắc là ngưỡng giám sát; cần xác nhận văn bản hiện hành; luôn so peer", confidence: "low"}
+  - {metric: "LLR ngân hàng", value: "xanh từ 100 phần trăm; đỏ dưới 70 phần trăm", context: "Cần đọc cùng tài sản bảo đảm và nợ nhóm 2", confidence: "low"}
+  - {metric: "CAR tối thiểu theo quy định", value: "thường nhắc 8 phần trăm (Basel II VN)", context: "Cần xác nhận văn bản hiện hành; ngân hàng công bố mức thực", confidence: "medium"}
+  - {metric: "Phân vị peer", value: "từ 0,75 nhóm đầu; dưới 0,25 nhóm cuối", context: "Nhóm peer cùng mô hình; chỉ tiêu càng cao càng tốt", confidence: "medium"}
+  - {metric: "Thuế suất TNDN danh nghĩa", value: "mức hiện hành cần xác nhận khi chạy", context: "Dùng cho điều chỉnh chuẩn hóa; ví dụ trong module dùng 20 phần trăm giả định", confidence: "medium"}
+
+pitfalls:
+  - "Dùng số thị trường cố định trong prompt (lãi suất, EPS, P/E, giá) cho lần phân tích mới thay vì tra cứu snapshot có ngày."
+  - "Tin dữ liệu yfinance cho mã .VN như nguồn duy nhất: có thể thiếu, sai đơn vị hoặc lệch kỳ."
+  - "Dùng EPS, ROE báo cáo chưa chuẩn hóa để nhân P/E; lãi một lần tạo giá trị ảo."
+  - "Chuẩn hóa một chiều (chỉ trừ lãi, giữ lỗ) hoặc coi mọi khoản 'thu nhập khác' là bất thường."
+  - "Đo chất lượng bằng một chỉ số: lãi tăng, ROE cao mà bỏ qua CFO, ΔNWC, đòn bẩy."
+  - "Dùng thước đo sai ngành: EBITDA, FCFF, ICR, Z-score cho ngân hàng; P/B làm trọng tài cho công ty công nghệ."
+  - "Rơi vào bẫy P/E ngân hàng: thấy P/E TTM cao do trích lập mạnh mà không xét PPOP và khả năng hoàn nhập; ngược lại khen ngân hàng trích lập thấp bất thường."
+  - "Chỉ nhìn NPL nội bảng mà quên nợ nhóm 2, tái cấu trúc, VAMC, trái phiếu doanh nghiệp."
+  - "Ghi ICR bỏ lãi vay vốn hóa (bất động sản, hạ tầng) và đánh giá thiếu rủi ro."
+  - "Tin giá thẩm định như giá bán khi tính kho báu; quên thuế, chi phí, thời gian; hoặc chỉ tìm kho báu mà bỏ cục máu đông."
+  - "Cherry-picking peer hoặc so số hợp nhất với số riêng lẻ, khác kỳ, khác chuẩn kế toán."
+  - "Dùng ngưỡng cứng của module như chân lý: chúng là quy ước làm việc cần hiệu chỉnh theo ngành và peer."
+  - "Hiểu điểm scorecard là khuyến nghị mua bán; điểm chỉ đo chất lượng, chưa tính giá."
+  - "Kết luận gian lận khi chỉ có cờ; chỉ báo cáo bất thường kèm bằng chứng và đề xuất kiểm tra."
+  - "Chép số của STB, SHB, Grab, WeWork từ prompt gốc như dữ kiện: đó là ví dụ minh họa (unverified)."
+  - "Quên ghi giả định, nguồn, ngày và nhãn độ tin cậy trong báo cáo."
+
+sme_vn_guidance:
+  - "Nhà đầu tư cá nhân VN nên bắt đầu từ nguồn công bố chính thức: trang quan hệ nhà đầu tư của doanh nghiệp, hệ thống công bố thông tin HOSE/HNX; CafeF và Vietstock dùng để tra nhanh và đối chiếu (có bản miễn phí; gói trả phí cần kiểm tra giá hiện hành)."
+  - "Đọc 4 mục thuyết minh trước: thu nhập khác và chi phí khác, hàng tồn kho (bất động sản dở dang), phải thu và dự phòng, giao dịch bên liên quan; với ngân hàng: nợ theo nhóm, tái cấu trúc, VAMC, tập trung tín dụng."
+  - "Thị trường VN có đặc thù: tỷ trọng nhà đầu tư cá nhân cao, biến động theo tâm lý; BCTC quý chưa kiểm toán; một số doanh nghiệp chậm công bố hoặc bị đưa vào diện cảnh báo (cần xác nhận quy định hiện hành)."
+  - "Doanh nghiệp bất động sản VN: người mua trả trước, trái phiếu doanh nghiệp, pháp lý dự án, lãi vay vốn hóa; luôn tính ICR gồm lãi vốn hóa và kiểm tra trái phiếu đáo hạn trong 12-24 tháng."
+  - "Ngân hàng VN: chú ý nợ nhóm 2, nợ tái cấu trúc theo các thông tư hỗ trợ (cần xác nhận văn bản hiện hành), trái phiếu doanh nghiệp bất động sản, tỷ lệ cho vay bên liên quan, CAR theo Basel II và nguồn vốn cấp 2."
+  - "Ưu đãi thuế, thuế suất thực tế và thay đổi chuẩn kế toán (IFRS) cần xác nhận khi chạy; không giả định thuế suất cố định cho mọi doanh nghiệp."
+  - "Khi dùng yfinance cho mã VN (ví dụ đuôi .VN): kiểm tra đủ năm, đúng đơn vị và đúng kỳ; nếu thiếu, tìm bản PDF chính thức; ghi rõ nguồn cho người dùng."
+  - "Kỷ luật quản trị rủi ro cá nhân: chỉ đầu tư theo kết luận của scorecard C trở lên khi đã nâng biên an toàn; đa dạng hóa; không vay margin dựa vào một kết luận định tính (xem m07)."
+  - "Disclaimer: module này phục vụ học tập và phân tích, không phải tư vấn đầu tư cá nhân hóa; người dùng tự chịu trách nhiệm quyết định."
+
+case_lessons:
+  - name: "Bẫy P/E của ngân hàng trích lập mạnh (dựa trên ví dụ trong prompt gốc, nhắc STB)"
+    type: "sme"
+    setup: "Prompt gốc nêu một ngân hàng (STB) nửa đầu năm 2026 đẩy trích lập dự phòng lên gấp hơn 6 lần để dọn sạch nợ xấu nội bảng, làm LNST và EPS sụt, P/E TTM cao. Số liệu cụ thể chưa kiểm chứng, chỉ dùng làm bài học logic."
+    key_calculations:
+      - "Ví dụ giả định NH Phương Nam: PPOP tăng 11,8 phần trăm (6.600 lên 7.380) nhưng EPS giảm 15,9 phần trăm (2.320 xuống 1.952) vì chi phí dự phòng tăng từ 800 lên 2.500."
+      - "EPS chuẩn hóa với chi phí tín dụng 1,0 phần trăm = 2.192, cao hơn EPS báo cáo 12,3 phần trăm."
+    lesson: "P/E TTM của ngân hàng đang trích lập bất thường đánh lừa; phải xem PPOP, tính EPS chuẩn hóa, và kiểm tra liệu việc dọn nợ xấu đã xong và dự phòng có hoàn nhập được không."
+    data_reliability: "unverified"
+  - name: "P/B là trọng tài cho ngân hàng nhưng vô nghĩa với asset-light (dựa trên ví dụ SHB và Grab trong prompt gốc)"
+    type: "sme"
+    setup: "Prompt gốc nêu P/B là chỉ số then chốt cho ngân hàng (tài sản là tiền thật và khoản vay có thanh khoản) nhưng vô nghĩa cho công ty công nghệ asset-light như Grab (giá trị nằm ở hiệu ứng mạng lưới). Dữ kiện cụ thể từng công ty chưa kiểm chứng."
+    key_calculations:
+      - "Với ngân hàng: P/B hợp lý liên hệ ROE, tăng trưởng và chi phí vốn (xem m04); chỉ đáng tin sau khi điều chỉnh nợ xấu và dự phòng (m03)."
+      - "Với công ty công nghệ: vốn chủ thấp vì R&D, marketing bị tính vào chi phí nên P/B cao không nói về đắt rẻ."
+    lesson: "Chọn thước đo theo bản chất tài sản trước khi định giá."
+    data_reliability: "unverified"
+  - name: "Garbage In, Garbage Out (WeWork - dựa trên prompt gốc)"
+    type: "failure"
+    setup: "Prompt gốc nhắc WeWork như ví dụ vẽ kịch bản tăng trưởng 30-50 phần trăm kéo dài nhiều năm. Số liệu cụ thể không kiểm chứng trong module này."
+    key_calculations:
+      - "Chất lượng đầu vào quyết định chất lượng đầu ra: EBITDA điều chỉnh bỏ SBC, tăng trưởng không có cơ sở, nợ thuê ngoài bảng đều là điểm kiểm tra của scorecard."
+    lesson: "Mọi giả định tăng trưởng phải gắn với ROIC và tái đầu tư (m03_reinvestment_rate); không chấp nhận số đẹp không có chuỗi nhân quả."
+    data_reliability: "unverified"
+  - name: "Cơ khí An Phát - lãi đẹp nhờ bán đất cho bên liên quan"
+    type: "sme"
+    setup: "Doanh nghiệp sản xuất giả định, LNST báo cáo 11.040 triệu nhưng 26 phần trăm là lãi thanh lý đất và CFO chỉ 5.540."
+    key_calculations:
+      - "LNST cốt lõi 8.160 (73,9 phần trăm); CFO/NI 0,50; FCF -3.460; ΔNWC +6.500; ROIC 14,5 phần trăm."
+    lesson: "ROE báo cáo 25,1 phần trăm thổi phồng so với ROE cốt lõi 18,5 phần trăm; tăng trưởng tài trợ bằng vay ngắn hạn và phải thu; cần chuẩn hóa trước định giá."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Ví dụ 1 - Cơ khí An Phát: chuẩn hóa lợi nhuận, chất lượng tiền, ROIC và scorecard phi tài chính (giả định minh họa, BS cân)"
+    inputs:
+      units: "triệu VNĐ"
+      data_reliability: "illustrative"
+      tax_rate: 0.2
+      income_statement_N: {revenue: 120000, cogs: 96000, sga: 12000, financial_income: 600, interest_expense: 2400, gain_on_land_sale_to_related_party: 4000, other_one_off_penalty: 400}
+      revenue_N_1: 100000
+      cogs_N_1: 78500
+      balance_sheet_N_1: {cash: 6000, ar: 14000, inventory: 16000, other_current: 1000, ppe: 40000, intangibles: 3000, ap: 10000, short_debt: 12000, other_current_liab: 3000, long_debt: 15000, share_capital: 30000, retained_earnings: 10000}
+      balance_sheet_N: {cash: 7040, ar: 18000, inventory: 21000, other_current: 1000, ppe: 43500, intangibles: 3000, ap: 12000, short_debt: 17000, other_current_liab: 3500, long_debt: 13000, share_capital: 30000, retained_earnings: 18040}
+      cash_flow_items_N: {depreciation: 5000, capex: 9000, land_sale_proceeds: 4500, land_book_value: 500, dividends: 3000}
+      assumption_wacc: "11 phần trăm (giả định minh họa; thực tế lấy từ m05 theo ảnh chụp thị trường có ngày)"
+    steps:
+      - "KQKD năm N: LN gộp = 120.000 - 96.000 = 24.000; EBIT cốt lõi = 24.000 - 12.000 = 12.000; EBT = 12.000 + 600 - 2.400 + 4.000 - 400 = 13.800; thuế 20 phần trăm = 2.760; LNST = 11.040."
+      - "BS cân: Năm N-1 tài sản 6.000 + 14.000 + 16.000 + 1.000 + 40.000 + 3.000 = 80.000 = nợ 40.000 + vốn chủ 40.000. Năm N tài sản 7.040 + 18.000 + 21.000 + 1.000 + 43.500 + 3.000 = 93.540 = nợ 45.500 + vốn chủ 48.040 (LNCPP = 10.000 + 11.040 - 3.000 = 18.040)."
+      - "LCTT năm N: CFO = 11.040 + 5.000 - 4.000 (loại lãi thanh lý) - 4.000 (phải thu) - 5.000 (tồn kho) + 2.000 (phải trả) + 500 (nợ NH khác) = 5.540; CFI = -9.000 + 4.500 = -4.500; CFF = +5.000 - 2.000 - 3.000 = 0; thay đổi tiền = +1.040; 6.000 + 1.040 = 7.040 khớp bảng cân đối."
+      - "Chuẩn hóa: LNST cốt lõi = (13.800 - 4.000 + 400) x 0,8 = 8.160; core share = 8.160/11.040 = 73,9 phần trăm (cờ vàng). Lãi 4.000 là bán đất cho bên liên quan: thêm cờ quản trị."
+      - "Chất lượng tiền: CFO/NI = 5.540/11.040 = 0,50 (một năm; cần cộng dồn 3 năm); accruals = (11.040 - 5.540)/86.770 = 6,3 phần trăm; ΔNWC = 24.500 - 18.000 = +6.500; FCF = 5.540 - 9.000 = -3.460."
+      - "Tăng trưởng vốn lưu động so với doanh thu: doanh thu +20 phần trăm; phải thu +28,6 phần trăm; tồn kho +31,3 phần trăm (vượt 8,6-11,3 điểm: cờ vàng). CCC = 70,3 + 48,7 - 41,8 = 77,2 ngày."
+      - "ROE cốt lõi = 8.160/44.020 = 18,5 phần trăm (báo cáo 25,1 phần trăm); DuPont cốt lõi: biên 6,8 phần trăm x vòng quay 1,383 x EM 1,971."
+      - "ROIC: NOPAT = 12.000 x 0,8 = 9.600; IC bình quân = (61.000 + 71.000)/2 = 66.000; ROIC = 14,5 phần trăm; trừ WACC giả định 11 phần trăm = +3,5 điểm (xanh)."
+      - "Đòn bẩy: nợ ròng/EBITDA = 22.960/17.000 = 1,35; ICR = 12.000/2.400 = 5,0; Z'' = 3,62 (an toàn). Tái đầu tư = (9.000 - 5.000 + 6.500)/9.600 = 109 phần trăm (cần vay thêm: vay ngắn hạn +5.000)."
+      - "Scorecard (12 tiêu chí): EQ1 0,5 x 10 = 5; EQ2 0 (0,50 dưới 0,6); EQ3 0,5 x 5 = 2,5; PR1 1 x 10 = 10; PR2 0,5 x 5 = 2,5 (biên gộp giảm từ 21,5 xuống 20,0, giảm 1,5 điểm); BS1 10; BS2 10 (ICR đúng 5,0); BS3 5; WC1 0,5 x 10 = 5; AQ1 0,5 x 10 = 5 (giả định 8 phần trăm tồn kho trên 12 tháng); GV1 0,5 x 10 = 5 (bên liên quan); FCF1 0. Tổng = 60 điểm."
+      - "Knockout: không (kiểm toán chấp nhận toàn phần giả định, ICR trên 1, CFO dương một năm). Xếp hạng C (50-65)."
+    result: "Hạng C (60 điểm). Lợi nhuận bền vững khoảng 8.160 (EPS cốt lõi thấp hơn 26 phần trăm so với báo cáo); chuyển EPS cốt lõi, ROIC 14,5 phần trăm, tái đầu tư 109 phần trăm sang m04 và m05; kiểm tra thêm giao dịch bán đất với bên liên quan và kế hoạch kiểm soát vốn lưu động. Mọi tính toán verify bằng Python ngày thực hiện."
+  - name: "Ví dụ 2 - Ngân hàng giả định NH Phương Nam: CAMELS, bẫy P/E và stress nợ nhóm 2 (tỷ VNĐ)"
+    inputs:
+      units: "tỷ VNĐ"
+      data_reliability: "illustrative"
+      tax_rate: 0.2
+      income: {nii: 9180, non_interest_income: 2500, opex: 4300, provision_expense: 2500, ppop_prior_year: 6600, provision_expense_prior_year: 800}
+      balances: {loans_gross: 200000, loan_reserves: 3400, investment_securities: 55000, interbank_and_cash: 20000, vamc_bonds_gross: 3000, vamc_reserves: 1500, other_assets: 6900, customer_deposits: 210000, interbank_borrowings_and_papers: 47000, equity: 23000}
+      credit_quality: {npl: 4000, group2: 5000}
+      capital: {tier1: 22000, tier2: 3000, rwa: 230000, min_car_assumption: 0.08}
+      averages: {avg_interest_earning_assets: 255000, avg_loans: 190000, avg_assets: 275000, avg_equity: 22000}
+      funding: {casa_deposits: 63000}
+      shares_million: 2000
+      price_for_illustration: 24000
+    steps:
+      - "BS cân: tài sản = 200.000 - 3.400 + 55.000 + 20.000 + (3.000 - 1.500) + 6.900 = 280.000; nguồn vốn = 210.000 + 47.000 + 23.000 = 280.000."
+      - "Thu nhập: tổng thu nhập = 9.180 + 2.500 = 11.680; PPOP = 11.680 - 4.300 = 7.380; EBT = 7.380 - 2.500 = 4.880; LNST = 4.880 x 0,8 = 3.904. Cổ tức tiền mặt 1.904 nên vốn chủ 21.000 + 3.904 - 1.904 = 23.000."
+      - "Hiệu quả: NIM = 9.180/255.000 = 3,60 phần trăm; CIR = 4.300/11.680 = 36,8 phần trăm; chi phí tín dụng = 2.500/190.000 = 1,32 phần trăm; ROA = 3.904/275.000 = 1,42 phần trăm; ROE = 3.904/22.000 = 17,7 phần trăm; EM = 12,5."
+      - "Chất lượng tài sản: NPL = 4.000/200.000 = 2,0 phần trăm; LLR = 3.400/4.000 = 85 phần trăm; nợ nhóm 2 = 2,5 phần trăm; NPL điều chỉnh gồm VAMC = 7.000/203.000 = 3,45 phần trăm; LLR điều chỉnh = (3.400 + 1.500)/7.000 = 70 phần trăm."
+      - "Stress: 30 phần trăm nợ nhóm 2 chuyển xấu: NPL = 5.500 (2,75 phần trăm), LLR 61,8 phần trăm; để bao phủ 100 phần trăm cần thêm 2.100 trước thuế, sau thuế 1.680 = 43,0 phần trăm lợi nhuận năm."
+      - "Vốn và thanh khoản: CAR = 25.000/230.000 = 10,87 phần trăm (đệm 2,87 điểm trên 8 phần trăm giả định); CASA = 63.000/210.000 = 30 phần trăm; LDR thô = 95,2 phần trăm."
+      - "Bẫy P/E: EPS năm N = 3.904 x 1000/2.000 = 1.952 đồng; năm trước LNST = (6.600 - 800) x 0,8 = 4.640, EPS 2.320 (giảm 15,9 phần trăm) dù PPOP tăng 11,8 phần trăm. Chuẩn hóa chi phí tín dụng 1,0 phần trăm = 1.900: LNST = (7.380 - 1.900) x 0,8 = 4.384; EPS chuẩn hóa = 2.192."
+      - "Minh họa với giá giả định 24.000 đồng (không phải giá thị trường): P/E TTM = 12,3; P/E chuẩn hóa = 10,9; BVPS = 23.000 x 1000/2.000 = 11.500; P/B = 2,09. Thực tế giá lấy từ snapshot."
+      - "Scorecard ngân hàng: B1 vàng (NPL 2,0 phần trăm thuộc 2-3) = 6; B2 vàng (85 phần trăm) = 6; B3 vàng (3,45 phần trăm nợ xấu cộng VAMC, chưa tính nợ nhóm 2 và tái cấu trúc) = 5; B4 vàng (đệm 2,87) = 6; B5-B11 chấm theo peer lúc chạy. Kết luận minh họa: chất lượng tài sản trung bình, đệm vốn mỏng, lợi nhuận bị che bởi trích lập."
+    result: "NPL 2,0 phần trăm nhưng NPL điều chỉnh 3,45 phần trăm và stress ăn 43 phần trăm lợi nhuận: chất lượng tài sản không tốt như bề ngoài. EPS chuẩn hóa 2.192 đồng hơn báo cáo 12,3 phần trăm, minh họa bẫy P/E. Định giá chuyển sang m04 (P/B theo ROE) và m05 (FCFE hoặc DDM, không FCFF)."
+  - name: "Ví dụ 3 - Thời trang Gia Hân (bán lẻ giả định): tồn kho phình to, thiếu dự phòng, nợ thuê (BS cân)"
+    inputs:
+      units: "triệu VNĐ"
+      data_reliability: "illustrative"
+      tax_rate: 0.2
+      revenue: {N_1: 160000, N: 200000}
+      cogs: {N_1: 104000, N: 130000}
+      operating_expenses_N: {total_opex_incl_rent_and_depreciation: 50000, store_rent: 24000, depreciation: 6000, interest: 3000}
+      balance_sheet_N_1: {cash: 12000, ar: 3000, inventory: 30000, other_current: 2000, ppe: 25000, store_deposits: 4000, ap: 18000, short_debt: 10000, other_current_liab: 6000, long_debt: 8000, share_capital: 20000, retained_earnings: 14000}
+      balance_sheet_N: {cash: 8600, ar: 4000, inventory: 52000, other_current: 3000, ppe: 33000, store_deposits: 5000, ap: 24000, short_debt: 22000, other_current_liab: 8000, long_debt: 8000, share_capital: 20000, retained_earnings: 23600}
+      cash_flow_N: {capex: 14000, deposits_paid: 1000, dividends: 4000}
+      inventory_aging: {aged_over_12_months: 9000, booked_provision: 500, required_pct_assumption: 0.5}
+      lease_pv_assumption: 36000
+    steps:
+      - "KQKD: EBIT = 200.000 - 130.000 - 50.000 = 20.000; EBT = 20.000 - 3.000 = 17.000; LNST = 13.600; biên gộp 35 phần trăm cả hai năm."
+      - "BS cân N-1: tài sản 12.000 + 3.000 + 30.000 + 2.000 + 25.000 + 4.000 = 76.000 = nợ 42.000 + vốn chủ 34.000. N: 8.600 + 4.000 + 52.000 + 3.000 + 33.000 + 5.000 = 105.600 = nợ 62.000 + vốn chủ 43.600."
+      - "LCTT N: CFO = 13.600 + 6.000 - 1.000 (phải thu) - 22.000 (tồn kho) - 1.000 (trả trước) + 6.000 (phải trả) + 2.000 (nợ khác) = 3.600; CFI = -14.000 - 1.000 = -15.000; CFF = +12.000 - 4.000 = +8.000; tiền giảm 3.400 (12.000 xuống 8.600) khớp."
+      - "Tăng trưởng không cân xứng: doanh thu +25 phần trăm, giá vốn +25 phần trăm nhưng tồn kho +73,3 phần trăm; DIO cuối kỳ 105,3 lên 146,0 ngày; CFO/NI = 3.600/13.600 = 0,26; FCF = 3.600 - 14.000 = -10.400, tài trợ bằng vay ngắn hạn +12.000."
+      - "CCC (bình quân) = DIO 115,1 + DSO 6,4 - DPO 59,0 = 62,5 ngày."
+      - "Gap dự phòng: 9.000 x 0,5 - 500 = 4.000; LNST điều chỉnh = 13.600 - 4.000 x 0,8 = 10.400; biên ròng từ 6,8 xuống 5,2 phần trăm; gap bằng 23,5 phần trăm EBT (4.000/17.000)."
+      - "Nợ thuê: nợ vay có lãi = 30.000; EBITDA = 26.000; EBITDAR = 50.000; (30.000 + 36.000)/50.000 = 1,32 lần so với nợ ròng/EBITDA thuần (30.000 - 8.600)/26.000 = 0,82. ICR thuần = 20.000/3.000 = 6,7 nhưng ICR điều chỉnh thuê = (20.000 + 24.000)/(3.000 + 24.000) = 1,63 nếu coi tiền thuê là chi phí cố định."
+      - "Kết luận: lợi nhuận bị thổi phồng do thiếu dự phòng; tăng trưởng cửa hàng mới tài trợ bằng vay ngắn hạn và tồn kho; cần kiểm tra doanh thu cửa hàng cũ, tuổi hàng, kế hoạch xả hàng và gia hạn vay."
+    result: "Cờ đỏ: tồn kho +73 phần trăm so với giá vốn +25 phần trăm, CFO/NI 0,26, gap dự phòng 4.000 (23,5 phần trăm EBT), đòn bẩy điều chỉnh thuê 1,32 lần và ICR điều chỉnh thuê 1,63 lần; dùng EPS đã trừ gap cho m04 và nâng biên an toàn."
+  - name: "Ví dụ 4 - Địa ốc Sông Hương (bất động sản giả định): kho báu quỹ đất, cục máu đông tồn kho, ICR đúng (tỷ VNĐ, BS cân)"
+    inputs:
+      units: "tỷ VNĐ"
+      data_reliability: "illustrative"
+      tax_rate: 0.2
+      balance_sheet: {cash: 300, ar: 400, inventory_projects: 6000, other_current: 100, ppe: 500, associates: 700, customer_advances: 1200, ap: 500, short_debt: 900, other_current_liab: 300, long_debt: 2200, equity: 2900}
+      income: {ebit: 300, interest_expensed: 100, interest_capitalized: 250}
+      land_bank: {book_value: 2500, appraised_value_assumption: 4500, haircut_assumption: 0.3}
+      slow_inventory: {completed_unsold_over_24_months: 1200, borrowing_rate_assumption: 0.09}
+      shares_million: 200
+    steps:
+      - "BS cân: tài sản = 300 + 400 + 6.000 + 100 + 500 + 700 = 8.000; nợ = 1.200 + 500 + 900 + 300 + 2.200 = 5.100; vốn chủ 2.900; tổng nguồn vốn 8.000."
+      - "ICR: chỉ lãi ghi chi phí = 300/100 = 3,0; ICR đúng = 300/(100 + 250) = 0,86 (dưới 1: EBIT không đủ trả toàn bộ lãi). LNST = (300 - 100) x 0,8 = 160, nhưng lãi vốn hóa 250 sẽ chảy vào giá vốn khi bàn giao."
+      - "Đòn bẩy: nợ ròng = 900 + 2.200 - 300 = 2.800; nợ ròng/vốn chủ = 0,97; nếu tính cả tiền người mua trả trước là nghĩa vụ giao nhà = (2.800 + 1.200)/2.900 = 1,38."
+      - "Cục máu đông: tồn kho thành phẩm bán chậm trên 24 tháng = 1.200 (20 phần trăm tồn kho); chi phí vốn kẹt khoảng 1.200 x 9 phần trăm = 108 mỗi năm (36 phần trăm EBIT 300 và 67,5 phần trăm LNST 160)."
+      - "Kho báu: quỹ đất sổ 2.500, ước tính 4.500 (giả định thẩm định): chênh 2.000; sau thuế 20 phần trăm = 1.600; haircut 30 phần trăm = 1.120; vốn chủ điều chỉnh = 2.900 + 1.120 = 4.020; BVPS sổ = 2.900 x 1000/200 = 14.500 đồng; BVPS điều chỉnh thận trọng = 20.100; trần không haircut = 22.500."
+      - "Kết hợp: kho báu ròng 1.120 trừ ước tính dự phòng cục máu đông (giả định giảm giá 10 phần trăm cho 1.200 tồn kho bán chậm = 120, sau thuế 96) cho vốn chủ điều chỉnh 4.020 - 96 = 3.924; BVPS ≈ 19.620 đồng."
+    result: "Kho báu quỹ đất tăng BVPS thận trọng thêm 38,6 phần trăm so với sổ nhưng ICR đúng 0,86 và nợ ròng/vốn chủ gồm tiền trả trước 1,38 cảnh báo rủi ro thanh khoản: giá trị hiện thực hóa phụ thuộc thời gian bán và dòng tiền trả lãi. Hạng quản trị rủi ro cao; chuyển BVPS 19.620 làm bản thận trọng cho m04 và RNAV cho m05."
+  - name: "Ví dụ 5 - Quy trình đối chiếu dữ liệu BCTC giữa các nguồn (giả định minh họa)"
+    inputs:
+      data_reliability: "illustrative"
+      source_a_yfinance: {net_income_vnd: 10500000000, total_assets_vnd: 93000000000, period: "năm N"}
+      source_b_company_pdf: {net_income_vnd: 11040000000, total_assets_vnd: 93540000000, period: "năm N", audit_status: "đã kiểm toán", scope: "hợp nhất"}
+      tolerance: 0.005
+    steps:
+      - "Chênh lệch lợi nhuận: |10.500 - 11.040|/11.040 = 4,9 phần trăm (vượt sai số làm tròn 0,5 phần trăm); chênh tổng tài sản: 540/93.540 = 0,58 phần trăm (cũng vượt)."
+      - "Nguyên nhân có thể: yfinance lấy số riêng lẻ hoặc bản chưa điều chỉnh sau kiểm toán; hoặc lấy kỳ khác (TTM thay vì năm)."
+      - "Quy tắc: tin PDF chính thức đã kiểm toán, hợp nhất; ghi nguồn tên file, ngày công bố; dán nhãn yfinance là unverified."
+      - "Ghi vào báo cáo: 'Số liệu lấy từ BCTC hợp nhất có kiểm toán, công bố ngày [ngày]; yfinance lệch 4,9 phần trăm nên không dùng'."
+    result: "Chỉ dùng nguồn chính thức; yfinance chỉ để phát hiện sai khác. Số nghi ngờ nằm ngoài sai số làm tròn đều phải truy về PDF."
+
+practice_questions:
+  - q: "Doanh nghiệp báo lãi sau thuế 12.000 triệu trong đó có lãi thanh lý bất động sản 5.000 (trước thuế) và chi phí phạt 500 (trước thuế), thuế 20 phần trăm. EBT = 15.000. Tính LNST cốt lõi và core share."
+    a: "EBT cốt lõi = 15.000 - 5.000 + 500 = 10.500; LNST cốt lõi = 8.400; reported = 12.000 (EBT 15.000 x 0,8); core share = 8.400/12.000 = 0,70 (vùng vàng sát đỏ)."
+  - q: "NI = 8.000, CFO = 3.000, tài sản đầu kỳ 70.000, cuối kỳ 90.000. Tính CFO/NI và accruals. Nhận định?"
+    a: "CFO/NI = 0,375 (dưới 0,6: đỏ nếu kéo dài); accruals = 5.000/80.000 = 6,25 phần trăm (vàng). Cần xem ΔNWC và lý do (tăng trưởng thật hay phải thu khó đòi)."
+  - q: "Ngân hàng: dư nợ 100.000, nợ xấu 2.500, dự phòng 2.000, nợ nhóm 2 là 4.000, VAMC 1.500 (dự phòng riêng 600). Tính NPL, LLR, NPL điều chỉnh và LLR điều chỉnh."
+    a: "NPL = 2,5 phần trăm; LLR = 80 phần trăm; NPL điều chỉnh = (2.500 + 1.500)/101.500 = 3,94 phần trăm; LLR điều chỉnh = (2.000 + 600)/4.000 = 65 phần trăm. Chất lượng tài sản thấp hơn bề ngoài."
+  - q: "Cùng ngân hàng trên, 25 phần trăm nợ nhóm 2 chuyển xấu, thuế 20 phần trăm, LNST 1.200. Tác động lên lợi nhuận?"
+    a: "NPL mới = 2.500 + 1.000 = 3.500; thiếu = 3.500 - 2.000 = 1.500; sau thuế 1.200; chia 1.200 = 100 phần trăm lợi nhuận một năm. Ngân hàng cực mong manh."
+  - q: "PPOP 5.000, dư nợ bình quân 80.000, chi phí tín dụng bình thường 1,2 phần trăm, thuế 20 phần trăm, 1.000 triệu cổ phiếu. Tính EPS chuẩn hóa."
+    a: "Dự phòng chuẩn = 960; LNST = (5.000 - 960) x 0,8 = 3.232; EPS = 3.232 x 1000/1.000 = 3.232 đồng."
+  - q: "EBIT 500, lãi ghi chi phí 150, lãi vốn hóa 250 (bất động sản). Tính ICR có và không có lãi vốn hóa. Kết luận?"
+    a: "Không gồm vốn hóa 3,33; gồm vốn hóa 500/400 = 1,25 (đỏ, dưới 2,5). Tính ICR đúng và cảnh báo."
+  - q: "Quỹ đất sổ 1.000 tỷ, ước tính 2.000 tỷ, thuế 20 phần trăm, haircut 25 phần trăm, vốn chủ 3.000 tỷ, 150 triệu cổ phiếu. Tính BVPS điều chỉnh."
+    a: "Chênh 1.000 x 0,8 x 0,75 = 600; vốn chủ điều chỉnh 3.600; BVPS = 3.600 x 1000/150 = 24.000 đồng (sổ 20.000)."
+  - q: "Vì sao không dùng FCFF cho ngân hàng và không dùng ICR, EBITDA để chấm ngân hàng?"
+    a: "Nợ vay (tiền gửi) là nguyên liệu kinh doanh chứ không phải nguồn vốn tài trợ nên FCFF và EBITDA không phản ánh dòng tiền cho cổ đông; dòng tiền thực cho cổ đông là sau khi trừ phần giữ lại để trích lập và duy trì CAR (FCFE hoặc DDM). Chi phí lãi là chi phí vốn của hoạt động chứ không phải chi phí tài chính tùy chọn."
+  - q: "Công ty phần mềm có P/B rất cao. Có nên kết luận đắt?"
+    a: "Chưa. R&D, marketing bị tính vào chi phí nên vốn chủ thấp, tài sản vô hình không có trên sổ; P/B vô nghĩa làm trọng tài. Kiểm tra ROIC sau điều chỉnh, giữ chân khách hàng, biên gộp, hiệu ứng mạng lưới, SBC và dùng mô hình P/S hoặc DCF thận trọng (m04, m05)."
+  - q: "Agent cần lãi suất trái phiếu chính phủ 10 năm và P/E của mã VNM để định giá. Nên lấy từ đâu?"
+    a: "Tra cứu lúc chạy bằng web_search hoặc web_fetch từ nguồn chính thức (Kho bạc, HNX, Ngân hàng Nhà nước, sàn niêm yết) và dịch vụ dữ liệu đối chiếu; ghi nguồn và ngày giờ trong bảng ảnh chụp thị trường. Không lấy số từ prompt gốc hay từ ví dụ minh họa."
+  - q: "Hãy chỉ ra 5 cờ đỏ nhìn từ BCTC của một doanh nghiệp bất động sản."
+    a: "(1) ICR đúng dưới 1 khi gồm lãi vốn hóa; (2) tồn kho dự án tăng liên tục, thành phẩm bán chậm; (3) người mua trả trước dùng để trả nợ; (4) trái phiếu doanh nghiệp đáo hạn dày trong 12-24 tháng; (5) giao dịch bên liên quan lớn, lãi do bán đất cho bên liên quan hoặc đánh giá lại."
+
+checklist:
+  - "Đã xác định mục tiêu, ngành và kỳ phân tích; chọn ống kính ngành (ngân hàng hay phi tài chính)?"
+  - "Đã chụp ảnh thị trường có ngày với nguồn cho từng số (giá, lợi suất TPCP 10 năm, P/E, P/B)? Không dùng số từ prompt gốc hay ví dụ?"
+  - "Đã thu thập BCTC hợp nhất mới nhất từ nguồn chính thức; ghi tên file, ngày công bố, trạng thái kiểm toán/soát xét?"
+  - "Đã đối chiếu yfinance (nếu dùng) với nguồn chính thức, nêu sai lệch và nhãn độ tin cậy?"
+  - "Bảng cân đối có cân; tiền trên lưu chuyển tiền tệ khớp bảng cân đối; đơn vị và kỳ nhất quán?"
+  - "Đã đọc thuyết minh về thu nhập và chi phí khác, tồn kho, phải thu, dự phòng, đầu tư, bên liên quan, vay nợ (ngân hàng thêm: nhóm nợ, VAMC, tái cấu trúc, tập trung tín dụng)?"
+  - "Đã lập cầu nối reported to core hai chiều và tính core share, EPS cốt lõi?"
+  - "Đã tính CFO/NI 3 năm, accruals, ΔNWC, FCF và giải thích chênh lệch lãi - tiền?"
+  - "Ngân hàng: đã tính NPL, LLR, NPL điều chỉnh gồm VAMC và nợ nhóm 2, CAR, NIM, CIR, PPOP, chi phí tín dụng, ROA, ROE, CASA, LDR và stress; chuẩn hóa EPS; không dùng FCFF?"
+  - "Phi tài chính: đã tính CCC, ΔNWC, CapEx, ROIC, nợ ròng/EBITDA, ICR gồm lãi vốn hóa, Z'' (nếu hợp lệ), tái đầu tư?"
+  - "Đã lập bản đồ kho báu và cục máu đông với nguồn, thuế, haircut, thời gian?"
+  - "Đã duyệt danh mục cờ đỏ và kiểm tra knockout?"
+  - "Đã so với peer cùng mô hình, cùng chuẩn kế toán, cùng kỳ; có trung vị và phân vị?"
+  - "Đã chấm scorecard đúng loại, ghi thiếu dữ liệu, xếp hạng và nêu 3 điểm mạnh, 3 điểm yếu?"
+  - "Đã chuyển giao điều chỉnh cho m04, m05 (EPS, BVPS, ROIC, tái đầu tư) và nêu giả định, hạn chế?"
+  - "Mọi phép tính đã chạy lại bằng Python; mọi con số đều có nguồn hoặc nhãn illustrative/unverified?"
+  - "Có tuyên bố đây không phải tư vấn đầu tư cá nhân hóa?"
+
+excel_google_sheets_templates:
+  - "Sheet 'Snapshot': cột Số | Giá trị | Nguồn | Ngày giờ | Độ tin cậy; dùng GOOGLEFINANCE hoặc nhập tay từ nguồn chính thức (với mã VN cần kiểm tra độ phủ)."
+  - "Sheet 'BCTC 3-5 năm': hàng mã số VAS, cột năm; có hàng kiểm tra cân đối (tài sản - nợ - vốn chủ = 0) và khớp tiền."
+  - "Sheet 'Normalize': bảng cầu nối reported to core, cột nguồn thuyết minh; ô core share có định dạng màu xanh vàng đỏ theo ngưỡng."
+  - "Sheet 'Quality': CFO/NI, accruals, ΔNWC, FCF, CCC, ROIC, ICR, nợ ròng/EBITDA, Z''; định dạng có điều kiện."
+  - "Sheet 'Bank': NPL, LLR, NPL điều chỉnh, CAR, NIM, CIR, PPOP, chi phí tín dụng, ROA, ROE, CASA, LDR, stress; EPS chuẩn hóa."
+  - "Sheet 'Treasure and Clots': dòng tài sản, sổ, thị trường ước tính, nguồn, thuế, haircut, kết quả ròng, BVPS điều chỉnh."
+  - "Sheet 'Peers': doanh nghiệp theo cột, chỉ tiêu theo hàng, trung vị (MEDIAN) và phân vị (PERCENTRANK.INC)."
+  - "Sheet 'Scorecard': 12 hoặc 11 tiêu chí, trọng số, điểm 0/0,5/1, tổng bằng SUMPRODUCT, xếp hạng bằng IFS, ô knockout."
+
+source_file: "stock-analysist/prompt-dinh-gia-doanh-nghiep.md (Phần 1 mục 1, Phần 2 lưu ý); tham chiếu chéo: finance-agent-skill m05-financial-statement-analysis.yaml, accounting-agent-skill m06-financial-ratios.yaml, m01-financial-accounting.yaml"

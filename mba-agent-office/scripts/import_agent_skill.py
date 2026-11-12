@@ -11,7 +11,7 @@ Vì sao phải chuyển đổi: bộ gốc rất lớn (~1 MB YAML mỗi bộ) �
                               chỉ tra cứu (khoá `when` không bao giờ khớp): agent gọi công cụ `skill_search`.
 Mọi khoá/mục của bộ gốc đều thành một "section" tra cứu được (không bỏ sót). Bộ gốc vẫn là nguồn chính: sửa ở đó rồi chạy lại script này.
 
-Chạy:  python3 scripts/import_agent_skill.py <finance|marketing|strategy|accounting> [thư_mục_bộ_skill]   (cần pyyaml; SKILL_OUT=<thư mục> để ghi nơi khác)
+Chạy:  python3 scripts/import_agent_skill.py <finance|marketing|strategy|accounting|investor> [thư_mục_bộ_skill]   (cần pyyaml; SKILL_OUT=<thư mục> để ghi nơi khác)
 """
 import json, os, re, sys, unicodedata, glob
 import yaml
@@ -20,7 +20,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.environ.get('SKILL_OUT') or os.path.join(HERE, '..', 'skills')
 
 DOMAINS = {
-    'finance': dict(agent='financial_expert', extra_agents=('stock_analyst', 'accountant'), prefix='finance', label='Tài chính', src=('3-financial-management', 'finance-agent-skill'),
+    'finance': dict(agent='financial_expert', extra_agents=('investor', 'accountant'), prefix='finance', label='Tài chính', src=('3-financial-management', 'finance-agent-skill'),
                     title='Chuyên gia tài chính doanh nghiệp — vai trò, quy tắc, định tuyến', field='tài chính doanh nghiệp', unit='công thức',
                     ex_formula='m03_wacc', ex_play='pb_wacc', ex_terms='"WACC", "chi phí vốn chủ"', ex_kw='"ví dụ NPV", "lỗi thường gặp WACC"', pack='finance-agent-skill', short_kw='NPV, IRR, EPS'),
     'marketing': dict(agent='marketing_expert', prefix='marketing', label='Marketing', src=('2-marketing-management', 'marketing-agent-skill'),
@@ -32,10 +32,13 @@ DOMAINS = {
     'accounting': dict(agent='accountant', extra_agents=(), prefix='accounting', label='Kế toán', src=('4-accounting', 'accounting-agent-skill'),
                        title='Chuyên gia kế toán — vai trò, quy tắc, định tuyến', field='kế toán', unit='công thức/bút toán',
                        ex_formula='m03_abc_costing', ex_play='pb_variance_analysis', ex_terms='"khấu hao", "giá thành"', ex_kw='"ví dụ định khoản", "lỗi thường gặp khấu hao"', pack='accounting-agent-skill', short_kw='COGS, EBITDA'),
+    'investor': dict(agent='investor', extra_agents=(), prefix='investor', label='Đầu tư', base='.', src=('stock-analysist', 'investor-agent-skill'),
+                     title='Investor — vai trò, quy tắc, định tuyến', field='đầu tư, định giá và phân tích cổ phiếu', unit='công thức',
+                     ex_formula='m05_dcf', ex_play='pb_company_valuation', ex_terms='"DCF", "Value Area"', ex_kw='"ví dụ DCF", "lỗi thường gặp định giá"', pack='investor-agent-skill', short_kw='WACC, FCFF, P/E'),
 }
 DOM_NAME = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] in DOMAINS else 'finance'
 D = DOMAINS[DOM_NAME]
-DEFAULT_SRC = os.path.join(HERE, '..', '..', 'mba-quan-tri-doanh-nghiep', *D['src'])
+DEFAULT_SRC = os.path.join(HERE, '..', '..', D.get('base', 'mba-quan-tri-doanh-nghiep'), *D['src'])
 _args = [a for a in sys.argv[1:] if a not in DOMAINS]
 SRC = os.path.abspath(_args[0] if _args else DEFAULT_SRC)
 AGENT = D['agent']
@@ -173,7 +176,7 @@ core_sections = [
     section('pham-vi', 'Phạm vi và giới hạn', 'Trong phạm vi: ' + clip(render((profile.get('scope') or {}).get('in_scope', '')).replace('\n', ' '), 330) + '\nNgoài phạm vi: ' + clip(render((profile.get('scope') or {}).get('out_of_scope', '')).replace('\n', ' '), 330), ['phạm', 'vi', 'giới', 'hạn']),
 ]
 # phần còn lại của hồ sơ (tra cứu được, không nạp prompt vì nằm sau mốc cắt)
-for key, label in (('scope', 'Phạm vi'), ('response_style', 'Phong cách trả lời'), ('disclaimers', 'Tuyên bố miễn trừ'), ('known_data_caveats', 'Lưu ý dữ liệu'), ('principles', 'Nguyên tắc (đầy đủ)'),
+for key, label in (('report_rules', 'Quy tắc lập báo cáo'), ('scope', 'Phạm vi'), ('response_style', 'Phong cách trả lời'), ('disclaimers', 'Tuyên bố miễn trừ'), ('known_data_caveats', 'Lưu ý dữ liệu'), ('principles', 'Nguyên tắc (đầy đủ)'),
                    ('calculation_discipline', 'Kỷ luật tính toán (đầy đủ)'), ('workflow', 'Quy trình (đầy đủ)'), ('confidence_labels', 'Nhãn độ tin cậy (đầy đủ)')):
     if profile.get(key):
         core_sections.append(section(f'hs-{key}', f'Hồ sơ agent — {label}', profile[key], tags_of(label)))

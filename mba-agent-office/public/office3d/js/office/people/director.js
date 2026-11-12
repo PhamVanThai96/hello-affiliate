@@ -124,6 +124,6 @@ export function setup() {
     }
     reset() { for (const n of deskNotes.values()) n.m.removeFromParent(); deskNotes.clear(); this.queue = []; this.job = null; this.chore = null; this.after = null; this.paper.visible = false; this.hush(); this.path = []; this.phase = 'idle'; this.pos.set(DIR_HOME.x, DIR_HOME.z); this.spot = DIR_HOME; this.face = this.faceTarget = 0; this.pose = 'sit'; this.station = 'home'; this.anim = 'type'; }
   };
-  director = PRO ? new Director() : null;
+  director = null;   // Agent Office: CEO (người dùng) là một nhân vật thật ngồi ghế giám đốc, không dùng NPC giám đốc
   if (director) npcs.push(director);
 }

@@ -121,7 +121,7 @@ playbooks:
       - "DuPont: tách ROE thành biên lợi nhuận, vòng quay tài sản, đòn bẩy tài chính"
       - "So sánh xu hướng nhiều kỳ và benchmark ngành (ghi độ tin cậy)"
       - "Xác định điểm mạnh, điểm yếu, nguyên nhân gốc"
-      - "Khuyến nghị theo mức ưu tiên; chuyển financial_expert hoặc stock_analyst nếu cần định giá"
+      - "Khuyến nghị theo mức ưu tiên; chuyển financial_expert hoặc investor nếu cần định giá"
     sanity: [công thức dùng số bình quân hay cuối kỳ nhất quán, ROE DuPont bằng ROE trực tiếp, chia cho mẫu số khác 0]
     output: "Báo cáo chẩn đoán (rpt_ratio_diagnosis) + bảng ưu tiên hành động"
 
@@ -152,3 +152,17 @@ playbooks:
       - "Tổng hợp theo lộ trình ưu tiên 30-60-90 ngày; chuyển financial_expert nếu cần định giá/gọi vốn"
     sanity: [các báo cáo khớp nhau, giả định nhất quán giữa các bước, số liệu giả định được gắn nhãn]
     output: "Báo cáo tổng hợp (rpt_integrated_review)"
+
+  pb_valuation_data_pack:
+    goal: Lập gói số liệu BCTC đã kiểm làm đầu vào cho định giá của #investor (không định giá)
+    steps:
+      - Lấy BCTC hợp nhất mới nhất (kỳ, ngày công bố, kiểm toán/soát xét hay chưa); ghi nguồn và ngày từng số
+      - Số cổ phiếu: lưu hành, bình quân gia quyền, cổ phiếu quỹ; nêu chênh lệch giữa nguồn
+      - Nợ vay ngắn/dài hạn, tiền và tương đương và đầu tư ngắn hạn, nợ ròng; vốn chủ sở hữu công ty mẹ và lợi ích cổ đông thiểu số
+      - Tỷ lệ sở hữu các công ty con/liên kết (hiệu lực từ ngày nào) và giá trị sổ sách khoản đầu tư
+      - Lợi nhuận cốt lõi so với bất thường; LNST cổ đông mẹ; loại FCF (trước hay sau lãi vay, sau CapEx)
+      - Cảnh báo chất lượng lợi nhuận và bất thường tồn kho/phải thu/nợ xấu
+    sanity:
+      - Mỗi dòng có nguồn, ngày, nhãn đã kiểm hoặc chưa kiểm; thiếu số thì ghi chưa có
+      - Tài sản = Nợ phải trả + Vốn chủ; nợ ròng khớp nợ vay trừ tiền
+    output: Bảng Gói số liệu BCTC đã kiểm (một bảng) và danh sách số còn thiếu

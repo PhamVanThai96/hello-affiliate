@@ -1,7 +1,7 @@
 id: finance-playbooks
 title: "Tài chính — playbook (quy trình giải quyết từng loại vấn đề)"
 summary: "Các playbook pb_* theo bộ định tuyến."
-agents: ["financial_expert", "stock_analyst", "accountant"]
+agents: ["financial_expert", "investor", "accountant"]
 order: 60
 when: ["__chi_tra_cuu_bang_skill_search__"]
 sections:
@@ -300,3 +300,21 @@ sections:
       - Rủi ro: stress test, VaR/Monte Carlo nếu cần
       - Giá trị doanh nghiệp tác động (pb_valuation)
       output: Báo cáo tích hợp theo mẫu rpt_integrated
+  - id: "pb-pb_valuation_crosscheck"
+    title: "Playbook pb_valuation_crosscheck — Kiểm tra chéo độc lập một định giá cổ phiếu/doanh nghiệp niêm yết do"
+    tags: ["pb_valuation_crosscheck", "kiểm", "tra", "chéo", "độc", "lập", "một", "định", "giá", "cổ", "phiếu", "doanh"]
+    text: |-
+      goal: Kiểm tra chéo độc lập một định giá cổ phiếu/doanh nghiệp niêm yết do
+      modules:
+      - m03
+      - m10
+      steps:
+      - Lấy giả định và kết quả của
+      - Tính lại bằng python giá trị chính và bảng độ nhạy; so sánh sai lệch với bản gốc
+      - Kiểm tra cặp chiết khấu (FCFF-WACC, FCFE/DDM-Re), g không vượt Rf, tỷ trọng PV(TV)
+      - Kiểm tra cầu nối EV sang vốn chủ - nợ ròng, thiểu số theo từng công ty con, tài sản liên kết, số cổ phiếu (lưu hành vs pha loãng), không tính hai lần
+      - Đối chiếu Rf, ERP, beta và giá thị trường với nguồn tra lúc chạy
+      sanity:
+      - Chênh lệch giữa kết quả của bạn và
+      - Không đưa khuyến nghị mua/bán/giữ
+      output: Bảng so sánh (bản gốc vs tính lại) kèm nguyên nhân chênh lệch và các điểm cần

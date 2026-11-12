@@ -71,7 +71,13 @@ LOG="$(mktemp -t mba-office)"
 bold "Đang khởi động server…"
 "$NODE" server.js > >(tee "$LOG") 2>&1 &
 PID=$!
-trap 'kill "$PID" 2>/dev/null; rm -f "$LOG"; exit 0' INT TERM HUP
+stop_server() {   # Ctrl+C / đóng cửa sổ: dừng gọn server (tối đa ~3 giây), nếu còn sống thì buộc dừng
+  kill "$PID" 2>/dev/null
+  for _ in 1 2 3 4 5 6; do kill -0 "$PID" 2>/dev/null || break; sleep 0.5; done
+  kill -9 "$PID" 2>/dev/null
+  rm -f "$LOG"; exit 0
+}
+trap stop_server INT TERM HUP
 URL=""
 for _ in $(seq 1 60); do
   URL="$(grep -o 'http://localhost:[0-9]*' "$LOG" 2>/dev/null | head -1)"

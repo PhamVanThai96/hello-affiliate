@@ -34,7 +34,7 @@ Lưu ý:
 
 ## Sử dụng
 1. Nhập yêu cầu vào ô "Ra lệnh cho Quản Lí…" rồi bấm **Giao**. Agent Quản Lí lập kế hoạch, chia task cho các agent; các agent bàn giao/hỏi đáp lẫn nhau và báo cáo về Quản Lí. Quản Lí gửi báo cáo cuối cho CEO ở khung "Báo cáo gửi CEO".
-2. Muốn giao thẳng cho một agent, thêm `/id` đầu câu, ví dụ `/strategist đặt lịch hẹn 10h sáng mai` (id mặc định: manager, strategist, reviewer, rag, analyst, financial_expert, designer, marketing_expert, stock_analyst, accountant).
+2. Muốn giao thẳng cho một agent, thêm `/id` đầu câu, ví dụ `/strategist đặt lịch hẹn 10h sáng mai` (id mặc định: manager, strategist, reviewer, rag, analyst, financial_expert, designer, marketing_expert, investor, accountant).
 3. Quan sát đường nối giữa các agent để biết ai đang nói chuyện với ai; xem chú giải màu ở đầu trang và chi tiết ở [docs/SOCIAL-COLLAB-LOOP.md](docs/SOCIAL-COLLAB-LOOP.md). Mỗi lần chỉ chạy một yêu cầu.
 
 **Lưu ý:** phải mở trang do `npm start` phục vụ (kể cả qua proxy cổng của code-server). Mở file `index.html` trực tiếp hoặc bằng server tĩnh khác (Live Server, `python -m http.server`) sẽ báo "Unsupported method POST" và văn phòng trống.

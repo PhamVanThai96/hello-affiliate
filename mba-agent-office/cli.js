@@ -1,4 +1,5 @@
 import { spawn, spawnSync } from 'node:child_process';
+import { trackChild } from './lifecycle.js';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -76,7 +77,7 @@ export function authStatus(provider, cmd) {
     const executable = resolveCommand(cmd);
     if (!executable) { resolve(false); return; }
     let done = false;
-    const child = spawn(executable, args, { env: childEnv(), stdio: ['ignore', 'ignore', 'ignore'], shell: WIN });
+    const child = trackChild(spawn(executable, args, { env: childEnv(), stdio: ['ignore', 'ignore', 'ignore'], shell: WIN }));
     const finish = (ok) => { if (done) return; done = true; clearTimeout(timer); resolve(ok); };
     const timer = setTimeout(() => { child.kill(); finish(false); }, 15000);
     child.on('error', () => finish(false));
@@ -96,7 +97,7 @@ export function loginStart(provider, cmd) {
   const executable = resolveCommand(cmd);
   if (!executable) throw new Error(`Không tìm thấy CLI "${cmd}".`);
   const args = provider === 'gpt' ? ['login'] : ['auth', 'login'];
-  const child = spawn(executable, args, { env: childEnv(), stdio: ['pipe', 'pipe', 'pipe'], shell: WIN });
+  const child = trackChild(spawn(executable, args, { env: childEnv(), stdio: ['pipe', 'pipe', 'pipe'], shell: WIN }));
   const s = login = { provider, state: 'running', url: '', child };
   const onData = (d) => {
     if (s.url) return;
@@ -186,7 +187,7 @@ function run({ provider, cmd, model, system, prompt, agentId }) {
   const stdin = provider === 'claude' ? prompt : `${system}\n\n${prompt}`;
   const args = buildArgs(provider, model, sysFile).map(quote);
   return new Promise((resolve, reject) => {
-    const child = spawn(WIN ? quote(executable) : executable, args, { cwd: dir, shell: WIN, env: childEnv() });
+    const child = trackChild(spawn(WIN ? quote(executable) : executable, args, { cwd: dir, shell: WIN, env: childEnv() }));
     let out = '', err = '', done = false;
     const finish = (fn, v) => {
       if (done) return;

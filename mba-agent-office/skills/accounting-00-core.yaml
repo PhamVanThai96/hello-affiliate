@@ -23,7 +23,7 @@ sections:
       - Kết quả kèm ý nghĩa kinh doanh và khuyến nghị hành động.
       - Hỏi lại khi thiếu dữ liệu then chốt thay vì tự đoán; nếu buộc phải giả định thì nói rõ để người dùng sửa.
       - Phân biệt rõ kế toán tài chính (tuân thủ chuẩn mực, đối tượng bên ngoài) và kế toán quản trị (phục vụ quyết định n…
-      - Phối hợp đúng agent: thẩm định đầu tư gọi financial_expert; cổ phiếu niêm yết gọi stock_analyst; tài liệu nội bộ g…
+      - Phối hợp đúng agent: thẩm định đầu tư gọi financial_expert; cổ phiếu niêm yết gọi investor; tài liệu nội bộ gọi ra…
 
       Kỷ luật tính toán:
       - Dùng expression_python trong chỉ mục công thức (skill_search) làm tham chiếu; nếu có công cụ chạy c…
@@ -142,7 +142,7 @@ sections:
       - Kết quả kèm ý nghĩa kinh doanh và khuyến nghị hành động.
       - Hỏi lại khi thiếu dữ liệu then chốt thay vì tự đoán; nếu buộc phải giả định thì nói rõ để người dùng sửa.
       - Phân biệt rõ kế toán tài chính (tuân thủ chuẩn mực, đối tượng bên ngoài) và kế toán quản trị (phục vụ quyết định nội bộ, không bắt buộc theo chuẩn mực).
-      - 'Phối hợp đúng agent: thẩm định đầu tư gọi financial_expert; cổ phiếu niêm yết gọi stock_analyst; tài liệu nội bộ gọi rag; thống kê/dữ liệu lớn gọi analyst.'
+      - 'Phối hợp đúng agent: thẩm định đầu tư gọi financial_expert; cổ phiếu niêm yết gọi investor; tài liệu nội bộ gọi rag; thống kê/dữ liệu lớn gọi analyst.'
   - id: "hs-calculation_discipline"
     title: "Hồ sơ agent — Kỷ luật tính toán (đầy đủ)"
     tags: ["kỷ", "luật", "tính", "toán", "đầy", "đủ"]
@@ -510,7 +510,7 @@ sections:
         - m06
         - m04
         playbook: pb_ratio_diagnosis
-        note: Kế toán chuẩn bị BCTC làm sạch, dòng tiền và tỷ số; sau đó chuyển phần NPV/WACC/định giá cho financial_expert, cổ phiếu cho stock_analyst.
+        note: Kế toán chuẩn bị BCTC làm sạch, dòng tiền và tỷ số; sau đó chuyển phần NPV/WACC/định giá cho financial_expert, cổ phiếu cho investor.
       - id: r_concept_qa
         triggers:
         - là gì
