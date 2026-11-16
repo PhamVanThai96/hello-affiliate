@@ -72,6 +72,23 @@ sections:
       - Biểu đồ — chèn bằng ![Biểu đồ <MÃ>](<chart_path>), không in đường dẫn
       - Cảnh báo ràng buộc VN (không bán khống, biên độ, T+2)
       - Disclaimer từ trường disclaimer của JSON
+  - id: "tpl-rpt_valuation_matrix"
+    title: "Mẫu báo cáo rpt_valuation_matrix — Ma trận định giá (một bảng, VNĐ/cổ phiếu)"
+    tags: ["rpt_valuation_matrix", "ma", "trận", "định", "giá", "một", "bảng", "vnđ", "cổ", "phiếu", "mẫu", "báo"]
+    text: |-
+      title: Ma trận định giá (một bảng, VNĐ/cổ phiếu)
+      tables:
+      - name: Ma trận định giá
+        columns:
+        - Phương pháp
+        - Chỉ số nền
+        - Hệ số hoặc giả định chính
+        - Giá thấp
+        - Giá cơ sở
+        - Giá cao
+        - So với thị giá (%)
+        - Độ tin cậy
+        rows_hint: P/E; P/B; DCF (FCFF-WACC hoặc FCFE/DDM-Re); SOTP (holding); Thị giá hiện tại; Khoảng tham chiếu (giao các phương pháp đã kiểm)
   - id: "tpl-rpt_company_valuation"
     title: "Mẫu báo cáo rpt_company_valuation — Báo cáo phân tích và định giá doanh nghiệp (4 phần)"
     tags: ["rpt_company_valuation", "báo", "cáo", "phân", "tích", "và", "định", "giá", "doanh", "nghiệp", "phần", "mẫu"]

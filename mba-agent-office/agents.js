@@ -217,8 +217,8 @@ const words = (t) => Math.round((t * 0.45) / 10) * 10;
 const style = () => CONFIG.detail === 'brief'
   ? { work: 'phần văn bản tối đa 3 câu, không lặp lại đề bài.', sum: 'tối đa 5 câu.' }
   : {
-      work: 'có cấu trúc bằng markdown (### tiêu đề, danh sách), không lặp lại đề bài: đưa kết quả/sản phẩm chính trước; sau đó chỉ nêu căn cứ, giả định, rủi ro bằng gạch đầu dòng ngắn và bước tiếp theo nếu có, không giải thích dài dòng cách làm. Việc đơn giản thì chỉ đủ ý, không độn chữ.',
-      sum: 'mở đầu bằng "### Kết luận" (2-3 câu trả lời thẳng vào yêu cầu), sau đó "### Diễn giải" giải thích đầy đủ lý do, căn cứ và cách các agent đi đến kết quả (có thể dùng danh sách), rồi "### Lưu ý & bước tiếp theo". Với yêu cầu đơn giản thì viết ngắn hơn.',
+      work: 'có cấu trúc bằng markdown (### tiêu đề, danh sách), không lặp lại đề bài: đưa kết quả/sản phẩm chính trước; sau đó chỉ nêu căn cứ, giả định, rủi ro bằng gạch đầu dòng ngắn (ưu tiên bảng, không đoạn văn diễn giải, không giải thích ý nghĩa từng con số, không kể cách làm). Việc đơn giản thì chỉ đủ ý, không độn chữ.',
+      sum: 'chỉ gồm "### Kết luận" (2-3 câu trả lời thẳng vào yêu cầu, kèm con số chính) và, nếu có, "### Lưu ý & bước tiếp theo" (tối đa 3 gạch đầu dòng: task chưa xong, số chưa kiểm chứng, việc cần CEO làm). KHÔNG có mục "Diễn giải", không kể lại quá trình các agent làm, không nhắc lại số liệu đã nằm trong bảng/chi tiết của báo cáo.',
     };
 const DATA_RULES = 'Báo cáo tự dựng từ câu trả lời của bạn: số liệu từ 2 mục trở lên → bảng markdown; từ 3 giá trị cần so sánh/xu hướng/tỷ trọng → thêm biểu đồ bằng khối ```chart {"type":"bar|line|pie","title":"…","labels":["…"],"series":[{"name":"…","data":[số]}],"unit":"…"} ```. Bảng/biểu đồ không tính vào giới hạn số câu. Chỉ dùng số liệu thật (từ yêu cầu, đồng nghiệp, công cụ); không có thì không bịa để vẽ.';
 

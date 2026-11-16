@@ -41,11 +41,95 @@
         "sotp",
         "gia tri noi tai",
         "dinh gia masan",
-        "gia hop ly co phieu"
+        "gia hop ly co phieu",
+        "phan tich ki thuat",
+        "ki thuat"
       ],
       "steps": [
+        [
+          {
+            "agent": "accountant",
+            "when": [
+              "dinh gia",
+              "dcf",
+              "sotp",
+              "gia tri noi tai",
+              "bao cao tai chinh",
+              "bctc",
+              "tham dinh",
+              "chat luong loi nhuan",
+              "phan tich co ban"
+            ],
+            "title": "Kế toán: chuẩn bị gói số liệu BCTC đã kiểm (nợ ròng, số cổ phiếu, vốn chủ mẹ/thiểu số, tỷ lệ sở hữu, lợi nhuận cốt lõi, loại dòng tiền) cho: {c}"
+          },
+          {
+            "agent": "investor",
+            "when": [
+              "ky thuat",
+              "bieu do",
+              "kenh gia",
+              "kenh xu huong",
+              "value area",
+              "volume profile",
+              "tpo",
+              "poc",
+              "vah",
+              "val",
+              "xu huong gia",
+              "duong ma",
+              "mo hinh nen",
+              "ki thuat",
+              "phan tich ki thuat",
+              "chart",
+              "do thi"
+            ],
+            "title": "Phân tích KỸ THUẬT (chạy stock_cli, biểu đồ TPO + Volume Profile; chỉ phần kỹ thuật) cho: {c}"
+          },
+          {
+            "agent": "investor",
+            "when": [
+              "phan tich",
+              "co phieu",
+              "chung khoan",
+              "ma ck",
+              "danh gia",
+              "danh muc",
+              "hose",
+              "hnx",
+              "upcom"
+            ],
+            "unless": [
+              "dinh gia",
+              "dcf",
+              "sotp",
+              "gia tri noi tai",
+              "bao cao tai chinh",
+              "bctc",
+              "tham dinh",
+              "chat luong loi nhuan",
+              "phan tich co ban",
+              "ky thuat",
+              "bieu do",
+              "kenh gia",
+              "kenh xu huong",
+              "value area",
+              "volume profile",
+              "tpo",
+              "poc",
+              "vah",
+              "val",
+              "xu huong gia",
+              "duong ma",
+              "mo hinh nen",
+              "ki thuat",
+              "chart",
+              "do thi"
+            ],
+            "title": "Phân tích chứng khoán: {c}"
+          }
+        ],
         {
-          "agent": "accountant",
+          "agent": "investor",
           "when": [
             "dinh gia",
             "dcf",
@@ -54,11 +138,11 @@
             "bao cao tai chinh",
             "bctc",
             "tham dinh",
-            "chat luong loi nhuan"
+            "chat luong loi nhuan",
+            "phan tich co ban"
           ],
-          "title": "Kế toán: chuẩn bị gói số liệu BCTC đã kiểm (nợ ròng, số cổ phiếu, vốn chủ mẹ/thiểu số, tỷ lệ sở hữu, lợi nhuận cốt lõi, loại dòng tiền) cho: {c}"
+          "title": "ĐỊNH GIÁ doanh nghiệp (chỉ phần định giá: ma trận định giá nhiều phương pháp; dùng gói số liệu của #accountant, phần kỹ thuật đã do bước khác làm) cho: {c}"
         },
-        "investor",
         {
           "agent": "financial_expert",
           "when": [
@@ -68,9 +152,15 @@
             "gia tri noi tai",
             "wacc"
           ],
-          "title": "Tài chính: kiểm tra chéo độc lập định giá của #investor (tính lại, đối chiếu giả định, giải thích chênh lệch) cho: {c}"
+          "title": "Tài chính: kiểm tra chéo độc lập định giá của #investor (tính lại, bảng chênh lệch) cho: {c}"
         },
-        "reviewer"
+        {
+          "agent": "reviewer",
+          "after": [
+            "investor",
+            "financial_expert"
+          ]
+        }
       ],
       "titles": {
         "investor": "Phân tích chứng khoán: {c}",

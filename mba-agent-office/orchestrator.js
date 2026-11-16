@@ -108,14 +108,20 @@ export function createOrchestrator({ emit, state }) {
           listDir: async (p) => { think(a.id, `Xem thư mục ${p}`); const r = await raw.listDir(p); think(a.id, r.error ? `Không xem được: ${r.error}` : `Thấy ${r.entries.length} mục`); return r; },
         };
         try {
-          const text = await work(a, {
-            command, task: t, inputs, memory, attachments, feedback: extra.feedback, round: extra.round || 0,
+          const bad = (x) => /^\s*(<invoke\b|\{\s*"tool"\s*:)/.test(String(x)) || String(x).trim() === 'Không hoàn tất được sau nhiều bước.' || !String(x).trim();
+          const attempt = (cmd) => work(a, {
+            command: cmd, task: t, inputs, memory, attachments, feedback: extra.feedback, round: extra.round || 0,
             think: (x) => think(a.id, x), isLast: !tasks.some((o) => o.dependsOn?.includes(t.id)),
             tools,
             ask: (to, q) => consult(a, to, q, command),
           });
-          // Đầu ra chỉ là lệnh gọi công cụ chưa chạy / báo hết bước: không phải kết quả, đừng để bước sau và bước duyệt xử lý như đã xong.
-          if (/^\s*(<invoke\b|\{\s*"tool"\s*:)/.test(String(text)) || String(text).trim() === 'Không hoàn tất được sau nhiều bước.') throw new Error('Agent chưa trả được kết quả (chỉ có lệnh gọi công cụ hoặc hết bước).');
+          let text = await attempt(command);
+          // Đầu ra chỉ là lệnh gọi công cụ chưa chạy / báo hết bước / rỗng (model đôi khi lỗi ngẫu nhiên): thử lại một lần có nhắc rõ, rồi mới báo lỗi.
+          if (bad(text)) {
+            think(a.id, 'Kết quả chưa hợp lệ (chỉ có lệnh công cụ hoặc rỗng), thử lại một lần');
+            text = await attempt(`${command}\n[Hệ thống] Lần trước bạn chỉ trả về lệnh gọi công cụ chưa thực thi. Lần này hãy gọi công cụ thật (functionCall), đọc kết quả rồi TRẢ LỜI cuối cùng bằng văn bản/bảng; không viết lệnh gọi công cụ thành văn bản.`);
+          }
+          if (bad(text)) throw new Error('Agent chưa trả được kết quả (chỉ có lệnh gọi công cụ, hết bước hoặc rỗng) sau 2 lần thử.');
           think(a.id, 'Hoàn thành, gửi báo cáo cho Quản Lí ✓', text);
           setStatus(a.id, 'idle', text);
           msg(a.id, CEO, 'report', short(text, 140));

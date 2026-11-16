@@ -167,6 +167,12 @@ Team Effectiveness = (Individual Skills × Synergy) + Leadership + Environment +
           Time ────────────────────────────────────────────────────────────────────▶
 ```
 
+**Tại sao Tuckman ra đời & dùng để làm gì?**
+- **Bối cảnh**: Năm 1965, Tuckman (nhà tâm lý học, Hải quân Mỹ) tổng hợp ~50 nghiên cứu về nhóm nhỏ (nhóm trị liệu, nhóm huấn luyện, nhóm thí nghiệm) và nhận thấy chúng đi qua cùng một chuỗi: Forming, Storming, Norming, Performing. Năm 1977, Tuckman & Jensen bổ sung giai đoạn thứ 5 là Adjourning sau khi rà soát thêm các nghiên cứu.
+- **Vấn đề giải quyết**: Nhà quản lý mới thường hoảng khi nhóm bắt đầu cãi nhau ở tuần thứ 3-4 và tưởng là "tuyển sai người". Tuckman cho thấy xung đột giai đoạn đầu là **bình thường và cần thiết**, vì nhóm phải "đo" ranh giới quyền lực và cách làm việc trước khi đạt hiệu suất cao.
+- **Logic**: Mỗi giai đoạn cần một kiểu lãnh đạo khác nhau (chỉ đạo, huấn luyện, hỗ trợ, ủy quyền). Dùng sai kiểu lãnh đạo cho sai giai đoạn (ví dụ ủy quyền hoàn toàn khi nhóm đang Forming) là nguyên nhân phổ biến khiến nhóm kẹt.
+- **Giới hạn**: Mô hình mô tả xu hướng, không phải quy luật bắt buộc; nhóm có thể nhảy lùi (nhân sự mới vào làm nhóm quay lại Forming/Storming) và thời lượng mỗi giai đoạn ở sơ đồ trên chỉ là **ước lượng minh họa**.
+
 ### Giai đoạn 1: FORMING (Hình thành)
 
 **Đặc điểm chung:**
@@ -589,6 +595,8 @@ NEXT STEPS (Chuyển Acquired team)
 
 **Quan trọng**: Một người có thể đóng 1-3 role khác nhau tùy tình huống.
 
+**Tại sao Belbin ra đời?** Belbin (Henley Management College, Anh) quan sát hàng trăm nhóm quản lý trong trò chơi mô phỏng và thấy một nghịch lý: nhóm gồm toàn người thông minh nhất ("Apollo team") lại thường **thua** các nhóm khác, vì mọi người cùng tranh cãi ý tưởng mà không ai thực thi, hoặc cùng giống nhau nên bỏ sót điểm yếu. Ông kết luận hiệu suất nhóm phụ thuộc vào **sự cân bằng hành vi đóng góp (team role)**, không chỉ năng lực chuyên môn. Ban đầu có 8 vai trò (1981); vai trò thứ 9 là Specialist được bổ sung sau (cuối thập niên 1980). Vì vậy Belbin giúp trả lời câu hỏi tuyển dụng/ghép nhóm: "Nhóm này đang **thiếu** hành vi nào?" thay vì "Ai giỏi nhất?". Lưu ý: bộ trắc nghiệm Belbin là công cụ thương mại, độ giá trị khoa học còn tranh luận, nên dùng làm **ngôn ngữ chung để thảo luận**, không dùng để dán nhãn cố định.
+
 ```
               BELBIN'S 9 TEAM ROLES
               ═══════════════════════════════════
@@ -975,7 +983,9 @@ NEXT STEPS (Chuyển Acquired team)
 
 ### Giới thiệu
 
-**Patrick Lencioni (2002)** trong sách "The Five Dysfunctions of a Team" đề xuất rằng **team không hiệu quả do 5 vấn đề cơ bản**, liên tiếp theo thứ tự:
+**Patrick Lencioni (2002)** trong sách "The Five Dysfunctions of a Team" đề xuất rằng **team không hiệu quả do 5 vấn đề cơ bản**, liên tiếp theo thứ tự.
+
+**Tại sao Lencioni dùng "kim tự tháp"?** Lencioni là tư vấn quản trị, trình bày mô hình dưới dạng truyện ngụ ngôn kinh doanh dựa trên kinh nghiệm tư vấn (đây là **mô hình thực hành, không phải kết quả nghiên cứu định lượng**). Logic nhân quả: nếu không tin nhau (1) thì không dám tranh luận thẳng thắn (2); không tranh luận thẳng thắn thì quyết định chỉ được "gật đầu giả" chứ không cam kết thật (3); không cam kết rõ ràng thì không có chuẩn để đồng đội nhắc nhở nhau (4); không ai nhắc nhau thì mỗi người quay sang ưu tiên lợi ích cá nhân thay vì kết quả chung (5). Vì vậy **sửa từ đáy lên**, sửa tầng trên mà tầng dưới còn hỏng chỉ là chữa triệu chứng.
 
 ```
           LENCIONI'S 5 DYSFUNCTIONS
@@ -1463,7 +1473,10 @@ Result: Team aligned, proud, understand why work matter
 
 ### Giới thiệu
 
-**Google (2012-2015)** conducted research (crunched data on 180 Google teams):
+**Google (2012-2015)** conducted research (crunched data on 180 Google teams; thông tin công khai qua bài báo The New York Times 2016 và re:Work của Google):
+
+> **Lưu ý**: Google xếp Psychological Safety là yếu tố **quan trọng nhất** trong 5 yếu tố. Con số "50% impact" ở tiêu đề mục 1 phía dưới chỉ là **cách nói minh họa**, không phải tỷ lệ phần trăm do Google công bố.
+
 - Q: What make team effective?
 - A: Not who (seniority, talent), but HOW (dynamics)
 
@@ -1693,7 +1706,7 @@ Average > 4/5 = High psychological safety
 
 ## VII. GRPI MODEL (Goals, Roles, Processes, Interpersonal)
 
-**Rudy Beckhard & Harris (1987)** propose 4 element team effectiveness:
+**Richard Beckhard (1972)** đề xuất mô hình GRPI (nhà tư vấn phát triển tổ chức, Mỹ; một số tài liệu sau này bổ sung/diễn giải thêm). **Tại sao GRPI?** Đây là công cụ **chẩn đoán nhanh theo thứ tự ưu tiên**: nếu nhóm không hiệu quả, hãy kiểm tra theo trình tự G → R → P → I, vì sửa quan hệ cá nhân (I) khi mục tiêu (G) còn mù mờ thường vô ích: mâu thuẫn chỉ là hệ quả của việc không rõ ai làm gì để đạt gì. 4 yếu tố:
 
 ```
     GRPI TEAM EFFECTIVENESS
@@ -1750,7 +1763,7 @@ If team not effective → Check GRPI:
 
 ## VIII. DREXLER-SIBBET TEAM PERFORMANCE MODEL (7 giai đoạn)
 
-**Allen Drexler & David Sibbet (1998)** extended Tuckman to 7 stages:
+**Allan Drexler & David Sibbet** (mô hình Drexler/Sibbet Team Performance Model, phát triển từ thập niên 1980-1990; năm công bố chính xác cần kiểm chứng) mở rộng ý tưởng của Tuckman thành 7 giai đoạn. **Tại sao thêm giai đoạn?** Tuckman gộp việc "làm rõ mục tiêu - vai trò - cam kết" vào Norming; Drexler-Sibbet tách chúng ra vì thực tế nhiều nhóm thất bại ở đúng các bước này, và bổ sung bước Renewal để nhóm dài hạn tự làm mới:
 
 ```
 DREXLER-SIBBET 7-STAGE MODEL
@@ -1795,7 +1808,7 @@ DREXLER-SIBBET 7-STAGE MODEL
 
 ## IX. T7 MODEL – Team Leadership
 
-**Jeff Weiss & Jon Katzenbach** propose T7 model for team leader:
+**T7 Model** (nguồn gốc thường gắn với Larson & LaFasto/Hay Group; một số tài liệu gắn với Weiss & Katzenbach, **cần kiểm chứng tác giả**) là danh mục kiểm tra 7 đòn bẩy mà người lãnh đạo nhóm có thể điều chỉnh. **Tại sao có T7?** Vì nhà quản lý thường chỉ nhìn vào "con người" mà quên các yếu tố hệ thống (công cụ, phần thưởng, học tập) cũng quyết định hiệu suất nhóm:
 
 **T7 = 7 element team leader must manage:**
 
@@ -2250,55 +2263,57 @@ Action:
 
 ## XIV. CASE STUDIES CHI TIẾT
 
+> **Lưu ý về độ tin cậy dữ liệu**: Các case về doanh nghiệp quốc tế (SpaceX, IDEO, Pixar, NASA, Boeing, Spotify) và case VNG là **bản tái dựng minh họa** dựa trên thông tin công khai phổ biến; các mốc thời gian, tỷ lệ giữ chân nhân sự, kích thước nhóm và chi tiết hội thoại là **ước tính/minh họa**, chưa kiểm chứng nguồn gốc từng con số. Case 7 và Case 9 là tình huống **giả định minh họa** do tác giả thiết kế. Mục đích là học cách vận dụng mô hình, không phải trích dẫn số liệu lịch sử.
+
 ### Case 1: SpaceX Falcon Team – Tuckman Success (Forming-Performing)
 
-**Context:**
+#### Context
 - 2006: SpaceX muốn launch Falcon 1 (first rocket)
 - Team: 30 engineers, Elon Musk as leader
 - Goal: Launch by 2007 (deadline tight)
 - Budget: $100M (not much for rocket)
 
-**Forming (Month 1):**
+#### Forming (Month 1)
 - Team charter: "Land reusable rocket on ocean, recover & reuse" (vision)
 - Role: Avionics, structures, propulsion, testing, mission control
 - Process: Daily standup 7AM, weekly design review, test-first culture
 
-**Storming (Month 2-3):**
+#### Storming (Month 2-3)
 - Conflict: Avionics want redundant system (add weight). Structures want lightweight
 - Elon decide: "Single string (no redundancy) for M1 (first mission). V2 add redundancy"
 - Result: Team disagree but respect decision. Commitment clear.
 
-**Norming (Month 4-6):**
-- Culture form: "Failure is learning" (Falcon 1 fail 3 times, but Falcon 9 succeed)
+#### Norming (Month 4-6)
+- Culture form: "Failure is learning" (Falcon 1 thất bại nhiều lần trước khi thành công, sau đó Falcon 9 phát triển trên bài học đó)
 - Weekly test (not monthly): Find issue early
 - Team eat together (culture building)
 
-**Performing (Month 7-24):**
+#### Performing (Month 7-24)
 - Velocity high: Deliver M1 test launch in 18 month
 - Problem-solving: Team solve booster oscillation issue autonomously (not wait Elon)
 - Learning: Each launch, document lesson, improve V2, V3, V4
 
-**Result:**
+#### Result
 - Falcon 9 (2015): Land booster, first time success (multiple attempts fail, but team improve every iteration)
 - Team retention: 70% same team Falcon 1 → Falcon 9 (rare in aerospace)
 - Culture: "Rapid innovation + test + learn" (SpaceX trademark)
 
-**Key Tuckman success:**
+#### Key Tuckman success
 - Clear vision (Mars) + specific goal (reusable rocket) + meaningful purpose
 - Leader navigate Storming well (decide without killing team spirit)
-- Normalize failure (Falcon 1 fail, Falcon 5 fail, but team keep trying)
+- Normalize failure (Falcon 1 thất bại nhiều lần nhưng team tiếp tục thử)
 - High psychological safety (can propose radical idea like "land booster")
 
 ---
 
 ### Case 2: IDEO Design Team – Belbin Success
 
-**Context:**
+#### Context
 - IDEO: Design consulting firm
 - Team: 10 people, diverse background (engineer, designer, psychologist, architect)
 - Goal: Design new product (e.g., shopping cart, water filter, medical device)
 
-**Team composition (Belbin):**
+#### Team composition (Belbin)
 | Name | Role | Contribution |
 |------|------|-------------|
 | Tom (Lead) | Coordinator | Guide process, keep focus |
@@ -2313,29 +2328,29 @@ Action:
 
 **Project: Redesign shopping cart (1995)**
 
-**Week 1 (Forming + Storming):**
+#### Week 1 (Forming + Storming)
 - Sarah: "What if cart is purple & curved?" (crazy idea)
 - Bob: "Purple? Why? Market data don't support" (challenge)
 - David: "I like purple. Different. Let's test" (push)
 - Debate: 2 hours. Tom: "Let's prototyping all 3 color. Test week 2"
 
-**Week 2 (Norming):**
+#### Week 2 (Norming)
 - James: Build purple prototype
 - Lisa: Find material (lightweight plastic)
 - Sarah + Mike: Design handle, wheel (easy to push)
 - Carol: Test durability (push 100,000x simulate)
 
-**Week 3 (Performing):**
+#### Week 3 (Performing)
 - User test: Purple cart increase pleasure (emotional) vs. gray (utilitarian)
 - Client: "No one every think shopping joy. I love it"
 - Team: Celebrate win (lunch + "Shopping cart won design award!")
 
-**Result:**
+#### Result
 - IDEO became famous (Nightline feature on ABC)
 - Purple shopping cart business success (still use today in some store)
 - Team energized, more project come
 
-**Key Belbin success:**
+#### Key Belbin success
 - Role clarity (everyone know their part: idea, specialist, teamworker, executer, finisher)
 - Complementary skill (not all designer. Psychologist add human insight. Engineer make feasible)
 - Role balance (if all Sarah type, endless idea, no prototype. If all James type, boring execution)
@@ -2344,19 +2359,19 @@ Action:
 
 ### Case 3: Pixar Braintrust – Lencioni Success (Overcoming Dysfunction)
 
-**Context:**
+#### Context
 - Pixar: Animation studio
 - Braintrust: Weekly meeting with all director + producer
 - Goal: Ensure movie quality (not crash & burn like first draft often do)
 
-**Problem (Before fixing Lencioni dysfunction):**
+#### Problem (Before fixing Lencioni dysfunction)
 - Toy Story 1 (1995): Development problem, Lencioni dysfunction evident
   - Fear of conflict: Director won't challenge producer
   - Lack of commitment: People half-hearted about direction
   - No accountability: Script re-write 5 time, no one own it
   - Inattention to result: Ship mediocre version first, then fix (costly)
 
-**Fix (Applying Lencioni framework):**
+#### Fix (Applying Lencioni framework)
 
 1. **Build Trust**:
    - Steve Jobs: "In Braintrust, all idea equal. Director = Producer = Animator. No hierarchy"
@@ -2385,7 +2400,7 @@ Action:
    - "If audience laugh/cry at right moment, story work. If not, back to drawing board"
    - Celebrate win: Movie success = team success (not individual)
 
-**Process (Actual):**
+#### Process (Actual)
 
 Week 1: Director present story board
 - Braintrust watch, silent
@@ -2402,12 +2417,12 @@ Week 2: Revised story board
 - Cycle continue until good (may take 4-6 week)
 - Then animation start
 
-**Result:**
+#### Result
 - Pixar movie consistency high quality (Toy Story, Finding Nemo, Up all critical success)
 - Process transparent (not one genius, but team craft)
 - Culture: "Excellence through debate" (not "follow director")
 
-**Key Lencioni success:**
+#### Key Lencioni success
 - Trust: Steve Jobs norm setting (all voice heard, no hierarchy fear)
 - Healthy conflict: Explicit norm (you MUST speak, silence bad)
 - Commitment: Clear decision by director (heard everyone but own call)
@@ -2418,13 +2433,13 @@ Week 2: Revised story board
 
 ### Case 4: NASA Challenger Disaster – Failure (Absence of Trust + Groupthink)
 
-**Context:**
+#### Context
 - January 28, 1986: Space Shuttle Challenger explode after launch
 - All 7 crew die
 - Root cause: O-ring failure in cold weather (temperature 36°F, design limit 53°F)
 - Engineers knew risk, but launch proceed anyway
 
-**What went wrong:**
+#### What went wrong
 
 1. **Absence of Trust**:
    - Engineers (Thiokol) worried O-ring break in cold weather
@@ -2460,7 +2475,7 @@ Week 2: Revised story board
    - Group (team) suppress doubt ("We always safe, don't worry")
    - Result: False consensus (everyone "agree" but not truly)
 
-**What could save it (Lencioni + Psychological Safety):**
+#### What could save it (Lencioni + Psychological Safety)
 
 1. **Psychological Safety**:
    - NASA culture: "Raising safety concern is honor, not doubt"
@@ -2482,7 +2497,7 @@ Week 2: Revised story board
    - Engineer: "We assess O-ring risk and here's recommended action"
    - Both accountable, both on record
 
-**Outcome:**
+#### Outcome
 - 7 astronaut died
 - NASA investigation found: "Organization failure, not technical failure"
 - Culture change: New norm "Safety first" (not schedule first)
@@ -2492,12 +2507,12 @@ Week 2: Revised story board
 
 ### Case 5: Boeing 737 MAX Disaster – Failure (Team Silos + No Dissent)
 
-**Context:**
+#### Context
 - 2018-2019: Boeing 737 MAX crash twice (Lion Air, Ethiopian Airlines)
 - 346 people died
 - Root cause: MCAS system (Maneuvering Characteristics Augmentation System) defect + inadequate pilot training
 
-**What went wrong:**
+#### What went wrong
 
 1. **Team Silos**:
    - Software team develop MCAS (automated system to prevent stall)
@@ -2527,7 +2542,7 @@ Week 2: Revised story board
    - Didn't translate to: "Pilot may see instrument reading confuse & disable MCAS wrong way → crash"
    - Impact not clear to other team
 
-**What could save it (Team Dynamics):**
+#### What could save it (Team Dynamics)
 
 1. **Psychological Safety**:
    - Junior engineer voice concern officially: "MCAS design risky because..."
@@ -2554,7 +2569,7 @@ Week 2: Revised story board
    - Training updated before plane fly
    - Impact on pilot workload tested
 
-**Outcome:**
+#### Outcome
 - 737 MAX grounded 21 month (costly)
 - Boeing CEO fired
 - Culture change: New safety committee, independent audit
@@ -2564,18 +2579,18 @@ Week 2: Revised story board
 
 ### Case 6: VNG Game Studio – Tuckman Success (Vietnam Example)
 
-**Context:**
-- VNG: Vietnamese gaming company, subsidiary of Viettel
+#### Context
+- VNG: công ty công nghệ/game Việt Nam (tình huống dưới đây là **minh họa tái dựng**, không phải số liệu nội bộ của VNG)
 - Game studio: 50 engineers, 10 designer, 5 producer
 - Game: Mobile MOBA game (like League of Legends, but Vietnamese context)
 - Goal: Launch month 12 with 100K user
 
-**Forming (Month 1-2):**
+#### Forming (Month 1-2)
 - Team charter: Game design doc (gameplay, mechanic, character)
 - Role: Backend (3 engineer), Frontend (4), Art (5 designer), Production (2 producer)
 - Process: Agile sprint 2-week, Daily standup 10AM, Weekly demo, Retrospective Friday
 
-**Storming (Month 3-4):**
+#### Storming (Month 3-4)
 - Conflict: "Character balance too hard to iterate" (designer) vs. "Easy, code flexible" (backend)
 - Debate: 3 hour workshop
   - Designer: "This character too strong, need nerf 30% HP"
@@ -2588,24 +2603,24 @@ Week 2: Revised story board
   - Backend: "No lag on my machine"
   - Result: Test on old device (lag). Backend optimize, improve 30% latency
 
-**Norming (Month 5-8):**
+#### Norming (Month 5-8)
 - Culture form: "Ship fast, learn from user"
 - Norm: Minimal spec (1-2 page design doc), test with real user early (beta month 8)
 - Learning: User behavior different from assumption (gamer Vietnamese prefer different character than designer thought)
 - Team celebrate: "Beta launch with 50K download in 1 week" (exceed expectation)
 
-**Performing (Month 9-12):**
+#### Performing (Month 9-12)
 - Velocity high: Month 9-10 = feature polish (character balance, UI improve)
 - Month 11-12 = server scale (prep for launch)
 - Team solve problem autonomously: Latency issue → optimize server, use CDN, solved in 1 week
 - Result: Launch month 12 with 100K user (goal achieve)
 
-**Result:**
+#### Result
 - Game popular in Vietnam (Vietnamese game player love local content)
 - Team retention: 80% same team 2 year later (rare in game industry)
 - VNG learn Agile model, use for future game
 
-**Key success:**
+#### Key success
 - Tuckman navigate well (manager anticipate Storming, not surprise)
 - Belbin role clarity (each person know their role)
 - Psychological safety (designer propose change without fear)
@@ -2615,7 +2630,7 @@ Week 2: Revised story board
 
 ### Case 7: Fintech Startup Vietnam – Failure (Cofounder Storming)
 
-**Context:**
+#### Context
 - Fintech startup: Payment solution (like Momo, but 2015)
 - Cofounder: 3 people
   - CEO (Tech): Visionary, aggressive, want move fast
@@ -2623,29 +2638,29 @@ Week 2: Revised story board
   - Product (UX): Want elegant design, user first
 - Goal: Launch payment app in 6 month, get customer 10K
 
-**Month 1-2 (Forming + Storming):**
+#### Month 1-2 (Forming + Storming)
 - CEO: "Let's move fast, user experience we optimize later"
 - CFO: "No, we need compliance first. Regulation fine if we wrong $500K"
 - Product: "Neither, we need beautiful design. User like beautiful UI"
 - Debate → Argument → Yelling → Founder meeting 3 hour (not resolve)
 
-**Month 3-4 (Stuck in Storming):**
+#### Month 3-4 (Stuck in Storming)
 - CEO + CFO compromise: "OK we get compliance." But CEO really don't like wait.
 - Product feel left out (design not priority)
 - Tension high, team feel founder divide
 - Engineer take side: "Which founder right? CEO aggressive (I like) or CFO careful (safer)?"
 
-**Month 5-6:**
+#### Month 5-6
 - CEO frustrated (slow progress, want launch month 4): "Let's hire PM to manage this"
 - But PM conflicted by founder decision (who listen to?). PM fail.
 - Team: High turnover (smart engineer leave: "This startup not healthy")
 - Morale: Low ("Will this company even launch?")
 
-**Month 7:**
+#### Month 7
 - Product founder leave: "I can't work with CEO, too aggressive. CFO don't support design. I'm out"
 - Company collapse: 3-person team now 2, morale worse
 
-**What went wrong:**
+#### What went wrong
 
 1. **No conflict resolution**:
    - Founder never agree on decision-making framework
@@ -2668,7 +2683,7 @@ Week 2: Revised story board
    - Team scared, don't speak opinion
    - "If I say disagree, will I fire?"
 
-**What could save it:**
+#### What could save it
 
 Month 1: Cofounder agreement
 1. **Decision framework**: "CEO decide product strategy & launch timeline. CFO decide finance & regulation. Product decide design. If cross-function → discuss & decide together"
@@ -2686,12 +2701,12 @@ Result if fix: Founders work well, product ship month 6 with compliance, design 
 
 ### Case 8: Spotify Squads Model – Success (Combine Tuckman + Belbin + Aristotle)
 
-**Context:**
+#### Context
 - Spotify (2010-2015): Music streaming service, 200+ engineer
 - Challenge: Organize large team, but keep startup speed + quality
 - Solution: Squads model
 
-**Organizational structure:**
+#### Organizational structure
 
 ```
 SPOTIFY SQUADS MODEL
@@ -2718,16 +2733,16 @@ Each Squad:
 - Own 1 feature / service end-to-end
 ```
 
-**How Spotify apply Tuckman + Belbin + Aristotle:**
+#### How Spotify apply Tuckman + Belbin + Aristotle
 
-**Tuckman in Squad:**
+#### Tuckman in Squad
 - Forming: Squad charter (goal = owner feature X, quality high, launch month Y)
 - Storming: Design debate (should we use service A or B? → decide after debate)
 - Norming: Norms form ("Ship Friday", "Code review 24h", "Test 80% coverage")
 - Performing: High velocity, team solve problem autonomously
 - Adjourning: If feature done, squad dissolve or merge with other squad
 
-**Belbin in Hiring:**
+#### Belbin in Hiring
 - Specialist (deep coder, architect)
 - Implementer (reliable, execution)
 - Completer Finisher (quality, testing)
@@ -2735,28 +2750,28 @@ Each Squad:
 - Teamworker (cohesion, help other)
 - Don't hire 5 genius (clash), hire balanced team
 
-**Aristotle in Squad culture:**
+#### Aristotle in Squad culture
 1. **Psychological Safety**: "Fail fast, learn" culture. Bad idea? Try it, learn, next.
 2. **Dependability**: Engineer reliable, ship on schedule
 3. **Structure & Clarity**: Feature goal clear, ownership clear
 4. **Meaning**: "We help 100M user enjoy music"
 5. **Impact**: Weekly user metric (stream, churn, rating)
 
-**Process (Real):**
+#### Process (Real)
 
-**Week 1-2 (Forming):**
+#### Week 1-2 (Forming)
 - Squad form: 6 engineer + designer
 - Charter: Recommendation feature (user get song they like)
 - Success criteria: User engagement +20% vs control, rating >4.5/5
 
-**Week 3-4 (Storming):**
+#### Week 3-4 (Storming)
 - Debate: Should use collaborative filter (complex but good) or content-based (simple but limited)?
 - Specialist: "Collaborative filter best, I can do"
 - Implementer: "But complex, risky, maintenance cost"
 - Designer: "User won't know, both OK design-wise"
 - Decide: "Collaborative filter. Implementer help specialist, risk lower"
 
-**Week 5-12 (Norming + Performing):**
+#### Week 5-12 (Norming + Performing)
 - Sprint 2-week
 - Daily standup (15 min)
 - Code review (24 hour turnaround)
@@ -2764,25 +2779,97 @@ Each Squad:
 - Sprint retrospective (what learn?)
 - Iteration based on user data
 
-**Week 13:**
+#### Week 13
 - Feature ready
 - A/B test: Recommendation squad = 22% better engagement (goal = 20%)
 - Ship to all user
 - Celebrate: Team lunch, announced in all-hands
 
-**Result:**
+#### Result
 - High velocity, high quality (not mutually exclusive)
 - Autonomy + alignment ("Do what you want, but align to company goal")
 - People happy (own mission, see impact)
 - Attrition low (engineer stay because fulfilling work)
 - Quality high (testing, no technical debt)
 
-**Why work:**
+#### Why work
 - Clear goal (each squad own feature)
 - Role clarity (squad lead decide, engineer execute, designer design)
 - Psychological safety (fast fail, learn, no blame)
 - Result focus (user metric, not activity metric)
 - Autonomy (squad decide how, not micromanage)
+
+---
+
+### Case 9: Agency Digital "Nắng Mới" (Đà Nẵng) – Chẩn đoán và sửa Team bằng GRPI + Lencioni + Belbin (SME Việt Nam)
+
+> **Toàn bộ tên doanh nghiệp, nhân sự và số liệu trong case này là GIẢ ĐỊNH MINH HỌA** do tác giả thiết kế để thực hành; không phải doanh nghiệp thật.
+
+#### Bối cảnh
+- Agency marketing số "Nắng Mới" tại Đà Nẵng, **12 nhân sự** (1 giám đốc, 2 account, 4 content/creative, 3 performance ads, 1 designer lead, 1 kế toán kiêm hành chính).
+- Lương trung bình giả định: **15 triệu VNĐ/tháng** (tương đương 15.000.000 / 160 giờ = **93.750 VNĐ/giờ**).
+- Triệu chứng sau 18 tháng tăng trưởng nóng: **4/12 người nghỉ việc trong 12 tháng**, chỉ **12/20 dự án giao đúng hạn** (60%), khách phàn nàn "mỗi người trả lời một kiểu", account và creative đổ lỗi cho nhau.
+- Giám đốc ban đầu nghĩ: "Tuyển người giỏi hơn là xong". Cô thuê một tư vấn nội bộ chẩn đoán trước khi tuyển thêm.
+
+#### Bước 1: Chẩn đoán bằng khảo sát nhanh (pulse survey) theo GRPI
+**Tại sao dùng GRPI trước?** Vì GRPI cho thứ tự kiểm tra nhân quả: Goals → Roles → Processes → Interpersonal. Nếu mục tiêu và vai trò mù mờ thì mâu thuẫn cá nhân chỉ là triệu chứng.
+
+Khảo sát 5 điểm (1 = rất không đồng ý, 5 = rất đồng ý), 12 người trả lời (giả định):
+
+| Khía cạnh | Điểm trước | Diễn giải |
+|-----------|-----------|-----------|
+| Goals (mục tiêu rõ ràng) | 2,6 | Mỗi người hiểu "thành công" theo KPI riêng (doanh thu, số bài, ROAS) |
+| Roles (vai trò, quyền quyết định) | 3,1 | Account và creative chồng chéo ai quyết định phương án gửi khách |
+| Processes (quy trình) | 2,4 | Không có quy trình duyệt nội bộ, brief bằng tin nhắn Zalo rời rạc |
+| Interpersonal (tin cậy, góp ý) | 2,2 | Ít người dám nói "tôi làm chưa kịp" trước cuộc họp |
+| Psychological safety (an toàn tâm lý) | 2,8 | Sai sót thường bị nhắc trước mặt cả nhóm |
+
+Điểm trung bình trước = (2,6 + 3,1 + 2,4 + 2,2 + 2,8) / 5 = **2,62**.
+
+**Diễn giải**: Hai điểm thấp nhất là Interpersonal (2,2) và Processes (2,4). Theo logic Lencioni, điểm Interpersonal thấp nghĩa là tầng đáy "Absence of Trust" đang hỏng; việc 12/20 dự án trễ hạn (tầng "Inattention to Results") là hệ quả cuối của chuỗi chứ không phải nguyên nhân gốc.
+
+#### Bước 2: Ghép lên Lencioni và Belbin để xác định hành động
+| Tầng Lencioni | Dấu hiệu quan sát được | Hành động |
+|---------------|------------------------|-----------|
+| Trust | Không ai thừa nhận sai sót | Buổi workshop 2 ngày: chia sẻ "điểm yếu của tôi", Belbin |
+| Conflict | Họp chỉ gật đầu, tranh cãi bằng Zalo sau họp | Quy tắc "tranh luận trong họp, cam kết sau họp" |
+| Commitment | Phương án gửi khách thay đổi sau họp | Mỗi cuộc họp kết thúc bằng 3 dòng "đã chốt gì, ai làm, hạn nào" |
+| Accountability | Trễ hạn không ai nhắc | Bảng RACI + kanban công khai |
+| Results | Mỗi người có KPI riêng | Một mục tiêu chung quý: tỷ lệ giao đúng hạn >= 90% và NPS khách |
+
+Kết quả Belbin (giả định): nhóm có 4 Shaper/Plant (nhiều ý tưởng, nhiều tranh cãi), **không có Completer Finisher** (nên lỗi chi tiết lọt ra khách) và **chỉ 1 Coordinator** (giám đốc, quá tải). Quyết định: thay vì tuyển thêm người giỏi, **đào tạo 1 account thành Coordinator cho các dự án** và giao 1 designer vai trò Completer Finisher (kiểm tra lần cuối trước khi gửi khách).
+
+#### Bước 3: Chi phí chương trình (giả định)
+| Hạng mục | Cách tính | Chi phí (VNĐ) |
+|----------|-----------|---------------|
+| Workshop 2 ngày (tư vấn bên ngoài) | Trọn gói | 30.000.000 |
+| Trắc nghiệm Belbin 12 người | 12 x 1.200.000 | 14.400.000 |
+| Coaching giám đốc + 2 trưởng nhóm 3 tháng | Trọn gói | 36.000.000 |
+| Thời gian họp retrospective 2 tuần/lần | 12 người x 1,5 giờ x 13 buổi = 234 giờ x 93.750 | 21.937.500 |
+| **Tổng** | | **102.337.500** |
+
+#### Bước 4: Lợi ích sau 6 tháng và 12 tháng (giả định)
+- **Nghỉ việc**: từ 4 người/năm giảm còn 1 người/năm. Chi phí thay thế mỗi người giả định bằng 4 tháng lương = 4 x 15.000.000 = **60.000.000**. Tiết kiệm = (4 - 1) x 60.000.000 = **180.000.000**.
+- **Làm lại (rework)**: từ 160 giờ/tháng giảm còn 80 giờ/tháng. Tiết kiệm = (160 - 80) x 93.750 x 12 tháng = **90.000.000**.
+- **Giao đúng hạn**: 12/20 = 60% tăng lên 18/20 = **90%**.
+- **Khảo sát lại** (giả định): Goals 3,9; Roles 4,1; Processes 3,8; Interpersonal 3,7; Psych safety 4,0. Trung bình = (3,9 + 4,1 + 3,8 + 3,7 + 4,0) / 5 = **3,90**, tăng từ 2,62.
+
+#### Bước 5: Tính hiệu quả đầu tư
+- Tổng lợi ích = 180.000.000 + 90.000.000 = **270.000.000** VNĐ/năm.
+- Lợi nhuận ròng = 270.000.000 - 102.337.500 = **167.662.500** VNĐ.
+- ROI = 167.662.500 / 102.337.500 = **164%**.
+- Thời gian hoàn vốn = 102.337.500 / (270.000.000 / 12) = **khoảng 4,5 tháng**.
+
+#### Diễn giải kinh doanh
+1. Nếu agency tuyển thêm 2 người "giỏi" (30 triệu/tháng cho cả hai, 360 triệu/năm) mà không sửa hệ thống, nhiều khả năng họ cũng rơi vào cùng vòng lặp trễ hạn và nghỉ việc. Chi phí sửa cách vận hành chỉ bằng khoảng 28% chi phí tuyển thêm (102,3 / 360 = 0,284) và đánh vào nguyên nhân gốc.
+2. Các lợi ích chưa tính (giữ khách hàng, giảm phàn nàn, uy tín tuyển dụng) nên ROI thực tế có thể cao hơn; ngược lại, kết quả "giảm từ 4 xuống 1 người nghỉ" chỉ là giả định, nên cần coi đây là kịch bản lạc quan và chạy thêm kịch bản thận trọng (ví dụ chỉ giảm còn 2 người nghỉ: tiết kiệm 120 triệu, tổng lợi ích 210 triệu).
+
+#### Bài học & khuyến nghị
+- **Chẩn đoán trước khi chữa**: pulse survey 5 phút + GRPI chỉ ra đúng chỗ hỏng; đừng mặc định "thiếu người giỏi".
+- **Sửa từ đáy lên** theo Lencioni: Trust và quy tắc tranh luận trước, KPI sau.
+- **Dùng Belbin để lấp khoảng trống hành vi** (Completer Finisher, Coordinator) thay vì tuyển thêm người cùng kiểu.
+- **Đo lại sau 3 và 6 tháng**, đưa cả chi phí lẫn lợi ích vào cùng một bảng để thuyết phục chủ doanh nghiệp.
+- **Rủi ro**: kết quả phụ thuộc vào cam kết của giám đốc (nếu giám đốc tiếp tục quở trách trước đám đông, an toàn tâm lý sẽ sụp lại).
 
 ---
 
@@ -3554,6 +3641,58 @@ Use monthly to self-assess:
 
 ---
 
+## PHỤ LỤC: CHECKLIST TEAM DYNAMICS TỔNG HỢP
+
+Dùng checklist này để tự rà soát **trước khi áp dụng** các mô hình team vào doanh nghiệp (kết hợp với bảng chọn mô hình ở mục XIX).
+
+**Tổng hợp nhanh các mô hình và câu hỏi chính**
+
+| Mô hình | Câu hỏi nó trả lời | Dùng khi |
+|---------|--------------------|----------|
+| Tuckman | Nhóm đang ở giai đoạn nào, cần kiểu lãnh đạo nào? | Nhóm mới lập hoặc có thay đổi nhân sự lớn |
+| Belbin | Nhóm đang thiếu hành vi đóng góp nào? | Ghép nhóm, tuyển dụng |
+| Lencioni | Tầng nào của chuỗi tin cậy - tranh luận - cam kết - trách nhiệm - kết quả đang hỏng? | Nhóm "kẹt" dù ai cũng giỏi |
+| Project Aristotle | 5 yếu tố nào quyết định hiệu quả? | Nhóm từ xa, nhóm tri thức |
+| GRPI | Mục tiêu - vai trò - quy trình - quan hệ, thiếu cái nào? | Chẩn đoán nhanh |
+| Edmondson | Mọi người có dám lên tiếng không? | Văn hóa sợ sai |
+
+**A. Trước khi bắt đầu (Forming)**
+□ Đã viết Team Charter (mục tiêu, vai trò, quy tắc họp, cách ra quyết định)?
+□ Mỗi thành viên hiểu vai trò và quyền quyết định của mình (RACI)?
+□ Đã báo trước cho nhóm rằng xung đột giai đoạn đầu là bình thường (Storming)?
+
+**B. Thành phần nhóm**
+□ Đã rà soát khoảng trống hành vi (Belbin), không chỉ kỹ năng chuyên môn?
+□ Không có nhóm chỉ gồm một kiểu người (toàn Shaper hoặc toàn Plant)?
+□ Có người đảm nhận vai trò kiểm tra chất lượng cuối (Completer Finisher) và điều phối (Coordinator)?
+
+**C. Tin cậy và an toàn tâm lý**
+□ Lãnh đạo thừa nhận sai sót của mình trước nhóm?
+□ Phản hồi bằng giải quyết vấn đề thay vì quy lỗi khi nghe tin xấu?
+□ Có kênh để nói ý kiến trái chiều mà không bị trừng phạt?
+
+**D. Xung đột, cam kết, trách nhiệm**
+□ Có quy tắc "tranh luận trong họp, cam kết sau họp"?
+□ Mỗi cuộc họp chốt rõ: quyết gì, ai làm, hạn khi nào?
+□ Tiến độ công khai (bảng kanban/OKR) để đồng đội nhắc nhau?
+
+**E. Đo lường**
+□ Chạy pulse survey định kỳ (tháng/quý) và có hành động sau khảo sát?
+□ Theo dõi: giao đúng hạn, tỷ lệ nghỉ việc, thời gian chu trình, mức độ gắn kết?
+□ Tính cả chi phí thay thế nhân sự khi đánh giá hiệu quả đầu tư vào team?
+
+**F. Tránh các bẫy phổ biến**
+□ Có biện pháp chống groupthink (giao 1 người phản biện, bỏ phiếu kín)?
+□ Có phân biệt rõ đóng góp từng người để tránh social loafing/free rider?
+□ Không để một người hay một bộ phận "giữ" thông tin (information silo)?
+□ Theo dõi dấu hiệu burnout (làm thêm giờ kéo dài, nghỉ việc đột ngột)?
+
+**G. Duy trì**
+□ Retrospective định kỳ (2 tuần hoặc 1 tháng) và có hành động cải tiến?
+□ Rà soát lại chương trình phát triển team sau 3 và 6 tháng bằng cùng một bộ chỉ số?
+
+---
+
 ## XX. TÀI LIỆU THAM KHẢO
 
 ### Sách
@@ -3584,21 +3723,22 @@ Use monthly to self-assess:
 
 ---
 
-## XXI. CẬP NHẬT & LỚN HỌN
+## XXI. TỔNG KẾT NỘI DUNG & ĐIỂM CHÍNH
 
-This document cover:
+Tài liệu này bao gồm:
 ✓ Tuckman's 5 stage (detail)
 ✓ 6 mô hình khác (Belbin, Lencioni, Aristotle, GRPI, Drexler-Sibbert, T7)
 ✓ Psychological Safety (Amy Edmondson)
 ✓ So sánh bảng lớn
 ✓ Hoàn cảnh áp dụng (dự án ngắn, team dài hạn, remote, startup, toxic)
 ✓ Ưu/nhược điểm
-✓ 8 case studies chi tiết (80-150 dòng/case)
+✓ 9 case studies chi tiết (gồm 1 case SME Việt Nam giả định minh họa)
 ✓ Tools & templates (team charter, RACI, retrospective, pulse survey)
 ✓ Cách đo performance (NPS, velocity, OKR, attrition, etc.)
 ✓ Pitfalls (groupthink, social loafing, burnout, etc.)
 ✓ Team leader checklist
 ✓ Quick reference
+✓ Phụ lục: Checklist tổng hợp
 ✓ Tài liệu tham khảo
 
 ---

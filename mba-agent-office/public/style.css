@@ -370,4 +370,6 @@ body.v3 #office { padding:0; overflow:hidden; min-width:0; }
 #viewSw button { flex:1; padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:transparent; cursor:pointer; }
 #viewSw button.on { background:#2d6fa3; color:#fff; border-color:#2d6fa3; }
 
-.req .ask-in { width:100%; box-sizing:border-box; margin-top:6px; height:32px; padding:0 8px; border:1px solid #efc662; border-radius:8px; font-size:12.5px; background:#fff; }
+.req input.ask-in { width:100%; box-sizing:border-box; margin-top:8px; height:38px; padding:0 12px; border:2px solid #efc662; border-radius:8px; font-size:14px; font-weight:600; background:#fff !important; color:#111 !important; -webkit-text-fill-color:#111; caret-color:#111; }
+.req input.ask-in::placeholder { color:#6b6b6b !important; -webkit-text-fill-color:#6b6b6b; font-weight:400; opacity:1; }
+.req input.ask-in:focus { outline:3px solid rgba(239,198,98,.55); border-color:#c98f00; }

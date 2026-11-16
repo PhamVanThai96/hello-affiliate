@@ -91,8 +91,15 @@ const cells = (line) => line.trim().replace(/^\||\|$/g, '').split('|').map((c) =
 const isSep = (line) => /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/.test(line) && line.includes('-');
 
 function tableHtml(head, rows) {
-  const num = (v) => /^[-+]?[\d.,\s]+%?$/.test(v) && /\d/.test(v);
-  return `<div class="tw"><table><thead><tr>${head.map((h) => `<th>${inline(h)}</th>`).join('')}</tr></thead><tbody>${rows.map((r) => `<tr>${head.map((_, i) => `<td${num(r[i] ?? '') ? ' class="n"' : ''}>${inline(r[i] ?? '')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  const num = (v) => /^[-+−]?[\d.,\s]+%?$/.test(v) && /\d/.test(v);
+  // Ma trận định giá: bảng có cột "Giá cơ sở" -> khung nổi bật, cột cơ sở đậm, cột "so với thị giá/chênh/biên an toàn" tô xanh (cao hơn thị giá) / đỏ (thấp hơn).
+  const matrix = head.some((h) => /giá cơ sở/i.test(h)), base = head.findIndex((h) => /giá cơ sở/i.test(h));
+  const delta = (i) => /so (với )?thị giá|chênh|biên an toàn/i.test(head[i]);
+  const cell = (v, i) => {
+    const cls = [num(v) || (matrix && /\d/.test(v) && i > 0 && !/[a-zà-ỹ]{4,}/i.test(v)) ? 'n' : '', matrix && i === base ? 'base' : '', delta(i) && /^[+]\s*\d/.test(v.trim()) ? 'up' : '', delta(i) && /^[-−–]\s*\d/.test(v.trim()) ? 'down' : ''].filter(Boolean).join(' ');
+    return `<td${cls ? ` class="${cls}"` : ''}>${inline(v)}</td>`;
+  };
+  return `<div class="tw${matrix ? ' matrix' : ''}"><table><thead><tr>${head.map((h) => `<th>${inline(h)}</th>`).join('')}</tr></thead><tbody>${rows.map((r) => `<tr${matrix && /thị giá hiện tại|khoảng tham chiếu/i.test(r[0] ?? '') ? ' class="sumrow"' : ''}>${head.map((_, i) => cell(r[i] ?? '', i)).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 
 // images: Map<đường dẫn | tên file, dataURI>; dùng để thay ![alt](path). used: Set đánh dấu ảnh đã chèn trong thân báo cáo.
@@ -247,6 +254,8 @@ figcaption{color:var(--mut);font-size:13px;margin-top:6px}figure.chart svg{max-w
 .panel-hi table{background:#12345a;color:#fff}.panel-hi th{background:#1d4a7e;color:#fff;border-color:#3b6ba3}.panel-hi td{border-color:#3b6ba3}.panel-hi tbody tr:nth-child(even){background:#173f6a}
 .st{font-size:11.5px;color:#fff;border-radius:99px;padding:1px 9px;vertical-align:middle}.st.done{background:var(--ok)}.st.failed{background:var(--bad)}.st.skipped{background:#8a8f98}.fail{color:#b42318}
 details.tasks{margin-top:26px;font-size:13.5px}details.tasks summary{cursor:pointer;color:var(--mut)}
+.matrix{border:2px solid #2f5bea;box-shadow:0 4px 14px rgba(47,91,234,.12)}.matrix th{background:#2f5bea;color:#fff;text-align:center}.matrix td{text-align:center}.matrix td:first-child{text-align:left;font-weight:650}
+.matrix td.base{background:#eaf0ff;font-weight:750}.matrix td.up{color:#1f9d6b;font-weight:700}.matrix td.down{color:#d1373f;font-weight:700}.matrix tr.sumrow td{background:#f3f4f8;font-weight:700;border-top:2px solid #9db4f5}
 math{font-size:1.12em}math[display="block"]{display:block math;margin:.8em 0;padding:8px 12px;background:#f7f8fc;border-radius:8px;overflow-x:auto}
 @media(max-width:600px){.paper{padding:4px 14px 18px}.rh{padding:16px}.rh h1{font-size:20px}}
 @media print{body{background:#fff;padding:0}.paper,.rh{box-shadow:none}}`;

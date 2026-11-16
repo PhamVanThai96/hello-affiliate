@@ -112,8 +112,12 @@ sections:
       - Phải đối chiếu tối thiểu 2 phương pháp (SOTP/DCF/multiples) bằng bảng giải thích chênh lệch từng khoản; không kết luận một con số khi phương pháp chênh quá 15% mà chưa giải thích.
       - Nhãn CHƯA KIỂM CHỨNG/GIẢ ĐỊNH không được dùng làm kết luận chính mà không nói rõ; không viết 'hợp lý' chắc chắn.
       - Không viết khuyến nghị kiểu 'nên chờ giải ngân quanh X-Y', 'vùng mua'; chỉ nêu kịch bản, mức vô hiệu hóa, biên an toàn.
+      no_commentary:
+      - 'KHÔNG diễn giải: bỏ đoạn văn giải thích ý nghĩa, bối cảnh, cách làm. Thông tin đưa bằng bảng hoặc gạch đầu dòng ≤ 15 từ; chú thích ký hiệu chỉ 1 dòng ở lần đầu.'
+      valuation_matrix:
+      - 'Báo cáo định giá bắt buộc có đúng 1 bảng ''Ma trận định giá'' (VNĐ/cổ phiếu): Phương pháp | Chỉ số nền | Hệ số/giả định chính | Giá thấp | Giá cơ sở | Giá cao | So với thị giá (%) | Độ tin cậy. Hàng: từng phương pháp (P/E, P/B, DCF, SOTP nếu có), ''Thị giá hiện tại'', ''Khoảng tham chiếu (giao các phương pháp đã kiểm)''. Ô chưa tính được ghi —.'
       structure_default:
-      - 1) Kết luận tham chiếu + con số chính + rủi ro chính  2) Dữ liệu đầu vào (nguồn, ngày, nhãn)  3) Phương pháp + chú thích ký hiệu  4) Tính toán từng bước  5) Độ nhạy/kịch bản  6) Điều kiện làm đổi kết luận + giới hạn  7) Câu hỏi còn thiếu (nếu có).
+      - Kết luận (3 dòng) -> Ma trận định giá -> Đầu vào đã kiểm (bảng) -> Tính toán từng bước (bảng) -> Độ nhạy (bảng) -> tối đa 3 gạch rủi ro/điều kiện đổi kết luận -> disclaimer 1 dòng.
   - id: "hs-scope"
     title: "Hồ sơ agent — Phạm vi"
     tags: ["phạm", "vi"]

@@ -32,6 +32,19 @@
     mãn
 ```
 
+#### Tại sao nhà quản trị phải hiểu động lực?
+
+Hiệu suất của một nhân viên có thể viết gọn thành: **Hiệu suất = Năng lực (Ability) × Động lực (Motivation) × Nguồn lực/Cơ hội (Opportunity)**. Công ty có thể mua năng lực (tuyển người giỏi) và cấp nguồn lực (máy móc, ngân sách), nhưng **không thể "mua" trực tiếp phần nỗ lực tự nguyện** — đó là phần phụ thuộc vào động lực. Hai nhân viên cùng trình độ, cùng lương có thể chênh nhau 2-3 lần về đóng góp chỉ vì khác động lực. Với SME, nơi mỗi người gánh nhiều việc và không có dư địa để "bù" cho người lười, vấn đề này còn sống còn hơn tập đoàn lớn.
+
+Các thuyết trong file này chia thành **hai họ** để dễ nhớ:
+
+| **Họ lý thuyết** | **Câu hỏi trả lời** | **Đại diện** | **Dùng để làm gì** |
+|----------|----------|----------|----------|
+| **Content theories (Thuyết nội dung)** | *Cái gì* thúc đẩy con người? (nhu cầu, yếu tố) | Maslow, Herzberg, McClelland, SDT | Chẩn đoán nhân viên cần gì, thiết kế công việc & phúc lợi |
+| **Process theories (Thuyết quá trình)** | *Làm thế nào* động lực hình thành và duy trì? (suy luận, so sánh, mục tiêu, củng cố) | Vroom, Adams, Locke, Skinner | Thiết kế hệ thống KPI, thưởng, công bằng, phản hồi |
+
+Nhà quản trị giỏi dùng **content theories để chẩn đoán** ("nhóm nhân viên này thiếu gì?") rồi dùng **process theories để thiết kế cơ chế** ("làm sao để họ thấy nỗ lực thật sự được đền đáp?").
+
 ---
 
 ### 2. Lịch Sử Phát Triển Nghiên Cứu Động Lực Học
@@ -42,10 +55,10 @@
 |------------|-------------------------------|---------|------------------|-------------------|
 | **Quản lý khoa học (Scientific Management)** | Frederick Taylor | 1911 | Motion Study, Tiền lương incentive (piece-rate pay) | Cuộc cách mạng công nghiệp lần thứ 2 |
 | **Hawthorne Studies** | Elton Mayo & đội | 1924-1932 | Con người quan trọng hơn điều kiện vật chất | Khủng hoảng kinh tế toàn cầu 1929 |
-| **Nhu cầu phân cấp** | Abraham Maslow | 1943 | Hierarchy of Needs (5 tầng) | Cơn bão thời Thế chiến II |
+| **Nhu cầu phân cấp** | Abraham Maslow | 1943 | Hierarchy of Needs (5 tầng) | Thời kỳ Thế chiến II, tâm lý học chuyển từ nghiên cứu bệnh lý sang nghiên cứu con người khỏe mạnh |
 | **Hai yếu tố** | Frederick Herzberg | 1959 | Hygiene vs Motivators | Thời kỳ phát triển kinh tế hậu chiến |
-| **Nhu cầu thành tựu** | David McClelland | 1961 | nAch, nAff, nPow – TAT (Thematic Apperception Test) | Thời kỳ Mạnh hóa Phát triển Tổ chức |
-| **Expectancy Theory** | Victor Vroom | 1964 | Expectancy × Instrumentality × Valence | Chiến tranh Việt Nam, xã hội thay đổi |
+| **Nhu cầu thành tựu** | David McClelland | 1961 (*The Achieving Society*) | nAch, nAff, nPow – đo bằng TAT (Thematic Apperception Test) | Thời kỳ tăng trưởng kinh tế hậu chiến, nhiều nghiên cứu về "tinh thần doanh nhân" |
+| **Expectancy Theory** | Victor Vroom | 1964 | Expectancy × Instrumentality × Valence | Thời kỳ các lý thuyết nhận thức (cognitive) trỗi dậy trong tâm lý học tổ chức |
 | **Equity Theory** | J. Stacy Adams | 1963 | Công bằng so sánh trong công việc | Phong trào dân quyền |
 | **Goal-Setting Theory** | Edwin Locke | 1968 | Mục tiêu cụ thể, khó, và cam kết là motivator | Thời kỳ quản lý bằng mục tiêu (MBO) |
 | **Reinforcement Theory** | B.F. Skinner | 1938 (behavioral) | Hành vi được củng cố lặp lại | Tâm lý hành vi học |
@@ -59,6 +72,10 @@
 
 ### 1. Lý Thuyết 5 Tầng Cơ Bản
 
+#### Tại sao có thuyết này?
+
+Trước Maslow, hai trường phái thống trị tâm lý học là **phân tâm học** (Freud, tập trung vào người bệnh lý, xung năng bản năng) và **hành vi học** (Watson, Skinner, coi con người là phản ứng với kích thích). Maslow, trong bài báo *"A Theory of Human Motivation"* (1943, Psychological Review), phản biện: cần nghiên cứu cả **người khỏe mạnh, có thành tựu**, và động lực của con người không chỉ là "tránh đau đớn". Ông đưa ra một bản đồ giải thích **vì sao cùng một phần thưởng, lúc này thu hút nhưng lúc khác thì không**: người đang đói không quan tâm danh hiệu; người đã no và an toàn mới đi tìm sự công nhận. Logic cốt lõi là **"nhu cầu chưa thỏa mãn mới là động lực"** (prepotency): nhu cầu thấp chưa đủ sẽ "chiếm" toàn bộ sự chú ý. Đối với quản trị, hàm ý thực dụng là: **đừng treo phần thưởng tầng 4-5 (danh hiệu, học tập) cho người còn lo tầng 1-2 (lương không đủ sống)**. Lưu ý: Maslow chưa bao giờ vẽ "kim tự tháp" — hình tam giác là do các nhà biên soạn giáo trình sau này; và ông cho rằng thứ bậc mang tính **tương đối** chứ không cứng.
+
 Năm **1943**, Abraham Maslow đề xuất rằng **nhu cầu của con người được sắp xếp theo một hệ thống cấp bậc từ thấp đến cao**. Theo đó, con người phải **thỏa mãn nhu cầu ở mức thấp hơn** trước khi có thể **hướng sự chú ý đến những nhu cầu ở mức cao hơn**.
 
 **5 tầng nhu cầu (từ dưới lên trên):**
@@ -70,8 +87,8 @@ Năm **1943**, Abraham Maslow đề xuất rằng **nhu cầu của con người
                       │ 5. Self-
                       │ actuali-
                       │ zation  │
-                      │ 自我    │
-                      │ 实现    │
+                      │ Tự thực │
+                      │ hiện    │
                       └───┬────┘
                       ┌───▼────┐
                       │ 4. Esteem
@@ -83,8 +100,8 @@ Năm **1943**, Abraham Maslow đề xuất rằng **nhu cầu của con người
                       ┌───▼────┐
                       │ 3. Love &
                       │ Belonging│
-                      │ Tình yêu,│
-                      │ thân tác │
+                      │ Tình cảm,│
+                      │ thân thiết│
                       │ & xã hội │
                       └───┬────┘
                       ┌───▼────┐
@@ -199,7 +216,7 @@ Sau này, Maslow **mở rộng lý thuyết** thành **8 tầng** bằng cách t
 
 **Phê phán từ các nhà nghiên cứu:**
 
-- **Schneider & Alderfer (1973)**: Đề xuất **Alderfer's ERG Theory** (Existence → Relatedness → Growth) – thay thế cấu trúc phân cấp cứng nhắc bằng cấu trúc **linh hoạt hơn**.
+- **Clayton Alderfer (1969)**: Đề xuất **ERG Theory** (Existence → Relatedness → Growth) – thay thế cấu trúc phân cấp cứng nhắc bằng cấu trúc **linh hoạt hơn**.
 - **Wahba & Bridwell (1976)**: Phê phán rằng **không có chứng cứ mạnh** để chứng minh cấu trúc 5 tầng của Maslow.
 - **Hofstede (1980s)**: Chỉ ra rằng **nhu cầu ở các quốc gia khác nhau khác nhau đáng kể**.
 
@@ -214,7 +231,7 @@ Sau này, Maslow **mở rộng lý thuyết** thành **8 tầng** bằng cách t
 | **Cấp nhân viên** | **Tầng 1-2: Sinh lý & An toàn** | **Tầng 3: Tình cảm** | **Tầng 4: Tôn trọng** | **Tầng 5: Tự thực hiện** |
 |---------|----------|----------|----------|----------|
 | **Công nhân sản xuất (lương ~5-7 triệu VND/tháng)** | Lương đủ sống, an toàn lao động (công cụ bảo vệ, không OT quá) | Team spirit, cảm thấy như gia đình, chuyên đề team-building hàng tháng | Công nhân xuất sắc được đưa lên bảng vinh danh công ty | Đào tạo kỹ năng mới, cơ hội nâng cấp lên Supervisor |
-| **Nhân viên行政/Sale (lương ~8-12 triệu VND/tháng)** | Lương xứng đáng, leave policy rõ ràng | Sự ghi nhận từ lãnh đạo, team atmosphere tích cực | **Promotion path rõ ràng**, title mới, quyền tự quyết định nhỏ | Khóa đào tạo chuyên ngành, project leadership |
+| **Nhân viên hành chính/Sale (lương ~8-12 triệu VND/tháng)** | Lương xứng đáng, leave policy rõ ràng | Sự ghi nhận từ lãnh đạo, team atmosphere tích cực | **Promotion path rõ ràng**, title mới, quyền tự quyết định nhỏ | Khóa đào tạo chuyên ngành, project leadership |
 | **Trưởng phòng/Manager (lương ~20-30 triệu VND/tháng)** | Lương cạnh tranh, flexible working | Sự tôn trọng từ CEO, insider culture | Ghi nhận công khai (company meeting), quyền tự quyết, seat tốt | Khóa lãnh đạo nước ngoài, cơ hội learning & development |
 
 **Chiến lược tăng động lực theo Maslow ở công ty này:**
@@ -232,7 +249,11 @@ Sau này, Maslow **mở rộng lý thuyết** thành **8 tầng** bằng cách t
 
 ### 1. Lý Thuyết Cơ Bản
 
-Năm **1959**, Frederick Herzberg nghiên cứu **200 kỹ sư và kế toán** tại công ty Pittsburghma, yêu cầu họ **mô tả những thời điểm họ thấy công việc rất hài lòng** và **những thời điểm họ rất bất mãn**.
+Năm **1959**, Frederick Herzberg (cùng cộng sự Mausner và Snyderman, xuất bản trong sách *The Motivation to Work*) nghiên cứu khoảng **200 kỹ sư và kế toán** (thường được trích dẫn là 203 người) tại nhiều công ty ở khu vực Pittsburgh (Mỹ), yêu cầu họ **mô tả những thời điểm họ thấy công việc rất hài lòng** và **những thời điểm họ rất bất mãn**.
+
+#### Tại sao có thuyết này?
+
+Vào cuối thập niên 1950, các doanh nghiệp Mỹ tin rằng "tăng lương + cải thiện điều kiện = nhân viên hài lòng hơn = làm việc tốt hơn". Herzberg nghi ngờ giả định ngầm rằng **hài lòng và bất mãn là hai đầu của một thanh trượt**. Ông thiết kế nghiên cứu để hỏi **hai câu độc lập**: "kể về lúc bạn thấy rất tốt về công việc" và "kể về lúc bạn thấy rất tệ". Điều đáng giá về mặt quản trị: nếu hai nhóm nguyên nhân khác nhau, thì **chi tiền để "dập bất mãn" (lương, điều kiện) và chi tiền để "tạo động lực" (công việc có ý nghĩa, thành tựu) là hai khoản đầu tư khác nhau** — không thể dùng khoản này thay khoản kia. Ví dụ bình dân: bồn cầu sạch không khiến bạn yêu nhà hàng, nhưng bồn cầu bẩn chắc chắn làm bạn bỏ đi.
 
 Sau phân tích, Herzberg **khám phá một bất ngờ**: Những **yếu tố tạo ra sự hài lòng** (motivators) **HOÀN TOÀN KHÁC** với những **yếu tố gây ra sự bất mãn** (dissatisfiers/hygiene factors).
 
@@ -322,9 +343,9 @@ Hãy tưởng tượng **bạn cảm thấy hài lòng với công việc** vì:
 
 | **Nhược điểm** | **Chi tiết phê phán** | **Ví dụ thực tế** |
 |---------|-----------|-----------|
-| **Phương pháp nghiên cứu được chỉ trích** | Herzberg sử dụng "critical incident method" với **200 người** ở **1 công ty** (Pittsburgh). Mẫu **quá nhỏ, quá specific**, không đại diện. | Khi Herzberg trực tiếp phỏng vấn, người hỏi có thể **bias** sự trả lời. Ví dụ: Nếu Herzberg hỏi "Khi nào bạn hài lòng nhất?", người trả lời có xu hướng nói những điều **tích cực, cao đẹp** (achievement, responsibility) chứ không nói **tiền lương** (vì tưởng mình hạ thấp bản thân nếu nói tiền). |
+| **Phương pháp nghiên cứu được chỉ trích** | Herzberg sử dụng "critical incident method" với **khoảng 200 người** chỉ thuộc **2 nghề (kỹ sư, kế toán)** ở khu vực Pittsburgh. Mẫu **quá nhỏ, quá specific**, không đại diện. | Khi Herzberg trực tiếp phỏng vấn, người hỏi có thể **bias** sự trả lời. Ví dụ: Nếu Herzberg hỏi "Khi nào bạn hài lòng nhất?", người trả lời có xu hướng nói những điều **tích cực, cao đẹp** (achievement, responsibility) chứ không nói **tiền lương** (vì tưởng mình hạ thấp bản thân nếu nói tiền). |
 | **Lương là Hygiene hay Motivator?** | Herzberg nói **lương là Hygiene** (không motivate, chỉ tránh bất mãn). Nhưng **thực tế không phải lúc nào cũng đúng**. Nếu lương **very high, above market**, nó có thể **là Motivator**. Nếu lương **cực thấp**, nó gây **bất mãn rất lớn**. | Ở Việt Nam, công nhân nhà máy được tăng lương từ 4 triệu → 6 triệu VND/tháng sẽ **rất motivate**. Việc tăng lương **có thể vừa tránh bất mãn vừa motivate**, không phải chỉ là Hygiene. |
-| **Bất đồng ý từ các nghiên cứu sau** | Nhiều nghiên cứu **không tìm thấy chứng cứ mạnh** cho sự phân chia rõ ràng giữa Hygiene vs Motivators. | House & Wigdor (1967) tái phỏng vấn 151 nhân viên, **không tìm thấy chứng cứ rõ ràng** cho Two-Factor Theory. |
+| **Bất đồng ý từ các nghiên cứu sau** | Nhiều nghiên cứu **không tìm thấy chứng cứ mạnh** cho sự phân chia rõ ràng giữa Hygiene vs Motivators. | House & Wigdor (1967) tổng hợp lại các nghiên cứu về Two-Factor và **không tìm thấy chứng cứ rõ ràng** cho việc tách bạch hai nhóm yếu tố. |
 | **Khác biệt văn hóa không được xem xét** | Herzberg nghiên cứu ở Mỹ (văn hóa cá nhân chủ nghĩa). Ở các nước khác, **nhu cầu có thể khác nhau**. | Ở Việt Nam, **ổn định công việc (Hygiene)** có thể là **siêu quan trọng** hơn Mỹ, vì tình hình kinh tế còn **bất ổn**. Công nhân VN sợ **bị sa thải**, nên an toàn việc làm **cực kỳ motivate**. |
 | **Không xem xét sự khác biệt cá nhân** | Một người có thể **bị motivate bởi Hygiene** (muốn lương cao) trong khi người khác **bị motivate bởi Motivators** (muốn công nhận). | Một người nuôi 5 người con sẽ **quan tâm lương hơn** người độc thân. Một person tham vọng lãnh đạo sẽ **quan tâm advancement hơn** người chỉ muốn công việc ổn định. |
 | **Khó áp dụng trong thực tế** | Để **xóa bỏ Hygiene factors**, tổ chức phải **chi tiêu rất lớn** (lương cao, điều kiện tốt). Trong khi **các Motivators có thể được cung cấp với chi phí thấp hơn** (recognition, responsibility). Nhưng nếu **Hygiene không tốt**, **Motivators cũng vô ích**. | Nếu công ty **chỉ cho khen ngợi (Motivator)** nhưng **lương quá thấp (Hygiene kém)**, nhân viên vẫn sẽ **bỏ đi** tìm công việc lương cao hơn. |
@@ -349,6 +370,10 @@ Hãy tưởng tượng **bạn cảm thấy hài lòng với công việc** vì:
 ## IV. McCLELLAND'S THEORY OF NEEDS – THUYẾT NHU CẦU THÀNH TỰU
 
 ### 1. Lý Thuyết Cơ Bản – Ba Nhu Cầu
+
+#### Tại sao có thuyết này?
+
+McClelland (Harvard) bắt đầu từ một câu hỏi vĩ mô: *vì sao có quốc gia/thời kỳ phát triển kinh tế nhanh hơn?* Trong cuốn *The Achieving Society* (1961), ông cho rằng một phần lời giải là **tỷ lệ người có nhu cầu thành tựu cao (nAch)** trong xã hội — những người thích tự chịu trách nhiệm, đặt mục tiêu vừa sức khó và cần phản hồi cụ thể. Khác Maslow (mọi người đều đi lên cùng một cầu thang), McClelland cho rằng nhu cầu **được học từ trải nghiệm** và **mỗi người có "hồ sơ" nhu cầu riêng**, nên cùng một vị trí công việc sẽ hợp với người này hơn người kia. Công cụ đo lường ông dùng là **TAT** (do Henry Murray và Christiana Morgan phát triển năm 1935, McClelland chỉnh lại cách chấm điểm cho nAch/nAff/nPow). Hàm ý quản trị: **tuyển đúng "hồ sơ nhu cầu" cho đúng vị trí** (sales cần nAch, quản lý cần social nPow) và **có thể huấn luyện nAch** (các khóa đào tạo của McClelland ở Ấn Độ cho thấy doanh nhân nhỏ tăng đầu tư và tạo thêm việc làm sau huấn luyện, theo nghiên cứu ông công bố — mang tính tham khảo).
 
 Năm **1961**, David McClelland (tâm lý học Mỹ) đề xuất rằng **con người có ba nhu cầu chính** thúc đẩy hành động:
 
@@ -526,6 +551,12 @@ McClelland phát triển **TAT (Thematic Apperception Test)** – **phương ph�
 
 ### 1. Lý Thuyết Cơ Bản
 
+#### Tại sao có thuyết này, và tại sao là phép NHÂN?
+
+Maslow, Herzberg, McClelland đều trả lời "con người cần gì". Victor Vroom (Yale, sách *Work and Motivation*, 1964) hỏi câu khác, thực tế hơn: **một người đang cần tiền có chắc sẽ cố gắng hết sức không?** Không — nếu họ nghĩ "cố cũng không kịp deadline" hoặc "làm tốt cũng chẳng ai thưởng". Vroom mô hình hóa động lực như một **phép tính xác suất chủ quan** trong đầu nhân viên: (1) *Tôi cố thì có làm được không?* (E), (2) *Làm được thì có được đền đáp không?* (I), (3) *Phần thưởng có đáng không?* (V).
+
+Lý do dùng **phép nhân** chứ không phải phép cộng: một chuỗi nhân quả đứt ở **bất kỳ mắt xích nào** thì toàn bộ chuỗi mất tác dụng. Nếu cộng, một người với E=0 (tin chắc mình không làm nổi) nhưng V cao vẫn có "động lực dương" — phi lý. Phép nhân buộc kết quả bằng 0 khi một thành phần bằng 0. Hàm ý quản trị: **đừng chỉ tăng tiền thưởng (V) khi vấn đề nằm ở E hoặc I** — đây là lỗi phổ biến nhất của SME (xem Case Study 3).
+
 Năm **1964**, Victor Vroom đề xuất rằng **motivation không phải là kết quả của nhu cầu cá nhân**, mà là **kết quả của quá trình suy luận logic**:
 
 *"Nhân viên sẽ motivate để làm công việc nếu họ **kỳ vọng** rằng **nỗ lực của họ sẽ dẫn đến kết quả tốt**, và **kết quả đó sẽ mang lại phần thưởng có giá trị** cho họ."*
@@ -687,16 +718,19 @@ Trong đó:
 
 ### 1. Equity Theory (Adams, 1963) – Thuyết Công Bằng
 
+**Tại sao có thuyết này?** John Stacy Adams (tâm lý học xã hội, làm việc tại General Electric) dựa trên thuyết bất hòa nhận thức (cognitive dissonance) của Festinger (1957): khi con người thấy "mình bị thiệt" so với người khác, họ rơi vào trạng thái căng thẳng khó chịu và **tìm cách giảm căng thẳng đó** — bằng cách giảm nỗ lực, đòi tăng lương, tự thuyết phục lại, đổi đối tượng so sánh, hoặc bỏ đi. Điểm quan trọng: nhân viên không so **mức tuyệt đối** (lương bao nhiêu) mà so **tỷ lệ đầu ra/đầu vào** với một "người tham chiếu" (referent). Vì thế lương tăng 10% vẫn có thể gây bất mãn nếu đồng nghiệp được tăng 20%.
+
 **Lý thuyết**: Nhân viên so sánh **inputs (nỗ lực, kỹ năng) vs outputs (lương, recognition)** của họ với **người khác**. Nếu **tỷ lệ không công bằng**, họ sẽ **bất mãn, giảm nỗ lực, hoặc bỏ đi**.
 
 **Công thức**:
 
 $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\text{Others' Outputs}}$$
 
-**Ví dụ thực tế**:
-- Bạn làm việc **10 giờ/ngày, được lương 10 triệu VND**.
-- Đồng nghiệp làm **8 giờ/ngày, được lương 12 triệu VND**.
-- **Bất công bằng!** Bạn sẽ **bất mãn, có thể bỏ công ty, hoặc giảm nỗ lực**.
+**Ví dụ tính toán từng bước (số giả định minh họa)**:
+- Bạn làm việc **10 giờ/ngày, lương 10 triệu VND/tháng** → Output/Input = 10 triệu / 10 giờ = **1,0 triệu VND mỗi giờ-ngày**.
+- Đồng nghiệp làm **8 giờ/ngày, lương 12 triệu VND/tháng** → 12 / 8 = **1,5 triệu VND mỗi giờ-ngày**.
+- Tỷ lệ của bạn chỉ bằng 1,0/1,5 ≈ **67%** của đồng nghiệp → **bất công bằng (bị thiệt)**. Bạn sẽ **bất mãn, giảm nỗ lực, đòi tăng lương, hoặc bỏ đi**.
+- Ngược lại, nếu tỷ lệ của bạn **cao hơn** (over-rewarded), một số người cũng cảm thấy áy náy và tăng nỗ lực hoặc đánh giá lại công việc — nhưng phản ứng này yếu hơn nhiều so với khi bị thiệt.
 
 **Cách khắc phục**:
 - **Lương công bằng**: Mỗi cấp level, cùng exp → cùng lương.
@@ -706,6 +740,8 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 ---
 
 ### 2. Goal-Setting Theory (Locke, 1968)
+
+**Tại sao có thuyết này?** Edwin Locke (1968, bài *"Toward a Theory of Task Motivation and Incentives"*) quan sát rằng nhiều hệ thống thưởng thất bại không phải vì tiền ít mà vì **người lao động không biết chính xác phải đạt gì**. Qua hàng trăm thí nghiệm (cùng Gary Latham, tổng hợp năm 1990), ông kết luận: mục tiêu **cụ thể và khó** cho hiệu suất cao hơn mục tiêu **"hãy cố hết sức"** — vì mục tiêu định hướng sự chú ý, huy động nỗ lực, tăng sự bền bỉ và khuyến khích tìm chiến lược tốt hơn. Đây là nền tảng của MBO (Drucker, 1954), SMART goals và OKR.
 
 **Lý thuyết**: Nhân viên sẽ **motivate cao nhất** khi có **mục tiêu cụ thể, khó, và commit cao** (committed to the goal).
 
@@ -720,12 +756,15 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 | **Task Complexity (Độ phức tạp)** | Nếu goal quá phức tạp, cần **thời gian dài hơn** để commit. | ✓ Project 1 năm cần commit từ sớm vs ✓ Task 1 tuần không cần commit lâu |
 
 **Ứng dụng**:
-- **OKR (Objectives & Key Results)** framework là ứng dụng trực tiếp của Goal-Setting.
-- Google, Intel sử dụng OKR để motivate teams.
+- **OKR (Objectives & Key Results)** framework là ứng dụng trực tiếp của Goal-Setting (Intel phát triển với Andy Grove, Google áp dụng từ cuối thập niên 1990 nhờ John Doerr).
+- **Lưu ý rủi ro**: mục tiêu quá khó + áp lực cao có thể khiến người ta **gian lận số liệu hoặc bỏ qua chất lượng** (xem Case Study 3). Mục tiêu nên đi kèm chỉ số chất lượng.
+- Liên hệ với Vroom: mục tiêu "khó" chỉ hiệu quả khi **Expectancy vẫn đủ cao** — người lao động phải tin mình có cơ hội đạt.
 
 ---
 
 ### 3. Self-Determination Theory (Deci & Ryan, 1985-2000s)
+
+**Tại sao có thuyết này?** Edward Deci và Richard Ryan (Đại học Rochester) phát hiện từ thí nghiệm những năm 1970-1980 một hiện tượng gây tranh cãi: **thưởng tiền cho việc người ta vốn thích làm có thể làm giảm hứng thú** (hiệu ứng *overjustification / crowding-out*, mở rộng từ thí nghiệm của Lepper, 1973). Họ phân biệt **động lực nội tại (intrinsic)** — làm vì bản thân việc làm đem lại thỏa mãn — và **động lực ngoại tại (extrinsic)** — làm vì phần thưởng/áp lực. Kết luận thực dụng: phần thưởng bên ngoài **không đáng ghét**, nhưng nếu được dùng như công cụ **kiểm soát**, nó làm mất cảm giác tự chủ và triệt tiêu động lực nội tại; nếu được dùng như **phản hồi ghi nhận năng lực**, nó lại có thể củng cố động lực. Ba nhu cầu tâm lý bẩm sinh quyết định điều này:
 
 **Lý thuyết**: Con người **cơ bản** cần có **ba nhu cầu tâm lý**:
 
@@ -739,11 +778,13 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 - Google cho **mỗi engineer 20% thời gian** để làm **dự án bất kỳ họ muốn** (autonomy).
 - Engineer được **học kỹ năng mới** (competence).
 - Engineer **làm việc với những người cùng passion** (relatedness).
-- **Kết quả**: Rất nhiều sản phẩm nổi tiếng xuất phát từ 20% time (Gmail, Google News, AdSense).
+- **Kết quả**: Một số sản phẩm nổi tiếng thường được kể là xuất phát từ 20% time (Gmail, Google News, AdSense) — đây là câu chuyện được Google và báo chí nhắc rộng rãi, nhưng mức độ đóng góp chính xác và việc chính sách còn được thực thi rộng như trước hay không thì **chưa được kiểm chứng đầy đủ**; nên xem như ví dụ minh họa.
 
 ---
 
 ### 4. Reinforcement Theory (Skinner, 1938)
+
+**Tại sao có thuyết này?** B.F. Skinner (Harvard, sách *The Behavior of Organisms*, 1938) phát triển **điều kiện hóa thao tác (operant conditioning)**: hành vi chịu ảnh hưởng bởi **hậu quả** xảy ra ngay sau nó. Khác các thuyết trên, Reinforcement **không quan tâm "bên trong đầu" nhân viên nghĩ gì**, chỉ quan tâm quan hệ *hành vi → hậu quả*. Nó giải thích vì sao lời khen kịp thời hiệu quả hơn bonus cuối năm, và vì sao hành vi tốt không được để ý sẽ dần biến mất. Hạn chế: bỏ qua yếu tố nhận thức và có thể gây hiệu ứng crowding-out (xem SDT).
 
 **Lý thuyết**: Hành vi được **tăng cường (reinforce)** sẽ **lặp lại** (dựa trên Behavioral Psychology).
 
@@ -752,8 +793,8 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 | **Loại** | **Định nghĩa** | **Ví dụ** | **Tác động** |
 |---------|---------|---------|---------|
 | **Positive Reinforcement** | Thêm một **phần thưởng dương tính** sau hành vi tốt. | Công nhân produce 120 sản phẩm → thưởng 1 triệu VND → sẽ tiếp tục produce 120+. | Hành vi **lặp lại & tăng cường**. |
-| **Negative Reinforcement** | Loại bỏ một **phần thưởng âm tính** khi hành vi tốt. | Cử nhân kết quả tốt, **không bị chỉ trích** → sẽ tiếp tục. | Hành vi **lặp lại** (vì tránh negative). |
-| **Punishment** | Áp dụng **khoá phạt** khi hành vi xấu. | Nhân viên đi trễ → bị giảm lương → sẽ cố gắng **không đi trễ**. | Hành vi xấu **giảm bớt**. |
+| **Negative Reinforcement** | **Gỡ bỏ một điều khó chịu** khi hành vi mong muốn xảy ra (khác với punishment!). | Nhân viên nộp báo cáo đúng hạn → được **miễn họp kiểm tra tiến độ hàng tuần** → sẽ tiếp tục nộp đúng hạn. | Hành vi mong muốn **lặp lại** (vì tránh được điều khó chịu). |
+| **Punishment** | Áp dụng **hậu quả khó chịu** (phạt) khi hành vi xấu. | Nhân viên đi trễ → bị giảm lương → sẽ cố gắng **không đi trễ**. | Hành vi xấu **giảm bớt**. |
 | **Extinction** | **Không có gì xảy ra** sau hành vi (không reward, không punish). | Nhân viên hoàn thành task tốt nhưng **không được công nhận** → hành vi dần **biến mất**. | Hành vi **giảm dần**. |
 
 **Vấn đề**: Nếu chỉ dùng **punishment**, nhân viên sẽ chỉ **tránh hành vi xấu**, không phải **chủ động tìm thành công**. **Tốt hơn là dùng Positive Reinforcement**.
@@ -761,6 +802,8 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 ---
 
 ### 5. Job Characteristics Model (Hackman & Oldham, 1976)
+
+**Tại sao có thuyết này?** Từ Taylor (1911), nhiều doanh nghiệp tối ưu hiệu suất bằng cách **chia nhỏ công việc** thành thao tác đơn giản, lặp lại. Kết quả phụ: nhàm chán, vắng mặt, nghỉ việc cao. Herzberg đề xuất "làm giàu công việc" (job enrichment) nhưng thiếu công cụ chẩn đoán. Richard Hackman và Greg Oldham (Yale, 1976) xây dựng mô hình để **đo được công việc "có tính tạo động lực" đến đâu** và biết cần sửa đặc điểm nào, kèm công cụ khảo sát JDS (Job Diagnostic Survey).
 
 **Lý thuyết**: Công việc **có những đặc điểm nhất định** sẽ **tạo ra motivation** và **job satisfaction** cao.
 
@@ -773,6 +816,14 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 | **Task Significance** | Nhân viên thấy **công việc có ảnh hưởng** tới người khác / xã hội. | "Feature bạn build này sẽ giúp **1 triệu user** mỗi ngày." Hoặc "Bạn serve customer sao cho happy, họ sẽ recommend công ty cho bạn bè." | Tăng motivation & meaning. |
 | **Autonomy** | Nhân viên có **quyền tự quyết** cách thực hiện công việc, lịch trình, resources. | Cho developer **tự chọn tech stack**, không ép buộc. Cho salesman **tự lập kế hoạch**, không cần report hàng giờ. | Tăng responsibility & ownership. |
 | **Feedback** | Nhân viên **biết rõ kết quả** của công việc (good or bad), để có thể **cải thiện**. | Thay vì chỉ báo hiệu suất hàng tháng, hãy cho **real-time feedback** (dashboard metrics, weekly 1-on-1s, immediate praise). | Tăng learning & control. |
+
+**Chỉ số tiềm năng tạo động lực (Motivating Potential Score – MPS):**
+
+$$MPS = \frac{\text{Skill Variety} + \text{Task Identity} + \text{Task Significance}}{3} \times \text{Autonomy} \times \text{Feedback}$$
+
+*Tại sao công thức có dạng này?* Ba đặc điểm đầu cùng tạo cảm giác "công việc có ý nghĩa" nên **lấy trung bình**; còn **Autonomy** (cảm giác trách nhiệm) và **Feedback** (biết kết quả) là hai điều kiện **bắt buộc** nên **nhân** — nếu một trong hai bằng 0, công việc không tạo được động lực dù rất đa dạng.
+
+*Ví dụ (thang 1-7, số giả định minh họa):* Công nhân lắp ráp một chi tiết: Variety 2, Identity 2, Significance 3, Autonomy 2, Feedback 3 → MPS = (2+2+3)/3 × 2 × 3 = 2,33 × 6 = **14**. Sau khi thiết kế lại thành tổ lắp ráp trọn bộ sản phẩm: Variety 5, Identity 4, Significance 6, Autonomy 4, Feedback 6 → MPS = (5+4+6)/3 × 4 × 6 = 5 × 24 = **120**. Tăng ~8,6 lần cho thấy hiệu quả của thiết kế lại công việc.
 
 **Model**: 5 Job Characteristics → 3 Psychological States → 3 Outcomes
 
@@ -903,7 +954,7 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 | **Maslow** | ✅ | IT workers đã có lương cao (Tầng 1-2 done). Nhấn mạnh Tầng 4-5 | **Title**: Senior, Lead, Staff Engineer. **Learning**: AWS, Kubernetes, AI/ML. **Project**: Build transformative products. |
 | **Herzberg** | ✅ | IT job **potentially interesting** (technical challenges, diverse skill), nhưng **risk**: code quality repetitive, no autonomy. Redesign needed | **Autonomy in how to implement** (not just WHAT, but HOW). **Technical leadership** (architect, tech lead roles). |
 | **Vroom** | ✅ | Tech industry often use **performance bonus** tied to KPI. But **problem**: E might be low (if unclear), I might be low (if trust company) | **Clarity**: OKR system, quarterly reviews, linked to bonus/equity. **Trust**: Deliver on promised raises/equity |
-| **McClelland** | ✅ | IT需要 **high nAch** engineers & **high social power** tech leads. Startup founders often have high nAch + nPow | **Identify high nAch**: Give challenging projects. **Identify high social nPow**: Promote to tech lead, engineering manager. |
+| **McClelland** | ✅ | IT cần **high nAch** engineers & **high social power** tech leads. Startup founders often have high nAch + nPow | **Identify high nAch**: Give challenging projects. **Identify high social nPow**: Promote to tech lead, engineering manager. |
 
 **Kế hoạch Motivation cho IT/Tech**:
 1. **Autonomy**: Let engineers **choose tech stack, approach**. No micromanagement.
@@ -977,14 +1028,18 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 
 ## X. CASE STUDIES CHI TIẾT
 
+> **Lưu ý về nguồn dữ liệu**: Các case về doanh nghiệp thật (Google, Vinamilk, Yahoo, FPT Software, WeWork, The Coffee House) được dùng để **minh họa cách vận dụng lý thuyết**. Các con số cụ thể (tỷ lệ nghỉ việc, năng suất, ngân sách...) trong các case này là **ước tính/minh họa, chưa được kiểm chứng từ nguồn công bố chính thức**; người đọc không nên trích dẫn như số liệu thật. Case 3 và Case 8 là tình huống **giả định minh họa** do tác giả thiết kế, có tính toán tự nhất quán.
+
 ### Case Study 1: GOOGLE – Áp dụng Self-Determination Theory (Success)
 
-**Bối cảnh:**
+> *Ghi chú nguồn*: chính sách 20% time và các sản phẩm liên quan được báo chí và Google nhắc rộng rãi; ngân sách học tập "$15,000/năm" là ước tính minh họa.
+
+#### Bối cảnh
 - Google được thành lập năm 1998, bắt đầu từ 2 người (Sergey Brin & Larry Page).
 - Năm 2004-2005, Google lớn lên nhưng **gặp vấn đề retention** – talented engineers đi tìm startups khác.
 - Vấn đề: Tiền **không phải motivator duy nhất** – engineers muốn **autonomy, competence, relatedness**.
 
-**Giải pháp áp dụng Self-Determination:**
+#### Giải pháp áp dụng Self-Determination
 
 1. **Autonomy (Tự chủ)**:
    - **20% Time Policy**: Mỗi engineer được dành **20% thời gian công việc** (1 ngày/tuần) để làm **bất kỳ dự án nào họ muốn** (không cần phê duyệt từ manager).
@@ -1000,13 +1055,20 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
    - **Team lunches**: Subsidized lunch (everyone eat together, bond).
    - **Inclusive culture**: Diversity & inclusion programs.
 
-**Kết quả:**
+#### Kết quả
 - Gmail (từ 20% time), Google News (từ 20% time), AdSense (từ 20% time) – **3 trong những sản phẩm lớn nhất của Google**.
 - **Retention rate cao**: Google consistently ranked trong "Best Places to Work".
 - **High employee satisfaction**: Employees feel empowered, motivated, part of something big.
 - **Innovation culture**: 20% time model encouraging **bottom-up innovation**.
 
-**Bài học:**
+#### Phân tích: vì sao mô hình này hiệu quả (lập luận từng bước)
+
+1. **Chẩn đoán**: Engineer Google đã có lương cao (Maslow tầng 1-2 thỏa mãn; theo Herzberg, lương đã là hygiene "đủ") → tăng thêm lương chỉ giữ chân được ngắn hạn, vì họ bị so sánh với offer của startup (Equity).
+2. **Đòn bẩy đúng nhu cầu**: Với người giỏi và có học vấn cao, ba nhu cầu SDT quan trọng hơn tiền: tự chủ (20% time), năng lực (ngân sách học tập, thử thách), kết nối (đồng nghiệp xuất sắc).
+3. **Chi phí so với lợi ích (logic)**: 20% thời gian ≈ 1/5 năng lực kỹ thuật "bị chuyển hướng" — đây là chi phí thật. Giá trị đạt được là: giữ chân người giỏi (tránh chi phí thay thế thường bằng 50-200% lương năm theo ước lượng phổ biến trong ngành), tạo ra ý tưởng sản phẩm từ dưới lên, và tăng uy tín tuyển dụng.
+4. **Điều kiện áp dụng**: Cơ chế này cần (a) lợi nhuận cao để chịu được chi phí cơ hội, (b) nhân sự tự giác cao, (c) văn hóa chấp nhận thất bại. SME khó sao chép nguyên văn nhưng có thể **thu nhỏ**: 1 buổi chiều/tháng cho "dự án cải tiến tự chọn".
+
+#### Bài học
 - Self-Determination **rất powerful** khi paired với high-paying job + smart peers.
 - Autonomy + Competence + Relatedness = **unbeatable motivation formula**.
 - Investment trong "soft" factors (autonomy, learning) > invest in higher salary alone.
@@ -1015,40 +1077,54 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 
 ### Case Study 2: VINAMILK – Áp dụng Maslow + Herzberg (Success)
 
-**Bối cảnh:**
+> *Ghi chú nguồn*: bối cảnh và chương trình là minh họa dựa trên các thực hành quản trị nhân sự phổ biến của doanh nghiệp sản xuất lớn ở Việt Nam; các con số (turnover 40% → 8%, lương 2,5 → 4,5 triệu, năng suất +25%, v.v.) là **ước tính minh họa, không phải số liệu do Vinamilk công bố**.
+
+#### Bối cảnh
 - Vinamilk (công ty sữa Việt Nam) có ~10,000 nhân viên.
 - Năm 2000s, **turnover rate cao** (40%/năm) ở nhân viên sản xuất + phân phối.
 - Vấn đề: Lương thấp (market norm), công việc repetitive, công nhân không cảm thấy valued.
 
-**Giải pháp áp dụng:**
+#### Giải pháp áp dụng
 
-**Maslow – Tầng 1-3:**
+##### Maslow – Tầng 1-3
 1. **Lương tăng**: Tăng từ 2.5 triệu → 4.5 triệu VND/tháng (gần market rate).
 2. **BHXH đầy đủ**: Health insurance, life insurance, accident insurance.
 3. **Team bonding**: Annual company outing, monthly team gathering, worker appreciation day.
 4. **Family-like culture**: CEO visit production floor, know workers by name, celebrate birthdays.
 
-**Herzberg – Motivators:**
+##### Herzberg – Motivators
 1. **Public Recognition**: "Worker of the Month" program – recognition công khai, photo in factory, small gift, announcement in company newsletter.
 2. **Responsibility**: Front-line workers được **empower quyết định nhỏ** (report defect without permission, suggest improvement).
 3. **Growth path**: Production worker → Team lead → Supervisor → Manager. Clear career path.
 4. **Skill variety**: Rotate workers across different production lines (avoid boredom).
 5. **Meaningful work**: "You're producing milk for millions of children in Vietnam" – communicate impact.
 
-**Job Redesign (Herzberg's Job Characteristics):**
+#### Job Redesign (Herzberg's Job Characteristics)
 - Skill variety: Rotate tasks (not same job all day).
 - Task significance: Connect to customer impact (milk for families).
 - Autonomy: Worker can suggest improvement, no need to ask supervisor every time.
 - Feedback: Daily production metrics visible on dashboard; weekly team review.
 
-**Kết quả:**
+#### Kết quả
 - **Turnover rate**: Giảm từ 40% → 8% trong 2 năm.
 - **Productivity**: Tăng 25% (do motivation increase + skill improvement).
 - **Quality**: Defect rate giảm 15% (do workers care more).
 - **Employee satisfaction**: Score từ 2.5/5 → 4.2/5 trong internal survey.
 - **Cost**: Initial investment cao (lương tăng, events), nhưng ROI positive (productivity gain > salary increase cost).
 
-**Bài học:**
+#### Kiểm tra logic ROI (giả định minh họa, tính từng bước)
+
+Một chương trình tăng lương chỉ hợp lý nếu lợi ích vượt chi phí. Giả sử nhóm áp dụng là **3.000 công nhân**:
+
+| **Khoản mục** | **Phép tính** | **Kết quả/năm** |
+|---|---|---|
+| Chi phí tăng lương (2,5 → 4,5 triệu/tháng) | 3.000 × 2 triệu × 12 | **72.000 triệu VND (72 tỷ)** |
+| Tiết kiệm chi phí thay thế nhân sự (giả định 6 triệu/người) | 3.000 × (40% − 8%) × 6 triệu | **5.760 triệu VND (5,76 tỷ)** |
+| Phần còn lại phải bù bằng năng suất/chất lượng | 72.000 − 5.760 | **66.240 triệu VND** |
+
+Quy ra mỗi công nhân: chi phí tăng thêm 24 triệu/năm, tiết kiệm thay thế 1,92 triệu/năm → cần lợi ích năng suất ≥ **22,08 triệu/năm ≈ 1,84 triệu/tháng**. Nếu mỗi công nhân tạo ra *lợi nhuận gộp đóng góp* (giả định) 20 triệu/tháng, thì năng suất +25% mang lại 5 triệu/tháng → **lãi ròng ≈ 5 + 0,16 − 2 = 3,16 triệu/người/tháng**. Bài học: **tăng lương chỉ có ROI dương khi đi cùng cơ chế chuyển động lực thành năng suất/chất lượng** (recognition, job redesign, KPI); tăng lương đơn độc thì chỉ là chi phí.
+
+#### Bài học
 - **Maslow T1-2 (Hygiene)**: Phải resolve trước – không đủ lương, không ai motivate.
 - **Maslow T3** (Tình cảm): Rất quan trọng ở Việt Nam – employees want to be "family", not just workers.
 - **Herzberg**: Motivators **tương đương hoặc quan trọng hơn** lương – công nhân muốn recognized, có responsibility.
@@ -1058,14 +1134,16 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 
 ### Case Study 3: SME Việt Nam – Sai Lầm Expectancy Theory (Failure)
 
-**Bối cảnh:**
+> *Ghi chú*: tình huống **giả định minh họa** (công ty và con số do tác giả thiết kế).
+
+#### Bối cảnh
 - Công ty sản xuất linh kiện điện tử, ~200 nhân viên.
 - CEO đọc bài viết về "performance-based bonus" và quyết định **implement aggressive KPI system**.
 - Mục tiêu: Tăng productivity 50% trong 1 năm.
 
-**Giải pháp (sai) áp dụng Expectancy Theory:**
+#### Giải pháp (sai) áp dụng Expectancy Theory
 
-**Hệ thống KPI aggressive**:
+##### Hệ thống KPI aggressive
 - Base salary (vẫn như cũ): 5 triệu VND/tháng.
 - Bonus structure: **Tính bằng output cụ thể** – ví dụ:
   - 100 units/day = 0 bonus.
@@ -1073,42 +1151,66 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
   - 140 units/day = 1 triệu bonus.
   - 160 units/day = 1.5 triệu bonus.
 
-**Vấn đề 1: Expectancy (E) quá thấp**:
+##### Vấn đề 1: Expectancy (E) quá thấp
 - Công nhân không bao giờ produce 160 units/day trước đó (normal là 100-110).
 - Bất ngờ nhìn vào KPI 160, công nhân nghĩ: "Không thể nào đạt được" → **E = 0.1 (rất thấp)**.
 - Lãnh đạo không cung cấp training, tools, resources để **improve productivity** → E vẫn thấp.
 - **Kết quả**: M = 0.1 × (I) × (V) = rất thấp → **không motivate, chỉ làm công nhân stress**.
 
-**Vấn đề 2: "Gaming" hệ thống (Unintended consequences)**:
+##### Vấn đề 2: "Gaming" hệ thống (Unintended consequences)
 - Một số công nhân **chuyển sang tính trò** – không quan tâm quality, chỉ quan tâm quantity.
 - Defect rate **tăng 40%** (ngắn hạn output cao, nhưng quality kém).
 - Quality team complaint, nhưng KPI system không reward quality → focus chỉ trên output.
 - Công nhân nói: "Công ty chỉ quan tâm số lượng, không quan tâm quality" → lose confidence in system (I thấp).
 
-**Vấn đề 3: Instrumentality (I) không rõ**:
+##### Vấn đề 3: Instrumentality (I) không rõ
 - CEO nói "bonus tính dựa trên output", nhưng **công thức chính xác không clear**.
 - Một số công nhân produce 135 units, nhưng bonus không được tính đúng (vì overtime hour bị count sai).
 - Công nhân không trust system → **I giảm từ 0.8 → 0.3**.
 
-**Vấn đề 4: Valence (V) không match**:
+##### Vấn đề 4: Valence (V) không match
 - Công nhân sẽ cô đơn, không có team spirit (vì everyone focus trên individual output, không collaborate).
 - Bị stress (target quá cao) → muốn **relax time, không muốn thêm tiền**.
 - Nhiều công nhân **bỏ đi tìm công ty khác** (lower stress, lower pay) → **V thấp**.
 
-**Hậu quả sau 3 tháng**:
+#### Hậu quả sau 3 tháng
 - **Turnover**: Tăng từ 5%/tháng → 20%/tháng (top performers bỏ đi vì stress).
 - **Productivity**: Tăng ngắn hạn (3 tháng) nhưng dài hạn **giảm** (vì nhân viên giỏi đi, chỉ còn những người dễ tính).
 - **Defect rate**: Tăng 40% → chi phí rework & customer complaint tăng.
 - **Morale**: Rất tệ – công nhân cảm thấy "công ty không care about us, chỉ care about money".
 
-**Giải pháp khắc phục**:
+#### Phân tích định lượng: vì sao Motivation sụp đổ? (giả định minh họa)
+
+**Bước 1 – Khoảng cách giữa mặc định và mục tiêu.** Công nhân trung bình sản xuất **105 units/ngày**. Các mốc thưởng đòi tăng so với mức hiện tại:
+
+| **Mốc KPI** | **Phép tính** | **Tăng so với 105** |
+|---|---|---|
+| 120 units | (120/105) − 1 | **+14,3%** (khả thi nếu có đào tạo) |
+| 140 units | (140/105) − 1 | **+33,3%** (rất khó) |
+| 160 units | (160/105) − 1 | **+52,4%** (gần như không thể) |
+
+→ Hai mốc thưởng cao nhất đòi tăng 33-52%, khiến phần lớn công nhân kết luận chỉ mốc 120 là với tới được — mà mốc này chỉ thưởng 500k (≈10% lương 5 triệu).
+
+**Bước 2 – Ước lượng E, I, V (cảm nhận trung bình của công nhân).**
+
+| **Thời điểm** | **E** | **I** | **V** | **M = E × I × V** |
+|---|---|---|---|---|
+| Trước KPI (lương cố định, chưa có thưởng sản lượng) | 0,7 | 0,5 | 0,6 | 0,7 × 0,5 × 0,6 = **0,210** |
+| Sau khi áp KPI sai (sau ~3 tháng) | 0,1 | 0,3 | 0,4 | 0,1 × 0,3 × 0,4 = **0,012** |
+| Sau khắc phục (mục tiêu bậc thang 110/120, bonus rõ, trả ngay) | 0,7 | 0,85 | 0,75 | 0,7 × 0,85 × 0,75 ≈ **0,446** |
+
+**Bước 3 – Diễn giải.** M giảm từ 0,21 xuống 0,012 (giảm khoảng **94%**) dù **tiền thưởng (đáng lẽ làm tăng V) được thêm vào**. Nguyên nhân: E và I bị phá hủy mạnh hơn mức V tăng. Đây chính là hậu quả của phép nhân. Sau khắc phục, M tăng gấp ~37 lần so với đáy và gấp ~2,1 lần so với trước KPI — **mà không cần tăng tiền thưởng**, chỉ cần sửa E (bậc thang vừa sức, đào tạo) và I (công thức minh bạch, trả ngay).
+
+**Bước 4 – Bài học chẩn đoán.** Khi KPI thưởng không hiệu quả, **hỏi theo thứ tự E → I → V** ("Họ có tin làm được không? Có tin được thưởng không? Thưởng có đáng không?") trước khi nghĩ đến chuyện tăng tiền.
+
+#### Giải pháp khắc phục
 1. **Reset E**: Cung cấp training, tools, mentor để công nhân **dần dần tăng output** (từ 100 → 110 → 120, không phải 100 → 160).
 2. **Cải thiện I**: Công thức bonus rõ ràng, transparent, trả **ngay tháng đó** (không chờ).
 3. **Cân bằng Valence**: Vừa có tiền (bonus), vừa có team spirit (group target), vừa có learning (skill improvement).
 4. **Quality metrics**: Thêm quality KPI (không chỉ output). "Good quality + high output = highest bonus".
 5. **Re-build trust**: CEO communicate sorry, explain new plan, involve workers in goal-setting (co-create targets).
 
-**Bài học**:
+#### Bài học
 - **Expectancy Theory cần cân bằng**: E, I, V phải **tất cả cao**, không chỉ focus vào V (reward $).
 - **Không set target quá cao ngay** → E = 0 → motivation collapse.
 - **Transparency + trust** là nền tảng của Expectancy Theory.
@@ -1119,99 +1221,103 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 
 ### Case Study 4: YAHOO dưới Marissa Mayer – Cấm WFH (Failure)
 
-**Bối cảnh:**
+> *Ghi chú nguồn*: việc Yahoo yêu cầu nhân viên làm việc tại văn phòng (memo từ bộ phận nhân sự, công bố đầu 2013, áp dụng từ tháng 6/2013) là sự kiện được báo chí đưa tin rộng rãi. Các số liệu như tỷ lệ nghỉ việc tăng 20-30% là **ước tính minh họa**, không có công bố chính thức; Yahoo cũng chịu nhiều áp lực kinh doanh khác nên **không thể quy toàn bộ suy giảm cho chính sách này**.
+
+#### Bối cảnh
 - Yahoo từng là **search giant #1**, nhưng **bị Google vượt qua** năm 2000s.
-- Năm 2012, **Marissa Mayer (từ Google) trở thành CEO** của Yahoo.
+- Tháng 7/2012, **Marissa Mayer (từ Google) trở thành CEO** của Yahoo.
 - Mayer observe rằng "productivity cao nhất ở office" (dựa trên Google experience), nên quyết định **cấm work-from-home (WFH)**.
 
-**Giải pháp sai**:
+#### Giải pháp sai
 - **Memo nổi tiếng**: "Employees cần **work in office**. Kỳ từ ngay, không WFH nữa."
 - Quy định **strict attendance**: Manager track xem ai vào office, mấy giờ, chỉ trích nếu không present.
 
-**Vấn đề 1: Vi phạm Self-Determination – Autonomy**:
+##### Vấn đề 1: Vi phạm Self-Determination – Autonomy
 - **Autonomy**: Mayer remove flexibility – employees bỗng **mất quyền tự quyết** khi nào work from home.
 - **Perception**: Employees cảm thấy "công ty không trust tôi" → **autonomy need bị vi phạm**.
-- Especially hit female employees (often need flexibility for childcare) – mayer **ironically là nữ, nhưng policy harm women**.
+- Chính sách có thể ảnh hưởng nặng hơn tới những nhân viên cần linh hoạt chăm sóc gia đình (bất kể giới tính).
 
-**Vấn đề 2: Equity Theory vi phạm**:
+##### Vấn đề 2: Equity Theory vi phạm
 - **Google (nơi Mayer từng làm)**: Flexible work, **high autonomy**, high salary.
 - **Yahoo (nơi Mayer làm CEO)**: Rigid office policy, **low autonomy**, salary **thấp hơn Google**.
 - Employees compare: "Google cho WFH, Yahoo không. Tại sao? Yahoo lương thua Google, policy thua Google" → **bất công bằng**.
 
-**Vấn đề 3: Brain drain**:
+##### Vấn đề 3: Brain drain
 - **Top talent tại Yahoo**: Từng work ở Google, Microsoft, Apple → quen với flexible work.
 - Mayer's policy **drive them away**: "Yahoo không trust me, can't WFH, salary thấp → I'll go to Google back" → **resignation wave**.
 - **Attrition rate tăng 20-30%** trong 1 năm sau policy.
 
-**Vấn đề 4: Misalignment với company stage**:
+##### Vấn đề 4: Misalignment với company stage
 - **Google (2004)**: Startup rising, office environment energetic, people WANT to be office.
 - **Yahoo (2012)**: Struggling company, low morale → forcing office time **không fix underlying problem**.
 - Office time không = higher productivity nếu employees **demotivated**.
 
-**Kết quả**:
+#### Kết quả
 - **Retention**: High performer leave, brain drain.
 - **Productivity**: **Không tăng** (vì employees demotivated, và top talent gone).
 - **Culture**: **Morale collapse** – employees feel controlled, not trusted.
 - **Stock price**: Continued decline (policy didn't fix business problem).
 - **Mayer's legacy**: Known as "CEO who killed Yahoo culture" – policy backfired badly.
 
-**Bài học**:
+#### Bài học
 - **Self-Determination**: Autonomy **very important** – people want to feel trusted.
 - **Equity Theory**: Compare with competitors → fairness matters.
 - **Context matters**: Policy từ Google không auto-work ở Yahoo (different stage, culture, market condition).
 - **Don't force collaboration** through rigid office policy – **trust & autonomy work better**.
-- **Female leader = more aware of work-life balance**, not less. Mayer's policy was surprising flip.
+- **Quyết định dựa trên kinh nghiệm cá nhân** của lãnh đạo ("ở Google thì thế") dễ sai khi bối cảnh công ty khác — cần dữ liệu về chính nhân viên của mình (survey, năng suất thực tế).
 - **Brain drain cost >> flexibility cost** – losing top talent is expensive.
 
 ---
 
 ### Case Study 5: FPT SOFTWARE – Kết Hợp Nhiều Thuyết (Success)
 
-**Bối cảnh:**
+> *Ghi chú nguồn*: FPT Software là công ty thật, nhưng phần chương trình nhân sự và kết quả (retention 85-90% so với 60-70% ngành, v.v.) dưới đây là **mô hình minh họa/ước tính** để thể hiện cách kết hợp nhiều thuyết, không phải số liệu do FPT công bố.
+
+#### Bối cảnh
 - FPT Software (công ty Việt) có ~10,000 developers, software engineer.
 - Năm 2015, cạnh tranh với **outsourcing giants** (Infosys, TCS, Cognizant).
 - Vấn đề: Talented developers dễ **chuyển sang startups, hoặc Singapore/Japan** vì lương, opportunity tốt hơn.
 
-**Giải pháp áp dụng – Kết hợp thuyết**:
+#### Giải pháp áp dụng – Kết hợp thuyết
 
-**1. Herzberg – Hygiene Factors**:
+##### 1. Herzberg – Hygiene Factors
 - **Competitive salary**: Match hoặc vượt market (50th-75th percentile).
 - **Benefits package**: Health insurance, retirement, lunch, office amenities.
 - **Clear management**: Không arbitrary decision, transparent rules.
 
-**2. Herzberg – Motivators**:
+##### 2. Herzberg – Motivators
 - **Meaningful work**: Projects for **Google, Microsoft, Intel** → developers proud to say "I build for Google".
 - **Responsibility**: Senior developers lead small teams, architect decisions.
 - **Recognition**: "Star Engineer" program – recognition công khai, featured in newsletter.
 - **Growth**: Technical tracks (Senior Engineer → Staff Engineer → Principal Engineer) AND management tracks (Manager → Director).
 
-**3. McClelland – nAch focus**:
+##### 3. McClelland – nAch focus
 - **Identify & recruit high-nAch people**: Tìm engineers muốn **challenge, achievement, excellence**.
 - **Give challenging projects**: Not just "maintain legacy code", nhưng "build new platform" hoặc "migrate cloud".
 - **Metrics & feedback**: Engineers see clear metrics (code quality, delivery speed, customer satisfaction) → know their achievement level.
 - **Stretch goals**: Set achievable-but-difficult targets (McClelland recommendation).
 
-**4. McClelland – nPow & nAff**:
+##### 4. McClelland – nPow & nAff
 - **Identify future leaders** (high social nPow + high nAch) → promote to tech lead, manager.
 - **Team culture** (high nAff): Tech talks, code reviews (collaborative), team lunch, mentorship program.
 
-**5. Vroom – Expectancy Theory**:
+##### 5. Vroom – Expectancy Theory
 - **Clear KPI**: Individual + team metrics (code quality, delivery, customer satisfaction, innovation).
 - **Expectancy (E)**: Provide training, tools (IDE, library, infrastructure) so engineers **confident in ability**.
 - **Instrumentality (I)**: **Transparent link** performance → bonus/promotion. "If you deliver on time with quality, you get 15% bonus". Deliver on promise quickly (no delay).
 - **Valence (V)**: Offer **multiple reward paths**: Salary increase, bonus, promotion, learning opportunity, stock option (if public). Let people choose.
 
-**6. Self-Determination – Modern approach**:
+##### 6. Self-Determination – Modern approach
 - **Autonomy**: Engineers choose **tech stack, architecture** (not forced). Don't micromanage.
 - **Competence**: Generous learning budget, conferences, certifications. Internal tech talks.
 - **Relatedness**: Strong peer group (hire smartest), collaborative culture.
 
-**7. Equity Theory**:
+##### 7. Equity Theory
 - **Fair pay scale**: Public salary bands (or at least within reasonable range). No hidden disparities.
 - **Equal opportunity**: Promotion based on merit, not politics.
 - **Transparent rules**: Everyone knows how bonuses, raises calculated.
 
-**Kết quả**:
+#### Kết quả
 - **Retention rate**: 85-90% (industry average 60-70% for tech).
 - **Productivity**: High (motivated team).
 - **Quality**: Top-tier (engineers care about quality).
@@ -1219,7 +1325,19 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 - **Culture**: "Great place to work" consistently (Vietnam ranking).
 - **Business impact**: Able to **compete with global giants**, win big contracts.
 
-**Bài học**:
+#### Bản đồ kết hợp: mỗi thuyết giải quyết vấn đề gì?
+
+| **Vấn đề của FPT Software** | **Thuyết chẩn đoán** | **Công cụ đưa ra** | **Chỉ số theo dõi** |
+|---|---|---|---|
+| Lương thấp hơn Singapore/Nhật → mất người | Herzberg (hygiene), Equity | Lương ở P50-P75 thị trường, thang bậc minh bạch | % offer bị từ chối, turnover |
+| Kỹ sư giỏi chán việc bảo trì | Herzberg (motivators), JCM | Dự án mới, kiến trúc, lộ trình kỹ thuật song song quản lý | Engagement score |
+| Thiếu lãnh đạo kế cận | McClelland | Nhận diện nAch cao + social nPow cao, huấn luyện | Tỷ lệ lấp vị trí quản lý nội bộ |
+| Thưởng không "chạm" | Vroom | KPI rõ, thưởng nhanh, nhiều dạng phần thưởng | Khảo sát E, I, V |
+| Mất cảm giác làm chủ | SDT | Tự chọn công nghệ, ngân sách học tập | Khảo sát tự chủ |
+
+**Ý nghĩa**: không có "một thuyết đúng"; mỗi thuyết là một **ống kính chẩn đoán**. Giá trị của case là quy trình *chẩn đoán → chọn thuyết → thiết kế → đo lường*.
+
+#### Bài học
 - **Combine multiple theories**: Không dùng 1 thuyết alone – dùng:
   - **Herzberg** để design công việc meaningful.
   - **McClelland** để recruit & develop leaders.
@@ -1233,50 +1351,52 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 
 ### Case Study 6: WeWork – Overuse Self-Determination (Failure)
 
-**Bối cảnh:**
+> *Ghi chú nguồn*: định giá khoảng 47 tỷ USD đầu 2019, IPO bị hoãn/rút tháng 9/2019 và việc sa thải hàng nghìn nhân sự cuối 2019 là các sự kiện được báo chí đưa tin rộng rãi. Số lượng nhân viên và tỷ lệ cắt giảm dưới đây là **ước tính minh họa**. Phân tích "overuse SDT" là **diễn giải của tác giả**, không phải kết luận chính thức; nguyên nhân sụp đổ của WeWork chủ yếu là mô hình kinh doanh và quản trị.
+
+#### Bối cảnh
 - **WeWork** (flexible workspace company) founded 2010, growth insane (valued $47B by 2019).
 - Company culture: "We're disrupting real estate, changing world" – very inspirational.
 - CEO Adam Neumann: Charismatic, visionary, but **lack of governance & financial discipline**.
 - Employees: Young, motivated, believe in mission.
 
-**Giải pháp sai – Overuse Self-Determination:**
+#### Giải pháp sai – Overuse Self-Determination
 
-**Problem 1: Autonomy without Guardrails**:
+##### Problem 1: Autonomy without Guardrails
 - **Autonomy trop cao**: Employees có quá nhiều freedom, nhưng **không enough structure**.
 - Teams work independently, **minimal cross-team collaboration** → silos.
 - Decisions made **without proper review** → can go wrong (wasted resources, duplicated efforts).
 - CEO **Neumann's decisions often arbitrary** (e.g., "let's buy office building" without proper ROI analysis).
 
-**Problem 2: Competence Gap**:
-- **Hiring too fast** – grew from 100 → 5000+ employees in 5 years.
+##### Problem 2: Competence Gap
+- **Hiring too fast** – tăng từ vài trăm lên hàng nghìn nhân sự trong vài năm (ước tính).
 - Many employees **not sufficiently trained/mentored** → burnout (autonomy without competence = stress).
 - Junior people given **too much responsibility too quickly**.
 
-**Problem 3: Relatedness façade**:
+##### Problem 3: Relatedness façade
 - WeWork pushed "community, family, mission" culture hard.
 - But **toxic behaviors** not addressed (e.g., Neumann behavior: "I'm founder, I can do what I want").
 - Relatedness became **cult-like** – criticizing company = criticizing "family".
 - **Dissent suppressed** – people afraid to speak up.
 
-**Problem 4: Equity Theory violated**:
+##### Problem 4: Equity Theory violated
 - Neumann & insiders got **massive valuations (equity)**.
 - Regular employees? **Stock options diluted** (so much later-stage funding).
 - **Major disparity**: Neumann took billions, employees got fractional equity → felt **unfair**.
 - When IPO failed (2019), employees realize **equity worthless** → **betrayal**.
 
-**Problem 5: Valence Problem (Vroom)**:
+##### Problem 5: Valence Problem (Vroom)
 - Employees motivated by **mission** ("change real estate, build community") – not salary primarily.
 - When company IPO failed, mission collapsed → **Valence = 0** (reward not valuable anymore).
 - Employees left because **motivation entirely based on failed mission**, not diversified.
 
-**Hậu quả**:
+#### Hậu quả
 - **IPO collapse** (2019): Supposed $47B company, failed IPO.
-- **Massive layoffs**: 50% workforce (5000 → 2000).
+- **Massive layoffs**: cắt giảm hàng nghìn nhân sự (khoảng 1/5 lực lượng lao động theo báo chí; con số cụ thể cần kiểm chứng).
 - **Attrition**: Top talent left during collapse.
 - **Culture collapse**: Employees felt **betrayed** (promised equity → worthless).
 - **Lawsuits**: Employees sued company for misrepresentation, unfair treatment.
 
-**Bài học**:
+#### Bài học
 - **Autonomy không = no governance**: Self-determination works khi có **clear vision, ethical leadership, proper controls**.
 - **Autonomy without competence = disaster**: Hiring too fast, not training = people fail.
 - **Relatedness can be toxic** if used to suppress dissent.
@@ -1288,42 +1408,44 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 
 ### Case Study 7: The Coffee House (Việt Nam) – Maslow + Herzberg for Service Workers
 
-**Bối cảnh:**
+> *Ghi chú nguồn*: The Coffee House là chuỗi có thật, nhưng mức lương, tỷ lệ nghỉ việc và diễn biến nội bộ dưới đây là **ước tính/diễn giải minh họa**, không dựa trên công bố của công ty. Quy mô nhân sự (~3.000) cũng chỉ mang tính ước chừng.
+
+#### Bối cảnh
 - **The Coffee House**: Chuỗi cafe Việt Nam, thành công 2010s, iconic brand.
 - ~3000 barista, waiter, staff.
 - Năm 2010-2015: **Golden period** – được lựa chọn là "Best Café in Vietnam", high revenue, loyal customers.
 - Năm 2018+: **Bắt đầu decline** – increased competition từ Starbucks, Trung Quốc brands; internal management issues.
 
-**Giải pháp thành công (2010-2015) – Áp dụng Maslow + Herzberg:**
+#### Giải pháp thành công (2010-2015) – Áp dụng Maslow + Herzberg
 
-**Maslow – Tầng 1-3:**
+##### Maslow – Tầng 1-3
 1. **Lương competitive**: ~4-6 triệu VND/tháng (higher than market) + commission từ upsell.
 2. **BHXH + meal**: Health insurance, free meal, discount on products.
 3. **Team culture**: "Coffee House family" – very strong bonding. Staff gathering monthly, annual trip.
 4. **Inclusive environment**: Store managers visible, caring, know staff by name, celebrate birthdays.
 
-**Herzberg – Motivators:**
+##### Herzberg – Motivators
 1. **Meaningful work**: "You're not just serving coffee, you're creating experience for customers" – communication strategy.
 2. **Recognition**: "Barista of Month" – photo on wall, featured in social media, small bonus. Customers write thank-you notes (displayed).
 3. **Responsibility**: Staff **empower** to offer free upgrade, refund if customer complain, suggest new menu item.
 4. **Skill development**: Barista training (latte art, coffee knowledge), customer service training.
 5. **Growth path**: Barista → Shift lead → Supervisor → Store manager → Regional manager.
 
-**Job Characteristics Model (Hackman & Oldham)**:
+#### Job Characteristics Model (Hackman & Oldham)
 - **Skill variety**: Not just make coffee – also cashier, inventory, customer care, event planning.
 - **Task identity**: Can see result (happy customer, compliment).
 - **Task significance**: "You create moment of joy in customer's day".
 - **Autonomy**: Staff can decide how to approach customer, what to recommend.
 - **Feedback**: Immediately (customer feedback, manager praise, sales number visible on board).
 
-**Kết quả (2010-2015)**:
+#### Kết quả (2010-2015)
 - **Turnover rate: 10-15%/year** (very low for F&B, industry average 40%+).
 - **Customer retention**: High (same customers visit weekly, loyal).
 - **Revenue/store**: High (upsell, loyalty).
 - **Culture**: Iconic (employees proud to work at The Coffee House, tell friends).
 - **Social media**: Strong (employees tag themselves, post stories – organic marketing).
 
-**Vấn đề xuất hiện (2018+) – Management changes, lose formula:**
+#### Vấn đề xuất hiện (2018+) – Management changes, lose formula
 
 1. **Lương decline**: Stopped raising salary at inflation rate → real salary decreased.
 2. **Hyper-expansion**: Opened too many stores too fast → **diluted team quality**.
@@ -1332,18 +1454,109 @@ $$\frac{\text{My Inputs}}{\text{My Outputs}} = \frac{\text{Others' Inputs}}{\tex
 5. **Centralized policy**: Head office forced policies (no flexibility) → killed staff autonomy.
 6. **Focus on **cost-cutting** instead of motivation.
 
-**Hậu quả (2018+)**:
+#### Hậu quả (2018+)
 - **Turnover**: Jumped to 35-40%/year.
 - **Staff quality**: Lower (good staff left, replaced by mediocre).
 - **Customer experience**: Declined (less knowledgeable staff, less personal service).
 - **Revenue**: Declined despite more stores.
 - **Culture**: Lost (employees don't brag anymore, social media presence decline).
 
-**Lesson**:
+#### Phân tích: vì sao công thức từng thành công rồi sụp đổ?
+
+| **Giai đoạn** | **Maslow T1-2 (lương, an toàn)** | **Maslow T3 (gia đình)** | **Herzberg motivators** | **Kết quả (ước tính)** |
+|---|---|---|---|---|
+| 2010-2015 | Lương cao hơn thị trường, đủ BHXH | Văn hóa "gia đình", quản lý quen tên nhân viên | Có recognition, trao quyền, lộ trình | Nghỉ việc 10-15%/năm |
+| 2018+ | Lương thực giảm vì không theo lạm phát | Mở cửa hàng quá nhanh, quản lý mới chưa thấm văn hóa | Bỏ chương trình ghi nhận, tập trung hóa chính sách | Nghỉ việc 35-40%/năm |
+
+*Logic*: Với nhân viên F&B lương gần mức sàn, **hygiene** (lương thực tế) và **tầng 3** (thuộc về) là nền tảng giữ chân; khi nền tảng bị cắt giảm đồng thời với việc bỏ các motivator rẻ tiền nhưng hiệu quả (ghi nhận, trao quyền), nhân viên bị mất cả "lý do ở lại" lẫn "lý do cố gắng". Tính theo chi phí: nếu chi phí thay thế một nhân viên là 5 triệu VND (giả định), với 3.000 nhân viên thì nghỉ việc tăng từ 12% lên 38% (+26 điểm phần trăm) tạo thêm 3.000 × 26% × 5 triệu = **3.900 triệu VND/năm** chi phí thay thế, chưa kể thiệt hại trải nghiệm khách hàng — khoản tiết kiệm từ việc ngừng tăng lương và bỏ chương trình ghi nhận thường nhỏ hơn con số này.
+
+#### Bài học
 - **What worked**: Maslow (lương fair + family culture) + Herzberg (meaningful work, recognition, growth).
 - **Why it collapsed**: **Didn't maintain the formula** – cut costs on Maslow (lương, culture), removed Herzberg motivators (recognition).
 - **Implication**: Motivation culture **must be maintained**, not one-time initiative. When you stop investing, you lose gains.
 - **Service industry specific**: For low-wage workers in F&B, **team culture & recognition = key motivators** (can't compete on salary with Starbucks).
+
+---
+
+### Case Study 8: Xưởng may "Thiên Phú" (SME Việt Nam, giả định minh họa) – Chẩn đoán bằng Herzberg + Vroom + Equity
+
+> *Ghi chú*: Doanh nghiệp, nhân sự và toàn bộ con số trong case này là **giả định minh họa do tác giả thiết kế**; các phép tính đã được kiểm tra tính nhất quán.
+
+#### Bối cảnh
+
+- **Xưởng may gia công Thiên Phú** (Bình Dương), **120 công nhân**, lương bình quân **7,5 triệu VND/tháng** → quỹ lương = 120 × 7,5 triệu = **900 triệu VND/tháng**.
+- Sản lượng **36.000 áo/tháng**, giá gia công **100.000 VND/áo** → doanh thu **3,6 tỷ VND/tháng**.
+- Vấn đề: **tỷ lệ nghỉ việc 48%/năm**, **tỷ lệ lỗi 6%**, tổ trưởng than công nhân "làm cho có". Chủ xưởng định **tăng lương đồng loạt 10%** nhưng chưa chắc có hiệu quả.
+- Chi phí cho 1 lần thay người (tuyển + đào tạo + năng suất thấp giai đoạn đầu): **8 triệu VND/người** (giả định). Chi phí sửa 1 áo lỗi: **40.000 VND**. Lợi nhuận đóng góp mỗi áo thêm: **12.000 VND**.
+
+#### Bước 1 – Đo chi phí của vấn đề hiện tại
+
+- Số công nhân nghỉ/năm: 120 × 48% = **57,6 người** → chi phí thay thế = 57,6 × 8 triệu = **460,8 triệu VND/năm**.
+- Áo lỗi/tháng: 36.000 × 6% = **2.160 áo** → chi phí sửa = 2.160 × 40.000 = **86,4 triệu/tháng = 1.036,8 triệu/năm**.
+- Tổng thiệt hại "nhìn thấy" ≈ **1.497,6 triệu VND/năm** (460,8 + 1.036,8), tương đương ≈ 13,9% quỹ lương năm 10.800 triệu. Con số này cho biết **đầu tư tối đa hợp lý** vào cải thiện động lực.
+
+#### Bước 2 – Chẩn đoán bằng Herzberg (khảo sát 60 công nhân, thang 1-5)
+
+| **Nhóm** | **Yếu tố** | **Điểm TB** |
+|---|---|---|
+| Hygiene | Lương | 2,4 |
+| Hygiene | Điều kiện làm việc | 3,1 |
+| Hygiene | An toàn việc làm | 3,4 |
+| Hygiene | Quản lý trực tiếp | 2,6 |
+| Motivators | Được công nhận | 1,9 |
+| Motivators | Trách nhiệm/tự chủ | 2,2 |
+| Motivators | Cơ hội thăng tiến | 1,8 |
+| Motivators | Công việc có ý nghĩa | 2,5 |
+
+- Trung bình Hygiene = (2,4 + 3,1 + 3,4 + 2,6)/4 = **2,875**; trung bình Motivators = (1,9 + 2,2 + 1,8 + 2,5)/4 = **2,10**.
+- **Diễn giải**: Hygiene ở mức "cần cải thiện" (chưa tệ), còn Motivators ở mức **báo động (< 2,5)**. Chỉ tăng lương (hygiene) sẽ *giảm bất mãn nhưng không tạo động lực*. Chỉ số thấp nhất là *công nhận* và *thăng tiến*, những khoản **rẻ nhất để cải thiện**.
+
+#### Bước 3 – Chẩn đoán bằng Vroom (E, I, V theo nhóm)
+
+| **Nhóm** | **E** | **I** | **V** | **M = E × I × V** | **Vấn đề chính** |
+|---|---|---|---|---|---|
+| Công nhân may | 0,6 | 0,3 | 0,7 | **0,126** | I thấp: "làm nhiều cũng như làm ít" |
+| Nhân viên QC | 0,7 | 0,4 | 0,5 | **0,140** | V thấp: thưởng không phải thứ họ cần |
+| Tổ trưởng | 0,8 | 0,5 | 0,4 | **0,160** | V thấp: muốn lộ trình quản lý, không phải tiền |
+
+→ **Tăng lương 10% (chỉ tác động V)** sẽ không giải quyết cốt lõi của công nhân may (I = 0,3). Muốn M của họ lên ≥ 0,5 thì I phải ≥ ~0,8.
+
+#### Bước 4 – Kiểm tra công bằng (Equity) – nguyên nhân sâu của I thấp
+
+- Công nhân **A**: 105 áo/ngày × 26 ngày = 2.730 áo, lương **7,2 triệu** → thu nhập/áo = 7,2 triệu / 2.730 ≈ **2.637 VND/áo**.
+- Công nhân **B** (cùng tổ, được tổ trưởng quý): 100 áo/ngày × 26 = 2.600 áo, lương **8,4 triệu** → ≈ **3.231 VND/áo**.
+- Tỷ lệ output/input của A chỉ bằng 2.637/3.231 ≈ **81,6%** của B. A làm nhiều hơn nhưng nhận ít hơn → **vi phạm công bằng**, làm sụp I ("làm tốt cũng không hơn") và là lý do nhiều công nhân giỏi bỏ đi.
+
+#### Bước 5 – Thiết kế can thiệp (kết hợp thuyết, có ngân sách)
+
+| **Hạng mục** | **Thuyết** | **Nội dung** | **Chi phí/năm** |
+|---|---|---|---|
+| Điều chỉnh lương cơ bản +5% theo bậc thợ, công khai thang bảng lương | Herzberg (hygiene), Equity | 900 triệu × 5% × 12 | **540 triệu** |
+| Thưởng năng suất + chất lượng, công thức in trên bảng, trả ngày 10 tháng sau | Vroom (I, E), Goal-Setting, Reinforcement | Quỹ thưởng 3% quỹ lương: 900 × 3% × 12 | **324 triệu** |
+| Ghi nhận công khai hàng tháng, đào tạo thợ đa kỹ năng, lộ trình công nhân → tổ phó → tổ trưởng | Herzberg (motivators), Maslow T4-5, JCM | Quà nhỏ, bảng vinh danh, khóa đào tạo | **40 triệu** |
+| **Tổng** | | | **904 triệu** |
+
+*Lưu ý thiết kế*: bonus gắn với **cả sản lượng và tỷ lệ lỗi** (tránh trường hợp Case 3); mục tiêu sản lượng **bậc thang** (+5%, +10%, +15% so với 105 áo/ngày) để giữ E cao.
+
+#### Bước 6 – Kết quả kỳ vọng sau 12 tháng (giả định) và tính ROI
+
+| **Chỉ tiêu** | **Trước** | **Sau (giả định)** | **Giá trị tiết kiệm/tăng thêm (triệu VND/năm)** |
+|---|---|---|---|
+| Nghỉ việc | 48% (57,6 người) | 25% (30 người) | (57,6 − 30) × 8 = **220,8** |
+| Tỷ lệ lỗi | 6% (2.160 áo/tháng) | 3,5% (1.260 áo/tháng) | (2.160 − 1.260) × 40.000 × 12 = **432** |
+| Sản lượng (cùng nhân sự) | 36.000 áo/tháng | +8% = +2.880 áo/tháng | 2.880 × 12.000 × 12 = **414,72** |
+| **Tổng lợi ích** | | | **1.067,52** |
+
+- **Lãi ròng** = 1.067,52 − 904 = **+163,52 triệu VND/năm**; chi phí/lợi ích = 904/1.067,52 ≈ **0,85**.
+- Vroom sau can thiệp (công nhân may): E = 0,75, I = 0,85, V = 0,8 → M = 0,75 × 0,85 × 0,8 = **0,51** (so với 0,126 trước) → tăng gấp **~4 lần**. QC: 0,8 × 0,8 × 0,7 = **0,448**; Tổ trưởng: 0,85 × 0,8 × 0,7 = **0,476**.
+- **Phân tích độ nhạy**: nếu chỉ đạt **một nửa** lợi ích năng suất (207,36 thay vì 414,72) → tổng lợi ích = 220,8 + 432 + 207,36 = **860,16** → **lỗ −43,84 triệu** trong năm đầu. Vì vậy cần theo dõi hằng quý, và phần "tăng lương cố định" là khoản khó điều chỉnh nhất — nên cân nhắc tăng theo bậc thay vì đồng loạt.
+
+#### Bài học
+
+1. **Chẩn đoán trước khi chi tiền**: ý định ban đầu "tăng lương 10%" chỉ xử lý V, trong khi gốc rễ là I (Equity) và Motivators thấp.
+2. **Công bằng là điều kiện của Instrumentality**: nếu A giỏi hơn nhận ít hơn B, mọi hệ thống KPI đều mất niềm tin.
+3. **Hygiene đủ, Motivators rẻ**: 40 triệu cho ghi nhận/đào tạo (4,4% tổng ngân sách) tác động trực tiếp lên chỉ số thấp nhất (công nhận, thăng tiến).
+4. **Đo ROI bằng số**: kết quả dương nhưng mỏng; SME cần pilot một tổ trước khi nhân rộng.
 
 ---
 
@@ -1460,7 +1673,7 @@ Measurement (monthly/quarterly):
 
 ## XII. CHECKLIST & TEMPLATES
 
-### Checklist 1: Employee Motivation Assessment
+### Template 1: Employee Motivation Assessment (Checklist)
 
 ```
 [ ] 1. SALARY & BENEFITS (Maslow T1-2, Herzberg Hygiene)
@@ -1731,7 +1944,7 @@ Quarterly review:
 
 ---
 
-## XIII. PITFALLS – SỰ CỐT THƯỜNG GẶP
+## XIII. PITFALLS – SAI LẦM THƯỜNG GẶP
 
 | **Sai Lầm Phổ Biến** | **Triệu Chứng** | **Nguyên nhân** | **Cách Khắc Phục** |
 |---------|---------|---------|---------|
@@ -1753,7 +1966,7 @@ Quarterly review:
 
 ---
 
-## XIV. KÊNH ĐÁP ỨNG THƯỜNG GẶP
+## XIV. FAQ – CÂU HỎI THƯỜNG GẶP
 
 | **Câu hỏi** | **Câu trả lời** |
 |---------|---------|
@@ -1763,3 +1976,55 @@ Quarterly review:
 | **"Nếu tôi promote everyone, budget sẽ vỡ"** | **Promote based on merit**, not everyone. Identify **high-nAch + nPow** people (McClelland), promote them. Others get **other motivation** (recognition, learning, autonomy). Clear **career path** (not everyone reach manager level – technical track alternative). |
 | **"Sếp tôi micromanage, làm tôi không motivate"** | **Talk to manager**: "I work better when given autonomy". Share **results when trusted**: "When I have autonomy, I deliver on time with better quality". Use data. If no change, escalate to HR hoặc **consider other job**. |
 | **"Reward system quá complex, nhân viên không hiểu"** | **Simplify**. KPI formula maximum 1 page. Bonus calculation transparent (show example). **Dashboard visible real-time** (so employees see progress). If complex, it fails (Vroom: I = low). |
+
+---
+
+## PHỤ LỤC: CHECKLIST MOTIVATION TỔNG HỢP
+
+### A. Bảng tóm tắt các thuyết và công thức chính
+
+| **Thuyết** | **Công thức/Khung chính** | **Câu hỏi chẩn đoán** | **Công cụ can thiệp** |
+|---|---|---|---|
+| Maslow (1943) | 5 (hoặc 8) tầng nhu cầu | Nhân viên còn thiếu tầng nào? | Lương, an toàn, văn hóa, ghi nhận, phát triển |
+| Herzberg (1959) | Hygiene vs Motivators | Bất mãn do hygiene hay thiếu motivator? | Sửa hygiene đủ mức; thêm thành tựu, ghi nhận, trách nhiệm |
+| McClelland (1961) | nAch, nAff, nPow | Hồ sơ nhu cầu có hợp vị trí? | Tuyển/giao việc theo hồ sơ; huấn luyện social nPow |
+| Vroom (1964) | $M = E \times I \times V$ | Họ có tin làm được / được thưởng / thưởng đáng giá? | KPI vừa sức, thưởng minh bạch, phần thưởng đa dạng |
+| Adams (1963) | $\frac{\text{Output}_{mình}}{\text{Input}_{mình}} = \frac{\text{Output}_{người khác}}{\text{Input}_{người khác}}$ | Họ thấy mình bị thiệt so với ai? | Thang lương minh bạch, quy tắc thưởng nhất quán |
+| Locke (1968) | Mục tiêu cụ thể + khó + cam kết + phản hồi | Mục tiêu đã rõ và đo được chưa? | OKR/SMART, phản hồi thường xuyên |
+| Deci & Ryan | Autonomy – Competence – Relatedness | Có cảm giác tự chủ, giỏi lên, thuộc về? | Giảm micromanage, đào tạo, văn hóa đội nhóm |
+| Skinner (1938) | Hậu quả → hành vi lặp lại | Hành vi tốt có được củng cố ngay? | Khen/thưởng kịp thời; hạn chế chỉ phạt |
+| Hackman & Oldham (1976) | $MPS = \frac{V + I + S}{3} \times A \times F$ | Công việc có tiềm năng tạo động lực không? | Thiết kế lại công việc |
+
+### B. Checklist trước khi triển khai chương trình động lực
+
+**Chẩn đoán**
+- □ Đã khảo sát nhân viên (hygiene và motivators, E/I/V) thay vì đoán?
+- □ Đã tính chi phí của vấn đề hiện tại (turnover, lỗi, vắng mặt) để biết ngân sách tối đa hợp lý?
+- □ Đã phân nhóm nhân viên (công nhân, chuyên viên, quản lý) và chẩn đoán riêng từng nhóm?
+- □ Đã kiểm tra công bằng nội bộ (cùng vị trí, cùng năng suất, cùng mức thưởng?) và so với thị trường?
+
+**Thiết kế**
+- □ Hygiene (lương, điều kiện, an toàn việc làm) đạt tối thiểu P50 thị trường trước khi kỳ vọng motivators?
+- □ Mục tiêu/KPI bậc thang, dựa trên dữ liệu quá khứ + 10-20% (giữ E ≥ 0,6)?
+- □ Công thức thưởng minh bạch, viết trên một trang, kèm ví dụ tính (giữ I cao)?
+- □ Có chỉ số **chất lượng** đi kèm chỉ số sản lượng để tránh "chơi" KPI?
+- □ Đã hỏi nhân viên họ giá trị phần thưởng nào (tiền, thời gian, học tập, danh hiệu) (V)?
+- □ Có chương trình ghi nhận công khai, chi phí thấp, kịp thời?
+- □ Có lộ trình nghề nghiệp (kỹ thuật và quản lý) và ngân sách đào tạo?
+- □ Có cho phép tự chủ trong cách làm (không micromanage)?
+
+**Triển khai & đo lường**
+- □ Pilot ở 1 bộ phận trước khi nhân rộng?
+- □ Thưởng được trả đúng hạn, không trì hoãn?
+- □ Theo dõi hằng quý: turnover, engagement, năng suất, lỗi, vắng mặt?
+- □ Đã tính ROI và độ nhạy (nếu chỉ đạt 50% lợi ích thì còn lãi không)?
+- □ Cam kết duy trì chương trình (không cắt ghi nhận/lương khi cắt giảm chi phí)?
+- □ Đã đánh dấu các số liệu "minh họa" khi trích từ case study cho báo cáo nội bộ?
+
+### C. Công thức tính nhanh
+
+- **Motivation (Vroom)**: $M = E \times I \times V$ — nếu M thấp, kiểm tra theo thứ tự E → I → V.
+- **Chi phí nghỉ việc/năm** = Số nhân viên × Tỷ lệ nghỉ × Chi phí thay thế/người.
+- **ROI chương trình động lực** = (Tiết kiệm turnover + Giảm lỗi + Tăng sản lượng) − Chi phí chương trình; luôn tính thêm kịch bản 50% hiệu quả.
+- **Công bằng (Equity)**: so Output/Input giữa hai nhân viên có cùng vị trí; chênh lệch > 10-15% cần giải thích được bằng tiêu chí minh bạch.
+

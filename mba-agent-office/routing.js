@@ -42,11 +42,11 @@ export function planFor(workflow, command, ids) {
   let prev = [];
   for (const raw of workflow.steps || []) {
     const group = (Array.isArray(raw) ? raw : [raw]).map((s) => (typeof s === 'string' ? { agent: s } : s))
-      .filter((s) => ids.includes(s.agent) && s.agent !== 'manager' && (!s.when || s.when.some((k) => has(text, k))));
+      .filter((s) => ids.includes(s.agent) && s.agent !== 'manager' && (!s.when || s.when.some((k) => has(text, k))) && !(s.unless || []).some((k) => has(text, k)));
     const cur = group.map((s, i) => ({
       id: `t${tasks.length + i + 1}`,
       title: (s.title || workflow.titles?.[s.agent] || TITLES[s.agent] || `Thực hiện phần việc của #${s.agent}: {c}`).replace('{c}', c),
-      assignee: s.agent, dependsOn: prev,
+      assignee: s.agent, dependsOn: s.after ? tasks.filter((x) => s.after.includes(x.assignee)).map((x) => x.id) || prev : prev,   // after: [agent] = phụ thuộc mọi task trước của các agent đó (vd Rà soát cần cả kỹ thuật lẫn định giá)
     }));
     if (cur.length) { tasks.push(...cur); prev = cur.map((t) => t.id); }
   }
