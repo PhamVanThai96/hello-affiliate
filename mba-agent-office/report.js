@@ -285,6 +285,18 @@ export const CHART_DIR = path.join(os.tmpdir(), 'mba-stock-charts');
 const chartPaths = (text) => [...String(text ?? '').matchAll(/[^\s`()"'<>\[\]]+\.(?:png|jpe?g|webp)/gi)].map((m) => m[0])
   .filter((f) => { try { return fs.realpathSync(f).startsWith(fs.realpathSync(CHART_DIR) + path.sep); } catch { return false; } });
 
+// Báo cáo gọn (mặc định): chỉ phần Kết luận cuối của Quản Lí + ma trận định giá (nếu có) + biểu đồ; KHÔNG chép phần suy luận của từng agent.
+// Muốn báo cáo đầy đủ như trước: đặt REPORT_FULL=1.
+const FULL_REPORT = /^(1|true|on)$/i.test(process.env.REPORT_FULL || '');
+function matrixMd(text) {
+  const lines = String(text ?? '').split('\n');
+  const i = lines.findIndex((l, k) => l.includes('|') && /giá cơ sở/i.test(l) && /^\s*\|?\s*:?-{2,}/.test(lines[k + 1] || ''));
+  if (i < 0) return '';
+  let j = i + 2;
+  while (j < lines.length && lines[j].includes('|') && lines[j].trim()) j++;
+  return lines.slice(i, j).join('\n');
+}
+
 // ev: { text, tasks, details:[{agent,title,status,text}], artifacts:[đường dẫn file agent đã tạo] }
 export async function buildReport(ev, command, when, title = '') {
   const images = new Map(), used = new Set(), attach = [], tables = [];
@@ -309,6 +321,16 @@ export async function buildReport(ev, command, when, title = '') {
   const rows = (ev.tasks || []).map((x) => `<tr><td>${esc(x.agent)}</td><td>${esc(x.title)}</td><td>${esc(x.status)}</td></tr>`).join('');
   // Liên kết kèm theo (vd Dashboard content): href tính từ gốc web ("reports/…") nên đổi sang đường dẫn tương đối trong thư mục reports.
   const links = (ev.links || []).filter((l) => l?.href).map((l) => `<a href="${esc(String(l.href).replace(/^reports\//, ''))}">${esc(l.label || l.href)}</a>`).join(' &nbsp;·&nbsp; ');
+  if (!FULL_REPORT) {
+    const mx = (ev.details || []).filter((d) => d.status === 'done').map((d) => matrixMd(d.text)).find(Boolean);
+    const figs0 = attach.filter((a) => a.hero).map((a) => `<figure><img src="${a.uri}" alt="${esc(path.basename(a.f))}"></figure>`).join('');
+    const failed = (ev.details || []).filter((d) => d.status === 'failed').map((d) => `${esc(d.agent)}: chưa xong`);
+    const slim = `${summary ? `<div class="sum">${summary}</div>` : ''}
+${mx ? `<h3>Ma trận định giá</h3>${mdHtml(mx)}` : ''}
+${figs0 ? `<h3>Biểu đồ</h3>${figs0}` : ''}
+${failed.length ? `<p class="meta">${failed.join(' · ')}</p>` : ''}`;
+    return pageShell({ title, command, when, links, body: slim });
+  }
   const body = `${summary ? `<div class="sum">${summary}</div>` : ''}
 ${hero.length ? `<h3>Biểu đồ</h3>${figs(hero)}` : ''}
 ${detail}

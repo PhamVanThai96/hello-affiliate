@@ -1,0 +1,614 @@
+# 03-playbooks.yaml — Kịch bản giải quyết vấn đề vận hành end-to-end
+# Mỗi playbook: intake (dữ liệu cần) -> steps (tính toán, tham chiếu module) -> sanity -> output -> decision.
+# Trường formulas/procedures/frameworks là id thật trong modules/ (đã kiểm tra bằng script).
+playbooks:
+  pb_process_diagnosis:
+    goal: "Chẩn đoán quy trình chậm/rườm rà: đo thời gian, tìm nút thắt và lãng phí, đề xuất cải tiến"
+    modules: [m01, m09, m05]
+    formulas: [m01_throughput_time, m01_process_velocity, m01_pce, m01_littles_law_wait, m01_littles_law_wip, m01_stage_capacity, m01_process_capacity, m01_utilization, m01_queue_wait_factor, m01_takt_time]
+    procedures: [m01_proc_7step, m01_proc_find_bottleneck, m01_proc_vsm_numbers]
+    frameworks: [m01_flowchart, m01_sipoc, m01_vsm, m01_seven_wastes, m01_ecrs, m01_pareto_gemba]
+    intake:
+      - "mô tả quy trình và các bước"
+      - "thời gian xử lý từng bước (đo thực tế)"
+      - "thời gian chờ giữa các bước"
+      - "số người/máy mỗi bước"
+      - "nhu cầu/số đơn mỗi ngày"
+      - "số đơn đang dở dang (WIP)"
+      - "thời gian làm việc khả dụng"
+    steps:
+      - "Vẽ flowchart/SIPOC và đi Gemba để đo thật; liệt kê thời gian xử lý (CT) và thời gian chờ từng bước (m01_proc_7step, m01_flowchart)"
+      - "Dựng bảng VSM: phân loại VA/NVA-N/NVA; tính Throughput Time và PCE = thời gian tạo giá trị / throughput time (m01_throughput_time, m01_pce)"
+      - "Tính năng lực từng công đoạn = số người x 60 / CT; năng lực quy trình = min; utilization từng công đoạn (m01_stage_capacity, m01_process_capacity, m01_utilization)"
+      - "Kiểm tra số liệu bằng Little: WIP = lambda x thời gian trong hệ thống (m01_littles_law_wait); nếu không khớp thì đo lại"
+      - "Tính Takt Time so với CT từng bước để thấy bước lệch nhịp (m01_takt_time)"
+      - "Với công đoạn có utilization > 85%: hệ số chờ tăng vọt, ưu tiên xử lý (m01_queue_wait_factor)"
+      - "Phân loại lãng phí 7 Wastes, Pareto nguyên nhân; áp ECRS (loại bỏ, gộp, sắp xếp lại, đơn giản hóa) cho các khoảng chờ trước khi mua thêm nguồn lực"
+      - "Đề xuất 2-3 phương án (rẻ -> đắt), ước lượng PCE/throughput time mới và hoàn vốn"
+    sanity:
+      - "throughput time >= tổng thời gian tạo giá trị"
+      - "PCE trong 0-100%"
+      - "WIP đo được khớp Little"
+      - "năng lực hệ thống = công đoạn nhỏ nhất"
+    decision: "Nếu PCE chỉ vài % thì nhắm vào khoảng chờ giữa các bước, không ép nhân viên làm nhanh; chỉ thêm người ở công đoạn nghẽn."
+    output: "Bảng VSM + bảng năng lực/utilization + danh sách lãng phí xếp theo Pareto + kế hoạch cải tiến (rpt_process_diagnosis)"
+
+  pb_bottleneck_toc:
+    goal: "Tìm ràng buộc (nút thắt) đang giới hạn đầu ra, khai thác miễn phí trước khi đầu tư, đánh giá có nên nâng cấp"
+    modules: [m09, m01, m05]
+    formulas: [m09_utilization, m09_system_output, m09_wip_accumulation, m09_exploit_capacity_gain, m09_elevate_payback, m09_throughput, m01_process_capacity, m05_system_capacity]
+    procedures: [m09_proc_identify, m09_proc_exploit, m09_proc_elevate_decision, m09_proc_repeat]
+    frameworks: [m09_five_focusing_steps, m09_constraint_types, m09_throughput_accounting]
+    intake:
+      - "danh sách công đoạn nối tiếp và năng lực/giờ mỗi công đoạn"
+      - "nhu cầu thị trường"
+      - "nơi hàng chờ tích tụ"
+      - "thời gian dừng/chờ vật tư/đổi mã/lỗi tại công đoạn nghi ngờ"
+      - "T mỗi đơn vị"
+      - "chi phí nâng cấp"
+    steps:
+      - "Identify: tính utilization từng công đoạn (nhu cầu / năng lực) và đầu ra hệ thống = min năng lực; kiểm chứng bằng nơi hàng chờ tích tụ (m09_utilization, m09_system_output, m09_wip_accumulation)"
+      - "Phân loại ràng buộc: vật lý, thị trường, chính sách, nguồn lực (m09_constraint_types); nếu thị trường là ràng buộc thì nâng năng lực không giúp"
+      - "Exploit: tìm thời gian bị phí tại ràng buộc (dừng, chờ vật tư, đổi mã, lỗi, nghỉ giải lao so le) và đo mức tăng đầu ra không tốn vốn (m09_exploit_capacity_gain)"
+      - "Subordinate: các công đoạn khác chạy theo nhịp ràng buộc (không chạy hết công suất tạo WIP); chuyển sang playbook pb_toc_dbr"
+      - "Elevate: chỉ khi Exploit đã cạn; tính Delta T x kỳ hạn so với vốn, hoàn vốn (m09_elevate_payback); thêm tại công đoạn không phải ràng buộc thì Delta T = 0"
+      - "Repeat: tính lại min năng lực sau khi nâng; xác định ràng buộc mới, tránh quán tính (m09_proc_repeat)"
+    sanity:
+      - "utilization ràng buộc xấp xỉ 100% và các công đoạn khác thấp hơn"
+      - "đầu ra hệ thống không vượt công đoạn nhỏ nhất"
+      - "sau nâng cấp ràng buộc có thể dịch chuyển"
+    decision: "Exploit trước (gần như miễn phí), Elevate chỉ khi hoàn vốn chấp nhận được và ràng buộc thật sự là vật lý; không mua máy ở công đoạn không phải ràng buộc."
+    output: "Bảng năng lực/utilization + xác nhận ràng buộc + danh sách hành động Exploit + phân tích hoàn vốn Elevate (rpt_toc_plan)"
+
+  pb_line_balancing:
+    goal: "Tính takt time, số người/số trạm, cân bằng chuyền; so sánh layout/cell và tự động hóa chuyền"
+    modules: [m08, m01, m05, m09]
+    formulas: [m08_takt_time, m08_min_stations, m08_rpw, m08_line_efficiency, m08_line_idle, m08_line_output, m01_takt_time, m01_staff_required, m01_line_efficiency, m05_line_cycle_time, m05_line_min_stations, m05_line_balance_efficiency, m08_batch_lead_time, m08_onepiece_lead_time, m08_automation_payback]
+    procedures: [m08_balance_line_procedure, m08_cell_pilot_procedure, m08_automation_evaluation]
+    frameworks: [m08_line_balancing_rpw, m08_cellular_gt_roc, m08_layout_type_selection]
+    intake:
+      - "nhu cầu/ngày"
+      - "thời gian khả dụng/ngày"
+      - "danh sách việc kèm thời gian và quan hệ trước-sau"
+      - "số người hiện tại"
+      - "sản lượng thực tế"
+      - "nếu xét tự động hóa thì chi phí đầu tư và lương"
+    steps:
+      - "Takt Time = thời gian khả dụng / nhu cầu (m08_takt_time hoặc m01_takt_time); cycle time chuyền không được vượt takt"
+      - "Số trạm tối thiểu = tổng thời gian việc / takt, làm tròn lên (m08_min_stations)"
+      - "Xếp việc theo RPW vào trạm mà không vượt cycle time (m08_rpw, m08_balance_line_procedure)"
+      - "Tính hiệu suất chuyền, độ trễ cân bằng, thời gian nhàn rỗi (m08_line_efficiency, m08_line_idle) và sản lượng chuyền theo cycle time thực (m08_line_output)"
+      - "Số người cần theo takt cho từng công đoạn (m01_staff_required); xác định công đoạn nghẽn (CT/người > takt)"
+      - "Nếu đa mã/sản lượng thấp: cân nhắc cell (ROC) và so lead time lô vs one-piece (m08_batch_lead_time, m08_onepiece_lead_time)"
+      - "Nếu xét tự động hóa: m08_automation_payback; chỉ tại công đoạn là ràng buộc (m09)"
+    sanity:
+      - "số trạm x cycle time >= tổng thời gian việc"
+      - "hiệu suất <= 100%"
+      - "cycle time >= thời gian việc dài nhất"
+      - "tuân thủ thứ tự trước-sau"
+    decision: "Hiệu suất chuyền >= ~85% là khá tốt (tham khảo); nếu thấp, san tải bằng chia nhỏ việc/gộp trạm trước khi thêm người."
+    output: "Bảng phân bổ trạm + hiệu suất + so sánh phương án + kế hoạch thí điểm (rpt_layout_line)"
+
+  pb_quality_defects:
+    goal: "Đo mức lỗi (DPMO, sigma, Cpk), tìm nguyên nhân gốc và thiết lập kiểm soát (DMAIC, SPC, Lean tools)"
+    modules: [m02, m01, m09]
+    formulas: [m02_fpy, m02_rty, m02_dpmo, m02_sigma_level, m02_multi_opportunity_yield, m02_cp, m02_cpk, m02_cpk_to_ppm, m02_xbar_limits, m02_r_limits, m02_sigma_hat, m02_p_chart, m02_rpn, m02_pareto, m02_two_proportion_z, m01_cp, m01_cpk]
+    procedures: [m02_proc_dmaic_sme, m02_proc_capability_study, m02_proc_setup_control_chart, m02_proc_five_why_fishbone]
+    frameworks: [m02_six_sigma_dmaic, m02_7_qc_tools, m02_five_why, m02_control_chart, m02_fmea, m02_5s, m02_poka_yoke, m02_jidoka_andon, m02_pdca]
+    intake:
+      - "loại lỗi và số lượng theo thời gian/ca/máy/cửa hàng"
+      - "số đơn vị kiểm tra"
+      - "số cơ hội lỗi mỗi đơn vị"
+      - "giới hạn kỹ thuật USL/LSL và mẫu đo"
+      - "chi phí mỗi lỗi"
+    steps:
+      - "Define/Measure: xác định CTQ từ tiếng nói khách hàng; tính FPY/RTY, DPMO, sigma level (m02_fpy, m02_rty, m02_dpmo, m02_sigma_level)"
+      - "Pareto các loại lỗi để chọn mục tiêu vital few (m02_pareto)"
+      - "Kiểm tra ổn định bằng biểu đồ X-bar R hoặc p; chỉ khi in control mới tính năng lực (m02_xbar_limits, m02_r_limits, m02_p_chart)"
+      - "Analyze: Cp, Cpk với USL/LSL; Cp cao nhưng Cpk thấp là lệch tâm, cả hai thấp là biến động lớn (m02_cp, m02_cpk, m02_cpk_to_ppm)"
+      - "Tìm nguyên nhân gốc: Fishbone + 5-Why + dữ liệu; so sánh hai nhóm bằng kiểm định z hai tỷ lệ (m02_proc_five_why_fishbone, m02_two_proportion_z)"
+      - "Improve: Poka-Yoke, 5S, chuẩn hóa SOP; ưu tiên lỗi theo RPN (m02_rpn)"
+      - "Control: biểu đồ kiểm soát, kế hoạch phản ứng, đo lại DPMO/Cpk sau cải tiến"
+    sanity:
+      - "FPY >= RTY"
+      - "Cp >= Cpk"
+      - "sigma level tăng khi DPMO giảm"
+      - "không tính Cpk khi quy trình mất ổn định"
+      - "cỡ mẫu đủ khi so sánh tỷ lệ"
+    decision: "Cpk < 1,00 không đủ năng lực; 1,00-1,33 kiểm soát chặt; >= 1,33 chấp nhận (tham khảo). Chỉnh tâm trước khi giảm biến động nếu Cp cao nhưng Cpk thấp."
+    output: "Bảng baseline lỗi/sigma/Cpk + Pareto + nguyên nhân gốc + kế hoạch cải tiến và kiểm soát (rpt_quality)"
+
+  pb_quality_cost_improvement:
+    goal: "Quy đổi chất lượng kém ra tiền (COQ), chọn và đánh giá hoàn vốn dự án cải tiến chất lượng"
+    modules: [m02, m01, m06]
+    formulas: [m02_coq, m02_rule_of_ten, m02_variance_decomposition, m02_defect_cost_payback, m02_project_score, m02_overfill_cost, m02_stop_vs_run_cost, m02_nps]
+    procedures: [m02_proc_coq_baseline, m02_proc_dmaic_sme, m02_proc_roadmap_sme]
+    frameworks: [m02_project_selection, m02_compare_three, m02_tqm, m02_pdca]
+    intake:
+      - "chi phí phòng ngừa"
+      - "thẩm định"
+      - "lỗi nội bộ"
+      - "lỗi bên ngoài (đồng/năm)"
+      - "doanh thu"
+      - "danh sách dự án cải tiến ứng viên và tiêu chí chấm"
+      - "số lỗi và chi phí mỗi lỗi"
+      - "chi phí dự án"
+    steps:
+      - "Lập baseline COQ gồm 4 nhóm; tính COQ/doanh thu (m02_proc_coq_baseline, m02_coq)"
+      - "Ước lượng tác động theo quy luật 1-10-100: lỗi phát hiện càng muộn càng đắt (m02_rule_of_ten)"
+      - "Chấm điểm dự án ứng viên bằng ma trận trọng số (tác động, khả thi, thời gian) (m02_project_score, m02_project_selection)"
+      - "Tính thiệt hại hiện tại, tiết kiệm sau cải tiến và hoàn vốn (m02_defect_cost_payback)"
+      - "Các so sánh đặc thù: dư cân để che biến động (m02_overfill_cost), dừng chuyền hay chạy tiếp (m02_stop_vs_run_cost)"
+      - "Đặt KPI theo dõi: COQ/doanh thu, FPY, NPS (m02_nps)"
+    sanity:
+      - "tổng 4 nhóm COQ bằng tổng COQ"
+      - "tiết kiệm không vượt thiệt hại hiện tại"
+      - "chi phí phòng ngừa tăng thì lỗi bên ngoài giảm theo thời gian"
+    decision: "Ưu tiên dự án có điểm cao nhất và hoàn vốn ngắn nhất; chuyển chi phí từ lỗi sang phòng ngừa."
+    output: "Bảng COQ + bảng xếp hạng dự án + hoàn vốn + lộ trình 12 tháng (rpt_quality)"
+
+  pb_inventory_policy:
+    goal: "Xác định chính sách tồn kho cho từng SKU: nhập bao nhiêu, khi nào đặt, tồn kho an toàn, chiết khấu số lượng"
+    modules: [m04, m07, m03]
+    formulas: [m04_holding_cost_rate, m04_eoq, m04_eoq_orders_cycle, m04_total_cost_tc, m04_rop, m04_service_level_z, m04_safety_stock_demand, m04_safety_stock_demand_leadtime, m04_safety_stock_periodic, m04_order_up_to, m04_quantity_discount_tc, m04_eoq_backorder, m04_abc_value, m04_kanban_cards, m04_risk_pooling, m04_cycle_count_workload]
+    procedures: [m04_proc_setup_90_days, m04_proc_estimate_parameters, m04_proc_policy_per_sku]
+    frameworks: [m04_abc_framework, m04_eoq_model, m04_rop_ss_system, m04_periodic_review, m04_control_system_comparison, m04_quantity_discount_model]
+    intake:
+      - "nhu cầu bình quân và độ lệch chuẩn theo kỳ"
+      - "giá mua"
+      - "chi phí đặt hàng mỗi lần (S)"
+      - "tỷ lệ chi phí lưu kho (i)"
+      - "lead time và độ biến động"
+      - "mức phục vụ mong muốn"
+      - "MOQ/quy cách"
+      - "bảng chiết khấu"
+      - "sức chứa kho"
+      - "hạn sử dụng"
+    steps:
+      - "Phân loại ABC/ABC-XYZ để chọn mức độ kiểm soát (m04_abc_value)"
+      - "Chọn hệ thống: liên tục (s,Q) cho nhóm A ổn định; định kỳ (R,S) khi kiểm kê theo chu kỳ (m04_control_system_comparison)"
+      - "H = i x P; EOQ = sqrt(2DS/H); số lần đặt và chu kỳ (m04_holding_cost_rate, m04_eoq, m04_eoq_orders_cycle); làm tròn theo quy cách và tính lại TC (m04_total_cost_tc)"
+      - "Chọn mức phục vụ -> Z (m04_service_level_z); safety stock theo trường hợp có/không biến động lead time (m04_safety_stock_demand, m04_safety_stock_demand_leadtime); ROP = nhu cầu trong lead time + SS (m04_rop)"
+      - "Với hệ thống định kỳ: order-up-to S (m04_safety_stock_periodic, m04_order_up_to)"
+      - "Nếu có chiết khấu: so tổng chi phí (đặt + lưu + mua) từng bậc, kiểm tra sức chứa và hạn dùng (m04_quantity_discount_tc)"
+      - "Thiếu dữ liệu: ước lượng tham số theo m04_proc_estimate_parameters; ghi nhãn GIẢ ĐỊNH"
+    sanity:
+      - "chi phí đặt hàng năm xấp xỉ chi phí lưu kho năm tại EOQ"
+      - "ROP >= nhu cầu trong lead time"
+      - "SS tăng theo Z/sigma/sqrt(L)"
+      - "Q làm tròn vẫn trong sức chứa kho"
+    decision: "EOQ lệch vài chục % chỉ tăng chi phí vài %; ưu tiên thực tế (MOQ, quy cách). Nhóm hậu quả hết hàng nặng chọn mức phục vụ 99%."
+    output: "Bảng chính sách theo SKU (Q, ROP, SS, chu kỳ) + KPI tồn kho (rpt_inventory_plan)"
+
+  pb_overstock_stockout_diagnosis:
+    goal: "Chẩn đoán nghịch lý vừa thừa vừa thiếu hàng: tìm nguyên nhân (dự báo, chính sách, nhà cung cấp, quy trình) và xử lý hàng chậm"
+    modules: [m04, m07, m03, m09]
+    formulas: [m04_inventory_turnover, m04_dio, m04_ccc, m04_abc_value, m04_safety_stock_demand, m04_inventory_kpis, m07_bias, m07_tracking_signal, m07_wape, m04_investment_payback, m09_inventory_release_value]
+    procedures: [m04_proc_diagnose_stockout, m04_proc_clearance, m04_proc_policy_per_sku]
+    frameworks: [m04_abc_framework, m04_cycle_counting, m04_omnichannel_inventory, m04_inventory_tech]
+    intake:
+      - "tồn kho đầu/cuối kỳ và giá vốn"
+      - "doanh số/nhu cầu theo SKU"
+      - "số lần hết hàng"
+      - "lead time nhà cung cấp"
+      - "độ chính xác tồn kho (kiểm kê)"
+      - "danh sách hàng chậm/hết hạn"
+      - "giá vốn và giá bán"
+    steps:
+      - "Tính vòng quay, DIO, CCC và vốn bị chôn (m04_inventory_turnover, m04_dio, m04_ccc); KPI stockout, accuracy, obsolete (m04_inventory_kpis)"
+      - "ABC theo giá trị: tìm mã nhóm A hết hàng và nhóm C ứ đọng (m04_abc_value)"
+      - "Chẩn đoán hết hàng theo cây nguyên nhân: dữ liệu tồn sai, dự báo thấp, ROP/SS sai, lead time dài hơn giả định, giao hàng trễ (m04_proc_diagnose_stockout)"
+      - "Đo chất lượng dự báo: Bias, WAPE, Tracking Signal (m07_bias, m07_wape, m07_tracking_signal)"
+      - "Tính lại safety stock với sai số thực tế (m04_safety_stock_demand) và đặt chính sách theo SKU (m04_proc_policy_per_sku)"
+      - "Xử lý hàng chậm: khuyến mãi/combo/trả NCC/thanh lý theo thứ tự thu hồi vốn (m04_proc_clearance); tính vốn giải phóng và tiết kiệm lãi (m09_inventory_release_value)"
+    sanity:
+      - "giá vốn và tồn kho cùng kỳ"
+      - "DIO = 365/vòng quay"
+      - "vốn giải phóng không vượt giá trị tồn kho hiện có"
+      - "doanh số bị cắt cụt bởi hết hàng khiến dự báo thấp"
+    decision: "Sửa dữ liệu và dự báo trước khi tăng safety stock; giảm tồn nhóm C chậm, tăng đảm bảo nhóm A."
+    output: "Bảng KPI trước/sau + danh sách SKU hành động + kế hoạch thanh lý (rpt_inventory_plan)"
+
+  pb_seasonal_newsvendor:
+    goal: "Quyết định số lượng đặt một lần cho hàng thời vụ/dễ hỏng/vòng đời ngắn"
+    modules: [m04, m07, m03]
+    formulas: [m04_newsvendor_cr, m04_newsvendor_q, m04_newsvendor_expected_cost, m07_cost_asymmetry_threshold, m07_early_sales_extrapolation, m04_service_level_z]
+    procedures: [m07_proc_new_product, m04_proc_estimate_parameters]
+    frameworks: [m04_newsvendor_framework, m07_delphi]
+    intake:
+      - "giá bán"
+      - "giá vốn"
+      - "giá thanh lý/giá trị thu hồi"
+      - "chi phí thiếu hàng (nếu có)"
+      - "nhu cầu kỳ vọng và độ lệch chuẩn (hoặc phân phối)"
+      - "dữ liệu bán sớm"
+    steps:
+      - "Cu = giá bán - giá vốn (hoặc chi phí cơ hội mỗi đơn vị thiếu); Co = giá vốn - giá thanh lý"
+      - "Critical Ratio = Cu/(Cu+Co) (m04_newsvendor_cr)"
+      - "Q* = mu + Z x sigma với Z ứng với CR (m04_newsvendor_q)"
+      - "Tính chi phí bất định kỳ vọng (thừa + thiếu) cho Q* và vài Q lân cận (m04_newsvendor_expected_cost)"
+      - "Nếu đặt thử/đặt bổ sung được: dùng tốc độ bán sớm để cập nhật nhu cầu (m07_early_sales_extrapolation)"
+      - "Với ngưỡng xác suất cần tăng tồn, dùng m07_cost_asymmetry_threshold"
+    sanity:
+      - "CR trong (0,1)"
+      - "Q* tăng khi Cu tăng hoặc Co giảm"
+      - "Q* không âm"
+    decision: "Biên cao + thanh lý được -> đặt nhiều hơn mean; biên thấp + dễ hỏng -> đặt thấp hơn mean. Thử nhỏ + bổ sung nếu NCC cho phép."
+    output: "Bảng CR/Q*/chi phí kỳ vọng + khuyến nghị số lượng và phương án thanh lý"
+
+  pb_forecast_build:
+    goal: "Xây hệ thống dự báo: chọn mô hình theo dạng chuỗi, tính dự báo, đo sai số bằng backtesting"
+    modules: [m07, m04, m05]
+    formulas: [m07_moving_average, m07_weighted_moving_average, m07_ses, m07_holt, m07_holt_winters, m07_ols_regression, m07_r_squared, m07_multiple_regression, m07_seasonal_index, m07_decomposition_forecast, m07_mad, m07_mse_rmse, m07_mape, m07_wape, m07_bias, m07_tracking_signal, m07_demand_growth_capacity]
+    procedures: [m07_proc_7_steps, m07_proc_compare_models, m07_proc_seasonal_decomposition, m07_proc_wma_weekday, m07_proc_new_product]
+    frameworks: [m07_method_selection, m07_time_series_decomposition, m07_error_metric_suite, m07_method_comparison, m07_forecast_capability_assessment]
+    intake:
+      - "chuỗi nhu cầu lịch sử (số kỳ, tần suất)"
+      - "có xu hướng/mùa vụ không"
+      - "sự kiện bất thường"
+      - "thông tin ngoài (giá, khuyến mãi, thời tiết)"
+      - "mục đích sử dụng và chân trời dự báo"
+      - "dữ liệu có bị cắt cụt do hết hàng không"
+    steps:
+      - "Vẽ chuỗi, xác định thành phần xu hướng/mùa vụ/chu kỳ/ngẫu nhiên (m07_time_series_decomposition)"
+      - "Chọn ứng viên theo m07_method_selection: ngang -> MA/SES; xu hướng -> Holt/hồi quy; mùa vụ -> phân rã/Holt-Winters; sản phẩm mới -> Delphi/đặt thử"
+      - "Tính dự báo từng mô hình (m07_moving_average ... m07_holt_winters; mùa vụ: m07_seasonal_index, m07_decomposition_forecast)"
+      - "Backtesting: tách dữ liệu huấn luyện/kiểm định; tính MAD, RMSE, MAPE/WAPE, Bias (m07_proc_compare_models)"
+      - "Chọn mô hình đơn giản nhất đạt sai số chấp nhận; đặt Tracking Signal giám sát (m07_tracking_signal)"
+      - "Chuyển dự báo thành quyết định: safety stock từ sai số (m07_safety_stock_from_error) và thời điểm cần thêm công suất (m07_demand_growth_capacity)"
+    sanity:
+      - "tổng chỉ số mùa vụ = số kỳ"
+      - "MAPE không dùng khi nhu cầu gần 0"
+      - "mô hình phức tạp hơn phải thắng ngoài mẫu"
+      - "dự báo không âm"
+    decision: "Không đầu tư mô hình phức tạp khi sai số đã đủ cho quyết định; dự báo tổng hợp trước rồi phân bổ."
+    output: "Bảng so sánh mô hình + dự báo kỳ tới + sai số + quy tắc giám sát (rpt_forecast)"
+
+  pb_forecast_diagnosis:
+    goal: "Chẩn đoán dự báo sai/lệch một chiều và sửa"
+    modules: [m07, m03, m04]
+    formulas: [m07_bias, m07_tracking_signal, m07_mad, m07_mape, m07_wape, m07_safety_stock_from_error, m07_cost_asymmetry_threshold, m03_wape, m03_bullwhip_ratio]
+    procedures: [m07_proc_tracking_response, m07_proc_compare_models]
+    frameworks: [m07_error_metric_suite, m07_cpfr, m07_forecast_capability_assessment]
+    intake:
+      - "dự báo và thực tế theo kỳ (ít nhất 12 kỳ)"
+      - "sự kiện bất thường (khuyến mãi, hết hàng, đổi giá, đối thủ)"
+      - "phương pháp đang dùng"
+      - "ai dự báo và dùng cho quyết định gì"
+    steps:
+      - "Tính sai số từng kỳ, Bias, MAD, MAPE/WAPE (m07_bias, m07_mad, m07_wape)"
+      - "Tracking Signal tích lũy; vượt +-4 là tín hiệu mô hình hỏng (m07_tracking_signal)"
+      - "Phân loại nguyên nhân: bias một chiều, structural break, dữ liệu cắt cụt do hết hàng, bỏ sót khuyến mãi/mùa vụ, đo sai đơn vị"
+      - "Phản ứng theo m07_proc_tracking_response: reset mô hình, chọn lại tham số hoặc bổ sung yếu tố giải thích"
+      - "Cập nhật safety stock theo sai số mới và phản ánh bất đối xứng chi phí (m07_safety_stock_from_error, m07_cost_asymmetry_threshold)"
+      - "Nếu đơn hàng ở tầng trên dao động: kiểm tra Bullwhip và chia sẻ dự báo (m03_bullwhip_ratio, m07_cpfr)"
+    sanity:
+      - "Bias dương = dự báo thấp hơn thực tế (theo định nghĩa module: error = actual - forecast; kiểm tra quy ước)"
+      - "TS tích lũy khớp tổng sai số/MAD"
+    decision: "TS vượt +-4 thì rà soát ngay; không chờ sai số lớn mới sửa."
+    output: "Bảng sai số + chẩn đoán nguyên nhân + hành động sửa (rpt_forecast)"
+
+  pb_capacity_expansion:
+    goal: "Quyết định mở rộng công suất (mua máy, mở chi nhánh, thuê xưởng): đo năng lực thật, hòa vốn, thời điểm, dưới bất định"
+    modules: [m05, m09, m07, m01]
+    formulas: [m05_efficiency, m05_utilization, m05_system_capacity, m05_breakeven_qty, m05_margin_of_safety, m05_capacity_cushion, m05_capacity_for_target_util, m05_operating_leverage_breakeven, m05_emv, m05_annuity_npv, m05_staged_option_npv, m05_triangular_sample, m07_demand_growth_capacity]
+    procedures: [m05_proc_7_steps, m05_proc_assess_current, m05_proc_investment_decision]
+    frameworks: [m05_three_capacity_types, m05_breakeven_analysis, m05_lead_lag_match, m05_toc_five_steps, m05_decision_tree_emv, m05_monte_carlo, m05_capacity_cushion_framework, m05_capacity_risk_register]
+    intake:
+      - "năng lực thiết kế/hiệu quả/thực tế từng công đoạn"
+      - "nhu cầu hiện tại và dự báo"
+      - "giá bán/chi phí biến đổi/chi phí cố định thêm"
+      - "vốn đầu tư và vòng đời"
+      - "thời gian xây/mua"
+      - "kịch bản nhu cầu và xác suất"
+    steps:
+      - "Đo năng lực hiện tại: hiệu suất và utilization (m05_efficiency, m05_utilization); nếu hiệu suất thấp thì cải tiến vận hành trước (m05_proc_assess_current)"
+      - "Tìm ràng buộc, năng lực hệ thống = min (m05_system_capacity); chỉ nâng ràng buộc (xem pb_bottleneck_toc)"
+      - "Dự báo nhu cầu và thời điểm hết năng lực (m07_demand_growth_capacity); chọn Lead/Lag/Match (m05_lead_lag_match)"
+      - "Hòa vốn: Q hòa vốn, biên an toàn (m05_breakeven_qty, m05_margin_of_safety); điểm hòa vốn trên 70-80% năng lực mới là rủi ro cao"
+      - "Năng lực dự phòng và mức tăng để đạt utilization mục tiêu (m05_capacity_cushion, m05_capacity_for_target_util)"
+      - "Dưới bất định: cây quyết định EMV, NPV dòng tiền đều, phương án chờ rồi quyết (m05_emv, m05_annuity_npv, m05_staged_option_npv); Monte Carlo nếu cần (m05_triangular_sample)"
+      - "Đối chiếu thuê ngoài/năng lực linh hoạt (pb_make_or_outsource); NPV sâu -> finance-agent-skill"
+    sanity:
+      - "sản lượng thực <= năng lực hiệu quả <= năng lực thiết kế"
+      - "NPV dùng cùng tỷ lệ chiết khấu giả định ghi rõ"
+      - "hòa vốn không vượt năng lực mới"
+    decision: "Cải tiến vận hành/Exploit trước; mở rộng theo giai đoạn khi nhu cầu bất định; mua tại ràng buộc khi hòa vốn nằm dưới ngưỡng an toàn."
+    output: "Bảng năng lực + hòa vốn + kịch bản EMV/NPV + khuyến nghị theo giai đoạn (rpt_capacity)"
+
+  pb_service_queue_staffing:
+    goal: "Xác định số quầy/nhân viên theo khung giờ để đạt thời gian chờ mục tiêu (hàng đợi M/M/1, M/M/c)"
+    modules: [m05, m01, m07]
+    formulas: [m05_mm1_rho_wq, m05_mm1_lq_w, m05_erlang_c, m05_mmc_wq, m05_little_law, m01_queue_wait_factor, m01_effective_arrival, m07_wape]
+    procedures: [m05_proc_service_staffing]
+    frameworks: [m05_queuing_mm1_mmc, m05_aggregate_planning]
+    intake:
+      - "lượng khách đến theo khung giờ (lambda)"
+      - "thời gian phục vụ trung bình (1/mu)"
+      - "số quầy/nhân viên hiện có"
+      - "chuẩn thời gian chờ chấp nhận được"
+      - "chi phí nhân viên theo giờ"
+      - "tỷ lệ khách bỏ đi"
+    steps:
+      - "Đo lambda theo giờ và mu thực tế (m01_effective_arrival nếu có khách bỏ đi)"
+      - "Với một quầy: rho = lambda/mu và Wq, Lq, W (m05_mm1_rho_wq, m05_mm1_lq_w)"
+      - "Với c quầy: xác suất phải chờ Erlang C và Wq (m05_erlang_c, m05_mmc_wq); tăng c đến khi Wq đạt chuẩn (m05_proc_service_staffing)"
+      - "Kiểm tra số liệu bằng Little: L = lambda x W (m05_little_law)"
+      - "So sánh chi phí nhân viên thêm với doanh thu bị mất do khách bỏ đi; thiết kế ca cao/thấp điểm"
+    sanity:
+      - "rho = lambda/(c x mu) < 1 và nên < 85%"
+      - "Wq giảm khi c tăng"
+      - "Little khớp"
+    decision: "Gộp hàng đợi (một hàng nhiều quầy) giảm thời gian chờ so với nhiều hàng riêng; rho > 85% phải hành động."
+    output: "Bảng nhân sự theo khung giờ + Wq dự kiến + chi phí/lợi ích (rpt_capacity)"
+
+  pb_seasonal_aggregate_plan:
+    goal: "Hoạch định tổng hợp cho nhu cầu mùa vụ: so sánh Chase, Level, Mixed"
+    modules: [m05, m04, m07]
+    formulas: [m05_aggregate_cost, m07_seasonal_index, m07_decomposition_forecast, m05_crp_hours, m05_capacity_cushion]
+    procedures: [m05_proc_7_steps]
+    frameworks: [m05_aggregate_planning, m05_crp, m05_own_vs_outsource]
+    intake:
+      - "dự báo nhu cầu theo kỳ (tháng)"
+      - "năng lực thường/tăng ca"
+      - "chi phí lương/tăng ca/tuyển/sa thải/lưu kho/thiếu hàng/thuê ngoài"
+      - "tồn kho đầu kỳ"
+      - "giới hạn kho"
+    steps:
+      - "Có dự báo theo mùa (m07_seasonal_index, m07_decomposition_forecast)"
+      - "Dựng 3 chiến lược: Chase (theo nhu cầu), Level (sản xuất đều, tích kho), Mixed"
+      - "Tính tổng chi phí từng chiến lược (m05_aggregate_cost) gồm lương, tăng ca, tuyển/sa thải, lưu kho, thiếu hàng, thuê ngoài"
+      - "Kiểm tra giờ cần theo trung tâm làm việc (m05_crp_hours) và năng lực dự phòng"
+      - "Chọn phương án chi phí thấp thỏa ràng buộc kho, hạn sử dụng, nhân sự"
+    sanity:
+      - "tồn kho cuối kỳ không âm (hoặc backorder được ghi rõ)"
+      - "sản lượng <= năng lực mỗi kỳ"
+      - "tổng cung = tổng cầu + thay đổi tồn kho"
+    decision: "Hàng dễ hỏng/kho hạn chế -> nghiêng về Chase/thuê ngoài; hàng bền, chi phí tuyển cao -> Level."
+    output: "Bảng so sánh chi phí 3 chiến lược + kế hoạch theo tháng (rpt_capacity)"
+
+  pb_make_or_outsource:
+    goal: "Quyết định tự đầu tư hay thuê ngoài/gia công theo sản lượng và thời gian kéo dài"
+    modules: [m05, m03, m09]
+    formulas: [m05_breakeven_own_outsource, m05_operating_leverage_breakeven, m05_annuity_npv, m03_tco, m05_margin_of_safety]
+    procedures: [m05_proc_outsource_vs_invest_by_duration]
+    frameworks: [m05_own_vs_outsource, m05_breakeven_analysis, m03_kraljic]
+    intake:
+      - "chi phí cố định và biến đổi tự làm"
+      - "giá thuê ngoài/đơn vị"
+      - "sản lượng và thời gian đơn hàng"
+      - "chất lượng/rủi ro đối tác"
+      - "vốn đầu tư và vòng đời"
+    steps:
+      - "Tính sản lượng hòa vốn tự làm vs thuê ngoài (m05_breakeven_own_outsource)"
+      - "So sánh theo thời gian kéo dài của đơn hàng (m05_proc_outsource_vs_invest_by_duration); đơn ngắn/bất định -> thuê ngoài"
+      - "Đòn bẩy hoạt động và biên an toàn (m05_operating_leverage_breakeven, m05_margin_of_safety)"
+      - "Tính TCO gồm chất lượng, giao trễ, rủi ro phụ thuộc (m03_tco)"
+      - "Nếu tự làm: NPV dòng tiền đều (m05_annuity_npv) hoặc chuyển finance-agent-skill"
+    sanity:
+      - "chi phí tự làm/đơn vị giảm khi sản lượng tăng"
+      - "điểm hòa vốn có ý nghĩa trong phạm vi nhu cầu thực"
+    decision: "Sản lượng trên hòa vốn và ổn định lâu dài -> tự làm; ngắn hạn/bất định/năng lực lõi không phải -> thuê ngoài; giữ phương án dự phòng."
+    output: "Bảng hòa vốn + TCO + khuyến nghị có điều kiện"
+
+  pb_project_schedule_pert:
+    goal: "Lập lịch dự án, tìm đường găng, tính xác suất kịp hạn và cam kết ngày giao thực tế"
+    modules: [m06, m09, m05]
+    formulas: [m06_cpm_forward_backward, m06_pert_te, m06_pert_sigma, m06_project_sigma, m06_prob_on_time, m06_late_cost, m06_resource_utilization]
+    procedures: [m06_proc_commit_date, m06_proc_resource, m06_proc_risk]
+    frameworks: [m06_wbs, m06_gantt, m06_cpm, m06_pert, m06_triple_constraint, m06_resource_leveling, m06_life_cycle]
+    intake:
+      - "WBS và danh sách công việc"
+      - "quan hệ trước-sau"
+      - "ước lượng a/m/b hoặc thời lượng"
+      - "nguồn lực"
+      - "hạn giao và mức phạt trễ"
+      - "ngân sách"
+    steps:
+      - "Lập WBS theo quy tắc 100% (m06_wbs); mạng công việc (m06_gantt)"
+      - "Ước lượng 3 điểm a/m/b; te = (a+4m+b)/6 và sigma (m06_pert_te, m06_pert_sigma)"
+      - "Forward/Backward pass -> ES/EF/LS/LF/float; đường găng (m06_cpm_forward_backward)"
+      - "Sigma toàn dự án = sqrt(tổng phương sai việc trên đường găng); xác suất kịp hạn (m06_project_sigma, m06_prob_on_time)"
+      - "Cam kết ngày giao ở mức xác suất 85-90% thay vì tại Te (m06_proc_commit_date); cân nhắc chi phí trễ (m06_late_cost)"
+      - "Kiểm tra xung đột nguồn lực/san phẳng (m06_proc_resource, m06_resource_utilization); lập risk register (m06_proc_risk)"
+    sanity:
+      - "float >= 0"
+      - "đường găng liên tục đầu-cuối"
+      - "hạn = Te chỉ ~50% xác suất"
+      - "tổng thời lượng đường găng = thời lượng dự án"
+    decision: "Xác suất kịp hạn < 85-90% và trễ phạt nặng -> crash (pb_project_control_crash) hoặc đàm phán hạn."
+    output: "Bảng CPM + Gantt/đường găng + xác suất kịp hạn + ngày cam kết (rpt_project)"
+
+  pb_project_control_crash:
+    goal: "Kiểm soát dự án đang chạy bằng EVM, rút ngắn lịch tối ưu chi phí, quản trị rủi ro/thay đổi, chọn phương pháp"
+    modules: [m06, m09, m02]
+    formulas: [m06_ev_variances, m06_cpi_spi, m06_eac_cpi, m06_eac_onetime, m06_eac_cpi_spi, m06_etc_vac, m06_tcpi, m06_crash_cost_slope, m06_crash_net_benefit, m06_fasttrack_duration, m06_emv, m06_contingency_reserve, m06_late_cost, m06_defect_cost_stage, m06_velocity_forecast, m06_wait_time, m09_project_buffer_50]
+    procedures: [m06_proc_evm_weekly, m06_proc_crash, m06_proc_risk, m06_proc_velocity]
+    frameworks: [m06_evm, m06_compression, m06_risk_matrix, m06_change_control_8steps, m06_method_choice, m06_scrum, m06_kanban, m06_agile_metrics, m09_ccpm]
+    intake:
+      - "PV"
+      - "EV"
+      - "AC tại thời điểm báo cáo"
+      - "BAC"
+      - "thời lượng và chi phí bình thường/crash từng việc"
+      - "hạn và chi phí trễ"
+      - "danh sách rủi ro (xác suất, tác động)"
+      - "yêu cầu thay đổi"
+      - "velocity nếu Agile"
+    steps:
+      - "EVM tuần: CV, SV, CPI, SPI (m06_ev_variances, m06_cpi_spi; m06_proc_evm_weekly)"
+      - "Dự báo hoàn thành: EAC theo xu hướng CPI, một lần, CPI x SPI; ETC, VAC; TCPI (m06_eac_cpi, m06_eac_onetime, m06_eac_cpi_spi, m06_etc_vac, m06_tcpi)"
+      - "Rút ngắn: chỉ crash việc float = 0 theo chi phí/ngày thấp nhất; so với lợi ích/ngày (m06_crash_cost_slope, m06_crash_net_benefit, m06_proc_crash); fast-tracking (m06_fasttrack_duration)"
+      - "Rủi ro: EMV từng rủi ro và quỹ dự phòng (m06_emv, m06_contingency_reserve, m06_proc_risk)"
+      - "Chọn phương pháp: Waterfall (yêu cầu ổn định) vs Agile (chưa rõ); Scrum dự báo sprint (m06_method_choice, m06_velocity_forecast)"
+      - "Kiểm soát thay đổi 8 bước chống scope creep (m06_change_control_8steps)"
+      - "Nếu dự án luôn trễ: CCPM buffer (m09_project_buffer_50, m09_ccpm)"
+    sanity:
+      - "CPI < 1 là vượt chi phí"
+      - "SPI < 1 là chậm"
+      - "EAC = AC + ETC"
+      - "crash không làm đường găng mới nếu chưa tính lại"
+      - "chi phí crash/ngày tăng dần"
+    decision: "Crash khi chi phí/ngày < lợi ích/ngày; CPI/SPI < 0,9 kéo dài -> can thiệp phạm vi/nguồn lực hoặc điều chỉnh baseline có phê duyệt."
+    output: "Báo cáo EVM + phương án crash + risk register + quyết định (rpt_project)"
+
+  pb_layout_redesign:
+    goal: "Bố trí lại xưởng/kho/cửa hàng: chọn loại layout, giảm vận chuyển nội bộ, chọn vị trí kho, đánh giá hoàn vốn"
+    modules: [m08, m01, m05, m04]
+    formulas: [m08_load_distance, m08_rectilinear_distance, m08_material_handling_cost, m08_rel_tcr, m08_layout_total_cost, m08_layout_breakeven, m08_center_of_gravity, m08_walk_hours, m08_sales_per_m2, m08_space_utilization, m08_aisle_capacity, m08_impulse_value, m08_standardization_payback, m08_pct_reduction, m08_labor_cost_per_worker]
+    procedures: [m08_sme_6_steps, m08_cheap_to_costly_roadmap, m08_chain_standardization_pilot, m08_cell_pilot_procedure]
+    frameworks: [m08_layout_type_selection, m08_rel_chart, m08_from_to_load_distance, m08_cog_siting, m08_slp, m08_retail_layout_models, m08_flow_principles, m08_fixed_position_layout, m08_cellular_gt_roc]
+    intake:
+      - "sơ đồ mặt bằng hiện tại và kích thước"
+      - "danh sách khu/bộ phận"
+      - "ma trận luồng từ-đến (tần suất, tải)"
+      - "chi phí vận chuyển/đơn vị khoảng cách"
+      - "ràng buộc an toàn/PCCC"
+      - "sản lượng và độ đa dạng sản phẩm"
+      - "doanh thu và diện tích (bán lẻ)"
+      - "ngân sách"
+    steps:
+      - "Chọn loại layout theo Volume-Variety (m08_layout_type_selection); fixed-position cho công trình (m08_fixed_position_layout)"
+      - "Lập ma trận Từ-Đến và REL Chart, TCR cho quan hệ định tính an toàn/giám sát (m08_rel_tcr)"
+      - "Tính Load-Distance và chi phí vận chuyển hiện tại; thử hoán đổi cặp và so sánh (m08_load_distance, m08_rectilinear_distance, m08_material_handling_cost, m08_layout_total_cost)"
+      - "Chọn vị trí kho: Center of Gravity (m08_center_of_gravity)"
+      - "Process vs Product: sản lượng hòa vốn (m08_layout_breakeven)"
+      - "Bán lẻ/quán: vùng nóng/lạnh, doanh thu/m2, hệ số sử dụng, mua bốc phát (m08_sales_per_m2, m08_space_utilization, m08_impulse_value)"
+      - "Giờ đi bộ tiết kiệm và hoàn vốn; thí điểm và đối chứng trước khi chuẩn hóa chuỗi (m08_walk_hours, m08_standardization_payback, m08_chain_standardization_pilot)"
+      - "Lộ trình rẻ -> đắt (m08_cheap_to_costly_roadmap): 5S, đổi chiều dòng chảy, hoán đổi khu, rồi mới đầu tư"
+    sanity:
+      - "không gian đủ chứa thiết bị và lối đi tối thiểu"
+      - "load-distance mới < cũ"
+      - "lối đi/thoát hiểm đạt yêu cầu (needs_expert)"
+      - "chi phí chuyển đổi gồm cả thời gian dừng sản xuất"
+    decision: "Ưu tiên thay đổi chi phí thấp, thí điểm trước; layout liên quan an toàn/PCCC phải do chuyên gia xác nhận. Tối ưu tránh làm tăng WIP trước ràng buộc (m09)."
+    output: "Bảng Load-Distance trước/sau + sơ đồ layout đề xuất + hoàn vốn + kế hoạch thí điểm (rpt_layout_line)"
+
+  pb_supply_risk:
+    goal: "Đánh giá và quyết định phòng ngừa rủi ro nguồn cung (phụ thuộc một nhà cung cấp, gián đoạn)"
+    modules: [m03, m04, m06]
+    formulas: [m03_risk_score, m03_disruption_loss, m03_prevention_breakeven, m03_safety_stock_ref, m04_safety_stock_demand_leadtime, m03_interfaces, m03_cv]
+    procedures: [m03_proc_risk_decision, m03_proc_select_supplier]
+    frameworks: [m03_risk_resilience, m03_kraljic, m03_strategic_sourcing]
+    intake:
+      - "danh sách rủi ro nguồn cung"
+      - "xác suất và tác động (mất doanh thu/ngày, số ngày gián đoạn)"
+      - "chi phí phòng ngừa (tồn kho an toàn, NCC thứ hai, hợp đồng)"
+      - "lead time và độ biến động"
+    steps:
+      - "Chấm R = P x I và xếp hạng (m03_risk_score)"
+      - "Ước tính tổn thất mỗi lần gián đoạn L (m03_disruption_loss)"
+      - "So lợi ích ròng phòng ngừa với chi phí (m03_prevention_breakeven, m03_proc_risk_decision)"
+      - "Tồn kho an toàn với lead time biến động (m04_safety_stock_demand_leadtime) và so với đa nguồn"
+      - "Kế hoạch dự phòng: NCC thay thế, hợp đồng, theo dõi sớm; dự án đa nguồn hóa nếu cần (m06)"
+    sanity:
+      - "P trong [0,1]"
+      - "phòng ngừa chỉ đáng khi lợi ích kỳ vọng > chi phí"
+      - "tổn thất không vượt doanh thu gián đoạn"
+    decision: "Mặt hàng chiến lược (Kraljic) -> hợp tác sâu + NCC dự phòng; ưu tiên rủi ro có R cao và chi phí phòng ngừa thấp."
+    output: "Bảng rủi ro + quyết định phòng ngừa + kế hoạch dự phòng (rpt_supply_chain)"
+
+  pb_supplier_selection:
+    goal: "Chọn/phân bổ nhà cung cấp bằng Scorecard + TCO; so sánh nhập khẩu vs trong nước; phân loại mua hàng Kraljic"
+    modules: [m03, m02, m04]
+    formulas: [m03_supplier_score, m03_tco, m03_tco_supplier_unit, m03_perfect_order, m03_otd, m03_ccc, m03_sc_cost_pct, m03_centralization_breakeven, m03_network_routes]
+    procedures: [m03_proc_select_supplier, m03_proc_kraljic_scoring, m03_proc_import_vs_domestic, m03_proc_centralization]
+    frameworks: [m03_kraljic, m03_strategic_sourcing, m03_distribution_models, m03_fisher, m03_lean_agile_leagile]
+    intake:
+      - "danh sách NCC"
+      - "tiêu chí và trọng số (chất lượng, giá, giao hàng, linh hoạt, tài chính)"
+      - "giá"
+      - "tỷ lệ lỗi"
+      - "giao trễ"
+      - "chi phí vận chuyển/thuế/tồn kho/hao hụt"
+      - "lead time"
+      - "nhu cầu theo mặt hàng"
+    steps:
+      - "Phân loại mặt hàng bằng Kraljic (m03_proc_kraljic_scoring): chiến lược, đòn bẩy, nút thắt, thông thường"
+      - "Chấm Supplier Scorecard có trọng số (m03_supplier_score)"
+      - "TCO/landed cost thay vì chỉ giá (m03_tco, m03_tco_supplier_unit); nhập khẩu vs trong nước (m03_proc_import_vs_domestic)"
+      - "KPI NCC: OTD, Perfect Order (m03_otd, m03_perfect_order)"
+      - "Phân bổ tỷ trọng giữa NCC (m03_proc_select_supplier); tập trung hóa thu mua cho chuỗi (m03_centralization_breakeven)"
+      - "Chọn chuỗi theo sản phẩm: Fisher, Lean/Agile/Leagile (m03_fisher, m03_lean_agile_leagile)"
+    sanity:
+      - "tổng trọng số = 100%"
+      - "điểm trong thang"
+      - "TCO >= giá mua"
+      - "so sánh cùng điều kiện giao hàng (Incoterms)"
+    decision: "Chọn theo điểm + TCO, không chỉ giá thấp nhất; mặt hàng chiến lược giữ 2 nguồn."
+    output: "Bảng Scorecard + TCO + phân bổ NCC (rpt_supply_chain)"
+
+  pb_bullwhip_chain:
+    goal: "Chẩn đoán và giảm hiệu ứng Bullwhip dọc chuỗi"
+    modules: [m03, m07, m04]
+    formulas: [m03_bullwhip_ratio, m03_bullwhip_lower_bound, m03_cv, m03_wape, m03_perfect_order, m03_ccc, m07_wape]
+    procedures: [m03_proc_measure_bullwhip, m07_proc_tracking_response]
+    frameworks: [m03_bullwhip_diagnosis, m03_sop, m07_cpfr, m03_seven_step_rebuild]
+    intake:
+      - "chuỗi nhu cầu bán lẻ và chuỗi đơn đặt hàng nhà phân phối/nhà máy theo tuần/tháng"
+      - "lead time"
+      - "chính sách đặt hàng"
+      - "lịch khuyến mãi"
+    steps:
+      - "Đo BW = phương sai đơn hàng / phương sai nhu cầu (m03_bullwhip_ratio) và CV (m03_cv); so với cận dưới lý thuyết (m03_bullwhip_lower_bound)"
+      - "Chẩn đoán 4 nguyên nhân (cập nhật dự báo, đặt theo lô, biến động giá/khuyến mãi, thiếu hàng - phân bổ - tích trữ) (m03_bullwhip_diagnosis)"
+      - "Giải pháp: chia sẻ dữ liệu bán thực (POS), đặt hàng thường xuyên/nhỏ lô, EDLP, S&OP, CPFR/VMI"
+      - "Đo lại BW và độ chính xác (m03_wape), KPI Perfect Order"
+    sanity:
+      - "BW >= 1 trong thực tế (đơn dao động >= nhu cầu)"
+      - "dùng cùng đơn vị/kỳ cho hai chuỗi"
+    decision: "BW > 2 (ngưỡng thực hành) thì xử lý nguyên nhân gốc trước khi mua công nghệ."
+    output: "Bảng BW từng tầng + nguyên nhân + giải pháp (rpt_supply_chain)"
+
+  pb_toc_product_mix:
+    goal: "Chọn product mix khi nhiều sản phẩm dùng chung ràng buộc, bằng kế toán Throughput và T/CU"
+    modules: [m09, m05, m01]
+    formulas: [m09_throughput, m09_net_profit_roi, m09_productivity_turns, m09_tcu, m09_product_mix_allocation, m09_breakeven_price_tcu, m09_system_output]
+    procedures: [m09_proc_product_mix, m09_proc_identify]
+    frameworks: [m09_throughput_accounting, m09_five_focusing_steps]
+    intake:
+      - "giá bán"
+      - "chi phí biến đổi thuần túy (TVC) từng sản phẩm"
+      - "thời gian chiếm ràng buộc mỗi đơn vị"
+      - "nhu cầu tối đa từng sản phẩm"
+      - "thời gian ràng buộc khả dụng"
+      - "OE và I để tính lợi nhuận/ROI"
+    steps:
+      - "T mỗi đơn vị = giá bán - TVC (m09_throughput); không phân bổ nhân công/chi phí cố định vào giá thành"
+      - "T/CU = T mỗi đơn vị / thời gian ràng buộc mỗi đơn vị (m09_tcu); xếp giảm dần"
+      - "Phân bổ thời gian ràng buộc theo thứ tự T/CU đến hết thời gian hoặc hết nhu cầu (m09_product_mix_allocation)"
+      - "Lợi nhuận ròng và ROI theo T-I-OE (m09_net_profit_roi, m09_productivity_turns)"
+      - "Giá tối thiểu để một sản phẩm đạt T/CU mục tiêu khi báo giá (m09_breakeven_price_tcu)"
+    sanity:
+      - "tổng thời gian dùng <= thời gian ràng buộc khả dụng"
+      - "T không âm"
+      - "mix tối ưu không đổi thứ tự khi chỉ thay phân bổ chi phí cố định"
+    decision: "Ưu tiên T/CU cao nhất, không theo % lãi gộp; sản phẩm T/CU thấp chỉ giữ khi có lý do chiến lược."
+    output: "Bảng T/CU + mix tối ưu + lợi nhuận ròng/ROI (rpt_toc_plan)"
+
+  pb_toc_dbr:
+    goal: "Đồng bộ lịch quanh ràng buộc bằng Drum-Buffer-Rope, quản lý buffer, giảm WIP/lead time; CCPM cho dự án; Replenishment"
+    modules: [m09, m04, m06, m01]
+    formulas: [m09_buffer_size, m09_buffer_penetration, m09_little, m09_project_buffer_50, m09_project_buffer_rss, m09_oee, m09_inventory_release_value, m09_dbm_replenishment_buffer, m09_wip_accumulation]
+    procedures: [m09_proc_subordinate_dbr, m09_proc_ccpm, m09_proc_replenishment]
+    frameworks: [m09_dbr, m09_buffer_management, m09_ccpm, m09_replenishment_dbm, m09_sme_rollout]
+    intake:
+      - "ràng buộc đã xác định và năng lực"
+      - "lead time hiện tại và WIP"
+      - "biến động thời gian xử lý"
+      - "thời gian chuyển hàng"
+      - "với dự án: ước lượng an toàn/trung bình từng nhiệm vụ"
+      - "với phân phối: tồn kho theo điểm bán"
+    steps:
+      - "Drum: lịch của ràng buộc; Rope: giới hạn nhả vật tư theo nhịp ràng buộc; Buffer: thời gian đệm (m09_proc_subordinate_dbr)"
+      - "Kích thước buffer khởi đầu (m09_buffer_size); WIP mục tiêu theo Little (m09_little)"
+      - "Quản lý buffer Xanh/Vàng/Đỏ theo mức tiêu hao (m09_buffer_penetration)"
+      - "OEE tại ràng buộc (m09_oee); tính vốn giải phóng khi giảm WIP/tồn kho (m09_inventory_release_value)"
+      - "Dự án: CCPM với project buffer theo 50% hoặc RSS (m09_project_buffer_50, m09_project_buffer_rss; m09_proc_ccpm)"
+      - "Phân phối: Replenishment và DBM (m09_dbm_replenishment_buffer; m09_proc_replenishment)"
+    sanity:
+      - "buffer đo bằng thời gian không phải số lượng ngẫu nhiên"
+      - "WIP giảm không làm ràng buộc cạn việc"
+      - "project buffer < tổng phần an toàn cắt"
+    decision: "Buffer lâu ở vùng Đỏ -> điều tra nguyên nhân gốc; lâu ở vùng Xanh -> giảm buffer để rút lead time."
+    output: "Lịch DBR + bảng theo dõi buffer + kế hoạch triển khai (rpt_toc_plan)"

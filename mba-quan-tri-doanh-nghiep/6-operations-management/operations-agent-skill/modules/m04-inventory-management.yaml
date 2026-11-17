@@ -1,0 +1,1020 @@
+id: "m04"
+name_vi: "Quản trị tồn kho"
+name_en: "Inventory Management"
+source_file: "04-inventory-management.md"
+purpose: >
+  Giải bài toán cân bằng giữa hai nỗi sợ đối lập: sợ hết hàng (mất khách, mất doanh số) và sợ thừa hàng (chôn vốn,
+  hư hỏng, lỗi thời). Cung cấp bộ công cụ định lượng (EOQ, ROP, safety stock, ABC, newsvendor, order-up-to, Kanban,
+  chiết khấu số lượng, gộp rủi ro, vòng quay/DIO/CCC) để quyết định đặt BAO NHIÊU, đặt KHI NÀO, chú ý vào ĐÂU,
+  áp dụng được cho SME Việt Nam.
+when_to_use:
+  - "Chủ cửa hàng hỏi: mỗi lần nên nhập bao nhiêu hàng, khi nào nên đặt lại (EOQ, ROP)"
+  - "Vừa hết hàng bán chạy vừa ứ đọng hàng chậm (nghịch lý tồn kho) - cần chẩn đoán và phân nhóm ABC"
+  - "Tính tồn kho an toàn khi nhu cầu và/hoặc lead time biến động; chọn mức phục vụ (service level)"
+  - "Nhà cung cấp đề nghị chiết khấu khi mua số lượng lớn - có nên mua không"
+  - "Hàng thời vụ/một lần đặt (bánh trung thu, mứt Tết, hoa Valentine, thời trang theo mùa) - đặt bao nhiêu (newsvendor)"
+  - "Hàng có hạn sử dụng (thuốc, thực phẩm, mỹ phẩm) - FEFO, kiểm tra định kỳ ngắn"
+  - "Chọn hệ thống kiểm soát: liên tục (s,Q) hay định kỳ (R,S); tính mức order-up-to"
+  - "Thiết kế Kanban/JIT cho nhà xưởng; cân nhắc đệm chiến lược (Just-In-Case) sau gián đoạn chuỗi cung ứng"
+  - "Tính vòng quay tồn kho, DIO, CCC, vốn giải phóng khi giảm tồn; làm việc với kế toán/CFO về dự phòng giảm giá hàng tồn"
+  - "Nhiều kho/điểm bán: gộp hay tách kho (risk pooling); bán đa kênh bị bán ảo (oversell)"
+  - "Đánh giá đầu tư barcode/RFID/WMS có đáng hay không"
+prerequisites: ["m07"]
+related_modules:
+  - "m07: Dự báo nhu cầu - mean và độ lệch chuẩn nhu cầu là đầu vào của mọi công thức tồn kho"
+  - "m03: Chuỗi cung ứng - Bullwhip, VMI, ma trận Kraljic, lead time nhà cung cấp, kho tập trung/phân tán"
+  - "m01: Thiết kế quy trình - lô nhỏ, giảm setup, dòng chảy; nền tảng của JIT"
+  - "m05: Hoạch định năng lực - chiến lược tồn kho gắn với năng lực sản xuất, tồn kho theo mùa"
+  - "m02: Quản lý chất lượng - JIT cần chất lượng ổn định vì không có đệm để bù lỗi"
+  - "m09: Theory of Constraints - buffer, dòng chảy; tồn kho che giấu vấn đề (cùng logic hạ mực nước của JIT)"
+  - "Tài chính (3-financial-management): vốn lưu động, CCC, chi phí vốn quyết định H"
+
+concepts:
+  - term_vi: "Tồn kho"
+    term_en: "Inventory"
+    definition: "Toàn bộ nguyên vật liệu, bán thành phẩm (WIP), thành phẩm và vật tư bảo trì (MRO) doanh nghiệp giữ để phục vụ sản xuất/bán hàng tương lai; về tài chính là tiền đã chi nhưng chưa thu về."
+    why_it_matters: "Tồn kho là khoản đầu tư, vốn lưu động bị đóng băng. Quản trị tồn kho là cân bằng hai nỗi sợ đối lập (hết hàng vs thừa hàng), nên không thể chỉ nhìn mua rẻ hay luôn đủ hàng."
+  - term_vi: "5 lý do phải giữ tồn kho và 4 loại tồn kho"
+    term_en: "Reasons to hold inventory; cycle, safety, seasonal, pipeline stock"
+    definition: "Lý do: tách rời cung-cầu, lead time, biến động nhu cầu/nguồn cung, kinh tế theo quy mô, đầu cơ/mùa vụ. Loại: chu kỳ, an toàn, theo mùa, trong chuyển (pipeline)."
+    why_it_matters: "Mỗi lý do ứng với một công cụ (lead time -> ROP, biến động -> safety stock, quy mô -> EOQ/chiết khấu, mùa vụ -> newsvendor); mỗi loại giảm bằng cách khác nhau (cycle: giảm S; safety: giảm biến động/lead time; pipeline: rút ngắn vận chuyển)."
+  - term_vi: "Chi phí đặt hàng (S), lưu kho (H), thiếu hàng"
+    term_en: "Ordering, Holding, Stockout Cost"
+    definition: "S phát sinh mỗi lần đặt, không phụ thuộc số lượng. H = i x P là chi phí giữ một đơn vị một năm (vốn, kho, bảo hiểm, hao hụt, lỗi thời). Chi phí thiếu hàng gồm mất doanh số, mất khách, phạt, đặt khẩn cấp."
+    why_it_matters: "S giảm theo Q còn H tăng theo Q nên có điểm tối ưu. H thường 15-30% giá trị tồn mỗi năm (ước tính tham khảo). Chi phí thiếu hàng khó đo nên quy đổi qua mức phục vụ. Ước lượng S = lương giờ x giờ xử lý + phí vận chuyển cố định; H = lãi/chi phí cơ hội vốn 10-15% + hao hụt + kho/bảo hiểm."
+  - term_vi: "Mô hình EOQ"
+    term_en: "Economic Order Quantity"
+    definition: "Lượng đặt hàng tối thiểu hóa tổng chi phí đặt hàng + lưu kho khi nhu cầu ổn định; tại tối ưu chi phí đặt hàng bằng chi phí lưu kho."
+    why_it_matters: "Ford W. Harris công bố 1913 (How Many Parts to Make at Once) khi nhà máy Mỹ băn khoăn cỡ lô vì mỗi lần đổi máy tốn setup; R. H. Wilson phổ biến từ 1934. Căn bậc hai làm EOQ bền trước sai số: D tăng 4 lần thì EOQ chỉ tăng 2 lần; đường tổng chi phí phẳng quanh tối ưu."
+  - term_vi: "Điểm đặt hàng lại và tồn kho an toàn"
+    term_en: "Reorder Point (ROP) and Safety Stock (SS)"
+    definition: "ROP = nhu cầu trong lead time + SS. SS là đệm chống biến động nhu cầu và lead time."
+    why_it_matters: "EOQ trả lời bao nhiêu, ROP trả lời khi nào. Phương sai cộng dồn, độ lệch chuẩn không cộng dồn nên SS tỷ lệ căn L. Mức phục vụ quy đổi sang Z."
+  - term_vi: "Mức phục vụ chu kỳ vs Fill Rate"
+    term_en: "Cycle Service Level vs Fill Rate"
+    definition: "Cycle service level = xác suất không hết hàng trong một chu kỳ đặt hàng (dùng tra Z). Fill rate = tỷ lệ nhu cầu được đáp ứng đầy đủ."
+    why_it_matters: "Hai chỉ số khác nhau; nhầm lẫn làm đặt mục tiêu sai."
+  - term_vi: "Phân loại ABC (Pareto)"
+    term_en: "ABC Analysis"
+    definition: "Xếp SKU giảm dần theo giá trị sử dụng năm (nhu cầu x đơn giá): A 10-20% mã (70-80% giá trị), B 20-30% (15-25%), C 50-70% (5-10%)."
+    why_it_matters: "Pareto 1896 (80% đất Ý thuộc 20% dân số); Juran vital few, trivial many; H. Ford Dickie (GE) hệ thống hóa đầu thập niên 1950. Giải bài toán nguồn lực quản trị có hạn. Giá trị chỉ là một chiều: hàng rẻ nhưng thiếu là dừng dây chuyền, hoặc dễ hỏng cần nâng nhóm; có thể kết hợp ABC-XYZ."
+  - term_vi: "Hệ thống kiểm soát liên tục vs định kỳ"
+    term_en: "Continuous Review (s,Q) vs Periodic Review (R,S)"
+    definition: "Liên tục: theo dõi thời gian thực, chạm ROP đặt cố định Q. Định kỳ: kiểm tra mỗi R ngày, đặt lượng biến đổi để đạt mức order-up-to S."
+    why_it_matters: "Định kỳ cần SS cao hơn (bảo vệ R+L ngày) nhưng đơn giản, hợp kiểm kê thủ công và đặt gộp; liên tục cần IT nên hợp hàng giá trị cao, nhu cầu ổn định."
+  - term_vi: "JIT, Kanban, Heijunka và Just-In-Case"
+    term_en: "Just-In-Time, Kanban, Heijunka, Just-In-Case"
+    definition: "JIT: chỉ sản xuất/nhận hàng đúng số lượng, đúng lúc theo hệ thống kéo. Kanban: thẻ tín hiệu bổ sung khi công đoạn sau đã tiêu thụ. Heijunka: san đều khối lượng/chủng loại. JIC: giữ đệm có chọn lọc cho linh kiện quan trọng."
+    why_it_matters: "Kiichiro Toyoda nêu ý tưởng thập niên 1930, Taiichi Ohno xây TPS thập niên 1950 (Nhật hậu chiến thiếu vốn, mặt bằng). Ohno coi tồn kho dư là một trong 7 muda vì che giấu vấn đề. JIT hỏi ngược EOQ: làm sao giảm S gần 0. COVID và đứt gãy 2020-2022 phơi bày điểm yếu JIT thuần túy; dùng Kraljic (m03) chọn nhóm cần đệm."
+  - term_vi: "Chiết khấu số lượng"
+    term_en: "Quantity Discount"
+    definition: "Giá giảm theo bậc số lượng; phải so tổng chi phí gồm D x P vì H = iP đổi theo giá."
+    why_it_matters: "Chiết khấu lớn có thể thắng chi phí lưu kho tăng thêm, nhưng bị chặn bởi sức chứa kho, hạn dùng và vốn lưu động."
+  - term_vi: "Thiếu hàng có kế hoạch"
+    term_en: "Planned Backorder Model"
+    definition: "Cho phép khách chờ khi hết hàng, trả chi phí B (VNĐ/đơn vị/năm) đổi lấy tồn kho thấp hơn."
+    why_it_matters: "Phù hợp make-to-order/đặt trước; bán lẻ VN hiếm dùng vì khách đi nơi khác. B tiến tới vô cùng thì về EOQ cơ bản."
+  - term_vi: "Kiểm kê theo chu kỳ và FEFO"
+    term_en: "Cycle Counting and FEFO"
+    definition: "Chia nhỏ việc đếm hàng quanh năm theo ABC (A tháng/tuần, B quý, C nửa năm/năm). FEFO: xuất lô hạn dùng gần nhất trước."
+    why_it_matters: "Số tồn sai thì EOQ/ROP garbage-in-garbage-out; phải điều tra nguyên nhân gốc. Với hàng hạn dùng, hàng nhập trước chưa chắc hết hạn sớm hơn."
+  - term_vi: "Vòng quay tồn kho và DIO"
+    term_en: "Inventory Turnover and Days Inventory Outstanding"
+    definition: "Vòng quay = COGS / tồn bình quân; DIO = 365 / vòng quay."
+    why_it_matters: "So số tuyệt đối vô nghĩa, cần so với quy mô bán; dùng COGS để cùng đơn vị giá vốn. Quá cao có thể báo hiệu hay hết hàng; thấp là ứ vốn."
+  - term_vi: "Mô hình người bán báo"
+    term_en: "Newsvendor Model"
+    definition: "Quyết định số lượng đặt một lần cho sản phẩm vòng đời ngắn: Q* là phân vị CR = Cu/(Cu+Co) của phân phối nhu cầu."
+    why_it_matters: "Ý tưởng từ Edgeworth (1888), phát triển trong Arrow, Harris, Marschak (1951). Đặt thêm đơn vị có lợi khi P(bán) x Cu >= P(không bán) x Co. EOQ/ROP không dùng được vì chỉ có một cơ hội đặt."
+  - term_vi: "Gộp rủi ro"
+    term_en: "Risk Pooling"
+    definition: "Gộp tồn kho nhiều điểm: sigma gộp = sigma x căn n (độc lập); SS gộp < tổng SS riêng khi tương quan rho < 1."
+    why_it_matters: "Quy luật căn bậc hai (Maister 1976, Eppen 1979). Đánh đổi: chi phí/thời gian giao chặng cuối; rho = 1 thì không giảm được gì."
+  - term_vi: "Ký gửi và VMI"
+    term_en: "Consignment and Vendor Managed Inventory"
+    definition: "Ký gửi: NCC giữ quyền sở hữu đến khi khách dùng/bán. VMI: NCC quyết định bổ sung tại kho khách dựa trên dữ liệu bán hàng chia sẻ."
+    why_it_matters: "Ký gửi giảm áp lực vốn lưu động; VMI giảm Bullwhip (m03), cần chia sẻ dữ liệu và lòng tin (Walmart-P&G là ví dụ trong nguồn)."
+  - term_vi: "Tồn kho đa kênh và bán ảo"
+    term_en: "Unified Inventory and Oversell"
+    definition: "Một nguồn tồn duy nhất cho mọi kênh; oversell là bán quá lượng thực do tồn online không đồng bộ."
+    why_it_matters: "Hủy đơn làm hại uy tín gian hàng sàn TMĐT; giải pháp: đồng bộ, đệm 1-2 đơn vị mỗi sàn, trừ kho ngay."
+  - term_vi: "Liên hệ báo cáo tài chính"
+    term_en: "Inventory and financial statements"
+    definition: "Tồn cao tăng tài sản ngắn hạn nhưng chôn tiền; giảm ROA; kéo dài CCC = DIO + DSO - DPO; hàng lỗi thời phải trích lập dự phòng."
+    why_it_matters: "CFO và COO phải phối hợp. Nguồn nhắc Thông tư 48/2019/TT-BTC về dự phòng giảm giá hàng tồn kho, cần đối chiếu văn bản hiện hành."
+
+formulas:
+  - id: "m04_holding_cost_rate"
+    name_vi: "Chi phí lưu kho một đơn vị (H = i x P)"
+    name_en: "Unit Holding Cost"
+    expression_latex: 'H = i \times P'
+    expression_python: "i * P"
+    excel: "=i*P"
+    variables:
+      - {symbol: "i", meaning: "Tỷ lệ lưu kho hằng năm (vốn + kho bãi + bảo hiểm + hao hụt + lỗi thời)", unit: "phần trăm/năm (0.2 = 20%)"}
+      - {symbol: "P", meaning: "Giá mua một đơn vị", unit: "VNĐ/đơn vị"}
+    when_to_use: "Trước khi tính EOQ/chiết khấu: quy đổi tỷ lệ lưu kho sang VNĐ/đơn vị/năm."
+    why_it_works: "Giữ một đơn vị hàng trong năm tốn đúng i phần giá trị của nó (vốn đóng băng, hao hụt, kho). Hàng đắt tốn lưu kho nhiều hơn mỗi đơn vị."
+    assumptions: ["Tỷ lệ i ổn định; nguồn cho khoảng 15-30%/năm là ước tính tham khảo, hàng dễ hỏng cao hơn"]
+    pitfalls: ["Quên tính hao hụt/ẩm/vỡ (xi măng) hoặc chỉ tính lãi vay mà bỏ chi phí cơ hội", "Khi giá thay đổi theo bậc chiết khấu thì H cũng đổi theo"]
+    interpretation: "H lớn thì EOQ nhỏ, đặt lô nhỏ hơn, thường xuyên hơn."
+    example:
+      inputs: {i: 0.2, P: 100000}
+      steps: ["H = 0.2 x 100,000 = 20,000 VNĐ/đơn vị/năm"]
+      result: "H = 20000"
+
+  - id: "m04_eoq"
+    name_vi: "Lượng đặt hàng kinh tế (EOQ)"
+    name_en: "Economic Order Quantity"
+    expression_latex: 'Q^{*} = \sqrt{\dfrac{2DS}{H}}'
+    expression_python: "sqrt(2*D*S/H)"
+    excel: "=SQRT(2*D*S/H)"
+    variables:
+      - {symbol: "D", meaning: "Nhu cầu hằng năm", unit: "đơn vị/năm"}
+      - {symbol: "S", meaning: "Chi phí đặt hàng mỗi lần", unit: "VNĐ/lần"}
+      - {symbol: "H", meaning: "Chi phí lưu kho mỗi đơn vị mỗi năm", unit: "VNĐ/đơn vị/năm"}
+    when_to_use: "Quyết định đặt BAO NHIÊU mỗi lần khi nhu cầu tương đối ổn định (hàng nhóm A, nhu cầu liên tục)."
+    why_it_works: >
+      Tồn kho hình răng cưa từ Q về 0 nên tồn bình quân là Q/2. Tổng chi phí biến đổi TC(Q) = (D/Q)S + (Q/2)H. Đạo hàm theo Q bằng 0 cho Q^2 = 2DS/H.
+      Tại tối ưu chi phí đặt hàng bằng chi phí lưu kho (hai đường cắt nhau). Harris 1913; Wilson 1934.
+    assumptions:
+      - "Nhu cầu D ổn định, biết trước; lead time cố định"
+      - "Cả lô Q về cùng lúc; không cho phép thiếu hàng"
+      - "Giá mua không đổi theo số lượng (nếu có chiết khấu dùng m04_quantity_discount_tc)"
+    pitfalls:
+      - "Bản cũ của nguồn ghi nhầm căn của 600,000,000; số đúng trong căn là 600,000 (EOQ 775 vẫn đúng)"
+      - "Quên điều chỉnh theo MOQ của NCC, sức chứa kho, quy cách đóng gói (làm tròn theo thùng/xe)"
+      - "Dùng H hoặc S ước lượng sai nhiều: do căn bậc hai nên sai số bị giảm một nửa nhưng vẫn cần số hợp lý"
+    interpretation: >
+      EOQ không cần chính xác tuyệt đối: lệch ~35% (Q=500) chỉ làm tổng chi phí tăng ~10%. Nhưng lô quá lớn (2.000, gấp ~2,6 EOQ) tăng ~48,5%.
+      D hoặc S tăng gấp 4 thì EOQ chỉ gấp 2.
+    example:
+      inputs: {D: 12000, S: 500000, H: 20000}
+      steps:
+        - "EOQ = sqrt(2 x 12,000 x 500,000 / 20,000) = sqrt(600,000) = 774.6, làm tròn 775"
+      result: "EOQ = 774.6 đơn vị"
+
+  - id: "m04_eoq_orders_cycle"
+    name_vi: "Số lần đặt hàng và chu kỳ đặt hàng tối ưu"
+    name_en: "Optimal Number of Orders and Order Cycle"
+    expression_latex: 'N^{*} = \dfrac{D}{Q^{*}}, \quad T^{*} = \dfrac{\text{Ngay lam viec}}{N^{*}}'
+    expression_python: "(D/Q, working_days/(D/Q))"
+    variables:
+      - {symbol: "D", meaning: "Nhu cầu hằng năm", unit: "đơn vị/năm"}
+      - {symbol: "Q", meaning: "Lượng đặt mỗi lần (EOQ)", unit: "đơn vị"}
+      - {symbol: "working_days", meaning: "Số ngày làm việc trong năm", unit: "ngày"}
+    when_to_use: "Chuyển EOQ thành lịch đặt hàng thực tế (bao lâu đặt một lần)."
+    why_it_works: "Mỗi chu kỳ tiêu hết một lô Q nên số lần đặt = D/Q và độ dài chu kỳ = Q/D năm."
+    assumptions: ["Như EOQ cơ bản"]
+    pitfalls: ["Dùng 365 ngày trong khi nhu cầu tính theo ngày làm việc (360 hoặc 300)"]
+    interpretation: "Chu kỳ 23 ngày nghĩa là khoảng 3 tuần đặt một lần; có thể làm tròn về chu kỳ giao hàng của NCC."
+    example:
+      inputs: {D: 12000, Q: 774.5967, working_days: 360}
+      steps: ["N = 12,000 / 774.6 = 15.49 lần/năm", "T = 360 / 15.49 = 23.2 ngày"]
+      result: "N = 15.49 lần/năm; T = 23.2 ngày"
+
+  - id: "m04_total_cost_tc"
+    name_vi: "Tổng chi phí tồn kho biến đổi TC(Q) và TC tối ưu"
+    name_en: "Total Variable Inventory Cost"
+    expression_latex: 'TC(Q) = \dfrac{D}{Q}S + \dfrac{Q}{2}H, \qquad TC^{*} = \sqrt{2DSH}'
+    expression_python: "(D/Q)*S + (Q/2)*H"
+    excel: "=D/Q*S+Q/2*H"
+    variables:
+      - {symbol: "D", meaning: "Nhu cầu hằng năm", unit: "đơn vị/năm"}
+      - {symbol: "Q", meaning: "Lượng đặt mỗi lần", unit: "đơn vị"}
+      - {symbol: "S", meaning: "Chi phí đặt hàng mỗi lần", unit: "VNĐ/lần"}
+      - {symbol: "H", meaning: "Chi phí lưu kho mỗi đơn vị mỗi năm", unit: "VNĐ/đơn vị/năm"}
+    when_to_use: "So sánh chính sách đặt hiện tại với EOQ, hoặc tính thiệt hại khi đặt lệch Q; đánh giá tiết kiệm khi chuyển sang EOQ."
+    why_it_works: "Cộng hai thành phần đối nghịch: đặt hàng giảm theo Q, lưu kho tăng theo Q, tổng có đáy hình chữ U; tại EOQ hai thành phần bằng nhau nên TC* = sqrt(2DSH)."
+    assumptions: ["Như EOQ; chưa gồm chi phí mua D x P"]
+    pitfalls: ["Nhầm TC biến đổi với tổng chi phí gồm tiền mua hàng (xem chiết khấu)"]
+    interpretation: "Bảng độ nhạy trong nguồn (D=12,000; S=500,000; H=20,000): Q=400 +22.6%; Q=500 +9.7%; Q=775 tối ưu; Q=1,200 +9.7%; Q=2,000 +48.5%."
+    example:
+      inputs: {D: 12000, Q: 2000, S: 500000, H: 20000}
+      steps: ["Đặt hàng: 12,000/2,000 x 500,000 = 3,000,000", "Lưu kho: 2,000/2 x 20,000 = 20,000,000", "Tổng = 23,000,000 so với tối ưu 15,491,935 (+48.5%)"]
+      result: "TC(2000) = 23,000,000 VNĐ/năm"
+
+  - id: "m04_rop"
+    name_vi: "Điểm đặt hàng lại (ROP)"
+    name_en: "Reorder Point"
+    expression_latex: 'ROP = d \times L + SS'
+    expression_python: "d*L + SS"
+    excel: "=d*L+SS"
+    variables:
+      - {symbol: "d", meaning: "Nhu cầu trung bình mỗi ngày", unit: "đơn vị/ngày"}
+      - {symbol: "L", meaning: "Lead time", unit: "ngày"}
+      - {symbol: "SS", meaning: "Tồn kho an toàn", unit: "đơn vị"}
+    when_to_use: "Quyết định đặt KHI NÀO trong hệ thống liên tục; dán bảng ROP tại kho / cảnh báo trong phần mềm."
+    why_it_works: "Hàng đặt hôm nay chưa về ngay; phải đặt khi lượng tồn còn đủ bán trong L ngày chờ cộng đệm biến động."
+    assumptions: ["d, L, SS cùng đơn vị thời gian"]
+    pitfalls: ["Dùng lead time hứa hẹn thay vì lead time thực đo được", "Quên cập nhật ROP khi nhu cầu/lead time đổi"]
+    interpretation: "Khi tồn kho (gồm hàng đang về nếu có) chạm ROP thì đặt EOQ ngay. Excel cảnh báo: IF(Tồn<=ROP,'ĐẶT HÀNG','OK')."
+    example:
+      inputs: {d: 40, L: 9, SS: 39.6}
+      steps: ["d x L = 40 x 9 = 360", "ROP = 360 + 39.6 = 399.6, làm tròn 400"]
+      result: "ROP = 399.6"
+
+  - id: "m04_service_level_z"
+    name_vi: "Hệ số Z theo mức phục vụ"
+    name_en: "Service Level Z-score"
+    expression_latex: 'Z = \Phi^{-1}(\text{service level})'
+    expression_python: "NormalDist().inv_cdf(service_level)"
+    excel: "=NORM.S.INV(service_level)"
+    variables:
+      - {symbol: "service_level", meaning: "Xác suất không hết hàng trong một chu kỳ đặt hàng", unit: "xác suất 0-1"}
+    when_to_use: "Chuyển mức phục vụ mong muốn thành số độ lệch chuẩn đệm trong công thức SS."
+    why_it_works: "Nhu cầu trong lead time ~ phân phối chuẩn; Z là phân vị chuẩn tương ứng với xác suất đủ hàng."
+    assumptions: ["Nhu cầu phân phối chuẩn, độc lập giữa các ngày"]
+    pitfalls: ["Nhầm cycle service level với fill rate", "Chọn 99% cho mọi mã mà không xét hậu quả thiếu hàng"]
+    interpretation: "Bảng tham chiếu: 90% -> 1.28; 95% -> 1.65; 97.5% -> 1.96; 99% -> 2.33; 99.9% -> 3.09. Chi phí tăng phi tuyến khi gần 100%."
+    example:
+      inputs: {service_level: 0.95}
+      steps: ["Z = NORM.S.INV(0.95) = 1.645, làm tròn 1.65"]
+      result: "Z = 1.645"
+
+  - id: "m04_safety_stock_demand"
+    name_vi: "Tồn kho an toàn (nhu cầu biến động, lead time cố định)"
+    name_en: "Safety Stock - demand variability"
+    expression_latex: 'SS = Z \times \sigma_d \times \sqrt{L}'
+    expression_python: "Z*sigma_d*sqrt(L)"
+    excel: "=NORM.S.INV(service)*sigma_d*SQRT(L)"
+    variables:
+      - {symbol: "Z", meaning: "Hệ số mức phục vụ", unit: "độ lệch chuẩn"}
+      - {symbol: "sigma_d", meaning: "Độ lệch chuẩn nhu cầu mỗi ngày", unit: "đơn vị/ngày"}
+      - {symbol: "L", meaning: "Lead time", unit: "ngày"}
+    when_to_use: "Tính đệm khi lead time ổn định (nhà cung cấp nội địa gần, giao đúng hạn)."
+    why_it_works: "Phương sai cộng dồn: nhu cầu trong L ngày có phương sai L x sigma_d^2, tức độ lệch chuẩn sigma_d x sqrt(L), không phải L x sigma_d vì ngày nhiều ngày ít bù trừ nhau."
+    assumptions: ["Nhu cầu mỗi ngày độc lập, phân phối chuẩn", "Lead time cố định"]
+    pitfalls: ["Lấy sigma_d từ dữ liệu quá ngắn", "Bỏ qua biến động lead time (thường lớn hơn nhiều)"]
+    interpretation: "Ví dụ nguồn: 90% -> 30.7, 95% -> 39.6, 99% -> 55.9 đơn vị; 95% lên 99% thêm 16.3 đơn vị (+41% chi phí giữ SS), 90% lên 95% chỉ thêm 8.9."
+    example:
+      inputs: {Z: 1.65, sigma_d: 8, L: 9}
+      steps: ["SS = 1.65 x 8 x sqrt(9) = 1.65 x 8 x 3 = 39.6"]
+      result: "SS = 39.6 đơn vị"
+
+  - id: "m04_safety_stock_demand_leadtime"
+    name_vi: "Tồn kho an toàn (cả nhu cầu và lead time biến động)"
+    name_en: "Safety Stock - demand and lead time variability"
+    expression_latex: 'SS = Z \times \sqrt{L\,\sigma_d^{2} + d^{2}\,\sigma_L^{2}}'
+    expression_python: "Z*sqrt(L*sigma_d**2 + d**2*sigma_L**2)"
+    excel: "=Z*SQRT(L*sigma_d^2+d^2*sigma_L^2)"
+    variables:
+      - {symbol: "Z", meaning: "Hệ số mức phục vụ", unit: "độ lệch chuẩn"}
+      - {symbol: "L", meaning: "Lead time trung bình", unit: "ngày"}
+      - {symbol: "sigma_d", meaning: "Độ lệch chuẩn nhu cầu ngày", unit: "đơn vị/ngày"}
+      - {symbol: "d", meaning: "Nhu cầu trung bình ngày", unit: "đơn vị/ngày"}
+      - {symbol: "sigma_L", meaning: "Độ lệch chuẩn lead time", unit: "ngày"}
+    when_to_use: "Hàng nhập khẩu, NCC giao thất thường (xe trễ, thời tiết, tàu biển): thường ở VN biến động lead time gây thiếu hàng nhiều hơn biến động nhu cầu."
+    why_it_works: "Hai nguồn bất định độc lập nên phương sai cộng: biến động nhu cầu trong L ngày (L x sigma_d^2) cộng biến động do lead time lệch (d^2 x sigma_L^2: mỗi ngày trễ mất đúng d đơn vị)."
+    assumptions: ["Nhu cầu và lead time độc lập, xấp xỉ chuẩn"]
+    pitfalls: ["Chỉ tăng SS thay vì giảm sigma_L (hợp đồng cam kết giao đúng hạn, NCC gần, đa dạng hóa NCC) - thường rẻ hơn"]
+    interpretation: "Ví dụ nguồn: sigma_L = 2 ngày đẩy SS từ 39.6 lên ~138 (gấp 3,4 lần). Vinamilk giả định: 93 tấn lên 585 tấn khi sigma_L = 7 ngày (gấp hơn 6 lần)."
+    example:
+      inputs: {Z: 1.65, L: 9, sigma_d: 8, d: 40, sigma_L: 2}
+      steps: ["L x sigma_d^2 = 9 x 64 = 576", "d^2 x sigma_L^2 = 1,600 x 4 = 6,400", "SS = 1.65 x sqrt(6,976) = 1.65 x 83.5 = 137.8"]
+      result: "SS = 137.8 đơn vị (nguồn làm tròn ~138)"
+
+  - id: "m04_safety_stock_periodic"
+    name_vi: "Tồn kho an toàn hệ thống định kỳ"
+    name_en: "Safety Stock - periodic review"
+    expression_latex: 'SS = Z \times \sigma_d \times \sqrt{R + L}'
+    expression_python: "Z*sigma_d*sqrt(R+L)"
+    variables:
+      - {symbol: "Z", meaning: "Hệ số mức phục vụ", unit: "độ lệch chuẩn"}
+      - {symbol: "sigma_d", meaning: "Độ lệch chuẩn nhu cầu ngày", unit: "đơn vị/ngày"}
+      - {symbol: "R", meaning: "Chu kỳ rà soát", unit: "ngày"}
+      - {symbol: "L", meaning: "Lead time", unit: "ngày"}
+    when_to_use: "Hệ thống (R,S): đệm phải bảo vệ suốt R+L ngày vì giữa 2 lần kiểm tra không ai đặt hàng."
+    why_it_works: "Khoảng cần bảo vệ dài hơn (R+L thay vì L) nên độ lệch chuẩn nhu cầu trong khoảng đó lớn hơn."
+    assumptions: ["Như SS cơ bản"]
+    pitfalls: ["Dùng công thức SS của hệ thống liên tục cho hệ thống định kỳ -> thiếu đệm"]
+    interpretation: "Thuốc A (nhà thuốc): R=7 -> SS 24.75; R=30 -> SS 46.7."
+    example:
+      inputs: {Z: 1.65, sigma_d: 5, R: 7, L: 2}
+      steps: ["SS = 1.65 x 5 x sqrt(9) = 24.75"]
+      result: "SS = 24.75 hộp"
+
+  - id: "m04_order_up_to"
+    name_vi: "Mức tồn mục tiêu hệ thống định kỳ (order-up-to S)"
+    name_en: "Order-Up-To Level (R,S)"
+    expression_latex: 'S = d\,(R+L) + Z\,\sigma_d\sqrt{R+L}, \qquad \text{Qty dat} = S - (\text{ton hien co} + \text{hang dang ve})'
+    expression_python: "d*(R+L) + Z*sigma_d*sqrt(R+L)"
+    variables:
+      - {symbol: "d", meaning: "Nhu cầu trung bình ngày", unit: "đơn vị/ngày"}
+      - {symbol: "R", meaning: "Chu kỳ rà soát", unit: "ngày"}
+      - {symbol: "L", meaning: "Lead time", unit: "ngày"}
+      - {symbol: "Z", meaning: "Hệ số mức phục vụ", unit: "độ lệch chuẩn"}
+      - {symbol: "sigma_d", meaning: "Độ lệch chuẩn nhu cầu ngày", unit: "đơn vị/ngày"}
+    when_to_use: "SME kiểm kê thủ công, hàng giá trị thấp/có hạn dùng, đặt gộp nhiều mã chung một NCC (nhóm C)."
+    why_it_works: "Mức mục tiêu = nhu cầu kỳ vọng trong R+L + đệm; mỗi lần kiểm tra chỉ cần bù phần thiếu so với S (kể cả hàng đang về), nên lượng đặt tự điều chỉnh theo nhu cầu."
+    assumptions: ["Nhu cầu chuẩn, độc lập; lead time cố định"]
+    pitfalls: ["Quên trừ hàng đang trên đường về khi tính lượng đặt"]
+    interpretation: "Tồn bình quân xấp xỉ d x R / 2 + SS. Kiểm tra tuần giữ ít hơn ~3,5 lần số hộp trên kệ so với kiểm tra tháng (nhà thuốc), đánh đổi: nhiều lần đặt hơn."
+    example:
+      inputs: {d: 40, R: 14, L: 6, Z: 1.65, sigma_d: 10}
+      steps: ["R + L = 20", "SS = 1.65 x 10 x sqrt(20) = 73.8", "S = 40 x 20 + 73.8 = 873.8, làm tròn 874", "Nếu tồn + đang về = 310 thì đặt 874 - 310 = 564"]
+      result: "S = 873.8 (khoảng 874)"
+
+  - id: "m04_quantity_discount_tc"
+    name_vi: "Tổng chi phí có chiết khấu số lượng"
+    name_en: "Total Cost with Quantity Discount"
+    expression_latex: 'TC = \dfrac{D}{Q}S + \dfrac{Q}{2}H + DP, \quad H = iP'
+    expression_python: "D/Q*S + Q/2*(i*P) + D*P"
+    variables:
+      - {symbol: "D", meaning: "Nhu cầu hằng năm", unit: "đơn vị/năm"}
+      - {symbol: "Q", meaning: "Lượng đặt khả thi trong khoảng giá", unit: "đơn vị"}
+      - {symbol: "S", meaning: "Chi phí đặt hàng mỗi lần", unit: "VNĐ/lần"}
+      - {symbol: "i", meaning: "Tỷ lệ lưu kho", unit: "phần trăm/năm"}
+      - {symbol: "P", meaning: "Giá mua ở bậc đó", unit: "VNĐ/đơn vị"}
+    when_to_use: "NCC giảm giá theo bậc số lượng; cần chọn bậc tối ưu theo TỔNG chi phí, không phải giá thấp nhất."
+    why_it_works: "Giá đổi thì H = iP đổi và chi phí mua D x P đáng kể phải đưa vào so sánh; quy trình: (1) EOQ tại từng mức giá; (2) nếu EOQ nằm dưới khoảng được hưởng giá, nâng Q lên ngưỡng thấp nhất của khoảng, nếu EOQ vượt trên khoảng thì dùng Q lớn nhất của khoảng đó (hoặc loại bậc); (3) tính TC từng phương án khả thi, chọn nhỏ nhất."
+    assumptions: ["Nhu cầu ổn định", "Có sức chứa kho, hạn dùng cho phép"]
+    pitfalls: ["Chỉ nhìn giá thấp nhất", "Bỏ qua sức chứa kho, hạn sử dụng, áp lực vốn lưu động (hàng dễ hỏng không nên mua nhiều)"]
+    interpretation: "Ví dụ nguồn (giả định minh họa): mua 1,000/lần giá 95,000 rẻ nhất, 1,155.5 triệu, tiết kiệm ~23,8 triệu/năm so với EOQ giá 97,000 (1,179.26 triệu), dù chi phí đặt+lưu kho tăng nhẹ (15.5 so với 15.26 triệu)."
+    example:
+      inputs: {D: 12000, Q: 1000, S: 500000, i: 0.2, P: 95000}
+      steps: ["Đặt hàng: 12 x 500,000 = 6,000,000", "Lưu kho: 500 x 19,000 = 9,500,000", "Mua: 12,000 x 95,000 = 1,140,000,000", "Tổng = 1,155,500,000"]
+      result: "TC = 1,155,500,000 VNĐ/năm"
+
+  - id: "m04_eoq_backorder"
+    name_vi: "EOQ có thiếu hàng có kế hoạch"
+    name_en: "EOQ with Planned Backorders"
+    expression_latex: 'Q^{*}_{b} = \sqrt{\dfrac{2DS}{H}}\sqrt{\dfrac{H+B}{B}}, \quad I_{max} = Q^{*}_{b}\dfrac{B}{H+B}'
+    expression_python: "(sqrt(2*D*S/H)*sqrt((H+B)/B), sqrt(2*D*S/H)*sqrt((H+B)/B)*B/(H+B))"
+    variables:
+      - {symbol: "D", meaning: "Nhu cầu hằng năm", unit: "đơn vị/năm"}
+      - {symbol: "S", meaning: "Chi phí đặt hàng", unit: "VNĐ/lần"}
+      - {symbol: "H", meaning: "Chi phí lưu kho", unit: "VNĐ/đơn vị/năm"}
+      - {symbol: "B", meaning: "Chi phí thiếu hàng (chờ)", unit: "VNĐ/đơn vị/năm"}
+    when_to_use: "Make-to-order, hàng đặt trước: khách chấp nhận chờ."
+    why_it_works: "Cho phép thiếu hàng có kế hoạch giảm tồn kho; đổi lại trả B. Số đơn chờ tối đa = Q_b - I_max; tổng chi phí TC* x sqrt(B/(H+B))."
+    assumptions: ["Khách chấp nhận chờ, không bỏ đi"]
+    pitfalls: ["Áp dụng cho bán lẻ VN (khách đi mua nơi khác) -> sai"]
+    interpretation: "Khi B tiến tới vô cùng, quay về EOQ cơ bản."
+    example:
+      inputs: {D: 12000, S: 500000, H: 20000, B: 60000}
+      steps: ["Q_b = 774.6 x sqrt(80,000/60,000) = 894.4", "I_max = 894.4 x 0.75 = 670.8", "Đơn chờ tối đa = 223.6", "TC = 15.49 triệu x sqrt(60/80) = 13.42 triệu"]
+      result: "Q_b = 894.4; I_max = 670.8; chờ tối đa 223.6; TC 13.42 triệu VNĐ"
+
+  - id: "m04_abc_value"
+    name_vi: "Giá trị sử dụng năm và % tích lũy (phân loại ABC)"
+    name_en: "Annual Usage Value and Cumulative Share (ABC)"
+    expression_latex: 'V_k = D_k \times P_k, \qquad \text{Cum}_k = \dfrac{\sum_{j \le k} V_j}{\sum V}'
+    expression_python: "D_k*P_k"
+    variables:
+      - {symbol: "D_k", meaning: "Nhu cầu năm của mã k", unit: "đơn vị/năm"}
+      - {symbol: "P_k", meaning: "Đơn giá vốn của mã k", unit: "VNĐ/đơn vị"}
+    when_to_use: "Phân nhóm SKU để phân bổ nguồn lực kiểm soát; làm lại trên Excel mỗi 6 tháng."
+    why_it_works: "Nguyên lý Pareto: ít mã chiếm đa số giá trị. Quy trình 5 bước: lập danh sách + nhu cầu + đơn giá; tính V; sắp giảm dần; tính % và % tích lũy; cắt nhóm (A đến 70-80%, B đến 90-95%, còn lại C)."
+    assumptions: ["Có đủ dữ liệu 12 tháng"]
+    pitfalls: ["Chỉ xét giá trị: hàng rẻ nhưng thiếu là dừng dây chuyền hoặc dễ hỏng cần nâng nhóm (cân nhắc ABC-XYZ)", "Dữ liệu lịch sử kém khiến phân loại sai"]
+    interpretation: "Nhóm A: kiểm soát chặt, dự báo chính xác, kiểm kê thường xuyên; B: trung bình; C: đơn giản, đặt lô lớn ít lần hoặc định kỳ đặt gộp."
+    example:
+      inputs: {D_k: 6000, P_k: 70000}
+      steps: ["Nhớt máy: 6,000 x 70,000 = 420,000,000 = 420 triệu; tổng 10 nhóm = 1,643 triệu -> 25.6%, tích lũy 25.6%"]
+      result: "V = 420,000,000 VNĐ/năm"
+
+  - id: "m04_cycle_count_workload"
+    name_vi: "Tải công việc kiểm kê theo chu kỳ"
+    name_en: "Cycle Counting Workload"
+    expression_latex: '\text{Luot dem} = \sum_g n_g f_g, \qquad \text{SKU/ngay} = \dfrac{\text{Luot dem}}{\text{ngay lam viec}}'
+    expression_python: "(nA*fA + nB*fB + nC*fC, (nA*fA + nB*fB + nC*fC)/working_days)"
+    variables:
+      - {symbol: "nA", meaning: "Số SKU nhóm A", unit: "SKU"}
+      - {symbol: "fA", meaning: "Số lần đếm/năm nhóm A", unit: "lần/năm"}
+      - {symbol: "nB", meaning: "Số SKU nhóm B", unit: "SKU"}
+      - {symbol: "fB", meaning: "Số lần đếm/năm nhóm B", unit: "lần/năm"}
+      - {symbol: "nC", meaning: "Số SKU nhóm C", unit: "SKU"}
+      - {symbol: "fC", meaning: "Số lần đếm/năm nhóm C", unit: "lần/năm"}
+      - {symbol: "working_days", meaning: "Ngày làm việc/năm", unit: "ngày"}
+    when_to_use: "Thiết kế lịch cycle counting khả thi cho nhân viên kho kiêm nhiệm."
+    why_it_works: "Tần suất tỷ lệ với tầm quan trọng ABC: A tháng/tuần, B quý, C nửa năm/năm; tổng lượt chia đều quanh năm tránh đóng cửa kho."
+    assumptions: ["Số lần đếm theo nhóm A 12, B 4, C 1"]
+    pitfalls: ["Chỉ chỉnh số khi lệch mà không điều tra nguyên nhân gốc"]
+    interpretation: "13,6 SKU/ngày là khả thi cho 1 nhân viên kho kiêm nhiệm."
+    example:
+      inputs: {nA: 150, fA: 12, nB: 250, fB: 4, nC: 600, fC: 1, working_days: 250}
+      steps: ["150 x 12 + 250 x 4 + 600 x 1 = 1,800 + 1,000 + 600 = 3,400 lượt/năm", "3,400 / 250 = 13.6 SKU/ngày"]
+      result: "3,400 lượt/năm; 13.6 SKU/ngày"
+
+  - id: "m04_kanban_cards"
+    name_vi: "Số thẻ Kanban"
+    name_en: "Number of Kanban Cards"
+    expression_latex: 'N = \dfrac{d \times L \times (1+\alpha)}{C}'
+    expression_python: "d*L*(1+alpha)/C"
+    variables:
+      - {symbol: "d", meaning: "Nhu cầu trung bình mỗi đơn vị thời gian", unit: "chi tiết/ngày"}
+      - {symbol: "L", meaning: "Thời gian hoàn tất một chu kỳ bổ sung (chờ, sản xuất, vận chuyển), cùng đơn vị thời gian với d", unit: "ngày"}
+      - {symbol: "alpha", meaning: "Hệ số an toàn (phần trăm đệm do quản lý quyết định)", unit: "tỷ lệ (0.1 = 10%)"}
+      - {symbol: "C", meaning: "Sức chứa một thùng", unit: "chi tiết/thùng"}
+    when_to_use: "Thiết kế vòng kéo JIT: tồn tối đa trong vòng = N x C. Làm tròn N lên."
+    why_it_works: "Mỗi thẻ đại diện một thùng đang lưu thông; số thùng cần để phủ nhu cầu trong thời gian bổ sung cộng đệm. Rút ngắn L (kaizen) giảm số thẻ: hạ mực nước để lộ đá ngầm."
+    assumptions: ["Chu kỳ bổ sung ổn định", "Chất lượng ổn định (không có đệm bù lỗi)"]
+    pitfalls: ["Đặt alpha quá lớn làm mất tác dụng JIT", "Áp dụng khi nhu cầu bất ổn, NCC không tin cậy"]
+    interpretation: "Ví dụ giả định: L=0.5 -> 11 thẻ, 220 chi tiết; L=0.25 -> 5.5 làm tròn 6 thẻ, 120 chi tiết (giảm 45%)."
+    example:
+      inputs: {d: 400, L: 0.5, alpha: 0.1, C: 20}
+      steps: ["N = 400 x 0.5 x 1.1 / 20 = 11 thẻ", "Tồn tối đa = 11 x 20 = 220 chi tiết"]
+      result: "N = 11 thẻ"
+
+  - id: "m04_inventory_turnover"
+    name_vi: "Vòng quay tồn kho"
+    name_en: "Inventory Turnover"
+    expression_latex: '\text{Vong quay} = \dfrac{COGS}{\overline{Inv}}, \quad \overline{Inv} = \dfrac{Inv_{dau} + Inv_{cuoi}}{2}'
+    expression_python: "COGS / ((inv_begin + inv_end)/2)"
+    excel: "=COGS/AVERAGE(inv_begin, inv_end)"
+    variables:
+      - {symbol: "COGS", meaning: "Giá vốn hàng bán cả năm", unit: "triệu VNĐ"}
+      - {symbol: "inv_begin", meaning: "Tồn kho đầu kỳ", unit: "triệu VNĐ"}
+      - {symbol: "inv_end", meaning: "Tồn kho cuối kỳ", unit: "triệu VNĐ"}
+    when_to_use: "Đo tồn kho nhiều hay ít so với quy mô bán; benchmark theo ngành."
+    why_it_works: "Đo số lần trong năm bán hết và nhập lại lượng tồn bình quân; dùng COGS để cùng đơn vị giá vốn, không lẫn lợi nhuận."
+    assumptions: ["Tồn bình quân đại diện được (hàng mùa vụ nên dùng bình quân nhiều điểm)"]
+    pitfalls: ["So ngành khác nhau (siêu thị/thực phẩm quay nhanh; VLXD, nội thất quay chậm)", "Quá cao có thể do hay hết hàng"]
+    interpretation: "Cao: vốn quay nhanh (cẩn thận hết hàng); thấp: ứ vốn hoặc hàng chậm bán. Cần benchmark ngành."
+    example:
+      inputs: {COGS: 1800, inv_begin: 260, inv_end: 340}
+      steps: ["Tồn bình quân = (260+340)/2 = 300", "Vòng quay = 1,800 / 300 = 6"]
+      result: "6 vòng/năm"
+
+  - id: "m04_dio"
+    name_vi: "Số ngày tồn kho (DIO)"
+    name_en: "Days Inventory Outstanding"
+    expression_latex: 'DIO = \dfrac{365}{\text{Vong quay}}'
+    expression_python: "365 / turnover"
+    variables:
+      - {symbol: "turnover", meaning: "Vòng quay tồn kho", unit: "vòng/năm"}
+    when_to_use: "Diễn giải vòng quay thành số ngày hàng nằm kho."
+    why_it_works: "Nghịch đảo vòng quay nhân 365: một vòng mất bao nhiêu ngày."
+    assumptions: ["Năm 365 ngày"]
+    pitfalls: ["Nhầm với DSO/DPO"]
+    interpretation: "DIO 60.8 ngày: trung bình hàng nằm kho ~61 ngày trước khi bán."
+    example:
+      inputs: {turnover: 6}
+      steps: ["DIO = 365/6 = 60.8"]
+      result: "DIO = 60.83 ngày"
+
+  - id: "m04_ccc"
+    name_vi: "Chu kỳ chuyển đổi tiền mặt (CCC) và vốn giải phóng"
+    name_en: "Cash Conversion Cycle and Cash Released"
+    expression_latex: 'CCC = DIO + DSO - DPO, \qquad \text{Von giai phong} = \dfrac{COGS \times \Delta DIO}{365}'
+    expression_python: "(DIO + DSO - DPO, COGS*delta_dio/365)"
+    variables:
+      - {symbol: "DIO", meaning: "Số ngày tồn kho", unit: "ngày"}
+      - {symbol: "DSO", meaning: "Số ngày thu tiền phải thu", unit: "ngày"}
+      - {symbol: "DPO", meaning: "Số ngày trả tiền phải trả", unit: "ngày"}
+      - {symbol: "COGS", meaning: "Giá vốn hàng bán năm", unit: "triệu VNĐ"}
+      - {symbol: "delta_dio", meaning: "Số ngày DIO giảm được", unit: "ngày"}
+    when_to_use: "Chuyển cải tiến tồn kho thành dòng tiền; làm việc với CFO/ngân hàng."
+    why_it_works: "CCC là số ngày tiền bị chôn trong vòng vận hành; mỗi ngày DIO giảm giải phóng COGS/365 tiền mặt."
+    assumptions: ["COGS ổn định trong năm"]
+    pitfalls: ["Giảm DIO bằng cách giảm tồn quá mức gây hết hàng"]
+    interpretation: "Giảm DIO giúp rút ngắn CCC, cải thiện dòng tiền; tồn cao còn làm giảm ROA (mẫu số tăng)."
+    example:
+      inputs: {DIO: 60.8, DSO: 25, DPO: 30, COGS: 2400, delta_dio: 10}
+      steps: ["CCC = 60.8 + 25 - 30 = 55.8 ngày", "Giải phóng = 2,400 x 10 / 365 = 65.8 triệu VNĐ", "CCC mới ~45.8 ngày"]
+      result: "CCC = 55.8 ngày; giải phóng 65.8 triệu VNĐ"
+
+  - id: "m04_newsvendor_cr"
+    name_vi: "Tỷ lệ tới hạn Newsvendor (Critical Ratio)"
+    name_en: "Newsvendor Critical Ratio"
+    expression_latex: 'CR = \dfrac{C_u}{C_u + C_o}, \quad C_u = p - c, \quad C_o = c - s'
+    expression_python: "(p - c) / ((p - c) + (c - s))"
+    variables:
+      - {symbol: "p", meaning: "Giá bán", unit: "VNĐ/đơn vị"}
+      - {symbol: "c", meaning: "Giá vốn", unit: "VNĐ/đơn vị"}
+      - {symbol: "s", meaning: "Giá thanh lý cuối mùa", unit: "VNĐ/đơn vị"}
+    when_to_use: "Hàng vòng đời ngắn chỉ có một cơ hội đặt (bánh trung thu, mứt Tết, hoa, thời trang theo mùa, vé sự kiện)."
+    why_it_works: "Đặt thêm đơn vị thứ Q: bán được lãi thêm Cu, không bán được lỗ thêm Co. Có lợi khi P(bán) x Cu >= P(không bán) x Co, cân bằng ở xác suất không hết hàng = Cu/(Cu+Co)."
+    assumptions: ["Một kỳ đặt hàng, không bổ sung giữa mùa", "Nhu cầu có phân phối biết trước"]
+    pitfalls: ["Đặt theo trung bình dự báo bỏ qua bất đối xứng Cu và Co", "Quên thương lượng quyền đổi/trả (giảm Co) hoặc đặt bổ sung giữa mùa"]
+    interpretation: "CR > 0.5 (lãi biên lớn hơn lỗ thanh lý): đặt cao hơn dự báo; hàng thanh lý lỗ nặng (thực phẩm hết hạn, Co lớn): đặt thấp hơn dự báo."
+    example:
+      inputs: {p: 150000, c: 90000, s: 40000}
+      steps: ["Cu = 150,000 - 90,000 = 60,000", "Co = 90,000 - 40,000 = 50,000", "CR = 60,000 / 110,000 = 0.545"]
+      result: "CR = 0.5455"
+
+  - id: "m04_newsvendor_q"
+    name_vi: "Số lượng đặt tối ưu Newsvendor (nhu cầu chuẩn)"
+    name_en: "Newsvendor Optimal Quantity"
+    expression_latex: 'Q^{*} = \mu + Z_{CR}\,\sigma = F^{-1}(CR)'
+    expression_python: "NormalDist(mu, sigma).inv_cdf(CR)"
+    excel: "=NORM.INV(Cu/(Cu+Co), mu, sigma)"
+    variables:
+      - {symbol: "mu", meaning: "Nhu cầu dự báo trung bình", unit: "đơn vị"}
+      - {symbol: "sigma", meaning: "Độ lệch chuẩn nhu cầu", unit: "đơn vị"}
+      - {symbol: "CR", meaning: "Tỷ lệ tới hạn Cu/(Cu+Co)", unit: "xác suất"}
+    when_to_use: "Sau khi có CR: tra phân vị CR của phân phối nhu cầu."
+    why_it_works: "Q* là phân vị thứ CR của phân phối nhu cầu."
+    assumptions: ["Nhu cầu ~ chuẩn"]
+    pitfalls: ["sigma ước lượng thấp (dự báo quá tự tin) làm đặt sai"]
+    interpretation: "Ví dụ bánh trung thu: Z=0.114, Q*=1,023 hộp (làm tròn 1,020-1,025). Bài hoa Valentine: Q*=535 bó."
+    example:
+      inputs: {mu: 1000, sigma: 200, CR: 0.545454}
+      steps: ["Z = NORM.S.INV(0.545) = 0.114", "Q* = 1,000 + 0.114 x 200 = 1,022.8"]
+      result: "Q* = 1,023 hộp"
+
+  - id: "m04_newsvendor_expected_cost"
+    name_vi: "Chi phí bất định kỳ vọng Newsvendor (thừa + thiếu)"
+    name_en: "Newsvendor Expected Overage + Underage Cost"
+    expression_latex: 'E[\text{du}] = \sigma\,[z\Phi(z) + \varphi(z)], \quad E[\text{thieu}] = E[\text{du}] - z\sigma, \quad \text{Cost} = C_o E[\text{du}] + C_u E[\text{thieu}]'
+    expression_python: "Co*sigma*(z*NormalDist().cdf(z) + NormalDist().pdf(z)) + Cu*(sigma*(z*NormalDist().cdf(z) + NormalDist().pdf(z)) - z*sigma)"
+    variables:
+      - {symbol: "sigma", meaning: "Độ lệch chuẩn nhu cầu", unit: "đơn vị"}
+      - {symbol: "z", meaning: "Z tại CR (Q* = mu + z sigma)", unit: "độ lệch chuẩn"}
+      - {symbol: "Cu", meaning: "Chi phí thiếu hàng/đơn vị", unit: "VNĐ"}
+      - {symbol: "Co", meaning: "Chi phí thừa hàng/đơn vị", unit: "VNĐ"}
+    when_to_use: "Định lượng giá trị của việc giảm bất định (đặt muộn, lô nhỏ, đặt bổ sung); case Zara/thời trang."
+    why_it_works: "Số dư kỳ vọng và số thiếu kỳ vọng là hàm của sigma: giảm sigma thì cả hai giảm gần tỷ lệ thuận."
+    assumptions: ["Nhu cầu chuẩn; Q* tối ưu theo CR"]
+    pitfalls: ["Nguồn dùng biểu thức đó với số làm tròn; tính lại cho ra xấp xỉ (316 và 119 triệu)"]
+    interpretation: "Giảm sai số dự báo từ 40% xuống 15% giảm chi phí bất định ~62%: tốc độ phản hồi có giá trị hơn dự báo giỏi hơn."
+    example:
+      inputs: {sigma: 4000, z: 1.0675705, Cu: 300000, Co: 50000}
+      steps: ["Dư kỳ vọng = 4,000 x (z.Phi(z) + phi(z)) = 4,563 chiếc", "Thiếu kỳ vọng = 4,563 - 4,270 = 293 chiếc", "Chi phí = 4,563 x 50,000 + 293 x 300,000 = 228 + 88 = ~316 triệu"]
+      result: "~316 triệu VNĐ (mô hình 40%); ~119 triệu (mô hình 15%)"
+
+  - id: "m04_risk_pooling"
+    name_vi: "Gộp rủi ro (tồn kho an toàn khi gộp kho)"
+    name_en: "Risk Pooling Safety Stock"
+    expression_latex: '\sigma_{pool} = \sigma\sqrt{n + n(n-1)\rho}, \quad SS_{pool} = Z\,\sigma_{pool}\sqrt{L}'
+    expression_python: "Z*sigma*sqrt(n + n*(n-1)*rho)*sqrt(L)"
+    variables:
+      - {symbol: "Z", meaning: "Hệ số mức phục vụ", unit: "độ lệch chuẩn"}
+      - {symbol: "sigma", meaning: "Độ lệch chuẩn nhu cầu ngày của từng kho (giống nhau)", unit: "đơn vị/ngày"}
+      - {symbol: "n", meaning: "Số kho gộp", unit: "kho"}
+      - {symbol: "rho", meaning: "Hệ số tương quan nhu cầu giữa các kho", unit: "0-1"}
+      - {symbol: "L", meaning: "Lead time", unit: "ngày"}
+    when_to_use: "Cân nhắc gộp nhiều kho khu vực thành kho trung tâm; hàng biến động lớn, giá trị cao, không cần giao siêu tốc."
+    why_it_works: "Phương sai tổng = n sigma^2 + n(n-1) rho sigma^2: khi rho<1 biến động bù trừ nên SS gộp nhỏ hơn tổng SS riêng; độc lập (rho=0) thì sigma gộp = sigma x căn n (quy luật căn bậc hai: Maister 1976, Eppen 1979)."
+    assumptions: ["Các kho giống nhau, lead time như nhau"]
+    pitfalls: ["rho = 1 thì không giảm được gì", "Gộp làm tăng chi phí/thời gian giao chặng cuối"]
+    interpretation: "Ví dụ giả định 3 kho: riêng 297; gộp rho=0 -> 171.5 (-42%); rho=0.5 -> 242.5 (-18%); rho=1 -> 297. 4 kho n=4 độc lập giảm 50%."
+    example:
+      inputs: {Z: 1.65, sigma: 30, n: 3, rho: 0, L: 4}
+      steps: ["Riêng: 3 x 1.65 x 30 x 2 = 297", "Gộp rho=0: sigma_pool = 30 x sqrt(3) = 51.96; SS = 1.65 x 51.96 x 2 = 171.5"]
+      result: "SS gộp = 171.5 (giảm 42% so với 297)"
+
+  - id: "m04_inventory_kpis"
+    name_vi: "KPI tồn kho (stockout rate, accuracy, obsolete %, fill rate, chi phí lưu kho/doanh thu)"
+    name_en: "Inventory KPIs"
+    expression_latex: '\text{Stockout rate} = \dfrac{\text{So lan het hang}}{\text{Tong so lan kiem tra}}, \quad \text{Accuracy} = \dfrac{\text{SKU khop}}{\text{Tong SKU}}'
+    expression_python: "(stockouts/checks, matched_sku/total_sku)"
+    variables:
+      - {symbol: "stockouts", meaning: "Số lần hết hàng", unit: "lần"}
+      - {symbol: "checks", meaning: "Tổng số lần kiểm tra", unit: "lần"}
+      - {symbol: "matched_sku", meaning: "SKU khớp giữa hệ thống và thực tế", unit: "SKU"}
+      - {symbol: "total_sku", meaning: "Tổng số SKU", unit: "SKU"}
+    when_to_use: "Theo dõi hằng tháng sau khi triển khai hệ thống tồn kho; mục tiêu tham khảo: stockout < 5%, accuracy > 95%, obsolete (tồn > 6-12 tháng / tổng tồn) < 5%, fill rate > 95%, chi phí lưu kho/doanh thu 2-6% tùy ngành (tham khảo)."
+    why_it_works: "KPI đo cả hai phía: đủ hàng cho khách và hiệu quả vốn; kèm vòng quay và DIO."
+    assumptions: ["Ngưỡng mục tiêu là tham khảo, chưa kiểm chứng theo ngành"]
+    pitfalls: ["Chỉ theo dõi vòng quay mà bỏ qua stockout"]
+    interpretation: "Fill rate = số đơn đáp ứng đầy đủ / tổng đơn."
+    example:
+      inputs: {stockouts: 3, checks: 100, matched_sku: 96, total_sku: 100}
+      steps: ["Stockout 3/100 = 3% (< 5% đạt)", "Accuracy 96/100 = 96% (> 95% đạt)"]
+      result: "stockout 3%; accuracy 96%"
+
+  - id: "m04_investment_payback"
+    name_vi: "Hoàn vốn đầu tư công nghệ kho (RFID vs mã vạch)"
+    name_en: "Technology Payback (RFID vs Barcode)"
+    expression_latex: '\text{Payback} = \dfrac{\Delta Invest}{\text{Loi ich rong/nam}}'
+    expression_python: "delta_invest / (labor_saving + extra_gross_profit - recurring_cost)"
+    variables:
+      - {symbol: "delta_invest", meaning: "Đầu tư chênh lệch so với phương án rẻ hơn", unit: "triệu VNĐ"}
+      - {symbol: "labor_saving", meaning: "Tiết kiệm nhân công/năm", unit: "triệu VNĐ/năm"}
+      - {symbol: "extra_gross_profit", meaning: "Lợi nhuận gộp thêm nhờ giảm thất thoát/bán lỡ", unit: "triệu VNĐ/năm"}
+      - {symbol: "recurring_cost", meaning: "Chi phí lặp lại hằng năm (thẻ)", unit: "triệu VNĐ/năm"}
+    when_to_use: "Quyết định RFID/IoT/WMS phải dựa trên bài toán kinh tế, không theo trào lưu."
+    why_it_works: "So lợi ích ròng hằng năm với vốn chênh lệch; hoàn vốn quá dài so với vòng đời công nghệ thì không đáng."
+    assumptions: ["Số liệu bài tập là giả định"]
+    pitfalls: ["Bỏ chi phí thẻ định kỳ", "Áp RFID cho cả chuỗi thay vì chỉ nhóm hàng giá trị cao"]
+    interpretation: "Bài 10 (giả định): hoàn vốn ~9.5 năm: không hấp dẫn; chỉ dùng RFID cho nhóm hàng giá trị cao, chờ thẻ rẻ hơn, hoặc dùng mã vạch."
+    example:
+      inputs: {delta_invest: 2160, labor_saving: 288, extra_gross_profit: 840, recurring_cost: 900}
+      steps: ["Đầu tư chênh = 20 x (120 - 12) = 2,160 triệu", "Nhân công = 30 x 12 x 20 x 40,000 = 288 triệu", "Lợi nhuận gộp thêm = 120,000 x 2% x 35% = 840 triệu", "Ròng = 288 + 840 - 900 = 228 triệu/năm", "Hoàn vốn = 2,160 / 228 = 9.5 năm"]
+      result: "9.47 năm"
+
+frameworks:
+  - id: "m04_eoq_model"
+    name_vi: "Mô hình EOQ và đường tổng chi phí chữ U"
+    name_en: "EOQ Model"
+    origin: "Ford W. Harris 1913 (How Many Parts to Make at Once); R. H. Wilson phổ biến từ 1934 (HBR: A Scientific Routine for Stock Control)."
+    components: ["Chi phí đặt hàng S (giảm theo Q)", "Chi phí lưu kho H (tăng theo Q)", "Tổng chi phí hình chữ U, đáy tại Q*", "Giả định: nhu cầu ổn định, lead time cố định, lô về cùng lúc, không thiếu hàng, giá không đổi"]
+    when_to_use: "Hàng nhu cầu tương đối ổn định, cần quyết định lô đặt."
+    how_to_apply: ["Ước lượng D, S, H (H = i x P)", "Tính EOQ = sqrt(2DS/H)", "Tính N*, T*, TC* và kiểm tra chi phí đặt = chi phí lưu", "Điều chỉnh theo MOQ, sức chứa, quy cách đóng gói", "Cập nhật tham số hằng quý"]
+    how_to_read_results: "Đường TC phẳng quanh tối ưu: lệch 35% chỉ tăng ~10%; lô quá lớn gây hại nhiều hơn lô hơi nhỏ."
+    pitfalls: ["Giả định không thỏa (nhu cầu mùa vụ, có chiết khấu) mà vẫn dùng", "Quên điều chỉnh theo ràng buộc thực tế"]
+    example: "Xi măng VLXD Cần Thơ (giả định): EOQ ~980 bao thay vì lô 2,000, tiết kiệm ~5.85 triệu/năm."
+  - id: "m04_rop_ss_system"
+    name_vi: "Hệ thống liên tục (s,Q): ROP + Safety Stock"
+    name_en: "Continuous Review (s,Q) System"
+    origin: "Phát triển từ mô hình EOQ mở rộng cho nhu cầu/lead time ngẫu nhiên (Silver, Pyke, Peterson)."
+    components: ["EOQ (Q cố định)", "ROP = dL + SS", "SS theo Z, sigma_d, L (và sigma_L)", "Theo dõi tồn thời gian thực (POS, mã vạch)"]
+    when_to_use: "Hàng giá trị cao (nhóm A), nhu cầu ổn định, có IT."
+    how_to_apply: ["Đo d, sigma_d, L, sigma_L từ dữ liệu 3-6 tháng", "Chọn mức phục vụ theo hậu quả thiếu hàng", "Tính SS, ROP", "Dán bảng ROP/đặt cảnh báo", "Chạm ROP thì đặt Q = EOQ"]
+    how_to_read_results: "SS trả phí bảo hiểm: 95% -> 99% tốn thêm ~41% chi phí giữ SS."
+    pitfalls: ["Dùng lead time hứa hẹn", "Bỏ sigma_L với NCC thất thường"]
+    example: "Lốp xe (Hòa Phát Parts): mức phục vụ 99%, SS 9.3, ROP 29 chiếc."
+  - id: "m04_periodic_review"
+    name_vi: "Hệ thống định kỳ (R,S) order-up-to"
+    name_en: "Periodic Review System"
+    origin: "Họ chính sách kiểm tra định kỳ song song với hệ thống liên tục (Silver, Pyke, Peterson; Chopra & Meindl)."
+    components: ["Chu kỳ rà soát R cố định", "Mức tồn mục tiêu S = d(R+L) + SS", "Lượng đặt biến đổi = S - (tồn + đang về)", "SS bảo vệ R+L ngày"]
+    when_to_use: "SME kiểm kê thủ công, hàng giá trị thấp hoặc có hạn dùng, đặt gộp nhiều mã chung NCC."
+    how_to_apply: ["Chọn R theo lịch giao hàng NCC", "Tính SS và S", "Mỗi kỳ đếm tồn, cộng hàng đang về, đặt phần thiếu"]
+    how_to_read_results: "Tồn bình quân ~ dR/2 + SS; R ngắn thì tồn ít, rủi ro hết hạn thấp, nhưng nhiều lần đặt hơn."
+    pitfalls: ["Quên trừ hàng đang về", "SS dùng công thức hệ thống liên tục"]
+    example: "Nhà thuốc An Khang: R=7 ngày, S=160 hộp; so R=30: S=527 hộp."
+  - id: "m04_control_system_comparison"
+    name_vi: "So sánh hệ thống liên tục vs định kỳ và sơ đồ quyết định"
+    name_en: "Continuous vs Periodic Review Decision"
+    origin: "Khung chọn hệ thống kiểm soát tồn kho phổ biến trong giáo trình vận hành."
+    components: ["Theo dõi (thời gian thực vs chu kỳ)", "Lượng đặt (cố định EOQ vs biến đổi)", "SS (thấp hơn vs cao hơn)", "Yêu cầu IT (cao vs thấp)"]
+    when_to_use: "Chọn hệ thống kiểm soát cho từng nhóm hàng."
+    how_to_apply: ["Có IT theo dõi thời gian thực không? Không -> định kỳ", "Có IT và hàng nhóm A giá trị cao -> liên tục (ROP tự động)", "Có IT nhưng không phải nhóm A -> cân nhắc giữ định kỳ tần suất cao hơn"]
+    how_to_read_results: "SME thường định kỳ; doanh nghiệp lớn liên tục với mã vạch/RFID."
+    pitfalls: ["Đầu tư hệ thống liên tục mà dữ liệu chưa sạch"]
+    example: "Phụ tùng xe máy: nhớt/lốp (A) dùng liên tục; ốc vít (C) định kỳ 14 ngày đặt gộp."
+  - id: "m04_abc_framework"
+    name_vi: "Phân loại ABC và ma trận ABC-XYZ"
+    name_en: "ABC Analysis and ABC-XYZ"
+    origin: "Pareto 1896; Juran vital few; H. Ford Dickie (General Electric) đầu thập niên 1950; XYZ phân theo mức biến động nhu cầu."
+    components: ["A: 10-20% mã, 70-80% giá trị", "B: 20-30% mã, 15-25% giá trị", "C: 50-70% mã, 5-10% giá trị", "XYZ: mức biến động nhu cầu"]
+    when_to_use: "Mọi danh mục nhiều SKU; làm lại 6 tháng/lần."
+    how_to_apply: ["Danh sách SKU + nhu cầu năm + đơn giá", "Tính V = D x P", "Sắp giảm dần", "Tính % và % tích lũy", "Cắt A/B/C", "Nâng nhóm hàng quan trọng đặc biệt hoặc dễ hỏng", "Gán chính sách: A (EOQ+ROP, mức phục vụ cao, đếm tháng), B (định kỳ 2 tuần, đếm quý), C (đặt gộp, đếm năm)"]
+    how_to_read_results: "Mức phục vụ theo nhóm (ví dụ Vinamilk giả định: A 97.5-99%, B 95%, C 90%)."
+    pitfalls: ["Chỉ theo giá trị bỏ qua tầm quan trọng/độ dễ hỏng", "Dữ liệu lịch sử kém"]
+    example: "Hòa Phát Parts: 10 nhóm đại diện, A=4 mã chiếm 75.5%, B=2 mã 14.6%, C=4 mã 9.9% (mẫu nhỏ nên tỷ lệ mã cao hơn mức 10-20%)."
+  - id: "m04_jit_kanban"
+    name_vi: "JIT, hệ thống kéo và Kanban (TPS)"
+    name_en: "Just-In-Time, Pull System, Kanban"
+    origin: "Kiichiro Toyoda (thập niên 1930, ý tưởng), Taiichi Ohno (thập niên 1950, TPS); hoàn cảnh Nhật hậu chiến thiếu vốn, mặt bằng, thị trường nhỏ; theo tài liệu về TPS, Ohno lấy cảm hứng từ siêu thị Mỹ bổ sung hàng khi khách lấy đi."
+    components: ["Kanban (thẻ tín hiệu)", "Heijunka (san bằng sản xuất)", "Đối tác chặt chẽ với NCC: giao nhiều chuyến nhỏ/ngày", "SMED giảm setup S", "Line-side delivery", "Nhìn tồn kho dư là một trong 7 muda"]
+    when_to_use: "Nhu cầu ổn định, NCC tin cậy/gần, chất lượng ổn định, có văn hóa Kaizen."
+    how_to_apply: ["Giảm S (setup/đặt hàng) để lô nhỏ vẫn kinh tế", "Tính số thẻ N = dL(1+alpha)/C", "Giảm dần số thẻ bằng kaizen để lộ vấn đề", "Đánh giá rủi ro NCC bằng Kraljic, giữ đệm cho linh kiện quan trọng"]
+    how_to_read_results: "Giảm thẻ buộc xử lý nguyên nhân chậm trễ; không phải mục đích tự thân."
+    pitfalls: ["JIT thuần túy dễ tổn thương khi đứt chuỗi (COVID, chip 2020-2022)", "Áp dụng khi chất lượng và NCC chưa ổn"]
+    example: "Vòng kéo giả định: 11 thẻ giảm còn 6 thẻ khi L từ 0.5 xuống 0.25 ngày."
+  - id: "m04_quantity_discount_model"
+    name_vi: "Mô hình chiết khấu theo số lượng"
+    name_en: "Quantity Discount Model"
+    origin: "Mở rộng EOQ cho giá thay đổi theo bậc số lượng."
+    components: ["Bảng bậc giá", "EOQ tại từng mức giá", "Điều chỉnh Q về ngưỡng khả thi", "Tổng chi phí gồm D x P"]
+    when_to_use: "NCC đưa bảng giá theo bậc."
+    how_to_apply: ["Tính EOQ tại từng giá", "EOQ ngoài khoảng: nâng lên ngưỡng thấp nhất, hoặc loại nếu EOQ vượt khoảng", "Tính TC từng phương án", "Chọn nhỏ nhất rồi kiểm tra sức chứa, hạn dùng, vốn lưu động"]
+    how_to_read_results: "Tiết kiệm giá mua thường lớn hơn tăng chi phí lưu kho."
+    pitfalls: ["Chỉ so giá", "Hàng dễ hỏng"]
+    example: "D=12,000: chọn 1,000/lần ở giá 95,000, TC 1,155.5 triệu."
+  - id: "m04_cycle_counting"
+    name_vi: "Kiểm kê theo chu kỳ và FEFO"
+    name_en: "Cycle Counting and FEFO"
+    origin: "Thực hành kiểm soát tồn kho kết hợp ABC."
+    components: ["Tần suất A/B/C", "Điều tra nguyên nhân gốc lệch", "FEFO cho hàng hạn dùng", "Cảnh báo cận date 3 tháng"]
+    when_to_use: "Số hệ thống thường lệch thực tế; hàng có hạn dùng."
+    how_to_apply: ["Chia lịch đếm theo ABC", "Giao người đếm độc lập với người nhập/xuất", "Điều tra nguyên nhân gốc rồi sửa quy trình nhập/xuất", "Sắp lô gần hạn lên trước", "Cận date: chuyển chi nhánh bán nhanh/khuyến mãi/combo"]
+    how_to_read_results: "Accuracy > 95%; tỷ lệ tiêu hủy giảm."
+    pitfalls: ["Chỉnh số mà không tìm nguyên nhân", "Xử lý thuốc cận date không theo quy định chuyên ngành dược"]
+    example: "Nhà thuốc An Khang: tiêu hủy từ 4% xuống 0.8%."
+  - id: "m04_newsvendor_framework"
+    name_vi: "Newsvendor cho hàng vòng đời ngắn"
+    name_en: "Newsvendor Model"
+    origin: "Edgeworth 1888; Arrow, Harris, Marschak 1951."
+    components: ["Cu = giá bán - giá vốn", "Co = giá vốn - giá thanh lý", "CR = Cu/(Cu+Co)", "Q* = F^-1(CR)"]
+    when_to_use: "Bánh trung thu, mứt Tết, hoa 20/10, 8/3, Valentine, thời trang mùa, vé sự kiện."
+    how_to_apply: ["Xác định giá bán/vốn/thanh lý", "Tính Cu, Co, CR", "Tra Z hoặc NORM.INV", "Tính Q* = mu + Z sigma", "Tìm cách giảm Co (quyền đổi/trả) hoặc giảm bất định (đặt bổ sung giữa mùa, lô thử nhỏ, pre-order)"]
+    how_to_read_results: "CR > 0.5: đặt cao hơn dự báo; Co lớn: đặt thấp hơn."
+    pitfalls: ["Đặt đúng dự báo", "Bỏ qua giảm sigma"]
+    example: "Thời trang: Z=1.068, Q*=14,270 vs 11,601; chi phí bất định 316 vs 119 triệu."
+  - id: "m04_risk_pooling_framework"
+    name_vi: "Gộp rủi ro và kho tập trung/phân tán"
+    name_en: "Risk Pooling and Centralized vs Distributed Warehouse"
+    origin: "Maister 1976; Eppen 1979 (square root law)."
+    components: ["Kho tập trung (SS thấp, giao xa)", "Kho phân tán (giao nhanh, chi phí vận chuyển thấp, quản lý phức tạp)", "Mô hình lai"]
+    when_to_use: "Nhiều điểm bán/kho khu vực; TMĐT."
+    how_to_apply: ["Tính SS riêng và SS gộp theo rho", "Cân đối với chi phí/thời gian chặng cuối", "Mô hình lai: kho trung tâm cho hàng chậm, kho vệ tinh cho hàng bán chạy cần giao nhanh"]
+    how_to_read_results: "Nhu cầu càng tương quan, gộp càng ít lợi."
+    pitfalls: ["Gộp hết rồi giao chậm mất khách"]
+    example: "3 kho giả định: gộp giảm SS 42% (rho=0), 18% (rho=0.5)."
+  - id: "m04_consignment_vmi"
+    name_vi: "Ký gửi và VMI"
+    name_en: "Consignment and VMI"
+    origin: "Hợp tác khách-NCC (Walmart-P&G là ví dụ trong nguồn)."
+    components: ["Ký gửi: NCC giữ quyền sở hữu đến khi bán", "VMI: NCC quyết định bổ sung dựa trên dữ liệu bán hàng chia sẻ"]
+    when_to_use: "Hàng mới, thời trang, mỹ phẩm (ký gửi); đối tác chiến lược có hệ thống dữ liệu (VMI)."
+    how_to_apply: ["Thỏa thuận quyền sở hữu, rủi ro, quyền đổi/trả", "Chia sẻ dữ liệu bán hàng (VMI)", "Đối chiếu tồn định kỳ"]
+    how_to_read_results: "Giảm áp lực vốn lưu động và Bullwhip."
+    pitfalls: ["Thiếu lòng tin/dữ liệu chia sẻ"]
+    example: "SME VN ký gửi hàng thời trang/mỹ phẩm để giảm rủi ro nhập hàng."
+  - id: "m04_omnichannel_inventory"
+    name_vi: "Tồn kho đa kênh và chống bán ảo"
+    name_en: "Omnichannel Inventory"
+    origin: "Thực tiễn bán lẻ đa kênh/TMĐT."
+    components: ["Unified inventory", "Ship-from-store", "Click-and-collect", "Buffer chống oversell"]
+    when_to_use: "Bán trên cửa hàng, website, sàn TMĐT, mạng xã hội."
+    how_to_apply: ["Một nguồn tồn duy nhất", "Phần mềm đồng bộ đa kênh", "Để lại 1-2 đơn vị đệm mỗi sàn", "Trừ kho ngay khi có đơn"]
+    how_to_read_results: "Giảm hủy đơn, bảo vệ uy tín gian hàng."
+    pitfalls: ["Tồn online không đồng bộ real-time"]
+    example: "Bán ảo trên sàn TMĐT giai đoạn đầu chuyển đổi số."
+  - id: "m04_inventory_tech"
+    name_vi: "Barcode, RFID, IoT và WMS"
+    name_en: "Barcode, RFID, IoT, WMS"
+    origin: "Công nghệ theo dõi kho."
+    components: ["Barcode: quét từng mã, 5-20 triệu (ước tính)", "RFID: đọc nhiều thẻ, 100 triệu - vài tỷ (ước tính)", "IoT sensor: nhiệt độ/độ ẩm, thường 200 triệu trở lên (ước tính)"]
+    when_to_use: "Khi dữ liệu và quy trình đã chuẩn; quyết định theo bài toán kinh tế."
+    how_to_apply: ["Chuẩn hóa dữ liệu gốc", "Tính payback", "Lộ trình tích hợp xuyên bộ phận"]
+    how_to_read_results: "Hoàn vốn quá dài so với vòng đời công nghệ thì không đáng."
+    pitfalls: ["Đầu tư RFID/IoT thiếu tích hợp dữ liệu", "Một số nhà bán lẻ lớn (Decathlon, Uniqlo) được báo cáo dùng RFID; mức cụ thể chưa kiểm chứng"]
+    example: "Bài 10 (giả định): hoàn vốn ~9.5 năm, không hấp dẫn."
+
+procedures:
+  - id: "m04_proc_setup_90_days"
+    name: "Xây hệ thống quản trị tồn kho cho SME (6 bước, lộ trình 90 ngày)"
+    steps:
+      - "Bước 1 thu thập dữ liệu: nhu cầu 12 tháng, lead time, S, H từng SKU"
+      - "Bước 2 phân loại ABC toàn danh mục"
+      - "Bước 3 tính EOQ và safety stock cho nhóm/SKU quan trọng"
+      - "Bước 4 chọn hệ thống kiểm soát liên tục/định kỳ theo IT và ngành hàng"
+      - "Bước 5 triển khai công cụ (phần mềm/Excel có cấu trúc), cảnh báo chạm ROP"
+      - "Bước 6 kiểm kê định kỳ, cập nhật EOQ/SS"
+      - "Tháng 1: làm sạch dữ liệu, ABC trên Excel, thanh lý hàng tồn quá 6-12 tháng"
+      - "Tháng 2: EOQ/SS/ROP cho nhóm A, dán bảng ROP tại kho, bắt đầu cycle counting nhóm A"
+      - "Tháng 3: phần mềm bán hàng tồn kho thời gian thực, cảnh báo, đo KPI đầu tiên (vòng quay, tỷ lệ hết hàng)"
+    outputs: "Bảng ABC, bảng EOQ/SS/ROP theo SKU, lịch cycle counting, KPI nền."
+  - id: "m04_proc_estimate_parameters"
+    name: "Ước lượng tham số khi thiếu dữ liệu"
+    steps:
+      - "S = lương giờ nhân viên x giờ xử lý đơn + phí vận chuyển cố định mỗi chuyến"
+      - "H = (lãi vay hoặc chi phí cơ hội vốn 10-15%) + hao hụt + thuê kho/bảo hiểm, tính theo % giá vốn"
+      - "sigma_d = độ lệch chuẩn doanh số bán hằng ngày/tuần 3-6 tháng gần nhất (STDEV trong Excel)"
+      - "Đo lead time thực tế và sigma_L, không dùng lead time hứa hẹn"
+    outputs: "Tham số D, S, H, d, sigma_d, L, sigma_L."
+  - id: "m04_proc_policy_per_sku"
+    name: "Chọn chính sách cho từng SKU"
+    steps:
+      - "Phân ABC (và XYZ/hàng dễ hỏng/quan trọng đặc biệt)"
+      - "Chọn mức phục vụ theo hậu quả thiếu hàng (ví dụ lốp 99%, ốc vít 90%)"
+      - "Nhóm A: EOQ + ROP + SS; nhóm C: định kỳ đặt gộp"
+      - "Hàng có chiết khấu: so tổng chi phí theo m04_quantity_discount_tc"
+      - "Hàng thời vụ: newsvendor; hàng hạn dùng: FEFO + (R,S) chu kỳ ngắn"
+      - "Kiểm tra MOQ, sức chứa kho, quy cách đóng gói, hạn dùng"
+    outputs: "Bảng chính sách theo SKU: phương pháp, Q/S, ROP, mức phục vụ, tần suất đếm."
+  - id: "m04_proc_diagnose_stockout"
+    name: "Chẩn đoán hết hàng (bài 11)"
+    steps:
+      - "Thu thập nhu cầu và lead time thực tế 3 tháng"
+      - "Tính lại sigma_d, sigma_L"
+      - "Tính SS theo công thức có sigma_L và so với mức đang dùng"
+      - "Xác định nguyên nhân: ROP sai, SS thiếu, hay lead time thực dài hơn; xử lý NCC trước khi chỉ tăng SS"
+    outputs: "Nguyên nhân gốc và hành động (SS mới hoặc cải thiện NCC)."
+  - id: "m04_proc_clearance"
+    name: "Xử lý hàng chậm"
+    steps:
+      - "Liệt kê hàng tồn quá 6 tháng (hoặc quy tắc nội bộ)"
+      - "Thanh lý giảm giá/combo/điều chuyển"
+      - "Tính vốn giải phóng và lãi tiết kiệm (giả định lãi vay 12%/năm trong case)"
+      - "Cập nhật ABC, dừng nhập mã không quay"
+    outputs: "Vốn giải phóng, KPI obsolete %."
+
+decision_rules:
+  - "Nếu nhu cầu ổn định, hàng nhóm A, có IT thời gian thực thì dùng hệ thống liên tục (s,Q) với EOQ + ROP; nếu kiểm kê thủ công/hàng giá trị thấp/đặt gộp thì dùng định kỳ (R,S)."
+  - "Nếu EOQ tính ra lệch MOQ/quy cách đóng gói thì làm tròn theo quy cách; lệch vài chục % chỉ tăng chi phí ~10% nhưng tránh đặt lô gấp 2-3 lần EOQ."
+  - "Nếu lead time NCC biến động (nhập khẩu, giao đường dài) thì tính SS theo công thức có sigma_L; trước khi tăng SS hãy ưu tiên giảm sigma_L (hợp đồng giao đúng hạn, NCC gần, đa dạng NCC)."
+  - "Nếu hết hàng khiến khách bỏ đi ngay hoặc dừng sản xuất thì chọn mức phục vụ 99% (Z 2.33); nếu hậu quả nhẹ (ốc vít, hàng nhóm C) thì 90% (Z 1.28); nhóm B 95%."
+  - "Nếu NCC giảm giá theo bậc thì so TỔNG chi phí (đặt + lưu + mua) từng bậc, rồi kiểm tra sức chứa kho, hạn dùng, vốn lưu động trước khi chốt."
+  - "Nếu hàng thời vụ chỉ đặt một lần thì dùng newsvendor: CR > 0.5 đặt cao hơn dự báo, Co lớn (hàng hết hạn) đặt thấp hơn dự báo."
+  - "Nếu có thể giảm bất định (đặt muộn, lô thử nhỏ, pre-order, đặt bổ sung giữa mùa, quyền đổi/trả) thì làm trước khi cố dự báo giỏi hơn: chi phí bất định có thể giảm ~62% (case thời trang giả định)."
+  - "Nếu hàng có hạn dùng thì áp dụng FEFO, kiểm tra định kỳ chu kỳ ngắn (tuần), cảnh báo cận date 3 tháng và chuyển chi nhánh/khuyến mãi trước khi tiêu hủy."
+  - "Nếu nhiều kho khu vực nhu cầu ít tương quan và hàng giá trị cao thì cân nhắc gộp kho (SS giảm tới ~1/sqrt(n)); nếu hàng bán chạy cần giao nhanh thì giữ kho vệ tinh."
+  - "Nếu muốn áp JIT thì kiểm tra điều kiện: nhu cầu ổn định, NCC tin cậy, chất lượng ổn định, văn hóa kaizen; linh kiện độc quyền/khó thay (Kraljic) giữ đệm Just-In-Case."
+  - "Nếu vòng quay thấp nhưng vẫn hết hàng nhóm A thì chẩn đoán nghịch lý: ứ hàng nhóm C chậm bán + thiếu ROP cho nhóm A; thanh lý hàng chậm và đặt ROP cho A."
+  - "Nếu số tồn hệ thống lệch thực tế thì cycle counting theo ABC và sửa quy trình nhập/xuất trước khi tin kết quả EOQ/ROP."
+  - "Nếu bán đa kênh thì giữ một nguồn tồn duy nhất và đệm 1-2 đơn vị mỗi sàn để tránh bán ảo."
+  - "Nếu cân nhắc RFID/IoT thì tính payback; hoàn vốn quá dài (ví dụ ~9.5 năm) thì chỉ áp dụng cho hàng giá trị cao hoặc dùng mã vạch."
+
+benchmarks:
+  - {metric: "Tỷ lệ lưu kho H/giá vốn", value: "15-30%/năm; hàng dễ hỏng cao hơn", context: "Ước tính tham khảo trong nguồn", confidence: "medium"}
+  - {metric: "Tỷ trọng ABC", value: "A 10-20% mã (70-80% giá trị); B 20-30% mã (15-25%); C 50-70% mã (5-10%)", context: "Nguyên lý Pareto", confidence: "medium"}
+  - {metric: "Hệ số Z theo mức phục vụ", value: "90% 1.28; 95% 1.65; 97.5% 1.96; 99% 2.33; 99.9% 3.09", context: "Bảng chuẩn thống kê", confidence: "high"}
+  - {metric: "Tần suất kiểm kê", value: "A tháng/tuần; B quý; C nửa năm/năm", context: "Cycle counting khuyến nghị", confidence: "medium"}
+  - {metric: "Tỷ lệ hết hàng", value: "< 5%", context: "Mục tiêu KPI tham khảo", confidence: "medium"}
+  - {metric: "Độ chính xác tồn kho", value: "> 95%", context: "Mục tiêu KPI tham khảo", confidence: "medium"}
+  - {metric: "Tỷ lệ hàng lỗi thời (tồn > 6-12 tháng)", value: "< 5%", context: "Mục tiêu KPI tham khảo", confidence: "medium"}
+  - {metric: "Fill rate", value: "> 95%", context: "Mục tiêu KPI tham khảo", confidence: "medium"}
+  - {metric: "Chi phí lưu kho trên doanh thu", value: "2-6% tùy ngành", context: "Tham khảo, chưa kiểm chứng", confidence: "low"}
+  - {metric: "Vòng quay tồn kho", value: "Theo ngành: siêu thị/thực phẩm nhanh hơn, VLXD/nội thất chậm hơn", context: "Không có ngưỡng số cụ thể trong nguồn; số trong case là giả định (VLXD 4.5 vòng, phụ tùng 4.0 vòng)", confidence: "low"}
+  - {metric: "Mức phục vụ gợi ý theo nhóm", value: "A 97.5-99%; B 95%; C 90%", context: "Từ case Vinamilk (giả định minh họa)", confidence: "low"}
+  - {metric: "Chi phí công cụ tồn kho SME", value: "Excel 0-5 triệu; phần mềm bán hàng 5-50 triệu/năm; WMS cơ bản 100 triệu-1 tỷ; WMS/ERP lớn 2-20+ tỷ", context: "Ước tính tham khảo trong nguồn, cần xác nhận", confidence: "low"}
+
+pitfalls:
+  - "Áp dụng cùng một chính sách tồn kho cho mọi SKU (lãng phí nguồn lực quản trị) - phân ABC."
+  - "Không tính biến động nhu cầu/lead time khi tính SS, hoặc SS dựa hoàn toàn vào cảm tính - dùng Z và sigma, đo cả sigma_L."
+  - "Copy EOQ máy móc, bỏ MOQ/sức chứa/quy cách đóng gói."
+  - "Không kiểm kê định kỳ: số hệ thống lệch thực tế (garbage in, garbage out)."
+  - "Theo đuổi JIT tuyệt đối mà không đánh giá rủi ro chuỗi cung ứng; không giữ buffer cho hàng quan trọng."
+  - "Chạy theo chiết khấu số lượng mà không tính tổng chi phí; ứ vốn, hàng hỏng/lỗi thời."
+  - "Doanh nghiệp lớn: SS đặt một lần không cập nhật (tính lại hằng quý); đầu tư IT/RFID/IoT khi dữ liệu không chuẩn hoặc thiếu tích hợp, không tính ROI."
+  - "Nhầm cycle service level với fill rate; chọn mức phục vụ cao cho mọi mã."
+  - "Chỉ tối ưu EOQ mới mà không thanh lý hàng chậm: vốn nằm ở hàng cũ vẫn kéo lùi hiệu quả."
+  - "Quên trừ hàng đang về khi tính lượng đặt order-up-to; dùng SS liên tục cho hệ thống định kỳ."
+
+sme_vn_guidance:
+  - "Khởi nghiệp: sổ sách/Excel (0-5 triệu, ước tính); tăng trưởng: phần mềm bán hàng có module tồn kho như KiotViet, Sapo (3-10 triệu/năm ước tính, nên kiểm tra bảng giá hiện hành); Odoo Inventory 50-150 triệu/năm gồm triển khai (ước tính); SAP EWM/Oracle WMS hàng tỷ/năm cho doanh nghiệp lớn."
+  - "SME: ABC thủ công trên Excel 1-2 lần/năm, EOQ/SS công thức cơ bản, định kỳ (periodic review) phổ biến, kiểm kê toàn bộ 1-2 lần/năm tiến tới cycle counting."
+  - "Barcode (máy quét + phần mềm) 5-20 triệu; RFID 100 triệu-vài tỷ; IoT cảm biến từ ~200 triệu (ước tính, cần xác nhận)."
+  - "Hàng ký gửi giảm rủi ro nhập hàng cho hàng mới/thời trang/mỹ phẩm."
+  - "Nhập khẩu lead time dài ở VN: sigma_L thường lớn (tàu biển trễ, thời tiết): ký hợp đồng cam kết giao đúng hạn, đa dạng NCC."
+  - "Dược phẩm: tuân thủ quy định chuyên ngành khi xử lý thuốc cận date/tiêu hủy."
+  - "Kế toán: trích lập dự phòng giảm giá hàng tồn kho (nguồn nhắc Thông tư 48/2019/TT-BTC; cần đối chiếu văn bản hiện hành)."
+  - "Sàn TMĐT: dùng phần mềm đồng bộ đa kênh, trừ kho ngay, đệm 1-2 đơn vị mỗi sàn."
+  - "Thời trang online: đặt lô thử nhỏ, bán thử qua livestream/pre-order, rồi đặt lô lớn cho mẫu bán chạy."
+  - "Lãi vay giả định 12%/năm trong các case chỉ minh họa; thay bằng lãi vay thực của doanh nghiệp."
+
+case_lessons:
+  - name: "Toyota - Kanban, JIT và bài học đệm chiến lược"
+    type: "success"
+    setup: "TPS do Taiichi Ohno xây dựng từ thập niên 1950 (Nhật hậu chiến thiếu vốn, nhà xưởng chật, nhiều mẫu xe); pull bằng Kanban, SMED giảm setup, giao hàng sát dây chuyền. Phần định lượng là giả định minh họa về cách tính số thẻ."
+    key_calculations:
+      - "N = 400 x 0.5 x 1.1 / 20 = 11 thẻ, tối đa 220 chi tiết"
+      - "L = 0.25 ngày: N = 5.5 làm tròn 6 thẻ, 120 chi tiết (giảm 45%)"
+      - "1,000 vòng kéo tương tự giảm 100 chi tiết/vòng = 100,000 chi tiết ít hơn phải đầu tư vốn"
+    lesson: "JIT tối ưu chi phí tồn kho nhưng không tối ưu rủi ro gián đoạn: phân biệt linh kiện dễ thay (JIT) với độc quyền/khó thay (đệm JIC). Giảm tồn kho là cách phát hiện vấn đề, không phải mục đích. SME áp dụng nguyên tắc lô nhỏ, giao nhiều lần với NCC gần. Theo các nguồn tin kinh tế Toyota xây chiến lược đệm cho linh kiện quan trọng sau 2011 nên chịu tác động nhẹ hơn trong khủng hoảng chip 2020-2022 (ước tính theo báo chí, cần đối chiếu nguồn)."
+    data_reliability: "unverified"
+  - name: "Vinamilk - tồn kho nguyên liệu sữa (vận dụng phương pháp)"
+    type: "success"
+    setup: "Sữa tươi dễ hư, sữa bột nhập khẩu lead time dài. Chỉ nêu cách vận dụng khái quát (ABC cho hàng nghìn SKU, ERP, SS tính theo biến động nhu cầu và lead time); mọi số liệu là giả định minh họa, không phải dữ liệu nội bộ."
+    key_calculations:
+      - "d=50 tấn/ngày, sigma_d=8, L=50, Z=1.65: SS = 1.65 x 8 x sqrt(50) = 93.3 tấn; ROP = 2,593 tấn; 99% -> SS ~131.8"
+      - "sigma_L=7 ngày: SS = 1.65 x sqrt(50x64 + 2500x49) = 1.65 x 354.5 = ~585 tấn; ROP ~3,085 tấn (gấp hơn 6 lần)"
+    lesson: "Với lead time dài, biến động thời gian giao hàng mới là nguồn rủi ro chính; phải tính SS bằng công thức, dùng ABC để áp mức phục vụ khác nhau theo nhóm (A 97.5-99%, B 95%, C 90%) và đầu tư quản trị NCC (đa dạng hóa, theo dõi lịch tàu, hợp đồng giao ổn định)."
+    data_reliability: "illustrative"
+  - name: "VLXD Hậu Giang (Cần Thơ) - ABC + EOQ + ROP"
+    type: "sme"
+    setup: "Cửa hàng >500 mã, quản lý sổ sách; COGS 10.8 tỷ/năm, tồn bình quân 2.4 tỷ; hết xi măng/sắt nhóm A 15% nhưng ~30% giá trị tồn (720 triệu) là gạch mẫu/thiết bị vệ sinh ít bán. Toàn bộ giả định minh họa."
+    key_calculations:
+      - "Vòng quay = 10.8/2.4 = 4.5; DIO = 81 ngày"
+      - "ABC: A 75 mã (75% doanh thu), B 125 mã (18%), C 300 mã (7%); lượt đếm 75x12+125x4+300 = 1,700/năm = 5.7 mã/ngày"
+      - "Xi măng: D=36,000; S=300,000; H=0.25x90,000=22,500: EOQ=sqrt(960,000)=980 bao, N=36.7, chu kỳ 9.8 ngày"
+      - "Lô cũ 2,000: 5.4+22.5 = 27.9 triệu; EOQ: ~22.05 triệu; tiết kiệm 5.85 triệu; tồn chu kỳ 1,000 -> 490 bao, giải phóng 45.9 triệu"
+      - "SS = 1.65 x 25 x sqrt(2) = 58.3; ROP = 258 bao (gọi đại lý khi còn ~260, đặt 980)"
+      - "Thanh lý nhóm C: 720 -> 576 triệu, giải phóng 144 triệu; tồn mới = 2,400 - 144 - (45.9 - 5.22) = 2,215.3; vòng quay 4.88; DIO ~75"
+      - "Lợi ích ~5.85 + 144 x 12% = 23.1 triệu/năm"
+    lesson: "ABC + EOQ + ROP + phần mềm bán hàng giá rẻ đủ để SME cải thiện rõ; EOQ để tránh hai thái cực lô quá lớn/nhỏ, không phải đặt chính xác; phải đi kèm thanh lý hàng chậm."
+    data_reliability: "illustrative"
+  - name: "Thời trang truyền thống vs Zara - newsvendor"
+    type: "failure"
+    setup: "Hàng thời trang đặt trước cả mùa (~6 tháng) sai số dự báo lớn, cuối mùa giảm sâu (thường nhắc 50-70%, ước tính theo báo chí ngành); Zara (Inditex) được phân tích như mô hình ngược (lô nhỏ, phản hồi nhanh). Số liệu là giả định minh họa."
+    key_calculations:
+      - "Cu = 300,000; Co = 50,000; CR = 0.857; Z = 1.068"
+      - "sigma=4,000 (sai số 40%): Q* ~14,270; dư ~4,563 -> 228 triệu; thiếu -> 88 triệu; tổng ~316 triệu"
+      - "sigma=1,500 (15%): Q* ~11,601; dư ~1,711 -> 86 triệu; thiếu -> 33 triệu; tổng ~119 triệu (giảm ~62%)"
+    lesson: "Tốc độ phản hồi (rút ngắn lead time tới lúc biết rõ nhu cầu) có giá trị hơn dự báo giỏi hơn; thương lượng quyền đổi/trả để giảm Co; SME online: lô thử nhỏ, livestream/pre-order rồi đặt lô lớn."
+    data_reliability: "illustrative"
+  - name: "Chuỗi nhà thuốc An Khang (Hà Nội) - FEFO và order-up-to"
+    type: "sme"
+    setup: "8 nhà thuốc; tồn bình quân 4.8 tỷ; tiêu hủy hết hạn 4%/năm = 192 triệu. Giả định minh họa."
+    key_calculations:
+      - "Thuốc A: d=15, sigma_d=5, R=7, L=2, Z=1.65: SS = 24.75; S = 15x9 + 24.75 ~ 160 hộp"
+      - "R=30: SS ~46.7; S ~527 hộp; tồn bình quân tuần ~77.3 hộp so với tháng ~271.7 (ít hơn ~3.5 lần)"
+      - "Tiêu hủy 4% -> 0.8%: 38.4 triệu; tiết kiệm 192 - 38.4 = 153.6 triệu/năm"
+    lesson: "Hàng hạn dùng: FEFO và kiểm tra định kỳ chu kỳ ngắn quan trọng hơn EOQ; cảnh báo 3 tháng đổi tiêu hủy thành khuyến mãi/điều chuyển; lưu ý quy định dược khi xử lý thuốc cận date."
+    data_reliability: "illustrative"
+  - name: "Hòa Phát Parts (Biên Hòa) - chính sách theo nhóm ABC"
+    type: "sme"
+    setup: "~600 mã, 4 nhân viên; COGS 1,643 triệu; tồn bình quân 410.75 triệu (vòng quay 4.0; DIO 91). Dùng 10 nhóm hàng đại diện. Toàn bộ giả định minh họa."
+    key_calculations:
+      - "ABC: tổng 1,643 triệu; A (nhớt 420, lốp 420, nhông sên dĩa 225, bố thắng 176) = 75.5%; B (bugi, ắc quy 120 mỗi) = 14.6%; C = 9.9%"
+      - "Nhớt: D=6,000; S=150,000; H=14,000: EOQ=sqrt(128,571)=359 chai; SS=1.65x6xsqrt(5)=22.1; ROP=122; tổng 7.9 -> 5.02 triệu"
+      - "Lốp (99%): EOQ=104; SS=9.3; ROP=29; tổng 9.4 -> ~5.8 triệu; giải phóng 27.3 triệu"
+      - "Ốc vít (C, R=14, L=3, Z=1.28): SS=15.8; S=129 bộ"
+      - "Tồn 410.75 -> 328.6 triệu; vòng quay 5.0; DIO 73; lợi ích ~10.9 triệu/năm"
+    lesson: "Mỗi nhóm một chính sách (A: EOQ+ROP, C: định kỳ đặt gộp); mức phục vụ theo hậu quả thiếu hàng (lốp 99%, ốc vít 90%); lợi ích lớn nhất đến từ giải phóng vốn và giảm hết hàng hơn là tiết kiệm chi phí đặt hàng."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "EOQ, N*, T*, TC* và độ nhạy (cửa hàng bán lẻ)"
+    inputs: {D: 12000, S: 500000, price: 100000, i: 0.2, working_days: 360}
+    steps:
+      - "H = 0.2 x 100,000 = 20,000"
+      - "EOQ = sqrt(2 x 12,000 x 500,000 / 20,000) = sqrt(600,000) = 774.6"
+      - "N* = 12,000/774.6 = 15.49 lần; T* = 360/15.49 = 23.2 ngày"
+      - "Đặt hàng = 15.49 x 500,000 = 7.746 triệu; lưu kho = 387.3 x 20,000 = 7.746 triệu; TC* = 15.49 triệu"
+      - "Q=500 -> 17.0 triệu (+9.7%); Q=2,000 -> 23.0 triệu (+48.5%)"
+    result: "EOQ ~775; TC* = 15,491,934 VNĐ/năm"
+  - name: "SS, ROP và đổi mức phục vụ"
+    inputs: {d: 40, sigma_d: 8, L: 9, H: 20000}
+    steps:
+      - "d x L = 360; sigma_d x sqrt(L) = 24"
+      - "90%: SS 30.7, ROP 390.7, chi phí giữ SS 614,400"
+      - "95%: SS 39.6, ROP 399.6, 792,000"
+      - "99%: SS 55.9, ROP 415.9, 1,118,400"
+      - "Thêm sigma_L=2 ngày: SS = 1.65 x sqrt(576+6,400) = 137.8 (gấp 3.5 lần)"
+    result: "ROP 95% = 399.6; có sigma_L thì SS ~138"
+  - name: "Chiết khấu số lượng"
+    inputs: {D: 12000, S: 500000, i: 0.2}
+    steps:
+      - "Giá 100,000 (Q<500): EOQ 775 vượt khoảng, dùng 499: TC = 1,217,014,048"
+      - "Giá 97,000 (500-999): EOQ 786 hợp lệ: TC = 1,179,257,785"
+      - "Giá 95,000 (>=1,000): EOQ 795 thấp hơn ngưỡng, nâng lên 1,000: TC = 1,155,500,000"
+      - "Chọn Q=1,000, tiết kiệm ~23.8 triệu so với giá 97,000; kiểm tra kho và hạn dùng"
+    result: "Mua 1,000 đơn vị/lần giá 95,000: 1,155.5 triệu/năm"
+  - name: "Newsvendor bánh trung thu"
+    inputs: {price: 150000, cost: 90000, salvage: 40000, mu: 1000, sigma: 200}
+    steps:
+      - "Cu = 60,000; Co = 50,000; CR = 0.545"
+      - "Z = 0.114; Q* = 1,000 + 0.114 x 200 = 1,022.8"
+      - "Nếu giá bán 200,000: Cu = 110,000, CR = 0.6875 -> đặt nhiều hơn dự báo"
+    result: "Đặt ~1,023 hộp"
+  - name: "Vòng quay, DIO, CCC và vốn giải phóng"
+    inputs: {COGS: 2400, inv_begin: 380, inv_end: 420, DSO: 25, DPO: 30}
+    steps:
+      - "Tồn bình quân = 400; vòng quay = 6; DIO = 60.8"
+      - "CCC = 60.8 + 25 - 30 = 55.8"
+      - "Giảm DIO 10 ngày: 2,400 x 10/365 = 65.8 triệu; CCC còn 45.8"
+    result: "Vòng quay 6; DIO 60.8; CCC 55.8; giải phóng 65.8 triệu"
+  - name: "Risk pooling 3 kho"
+    inputs: {sigma: 30, L: 4, Z: 1.65, n: 3}
+    steps:
+      - "Riêng: 1.65 x 30 x 2 = 99 mỗi kho; 3 kho = 297"
+      - "Gộp rho=0: 30 x sqrt(3) = 51.96; SS = 171.5 (-42%)"
+      - "Gộp rho=0.5: phương sai = 3x900 + 6x0.5x900 = 5,400; sigma = 73.5; SS = 242.5 (-18%)"
+      - "rho=1: SS = 297 (không giảm)"
+    result: "SS gộp 171.5 (rho=0), 242.5 (rho=0.5), 297 (rho=1)"
+  - name: "Kanban số thẻ"
+    inputs: {d: 400, alpha: 0.1, C: 20}
+    steps: ["L=0.5: N = 400x0.5x1.1/20 = 11 thẻ, tồn tối đa 220", "L=0.25: N = 5.5 làm tròn 6, tồn tối đa 120 (giảm 45%)"]
+    result: "11 thẻ giảm còn 6 thẻ"
+  - name: "Order-up-to nhà thuốc"
+    inputs: {d: 15, sigma_d: 5, R: 7, L: 2, Z: 1.65}
+    steps: ["SS = 1.65 x 5 x 3 = 24.75", "S = 15 x 9 + 24.75 = 159.75 ~ 160 hộp", "R=30: SS = 46.7; S = 527 hộp"]
+    result: "S = 160 hộp (kiểm tra tuần)"
+
+practice_questions:
+  - q: "Bài 1: Xưởng mắm D=9,000 chai/năm, S=240,000, giá 40,000, tỷ lệ lưu kho 25%. Tính EOQ, số lần đặt, chu kỳ (360 ngày), TC*."
+    a: "H=10,000; EOQ = sqrt(432,000) ~ 657 chai; N* ~ 13.7 lần/năm; T* ~ 26.3 ngày; TC* ~ 6.57 triệu VNĐ/năm."
+  - q: "Bài 2: d=30, sigma_d=6, L=4, H=10,000. SS, ROP, chi phí giữ SS cho 90/95/99%."
+    a: "sigma_d sqrt(L) = 12. 90%: SS 15.4, ROP 135.4, 153,600; 95%: 19.8, 139.8, 198,000; 99%: 28.0, 148.0, 279,600. 95% -> 99% thêm ~8.2 đơn vị (~81,600 VNĐ/năm); đáng hay không tùy lãi biên mất khi hết hàng."
+  - q: "Bài 3: ABC 12 mã (nhu cầu x đơn giá), A đến 70%, B đến 90%."
+    a: "Tổng 300.3 triệu. Nhóm A: A, B, D, G (4 mã, 33% số mã, 68.4% giá trị); nhóm B: C, F, E (3 mã, 19.3%); nhóm C: H, I, J, K, L (5 mã, 12.3%)."
+  - q: "Bài 4: Hoa hồng Valentine, giá bán 120,000, vốn 50,000, thanh lý 10,000, mu=500, sigma=100. Đặt bao nhiêu?"
+    a: "Cu=70,000; Co=40,000; CR=0.636; Z ~ 0.349; Q* ~ 535 bó."
+  - q: "Bài 5: Chiết khấu D=6,000; S=100,000; i=20%; giá <300: 50,000; 300-799: 48,000; >=800: 46,000."
+    a: "Giá 50,000: Q=299, TC 303,501,689; 48,000: Q=354, TC ~291,394,113; 46,000: Q=800, TC 280,430,000 -> chọn Q=800 (tiết kiệm ~10.96 triệu so với giá 48,000), kiểm tra kho và hạn dùng."
+  - q: "Bài 6: 4 kho, sigma_d=20, L=9, 95%, độc lập. So sánh tổng SS riêng với gộp."
+    a: "Riêng 99 x 4 = 396; gộp sigma=40, SS=198 (giảm 50%, quy luật 1/sqrt(n)). Tương quan càng cao mức giảm càng ít."
+  - q: "Bài 7: COGS 2,400; tồn đầu 380, cuối 420; DSO 25; DPO 30. Vòng quay, DIO, CCC; giảm DIO 10 ngày giải phóng bao nhiêu?"
+    a: "Tồn bình quân 400; vòng quay 6; DIO 60.8; CCC 55.8; giải phóng 65.8 triệu."
+  - q: "Bài 8: Kanban d=600, L=0.25 ngày, alpha=20%, thùng 30."
+    a: "N = 600x0.25x1.2/30 = 6 thẻ; tồn tối đa 180 chi tiết."
+  - q: "Bài 9: Order-up-to d=40, sigma_d=10, R=14, L=6, 95%."
+    a: "R+L=20; SS=73.8; S ~ 874; nếu tồn + đang về = 310 thì đặt 564."
+  - q: "Bài 10: RFID (120 triệu/cửa hàng, thẻ 900 triệu/năm) vs mã vạch (12 triệu/cửa hàng), 20 cửa hàng; tiết kiệm nhân công 30 giờ x 12 x 20 x 40,000; tăng 2% doanh thu chuỗi 120 tỷ, biên gộp 35%."
+    a: "Chênh đầu tư 2,160 triệu; lợi ích 288 + 840 = 1,128; trừ thẻ 900 -> ròng 228 triệu/năm; hoàn vốn ~9.5 năm: không hấp dẫn."
+  - q: "Bài 11: Phân tích một trường hợp hết hàng bạn từng gặp."
+    a: "Gợi ý: thu thập nhu cầu/lead time 3 tháng, tính sigma_d và sigma_L, tính SS có sigma_L (m04_safety_stock_demand_leadtime), so với mức đã dùng."
+  - q: "Bài 12-13: Thiết kế cycle counting cho danh mục bài 3, FEFO cho ngành hạn dùng; làm Excel cảnh báo chạm ROP."
+    a: "Gợi ý: tần suất A tháng, B quý, C năm; người đếm độc lập; điều tra nguyên nhân gốc; Excel dùng các hàm trong mục excel_google_sheets_templates, cảnh báo =IF(Tồn<=ROP,'ĐẶT HÀNG','OK')."
+  - q: "Bài 14: Đánh đổi JIT thuần túy và đệm chiến lược; giải pháp bán ảo TMĐT; lộ trình chuyển định kỳ sang liên tục cho SME."
+    a: "Gợi ý: Kraljic chọn linh kiện cần đệm; tồn kho hợp nhất + đệm 1-2 đơn vị/sàn + trừ kho ngay; lộ trình theo chi phí giai đoạn trong sme_vn_guidance."
+
+checklist:
+  - "Đã có danh mục SKU với nhu cầu 12 tháng và đơn giá/giá vốn"
+  - "Đã ước lượng S và H (tỷ lệ % giá vốn)"
+  - "Đã đo lead time thực tế và độ lệch chuẩn của nó (không chỉ lead time hứa hẹn)"
+  - "Đã tính sigma_d từ dữ liệu bán hàng theo ngày/tuần"
+  - "Đã phân loại ABC (và cân nhắc XYZ/hàng nhạy cảm/dễ hỏng)"
+  - "Mức phục vụ chọn theo hậu quả thiếu hàng, khác nhau theo nhóm"
+  - "Nhóm A có EOQ, SS, ROP; nhóm C dùng kiểm tra định kỳ đặt gộp"
+  - "Đã kiểm tra MOQ, sức chứa kho, quy cách đóng gói, hạn sử dụng"
+  - "Đã so tổng chi phí khi có chiết khấu số lượng"
+  - "Có bảng ROP/cảnh báo tự động tại kho hoặc phần mềm"
+  - "Có lịch cycle counting theo ABC và quy trình điều tra sai lệch"
+  - "Áp dụng FEFO cho hàng hạn dùng; cảnh báo cận date 3 tháng"
+  - "Hàng thời vụ: đã dùng newsvendor; đã thương lượng quyền đổi/trả hoặc đặt bổ sung"
+  - "Tồn kho đa kênh đồng bộ, có đệm chống bán ảo"
+  - "Theo dõi KPI: vòng quay, DIO, tỷ lệ hết hàng, độ chính xác tồn, hàng lỗi thời"
+  - "Cập nhật EOQ, SS hằng quý hoặc khi nhu cầu/lead time đổi"
+  - "Thanh lý hàng chậm theo quy tắc (ví dụ quá 6 tháng)"
+  - "Đã đánh giá rủi ro chuỗi cung ứng trước khi áp JIT; giữ đệm cho linh kiện quan trọng"
+  - "Phối hợp kế toán: dự phòng giảm giá hàng tồn kho, đánh giá CCC"
+  - "Risk register: dự báo sai lệch, NCC giao trễ, hàng hết hạn, lệch số liệu, oversell, biến động giá đầu vào (hợp đồng giá cố định ngắn hạn)"
+
+excel_google_sheets_templates:
+  - name: "Bảng tính EOQ + SS + ROP (D ở B1, S ở B2, H ở B3, L ở B4, sigma_d ở B5, mức phục vụ ở B6, ngày làm việc ở B7)"
+    formulas:
+      - "EOQ: =SQRT(2*B1*B2/B3)"
+      - "Số lần đặt/năm: =B1/EOQ"
+      - "Nhu cầu ngày d: =B1/B7"
+      - "Z: =NORM.S.INV(B6)"
+      - "Safety stock: =Z*B5*SQRT(B4)"
+      - "ROP: =d*B4+SS"
+      - "Newsvendor Q*: =NORM.INV(Cu/(Cu+Co), mu, sigma)"
+      - "Vòng quay: =COGS/AVERAGE(tồn đầu, tồn cuối)"
+      - "Cảnh báo ROP: =IF(Tồn_hiện_tại<=ROP,\"ĐẶT HÀNG\",\"OK\")"
+    fields: "SKU, D, S, H, L, EOQ, N, d, sigma_d, mức phục vụ, Z, SS, ROP"
+  - name: "Bảng ABC trên Excel"
+    formulas: ["Giá trị = Nhu cầu x Đơn giá", "Sắp giảm dần", "% = giá trị / tổng", "% tích lũy = cộng dồn", "Nhóm = IF(tích lũy<=0.8,\"A\",IF(tích lũy<=0.95,\"B\",\"C\"))"]
+    fields: "Mã, nhu cầu, đơn giá, giá trị, %, % tích lũy, nhóm"
+  - name: "Sơ đồ chọn hệ thống kiểm soát"
+    formulas: ["Có IT thời gian thực? Không -> định kỳ; Có và nhóm A -> liên tục; Có nhưng không nhóm A -> giữ định kỳ tần suất cao hơn"]
+    fields: "Nhóm hàng, IT, hệ thống chọn"

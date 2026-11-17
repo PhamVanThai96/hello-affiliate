@@ -1,0 +1,1088 @@
+# m05 - Hoạch định năng lực (distill từ 05-capacity-planning.md)
+# Quy ước số liệu: mọi con số "giả định minh họa" do tác giả nguồn tự thiết kế, KHÔNG phải số liệu thật của doanh nghiệp được nhắc tên.
+id: "m05"
+name_vi: "Hoạch định năng lực"
+name_en: "Capacity Planning"
+source_file: "05-capacity-planning.md"
+purpose: >
+  Giúp doanh nghiệp trả lời "cần bao nhiêu năng lực, khi nào, và có nó bằng cách nào (xây trước, xây sau, thuê ngoài hay chờ)"
+  bằng dữ liệu thay vì cảm tính: đo năng lực thật (thiết kế/hiệu quả/thực tế), tìm nút thắt, tính điểm hòa vốn, dự báo hàng đợi
+  (M/M/1, Erlang C), đường cong học tập, cân bằng chuyền, Aggregate Planning (Chase/Level/Mixed), cây quyết định EMV/NPV,
+  Monte Carlo và quyền chọn chờ đợi (real option).
+when_to_use:
+  - "Chủ SME hỏi 'có nên mua thêm máy/mở thêm chi nhánh/thuê thêm xưởng không?' hoặc 'đơn hàng lớn này có đáng đầu tư không?'"
+  - "Cần đo xưởng/quầy đang dùng bao nhiêu % năng lực (Hiệu suất, Mức sử dụng) và còn dư bao nhiêu trước khi chi vốn."
+  - "Cần tìm công đoạn nút thắt (bottleneck) và biết nâng cấp công đoạn nào mới làm tăng sản lượng toàn hệ thống."
+  - "Dịch vụ có khách chờ lâu (quán cà phê, phòng khám, siêu thị, call center): cần bao nhiêu quầy/nhân viên theo từng khung giờ (M/M/1, M/M/c Erlang C)."
+  - "Nhu cầu mùa vụ: nên tuyển/sa thải (Chase), sản xuất đều và tích kho (Level) hay hỗn hợp (Mixed) - so sánh tổng chi phí."
+  - "Quyết định tự đầu tư hay thuê ngoài/gia công (điểm hòa vốn own vs outsource), hoặc nên đầu tư trước/sau/song hành với nhu cầu (Lead/Lag/Match)."
+  - "Đầu tư dưới bất định: cần EMV/NPV cây quyết định, xác suất lỗ (Monte Carlo), cân nhắc phương án chờ-và-quan-sát."
+  - "Lập kế hoạch ramp-up cho nhân viên/chuyền mới (learning curve), cân bằng chuyền (line balancing), CRP kiểm tra khả thi MPS."
+  - "KHÔNG dùng một mình để dự báo nhu cầu (xem m07) hay phân tích chi tiết TOC (xem m09)."
+prerequisites: ["m01", "m07"]
+related_modules:
+  - "m01 - Process design: Định luật Little (L = lambda x W), phân tích quy trình/nút thắt là nền của hàng đợi và cân bằng chuyền"
+  - "m04 - Inventory: Level strategy trong Aggregate Planning gắn với tồn kho đệm; Capacity Cushion tương tự Safety Stock"
+  - "m06 - Project management: hoạch định nguồn lực dự án liên quan năng lực đội ngũ"
+  - "m07 - Forecasting: dự báo nhu cầu là bước đầu bắt buộc của quy trình 7 bước hoạch định năng lực"
+  - "m09 - Theory of constraints: phân tích chuyên sâu nút thắt và 5 bước tập trung của Goldratt"
+  - "Tài chính (finance-agent-skill): NPV/chiết khấu/WACC cho quyết định đầu tư năng lực; giá trị thời gian của tiền"
+  - "Chiến lược (strategic-agent-skill m07): scenario planning/stress test cho các cam kết đầu tư dài hạn (bài học ngành hàng không)"
+
+concepts:
+  - term_vi: "Năng lực và hoạch định năng lực"
+    term_en: "Capacity and Capacity Planning"
+    definition: >
+      Năng lực là mức sản lượng tối đa một hệ thống (nhà máy, dây chuyền, cửa hàng, đội ngũ) tạo ra trong một khoảng thời gian ở điều kiện vận hành bình thường.
+      Hoạch định năng lực là xác định năng lực cần thiết để đáp ứng nhu cầu hiện tại/tương lai và quyết định thời điểm, quy mô, cách thức mở rộng hoặc thu hẹp.
+    why_it_matters: >
+      Là quyết định chiến lược khó vì 3 đặc điểm: (1) năng lực đến theo bậc (lumpy) - không mua 0.3 cái lò, nên mỗi lần đầu tư thường thừa một chút;
+      (2) độ trễ (lead time) từ quyết định đến lúc vận hành vài tuần đến vài năm; (3) khó đảo ngược - máy móc, mặt bằng khó bán lại nguyên giá nên sai lầm kéo dài dưới dạng khấu hao và chi phí cố định.
+      Thừa năng lực lãng phí vốn, thiếu năng lực mất doanh số và khách hàng. Nguồn gốc (theo nguồn): dây chuyền Ford Highland Park 1913 buộc cân đối năng lực giữa các công đoạn;
+      lý thuyết hàng đợi (Erlang, 1909), đường cong học tập (Wright, 1936), hoạch định tổng hợp (Holt-Modigliani-Muth-Simon, giữa thập niên 1950), Lý thuyết ràng buộc (Goldratt, 1984).
+  - term_vi: "Năng lực thiết kế"
+    term_en: "Design Capacity"
+    definition: "Sản lượng tối đa lý thuyết trong điều kiện lý tưởng (ví dụ dây chuyền thiết kế 1,000 sản phẩm/ngày)."
+    why_it_matters: "Là 'trần trên giấy'; mẫu số của Mức sử dụng - cho biết đồng vốn đã đầu tư vào tài sản đang được khai thác đến đâu."
+  - term_vi: "Năng lực hiệu quả"
+    term_en: "Effective Capacity"
+    definition: "Sản lượng tối đa thực tế có thể duy trì sau khi trừ bảo trì, đổi sản phẩm, nghỉ lễ (ví dụ 850/ngày = 85% thiết kế)."
+    why_it_matters: >
+      Là 'trần thực tế'; mẫu số của Hiệu suất. Khoảng cách thiết kế - hiệu quả là phần không thể tránh; khoảng cách hiệu quả - thực tế là phần có thể cải thiện bằng quản lý.
+      Nhiều chủ DN nói 'máy tôi chạy 1,000/ngày' nhưng chưa bao giờ đạt vì trộn lẫn 3 khái niệm.
+  - term_vi: "Sản lượng thực tế"
+    term_en: "Actual Output"
+    definition: "Sản lượng thực sự đạt được, có thể thấp hơn năng lực hiệu quả do sự cố, chất lượng kém, thiếu nguyên liệu."
+    why_it_matters: "Tử số của cả Hiệu suất và Mức sử dụng; chênh với năng lực hiệu quả là 'dư địa cải tiến vận hành' không cần vốn."
+  - term_vi: "Hiệu suất và Mức sử dụng"
+    term_en: "Efficiency vs Utilization"
+    definition: "Hiệu suất = thực tế / hiệu quả (đo quản lý vận hành). Mức sử dụng = thực tế / thiết kế (đo mức khai thác tài sản)."
+    why_it_matters: "Muốn cải tiến vận hành thì nhìn Hiệu suất; muốn cân nhắc có đầu tư thêm hay không thì nhìn Mức sử dụng và dư địa đến năng lực hiệu quả."
+  - term_vi: "Chi phí cố định, biến đổi, lợi nhuận góp"
+    term_en: "Fixed cost, Variable cost, Contribution Margin"
+    definition: "Mở rộng năng lực kéo theo chi phí cố định mới (khấu hao, lương quản lý, thuê mặt bằng) không phụ thuộc sản lượng; mỗi đơn vị bán ra góp P - VC để trang trải FC."
+    why_it_matters: "Break-even buộc người ra quyết định tách bạch cố định/biến đổi, trả lời 'bán tối thiểu bao nhiêu thì khoản cố định mới được bù'. Là phân tích tĩnh (không có giá trị thời gian của tiền)."
+  - term_vi: "Chiến lược Lead/Lag/Match"
+    term_en: "Capacity Timing Strategies (Lead, Lag, Match)"
+    definition: "Lead: xây năng lực trước khi nhu cầu tăng. Lag: xây sau khi nhu cầu đã vượt năng lực. Match: xây theo mức trung bình dự báo."
+    why_it_matters: "Là ba mức khẩu vị rủi ro trước hai loại sai lầm: Lead tránh chi phí cơ hội (mất khách) và chấp nhận tài sản nhàn rỗi; Lag ngược lại. Phụ thuộc cái nào đắt hơn trong ngành."
+  - term_vi: "Hoạch định tổng hợp"
+    term_en: "Aggregate Planning"
+    definition: "Hoạch định sản lượng, tồn kho, nhân lực trung hạn (3-18 tháng) cho nhu cầu dao động mùa vụ mà không đổi năng lực cố định (nhà xưởng, máy móc); gộp sản phẩm thành 'đơn vị tổng hợp'."
+    why_it_matters: "Hệ thống hóa bởi Holt, Modigliani, Muth, Simon giữa thập niên 1950 (quy tắc quyết định tuyến tính cho một nhà máy sơn); chọn tổ hợp rẻ nhất của 3 đòn bẩy: nhân lực, tăng ca, tồn kho."
+  - term_vi: "Chase, Level, Mixed"
+    term_en: "Chase / Level / Mixed (Hybrid) Strategy"
+    definition: "Chase: sản lượng/nhân lực theo sát nhu cầu. Level: sản xuất đều, tồn kho hấp thụ biến động. Mixed: lực lượng nền ổn định + thời vụ/tăng ca + tồn kho đệm vừa phải."
+    why_it_matters: "Chase tốn chi phí tuyển/sa thải và ảnh hưởng tinh thần; Level tốn lưu kho và rủi ro lỗi thời; kết luận phụ thuộc chi phí lưu kho (hàng tươi/thời trang thì Level kém hấp dẫn)."
+  - term_vi: "Nút thắt cổ chai"
+    term_en: "Bottleneck / Theory of Constraints (TOC)"
+    definition: "Trong chuỗi nối tiếp, năng lực hệ thống bằng công đoạn thấp nhất (sợi xích bền bằng mắt xích yếu nhất)."
+    why_it_matters: >
+      Goldratt (nhà vật lý Israel) phổ biến trong 'The Goal' (1984). Hệ quả: 1 giờ ngừng ở nút thắt = mất 1 giờ sản lượng cả hệ thống; tăng năng lực ngoài nút thắt không thêm đơn vị nào;
+      nâng nút thắt thì nút thắt dịch chuyển sang công đoạn chậm kế tiếp (nâng 60 lên 120 chỉ làm hệ thống 90 vì công đoạn 3 là 90 - tăng 50% chứ không phải 100%).
+  - term_vi: "Lý thuyết hàng đợi và ký hiệu M/M/1, M/M/c"
+    term_en: "Queuing Theory (Kendall notation M/M/1, M/M/c)"
+    definition: "Khách đến ngẫu nhiên Poisson (M = Markovian), thời gian phục vụ phân phối mũ (M), có 1 hoặc c quầy song song."
+    why_it_matters: >
+      Dịch vụ không lưu kho được năng lực nên dù năng lực trung bình > nhu cầu trung bình vẫn có hàng đợi do ngẫu nhiên. Erlang (kỹ sư Công ty Điện thoại Copenhagen, 1909) nghiên cứu số đường dây tổng đài;
+      sau lan sang ngân hàng, bệnh viện, siêu thị, data center. Thời gian chờ tỷ lệ nghịch với phần năng lực dư (mu - lambda) nên tiến ra vô cực khi rho tiến 1 (hyperbol, không phải mũ).
+  - term_vi: "Hệ số sử dụng hàng đợi"
+    term_en: "Utilization factor (rho)"
+    definition: "rho = lambda/mu (M/M/1) hoặc lambda/(c x mu) (M/M/c); phải < 1 để hệ thống ổn định."
+    why_it_matters: "Khi rho >= 1 hàng đợi tăng mãi (không có năng lực dư để xả); vùng > 85-90% thời gian chờ tăng rất mạnh. Dùng rho > 85% làm tín hiệu hệ thống 'sắp vỡ'."
+  - term_vi: "Hiệu ứng gộp hàng đợi"
+    term_en: "Pooling effect"
+    definition: "Nhiều quầy chia một hàng chung chờ ít hơn một quầy với cùng rho."
+    why_it_matters: "Một ca phục vụ lâu ở quầy 1 không làm cả hàng đứng yên vì quầy khác xử lý tiếp; một quầy tạm ngừng không sụp đổ cả hệ thống. Vì vậy thêm quầy hiệu quả hơn tăng tốc từng quầy."
+  - term_vi: "Đường cong học tập"
+    term_en: "Learning Curve (Wright's law)"
+    definition: "Mỗi lần sản lượng tích lũy gấp đôi, thời gian/chi phí một đơn vị giảm còn r lần (r = 90% = 'đường cong 90%')."
+    why_it_matters: "T. P. Wright (kỹ sư hàng không, Curtiss-Wright) công bố 1936 khi quan sát chi phí lao động máy bay. Năng lực thực tế của người/máy/chuyền mới thấp hơn thiết kế nhiều lúc đầu; bỏ qua sẽ lập kế hoạch giao hàng/dòng tiền sai. Đào tạo, SOP, kèm cặp giúp đường cong dốc hơn (r nhỏ hơn)."
+  - term_vi: "Cân bằng chuyền"
+    term_en: "Line Balancing"
+    definition: "Chia công việc đều giữa các trạm nối tiếp để tối thiểu hóa thời gian nhàn rỗi (idle time)."
+    why_it_matters: "Trạm chậm nhất quyết định nhịp chuyền (nguyên lý nút thắt); trạm nhanh phải chờ = lao động đã trả lương bị lãng phí. Ra đời cùng dây chuyền Ford, thuật toán hóa trong thập niên 1950-1960."
+  - term_vi: "Hoạch định yêu cầu năng lực"
+    term_en: "Capacity Requirements Planning (CRP)"
+    definition: "Sau MPS/MRP, tính giờ máy/giờ công cần ở từng trung tâm làm việc theo định mức (routing) để kiểm tra khả thi."
+    why_it_matters: "Buộc nhìn vào trung tâm bị quá tải thay vì năng lực trung bình toàn xưởng (cùng tinh thần TOC); thường tự động trong ERP/MRP."
+  - term_vi: "Năng lực dự phòng chiến lược"
+    term_en: "Capacity Cushion"
+    definition: "Cushion = 100% - Utilization Rate; phần năng lực chưa dùng được giữ có chủ đích như bảo hiểm."
+    why_it_matters: "Không có đệm thì mọi sự cố, đơn gấp, đột biến nhu cầu đều gây trễ hoặc mất khách (tương tự Safety Stock). Lớn hợp lý khi nhu cầu biến động mạnh, hậu quả thiếu năng lực nặng, năng lực khó bổ sung nhanh."
+  - term_vi: "Năng lực linh hoạt và thuê ngoài"
+    term_en: "Flexible Capacity, Outsourcing, Gig Economy"
+    definition: "Chuyển chi phí cố định thành chi phí biến đổi bằng lao động tự do (Grab, ShopeeFood), cloud kitchen, warehouse-as-a-service, cloud computing (IaaS)."
+    why_it_matters: "Giảm rủi ro dự báo sai và vốn trả trước; đổi lại chi phí đơn vị cao hơn về dài hạn, phụ thuộc đối tác, rủi ro kiểm soát chất lượng. Khối lượng dự báo càng bất định thì thuê ngoài càng đáng giá."
+  - term_vi: "Đòn bẩy hoạt động"
+    term_en: "Operating Leverage"
+    definition: "Tỷ trọng chi phí cố định cao khuếch đại cả lãi lẫn lỗ khi doanh thu thay đổi."
+    why_it_matters: "Lead strategy với tài sản đắt, khó đảo ngược làm điểm hòa vốn cao (ví dụ hàng không: 72.7% doanh thu bình thường); chuyển một phần cố định thành linh hoạt hạ điểm hòa vốn."
+  - term_vi: "Giá trị kỳ vọng và cây quyết định"
+    term_en: "EMV and Decision Tree"
+    definition: "Liệt kê phương án - kịch bản nhu cầu (xác suất) - lợi ích từng nhánh; EMV = tổng p x V. Khi dòng tiền nhiều năm, V phải là NPV."
+    why_it_matters: "Quyết định năng lực là quyết định dưới bất định (chọn trước khi biết nhu cầu). Lý thuyết quyết định hệ thống hóa bởi Howard Raiffa (Harvard, thập niên 1960). EMV không phản ánh rủi ro: luôn xem thêm kịch bản xấu nhất và khả năng chịu lỗ."
+  - term_vi: "Quyền chọn chờ đợi"
+    term_en: "Real Option (option to wait)"
+    definition: "Trả giá nhỏ (ví dụ thuê ngoài một năm) để có thêm thông tin trước khi cam kết vốn lớn."
+    why_it_matters: "Khi chi phí chờ nhỏ hơn giá trị thông tin thu được thì phương án 'chờ có chủ đích' thắng cả về kỳ vọng và rủi ro (Case Đất Đỏ: EMV 1,031.3 triệu, không có kịch bản lỗ)."
+  - term_vi: "Mô phỏng Monte Carlo"
+    term_en: "Monte Carlo Simulation"
+    definition: "Chạy hàng nghìn kịch bản ngẫu nhiên rút từ phân phối xác suất của biến đầu vào (thường phân phối tam giác: thấp nhất, khả dĩ nhất, cao nhất) để ra phân phối kết quả."
+    why_it_matters: "Cây quyết định chỉ có vài kịch bản rời rạc; thực tế nhu cầu là liên tục. Đặt tên theo sòng bạc Monte Carlo, do Ulam, von Neumann, Metropolis phát triển trong dự án Manhattan thập niên 1940 (theo nguồn). Cho P(NPV<0) thay vì một con số trung bình."
+  - term_vi: "Quy mô tối thiểu hiệu quả và ESG"
+    term_en: "Minimum Efficient Scale and Sustainability"
+    definition: "Cân nhắc hiệu quả năng lượng/đơn vị sản phẩm, dây chuyền tái cấu hình linh hoạt (flexible manufacturing system), và quy mô đủ lớn để có kinh tế quy mô nhưng không quá lớn gây lãng phí."
+    why_it_matters: "Xu hướng ESG ảnh hưởng quyết định năng lực hiện đại: đầu tư máy mới không chỉ nhìn công suất tối đa."
+
+formulas:
+  - id: "m05_efficiency"
+    name_vi: "Hiệu suất"
+    name_en: "Efficiency"
+    expression_latex: '\text{Efficiency} = \frac{\text{Actual Output}}{\text{Effective Capacity}} \times 100\%'
+    expression_python: "actual_output / effective_capacity"
+    excel: "=Thuc_te/Hieu_qua"
+    variables:
+      - {symbol: "actual_output", meaning: "Sản lượng thực tế", unit: "đơn vị/kỳ"}
+      - {symbol: "effective_capacity", meaning: "Năng lực hiệu quả", unit: "đơn vị/kỳ"}
+    when_to_use: "Đo chất lượng quản lý vận hành trong giới hạn thực tế; quyết định có nên cải tiến vận hành trước khi đầu tư."
+    why_it_works: "Lấy năng lực hiệu quả làm mẫu số nên chỉ phản ánh phần có thể cải thiện bằng quản lý (sự cố, phế phẩm, thiếu nguyên liệu, thao tác chậm kéo nó xuống). Trả lời 'ta có đang làm tốt trong giới hạn thực tế không?'."
+    assumptions: ["Năng lực hiệu quả đã trừ đúng các hao hụt không tránh được (bảo trì, đổi mẫu, nghỉ lễ)."]
+    pitfalls: ["Trộn lẫn mẫu số thiết kế và hiệu quả.", "Chỉ nhìn Hiệu suất cao mà bỏ qua Mức sử dụng thấp (tài sản chưa khai thác)."]
+    interpretation: "Mốc tham khảo > 85% (nguồn, KPI). Ví dụ 88.2% = vận hành tốt; dưới mốc thì cải tiến vận hành trước khi mua thêm."
+    example:
+      inputs: {actual_output: 750, effective_capacity: 850}
+      steps: ["Năng lực hiệu quả/thiết kế = 850/1,000 = 85%", "Hiệu suất = 750/850 = 0.8824"]
+      result: "Hiệu suất = 88.2%"
+  - id: "m05_utilization"
+    name_vi: "Mức sử dụng"
+    name_en: "Utilization"
+    expression_latex: '\text{Utilization} = \frac{\text{Actual Output}}{\text{Design Capacity}} \times 100\%'
+    expression_python: "actual_output / design_capacity"
+    excel: "=Thuc_te/Thiet_ke"
+    variables:
+      - {symbol: "actual_output", meaning: "Sản lượng thực tế", unit: "đơn vị/kỳ"}
+      - {symbol: "design_capacity", meaning: "Năng lực thiết kế", unit: "đơn vị/kỳ"}
+    when_to_use: "Đo mức khai thác tài sản đã đầu tư; cân nhắc có đầu tư thêm không."
+    why_it_works: "Mẫu số là trần lý thuyết nên trả lời 'đồng vốn bỏ vào máy móc đang được dùng đến mức nào?'. Utilization = Efficiency x (hiệu quả/thiết kế)."
+    assumptions: ["Năng lực thiết kế đo cùng đơn vị, cùng kỳ với sản lượng."]
+    pitfalls: ["Đẩy lên 100% liên tục: thời gian chờ và rủi ro sự cố tăng vọt."]
+    interpretation: "Mục tiêu tham khảo 75-90% (tránh 100% liên tục). Ví dụ 75.0%: khai thác 75% tài sản; hỏi trước 'có thể bán thêm đến mức hiệu quả mà không chi vốn không?'."
+    example:
+      inputs: {actual_output: 750, design_capacity: 1000}
+      steps: ["Utilization = 750/1,000"]
+      result: "Mức sử dụng = 75.0%"
+  - id: "m05_system_capacity"
+    name_vi: "Năng lực hệ thống nối tiếp (nút thắt)"
+    name_en: "Serial System Capacity (Bottleneck)"
+    expression_latex: '\text{Capacity}_{sys} = \min_i (\text{rate}_i \times \text{hours})'
+    expression_python: "min(rates) * hours_per_month"
+    variables:
+      - {symbol: "rates", meaning: "Năng lực từng công đoạn (danh sách)", unit: "đơn vị/giờ"}
+      - {symbol: "hours_per_month", meaning: "Số giờ làm việc trong tháng (giờ/ngày x ngày/tháng)", unit: "giờ/tháng"}
+    when_to_use: "Xác định nút thắt, năng lực thiết kế hệ thống; tính lại sau mỗi lần nâng một công đoạn."
+    why_it_works: "Sản lượng chung của chuỗi nối tiếp bằng công đoạn chậm nhất; nhân giờ làm việc để ra kg/tháng. Năng lực hiệu quả = thiết kế x tỷ lệ hiệu quả (ví dụ 85%)."
+    assumptions: ["Công đoạn nối tiếp, không có tồn đệm lớn giữa các công đoạn.", "Mọi công đoạn cùng đơn vị đo (ví dụ kg thành phẩm/giờ)."]
+    pitfalls: ["Cộng thẳng năng lực nâng cấp vào hệ thống (65 thay vì 45 không có nghĩa hệ thống tăng 44%): nút thắt dịch chuyển sang công đoạn kế tiếp."]
+    interpretation: "Công đoạn có 'thiết kế/tháng' nhỏ nhất = nút thắt; chỉ đầu tư vào nút thắt và phải tính lại nút thắt mới."
+    example:
+      inputs: {rates: [120, 45, 90, 60, 100], hours_per_month: 208}
+      steps: ["Công đoạn rang 45 kg/giờ thấp nhất", "45 x 208 = 9,360 kg/tháng", "Thêm máy rang +20 kg/giờ: rates = [120,65,90,60,100] thì min = 60 (đóng gói) -> 60 x 208 = 12,480 (tăng 33.3%, không phải 44%)"]
+      result: "Năng lực thiết kế = 9,360 kg/tháng (nút thắt: rang); sau khi thêm máy rang = 12,480 (nút thắt mới: đóng gói)"
+  - id: "m05_breakeven_qty"
+    name_vi: "Sản lượng hòa vốn"
+    name_en: "Break-Even Quantity"
+    expression_latex: 'Q^{*} = \frac{FC}{P - VC}'
+    expression_python: "fc / (price - vc)"
+    excel: "=FC/(P-VC)"
+    variables:
+      - {symbol: "fc", meaning: "Tổng chi phí cố định tăng thêm trong kỳ", unit: "VNĐ"}
+      - {symbol: "price", meaning: "Giá bán mỗi đơn vị", unit: "VNĐ/đơn vị"}
+      - {symbol: "vc", meaning: "Chi phí biến đổi mỗi đơn vị", unit: "VNĐ/đơn vị"}
+    when_to_use: "Trước mọi quyết định mở rộng năng lực (mua máy, mở chi nhánh): bán tối thiểu bao nhiêu thì chi phí cố định mới được bù, so với năng lực mới và dự báo nhu cầu."
+    why_it_works: "Mỗi đơn vị bán ra góp P - VC (lợi nhuận góp) để trang trải FC; cần Q đơn vị sao cho tổng phần góp bằng FC. Dùng từ đầu thế kỷ 20 trong kế toán quản trị vì đơn giản và buộc tách chi phí cố định/biến đổi."
+    assumptions: ["Một mức giá, một mức VC không đổi theo sản lượng.", "Phân tích tĩnh: không có giá trị thời gian của tiền."]
+    pitfalls: ["Chỉ nhìn Q* mà không so với năng lực mới (hòa vốn ở 80% công suất là rủi ro cao).", "Quyết định lớn phải kết hợp NPV; hòa vốn kế toán chưa phải hoàn vốn đầu tư."]
+    interpretation: "Quy tắc kinh nghiệm: điểm hòa vốn nên dưới khoảng 60-70% năng lực, hoặc có đơn hàng cam kết bù lại."
+    example:
+      inputs: {fc: 360000000, price: 120000, vc: 70000, capacity: 9000, demand: 8400}
+      steps: ["P - VC = 50,000", "Q* = 360,000,000/50,000 = 7,200 đv/năm", "Tỷ lệ công suất tại hòa vốn = 7,200/9,000 = 80%", "Biên an toàn = (8,400-7,200)/8,400 = 14.3%", "Lợi nhuận = (8,400-7,200) x 50,000 = 60 triệu/năm"]
+      result: "Q* = 7,200 đv/năm (80% công suất); lợi nhuận 60 triệu/năm tại nhu cầu 8,400"
+  - id: "m05_margin_of_safety"
+    name_vi: "Biên an toàn và lợi nhuận tại mức nhu cầu"
+    name_en: "Margin of Safety"
+    expression_latex: '\text{MoS} = \frac{D - Q^{*}}{D}, \quad \pi = (D - Q^{*})(P - VC)'
+    expression_python: "(demand - q_star) / demand"
+    variables:
+      - {symbol: "demand", meaning: "Nhu cầu dự báo", unit: "đơn vị/kỳ"}
+      - {symbol: "q_star", meaning: "Sản lượng hòa vốn", unit: "đơn vị/kỳ"}
+    when_to_use: "Đo nhu cầu có thể thấp hơn dự báo bao nhiêu % trước khi dự án bắt đầu lỗ."
+    why_it_works: "Phần nhu cầu vượt hòa vốn chia cho nhu cầu cho biết đệm an toàn; mỗi đơn vị vượt mang lại lợi nhuận góp P - VC."
+    assumptions: ["Như hòa vốn: P, VC cố định."]
+    pitfalls: ["Dùng dự báo lạc quan làm D."]
+    interpretation: "Biên an toàn nhỏ (14.3%) nghĩa là nhu cầu thấp hơn dự báo khoảng 14% là bắt đầu lỗ."
+    example:
+      inputs: {demand: 8400, q_star: 7200}
+      steps: ["(8,400-7,200)/8,400 = 0.1429"]
+      result: "Biên an toàn = 14.3%"
+  - id: "m05_breakeven_own_outsource"
+    name_vi: "Hòa vốn giữa tự làm và thuê ngoài"
+    name_en: "Own vs Outsource Break-Even"
+    expression_latex: 'Q^{*}_{own/out} = \frac{FC_{own}}{VC_{out} - VC_{own}}'
+    expression_python: "fc_own / (vc_out - vc_own)"
+    excel: "=FC_own/(VC_out-VC_own)"
+    variables:
+      - {symbol: "fc_own", meaning: "Chi phí cố định khi tự làm", unit: "VNĐ/năm"}
+      - {symbol: "vc_own", meaning: "Chi phí biến đổi khi tự làm", unit: "VNĐ/đơn vị"}
+      - {symbol: "vc_out", meaning: "Chi phí biến đổi khi thuê ngoài (không có chi phí cố định)", unit: "VNĐ/đơn vị"}
+    when_to_use: "Tự đầu tư hay thuê ngoài/gia công cho cùng một khối lượng; cốt lõi của Lead hay Lag cho SME."
+    why_it_works: "Tổng chi phí tự làm = FC_own + VC_own x Q; thuê ngoài = VC_out x Q. Hai đường cắt nhau tại Q* khi phần tiết kiệm biến đổi mỗi đơn vị (VC_out - VC_own) bù đủ FC_own."
+    assumptions: ["VC_out > VC_own, thuê ngoài không có chi phí cố định.", "Chất lượng và tính sẵn có của đối tác không đổi."]
+    pitfalls: ["Quên rủi ro kiểm soát chất lượng/phụ thuộc đối tác.", "Dùng Q* mà không xét độ bất định của khối lượng dự báo."]
+    interpretation: "Nhu cầu bền vững trên Q* thì tự đầu tư; dưới Q* thì thuê ngoài rẻ hơn. Khối lượng càng bất định, thuê ngoài càng đáng giá."
+    example:
+      inputs: {fc_own: 480000000, vc_own: 40000, vc_out: 52000}
+      steps: ["VC_out - VC_own = 12,000", "Q* = 480,000,000/12,000 = 40,000 đv/năm", "Tại 30,000: tự làm 1,680 triệu vs thuê 1,560 triệu (thuê rẻ hơn 120)", "Tại 50,000: tự làm 2,480 vs thuê 2,600 (tự làm rẻ hơn 120)"]
+      result: "Q* = 40,000 đơn vị/năm"
+  - id: "m05_mm1_rho_wq"
+    name_vi: "Hàng đợi M/M/1: hệ số sử dụng và thời gian chờ"
+    name_en: "M/M/1 Utilization and Waiting Time"
+    expression_latex: '\rho = \frac{\lambda}{\mu}, \qquad W_q = \frac{\lambda}{\mu(\mu - \lambda)}'
+    expression_python: "lam / (mu * (mu - lam))"
+    excel: "=lambda/(mu*(mu-lambda))"
+    variables:
+      - {symbol: "lam", meaning: "Tỷ lệ khách đến trung bình (lambda)", unit: "khách/giờ"}
+      - {symbol: "mu", meaning: "Tỷ lệ phục vụ trung bình của 1 quầy (mu)", unit: "khách/giờ"}
+    when_to_use: "Một quầy/một nhân viên phục vụ; ước lượng thời gian chờ và độ dài hàng khi nhu cầu thay đổi."
+    why_it_works: "Thời gian chờ tỷ lệ nghịch với phần năng lực dư (mu - lambda), không tỷ lệ với rho: gần rho = 1 gần như không còn năng lực để xả hàng đợi mỗi khi khách đến dồn, nên Wq tiến ra vô cực (hyperbol)."
+    assumptions: ["Khách đến Poisson, thời gian phục vụ phân phối mũ, 1 quầy, hàng đợi vô hạn FIFO.", "rho < 1."]
+    pitfalls: ["Phi tuyến: nhu cầu +27% làm chờ gấp 6.3 lần (4.5 -> 28.5 phút).", "Đổi đơn vị giờ sang phút khi báo cáo.", "Dùng khi thực tế nhiều quầy (nên dùng M/M/c)."]
+    interpretation: "Giữ rho dưới ~85% để tránh vùng chờ tăng vọt. Ví dụ lambda = 30, mu = 40: rho = 0.75, Wq = 4.5 phút."
+    example:
+      inputs: {lam: 30, mu: 40}
+      steps: ["rho = 30/40 = 0.75", "Wq = 30/(40 x 10) = 0.075 giờ = 4.5 phút", "Lq = 30^2/(40 x 10) = 2.25 khách", "W = 1/(40-30) = 0.1 giờ = 6 phút", "Kiểm tra Little: Lq = lambda x Wq = 30 x 0.075 = 2.25"]
+      result: "Wq = 0.075 giờ = 4.5 phút"
+  - id: "m05_mm1_lq_w"
+    name_vi: "Hàng đợi M/M/1: độ dài hàng, số khách trong hệ thống, thời gian trong hệ thống"
+    name_en: "M/M/1 Lq, Ls, W"
+    expression_latex: 'L_q = \frac{\lambda^2}{\mu(\mu-\lambda)}, \quad L_s = \frac{\lambda}{\mu-\lambda}, \quad W = \frac{1}{\mu-\lambda}'
+    expression_python: "lam**2 / (mu * (mu - lam))"
+    variables:
+      - {symbol: "lam", meaning: "Tỷ lệ khách đến", unit: "khách/giờ"}
+      - {symbol: "mu", meaning: "Tỷ lệ phục vụ", unit: "khách/giờ"}
+    when_to_use: "Cần số khách trung bình xếp hàng (Lq), trong hệ thống (Ls), tổng thời gian trong hệ thống W = Wq + 1/mu."
+    why_it_works: "Liên hệ qua Định luật Little (L = lambda x W): Lq = lambda x Wq, Ls = lambda x W."
+    assumptions: ["Như M/M/1."]
+    pitfalls: ["Nhầm Lq (chỉ người đang xếp hàng) với Ls (gồm cả người đang được phục vụ)."]
+    interpretation: "Ví dụ Bài 3: lambda=24, mu=30 -> Lq = 3.2 khách, W = 10 phút."
+    example:
+      inputs: {lam: 24, mu: 30}
+      steps: ["rho = 0.8", "Wq = 24/(30 x 6) = 0.1333 giờ = 8 phút", "Lq = 576/(30 x 6) = 3.2", "W = 1/6 giờ = 10 phút"]
+      result: "Lq = 3.2 khách; Wq = 8 phút; W = 10 phút"
+  - id: "m05_erlang_c"
+    name_vi: "Xác suất phải chờ Erlang C (M/M/c)"
+    name_en: "Erlang C Probability of Waiting"
+    expression_latex: 'P_w = \frac{\frac{a^c}{c!(1-\rho)}}{\sum_{k=0}^{c-1}\frac{a^k}{k!} + \frac{a^c}{c!(1-\rho)}}, \quad a = \frac{\lambda}{\mu}, \; \rho = \frac{a}{c}'
+    expression_python: "((lam/mu)**c / (math.factorial(c) * (1 - lam/(c*mu)))) / (sum((lam/mu)**k / math.factorial(k) for k in range(c)) + (lam/mu)**c / (math.factorial(c) * (1 - lam/(c*mu))))"
+    excel: "=(POISSON.DIST(c,a,FALSE)/(1-a/c))/((POISSON.DIST(c,a,FALSE)/(1-a/c))+POISSON.DIST(c-1,a,TRUE))"
+    variables:
+      - {symbol: "lam", meaning: "Tỷ lệ khách đến", unit: "khách/giờ"}
+      - {symbol: "mu", meaning: "Tỷ lệ phục vụ của 1 quầy", unit: "khách/giờ"}
+      - {symbol: "c", meaning: "Số quầy/nhân viên song song", unit: "quầy"}
+    when_to_use: "Có nhiều quầy chung một hàng đợi (ngân hàng, sân bay, call center, quầy pha chế): tính xác suất khách phải chờ và dùng cho Wq."
+    why_it_works: "Tử số là 'xác suất mọi quầy đều bận' (khách mới phải xếp hàng) chuẩn hóa theo tổng các trạng thái; do Erlang xây cho tổng đài điện thoại, nay vẫn là chuẩn hoạch định nhân lực call center. a = lambda/mu là tải trọng (đơn vị Erlang)."
+    assumptions: ["Poisson đến, phục vụ mũ, c quầy giống nhau, hàng chung, rho = lambda/(c x mu) < 1."]
+    pitfalls: ["rho >= 1: công thức không áp dụng (hệ thống không ổn định, hàng tăng mãi, ví dụ c = 4 với lambda = 120, mu = 30).", "Nhầm Pw (xác suất chờ) với Wq (thời gian chờ trung bình)."]
+    interpretation: "Ví dụ lambda = 120, mu = 30, c = 5: Pw = 55.4% (hơn nửa khách phải chờ); c = 6: 28.5%; c = 7: 13.5%."
+    example:
+      inputs: {lam: 120, mu: 30, c: 5}
+      steps: ["a = 120/30 = 4; rho = 4/5 = 0.8", "Pw = 0.5541 (tính theo công thức Erlang C)"]
+      result: "Pw = 55.4%"
+  - id: "m05_mmc_wq"
+    name_vi: "Thời gian chờ trung bình M/M/c"
+    name_en: "M/M/c Average Waiting Time"
+    expression_latex: 'W_q = \frac{P_w}{c\mu - \lambda}'
+    expression_python: "pw / (c * mu - lam)"
+    excel: "=Pw/(c*mu-lambda)"
+    variables:
+      - {symbol: "pw", meaning: "Xác suất khách phải chờ (Erlang C)", unit: "tỷ lệ 0-1"}
+      - {symbol: "c", meaning: "Số quầy", unit: "quầy"}
+      - {symbol: "mu", meaning: "Tỷ lệ phục vụ 1 quầy", unit: "khách/giờ"}
+      - {symbol: "lam", meaning: "Tỷ lệ khách đến", unit: "khách/giờ"}
+    when_to_use: "Tìm số quầy c nhỏ nhất để Wq đạt mục tiêu dịch vụ (ví dụ <= 1 phút) theo từng khung giờ."
+    why_it_works: "Thời gian chờ trung bình = xác suất phải chờ x thời gian xả hàng của phần năng lực dư (c x mu - lambda). Thêm quầy có hiệu ích biên giảm dần."
+    assumptions: ["Như Erlang C."]
+    pitfalls: ["Đơn vị: kết quả theo giờ, nhân 60 để ra phút.", "Tối đa hóa số quầy thay vì dừng ở điểm đạt chuẩn dịch vụ."]
+    interpretation: "Ví dụ lambda = 120, mu = 30: c = 5 -> 1.11 phút; c = 6 -> 0.28 phút; c = 7 -> 0.09 phút. Từ 5 lên 6 giảm 0.83 phút, 6 lên 7 chỉ giảm 0.19 phút."
+    example:
+      inputs: {pw: 0.5541125541, c: 5, mu: 30, lam: 120}
+      steps: ["c x mu - lambda = 150 - 120 = 30", "Wq = 0.5541/30 = 0.01847 giờ = 1.108 phút"]
+      result: "Wq = 1.11 phút"
+  - id: "m05_learning_curve"
+    name_vi: "Đường cong học tập (mô hình đơn vị)"
+    name_en: "Learning Curve (Unit Model)"
+    expression_latex: 'T_n = T_1 \times n^{\log_2(r)}'
+    expression_python: "t1 * n ** math.log2(r)"
+    excel: "=T1*n^(LOG(r,2))"
+    variables:
+      - {symbol: "t1", meaning: "Thời gian sản xuất đơn vị đầu tiên", unit: "giờ"}
+      - {symbol: "n", meaning: "Số thứ tự đơn vị cần dự đoán", unit: "đơn vị"}
+      - {symbol: "r", meaning: "Tỷ lệ học tập (0.9 = đường cong 90%)", unit: "tỷ lệ 0-1"}
+    when_to_use: "Dự báo năng suất ramp-up của người/máy/chuyền mới, lập kế hoạch giao hàng và dòng tiền 3-6 tháng đầu."
+    why_it_works: "Hàm lũy thừa đảm bảo mỗi khi sản lượng tích lũy gấp đôi, thời gian đơn vị giảm còn r lần (n -> 2n: T giảm r lần). log2(r) luôn âm vì r < 1. Quan sát gốc của Wright (1936)."
+    assumptions: ["Mô hình đơn vị (Crawford); mô hình gốc của Wright áp dụng cho thời gian trung bình tích lũy - hai mô hình cho kết quả hơi khác nhau.", "r ổn định theo sản lượng tích lũy."]
+    pitfalls: ["Dùng T1 cho cả lô (ước 1,000 giờ vs thực tế 581 giờ cho 100 đơn vị) hoặc dùng T100 cho giai đoạn đầu (sai khả năng giao hàng).", "Giả định xưởng mới đạt năng suất thiết kế ngay từ tháng đầu (xưởng may: ramp-up 2-3 tháng)."]
+    interpretation: "T1 = 10, r = 90%: đơn vị 2 = 9.00; 4 = 8.10; 8 = 7.29; 50 = 5.52; 100 = 4.97 giờ (khoảng một nửa đơn vị đầu)."
+    example:
+      inputs: {t1: 10, n: 50, r: 0.9}
+      steps: ["b = log2(0.9) = -0.1520", "T50 = 10 x 50^-0.152 = 5.52 giờ", "T100 = 4.97 giờ"]
+      result: "T50 = 5.52 giờ; T100 = 4.97 giờ"
+  - id: "m05_learning_cumulative"
+    name_vi: "Tổng giờ tích lũy theo đường cong học tập"
+    name_en: "Cumulative Hours under Learning Curve"
+    expression_latex: '\sum_{i=1}^{N} T_1 \cdot i^{\log_2 r}'
+    expression_python: "sum(t1 * i ** math.log2(r) for i in range(1, N + 1))"
+    variables:
+      - {symbol: "t1", meaning: "Thời gian đơn vị đầu tiên", unit: "giờ"}
+      - {symbol: "r", meaning: "Tỷ lệ học tập", unit: "tỷ lệ"}
+      - {symbol: "N", meaning: "Số đơn vị trong lô", unit: "đơn vị"}
+    when_to_use: "Tính tổng giờ công cho một lô N đơn vị đầu để lập kế hoạch năng lực/dòng tiền."
+    why_it_works: "Cộng thời gian từng đơn vị giảm dần; trung bình mỗi đơn vị thấp hơn T1 đáng kể."
+    assumptions: ["Như mô hình đơn vị."]
+    pitfalls: ["Nhân N x T1 gây ước tính thừa (1,000 giờ so với 581.4)."]
+    interpretation: "T1 = 10, r = 90%: 50 đơn vị = 321.4 giờ (6.43 giờ/đv); 100 đơn vị = 581.4 giờ (5.81 giờ/đv)."
+    example:
+      inputs: {t1: 10, r: 0.9, N: 100}
+      steps: ["Tổng 50 đv đầu = 321.4 giờ", "Tổng 100 đv đầu = 581.4 giờ; so với 100 x 10 = 1,000 giờ (gấp 1.7 lần)"]
+      result: "Tổng 100 đơn vị = 581.4 giờ"
+  - id: "m05_line_cycle_time"
+    name_vi: "Nhịp sản xuất tối đa cho phép"
+    name_en: "Cycle Time"
+    expression_latex: 'C = \frac{\text{Available time per day}}{\text{Required output per day}}'
+    expression_python: "available_time / required_output"
+    variables:
+      - {symbol: "available_time", meaning: "Thời gian sản xuất có sẵn mỗi ngày", unit: "phút/ngày"}
+      - {symbol: "required_output", meaning: "Sản lượng yêu cầu mỗi ngày", unit: "sản phẩm/ngày"}
+    when_to_use: "Bước đầu cân bằng chuyền: mỗi trạm không được mất quá C phút cho mỗi sản phẩm để giao đủ sản lượng mục tiêu."
+    why_it_works: "Chia thời gian có sẵn cho số sản phẩm cần làm ra thời gian trung bình mỗi sản phẩm được phép chiếm một trạm."
+    assumptions: ["Công việc tuần tự, có ràng buộc thứ tự (precedence)."]
+    pitfalls: ["Quên ràng buộc thứ tự công việc khi chia trạm."]
+    interpretation: "480 phút/200 sản phẩm = 2.4 phút."
+    example:
+      inputs: {available_time: 480, required_output: 200}
+      steps: ["C = 480/200"]
+      result: "C = 2.4 phút"
+  - id: "m05_line_min_stations"
+    name_vi: "Số trạm làm việc tối thiểu"
+    name_en: "Theoretical Minimum Number of Stations"
+    expression_latex: 'N_{min} = \left\lceil \frac{\sum t_i}{C} \right\rceil'
+    expression_python: "math.ceil(sum(task_times) / cycle_time)"
+    variables:
+      - {symbol: "task_times", meaning: "Thời gian từng công việc", unit: "phút"}
+      - {symbol: "cycle_time", meaning: "Nhịp sản xuất C", unit: "phút"}
+    when_to_use: "Cận dưới số trạm khi thiết kế/cân bằng chuyền."
+    why_it_works: "Tổng việc chia cho sức chứa mỗi trạm (C), làm tròn lên vì không có 2.33 trạm."
+    assumptions: ["Có thể chia việc hoàn hảo (cận dưới lý thuyết)."]
+    pitfalls: ["Thực tế còn bị ràng buộc thứ tự và kích thước từng công việc nên có thể cần nhiều trạm hơn N_min (yêu cầu 240/ngày: N_min = 3 nhưng thực tế cần 4 trạm, hiệu suất 70%)."]
+    interpretation: "Ví dụ 8 việc (tổng 5.6 phút), C = 2.4: N_min = ceil(2.333) = 3."
+    example:
+      inputs: {task_times: [0.8, 0.6, 0.9, 0.5, 0.7, 1.1, 0.6, 0.4], cycle_time: 2.4}
+      steps: ["Tổng = 5.6 phút", "5.6/2.4 = 2.33 -> làm tròn lên 3"]
+      result: "N_min = 3 trạm"
+  - id: "m05_line_balance_efficiency"
+    name_vi: "Hiệu suất cân bằng chuyền"
+    name_en: "Balance Efficiency"
+    expression_latex: '\text{Efficiency} = \frac{\sum t_i}{N_{actual} \times C} \times 100\%'
+    expression_python: "sum(task_times) / (n_actual * cycle_time)"
+    variables:
+      - {symbol: "task_times", meaning: "Thời gian từng công việc", unit: "phút"}
+      - {symbol: "n_actual", meaning: "Số trạm thực tế", unit: "trạm"}
+      - {symbol: "cycle_time", meaning: "Nhịp thực tế (thời gian trạm chậm nhất hoặc C)", unit: "phút"}
+    when_to_use: "Đánh giá một phương án chia trạm; so sánh các cách chia."
+    why_it_works: "Tử số là tổng việc thực có; mẫu số là tổng 'thời gian được trả lương' của mọi trạm; phần còn lại là thời gian nhàn rỗi."
+    assumptions: ["Nhịp = thời gian trạm chậm nhất khi tính sản lượng tối đa."]
+    pitfalls: ["Chia tham lam (nhồi đầy trạm đầu) có thể kém cân hơn: 77.8% so với 88.9%."]
+    interpretation: "Cách 2 (T1 = A+B 1.4; T2 = C+D+E 2.1; T3 = F+G+H 2.1): hiệu suất 5.6/(3 x 2.1) = 88.9%, sản lượng tối đa 480/2.1 = 228.6 sp/ngày (vượt yêu cầu 200)."
+    example:
+      inputs: {task_times: [0.8, 0.6, 0.9, 0.5, 0.7, 1.1, 0.6, 0.4], n_actual: 3, cycle_time: 2.1}
+      steps: ["5.6/(3 x 2.1) = 0.8889", "Cách 1 (nhịp 2.4): 5.6/(3 x 2.4) = 77.8%"]
+      result: "Hiệu suất cân bằng = 88.9%"
+  - id: "m05_crp_hours"
+    name_vi: "Giờ cần tại trung tâm làm việc (CRP)"
+    name_en: "Capacity Requirements at a Work Center"
+    expression_latex: '\text{Hours}_k = \sum_j (\text{Qty}_j \times \text{Std hours}_{j,k})'
+    expression_python: "sum(q * h for q, h in zip(qtys, std_hours))"
+    variables:
+      - {symbol: "qtys", meaning: "Số lượng từng sản phẩm theo MPS", unit: "đơn vị"}
+      - {symbol: "std_hours", meaning: "Định mức giờ/đơn vị tại trung tâm k", unit: "giờ/đơn vị"}
+    when_to_use: "Kiểm tra khả thi MPS/MRP: trung tâm/máy nào quá tải và thiếu bao nhiêu giờ."
+    why_it_works: "Cộng nhu cầu giờ máy của mọi sản phẩm qua cùng một trung tâm; so với năng lực hiệu quả để thấy chỗ quá tải thay vì năng lực trung bình toàn xưởng."
+    assumptions: ["Định mức routing chính xác."]
+    pitfalls: ["Chỉ so tổng năng lực toàn xưởng."]
+    interpretation: "Thiếu giờ thì tăng ca, thuê ngoài hoặc dời đơn hàng."
+    example:
+      inputs: {qtys: [1000, 600], std_hours: [0.30, 0.50]}
+      steps: ["1,000 x 0.30 + 600 x 0.50 = 600 giờ", "Năng lực: 2 máy x 200 giờ = 400 giờ -> thiếu 200 giờ"]
+      result: "Cần 600 giờ máy cắt; thiếu 200 giờ"
+  - id: "m05_capacity_cushion"
+    name_vi: "Năng lực dự phòng"
+    name_en: "Capacity Cushion"
+    expression_latex: '\text{Cushion} = 100\% - \text{Utilization Rate}'
+    expression_python: "1 - utilization"
+    variables:
+      - {symbol: "utilization", meaning: "Tỷ lệ sử dụng năng lực", unit: "tỷ lệ 0-1"}
+    when_to_use: "Chọn mức đệm phù hợp đặc thù ngành; đánh giá hệ thống vận hành quá sát 100%."
+    why_it_works: "Đệm là bảo hiểm mua bằng tài sản nhàn rỗi: thời gian chờ tiến ra vô cực khi rho -> 1, nên không có đệm thì mọi sự cố, đơn gấp gây trễ/mất khách."
+    assumptions: ["Utilization đo trên cùng cơ sở năng lực."]
+    pitfalls: ["Đẩy cushion về 0 để 'hiệu quả'."]
+    interpretation: "Ví dụ 85% -> cushion 15%. Tham khảo (ước tính theo nguồn): bệnh viện/cấp cứu 30-40%, hàng tiêu dùng ổn định 10-15%, data center 20-30%, thời trang/mùa vụ 25-35%."
+    example:
+      inputs: {utilization: 0.92}
+      steps: ["Cushion = 1 - 0.92 = 8% (thấp hơn mức tham khảo 10-15%)", "Để về 90%: năng lực cần x 92/90 = +2.2%; về 85%: 92/85 = +8.2%"]
+      result: "Cushion = 8%; cần +2.2% năng lực để về 90% hoặc +8.2% để về 85%"
+  - id: "m05_capacity_for_target_util"
+    name_vi: "Năng lực cần tăng để đạt mức sử dụng mục tiêu"
+    name_en: "Capacity Increase to Reach Target Utilization"
+    expression_latex: '\Delta = \frac{U_{now}}{U_{target}} - 1'
+    expression_python: "u_now / u_target - 1"
+    variables:
+      - {symbol: "u_now", meaning: "Mức sử dụng hiện tại", unit: "tỷ lệ"}
+      - {symbol: "u_target", meaning: "Mức sử dụng mục tiêu", unit: "tỷ lệ"}
+    when_to_use: "Xác định cần tăng bao nhiêu % năng lực để khôi phục đệm."
+    why_it_works: "Với sản lượng không đổi, utilization tỷ lệ nghịch với năng lực."
+    assumptions: ["Sản lượng thực tế không đổi."]
+    pitfalls: ["Nhầm tăng năng lực tính theo % của năng lực hiện có với % điểm utilization."]
+    interpretation: "92% -> 90%: +2.2%; 92% -> 85%: +8.2%."
+    example:
+      inputs: {u_now: 0.92, u_target: 0.85}
+      steps: ["0.92/0.85 - 1 = 0.0824"]
+      result: "+8.2% năng lực"
+  - id: "m05_aggregate_cost"
+    name_vi: "Tổng chi phí Aggregate Planning (Chase/Level/Mixed)"
+    name_en: "Aggregate Plan Total Cost"
+    expression_latex: 'TC = c_{reg} Q_{reg} + c_{ot} Q_{ot} + c_{inv} \sum_t I_t + c_{hire} H + c_{fire} F'
+    expression_python: "c_reg*q_reg + c_ot*q_ot + c_inv*inv_months + c_hire*hires + c_fire*fires"
+    variables:
+      - {symbol: "c_reg", meaning: "Chi phí sản xuất giờ chuẩn mỗi đơn vị", unit: "VNĐ/đv"}
+      - {symbol: "q_reg", meaning: "Tổng sản lượng giờ chuẩn", unit: "đv"}
+      - {symbol: "c_ot", meaning: "Chi phí tăng ca mỗi đơn vị", unit: "VNĐ/đv"}
+      - {symbol: "q_ot", meaning: "Tổng sản lượng tăng ca", unit: "đv"}
+      - {symbol: "c_inv", meaning: "Chi phí lưu kho mỗi đơn vị mỗi tháng", unit: "VNĐ/đv/tháng"}
+      - {symbol: "inv_months", meaning: "Tổng tồn kho cuối tháng cộng dồn (đv-tháng)", unit: "đv-tháng"}
+      - {symbol: "c_hire", meaning: "Chi phí tuyển mới mỗi người", unit: "VNĐ/người"}
+      - {symbol: "hires", meaning: "Số người tuyển", unit: "người"}
+      - {symbol: "c_fire", meaning: "Chi phí sa thải mỗi người", unit: "VNĐ/người"}
+      - {symbol: "fires", meaning: "Số người sa thải", unit: "người"}
+    when_to_use: "So sánh các kế hoạch tổng hợp trong 3-18 tháng khi nhu cầu theo mùa; kiểm tra độ nhạy theo chi phí lưu kho."
+    why_it_works: "Ba đòn bẩy (nhân lực, tăng ca, tồn kho) mỗi cái có chi phí riêng; kế hoạch tốt là tổ hợp rẻ nhất thỏa mọi nhu cầu và tồn kho không âm."
+    assumptions: ["Chi phí lao động giản lược (tính theo sản lượng, bỏ qua chi phí nhàn rỗi và lương cố định).", "Tồn kho đầu kỳ không tính chi phí trong ví dụ nguồn."]
+    pitfalls: ["Bỏ qua tổn thất tinh thần, đào tạo lại, đường cong học tập của người mới khi Chase.", "Kết luận Level/Mixed phụ thuộc chi phí lưu kho (hàng tươi/thời trang đảo ngược thứ hạng)."]
+    interpretation: "Ví dụ nguồn (giả định minh họa): Chase 340 triệu; Level 198.3 triệu; Mixed 197.0 triệu. Khi lưu kho 20,000 VNĐ/đv/tháng: Level 228, Mixed 215 (rẻ nhất), Chase 340."
+    example:
+      inputs: {c_reg: 50000, q_reg: 3600, c_ot: 75000, q_ot: 200, c_inv: 2000, inv_months: 1000, c_hire: 4000000, hires: 0, c_fire: 3000000, fires: 0}
+      steps: ["Mixed: nền 600 đv/tháng x 6 = 3,600 đv x 50,000 = 180 triệu", "Tăng ca T5: 200 đv x 75,000 = 15 triệu", "Tồn kho: 300+400+300+0+0+0 = 1,000 đv-tháng x 2,000 = 2 triệu", "Tổng = 197 triệu"]
+      result: "Tổng chi phí Mixed = 197,000,000 VNĐ (Level 198.3 triệu; Chase 340 triệu)"
+  - id: "m05_operating_leverage_breakeven"
+    name_vi: "Doanh thu hòa vốn với chi phí cố định và biến đổi theo tỷ lệ"
+    name_en: "Break-Even Revenue (Operating Leverage)"
+    expression_latex: 'R^{*} = \frac{FC}{1 - v_{ratio} - f_{ratio}}'
+    expression_python: "fc / (1 - v_ratio - f_ratio)"
+    variables:
+      - {symbol: "fc", meaning: "Chi phí cố định thật", unit: "đơn vị tương đối"}
+      - {symbol: "v_ratio", meaning: "Chi phí biến đổi theo doanh thu (tỷ lệ)", unit: "tỷ lệ"}
+      - {symbol: "f_ratio", meaning: "Chi phí linh hoạt cắt giảm được, theo tỷ lệ doanh thu bình thường (0 nếu cấu trúc cứng)", unit: "tỷ lệ"}
+    when_to_use: "Stress test cấu trúc chi phí trước sụt giảm nhu cầu; so sánh cấu trúc cứng với linh hoạt."
+    why_it_works: "Doanh thu hòa vốn = cố định / phần doanh thu còn lại sau chi phí biến đổi (và linh hoạt). Chi phí cố định càng lớn thì điểm hòa vốn càng cao, khuếch đại lãi/lỗ."
+    assumptions: ["Mô hình hãng giả định (đơn vị tương đối), KHÔNG phải số liệu một hãng cụ thể.", "Chi phí linh hoạt cắt được tỷ lệ với doanh thu."]
+    pitfalls: ["Dựa Lead dài hạn không có điều khoản hủy/hoãn."]
+    interpretation: "Cấu trúc cứng: 727.3 (72.7% doanh thu bình thường). Linh hoạt: 571.4 (57.1%). Cùng giảm 90%: lỗ -345 (cứng) vs -165 (linh hoạt, 48%)."
+    example:
+      inputs: {fc: 400, v_ratio: 0.45, f_ratio: 0}
+      steps: ["Cứng: 400/(1-0.45) = 727.3", "Linh hoạt: 200/(1-0.45-0.20) = 571.4", "Doanh thu 100: cứng 100-400-45 = -345; linh hoạt 100-45-20-200 = -165"]
+      result: "R* = 727.3 (cấu trúc cứng); 571.4 (cấu trúc linh hoạt, FC = 200, f_ratio = 0.20)"
+  - id: "m05_emv"
+    name_vi: "Giá trị tiền tệ kỳ vọng"
+    name_en: "Expected Monetary Value (EMV)"
+    expression_latex: 'EMV = \sum_i p_i V_i'
+    expression_python: "sum(p * v for p, v in zip(probs, values))"
+    excel: "=SUMPRODUCT(probs, values)"
+    variables:
+      - {symbol: "probs", meaning: "Xác suất từng kịch bản (tổng = 1)", unit: "tỷ lệ"}
+      - {symbol: "values", meaning: "Lợi ích (NPV nếu nhiều năm) của phương án trong từng kịch bản", unit: "triệu VNĐ"}
+    when_to_use: "So sánh phương án năng lực (mua máy/thuê ngoài/chờ) dưới bất định."
+    why_it_works: "Trung bình có trọng số xác suất của lợi ích; khi dòng tiền nhiều năm V phải là NPV vì một đồng hôm nay có giá trị hơn một đồng sau 5 năm."
+    assumptions: ["Xác suất ước lượng được và trung lập rủi ro."]
+    pitfalls: ["EMV không phản ánh rủi ro: A (EMV 120) có tiềm năng +600 nhưng B (EMV 130) không lỗ.", "Luôn báo cáo kịch bản xấu nhất và xác suất lỗ."]
+    interpretation: "Chọn EMV cao nhất sau khi xem kịch bản xấu nhất và khả năng chịu lỗ."
+    example:
+      inputs: {probs: [0.4, 0.6], values: [600, -200]}
+      steps: ["A: 0.4 x 600 + 0.6 x (-200) = 120", "B: 0.4 x 250 + 0.6 x 50 = 130"]
+      result: "EMV(A) = 120; EMV(B) = 130 triệu VNĐ"
+  - id: "m05_annuity_npv"
+    name_vi: "NPV dự án năng lực với dòng tiền đều hằng năm"
+    name_en: "Annuity NPV for a Capacity Investment"
+    expression_latex: 'NPV = CF \times \sum_{t=1}^{n}\frac{1}{(1+r)^t} - I_0'
+    expression_python: "cf * sum(1 / (1 + r) ** t for t in range(1, n + 1)) - i0"
+    excel: "=-CAPEX+PV(rate,n,-NetCashflow)"
+    variables:
+      - {symbol: "cf", meaning: "Dòng tiền ròng mỗi năm", unit: "triệu VNĐ/năm"}
+      - {symbol: "r", meaning: "Tỷ suất chiết khấu", unit: "tỷ lệ/năm"}
+      - {symbol: "n", meaning: "Số năm", unit: "năm"}
+      - {symbol: "i0", meaning: "Vốn đầu tư ban đầu", unit: "triệu VNĐ"}
+    when_to_use: "Biến mỗi nhánh cây quyết định thành NPV; so sánh mua máy/thuê ngoài."
+    why_it_works: "Chiết khấu dòng tiền tương lai về hiện tại; hệ số hiện tại hóa niên kim 5 năm 12% = 3.6048."
+    assumptions: ["Dòng tiền đều cuối năm; tỷ suất chiết khấu giả định 12%/năm."]
+    pitfalls: ["Cộng thẳng tiền các năm không chiết khấu.", "Quên chi phí cố định hằng năm khi sản lượng bằng 0 (nhánh Thấp: -90 triệu/năm)."]
+    interpretation: "Máy rang mới (Đất Đỏ, giả định minh họa): Cao +2,732.3; Trung bình +655.9; Thấp -804.4 triệu."
+    example:
+      inputs: {cf: 315.1, r: 0.12, n: 5, i0: 480}
+      steps: ["Annuity factor = 3.6048", "Trung bình: bán thêm 10,128 kg x 40,000 - 90 triệu = 315.1 triệu/năm", "NPV = 315.1 x 3.6048 - 480 = 655.9"]
+      result: "NPV = 655.9 triệu (xấp xỉ; dùng cf = 315.12 chính xác cho 655.94)"
+  - id: "m05_staged_option_npv"
+    name_vi: "NPV phương án chờ rồi quyết (real option)"
+    name_en: "Staged / Wait-then-Invest NPV"
+    expression_latex: 'NPV_D = \frac{CF^{out}}{1+r} + \sum_{t=2}^{5}\frac{CF^{own}}{(1+r)^t} - \frac{I_0}{1+r}'
+    expression_python: "cf_out/(1+r) + sum(cf_own/(1+r)**t for t in range(2, 6)) - i0/(1+r)"
+    variables:
+      - {symbol: "cf_out", meaning: "Dòng tiền năm 1 khi thuê ngoài", unit: "triệu VNĐ"}
+      - {symbol: "cf_own", meaning: "Dòng tiền ròng mỗi năm khi sở hữu máy (từ năm 2)", unit: "triệu VNĐ"}
+      - {symbol: "i0", meaning: "Vốn đầu tư bỏ ra ở cuối năm 1", unit: "triệu VNĐ"}
+      - {symbol: "r", meaning: "Tỷ suất chiết khấu", unit: "tỷ lệ/năm"}
+    when_to_use: "Nhu cầu bất định, chi phí chờ nhỏ: thuê ngoài năm đầu để quan sát nhu cầu rồi mới quyết mua máy."
+    why_it_works: "Trả giá nhỏ (mất 20,000 VNĐ/kg lợi nhuận góp ở năm 1) để loại bỏ nhánh lỗ 804 triệu; giá trị thông tin lớn hơn chi phí chờ."
+    assumptions: ["Nhu cầu 'lộ diện' sau năm 1; giá máy không đổi; nhánh Thấp không đầu tư (NPV 0)."]
+    pitfalls: ["Giả định thông tin hoàn hảo sau 1 năm."]
+    interpretation: "Cao 2,426.1; Trung bình 606.9; Thấp 0; EMV(D) = 1,031.3 triệu, cao nhất, không có kịch bản lỗ."
+    example:
+      inputs: {cf_out: 490.56, cf_own: 891.12, i0: 480, r: 0.12}
+      steps: ["Nhánh Cao: 490.56/1.12 + sum_{t=2..5} 891.12/1.12^t - 480/1.12 = 2,426.1", "EMV(D) = 0.3 x 2,426.1 + 0.5 x 606.9 + 0.2 x 0 = 1,031.3"]
+      result: "NPV nhánh Cao = 2,426.1 triệu; EMV(D) = 1,031.3 triệu"
+  - id: "m05_triangular_sample"
+    name_vi: "Rút mẫu phân phối tam giác (Monte Carlo)"
+    name_en: "Triangular Distribution Sampling"
+    expression_latex: 'D = \begin{cases} a + \sqrt{u(b-a)(m-a)} & u < \frac{m-a}{b-a} \\ b - \sqrt{(1-u)(b-a)(b-m)} & \text{otherwise}\end{cases}'
+    expression_python: "a + math.sqrt(u*(b-a)*(m-a)) if u < (m-a)/(b-a) else b - math.sqrt((1-u)*(b-a)*(b-m))"
+    excel: "=IF(u<(m-a)/(b-a), a+SQRT(u*(b-a)*(m-a)), b-SQRT((1-u)*(b-a)*(b-m)))"
+    variables:
+      - {symbol: "a", meaning: "Giá trị thấp nhất", unit: "kg/tháng"}
+      - {symbol: "m", meaning: "Giá trị khả dĩ nhất", unit: "kg/tháng"}
+      - {symbol: "b", meaning: "Giá trị cao nhất", unit: "kg/tháng"}
+      - {symbol: "u", meaning: "Số ngẫu nhiên đều U(0,1) (=RAND(), đặt ô riêng)", unit: "0-1"}
+    when_to_use: "Mô phỏng nhu cầu liên tục từ 3 con số dễ ước lượng; ước lượng P(NPV < 0)."
+    why_it_works: "Nghịch đảo hàm phân phối tích lũy của phân phối tam giác; ba mốc thấp/khả dĩ/cao dễ ước lượng từ kinh nghiệm."
+    assumptions: ["Phân phối tam giác phản ánh đúng bất định."]
+    pitfalls: ["Kết quả chênh nhẹ giữa các lần chạy/seed (nguồn: 27.7% với 10,000 lần; kiểm tra lại seed numpy 42 ra khoảng 28.6%).", "Quên dùng cùng u cho mọi phương án trong một lần chạy khi so sánh."]
+    interpretation: "Quy trình: lặp N lần, mỗi lần: bán thêm = max(0, min(nhu cầu, 10,608) - 7,956) x 12; tính NPV A và B; P(NPV<0) = COUNTIF(<0)/N. Nguồn (Đất Đỏ): A trung bình 951 triệu, P(NPV<0) = 27.7%, phân vị 5% = -804; B trung bình 878 triệu, 0%."
+    example:
+      inputs: {a: 7000, m: 8800, b: 11000, u: 0.5}
+      steps: ["(m-a)/(b-a) = 0.45; u = 0.5 >= 0.45 nên dùng nhánh dưới", "D = 11000 - sqrt(0.5 x 4000 x 2200) = 11000 - 2097.6 = 8,902.4"]
+      result: "D = 8,902.4 kg/tháng (với u = 0.5)"
+  - id: "m05_little_law"
+    name_vi: "Định luật Little"
+    name_en: "Little's Law"
+    expression_latex: 'L = \lambda W'
+    expression_python: "lam * w"
+    variables:
+      - {symbol: "lam", meaning: "Tỷ lệ đến", unit: "khách/giờ"}
+      - {symbol: "w", meaning: "Thời gian trung bình trong hệ thống/hàng đợi", unit: "giờ"}
+    when_to_use: "Kiểm tra chéo kết quả hàng đợi (Lq = lambda x Wq; Ls = lambda x W). Chi tiết ở m01."
+    why_it_works: "Số khách trung bình trong hệ thống bằng tốc độ đến nhân thời gian trung bình ở lại."
+    assumptions: ["Hệ thống ổn định (trạng thái dừng)."]
+    pitfalls: ["Lẫn đơn vị giờ/phút."]
+    interpretation: "lambda = 30, Wq = 0.075 giờ -> Lq = 2.25."
+    example:
+      inputs: {lam: 30, w: 0.075}
+      steps: ["30 x 0.075 = 2.25"]
+      result: "Lq = 2.25 khách"
+
+frameworks:
+  - id: "m05_three_capacity_types"
+    name_vi: "Ba loại năng lực và hai chỉ số hiệu suất"
+    name_en: "Design / Effective / Actual Capacity"
+    origin: "Khung phân biệt chuẩn trong quản trị vận hành; ra đời vì chủ DN hay trộn lẫn 'trần lý thuyết', 'trần thực tế' và 'đang làm được'."
+    components:
+      - "Năng lực thiết kế (trần lý thuyết)"
+      - "Năng lực hiệu quả (trần thực tế duy trì được, thiết kế trừ bảo trì/đổi mẫu/nghỉ lễ)"
+      - "Sản lượng thực tế"
+      - "Hiệu suất = thực tế/hiệu quả; Mức sử dụng = thực tế/thiết kế"
+    when_to_use: "Bước 2 của quy trình hoạch định, trước mọi quyết định đầu tư."
+    how_to_apply:
+      - "Đo năng lực thiết kế từng công đoạn (kg/giờ x giờ/ngày x ngày/tháng)."
+      - "Xác định tỷ lệ hiệu quả (ví dụ 85%) từ lịch bảo trì, đổi mẻ."
+      - "Đo sản lượng thực tế; tính Hiệu suất và Mức sử dụng."
+      - "Hỏi 'có bán thêm đến mức hiệu quả mà không chi vốn được không?' trước khi mua thêm."
+    how_to_read_results: "Khoảng cách thiết kế-hiệu quả là không tránh được; hiệu quả-thực tế là dư địa cải thiện. Hiệu suất > 85% là vận hành tốt; Mức sử dụng 75-90% là vùng khỏe."
+    pitfalls: ["Báo cáo 'công suất 1,000/ngày' mà chưa bao giờ đạt.", "Đầu tư khi Hiệu suất còn thấp."]
+    example: "Xưởng bánh: thiết kế 1,500, hiệu quả 1,200, thực tế 1,000 -> Hiệu suất 83.3%, Mức sử dụng 66.7%: cải tiến vận hành trước khi mua lò."
+  - id: "m05_breakeven_analysis"
+    name_vi: "Phân tích điểm hòa vốn cho đầu tư năng lực"
+    name_en: "Break-Even Analysis"
+    origin: "Kế toán quản trị đầu thế kỷ 20; buộc tách chi phí cố định/biến đổi."
+    components: ["FC", "P", "VC", "Lợi nhuận góp P - VC", "Q*", "% công suất tại hòa vốn", "Biên an toàn"]
+    when_to_use: "Mỗi lần cân nhắc mua máy, mở chi nhánh, thuê mặt bằng."
+    how_to_apply:
+      - "Liệt kê chi phí cố định tăng thêm (khấu hao, nhân công cơ bản, bảo trì, mặt bằng)."
+      - "Tính Q* = FC/(P - VC) và so với năng lực mới (Q*/năng lực)."
+      - "So với dự báo nhu cầu ba kịch bản; tính biên an toàn và lợi nhuận."
+      - "Nếu quyết định lớn, bổ sung NPV/dòng tiền chiết khấu."
+    how_to_read_results: "Q* nên dưới ~60-70% năng lực; hòa vốn 80% công suất là rủi ro cao. Break-even là phân tích tĩnh, chưa phải hoàn vốn đầu tư (hoàn vốn giản đơn = vốn/lợi nhuận tháng)."
+    pitfalls: ["Quên giá trị thời gian của tiền.", "Chỉ tính hòa vốn kế toán, bỏ qua hòa vốn tiền mặt (không có khấu hao)."]
+    example: "Lò nướng: FC 360 triệu/năm, P - VC = 50,000 -> Q* = 7,200 (80% công suất 9,000); nhu cầu 8,400 -> biên an toàn 14.3%."
+  - id: "m05_lead_lag_match"
+    name_vi: "Chiến lược thời điểm năng lực: Lead / Lag / Match"
+    name_en: "Capacity Timing Strategies"
+    origin: "Khung chuẩn quản trị vận hành cho câu hỏi 'bậc thang năng lực đặt trước, sau hay ngang đường nhu cầu?'."
+    components:
+      - "Lead: xây trước nhu cầu; không mất khách, dễ dư công suất, CAPEX lớn trả trước, nhạy với sai số dự báo"
+      - "Lag: xây sau khi nhu cầu vượt năng lực; an toàn vốn, có thể mất khách, chi phí cơ hội cao"
+      - "Match: xây theo mức trung bình dự báo; cân bằng, vẫn có giai đoạn thiếu/thừa xen kẽ"
+    when_to_use: "Chọn thời điểm bổ sung năng lực khi nhu cầu tăng."
+    how_to_apply:
+      - "Hỏi: nhu cầu tăng ổn định, dự báo tin cậy cao? Nếu không/biến động cao -> Lag/Match (chờ tín hiệu rõ, thuê ngoài linh hoạt)."
+      - "Nếu có: đối thủ đang mở rộng nhanh? Có -> Lead (giữ thị phần); Không -> Match (theo dự báo trung bình, điều chỉnh dần)."
+      - "So chi phí mất khách vĩnh viễn với chi phí tài sản nhàn rỗi và khả năng huy động vốn."
+    how_to_read_results: "Lead hợp thị trường winner-takes-most/hiệu ứng mạng và DN vốn dồi dào; Lag hợp ngành ổn định, tài sản rất đắt; Match hợp đa số SME."
+    pitfalls: ["Lead dựa dự báo dài hạn không có điều khoản linh hoạt (bài học COVID-19 ngành hàng không)."]
+    example: "Xưởng may Bình Dương chọn Y (tự may 40% + thầu phụ 60%) = Match trong giới hạn vốn."
+  - id: "m05_toc_five_steps"
+    name_vi: "5 bước tập trung của Lý thuyết ràng buộc"
+    name_en: "TOC Five Focusing Steps (Goldratt)"
+    origin: "Eliyahu Goldratt, tiểu thuyết quản trị 'The Goal' (1984)."
+    components: ["1. Xác định nút thắt", "2. Khai thác tối đa nút thắt (không để ngừng kể cả giờ nghỉ)", "3. Điều chỉnh mọi công đoạn khác phục vụ nút thắt", "4. Nâng cấp năng lực nút thắt", "5. Lặp lại vì nút thắt mới xuất hiện"]
+    when_to_use: "Cần tăng sản lượng hệ thống nối tiếp; tránh đầu tư sai chỗ."
+    how_to_apply:
+      - "Lập bảng năng lực từng công đoạn (template 5.3), chọn công đoạn 'thiết kế/tháng' nhỏ nhất."
+      - "Đảm bảo nút thắt không ngừng; các công đoạn khác không sản xuất vượt khả năng xử lý của nút thắt."
+      - "Nâng cấp nút thắt rồi tính lại năng lực hệ thống = min công đoạn mới."
+    how_to_read_results: "Nâng nút thắt 60 -> 120 trong chuỗi (100, 60, 90, 120) chỉ đưa hệ thống lên 90 (+50%); giờ ngừng ở nút thắt = mất giờ của cả hệ thống."
+    pitfalls: ["Đầu tư công đoạn 'dễ thấy' không phải nút thắt.", "Quên nút thắt dịch chuyển."]
+    example: "Đất Đỏ: rang 45 kg/giờ là nút thắt; thêm máy rang +20 -> nút thắt mới là đóng gói 60 kg/giờ, hệ thống chỉ +33%."
+  - id: "m05_queuing_mm1_mmc"
+    name_vi: "Phân tích hàng đợi M/M/1 và M/M/c"
+    name_en: "Queuing Analysis"
+    origin: "A. K. Erlang (Copenhagen Telephone, 1909); ký hiệu Kendall."
+    components: ["lambda, mu, c", "rho", "Wq, Lq, W, Ls", "Pw (Erlang C)", "Mục tiêu dịch vụ (Wq <= x phút)"]
+    when_to_use: "Dịch vụ không lưu kho năng lực: quán, phòng khám, quầy thu ngân, call center."
+    how_to_apply:
+      - "Đo lambda theo khung giờ (cao/thấp điểm) và mu mỗi nhân viên."
+      - "Đặt mục tiêu chờ (ví dụ Wq <= 1 phút)."
+      - "Tăng c từ mức ổn định (rho < 1), tính Pw và Wq bằng Erlang C; chọn c nhỏ nhất đạt chuẩn từng khung."
+      - "Xem xét điều tiết nhu cầu (đặt lịch, giá theo giờ) trước khi thêm vật lý."
+    how_to_read_results: "rho >= 1 là sụp đổ; rho > 85% là vùng cảnh báo; hiệu ích biên của quầy thứ c+1 giảm dần."
+    pitfalls: ["Lấy năng lực trung bình = nhu cầu trung bình là đủ.", "Quên đổi giờ sang phút."]
+    example: "Highlands (mô hình minh họa): cao điểm 6 nhân viên, thấp điểm 3, tiết kiệm 31% giờ công so với cố định 6 người cả ngày."
+  - id: "m05_aggregate_planning"
+    name_vi: "Hoạch định tổng hợp (Chase / Level / Mixed)"
+    name_en: "Aggregate Planning"
+    origin: "Holt, Modigliani, Muth, Simon, giữa thập niên 1950 (quy tắc quyết định tuyến tính cho nhà máy sơn)."
+    components: ["Nhu cầu theo tháng", "Đòn bẩy: nhân lực (tuyển/sa thải), tăng ca, tồn kho", "Chi phí giờ chuẩn, tăng ca, lưu kho, tuyển, sa thải", "Ba chiến lược: Chase, Level, Mixed"]
+    when_to_use: "Nhu cầu mùa vụ trong 3-18 tháng khi năng lực cố định không đổi."
+    how_to_apply:
+      - "Lập bảng nhu cầu và các chi phí đơn vị, năng suất/người, tồn kho đầu kỳ."
+      - "Chase: số người = nhu cầu/năng suất mỗi tháng; tính chi phí tuyển/sa thải."
+      - "Level: sản xuất đều (tổng nhu cầu/số tháng), tính tồn kho cuối tháng (tồn đầu + SX - nhu cầu), kiểm tra không âm."
+      - "Mixed: nền ổn định + tăng ca khi đỉnh; kiểm tra tồn kho không âm và giới hạn tăng ca."
+      - "So tổng chi phí; chạy độ nhạy theo chi phí lưu kho."
+    how_to_read_results: "Nguồn (giả định minh họa): Chase 340 triệu (tuyển/sa thải chiếm 145/340 = 43%); Level 198.3; Mixed 197.0. Hàng dễ hỏng làm Level kém hấp dẫn."
+    pitfalls: ["Bỏ qua tồn kho âm (kế hoạch bất khả thi).", "Bỏ qua chi phí ẩn của Chase (tinh thần, đào tạo, learning curve)."]
+    example: "Lưu kho tăng lên 20,000 VNĐ/đv/tháng: Level 228, Mixed 215 (rẻ nhất), Chase 340 triệu."
+  - id: "m05_line_balancing"
+    name_vi: "Cân bằng chuyền sản xuất"
+    name_en: "Line Balancing"
+    origin: "Ford (đầu thế kỷ 20); thuật toán hóa thập niên 1950-1960."
+    components: ["Tổng thời gian công việc", "Nhịp C", "N_min", "Quy tắc xếp trạm theo thứ tự (precedence)", "Hiệu suất cân bằng"]
+    when_to_use: "Dây chuyền nhiều trạm nối tiếp; trạm nhanh bị chờ."
+    how_to_apply:
+      - "Tính tổng thời gian công việc và C = thời gian có sẵn/sản lượng yêu cầu."
+      - "Tính N_min = ceil(tổng/C)."
+      - "Chia các công việc thành N trạm sao cho không trạm nào vượt C và thỏa thứ tự công việc; thử nhiều cách chia."
+      - "Tính hiệu suất = tổng/(N x nhịp thực tế); nếu thấp, chia nhỏ công việc dài hoặc thêm công nhân ở trạm đó."
+    how_to_read_results: "N_min chỉ là cận dưới. Chia 2 (1.4, 2.1, 2.1) hiệu suất 88.9% so với chia tham lam (2.3, 2.3, 1.0) 77.8%."
+    pitfalls: ["Yêu cầu 240/ngày: N_min = 3 nhưng thực tế cần 4 trạm (hiệu suất 70%)."]
+    example: "8 việc A-H tổng 5.6 phút, 480 phút/ngày, 200 sp/ngày: C = 2.4, N_min = 3."
+  - id: "m05_crp"
+    name_vi: "Hoạch định yêu cầu năng lực (CRP)"
+    name_en: "Capacity Requirements Planning"
+    origin: "Một bước của hệ MPS/MRP/ERP."
+    components: ["MPS", "Routing/định mức giờ", "Giờ cần theo trung tâm", "Năng lực hiệu quả theo trung tâm"]
+    when_to_use: "Sau khi có MPS/MRP để kiểm tra khả thi theo trung tâm làm việc."
+    how_to_apply:
+      - "Với mỗi trung tâm, cộng (số lượng x định mức giờ) của mọi sản phẩm đi qua."
+      - "So với giờ hiệu quả sẵn có (số máy x giờ hiệu quả)."
+      - "Chỗ thiếu: tăng ca, thuê ngoài, dời đơn."
+    how_to_read_results: "600 giờ cần vs 400 giờ có -> thiếu 200 giờ."
+    pitfalls: ["Chỉ nhìn năng lực trung bình toàn xưởng."]
+    example: "1,000 SP A (0.30 giờ) + 600 SP B (0.50 giờ) trên máy cắt = 600 giờ."
+  - id: "m05_capacity_cushion_framework"
+    name_vi: "Năng lực dự phòng chiến lược"
+    name_en: "Capacity Cushion"
+    origin: "Khái niệm vận hành tương tự Safety Stock."
+    components: ["Cushion = 100% - utilization", "Mức tham khảo theo ngành (ước tính)", "Điều kiện cushion lớn/nhỏ"]
+    when_to_use: "Quyết định mức đệm hợp lý."
+    how_to_apply:
+      - "Đánh giá độ biến động nhu cầu, hậu quả thiếu năng lực, tốc độ bổ sung năng lực."
+      - "Chọn đệm theo ngành (bệnh viện 30-40%, hàng tiêu dùng ổn định 10-15%, data center 20-30%, thời trang 25-35% - ước tính)."
+    how_to_read_results: "Đệm lớn: nhu cầu biến động, hậu quả nặng, khó bổ sung nhanh. Đệm nhỏ: nhu cầu ổn định, lưu kho được, thuê ngoài nhanh."
+    pitfalls: ["Vận hành 100% liên tục."]
+    example: "FPT Software (mô hình minh họa): bench 18% là cushion nhân sự."
+  - id: "m05_own_vs_outsource"
+    name_vi: "Sở hữu năng lực vs thuê ngoài / năng lực linh hoạt"
+    name_en: "Own vs Outsource / Flexible Capacity"
+    origin: "Xu hướng gig economy, cloud, cloud kitchen, warehouse-as-a-service, IaaS."
+    components: ["Chi phí cố định vs biến đổi", "Kiểm soát chất lượng", "Tính linh hoạt", "Rủi ro đối tác", "Q* hòa vốn own/outsource"]
+    when_to_use: "Nhu cầu biến động, thời vụ, không phải năng lực cốt lõi -> thuê; nhu cầu ổn định, dài hạn, cốt lõi -> sở hữu."
+    how_to_apply:
+      - "Ước lượng FC_own, VC_own, VC_out; tính Q*."
+      - "So Q* với khối lượng dự báo bền vững và độ bất định."
+      - "Nếu thuê: ký SLA rõ, đa dạng hóa đối tác."
+    how_to_read_results: "Trên Q* tự làm; dưới Q* thuê ngoài. Thuê ngoài có thể coi như quyền chọn chờ đợi."
+    pitfalls: ["Phụ thuộc quá mức đối tác.", "Chi phí đơn vị cao hơn dài hạn."]
+    example: "Q* = 480 triệu/12,000 = 40,000 đv/năm."
+  - id: "m05_decision_tree_emv"
+    name_vi: "Cây quyết định EMV/NPV và quyền chọn chờ đợi"
+    name_en: "Decision Tree (EMV/NPV) with Real Option"
+    origin: "Lý thuyết quyết định, Howard Raiffa (Harvard, thập niên 1960)."
+    components: ["Nút quyết định", "Nhánh kịch bản + xác suất", "NPV từng nhánh", "EMV", "NPV xấu nhất", "Phương án chờ (staged)"]
+    when_to_use: "Chọn giữa mua máy, thuê ngoài, không làm, chờ rồi quyết."
+    how_to_apply:
+      - "Dự báo ba kịch bản nhu cầu có xác suất, tính phần bán thêm = min(nhu cầu, năng lực mới) - năng lực hiện tại."
+      - "Tính NPV từng nhánh của mỗi phương án (chiết khấu 12%/năm, 5 năm)."
+      - "Tính EMV và ghi NPV xấu nhất, vốn bỏ ra ngay."
+      - "Thêm phương án D (thuê ngoài một năm rồi quyết) và so sánh."
+    how_to_read_results: "Không chọn chỉ theo EMV. Đất Đỏ: A 986.8 (xấu nhất -804.4), B 895.6, C 0, D 1,031.3 (xấu nhất 0)."
+    pitfalls: ["EMV bỏ qua rủi ro.", "Giả định thông tin hoàn hảo sau khi chờ."]
+    example: "Đầu tư vì 'gần quá tải' là sai: chờ có chủ đích thắng cả kỳ vọng lẫn rủi ro."
+  - id: "m05_monte_carlo"
+    name_vi: "Mô phỏng Monte Carlo cho năng lực"
+    name_en: "Monte Carlo Simulation"
+    origin: "Ulam, von Neumann, Metropolis (dự án Manhattan, thập niên 1940, theo nguồn)."
+    components: ["Biến bất định (nhu cầu, giá, chi phí)", "Phân phối tam giác", "Hàng nghìn lần chạy", "Phân phối NPV", "P(NPV<0)"]
+    when_to_use: "Quyết định lớn, sai lầm dự báo gây thiệt hại lớn; SME làm được bằng Excel/Sheets."
+    how_to_apply:
+      - "Xác định biến bất định và phân phối tam giác (thấp, khả dĩ, cao)."
+      - "Chạy hàng nghìn lần (Excel: 1,000 dòng, RAND())."
+      - "Tổng hợp thành phân phối NPV cho từng phương án."
+      - "So P(NPV < 0), phân vị 5%, NPV trung bình."
+    how_to_read_results: "Đất Đỏ (nguồn): A trung bình 951 triệu, P(NPV<0) 27.7%, p5 = -804; B 878 triệu, 0%."
+    pitfalls: ["Phân phối tam giác sai sẽ cho kết luận sai.", "Kết quả chênh nhẹ giữa các seed."]
+    example: "Nhu cầu 7,000 / 8,800 / 11,000 kg/tháng, 10,000 lần chạy."
+  - id: "m05_capacity_planning_7_steps"
+    name_vi: "Quy trình 7 bước hoạch định năng lực"
+    name_en: "7-Step Capacity Planning Process"
+    origin: "Quy trình tổng hợp của bài nguồn."
+    components: ["1 Dự báo nhu cầu", "2 Đánh giá năng lực hiện tại", "3 Khoảng cách năng lực", "4 Nút thắt", "5 Đánh giá phương án", "6 Triển khai", "7 Giám sát và điều chỉnh"]
+    when_to_use: "Khung end-to-end cho mọi bài toán năng lực của SME."
+    how_to_apply:
+      - "Xem procedure m05_proc_7_steps."
+    how_to_read_results: "Mỗi bước có đầu ra rõ: kịch bản có xác suất; Hiệu suất/Mức sử dụng; khoảng thiếu theo kịch bản; nút thắt; Q*/EMV/NPV; kế hoạch ramp-up; KPI hằng tháng."
+    pitfalls: ["Nhảy thẳng bước 6 (mua máy) mà không qua bước 2-5."]
+    example: "Case Đất Đỏ đi đủ chuỗi: đo năng lực, nút thắt, khoảng thiếu, hòa vốn, EMV/NPV, Monte Carlo, real option."
+  - id: "m05_capacity_risk_register"
+    name_vi: "Sổ tay rủi ro hoạch định năng lực"
+    name_en: "Capacity Risk Register"
+    origin: "Mẫu quản trị rủi ro của bài nguồn."
+    components: ["Dự báo sai gây dư thừa (TB/Cao): kịch bản đa chiều, đầu tư theo giai đoạn", "Sự kiện bất khả kháng (Thấp/Rất cao): điều khoản linh hoạt, BCP", "Nút thắt mới (Cao/TB): giám sát toàn chuỗi", "Thiếu lao động kỹ năng (TB/TB): đào tạo trước", "Phụ thuộc đối tác (TB/TB): đa dạng hóa, SLA", "Tự động hóa không hợp quy mô (Thấp/Cao): ROI và quy mô tối thiểu hiệu quả"]
+    when_to_use: "Soát rủi ro trước khi cam kết đầu tư."
+    how_to_apply: ["Điền xác suất, tác động, biện pháp giảm thiểu cho từng rủi ro; rà soát hằng quý."]
+    how_to_read_results: "Ưu tiên rủi ro tác động cao: sự kiện gián đoạn và tự động hóa không phù hợp."
+    pitfalls: ["Chỉ lập một lần."]
+    example: "Hàng không trước COVID: Lead + hợp đồng dài hạn cứng."
+
+procedures:
+  - id: "m05_proc_7_steps"
+    name: "Quy trình 7 bước hoạch định năng lực cho SME"
+    steps:
+      - "Bước 1 Dự báo nhu cầu (12-24 tháng doanh số + đơn đã chốt) -> 3 kịch bản cao/trung/thấp có xác suất (xem m07)."
+      - "Bước 2 Đánh giá năng lực hiện tại (giờ chạy máy, sản lượng, sự cố) -> thiết kế/hiệu quả/thực tế, Hiệu suất, Mức sử dụng."
+      - "Bước 3 Khoảng cách năng lực = nhu cầu từng kịch bản - năng lực hiệu quả (phần thiếu theo kg/SP/giờ)."
+      - "Bước 4 Nút thắt: năng lực từng công đoạn -> công đoạn thấp nhất và nút thắt kế tiếp."
+      - "Bước 5 Đánh giá phương án: Lead/Lag/Match, Q*, EMV, NPV, kịch bản xấu nhất, Monte Carlo."
+      - "Bước 6 Triển khai (mua máy, tuyển, mở cơ sở, thuê ngoài) kèm kế hoạch ramp-up 2-3 tháng (learning curve)."
+      - "Bước 7 Giám sát KPI hằng tháng/quý; cập nhật dự báo; kích hoạt bước đầu tư kế tiếp theo ngưỡng định trước."
+    outputs: "Bảng đánh giá năng lực, khoảng thiếu theo kịch bản, đề xuất phương án có EMV/NPV và kịch bản xấu nhất, kế hoạch giám sát."
+  - id: "m05_proc_assess_current"
+    name: "Đánh giá năng lực hiện tại (template 5.3)"
+    steps:
+      - "Với mỗi công đoạn: năng lực/giờ a, giờ/ngày x ngày/tháng b -> thiết kế/tháng c = a x b."
+      - "Chọn công đoạn có c nhỏ nhất = nút thắt = năng lực thiết kế hệ thống."
+      - "Hiệu quả/tháng e = c x d (d = tỷ lệ hiệu quả, ví dụ 85%)."
+      - "Thực tế/tháng f; Hiệu suất = f/e; Mức sử dụng = f/c."
+      - "Dư địa ở mức hiệu quả = e - f."
+    outputs: "Bảng 9 cột (công đoạn, năng lực/giờ, giờ, thiết kế, hiệu quả %, hiệu quả, thực tế, hiệu suất, mức sử dụng)."
+  - id: "m05_proc_investment_decision"
+    name: "Quyết định đầu tư năng lực dưới bất định (chuỗi chuẩn của case Đất Đỏ)"
+    steps:
+      - "Đo năng lực (3 loại), tìm nút thắt, định lượng khoảng cách theo kịch bản."
+      - "Tính lại nút thắt sau khi thêm máy (nút thắt dịch chuyển); phần bán thêm tối đa = min(nhu cầu, năng lực mới) - năng lực hiệu quả hiện tại."
+      - "Tính hòa vốn kế toán và hòa vốn tiền mặt của máy mới."
+      - "Cây quyết định NPV (A mua, B thuê, C không làm) -> EMV, NPV xấu nhất, vốn bỏ ra ngay."
+      - "Monte Carlo để ra P(NPV<0)."
+      - "Xét phương án D (thuê ngoài rồi quyết); đặt điều kiện kích hoạt mua máy (hai quý liên tiếp nhu cầu vượt ngưỡng, hoặc hợp đồng cam kết sản lượng tối thiểu)."
+      - "Nếu mua máy: lập kế hoạch nâng nút thắt kế tiếp (đóng gói)."
+    outputs: "Bảng so sánh EMV / NPV xấu nhất / vốn ngay; khuyến nghị và trigger."
+  - id: "m05_proc_service_staffing"
+    name: "Xếp ca dịch vụ theo khung giờ (Erlang C)"
+    steps:
+      - "Đo lambda theo từng khung giờ và mu mỗi nhân viên."
+      - "Đặt mục tiêu chờ Wq cho từng khung (ví dụ <= 1 phút)."
+      - "Với mỗi khung tăng c từ ceil(lambda/mu)+1: tính Pw, Wq (đổi ra phút)."
+      - "Chọn c nhỏ nhất đạt chuẩn; tính giờ công và chi phí so với lịch cố định."
+      - "Cân nhắc tác động ca ngắn/chia nhỏ tới tuyển dụng và giữ chân nhân viên."
+    outputs: "Lịch nhân sự theo giờ và tiết kiệm giờ công (ví dụ 30 giờ/ngày = 900,000 VNĐ/ngày trong mô hình giả định)."
+  - id: "m05_proc_outsource_vs_invest_by_duration"
+    name: "Tự đầu tư hay thầu phụ theo thời gian kéo dài của đơn hàng (case xưởng may)"
+    steps:
+      - "Tính khoảng thiếu = nhu cầu - năng lực hiện tại (áo/ngày, x 26 ngày/tháng)."
+      - "Lập 3 phương án: X thầu phụ toàn bộ, Y hỗn hợp, Z tự may toàn bộ; tính lợi nhuận góp từng phương án."
+      - "NPV mỗi phương án theo số tháng đơn hàng kéo dài (chiết khấu 1%/tháng, thu hồi 40% đầu tư cuối kỳ)."
+      - "Tìm điểm giao (Y vượt X và Z vượt Y từ tháng 20); xét giới hạn vốn."
+      - "Đàm phán cam kết (take-or-pay, đặt cọc) trước khi đầu tư; giả định ramp-up 2-3 tháng."
+    outputs: "Khuyến nghị theo thời gian đơn hàng, không theo quy mô đơn hàng."
+
+decision_rules:
+  - "Nếu Hiệu suất < 85% hoặc còn dư địa giữa sản lượng thực tế và năng lực hiệu quả thì cải tiến vận hành trước; chỉ đầu tư thêm khi nhu cầu thực sự vượt năng lực hiệu quả."
+  - "Nếu một công đoạn là nút thắt thì chỉ đầu tư vào đó; sau khi nâng phải tính lại năng lực hệ thống = min các công đoạn mới (nút thắt dịch chuyển)."
+  - "Nếu điểm hòa vốn nằm trên khoảng 70-80% năng lực mới (biên an toàn < ~15-20%) thì xem là dự án rủi ro cao; cần đơn hàng cam kết hoặc phương án linh hoạt."
+  - "Nếu rho (lambda/(c x mu)) >= 1 thì hệ thống sụp đổ, phải tăng c hoặc giảm lambda; nếu rho > 85% thì hành động ngay (tăng năng lực hoặc điều tiết nhu cầu)."
+  - "Nếu cần đạt mục tiêu chờ trong dịch vụ thì tăng số quầy c từ mức ổn định đến khi Wq (Erlang C) đạt chuẩn rồi dừng; không tối đa hóa số quầy vì hiệu ích biên giảm dần."
+  - "Nếu nhu cầu dịch vụ có đỉnh/đáy theo giờ thì xếp ca linh hoạt theo từng khung (cao điểm nhiều người, thấp điểm ít) thay vì lịch cố định; cân nhắc giữ chân nhân viên."
+  - "Nếu có thể điều tiết nhu cầu (đặt lịch hẹn, giá theo giờ) hoặc mua năng lực linh hoạt (nhân sự bán thời gian) thì làm trước khi đầu tư năng lực vật lý."
+  - "Nếu nhu cầu mùa vụ cực đoan thì kết hợp Lead (nền tảng cố định, tự động hóa) với Chase (lao động thời vụ); Level đắt hơn Chase khi phải trả lương người nhàn rỗi quá lâu (550 vs 210 tỷ trong mô hình Amazon giả định)."
+  - "Nếu hàng dễ hỏng/lỗi thời (chi phí lưu kho cao) thì Level kém hấp dẫn, nghiêng về Mixed/Chase; nếu chi phí tuyển/sa thải cao thì tránh Chase thuần."
+  - "Nếu khối lượng dự báo bền vững > Q* = FC_own/(VC_out - VC_own) thì tự đầu tư; nếu dưới Q* hoặc rất bất định thì thuê ngoài."
+  - "Nếu đơn hàng lớn chỉ kéo dài ngắn (ví dụ 4 tháng) thì thầu phụ thắng; điểm giao tự đầu tư trong case xưởng may là khoảng tháng 20 - quyết định theo thời gian đơn hàng kéo dài, không theo quy mô."
+  - "Nếu hai phương án có EMV gần nhau (chênh nhỏ) mà một phương án có kịch bản lỗ lớn thì chọn phương án không lỗ hoặc ít lỗ; luôn báo cáo NPV xấu nhất và P(NPV<0)."
+  - "Nếu chi phí chờ (mất lợi nhuận góp khi thuê ngoài) nhỏ hơn giá trị thông tin thì chọn phương án chờ-quan-sát (real option) với trigger mua rõ ràng (ví dụ hai quý liên tiếp vượt 8,500 kg/tháng hoặc có hợp đồng sản lượng tối thiểu)."
+  - "Nếu thị trường tăng trưởng ổn định, dự báo tin cậy, đối thủ mở rộng nhanh thì Lead; nếu không có đối thủ mở rộng thì Match; nếu biến động cao thì Lag/Match kèm thuê ngoài."
+  - "Nếu mở rộng nhanh với nhân viên/chuyền mới thì giả định ramp-up 2-3 tháng (learning curve) trong kế hoạch giao hàng, không dùng năng lực thiết kế ngay."
+  - "Nếu cam kết dài hạn tài sản đắt thì đàm phán điều khoản hủy/hoãn, thuê ngắn hạn và stress test điểm hòa vốn (hạ hòa vốn từ 72.7% xuống 57.1% trong ví dụ hàng không)."
+  - "Nếu tăng trưởng nhu cầu 20-30%/năm thì dự phóng lambda theo năm (ví dụ 18 x 1.44 = 25.9 > năng lực c = 4) và chuẩn bị bước năng lực kế tiếp trước khi quá tải."
+  - "Nếu line balancing cho N_min lý thuyết nhưng không chia được theo thứ tự công việc thì dùng N_min + 1 hoặc chia nhỏ công việc dài nhất / thêm công nhân ở trạm đó."
+
+benchmarks:
+  - {metric: "Hiệu suất (Efficiency) mục tiêu", value: "> 85%", context: "KPI năng lực trong PHỤ LỤC nguồn; ví dụ xưởng 88.2%", confidence: "medium"}
+  - {metric: "Mức sử dụng (Utilization) mục tiêu", value: "75-90% (tránh 100% liên tục)", context: "KPI năng lực nguồn; sai lầm thường gặp ghi 75-90% tùy ngành", confidence: "medium"}
+  - {metric: "Thời gian ngừng máy (Downtime)", value: "< 10% tổng thời gian vận hành", context: "KPI nguồn", confidence: "medium"}
+  - {metric: "Điểm hòa vốn so với năng lực", value: "dưới khoảng 60-70% năng lực", context: "Quy tắc kinh nghiệm nguồn; hòa vốn 80% là rủi ro cao với SME", confidence: "medium"}
+  - {metric: "Năng lực hiệu quả / thiết kế", value: "85% (ví dụ minh họa)", context: "Giả định cho dây chuyền ví dụ và case Đất Đỏ", confidence: "low"}
+  - {metric: "rho cảnh báo", value: "> 85% là lúc cần hành động; 85-90% chờ tăng rất mạnh", context: "M/M/1 và case phòng khám", confidence: "medium"}
+  - {metric: "Capacity Cushion - bệnh viện/cấp cứu", value: "30-40% (ước tính)", context: "Bảng tham khảo nguồn", confidence: "low"}
+  - {metric: "Capacity Cushion - hàng tiêu dùng ổn định", value: "10-15% (ước tính)", context: "Bảng tham khảo nguồn", confidence: "low"}
+  - {metric: "Capacity Cushion - data center", value: "20-30% (ước tính)", context: "Bảng tham khảo nguồn", confidence: "low"}
+  - {metric: "Capacity Cushion - thời trang/theo mùa", value: "25-35% (ước tính)", context: "Bảng tham khảo nguồn", confidence: "low"}
+  - {metric: "Ramp-up người/chuyền mới", value: "3-6 tháng đầu năng lực thấp hơn thiết kế (xưởng may giả định 2-3 tháng)", context: "Learning curve", confidence: "low"}
+  - {metric: "Mục tiêu thời gian chờ dịch vụ ví dụ", value: "Wq <= 1 phút (đồ uống); khách chờ 2-3 giờ ở phòng khám là quá tải", context: "Ví dụ giả định minh họa", confidence: "low"}
+  - {metric: "Chi phí hoạt động hoạch định theo giai đoạn SME", value: "Khởi nghiệp 0-50 triệu; tăng trưởng 200 triệu-2 tỷ; mở rộng 5-30 tỷ; DN lớn 50 tỷ đến hàng nghìn tỷ VNĐ", context: "Khoảng tham khảo thay đổi theo ngành (nguồn)", confidence: "low"}
+  - {metric: "Phần mềm mô phỏng Arena, Simul8", value: "50-200 triệu/license (ước tính)", context: "Cần kiểm tra báo giá hiện hành", confidence: "low"}
+
+pitfalls:
+  - "Chỉ dựa vào dự báo lạc quan để đầu tư: xây best/base/worst, tính EMV và NPV xấu nhất."
+  - "Không xác định đúng nút thắt: đầu tư sai chỗ, sản lượng không tăng."
+  - "Vận hành 100% công suất liên tục: thời gian chờ tăng vọt, không buffer cho sự cố; giữ 75-90% tùy ngành."
+  - "Bỏ qua ramp-up khi mở rộng: tính learning curve vào kế hoạch."
+  - "Không có kế hoạch dự phòng khi cam kết dài hạn (bài học COVID-19): đàm phán điều khoản linh hoạt, kịch bản ứng phó rủi ro."
+  - "Đầu tư vì một đơn hàng lớn duy nhất: đơn 4 tháng, đầu tư lỗ 635 triệu; tính điểm giao theo số tháng đơn hàng kéo dài và yêu cầu cam kết."
+  - "Chỉ nhìn EMV, bỏ qua kịch bản xấu: luôn báo cáo kịch bản xấu nhất và xác suất lỗ."
+  - "Quên nút thắt dịch chuyển sau khi nâng cấp: tính lại năng lực toàn hệ thống."
+  - "Đánh đồng năng lực trung bình bằng nhu cầu trung bình là đủ: hàng đợi vẫn sụp đổ khi rho = 1."
+  - "Dùng break-even tĩnh cho quyết định lớn mà không kèm NPV/dòng tiền chiết khấu."
+  - "Nhầm thời gian chờ tăng 'theo cấp số mũ': đúng là hyperbol (tiến ra vô cực khi rho -> 1), nhưng hệ quả thực tế như nhau."
+  - "Chase thuần mà quên chi phí ẩn (tinh thần, đào tạo, đường cong học tập)."
+  - "Thuê ngoài mà không kiểm soát chất lượng/SLA (hương vị là tài sản thương hiệu) và chuyển được chi phí nhưng không chuyển được trách nhiệm với khách hàng cuối."
+  - "Dùng số liệu 'giả định minh họa' của nguồn như số thật của Amazon, Highlands, FPT Software, hãng hàng không."
+
+sme_vn_guidance:
+  - "SME thường chọn Match/Lag do hạn chế vốn; chỉ Lead khi có cam kết đơn hàng dài hạn rõ ràng (hợp đồng take-or-pay/đặt cọc)."
+  - "Công cụ rẻ: Excel/Google Sheets cho break-even, hàng đợi, NPV, Monte Carlo 1,000 dòng (miễn phí); Google Sheets + Power BI theo dõi KPI (miễn phí - vài triệu/tháng); Arena, Simul8 ước 50-200 triệu/license; SAP APO/IBP, Oracle Demantra hàng tỷ/năm cho DN lớn (ước tính, cần kiểm tra báo giá hiện hành)."
+  - "Thuê ngoài/gia công và năng lực linh hoạt phù hợp SME: gia công rang, thầu phụ may, cloud kitchen, fulfillment bên thứ ba (Amazon FBA là mô hình tham chiếu), lao động tự do/bán thời gian giờ cao điểm; hợp đồng cần SLA, chất lượng, điều khoản hủy/hoãn."
+  - "Giai đoạn khởi nghiệp: ước lượng thủ công, thuê ngoài linh hoạt (0-50 triệu); tăng trưởng: máy móc/nhân sự cơ bản theo Match (200 triệu - 2 tỷ); mở rộng: cơ sở mới, tự động hóa một phần (5-30 tỷ) - khoảng tham khảo thay đổi theo ngành, cần xác nhận."
+  - "Phòng khám/quán dịch vụ: dùng đặt lịch hẹn và nhân sự bán thời gian giờ cao điểm trước khi mở rộng cơ sở; theo dõi lambda theo giờ và tăng trưởng 20%/năm."
+  - "Xưởng sản xuất nhỏ: đàm phán cam kết sản lượng tối thiểu (take-or-pay) hoặc đặt cọc trước khi mua máy; xây SOP, đào tạo, kèm cặp để rút ngắn ramp-up."
+  - "Khả năng vay vốn giới hạn (ví dụ giả định xưởng may chỉ vay 2-2.5 tỷ) là ràng buộc thực: so sánh phương án trong giới hạn vốn, tính tác động dòng tiền với bộ phận tài chính."
+  - "Thuế, khấu hao, lãi vay, giá máy móc và chi phí nhân công thực tế cần xác nhận theo quy định/báo giá hiện hành; các số trong module là giả định minh họa."
+  - "SME ưu tiên: đo năng lực thật -> hòa vốn đơn giản -> Match/Lag -> thuê ngoài như quyền chọn chờ đợi -> công cụ mô phỏng khi đủ lớn (lộ trình 5 bước của nguồn)."
+
+case_lessons:
+  - name: "Amazon - năng lực kho vận mùa cao điểm"
+    type: "success"
+    setup: "Nhu cầu tăng nhiều lần vào mùa cuối năm (theo mô tả công khai); Amazon kết hợp Lead (xây trung tâm fulfillment trước mùa), Chase cho lao động thời vụ 2-3 tháng, và tự động hóa bằng robot (Kiva, mua lại 2012, theo nguồn). Phần tính toán dùng trung tâm giả định, KHÔNG phải số liệu Amazon."
+    key_calculations:
+      - "Nhân sự ngày thường 100,000/100 = 1,000; cao điểm 500,000/100 = 5,000; cần thêm 4,000 người"
+      - "Level (thuê cố định cả năm, nhàn rỗi 275 ngày): 4,000 x 500,000 x 275 = 550 tỷ VNĐ"
+      - "Chase 90 ngày: 4,000 x (550,000 x 90 + 3,000,000) = 210 tỷ VNĐ"
+      - "Chase + robot (160 đơn/người/ngày): thêm 2,500 người x 52,500,000 = 131.25 tỷ; tiết kiệm 78.75 tỷ/mùa"
+    lesson: "Không có chiến lược thuần cho nhu cầu cực đoan: kết hợp Lead (nền tảng, tự động hóa) và năng lực linh hoạt (Chase). Level đắt gấp 2.6 lần Chase; Chase có chi phí ẩn (chất lượng, an toàn, đào tạo) nên cần tự động hóa; robot chỉ đáng khi tiết kiệm bù được đầu tư trong vài mùa."
+    data_reliability: "illustrative"
+  - name: "Highlands Coffee - xếp ca theo giờ cao/thấp điểm"
+    type: "success"
+    setup: "Chuỗi dùng dữ liệu lượng khách theo khung giờ để xếp ca linh hoạt (định tính). Mô hình giả định một cửa hàng 16 giờ/ngày (6 giờ cao điểm lambda = 120, 10 giờ thấp điểm lambda = 45), mu = 30 khách/giờ/người, 30,000 VNĐ/giờ, mục tiêu Wq <= 1 phút. KHÔNG phải dữ liệu nội bộ Highlands."
+    key_calculations:
+      - "Cao điểm: c = 4 rho 100% sụp đổ; c = 5 Wq 1.11 phút (không đạt); c = 6 Wq 0.28 phút (đạt)"
+      - "Thấp điểm: c = 2 Wq 2.57 phút (không đạt); c = 3 Wq 0.32 phút (đạt); c = 4 dư"
+      - "Lịch cố định 6 người x 16 giờ = 96 giờ = 2,880,000 VNĐ; linh hoạt 6 x 6 + 3 x 10 = 66 giờ = 1,980,000 VNĐ"
+      - "Tiết kiệm 30 giờ x 30,000 = 900,000 VNĐ/ngày (328.5 triệu/năm/cửa hàng, 31% giờ công)"
+    lesson: "Với dịch vụ không lưu kho năng lực, đồ thị nhu cầu theo giờ là đầu vào của bài toán: đo lambda theo khung, đặt mục tiêu chờ, dùng Erlang C tìm c nhỏ nhất. Lịch 4 người cố định rẻ nhất nhưng sụp đổ ở cao điểm. Cân nhắc ảnh hưởng ca ngắn tới tuyển dụng và giữ chân."
+    data_reliability: "illustrative"
+  - name: "Xưởng may gia công Bình Dương - mở rộng năng lực"
+    type: "sme"
+    setup: "Xưởng 150 công nhân, 10 áo/người/ngày = 1,500 áo/ngày, 26 ngày/tháng; khách đặt 3,000 áo/ngày trong 4 tháng đầu, có thể ký thêm 24 tháng (chưa chắc). P = 50,000; VC tự may 40,000 (góp 10,000); VC thầu phụ 48,000 (góp 2,000); đầu tư cho 60 công nhân + máy 2,000 triệu, thu hồi 40%; FC thêm 50 triệu/tháng; chiết khấu 1%/tháng. Giả định minh họa (đã viết lại đơn hàng gấp 2 lần để số nhất quán)."
+    key_calculations:
+      - "Thiếu 1,500 áo/ngày = 39,000 áo/tháng"
+      - "X (thầu phụ toàn bộ): 39,000 x 2,000 = 78.0 triệu/tháng"
+      - "Y (tự may 15,600 + thầu phụ 23,400): 15,600 x 10,000 - 50 triệu = 106.0; 23,400 x 2,000 = 46.8; tổng 152.8 triệu/tháng"
+      - "Z (tự may hết): 39,000 x 10,000 - 125 triệu = 265.0 triệu/tháng; vốn 5,000 triệu"
+      - "Hòa vốn phần tự may của Y: 50 triệu/10,000 = 5,000 áo/tháng (192 áo/ngày, 32% năng lực); hoàn vốn giản đơn 2,000/106 = 18.9 tháng"
+      - "NPV 4 tháng: X 304.4, Y -635.0, Z -2,044.0; 12 tháng: 877.9, 429.7, -242.5; 24 tháng: 1,657.0, 1,876.0, 2,204.6; 36 tháng: 2,348.4, 3,159.6, 4,376.3; 48 tháng: 2,962.0, 4,298.6, 6,303.6 (triệu VNĐ)"
+    lesson: "Quyết định tự đầu tư hay thầu phụ phụ thuộc thời gian kéo dài của nhu cầu (điểm giao khoảng 20 tháng), không phải quy mô đơn hàng. Đơn 4 tháng: thầu phụ thắng, mua máy lỗ 635 triệu. Z thắng về lâu dài nhưng vượt giới hạn vốn; Y là Match trong giới hạn vốn. Lợi thế Y so với X ở 24 tháng chỉ 219 triệu nên cần cam kết (take-or-pay/đặt cọc). Giả định ramp-up 2-3 tháng cho công nhân mới."
+    data_reliability: "illustrative"
+  - name: "Ngành hàng không - Lead quá mức trước COVID-19"
+    type: "failure"
+    setup: "Nhiều hãng mở rộng đội bay mạnh 2015-2019 theo dự báo tăng trưởng du lịch; COVID-19 năm 2020 làm nhu cầu giảm đột ngột (theo nhiều báo cáo công khai có lúc hơn 90%) trong khi cam kết thuê/mua máy bay dài hạn. Mô hình hãng giả định đơn vị tương đối: doanh thu 1,000; FC 400; VC 450; lợi nhuận 150. KHÔNG phải số liệu một hãng cụ thể."
+    key_calculations:
+      - "Nhu cầu giảm 90%: doanh thu 100, VC 45: 100 - 400 - 45 = -345"
+      - "Doanh thu hòa vốn cứng: 400/(1 - 0.45) = 727.3 (72.7% doanh thu bình thường)"
+      - "Cấu trúc linh hoạt (200 cố định + 200 cắt được): giảm 90% còn 100 - 45 - 20 - 200 = -165 (48% mức lỗ cứng)"
+      - "Hòa vốn linh hoạt: 200/(1 - 0.45 - 0.20) = 571.4 (57.1%)"
+    lesson: "Đòn bẩy hoạt động cao khuếch đại lỗ khi gián đoạn (black swan). Dùng kịch bản (scenario planning), stress test điểm hòa vốn và giữ linh hoạt hợp đồng dài hạn (điều khoản hủy/hoãn, thuê ngắn hạn)."
+    data_reliability: "illustrative"
+  - name: "Phòng khám tư nhân TP.HCM - mở rộng năng lực khám"
+    type: "sme"
+    setup: "Lượng bệnh nhân tăng 20%/năm, cuối tuần quá tải, chờ 2-3 giờ. Giả định: ca sáng 8 giờ, mu = 6 bệnh nhân/giờ/bác sĩ, 3 bác sĩ, lambda = 22/giờ (đến không hẹn)."
+    key_calculations:
+      - "Năng lực 3 x 6 = 18/giờ; rho = 22/18 = 1.22 (không ổn định); tồn 4/giờ x 8 = 32 bệnh nhân; chờ 32/18 = 1.78 giờ (~107 phút)"
+      - "Thêm bác sĩ (c = 4): rho 91.7%, Pw 82.2%, Wq 24.7 phút"
+      - "Thêm bác sĩ + đặt lịch (lambda đỉnh 22 -> 18): rho 75%, Pw 50.9%, Wq 5.1 phút"
+      - "Mở rộng c = 5, lambda 22: rho 73.3%, Wq 3.2 phút (chỉ tốt hơn ~2 phút so với kết hợp nhưng vốn lớn)"
+      - "Tăng trưởng 20%/năm: sau 2 năm lambda ≈ 18 x 1.44 = 25.9 > 24 (năng lực c = 4)"
+    lesson: "Trước khi đầu tư năng lực vật lý hãy điều tiết nhu cầu (đặt lịch, giá theo khung giờ) và mua năng lực linh hoạt (bác sĩ bán thời gian). Dùng rho để phát hiện hệ thống sắp vỡ (rho > 85%) và chuẩn bị bước tăng năng lực tiếp theo vì tăng trưởng 20%/năm."
+    data_reliability: "illustrative"
+  - name: "FPT Software - năng lực nhân sự công nghệ (bench)"
+    type: "success"
+    setup: "Phần định tính theo mô tả chung: bench làm vùng đệm, đào tạo nội bộ (FPT University, FPT Academy), mạng lưới đối tác/freelancer, dự báo nhân sự theo pipeline hợp đồng. Số liệu: 6,000 kỹ sư, 25 triệu VNĐ/kỹ sư/tháng, utilization mục tiêu 82% - giả định minh họa, không phải số nội bộ."
+    key_calculations:
+      - "Billable 6,000 x 82% = 4,920; bench 18% = 1,080 người"
+      - "Mỗi 1 điểm % utilization = 60 người chuyển từ bench sang billable = 60 x 25 triệu x 12 = 18 tỷ VNĐ/năm"
+    lesson: "Bench 18% là bảo hiểm để nhận dự án gấp mà không tuyển ồ ạt; đào tạo chéo tăng utilization an toàn; đẩy utilization > 90% làm mất khả năng đáp ứng và kiệt sức nhân sự. Ba đòn bẩy tương ứng sản xuất: cushion = safety stock, đào tạo = rút ngắn ramp-up, đối tác = thuê ngoài."
+    data_reliability: "illustrative"
+  - name: "Cà phê rang xay Đất Đỏ (SME mới) - máy rang: mua, thuê hay chờ"
+    type: "sme"
+    setup: "Xưởng rang xay Đắk Lắk, 1 ca 8 giờ, 26 ngày/tháng (208 giờ), sản lượng 7,000 kg/tháng. Công đoạn: sàng 120, rang 45, xay 90, đóng gói 60, dán nhãn 100 kg/giờ; hiệu quả 85% thiết kế. Giá 220,000, VC 180,000 (góp 40,000/kg). Máy rang mới +20 kg/giờ, 480 triệu, khấu hao 5 năm, FC thêm 90 triệu/năm; chiết khấu 12%/năm, 5 năm. Nhu cầu 10,000 (0.3) / 8,800 (0.5) / 7,500 (0.2). Toàn bộ giả định minh họa."
+    key_calculations:
+      - "Năng lực thiết kế = rang 45 x 208 = 9,360; hiệu quả 7,956; Hiệu suất 7,000/7,956 = 88.0%; Mức sử dụng 7,000/9,360 = 74.8%"
+      - "Khoảng thiếu: Cao 2,044; Trung bình 844; Thấp 0 kg/tháng"
+      - "Thêm máy rang: rang 65, nút thắt mới là đóng gói 60 x 208 = 12,480 (+33%); hiệu quả 10,608"
+      - "Hòa vốn kế toán: (90 + 96)/40,000 = 4,650 kg/năm (387.5 kg/tháng); hòa vốn tiền mặt 2,250 kg/năm"
+      - "NPV A: +2,732.3 / +655.9 / -804.4; EMV(A) = 986.8; NPV B: 1,768.4 / 730.2 / 0; EMV(B) = 895.6; EMV(C) = 0"
+      - "Phương án D (thuê ngoài năm 1 rồi quyết): Cao 2,426.1, Trung bình 606.9, Thấp 0; EMV(D) = 1,031.3, xấu nhất 0"
+      - "Monte Carlo (tam giác 7,000/8,800/11,000, 10,000 lần): A trung bình 951 triệu, P(NPV<0) = 27.7%, p5 = -804; B trung bình 878 triệu, 0%"
+    lesson: "Đừng mua máy vì 'gần quá tải'. A có EMV cao hơn B 91 triệu nhưng 20% khả năng lỗ 804 triệu (~28% trong mô phỏng). D (thuê ngoài rồi quyết) thắng cả kỳ vọng lẫn rủi ro vì chi phí chờ nhỏ hơn giá trị thông tin (real option). Trigger mua máy: hai quý liên tiếp nhu cầu vượt 8,500 kg/tháng hoặc có hợp đồng sản lượng tối thiểu; kiểm soát chất lượng/SLA với xưởng gia công; lập kế hoạch nâng cấp đóng gói (nút thắt tiếp theo)."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Ba loại năng lực, Hiệu suất, Mức sử dụng (dây chuyền 1,000/850/750)"
+    inputs: {design: 1000, effective: 850, actual: 750}
+    steps: ["Năng lực hiệu quả/thiết kế = 850/1,000 = 85%", "Hiệu suất = 750/850 = 88.2%", "Mức sử dụng = 750/1,000 = 75.0%", "Diễn giải: vận hành tốt nhưng chỉ khai thác 75% tài sản; kiểm tra bán thêm 100 sp/ngày (đến 850) không cần vốn trước khi mua dây chuyền mới"]
+    result: "Hiệu suất 88.2%; Mức sử dụng 75.0%; dư địa 100 sản phẩm/ngày ở mức hiệu quả"
+  - name: "Điểm hòa vốn lò nướng (giả định minh họa)"
+    inputs: {fc: 360000000, price: 120000, vc: 70000, capacity: 9000, demand: 8400}
+    steps: ["P - VC = 50,000", "Q* = 360,000,000/50,000 = 7,200 đv/năm", "% công suất tại hòa vốn = 7,200/9,000 = 80% (rủi ro cao)", "Biên an toàn = 1,200/8,400 = 14.3%", "Lợi nhuận tại 8,400 = 1,200 x 50,000 = 60 triệu/năm"]
+    result: "Q* = 7,200; hòa vốn ở 80% công suất; lợi nhuận 60 triệu/năm"
+  - name: "M/M/1 quầy thu ngân và bảng phi tuyến"
+    inputs: {lam: 30, mu: 40}
+    steps: ["rho = 0.75", "Wq = 30/(40 x 10) = 0.075 giờ = 4.5 phút; Lq = 2.25; W = 6 phút", "lambda = 38: rho 95%, Wq = 38/(40 x 2) = 0.475 giờ = 28.5 phút (nhu cầu +27%, chờ gấp 6.3 lần)", "lambda = 39: Wq = 39/(40 x 1) = 58.5 phút"]
+    result: "Wq = 4.5 phút ở rho 75%; 28.5 phút ở rho 95%"
+  - name: "Số nhân viên pha chế giờ cao điểm (Erlang C)"
+    inputs: {lam: 120, mu: 30}
+    steps: ["a = 4 Erlang; c = 4: rho = 1 không ổn định", "c = 5: Pw = 55.4%, Wq = 0.554/30 giờ = 1.11 phút (không đạt mục tiêu 1 phút)", "c = 6: Pw = 28.5%, Wq = 0.28 phút (đạt)", "c = 7: Wq = 0.09 phút (dư)"]
+    result: "Chọn c = 6"
+  - name: "Đường cong học tập 90%"
+    inputs: {t1: 10, r: 0.9}
+    steps: ["b = log2(0.9) = -0.1520", "T2 = 9.00; T4 = 8.10; T8 = 7.29; T50 = 5.52; T100 = 4.97 giờ", "Tổng 50 đơn vị = 321.4 giờ; 100 đơn vị = 581.4 giờ (không phải 1,000)"]
+    result: "Đơn vị thứ 100 mất ~một nửa đơn vị đầu; 100 đơn vị cần 581.4 giờ"
+  - name: "Cân bằng chuyền 8 công việc"
+    inputs: {task_times: [0.8, 0.6, 0.9, 0.5, 0.7, 1.1, 0.6, 0.4], available: 480, required: 200}
+    steps: ["Tổng = 5.6 phút; C = 480/200 = 2.4; N_min = ceil(2.333) = 3", "Chia tham lam: T1 = 2.3, T2 = 2.3, T3 = 1.0 -> 5.6/(3 x 2.4) = 77.8%", "Chia cân hơn: 1.4 / 2.1 / 2.1 -> 5.6/(3 x 2.1) = 88.9%; sản lượng tối đa 480/2.1 = 228.6", "Yêu cầu 240/ngày: C = 2.0, N_min = 3 nhưng thực tế 4 trạm (1.4/1.4/1.8/1.0) -> 5.6/(4 x 2.0) = 70%"]
+    result: "3 trạm hiệu suất 88.9% (yêu cầu 200); 4 trạm hiệu suất 70% (yêu cầu 240)"
+  - name: "Aggregate Planning Chase vs Level vs Mixed"
+    inputs: {demand: [400, 500, 700, 900, 800, 600]}
+    steps: ["Chase: tuyển 25 x 4 + sa thải 15 x 3 = 145 triệu + 195 triệu sản xuất = 340 triệu", "Level 650/tháng: tồn kho cuối tháng 350, 500, 450, 200, 50, 100 = 1,650 đv-tháng x 2,000 = 3.3 triệu; tổng 198.3 triệu", "Mixed 600 + tăng ca 200 ở T5: 180 + 15 + 2 = 197 triệu (tồn 300, 400, 300, 0, 0, 0)", "Nếu lưu kho 20,000/đv/tháng: Level 228, Mixed 215, Chase 340"]
+    result: "Rẻ nhất: Mixed (197 triệu; 215 triệu khi lưu kho đắt)"
+  - name: "Tự làm hay thuê ngoài"
+    inputs: {fc_own: 480000000, vc_own: 40000, vc_out: 52000}
+    steps: ["Q* = 480,000,000/12,000 = 40,000 đv/năm", "30,000 đv: tự làm 480 + 1,200 = 1,680 triệu; thuê 1,560 triệu (rẻ hơn 120)", "50,000 đv: tự làm 480 + 2,000 = 2,480 triệu; thuê 2,600 triệu (tự làm rẻ hơn 120)"]
+    result: "Tự đầu tư khi khối lượng bền vững > 40,000 đv/năm"
+  - name: "Cây quyết định EMV đơn giản (mua máy vs thuê ngoài)"
+    inputs: {probs: [0.4, 0.6], A: [600, -200], B: [250, 50]}
+    steps: ["EMV(A) = 0.4 x 600 + 0.6 x (-200) = 120", "EMV(B) = 0.4 x 250 + 0.6 x 50 = 130", "B cao hơn và không có kịch bản lỗ"]
+    result: "Chọn B (thuê ngoài)"
+  - name: "Cây quyết định NPV và phương án chờ - Đất Đỏ"
+    inputs: {probs: [0.3, 0.5, 0.2], extra_kg_per_year: [24528, 10128, 0], r: 0.12, n: 5, capex: 480}
+    steps: ["Hệ số niên kim 5 năm 12% = 3.6048", "A: Cao 891.1 x 3.6048 - 480 = 2,732.3; TB 315.1 x 3.6048 - 480 = 655.9; Thấp -90 x 3.6048 - 480 = -804.4; EMV = 986.8", "B: Cao 490.6 x 3.6048 = 1,768.4; TB 202.6 x 3.6048 = 730.2; Thấp 0; EMV = 895.6", "D: Cao 2,426.1; TB 606.9; Thấp 0; EMV = 1,031.3"]
+    result: "D (thuê ngoài rồi quyết) tốt nhất: EMV 1,031.3 triệu, NPV xấu nhất 0"
+  - name: "Phòng khám: số bác sĩ và đặt lịch"
+    inputs: {mu: 6, c: 3, lam: 22}
+    steps: ["rho = 22/18 = 1.22; tồn 4/giờ x 8 = 32 bệnh nhân; chờ 32/18 = 1.78 giờ", "c = 4, lambda = 22: Pw 82.2%, Wq 24.7 phút", "c = 4, lambda = 18: Pw 50.9%, Wq 5.1 phút", "c = 5, lambda = 22: Wq 3.2 phút"]
+    result: "Đặt lịch + 1 bác sĩ đưa chờ từ ~107 phút xuống 5.1 phút"
+  - name: "Hàng không: stress test hòa vốn"
+    inputs: {fc: 400, v_ratio: 0.45}
+    steps: ["Cứng: 400/0.55 = 727.3 (72.7%)", "Linh hoạt (FC 200, f 0.20): 200/0.35 = 571.4 (57.1%)", "Doanh thu 100: -345 vs -165"]
+    result: "Linh hoạt giảm lỗ còn 48% và hạ hòa vốn 15.6 điểm %"
+
+practice_questions:
+  - q: "Xưởng bánh: thiết kế 1,500, hiệu quả 1,200, thực tế 1,000 bánh/ngày. Tính Hiệu suất, Mức sử dụng; nên cải tiến vận hành hay mua thêm lò?"
+    a: "Hiệu suất 83.3%, Mức sử dụng 66.7%, hiệu quả/thiết kế 80%; còn dư 200 bánh/ngày ở mức hiệu quả nên cải thiện vận hành (lên ~90%+) trước khi đầu tư."
+  - q: "FC 600 triệu/năm, giá 150,000, VC 90,000, năng lực mới 15,000 đv/năm, dự báo bán thêm 13,000. Tính Q*, % công suất tại hòa vốn, lợi nhuận."
+    a: "Q* = 10,000 đv/năm (833/tháng); 66.7% công suất; lợi nhuận (13,000 - 10,000) x 60,000 = 180 triệu/năm."
+  - q: "Quầy tư vấn lambda = 24, mu = 30. Tính rho, Wq, Lq, W; nếu lambda = 28 thì Wq?"
+    a: "rho 0.8; Wq 8 phút; Lq 3.2; W 10 phút. lambda = 28: Wq = 28/(30 x 2) = 0.467 giờ = 28 phút (nhu cầu +17%, chờ gấp 3.5 lần)."
+  - q: "Quán lambda = 90/giờ, mu = 30/giờ/nhân viên. Cần bao nhiêu nhân viên để Wq <= 1 phút?"
+    a: "c = 3: rho = 1 (không ổn định). c = 4: Pw 50.9%, Wq 1.02 phút (hơi vượt). c = 5: Pw 23.6%, Wq 0.24 phút. Chọn c = 5 (hoặc 4 nếu chấp nhận 1.02 phút)."
+  - q: "So sánh Lead/Lag/Match cho một tình huống (quán mở chi nhánh, xưởng nhận đơn mới) theo CAPEX, rủi ro nhàn rỗi, chi phí cơ hội."
+    a: "Dùng bảng 2.13.1; SME ít vốn và nhu cầu bất định thường chọn Match/Lag; chứng minh bằng EMV ba kịch bản."
+  - q: "Quy trình 4 công đoạn 80, 50, 70, 90 sp/giờ, 8 giờ/ngày, hiệu quả 85%. Nút thắt? Nếu nâng công đoạn 2 lên 75?"
+    a: "Nút thắt công đoạn 2: thiết kế 50 x 8 = 400, hiệu quả 340 sp/ngày. Nâng lên 75: nút thắt chuyển sang công đoạn 3 (70) -> thiết kế 560 (+40%, không phải +50%)."
+  - q: "Aggregate Planning mục 2.7 với lưu kho 20,000 VNĐ/đv/tháng: phương án nào rẻ nhất?"
+    a: "Chase 340 triệu; Level 195 + 33 = 228; Mixed 180 + 15 + 20 = 215 -> Mixed rẻ nhất."
+  - q: "T1 = 20 giờ, tỷ lệ học tập 85%. Thời gian đơn vị thứ 50 và 100?"
+    a: "b = log2(0.85) = -0.2345; T50 = 7.99 giờ; T100 = 6.79 giờ (bằng 85% của T50)."
+  - q: "Hàng không: tính doanh thu hòa vốn khi FC = 400, VC = 45% doanh thu; nếu chuyển một nửa FC thành linh hoạt (tương đương 20% doanh thu bình thường)?"
+    a: "727.3 (72.7%); linh hoạt: 200/(1 - 0.45 - 0.20) = 571.4 (57.1%); doanh thu còn 100: lỗ -345 và -165."
+  - q: "Quán trà sữa lambda cao điểm 60, thấp điểm 20, mu = 20/người; mục tiêu Wq <= 1.6 phút cao điểm, <= 1 phút thấp điểm. Cần mấy người?"
+    a: "Cao điểm: c = 3 rho = 1 (loại); c = 4 Wq 1.53 phút (đạt); c = 5 0.35. Thấp điểm: c = 2 Wq 1.0 phút (đúng ngưỡng); c = 3 0.14. Lịch gợi ý 4 người cao điểm, 2 người thấp điểm."
+  - q: "FC_own = 480 triệu, VC_own = 40,000, VC_out = 52,000. Q*? So chi phí tại 30,000 và 50,000 đv/năm."
+    a: "Q* = 40,000. Tại 30,000: tự làm 1,680 vs thuê 1,560 triệu (thuê rẻ hơn 120). Tại 50,000: 2,480 vs 2,600 (tự làm rẻ hơn 120)."
+  - q: "Nhà máy bao bì ổn định mức sử dụng 92%. So với mức tham khảo 10-15%; cần tăng năng lực bao nhiêu để về 90% hoặc 85%?"
+    a: "Cushion = 8% < 10-15%. Về 90%: +2.2%; về 85%: +8.2% so với năng lực hiện có."
+  - q: "Tính EMV hai phương án mục 2.10 và ước lượng P(NPV<0) mua máy bằng Monte Carlo 1,000 dòng với số liệu Đất Đỏ."
+    a: "EMV(A) = 120; EMV(B) = 130 -> chọn B. P(NPV<0) kỳ vọng khoảng 25-30% (nguồn 27.7% với 10,000 lần; tái chạy numpy seed 42 ra ~28.6%); mỗi lần Excel chênh nhẹ vì RAND()."
+  - q: "Tổng thời gian công việc 8.4 phút, 480 phút/ngày, yêu cầu 160 sp/ngày. Nhịp, N_min, hiệu suất với 3 trạm?"
+    a: "C = 3 phút; N_min = ceil(2.8) = 3; hiệu suất 8.4/(3 x 3) = 93.3% (nếu chia được để trạm nào cũng <= 3 phút)."
+  - q: "SME tăng trưởng 30%/năm trong 3 năm: đề xuất lộ trình Lag/Match/Lead, chi phí theo giai đoạn, 3 chỉ số cảnh báo sớm; thiết kế lịch ca linh hoạt."
+    a: "Tình huống thảo luận: dùng mục 4.4 (khoảng chi phí tham khảo), sơ đồ quyết định 4.6; chỉ số cảnh báo gợi ý: rho > 85%, Mức sử dụng > 90%, nhu cầu vượt ngưỡng hai quý liên tiếp; lịch ca dùng Erlang C theo khung giờ."
+
+checklist:
+  - "Đã đo năng lực thiết kế và hiệu quả của quy trình cốt lõi; đã tính Hiệu suất và Mức sử dụng và biết khoảng cách không tránh được / cải thiện được?"
+  - "Đã xác định nút thắt hiện tại và nút thắt kế tiếp?"
+  - "Có dữ liệu lịch sử nhu cầu và ít nhất ba kịch bản (cao/trung/thấp) có xác suất?"
+  - "Đã tính điểm hòa vốn từng phương án mở rộng và so với năng lực mới (hòa vốn ở bao nhiêu % công suất)?"
+  - "Đã tính EMV/NPV và kịch bản xấu nhất (kèm P(NPV<0) nếu có Monte Carlo)?"
+  - "Có phương án dự phòng (thuê ngoài, lao động linh hoạt) cho nhu cầu tăng đột biến ngắn hạn; đã xét phương án chờ-quan-sát (real option)?"
+  - "Đã đánh giá rủi ro cam kết đầu tư/hợp đồng dài hạn trước sự kiện bất ngờ và có kịch bản dự phòng khi nhu cầu sụt giảm?"
+  - "Đã chọn capacity cushion phù hợp ngành; đã cân nhắc sở hữu vs thuê ngoài (Q* hòa vốn)?"
+  - "Đội ngũ quản lý hiểu nút thắt và 5 bước TOC?"
+  - "Với dịch vụ: đã đo lambda theo khung giờ và xác định số quầy/nhân viên để Wq đạt chuẩn?"
+  - "Đã tính ramp-up (learning curve) của người/máy mới trong kế hoạch giao hàng?"
+  - "Có kế hoạch giám sát định kỳ (ít nhất hàng quý) và đã trao đổi với tài chính về dòng tiền?"
+  - "KPI theo dõi: Hiệu suất > 85%; Mức sử dụng 75-90%; Downtime < 10%; thời gian chờ theo chuẩn ngành; tỷ lệ tăng trưởng năng lực theo kế hoạch."
+  - "Mọi số 'giả định minh họa' được gắn nhãn khi báo cáo; số thật cần xác nhận từ dữ liệu DN."
+
+excel_google_sheets_templates:
+  - "Template hòa vốn: Phương án, FC (VNĐ/năm), P, VC; Q* = FC/(P-VC) = ... đv/năm; so với dự báo năm 1-3 -> [ ] Đầu tư [ ] Không [ ] Đầu tư từng phần. Excel: =FC/(P-VC)."
+  - "Template đánh giá năng lực hiện tại (9 cột): Công đoạn | a năng lực/giờ | b giờ/ngày x ngày/tháng | c = a x b thiết kế/tháng | d hiệu quả % | e = c x d | f thực tế/tháng | f/e hiệu suất | f/c mức sử dụng; công đoạn có c nhỏ nhất = nút thắt."
+  - "Đường cong học tập: =T1*n^(LOG(r,2))."
+  - "M/M/1 thời gian chờ (giờ): =lambda/(mu*(mu-lambda))."
+  - "Erlang C: =(POISSON.DIST(c,a,FALSE)/(1-a/c))/((POISSON.DIST(c,a,FALSE)/(1-a/c))+POISSON.DIST(c-1,a,TRUE)) với a = lambda/mu; Wq (giờ) =Pw/(c*mu-lambda)."
+  - "NPV niên kim: =-CAPEX+PV(rate,n,-NetCashflow) hoặc =NPV(rate, dòng tiền năm 1..n)-CAPEX."
+  - "Nhu cầu tam giác ngẫu nhiên (u = RAND() ở ô riêng): =IF(u<(m-a)/(b-a), a+SQRT(u*(b-a)*(m-a)), b-SQRT((1-u)*(b-a)*(b-m)))."
+  - "Monte Carlo Excel: 1,000 dòng, mỗi dòng rút nhu cầu và tính NPV; xác suất lỗ =COUNTIF(cột NPV,\"<0\")/1000."
+  - "Công cụ theo dõi KPI: Google Sheets + Power BI (miễn phí - vài triệu/tháng); mô phỏng nâng cao: Arena, Simul8 (ước 50-200 triệu/license)."

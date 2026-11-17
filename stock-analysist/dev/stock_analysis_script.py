@@ -1162,10 +1162,22 @@ def plot_advanced_chart(df_ind: pd.DataFrame, channel: dict, sr: dict, boxes: li
         ax1.fill([curr_x, tx, tx], [curr_y, ol["cone_high"], ol["cone_low"]], color=col, alpha=0.10, zorder=3)
         ax1.plot([curr_x, tx], [curr_y, ol["cone_high"]], color=col, lw=0.8, ls="--", zorder=4)
         ax1.plot([curr_x, tx], [curr_y, ol["cone_low"]], color=col, lw=0.8, ls="--", zorder=4)
-        mid = curr_y * (1 + (ol.get("mean_ret") or 0.0)) if ol["direction"] != 0 else curr_y
+        # Mũi tên LUÔN chỉ rõ thiên hướng (lên/xuống theo xác suất đã hiệu chuẩn P(tăng) >= 50% hay không) với độ dốc đủ nhìn thấy:
+        # độ dài >= 40% nửa bề rộng vùng biến động. Hướng yếu (CHƯA RÕ) vẽ màu cam + ghi chú "≈ nền 50%": đây là thiên hướng, không phải dự báo chắc chắn.
+        p_up = ol.get("p_up")
+        tilt = ol["direction"] if ol["direction"] != 0 else ((1 if p_up >= 0.5 else -1) if p_up is not None else 0)
+        weak = ol["direction"] == 0 and tilt != 0
+        if weak:
+            col = "#ef6c00"
+        half = max(ol["cone_high"] - curr_y, curr_y - ol["cone_low"])
+        move = max(abs((ol.get("mean_ret") or 0.0) * curr_y), 0.40 * half) if tilt != 0 else 0.0
+        mid = curr_y + tilt * move
         ax1.annotate("", xy=(tx, mid), xytext=(curr_x, curr_y),
-                     arrowprops=dict(facecolor=col, edgecolor=col, arrowstyle="-|>", mutation_scale=16, linewidth=2.0), zorder=8)
+                     arrowprops=dict(facecolor=col, edgecolor=col, arrowstyle="-|>", mutation_scale=24, linewidth=3.2,
+                                     linestyle="--" if weak else "-"), zorder=8)
         p_txt = f"P(tăng {h} phiên)≈{ol['p_up']*100:.0f}%" if ol.get("p_up") is not None else "P: n/a"
+        if weak:
+            p_txt += " (thiên hướng yếu ≈ nền 50%)"
         ax1.text(tx, ol["cone_high"] * 1.008, f"{ol['label']}\n{p_txt}\nVùng 80%: {ol['cone_low']:,.0f} – {ol['cone_high']:,.0f}",
                  fontsize=7.8, fontweight="bold", color=col, ha="center", va="bottom",
                  bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor=col, alpha=0.92), zorder=9)

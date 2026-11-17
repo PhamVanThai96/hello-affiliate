@@ -1,0 +1,986 @@
+# m09 - Lý thuyết Ràng buộc (distill từ 09-theory-of-constraints.md)
+# Lưu ý dữ liệu: toàn bộ số liệu case/ví dụ trong nguồn là "giả định minh họa"; case Ford/Boeing/Amazon chỉ là minh họa nguyên lý, KHÔNG phải số liệu công bố.
+id: "m09"
+name_vi: "Lý thuyết Ràng buộc (TOC)"
+name_en: "Theory of Constraints (TOC)"
+source_file: "09-theory-of-constraints.md"
+purpose: >
+  Giúp doanh nghiệp (đặc biệt SME vốn ít) tìm đúng điểm nghẽn (ràng buộc) đang giới hạn đầu ra cả hệ thống, dồn nguồn lực
+  vào đó theo 5 bước tập trung (Identify-Exploit-Subordinate-Elevate-Repeat), đồng bộ phần còn lại bằng Drum-Buffer-Rope,
+  ra quyết định product mix/đầu tư bằng Throughput Accounting (T, I, OE, T/CU) để tăng dòng tiền, giảm tồn kho và tránh đầu tư sai chỗ.
+when_to_use:
+  - "Nhà máy/xưởng/dịch vụ bận rộn, tăng ca liên tục nhưng đơn trễ, tồn kho bán thành phẩm cao, lợi nhuận thấp."
+  - "Chủ SME định mua máy/mở rộng năng lực và hỏi 'có nên đầu tư không, đầu tư ở đâu?' (cần Identify trước, Elevate sau)."
+  - "Nhiều sản phẩm dùng chung một nguồn lực khan hiếm (máy laser, bếp trưởng, bến bốc xếp...) và cần quyết định product mix (T/CU)."
+  - "Cần tính Throughput, Net Profit, ROI theo T/I/OE thay vì giá thành đơn vị phân bổ."
+  - "Hàng chờ dài trước một công đoạn, lead time dài, cần đặt lịch Drum-Buffer-Rope và theo dõi buffer theo vùng Xanh/Vàng/Đỏ."
+  - "Dự án luôn trễ dù từng nhiệm vụ ước lượng 'an toàn' (CCPM: Project/Feeding Buffer)."
+  - "Chuỗi bán lẻ/phân phối vừa hết hàng vừa dư hàng (Replenishment, Dynamic Buffer Management)."
+  - "Phòng khám/nhà hàng/ngân hàng/logistics chờ lâu dù tổng năng lực đủ (ràng buộc nằm ở phân bố tải theo giờ hoặc người có kỹ năng hiếm)."
+  - "Nhu cầu thấp hơn công suất (ràng buộc thị trường) và chủ DN vẫn muốn mua thêm máy."
+  - "Chọn thứ tự cải tiến TOC -> Lean/Six Sigma (TLS), kết hợp đo OEE đúng chỗ (tại ràng buộc)."
+prerequisites: ["m05", "m01"]
+related_modules:
+  - "m05 - Hoạch định năng lực: Bottleneck Analysis, tỷ lệ sử dụng; TOC mở rộng thành hệ phương pháp quản trị quanh điểm nghẽn"
+  - "m06 - Quản trị dự án: CPM/PERT là nền để hiểu Critical Chain (CCPM, Project/Feeding Buffer)"
+  - "m01 - Thiết kế & phân tích quy trình: vẽ dòng chảy, đo năng lực thực từng công đoạn là bước đầu của Identify"
+  - "m03 - Chuỗi cung ứng: Replenishment Solution là ứng dụng TOC; Rope/Buffer trong chuỗi"
+  - "m04 - Quản trị tồn kho: Buffer Management/DBM là tồn kho bảo vệ; WIP và Little's Law"
+  - "m02 - Quản trị chất lượng: không để ràng buộc làm hàng lỗi; Six Sigma giảm biến động tại ràng buộc"
+  - "m07 - Dự báo: dự báo nhu cầu cho ràng buộc thị trường"
+  - "m08 - Bố trí mặt bằng: tối ưu dòng chảy vật lý quanh ràng buộc"
+  - "Tài chính (finance-agent-skill): ROI, hoàn vốn, NPV khi cân nhắc Elevate"
+
+concepts:
+  - term_vi: "Lý thuyết Ràng buộc"
+    term_en: "Theory of Constraints (TOC)"
+    definition: >
+      Triết lý quản trị và hệ phương pháp cải tiến dựa trên quan sát: mọi hệ thống luôn bị giới hạn bởi ít nhất một ràng buộc
+      (điểm nghẽn); ràng buộc quyết định đầu ra tối đa của cả hệ thống, như sợi xích chỉ chịu lực bằng mắt xích yếu nhất.
+    why_it_matters: >
+      Nguồn gốc (theo các nguồn phổ biến, cần đối chiếu khi trích dẫn học thuật): cuối thập niên 1970 Eliyahu M. Goldratt (nhà vật lý Israel)
+      phát triển phần mềm lập lịch OPT vì các nhà máy có MRP vẫn trễ đơn và tồn kho cao do lịch không tính đến công đoạn cổ chai;
+      1984 tiểu thuyết 'The Goal' (Goldratt & Cox) với nhân vật Alex Rogo và hình ảnh Herbie (cậu bé đi chậm nhất trong đoàn);
+      1990 'The Haystack Syndrome' (đo lường, DBR); 1994 'It's Not Luck' (Thinking Processes); 1997 'Critical Chain' (dự án).
+      Goldratt viết tiểu thuyết để người đọc tự khám phá: cái tưởng là 'hiệu quả' (máy nào cũng chạy kín, ai cũng bận) lại làm nhà máy lỗ.
+  - term_vi: "Tối ưu cục bộ"
+    term_en: "Local Optimum"
+    definition: "Mỗi bộ phận tối ưu chỉ tiêu riêng (máy chạy bao nhiêu %, nhân công làm bao nhiêu sản phẩm) với giả định ngầm 'bộ phận tối ưu thì cả hệ thống tối ưu'."
+    why_it_matters: >
+      Giả định sai trong hệ thống phụ thuộc nối tiếp: đầu ra cả hệ thống không vượt đầu ra công đoạn chậm nhất. Công đoạn nhanh chạy hết công suất chỉ tạo hàng tồn đọng
+      (ví dụ dây chuyền A-B-C-D: 360 bán thành phẩm/ca) mà không bán thêm được cái nào; chỉ số 'hiệu suất máy A 100%' trở thành con số gây hại.
+  - term_vi: "Ràng buộc / điểm nghẽn"
+    term_en: "Constraint / Bottleneck"
+    definition: "Công đoạn/nguồn lực/chính sách/nhu cầu có năng lực nhỏ nhất so với nhu cầu, giới hạn Throughput của cả hệ thống."
+    why_it_matters: "Một giờ mất ở ràng buộc là một giờ mất của cả hệ thống; một giờ tiết kiệm ở công đoạn không phải ràng buộc chỉ là ảo giác. Dấu hiệu: hàng chờ dài TRƯỚC nó, công đoạn SAU nó nhàn rỗi, tăng ca thường xuyên."
+  - term_vi: "Bốn loại ràng buộc"
+    term_en: "Types of constraints (Physical, Market, Policy, Resource)"
+    definition: >
+      Vật lý (máy, nhân lực, nguyên vật liệu không đủ); Thị trường (nhu cầu thấp hơn năng lực); Chính sách (quy định/quy trình nội bộ lỗi thời);
+      Nguồn lực (thiếu nhân sự có kỹ năng, thiếu vốn đầu tư).
+    why_it_matters: >
+      Mỗi loại xử lý khác nhau: vật lý/nguồn lực dùng 5 bước tập trung; thị trường cần chiến lược bán hàng/giá; chính sách cần Thinking Processes (CRT, Evaporating Cloud).
+      Ràng buộc chính sách là loại phổ biến và khó thấy nhất vì nằm trong thói quen (ví dụ 'mọi máy phải đạt hiệu suất 90%', 'đơn nhỏ phải đợi gộp lô'), không nằm trên sàn xưởng.
+  - term_vi: "Mục tiêu doanh nghiệp (Goal)"
+    term_en: "The Goal: make money now and in the future"
+    definition: "Theo Goldratt, mục tiêu của doanh nghiệp vì lợi nhuận là kiếm tiền, bây giờ và trong tương lai; ba chỉ số T, I, OE trả lời 'doanh nghiệp có đang kiếm tiền không'."
+    why_it_matters: "Cost Accounting (đầu thế kỷ 20, khi nhân công trực tiếp là chi phí lớn nhất và biến đổi theo sản lượng) phân bổ mọi chi phí lên sản phẩm, khuyến khích sản xuất thừa để 'chia nhỏ chi phí cố định'; Goldratt cho rằng điều này dẫn tới quyết định sai."
+  - term_vi: "Throughput (T)"
+    term_en: "Throughput"
+    definition: "Tốc độ hệ thống tạo ra tiền THÔNG QUA BÁN HÀNG = Doanh thu bán hàng - Chi phí hoàn toàn biến đổi (chủ yếu NVL trực tiếp, hoa hồng, cước vận chuyển theo đơn)."
+    why_it_matters: "Hàng sản xuất xong mà chưa bán thì KHÔNG tạo T. Đây là chỉ số duy nhất không có trần lý thuyết (trong giới hạn thị trường)."
+  - term_vi: "Tồn kho / Đầu tư (I)"
+    term_en: "Inventory / Investment"
+    definition: "Toàn bộ tiền bị 'chôn' vào những thứ dự định bán ra: NVL, bán thành phẩm, thành phẩm, máy móc, nhà xưởng."
+    why_it_matters: "Trong TOC tồn kho là gánh nặng (làm ROI giảm, che giấu lỗi, kéo dài lead time), trái với Cost Accounting coi tồn kho là tài sản làm tăng lợi nhuận kế toán."
+  - term_vi: "Chi phí vận hành (OE)"
+    term_en: "Operating Expense"
+    definition: "Toàn bộ tiền chi ra để biến Inventory thành Throughput (lương, điện nước, thuê mặt bằng, khấu hao...)."
+    why_it_matters: "Nhân công trực tiếp thường là OE (trả lương cố định dù sản lượng đổi), nên khi T tăng mà OE gần như cố định thì phần T tăng thêm chảy gần như toàn bộ xuống lợi nhuận."
+  - term_vi: "Thứ tự ưu tiên T > I > OE"
+    term_en: "Priority T > I > OE"
+    definition: "TOC ưu tiên tăng T, rồi giảm I, rồi giảm OE."
+    why_it_matters: "Giảm OE hay I có giới hạn (không xuống dưới 0), còn tăng T về lý thuyết không có trần. Nhưng chỉ tăng được T khi ràng buộc được giải phóng."
+  - term_vi: "Năm bước tập trung"
+    term_en: "Five Focusing Steps"
+    definition: "Identify (xác định) - Exploit (khai thác) - Subordinate (phụ thuộc hóa) - Elevate (nâng cấp) - Repeat (lặp lại)."
+    why_it_matters: "Ép doanh nghiệp đi từ rẻ nhất/nhanh nhất (Exploit, Subordinate) đến đắt nhất (Elevate) và không dừng lại; thứ tự quan trọng vì nếu bỏ Exploit, có thể chi hàng tỷ mua cái mà một lịch trình tốt cho ra miễn phí."
+  - term_vi: "Chín quy tắc OPT"
+    term_en: "Nine OPT rules"
+    definition: >
+      (1) Cân bằng dòng chảy, không cân bằng năng lực; (2) mức sử dụng công đoạn không-ràng-buộc do ràng buộc quyết định; (3) Utilization khác Activation;
+      (4) một giờ mất ở ràng buộc là một giờ mất của hệ thống; (5) một giờ tiết kiệm ở công đoạn không phải ràng buộc là ảo giác; (6) ràng buộc chi phối cả T lẫn I;
+      (7) lô chuyển không nhất thiết bằng lô sản xuất; (8) lô sản xuất nên biến đổi; (9) lịch lập bằng cách xét đồng thời mọi ràng buộc, lead time là kết quả của lịch.
+    why_it_matters: "Là nền tảng của lập lịch theo ràng buộc; tổng kết từ thời phần mềm OPT của Goldratt."
+  - term_vi: "Kế toán Throughput"
+    term_en: "Throughput Accounting"
+    definition: "Kế toán quản trị đo T, I, OE của cả hệ thống và quyết định product mix theo T/CU (Throughput trên mỗi đơn vị ràng buộc)."
+    why_it_matters: "Nguồn lực khan hiếm không phải 'đơn vị sản phẩm' mà là thời gian của ràng buộc. Như cửa hàng tính 'doanh thu trên mỗi m2 kệ' thay vì 'lãi trên mỗi món'. Gắn với Goldratt và Galloway & Waldron (cuối thập niên 1980) khi hệ thống hóa thành phương pháp kế toán quản trị."
+  - term_vi: "Drum-Buffer-Rope"
+    term_en: "Drum-Buffer-Rope (DBR)"
+    definition: "Cơ chế 'kéo có kiểm soát' quanh ràng buộc: Drum = lịch của ràng buộc; Buffer = vùng bảo vệ bằng thời gian trước ràng buộc; Rope = tín hiệu phát liệu theo nhịp ràng buộc."
+    why_it_matters: "Nếu mọi công đoạn tự lập lịch (đẩy), công đoạn nhanh tràn hàng sang công đoạn chậm. DBR đơn giản hơn MRP vì chỉ cần lập lịch chi tiết cho MỘT điểm rồi cho các công đoạn khác đi theo."
+  - term_vi: "Quản lý bộ đệm"
+    term_en: "Buffer Management"
+    definition: "Theo dõi mức tiêu hao buffer (Buffer Penetration) của từng lệnh sản xuất theo đèn giao thông Xanh/Vàng/Đỏ thay vì theo dõi tiến độ từng công đoạn."
+    why_it_matters: "Một chỉ số duy nhất cho biết lệnh nào cần hành động, tránh chữa cháy không cần thiết; dữ liệu tiêu hao tích lũy cho biết nguyên nhân gốc gây tiêu hao buffer nhiều nhất (Pareto) để ưu tiên cải tiến."
+  - term_vi: "Loại bộ đệm trong DBR"
+    term_en: "Constraint / Shipping / Assembly Buffer"
+    definition: "Constraint Buffer (trước ràng buộc), Shipping Buffer (trước khâu giao hàng, bảo vệ ngày giao cam kết), Assembly Buffer (trước điểm lắp ráp gặp các nhánh khi nhánh chứa ràng buộc gặp nhánh khác)."
+    why_it_matters: "Mỗi buffer bảo vệ một điểm khác nhau khỏi biến động; buffer là thời gian, không phải tồn kho tùy tiện."
+  - term_vi: "Quản trị dự án theo chuỗi tới hạn"
+    term_en: "Critical Chain Project Management (CCPM)"
+    definition: "Bóc dự phòng ẩn ở từng nhiệm vụ (ước lượng ~50% khả năng hoàn thành), gom thành Project Buffer cuối Critical Chain và Feeding Buffer ở các nhánh phụ; chuỗi tới hạn tính cả ràng buộc nguồn lực (khác CPM chỉ xét trình tự logic)."
+    why_it_matters: >
+      Dự án trễ vì HÀNH VI: (1) mỗi người cộng dự phòng ẩn; (2) Student Syndrome (trì hoãn đến sát hạn); (3) Parkinson's Law (việc giãn ra lấp đầy thời gian); (4) thời gian tiết kiệm bị lãng phí vì
+      nhiệm vụ sau không bắt đầu sớm; (5) đa nhiệm làm mọi việc chậm lại. Goldratt, 'Critical Chain', 1997.
+  - term_vi: "Hội chứng sinh viên và Luật Parkinson"
+    term_en: "Student Syndrome & Parkinson's Law"
+    definition: "Student Syndrome: có dư thời gian thì trì hoãn đến sát hạn chót mới bắt đầu. Parkinson's Law: công việc luôn giãn ra để lấp đầy thời gian được cấp."
+    why_it_matters: "Giải thích vì sao dự phòng thời gian ở từng nhiệm vụ bị lãng phí; CCPM bỏ mốc hạn cứng từng nhiệm vụ và dùng relay-race (xong sớm thì bàn giao ngay)."
+  - term_vi: "Các công cụ tư duy logic"
+    term_en: "Thinking Processes (CRT, Evaporating Cloud, FRT)"
+    definition: "Từ 'It's Not Luck' (1994), trả lời ba câu: thay đổi cái gì (CRT) - thay đổi thành cái gì (Evaporating Cloud) - thay đổi bằng cách nào/kiểm chứng (FRT)."
+    why_it_matters: "Dùng cho ràng buộc chính sách: truy ngược hiệu ứng không mong muốn (UDE) tới nguyên nhân gốc, làm lộ giả định ngầm sai của mâu thuẫn, và kiểm chứng giải pháp trước khi triển khai."
+  - term_vi: "Hiệu suất tổng thể thiết bị"
+    term_en: "OEE (Overall Equipment Effectiveness)"
+    definition: "OEE = Availability x Performance x Quality: tách thất thoát thiết bị thành dừng máy/chuyển đổi, chạy chậm, sản phẩm lỗi."
+    why_it_matters: "Với TOC, OEE chỉ đáng đo TẠI RÀNG BUỘC (vì giờ mất ở ràng buộc là mất của cả hệ thống); đo ở máy không-ràng-buộc chỉ khuyến khích chạy thừa."
+  - term_vi: "Bổ sung hàng và quản lý bộ đệm động"
+    term_en: "Replenishment Solution & Dynamic Buffer Management (DBM)"
+    definition: "Giữ buffer tập trung ở kho trung tâm (nơi gộp biến động nên cần ít hàng hơn) và bổ sung cho điểm bán theo mức TIÊU THỤ THỰC TẾ thay vì dự báo; DBM điều chỉnh kích thước buffer theo dữ liệu (liên tiếp vùng Đỏ -> tăng khoảng 1/3; liên tục vùng Xanh cả chu kỳ -> giảm)."
+    why_it_matters: "Dự báo cho từng điểm bán thường sai nên vừa hết hàng chỗ này vừa dư chỗ khác; Goldratt mở rộng TOC sang chuỗi cung ứng để giải quyết."
+  - term_vi: "Quán tính"
+    term_en: "Inertia"
+    definition: "Quy tắc/chính sách thiết lập cho ràng buộc cũ tiếp tục tồn tại sau khi ràng buộc đã dịch chuyển."
+    why_it_matters: "Là lý do bước Repeat là bắt buộc: chính sách cũ có thể trở thành ràng buộc chính sách mới."
+  - term_vi: "Nhàn rỗi có chủ đích"
+    term_en: "Deliberate idleness at non-constraints"
+    definition: "Công đoạn không phải ràng buộc chủ động chạy dưới năng lực để phục vụ nhịp ràng buộc (Subordinate)."
+    why_it_matters: "Là điểm khó nhất về văn hóa: phải đổi chỉ tiêu thưởng từ 'hiệu suất máy' sang 'giao đúng nhịp cho ràng buộc', và lãnh đạo phải bảo vệ nguyên lý này trước áp lực đo lường truyền thống."
+  - term_vi: "TOC kết hợp Lean và Six Sigma"
+    term_en: "TLS (TOC-Lean-Six Sigma)"
+    definition: "TOC trả lời 'cải tiến Ở ĐÂU trước', Lean (giảm lãng phí) và Six Sigma (giảm biến động/lỗi) trả lời 'cải tiến BẰNG CÁCH NÀO' tại điểm đó."
+    why_it_matters: "Tránh Lean tối ưu cục bộ không cần thiết và Six Sigma tốn thời gian phân tích vấn đề không quan trọng. Ví dụ: ràng buộc là máy in -> SMED giảm thời gian chuyển đổi và Six Sigma giảm in lỗi đúng tại máy in."
+
+formulas:
+  - id: "m09_throughput"
+    name_vi: "Throughput (T)"
+    name_en: "Throughput"
+    expression_latex: 'T = \text{Doanh thu bán hàng} - \text{Chi phí hoàn toàn biến đổi (TVC)}'
+    expression_python: "revenue - tvc"
+    excel: "=B2-C2"
+    variables:
+      - {symbol: "revenue", meaning: "Doanh thu bán hàng (chỉ hàng đã bán)", unit: "VNĐ/kỳ"}
+      - {symbol: "tvc", meaning: "Chi phí hoàn toàn biến đổi: NVL trực tiếp, hoa hồng, cước theo đơn", unit: "VNĐ/kỳ"}
+    when_to_use: "Mọi phân tích TOC; thay cho 'lãi gộp sau phân bổ nhân công/chi phí chung'."
+    why_it_works: "Đo đúng tốc độ tạo tiền của hệ thống: chỉ trừ phần chi phí thật sự thay đổi tỷ lệ với từng đơn bán; nhân công và chi phí chung là OE vì không đổi theo sản lượng."
+    assumptions: ["Chỉ tính hàng đã bán; NVL trực tiếp là chi phí hoàn toàn biến đổi.", "Nhân công trực tiếp được coi là OE (lương cố định)."]
+    pitfalls: ["Tính T trên hàng đã sản xuất nhưng chưa bán.", "Đưa nhân công cố định vào chi phí biến đổi làm sai thứ hạng sản phẩm."]
+    interpretation: "T càng cao càng tốt, là đòn bẩy duy nhất không có trần (trong giới hạn thị trường)."
+    example:
+      inputs: {revenue: 1200, tvc: 480}
+      steps: ["Xưởng may giả định (triệu VNĐ/tháng): T = 1.200 - 480 = 720"]
+      result: "720"
+  - id: "m09_net_profit_roi"
+    name_vi: "Lợi nhuận ròng và ROI theo T-I-OE"
+    name_en: "Net Profit and ROI (TOC)"
+    expression_latex: 'NP = T - OE, \qquad ROI = \frac{T - OE}{I}'
+    expression_python: "(T - OE, (T - OE) / I)"
+    excel: "=B2-B3 ; =(B2-B3)/B4"
+    variables:
+      - {symbol: "T", meaning: "Throughput", unit: "VNĐ/kỳ"}
+      - {symbol: "OE", meaning: "Chi phí vận hành", unit: "VNĐ/kỳ"}
+      - {symbol: "I", meaning: "Inventory/Investment (vốn chôn trong hệ thống)", unit: "VNĐ"}
+    when_to_use: "Đánh giá hiệu quả hệ thống và so sánh ba đòn bẩy: tăng T, giảm OE, giảm I."
+    why_it_works: "NP là phần tiền còn lại sau khi trả chi phí vận hành; ROI chia cho vốn chôn I để biết mỗi đồng vốn bị chôn sinh ra bao nhiêu lợi nhuận."
+    assumptions: ["T, OE cùng kỳ (tháng/tuần); ROI theo kỳ đó, quy năm chỉ khi giữ nguyên điều kiện."]
+    pitfalls: ["Trộn kỳ (T theo tháng, OE theo năm).", "Coi ROI theo tháng là ROI năm mà không nhân/điều chỉnh."]
+    interpretation: "Ví dụ xưởng may: ROI 4%/tháng (~48%/năm nếu giữ nguyên). Tăng T 10% -> NP +60%; giảm OE 10% -> NP +50%; giảm I 10% -> ROI 4% lên 4,44% và giải phóng 300 triệu tiền mặt."
+    example:
+      inputs: {T: 720, OE: 600, I: 3000}
+      steps: ["NP = 720 - 600 = 120", "ROI = 120 / 3.000 = 0,04 = 4%/tháng", "Tăng T 10%: T=792, NP=192 (+60%); giảm OE 10%: OE=540, NP=180 (+50%); giảm I 10%: I=2.700, ROI=4,44%"]
+      result: "NP = 120 triệu; ROI = 4%/tháng"
+  - id: "m09_productivity_turns"
+    name_vi: "Năng suất T/OE và vòng quay đầu tư T/I"
+    name_en: "Throughput productivity and investment turns"
+    expression_latex: '\text{Năng suất} = \frac{T}{OE}, \qquad \text{Vòng quay} = \frac{T}{I}'
+    expression_python: "(T / OE, T / I)"
+    excel: "=B2/B3 ; =B2/B4"
+    variables:
+      - {symbol: "T", meaning: "Throughput", unit: "VNĐ/kỳ"}
+      - {symbol: "OE", meaning: "Chi phí vận hành", unit: "VNĐ/kỳ"}
+      - {symbol: "I", meaning: "Vốn chôn trong hệ thống", unit: "VNĐ"}
+    when_to_use: "Chỉ số phụ để theo dõi hiệu quả dùng chi phí vận hành và vốn."
+    why_it_works: "T/OE: mỗi đồng chi vận hành tạo bao nhiêu đồng Throughput; T/I: mỗi đồng vốn bị chôn quay được bao nhiêu đồng Throughput."
+    assumptions: ["Cùng kỳ đo."]
+    pitfalls: ["So sánh giữa các ngành khác bản chất vốn."]
+    interpretation: "T/OE > 1 nghĩa là T bù được OE (NP > 0). Xưởng may: T/OE = 1,2; T/I = 0,24."
+    example:
+      inputs: {T: 720, OE: 600, I: 3000}
+      steps: ["T/OE = 720/600 = 1,2", "T/I = 720/3.000 = 0,24"]
+      result: "1,2 và 0,24"
+  - id: "m09_utilization"
+    name_vi: "Tỷ lệ sử dụng công đoạn (nhận diện ràng buộc)"
+    name_en: "Resource utilization"
+    expression_latex: '\text{Tỷ lệ sử dụng} = \frac{\text{Dòng chảy thực tế}}{\text{Năng lực tối đa}}'
+    expression_python: "flow / capacity"
+    excel: "=B2/C2"
+    variables:
+      - {symbol: "flow", meaning: "Dòng chảy thực tế của hệ thống qua công đoạn", unit: "sp/giờ"}
+      - {symbol: "capacity", meaning: "Năng lực tối đa thực tế (không dùng công suất danh nghĩa catalogue)", unit: "sp/giờ"}
+    when_to_use: "Bước Identify: lập bảng năng lực từng công đoạn; công đoạn tiến tới 100% khi dòng chảy bằng đầu ra hệ thống là ràng buộc."
+    why_it_works: "Khi hệ thống chạy ở đầu ra tối đa, chỉ ràng buộc dùng hết năng lực; các công đoạn khác tất yếu có tỷ lệ dưới 100%."
+    assumptions: ["Dòng chảy bằng đầu ra hệ thống (min năng lực, nhu cầu).", "Năng lực đo thực tế."]
+    pitfalls: ["Dùng công suất danh nghĩa.", "Chỉ nhìn tỷ lệ mà không kiểm chứng bằng nơi hàng chờ tích tụ."]
+    interpretation: "Dây chuyền A-B-C-D (120, 90, 75, 100; nhu cầu 80): A 62,5%, B 83,3%, C 100% (ràng buộc), D 75%."
+    example:
+      inputs: {flow: 75, capacity: 90}
+      steps: ["Công đoạn B: 75/90 = 0,8333"]
+      result: "83,3%"
+  - id: "m09_system_output"
+    name_vi: "Đầu ra hệ thống và đầu ra tối đa theo ràng buộc"
+    name_en: "System output = min of capacities and demand"
+    expression_latex: '\text{Đầu ra} = \min(C_1, C_2, \dots, C_n, D)'
+    expression_python: "min(capacities + [demand])"
+    excel: "=MIN(B2:B5, D1)"
+    variables:
+      - {symbol: "capacities", meaning: "Danh sách năng lực các công đoạn nối tiếp", unit: "sp/giờ"}
+      - {symbol: "demand", meaning: "Nhu cầu thị trường", unit: "sp/giờ"}
+    when_to_use: "Xác định ràng buộc (vật lý nếu min là một công đoạn, thị trường nếu min là nhu cầu) và tính đầu ra sau khi Exploit/Elevate."
+    why_it_works: "Trong chuỗi nối tiếp phụ thuộc, đầu ra không thể vượt công đoạn chậm nhất; nếu cả chuỗi dư năng lực thì thị trường là ràng buộc."
+    assumptions: ["Dòng chảy nối tiếp, không có đường vòng.", "Đơn vị đồng nhất giữa các công đoạn."]
+    pitfalls: ["Quên so với nhu cầu nên mua năng lực thừa (case bao bì Bình Dương)."]
+    interpretation: "Nếu min là một công đoạn < nhu cầu -> công đoạn đó là ràng buộc. Ford (minh họa): min(70,60,42,55,65)=42 < 50 -> Sơn."
+    example:
+      inputs: {capacities: [60, 45, 38, 50], demand: 48}
+      steps: ["min(60,45,38,50,48) = 38 < 48 -> Sơn là ràng buộc", "Nếu Sơn nâng lên 44: min(60,45,44,50,48) = 44; vượt 45 thì Hàn (45) là ràng buộc kế tiếp"]
+      result: "38 sp/giờ"
+  - id: "m09_wip_accumulation"
+    name_vi: "Tồn đọng WIP do công đoạn nhanh chạy hết công suất"
+    name_en: "WIP build-up before a slower step"
+    expression_latex: '\text{WIP tích lũy} = (C_{truoc} - C_{sau}) \times h'
+    expression_python: "(c_up - c_down) * hours"
+    variables:
+      - {symbol: "c_up", meaning: "Tốc độ phát ra của công đoạn trước", unit: "sp/giờ"}
+      - {symbol: "c_down", meaning: "Năng lực của công đoạn sau (chậm hơn)", unit: "sp/giờ"}
+      - {symbol: "hours", meaning: "Số giờ chạy", unit: "giờ"}
+    when_to_use: "Định lượng cái giá của tối ưu cục bộ trước khi đề xuất Subordinate/DBR."
+    why_it_works: "Phần chênh tốc độ không đi tiếp được nên tích lại thành hàng chờ; nhân với giá trị vốn/đơn vị ra tiền chết."
+    assumptions: ["Công đoạn trước chạy đúng tốc độ c_up cả ca."]
+    pitfalls: ["Quên tính từng cặp công đoạn liên tiếp rồi cộng."]
+    interpretation: "A-B-C-D: A 120 vs B 90 -> 30 sp/giờ x 8 = 240; B 90 vs C 75 -> 15 x 8 = 120; tổng 360 bán thành phẩm/ca."
+    example:
+      inputs: {c_up: 120, c_down: 90, hours: 8}
+      steps: ["(120 - 90) x 8 = 240 trước B", "(90 - 75) x 8 = 120 trước C; tổng = 360"]
+      result: "240 (trước B), tổng 360 sp/ca"
+  - id: "m09_tcu"
+    name_vi: "Throughput trên mỗi đơn vị ràng buộc (T/CU)"
+    name_en: "Throughput per Constraint Unit"
+    expression_latex: 'T/CU = \frac{\text{Giá bán} - \text{NVL trực tiếp}}{\text{Thời gian xử lý tại ràng buộc (phút)}}'
+    expression_python: "(price - material) / minutes"
+    excel: "=(B2-C2)/D2"
+    variables:
+      - {symbol: "price", meaning: "Giá bán", unit: "VNĐ/sp"}
+      - {symbol: "material", meaning: "Chi phí NVL trực tiếp (hoàn toàn biến đổi)", unit: "VNĐ/sp"}
+      - {symbol: "minutes", meaning: "Thời gian sản phẩm chiếm ràng buộc", unit: "phút/sp"}
+    when_to_use: "Nhiều sản phẩm dùng chung một ràng buộc và cần xếp ưu tiên product mix."
+    why_it_works: "Nguồn lực khan hiếm là THỜI GIAN ràng buộc (ví dụ 2.400 phút/tuần), nên mỗi phút phải tạo nhiều T nhất; đo T trên mỗi đơn vị sản phẩm hay % lãi gộp bỏ qua thời gian chiếm ràng buộc."
+    assumptions: ["Ràng buộc thực sự là nguồn lực đó và nhu cầu mỗi sản phẩm bị giới hạn.", "Chấm điểm theo T/CU chỉ đúng khi ràng buộc là vật lý; khách hàng chiến lược cần cả 3 sản phẩm thì cân nhắc thêm quan hệ/giá trị dài hạn."]
+    pitfalls: ["Ưu tiên sản phẩm có % lãi gộp/đơn vị cao nhất (nghịch lý: Bàn đứng đầu theo Cost Accounting, đứng cuối theo T/CU).", "Quên kiểm tải các công đoạn khác sau khi đổi mix."]
+    interpretation: "Xưởng inox: Kệ 44,0; Chậu 30,0; Bàn 26,67 (k VNĐ/phút) -> thứ tự Kệ > Chậu > Bàn."
+    example:
+      inputs: {price: 2000, material: 800, minutes: 45}
+      steps: ["T = 2.000 - 800 = 1.200 (k)", "T/CU = 1.200 / 45 = 26,67 k/phút"]
+      result: "26,67 k VNĐ/phút (Bàn sơ chế)"
+  - id: "m09_product_mix_allocation"
+    name_vi: "Phân bổ product mix theo T/CU (greedy)"
+    name_en: "Product mix allocation by T/CU"
+    expression_latex: 'q_i = \min\left(D_i,\ \left\lfloor \frac{M_{con\,lai}}{m_i} \right\rfloor\right),\ \text{theo thứ tự } T/CU \text{ giảm dần}'
+    expression_python: |
+      def product_mix(products, minutes):
+          # products: list of dict(name, price, material, mins, demand)
+          rows = sorted(products, key=lambda p: (p['price'] - p['material']) / p['mins'], reverse=True)
+          left, out, total = minutes, [], 0
+          for p in rows:
+              q = min(p['demand'], int(left // p['mins']))
+              out.append((p['name'], q)); left -= q * p['mins']; total += q * (p['price'] - p['material'])
+          return out, total
+    excel: "Sắp bảng theo T/CU giảm dần; I2 =MIN(E2,ROUNDDOWN($K$1/D2,0)); các dòng sau trừ phút đã dùng bằng SUMPRODUCT"
+    variables:
+      - {symbol: "products", meaning: "Danh sách sản phẩm (giá, NVL, phút tại ràng buộc, nhu cầu tối đa)", unit: "-"}
+      - {symbol: "minutes", meaning: "Tổng phút ràng buộc mỗi kỳ", unit: "phút/kỳ"}
+    when_to_use: "Chọn số lượng mỗi sản phẩm khi năng lực ràng buộc không đủ cho toàn bộ nhu cầu."
+    why_it_works: "Với một ràng buộc duy nhất và nhu cầu bị chặn, lấp đầy thời gian ràng buộc bằng sản phẩm T/CU cao nhất trước sẽ tối đa hóa tổng T."
+    assumptions: ["Một ràng buộc duy nhất, các công đoạn khác dư năng lực (phải kiểm tải).", "Làm tròn xuống số sản phẩm nguyên; có thể còn phút dư nhỏ."]
+    pitfalls: ["Bỏ bước kiểm tải công đoạn khác (chấn gấp 91,7% ở case inox cần theo dõi).", "Không kiểm tra ràng buộc có dịch chuyển khi đổi mix."]
+    interpretation: "Case Thành Phát: mix TOC (100 Kệ + 70 Chậu) cho T = 86 triệu/tuần so với 64,04 triệu theo lãi gộp (Bàn trước); NP 31 vs 9,04 triệu/tuần (gấp ~3,4 lần)."
+    example:
+      inputs: {minutes: 2400, products: "Kệ(800,360,10,100); Chậu(1200,600,20,80); Bàn(2000,800,45,60)"}
+      steps: ["T/CU: Kệ 44,0 > Chậu 30,0 > Bàn 26,67", "Kệ: min(100, 240)=100 -> 1.000 phút; còn 1.400", "Chậu: min(80, 70)=70 -> 1.400 phút; còn 0; Bàn: 0", "T = 100 x 440 + 70 x 600 = 86.000 k"]
+      result: "T = 86.000 k VNĐ/tuần (86 triệu); NP = 86 - 55 = 31 triệu/tuần"
+  - id: "m09_breakeven_price_tcu"
+    name_vi: "Giá tối thiểu để một sản phẩm đạt T/CU mục tiêu"
+    name_en: "Minimum price to reach target T/CU"
+    expression_latex: 'P_{min} = M + (T/CU)_{muc\,tieu} \times m'
+    expression_python: "material + target_tcu * minutes"
+    variables:
+      - {symbol: "material", meaning: "NVL trực tiếp", unit: "k VNĐ/sp"}
+      - {symbol: "target_tcu", meaning: "T/CU mục tiêu (vd T/CU của sản phẩm đứng liền trên)", unit: "k VNĐ/phút"}
+      - {symbol: "minutes", meaning: "Phút tại ràng buộc", unit: "phút/sp"}
+    when_to_use: "Khi sản phẩm T/CU thấp vẫn có khách: tăng giá đến mức đáng làm, hoặc chỉ nhận khi ràng buộc còn rảnh."
+    why_it_works: "Đảo công thức T/CU: T cần = T/CU mục tiêu x phút ràng buộc; cộng NVL ra giá."
+    assumptions: ["NVL không đổi; thị trường chấp nhận giá mới (giá mới có thể làm nhu cầu giảm)."]
+    pitfalls: ["Không xét độ co giãn cầu, quan hệ khách chiến lược."]
+    interpretation: "Case Thành Phát: để Bàn vượt Chậu (30 k/phút) cần T > 1.350k, tức giá >= 2.150k nếu NVL 800k."
+    example:
+      inputs: {material: 800, target_tcu: 30, minutes: 45}
+      steps: ["T cần = 30 x 45 = 1.350 k", "P = 800 + 1.350 = 2.150 k"]
+      result: "2.150 k VNĐ"
+  - id: "m09_exploit_capacity_gain"
+    name_vi: "Mức tăng năng lực nhờ Exploit và tác động T"
+    name_en: "Capacity gain from Exploit"
+    expression_latex: '\Delta C\% = \frac{C_{sau}}{C_{truoc}} - 1, \qquad \Delta T = \Delta q \times t'
+    expression_python: "(c_after / c_before - 1, (c_after - c_before) * t_unit)"
+    variables:
+      - {symbol: "c_before", meaning: "Năng lực thực của ràng buộc trước (ví dụ phút in thực/ngày)", unit: "đơn vị"}
+      - {symbol: "c_after", meaning: "Năng lực sau khi giảm thời gian chết/chuyển đổi", unit: "đơn vị"}
+      - {symbol: "t_unit", meaning: "Throughput mỗi đơn vị năng lực (VNĐ/phút hoặc VNĐ/sp)", unit: "VNĐ"}
+    when_to_use: "Định lượng Exploit (giảm chuyển đổi, chờ vật tư, nghỉ trưa luân phiên, kiểm tra trước khi vào ràng buộc)."
+    why_it_works: "Mỗi phút lấy lại ở ràng buộc là một phút T của cả hệ thống, với chi phí gần bằng 0; OE gần cố định nên NP tăng nhanh hơn nhiều so với T."
+    assumptions: ["Đủ đơn hàng để bán phần tăng thêm.", "OE không đổi."]
+    pitfalls: ["Tính lợi ích khi nhu cầu thị trường đã bão hòa (ràng buộc thành thị trường)."]
+    interpretation: "Xưởng in: thời gian in thực 300 -> 369 phút/ngày (+23%), NP 56 -> 147,08 triệu/tháng (+163%) khi T/CU = 60.000 VNĐ/phút, OE 340 triệu, 22 ngày/tháng."
+    example:
+      inputs: {c_before: 300, c_after: 369, t_unit: 60000}
+      steps: ["369/300 - 1 = 23%", "T trước = 300 x 60.000 x 22 = 396 triệu; T sau = 369 x 60.000 x 22 = 487,08 triệu", "NP trước = 396 - 340 = 56; NP sau = 487,08 - 340 = 147,08"]
+      result: "+23% năng lực; NP 56 -> 147,08 triệu/tháng"
+  - id: "m09_little"
+    name_vi: "Định luật Little (WIP - lead time)"
+    name_en: "Little's Law"
+    expression_latex: 'WIP = T_h \times LT \;\Rightarrow\; LT = \frac{WIP}{T_h}'
+    expression_python: "wip / throughput_rate"
+    excel: "=B2/B3"
+    variables:
+      - {symbol: "wip", meaning: "Hàng đang làm dở/chờ trước ràng buộc", unit: "đơn vị (tấn, sp)"}
+      - {symbol: "throughput_rate", meaning: "Tốc độ đầu ra T_h (do ràng buộc quyết định)", unit: "đơn vị/ngày"}
+    when_to_use: "Chứng minh giảm WIP bằng DBR rút ngắn lead time mà đầu ra không đổi; tính lead time chờ trước ràng buộc."
+    why_it_works: "Hệ thống ổn định: lượng hàng trong hệ thống = tốc độ ra x thời gian lưu. Đầu ra bị ràng buộc cố định nên chỉ có thể cắt lead time bằng cách cắt WIP."
+    assumptions: ["Hệ thống ổn định, T_h cố định bởi ràng buộc."]
+    pitfalls: ["Dùng khi đầu ra không ổn định hoặc bỏ qua thời gian chế biến thực."]
+    interpretation: "Dệt may: WIP 160 tấn, 12 tấn/ngày -> 13,3 ngày; giảm WIP còn 18 tấn -> 1,5 ngày."
+    example:
+      inputs: {wip: 160, throughput_rate: 12}
+      steps: ["LT = 160 / 12 = 13,33 ngày", "Với WIP = 18: 18 / 12 = 1,5 ngày"]
+      result: "13,3 ngày"
+  - id: "m09_buffer_size"
+    name_vi: "Kích thước buffer khởi đầu của DBR"
+    name_en: "Initial DBR buffer size"
+    expression_latex: 'B_0 \approx 50\% \times LT_{hien\,tai} \quad (\text{và buffer lượng} = B \times \text{tốc độ ràng buộc})'
+    expression_python: "(0.5 * lead_time, 0.5 * lead_time * rate)"
+    variables:
+      - {symbol: "lead_time", meaning: "Lead time hiện tại từ lúc phát liệu đến ràng buộc", unit: "ngày/giờ"}
+      - {symbol: "rate", meaning: "Tốc độ ràng buộc", unit: "đơn vị/thời gian"}
+    when_to_use: "Thiết lập ban đầu buffer trước ràng buộc, rồi chỉnh theo dữ liệu Buffer Management."
+    why_it_works: "Lead time hiện tại kéo dài chủ yếu do hàng nằm chờ nên có thể rút khoảng một nửa mà vẫn bảo vệ ràng buộc. Đây là HƯỚNG DẪN THAM KHẢO, không phải quy luật tuyệt đối."
+    assumptions: ["Lead time bị kéo dài chủ yếu bởi thời gian chờ."]
+    pitfalls: ["Coi 50% là bất biến; không điều chỉnh theo dữ liệu tiêu hao buffer."]
+    interpretation: "Ví dụ trong nguồn đặt buffer theo thời gian (Ford: 2 giờ x 46 xe/giờ = 92 xe; dệt may: 1,5 ngày x 12 = 18 tấn; inox: 1 ngày = 480 phút laser) thay vì chỉ riêng quy tắc 50%."
+    example:
+      inputs: {lead_time: 3, rate: 12}
+      steps: ["Lead time hiện tại giả định 3 ngày -> buffer khởi đầu 1,5 ngày", "Quy ra lượng: 1,5 x 12 = 18 tấn (khớp mức buffer trong case dệt may)"]
+      result: "1,5 ngày = 18 tấn"
+  - id: "m09_buffer_penetration"
+    name_vi: "Mức tiêu hao buffer và vùng Xanh/Vàng/Đỏ"
+    name_en: "Buffer Penetration"
+    expression_latex: '\text{Buffer Penetration} = \frac{\text{Thời gian buffer đã tiêu hao}}{\text{Tổng thời gian buffer}} \times 100\%'
+    expression_python: "consumed / total * 100"
+    excel: "=B2/C2"
+    variables:
+      - {symbol: "consumed", meaning: "Thời gian buffer đã tiêu hao", unit: "ngày"}
+      - {symbol: "total", meaning: "Tổng thời gian buffer của lệnh", unit: "ngày"}
+    when_to_use: "Theo dõi hằng ngày từng lệnh sản xuất/đơn hàng/dự án thay vì từng công đoạn."
+    why_it_works: "Buffer là bảo hiểm thời gian; tỷ lệ đã dùng cho biết còn bao nhiêu bảo hiểm so với rủi ro, nên một con số đủ để phân loại mức khẩn cấp."
+    assumptions: ["Chia vùng đều xấp xỉ 1/3 (quy ước thực hành)."]
+    pitfalls: ["Giám sát tiến độ từng công đoạn thay vì buffer.", "Không ghi nguyên nhân tiêu hao để làm Pareto."]
+    interpretation: "Xanh 0-33% không can thiệp; Vàng 33-66% lên kế hoạch xử lý, tìm nguyên nhân; Đỏ 66-100% hành động khẩn cấp (đẩy nguyên liệu, tăng nhân lực); >100% vượt buffer: báo khách hàng, ghi nhận nguyên nhân."
+    example:
+      inputs: {consumed: 2.4, total: 3}
+      steps: ["DH-101: 0,6/3 = 20% Xanh; DH-102: 1,5/3 = 50% Vàng", "DH-103: 2,4/3 = 80% Đỏ; DH-104: 3,3/3 = 110% vượt buffer"]
+      result: "80% (Đỏ)"
+  - id: "m09_project_buffer_50"
+    name_vi: "Project Buffer theo quy tắc 50% (CCPM)"
+    name_en: "CCPM project buffer, 50% rule"
+    expression_latex: 'B = 50\% \times \sum_i \tfrac{1}{2} s_i, \qquad \text{Lịch} = \sum \tfrac{1}{2}s_i + B'
+    expression_python: "(sum(s) * 0.5, sum(s) * 0.5 * 0.5, sum(s) * 0.5 * 1.5)"
+    variables:
+      - {symbol: "s", meaning: "Danh sách ước lượng 'an toàn' của từng nhiệm vụ trên chuỗi tới hạn", unit: "ngày"}
+    when_to_use: "Thiết lập lịch dự án CCPM: cắt ước lượng 50%, gom dự phòng thành một buffer cuối chuỗi."
+    why_it_works: "Dự phòng ẩn bị lãng phí bởi Student Syndrome/Parkinson; gom chung có hiệu quả vì rủi ro các nhiệm vụ không xảy ra cùng lúc. Kết quả rút ngắn lịch ~25% so với tổng ước lượng an toàn."
+    assumptions: ["Ước lượng tích cực = 50% ước lượng an toàn (khoảng 50% khả năng hoàn thành).", "Văn hóa không phạt người báo trễ."]
+    pitfalls: ["Phạt người báo trễ khiến họ giấu dự phòng như cũ.", "Giám sát mốc từng nhiệm vụ thay vì buffer."]
+    interpretation: "Chuỗi 10, 8, 12, 6, 14 (an toàn 50): cắt còn 25, buffer 12,5, lịch 37,5 ngày (ngắn hơn 25%)."
+    example:
+      inputs: {s: [10, 8, 12, 6, 14]}
+      steps: ["Tổng an toàn = 50 ngày; cắt 50% = 25 ngày", "Project Buffer = 25 x 50% = 12,5 ngày", "Lịch = 25 + 12,5 = 37,5 ngày; giám sát: dùng 7 ngày buffer -> 7/12,5 = 56% (Vàng)"]
+      result: "Buffer 12,5 ngày; lịch 37,5 ngày"
+  - id: "m09_project_buffer_rss"
+    name_vi: "Project Buffer theo căn bậc hai tổng bình phương (RSS)"
+    name_en: "CCPM buffer, Root Sum of Squares"
+    expression_latex: 'B = \sqrt{\sum_i d_i^2}, \quad d_i = \text{phần cắt của nhiệm vụ } i'
+    expression_python: "sum(d_i ** 2 for d_i in d) ** 0.5"
+    variables:
+      - {symbol: "d", meaning: "Phần bị cắt của từng nhiệm vụ (an toàn - tích cực)", unit: "ngày"}
+    when_to_use: "Cách tính chặt chẽ hơn quy tắc 50%, đặc biệt chuỗi dài nhiều nhiệm vụ."
+    why_it_works: "Rủi ro ngẫu nhiên từng nhiệm vụ không xảy ra cùng lúc nên buffer tổng không cần bằng tổng cộng đơn thuần (cộng các phương sai)."
+    assumptions: ["Các rủi ro độc lập tương đối."]
+    pitfalls: ["Rủi ro tương quan (cùng nhà cung cấp/nguồn lực) làm RSS đánh giá thấp."]
+    interpretation: "Với chuỗi 5 nhiệm vụ cho 11,6 ngày (gần 12,5); chuỗi 4 nhiệm vụ Boeing minh họa cho 18,5 (gần 18)."
+    example:
+      inputs: {d: [5, 4, 6, 3, 7]}
+      steps: ["sqrt(25+16+36+9+49) = sqrt(135) = 11,62 ngày"]
+      result: "11,6 ngày"
+  - id: "m09_oee"
+    name_vi: "Hiệu suất tổng thể thiết bị (OEE)"
+    name_en: "Overall Equipment Effectiveness"
+    expression_latex: 'OEE = A \times P \times Q, \quad A = \frac{t_{chay}}{t_{kehoach}},\ P = \frac{q_{thuc}}{q_{lytuong}},\ Q = \frac{q_{dat}}{q_{thuc}}'
+    expression_python: "(t_run / t_plan) * (q_actual / q_ideal) * (q_good / q_actual)"
+    excel: "=B1*B2*B3"
+    variables:
+      - {symbol: "t_run", meaning: "Thời gian chạy thực (sau dừng máy, chuyển đổi)", unit: "phút"}
+      - {symbol: "t_plan", meaning: "Thời gian kế hoạch", unit: "phút"}
+      - {symbol: "q_actual", meaning: "Sản lượng thực trong thời gian chạy", unit: "sp"}
+      - {symbol: "q_ideal", meaning: "Sản lượng lý tưởng trong thời gian chạy (tốc độ lý tưởng x t_run)", unit: "sp"}
+      - {symbol: "q_good", meaning: "Số sản phẩm đạt", unit: "sp"}
+    when_to_use: "Chỉ đo TẠI RÀNG BUỘC để tìm dư địa Exploit (A: dừng máy; P: chạy chậm; Q: lỗi)."
+    why_it_works: "Tách thất thoát thành 3 nhóm độc lập để biết nhóm nào lớn nhất; vì giờ mất ở ràng buộc là mất của cả hệ thống nên OEE ở đây trực tiếp quy ra T."
+    assumptions: ["Có tốc độ lý tưởng chuẩn.", "OEE tương đương sản phẩm đạt / sản lượng lý tưởng cả ca."]
+    pitfalls: ["Đo và thưởng OEE ở mọi máy khiến công đoạn không-ràng-buộc chạy thừa."]
+    interpretation: "Benchmark tham khảo trong nguồn: OEE tại ràng buộc > 85% (cần kiểm chứng). Ví dụ 75% nghĩa là mất 25% công suất lý thuyết; ưu tiên cải thiện P (mất 15%) và A (mất 10%)."
+    example:
+      inputs: {t_run: 432, t_plan: 480, q_actual: 367, q_ideal: 432, q_good: 360}
+      steps: ["A = 432/480 = 90%", "P = 367/432 = 85%", "Q = 360/367 = 98%", "OEE = 0,90 x 0,85 x 0,98 ~ 75% (kiểm: 360/480 = 75%)"]
+      result: "OEE = 75%"
+  - id: "m09_elevate_payback"
+    name_vi: "Thời gian hoàn vốn của quyết định Elevate"
+    name_en: "Payback of an Elevate investment"
+    expression_latex: '\text{Hoàn vốn} = \frac{\text{Vốn đầu tư}}{\Delta T - \Delta OE}'
+    expression_python: "capex / (delta_t - delta_oe)"
+    excel: "=B1/(B2-B3)"
+    variables:
+      - {symbol: "capex", meaning: "Vốn đầu tư nâng cấp ràng buộc", unit: "VNĐ"}
+      - {symbol: "delta_t", meaning: "Throughput tăng thêm mỗi kỳ", unit: "VNĐ/kỳ"}
+      - {symbol: "delta_oe", meaning: "OE tăng thêm mỗi kỳ (khấu hao, vận hành)", unit: "VNĐ/kỳ"}
+    when_to_use: "Trước mọi khoản Elevate; so với Exploit và với phương án đầu tư sai chỗ."
+    why_it_works: "Lợi ích thật là Throughput tăng thêm trừ chi phí vận hành tăng, vì tiền đầu tư chỉ có giá trị nếu ràng buộc được giải phóng và có đơn hàng để bán."
+    assumptions: ["Nhu cầu đủ để bán phần tăng thêm; đủ nguyên liệu; ràng buộc dịch chuyển sau Elevate nên T tăng bị chặn bởi ràng buộc mới."]
+    pitfalls: ["Đầu tư vào công đoạn không phải ràng buộc (Delta T = 0).", "Quên rằng ràng buộc mới giới hạn mức tăng."]
+    interpretation: "Case gỗ: buồng sơn 900 triệu hoàn vốn ~1,02 tháng; CNC 3,2 tỷ sai chỗ làm NP giảm 63,3 triệu/tháng. Case inox: laser 2 hoàn vốn ~10 tuần."
+    example:
+      inputs: {capex: 600, delta_t: 63.6, delta_oe: 3.5}
+      steps: ["Laser thứ hai (triệu VNĐ): Delta T = 149,6 - 86 = 63,6 /tuần", "Trừ OE tăng 3,5 -> ròng 60,1/tuần", "Hoàn vốn = 600 / 60,1 ~ 9,98 tuần"]
+      result: "~10 tuần"
+  - id: "m09_inventory_release_value"
+    name_vi: "Vốn giải phóng và tiết kiệm lãi do giảm tồn kho"
+    name_en: "Capital released by WIP/inventory reduction"
+    expression_latex: '\text{Vốn giải phóng} = \Delta WIP \times v, \qquad \text{Tiết kiệm lãi} = \text{Vốn giải phóng} \times r'
+    expression_python: "(d_wip * unit_value, d_wip * unit_value * rate)"
+    variables:
+      - {symbol: "d_wip", meaning: "Lượng WIP/tồn kho giảm", unit: "đơn vị"}
+      - {symbol: "unit_value", meaning: "Giá trị vốn mỗi đơn vị WIP", unit: "VNĐ/đơn vị"}
+      - {symbol: "rate", meaning: "Lãi suất vốn vay", unit: "%/năm"}
+    when_to_use: "Định lượng lợi ích tài chính của Subordinate/DBR hoặc Replenishment."
+    why_it_works: "Tồn kho là tiền chết; giảm WIP giải phóng tiền mặt và tiết kiệm chi phí vốn."
+    assumptions: ["Giá trị WIP và lãi vay giả định; chưa tính lợi ích khác (điện, tăng ca, hư hỏng)."]
+    pitfalls: ["Quên rằng vốn giải phóng chỉ có giá trị khi thực sự trả nợ hoặc dùng tốt hơn."]
+    interpretation: "Dệt may: giảm 142 tấn x 60 triệu = 8.520 triệu, lãi 11% -> ~937 triệu/năm. Cửa hàng tiện lợi: giá vốn 600 triệu/ngày x 5 ngày = 3.000 triệu, lãi 11% -> 330 triệu/năm."
+    example:
+      inputs: {d_wip: 142, unit_value: 60, rate: 0.11}
+      steps: ["142 x 60 = 8.520 triệu", "8.520 x 11% = 937,2 triệu/năm"]
+      result: "8.520 triệu vốn; 937,2 triệu/năm"
+  - id: "m09_dbm_replenishment_buffer"
+    name_vi: "Buffer bổ sung và điều chỉnh động (DBM)"
+    name_en: "Replenishment buffer and DBM adjustment"
+    expression_latex: 'B = d \times L \times k, \qquad B_{moi} \approx \tfrac{4}{3} B \ (\text{khi liên tiếp vùng Đỏ})'
+    expression_python: "(d * L * k, d * L * k * 4 / 3)"
+    variables:
+      - {symbol: "d", meaning: "Tiêu thụ trung bình mỗi ngày", unit: "đơn vị/ngày"}
+      - {symbol: "L", meaning: "Thời gian bổ sung từ kho trung tâm", unit: "ngày"}
+      - {symbol: "k", meaning: "Hệ số an toàn", unit: "-"}
+    when_to_use: "Thiết lập buffer cho từng mặt hàng/điểm bán; chia vùng 1/3 (Xanh >= 2/3 buffer, Vàng 1/3-2/3, Đỏ < 1/3 buffer)."
+    why_it_works: "Bổ sung theo tiêu thụ thực tế thay dự báo; gom buffer ở kho trung tâm nơi biến động nhỏ hơn; DBM dùng dữ liệu để tăng/giảm buffer."
+    assumptions: ["Hệ số an toàn 2 là giả định minh họa của nguồn."]
+    pitfalls: ["Đặt buffer cố định mãi; không điều chỉnh khi nhu cầu đổi."]
+    interpretation: "Nước suối 500ml: 18 x 1 x 2 = 36 chai (Xanh >= 24, Vàng 12-24, Đỏ < 12). Nhu cầu tăng lên 27/ngày, 2 chu kỳ liên tiếp Đỏ -> 36 x 4/3 = 48 (mức cần ~ 27 x 1 x 2 = 54)."
+    example:
+      inputs: {d: 18, L: 1, k: 2}
+      steps: ["B = 18 x 1 x 2 = 36 chai", "DBM tăng 1/3: 36 x 4/3 = 48 chai"]
+      result: "36 chai; sau DBM 48 chai"
+
+frameworks:
+  - id: "m09_five_focusing_steps"
+    name_vi: "Năm bước tập trung của TOC"
+    name_en: "Five Focusing Steps"
+    origin: "Goldratt (từ thời OPT cuối thập niên 1970, phổ biến qua 'The Goal' 1984). Ra đời để cải tiến không dàn trải: đi từ rẻ nhất đến đắt nhất và không dừng lại."
+    components:
+      - "1. Identify: tìm ràng buộc (năng lực nhỏ nhất so với nhu cầu; nơi hàng chờ tích tụ; công đoạn sau nhàn rỗi; tăng ca thường xuyên)."
+      - "2. Exploit: lấy tối đa từ ràng buộc hiện có mà không đầu tư thêm (không để đói việc, không làm hàng lỗi, không chạy sản phẩm T/CU thấp khi còn đơn T/CU cao hơn, giảm chuyển đổi, nghỉ trưa luân phiên)."
+      - "3. Subordinate: mọi công đoạn khác phục vụ nhịp ràng buộc (không sản xuất vượt ràng buộc, nhàn rỗi có chủ đích, bảo vệ bằng buffer)."
+      - "4. Elevate: chỉ khi Exploit+Subordinate chưa đủ mới đầu tư (máy, ca, nhân sự, thuê ngoài) và phải tính ROI/hoàn vốn."
+      - "5. Repeat: ràng buộc cũ bị phá thì ràng buộc mới xuất hiện (có thể là thị trường); quay lại bước 1, cảnh giác quán tính chính sách."
+    when_to_use: "Mọi bài toán cải tiến năng lực/dòng chảy; luôn là khung chính của module."
+    how_to_apply:
+      - "Vẽ dòng chảy, đo năng lực thực từng công đoạn, so với nhu cầu."
+      - "Kết luận ràng buộc bằng dữ liệu và kiểm chứng bằng nơi hàng chờ."
+      - "Liệt kê và định lượng các hành động Exploit miễn phí; thực hiện."
+      - "Đặt DBR để các công đoạn khác theo nhịp; đổi chỉ tiêu thưởng."
+      - "Nếu vẫn thiếu năng lực và có nhu cầu: tính Delta T, chi phí, hoàn vốn rồi mới Elevate."
+      - "Lặp lại, đưa vòng lặp vào họp vận hành định kỳ."
+    how_to_read_results: "Ví dụ A-B-C-D: Exploit nâng C 75 -> 82 cho đầu ra min(120,90,82,100,nhu cầu 80) = 80; Delta T = 5 x 40.000 x 8 x 26 = 41,6 triệu/tháng; Elevate không cần; ràng buộc mới là thị trường."
+    pitfalls: ["Nhảy thẳng Elevate.", "Dừng sau khi giải quyết một ràng buộc.", "Bỏ qua ràng buộc thị trường/chính sách."]
+    example: "Xưởng in TP.HCM: Exploit chuyển đổi/chờ vật tư làm năng lực +23%, tránh mua máy hàng tỷ."
+  - id: "m09_throughput_accounting"
+    name_vi: "Kế toán Throughput (T, I, OE, T/CU)"
+    name_en: "Throughput Accounting"
+    origin: "Goldratt; Galloway & Waldron hệ thống hóa thành phương pháp kế toán quản trị (cuối thập niên 1980). Phản ứng với Cost Accounting đầu thế kỷ 20 phân bổ chi phí lên từng sản phẩm."
+    components:
+      - "Đơn vị phân tích: T, I, OE của cả hệ thống (không phải giá thành đơn vị)."
+      - "Nhân công trực tiếp thường là OE."
+      - "Product mix theo T/CU; tồn kho là gánh nặng; chỉ chạy khi tạo T, chấp nhận nhàn rỗi ở công đoạn không-ràng-buộc."
+    when_to_use: "Quyết định product mix, đánh giá đầu tư, so sánh đòn bẩy T/OE/I."
+    how_to_apply: ["Tính T từng sản phẩm = giá - NVL.", "Tính T/CU = T / phút tại ràng buộc.", "Xếp hạng và phân bổ phút ràng buộc.", "Kiểm tải công đoạn khác.", "NP = tổng T - OE."]
+    how_to_read_results: "Xưởng inox: ưu tiên theo T/CU cho T 86 triệu/tuần so với 64,04 triệu theo lãi gộp lớn nhất; lợi ích ~22 triệu/tuần."
+    pitfalls: ["Dùng khi ràng buộc không phải vật lý.", "Bỏ qua khách hàng chiến lược cần cả danh mục."]
+    example: "Cost Accounting xếp Bàn sơ chế đầu (T/đơn vị 1.200k, 60%); Throughput Accounting xếp Bàn cuối (26,67 k/phút)."
+  - id: "m09_dbr"
+    name_vi: "Drum-Buffer-Rope"
+    name_en: "Drum-Buffer-Rope"
+    origin: "Goldratt, 'The Haystack Syndrome' (1990) và các quy tắc OPT; thay lập lịch đẩy bằng kéo có kiểm soát quanh ràng buộc."
+    components:
+      - "Drum: lịch trình ràng buộc (sản phẩm nào, lô nào, lúc nào)."
+      - "Buffer: vùng bảo vệ bằng thời gian trước ràng buộc; ba loại Constraint/Shipping/Assembly Buffer."
+      - "Rope: tín hiệu phát nguyên liệu vào theo đúng nhịp Drum, giữ WIP ổn định."
+    when_to_use: "Sau Identify, để Subordinate: ngăn tràn hàng sang công đoạn chậm, bảo vệ ràng buộc khỏi đói việc."
+    how_to_apply:
+      - "Lập lịch chi tiết cho ràng buộc (Drum)."
+      - "Đặt buffer thời gian trước ràng buộc (khởi đầu ~50% lead time hiện tại, chỉnh theo dữ liệu)."
+      - "Phát liệu theo nhịp Drum, không sớm hơn quá buffer (Rope)."
+      - "Theo dõi Buffer Penetration (Xanh/Vàng/Đỏ)."
+    how_to_read_results: "Ford (minh họa): thay vì +224 xe dở dang mỗi ca, buffer cố định 92 xe (2 giờ x 46). Dệt may: lead time chờ 13,3 -> 1,5 ngày. Inox: buffer 480 phút laser (Xanh >= 320, Vàng 160-320, Đỏ < 160)."
+    pitfalls: ["Rope phát liệu sớm hơn nhịp.", "Không giải thích cho bộ phận bị giảm tốc."]
+    example: "Dệt chạy đúng 12 tấn/ngày theo nhịp nhuộm thay vì 20; vốn giải phóng ~8,5 tỷ (minh họa)."
+  - id: "m09_buffer_management"
+    name_vi: "Quản lý bộ đệm (Xanh/Vàng/Đỏ)"
+    name_en: "Buffer Management"
+    origin: "Phần của hệ DBR (Goldratt), sau mở rộng sang CCPM và Replenishment."
+    components: ["Xanh 0-33%: an toàn.", "Vàng 33-66%: cảnh báo.", "Đỏ 66-100%: nguy hiểm.", "Pareto nguyên nhân tiêu hao buffer."]
+    when_to_use: "Điều hành hằng ngày lệnh sản xuất/đơn hàng/dự án."
+    how_to_apply: ["Mỗi đơn có tổng buffer.", "Tính % tiêu hao hằng ngày.", "Gán vùng và hành động.", "Ghi nguyên nhân tiêu hao, làm Pareto vài tuần."]
+    how_to_read_results: "Đơn tiêu hao 20%/50%/80% của buffer 3 ngày lần lượt Xanh/Vàng/Đỏ; Đỏ phải đẩy NVL, tăng nhân lực."
+    pitfalls: ["Giám sát tiến độ từng công đoạn thay vì buffer."]
+    example: "Template báo cáo hàng ngày DH-101..DH-104 (mục 5.3 nguồn)."
+  - id: "m09_ccpm"
+    name_vi: "Quản trị dự án chuỗi tới hạn (CCPM)"
+    name_en: "Critical Chain Project Management"
+    origin: "Goldratt, 'Critical Chain' (1997); áp dụng TOC cho dự án, khắc phục hành vi ước lượng dư thừa."
+    components:
+      - "Cắt ước lượng ~50% (khả năng hoàn thành ~50%)."
+      - "Project Buffer cuối Critical Chain (50% chuỗi đã cắt hoặc RSS)."
+      - "Feeding Buffer ở nhánh phụ nối vào chuỗi tới hạn."
+      - "Chuỗi tới hạn tính cả ràng buộc nguồn lực; relay-race; giảm đa nhiệm."
+    when_to_use: "Dự án luôn trễ, nhiều dự án chạy song song chia sẻ nguồn lực."
+    how_to_apply: ["Xác định chuỗi nhiệm vụ dài nhất kể cả nguồn lực.", "Lấy ước lượng an toàn, cắt 50%.", "Tính Project Buffer (50% hoặc RSS) và Feeding Buffer.", "Bỏ mốc hạn cứng từng nhiệm vụ.", "Theo dõi % tiêu hao Project Buffer; xong sớm thì bàn giao ngay."]
+    how_to_read_results: "Chuỗi 20,16,24,12 (72 ngày an toàn): cắt 36, buffer 18, lịch 54 (rút 25%). Sau 3 nhiệm vụ dùng 38 so với kế hoạch 30: 8/18 = 44% Vàng; 12/18 = 67% Đỏ."
+    pitfalls: ["Văn hóa phạt báo trễ làm giấu dự phòng.", "Đa nhiệm."]
+    example: "Boeing (minh họa nguyên lý; không phải số liệu công bố)."
+  - id: "m09_thinking_processes"
+    name_vi: "Công cụ tư duy logic: CRT, Evaporating Cloud, FRT"
+    name_en: "Thinking Processes"
+    origin: "Goldratt, 'It's Not Luck' (1994)."
+    components:
+      - "CRT (Current Reality Tree): truy ngược từ UDE theo nhân-quả tới nguyên nhân gốc (thường ràng buộc chính sách)."
+      - "Evaporating Cloud: 5 ô (Mục tiêu chung A <- Nhu cầu B và C <- Hành động D và D' mâu thuẫn); làm lộ giả định sai ở mỗi mũi tên và phá vỡ để mâu thuẫn tan."
+      - "FRT (Future Reality Tree): dự đoán hiệu ứng mong muốn và nhánh tiêu cực của giải pháp trước khi triển khai."
+    when_to_use: "Ràng buộc chính sách; mâu thuẫn chi phí-chất lượng; kiểm chứng giải pháp."
+    how_to_apply: ["Liệt kê UDE.", "Vẽ chuỗi nhân-quả ngược tới gốc (CRT).", "Viết đám mây mâu thuẫn, liệt kê giả định, phá một giả định.", "Dựng FRT, tìm nhánh tiêu cực trước khi làm."]
+    how_to_read_results: "UDE 'đơn nhỏ bị trễ' <- 'lô tối thiểu 500 cái' <- chính sách 'chạy lô lớn để giảm giá thành đơn vị' (nguyên nhân gốc)."
+    pitfalls: ["Dùng CRT cho ràng buộc vật lý đo được thì thừa."]
+    example: "Bài 10: giả định sai 'chất lượng chỉ đến từ thêm người'; phá bằng chuẩn hóa quy trình tại khâu ràng buộc."
+  - id: "m09_replenishment_dbm"
+    name_vi: "Giải pháp bổ sung hàng và DBM"
+    name_en: "Replenishment Solution & Dynamic Buffer Management"
+    origin: "Goldratt mở rộng TOC sang chuỗi cung ứng/bán lẻ."
+    components: ["Buffer tập trung kho trung tâm.", "Bổ sung theo tiêu thụ thực tế.", "Chia vùng Xanh/Vàng/Đỏ cho tồn mỗi điểm bán.", "DBM: Đỏ liên tiếp +1/3; Xanh cả chu kỳ giảm."]
+    when_to_use: "Chuỗi nhiều điểm bán vừa hết vừa dư hàng; nên có phần mềm APS khi quy mô lớn."
+    how_to_apply: ["Đặt buffer = tiêu thụ x thời gian bổ sung x hệ số an toàn.", "Mỗi ngày gửi đúng lượng bán hôm trước.", "Điều chỉnh buffer theo vùng."]
+    how_to_read_results: "Cửa hàng tiện lợi (giả định): hết hàng 8,5% -> 3,2%; tồn 14 -> 9 ngày; vốn giải phóng 3 tỷ, tiết kiệm lãi 330 triệu/năm; T thu hồi ~1.548 triệu/năm."
+    pitfalls: ["Đặt theo dự báo từng điểm.", "Không dùng dữ liệu để chỉnh buffer."]
+    example: "Nước suối 500ml: buffer 36 chai -> 48 chai sau DBM."
+  - id: "m09_constraint_types"
+    name_vi: "Phân loại ràng buộc"
+    name_en: "Constraint taxonomy"
+    origin: "Phân loại thực hành của TOC (vật lý, thị trường, chính sách, nguồn lực)."
+    components: ["Vật lý", "Thị trường", "Chính sách", "Nguồn lực"]
+    when_to_use: "Sau Identify để chọn công cụ xử lý phù hợp."
+    how_to_apply: ["Hỏi: công suất sử dụng bao nhiêu % so với doanh số? (thấp -> thị trường).", "Hỏi: có quy tắc/chỉ tiêu nào ép hành vi sai? (chính sách).", "Hỏi: có kỹ năng/người/vốn hiếm? (nguồn lực)."]
+    how_to_read_results: "Bao bì Bình Dương: sử dụng 64% công suất -> ràng buộc là thị trường; đầu tư bán hàng thay vì máy mới."
+    pitfalls: ["Mặc định mọi ràng buộc là vật lý."]
+    example: "Vật lý/nguồn lực -> 5 bước; thị trường -> bán hàng/giá; chính sách -> CRT/Evaporating Cloud."
+  - id: "m09_tls"
+    name_vi: "TOC so với Lean và Six Sigma; kết hợp TLS"
+    name_en: "TOC vs Lean vs Six Sigma / TLS"
+    origin: "Kết hợp thực hành TOC-Lean-Six Sigma."
+    components:
+      - "TOC: tập trung 100% vào ràng buộc; thấy kết quả nhanh; rủi ro bỏ sót vấn đề ở nơi không phải ràng buộc."
+      - "Lean: loại bỏ lãng phí (Muda) toàn bộ quy trình; trung bình; rủi ro tối ưu cục bộ nếu không xác định ràng buộc trước."
+      - "Six Sigma: giảm biến động/lỗi bằng thống kê; chậm hơn; rủi ro phân tích tốn thời gian cho vấn đề không quan trọng."
+    when_to_use: "Chọn thứ tự cải tiến: TOC trước để chọn điểm, Lean/Six Sigma sau để cải tiến tại điểm đó."
+    how_to_apply: ["Identify ràng buộc bằng TOC.", "Dùng SMED giảm chuyển đổi (Lean) và Six Sigma giảm lỗi tại ràng buộc.", "Repeat."]
+    how_to_read_results: "Ví dụ máy in là ràng buộc: SMED + giảm in lỗi đúng tại máy in thay vì rải khắp xưởng."
+    pitfalls: ["Triển khai Lean/Six Sigma dàn trải trước khi chọn điểm."]
+    example: "TOC trả lời 'ở đâu'; Lean/Six Sigma trả lời 'bằng cách nào'."
+  - id: "m09_sme_rollout"
+    name_vi: "Lộ trình triển khai TOC cho SME"
+    name_en: "SME rollout roadmap"
+    origin: "Khuyến nghị thực hành của tài liệu nguồn."
+    components: ["Vẽ dòng chảy + đo năng lực.", "Exploit trước (miễn phí).", "Subordinate.", "Đo kết quả (sản lượng, lead time, T, NP).", "Elevate khi đã hết dư địa miễn phí."]
+    when_to_use: "SME tự triển khai bằng bảng tính và quan sát trực tiếp."
+    how_to_apply: ["Thực hiện lần lượt các thành phần; mỗi bước có người chịu trách nhiệm và số liệu."]
+    how_to_read_results: "Exploit: vốn rất thấp, rủi ro thấp, vài tuần; Subordinate: vốn thấp, rủi ro thấp-trung bình (phản ứng nhân viên); Elevate: vốn cao, chậm (vài tháng-năm), rủi ro cao nếu sai ràng buộc."
+    pitfalls: ["Không đo kết quả trước Elevate."]
+    example: "Đầu tư sai chỗ 3,2 tỷ vs đúng chỗ 900 triệu hoàn vốn ~1 tháng (case gỗ)."
+
+procedures:
+  - id: "m09_proc_identify"
+    name: "Xác định ràng buộc (Identify) bằng dữ liệu"
+    steps:
+      - "Vẽ sơ đồ dòng chảy (Process Flow)."
+      - "Thu thập năng lực thực tế từng công đoạn (không dùng công suất danh nghĩa)."
+      - "Lập bảng: năng lực, nhu cầu/dòng chảy, tỷ lệ sử dụng, là ràng buộc?"
+      - "Kiểm chứng: hàng chờ dài trước nó, công đoạn sau nhàn rỗi, tăng ca thường xuyên."
+      - "Nếu tổng năng lực đủ nhưng chờ vẫn dài: kiểm tra phân bố tải theo giờ (phòng khám)."
+      - "Nếu sử dụng công suất thấp (~64%): nghi ràng buộc thị trường/chính sách."
+      - "Phân loại ràng buộc."
+    outputs: "Ràng buộc đã xác định, loại, và bằng chứng dữ liệu."
+  - id: "m09_proc_exploit"
+    name: "Khai thác ràng buộc (Exploit) miễn phí"
+    steps:
+      - "Đo cách ràng buộc dùng thời gian (chuyển đổi, chờ vật tư, chờ duyệt, dừng máy, lỗi)."
+      - "Chuẩn bị sẵn nguyên liệu/khuôn/bản vẽ trong lúc ràng buộc đang chạy (SMED, thao tác ngoại)."
+      - "Gộp đơn cùng loại để giảm chuyển đổi; nghỉ trưa luân phiên."
+      - "Kiểm chất lượng trước ràng buộc để không cắt/chế biến lỗi."
+      - "Dồn việc không cần kỹ năng hiếm ra khỏi tay người ràng buộc (bếp trưởng)."
+      - "Chọn sản phẩm T/CU cao nhất cho thời gian ràng buộc."
+      - "Định lượng Delta T, kiểm đủ nhu cầu."
+    outputs: "Năng lực ràng buộc tăng, Delta T, chi phí ~0."
+  - id: "m09_proc_subordinate_dbr"
+    name: "Phụ thuộc hóa bằng DBR (Subordinate)"
+    steps:
+      - "Đặt Drum = lịch ràng buộc."
+      - "Đặt Rope: phát liệu theo nhịp ràng buộc, không theo năng lực công đoạn đầu."
+      - "Đặt buffer thời gian (khởi đầu ~50% lead time, chỉnh theo dữ liệu)."
+      - "Kiểm tải công đoạn khác dưới 100% với mix mới."
+      - "Đổi chỉ tiêu thưởng sang 'giao đúng nhịp'; truyền thông nhàn rỗi có chủ đích."
+      - "Theo dõi Buffer Penetration hằng ngày."
+    outputs: "WIP cố định, lead time ngắn, vốn giải phóng."
+  - id: "m09_proc_product_mix"
+    name: "Quyết định product mix theo T/CU"
+    steps:
+      - "Tính T = giá - NVL, T/CU = T / phút ràng buộc cho mỗi sản phẩm."
+      - "Nạp tải nếu làm đủ nhu cầu để xác nhận ràng buộc (>100%)."
+      - "Xếp hạng T/CU giảm dần, phân bổ phút theo nhu cầu tối đa."
+      - "Kiểm tải các công đoạn khác."
+      - "So sánh với phương án truyền thống (lãi gộp)."
+      - "Cân nhắc tăng giá sản phẩm T/CU thấp hoặc chỉ nhận khi ràng buộc rảnh; cân nhắc khách chiến lược."
+    outputs: "Mix tối ưu, T và NP kỳ."
+  - id: "m09_proc_elevate_decision"
+    name: "Ra quyết định Elevate"
+    steps:
+      - "Xác nhận Exploit/Subordinate đã hết dư địa và nhu cầu vẫn dư."
+      - "Tính đầu ra mới bằng min(năng lực, nhu cầu) với ràng buộc mới."
+      - "Tính Delta T, Delta OE (khấu hao, vận hành), ROI, hoàn vốn."
+      - "So sánh các phương án (đúng chỗ vs sai chỗ), chọn theo hoàn vốn và rủi ro."
+      - "Lập kế hoạch Repeat: ràng buộc kế tiếp."
+    outputs: "Quyết định đầu tư kèm hoàn vốn."
+  - id: "m09_proc_ccpm"
+    name: "Lập lịch dự án CCPM"
+    steps:
+      - "Xác định chuỗi tới hạn (nhiệm vụ + nguồn lực)."
+      - "Thu ước lượng an toàn, cắt ~50%."
+      - "Tính Project Buffer (50% hoặc RSS), Feeding Buffer."
+      - "Bỏ mốc hạn từng nhiệm vụ, áp dụng relay-race, giảm đa nhiệm."
+      - "Theo dõi % tiêu hao buffer theo vùng Xanh/Vàng/Đỏ."
+    outputs: "Lịch dự án ngắn hơn ~25% và buffer chung."
+  - id: "m09_proc_replenishment"
+    name: "Triển khai Replenishment và DBM"
+    steps:
+      - "Gom buffer tại kho trung tâm."
+      - "Đặt buffer điểm bán = tiêu thụ x thời gian bổ sung x hệ số an toàn."
+      - "Chia vùng Xanh/Vàng/Đỏ."
+      - "Bổ sung mỗi ngày đúng lượng đã bán."
+      - "DBM: Đỏ liên tiếp +1/3, Xanh cả chu kỳ giảm."
+      - "Đo OOS, ngày tồn, vốn giải phóng."
+    outputs: "Giảm hết hàng và tồn kho."
+  - id: "m09_proc_repeat"
+    name: "Lặp lại và chống quán tính"
+    steps:
+      - "Sau mỗi thay đổi, tính lại min(năng lực, nhu cầu)."
+      - "Xác định ràng buộc mới (có thể thị trường)."
+      - "Rà soát chính sách/chỉ tiêu thiết lập cho ràng buộc cũ."
+      - "Đưa vòng lặp vào họp vận hành định kỳ."
+    outputs: "Vòng cải tiến liên tục."
+
+decision_rules:
+  - "Nếu đầu ra hệ thống = min(năng lực các công đoạn) nhỏ hơn nhu cầu thì công đoạn nhỏ nhất là ràng buộc; nếu nhu cầu nhỏ hơn mọi năng lực thì ràng buộc là thị trường."
+  - "Nếu hàng chờ tích tụ trước một công đoạn và công đoạn sau nhàn rỗi thì nghi công đoạn đó là ràng buộc; kiểm chứng bằng dữ liệu trước khi duyệt đầu tư."
+  - "Nếu chủ DN muốn mua máy ở công đoạn chưa phải ràng buộc thì Delta T = 0: không duyệt; chỉ đầu tư vào ràng buộc đã xác định (case CNC: NP giảm 63,3 triệu/tháng)."
+  - "Nếu còn dư địa Exploit (chuyển đổi, chờ vật tư, dừng máy, lỗi tại ràng buộc) thì làm Exploit trước khi cân nhắc Elevate."
+  - "Nếu nhiều sản phẩm dùng chung ràng buộc thì xếp theo T/CU giảm dần, không theo % lãi gộp hay T/đơn vị."
+  - "Nếu công đoạn không phải ràng buộc đang chạy vượt nhịp ràng buộc thì giảm tốc (Rope), chấp nhận nhàn rỗi có chủ đích và đổi chỉ tiêu thưởng."
+  - "Nếu sử dụng công suất thấp (ví dụ 64%) và chủ DN muốn mở rộng máy thì kiểm tra ràng buộc thị trường: đầu tư bán hàng/giá trước."
+  - "Nếu buffer penetration < 33% thì không can thiệp; 33-66% tìm nguyên nhân và chuẩn bị; > 66% hành động ngay; > 100% báo khách."
+  - "Nếu tổng năng lực đủ nhưng bệnh nhân/khách chờ dài thì xét phân bố tải theo giờ: hẹn lịch đều (Subordinate) trước khi mua thêm máy."
+  - "Nếu ràng buộc là người có kỹ năng hiếm thì dồn việc không cần kỹ năng đó cho người khác (Exploit) trước khi tuyển thêm."
+  - "Nếu dự án trễ dù từng nhiệm vụ ước lượng an toàn thì dùng CCPM: cắt ~50%, gom Project Buffer, theo dõi % tiêu hao buffer; kèm điều kiện không phạt người báo trễ."
+  - "Nếu ràng buộc dịch chuyển (Repeat) thì kiểm tra chính sách/chỉ tiêu cũ có thành ràng buộc chính sách mới không."
+  - "Nếu tồn kho điểm bán liên tiếp vùng Đỏ thì tăng buffer ~1/3; nếu cả chu kỳ vùng Xanh thì giảm buffer (DBM)."
+  - "Nếu Elevate: chỉ làm khi hoàn vốn = vốn/(Delta T - Delta OE) hợp lý và nhu cầu đã được xác nhận (tính cả sau Exploit)."
+  - "Nếu đo OEE: chỉ đo/thưởng tại ràng buộc, không thưởng OEE ở máy không-ràng-buộc."
+  - "Nếu muốn giảm kiểm tra chất lượng tại ràng buộc (kiểm theo rủi ro) thì cần dữ liệu tỷ lệ lỗi và thỏa thuận khách hàng; chất lượng giảm làm hàng trả về vượt lợi ích."
+
+benchmarks:
+  - {metric: "Chia vùng buffer", value: "Xanh 0-33%, Vàng 33-66%, Đỏ 66-100% tiêu hao", context: "Buffer Management; chia đều xấp xỉ 1/3", confidence: "medium"}
+  - {metric: "Buffer DBR khởi đầu", value: "~50% lead time hiện tại", context: "Hướng dẫn tham khảo, không phải quy luật tuyệt đối; chỉnh theo dữ liệu", confidence: "low"}
+  - {metric: "Project Buffer CCPM", value: "50% chuỗi đã cắt hoặc căn bậc hai tổng bình phương", context: "Quy tắc thực hành; cắt ước lượng ~50%", confidence: "medium"}
+  - {metric: "Rút ngắn lịch CCPM", value: "~25% so với tổng ước lượng an toàn", context: "Ví dụ minh họa (50 -> 37,5; 72 -> 54; 40 -> 30)", confidence: "low"}
+  - {metric: "OEE tại ràng buộc", value: "> 85%", context: "Benchmark tham khảo theo bảng KPI nguồn, cần kiểm chứng", confidence: "low"}
+  - {metric: "Tỷ lệ giao đúng hạn", value: "> 95%", context: "Mục tiêu tham khảo theo bảng KPI nguồn", confidence: "low"}
+  - {metric: "Tỷ lệ sử dụng ràng buộc", value: "gần 100%", context: "Dấu hiệu nhận diện và mục tiêu KPI", confidence: "medium"}
+  - {metric: "Hệ số an toàn buffer bổ sung", value: "2 (nước suối 500ml)", context: "Giả định minh họa của nguồn", confidence: "low"}
+  - {metric: "Điều chỉnh DBM", value: "tăng khoảng 1/3 khi liên tiếp vùng Đỏ", context: "Nguồn mô tả khoảng 1/3", confidence: "low"}
+  - {metric: "Chi phí đào tạo/tư vấn TOC cho SME", value: "5-20 triệu VNĐ", context: "Ước tính tham khảo, cần cập nhật báo giá", confidence: "low"}
+  - {metric: "Phần mềm CCPM", value: "hàng chục triệu VNĐ/năm", context: "Ước tính, cần cập nhật", confidence: "low"}
+  - {metric: "Phần mềm APS", value: "hàng trăm triệu đến hàng tỷ VNĐ", context: "Ước tính, cần cập nhật", confidence: "low"}
+
+pitfalls:
+  - "Xác định ràng buộc theo cảm tính (máy cũ nhất, khâu bận nhất) thay vì dữ liệu năng lực thực và nơi hàng chờ tích tụ."
+  - "Nhảy thẳng đến Elevate bỏ qua Exploit; đầu tư sai công đoạn (Delta T = 0)."
+  - "Không đồng bộ các bộ phận khác theo ràng buộc: tồn kho tăng ở công đoạn không-ràng-buộc."
+  - "Dừng sau khi giải quyết một ràng buộc; không Repeat, không chống quán tính."
+  - "Bỏ qua ràng buộc thị trường/chính sách; mua năng lực thừa."
+  - "Đo OEE/hiệu suất ở mọi máy và thưởng theo hiệu suất cục bộ."
+  - "Dùng công suất danh nghĩa thay vì năng lực thực."
+  - "Ưu tiên sản phẩm theo % lãi gộp hay giá thành phân bổ thay vì T/CU."
+  - "Dùng T/CU khi ràng buộc không phải vật lý hoặc quên khách hàng chiến lược."
+  - "Quên kiểm tải công đoạn khác sau khi đổi mix (chấn gấp 91,7% ở case inox)."
+  - "Thiếu cam kết lãnh đạo, không đổi chỉ tiêu thưởng nên nhân viên phản đối nhàn rỗi có chủ đích."
+  - "CCPM: phạt người báo trễ làm họ giấu dự phòng như cũ; vẫn giám sát từng nhiệm vụ thay vì buffer."
+  - "Tính T/OE/I ở kỳ khác nhau, hoặc coi tồn kho là tài sản để làm đẹp lợi nhuận."
+  - "Giảm kiểm tra chất lượng để tăng năng lực mà không có dữ liệu lỗi."
+  - "Tin số liệu giả định minh họa là số thật; số liệu quốc tế (Ford/Boeing/Amazon) chỉ minh họa nguyên lý."
+
+sme_vn_guidance:
+  - "Khởi đầu miễn phí: quan sát, bảng Excel/Google Sheets năng lực từng công đoạn và T/CU (chi phí 0). Tăng trưởng: đào tạo/tư vấn TOC 5-20 triệu VNĐ (ước tính, cần cập nhật báo giá)."
+  - "Phần mềm: CCPM chuyên dụng (ví dụ Realization/Concerto) hàng chục triệu VNĐ/năm; mô phỏng (Simul8, FlexSim) hàng chục triệu/năm; APS (SAP APO/Oracle APS) hàng trăm triệu đến hàng tỷ - chỉ cần khi ràng buộc dịch chuyển nhiều lần, nhiều kho/điểm bán, nhiều dự án song song (giá cần xác nhận báo giá hiện hành)."
+  - "SME tập trung Exploit; doanh nghiệp lớn dùng đủ 5 bước kèm APS. Lợi thế SME: ít tầng quản lý, thay đổi nhanh."
+  - "Việc đầu tiên cho chủ SME: đổi chỉ tiêu thưởng quản đốc từ 'hiệu suất máy' sang 'giao đúng nhịp'; giải thích bằng ví dụ của chính xưởng; cho nhân viên không ở ràng buộc hỗ trợ ràng buộc (đào tạo chéo)."
+  - "Dịch vụ/bán lẻ: ngân hàng (quầy hồ sơ vay phức tạp), phòng khám (máy xét nghiệm/phòng mổ/chẩn đoán hình ảnh), bán lẻ (thanh toán giờ cao điểm), nhà hàng (bếp trưởng/quầy bar)."
+  - "Lãi vay 11%/năm trong các ví dụ là giả định minh họa; cần thay bằng lãi suất thực tế của doanh nghiệp (cần xác nhận)."
+  - "Module này không có số liệu thuế/pháp lý VN; chi phí phần mềm/đào tạo đều là ước tính tham khảo."
+
+case_lessons:
+  - name: "Ford - dây chuyền lắp ráp, ràng buộc ở máy sơn (minh họa nguyên lý)"
+    type: "success"
+    setup: "Dây chuyền 5 công đoạn (dập 70, hàn 60, sơn 42, lắp ráp 55, kiểm tra 65 xe/giờ), nhu cầu 50 xe/giờ; đầu tư rải rác nhưng sản lượng không tăng. Số liệu minh họa, không phải số liệu công bố của Ford."
+    key_calculations:
+      - "Đầu ra = min(70,60,42,55,65) = 42 < 50 -> sơn là ràng buộc."
+      - "Tối ưu cục bộ: (10 + 18) x 8 = 224 xe dở dang/ca; x 2.500 USD = 560.000 USD/ca vốn chết."
+      - "Exploit: sơn 42 -> 46; Delta T = 4 x 8 x 4.000 = 128.000 USD/ca."
+      - "DBR: buffer 2 giờ x 46 = 92 xe thay vì +224 xe/ca; sử dụng dập 65,7%, hàn 76,7%."
+    lesson: "Tìm nơi hàng chờ tích tụ trước khi duyệt đầu tư; DBR biến WIP tăng liên tục thành mức cố định; sau Exploit ràng buộc kế tiếp có thể là lắp ráp (55)."
+    data_reliability: "illustrative"
+  - name: "Nhà máy dệt-nhuộm-may Việt Nam - ràng buộc ở nhuộm (minh họa)"
+    type: "success"
+    setup: "Dệt 20, nhuộm 12, may 16 tấn/ngày; dệt vẫn chạy 20 vì thưởng quản đốc gắn 'hiệu suất máy dệt 95%'. Không nêu tên doanh nghiệp."
+    key_calculations:
+      - "Đầu ra = min(20,12,16) = 12 tấn/ngày; tích lũy 8 tấn/ngày x 20 ngày = 160 tấn."
+      - "Little: LT = 160/12 = 13,3 ngày; DBR buffer 1,5 ngày x 12 = 18 tấn -> LT 1,5 ngày."
+      - "Giải phóng (160-18) x 60 triệu = 8.520 triệu; lãi 11% -> ~937 triệu/năm."
+    lesson: "Dệt cố ý chạy chậm làm chỉ số cục bộ giảm nhưng tiền cả doanh nghiệp tăng; phải đổi chỉ tiêu thưởng sang 'giao đủ đúng nhịp cho nhuộm'."
+    data_reliability: "illustrative"
+  - name: "Xưởng in TP.HCM - Exploit máy in offset cũ (SME)"
+    type: "sme"
+    setup: "1 máy in offset là ràng buộc, 480 phút/ca, 22 ngày/tháng, 8 đơn/ngày, OE 340 triệu/tháng, T/CU 60.000 VNĐ/phút. Chủ định mua máy mới hàng tỷ (ngoài khả năng tài chính)."
+    key_calculations:
+      - "Thời gian in thực 480 - 160 - 20 = 300 -> sau Exploit 480 - 96 - 15 = 369 phút (+23%)."
+      - "T: 396 -> 487,08 triệu/tháng (+91,08); NP: 56 -> 147,08 triệu (~+163%)."
+    lesson: "Gộp đơn, chuẩn bị khuôn/giấy khi máy đang chạy (SMED), duyệt mẫu trước: chi phí đầu tư gần 0; OE cố định nên T tăng chảy gần hết xuống NP. Chỉ Elevate khi Exploit hết dư địa."
+    data_reliability: "illustrative"
+  - name: "Doanh nghiệp đồ gỗ đầu tư CNC sai chỗ (thất bại)"
+    type: "failure"
+    setup: "Cắt 120, lắp ráp 150, sơn 90, đóng gói 140 bộ/ngày; mua CNC 3,2 tỷ vì 'cắt gỗ cũ nhất' mà không đo năng lực. T 1,2 triệu/bộ, 26 ngày, OE 2.100, I 12.000 (triệu)."
+    key_calculations:
+      - "Trước: đầu ra 90; T = 90 x 1,2 x 26 = 2.808; NP = 708; ROI 5,9%/tháng."
+      - "Sau CNC: vẫn 90; OE = 2.100 + 53,3 + 10 = 2.163,3; NP = 644,7; ROI = 644,7/15.200 = 4,24%."
+      - "Buồng sơn thứ hai 900 triệu: sơn 130 -> đầu ra 120; T = 3.744; OE 2.155; NP = 1.589; hoàn vốn 900/881 ~ 1,02 tháng."
+    lesson: "Ba lỗi: quyết định cảm tính, không đo năng lực từng công đoạn, nhảy thẳng Elevate. Quy trình đúng: vẽ dòng chảy -> đo -> quan sát hàng chờ -> chỉ đầu tư ràng buộc kèm Delta T và hoàn vốn."
+    data_reliability: "illustrative"
+  - name: "Phòng khám đa khoa - ràng buộc ở máy xét nghiệm (SME dịch vụ)"
+    type: "sme"
+    setup: "1 máy 10 mẫu/giờ (80/ngày); nhu cầu 16/giờ trong 3 giờ cao điểm và 6/giờ trong 5 giờ còn lại (78/ngày)."
+    key_calculations:
+      - "Hàng chờ cao điểm (16-10) x 3 = 18 mẫu; chờ cuối cao điểm 18/10 = 1,8 giờ = 108 phút; trung bình ~52 phút."
+      - "Hẹn lịch đều 78/8 = 9,75 mẫu/giờ < 10; thêm buffer ~3 mẫu (~18 phút) -> chờ TB dưới ~10-18 phút."
+    lesson: "Ràng buộc dịch vụ thường nằm ở phân bố tải theo giờ chứ không ở tổng năng lực; điều chỉnh lịch (miễn phí) là giải pháp đầu tiên."
+    data_reliability: "illustrative"
+  - name: "Boeing - CCPM (minh họa nguyên lý)"
+    type: "success"
+    setup: "Chuỗi tới hạn 4 nhiệm vụ an toàn 20,16,24,12 ngày. Nguồn nói rõ không có số liệu công bố chính thức được kiểm chứng."
+    key_calculations:
+      - "An toàn 72; cắt 50% = 36; Project Buffer 18 (RSS sqrt(344) ~ 18,5); lịch 54 (-25%)."
+      - "Sau 3 nhiệm vụ dùng 38 so với kế hoạch 30: 8/18 = 44% Vàng; 12/18 = 67% Đỏ."
+    lesson: "Quản trị bằng mức tiêu hao buffer chung, không ép từng nhiệm vụ đúng hạn; relay-race; rủi ro nếu văn hóa vẫn phạt báo trễ."
+    data_reliability: "unverified"
+  - name: "Chuỗi nhà hàng Hà Nội - bếp trưởng là ràng buộc"
+    type: "sme"
+    setup: "3 chi nhánh, cao điểm 150 phút; món đặc biệt 185.000 - 78.000 = T 107.000 VNĐ/món, chỉ bếp trưởng hoàn thiện, nhu cầu 55 món/chi nhánh."
+    key_calculations:
+      - "Năng lực 150/4 = 37,5 món < 55; Exploit chuyển sơ chế và trình bày cho người khác: 2,5 phút -> 60 món (> 55)."
+      - "Delta T = 17,5 x 107.000 = 1.872.500/ngày = 56,175 triệu/tháng/chi nhánh; trừ phụ bếp 8 -> 48,175; 3 chi nhánh ~144,5 triệu/tháng."
+    lesson: "Ràng buộc là người có kỹ năng hiếm: Exploit = dồn việc không cần kỹ năng đó ra khỏi tay họ; rẻ hơn nhiều so với tuyển bếp trưởng thứ hai; sau đó ràng buộc chuyển sang thị trường."
+    data_reliability: "illustrative"
+  - name: "Trung tâm hoàn tất đơn hàng kiểu Amazon - trạm đóng gói (minh họa)"
+    type: "success"
+    setup: "Picking 1.200, sorting 1.100, đóng gói 800 (16 trạm x 50) đơn/giờ; nhu cầu 1.000. Không phải số liệu công bố của Amazon."
+    key_calculations:
+      - "Đầu ra 800 < 1.000; Exploit 50 -> 58 đơn/trạm: 16 x 58 = 928 (+16%)."
+      - "Nếu picking vẫn 1.200: tồn 1.200 - 928 = 272 đơn/giờ, ca 10 giờ 2.720 đơn dở dang; Rope: phát đúng 928."
+      - "Elevate: thêm 2 trạm (72/58 ~ 1,24 -> 2): 18 x 58 = 1.044 > 1.000."
+    lesson: "Mùa cao điểm cho thấy giá trị Subordinate: không chạy nhanh khâu lấy hàng; Elevate chỉ sau Exploit."
+    data_reliability: "illustrative"
+  - name: "Bao bì carton Bình Dương - ràng buộc thị trường"
+    type: "sme"
+    setup: "Công suất 1.500 nghìn m2/tháng, bán 960 (64%); giá 9.000, NVL 6.300 -> T 2.700 VNĐ/m2; OE 2.200 triệu. Chủ định mua máy sóng 4,5 tỷ."
+    key_calculations:
+      - "T = 960.000 x 2.700 = 2.592 triệu; NP = 392 triệu."
+      - "Phương án B: 3 sales + công cụ OE +55 triệu; giảm giá 2% -> T/m2 = 8.820 - 6.300 = 2.520; +270 nghìn m2 -> Delta T = 680,4; NP = 1.017,4 triệu (gấp ~2,6); sử dụng 82%."
+    lesson: "Phân biệt ràng buộc thị trường và vật lý; mua máy khi chưa có đơn là lãng phí; Repeat: khi sử dụng gần 100% ràng buộc quay lại vật lý."
+    data_reliability: "illustrative"
+  - name: "Công ty logistics - ràng buộc ở bến bốc xếp"
+    type: "sme"
+    setup: "3 bến x 780 phút, mỗi xe chiếm bến 60 phút; đội xe đủ 50 chuyến/ngày; T 2,4 triệu/chuyến."
+    key_calculations:
+      - "Năng lực bến 3 x 780/60 = 39 chuyến < 50 xe."
+      - "Exploit 60 -> 52 phút: 3 x 780/52 = 45 chuyến (+6, +15,4%); Delta T = 6 x 2,4 x 26 = 374,4 triệu/tháng."
+    lesson: "Mua thêm xe ở trạng thái ban đầu chỉ tăng chi phí vì cổng kho chặn ở 39; sau Exploit ràng buộc kế tiếp có thể là đội xe."
+    data_reliability: "illustrative"
+  - name: "Nhà máy linh kiện điện tử Bắc Ninh - ràng buộc ở QC"
+    type: "sme"
+    setup: "6 nhân viên QC kiểm 100% mỗi sp 90 giây; lắp ráp 320 sp/giờ."
+    key_calculations:
+      - "Năng lực 6 x 3.600/90 = 240 sp/giờ."
+      - "Kiểm theo rủi ro: 0,8 x 90 + 0,2 x 45 = 81 giây; đào tạo chéo 2 người x 4/8 -> 7 người; năng lực 7 x 3.600/81 = 311,1 (+29,6%)."
+    lesson: "Kiểm theo rủi ro + đào tạo chéo; giảm kiểm tra cần dữ liệu tỷ lệ lỗi và thỏa thuận khách hàng, nếu không hàng trả về vượt lợi ích; ràng buộc sắp chuyển về lắp ráp."
+    data_reliability: "illustrative"
+  - name: "Chuỗi cửa hàng tiện lợi 40 cửa hàng - Replenishment"
+    type: "sme"
+    setup: "Hết hàng 8,5%, tồn 14 ngày bán; doanh thu 800 triệu/ngày, giá vốn 600 triệu/ngày, T ~25% doanh thu."
+    key_calculations:
+      - "Buffer nước suối 18 x 1 x 2 = 36; DBM 36 x 4/3 = 48."
+      - "Sau 6 tháng: OOS 3,2%, tồn 9 ngày; vốn giải phóng 600 x 5 = 3.000 triệu, lãi 11% = 330 triệu/năm."
+      - "Doanh thu thu hồi: (8,5% - 3,2%) x 40% = 2,12% -> 16,96 triệu/ngày; T 25% ~ 4,24 triệu/ngày ~ 1.548 triệu/năm."
+    lesson: "Gom buffer ở kho trung tâm, bổ sung theo tiêu thụ thực, điều chỉnh buffer bằng dữ liệu."
+    data_reliability: "illustrative"
+  - name: "Xưởng inox Thành Phát (Biên Hòa) - product mix quanh máy laser (SME, case tổng hợp)"
+    type: "sme"
+    setup: "3 sản phẩm (Kệ, Chậu, Bàn) dùng chung laser 2.400 phút/tuần; OE 55 triệu/tuần; chủ ưu tiên Bàn vì lãi gộp 60%. Tên và số liệu hoàn toàn hư cấu."
+    key_calculations:
+      - "Tải laser nếu làm đủ: 1.000 + 1.600 + 2.700 = 5.300 phút = 220,8% (ràng buộc); chấn 91,7%; hàn 66,7%; đánh bóng 65,6%."
+      - "T/CU: Kệ 44,0; Chậu 30,0; Bàn 26,67. Mix theo lãi gộp: T = 64,04 triệu, NP 9,04. Mix TOC (100 Kệ + 70 Chậu): T = 86, NP = 31 triệu/tuần (gấp ~3,4)."
+      - "Elevate laser 2 (600 triệu, +3,5 triệu OE): T = 149,6; Delta T ròng 60,1/tuần; hoàn vốn ~10 tuần."
+    lesson: "Quyết định theo % lãi gộp làm mất ~22 triệu/tuần; có thể tăng giá Bàn lên >= 2.150k hoặc chỉ nhận khi laser rảnh; kiểm tải công đoạn khác; Elevate sau khi tối ưu mix; lưu ý khách chiến lược."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Nhận diện ràng buộc và chi phí của tối ưu cục bộ (A-B-C-D)"
+    inputs: {capacities: "A 120, B 90, C 75, D 100 sp/giờ", demand: 80, hours: 8}
+    steps:
+      - "Đầu ra = min(120, 90, 75, 100) = 75 < 80 -> C là ràng buộc."
+      - "Tỷ lệ sử dụng khi dòng chảy 75: A 62,5%, B 83,3%, C 100%, D 75%."
+      - "Nếu mọi công đoạn chạy tối đa: trước B 30 x 8 = 240, trước C 15 x 8 = 120, tổng 360 bán thành phẩm/ca."
+      - "Exploit nâng C lên 82 -> đầu ra min(120,90,82,100,80) = 80; Delta T = 5 x 40.000 x 8 x 26 = 41,6 triệu/tháng."
+    result: "C ràng buộc; Exploit cho +41,6 triệu/tháng; sau đó ràng buộc là thị trường (80 sp/giờ)."
+  - name: "Product mix xưởng inox theo T/CU (Thành Phát)"
+    inputs: {laser_minutes: 2400, OE_per_week_million: 55}
+    steps:
+      - "T/CU: Kệ 440/10 = 44,0; Chậu 600/20 = 30,0; Bàn 1.200/45 = 26,67."
+      - "Kệ 100 chiếc dùng 1.000 phút; Chậu min(80, 1.400/20 = 70) = 70 dùng 1.400 phút; Bàn 0."
+      - "T = 100 x 440 + 70 x 600 = 86.000 k = 86 triệu; NP = 86 - 55 = 31 triệu/tuần."
+      - "So sánh mix lãi gộp: Bàn 53 + Kệ 1: T = 64.040 k; NP = 9,04 triệu."
+    result: "TOC hơn 21,96 triệu T/tuần; NP gấp ~3,4 lần."
+  - name: "So sánh đầu tư sai chỗ và đúng chỗ (đồ gỗ)"
+    inputs: {T_per_set_million: 1.2, days: 26, OE: 2100, I: 12000}
+    steps:
+      - "Hiện trạng: 90 bộ -> T = 90 x 1,2 x 26 = 2.808; NP = 708; ROI = 5,9%."
+      - "CNC 3,2 tỷ: đầu ra vẫn 90; OE = 2.100 + 3.200/60 + 10 = 2.163,3; NP = 644,7; ROI = 644,7/15.200 = 4,24%."
+      - "Buồng sơn 900 triệu: đầu ra 120; T = 3.744; OE = 2.155; NP = 1.589; hoàn vốn 900/881 ~ 1,02 tháng."
+    result: "Đúng chỗ NP 1.589 triệu/tháng so với sai chỗ 644,7."
+  - name: "CCPM chuỗi 5 nhiệm vụ và theo dõi buffer"
+    inputs: {safe_estimates: [8, 6, 10, 12, 4]}
+    steps:
+      - "Tổng an toàn = 40; cắt 50% = 4,3,5,6,2 = 20 ngày."
+      - "Project Buffer 50% = 10 ngày; lịch = 30 ngày (-25%); RSS = sqrt(90) ~ 9,5."
+      - "Chuỗi thực tế 24 ngày: tiêu hao 24 - 20 = 4 ngày -> 4/10 = 40% Vàng; nếu 27 ngày: 7/10 = 70% Đỏ."
+    result: "Lịch 30 ngày; 24 ngày thực tế = Vàng."
+  - name: "OEE tại ràng buộc và ưu tiên cải thiện"
+    inputs: {plan_min: 480, downtime: 60, ideal_rate: 1.2, actual: 441, good: 427}
+    steps:
+      - "Chạy 420 phút -> A = 420/480 = 87,5%."
+      - "Lý tưởng 420 x 1,2 = 504; P = 441/504 = 87,5%; Q = 427/441 = 96,8%."
+      - "OEE = 0,875 x 0,875 x 0,968 = 74,1% (kiểm: 427/576)."
+    result: "OEE 74,1%; ưu tiên giảm dừng máy/chuyển đổi (A) và chạy chậm (P), rồi Q."
+  - name: "Chọn Exploit hay Elevate theo hoàn vốn"
+    inputs: {T_now_million: 150, exploit_gain: 0.10, exploit_cost: 2, elevate_capex: 800, elevate_gain: 0.20, delta_oe: 5}
+    steps:
+      - "Exploit: +10% x 150 = 15 triệu/tháng; hoàn vốn 2/15 = 0,13 tháng (~4 ngày)."
+      - "Elevate: +20% x 150 = 30 - 5 = 25 triệu/tháng; hoàn vốn 800/25 = 32 tháng."
+    result: "Exploit trước; Elevate chỉ khi còn thiếu và nhu cầu xác nhận."
+
+practice_questions:
+  - q: "Dây chuyền Cắt 60, Hàn 45, Sơn 38, Đóng gói 50 (sp/giờ), nhu cầu 48. (a) Ràng buộc? (b) Tỷ lệ sử dụng? (c) Nếu Sơn nâng lên 44?"
+    a: "(a) min = 38 < 48 -> Sơn. (b) Cắt 63,3%, Hàn 84,4%, Sơn 100%, Đóng gói 76%. (c) Đầu ra 44 (vẫn < 48), Sơn vẫn là ràng buộc; nâng lên 45+ thì Hàn (45) là ràng buộc kế tiếp."
+  - q: "Ba sản phẩm chung ràng buộc 900 phút/tuần: X giá 500k, NVL 200k, 15 phút, cầu 30; Y 420k, 150k, 10 phút, cầu 40; Z 300k, 60k, 6 phút, cầu 50. Tính T/CU, mix, T; so với xếp theo T/đơn vị."
+    a: "T/CU: X 20, Y 27, Z 40 -> Z, Y, X. Z 50 (300 phút), Y 40 (400), X 13 (195). T = 12.000 + 10.800 + 3.900 = 26.700k. Theo T/đơn vị: X 30, Y 40, Z 8 -> 21.720k. Chênh 4.980k (~23%)."
+  - q: "Doanh thu 2.000, NVL 800, OE 900, I 3.600 (triệu/tháng). Tính T, NP, ROI, T/OE, T/I; giảm OE 10% hay tăng T 10%?"
+    a: "T 1.200; NP 300; ROI 8,33%/tháng; T/OE 1,33; T/I 0,333. Giảm OE 10% -> NP 390 (+30%); tăng T 10% -> NP 420 (+40%)."
+  - q: "Ràng buộc tạo T 150 triệu/tháng. Exploit: +10% T, chi phí 2 triệu. Elevate: máy 800 triệu, +20% T, OE +5 triệu/tháng. Hoàn vốn và thứ tự?"
+    a: "Exploit hoàn vốn 2/15 ~ 0,13 tháng; Elevate 800/(30-5) = 32 tháng. Exploit trước."
+  - q: "Ca 480 phút, dừng 60 phút, tốc độ lý tưởng 1,2 sp/phút, thực làm 441, đạt 427. Tính A, P, Q, OEE."
+    a: "A 87,5%; P 441/504 = 87,5%; Q 96,8%; OEE 74,1%. Ưu tiên A và P."
+  - q: "Chuỗi 5 nhiệm vụ an toàn 8,6,10,12,4 ngày: lịch theo quy tắc 50%, buffer RSS, vùng buffer nếu thực tế 24 ngày."
+    a: "Cắt 20 ngày; buffer 10; lịch 30 (giảm 25%); RSS sqrt(90) ~ 9,5; 24 ngày -> 4/10 = 40% Vàng (27 ngày -> 70% Đỏ)."
+  - q: "Buffer mỗi đơn 4 ngày, ba đơn đã tiêu hao 1; 2,2; 3,4 ngày. Phân vùng và hành động."
+    a: "25% Xanh (không can thiệp); 55% Vàng (tìm nguyên nhân, chuẩn bị); 85% Đỏ (hành động ngay)."
+  - q: "WIP trước ràng buộc 90 tấn, ràng buộc 15 tấn/ngày. Lead time chờ? Nếu WIP 30?"
+    a: "LT = 90/15 = 6 ngày; WIP 30 -> 2 ngày (giảm 4 ngày, đầu ra vẫn 15 tấn/ngày)."
+  - q: "Công suất 10.000 sp/tháng, bán 7.000, T 50.000/sp, OE 280 triệu. (A) mua máy 900 triệu +30% công suất; (B) 2 sales 40 triệu/tháng, mỗi người +1.200 sp. NP?"
+    a: "Hiện tại NP = 350 - 280 = 70 triệu. (A) Delta T = 0, OE tăng khấu hao -> NP giảm. (B) +2.400 sp -> Delta T 120; Delta NP 80 -> NP 150 triệu (~2,14 lần); sử dụng 94%."
+  - q: "Vì sao Exploit phải làm trước Elevate? Vì sao dừng sau khi giải quyết một ràng buộc là sai lầm?"
+    a: "Exploit gần như miễn phí và có thể đủ (vd xưởng in +23%); Elevate tốn vốn và rủi ro nếu sai ràng buộc. Ràng buộc dịch chuyển (có thể sang thị trường) và quán tính chính sách nên phải Repeat."
+  - q: "Xây CRT cho 'nhân viên thường xuyên trễ deadline' và Evaporating Cloud cho 'giảm chi phí' và 'tăng chất lượng dịch vụ'."
+    a: "CRT: trễ deadline <- nhận việc đột xuất <- không có quy tắc ưu tiên và đa nhiệm <- gốc: chính sách 'ai cũng phải đáp ứng mọi yêu cầu ngay'. Cloud: mục tiêu 'dịch vụ bền vững có lợi nhuận'; B giữ chi phí thấp - D cắt người; C chất lượng cao - D' thêm nhân sự/đào tạo; phá giả định 'chất lượng chỉ từ thêm người' bằng chuẩn hóa quy trình tại khâu ràng buộc."
+
+checklist:
+  - "Chuẩn bị: có dữ liệu năng lực thực tế (không phải công suất danh nghĩa) từng công đoạn?"
+  - "Chuẩn bị: lãnh đạo cấp cao cam kết bảo vệ nguyên lý 'nhàn rỗi có chủ đích'?"
+  - "Chuẩn bị: có kế hoạch truyền thông và đổi chỉ tiêu thưởng khỏi hiệu suất cục bộ?"
+  - "Chuẩn bị: đã chọn công cụ theo dõi Buffer Management phù hợp quy mô?"
+  - "Identify: ràng buộc xác định bằng dữ liệu và kiểm chứng bằng nơi hàng chờ tích tụ?"
+  - "Đã phân loại ràng buộc: vật lý, thị trường, chính sách, nguồn lực?"
+  - "Exploit: đã thử tối ưu miễn phí trước khi cân nhắc đầu tư (Elevate)?"
+  - "Đã xếp ưu tiên sản phẩm theo T/CU khi chung ràng buộc, và kiểm tải các công đoạn khác sau khi đổi mix?"
+  - "Đã thiết lập Drum, Buffer, Rope và giải thích lý do công đoạn khác giảm tốc?"
+  - "Đã giám sát tiêu hao buffer thay vì từng công đoạn riêng lẻ?"
+  - "Đã tính Delta T, chi phí, hoàn vốn trước mọi khoản Elevate?"
+  - "Đã lên kế hoạch Repeat định kỳ và theo dõi ràng buộc chính sách do quán tính?"
+  - "KPI: T, tỷ lệ sử dụng ràng buộc, Buffer Penetration, lead time, OEE tại ràng buộc (> 85% tham khảo), giao đúng hạn (> 95% tham khảo)."
+  - "Rủi ro: xác định sai ràng buộc, ràng buộc dịch chuyển, nhân viên phản đối, Elevate quá sớm, thiếu cải tiến liên tục đều có biện pháp giảm thiểu?"
+  - "Mức trưởng thành: Cấp 1 nhận thức; 2 áp dụng đơn lẻ; 3 hệ thống hóa (5 bước + Buffer Management); 4 văn hóa tổ chức."
+  - "Số liệu giả định minh họa đã được gắn nhãn; số liệu thực của doanh nghiệp được thay vào trước khi kết luận."
+
+excel_google_sheets_templates:
+  - name: "Bảng phân tích năng lực xác định ràng buộc"
+    layout: "Cột: Công đoạn | Năng lực tối đa (đơn vị/giờ) | Nhu cầu/dòng chảy thực tế | Tỷ lệ sử dụng = dòng chảy/năng lực | Là ràng buộc? (gần 100%)"
+    formulas: "Tỷ lệ = C2/B2; Đầu ra hệ thống = MIN(B2:B5, nhu cầu)"
+  - name: "Báo cáo Buffer Management hằng ngày"
+    layout: "Cột: Ngày | Đơn hàng | Buffer tiêu hao (ngày) | % tiêu hao | Vùng (Xanh/Vàng/Đỏ/Vượt) | Hành động. Ví dụ buffer 3 ngày: DH-101 20% Xanh; DH-102 50% Vàng; DH-103 80% Đỏ; DH-104 110% vượt."
+    formulas: "% = tiêu hao/tổng buffer; vùng bằng IF: <=33% Xanh, <=66% Vàng, <=100% Đỏ, còn lại Vượt buffer"
+  - name: "Mẫu tính T/CU và product mix"
+    layout: "A Sản phẩm | B Giá bán | C NVL | D Phút ràng buộc | E Nhu cầu tối đa | F T | G T/CU | H Thứ hạng | I Số lượng | J Tổng T; ô K1 = tổng phút ràng buộc/kỳ. Sắp xếp theo T/CU giảm dần trước khi phân bổ."
+    formulas: "F2=B2-C2; G2=F2/D2; H2=RANK(G2,$G$2:$G$4,0); I (hạng 1)=MIN(E2,ROUNDDOWN($K$1/D2,0)); các hạng sau trừ phút đã dùng (SUMPRODUCT); NP = SUM(J) - OE; thêm bảng kiểm tải công đoạn khác (không vượt 100%)."
+  - name: "Bảng so sánh Elevate"
+    layout: "Phương án | Vốn | Delta T | Delta OE | Hoàn vốn = Vốn/(Delta T - Delta OE) | NP kỳ | ROI"
+    formulas: "=B2/(C2-D2)"
+  - name: "Công cụ khác"
+    layout: "Phần mềm CCPM (Realization/Concerto), APS (SAP APO/Oracle APS), mô phỏng (Simul8, FlexSim); SME dùng Excel/Google Sheets (miễn phí)."
+    formulas: "-"

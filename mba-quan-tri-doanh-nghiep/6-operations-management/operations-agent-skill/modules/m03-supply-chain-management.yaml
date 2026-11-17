@@ -1,0 +1,883 @@
+id: "m03"
+name_vi: "Quản trị Chuỗi cung ứng"
+name_en: "Supply Chain Management (SCM)"
+source_file: "03-supply-chain-management.md"
+purpose: >
+  Giúp tối ưu CẢ chuỗi (nhà cung cấp - doanh nghiệp - phân phối - khách hàng) thay vì từng khâu: chọn đúng loại chuỗi cho sản phẩm
+  (Fisher), phân loại và chọn nhà cung cấp (Kraljic, Scorecard, TCO), đo và giảm hiệu ứng Bullwhip, hoạch định S&OP, quản trị rủi ro
+  và đo KPI chuỗi (Perfect Order, CCC, WAPE). Có hướng dẫn áp dụng cho SME Việt Nam.
+when_to_use:
+  - "Kho lúc tràn hàng sắp hết hạn, lúc hết hàng; nhà cung cấp/nhà máy phàn nàn đơn hàng dao động thất thường (nghi Bullwhip)"
+  - "Chọn hoặc đánh giá nhà cung cấp: dùng Supplier Scorecard + TCO thay vì chỉ so giá"
+  - "So sánh nhập khẩu với mua trong nước theo tổng chi phí đưa hàng về kho (landed cost/TCO)"
+  - "Phân loại danh mục mua hàng để biết mặt hàng nào cần hợp tác sâu, đấu thầu, dự phòng hay đơn giản hóa (Kraljic)"
+  - "Chọn chiến lược chuỗi: Efficient/Lean hay Responsive/Agile hay Leagile theo tính chất sản phẩm (Fisher)"
+  - "Phụ thuộc 1 nhà cung cấp: có nên đa nguồn/tồn kho an toàn không (cost-benefit phòng ngừa rủi ro)"
+  - "Chuỗi nhiều cửa hàng/chi nhánh: có nên tập trung hóa thu mua + kho trung chuyển, hòa vốn ở bao nhiêu điểm bán"
+  - "Cần bộ KPI chuỗi cung ứng: Perfect Order, OTD, CCC, Forecast Accuracy (WAPE), Supply Chain Cost %"
+  - "Thiết lập họp S&OP, VMI, CPFR; thiết kế mạng lưới phân phối (trực tiếp, DC, cross-docking, milk run)"
+  - "Lập sổ tay rủi ro chuỗi cung ứng (P x I), kế hoạch BCP, ESG nhà cung cấp cho đơn hàng xuất khẩu"
+prerequisites: ["m01"]
+related_modules:
+  - "m01: Thiết kế & phân tích quy trình - nền tảng vận hành cho từng mắt xích chuỗi"
+  - "m02: Quản trị chất lượng - tỷ lệ lỗi/PPM của nhà cung cấp, chi phí chất lượng trong TCO"
+  - "m04: Quản trị tồn kho - tồn kho an toàn SS = z*sigma*sqrt(L), EOQ, JIT, VMI"
+  - "m05: Hoạch định năng lực - gắn với hoạch định cung ứng trong S&OP"
+  - "m07: Dự báo - Forecast Accuracy/WAPE, trung bình động; dự báo là đầu vào của S&OP và nguyên nhân Bullwhip"
+  - "finance m06: Quản trị vốn lưu động - CCC, DIO/DSO/DPO"
+
+concepts:
+  - term_vi: "Chuỗi cung ứng"
+    term_en: "Supply Chain"
+    definition: "Mạng lưới tổ chức, con người, hoạt động, thông tin và nguồn lực đưa sản phẩm/dịch vụ từ nhà cung cấp nguyên liệu thô đến khách hàng cuối (Tier-2 -> Tier-1 -> doanh nghiệp trung tâm -> nhà phân phối -> nhà bán lẻ -> khách hàng)."
+    why_it_matters: "Giá trị cho khách hàng và chi phí được tạo ra bởi cả mạng lưới, không bởi một doanh nghiệp riêng lẻ."
+  - term_vi: "Quản trị chuỗi cung ứng"
+    term_en: "Supply Chain Management (SCM)"
+    definition: "Hoạch định, tổ chức, kiểm soát 3 dòng chảy: vật chất (nguyên liệu - thành phẩm, hàng trả), thông tin (đơn hàng, dự báo, tồn kho) và tài chính (thanh toán, công nợ) xuyên suốt mạng lưới."
+    why_it_matters: >
+      Giải quyết tối ưu cục bộ (local optimization): phòng mua chọn giá rẻ nhất -> hàng kém, giao trễ -> sản xuất dừng -> mất đơn; mỗi bộ phận đạt KPI
+      riêng nhưng tổng chi phí/lợi nhuận cả chuỗi xấu đi. Câu hỏi đổi từ "khâu của tôi rẻ nhất chưa" sang "toàn chuỗi tạo giá trị với tổng chi phí thấp nhất chưa".
+      Thuật ngữ thường được ghi nhận do Keith Oliver (Booz Allen Hamilton) đưa ra năm 1982, khi doanh nghiệp phương Tây thấy đối thủ Nhật (Toyota và hệ sinh thái nhà cung cấp) cạnh tranh bằng cả hệ thống; CSCMP mô tả SCM gồm sourcing, procurement, conversion, logistics.
+  - term_vi: "Ba dòng chảy của chuỗi"
+    term_en: "Physical, Information, Financial flows"
+    definition: "Vật chất đi xuôi dòng (và ngược khi trả hàng); thông tin hai chiều (ngày càng real-time: EDI, API, IoT); tài chính chảy ngược dòng (tiền từ khách về nhà cung cấp)."
+    why_it_matters: "Vật chất quyết định chi phí vận chuyển/tồn kho/thời gian giao; thông tin sai hoặc trễ là gốc rễ của Bullwhip; tài chính quyết định vốn lưu động mỗi bên."
+  - term_vi: "Mô hình SCOR"
+    term_en: "Supply Chain Operations Reference"
+    definition: "Mô hình tham chiếu 6 quy trình: Plan, Source, Make, Deliver, Return, Enable; kèm các chỉ số benchmark (Perfect Order Fulfillment, Order Fulfillment Cycle Time, Supply Chain Cost, Cash-to-Cash Cycle Time)."
+    why_it_matters: >
+      Hai doanh nghiệp cùng nói 'logistics' nhưng hiểu khác nhau thì không so sánh/cải tiến có hệ thống được; SCOR là ngôn ngữ chung để mô tả, đo, benchmark.
+      Do Supply Chain Council (lập 1996 bởi PRTM và AMR Research cùng nhóm doanh nghiệp) phát triển, sau sáp nhập vào APICS (nay ASCM); ban đầu 4 quy trình, về sau thêm Return và Enable.
+  - term_vi: "Hiệu ứng Bullwhip (cái roi da)"
+    term_en: "Bullwhip Effect"
+    definition: "Dao động nhu cầu bị khuếch đại dần khi đi ngược dòng chuỗi: người tiêu dùng mua đều nhưng đơn hàng lên nhà bán lẻ, phân phối, nhà máy dao động ngày càng mạnh."
+    why_it_matters: >
+      Gây tồn kho đệm lớn, thuê công suất phòng xa, lúc thừa lúc thiếu, chi phí tăng ở mọi mắt xích mà không ai bán thêm được hàng; là bằng chứng rõ nhất tối ưu cục bộ hại cả chuỗi.
+      Forrester (MIT) mô tả hiện tượng trong Industrial Dynamics (1961); Lee, Padmanabhan, Whang (1997, Sloan Management Review) hệ thống thành 4 nguyên nhân sau khi quan sát tại P&G (nhu cầu tã Pampers ở người dùng ổn định nhưng đơn lên nhà máy P&G và nhà cung cấp dao động mạnh hơn nhiều).
+  - term_vi: "4 nguyên nhân Bullwhip"
+    term_en: "Four causes (Lee, Padmanabhan, Whang 1997)"
+    definition: "(1) Xử lý tín hiệu nhu cầu - dự báo dựa trên đơn của mắt xích liền kề thay vì nhu cầu thực; (2) đặt hàng theo lô (order batching, MOQ); (3) biến động giá/khuyến mãi gây forward buying; (4) trò chơi phân bổ và thiếu hụt (đặt gấp đôi để được phân bổ nhiều rồi hủy)."
+    why_it_matters: "Mỗi nguyên nhân có giải pháp đối ứng riêng (chia sẻ POS/VMI/CPFR; giảm lô và lead time; EDLP; phân bổ theo sell-through) nên chẩn đoán đúng nguyên nhân mới chọn đúng thuốc."
+  - term_vi: "Sản phẩm chức năng vs sáng tạo"
+    term_en: "Functional vs Innovative products (Fisher)"
+    definition: "Functional: vòng đời dài (>2 năm), biên thấp (5-20%), sai số dự báo ~10%. Innovative: vòng đời ngắn (3 tháng-1 năm), biên cao (20-60%), sai số dự báo 40-100%. Con số là ngưỡng minh họa của Fisher, không phải ranh giới cứng."
+    why_it_matters: >
+      Mỗi chuỗi đánh đổi giữa chi phí thấp và phản ứng nhanh; tính chất nhu cầu quyết định nên hy sinh đầu nào. Marshall Fisher (Wharton), HBR 1997, nhận thấy nhiều công ty có chuỗi 'tốt' nhưng SAI LOẠI cho sản phẩm của mình.
+  - term_vi: "Chuỗi hiệu quả vs đáp ứng nhanh"
+    term_en: "Efficient vs Responsive supply chain"
+    definition: "Efficient: tối thiểu chi phí, tồn kho thấp, chọn NCC theo chi phí/chất lượng. Responsive: tối đa tốc độ phản hồi, tồn đệm cao hơn, lead time ưu tiên số 1, chọn NCC theo tốc độ/linh hoạt."
+    why_it_matters: "Khớp: Functional + Efficient; Innovative + Responsive. Áp Efficient cho sản phẩm sáng tạo gây thiếu hàng hoặc ế; áp Responsive cho sản phẩm chức năng là lãng phí chi phí."
+  - term_vi: "Lean, Agile, Leagile và điểm phân tách"
+    term_en: "Lean / Agile / Leagile / Decoupling Point"
+    definition: "Lean: loại lãng phí, tồn kho tối thiểu (JIT), hợp nhu cầu ổn định. Agile: đáp ứng nhanh biến động, tồn đệm chiến lược tại điểm phân tách, chi phí vận hành cao hơn. Leagile: Lean từ thượng nguồn đến điểm phân tách, Agile từ đó đến khách hàng."
+    why_it_matters: "Fisher cho biết loại sản phẩm cần gì; Lean/Agile/Leagile là cách thiết kế vận hành để đạt. Thực tế là hỗn hợp: vải mộc tồn sẵn theo kế hoạch (Lean), cắt-may-nhuộm theo đơn (Agile) như Zara, Dell, xưởng may SME."
+  - term_vi: "Ma trận Kraljic"
+    term_en: "Kraljic Matrix"
+    definition: "Phân loại mặt hàng mua theo 2 trục: Rủi ro cung ứng (Supply Risk) và Tác động lợi nhuận (Profit Impact) thành 4 nhóm: Chiến lược, Đòn bẩy, Nút thắt, Không quan trọng."
+    why_it_matters: >
+      Doanh nghiệp có hàng trăm mặt hàng/NCC nhưng thời gian quản trị có hạn; không thể 'hợp tác chiến lược' với tất cả cũng không nên chỉ 'ép giá' tất cả.
+      Peter Kraljic (McKinsey), HBR 1983, sau cú sốc dầu mỏ thập niên 1970 khi mua hàng chỉ lo ép giá mà không thấy rủi ro nguồn cung.
+  - term_vi: "Supplier Scorecard"
+    term_en: "Supplier Scorecard (weighted scoring)"
+    definition: "Điểm tổng S = sum(w_i * s_i), thang 1-5, trọng số tổng 100%, trên 5 tiêu chí mẫu: Chất lượng 30%, OTD 25%, Giá/chi phí tổng 20%, Năng lực 15%, ESG 10%."
+    why_it_matters: "Chọn NCC chỉ theo giá là tối ưu cục bộ (rẻ hơn 3% nhưng giao trễ 15% đơn gây dừng dây chuyền còn đắt hơn). Trọng số thể hiện ưu tiên chiến lược (thực phẩm tăng chất lượng; xuất khẩu tăng ESG)."
+  - term_vi: "Tổng chi phí sở hữu / chi phí đưa về kho"
+    term_en: "Total Cost of Ownership (TCO) / Landed Cost"
+    definition: "TCO = P + F + D + H + Q + L: giá mua, vận chuyển/bảo hiểm, thuế/phí, chi phí vốn tồn kho, chi phí chất lượng, chi phí giao trễ."
+    why_it_matters: "Giá báo giá chỉ là phần nổi tảng băng. Ý tưởng TCO do Gartner phổ biến cho CNTT thập niên 1980 rồi ngành thu mua mở rộng; buộc người mua so sánh chi phí đưa hàng về nơi sử dụng, không chỉ giá mua."
+  - term_vi: "Thu mua chiến lược"
+    term_en: "Strategic Sourcing"
+    definition: "Quy trình 7 bước: Spend Analysis -> Supply Market Analysis -> chiến lược tìm nguồn (Kraljic) -> RFI -> RFP/RFQ -> đàm phán & chọn NCC -> triển khai hợp đồng & theo dõi hiệu suất."
+    why_it_matters: "Mua theo cảm tính (quen biết, báo giá đầu tiên) khiến doanh nghiệp không biết tiền chi vào đâu; theo Pareto khoảng 20% mặt hàng chiếm ~80% chi tiêu nên tối ưu đúng 20% đó mang lại phần lớn hiệu quả."
+  - term_vi: "Đơn nguồn vs đa nguồn"
+    term_en: "Single vs Multiple Sourcing"
+    definition: "Đơn nguồn: rủi ro gián đoạn cao, dễ kiểm soát chất lượng, chi phí quản lý thấp, hợp linh kiện đặc thù. Đa nguồn: phân tán rủi ro, đàm phán giá mạnh hơn, khó đồng bộ chất lượng, chi phí quản lý cao, hợp hàng commodity."
+    why_it_matters: "Quy tắc thực dụng chia đơn chính-phụ 70/30 hoặc 60/25/15: NCC chính giữ lợi thế quy mô, NCC phụ luôn 'ấm máy' để thay thế khi cần."
+  - term_vi: "Logistics đầu vào, đầu ra, ngược"
+    term_en: "Inbound / Outbound / Reverse logistics"
+    definition: "Inbound: NVL từ NCC đến nhà máy/kho. Outbound: thành phẩm đến khách. Reverse: hàng trả, bảo hành, tái chế."
+    why_it_matters: "Là phần vật chất của chuỗi; bài toán gốc là đánh đổi chi phí vận chuyển, chi phí tồn kho và tốc độ giao."
+  - term_vi: "Hoạch định bán hàng và vận hành"
+    term_en: "S&OP (Sales and Operations Planning)"
+    definition: "Chu trình họp hàng tháng để Kinh doanh, Vận hành, Tài chính đồng thuận MỘT con số kế hoạch cung-cầu gắn với ngân sách."
+    why_it_matters: "Nhiều doanh nghiệp tồn tại 3 kế hoạch khác nhau (Kinh doanh nói bán 1.000, Sản xuất theo công suất, Tài chính ngân sách riêng) -> vừa thiếu vừa thừa hàng. S&OP do Oliver Wight phát triển từ thập niên 1980 trên nền MRP II."
+  - term_vi: "VMI và CPFR"
+    term_en: "Vendor Managed Inventory / Collaborative Planning, Forecasting and Replenishment"
+    definition: "VMI: nhà cung cấp quản lý tồn kho tại kho/cửa hàng khách theo mức min-max thỏa thuận. CPFR: hai bên cùng lập dự báo, kế hoạch khuyến mãi, bổ sung hàng và giải quyết chênh lệch dự báo."
+    why_it_matters: "VMI xử lý tín hiệu nhu cầu và đặt hàng theo lô; CPFR xử lý cả 4 nguyên nhân Bullwhip (mạnh nhất với 1 và 3). Lịch sử: Walmart - Warner-Lambert thử CPFR giữa thập niên 1990; Walmart - P&G với VMI/bổ sung liên tục (chỉ để hiểu ý tưởng)."
+  - term_vi: "Khả năng phục hồi chuỗi cung ứng"
+    term_en: "Supply Chain Resilience"
+    definition: "Khả năng chuỗi chịu và hồi phục sau cú sốc; chiến lược: đa dạng hóa nguồn, China+1/near-shoring, tồn kho chiến lược, Digital Twin/Control Tower, BCP và bảo hiểm."
+    why_it_matters: "Chuỗi toàn cầu tối ưu bằng JIT và đơn nguồn giảm chi phí nhưng mong manh (fragile); các cú sốc COVID-19 (2020-2022), kẹt kênh Suez (2021), căng thẳng thương mại Mỹ-Trung đưa resilience lên ngang hàng chi phí."
+  - term_vi: "Điểm rủi ro"
+    term_en: "Risk score R = P x I"
+    definition: "Chấm xác suất P và tác động I thang 1-5, R = P x I (tối đa 25); R >= 15 ưu tiên cao, 8-14 giám sát và dự phòng, < 8 chấp nhận."
+    why_it_matters: "Dùng tích vì rủi ro rất hiếm nhưng thảm khốc và rủi ro thường xuyên nhưng nhẹ có thể có mức ưu tiên tương đương."
+  - term_vi: "Chuỗi cung ứng số"
+    term_en: "Digital Supply Chain (IoT, Blockchain, AI/ML, Digital Twin, Control Tower, RPA)"
+    definition: "Công nghệ giảm độ trễ và tăng minh bạch dữ liệu (visibility)."
+    why_it_matters: "Quyết định chuỗi phụ thuộc dữ liệu đúng, kịp thời; dữ liệu trễ -> Bullwhip. Ví dụ công ty ở bảng nguồn (Walmart IBM Food Trust, Amazon, Unilever, DHL) chỉ là minh họa xu hướng, chưa kiểm chứng quy mô triển khai."
+  - term_vi: "Chuỗi cung ứng bền vững / ESG"
+    term_en: "Sustainable Supply Chain & ESG"
+    definition: "E: giảm phát thải vận chuyển, bao bì tái chế. S: điều kiện lao động tại NCC (audit, SA8000, BSCI). G: minh bạch truy xuất nguồn gốc, chống lao động cưỡng bức (vd UFLPA của Mỹ)."
+    why_it_matters: "Khách lớn châu Âu/Mỹ đưa ESG vào điều kiện hợp đồng (như H&M, Nike, IKEA), doanh nghiệp xuất khẩu không đáp ứng sẽ mất đơn; trọng số ESG 10% trong Scorecard đưa yêu cầu này vào đánh giá hằng ngày."
+
+formulas:
+  - id: "m03_bullwhip_ratio"
+    name_vi: "Tỷ số Bullwhip (khuếch đại phương sai)"
+    name_en: "Bullwhip ratio"
+    expression_latex: 'BW = \frac{\mathrm{Var}(\text{don hang dat len thuong nguon})}{\mathrm{Var}(\text{nhu cau cuoi})}'
+    expression_python: "pvariance(orders) / pvariance(demand)"
+    excel: "=VAR.P(C2:C13)/VAR.P(B2:B13)"
+    variables:
+      - {symbol: "orders", meaning: "Chuỗi đơn hàng mắt xích đặt lên thượng nguồn theo kỳ", unit: "đơn vị hàng/kỳ"}
+      - {symbol: "demand", meaning: "Chuỗi nhu cầu cuối thực (sell-out)", unit: "đơn vị hàng/kỳ"}
+    when_to_use: "Chẩn đoán đơn hàng thất thường, kho lúc dư lúc thiếu; đo từng tầng (tiệm so với nhu cầu thực, nhà máy so với nhu cầu thực)."
+    why_it_works: "Dao động là sự phân tán quanh trung bình; phương sai đo đúng điều đó và so sánh được giữa các mắt xích có cùng đơn vị. Tỷ số phương sai = 1 nghĩa là không khuếch đại."
+    assumptions: ["Cùng đơn vị đo, cùng khoảng thời gian, tổng đơn xấp xỉ tổng nhu cầu (không tích lũy tồn kho dài hạn)", "Dùng phương sai tổng thể VAR.P như nguồn; nhiều nghiên cứu dùng hệ số biến thiên CV để so khi quy mô khác nhau"]
+    pitfalls: ["Chỉ 4-6 tuần dữ liệu thì không đủ tin cậy", "Ngưỡng cảnh báo BW > 2 là quy ước thực hành, không phải chuẩn", "BW > 1 sau cải thiện vẫn bình thường: mục tiêu là giảm tới mức chấp nhận được"]
+    interpretation: "BW = 1 không khuếch đại; > 1 có Bullwhip, càng lớn càng nghiêm trọng. Mục tiêu thực hành: gần 1, < 2."
+    example:
+      inputs: {demand: [100, 104, 98, 102, 100, 96], orders: [90, 115, 85, 112, 95, 103]}
+      steps:
+        - "Var(demand) = (0+16+4+4+0+16)/6 = 6,667"
+        - "Var(orders) = 728/6 = 121,33"
+        - "BW = 121,33/6,667 = 18,2"
+      result: "BW ~ 18,2: khuếch đại nghiêm trọng; nguyên nhân khả dĩ là đặt hàng luân phiên (lô) và khuyến mãi"
+  - id: "m03_bullwhip_lower_bound"
+    name_vi: "Cận dưới Bullwhip (Chen, Drezner, Ryan, Simchi-Levi 2000)"
+    name_en: "Bullwhip lower bound, order-up-to with moving-average forecast"
+    expression_latex: 'BW \ge 1 + \frac{2L}{p} + \frac{2L^{2}}{p^{2}}'
+    expression_python: "1 + 2*L/p + 2*L**2/p**2"
+    variables:
+      - {symbol: "L", meaning: "Lead time", unit: "kỳ (tuần)"}
+      - {symbol: "p", meaning: "Số kỳ trung bình động dùng để dự báo", unit: "kỳ (tuần)"}
+    when_to_use: "Ước lượng mức khuếch đại tối thiểu do chính phương pháp dự báo + lead time; biện minh cho việc rút ngắn lead time."
+    why_it_works: "Mỗi mắt xích dự báo bằng trung bình động p kỳ rồi bổ sung đến mức tối đa (order-up-to); sai số dự báo cộng với phần bù lead time khiến phương sai đơn hàng lớn hơn phương sai nhu cầu. L xuất hiện bình phương nên lead time dài khuếch đại rất mạnh."
+    assumptions: ["Mô hình order-up-to, dự báo trung bình động p kỳ, nhu cầu độc lập cùng phân phối", "Là cận dưới cho MỘT mắt xích; hiệu ứng nhân lên qua nhiều mắt xích"]
+    pitfalls: ["Không dùng cho nhu cầu có xu hướng/mùa vụ mạnh", "Là cận dưới, thực tế thường cao hơn"]
+    interpretation: "Giảm L (đặt hàng điện tử, giao thường xuyên) hoặc tăng p (làm mượt dự báo) làm giảm cận dưới."
+    example:
+      inputs: {L: 2, p: 4}
+      steps: ["1 + 2*2/4 + 2*4/16 = 1 + 1 + 0,5"]
+      result: "BW >= 2,5: riêng dự báo MA 4 tuần với lead time 2 tuần đã khuếch đại phương sai >= 2,5 lần ở một mắt xích"
+  - id: "m03_cv"
+    name_vi: "Hệ số biến thiên (CV)"
+    name_en: "Coefficient of variation"
+    expression_latex: 'CV = \frac{\sigma}{\mu}'
+    expression_python: "pstdev(x) / mean(x)"
+    variables:
+      - {symbol: "x", meaning: "Chuỗi đơn hàng hoặc nhu cầu theo kỳ", unit: "đơn vị hàng"}
+    when_to_use: "So sánh độ dao động giữa các mắt xích có quy mô trung bình khác nhau; báo cáo cho người không quen phương sai."
+    why_it_works: "Chuẩn hóa độ lệch chuẩn theo trung bình nên so sánh được khi quy mô khác nhau."
+    assumptions: ["Trung bình khác 0"]
+    pitfalls: ["Không thay thế tỷ số phương sai khi cần tính BW đúng định nghĩa"]
+    interpretation: "Case Tân Phát: nhu cầu thực CV 3,4%, đơn tiệm 10,7%, đơn nhà máy 25,3%."
+    example:
+      inputs: {x: [200, 210, 195, 205, 200, 215, 190, 210, 205, 200, 195, 205]}
+      steps: ["mean = 202,5; sigma = 6,92", "CV = 6,92/202,5 = 3,4%"]
+      result: "CV nhu cầu thực ~ 3,4%"
+  - id: "m03_supplier_score"
+    name_vi: "Điểm nhà cung cấp có trọng số (Supplier Scorecard)"
+    name_en: "Weighted supplier score"
+    expression_latex: 'S = \sum_{i=1}^{n} w_i \cdot s_i, \qquad \sum w_i = 100\%'
+    expression_python: "sum(w*s for w, s in zip(weights, scores))"
+    excel: "=SUMPRODUCT(B2:B6, C2:C6) ; xếp loại =IF(D8>4,\"Chiến lược\",IF(D8>=3,\"Duy trì\",\"Cải thiện\"))"
+    variables:
+      - {symbol: "weights", meaning: "Trọng số tiêu chí (mẫu 30/25/20/15/10 cho Chất lượng/OTD/Giá/Năng lực/ESG), tổng 1", unit: "tỷ lệ"}
+      - {symbol: "scores", meaning: "Điểm từng tiêu chí", unit: "thang 1-5"}
+    when_to_use: "Đánh giá, xếp hạng và theo dõi nhà cung cấp theo quý; quyết định phân bổ tỷ trọng đơn hàng."
+    why_it_works: "Biến các khía cạnh khác nhau thành một con số so sánh được; trọng số phản ánh ưu tiên chiến lược nên chất lượng (trọng số lớn nhất) kéo tổng điểm mạnh hơn giá."
+    assumptions: ["Tiêu chí độc lập tương đối, thang điểm quy đổi nhất quán (vd lỗi <=0,5% -> 5; 0,5-1,5% -> 4; 1,5-3% -> 3; OTD >=96% -> 5, 93-96% -> 4, 85-93% -> 3; giá <=415 -> 5, 416-445 -> 3, >460 -> 2 trong case Tân Phát)"]
+    pitfalls: ["Điểm giá cao có thể che chất lượng thấp nếu trọng số chất lượng đặt thấp", "Không thay cho TCO: scorecard chấm điểm, TCO tính tiền"]
+    interpretation: "> 4,0 Đối tác chiến lược; 3,0-4,0 Duy trì; < 3,0 Cần cải thiện/thay thế."
+    example:
+      inputs: {weights: [0.30, 0.25, 0.20, 0.15, 0.10], scores: [4, 3, 5, 3, 2]}
+      steps: ["0,30*4 + 0,25*3 + 0,20*5 + 0,15*3 + 0,10*2 = 1,20 + 0,75 + 1,00 + 0,45 + 0,20"]
+      result: "S = 3,60: Duy trì; X rẻ nhưng yếu ESG và giao hàng -> yêu cầu cải thiện OTD trước khi tăng tỷ trọng"
+  - id: "m03_tco"
+    name_vi: "Tổng chi phí sở hữu / chi phí đưa về kho (TCO / Landed Cost)"
+    name_en: "Total Cost of Ownership / Landed Cost"
+    expression_latex: '\mathrm{TCO} = P + F + D + H + Q + L'
+    expression_python: "P + F + D + H + Q + L"
+    excel: "=P+F+D+H+Q+L (D = thuế% x giá CIF; H = Giá x lãi suất x ngày/365)"
+    variables:
+      - {symbol: "P", meaning: "Giá mua", unit: "VNĐ/đơn vị"}
+      - {symbol: "F", meaning: "Vận chuyển/bảo hiểm", unit: "VNĐ/đơn vị"}
+      - {symbol: "D", meaning: "Thuế, phí hải quan (thuế % x giá CIF = P+F)", unit: "VNĐ/đơn vị"}
+      - {symbol: "H", meaning: "Chi phí vốn tồn kho = P x lãi suất x lead time/365", unit: "VNĐ/đơn vị"}
+      - {symbol: "Q", meaning: "Chi phí chất lượng (lỗi, đổi trả) = tỷ lệ lỗi x giá x hệ số xử lý", unit: "VNĐ/đơn vị"}
+      - {symbol: "L", meaning: "Chi phí giao trễ (đặt gấp, dừng máy) = (1-OTD) x phí xử lý/đơn vị", unit: "VNĐ/đơn vị"}
+    when_to_use: "So sánh nhà cung cấp, nhập khẩu vs nội địa, quyết định outsource: mọi lúc giá niêm yết chênh nhau nhưng chi phí ẩn khác nhau."
+    why_it_works: "Giá báo giá chỉ là phần nổi; vốn bị chôn trong hàng đang đi đường, hàng lỗi, giao trễ đều là tiền thật. Cộng đủ để so sánh trên cùng nền 'đưa hàng về nơi sử dụng'."
+    assumptions: ["Hệ số xử lý lỗi, phí giao trễ là giả định phải thay bằng số thật của doanh nghiệp", "Ví dụ tính nhập khẩu bên dưới chưa gồm rủi ro tỷ giá, rủi ro chậm tàu"]
+    pitfalls: ["Quên H (lead time 45 ngày tốn vốn)", "Tính thuế trên giá FOB thay vì CIF", "Chỉ so giá niêm yết"]
+    interpretation: "Chọn TCO thấp nhất nhưng vẫn xét điểm Scorecard/rủi ro (TCO rẻ nhất chưa chắc nên chiếm tỷ trọng lớn)."
+    example:
+      inputs: {P: 459000, F: 36720, D: 24786, H: 8488, Q: 0, L: 0}
+      steps:
+        - "Nhập khẩu: P = 18 x 25.500 = 459.000; F = 8% x 459.000 = 36.720; CIF = 495.720; D = 5% x 495.720 = 24.786; H = 459.000 x 15% x 45/365 ~ 8.488"
+        - "TCO nhập khẩu = 459.000 + 36.720 + 24.786 + 8.488 = 528.994 VNĐ/cái"
+        - "Nội địa: H = 520.000 x 15% x 7/365 ~ 1.496 -> TCO = 521.496 VNĐ/cái"
+      result: "Nhập khẩu rẻ hơn 11,7% theo giá niêm yết nhưng TCO đắt hơn ~7.498 VNĐ/cái (~1,4%); chưa tính rủi ro tỷ giá, chậm tàu (giả định minh họa)"
+  - id: "m03_tco_supplier_unit"
+    name_vi: "TCO đơn giản theo thùng (giá + lỗi + giao trễ)"
+    name_en: "Simplified per-unit supplier TCO"
+    expression_latex: '\mathrm{TCO} = \mathrm{Gia} + \mathrm{TyLeLoi} \times \mathrm{Gia} \times 2 + (1 - \mathrm{OTD}) \times 60'
+    expression_python: "gia + loi*gia*he_so_loi + (1-otd)*phi_tre"
+    variables:
+      - {symbol: "gia", meaning: "Giá mua", unit: "nghìn VNĐ/thùng"}
+      - {symbol: "loi", meaning: "Tỷ lệ lỗi", unit: "tỷ lệ"}
+      - {symbol: "he_so_loi", meaning: "Hệ số chi phí xử lý hàng lỗi (giả định = 2 x giá)", unit: "lần"}
+      - {symbol: "otd", meaning: "Tỷ lệ giao đúng hạn", unit: "tỷ lệ"}
+      - {symbol: "phi_tre", meaning: "Chi phí mỗi thùng giao trễ (giả định 60 nghìn)", unit: "nghìn VNĐ/thùng"}
+    when_to_use: "So sánh nhanh các nhà máy cùng chủng loại trong nội địa khi chưa có phí vận chuyển/thuế khác nhau."
+    why_it_works: "Giá thấp nhưng lỗi và trễ nhiều bị 'phạt' vào chi phí, thấy được giá thật."
+    assumptions: ["Hệ số xử lý lỗi 2 và phí trễ 60 nghìn/thùng là giả định minh họa"]
+    pitfalls: ["TCO thấp nhất (nhà máy C) vẫn có điểm Scorecard thấp 3,15 do năng lực/ESG yếu, một dây chuyền -> không nên dựa chủ yếu vào C"]
+    interpretation: "Dùng cùng Scorecard: TCO cho phần tiền, Scorecard cho phần chiến lược/rủi ro."
+    example:
+      inputs: {gia: 440, loi: 0.012, he_so_loi: 2, otd: 0.97, phi_tre: 60}
+      steps: ["A: 440 + 0,012 x 440 x 2 + 0,03 x 60 = 440 + 10,56 + 1,8 = 452,36", "B = 472,32; C = 437,70; bình quân gia quyền 60/25/15 = 455,2"]
+      result: "TCO A = 452,36 nghìn/thùng (giả định minh họa)"
+  - id: "m03_perfect_order"
+    name_vi: "Tỷ lệ đơn hàng hoàn hảo (Perfect Order Fulfillment)"
+    name_en: "Perfect Order Fulfillment"
+    expression_latex: '\mathrm{POF} = OT \times IF \times ND \times CD'
+    expression_python: "ot * if_ * nd * cd"
+    variables:
+      - {symbol: "ot", meaning: "On-time: tỷ lệ đúng hạn", unit: "tỷ lệ"}
+      - {symbol: "if_", meaning: "In-full: tỷ lệ đủ số lượng", unit: "tỷ lệ"}
+      - {symbol: "nd", meaning: "No-damage: tỷ lệ không hư hỏng", unit: "tỷ lệ"}
+      - {symbol: "cd", meaning: "Correct-documents: tỷ lệ chứng từ đúng", unit: "tỷ lệ"}
+    when_to_use: "Đo độ tin cậy giao hàng theo cách khách hàng cảm nhận; KPI cốt lõi SCOR."
+    why_it_works: "Đơn chỉ hoàn hảo khi ĐỒNG THỜI đúng hạn, đủ, không hỏng, đủ chứng từ; các điều kiện độc lập nên xác suất đồng thời là tích. Một khâu hỏng là cả đơn hỏng trong mắt khách."
+    assumptions: ["Các thành phần độc lập (xấp xỉ)"]
+    pitfalls: ["Báo cáo trung bình các tỷ lệ thành phần che mất việc POF thấp hơn nhiều"]
+    interpretation: "Mục tiêu ngành thường > 95%; cải thiện chỉ số thấp nhất trước."
+    example:
+      inputs: {ot: 0.96, if_: 0.98, nd: 0.99, cd: 0.99}
+      steps: ["0,96 x 0,98 x 0,99 x 0,99 = 0,922"]
+      result: "POF = 92,2% dù từng chỉ số >= 96%; thấp hơn mục tiêu 95%, cải thiện OTD (96%) trước"
+  - id: "m03_otd"
+    name_vi: "Tỷ lệ giao đúng hạn (OTD)"
+    name_en: "On-Time Delivery"
+    expression_latex: '\mathrm{OTD} = \frac{\text{so don giao dung han}}{\text{tong so don}}'
+    expression_python: "don_dung_han / tong_don"
+    variables:
+      - {symbol: "don_dung_han", meaning: "Số đơn giao đúng hạn", unit: "đơn"}
+      - {symbol: "tong_don", meaning: "Tổng số đơn", unit: "đơn"}
+    when_to_use: "Chấm điểm nhà cung cấp (trọng số 25%) và đo dịch vụ giao hàng của chính mình."
+    why_it_works: "Đo trực tiếp độ tin cậy lịch giao; trễ gây dừng máy và đặt gấp tốn kém."
+    assumptions: ["Định nghĩa 'đúng hạn' thống nhất với nhà cung cấp/khách"]
+    pitfalls: ["Đo theo dòng hàng thay vì theo đơn làm kết quả đẹp giả"]
+    interpretation: "> 95% là mục tiêu tham khảo. Order Fulfillment Cycle Time = thời gian từ khách đặt đến khi nhận hàng, càng ngắn càng tốt theo ngành."
+    example:
+      inputs: {don_dung_han: 97, tong_don: 100}
+      steps: ["97/100"]
+      result: "OTD = 97%"
+  - id: "m03_ccc"
+    name_vi: "Chu kỳ chuyển hóa tiền (Cash-to-Cash, CCC)"
+    name_en: "Cash-to-Cash Cycle Time"
+    expression_latex: '\mathrm{CCC} = \mathrm{DIO} + \mathrm{DSO} - \mathrm{DPO}; \ \mathrm{DIO} = \frac{\text{Ton kho BQ}}{\text{GVHB}} \times 365, \ \mathrm{DSO} = \frac{\text{Phai thu BQ}}{\text{Doanh thu}} \times 365, \ \mathrm{DPO} = \frac{\text{Phai tra BQ}}{\text{GVHB}} \times 365'
+    expression_python: "ton_kho/gvhb*365 + phai_thu/doanh_thu*365 - phai_tra/gvhb*365"
+    variables:
+      - {symbol: "ton_kho", meaning: "Tồn kho bình quân", unit: "triệu VNĐ"}
+      - {symbol: "phai_thu", meaning: "Phải thu bình quân", unit: "triệu VNĐ"}
+      - {symbol: "phai_tra", meaning: "Phải trả bình quân", unit: "triệu VNĐ"}
+      - {symbol: "gvhb", meaning: "Giá vốn hàng bán", unit: "triệu VNĐ"}
+      - {symbol: "doanh_thu", meaning: "Doanh thu", unit: "triệu VNĐ"}
+    when_to_use: "Đo số ngày tiền doanh nghiệp 'nằm' trong chuỗi trước khi quay lại thành tiền mặt; chọn đòn bẩy giảm vốn lưu động."
+    why_it_works: "Ta ứng tiền khi giữ hàng (DIO) và khi bán chịu (DSO), được ứng tiền khi trả chậm NCC (DPO); CCC càng ngắn vốn lưu động càng nhẹ."
+    assumptions: ["Dùng bình quân đầu-cuối kỳ; kỳ 365 ngày"]
+    pitfalls: ["Kéo DPO quá dài làm hỏng quan hệ/giá với NCC", "DIO tính theo GVHB, DSO theo doanh thu (không lẫn)"]
+    interpretation: "Càng ngắn càng tốt; rút ngắn bằng giảm tồn (S&OP tốt hơn), thu tiền nhanh hơn, đàm phán thanh toán chậm hơn."
+    example:
+      inputs: {ton_kho: 4000, phai_thu: 3000, phai_tra: 2000, gvhb: 24000, doanh_thu: 36000}
+      steps: ["DIO = 4.000/24.000 x 365 = 60,8", "DSO = 3.000/36.000 x 365 = 30,4", "DPO = 2.000/24.000 x 365 = 30,4", "CCC = 60,8 + 30,4 - 30,4"]
+      result: "CCC ~ 60,8 ngày"
+  - id: "m03_wape"
+    name_vi: "Độ chính xác dự báo (WAPE)"
+    name_en: "Forecast Accuracy via WAPE"
+    expression_latex: '\mathrm{WAPE} = \frac{\sum |A_t - F_t|}{\sum A_t}, \quad \mathrm{Accuracy} = 1 - \mathrm{WAPE}'
+    expression_python: "1 - sum(abs(a-f) for a, f in zip(actual, forecast)) / sum(actual)"
+    variables:
+      - {symbol: "actual", meaning: "Nhu cầu thực các kỳ A_t", unit: "đơn vị hàng"}
+      - {symbol: "forecast", meaning: "Dự báo các kỳ F_t", unit: "đơn vị hàng"}
+    when_to_use: "Đánh giá dự báo cho S&OP/đặt hàng; so sánh nhiều mặt hàng."
+    why_it_works: "Cộng sai số tuyệt đối rồi chia tổng nhu cầu (có trọng số theo lượng) nên mặt hàng nhỏ không làm méo kết quả như MAPE từng dòng."
+    assumptions: ["Tổng nhu cầu khác 0"]
+    pitfalls: ["Chưa phân biệt dự báo thừa/thiếu (không đo bias)"]
+    interpretation: "Mục tiêu tham khảo > 80%."
+    example:
+      inputs: {actual: [120, 150, 100, 130], forecast: [100, 170, 90, 115]}
+      steps: ["Sai số tuyệt đối = 20+20+10+15 = 65", "WAPE = 65/500 = 13%"]
+      result: "Accuracy = 87% (> 80%, đạt)"
+  - id: "m03_sc_cost_pct"
+    name_vi: "Chi phí chuỗi cung ứng trên doanh thu"
+    name_en: "Supply Chain Cost % Revenue"
+    expression_latex: '\text{SC Cost \%} = \frac{\text{chi phi mua, kho, van tai, ton kho, quan tri}}{\text{Doanh thu}}'
+    expression_python: "chi_phi_chuoi / doanh_thu"
+    variables:
+      - {symbol: "chi_phi_chuoi", meaning: "Tổng chi phí chuỗi (mua, kho, vận tải, tồn kho, quản trị)", unit: "VNĐ"}
+      - {symbol: "doanh_thu", meaning: "Doanh thu", unit: "VNĐ"}
+    when_to_use: "KPI cân bằng với độ tin cậy/tốc độ để tránh chỉ tối ưu chi phí."
+    why_it_works: "Chuẩn hóa chi phí theo quy mô bán hàng nên so sánh được theo ngành/thời gian."
+    assumptions: ["Phạm vi chi phí được định nghĩa nhất quán"]
+    pitfalls: ["Chỉ giảm tỷ lệ này mà hy sinh Perfect Order là tối ưu cục bộ"]
+    interpretation: "Khoảng 5-12% tùy ngành (số tham khảo)."
+    example:
+      inputs: {chi_phi_chuoi: 90, doanh_thu: 1000}
+      steps: ["90/1000"]
+      result: "9% (ví dụ giả định minh họa, nằm trong khoảng tham khảo)"
+  - id: "m03_risk_score"
+    name_vi: "Điểm rủi ro P x I"
+    name_en: "Risk score"
+    expression_latex: 'R = P \times I'
+    expression_python: "p * i"
+    variables:
+      - {symbol: "p", meaning: "Xác suất xảy ra", unit: "thang 1-5"}
+      - {symbol: "i", meaning: "Mức tác động", unit: "thang 1-5"}
+    when_to_use: "Lập sổ tay rủi ro (risk register) và xếp thứ tự ưu tiên xử lý."
+    why_it_works: "Tích cho phép so sánh rủi ro hiếm-thảm khốc với thường xuyên-nhẹ trên cùng một thang."
+    assumptions: ["Thang 1-5 chấm nhất quán bởi nhóm"]
+    pitfalls: ["Rủi ro sống còn (P thấp, I=5) dễ bị xếp thấp: cần xét riêng phần bù sống còn cho SME"]
+    interpretation: "R >= 15 ưu tiên cao (đa dạng NCC, tồn đệm, bảo hiểm, BCP); 8-14 giám sát và dự phòng; < 8 chấp nhận. Ma trận 2x2: P cao + I cao = ưu tiên cao; P thấp + I cao = giám sát; P cao + I thấp = giảm thiểu; P thấp + I thấp = chấp nhận."
+    example:
+      inputs: {p: 3, i: 5}
+      steps: ["3 x 5"]
+      result: "R = 15: gián đoạn nguồn cung nguyên liệu chính -> ưu tiên cao (ví dụ risk register mẫu)"
+  - id: "m03_prevention_breakeven"
+    name_vi: "Lợi ích ròng của biện pháp phòng ngừa rủi ro"
+    name_en: "Risk mitigation net benefit and breakeven probability"
+    expression_latex: '\text{Dang lam khi } C \lesssim p \times L \times (1 - r); \quad \text{Loi ich rong} = pL(1-r) - C; \quad p^{*} = \frac{C}{L(1-r)}'
+    expression_python: "p*L*(1-r) - C"
+    variables:
+      - {symbol: "p", meaning: "Xác suất sự cố mỗi năm", unit: "lần/năm"}
+      - {symbol: "L", meaning: "Tổn thất một lần sự cố", unit: "triệu VNĐ"}
+      - {symbol: "r", meaning: "Phần tổn thất còn lại sau khi có biện pháp (residual)", unit: "tỷ lệ"}
+      - {symbol: "C", meaning: "Chi phí phòng ngừa hằng năm", unit: "triệu VNĐ/năm"}
+    when_to_use: "Quyết định đa nguồn, tồn kho an toàn, bảo hiểm cho nguyên liệu/NCC nút thắt hoặc chiến lược."
+    why_it_works: "So chi phí chắc chắn hằng năm với tổn thất kỳ vọng tránh được p x L x (1-r)."
+    assumptions: ["p, L, r là giả định/ước lượng chủ quan", "Nên cộng phần bù sống còn cho SME vì tổn thất kỳ vọng chưa phản ánh rủi ro kiệt quệ dòng tiền"]
+    pitfalls: ["Chỉ nhìn kỳ vọng: giá trị thật của đa nguồn nằm ở cắt đuôi rủi ro", "Quên chi phí vốn của tồn kho an toàn"]
+    interpretation: "Lợi ích ròng nhỏ dương (vd +60 triệu) vẫn đáng làm nếu sự cố có thể gây đứt dòng tiền; phương án chỉ còn là 'mua bảo hiểm' khi p thấp hơn p*."
+    example:
+      inputs: {p: 0.3, L: 600, r: 0.2, C: 100}
+      steps: ["Lợi ích kỳ vọng = 0,3 x 600 x 0,8 = 144", "Lợi ích ròng = 144 - 100"]
+      result: "+44 triệu/năm -> nên làm (và giảm rủi ro kiệt quệ dòng tiền)"
+  - id: "m03_disruption_loss"
+    name_vi: "Tổn thất một lần gián đoạn nguồn cung (L)"
+    name_en: "Single-disruption loss (SME wood workshop)"
+    expression_latex: 'L = DT_{\text{thang}} \times \frac{\text{tuan}}{4} \times \%\text{mat} \times CM + \text{Phat} + \text{Mat KH}'
+    expression_python: "doanh_thu_thang*tuan/4*ty_le_mat*cm + phat + mat_kh"
+    variables:
+      - {symbol: "doanh_thu_thang", meaning: "Doanh thu tháng", unit: "triệu VNĐ"}
+      - {symbol: "tuan", meaning: "Số tuần dừng sản xuất", unit: "tuần"}
+      - {symbol: "ty_le_mat", meaning: "Phần doanh thu mất hẳn", unit: "tỷ lệ"}
+      - {symbol: "cm", meaning: "Biên đóng góp (contribution margin)", unit: "tỷ lệ"}
+      - {symbol: "phat", meaning: "Tiền phạt trễ hạn", unit: "triệu VNĐ"}
+      - {symbol: "mat_kh", meaning: "Lợi nhuận gộp mất do mất khách (tính 1 năm)", unit: "triệu VNĐ"}
+    when_to_use: "Định lượng L cho công thức phòng ngừa rủi ro."
+    why_it_works: "Gom ba nguồn thiệt hại: lợi nhuận đóng góp mất đi, phạt hợp đồng, mất khách."
+    assumptions: ["70% doanh thu bị ảnh hưởng mất hẳn; mức phạt 8% là giả định minh họa"]
+    pitfalls: ["Bỏ sót thiệt hại gián tiếp dài hạn (uy tín)"]
+    interpretation: "L = 968,5 triệu xấp xỉ 85% lợi nhuận đóng góp cả một tháng (3.000 x 38%)."
+    example:
+      inputs: {doanh_thu_thang: 3000, tuan: 3, ty_le_mat: 0.7, cm: 0.38, phat: 120, mat_kh: 250}
+      steps: ["Doanh thu bị ảnh hưởng = 3.000 x 3/4 = 2.250; mất 70% = 1.575; x 38% = 598,5", "Phạt 1.500 x 8% = 120; mất khách 250", "L = 598,5 + 120 + 250"]
+      result: "L = 968,5 triệu VNĐ/sự cố (giả định minh họa)"
+  - id: "m03_centralization_breakeven"
+    name_vi: "Hòa vốn tập trung hóa thu mua"
+    name_en: "Centralized procurement breakeven"
+    expression_latex: 'N^{*} = \frac{F_{\text{co dinh}}}{s - v}, \quad s = \text{chi nguyen lieu moi cua hang} \times \%\text{giam gia}'
+    expression_python: "ceil(co_dinh / (chi_nvl*giam_gia - bien_doi))"
+    variables:
+      - {symbol: "co_dinh", meaning: "Chi phí cố định (kho, nhân sự) mỗi tháng", unit: "triệu VNĐ"}
+      - {symbol: "chi_nvl", meaning: "Chi nguyên liệu mỗi cửa hàng mỗi tháng", unit: "triệu VNĐ"}
+      - {symbol: "giam_gia", meaning: "Mức giảm giá nhờ mua tập trung", unit: "tỷ lệ"}
+      - {symbol: "bien_doi", meaning: "Chi phí giao hàng biến đổi mỗi cửa hàng", unit: "triệu VNĐ"}
+    when_to_use: "Chuỗi nhiều cửa hàng cân nhắc kho trung chuyển và đội thu mua tập trung."
+    why_it_works: "Tập trung hóa tạo tiết kiệm tỷ lệ theo mỗi cửa hàng nhưng kèm chi phí cố định; chỉ lãi khi đủ số điểm bán gánh chi phí cố định."
+    assumptions: ["Mức giảm giá và chi phí là giả định minh họa"]
+    pitfalls: ["Rủi ro mới: phụ thuộc ít NCC -> cần NCC dự phòng", "Dưới ngưỡng quy mô nên dùng 3PL hoặc mua chung"]
+    interpretation: "Case Nắng Trung: N* = 79/6,0 = 13,2 nên từ cửa hàng thứ 14 mới lãi; với 5 cửa hàng lỗ 49 triệu/tháng."
+    example:
+      inputs: {co_dinh: 50, chi_nvl: 45, giam_gia: 0.10, bien_doi: 0.9}
+      steps: ["Tiết kiệm/cửa hàng = 45 x 10% = 4,5", "Đóng góp ròng = 4,5 - 0,9 = 3,6", "N* = 50/3,6 = 13,9 -> làm tròn lên"]
+      result: "Tối thiểu 14 cửa hàng"
+  - id: "m03_network_routes"
+    name_vi: "Số tuyến mạng lưới: trực tiếp vs qua DC"
+    name_en: "Network routes: direct vs via DC"
+    expression_latex: '\text{Truc tiep} = n \times m; \quad \text{Qua DC} = n + m'
+    expression_python: "(n*m, n+m)"
+    variables:
+      - {symbol: "n", meaning: "Số nhà cung cấp", unit: "NCC"}
+      - {symbol: "m", meaning: "Số khách hàng/điểm nhận", unit: "điểm"}
+    when_to_use: "Biện minh kho trung tâm/cross-docking để giảm độ phức tạp tuyến."
+    why_it_works: "Qua một DC, mỗi bên chỉ nối với DC (cộng thay vì nhân)."
+    assumptions: ["Một DC duy nhất; bỏ qua chi phí xử lý thêm tại DC"]
+    pitfalls: ["Đổi lại hàng qua thêm một điểm trung chuyển (thêm thời gian và chi phí xử lý)"]
+    interpretation: "n=10, m=20: 200 tuyến trực tiếp so với 30 tuyến qua DC."
+    example:
+      inputs: {n: 10, m: 20}
+      steps: ["10 x 20 = 200", "10 + 20 = 30"]
+      result: "(200, 30)"
+  - id: "m03_interfaces"
+    name_vi: "Số cặp giao diện giữa n nhà cung cấp"
+    name_en: "Pairwise interfaces n(n-1)/2"
+    expression_latex: '\frac{n(n-1)}{2}'
+    expression_python: "n*(n-1)/2"
+    variables:
+      - {symbol: "n", meaning: "Số nhà cung cấp lớn cần ghép nối kỹ thuật", unit: "NCC"}
+    when_to_use: "Đánh giá chi phí phối hợp khi outsource nhiều NCC (bài học Boeing 787)."
+    why_it_works: "Số cặp tiềm năng tăng bình phương theo n nên chi phí phối hợp phình nhanh hơn lợi ích chia sẻ vốn."
+    assumptions: ["Giả định minh họa: không phải cặp nào cũng cần ghép nối trực tiếp"]
+    pitfalls: ["Hiểu là số giao diện thực tế (chỉ là cận trên tiềm năng)"]
+    interpretation: "10 NCC: 45 cặp; 50 NCC: 1.225 cặp (gấp ~27 lần)."
+    example:
+      inputs: {n: 50}
+      steps: ["50 x 49 / 2"]
+      result: "1.225 cặp"
+  - id: "m03_safety_stock_ref"
+    name_vi: "Tồn kho an toàn (tham chiếu sang m04)"
+    name_en: "Safety stock (see m04)"
+    expression_latex: 'SS = z \cdot \sigma \cdot \sqrt{L}'
+    expression_python: "z * sigma * sqrt(L)"
+    variables:
+      - {symbol: "z", meaning: "Hệ số mức phục vụ (95% -> 1,65)", unit: "độ lệch chuẩn"}
+      - {symbol: "sigma", meaning: "Độ lệch chuẩn nhu cầu/đơn theo kỳ", unit: "đơn vị hàng/kỳ"}
+      - {symbol: "L", meaning: "Lead time", unit: "kỳ (tuần)"}
+    when_to_use: "Lượng hóa lợi ích giảm Bullwhip: sigma đơn giảm thì đệm cần thiết giảm."
+    why_it_works: "Đệm bù dao động trong thời gian chờ hàng; chi tiết xem module m04."
+    assumptions: ["Nhu cầu các kỳ độc lập, phân phối chuẩn"]
+    pitfalls: ["Dùng sigma của đơn hàng (đã khuếch đại) thay vì nhu cầu thực sẽ thổi phồng tồn đệm"]
+    interpretation: "Case Tân Phát: đệm cho đơn gửi nhà máy giảm từ ~119,4 xuống ~26,2 thùng sau cải thiện."
+    example:
+      inputs: {z: 1.65, sigma: 51.17, L: 2}
+      steps: ["1,65 x 51,17 x sqrt(2)"]
+      result: "SS ~ 119,4 thùng"
+
+frameworks:
+  - id: "m03_scor"
+    name_vi: "Mô hình SCOR"
+    name_en: "SCOR (Supply Chain Operations Reference)"
+    origin: "Supply Chain Council (lập 1996 bởi PRTM và AMR Research cùng nhóm doanh nghiệp), sau sáp nhập vào APICS (nay ASCM). Ra đời để có ngôn ngữ chung mô tả/đo/benchmark chuỗi."
+    components:
+      - "Plan: cân đối cung-cầu (dự báo, S&OP, hoạch định năng lực)"
+      - "Source: tìm và thu mua (chọn NCC, đàm phán, đặt hàng)"
+      - "Make: chuyển nguyên liệu thành thành phẩm (lên lịch, QC)"
+      - "Deliver: xử lý đơn, kho, vận tải, lắp đặt"
+      - "Return: hàng trả, bảo hành, thu hồi, tái chế"
+      - "Enable: hỗ trợ xuyên suốt (rủi ro, hợp đồng, dữ liệu, CNTT)"
+    when_to_use: "Chuẩn hóa mô tả chuỗi và chọn KPI benchmark (Perfect Order, Order Fulfillment Cycle Time, Supply Chain Cost, Cash-to-Cash)."
+    how_to_apply: ["Vẽ chuỗi theo 6 quy trình", "Gắn KPI cho từng quy trình", "Benchmark với ngành, chọn khoảng cách lớn nhất để cải tiến"]
+    how_to_read_results: "KPI cân bằng 4 nhóm: độ tin cậy, tốc độ, chi phí, tài sản; không tối ưu chỉ một nhóm."
+    pitfalls: ["Dùng SCOR như checklist cứng thay vì công cụ chẩn đoán", "Chỉ đo chi phí"]
+    example: "Xưởng SME gắn Plan = họp S&OP tháng, Source = Scorecard NCC, Deliver = OTD/Perfect Order."
+  - id: "m03_bullwhip_diagnosis"
+    name_vi: "Chẩn đoán và giảm Bullwhip"
+    name_en: "Bullwhip diagnosis and mitigation"
+    origin: "Forrester 1961 (Industrial Dynamics); Lee-Padmanabhan-Whang 1997 (4 nguyên nhân, quan sát tại P&G); Chen et al. 2000 (cận dưới định lượng)."
+    components:
+      - "Nguyên nhân 1 Xử lý tín hiệu nhu cầu -> giải pháp: chia sẻ POS/sell-out, VMI, CPFR"
+      - "Nguyên nhân 2 Đặt hàng theo lô -> giải pháp: giảm lô và lead time, đặt hàng điện tử, giao thường xuyên hơn, đàm phán lại MOQ"
+      - "Nguyên nhân 3 Biến động giá -> giải pháp: giá ổn định EDLP + thưởng theo doanh số kỳ"
+      - "Nguyên nhân 4 Rationing/Shortage gaming -> giải pháp: phân bổ theo lịch sử bán thực (sell-through)"
+    when_to_use: "Khi đơn hàng lên thượng nguồn dao động mạnh hơn nhiều so với nhu cầu cuối."
+    how_to_apply:
+      - "Thu thập 12 tuần: nhu cầu thực (sell-out), đơn mắt xích kế, đơn gửi thượng nguồn"
+      - "Kiểm tra tổng ba cột bằng nhau (nếu không, có tích lũy tồn kho)"
+      - "Tính trung bình, phương sai, độ lệch chuẩn, CV mỗi cột"
+      - "Tính BW từng tầng (đơn / nhu cầu thực)"
+      - "Đối chiếu dấu hiệu dữ liệu với 4 nguyên nhân (đơn cao/thấp luân phiên -> lô; khuyến mãi theo đợt -> giá; tin đồn thiếu hàng -> gaming)"
+      - "Thực hiện giải pháp tương ứng, đo lại sau 12 tuần"
+    how_to_read_results: "BW = 1 không khuếch đại; > 2 cần xử lý (quy ước thực hành); sau cải thiện BW > 1 vẫn bình thường, theo dõi hằng tháng."
+    pitfalls: ["Giải pháp công nghệ khi nguyên nhân là hành vi lô/giá", "Không đo lại sau cải thiện"]
+    example: "Tân Phát Foods: BW tiệm 9,87 -> 2,25; BW nhà máy 54,65 -> 5,01 chỉ bằng chia sẻ sell-out, lịch đặt cố định, giá ổn định, S&OP, giảm MOQ."
+  - id: "m03_fisher"
+    name_vi: "Mô hình Fisher: chuỗi phù hợp với sản phẩm"
+    name_en: "Fisher: What is the right supply chain for your product?"
+    origin: "Marshall Fisher (Wharton), HBR 1997: nhiều công ty có chuỗi 'tốt' nhưng sai loại cho sản phẩm."
+    components:
+      - "Functional (vòng đời >2 năm, biên 5-20%, sai số dự báo ~10%; gạo, muối, giấy vệ sinh) -> Efficient: tối thiểu chi phí, tồn thấp, NCC theo chi phí/chất lượng, JIT"
+      - "Innovative (vòng đời 3 tháng-1 năm, biên 20-60%, sai số 40-100%; thời trang, điện thoại mới, đồ chơi trend) -> Responsive: tốc độ, tồn đệm cao hơn, lead time số 1, NCC linh hoạt"
+      - "Ma trận khớp 2x2: Functional+Efficient khớp; Innovative+Responsive khớp; Functional+Responsive lãng phí chi phí; Innovative+Efficient thiếu hàng hoặc ế"
+    when_to_use: "Chọn chiến lược chuỗi theo từng nhóm sản phẩm, trước khi chọn nhà cung cấp."
+    how_to_apply:
+      - "Phân loại sản phẩm theo vòng đời, biên, độ chính xác dự báo"
+      - "Chọn Efficient hoặc Responsive; nếu hỗn hợp xem Leagile"
+      - "Sơ đồ quyết định: nhu cầu ổn định, dễ dự báo? Có -> biên thấp? Có -> EFFICIENT; Không -> xem LEAGILE. Không ổn định -> AGILE"
+    how_to_read_results: "Các con số là ngưỡng minh họa, không phải ranh giới cứng."
+    pitfalls: ["Áp Efficient/Lean cho sản phẩm biến động cao", "Một chiến lược cho mọi sản phẩm"]
+    example: "Bài tập: gạo, giấy vệ sinh, nước tương -> Efficient; giày mẫu mới theo mùa, phụ kiện điện thoại trend -> Responsive (giày có thể Leagile: dự trữ vải/đế, đóng giày theo tín hiệu thị trường)."
+  - id: "m03_lean_agile_leagile"
+    name_vi: "Lean - Agile - Leagile và điểm phân tách"
+    name_en: "Lean / Agile / Leagile with decoupling point"
+    origin: "Mô tả thiết kế vận hành để hiện thực hóa kết quả mô hình Fisher; Zara, Dell là ví dụ Leagile."
+    components:
+      - "Lean: loại lãng phí, JIT, rủi ro gián đoạn bất ngờ; FMCG cơ bản, ô tô hàng loạt"
+      - "Agile: đáp ứng nhanh, tồn đệm chiến lược ở điểm phân tách, chi phí vận hành cao hơn; thời trang nhanh, công nghệ, đồ chơi trend"
+      - "Leagile: [Nguyên liệu - sản xuất theo kế hoạch (Lean)] -> điểm phân tách -> [hoàn thiện theo đơn (Agile)] -> khách"
+    when_to_use: "Sản phẩm có phần thượng nguồn ổn định nhưng hoàn thiện cuối biến động."
+    how_to_apply: ["Xác định bước cuối còn giữ tồn kho chung (vải mộc, bán thành phẩm)", "Đặt điểm phân tách ở đó", "Thượng nguồn tối ưu chi phí, hạ nguồn tối ưu tốc độ"]
+    how_to_read_results: "Điểm phân tách càng gần khách hàng thì đáp ứng càng nhanh nhưng tồn kho đệm càng nhiều."
+    pitfalls: ["Đặt điểm phân tách sai chỗ (tồn thành phẩm cuối ế)"]
+    example: "Xưởng may SME: tồn vải mộc (Lean, mua theo kế hoạch), cắt-may-nhuộm khi có đơn (Agile)."
+  - id: "m03_kraljic"
+    name_vi: "Ma trận Kraljic"
+    name_en: "Kraljic Matrix"
+    origin: "Peter Kraljic (McKinsey), HBR 1983, sau cú sốc dầu mỏ thập niên 1970."
+    components:
+      - "Trục dọc Rủi ro cung ứng (nguồn hiếm? ít NCC? khó thay? biến động giá?); trục ngang Tác động lợi nhuận (% chi phí/giá trị sản phẩm cuối)"
+      - "Chiến lược (rủi ro cao, tác động cao): đối tác dài hạn, chia sẻ dự báo, đồng phát triển; hợp đồng khung nhiều năm, họp định kỳ, scorecard"
+      - "Đòn bẩy (rủi ro thấp, tác động cao): tận dụng sức mạnh đàm phán; RFQ, e-auction định kỳ, đa nguồn"
+      - "Nút thắt (rủi ro cao, tác động thấp): bảo đảm nguồn cung dù giá cao hơn chút; NCC dự phòng, tồn kho an toàn, hợp đồng bảo đảm sản lượng"
+      - "Không quan trọng (thấp, thấp): giảm chi phí giao dịch; P-card, e-procurement, gộp đơn, danh mục chuẩn hóa"
+    when_to_use: "Phân bổ nguồn lực quản trị mua hàng cho hàng trăm mặt hàng."
+    how_to_apply:
+      - "Liệt kê mặt hàng + % chi phí"
+      - "Chấm 1-5 Tác động lợi nhuận (theo % chi phí) và Rủi ro cung ứng (số NCC thay thế, thời gian chuyển đổi, biến động giá)"
+      - "Ngưỡng 'Cao' >= 3,5 (mẫu SME)"
+      - "Xếp ô, gán chiến lược, kiểm tra có NCC dự phòng cho Chiến lược/Nút thắt"
+    how_to_read_results: "Gỗ xẻ sấy 48% chi phí chấm (5; 4) -> Chiến lược; phụ kiện nhập khẩu (2; 4) và keo chuyên dụng (2; 4,5) -> Nút thắt vì thiếu là dừng sản xuất."
+    pitfalls: ["Ngưỡng 3,5 là quy ước mẫu", "Xếp nhầm Nút thắt với Chiến lược khi bỏ qua % chi phí", "Boeing 787: cấu kiện cốt lõi thuộc Chiến lược nhưng bị giao trọn gói"]
+    example: "Bài 2 xưởng bánh: bơ nhập (4; 4) Chiến lược; bột mì (5; 2) và vận chuyển lạnh (4; 3) Đòn bẩy; hương liệu đặc biệt (2; 4,5) Nút thắt; còn lại Không quan trọng."
+  - id: "m03_strategic_sourcing"
+    name_vi: "Quy trình thu mua chiến lược 7 bước"
+    name_en: "Strategic Sourcing process"
+    origin: "Thực hành thu mua hiện đại, bắt đầu từ dữ liệu chi tiêu theo quy tắc Pareto (~20% mặt hàng ~80% chi tiêu)."
+    components: ["1 Spend Analysis", "2 Supply Market Analysis", "3 Chiến lược tìm nguồn (Kraljic)", "4 RFI", "5 RFP/RFQ", "6 Đàm phán & chọn NCC", "7 Triển khai hợp đồng & theo dõi hiệu suất"]
+    when_to_use: "Thay mua hàng cảm tính bằng quy trình dựa trên dữ liệu."
+    how_to_apply: ["Phân loại chi tiêu theo danh mục và NCC", "Tập trung vào nhóm ~80% chi tiêu", "Chọn NCC bằng Scorecard + TCO", "Theo dõi hiệu suất hằng quý"]
+    how_to_read_results: "Mỗi bước có đầu ra riêng; bước 7 cấp dữ liệu cho Scorecard."
+    pitfalls: ["Bỏ qua Spend Analysis", "Chốt giá đầu tiên"]
+    example: "Xưởng gỗ: chia 70% NCC chính, 15% + 15% hai NCC phụ."
+  - id: "m03_distribution_models"
+    name_vi: "Các mô hình mạng lưới phân phối và phương thức vận tải"
+    name_en: "Distribution network models and transport modes"
+    origin: "Bài toán gốc: đánh đổi chi phí vận chuyển, chi phí tồn kho và tốc độ giao; không mô hình nào thắng tuyệt đối."
+    components:
+      - "Direct Shipment: NCC/nhà máy -> khách; đơn giản, đắt khi đơn nhỏ lẻ"
+      - "Qua kho trung tâm (DC): gộp đơn tối ưu vận chuyển, tăng thời gian giao; tuyến n + m thay vì n x m"
+      - "Cross-Docking: hàng đến và đi trong vài giờ, tồn kho gần như 0 (MWG, thực phẩm tươi)"
+      - "Milk Run: một xe thu gom tuần hoàn từ nhiều NCC theo tuyến cố định"
+      - "Vận tải: biển (chậm nhất, rẻ nhất, hàng khối lượng lớn), sắt (hàng nặng xa), bộ (nhanh, nội địa linh hoạt), hàng không (nhanh nhất, đắt nhất, hàng giá trị cao/gấp/dễ hỏng), ống (dầu khí, đầu tư cao)"
+    when_to_use: "Thiết kế bước 4 'mạng lưới' của quy trình 7 bước."
+    how_to_apply: ["Chọn mô hình theo đặc tính hàng (tươi: cross-dock/giao hằng ngày; thời trang: DC + giao nhanh; điện tử giá trị cao: trực tiếp hoặc DC bảo mật)", "Tính số tuyến, tần suất giao, chi phí/đơn vị", "Chọn phương thức vận tải theo tốc độ-chi phí"]
+    how_to_read_results: "DC giảm độ phức tạp tuyến nhưng tăng thời gian/xử lý."
+    pitfalls: ["Một mô hình cho mọi ngành hàng"]
+    example: "n = 10 NCC, m = 20 khách: 200 tuyến trực tiếp so với 30 tuyến qua DC."
+  - id: "m03_sop"
+    name_vi: "Chu trình S&OP 5 bước"
+    name_en: "Sales and Operations Planning cycle"
+    origin: "Oliver Wight, thập niên 1980, trên nền MRP II; lý do: tránh 3 kế hoạch rời rạc Kinh doanh/Sản xuất/Tài chính."
+    components:
+      - "Tuần 1 Thu thập dữ liệu (doanh số thực tế, dự báo thị trường, đơn tồn đọng)"
+      - "Tuần 2 Hoạch định nhu cầu (Marketing & Sales thống nhất dự báo)"
+      - "Tuần 3 Hoạch định cung ứng (Operations đánh giá năng lực, xác định gap)"
+      - "Tuần 4 Họp Pre-S&OP (giải quyết xung đột cung-cầu, đề xuất phương án)"
+      - "Tuần 4 Họp S&OP điều hành (lãnh đạo duyệt kế hoạch cuối, gắn ngân sách)"
+      - "Mở rộng ngoài doanh nghiệp: VMI, CPFR"
+    when_to_use: "Mọi doanh nghiệp có bất đồng kế hoạch cung-cầu; SME dùng bản S&OP đơn giản hằng tháng (kinh doanh, kho, mua hàng)."
+    how_to_apply: ["Chốt lịch họp cố định", "Mỗi họp ghi rõ người tham dự, đầu vào, đầu ra", "Chốt MỘT con số dự báo gắn ngân sách", "Theo dõi Forecast Accuracy"]
+    how_to_read_results: "Một con số dự báo duy nhất được ban lãnh đạo phê duyệt."
+    pitfalls: ["Họp hình thức không ra quyết định", "Dự báo dựa vào đơn hàng thay vì sell-out"]
+    example: "Tân Phát: S&OP đơn giản hằng tháng + chia sẻ sell-out hằng tuần."
+  - id: "m03_risk_resilience"
+    name_vi: "Quản trị rủi ro và khả năng phục hồi chuỗi"
+    name_en: "Supply chain risk management and resilience"
+    origin: "Cú sốc COVID-19 (2020-2022), kẹt Suez (2021), căng thẳng Mỹ-Trung đưa resilience ngang hàng chi phí."
+    components:
+      - "Chấm P và I thang 1-5, R = P x I; >= 15 ưu tiên; 8-14 giám sát; < 8 chấp nhận"
+      - "Ma trận 2x2: ưu tiên cao (P cao, I cao): đa dạng NCC, tồn đệm, bảo hiểm, BCP; giám sát (P thấp, I cao): xây kế hoạch dự phòng; giảm thiểu (P cao, I thấp): kiểm soát định kỳ, hợp đồng dự phòng; chấp nhận (thấp, thấp)"
+      - "Chiến lược: đa dạng hóa nguồn, China+1/near-shoring, tồn kho chiến lược, Digital Twin/Control Tower, BCP + bảo hiểm"
+      - "Cost-benefit: chi phí phòng ngừa <~ p x L x (1-r), cộng phần bù sống còn cho SME"
+    when_to_use: "Lập risk register hằng quý và quyết định đầu tư phòng ngừa."
+    how_to_apply: ["Liệt kê rủi ro, chấm P, I", "Xếp hạng theo R", "Với rủi ro hàng đầu tính L, p, r, C", "Quyết định + kế hoạch triển khai dần (không đóng băng vốn một lúc)"]
+    how_to_read_results: "Lợi ích kỳ vọng nhỏ nhưng cắt đuôi rủi ro (L từ 968,5 xuống ~145 triệu) có giá trị sống còn với SME."
+    pitfalls: ["Chỉ nhìn tổn thất kỳ vọng", "Việt Nam hưởng lợi China+1 nhưng phụ thuộc nguyên liệu đầu vào nhập khẩu"]
+    example: "Risk register mẫu: gián đoạn NVL chính (3x5=15), tỷ giá nhập khẩu (4x3=12), thiên tai dịch bệnh (2x5=10), lỗi hệ thống thông tin (3x3=9), đình công vận tải (2x4=8)."
+  - id: "m03_digital_roadmap"
+    name_vi: "Lộ trình chuyển đổi số chuỗi cung ứng cho SME"
+    name_en: "Digital supply chain roadmap (4 stages)"
+    origin: "Dữ liệu trễ gây Bullwhip; số hóa tăng visibility. Bảng công nghệ: IoT, Blockchain, AI/ML, Digital Twin, Control Tower, RPA (ví dụ công ty chưa kiểm chứng quy mô)."
+    components: ["GĐ1 Số hóa dữ liệu cơ bản (giấy -> Excel/phần mềm đơn giản)", "GĐ2 Kết nối nội bộ (bán hàng-kho-mua hàng trên một nền tảng/ERP nhỏ)", "GĐ3 Kết nối đối tác (chia sẻ tồn kho/đơn qua API/cổng)", "GĐ4 Phân tích dự báo nâng cao (AI/ML trong SaaS)"]
+    when_to_use: "Quyết định mức đầu tư công nghệ theo quy mô."
+    how_to_apply: ["Ưu tiên GĐ1-2 trước", "Không cần Control Tower/Digital Twin ngay từ đầu", "RPA tự động 3-way matching (PO - biên nhận - hóa đơn)"]
+    how_to_read_results: "Công nghệ nâng cao chỉ hiệu quả khi dữ liệu nội bộ sạch."
+    pitfalls: ["Đầu tư công nghệ quá sớm, dữ liệu không sạch, phần mềm không được dùng"]
+    example: "Tân Phát dùng Zalo/Google Sheet để chia sẻ sell-out (GĐ1-3 chi phí gần 0)."
+  - id: "m03_seven_step_rebuild"
+    name_vi: "Quy trình 7 bước xây dựng/tái cấu trúc chuỗi cung ứng"
+    name_en: "7-step SCM build/restructure for SME"
+    origin: "Thứ tự: hiểu hiện trạng trước, chọn chiến lược theo sản phẩm (Fisher) trước khi chọn NCC (Kraljic), mạng lưới và hệ thống thông tin phục vụ chiến lược."
+    components: ["1 Đánh giá hiện trạng (vẽ sơ đồ; đo Bullwhip, OTD, CCC)", "2 Phân tích chiến lược sản phẩm (Fisher)", "3 Phân loại danh mục mua (Kraljic)", "4 Thiết kế mạng lưới", "5 Xây hệ thống thông tin (ERP/WMS/TMS; EDI/API/Zalo/Sheet)", "6 Triển khai thí điểm", "7 Đo lường & cải tiến liên tục (KPI, S&OP tháng)"]
+    when_to_use: "Khởi động dự án cải tiến chuỗi."
+    how_to_apply: ["Làm lần lượt 1->7", "Pilot một khu vực/nhóm sản phẩm trước nhân rộng"]
+    how_to_read_results: "Mỗi bước có đầu ra kiểm chứng được (sơ đồ, phân loại, KPI)."
+    pitfalls: ["Nhảy thẳng sang mua phần mềm (bước 5)"]
+    example: "Lộ trình SME: sơ đồ chuỗi (1 tuần) -> Kraljic (2 tuần) -> số hóa tồn kho/đơn (1-2 tháng) -> NCC dự phòng + scorecard (3 tháng) -> đo Bullwhip + S&OP (3-6 tháng) -> WMS/ERP khi đủ quy mô."
+
+procedures:
+  - id: "m03_proc_measure_bullwhip"
+    name: "Đo và xử lý Bullwhip bằng Excel/Google Sheets"
+    steps:
+      - "Lập bảng 12 tuần: B = nhu cầu thực, C = đơn của khách gửi bạn, D = đơn bạn gửi NCC"
+      - "Phương sai: =VAR.P(B2:B13), =VAR.P(C2:C13), =VAR.P(D2:D13)"
+      - "BW1 = VAR.P(C)/VAR.P(B); BW2 = VAR.P(D)/VAR.P(B)"
+      - "Cảnh báo =IF(BW>2,\"Cần xử lý\",\"Chấp nhận được\") (ngưỡng 2 là quy ước)"
+      - "Chẩn đoán nguyên nhân từ pattern dữ liệu, áp giải pháp tương ứng, đo lại sau 12 tuần"
+    outputs: "BW từng tầng, CV, nguyên nhân chính, kế hoạch hành động, BW sau cải thiện"
+  - id: "m03_proc_select_supplier"
+    name: "Chọn và phân bổ tỷ trọng nhà cung cấp (Scorecard + TCO)"
+    steps:
+      - "Quy đổi chỉ số đo (lỗi, OTD, giá) sang điểm 1-5 theo bảng quy ước"
+      - "Tính S = sum(w x s) với trọng số 30/25/20/15/10 (điều chỉnh theo ngành)"
+      - "Tính TCO mỗi đơn vị (giá + lỗi + giao trễ [+ vận chuyển, thuế, vốn])"
+      - "Kết hợp: Scorecard cho chiến lược/rủi ro, TCO cho tiền"
+      - "Phân bổ tỷ trọng (vd A 60%, B 25%, C 15%) và đặt điều kiện nâng tỷ trọng (OTD > 93% hai quý)"
+      - "Đánh giá lại hằng quý"
+    outputs: "Bảng điểm, TCO, phân bổ tỷ trọng, kế hoạch cải thiện NCC"
+  - id: "m03_proc_kraljic_scoring"
+    name: "Chấm điểm và áp chiến lược Kraljic"
+    steps:
+      - "Spend Analysis để chọn nhóm ~80% chi tiêu"
+      - "Chấm Tác động LN (1-5) theo % chi phí và Rủi ro (1-5) theo số NCC thay thế, thời gian chuyển đổi, biến động giá"
+      - "Ngưỡng >= 3,5 là Cao; Excel: =IF(AND(tác động>=3.5; rủi ro>=3.5),\"Chiến lược\", ...)"
+      - "Gán chiến lược, NCC dự phòng cho Chiến lược/Nút thắt"
+    outputs: "Bảng phân loại danh mục + chiến lược + NCC dự phòng"
+  - id: "m03_proc_risk_decision"
+    name: "Quyết định phòng ngừa rủi ro nguồn cung"
+    steps:
+      - "Định lượng L (lợi nhuận đóng góp mất, phạt, mất khách)"
+      - "Ước p và r; tính chi phí C (chênh giá đa nguồn + chi phí vốn tồn an toàn)"
+      - "Lợi ích ròng = p x L x (1-r) - C; tính p* = C/(L(1-r))"
+      - "Xét thêm rủi ro kiệt quệ dòng tiền (phần bù sống còn)"
+      - "Triển khai dần: NCC chính 70%, hai NCC phụ 15% mỗi nơi, tồn an toàn tăng từ 0 lên 4 tuần trong 6 tháng, điều khoản bất khả kháng, scorecard quý"
+    outputs: "Quyết định + lộ trình + điều khoản hợp đồng"
+  - id: "m03_proc_centralization"
+    name: "Quyết định tập trung hóa thu mua cho chuỗi cửa hàng"
+    steps:
+      - "Tính chi nguyên liệu toàn chuỗi và cơ cấu theo nhóm hàng"
+      - "Ước mức giảm giá từng nhóm, tính mức giảm bình quân gia quyền"
+      - "Cộng chi phí vận hành tập trung (kho, nhân viên kho, thu mua, xe)"
+      - "Tính tiết kiệm ròng và N* = cố định/(tiết kiệm - biến đổi mỗi cửa hàng)"
+      - "Dưới N*: dùng 3PL hoặc mua chung; trên N*: xây kho trung chuyển, SOP chuẩn hóa, NCC dự phòng"
+    outputs: "Tiết kiệm ròng/tháng, N*, quyết định"
+  - id: "m03_proc_import_vs_domestic"
+    name: "So sánh nhập khẩu và mua trong nước theo TCO"
+    steps:
+      - "P = giá USD x tỷ giá"
+      - "F = % x P; CIF = P + F; D = thuế% x CIF"
+      - "H = P x lãi vốn x lead time/365"
+      - "So TCO với nội địa (cộng H nội địa); xét thêm rủi ro tỷ giá, chậm tàu"
+    outputs: "TCO hai phương án và chênh lệch"
+
+decision_rules:
+  - "Nếu sản phẩm thuộc nhóm Functional (vòng đời dài, biên thấp, dự báo chính xác) thì chọn chuỗi Efficient/Lean; nếu Innovative thì chọn Responsive/Agile; nếu hỗn hợp thì đặt điểm phân tách (Leagile)."
+  - "Nếu BW > 2 (ngưỡng thực hành) thì chẩn đoán 4 nguyên nhân Lee và xử lý bằng giải pháp đối ứng trước khi mua công nghệ."
+  - "Nếu đơn hàng luân phiên cao-thấp theo tuần thì nghi nguyên nhân đặt hàng theo lô; giải pháp: ngày đặt cố định, giảm MOQ, giao thường xuyên hơn."
+  - "Nếu có khuyến mãi theo đợt rồi im lặng vài tuần thì nghi biến động giá/forward buying; chuyển EDLP + thưởng doanh số kỳ."
+  - "Nếu mặt hàng có Tác động LN và Rủi ro cùng >= 3,5 thì xếp Chiến lược: hợp tác sâu, NCC dự phòng, chia sẻ dự báo; nếu chỉ rủi ro cao thì Nút thắt: tồn an toàn + NCC thay thế; nếu chỉ tác động cao thì Đòn bẩy: đấu thầu định kỳ; còn lại: đơn giản hóa."
+  - "Nếu giá niêm yết nhà cung cấp thấp hơn nhưng lỗi/trễ/lead time/thuế cao thì phải so TCO trước khi chọn."
+  - "Nếu Scorecard S > 4,0 thì Đối tác chiến lược; 3,0-4,0 Duy trì; < 3,0 cải thiện/thay thế. NCC TCO rẻ nhất mà S thấp (như C 3,15) chỉ giữ tỷ trọng nhỏ kèm kế hoạch cải thiện."
+  - "Nếu chi phí phòng ngừa C <= p x L x (1-r) thì làm; nếu hơi lỗ nhưng sự cố có thể đứt dòng tiền SME thì vẫn xem là bảo hiểm sống còn."
+  - "Nếu R = P x I >= 15 thì xử lý ưu tiên; 8-14 giám sát và có phương án dự phòng; < 8 chấp nhận."
+  - "Nếu chi nhánh dưới N* (vd < 14 cửa hàng theo giả định) thì không xây kho tập trung riêng; dùng 3PL hoặc mua chung."
+  - "Nếu Perfect Order < 95% thì cải thiện thành phần thấp nhất trước (thường OTD)."
+  - "Nếu dữ liệu nội bộ chưa số hóa/sạch thì chưa đầu tư WMS/Control Tower; làm GĐ1-2 trước."
+  - "Nếu hàng tươi/dễ hỏng thì hao hụt là biến số quyết định lợi nhuận: ưu tiên chuỗi lạnh, giao hằng ngày, bớt trung gian."
+  - "Nếu lead time L dài thì ưu tiên rút ngắn trước vì L xuất hiện bình phương trong cận dưới Bullwhip."
+
+benchmarks:
+  - {metric: "Perfect Order Fulfillment", value: "> 95%", context: "Mục tiêu ngành thường gặp theo nguồn", confidence: "medium"}
+  - {metric: "On-Time Delivery (OTD)", value: "> 95%", context: "Mục tiêu tham khảo", confidence: "medium"}
+  - {metric: "Forecast Accuracy (1 - WAPE)", value: "> 80%", context: "Mục tiêu tham khảo", confidence: "medium"}
+  - {metric: "Supply Chain Cost % Revenue", value: "5-12%", context: "Tùy ngành; số tham khảo, chưa kiểm chứng", confidence: "low"}
+  - {metric: "Bullwhip ratio", value: "gần 1; < 2 là mục tiêu thực hành", context: "Ngưỡng 2 là quy ước thực hành, không phải chuẩn", confidence: "low"}
+  - {metric: "Cận dưới Bullwhip", value: "L=2, p=4 -> >= 2,5", context: "Chen et al. 2000, mô hình order-up-to + MA", confidence: "high"}
+  - {metric: "Phân loại Scorecard", value: "> 4,0 chiến lược; 3,0-4,0 duy trì; < 3,0 cải thiện", context: "Template nguồn", confidence: "medium"}
+  - {metric: "Ngưỡng Kraljic 'Cao'", value: ">= 3,5 trên thang 1-5", context: "Quy ước mẫu cho SME", confidence: "low"}
+  - {metric: "Điểm rủi ro", value: ">= 15 ưu tiên; 8-14 giám sát; < 8 chấp nhận", context: "Thang P, I 1-5", confidence: "medium"}
+  - {metric: "Chia tỷ trọng NCC", value: "70/30 hoặc 60/25/15", context: "Quy tắc thực dụng", confidence: "medium"}
+  - {metric: "Số liệu Fisher", value: "Functional vòng đời >2 năm, biên 5-20%, sai số ~10%; Innovative 3 tháng-1 năm, biên 20-60%, sai số 40-100%", context: "Ngưỡng minh họa của Fisher, không phải ranh giới cứng", confidence: "medium"}
+  - {metric: "Zara markdown (trích dẫn học thuật)", value: "~15-20% so với 30-40% ngành; thiết kế đến cửa hàng ~2-3 tuần", context: "Chưa kiểm chứng độc lập", confidence: "low"}
+  - {metric: "Boeing 787 tỷ trọng outsource", value: "hơn một nửa, có nguồn nói ~70%", context: "Ước tính chưa kiểm chứng", confidence: "low"}
+  - {metric: "Chi phí đầu tư SCM theo giai đoạn", value: "<20 người: 0-20 triệu; 20-100: 50-300 triệu/năm; 100-500: 500 triệu-3 tỷ; >500: 5-50+ tỷ", context: "Ước tính tham khảo, cần kiểm tra lại theo thời điểm", confidence: "low"}
+
+pitfalls:
+  - "Tối ưu cục bộ từng mắt xích (chỉ giá mua) làm tổng chi phí chuỗi tăng: dùng TCO."
+  - "Không chia sẻ dữ liệu nhu cầu với NCC -> Bullwhip: chia sẻ sell-out/POS, CPFR/VMI."
+  - "Phụ thuộc một NCC cho sản phẩm quan trọng: đa dạng hóa theo Kraljic và tính cost-benefit."
+  - "Chọn Lean cho sản phẩm biến động cao -> thiếu hàng: dùng Fisher."
+  - "Đầu tư công nghệ quá sớm, dữ liệu không sạch: số hóa nội bộ trước."
+  - "Khuyến mãi dồn dập ở khâu bán sỉ gây mua dồn: giá ổn định + thưởng doanh số kỳ."
+  - "Outsource cấu phần cốt lõi mà không giám sát (Boeing 787): giữ năng lực kỹ thuật, scorecard định kỳ."
+  - "Chỉ dùng KPI chi phí: dùng bộ cân bằng (Perfect Order, CCC, OTD...)."
+  - "Quên rằng tập trung hóa có chi phí cố định, chỉ lãi khi đủ quy mô."
+  - "Đóng băng vốn một lúc khi tăng tồn kho an toàn: tăng dần."
+
+sme_vn_guidance:
+  - "Khởi nghiệp (<20 người): Excel/Google Sheets, quan hệ trực tiếp 1-2 NCC, 0-20 triệu (ước tính, cần xác nhận)."
+  - "Tăng trưởng (20-100 người): phần mềm kho cơ bản, thuê 3PL, 50-300 triệu/năm (ước tính)."
+  - "Công cụ: KiotViet/Sapo 3-10 triệu/năm (SME bán lẻ); Odoo/Bitrix24 50-200 triệu/năm (SME vừa); SAP S/4HANA, Oracle SCM Cloud hàng tỷ đến hàng chục tỷ/năm; Blue Yonder, Kinaxis theo hợp đồng riêng. Chi phí ước tính, cần kiểm tra lại theo thời điểm."
+  - "SME thường quản 3-5 NCC chính, Excel + kinh nghiệm chủ DN; vai trò CSCO do COO/chủ DN kiêm nhiệm nhưng cần tư duy hệ thống chuỗi, không chỉ mua hàng."
+  - "Chia sẻ sell-out hằng tuần qua Zalo/Google Sheet với tiệm/đại lý (đổi lại hỗ trợ giao hàng cố định) là giải pháp chi phí gần 0."
+  - "Ít nhất 1 NCC dự phòng cho nguyên liệu quan trọng nhất; chấm scorecard hằng quý."
+  - "Hợp đồng với khách xuất khẩu cần điều khoản bất khả kháng và ngưỡng phạt rõ ràng; chuẩn bị ESG (SA8000, BSCI) nếu bán cho nhãn quốc tế. Tên tiêu chuẩn cần xác nhận phiên bản hiện hành."
+  - "Thuế nhập khẩu 5% và tỷ giá 25.500 VNĐ/USD trong ví dụ là giả định minh họa; cần xác nhận thuế suất/HS code thực tế."
+  - "Dưới ngưỡng quy mô tập trung hóa thu mua: dùng 3PL hoặc liên kết mua chung."
+
+case_lessons:
+  - name: "Zara (Inditex) - chuỗi thời trang Agile/Leagile"
+    type: "success"
+    setup: "Sản phẩm Innovative (Fisher); sản xuất lô nhỏ gần thị trường, giao ~2 lần/tuần, POS về trung tâm thiết kế, vải chưa nhuộm tồn sẵn (điểm phân tách). Thông tin định tính theo nguồn công khai."
+    key_calculations:
+      - "Mỗi 1.000 sp: truyền thống giá thành 40, bán 600 đủ giá (100) + 300 giảm giá (60) + 100 thanh lý (20): doanh thu 80.000, lợi nhuận gộp 40.000 (biên 50,0%)"
+      - "Zara giá thành 50, bán 850 đủ giá + 150 giảm giá: doanh thu 94.000, lợi nhuận gộp 44.000 (biên 46,8%)"
+      - "Ngưỡng: 94.000 - 1.000c >= 40.000 -> c <= 54, tức giá thành có thể cao hơn tới 35% mà lãi tuyệt đối bằng đối thủ"
+    lesson: "Biên % thấp hơn nhưng lợi nhuận tuyệt đối cao hơn 10%: với sản phẩm Innovative chi phí thật nằm ở giảm giá và hàng ế; tính ngưỡng hòa vốn của khoản chi phí chấp nhận thêm trước khi quyết định."
+    data_reliability: "illustrative"
+  - name: "Thế Giới Di Động (Bách Hóa Xanh) - hàng tươi và chuỗi lạnh"
+    type: "success"
+    setup: "Hai nhóm hàng khác đặc tính (điện thoại/điện máy bền vs thực phẩm tươi); kho vùng, cross-docking, ERP/WMS, POS; BHX giai đoạn đầu hao hụt lớn do chuỗi lạnh chưa hoàn thiện. Mô tả định tính theo thông tin công khai; số liệu bên dưới là giả định minh họa."
+    key_calculations:
+      - "Mỗi 1.000 kg rau giá bán 28.000: chuỗi cũ bán 880 kg, doanh thu 24.640.000, chi nhập 22.000.000, LN gộp 2.640.000 (10,7%)"
+      - "Chuỗi mới (giá mua 20.000 + 1.500 lạnh, hao hụt 5%): bán 950 kg, doanh thu 26.600.000, chi 21.500.000, LN gộp 5.100.000 (19,2%)"
+      - "Hao hụt hòa vốn s = 1 - 21.500/28.000 ~ 23,2% (ngưỡng có lãi sau chi phí cửa hàng thấp hơn nhiều)"
+    lesson: "Giảm hao hụt 12% -> 5% và bớt một tầng trung gian gần nhân đôi lợi nhuận gộp; với hàng tươi hao hụt là biến số quyết định; mỗi ngành hàng cần thiết kế chuỗi riêng."
+    data_reliability: "illustrative"
+  - name: "Boeing 787 Dreamliner - outsource quá mức"
+    type: "failure"
+    setup: "Outsource sâu thiết kế và sản xuất cho >50 nhà cung cấp cấp 1; thiếu phối hợp/giám sát, cụm cấu kiện đến chưa hoàn thiện (travelled work); giao máy đầu 2011 so kế hoạch 2008; sự cố pin lithium-ion 2013. Tỷ trọng outsource (>50%, có nguồn ~70%) là ước tính chưa kiểm chứng."
+    key_calculations:
+      - "Giao diện n(n-1)/2: 10 NCC -> 45 cặp; 50 NCC -> 1.225 cặp (gấp ~27 lần) - ví dụ minh họa"
+      - "5 Whys (giả thuyết): trễ -> cấu kiện chưa đạt -> NCC thiếu năng lực -> không giám sát được -> mất năng lực kỹ thuật nội bộ -> tối ưu vốn cục bộ"
+      - "Kraljic: cấu kiện cốt lõi máy bay thuộc nhóm Chiến lược, cần hợp tác sâu, giữ năng lực kỹ thuật"
+    lesson: "Outsource không chuyển được rủi ro cuối cùng; phải giữ năng lực giám sát và tích hợp, dùng scorecard + dữ liệu thời gian thực, tính tổng chi phí phối hợp trong make-or-buy."
+    data_reliability: "unverified"
+  - name: "Gỗ Nam Phát (xưởng gỗ nội thất Bình Dương) - đa nguồn và tồn kho an toàn"
+    type: "sme"
+    setup: "80 công nhân, doanh thu 3.000 triệu/tháng, 120 m3 gỗ/tháng giá 12 triệu/m3, biên đóng góp 38%, đơn nguồn; NCC cháy kho dừng sản xuất 3 tuần. Tên và số liệu giả định minh họa."
+    key_calculations:
+      - "L = 3.000 x 3/4 x 70% x 38% + 1.500 x 8% + 250 = 598,5 + 120 + 250 = 968,5 triệu"
+      - "Chi phí phòng ngừa = 17.280 x 30% x 4% (207,36) + 1.440 x 10% (144) = 351,36 triệu/năm"
+      - "Với p = 0,5, r = 15%: tổn thất kỳ vọng 484,25; tránh được 411,61; lợi ích ròng +60,25; p* ~ 0,427"
+      - "Sau phòng ngừa L còn ~145 triệu; L ~ 85% lợi nhuận đóng góp một tháng"
+    lesson: "Lợi ích ròng kỳ vọng chỉ nhẹ nhưng cắt đuôi rủi ro sống còn; chia 70/15/15, tăng tồn an toàn dần trong 6 tháng, điều khoản bất khả kháng, scorecard quý. Gỗ (48% chi phí) là Chiến lược; phụ kiện/keo nhập khẩu là Nút thắt thật."
+    data_reliability: "illustrative"
+  - name: "Cà phê Nắng Trung - tập trung hóa thu mua chuỗi nhượng quyền"
+    type: "sme"
+    setup: "5 -> 25 cửa hàng miền Trung, mỗi cửa hàng tự mua: chất lượng không đồng nhất, giá cao; NVL 60 triệu/cửa hàng/tháng (1.500 triệu toàn chuỗi). Giả định minh họa."
+    key_calculations:
+      - "Giảm giá gia quyền: 40% x 9% + 30% x 15% + 15% x 14% + 15% x 12% = 3,6 + 4,5 + 2,1 + 1,8 = 12,0% -> tiết kiệm 180 triệu/tháng"
+      - "Chi phí tập trung: 25 + 24 + 30 + 30 = 109 triệu/tháng (cố định 79, biến đổi 30) -> tiết kiệm ròng 71 triệu/tháng (~852 triệu/năm)"
+      - "N* = 79/(7,2 - 1,2) = 13,2 -> từ cửa hàng thứ 14; với 5 cửa hàng: 5 x 6 - 79 = -49 triệu/tháng"
+    lesson: "Tập trung hóa tạo sức mạnh đàm phán và nhất quán thương hiệu nhưng có chi phí cố định; dưới ngưỡng dùng 3PL hoặc mua chung; cần NCC dự phòng cho rủi ro phụ thuộc."
+    data_reliability: "illustrative"
+  - name: "Tân Phát Foods - Bullwhip, Scorecard và TCO (nhà phân phối đông lạnh Cần Thơ)"
+    type: "sme"
+    setup: "120 tiệm, 3 nhà máy, giá vốn 450.000 VNĐ/thùng; kho lúc tràn lúc hết, nhà máy phàn nàn đơn thất thường. Giả định minh họa."
+    key_calculations:
+      - "12 tuần: nhu cầu thực Var 47,92 (sigma 6,92, CV 3,4%); đơn tiệm Var 472,92 (CV 10,7%); đơn nhà máy Var 2.618,75 (sigma 51,17, CV 25,3%); BW1 = 9,87, BW2 = 54,65"
+      - "Sau 12 tuần cải thiện: BW1 = 2,25; BW2 = 5,01 (var nhu cầu 25,14; var đơn tiệm 56,64; var đơn nhà máy 126,06; sigma 11,23)"
+      - "Tồn an toàn (z 1,65, L 2): 119,4 -> 26,2 thùng cho đơn nhà máy; 50,7 -> 17,6 cho đơn tiệm"
+      - "Tiết kiệm ~15,9 triệu/12 tuần (8,7 hủy hàng cận date + 7,2 giao gấp) ~ 69 triệu/năm"
+      - "Scorecard A/B/C = 3,95/4,15/3,15; TCO/thùng 452,36/472,32/437,70 nghìn; phân bổ 60/25/15, TCO bình quân ~455,2 nghìn"
+    lesson: "Đo trước khi sửa; giải pháp rẻ nhất (chia sẻ sell-out, ngày đặt cố định, giá ổn định, S&OP tháng, giảm MOQ) hiệu quả nhất; Scorecard + TCO để chọn NCC đúng chiến lược; BW không về 1 hoàn toàn nên theo dõi hằng tháng."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Đo Bullwhip 12 tuần cho nhà phân phối đông lạnh"
+    inputs: {demand: "[200,210,195,205,200,215,190,210,205,200,195,205]", retail_orders: "[185,225,180,230,190,235,175,230,205,210,185,180]", factory_orders: "[150,260,160,270,150,260,140,270,190,240,150,190]"}
+    steps:
+      - "Tổng ba cột đều 2.430 -> chỉ độ dao động khác nhau; trung bình 202,5"
+      - "Var nhu cầu = 47,92; Var đơn tiệm = 472,92; Var đơn nhà máy = 2.618,75"
+      - "BW1 = 472,92/47,92 = 9,87; BW2 = 2.618,75/47,92 = 54,65"
+      - "Pattern đơn luân phiên cao-thấp + khuyến mãi tuần chẵn -> lô và biến động giá"
+    result: "BW tiệm ~ 9,9; BW nhà máy ~ 54,7 (giả định minh họa). Hành động: chia sẻ sell-out, ngày đặt cố định, EDLP, S&OP, giảm MOQ."
+  - name: "Scorecard 3 nhà cung cấp và phân bổ tỷ trọng"
+    inputs: {A: "(4,5,3,4,3)", B: "(5,4,2,5,5)", C: "(3,3,5,2,2)", weights: "30/25/20/15/10"}
+    steps:
+      - "A = 1,20 + 1,25 + 0,60 + 0,60 + 0,30 = 3,95"
+      - "B = 1,50 + 1,00 + 0,40 + 0,75 + 0,50 = 4,15"
+      - "C = 0,90 + 0,75 + 1,00 + 0,30 + 0,20 = 3,15"
+      - "TCO (nghìn/thùng): A 452,36; B 472,32; C 437,70"
+      - "Phân bổ A 60%, B 25%, C 15%; TCO bình quân = 0,6 x 452,36 + 0,25 x 472,32 + 0,15 x 437,70 ~ 455,2"
+    result: "B điểm cao nhất (dòng cao cấp), A nguồn chính, C rẻ nhất theo TCO nhưng điểm thấp nên chỉ 15% + kế hoạch cải thiện OTD"
+  - name: "TCO nhập khẩu vs nội địa"
+    inputs: {gia_usd: 18, ty_gia: 25500, van_chuyen: 0.08, thue: 0.05, lead_nk: 45, noi_dia: 520000, lead_nd: 7, von: 0.15}
+    steps:
+      - "P = 459.000; F = 36.720; CIF = 495.720; D = 24.786; H = 8.488 -> TCO = 528.994"
+      - "Nội địa: H = 1.496 -> TCO = 521.496"
+    result: "Nội địa rẻ hơn ~7.498 VNĐ/cái dù giá nhập khẩu niêm yết thấp hơn 11,7% (giả định minh họa)"
+  - name: "Hòa vốn tập trung hóa thu mua chuỗi trà sữa"
+    inputs: {chi_nvl: 45, giam_gia: 0.10, co_dinh: 50, bien_doi: 0.9}
+    steps: ["Tiết kiệm/cửa hàng = 4,5", "Đóng góp ròng = 3,6", "N = 50/3,6 = 13,9"]
+    result: "Tối thiểu 14 cửa hàng"
+  - name: "Lợi ích ròng phòng ngừa rủi ro nguồn cung"
+    inputs: {p: 0.3, L: 600, r: 0.2, C: 100}
+    steps: ["Lợi ích kỳ vọng = 0,3 x 600 x 0,8 = 144", "Ròng = 144 - 100 = +44"]
+    result: "Nên làm"
+  - name: "Perfect Order + CCC"
+    inputs: {ot: 0.96, if: 0.98, nd: 0.99, cd: 0.99, ton_kho: 4000, phai_thu: 3000, phai_tra: 2000, gvhb: 24000, dt: 36000}
+    steps: ["POF = 92,2%", "DIO 60,8; DSO 30,4; DPO 30,4 -> CCC 60,8 ngày"]
+    result: "POF dưới 95%; CCC ~ 60,8 ngày"
+
+practice_questions:
+  - q: "Phân loại gạo đóng gói, giày thể thao mẫu mới theo mùa, giấy vệ sinh, phụ kiện điện thoại theo trend, nước tương theo Fisher và đề xuất chiến lược."
+    a: "Gạo, giấy vệ sinh, nước tương: Functional -> Efficient. Giày mẫu mới, phụ kiện trend: Innovative -> Responsive; giày gợi ý Leagile (dự trữ vải/đế, đóng giày theo tín hiệu)."
+  - q: "Xưởng bánh 8 mặt hàng (Tác động, Rủi ro): bột mì (5,2), bơ nhập (4,4), hương liệu (2,4,5), hộp giấy (2,1), điện/gas (3,2), vận chuyển lạnh (4,3), băng keo (1,1), nhãn mác (2,2). Phân loại với ngưỡng 3,5."
+    a: "Chiến lược: bơ nhập. Đòn bẩy: bột mì, vận chuyển lạnh. Nút thắt: hương liệu đặc biệt. Không quan trọng: hộp giấy, điện/gas, băng keo, nhãn mác."
+  - q: "Điểm Scorecard X (4,3,5,3,2), Y (5,5,2,4,4), Z (2,3,4,3,3), trọng số 30/25/20/15/10."
+    a: "X = 3,60 (Duy trì); Y = 4,15 (Chiến lược); Z = 2,90 (Cần cải thiện); Z giá cao nhưng chất lượng thấp bị kéo xuống vì trọng số chất lượng lớn nhất."
+  - q: "Nhu cầu thực 6 tuần: 100,104,98,102,100,96; đơn tiệm: 90,115,85,112,95,103. Tính BW."
+    a: "Var nhu cầu 6,67; Var đơn 121,33; BW = 18,2; nguyên nhân khả dĩ: đặt hàng luân phiên (lô), khuyến mãi."
+  - q: "Doanh thu 36.000, giá vốn 24.000, tồn kho BQ 4.000, phải thu 3.000, phải trả 2.000 (triệu). Tính CCC."
+    a: "DIO 60,8 + DSO 30,4 - DPO 30,4 = 60,8 ngày; rút ngắn: giảm tồn (S&OP), thu tiền nhanh, đàm phán trả chậm."
+  - q: "Giao đúng hạn 96%, đủ 98%, không hỏng 99%, chứng từ 99%: Perfect Order?"
+    a: "92,2% < 95%; cải thiện chỉ số thấp nhất (đúng hạn)."
+  - q: "So TCO nhập khẩu 18 USD (25.500 đ/USD, vận chuyển 8%, thuế 5% trên CIF, 45 ngày, vốn 15%/năm) với nội địa 520.000 đ (7 ngày)."
+    a: "528.994 so với 521.496; nội địa rẻ hơn ~7.498 đ (~1,4%) chưa tính rủi ro tỷ giá."
+  - q: "Nhu cầu thực 120,150,100,130; dự báo 100,170,90,115. Tính độ chính xác."
+    a: "WAPE = 65/500 = 13%; accuracy 87% (> 80%)."
+  - q: "Chuỗi trà sữa: NVL 45 triệu/cửa hàng/tháng, giảm 10%, cố định 50 triệu, giao 0,9 triệu/cửa hàng. Cần tối thiểu bao nhiêu cửa hàng?"
+    a: "N = 50/(4,5-0,9) = 13,9 -> 14 cửa hàng."
+  - q: "Sự cố NCC p = 0,3/năm, thiệt hại 600 triệu, dự phòng giảm 80%, chi phí 100 triệu/năm. Có nên làm?"
+    a: "Lợi ích 144 > 100; ròng +44 triệu/năm -> nên làm."
+  - q: "Vì sao L dài làm Bullwhip tăng mạnh? Tính cận dưới với L=2, p=4."
+    a: "L xuất hiện bình phương trong 1 + 2L/p + 2L^2/p^2; = 2,5."
+  - q: "Phân tích Boeing 787 bằng 5 Whys và Kraljic."
+    a: "Chuỗi nguyên nhân dẫn đến thiếu giám sát do mất năng lực kỹ thuật nội bộ vì tối ưu vốn cục bộ; cấu kiện cốt lõi thuộc Chiến lược nên cần hợp tác sâu; n(n-1)/2: 10 NCC -> 45, 50 NCC -> 1.225 cặp."
+  - q: "Thực hành: vẽ chuỗi cung ứng sản phẩm quen thuộc, đánh dấu 3 dòng chảy; lập S&OP mẫu 5 bước; tính chi phí đầu tư SCM theo giai đoạn."
+    a: "Hướng dẫn: hỏi ai cung cấp cho ai, thông tin chảy ngược từ đâu, tiền trả lúc nào; mỗi cuộc họp ghi người tham dự, đầu vào, đầu ra; so với bảng chi phí giai đoạn mục sme_vn_guidance."
+
+checklist:
+  - "□ Đã vẽ sơ đồ chuỗi hiện tại với 3 dòng chảy (vật chất, thông tin, tài chính)"
+  - "□ Đã phân loại sản phẩm theo Fisher (Functional/Innovative) và chọn chiến lược tương ứng; xác định decoupling point nếu Leagile"
+  - "□ Đã Spend Analysis, xác định nhóm ~80% chi tiêu và chấm Kraljic các mặt hàng chính"
+  - "□ Mỗi mặt hàng Chiến lược/Nút thắt có ít nhất 1 NCC dự phòng"
+  - "□ Có Supplier Scorecard cập nhật ít nhất hằng quý; so NCC theo TCO, không chỉ giá"
+  - "□ Hợp đồng có bất khả kháng, phạt trễ hạn, bảo đảm sản lượng"
+  - "□ Có họp S&OP hằng tháng với MỘT con số dự báo"
+  - "□ Đã đo Bullwhip và xác định nguyên nhân chính; chia sẻ sell-out/POS với đối tác chính; giá sỉ ổn định"
+  - "□ Đã chọn mô hình phân phối (trực tiếp/DC/cross-docking/milk run), tính tuyến, tần suất, chi phí/đơn vị"
+  - "□ Đã đo KPI cốt lõi: Perfect Order, OTD, CCC, Forecast Accuracy, Supply Chain Cost %"
+  - "□ Có risk register P x I, đã tính cost-benefit cho biện pháp phòng ngừa quan trọng nhất"
+  - "□ Có BCP, bảo hiểm, tồn kho an toàn cho hàng nút thắt; đánh giá ESG NCC nếu xuất khẩu"
+  - "□ Dữ liệu tồn kho/đơn hàng được số hóa và đối chiếu định kỳ; chỉ đầu tư WMS/Control Tower sau khi dữ liệu nội bộ ổn định"
+
+excel_google_sheets_templates:
+  - name: "Supplier Scorecard"
+    description: "Cột: Tiêu chí, Trọng số (B2:B6), Điểm 1-5 (C2:C6), Điểm x Trọng số; tổng =SUMPRODUCT(B2:B6,C2:C6); xếp loại =IF(D8>4,\"Chiến lược\",IF(D8>=3,\"Duy trì\",\"Cải thiện\")). Phân loại: >4,0 chiến lược; 3,0-4,0 duy trì; <3,0 cải thiện."
+  - name: "Chấm điểm Kraljic"
+    description: "Cột: Mặt hàng, % chi phí, Tác động LN (1-5), Số NCC thay thế, Rủi ro (1-5), Nhóm (=IF(AND(tác động>=3,5; rủi ro>=3,5),\"Chiến lược\",...)), Chiến lược, NCC dự phòng?"
+  - name: "Đo Bullwhip"
+    description: "Bảng 12 tuần: nhu cầu thực (B), đơn khách (C), đơn gửi NCC (D); =VAR.P cho từng cột; BW1 =VAR.P(C)/VAR.P(B), BW2 =VAR.P(D)/VAR.P(B); cảnh báo =IF(BW>2,\"Cần xử lý\",\"Chấp nhận được\")."
+  - name: "TCO / Landed Cost"
+    description: "Hàng: P, F (% giá hoặc cố định), D (% x giá CIF), H (giá x lãi suất x ngày/365), Q (tỷ lệ lỗi x giá x hệ số xử lý), L ((1-OTD) x phí xử lý), TCO = P+F+D+H+Q+L; so sánh hai NCC."
+  - name: "Risk register"
+    description: "Cột: Rủi ro, P, I, R = P x I, biện pháp giảm thiểu; sắp xếp giảm dần theo R."
+  - name: "Sơ đồ quyết định chiến lược chuỗi"
+    description: "Nhu cầu ổn định? có -> biên thấp? có -> Efficient; không -> Leagile; nhu cầu không ổn định -> Agile."

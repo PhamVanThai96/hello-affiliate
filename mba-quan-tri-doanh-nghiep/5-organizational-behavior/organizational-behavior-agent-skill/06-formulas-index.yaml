@@ -1,0 +1,1504 @@
+# 06-formulas-index.yaml — SINH TỰ ĐỘNG bởi tools/build_and_validate.py từ modules/*.yaml. Không sửa tay.
+total: 122
+formulas:
+- id: m01_vroom_motivation
+  module: m01
+  name_vi: Điểm động lực kỳ vọng (Vroom)
+  name_en: Expectancy motivation score M = E x I x V
+  expression_latex: M = E \times I \times V
+  expression_python: E * I * V
+  excel: =B2*C2*D2
+  variables:
+  - E
+  - I
+  - V
+  when_to_use: Chẩn đoán vì sao KPI/thưởng không tạo động lực theo nhóm nhân viên; so sánh trước/sau can thiệp; thiết kế hệ
+    thống thưởng.
+- id: m01_mps
+  module: m01
+  name_vi: Chỉ số tiềm năng tạo động lực của công việc (MPS)
+  name_en: Motivating Potential Score (Hackman-Oldham)
+  expression_latex: MPS = \frac{SV + TI + TS}{3} \times A \times F
+  expression_python: (SV + TI + TS) / 3 * A * F
+  excel: =(B2+B3+B4)/3*B5*B6
+  variables:
+  - SV
+  - TI
+  - TS
+  - A
+  - F
+  when_to_use: Chấm điểm và so sánh công việc trước/sau thiết kế lại (job redesign), chọn đặc điểm cần sửa trước.
+- id: m01_equity_ratio
+  module: m01
+  name_vi: Tỷ lệ công bằng Adams (Output/Input)
+  name_en: Equity ratio comparison
+  expression_latex: \frac{O_{me}}{I_{me}} = \frac{O_{ref}}{I_{ref}}, \quad ER = \frac{O_{me}/I_{me}}{O_{ref}/I_{ref}}
+  expression_python: (O_me / I_me) / (O_ref / I_ref)
+  excel: =(B2/B3)/(C2/C3)
+  variables:
+  - O_me
+  - I_me
+  - O_ref
+  - I_ref
+  when_to_use: Kiểm tra công bằng nội bộ giữa hai người cùng vị trí; tìm nguyên nhân sâu của I (Instrumentality) thấp; kiểm
+    tra thang lương/thưởng.
+- id: m01_pay_per_unit_equity
+  module: m01
+  name_vi: Thu nhập trên đơn vị sản lượng giữa hai công nhân
+  name_en: Pay-per-unit equity check
+  expression_latex: ER = \frac{w_A/q_A}{w_B/q_B}
+  expression_python: (wA / qA) / (wB / qB)
+  excel: =(B2/B3)/(C2/C3)
+  variables:
+  - wA, wB
+  - qA, qB
+  when_to_use: Chẩn đoán SME sản xuất/may/gia công khi người năng suất cao nhận lương/đơn vị thấp hơn người được ưu ái.
+- id: m01_turnover_cost
+  module: m01
+  name_vi: Chi phí nghỉ việc hằng năm
+  name_en: Annual turnover cost
+  expression_latex: C_{turn} = N \times r \times c
+  expression_python: N * r * c
+  excel: =B1*B2*B3
+  variables:
+  - N
+  - r
+  - c
+  when_to_use: 'Bước đầu trước mọi chương trình động lực: đo giá của vấn đề để biết ngân sách tối đa hợp lý.'
+- id: m01_defect_cost
+  module: m01
+  name_vi: Chi phí sửa lỗi
+  name_en: Annual defect/rework cost
+  expression_latex: C_{defect} = Q \times d \times u \times 12
+  expression_python: Q * d * u * 12 / 1e6
+  excel: =B1*B2*B3*12/1000000
+  variables:
+  - Q
+  - d
+  - u
+  when_to_use: Quy chất lượng ra tiền khi tính thiệt hại và lợi ích giảm lỗi.
+- id: m01_program_roi
+  module: m01
+  name_vi: ROI chương trình động lực (kèm độ nhạy)
+  name_en: Motivation program ROI and sensitivity
+  expression_latex: Net = (S_{turn} + S_{defect} + G_{output}) - C_{program}, \quad CBR = \frac{C_{program}}{S_{turn}+S_{defect}+G_{output}}
+  expression_python: (S_turn + S_defect + G_output) - C_program
+  excel: =(B1+B2+B3)-B4
+  variables:
+  - S_turn
+  - S_defect
+  - G_output
+  - C_program
+  when_to_use: Duyệt ngân sách chương trình động lực; luôn chạy thêm kịch bản chỉ đạt 50% lợi ích năng suất.
+- id: m01_wage_breakeven_productivity
+  module: m01
+  name_vi: Điểm hòa vốn năng suất của tăng lương
+  name_en: Wage increase break-even productivity gain
+  expression_latex: B_{req} = 12 \times \Delta w - S_{turn,pp}
+  expression_python: (wage_rise * 12) - turnover_saving_per_worker
+  excel: =B1*12-B2
+  variables:
+  - wage_rise
+  - turnover_saving_per_worker
+  when_to_use: 'Kiểm tra logic trước khi tăng lương: lợi ích năng suất tối thiểu mỗi người mỗi năm để hòa vốn.'
+- id: m01_kpi_stretch_gap
+  module: m01
+  name_vi: Mức tăng yêu cầu của mốc KPI so với năng suất hiện tại
+  name_en: KPI stretch gap
+  expression_latex: g = \frac{T}{P_0} - 1
+  expression_python: T / P0 - 1
+  excel: =B1/B2-1
+  variables:
+  - T
+  - P0
+  when_to_use: Kiểm tra mốc thưởng có khả thi (giữ Expectancy) trước khi triển khai; thiết kế mục tiêu bậc thang.
+- id: m01_bonus_formula
+  module: m01
+  name_vi: Công thức thưởng theo thành tích
+  name_en: Performance bonus formula
+  expression_latex: Bonus = Base \times Bonus\% \times \frac{Actual}{Target}, \ \text{(có trần)}
+  expression_python: min(base * bonus_pct * (actual / target), cap)
+  excel: =MIN(B1*B2*(B3/B4),B5)
+  variables:
+  - base
+  - bonus_pct
+  - actual
+  - target
+  - cap
+  when_to_use: 'Thiết kế hệ thống thưởng minh bạch (Template 3): KPI cá nhân 60% + KPI nhóm 40%.'
+- id: m01_survey_scoring
+  module: m01
+  name_vi: Chấm điểm khảo sát động lực và trung bình theo nhóm yếu tố
+  name_en: Survey scoring and group means
+  expression_latex: \bar{x}_{g} = \frac{1}{n_g}\sum_{i \in g} x_i
+  expression_python: sum(hygiene) / len(hygiene)
+  excel: =AVERAGE(B2:B5)
+  variables:
+  - hygiene
+  when_to_use: Chẩn đoán Herzberg (nhóm Hygiene vs Motivators) và khảo sát 22 câu; xác định yếu tố thấp nhất để can thiệp
+    trước.
+- id: m01_replacement_cost_delta
+  module: m01
+  name_vi: Chi phí thay thế tăng thêm khi nghỉ việc tăng
+  name_en: Incremental replacement cost
+  expression_latex: \Delta C = N \times (r_1 - r_0) \times c
+  expression_python: N * (r1 - r0) * c
+  excel: =B1*(B2-B3)*B4
+  variables:
+  - N
+  - r0, r1
+  - c
+  when_to_use: Lập luận khi ngừng tăng lương/bỏ chương trình ghi nhận để cắt chi phí (case The Coffee House).
+- id: m02_turnover_rate
+  module: m02
+  name_vi: Tỷ lệ nghỉ việc
+  name_en: Employee turnover rate
+  expression_latex: \text{Turnover} = \dfrac{\text{Số người nghỉ}}{\text{Nhân sự trung bình}} \times 100\%, \quad \text{Nhân
+    sự TB} = \dfrac{N_{dau} + N_{cuoi}}{2}
+  expression_python: left / ((start + end) / 2) * 100
+  excel: =B1/AVERAGE(B2,B3)*100
+  variables:
+  - left
+  - start
+  - end
+  when_to_use: 'Bước đầu ''đo trước khi sửa'': lượng hóa hậu quả của phong cách lãnh đạo lên giữ chân nhân sự (cùng eNPS,
+    tỷ lệ lỗi).'
+- id: m02_turnover_cost
+  module: m02
+  name_vi: Chi phí nghỉ việc (khoản lỗ ẩn của lãnh đạo kém)
+  name_en: Cost of turnover
+  expression_latex: \text{Chi phí} = N_{nghi} \times (\text{số tháng lương thay thế}) \times \text{lương tháng}
+  expression_python: left * months_replace * monthly_salary
+  excel: =B1*B2*B3
+  variables:
+  - left
+  - months_replace
+  - monthly_salary
+  when_to_use: Quy đổi tác hại phong cách lãnh đạo ra tiền để thuyết phục chủ DN đầu tư đào tạo tổ trưởng.
+- id: m02_enps
+  module: m02
+  name_vi: Chỉ số giới thiệu của nhân viên (eNPS)
+  name_en: Employee Net Promoter Score
+  expression_latex: \text{eNPS} = \%\text{Promoter} - \%\text{Detractor} = \dfrac{P - D}{N} \times 100
+  expression_python: (promoters - detractors) / total * 100
+  excel: =(COUNTIF(A:A,">=9")-COUNTIF(A:A,"<=6"))/COUNT(A:A)*100
+  variables:
+  - promoters
+  - detractors
+  - total
+  when_to_use: Đo nhanh mức gắn kết/văn hóa dưới tác động của lãnh đạo; theo dõi mỗi quý hoặc nửa năm; làm mục tiêu cho chương
+    trình phát triển lãnh đạo.
+- id: m02_style_fit_rate
+  module: m02
+  name_vi: Tỷ lệ khớp phong cách lãnh đạo (Fit rate)
+  name_en: Leadership style fit rate
+  expression_latex: \text{Fit} = \dfrac{\text{Số người nhận đúng phong cách}}{\text{Tổng số người}} \times 100\%
+  expression_python: matched / total * 100
+  excel: =B1/B2*100
+  variables:
+  - matched
+  - total
+  when_to_use: 'Sau khi chẩn đoán D-level toàn đội: đo độ lệch giữa phong cách thực tế và nhu cầu.'
+- id: m02_roi_intervention
+  module: m02
+  name_vi: ROI của can thiệp phát triển lãnh đạo
+  name_en: ROI of leadership development
+  expression_latex: \text{ROI} = \dfrac{\text{Lợi ích} - \text{Chi phí}}{\text{Chi phí}} \times 100\%
+  expression_python: (benefit - cost) / cost * 100
+  excel: =(B1-B2)/B2*100
+  variables:
+  - benefit
+  - cost
+  when_to_use: Biện minh đầu tư đào tạo tổ trưởng/quản lý; so sánh các phương án can thiệp.
+- id: m02_dlevel_diagnosis
+  module: m02
+  name_vi: Chẩn đoán D-level từ điểm Năng lực và Động lực
+  name_en: D-level diagnosis scoring rule
+  expression_latex: D = \begin{cases} D1 & NL \le 2, \; DL \ge 3 \\ D2 & NL \le 2, \; DL \le 2 \\ D3 & NL \ge 3, \; DL \le
+    2 \\ D4 & NL \ge 3, \; DL \ge 3 \end{cases}
+  expression_python: '''D4'' if ability >= 3 and motivation >= 3 else ''D3'' if ability >= 3 else ''D1'' if motivation >=
+    3 else ''D2'''
+  excel: null
+  variables:
+  - ability
+  - motivation
+  when_to_use: Chẩn đoán nhanh D-level cho từng người, từng nhiệm vụ, cập nhật mỗi quý; sau đó ánh xạ D1->S1, D2->S2, D3->S3,
+    D4->S4.
+- id: m02_mlq_factor_score
+  module: m02
+  name_vi: Điểm trung bình một yếu tố MLQ
+  name_en: MLQ factor mean score
+  expression_latex: \bar{x}_f = \dfrac{1}{n_f}\sum_{i=1}^{n_f} x_i, \quad x_i \in \{0,1,2,3,4\}
+  expression_python: sum(items) / len(items)
+  excel: =AVERAGE(B2:B5)
+  variables:
+  - items
+  when_to_use: 'Chấm MLQ 5X (45 câu): 9 yếu tố lãnh đạo x 4 câu = 36 câu, cộng 9 câu kết quả (Extra Effort 3, Effectiveness
+    4, Satisfaction 2).'
+- id: m02_relative_change
+  module: m02
+  name_vi: Mức thay đổi tương đối và bội số tăng trưởng
+  name_en: Relative change and growth multiple
+  expression_latex: \Delta\% = \dfrac{x_{sau} - x_{truoc}}{x_{truoc}} \times 100\%, \quad M = \dfrac{x_{sau}}{x_{truoc}}
+  expression_python: (after - before) / before * 100
+  excel: =(B2-B1)/B1*100
+  variables:
+  - before
+  - after
+  when_to_use: So sánh tỷ lệ lỗi, năng suất, doanh thu, giá cổ phiếu trước-sau; phân biệt điểm phần trăm và phần trăm tương
+    đối.
+- id: m03_stage_capacity_forecast
+  module: m03
+  name_vi: Dự báo năng lực giao hàng theo giai đoạn Tuckman
+  name_en: Stage-based capacity forecast
+  expression_latex: Delivered = \sum_{k} n_k \times C \times r_k
+  expression_python: sum(n * capacity * r for n, r in stages)
+  excel: =SUMPRODUCT(B2:B5, C2:C5) * capacity
+  variables:
+  - stages
+  - capacity
+  when_to_use: Lập kế hoạch dự án ngắn/trung hạn cho nhóm mới và kiểm tra backlog có vừa không khi tính đến Forming/Storming
+    năng suất thấp.
+- id: m03_storming_delay_cost
+  module: m03
+  name_vi: Chi phí chậm trễ do Storming kéo dài
+  name_en: Storming delay cost
+  expression_latex: Cost = \frac{Gap}{V_{perf}} \times \frac{w}{4{,}345} \times P
+  expression_python: (backlog - delivered) / perf_velocity * sprint_weeks / 4.345 * monthly_payroll
+  excel: null
+  variables:
+  - backlog
+  - delivered
+  - perf_velocity
+  - sprint_weeks
+  - monthly_payroll
+  when_to_use: Thuyết phục chủ doanh nghiệp đầu tư vào điều lệ nhóm/giải quyết xung đột bằng cách quy ra tiền cho phần chậm
+    trễ.
+- id: m03_storming_overrun_ratio
+  module: m03
+  name_vi: Tỷ lệ vượt ngưỡng Storming
+  name_en: Storming overrun ratio
+  expression_latex: R = \frac{M \times 4{,}345}{6}
+  expression_python: months_in_storming * 4.345 / 6
+  excel: null
+  variables:
+  - months_in_storming
+  when_to_use: Kiểm tra nhóm có đang Storming mãn tính không bằng cách so với giới hạn trên 6 tuần của khoảng thông thường
+    (2-6 tuần).
+- id: m03_runway
+  module: m03
+  name_vi: Runway (số tháng còn sống) và vốn đã đốt
+  name_en: Runway
+  expression_latex: Runway = \frac{Cash - Burn \times t}{Burn}
+  expression_python: (cash - burn * elapsed_months) / burn
+  excel: null
+  variables:
+  - cash
+  - burn
+  - elapsed_months
+  when_to_use: 'Đánh giá cái giá của tranh cãi sáng lập viên kéo dài: mỗi tháng Storming đốt đúng bằng burn rate mà không
+    tạo sản phẩm.'
+- id: m03_psych_safety_score
+  module: m03
+  name_vi: Điểm An toàn tâm lý (khảo sát 5 câu, có đảo điểm)
+  name_en: Psychological safety pulse score
+  expression_latex: S = \frac{(6 - x_1) + x_2 + x_3 + (6 - x_4) + x_5}{5}
+  expression_python: ((6 - x1) + x2 + x3 + (6 - x4) + x5) / 5
+  excel: =((6-B1)+B2+B3+(6-B4)+B5)/5
+  variables:
+  - x1
+  - x2
+  - x3
+  - x4
+  - x5
+  when_to_use: Đo An toàn tâm lý hằng quý; theo dõi chiều thay đổi hơn là điểm tuyệt đối.
+- id: m03_pulse_average
+  module: m03
+  name_vi: Điểm trung bình pulse survey / 5 yếu tố
+  name_en: Pulse survey / factor average
+  expression_latex: \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i
+  expression_python: sum(scores) / len(scores)
+  excel: =AVERAGE(B2:B6)
+  variables:
+  - scores
+  when_to_use: Chấm Aristotle (5 yếu tố), GRPI + An toàn tâm lý, hoặc pulse survey 25 câu; so sánh theo thời gian.
+- id: m03_team_nps
+  module: m03
+  name_vi: NPS của nhóm
+  name_en: Team Net Promoter Score
+  expression_latex: NPS = \%Promoters - \%Detractors
+  expression_python: (promoters - detractors) / total * 100
+  excel: =(COUNTIF(A:A,">=9")-COUNTIF(A:A,"<=6"))/COUNT(A:A)*100
+  variables:
+  - promoters
+  - detractors
+  - total
+  when_to_use: 'Đo nhanh lòng tin và hài lòng tổng thể bằng một câu: ''bạn sẵn sàng giới thiệu nhóm này cho đồng nghiệp ở
+    mức nào?'' (thang 0-10).'
+- id: m03_okr_completion
+  module: m03
+  name_vi: Tỷ lệ hoàn thành OKR quý
+  name_en: OKR completion rate
+  expression_latex: C = \frac{1}{m}\sum_{j=1}^{m} p_j
+  expression_python: sum(progress) / len(progress)
+  excel: null
+  variables:
+  - progress
+  when_to_use: Đánh giá cuối quý mức đạt mục tiêu nhóm.
+- id: m03_attrition_rate
+  module: m03
+  name_vi: Tỷ lệ nghỉ việc của nhóm
+  name_en: Team attrition rate
+  expression_latex: Attrition = \frac{Leavers}{Headcount_{start}}
+  expression_python: leavers / headcount_start
+  excel: =B2/B1
+  variables:
+  - leavers
+  - headcount_start
+  when_to_use: Chỉ số sức khỏe con người cạnh chỉ số năng suất; luôn kèm chi phí thay thế.
+- id: m03_turnover_cost
+  module: m03
+  name_vi: Chi phí thay thế nhân sự nghỉ việc
+  name_en: Cost of turnover
+  expression_latex: C = N \times m \times W
+  expression_python: n_leavers * months_of_salary * monthly_salary
+  excel: null
+  variables:
+  - n_leavers
+  - months_of_salary
+  - monthly_salary
+  when_to_use: Quy nghỉ việc ra tiền để biện minh đầu tư vào nhóm; so sánh kịch bản trước/sau can thiệp.
+- id: m03_team_program_roi
+  module: m03
+  name_vi: ROI và thời gian hoàn vốn chương trình phát triển nhóm
+  name_en: Team development program ROI and payback
+  expression_latex: ROI = \frac{Benefit - Cost}{Cost}, \quad Payback = \frac{Cost}{Benefit/12}
+  expression_python: ((benefit - cost) / cost, cost / (benefit / 12))
+  excel: null
+  variables:
+  - benefit
+  - cost
+  when_to_use: Thuyết phục chủ doanh nghiệp rằng sửa vận hành nhóm rẻ hơn tuyển thêm người giỏi.
+- id: m03_hourly_cost
+  module: m03
+  name_vi: Chi phí giờ làm việc (quy lương ra giờ)
+  name_en: Hourly cost
+  expression_latex: h = \frac{W}{H}
+  expression_python: monthly_salary / hours_per_month
+  excel: null
+  variables:
+  - monthly_salary
+  - hours_per_month
+  when_to_use: Quy giá trị giờ họp retrospective, giờ làm lại (rework) ra tiền.
+- id: m03_weighted_decision_score
+  module: m03
+  name_vi: Điểm quyết định có trọng số (giải xung đột nội dung)
+  name_en: Weighted decision scoring
+  expression_latex: S_a = \sum_i w_i \, s_{a,i}
+  expression_python: sum(w * s for w, s in zip(weights, scores))
+  excel: =SUMPRODUCT(weights, scores)
+  variables:
+  - weights
+  - scores
+  when_to_use: 'Giai đoạn Storming khi tranh luận kỹ thuật/nội dung bế tắc: thống nhất tiêu chí và trọng số trước rồi chấm.'
+- id: m03_belbin_coverage
+  module: m03
+  name_vi: Độ phủ 9 vai trò Belbin
+  name_en: Belbin role coverage
+  expression_latex: Coverage = |\bigcup_p R_p| / 9
+  expression_python: len(set(roles)) / 9
+  excel: null
+  variables:
+  - roles
+  when_to_use: Kiểm tra nhóm 5-9 người đã bao phủ đủ hành vi chưa và vai nào còn trống để chủ động bù.
+- id: m03_impact_hours
+  module: m03
+  name_vi: Tác động quy ra giờ (đo ý nghĩa)
+  name_en: Impact in hours
+  expression_latex: H = U \times h
+  expression_python: users * hours_saved_per_user
+  excel: null
+  variables:
+  - users
+  - hours_saved_per_user
+  when_to_use: Viết lại mục tiêu từ hoạt động sang tác động để nhóm thấy ý nghĩa công việc.
+- id: m03_relative_change
+  module: m03
+  name_vi: Thay đổi tuyệt đối và tương đối của chỉ số (vd churn)
+  name_en: Absolute and relative change
+  expression_latex: RC = \frac{x_0 - x_1}{x_0}
+  expression_python: (x0 - x1) / x0
+  excel: null
+  variables:
+  - x0
+  - x1
+  when_to_use: 'Đánh giá mục tiêu nhóm: giảm churn từ 5% xuống 3% là giảm 2 điểm phần trăm (tương đối 40%).'
+- id: m03_t7_priority
+  module: m03
+  name_vi: Ưu tiên cải thiện từ kiểm toán T7
+  name_en: T7 audit priority
+  expression_latex: k^* = \arg\min_k s_k
+  expression_python: min(scores, key=scores.get)
+  excel: null
+  variables:
+  - scores
+  when_to_use: 'Kiểm toán lãnh đạo nhóm theo quý: chấm 7 yếu tố, chọn 1-2 yếu tố thấp nhất cải thiện rồi chấm lại.'
+- id: m04_hofstede_cultural_distance
+  module: m04
+  name_vi: Khoảng cách văn hóa Hofstede (trung bình chênh lệch tuyệt đối)
+  name_en: Hofstede cultural distance (mean absolute difference)
+  expression_latex: CD_{A,B} = \frac{1}{k}\sum_{d=1}^{k} \left| I_{A,d} - I_{B,d} \right|
+  expression_python: sum(abs(a - b) for a, b in zip(country_a, country_b)) / len(country_a)
+  excel: =SUMPRODUCT(ABS(B2:B6-C2:C6))/COUNT(B2:B6)
+  variables:
+  - country_a
+  - country_b
+  - k
+  when_to_use: Đánh giá nhanh mức lệch văn hóa quốc gia khi M&A xuyên biên giới, mở chi nhánh nước ngoài, thuê quản lý nước
+    ngoài; xếp hạng chiều nào là điểm nghẽn.
+- id: m04_ocai_gap
+  module: m04
+  name_vi: Khoảng cách OCAI (tổng độ lệch tuyệt đối Preferred - Now)
+  name_en: OCAI gap (total absolute deviation between Now and Preferred)
+  expression_latex: G_{OCAI} = \sum_{c} \left| P_c - N_c \right|, \quad \sum_c N_c = \sum_c P_c = 100
+  expression_python: sum(abs(p - n) for p, n in zip(preferred, now))
+  excel: =SUMPRODUCT(ABS(C2:C5-B2:B5))
+  variables:
+  - now
+  - preferred
+  when_to_use: 'Sau khi chạy OCAI: lượng hóa mức độ nhân viên muốn thay đổi văn hóa và theo dõi khoảng cách thu hẹp qua các
+    vòng đo (trước/sau can thiệp).'
+- id: m04_ocai_profile_difference
+  module: m04
+  name_vi: Chênh lệch giữa hai hồ sơ văn hóa OCAI (so hai tổ chức)
+  name_en: OCAI profile difference between two organizations
+  expression_latex: D_{A,B} = \sum_{c} \left| N_{A,c} - N_{B,c} \right|
+  expression_python: sum(abs(a - b) for a, b in zip(profile_a, profile_b))
+  excel: =SUMPRODUCT(ABS(B2:B5-C2:C5))
+  variables:
+  - profile_a
+  - profile_b
+  when_to_use: Cultural due diligence trong M&A, so văn hóa hai công ty/hai bộ phận, hoặc so văn hóa hiện tại với mô hình
+    mục tiêu.
+- id: m04_denison_average_spread
+  module: m04
+  name_vi: Điểm trung bình và độ chênh Denison (cao nhất - thấp nhất)
+  name_en: Denison average score and spread
+  expression_latex: M = \frac{1}{4}\sum_{i} S_i, \qquad R = \max_i S_i - \min_i S_i
+  expression_python: (sum(scores) / len(scores), max(scores) - min(scores))
+  excel: =AVERAGE(B2:B5) và =MAX(B2:B5)-MIN(B2:B5)
+  variables:
+  - scores
+  when_to_use: 'Đọc kết quả khảo sát Denison (hoặc khảo sát tương tự): phát hiện mất cân bằng giữa hướng ngoài/hướng trong,
+    linh hoạt/ổn định.'
+- id: m04_survey_score_change
+  module: m04
+  name_vi: Điểm khảo sát văn hóa (trung bình nhóm câu hỏi) và thay đổi trước-sau
+  name_en: Culture survey score and before/after change
+  expression_latex: S_g = \frac{1}{n_g}\sum_{q \in g} x_q, \qquad \Delta = \bar{S}_{sau} - \bar{S}_{truoc}
+  expression_python: sum(after) / len(after) - sum(before) / len(before)
+  excel: =AVERAGE(after_range)-AVERAGE(before_range)
+  variables:
+  - before
+  - after
+  when_to_use: Tính điểm 5 nhóm của mẫu khảo sát 20 câu (mỗi nhóm = trung bình 4 câu; tổng thể = trung bình 20 câu) và chứng
+    minh văn hóa đổi thật bằng thiết kế đo trước/sau.
+- id: m04_enps
+  module: m04
+  name_vi: eNPS - Điểm ròng nhân viên sẵn sàng giới thiệu
+  name_en: Employee Net Promoter Score (eNPS)
+  expression_latex: eNPS = \frac{N_{9-10} - N_{0-6}}{N_{total}} \times 100
+  expression_python: (promoters - detractors) / (promoters + passives + detractors) * 100
+  excel: =(COUNTIF(A:A,">=9")-COUNTIF(A:A,"<=6"))/COUNT(A:A)*100
+  variables:
+  - promoters
+  - passives
+  - detractors
+  when_to_use: Theo dõi định kỳ (tháng/quý) mức gắn kết và uy tín nội bộ; kết hợp turnover; đo trước/sau chương trình văn
+    hóa.
+- id: m04_turnover_rate
+  module: m04
+  name_vi: Tỷ lệ nghỉ việc
+  name_en: Turnover rate
+  expression_latex: TR = \frac{L}{\bar{H}} \times 100\%
+  expression_python: leavers / avg_headcount * 100
+  excel: =B2/B3*100
+  variables:
+  - leavers
+  - avg_headcount
+  when_to_use: Chỉ báo cứng đầu tiên của văn hóa kém; dùng cùng eNPS; theo dõi theo bộ phận để phát hiện kiệt sức/quản lý
+    có vấn đề.
+- id: m04_turnover_cost
+  module: m04
+  name_vi: Chi phí nghỉ việc
+  name_en: Cost of turnover
+  expression_latex: C_{TO} = L \times c_r, \qquad c_r = \rho \times W_{nam}
+  expression_python: leavers * replacement_pct * monthly_salary * months_paid
+  excel: =B2*B3*B4*B5
+  variables:
+  - leavers
+  - replacement_pct
+  - monthly_salary
+  - months_paid
+  when_to_use: Quy văn hóa kém ra tiền để thuyết phục chủ SME đầu tư; làm tử số của ROI chương trình văn hóa.
+- id: m04_turnover_saving
+  module: m04
+  name_vi: Tiết kiệm nhờ giảm tỷ lệ nghỉ việc
+  name_en: Savings from lower turnover
+  expression_latex: S = H \times (TR_{truoc} - TR_{sau}) \times c_r
+  expression_python: headcount * (rate_before - rate_after) * replacement_cost
+  excel: =B2*(B3-B4)*B5
+  variables:
+  - headcount
+  - rate_before
+  - rate_after
+  - replacement_cost
+  when_to_use: Ước lượng lợi ích tài chính của chương trình văn hóa khi biết mục tiêu giảm turnover (dạng 'giảm 5 điểm phần
+    trăm').
+- id: m04_culture_roi
+  module: m04
+  name_vi: ROI chương trình văn hóa
+  name_en: Culture program ROI
+  expression_latex: ROI = \frac{S - C}{C} \times 100\%
+  expression_python: (savings - program_cost) / program_cost * 100
+  excel: =(B2-B3)/B3
+  variables:
+  - savings
+  - program_cost
+  when_to_use: Thuyết phục chủ SME/ban lãnh đạo đầu tư; so các phương án can thiệp.
+- id: m04_talent_density
+  module: m04
+  name_vi: Hiệu quả theo mật độ nhân tài (đầu ra trên chi phí)
+  name_en: Talent density efficiency ratio
+  expression_latex: E_B / E_A = \frac{n_B \, o_B / (n_B \, c_B)}{n_A \, o_A / (n_A \, c_A)}
+  expression_python: (n_b * out_b / (n_b * cost_b)) / (n_a * out_a / (n_a * cost_a))
+  excel: =(B2*B3/(B2*B4))/(C2*C3/(C2*C4))
+  variables:
+  - n_a
+  - out_a
+  - cost_a
+  - n_b
+  - out_b
+  - cost_b
+  when_to_use: Giải thích logic kinh tế của chiến lược 'trả cao hơn cho ít người giỏi hơn' (Netflix) và cân nhắc áp dụng ở
+    SME.
+- id: m04_communication_channels
+  module: m04
+  name_vi: Số kênh giao tiếp trong nhóm
+  name_en: Communication channels n(n-1)/2
+  expression_latex: K = \frac{n(n-1)}{2}
+  expression_python: n * (n - 1) / 2
+  excel: =B2*(B2-1)/2
+  variables:
+  - n
+  when_to_use: Giải thích vì sao đội nhỏ họp ít, phối hợp nhẹ hơn; cân nhắc khi mở rộng đội ngũ (liên hệ chuyển từ văn hóa
+    Power sang Role).
+- id: m04_approval_delay
+  module: m04
+  name_vi: Độ trễ phê duyệt tích lũy
+  name_en: Cumulative approval delay
+  expression_latex: T = L \times d \times N
+  expression_python: layers * days_per_layer * decisions_per_month
+  excel: =B2*B3*B4
+  variables:
+  - layers
+  - days_per_layer
+  - decisions_per_month
+  when_to_use: Lượng hóa chi phí 'chờ sếp quyết' để biện luận cho ủy quyền (context not control); ở SME PDI cao thường là
+    nút cổ chai.
+- id: m04_offer_program
+  module: m04
+  name_vi: Kinh tế của chương trình 'The Offer' (trả để người không hợp rời đi sớm)
+  name_en: Cost-benefit of paying poor-fit hires to leave early
+  expression_latex: C = H \cdot p \cdot O,\quad B = H \cdot p \cdot \ell,\quad B/C = \ell / O
+  expression_python: (hires * take_rate * offer, hires * take_rate * loss_each, hires * take_rate * (loss_each - offer), loss_each
+    / offer)
+  excel: =B2*B3*B4 (chi phí); =B2*B3*B5 (lợi ích)
+  variables:
+  - hires
+  - take_rate
+  - offer
+  - loss_each
+  when_to_use: Cân nhắc chương trình lọc người không hợp văn hóa SỚM, trước khi gây thiệt hại; tương tự thử việc có tiêu chí
+    hành vi rõ.
+- id: m04_kaizen_roi
+  module: m04
+  name_vi: ROI hệ thống đề xuất cải tiến (Kaizen) cho xưởng SME
+  name_en: Suggestion-system (Kaizen) ROI
+  expression_latex: ROI = \frac{A \cdot s - I \cdot r}{I \cdot r}, \; I = W \cdot m \cdot 12, \; A = I \cdot a
+  expression_python: (workers * ideas_per_month * 12 * adopt_rate * saving_each - workers * ideas_per_month * 12 * reward_each)
+    / (workers * ideas_per_month * 12 * reward_each) * 100
+  excel: =(B5*B6-B4*B7)/(B4*B7)
+  variables:
+  - workers
+  - ideas_per_month
+  - adopt_rate
+  - saving_each
+  - reward_each
+  when_to_use: Đề xuất triển khai hộp đề xuất/thưởng cải tiến ở xưởng SME; bắt đầu bằng làm vấn đề nhìn thấy được.
+- id: m04_defect_cost_escalation
+  module: m04
+  name_vi: Chênh lệch chi phí lỗi theo giai đoạn phát hiện
+  name_en: Defect cost escalation by detection stage
+  expression_latex: D = U \cdot r \cdot (c_{muon} - c_{som})
+  expression_python: units * defect_rate * (cost_late - cost_early)
+  excel: =B2*B3*(B5-B4)
+  variables:
+  - units
+  - defect_rate
+  - cost_early
+  - cost_late
+  when_to_use: Biện luận cho quyền dừng chuyền (Andon), văn hóa báo lỗi sớm, không đổ lỗi.
+- id: m04_fast_vs_slow_ev
+  module: m04
+  name_vi: 'Kỳ vọng giá trị: quyết định nhanh vs chậm, và xác suất hòa vốn'
+  name_en: Expected value of fast vs slow decisions and break-even accuracy
+  expression_latex: EV_{nhanh}=p_f V + (1-p_f)L;\; EV_{cham}=p_s V(1-d)+(1-p_s)L;\; p^* = \frac{EV_{nhanh}-L}{V(1-d)-L}
+  expression_python: (p_fast * value + (1 - p_fast) * loss, p_slow * value * (1 - delay_loss) + (1 - p_slow) * loss, ((p_fast
+    * value + (1 - p_fast) * loss) - loss) / (value * (1 - delay_loss) - loss))
+  excel: =B2*B3+(1-B2)*B4
+  variables:
+  - value
+  - loss
+  - p_fast
+  - p_slow
+  - delay_loss
+  when_to_use: 'Cân nhắc ''văn hóa tốc độ'' (Vingroup minh họa): khi nào nhanh 70% thắng chậm 85%; phân loại quyết định đảo
+    ngược được vs không đảo ngược được.'
+- id: m04_cross_sell_gap
+  module: m04
+  name_vi: Khoảng cách chỉ tiêu bán chéo so với nhu cầu thực
+  name_en: Cross-sell target gap
+  expression_latex: G = H \times (T - P), \qquad g_{ng} = G / N
+  expression_python: (households * (target_per_household - current_per_household), households * (target_per_household - current_per_household)
+    / sellers)
+  excel: =B2*(B3-B4)
+  variables:
+  - households
+  - current_per_household
+  - target_per_household
+  - sellers
+  when_to_use: Kiểm tra tính khả thi của chỉ tiêu theo nhu cầu thật TRƯỚC khi giao; phát hiện chỉ tiêu buộc người ta gian
+    lận.
+- id: m04_cagr
+  module: m04
+  name_vi: Tốc độ tăng trưởng kép (CAGR)
+  name_en: Compound annual growth rate
+  expression_latex: CAGR = \left(\frac{V_{cuoi}}{V_{dau}}\right)^{1/n} - 1
+  expression_python: (end_value / start_value) ** (1 / years) - 1
+  excel: =(B2/B1)^(1/B3)-1
+  variables:
+  - start_value
+  - end_value
+  - years
+  when_to_use: 'Mô tả tăng trưởng dài hạn khi phân tích case (Netflix 2003-2023). Luôn kèm cảnh báo: văn hóa là một yếu tố
+    góp phần, không phải nguyên nhân duy nhất.'
+- id: m04_overtime_excess
+  module: m04
+  name_vi: Giờ làm thêm vượt chuẩn mỗi tháng
+  name_en: Excess overtime per month
+  expression_latex: OT_{thang} = (h_{tuan} - h_{chuan}) \times 52 / 12
+  expression_python: (hours_week - normal_hours) * 52 / 12
+  excel: =(B2-B3)*52/12
+  variables:
+  - hours_week
+  - normal_hours
+  when_to_use: Kiểm tra rủi ro tuân thủ và kiệt sức khi áp dụng 'văn hóa tốc độ' (Vingroup minh họa).
+- id: m05_emerson_dependence
+  module: m05
+  name_vi: Mức phụ thuộc quyền lực (Emerson)
+  name_en: Emerson power-dependence
+  expression_latex: P_{AB} = D_{BA} \propto \frac{I_B}{Alt_B}
+  expression_python: I_B / Alt_B
+  excel: =I_B/Alt_B
+  variables:
+  - P_AB
+  - D_BA
+  - I_B
+  - Alt_B
+  when_to_use: So sánh thế mạnh thương lượng giữa hai bên (nhà cung cấp - tập đoàn, founder - nhà đầu tư, nhân viên then chốt
+    - công ty) và hoạch định cách cân bằng.
+- id: m05_power_ratio
+  module: m05
+  name_vi: Tỷ lệ quyền lực hai chiều
+  name_en: Mutual dependence power ratio
+  expression_latex: \frac{P_{AB}}{P_{BA}} = \frac{D_{BA}}{D_{AB}} = \frac{I_B/Alt_B}{I_A/Alt_A}
+  expression_python: (I_B / Alt_B) / (I_A / Alt_A)
+  excel: =(I_B/Alt_B)/(I_A/Alt_A)
+  variables:
+  - I_B
+  - Alt_B
+  - I_A
+  - Alt_A
+  when_to_use: Định lượng độ chênh quyền lực giữa hai bên và đánh giá hiệu quả của chiến lược cân bằng (đa dạng hóa khách
+    hàng, tìm liên minh).
+- id: m05_dependence_index_sme
+  module: m05
+  name_vi: Chỉ số phụ thuộc người then chốt (đơn giản, giả định)
+  name_en: Key-person dependence index
+  expression_latex: D = s \times m
+  expression_python: share * months
+  excel: =share*months
+  variables:
+  - s
+  - m
+  when_to_use: Xếp hạng ai là người khó thay thế nhất trong SME để điều chỉnh bản đồ quyền lực/Mendelow, lập kế hoạch đào
+    tạo dự phòng.
+- id: m05_cloture_threshold
+  module: m05
+  name_vi: Ngưỡng biểu quyết siêu đa số (2/3)
+  name_en: Supermajority voting threshold
+  expression_latex: \text{Ngưỡng} = \lceil q \cdot N \rceil
+  expression_python: -(-2 * n // 3)
+  excel: =ROUNDUP(2/3*N,0)
+  variables:
+  - q
+  - N
+  when_to_use: 'Bước đầu tiên khi cần thắng một cuộc bỏ phiếu: xác định cần bao nhiêu phiếu rồi mới dồn công sức vào nhóm
+    có thể xoay chuyển.'
+- id: m05_coalition_margin
+  module: m05
+  name_vi: Biên an toàn của liên minh
+  name_en: Coalition safety margin
+  expression_latex: \text{Biên} = \sum_{i \in C} s_i - \theta
+  expression_python: sum(stakes) - threshold
+  excel: =SUM(stakes)-threshold
+  variables:
+  - s_i
+  - theta
+  when_to_use: Đánh giá một liên minh cụ thể có thắng không và có đủ vững không (chịu được một thành viên đổi ý); so sánh
+    nhiều tổ hợp.
+- id: m05_veto_check
+  module: m05
+  name_vi: Kiểm tra quyền phủ quyết
+  name_en: Veto power check
+  expression_latex: \text{Veto}(h) \iff \Theta_{tot} - s_h < \theta
+  expression_python: (total - holder) < threshold
+  excel: =(total-holder)<threshold
+  variables:
+  - total
+  - holder
+  - threshold
+  when_to_use: Xác định bên nào không thể bỏ qua khi cần biểu quyết (HĐQT, cổ đông, hội đồng thành viên).
+- id: m05_minimal_coalition
+  module: m05
+  name_vi: Liên minh thắng tối thiểu
+  name_en: Minimal winning coalition test
+  expression_latex: \sum_{i\in C} s_i \ge \theta \;\wedge\; \forall j\in C:\ \sum_{i\in C} s_i - s_j < \theta
+  expression_python: sum(stakes) >= threshold and all(sum(stakes) - s < threshold for s in stakes)
+  excel: '(thủ công/VBA: kiểm tra tổng >= ngưỡng và bỏ từng người thì < ngưỡng)'
+  variables:
+  - stakes
+  - threshold
+  when_to_use: Liệt kê các tổ hợp tối thiểu để thắng, tìm thành viên 'then chốt' và lựa chọn liên minh ít người nhất/ít nhượng
+    bộ nhất.
+- id: m05_mendelow_class
+  module: m05
+  name_vi: Phân loại ma trận Mendelow theo điểm Power/Interest
+  name_en: Mendelow quadrant classification
+  expression_latex: Q = f(P \ge 5,\ I \ge 5) \in \{\text{Manage Closely, Keep Satisfied, Keep Informed, Monitor}\}
+  expression_python: ('Manage Closely' if interest >= cutoff else 'Keep Satisfied') if power >= cutoff else ('Keep Informed'
+    if interest >= cutoff else 'Monitor')
+  excel: =IF(power>=cutoff,IF(interest>=cutoff,"Manage Closely","Keep Satisfied"),IF(interest>=cutoff,"Keep Informed","Monitor"))
+  variables:
+  - power
+  - interest
+  - cutoff
+  when_to_use: Lập danh sách stakeholder và quyết định phân bổ thời gian/kênh liên lạc cho từng nhóm.
+- id: m05_velasquez_score
+  module: m05
+  name_vi: Điểm đạo đức 5 lăng kính (Velasquez, thang 0-2)
+  name_en: Velasquez ethical score
+  expression_latex: E = \sum_{k=1}^{5} e_k,\ e_k \in \{0,1,2\}
+  expression_python: sum(scores)
+  excel: =SUM(range)
+  variables:
+  - e_k
+  when_to_use: Kiểm tra nhanh một hành động chính trị/ảnh hưởng trước khi làm (và so sánh hai cách làm cùng mục tiêu).
+- id: m05_pdi_band
+  module: m05
+  name_vi: Phân nhóm Power Distance
+  name_en: PDI banding
+  expression_latex: \text{Nhóm} = \begin{cases}\text{Cao} & PDI>60\\ \text{Trung bình} & 40\le PDI\le 60\\ \text{Thấp} & PDI<40\end{cases}
+  expression_python: '''high'' if pdi > 60 else (''medium'' if pdi >= 40 else ''low'')'
+  excel: =IF(pdi>60,"Cao",IF(pdi>=40,"Trung bình","Thấp"))
+  variables:
+  - pdi
+  when_to_use: Chọn phong cách tác động/lãnh đạo phù hợp văn hóa; đánh giá rủi ro xung đột khi công ty nước ngoài vào VN hoặc
+    ngược lại.
+- id: m05_runway
+  module: m05
+  name_vi: Runway và khoảng đệm so với mốc gọi vốn
+  name_en: Cash runway and buffer
+  expression_latex: \text{Runway} = \frac{\text{Vốn}}{\text{Burn}},\quad \text{Đệm} = \text{Runway} - T_{target}
+  expression_python: cash / burn
+  excel: =cash/burn
+  variables:
+  - cash
+  - burn
+  - T_target
+  when_to_use: 'Khi nhà đầu tư/founder/nhân sự xung đột về tốc độ vs chất lượng: xác định áp lực thời gian là thật hay chỉ
+    là sức ép.'
+- id: m05_npv_annuity
+  module: m05
+  name_vi: NPV dự án với dòng lợi ích đều (niên kim)
+  name_en: NPV of level annual benefit
+  expression_latex: NPV = B \cdot \frac{1-(1+r)^{-n}}{r} - I_0
+  expression_python: benefit * (1 - (1 + r) ** -n) / r - capex
+  excel: =PV(r,n,-benefit)-capex
+  variables:
+  - B
+  - r
+  - n
+  - I_0
+  when_to_use: Chuẩn bị dữ liệu Rational Persuasion để trả lời lo ngại tài chính của bên có Informational/Expert Power (vd
+    chị M phụ trách tài chính) trước khi biểu quyết.
+- id: m05_breakeven_benefit
+  module: m05
+  name_vi: Lợi ích hòa vốn NPV tối thiểu
+  name_en: NPV break-even annual benefit
+  expression_latex: B^{*} = \frac{I_0}{\left(1-(1+r)^{-n}\right)/r}
+  expression_python: capex / ((1 - (1 + r) ** -n) / r)
+  excel: =capex/PV(r,n,-1)
+  variables:
+  - capex
+  - r
+  - n
+  when_to_use: Xác định mức lợi ích tối thiểu để dự án đáng làm; đặt điều kiện dừng trung thực khi thuyết phục bên lo ngại.
+- id: m05_leverage_ebitda
+  module: m05
+  name_vi: Đòn bẩy nợ / EBITDA sau vay
+  name_en: Debt-to-EBITDA after borrowing
+  expression_latex: \frac{D_{cũ}+D_{mới}}{EBITDA}
+  expression_python: (existing_debt + new_debt) / ebitda
+  excel: =(existing_debt+new_debt)/ebitda
+  variables:
+  - existing_debt
+  - new_debt
+  - ebitda
+  when_to_use: Trả lời lo ngại về nợ của bên nắm tài chính trước khi biểu quyết đầu tư.
+- id: m05_reward_cost
+  module: m05
+  name_vi: Chi phí dùng Reward Power cho một yêu cầu
+  name_en: Reward power cost
+  expression_latex: C = n \times d \times w
+  expression_python: n * days * rate
+  excel: =n*days*rate
+  variables:
+  - n
+  - d
+  - w
+  when_to_use: So sánh chi phí giữa các nguồn quyền lực khi yêu cầu nhân viên làm thêm (Legitimate rẻ nhưng tuân thủ tối thiểu;
+    Reward tốn tiền, tạo tiền lệ).
+- id: m05_pct_change
+  module: m05
+  name_vi: Phần trăm thay đổi (ví dụ sụt doanh thu)
+  name_en: Percent change
+  expression_latex: \frac{X_{mới}-X_{cũ}}{X_{cũ}}\times 100
+  expression_python: (new - old) / old * 100
+  excel: =(new-old)/old
+  variables:
+  - new
+  - old
+  when_to_use: 'Đo hậu quả của việc bỏ qua bản đồ stakeholder (Case JC Penney: doanh thu giảm sau khi thay đổi mô hình giá
+    mà không tham vấn).'
+- id: m06_zopa
+  module: m06
+  name_vi: Vùng thỏa thuận khả dĩ (ZOPA)
+  name_en: Zone of Possible Agreement
+  expression_latex: ZOPA \neq \emptyset \iff R_b \ge R_s;\quad W = R_b - R_s
+  expression_python: '{''exists'': Rb >= Rs, ''width'': Rb - Rs, ''midpoint'': (Rb + Rs) / 2}'
+  excel: =IF(Rb>=Rs, Rb-Rs, "Không có ZOPA")
+  variables:
+  - Rs
+  - Rb
+  when_to_use: Trước đàm phán giá/điều khoản để biết có đáng đàm phán không và thặng dư lớn cỡ nào.
+- id: m06_surplus_share
+  module: m06
+  name_vi: Phần thặng dư mỗi bên nhận theo giá chốt
+  name_en: Surplus Share at Price P
+  expression_latex: S_{seller} = \frac{P - R_s}{R_b - R_s},\quad S_{buyer} = 1 - S_{seller}
+  expression_python: (P - Rs) / (Rb - Rs)
+  excel: =(P-Rs)/(Rb-Rs)
+  variables:
+  - P
+  - Rs
+  - Rb
+  when_to_use: Đánh giá một mức giá chốt chia thặng dư thế nào giữa hai bên.
+- id: m06_anchoring_share
+  module: m06
+  name_vi: 'Hiệu ứng anchoring: điểm giữa hai mốc mở đầu'
+  name_en: Anchoring Midpoint Outcome
+  expression_latex: P \approx \frac{A_s + A_b}{2},\quad S_{seller} = \frac{P - R_s}{R_b - R_s}
+  expression_python: ((A_s + A_b) / 2 - Rs) / (Rb - Rs)
+  excel: =(((A_s+A_b)/2)-Rs)/(Rb-Rs)
+  variables:
+  - A_s
+  - A_b
+  - Rs
+  - Rb
+  when_to_use: Giải thích vì sao ra mốc đầu tiên có lợi và chọn mốc mở đầu.
+- id: m06_seller_reservation_price
+  module: m06
+  name_vi: Giá giữ chỗ tối thiểu của người bán theo biên gộp mục tiêu
+  name_en: Seller Reservation Price from Minimum Margin
+  expression_latex: P_{min} = \frac{C}{1 - m}
+  expression_python: cost / (1 - m)
+  excel: =cost/(1-m)
+  variables:
+  - cost
+  - m
+  when_to_use: Xác định giá sàn khi báo giá dịch vụ gấp/đơn đặc biệt (ví dụ giao nhanh).
+- id: m06_buyer_reservation_price
+  module: m06
+  name_vi: Giá giữ chỗ tối đa của người mua theo phương án thay thế
+  name_en: Buyer Reservation Price from Alternative Supplier
+  expression_latex: R_b = P_{alt} - K_{switch}
+  expression_python: P_alt - K_switch
+  excel: =P_alt-K_switch
+  variables:
+  - P_alt
+  - K_switch
+  when_to_use: Ước lượng BATNA/mức giữ chỗ của khách hàng/đối tác.
+- id: m06_log_rolling_value
+  module: m06
+  name_vi: Giá trị tạo thêm từ log rolling (thanh toán sớm đổi chiết khấu)
+  name_en: Integrative Value from Log Rolling (early payment)
+  expression_latex: V_{created} = \frac{d}{365}(r_s - r_b)\,V;\quad G_s = \frac{d}{365} r_s V - D V,\; G_b = D V - \frac{d}{365}
+    r_b V
+  expression_python: '{''seller_value'': days/365*r_s*V, ''buyer_cost'': days/365*r_b*V, ''created'': days/365*(r_s - r_b)*V,
+    ''seller_gain'': days/365*r_s*V - disc*V, ''buyer_gain'': disc*V - days/365*r_b*V}'
+  excel: =days/365*(r_s-r_b)*V
+  variables:
+  - V
+  - days
+  - r_s
+  - r_b
+  - disc
+  when_to_use: Khi hai bên có chi phí vốn/định giá thời gian khác nhau; minh họa nguyên lý giá trị tích hợp.
+- id: m06_conflict_cost
+  module: m06
+  name_vi: Chi phí xung đột hằng tháng
+  name_en: Monthly Cost of Conflict
+  expression_latex: C = n_{late} V \pi + n_{late} k + n_{lost} V g + n_{quit} c_{rep}
+  expression_python: n_late*V*pen + n_late*k + n_lost*V*g + n_quit*c_rep
+  excel: =n_late*V*pen+n_late*k+n_lost*V*g+n_quit*c_rep
+  variables:
+  - n_late
+  - V
+  - pen
+  - k
+  - n_lost
+  - g
+  - n_quit
+  - c_rep
+  when_to_use: Đưa xung đột nội bộ về ngôn ngữ tiền để chủ doanh nghiệp ưu tiên xử lý.
+- id: m06_conflict_cost_ratio
+  module: m06
+  name_vi: Tỷ lệ chi phí xung đột trên lợi nhuận hoạt động
+  name_en: Conflict Cost to EBIT Ratio
+  expression_latex: R = \frac{C}{EBIT}
+  expression_python: C / EBIT
+  excel: =C/EBIT
+  variables:
+  - C
+  - EBIT
+  when_to_use: Quyết định mức ưu tiên xử lý xung đột.
+- id: m06_ev_continue_vs_settle
+  module: m06
+  name_vi: 'Giá trị kỳ vọng: tiếp tục tranh chấp so với dàn xếp'
+  name_en: Expected Value of Continuing vs Settling (ignore sunk cost)
+  expression_latex: EV_{continue} = p \cdot W - C_{future};\quad \Delta = S - EV_{continue}
+  expression_python: '{''ev_continue'': p*W - C_future, ''settle'': S, ''advantage_settle'': S - (p*W - C_future)}'
+  excel: =p*W-C_future
+  variables:
+  - p
+  - W
+  - C_future
+  - S
+  when_to_use: Quyết định tiếp tục kiện/tranh chấp hay dàn xếp; kiểm tra bẫy chi phí chìm.
+- id: m06_ev_innovation_budget
+  module: m06
+  name_vi: Giá trị kỳ vọng ròng của ngân sách đầu tư theo trần % EBIT
+  name_en: Expected Net Value of Capped Investment (Case VietGame)
+  expression_latex: EV_{net} = p \cdot G - \alpha \cdot EBIT \cdot T
+  expression_python: p*G - alpha*EBIT*T
+  excel: =p*G-alpha*EBIT*T
+  variables:
+  - p
+  - G
+  - alpha
+  - EBIT
+  - T
+  when_to_use: Chuyển tranh luận cảm tính (rủi ro/không rủi ro) giữa hai đồng sáng lập thành tranh luận bằng số, tìm trần
+    đầu tư chung.
+- id: m06_tki_scoring
+  module: m06
+  name_vi: Chấm điểm TKI Likert 25 câu
+  name_en: TKI Likert Scoring (25 items)
+  expression_latex: S_k = \sum_{i=1}^{5} x_{k,i},\quad 5 \le S_k \le 25
+  expression_python: '{k: sum(v) for k, v in items.items()}'
+  excel: =SUM(range_5_cau)
+  variables:
+  - items
+  when_to_use: Xác định phong cách mặc định (preferred) và dự phòng (backup) của một người.
+- id: m06_force_field_net
+  module: m06
+  name_vi: Chênh lệch trường lực Lewin
+  name_en: Force Field Net Score
+  expression_latex: N = \sum F_{drive} - \sum F_{restrain}
+  expression_python: sum(drive) - sum(restrain)
+  excel: =SUM(drive)-SUM(restrain)
+  variables:
+  - drive
+  - restrain
+  when_to_use: Hai bên kẹt về một chính sách (remote vs văn phòng), cần xem can thiệp nào dịch chuyển hệ thống.
+- id: m06_max_cogs_for_margin
+  module: m06
+  name_vi: Giá vốn tối đa theo biên gộp mục tiêu và biên gộp thực
+  name_en: Max COGS for Target Margin / Gross Margin
+  expression_latex: C_{max} = P(1 - m);\quad m = \frac{P - C}{P}
+  expression_python: '{''max_cogs'': P*(1 - m_target), ''margin_design'': (P - C_design)/P, ''margin_compromise'': (P - (C_design
+    + P*(1 - m_target))/2)/P, ''margin_collab'': (P - C_collab)/P}'
+  excel: =P*(1-m_target)
+  variables:
+  - P
+  - m_target
+  - C_design
+  - C_collab
+  when_to_use: Xung đột chất lượng vs giá/chi phí giữa bộ phận sản phẩm và vận hành; so ba phương án Competing, Compromising,
+    Collaborating bằng số.
+- id: m06_blended_margin
+  module: m06
+  name_vi: Biên gộp bình quân gia quyền theo danh mục sản phẩm
+  name_en: Blended Gross Margin of Tiered Portfolio
+  expression_latex: m_{avg} = \frac{\sum_i R_i m_i}{\sum_i R_i}
+  expression_python: sum(r*m for r, m in zip(rev, margin)) / sum(rev)
+  excel: =SUMPRODUCT(rev,margin)/SUM(rev)
+  variables:
+  - rev
+  - margin
+  when_to_use: Giải xung đột chất lượng vs giá bằng phân tầng sản phẩm (Premium/Standard/Budget); kiểm tra cannibalization.
+- id: m06_turnover_replacement_cost
+  module: m06
+  name_vi: Chi phí thay thế nhân sự do nghỉ việc khi ép hợp nhất văn hóa
+  name_en: Turnover Replacement Cost (M&A integration)
+  expression_latex: C_{turn} = N \cdot q \cdot (\rho \cdot w)
+  expression_python: N * q * (rho * w)
+  excel: =N*q*(rho*w)
+  variables:
+  - N
+  - q
+  - rho
+  - w
+  when_to_use: Biện minh cho hợp nhất văn hóa theo giai đoạn thay vì ép hợp nhất ngay.
+- id: m06_escalation_profit_scenarios
+  module: m06
+  name_vi: 'Lợi nhuận 3 năm: leo thang xung đột vs hòa giải sớm'
+  name_en: '3-Year Profit: Escalation vs Early Mediation'
+  expression_latex: Pr = \sum_{t=1}^{3} (R_t \cdot m_t - L_t)
+  expression_python: sum(r*m - L for r, m, L in zip(revs, margins, legal))
+  excel: =SUMPRODUCT(revs,margins)-SUM(legal)
+  variables:
+  - revs
+  - margins
+  - legal
+  when_to_use: Lập luận kinh tế cho can thiệp sớm với cổ đông/đồng sáng lập.
+- id: m06_payback_months
+  module: m06
+  name_vi: Thời gian hoàn vốn (tháng) của khoản đầu tư giải quyết xung đột/mở rộng
+  name_en: Payback in Months
+  expression_latex: T = \frac{I}{\Delta \pi}
+  expression_python: I / d_profit
+  excel: =I/d_profit
+  variables:
+  - I
+  - d_profit
+  when_to_use: Đánh giá hòa giải/mở chi nhánh từng bước (Case 4, Case 12).
+- id: m06_fast_delivery_surcharge
+  module: m06
+  name_vi: Kiểm tra phụ phí dịch vụ gấp bằng ZOPA và biên
+  name_en: Rush Surcharge Check (ZOPA + Margin)
+  expression_latex: P = P_0(1+s),\; m = \frac{P - C_{rush}}{P},\; \Delta \pi = n \cdot (P_0 s - k_{rush})
+  expression_python: '{''price'': P0*(1+s), ''in_zopa'': Rs <= P0*(1+s) <= Rb, ''margin'': (P0*(1+s) - C_rush)/(P0*(1+s)),
+    ''monthly_extra_profit'': n*(P0*s - k_rush)}'
+  excel: =P0*(1+s)
+  variables:
+  - P0
+  - s
+  - C_rush
+  - Rs
+  - Rb
+  - n
+  - k_rush
+  when_to_use: Thiết kế chính sách giao nhanh có phụ phí để giải xung đột Kinh doanh vs Sản xuất.
+- id: m07_beckhard_harris
+  module: m07
+  name_vi: Phương trình thay đổi Beckhard-Harris (kiểm tra điều kiện thay đổi)
+  name_en: Beckhard-Harris Change Equation
+  expression_latex: D \times V \times F > R
+  expression_python: D * V * F > R
+  excel: =B1*B2*B3>B4
+  variables:
+  - D
+  - V
+  - F
+  - R
+  when_to_use: Chẩn đoán nhanh trước khi khởi động thay đổi, và lặp lại sau mỗi can thiệp để xem yếu tố nào cần đầu tư thêm.
+- id: m07_adoption_rate
+  module: m07
+  name_vi: Tỷ lệ chấp nhận cách làm mới
+  name_en: Adoption rate
+  expression_latex: \text{Adoption} = \dfrac{\text{Số người dùng đúng cách mới}}{\text{Tổng số người bị ảnh hưởng}}
+  expression_python: users_new / users_total
+  excel: =B1/B2
+  variables:
+  - users_new
+  - users_total
+  when_to_use: Chỉ số dẫn dắt (leading indicator) hằng tháng; mục tiêu tham chiếu trong nguồn là 70%+ cho adoption.
+- id: m07_adkar_score
+  module: m07
+  name_vi: Điểm ADKAR trung bình và điểm nghẽn
+  name_en: ADKAR average score and barrier point
+  expression_latex: \bar{S} = \dfrac{A + D + K + Ab + R}{5}, \quad \text{barrier} = \text{yếu tố đầu tiên theo thứ tự A-D-K-A-R
+    có } S_i \le \theta
+  expression_python: (A + D + K + Ab + R) / 5
+  excel: =AVERAGE(B2:B6)
+  variables:
+  - A
+  - D
+  - K
+  - Ab
+  - R
+  when_to_use: Khảo sát định kỳ (tháng 0, 3, 9...) để biết nhóm/cá nhân kẹt ở đâu và chọn biện pháp phù hợp.
+- id: m07_force_field_balance
+  module: m07
+  name_vi: Cân bằng lực trường (Lewin)
+  name_en: Force field balance
+  expression_latex: \Delta = \sum_i d_i - \sum_j r_j
+  expression_python: sum(driving) - sum(restraining)
+  excel: =SUM(B2:B4)-SUM(D2:D4)
+  variables:
+  - driving
+  - restraining
+  when_to_use: Thay đổi nhỏ trong nhóm nhỏ; cần quyết định nên tăng lực đẩy hay giảm lực kìm.
+- id: m07_kotter_scorecard
+  module: m07
+  name_vi: Bảng điểm Kotter (đánh giá chủ quan 8 bước)
+  name_en: Kotter scorecard
+  expression_latex: S = \sum_{k=1}^{8} s_k, \; s_k \in \{0,1,2\}
+  expression_python: sum(scores)
+  excel: =SUM(B2:I2)
+  variables:
+  - scores
+  when_to_use: So sánh nhanh mức đầy đủ của các nỗ lực thay đổi (đang chạy hoặc case đã xảy ra) và phát hiện bước bị bỏ qua.
+- id: m07_waste_saving
+  module: m07
+  name_vi: Tiết kiệm hao hụt nguyên vật liệu hằng tháng
+  name_en: Monthly material waste saving
+  expression_latex: S_w = \text{Rev} \times c \times (w_0 - w_1)
+  expression_python: rev * cogs_ratio * (w0 - w1)
+  excel: =B1*B2*(B3-B4)
+  variables:
+  - rev
+  - cogs_ratio
+  - w0
+  - w1
+  when_to_use: Lượng hóa lợi ích của số hóa kho/định mức ở quán ăn, tiệm bánh, bán lẻ.
+- id: m07_manual_time_saving
+  module: m07
+  name_vi: Tiết kiệm thời gian báo cáo thủ công
+  name_en: Manual reporting time saving
+  expression_latex: S_t = n \times h \times 4{,}33 \times c_h \times \rho
+  expression_python: n * h * 4.33 * cost_per_hour * reduction / 1e6
+  excel: =B1*B2*4.33*B3*B4/1000000
+  variables:
+  - n
+  - h
+  - cost_per_hour
+  - reduction
+  when_to_use: Lượng hóa lợi ích thời gian khi số hóa quy trình.
+- id: m07_change_net_benefit
+  module: m07
+  name_vi: Lợi ích ròng ổn định hằng tháng của thay đổi
+  name_en: Steady-state monthly net benefit
+  expression_latex: B_{net} = S_w + S_t - C_{run}
+  expression_python: waste_saving + time_saving - running_cost
+  excel: =B1+B2-B3
+  variables:
+  - waste_saving
+  - time_saving
+  - running_cost
+  when_to_use: Tính lợi ích ròng khi đã ổn định để đưa vào bảng hoàn vốn.
+- id: m07_change_onetime_cost
+  module: m07
+  name_vi: Chi phí một lần của dự án thay đổi
+  name_en: One-time change cost
+  expression_latex: C_0 = \sum_i c_i
+  expression_python: sum(items)
+  excel: =SUM(B2:B6)
+  variables:
+  - items
+  when_to_use: Lập ngân sách thay đổi, tránh chỉ tính giá phần mềm.
+- id: m07_change_payback
+  module: m07
+  name_vi: Hoàn vốn thay đổi theo đường cong chấp nhận
+  name_en: Change payback with adoption ramp
+  expression_latex: '\text{Payback} = \min\{m : \sum_{k=1}^{m} a_k B - c_{run}(m-1) - C_0 \ge 0\}'
+  expression_python: next((m for m in range(1, 61) if sum(min(1, max(0, (k - 3) * 0.25)) * B for k in range(1, m + 1)) - run
+    * max(m - 1, 0) - C0 >= 0), None)
+  excel: Dùng bảng lũy kế theo tháng, MATCH(TRUE, cumulative>=0, 0)
+  variables:
+  - B
+  - run
+  - C0
+  - a_k
+  when_to_use: Ra quyết định đầu tư vào thay đổi; trình bày với chủ/ngân hàng thời gian hoàn vốn thực tế.
+- id: m07_comm_repetition
+  module: m07
+  name_vi: Quy tắc lặp thông điệp 7-10 lần
+  name_en: 7-10 repetitions rule of thumb
+  expression_latex: n_{msg} \ge 7\text{-}10
+  expression_python: n_messages >= 7
+  excel: null
+  variables:
+  - n_messages
+  when_to_use: 'Lập kế hoạch giao tiếp thay đổi: mỗi thông điệp cốt lõi nên được lặp qua nhiều kênh.'
+- id: m08_blind_spot_gap
+  module: m08
+  name_vi: Khoảng cách điểm mù (tự đánh giá - người khác đánh giá)
+  name_en: Blind-spot gap
+  expression_latex: Gap = S - \bar{O}, \quad \bar{O} = \frac{1}{n}\sum_{i=1}^{n} O_i
+  expression_python: S - sum(O)/len(O)
+  excel: =S - AVERAGE(O1:On)
+  variables:
+  - S
+  - O
+  when_to_use: Đọc kết quả 360 độ (ESCI hoặc 360 tự thiết kế) để tìm domain có điểm mù lớn nhất cần can thiệp trước.
+- id: m08_domain_mean_overall_gap
+  module: m08
+  name_vi: Điểm trung bình các domain và gap tổng
+  name_en: Average across domains and overall gap
+  expression_latex: \bar{S}=\frac{1}{4}\sum_{d=1}^{4}S_d,\; \bar{O}=\frac{1}{4}\sum_{d=1}^{4}\bar{O}_d,\; Gap_{tot}=\bar{S}-\bar{O}
+  expression_python: sum(S_domains)/len(S_domains) - sum(O_domain_means)/len(O_domain_means)
+  excel: =AVERAGE(S1:S4) - AVERAGE(O1:O4)
+  variables:
+  - S_domains
+  - O_domain_means
+  when_to_use: Tóm tắt 1 con số cho cả 4 domain trước và sau can thiệp.
+- id: m08_turnover_rate
+  module: m08
+  name_vi: Tỷ lệ nghỉ việc
+  name_en: Turnover rate
+  expression_latex: TR = \frac{N_{left}}{N_{avg}}
+  expression_python: N_left / N_avg
+  excel: =N_left / N_avg
+  variables:
+  - N_left
+  - N_avg
+  when_to_use: Theo dõi tác động của văn hóa và hành vi lãnh đạo; làm chỉ số trước-sau cho chương trình EQ.
+- id: m08_replacement_cost
+  module: m08
+  name_vi: Chi phí thay thế nhân sự và tổng chi phí nghỉ việc
+  name_en: Replacement cost and total turnover cost
+  expression_latex: C_{turnover} = N_{left} \times (r \times W_{year})
+  expression_python: N_left * (r * W_year)
+  excel: =N_left * r * W_year
+  variables:
+  - N_left
+  - r
+  - W_year
+  when_to_use: Đưa 'chi phí cảm xúc' (hành vi lãnh đạo gây nghỉ việc) về tiền để thuyết phục chủ/cổ đông.
+- id: m08_eq_program_roi
+  module: m08
+  name_vi: ROI và thời gian hoàn vốn của chương trình phát triển EQ
+  name_en: ROI and payback of an EQ development program
+  expression_latex: ROI = \frac{C_{avoided} - C_{program}}{C_{program}},\; C_{avoided}=C_{before}-C_{after},\; Payback_{months}=\frac{C_{program}}{C_{avoided}/12}
+  expression_python: (C_before - C_after - C_program) / C_program
+  excel: =((C_before - C_after) - C_program) / C_program
+  variables:
+  - C_before
+  - C_after
+  - C_program
+  when_to_use: Chứng minh khoản đầu tư coaching/EQ trước khi chi hoặc sau khi đo lại 6-12 tháng.
+- id: m08_eq_self_assessment_score
+  module: m08
+  name_vi: Điểm tự đánh giá EQ 12 câu
+  name_en: 12-item EQ self-assessment score
+  expression_latex: Score = \sum_{k=1}^{12} x_k, \quad x_k \in \{1,\dots,5\}, \; Score \in [12,60]
+  expression_python: sum(items)
+  excel: =SUM(range)
+  variables:
+  - items
+  when_to_use: Công cụ khởi động để bắt đầu quan sát bản thân theo 4 domain; không thay thế ESCI/EQ-i.
+- id: m08_eq_iq_split_illustrative
+  module: m08
+  name_vi: Cơ cấu đóng góp hiệu suất IQ/EQ/khác (ước tính phổ biến, chưa kiểm chứng)
+  name_en: IQ / EQ / Other contribution split (illustrative, unverified)
+  expression_latex: IQ + EQ + Other = 100\%, \quad (25\%, 58\%, 17\%)
+  expression_python: 100 - iq_share - eq_share
+  excel: null
+  variables:
+  - iq_share
+  - eq_share
+  when_to_use: Chỉ để giải thích/nhận diện con số khi người dùng trích nó; KHÔNG dùng để ra quyết định hay dự báo.
+- id: m09_weighted_decision_matrix
+  module: m09
+  name_vi: Điểm ma trận quyết định có trọng số
+  name_en: Weighted Scoring / Decision Matrix score
+  expression_latex: S_j=\sum_{i=1}^{n} w_i\,s_{ij},\qquad \sum_i w_i=1
+  expression_python: sum(wi*si for wi, si in zip(weights, scores))
+  excel: =SUMPRODUCT(weights_range, scores_range)
+  variables:
+  - w_i (weights)
+  - s_ij (scores)
+  - S_j
+  when_to_use: Chọn giữa 3-5 phương án khi mỗi phương án tốt ở tiêu chí này nhưng kém ở tiêu chí khác (rẻ nhưng chậm, nhanh
+    nhưng đắt).
+- id: m09_normalized_criteria_score
+  module: m09
+  name_vi: Chuẩn hóa điểm tiêu chí về thang 0-100 (tiêu chí càng thấp càng tốt)
+  name_en: Criterion normalization (lower-is-better, best = 100)
+  expression_latex: score_{price,j}=\frac{p_{min}}{p_j}\times 100
+  expression_python: p_min / p * 100
+  excel: =MIN(price_range)/B2*100
+  variables:
+  - p_min
+  - p
+  when_to_use: Đưa các tiêu chí khác đơn vị (giá, % đạt, tuần giao hàng) về cùng thang 0-100 trước khi nhân trọng số (ví dụ
+    chọn nhà cung cấp vải).
+- id: m09_expected_value
+  module: m09
+  name_vi: Giá trị kỳ vọng (EV)
+  name_en: Expected Value
+  expression_latex: EV=\sum_k p_k\,x_k,\qquad \sum_k p_k=1;\quad EV_{net}=EV-I
+  expression_python: sum(p*x for p, x in zip(probs, payoffs)) - investment
+  excel: =SUMPRODUCT(prob_range, payoff_range)-investment
+  variables:
+  - p_k (probs)
+  - x_k (payoffs)
+  - I (investment)
+  when_to_use: So sánh phương án có kết cục không chắc chắn trên cây quyết định (mở rộng hay không, mua máy hay thuê ngoài).
+- id: m09_breakeven_probability
+  module: m09
+  name_vi: Xác suất hòa EV giữa hai phương án
+  name_en: Break-even probability between two options
+  expression_latex: p^{*}=\frac{(r_B-r_A)+(I_A-I_B)}{(h_A-r_A)-(h_B-r_B)}\quad(h=high,\ r=rest)
+  expression_python: (rest_B - rest_A - I_B + I_A) / ((high_A - rest_A) - (high_B - rest_B))
+  excel: =(restB-restA-IB+IA)/((highA-restA)-(highB-restB))
+  variables:
+  - p*
+  - high_X
+  - rest_X
+  - I_X
+  when_to_use: Kiểm tra mức tự tin tối thiểu vào kịch bản tốt để phương án vốn lớn đáng chọn hơn phương án vốn nhỏ.
+- id: m09_forward_looking_value
+  module: m09
+  name_vi: Giá trị ròng hướng về tương lai (loại chi phí chìm)
+  name_en: Forward-looking net value (ignore sunk costs)
+  expression_latex: V_{fwd}=B_{future}-C_{future}\quad(\text{không chứa } C_{sunk})
+  expression_python: future_benefit - future_cost
+  excel: =future_benefit-future_cost
+  variables:
+  - B_future
+  - C_future
+  - V_fwd
+  when_to_use: Dự án/chi nhánh/phần mềm đang lỗ và có áp lực đã bỏ ra rồi; cần quyết định tiếp tục, thu hẹp hay dừng.
+- id: m09_cost_benefit
+  module: m09
+  name_vi: Phân tích chi phí - lợi ích (Net Benefit, B/C, ROI)
+  name_en: Cost-Benefit Analysis
+  expression_latex: NB=B-C,\qquad BCR=\frac{B}{C},\qquad ROI=\frac{NB}{C}
+  expression_python: '{''net_benefit'': benefits - costs, ''bcr'': benefits / costs, ''roi_on_total_cost'': (benefits - costs)
+    / costs}'
+  excel: =B-C ; =B/C ; =(B-C)/C
+  variables:
+  - B (benefits)
+  - C (costs)
+  - NB
+  - BCR
+  when_to_use: Đánh giá một dự án/khoản đầu tư xem tổng lợi ích có vượt tổng chi phí không và vượt bao nhiêu.
+- id: m09_prospect_value
+  module: m09
+  name_vi: Hàm giá trị Prospect Theory
+  name_en: Prospect Theory value function
+  expression_latex: v(x)=\begin{cases} x^{\alpha} & x\ge 0\\ -\lambda\,(-x)^{\alpha} & x<0\end{cases},\quad \alpha=0{,}88,\
+    \lambda=2{,}25
+  expression_python: x**alpha if x >= 0 else -lam * (-x)**alpha
+  excel: =IF(x>=0, x^0.88, -2.25*(-x)^0.88)
+  variables:
+  - x
+  - alpha
+  - lam (lambda)
+  when_to_use: Giải thích vì sao người ta từ chối cược EV >= 0, vì sao cùng phương án trình bày kiểu lãi hay lỗ dẫn tới phản
+    ứng khác nhau (framing), và thiết kế bảng giá/ưu đãi.
+- id: m09_breakeven_revenue
+  module: m09
+  name_vi: Doanh thu hòa vốn và lợi nhuận vận hành tháng
+  name_en: Break-even revenue / monthly operating profit
+  expression_latex: R_{BE}=\frac{F}{1-v},\qquad \pi=R(1-v)-F
+  expression_python: fixed_cost / (1 - var_cost_ratio)
+  excel: =F/(1-v) ; =R*(1-v)-F
+  variables:
+  - F (fixed_cost)
+  - v (var_cost_ratio)
+  - R
+  when_to_use: Trước khi mở chi nhánh/cửa hàng mới hoặc kiểm tra kế hoạch dựa trên doanh số neo từ nơi khác.
+- id: m09_leverage_loss_threshold
+  module: m09
+  name_vi: Đòn bẩy và ngưỡng chịu lỗ (risk capacity)
+  name_en: Leverage and loss-absorption threshold
+  expression_latex: L=\frac{A}{E},\qquad \text{ngưỡng chịu lỗ}=\frac{E}{A}=\frac{1}{L}
+  expression_python: '{''leverage'': assets / equity, ''loss_threshold'': equity / assets}'
+  excel: =A/E ; =E/A
+  variables:
+  - A (assets)
+  - E (equity)
+  when_to_use: Kiểm tra khả năng chịu lỗ trước khi chấp nhận quyết định có EV dương nhưng kịch bản xấu lớn; cảnh báo overconfidence
+    vào mô hình.
+- id: m09_payback_trigger
+  module: m09
+  name_vi: Thời gian hoàn vốn của quyền chọn mở rộng (real option trigger)
+  name_en: Payback months for expansion trigger
+  expression_latex: T=\frac{I}{S_{month}}
+  expression_python: investment / monthly_saving
+  excel: =I/S
+  variables:
+  - I (investment)
+  - S (monthly_saving)
+  when_to_use: Đặt điều kiện kích hoạt mua sắm lớn (Type 1) sau khi chọn phương án đảo ngược được (Type 2), dựa trên dữ liệu
+    thật.
+- id: m10_turnover_rate
+  module: m10
+  name_vi: Tỷ lệ nghỉ việc
+  name_en: Employee turnover rate
+  expression_latex: TR = \frac{N_{left}}{N_{total}} \times 100\%
+  expression_python: n_left / n_total * 100
+  excel: =B1/B2*100
+  variables:
+  - n_left
+  - n_total
+  when_to_use: 'Đo hiệu quả ghép người-việc và quản lý theo tính cách/động cơ (case chị Lan: 6/18 nghỉ trong 6 tháng). Tài
+    liệu nguồn dùng phép chia đơn giản trên tổng nhân sự.'
+- id: m10_replacement_cost
+  module: m10
+  name_vi: Chi phí thay thế nhân sự
+  name_en: Turnover replacement cost
+  expression_latex: C = N_{left} \times c
+  expression_python: n_left * c
+  excel: =B1*B2
+  variables:
+  - n_left
+  - c
+  when_to_use: Lượng hóa thiệt hại trực tiếp của việc nghỉ việc để biện minh đầu tư vào tuyển đúng người/giữ chân.
+- id: m10_revenue_growth_pct
+  module: m10
+  name_vi: Tăng trưởng doanh thu theo %
+  name_en: Revenue growth percentage
+  expression_latex: g = \frac{R_1 - R_0}{R_0} \times 100\%
+  expression_python: (r1 - r0) / r0 * 100
+  excel: =(B2-B1)/B1*100
+  variables:
+  - r0
+  - r1
+  when_to_use: 'Kiểm tra bằng số sau khi thay đổi quyết định nhân sự/cách quản lý (case: 140 lên 168 triệu/tháng).'

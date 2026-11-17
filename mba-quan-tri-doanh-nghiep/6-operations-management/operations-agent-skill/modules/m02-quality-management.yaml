@@ -1,0 +1,1290 @@
+# Module m02 - Quản trị chất lượng. Distill từ 02-quality-management.md
+# Quy ước nhãn số liệu của nguồn: "giả định minh họa" = số tự thiết kế để dạy cách tính (đã kiểm tra bằng Python);
+# "ước tính/công bố" = số lịch sử của công ty/nghiên cứu, chưa kiểm chứng nguồn.
+# expression_python dùng các hàm trợ giúp: Phi (CDF chuẩn), Phi_inv (nghịch đảo CDF chuẩn), sqrt, prod, min, max.
+id: "m02"
+name_vi: "Quản trị chất lượng (TQM, Six Sigma, Lean)"
+name_en: "Quality Management (TQM, Six Sigma, Lean Manufacturing)"
+source_file: "02-quality-management.md"
+purpose: >
+  Giúp doanh nghiệp làm ra sản phẩm/dịch vụ đáp ứng NHẤT QUÁN yêu cầu khách hàng (ly thứ 100 ngon như ly thứ nhất),
+  đồng thời giảm lãng phí và biến động. Module gồm ba trụ cột: TQM (văn hóa, triết lý), Six Sigma (giảm biến động bằng
+  thống kê: DPMO, Sigma Level, Cp/Cpk, biểu đồ kiểm soát, DMAIC, FMEA) và Lean (loại bỏ lãng phí: 7 Wastes, 5S, Kanban,
+  SMED, Poka-Yoke, Jidoka), kèm cách quy chất lượng thành tiền (COQ) và áp dụng cho SME Việt Nam.
+when_to_use:
+  - "Khách phàn nàn sản phẩm/dịch vụ không đồng nhất giữa các ca, cửa hàng, lô hàng"
+  - "Cần tính DPMO, Sigma Level, Yield, FPY/RTY của một quy trình"
+  - "Cần đánh giá năng lực quy trình theo USL/LSL: tính Cp, Cpk, tỷ lệ ngoài giới hạn (ppm)"
+  - "Cần thiết lập hoặc đọc biểu đồ kiểm soát (X-bar R cho dữ liệu liên tục, biểu đồ p cho tỷ lệ lỗi)"
+  - "Cần quy đổi chất lượng kém ra tiền: Cost of Quality (prevention/appraisal/internal/external failure)"
+  - "Chọn dự án cải tiến đầu tiên cho SME; lập Project Charter DMAIC đơn giản hóa"
+  - "Ưu tiên rủi ro/lỗi bằng FMEA (RPN) hoặc Pareto; tìm nguyên nhân gốc bằng Fishbone, 5-Why"
+  - "Giảm lãng phí: 5S, Kanban (tính số thẻ), SMED (giảm thời gian chuyển đổi), Poka-Yoke, Jidoka/Andon"
+  - "Chủ SME hỏi: có nên làm Six Sigma/ISO ngay không, hay bắt đầu từ đâu"
+  - "Phân biệt biến động bình thường (common cause) và bất thường (special cause) để khỏi trừng phạt oan hoặc chỉnh máy liên tục"
+prerequisites: ["m01"]
+related_modules:
+  - "m01: Process design and analysis - Process Capability (Cp, Cpk) và VSM là nền của file này; Lean/VSM giới thiệu ở m01"
+  - "m04: Inventory management - JIT, tồn kho; Kanban và Overproduction/Inventory waste liên quan trực tiếp"
+  - "m03: Supply chain management - chất lượng nhà cung cấp (Deming điểm 4), rủi ro JIT với gián đoạn cung ứng"
+  - "m05: Capacity planning - rework/phế phẩm làm giảm công suất hiệu dụng"
+  - "m06: Project management - DMAIC/PDCA là dự án cải tiến; Project Charter, Champion"
+  - "m07: Forecasting - Kanban cần ước lượng nhu cầu D; sai dự báo gây Overproduction"
+  - "m09: Theory of constraints - bổ sung góc nhìn bottleneck cho cải tiến chất lượng/lãng phí"
+
+concepts:
+  - term_vi: "Quản trị chất lượng"
+    term_en: "Quality Management"
+    definition: "Tập hợp triết lý, công cụ, phương pháp để sản phẩm/dịch vụ đáp ứng nhất quán yêu cầu khách hàng, đồng thời giảm lãng phí và biến động của quy trình."
+    why_it_matters: >
+      Bài toán kinh doanh thật không phải 'làm ra một sản phẩm tốt' mà là 'làm ra hàng nghìn sản phẩm tốt như nhau, ở mọi cửa hàng, mọi ca'.
+      Quản trị chất lượng là khoa học của SỰ NHẤT QUÁN; khách trung thành chỉ ở lại khi trải nghiệm lặp lại được.
+  - term_vi: "Ba định nghĩa chất lượng kinh điển"
+    term_en: "Fitness for Use (Juran) / Conformance to Requirements (Crosby) / Degree of Excellence (Deming)"
+    definition: >
+      Juran: phù hợp mục đích sử dụng (góc nhìn khách hàng). Crosby: tuân thủ yêu cầu, làm đúng ngay từ đầu (Zero Defects), đo bằng chi phí không tuân thủ.
+      Deming: mức độ hoàn hảo, gắn với cải tiến liên tục và giảm biến động thống kê (cách diễn đạt của Deming thay đổi theo tác phẩm; đây là tóm lược giáo trình, không phải trích nguyên văn).
+    why_it_matters: "Biết mình đang dùng định nghĩa nào quyết định đo gì: sự hài lòng khách (Juran), chi phí lỗi (Crosby), hay biến động (Deming)."
+  - term_vi: "Lịch sử hình thành ba trường phái"
+    term_en: "History: Shewhart, Deming/Juran, Toyota, Motorola/GE"
+    definition: >
+      1924 Shewhart (Bell Labs) phát minh biểu đồ kiểm soát; 1950 Deming được JUSE mời giảng tại Nhật, giải Deming 1951; 1950s-1970s Toyota (Ohno, Shingo) xây TPS (Kanban, Jidoka, SMED, Poka-Yoke);
+      1960s Ishikawa phổ biến Quality Circle và Fishbone; 1979 Crosby xuất bản Quality is Free; 1986 Bill Smith (Motorola) đề xuất Six Sigma, Motorola đoạt giải Baldrige 1988;
+      1987 ISO 9001 ra đời; 1990 sách The Machine That Changed the World phổ biến thuật ngữ Lean; 1995 Jack Welch đưa Six Sigma vào GE.
+    why_it_matters: >
+      Mạch tư duy: Shewhart/Deming dạy 'đo biến động bằng thống kê' -> Toyota dạy 'loại bỏ lãng phí và không để lỗi đi tiếp' -> Motorola/GE gom thành 'chương trình có kỷ luật, có đai, có mục tiêu tài chính'.
+      Nhớ bối cảnh ra đời giúp nhớ công cụ nào giải quyết vấn đề nào.
+  - term_vi: "Ba trụ cột: TQM, Six Sigma, Lean"
+    term_en: "TQM, Six Sigma, Lean Manufacturing"
+    definition: "TQM = triết lý/văn hóa (tại sao); Six Sigma = công cụ thống kê giảm biến động (nhất quán); Lean = loại bỏ lãng phí (nhanh, tinh gọn). Kết hợp = Lean Six Sigma."
+    why_it_matters: "Dùng Lean để quick win ở lãng phí rõ ràng, Six Sigma DMAIC cho vấn đề phức tạp cần thống kê sâu, đặt trong khung văn hóa TQM (cam kết lãnh đạo, mọi người tham gia)."
+  - term_vi: "Chi phí chất lượng"
+    term_en: "Cost of Quality (COQ)"
+    definition: "Tổng chi phí phòng ngừa + thẩm định + lỗi nội bộ + lỗi bên ngoài. Nhóm 1+2 là chi phí tuân thủ (chủ động chi); nhóm 3+4 là chi phí không tuân thủ (mất tiền bị động)."
+    why_it_matters: >
+      Nhiều chủ doanh nghiệp tin 'chất lượng cao thì tốn kém'. Juran và Crosby phản bác bằng cách đặt giá cho chất lượng KÉM: cộng toàn bộ tiền mất vì làm sai và tiền bỏ ra để ngăn sai thì thấy
+      chi cho phòng ngừa thường rẻ hơn trả cho sửa chữa. COQ biến khái niệm mơ hồ thành con số tài chính CEO hiểu được.
+  - term_vi: "Quy luật 1-10-100 (Rule of Ten)"
+    term_en: "Rule of Ten"
+    definition: "Quy tắc kinh nghiệm (không phải định luật chính xác): chi phí xử lý một lỗi tăng khoảng 10 lần ở mỗi giai đoạn muộn hơn (tại trạm gây lỗi -> kiểm tra cuối chuyền -> khách hàng phát hiện)."
+    why_it_matters: "Lỗi đi càng xa càng tích tụ giá trị đã đầu tư (nguyên liệu, nhân công, vận chuyển) và càng khó truy nguyên. Là cơ sở cho Deming 'ngừng phụ thuộc kiểm tra hàng loạt' và cho Jidoka/Poka-Yoke."
+  - term_vi: "Biến động: nguyên nhân phổ biến vs đặc biệt"
+    term_en: "Variability: Common vs Special causes"
+    definition: >
+      Common cause: biến động vốn có của hệ thống (chỉ giảm bằng thiết kế lại quy trình). Special cause: sự cố cụ thể (máy hỏng, lô nguyên liệu bẩn, nhân viên mới chưa đào tạo; giải quyết bằng tìm và loại bỏ nguyên nhân).
+      Giả định độc lập: phương sai tổng = phương sai common + phương sai special.
+    why_it_matters: >
+      Trả lời sai dẫn đến hai sai lầm đắt giá: (a) can thiệp vào quy trình đang ổn (trừng phạt nhân viên oan, chỉnh máy liên tục làm biến động tăng - gọi là tampering); (b) không can thiệp khi có sự cố thật.
+      Deming ước tính khoảng 94% vấn đề chất lượng thuộc về hệ thống (ước tính kinh nghiệm của ông, KHÔNG phải số liệu thực nghiệm chính xác): quy trình ổn định mà vẫn lỗi thì phải đổi quy trình, không phạt cá nhân.
+  - term_vi: "Nhà máy ẩn"
+    term_en: "Hidden Factory"
+    definition: "Phần sản phẩm phải làm lại ở các bước giữa nhưng không lộ trong tỷ lệ thành phẩm đạt cuối chuyền (thường 98-99%)."
+    why_it_matters: "Tốn tiền nhưng không xuất hiện trong báo cáo; đo bằng FPY/RTY. Bill Smith (Motorola, 1986) nhận ra sản phẩm ít sửa trong nhà máy thì cũng ít hỏng ở khách hàng."
+  - term_vi: "Sigma (độ lệch chuẩn) và Sigma Level"
+    term_en: "Sigma and Sigma Level"
+    definition: "Sigma Level cho biết khoảng cách từ trung bình quy trình đến giới hạn khách hàng chứa được bao nhiêu độ lệch chuẩn; càng nhiều sigma = biên an toàn càng lớn = càng ít lỗi."
+    why_it_matters: "Biến chất lượng thành một con số so sánh được giữa mọi quy trình (đóng gói, giao hàng, hóa đơn) thay vì mỗi nơi một thước đo."
+  - term_vi: "Dịch chuyển 1,5 sigma"
+    term_en: "1.5 Sigma Shift"
+    definition: "Quy ước của Motorola: qua thời gian dài trung bình quy trình trôi khoảng 1,5 sigma (mòn máy, đổi lô, đổi ca), nên '6 sigma ngắn hạn' tương đương khoảng cách 4,5 sigma dài hạn tới giới hạn gần nhất."
+    why_it_matters: >
+      Giải thích vì sao 6 sigma ứng với 3,4 DPMO chứ không phải ~0,002 DPMO (6 sigma đúng tâm, hai phía). Con số 1,5 là quy ước thực nghiệm gây tranh cãi trong giới thống kê;
+      nếu không dùng shift, 3 sigma hai phía = khoảng 2.700 DPMO.
+  - term_vi: "In control vs Capable"
+    term_en: "Statistical control vs Process capability"
+    definition: "In control = quy trình ổn định (chỉ còn common cause). Capable = đáp ứng yêu cầu khách hàng (Cpk đủ lớn). USL/LSL do khách hàng đặt; UCL/LCL do dữ liệu quy trình tạo ra (Voice of the Process)."
+    why_it_matters: "Ổn định không có nghĩa đạt yêu cầu (ổn định nhưng luôn Cpk < 1), và đạt hôm nay chưa chắc ổn định. Cần CẢ HAI: ổn định trước bằng control chart, rồi mới tính Cp/Cpk."
+  - term_vi: "TQM"
+    term_en: "Total Quality Management"
+    definition: "Triết lý quản trị toàn diện: chất lượng là trách nhiệm của MỌI thành viên (không chỉ bộ phận QC), tập trung hài lòng khách hàng và cải tiến liên tục."
+    why_it_matters: "Trước TQM, chất lượng là việc của phòng kiểm tra cuối chuyền: đắt (Rule of Ten) và gây xung đột nội bộ (lỗi của QC bỏ sót hay sản xuất làm ẩu?). TQM chuyển trách nhiệm về nơi tạo ra lỗi: mỗi người là 'QC của chính công đoạn mình'."
+  - term_vi: "Cải tiến liên tục"
+    term_en: "Kaizen"
+    definition: "Triết lý cải tiến từng bước nhỏ, không có mức 'đủ tốt'."
+    why_it_matters: "Thử nghiệm nhỏ lặp lại thì sai chỉ tốn ít; là cốt lõi của PDCA."
+  - term_vi: "Six Sigma"
+    term_en: "Six Sigma"
+    definition: "Phương pháp cải tiến quy trình dựa trên thống kê, giảm biến động xuống mức cực thấp; mục tiêu lý tưởng 3,4 DPMO. Bill Smith (Motorola) đề xuất 1986; Mikel Harry và những người khác hệ thống hóa; Jack Welch đưa vào GE 1995."
+    why_it_matters: "Buộc 'đo trước, kết luận sau' và gắn mục tiêu tài chính cho từng dự án. Với sản phẩm phức tạp, mức 3-4 sigma nghĩa là gần một nửa sản phẩm phải sửa (xem case Motorola)."
+  - term_vi: "Lean Manufacturing"
+    term_en: "Lean (Toyota Production System)"
+    definition: "Triết lý/bộ công cụ tối đa hóa giá trị cho khách bằng tối thiểu hóa lãng phí (muda). Có nguồn gốc Toyota Production System."
+    why_it_matters: >
+      Sau chiến tranh Toyota thiếu vốn, thị trường Nhật nhỏ, không thể sản xuất khối lượng lớn kiểu Ford rồi giữ tồn kho khổng lồ. Taiichi Ohno thấy phần lớn thời gian và tiền không tạo giá trị (chờ, vận chuyển, tồn kho, làm lại)
+      nên xây hệ thống làm đúng thứ khách cần, đúng lúc, đúng số lượng. Rất hợp SME Việt Nam vốn ít.
+  - term_vi: "Push và Pull"
+    term_en: "Push vs Pull system"
+    definition: "Push: sản xuất theo dự báo, dễ làm thừa khi dự báo sai. Pull: công đoạn sau 'kéo', chỉ làm đúng cái đã tiêu thụ; thẻ Kanban là tín hiệu kéo."
+    why_it_matters: "Ohno (thập niên 1950) lấy cảm hứng từ siêu thị Mỹ chỉ bổ sung hàng khi khách lấy đi."
+  - term_vi: "Just-in-Time"
+    term_en: "JIT"
+    definition: "Nhập/sản xuất đúng số lượng, đúng thời điểm cần, không sớm hơn, không nhiều hơn (phân tích chi tiết ở m04)."
+    why_it_matters: "Giảm tồn kho nhưng có rủi ro gián đoạn chuỗi cung ứng nếu áp dụng triệt để (bài học COVID-19)."
+  - term_vi: "Gemba và Genchi Genbutsu"
+    term_en: "Gemba / Genchi Genbutsu"
+    definition: "Gemba = hiện trường nơi công việc thật sự diễn ra; Genchi Genbutsu = đi và xem tận nơi."
+    why_it_matters: "Lãnh đạo phải trực tiếp tham gia Gemba Walk, không chỉ ký duyệt văn bản, nếu không TQM thành khẩu hiệu."
+  - term_vi: "Voice of the Customer / Voice of the Process"
+    term_en: "VOC / VOP"
+    definition: "VOC = yêu cầu khách hàng (USL, LSL); VOP = giới hạn do dữ liệu quy trình tạo ra (UCL, LCL)."
+    why_it_matters: "So sánh hai 'giọng nói' này chính là bản chất của Cp/Cpk."
+
+formulas:
+  - id: "m02_coq"
+    name_vi: "Tổng chi phí chất lượng (COQ) và tỷ lệ COQ/doanh thu"
+    name_en: "Total Cost of Quality"
+    expression_latex: '\text{Total COQ} = P + A + IF + EF \qquad \text{COQ\%} = \frac{\text{Total COQ}}{\text{Revenue}} \times 100\%'
+    expression_python: "P + A + IF + EF"
+    excel: "=SUM(P:EF) ; =TotalCOQ/Revenue"
+    variables:
+      - {symbol: "P", meaning: "Prevention Cost (đào tạo, SOP, bảo trì phòng ngừa)", unit: "VNĐ hoặc triệu đồng"}
+      - {symbol: "A", meaning: "Appraisal Cost (kiểm tra QC, test, audit)", unit: "VNĐ hoặc triệu đồng"}
+      - {symbol: "IF", meaning: "Internal Failure Cost (rework, scrap trước khi giao)", unit: "VNĐ hoặc triệu đồng"}
+      - {symbol: "EF", meaning: "External Failure Cost (bảo hành, đổi trả, mất uy tín, kiện tụng)", unit: "VNĐ hoặc triệu đồng"}
+    when_to_use: "Lập baseline chi phí chất lượng; so sánh phương án 'kiểm tra cuối chuyền' với 'đầu tư phòng ngừa'; thuyết phục lãnh đạo đầu tư vào chất lượng."
+    why_it_works: >
+      Đặt giá cho chất lượng kém (Juran, Crosby): cộng tiền mất vì làm sai (nhóm 3+4) với tiền chi để ngăn/phát hiện sai (nhóm 1+2).
+      Khi tăng Prevention, hai nhóm failure giảm nhiều hơn mức tăng, nên tổng COQ giảm.
+    assumptions:
+      - "Có thể quy đổi hầu hết tổn thất chất lượng ra tiền (uy tín thương hiệu thường chỉ ước lượng được)"
+    pitfalls:
+      - "Bỏ sót chi phí ẩn (mất khách, thời gian quản lý xử lý khiếu nại) nên COQ thật thường cao hơn số đo được"
+      - "Chỉ so sánh Appraisal cũ với Prevention mới mà quên hiệu ứng lên failure"
+    interpretation: "COQ/doanh thu càng thấp càng tốt; nhìn cơ cấu: tỷ trọng Failure cao = đang trả giá bị động, nên dịch chuyển sang Prevention."
+    example:
+      inputs: {P: 50, A: 400, IF: 600, EF: 500, revenue: 10000}
+      steps:
+        - "Phương án A (kiểm tra 100% cuối chuyền): 50 + 400 + 600 + 500 = 1.550 triệu/năm = 15,5% doanh thu 10.000 triệu"
+        - "Phương án B (đầu tư phòng ngừa): 300 + 200 + 250 + 100 = 850 triệu/năm = 8,5% doanh thu"
+        - "Prevention tăng thêm 250 triệu nhưng tổng COQ giảm 1.550 - 850 = 700 triệu/năm (7,0 điểm % doanh thu)"
+      result: "COQ A = 1.550 (15,5%); COQ B = 850 (8,5%); tiết kiệm 700 triệu/năm. Số giả định minh họa."
+
+  - id: "m02_rule_of_ten"
+    name_vi: "Chi phí sửa lỗi theo giai đoạn (Quy luật 1-10-100)"
+    name_en: "Rule of Ten (cost escalation of defects)"
+    expression_latex: 'C_k = N \times c \times 10^{k},\quad k=0,1,2'
+    expression_python: "[defects * unit_cost * 10**k for k in range(3)]"
+    variables:
+      - {symbol: "N (defects)", meaning: "Số sản phẩm lỗi", unit: "cái"}
+      - {symbol: "c (unit_cost)", meaning: "Chi phí sửa mỗi sản phẩm tại trạm gây lỗi", unit: "VNĐ"}
+      - {symbol: "k", meaning: "0 = ngay tại trạm; 1 = kiểm tra cuối chuyền; 2 = khách hàng phát hiện", unit: "bậc"}
+    when_to_use: "Minh họa tại sao phòng ngừa/dừng sớm (Poka-Yoke, Jidoka) rẻ hơn kiểm tra cuối hoặc xử lý khiếu nại."
+    why_it_works: "Lỗi đi càng xa càng tích tụ giá trị đầu tư vào nó (nguyên liệu, nhân công, vận chuyển) và càng khó truy nguyên."
+    assumptions: ["Hệ số 10 là quy tắc kinh nghiệm, không phải định luật chính xác; hệ số thật tùy ngành"]
+    pitfalls: ["Dùng ×10 như số liệu chắc chắn trong báo cáo; chưa tính mất uy tín khi khách phát hiện"]
+    interpretation: "Chênh lệch giữa các bậc cho thấy giá trị của việc phát hiện sớm."
+    example:
+      inputs: {defects: 100, unit_cost: 50000}
+      steps:
+        - "Tại trạm: 100 x 50.000 = 5.000.000đ"
+        - "Cuối chuyền (x10): 100 x 500.000 = 50.000.000đ"
+        - "Khách phát hiện (x100): 100 x 5.000.000 = 500.000.000đ (chưa tính mất uy tín)"
+      result: "[5.000.000, 50.000.000, 500.000.000] đồng (giả định minh họa)"
+
+  - id: "m02_variance_decomposition"
+    name_vi: "Phân rã phương sai biến động"
+    name_en: "Variance decomposition (common + special causes)"
+    expression_latex: '\sigma^2_{\text{total}} = \sigma^2_{\text{common}} + \sigma^2_{\text{special}}'
+    expression_python: "var_common + var_special"
+    variables:
+      - {symbol: "var_common", meaning: "Phương sai do nguyên nhân phổ biến (vốn có của hệ thống)", unit: "đơn vị^2"}
+      - {symbol: "var_special", meaning: "Phương sai do nguyên nhân đặc biệt (sự cố cụ thể)", unit: "đơn vị^2"}
+    when_to_use: "Giải thích vì sao cần phân biệt hai loại nguyên nhân trước khi can thiệp."
+    why_it_works: "Hai nguồn độc lập thì phương sai cộng dồn. Loại special cause thu về mức nền common; muốn thấp hơn nữa phải thiết kế lại quy trình."
+    assumptions: ["Hai nhóm nguyên nhân độc lập"]
+    pitfalls: ["Xử lý common cause như special cause (phạt người, chỉnh máy liên tục) làm biến động tăng"]
+    interpretation: "Dùng control chart để tách: điểm ngoài giới hạn/chuỗi bất thường là special cause."
+    example:
+      inputs: {var_common: 4, var_special: 5}
+      steps: ["Tổng phương sai = 4 + 5 = 9 (độ lệch chuẩn tổng = 3)", "Ví dụ số tự đặt để minh họa phép cộng; không có trong nguồn"]
+      result: "9"
+
+  - id: "m02_fpy"
+    name_vi: "Tỷ lệ đạt lần đầu (FPY)"
+    name_en: "First Pass Yield"
+    expression_latex: 'FPY = \frac{\text{Số sản phẩm đạt ngay lần đầu, không rework}}{\text{Tổng số sản phẩm đưa vào}}'
+    expression_python: "good_first_pass / total_in"
+    variables:
+      - {symbol: "good_first_pass", meaning: "Số sản phẩm đạt ngay lần đầu không rework", unit: "cái"}
+      - {symbol: "total_in", meaning: "Tổng số sản phẩm đưa vào bước đó", unit: "cái"}
+    when_to_use: "Đo chất lượng từng bước, lộ ra 'nhà máy ẩn' mà tỷ lệ thành phẩm cuối chuyền che giấu."
+    why_it_works: "Chỉ tính sản phẩm đạt mà không phải sửa lại, nên phần rework (tốn tiền nhưng không lên báo cáo) bị lộ ra."
+    assumptions: ["Ghi nhận đầy đủ cả sản phẩm làm lại (không bỏ sót rework)"]
+    pitfalls: ["Dùng tỷ lệ đạt cuối chuyền (sau rework) thay cho FPY"]
+    interpretation: "FPY thấp ở một bước = bước đó là điểm cần cải tiến ưu tiên."
+    example:
+      inputs: {good_first_pass: 98, total_in: 100}
+      steps: ["FPY = 98/100 = 0,98 (98%)"]
+      result: "0,98"
+
+  - id: "m02_rty"
+    name_vi: "Tỷ lệ đạt xuyên suốt (RTY)"
+    name_en: "Rolled Throughput Yield"
+    expression_latex: 'RTY = FPY_1 \times FPY_2 \times \dots \times FPY_n = \prod_{i=1}^{n} FPY_i'
+    expression_python: "prod(fpy_list)"
+    variables:
+      - {symbol: "fpy_list", meaning: "Danh sách FPY của n bước nối tiếp", unit: "tỷ lệ (0-1)"}
+    when_to_use: "Quy trình nhiều bước nối tiếp; chứng minh mỗi bước 'trông rất tốt' vẫn có thể cho tổng thể kém."
+    why_it_works: "RTY là xác suất một sản phẩm đi qua TOÀN BỘ n bước mà không làm lại lần nào; nhân vì các bước nối tiếp và phải đạt tất cả."
+    assumptions: ["Các bước độc lập; lỗi ở các bước không bù trừ nhau"]
+    pitfalls: ["Chỉ nhìn FPY từng bước (98%) mà không nhân"]
+    interpretation: "Quy trình càng nhiều bước, mỗi bước cần chất lượng càng cao (nền logic của 6 sigma). Ưu tiên cải tiến bước có FPY thấp nhất."
+    example:
+      inputs: {fpy_list: [0.97, 0.95, 0.99, 0.98]}
+      steps:
+        - "RTY = 0,97 x 0,95 x 0,99 x 0,98 = 0,894 (89,4%)"
+        - "Dù không bước nào dưới 95%, hơn 10% sản phẩm phải làm lại ít nhất một lần; ưu tiên bước 2 (95%)"
+        - "Ví dụ khác (giả định minh họa): 5 bước x 98% = 0,98^5 = 90,4%; nâng mỗi bước lên 99% thì 0,99^5 = 95,1% (+4,7 điểm %)"
+      result: "0,894 (89,4%)"
+
+  - id: "m02_dpmo"
+    name_vi: "Lỗi trên triệu cơ hội (DPMO) và Yield"
+    name_en: "Defects Per Million Opportunities"
+    expression_latex: 'DPMO = \frac{\text{Số lỗi}}{\text{Số đơn vị} \times \text{Số cơ hội lỗi/đơn vị}} \times 1.000.000 \qquad Yield = 1 - \frac{DPMO}{10^6}'
+    expression_python: "defects / (units * opportunities) * 1e6"
+    excel: "=Defects/(Units*Opportunities)*1000000"
+    variables:
+      - {symbol: "defects", meaning: "Tổng số lỗi phát hiện", unit: "lỗi"}
+      - {symbol: "units", meaning: "Số đơn vị được kiểm tra", unit: "đơn vị"}
+      - {symbol: "opportunities", meaning: "Số cơ hội lỗi trên mỗi đơn vị", unit: "cơ hội/đơn vị"}
+    when_to_use: "So sánh mức chất lượng giữa các quy trình phức tạp khác nhau."
+    why_it_works: "Chuẩn hóa theo số cơ hội: chiếc áo có 4 điểm có thể lỗi khó đạt chuẩn hơn chiếc ly chỉ 1 điểm; chia cho số cơ hội cho phép so sánh công bằng."
+    assumptions: ["Định nghĩa 'cơ hội lỗi' nhất quán giữa các quy trình so sánh"]
+    pitfalls: ["Đếm cơ hội tùy tiện (tăng số cơ hội để làm DPMO đẹp hơn)", "Dùng tỷ lệ % lỗi thay DPMO cho sản phẩm nhiều chi tiết"]
+    interpretation: "Tham chiếu: 3 sigma 66.807; 4 sigma 6.210; 5 sigma 233; 6 sigma 3,4 DPMO (có shift 1,5)."
+    example:
+      inputs: {defects: 45, units: 5000, opportunities: 4}
+      steps:
+        - "Xưởng may kiểm 5.000 áo, mỗi áo 4 điểm có thể lỗi (cổ, tay, thân, khuy), 45 lỗi"
+        - "Tổng cơ hội = 5.000 x 4 = 20.000"
+        - "DPMO = 45/20.000 x 10^6 = 2.250; Yield = 99,775%"
+      result: "2.250 DPMO (xem m02_sigma_level để đổi sang 4,34 sigma)"
+
+  - id: "m02_sigma_level"
+    name_vi: "Sigma Level từ DPMO (có shift 1,5)"
+    name_en: "Sigma Level"
+    expression_latex: '\text{Sigma Level} = \Phi^{-1}\!\left(1-\frac{DPMO}{10^6}\right) + 1{,}5'
+    expression_python: "Phi_inv(1 - dpmo/1e6) + 1.5"
+    excel: "=NORM.S.INV(1-DPMO/1000000)+1.5"
+    variables:
+      - {symbol: "dpmo", meaning: "Lỗi trên triệu cơ hội", unit: "DPMO"}
+      - {symbol: "Phi_inv", meaning: "Nghịch đảo hàm phân phối tích lũy chuẩn", unit: "-"}
+    when_to_use: "Đổi DPMO/Yield thành thước đo sigma để so sánh và đặt mục tiêu."
+    why_it_works: "Phi_inv(yield) cho khoảng cách tính bằng sigma ngắn hạn tới giới hạn; cộng 1,5 theo quy ước Motorola vì trung bình trôi dài hạn."
+    assumptions: ["Phân phối chuẩn", "Quy ước shift 1,5 sigma (tranh cãi); bỏ shift thì kết quả sigma thấp hơn 1,5"]
+    pitfalls: ["Quên nêu rõ có/không có shift 1,5 khi báo cáo", "Dùng khi dữ liệu rời rạc/lệch chuẩn nặng mà không kiểm chứng"]
+    interpretation: "4,34 sigma = khá tốt nhưng còn xa 6 sigma. Bài 1: 5.000 DPMO = 4,08 sigma."
+    example:
+      inputs: {dpmo: 2250}
+      steps: ["Phi_inv(1 - 0,00225) = 2,84", "Sigma Level = 2,84 + 1,5 = 4,34"]
+      result: "4,34 sigma (4,3408 khi tính chính xác)"
+
+  - id: "m02_dpmo_from_sigma"
+    name_vi: "DPMO từ Sigma Level (bảng sigma - DPMO)"
+    name_en: "DPMO from Sigma Level"
+    expression_latex: 'DPMO = \bigl(1-\Phi(\sigma_{L}-1{,}5)\bigr)\times 10^6'
+    expression_python: "(1 - Phi(sigma_level - 1.5)) * 1e6"
+    excel: "=(1-NORM.S.DIST(Sigma-1.5,TRUE))*1000000"
+    variables:
+      - {symbol: "sigma_level", meaning: "Cấp sigma (2 đến 6)", unit: "sigma"}
+    when_to_use: "Dựng bảng tham chiếu; giải thích tại sao 6 sigma = 3,4 DPMO."
+    why_it_works: "Trừ 1,5 vì trung bình trôi; 6 sigma ngắn hạn còn 4,5 sigma dài hạn, tail một phía (1 - Phi(4,5)) x 10^6 = 3,4."
+    assumptions: ["Phân phối chuẩn; shift 1,5 sigma"]
+    pitfalls: ["Hiểu nhầm 6 sigma là 0,002 DPMO (đó là khi không shift, hai phía, đúng tâm)"]
+    interpretation: "2 sigma 308.537 (yield 69,1%); 3 sigma 66.807 (93,3%); 4 sigma 6.210 (99,38%); 5 sigma 233 (99,977%); 6 sigma 3,4 (99,99966%)."
+    example:
+      inputs: {sigma_level: 6}
+      steps: ["1 - Phi(4,5) = 3,4e-6", "x 10^6 = 3,4 DPMO"]
+      result: "3,40 DPMO; kiểm tra 3 sigma cho 66.807"
+
+  - id: "m02_multi_opportunity_yield"
+    name_vi: "Yield của sản phẩm nhiều cơ hội lỗi"
+    name_en: "Product yield with n defect opportunities"
+    expression_latex: 'Y = (1-d)^{n},\quad d=\frac{DPMO}{10^6}'
+    expression_python: "(1 - dpmo/1e6) ** n"
+    variables:
+      - {symbol: "dpmo", meaning: "DPMO của mỗi cơ hội (theo bảng sigma có shift)", unit: "DPMO"}
+      - {symbol: "n", meaning: "Số cơ hội lỗi trên một sản phẩm", unit: "cơ hội"}
+    when_to_use: "Giải thích tại sao sản phẩm phức tạp (nhiều linh kiện/mối hàn) cần 6 sigma chứ không dừng ở 3-4 sigma."
+    why_it_works: "Sản phẩm hoàn hảo khi MỌI cơ hội đều đạt; xác suất độc lập nên lũy thừa n. Mỗi cơ hội 99,38% nghe tốt nhưng 100 cơ hội còn ~53,6%."
+    assumptions: ["Các cơ hội lỗi độc lập; n = 100 là giả định minh họa"]
+    pitfalls: ["Đánh giá sản phẩm phức tạp bằng yield mỗi cơ hội"]
+    interpretation: "n = 100: 3 sigma ~0,1%; 4 sigma ~53,6%; 5 sigma ~97,7%; 6 sigma ~99,97%."
+    example:
+      inputs: {dpmo: 6209.665, n: 100}
+      steps: ["4 sigma: d = 0,00621; (1 - d)^100 = 0,536"]
+      result: "~53,6% sản phẩm hoàn hảo; gần một nửa phải sửa"
+
+  - id: "m02_cp"
+    name_vi: "Chỉ số tiềm năng quy trình Cp"
+    name_en: "Process Capability Cp"
+    expression_latex: 'C_p = \frac{USL - LSL}{6\sigma}'
+    expression_python: "(USL - LSL) / (6 * sigma)"
+    excel: "=(USL-LSL)/(6*STDEV.S(range))"
+    variables:
+      - {symbol: "USL", meaning: "Giới hạn kỹ thuật trên (do khách hàng quy định)", unit: "đơn vị đo"}
+      - {symbol: "LSL", meaning: "Giới hạn kỹ thuật dưới", unit: "đơn vị đo"}
+      - {symbol: "sigma", meaning: "Độ lệch chuẩn của quy trình", unit: "đơn vị đo"}
+    when_to_use: "Kiểm tra quy trình có TIỀM NĂNG đáp ứng khoảng cho phép nếu được chỉnh đúng tâm."
+    why_it_works: "Với phân phối chuẩn, mu +/- 3 sigma chứa 99,73% sản phẩm nên độ rộng thực tế = 6 sigma. Cp là tỷ số 'khoảng cho phép / khoảng thực tế'."
+    assumptions: ["Quy trình ổn định (in control) và phân phối xấp xỉ chuẩn", "Đủ dữ liệu để ước lượng sigma"]
+    pitfalls: ["Cp bỏ qua độ lệch tâm: Cp cao vẫn có thể lỗi nhiều", "Tính khi quy trình chưa ổn định"]
+    interpretation: "Cp > 1: khoảng thực tế lọt trong khoảng cho phép; Cp < 1: chắc chắn có sản phẩm ngoài giới hạn. Cp thấp = vấn đề biến động quá lớn."
+    example:
+      inputs: {USL: 520, LSL: 500, sigma: 4.2}
+      steps: ["Cp = (520 - 500)/(6 x 4,2) = 20/25,2 = 0,794", "Độ rộng quy trình 25,2 g > khoảng cho phép 20 g"]
+      result: "0,794 (case xưởng cà phê trước cải tiến, giả định minh họa)"
+
+  - id: "m02_cpk"
+    name_vi: "Chỉ số năng lực thực tế Cpk"
+    name_en: "Process Capability Cpk"
+    expression_latex: 'C_{pk} = \min\!\left(\frac{USL-\mu}{3\sigma},\ \frac{\mu-LSL}{3\sigma}\right)'
+    expression_python: "min((USL - mu) / (3 * sigma), (mu - LSL) / (3 * sigma))"
+    excel: "=MIN((USL-AVERAGE(range)),(AVERAGE(range)-LSL))/(3*STDEV.S(range))"
+    variables:
+      - {symbol: "USL", meaning: "Giới hạn kỹ thuật trên", unit: "đơn vị đo"}
+      - {symbol: "LSL", meaning: "Giới hạn kỹ thuật dưới", unit: "đơn vị đo"}
+      - {symbol: "mu", meaning: "Trung bình quy trình", unit: "đơn vị đo"}
+      - {symbol: "sigma", meaning: "Độ lệch chuẩn quy trình", unit: "đơn vị đo"}
+    when_to_use: "Đánh giá năng lực THỰC TẾ có tính lệch tâm; chẩn đoán vấn đề do biến động hay do lệch tâm."
+    why_it_works: >
+      Lấy khoảng cách từ trung bình đến giới hạn GẦN nhất (phía nguy hiểm nhất) chia 3 sigma (nửa độ rộng quy trình). Cpk <= Cp luôn đúng; bằng nhau khi đúng tâm.
+      z = 3 x Cpk là khoảng cách (tính bằng sigma) tới giới hạn gần nhất.
+    assumptions: ["Quy trình ổn định, phân phối chuẩn", "Cần kiểm tra bằng control chart/histogram trước"]
+    pitfalls: ["Tính Cpk khi quy trình chưa ổn định hoặc dữ liệu không chuẩn", "Hạ trung bình để tiết kiệm mà không giảm sigma"]
+    interpretation: >
+      Cpk < 1,00 không đủ năng lực; 1,00-1,33 tạm chấp nhận, kiểm soát chặt; >= 1,33 đạt yêu cầu nhiều ngành; >= 1,67 rất tốt; ~1,50 (z = 4,5) tương đương 'Six Sigma có shift 1,5' (3,4 DPMO một phía).
+      Cp cao mà Cpk thấp = lệch tâm (chỉnh trung bình dễ hơn giảm biến động); cả hai thấp = biến động quá lớn.
+    example:
+      inputs: {USL: 25.10, LSL: 24.90, mu: 25.02, sigma: 0.025}
+      steps:
+        - "Trục máy 25,00 +/- 0,10 mm (giả định minh họa). Cp = 0,20/0,15 = 1,333"
+        - "(USL - mu)/(3 sigma) = 0,08/0,075 = 1,067; (mu - LSL)/(3 sigma) = 0,12/0,075 = 1,600; Cpk = 1,067"
+        - "Cp 1,333 nhưng Cpk 1,067 nghĩa là lệch về phía USL; chỉnh về tâm thì Cpk = 1,333"
+      result: "Cpk = 1,067"
+
+  - id: "m02_one_sided_cpl"
+    name_vi: "Cpl / Cpu cho giới hạn một phía và tỷ lệ không đạt"
+    name_en: "One-sided capability (Cpl, Cpu) and nonconformance"
+    expression_latex: 'C_{pl} = \frac{\mu - LSL}{3\sigma},\quad z=\frac{\mu-LSL}{\sigma},\quad \text{ppm}=\Phi(-z)\times10^6'
+    expression_python: "((mu - LSL) / (3 * sigma), Phi(-(mu - LSL) / sigma) * 1e6)"
+    variables:
+      - {symbol: "mu", meaning: "Trung bình quy trình", unit: "đơn vị đo"}
+      - {symbol: "LSL", meaning: "Giới hạn dưới (hoặc thay bằng USL - mu cho Cpu)", unit: "đơn vị đo"}
+      - {symbol: "sigma", meaning: "Độ lệch chuẩn", unit: "đơn vị đo"}
+    when_to_use: "Thông số chỉ có một giới hạn (vd nhiệt độ thanh trùng tối thiểu 72 độ C; nhiệt cao hơn không vi phạm an toàn)."
+    why_it_works: "Một phía thì chỉ cần khoảng cách tới giới hạn duy nhất; z = 3 x Cpl; đuôi chuẩn cho tỷ lệ vượt."
+    assumptions: ["Phân phối chuẩn", "72 độ C trong 15 giây (HTST) là thông số phổ biến trong công nghiệp sữa theo nguồn; mu = 74 độ C là giả định minh họa"]
+    pitfalls: ["Dùng công thức hai phía cho thông số một phía"]
+    interpretation: "Chỉ cần sigma tăng gấp đôi (0,5 -> 1,0), tỷ lệ không đạt tăng ~718 lần: cần cảm biến đo liên tục và hiệu chuẩn (Prevention)."
+    example:
+      inputs: {mu: 74.0, LSL: 72.0, sigma: 0.5}
+      steps:
+        - "Kịch bản A: sigma 0,5: Cpl = 2/(1,5) = 1,333; z = 4,0; ppm = 31,7"
+        - "Kịch bản B: sigma 1,0: Cpl = 0,667; z = 2,0; ppm = 22.750 (2,3%)"
+        - "Tỷ lệ B/A = 22.750/31,7 = ~718 lần"
+      result: "(1,333; 31,7 ppm) cho kịch bản A. Số giả định minh họa, KHÔNG phải số thật của Vinamilk."
+
+  - id: "m02_cpk_to_ppm"
+    name_vi: "Tỷ lệ ngoài giới hạn (ppm) hai phía"
+    name_en: "Out-of-spec rate (ppm), two-sided"
+    expression_latex: '\text{ppm} = \bigl[\Phi(-\tfrac{USL-\mu}{\sigma}) + \Phi(-\tfrac{\mu-LSL}{\sigma})\bigr]\times 10^6'
+    expression_python: "(Phi(-(USL - mu) / sigma) + Phi(-(mu - LSL) / sigma)) * 1e6"
+    excel: "=(NORM.S.DIST(-3*Cpk,TRUE))*1000000   (gần đúng hai phía theo nguồn)"
+    variables:
+      - {symbol: "USL", meaning: "Giới hạn trên", unit: "đơn vị đo"}
+      - {symbol: "LSL", meaning: "Giới hạn dưới", unit: "đơn vị đo"}
+      - {symbol: "mu", meaning: "Trung bình", unit: "đơn vị đo"}
+      - {symbol: "sigma", meaning: "Độ lệch chuẩn", unit: "đơn vị đo"}
+    when_to_use: "Quy Cp/Cpk thành tỷ lệ sản phẩm lỗi và số túi/cái ngoài giới hạn mỗi tháng, rồi quy ra tiền."
+    why_it_works: "Cộng xác suất đuôi chuẩn ở hai phía; z = khoảng cách tới giới hạn chia sigma."
+    assumptions: ["Phân phối chuẩn (kiểm tra bằng histogram)"]
+    pitfalls: ["Công thức Excel chỉ tính phía gần nhất (bỏ qua phía xa), chỉ gần đúng"]
+    interpretation: "Dùng cùng m02_sigma_level để đổi DPMO sang Sigma Level."
+    example:
+      inputs: {USL: 520, LSL: 500, mu: 512.5, sigma: 4.2}
+      steps:
+        - "Dưới 500: z = -2,98 -> ~1.459 ppm; trên 520: z = 1,79 -> ~37.073 ppm"
+        - "Tổng ~38.532 DPMO -> Sigma Level ~3,27; 40.000 x 0,038532 ~ 1.541 túi/tháng ngoài giới hạn"
+      result: "~38.532 ppm"
+
+  - id: "m02_xbar_limits"
+    name_vi: "Giới hạn kiểm soát biểu đồ X-bar"
+    name_en: "X-bar control chart limits"
+    expression_latex: 'UCL_{\bar X} = \bar{\bar X} + A_2\bar R,\quad LCL_{\bar X} = \bar{\bar X} - A_2\bar R,\quad A_2=\frac{3}{d_2\sqrt n}'
+    expression_python: "(grand_mean - A2 * Rbar, grand_mean, grand_mean + A2 * Rbar)"
+    variables:
+      - {symbol: "grand_mean", meaning: "Trung bình của các trung bình mẫu", unit: "đơn vị đo"}
+      - {symbol: "Rbar", meaning: "Trung bình khoảng biến thiên (max - min) các mẫu", unit: "đơn vị đo"}
+      - {symbol: "A2", meaning: "Hằng số tra bảng theo cỡ mẫu n (n=3: 1,023; 4: 0,729; 5: 0,577; 6: 0,483)", unit: "-"}
+    when_to_use: "Theo dõi trung bình quy trình theo thời gian với dữ liệu liên tục (khối lượng, kích thước) lấy mẫu con n sản phẩm."
+    why_it_works: >
+      Shewhart (1924): vẽ trung bình mẫu cùng hai đường cách trung tâm +/- 3 sigma; điểm ngoài giới hạn có xác suất ~0,27% nếu quy trình ổn định,
+      nên rất có thể có nguyên nhân đặc biệt. Dùng Rbar thay vì độ lệch chuẩn để công nhân dễ tính.
+    assumptions: ["Dùng ~10-20 mẫu ổn định giai đoạn thiết lập", "Phân phối xấp xỉ chuẩn", "Quy tắc bổ sung (tham khảo): 8 điểm liên tiếp một phía đường trung tâm; 6 điểm liên tiếp tăng/giảm dần"]
+    pitfalls: ["Nhầm UCL/LCL với USL/LSL", "Tính giới hạn từ dữ liệu có điểm bất thường chưa loại", "Phản ứng với mọi dao động nhỏ (tampering)"]
+    interpretation: "Điểm ngoài UCL/LCL = tín hiệu special cause: dừng, điều tra, không phạt cá nhân. Xem R chart để biết nhảy trung bình hay tăng phân tán."
+    example:
+      inputs: {grand_mean: 510.26, Rbar: 5.5, A2: 0.577}
+      steps:
+        - "10 mẫu đầu ổn định: grand_mean = 510,26 g; Rbar = 5,5 g (n = 5)"
+        - "UCL = 510,26 + 0,577 x 5,5 = 513,43; LCL = 507,09"
+        - "Mẫu 11 có X-bar = 517,0 > UCL: ngoài kiểm soát, R = 4 vẫn bình thường (trung bình nhảy, phân tán không đổi); nguyên nhân: cảm biến lệch zero sau vệ sinh"
+      result: "(507,09; 510,26; 513,43) g. Số giả định minh họa."
+
+  - id: "m02_r_limits"
+    name_vi: "Giới hạn kiểm soát biểu đồ R"
+    name_en: "R control chart limits"
+    expression_latex: 'UCL_R = D_4\bar R,\quad LCL_R = D_3\bar R'
+    expression_python: "(D3 * Rbar, Rbar, D4 * Rbar)"
+    variables:
+      - {symbol: "Rbar", meaning: "Trung bình khoảng biến thiên", unit: "đơn vị đo"}
+      - {symbol: "D3", meaning: "Hằng số tra bảng (n=3..6: 0)", unit: "-"}
+      - {symbol: "D4", meaning: "Hằng số tra bảng (n=3: 2,574; 4: 2,282; 5: 2,114; 6: 2,004)", unit: "-"}
+    when_to_use: "Theo dõi độ phân tán (biến động trong mẫu) song song với biểu đồ X-bar."
+    why_it_works: "Giới hạn 3 sigma của khoảng biến thiên mẫu, hằng số D3/D4 suy từ phân phối của R theo n."
+    assumptions: ["Cùng điều kiện với X-bar"]
+    pitfalls: ["Chỉ xem X-bar mà bỏ R chart"]
+    interpretation: "R vượt UCL: phân tán tăng bất thường (máy mòn, nguyên liệu không đồng đều)."
+    example:
+      inputs: {Rbar: 5.5, D3: 0, D4: 2.114}
+      steps: ["UCL_R = 2,114 x 5,5 = 11,63 g; LCL_R = 0"]
+      result: "(0; 5,5; 11,627) g"
+
+  - id: "m02_sigma_hat"
+    name_vi: "Ước lượng sigma từ Rbar"
+    name_en: "Sigma estimate from average range"
+    expression_latex: '\hat\sigma = \frac{\bar R}{d_2}'
+    expression_python: "Rbar / d2"
+    variables:
+      - {symbol: "Rbar", meaning: "Trung bình khoảng biến thiên", unit: "đơn vị đo"}
+      - {symbol: "d2", meaning: "Hằng số theo n (3: 1,693; 4: 2,059; 5: 2,326; 6: 2,534)", unit: "-"}
+    when_to_use: "Ước lượng sigma quy trình từ biểu đồ kiểm soát để tính Cp/Cpk sau cải tiến."
+    why_it_works: "Với mẫu chuẩn cỡ n, khoảng biến thiên kỳ vọng = d2 x sigma nên sigma ~ Rbar/d2."
+    assumptions: ["Quy trình ổn định", "Cỡ mẫu nhỏ (n <= ~6)"]
+    pitfalls: ["Dùng sigma toàn bộ dữ liệu khi quy trình chưa ổn định"]
+    interpretation: "Sigma 'trong-mẫu' phản ánh biến động ngắn hạn."
+    example:
+      inputs: {Rbar: 5.5, d2: 2.326}
+      steps:
+        - "sigma_hat = 5,5/2,326 = 2,36 g; Cp = 20/(6 x 2,36) = 1,41"
+        - "Cpk = min(1,373; 1,447) = 1,37 (mu = 510,26); ppm tổng ~26 -> Sigma Level ~5,54 (case xưởng cà phê sau cải tiến)"
+      result: "2,36 g"
+
+  - id: "m02_p_chart"
+    name_vi: "Biểu đồ kiểm soát p (tỷ lệ lỗi)"
+    name_en: "p control chart"
+    expression_latex: 'UCL_p = \bar p + 3\sqrt{\frac{\bar p(1-\bar p)}{n}},\quad LCL_p = \max\!\Bigl(0,\ \bar p - 3\sqrt{\frac{\bar p(1-\bar p)}{n}}\Bigr)'
+    expression_python: "(max(0, pbar - 3 * sqrt(pbar * (1 - pbar) / n)), pbar, pbar + 3 * sqrt(pbar * (1 - pbar) / n))"
+    variables:
+      - {symbol: "pbar", meaning: "Tỷ lệ lỗi trung bình quy trình ổn định", unit: "tỷ lệ (0-1)"}
+      - {symbol: "n", meaning: "Cỡ mẫu mỗi lần kiểm", unit: "đơn vị"}
+    when_to_use: "Dữ liệu đếm (đạt/không đạt, có/không phàn nàn): theo dõi tỷ lệ lỗi theo ngày/tuần."
+    why_it_works: "Tỷ lệ lỗi theo nhị thức có độ lệch chuẩn sqrt(p(1-p)/n); giới hạn 3 sigma. LCL không âm nên chặn ở 0."
+    assumptions: ["Cỡ mẫu n đủ lớn, cùng n mỗi lần", "pbar từ giai đoạn ổn định"]
+    pitfalls: ["Truy cứu cá nhân khi điểm vẫn trong giới hạn", "Dùng cỡ mẫu quá nhỏ làm giới hạn rộng vô nghĩa"]
+    interpretation: "Điểm vượt UCL = special cause, điều tra; điểm trong giới hạn = biến động ngẫu nhiên, không nên đổ lỗi cho ai."
+    example:
+      inputs: {pbar: 0.03, n: 300}
+      steps:
+        - "Case trà sữa sau cải tiến: sqrt(0,03 x 0,97/300) = 0,00985; UCL = 0,03 + 0,02955 = 5,95%; LCL ~0,05% (~0)"
+        - "Tuần có 22 đơn phàn nàn = 22/300 = 7,33% > UCL: tín hiệu special cause (ca tối cửa hàng 2 có nhân viên mới chưa dùng cân)"
+        - "Bài 14: n = 200, pbar = 4%: UCL = 8,16%, LCL = 0; ngày 14 lỗi (7%) trong kiểm soát; 18 lỗi (9%) ngoài kiểm soát"
+      result: "(0,0005; 0,03; 0,0595)"
+
+  - id: "m02_rpn"
+    name_vi: "Số ưu tiên rủi ro FMEA (RPN)"
+    name_en: "Risk Priority Number"
+    expression_latex: 'RPN = S \times O \times D'
+    expression_python: "S * O * D"
+    variables:
+      - {symbol: "S", meaning: "Severity: mức nghiêm trọng (1-10)", unit: "điểm"}
+      - {symbol: "O", meaning: "Occurrence: khả năng xảy ra (1-10)", unit: "điểm"}
+      - {symbol: "D", meaning: "Detection: khả năng phát hiện trước khi tới khách (điểm cao = KHÓ phát hiện)", unit: "điểm"}
+    when_to_use: "Xếp thứ tự ưu tiên xử lý các kiểu lỗi (failure modes) khi nguồn lực có hạn; chấm lại sau cải tiến."
+    why_it_works: "Chỉ xét tần suất là chưa đủ (lỗi hiếm nhưng chết người vẫn phải ưu tiên), chỉ xét nghiêm trọng cũng thiếu; nhân ba yếu tố cho một con số phản ánh cả ba. FMEA được quân đội Mỹ chuẩn hóa từ thập niên 1940, sau đó NASA và ngành ô tô áp dụng (chi tiết lịch sử cần tham khảo thêm)."
+    assumptions: ["Thang 1-10 nhất quán giữa người chấm"]
+    pitfalls: ["Nhân ba thang thứ tự có hạn chế: hai lỗi khác nhau có thể cùng RPN", "Bỏ qua lỗi Severity >= 9 vì RPN thấp"]
+    interpretation: "RPN thang 1-1.000, càng cao ưu tiên càng lớn; luôn xem riêng các lỗi có Severity >= 9."
+    example:
+      inputs: {S: 6, O: 6, D: 7}
+      steps:
+        - "Đồ ăn nguội khi giao: 6x6x7 = 252 (cao nhất; giao sai địa chỉ 8x3x2 = 48; thiếu món 7x4x3 = 84)"
+        - "Sau cải tiến (hộp giữ nhiệt giảm O 6->3, nhiệt kế giảm D 7->4): RPN mới 6x3x4 = 72 (giảm 71%)"
+        - "Bài 3 (pha chế cà phê): sai tỷ lệ 7x5x6 = 210 -> sau Poka-Yoke O=2, D=3: 7x2x3 = 42 (giảm 80%); cốc bẩn 9x2x3 = 54 vẫn giữ quy trình vì S = 9"
+      result: "252"
+
+  - id: "m02_kanban"
+    name_vi: "Số thẻ Kanban"
+    name_en: "Number of Kanban cards"
+    expression_latex: 'k = \frac{D \times L \times (1+\alpha)}{C}'
+    expression_python: "ceil(D * L * (1 + alpha) / C)"
+    variables:
+      - {symbol: "D", meaning: "Nhu cầu trên một đơn vị thời gian", unit: "đơn vị/giờ"}
+      - {symbol: "L", meaning: "Thời gian bổ sung (từ phát thẻ đến hàng về)", unit: "giờ"}
+      - {symbol: "alpha", meaning: "Hệ số an toàn", unit: "tỷ lệ"}
+      - {symbol: "C", meaning: "Số lượng chứa trong mỗi thùng/khay (mỗi thẻ)", unit: "đơn vị/khay"}
+    when_to_use: "Thiết kế hệ thống pull: tính số thẻ/khay lưu hành giữa hai công đoạn."
+    why_it_works: "Lượng cần có trong lúc chờ bổ sung = D x L; cộng đệm an toàn; chia cho dung lượng mỗi thẻ. Làm tròn LÊN."
+    assumptions: ["Nhu cầu tương đối ổn định; L và alpha là ước tính"]
+    pitfalls: ["Làm tròn xuống gây đứt hàng", "Đặt alpha quá lớn quay lại tồn kho dư (Inventory/Overproduction waste)"]
+    interpretation: "Ít thẻ hơn = tồn kho thấp hơn, áp lực cải tiến cao hơn."
+    example:
+      inputs: {D: 120, L: 0.5, alpha: 0.2, C: 10}
+      steps:
+        - "Quán trà sữa 120 phần trân châu/giờ, nấu mẻ 0,5 giờ, đệm 20%, khay 10 phần: k = 120 x 0,5 x 1,2/10 = 7,2 -> 8 khay"
+        - "Bài 15: 60 cốc/giờ, 0,75 giờ, 25%, khay 5: k = 60 x 0,75 x 1,25/5 = 11,25 -> 12 thẻ"
+      result: "8 thẻ (giả định minh họa)"
+
+  - id: "m02_smed"
+    name_vi: "Thời gian chuyển đổi SMED"
+    name_en: "Setup time reduction (SMED)"
+    expression_latex: '\text{Setup} = \text{Internal} + \text{External};\quad \text{Giảm}\% = \frac{S_0-S_1}{S_0}'
+    expression_python: "((setup_before - setup_after) / setup_before, (setup_before - setup_after) * changes_per_day)"
+    variables:
+      - {symbol: "setup_before", meaning: "Downtime chuyển đổi trước cải tiến", unit: "phút"}
+      - {symbol: "setup_after", meaning: "Downtime sau cải tiến", unit: "phút"}
+      - {symbol: "changes_per_day", meaning: "Số lần chuyển đổi mỗi ngày", unit: "lần"}
+    when_to_use: "Chuyển đổi loại sản phẩm/khuôn mất lâu buộc chạy lô lớn và tồn kho nhiều."
+    why_it_works: "Shigeo Shingo (thập niên 1950-60, Toyota) giảm thời gian thay khuôn ép từ hàng giờ xuống dưới 10 phút. Chuyển đổi nhanh thì chạy lô nhỏ, linh hoạt, ít tồn kho."
+    assumptions: ["Có thể tách việc 'internal' (máy dừng) và 'external' (làm trước khi máy chạy)"]
+    pitfalls: ["Chỉ tăng tốc thao tác mà không tách internal/external"]
+    interpretation: "Ba nguyên tắc: (1) tách internal/external; (2) chuyển tối đa từ internal sang external; (3) cải tiến các bước internal (kẹp nhanh, dụng cụ chuẩn)."
+    example:
+      inputs: {setup_before: 60, setup_after: 20, changes_per_day: 6}
+      steps:
+        - "Máy đóng gói đổi túi 60 phút; 25 phút là việc chuẩn bị làm trước được -> downtime 35 phút"
+        - "Dùng kẹp nhanh giảm internal 35 -> 20 phút. Giảm (60 - 20)/60 = 66,7%"
+        - "6 lần/ngày x 40 phút = 240 phút (4 giờ máy chạy) tiết kiệm/ngày"
+      result: "(0,667; 240 phút/ngày). Giả định minh họa."
+
+  - id: "m02_pareto"
+    name_vi: "Phần trăm tích lũy Pareto"
+    name_en: "Pareto cumulative percentage"
+    expression_latex: '\text{Cum\%}_i = \frac{\sum_{j\le i} f_j}{\sum f}\times 100\%'
+    expression_python: "[round(sum(counts[:i + 1]) / sum(counts) * 100, 1) for i in range(len(counts))]"
+    excel: "=SUM($B$2:B2)/SUM($B$2:$B$11)"
+    variables:
+      - {symbol: "counts", meaning: "Tần suất từng loại lỗi, xếp giảm dần", unit: "lỗi"}
+    when_to_use: "Chọn vital few nguyên nhân/lỗi để xử lý trước khi nguồn lực có hạn."
+    why_it_works: "Pareto (1896) thấy đất đai Ý thuộc về thiểu số; Juran gọi là 'vital few vs trivial many'. Xếp giảm dần và tích lũy cho thấy vài nhóm đầu chiếm phần lớn lỗi."
+    assumptions: ["80/20 chỉ là quy tắc gần đúng, tỷ lệ thật tùy dữ liệu"]
+    pitfalls: ["Ép 80/20 khi dữ liệu không thế (bài 10 thực tế là 80/50)", "Xếp theo tần suất mà bỏ qua mức nghiêm trọng"]
+    interpretation: "Chọn nhóm đầu chiếm khoảng 80% đầu tiên."
+    example:
+      inputs: {counts: [120, 85, 60, 40, 30, 25, 15, 10, 8, 7]}
+      steps:
+        - "Bài 10 (400 lỗi, 10 loại): tích lũy 30,0 - 51,3 - 66,3 - 76,3 - 83,8 - 90,0 - 93,8 - 96,3 - 98,3 - 100 (nguồn làm tròn; giá trị chính xác 51,25 ...)"
+        - "80% đạt ở loại thứ 5 (50% số loại chiếm ~84% lỗi): ưu tiên 3-4 loại đầu (66-76%)"
+        - "Case xưởng gỗ: bong tróc 46,7% + không đều màu 33,3% = 80% (vital few)"
+      result: "[30,0; 51,2; 66,2; 76,2; 83,8; 90,0; 93,8; 96,2; 98,2; 100,0] (làm tròn kiểu Python)"
+
+  - id: "m02_project_score"
+    name_vi: "Điểm chọn dự án cải tiến (ma trận trọng số)"
+    name_en: "Weighted project selection score"
+    expression_latex: 'Score = \sum_i w_i s_i'
+    expression_python: "sum(w * s for w, s in zip(weights, scores))"
+    variables:
+      - {symbol: "weights", meaning: "Trọng số: tài chính 0,30; khách hàng 0,25; thực thi 0,20; nhân rộng 0,15; cam kết 0,10", unit: "tỷ lệ, tổng 1"}
+      - {symbol: "scores", meaning: "Điểm từng tiêu chí (thang 1-10)", unit: "điểm"}
+    when_to_use: "SME nguồn lực ít cần chọn dự án đầu tiên có xác suất thành công cao."
+    why_it_works: "Chọn sai dự án (quá lớn, thiếu dữ liệu) dễ thất bại và mất niềm tin vào phương pháp; ma trận buộc so sánh theo cùng tiêu chí thay vì cảm tính."
+    assumptions: ["Trọng số khuyến nghị có thể chỉnh theo doanh nghiệp"]
+    pitfalls: ["Chọn ngay vấn đề quá phức tạp thay vì quick win"]
+    interpretation: "Chọn điểm cao nhất, ưu tiên dự án dễ thành công nhanh."
+    example:
+      inputs: {weights: [0.30, 0.25, 0.20, 0.15, 0.10], scores: [8, 9, 8, 7, 8]}
+      steps:
+        - "A. Vị trà không đồng nhất: 0,3x8 + 0,25x9 + 0,2x8 + 0,15x7 + 0,1x8 = 8,1"
+        - "B. Giao hàng trễ (7,8,4,6,5) = 6,3; C. Lỗi in hóa đơn (4,3,9,5,7) = 5,2 -> chọn A"
+      result: "8,1 (giả định minh họa)"
+
+  - id: "m02_two_proportion_z"
+    name_vi: "Kiểm định z hai tỷ lệ (so sánh tỷ lệ lỗi giữa hai nhóm)"
+    name_en: "Two-proportion z-test"
+    expression_latex: 'z = \frac{p_2 - p_1}{\sqrt{\hat p(1-\hat p)\left(\frac{1}{n_1}+\frac{1}{n_2}\right)}}'
+    expression_python: "(p2 - p1) / sqrt(p_pool * (1 - p_pool) * (1 / n1 + 1 / n2))"
+    variables:
+      - {symbol: "p1, p2", meaning: "Tỷ lệ lỗi của hai nhóm (vd ca sáng, ca chiều)", unit: "tỷ lệ"}
+      - {symbol: "p_pool", meaning: "Tỷ lệ gộp = tổng lỗi/tổng mẫu", unit: "tỷ lệ"}
+      - {symbol: "n1, n2", meaning: "Cỡ mẫu hai nhóm", unit: "mẫu"}
+    when_to_use: "Giai đoạn Analyze: kiểm chứng nghi ngờ (vd lỗi tập trung ca chiều) có ý nghĩa thống kê hay chỉ may rủi."
+    why_it_works: "So sánh chênh lệch tỷ lệ với sai số chuẩn dưới giả thuyết hai nhóm như nhau; |z| > 1,96 ~ p < 0,05."
+    assumptions: ["Mẫu độc lập, cỡ mẫu đủ lớn cho xấp xỉ chuẩn"]
+    pitfalls: ["Kết luận từ chênh lệch 8% vs 23% với mẫu nhỏ mà không kiểm định"]
+    interpretation: "z > 1,96: chênh lệch có ý nghĩa; z ~2,99 -> p ~0,003."
+    example:
+      inputs: {p1: 0.0818, p2: 0.2333, p_pool: 0.15, n1: 110, n2: 90}
+      steps:
+        - "Ca sáng 9/110 = 8,2%; ca chiều 21/90 = 23,3%; tỷ lệ gộp 30/200 = 0,15"
+        - "z = 0,1515/sqrt(0,15 x 0,85 x (0,00909 + 0,01111)) = 0,1515/0,0507 ~ 2,99 > 1,96 (p ~ 0,003)"
+        - "Nguyên nhân điều tra: độ ẩm xưởng ca chiều cao hơn (giả định ~82% so với ~68%) và công nhân chưa quen kỹ thuật phun mới"
+      result: "z ~ 2,99 (case xưởng gỗ, giả định minh họa)"
+
+  - id: "m02_defect_cost_payback"
+    name_vi: "Thiệt hại do lỗi, tiết kiệm và hoàn vốn dự án chất lượng"
+    name_en: "Defect loss, savings and payback"
+    expression_latex: '\text{Loss}=N\times r\times c;\quad \text{Savings}=N(r_0-r_1)c;\quad \text{Payback}=\frac{I}{\text{Savings}}'
+    expression_python: "(orders * r0 * cost, orders * (r0 - r1) * cost, invest / (orders * (r0 - r1) * cost))"
+    variables:
+      - {symbol: "orders", meaning: "Số đơn/sản phẩm mỗi tháng", unit: "đơn/tháng"}
+      - {symbol: "r0, r1", meaning: "Tỷ lệ lỗi/phàn nàn trước và sau", unit: "tỷ lệ"}
+      - {symbol: "cost", meaning: "Chi phí xử lý mỗi đơn lỗi", unit: "VNĐ"}
+      - {symbol: "invest", meaning: "Vốn đầu tư dự án", unit: "VNĐ"}
+    when_to_use: "Định lượng tiền cho bước Define/Measure và chứng minh ROI cho chủ SME."
+    why_it_works: "Quy chất lượng thành tiền (cùng tinh thần COQ) thì ra quyết định đầu tư được."
+    assumptions: ["Chi phí xử lý mỗi đơn là ước lượng trung bình (28.000đ và 450.000đ là giả định minh họa)"]
+    pitfalls: ["Bỏ sót chi phí uy tín/mất khách", "Dự báo tiết kiệm giữ nguyên khi chưa có Control"]
+    interpretation: "Hoàn vốn tính theo tháng; nhỏ hơn 1 tháng = no-brainer (case SME)."
+    example:
+      inputs: {orders: 9000, r0: 0.12, r1: 0.03, cost: 28000, invest: 4000000}
+      steps:
+        - "Trà sữa: 9.000 x 12% = 1.080 đơn x 28.000 = 30.240.000đ/tháng; sau cải tiến 3% = 270 đơn; giảm 810 đơn = 22.680.000đ/tháng"
+        - "Đầu tư 6 cân x 500.000 + vật tư 1.000.000 = 4.000.000đ; hoàn vốn 0,18 tháng (~5 ngày)"
+        - "Xưởng gỗ: 1.600 x 15% = 240 SP x 450.000 = 108 triệu/tháng; sau 4% = 64 SP; giảm 176 SP = 79,2 triệu; đầu tư 40 triệu hoàn vốn ~0,5 tháng"
+      result: "(30.240.000; 22.680.000; 0,176 tháng)"
+
+  - id: "m02_overfill_cost"
+    name_vi: "Chi phí dư cân/cài dư để che biến động"
+    name_en: "Overfill (giveaway) cost"
+    expression_latex: 'C_{over} = (\mu - T)\times p \times V'
+    expression_python: "(mu - target) * price_per_g * volume"
+    variables:
+      - {symbol: "mu", meaning: "Trung bình thực tế", unit: "g"}
+      - {symbol: "target", meaning: "Mục tiêu khối lượng", unit: "g"}
+      - {symbol: "price_per_g", meaning: "Giá nguyên liệu mỗi gam", unit: "VNĐ/g"}
+      - {symbol: "volume", meaning: "Số túi mỗi tháng", unit: "túi"}
+    when_to_use: "Doanh nghiệp cài máy cao 'cho chắc' để tránh thiếu cân: tính chi phí ẩn thường xuyên."
+    why_it_works: "Mỗi gam trung bình vượt mục tiêu là tiền tặng khách; giảm sigma cho phép hạ trung bình về mục tiêu mà vẫn an toàn."
+    assumptions: ["Giá 250.000đ/kg = 250đ/g là giả định minh họa"]
+    pitfalls: ["Hạ trung bình mà giữ nguyên sigma: tỷ lệ ngoài giới hạn tăng vọt"]
+    interpretation: "Trước: (512,5 - 510) x 250 x 40.000 = 25 triệu/tháng; sau: (510,26 - 510) x 250 x 40.000 = 2,6 triệu."
+    example:
+      inputs: {mu: 512.5, target: 510, price_per_g: 250, volume: 40000}
+      steps:
+        - "Chi phí túi ngoài giới hạn: 1.541 túi x 12.000đ = ~18,5 triệu/tháng; tổng tổn thất ~43,5 triệu/tháng"
+        - "Sau cải tiến: tiết kiệm 18,5 + 22,4 = ~40,9 triệu/tháng; đầu tư 50 triệu hoàn vốn 50/40,9 = ~1,2 tháng"
+        - "Nếu chỉ hạ mu về 510 mà giữ sigma 4,2: z = +/-2,38, mỗi phía ~8.634 ppm, tổng ~17.268 ppm (~690 túi/tháng): tệ hơn nhiều so với 26 DPMO"
+      result: "25.000.000đ/tháng"
+
+  - id: "m02_stop_vs_run_cost"
+    name_vi: "So sánh chi phí dừng chuyền (Andon) với cho chạy tiếp"
+    name_en: "Stop-the-line vs run-on cost"
+    expression_latex: 'C_A = n_{stop}\, m;\ C_B = N f;\ C_C = N e'
+    expression_python: "{'andon_stop': stopped_units * margin, 'end_of_line_fix': affected * fix_cost, 'escape_to_customer': affected * escape_cost}"
+    variables:
+      - {symbol: "stopped_units", meaning: "Sản lượng mất khi dừng chuyền", unit: "xe"}
+      - {symbol: "margin", meaning: "Biên đóng góp mỗi xe", unit: "VNĐ"}
+      - {symbol: "affected", meaning: "Số xe mang lỗi nếu không dừng", unit: "xe"}
+      - {symbol: "fix_cost", meaning: "Chi phí sửa cuối chuyền mỗi xe", unit: "VNĐ"}
+      - {symbol: "escape_cost", meaning: "Chi phí xử lý nếu lỗi lọt tới khách mỗi xe (~10 lần theo Rule of Ten)", unit: "VNĐ"}
+    when_to_use: "Biện luận kinh tế cho văn hóa 'dừng lại khi có lỗi' (Jidoka/Andon)."
+    why_it_works: "Dừng sớm mất sản lượng thật nhưng chặn lỗi nhân lên theo số xe và theo Rule of Ten."
+    assumptions: ["Số liệu giả định minh họa của nguồn: 15 triệu/xe, 30 xe, 2 triệu/xe, 20 triệu/xe, dừng 3 phút mất 3 xe"]
+    pitfalls: ["Chỉ thấy chi phí dừng chuyền (hữu hình) mà bỏ qua chi phí lọt khách"]
+    interpretation: "Phương án rẻ nhất là dừng chuyền sớm."
+    example:
+      inputs: {stopped_units: 3, margin: 15000000, affected: 30, fix_cost: 2000000, escape_cost: 20000000}
+      steps: ["(A) 3 x 15 triệu = 45 triệu", "(B) 30 x 2 triệu = 60 triệu", "(C) 30 x 20 triệu = 600 triệu (chưa tính uy tín)"]
+      result: "{andon_stop 45 triệu; end_of_line_fix 60 triệu; escape_to_customer 600 triệu}"
+
+  - id: "m02_nps"
+    name_vi: "Chỉ số NPS (KPI chất lượng dịch vụ)"
+    name_en: "Net Promoter Score"
+    expression_latex: 'NPS = \%\text{Promoters} - \%\text{Detractors}'
+    expression_python: "pct_promoters - pct_detractors"
+    variables:
+      - {symbol: "pct_promoters", meaning: "% khách Promoters", unit: "%"}
+      - {symbol: "pct_detractors", meaning: "% khách Detractors", unit: "%"}
+    when_to_use: "KPI dịch vụ/TQM để có 'bằng chứng sớm' cho cải tiến văn hóa."
+    why_it_works: "Một số duy nhất theo dõi lòng trung thành khách; nguồn chỉ nêu công thức, không đi sâu cách phân nhóm."
+    assumptions: ["Phân loại Promoters/Detractors theo chuẩn NPS (nguồn không nêu chi tiết)"]
+    pitfalls: ["Dùng NPS thay cho đo lỗi quy trình"]
+    interpretation: "Theo dõi theo thời gian; kết hợp tỷ lệ khiếu nại."
+    example:
+      inputs: {pct_promoters: 55, pct_detractors: 15}
+      steps: ["NPS = 55 - 15 = 40 (ví dụ tự đặt, không có trong nguồn)"]
+      result: "40"
+
+frameworks:
+  - id: "m02_tqm"
+    name_vi: "Quản trị chất lượng toàn diện (TQM)"
+    name_en: "Total Quality Management"
+    origin: "Deming, Juran, Crosby; Nhật Bản thập niên 1950 (Deming được JUSE mời 1950, giải Deming 1951). ISO 9001 (1987) là phiên bản chuẩn hóa quốc tế của tư duy TQM."
+    components: ["Khách hàng là trung tâm", "Mọi thành viên chịu trách nhiệm chất lượng", "Cải tiến liên tục (Kaizen, PDCA)", "Ra quyết định dựa trên dữ liệu", "Cam kết lãnh đạo"]
+    when_to_use: "Vấn đề văn hóa, thái độ làm việc; cần thay đổi tư duy toàn tổ chức hơn là công cụ kỹ thuật."
+    how_to_apply: ["Lãnh đạo cam kết và làm Champion", "Đào tạo 7 QC Tools", "Xây an toàn tâm lý khi báo lỗi", "Gắn KPI cụ thể (NPS, tỷ lệ khiếu nại) để có bằng chứng sớm", "Gemba Walk"]
+    how_to_read_results: "Kết quả chậm, dài hạn; đo bằng sự hài lòng khách hàng và văn hóa cải tiến."
+    pitfalls: ["Dễ thành khẩu hiệu nếu lãnh đạo không cam kết thật", "Khó đo ROI ngắn hạn"]
+    example: "SME mới bắt đầu: thói quen 'làm đúng ngay từ đầu', Check Sheet giấy ghi lỗi, 5S khu vực làm việc; chưa cần Six Sigma hay ISO."
+
+  - id: "m02_deming_14"
+    name_vi: "14 điểm của Deming"
+    name_en: "Deming's 14 Points"
+    origin: "W. E. Deming, sách Out of the Crisis (1982). Diễn đạt trong nguồn là tóm lược theo cách hiểu phổ biến."
+    components:
+      - "1 Nhất quán mục đích cải tiến, tầm nhìn dài hạn"
+      - "2 Triết lý mới: không chấp nhận lỗi là bình thường"
+      - "3 Ngừng phụ thuộc kiểm tra hàng loạt; xây chất lượng vào quy trình"
+      - "4 Không chọn nhà cung cấp chỉ theo giá thấp nhất; xét tổng chi phí và độ ổn định"
+      - "5 Cải tiến liên tục (Kaizen)"
+      - "6 Đào tạo tại chỗ"
+      - "7 Thiết lập vai trò lãnh đạo (hỗ trợ, không chỉ giám sát)"
+      - "8 Loại bỏ nỗi sợ hãi (dám báo lỗi)"
+      - "9 Phá bỏ rào cản giữa phòng ban"
+      - "10 Bỏ khẩu hiệu không kèm phương pháp"
+      - "11 Bỏ quota số lượng thuần túy"
+      - "12 Loại bỏ rào cản khiến nhân viên không tự hào về công việc"
+      - "13 Khuyến khích giáo dục và tự hoàn thiện"
+      - "14 Hành động để đạt chuyển đổi; cam kết cấp cao là điều kiện tiên quyết"
+    when_to_use: "Thiết kế văn hóa/quản lý nhân sự theo hướng chất lượng; chẩn đoán nguyên nhân hệ thống."
+    how_to_apply: ["Rà soát từng điểm so với thực tế", "Ưu tiên điểm 3 (bỏ kiểm tra cuối), 8 (nỗi sợ), 11 (quota), 4 (nhà cung cấp)"]
+    how_to_read_results: "Điểm nào vi phạm thì giải thích chất lượng kém do hệ thống (khoảng 94% theo ước tính kinh nghiệm của Deming)."
+    pitfalls: ["Coi là danh sách khẩu hiệu thay vì thay đổi quản lý", "Quota ép công nhân làm ẩu, tăng lỗi"]
+    example: "Điểm 10: hô 'Zero defects!' mà không có công cụ chỉ gây áp lực."
+
+  - id: "m02_pdca"
+    name_vi: "Vòng PDCA"
+    name_en: "Plan-Do-Check-Act (Deming/Shewhart Cycle)"
+    origin: "Shewhart đề xuất chu trình Specification-Production-Inspection; Deming phổ biến sang Nhật thập niên 1950 nên còn gọi Deming Cycle/Shewhart Cycle."
+    components: ["Plan: xác định vấn đề, phân tích nguyên nhân gốc, đề xuất giải pháp", "Do: pilot quy mô nhỏ", "Check: đo kết quả so với mục tiêu", "Act: hiệu quả thì chuẩn hóa và nhân rộng, không thì quay lại Plan"]
+    when_to_use: "Vấn đề đơn giản, cải tiến nhỏ thường xuyên; thay cho DMAIC đầy đủ khi không cần thống kê sâu."
+    how_to_apply: ["Chọn một vấn đề nhỏ", "Thử nghiệm quy mô nhỏ để sai thì rẻ", "Đo trước/sau", "Chuẩn hóa bằng SOP", "Lặp lại (Kaizen)"]
+    how_to_read_results: "Cải tiến là thí nghiệm khoa học nhỏ lặp đi lặp lại, không phải cải cách lớn một lần."
+    pitfalls: ["Bỏ bước Check (không đo)", "Không chuẩn hóa ở Act"]
+    example: "Đổi cách bố trí quầy ở một cửa hàng thử 2 tuần, đo thời gian phục vụ, rồi nhân rộng."
+
+  - id: "m02_iso_9001_principles"
+    name_vi: "7 nguyên tắc quản lý chất lượng ISO 9001:2015"
+    name_en: "ISO 9001:2015 Seven Quality Management Principles"
+    origin: "ISO 9001 ban hành lần đầu 1987; bản 2015 dùng 7 nguyên tắc (tài liệu cũ ghi 8 nhưng chỉ liệt kê 7 là chưa chính xác)."
+    components: ["Hướng đến khách hàng", "Vai trò lãnh đạo", "Sự tham gia của con người", "Tiếp cận theo quy trình", "Cải tiến", "Ra quyết định dựa trên bằng chứng", "Quản lý mối quan hệ"]
+    when_to_use: "SME chuẩn bị xuất khẩu/đấu thầu hoặc chuẩn bị nhượng quyền cần chuẩn hóa chất lượng bằng văn bản."
+    how_to_apply: ["Chuẩn hóa SOP", "Cân nhắc chứng nhận ISO nếu ngành/đối tác yêu cầu"]
+    how_to_read_results: "ISO không phải đích đến mà là công cụ duy trì kỷ luật."
+    pitfalls: ["Làm ISO để có chứng chỉ"]
+    example: "Vinamilk: ISO 9001 (quản lý chất lượng), ISO 22000/HACCP (an toàn thực phẩm); thông tin cần kiểm chứng với báo cáo mới nhất."
+
+  - id: "m02_7_qc_tools"
+    name_vi: "Bảy công cụ kiểm soát chất lượng"
+    name_en: "7 QC Tools"
+    origin: "Kaoru Ishikawa (Nhật, thập niên 1960): để mọi công nhân, không cần giỏi toán, dùng được công cụ thống kê; phần lớn vấn đề tại xưởng giải quyết được bằng 7 công cụ đơn giản."
+    components:
+      - "Check Sheet: thu thập dữ liệu lỗi có hệ thống"
+      - "Pareto Chart: xếp hạng nguyên nhân theo tần suất (vital few vs trivial many, Juran áp dụng ý tưởng Pareto 1896)"
+      - "Cause-and-Effect/Fishbone/Ishikawa: 6M (Man, Machine, Material, Method, Measurement, Mother Nature/Environment)"
+      - "Histogram: phân phối dữ liệu, kiểm tra giả định chuẩn"
+      - "Control Chart: theo dõi biến động theo thời gian, phát hiện out of control"
+      - "Scatter Diagram: tương quan hai biến"
+      - "Stratification: phân tầng dữ liệu (ca, máy, lô, công nhân) để lộ pattern ẩn"
+    when_to_use: "Giai đoạn Measure/Analyze của DMAIC và PDCA; mọi quy mô SME."
+    how_to_apply:
+      - "Check Sheet thu dữ liệu tối thiểu 2 tuần"
+      - "Pareto xác định vital few"
+      - "Fishbone 6M tìm nguyên nhân; kiểm chứng bằng dữ liệu (phân tầng, kiểm định)"
+      - "Control Chart để duy trì"
+    how_to_read_results: "Pareto: chọn các loại chiếm ~80% đầu. Fishbone chỉ là giả thuyết đến khi có dữ liệu kiểm chứng."
+    pitfalls: ["Kết luận từ cảm nhận không có dữ liệu", "Vẽ Fishbone mà không kiểm chứng nhánh nào là gốc"]
+    example: "Trà sữa vị không đồng nhất: Man (không đong theo công thức, thiếu đào tạo), Machine (máy pha không hiệu chỉnh), Material (đường/sữa nhiều nhà cung cấp), Method (không có SOP công thức bằng văn bản), Measurement (cốc đong không chuẩn), Environment (nhiệt độ quầy, đá tan)."
+
+  - id: "m02_five_why"
+    name_vi: "5-Why (5 lần hỏi tại sao)"
+    name_en: "5 Whys root cause analysis"
+    origin: "Gắn với Toyota Production System; nguồn trình bày kèm Case Toyota."
+    components: ["Hỏi 'tại sao' liên tiếp (thường 5 lần) đến khi chạm nguyên nhân gốc hệ thống mà quản lý kiểm soát được"]
+    when_to_use: "Sự cố lặp lại; giai đoạn Analyze; sau Andon/dừng chuyền."
+    how_to_apply: ["Nêu hiện tượng", "Hỏi tại sao, trả lời bằng sự kiện đã kiểm chứng", "Lặp đến nguyên nhân hệ thống", "Đặt biện pháp tại nguyên nhân gốc"]
+    how_to_read_results: "Dừng ở Why #1 (thay cầu chì) thì sự cố lặp lại. Nguyên nhân đúng thường là quy trình/hệ thống, không phải 'thiếu ý thức'."
+    pitfalls: ["Nguyên nhân gốc thường nhiều nhánh: dùng kèm Fishbone và dữ liệu", "Dừng ở lỗi cá nhân"]
+    example: "Máy dừng -> cầu chì cháy -> quá tải -> vòng bi thiếu dầu -> bơm dầu kém -> trục bơm mòn -> không có bộ lọc nên mạt kim loại lọt vào (gốc). Bài 4: nhân viên đi trễ -> lịch ca 7h không dựa trên dữ liệu di chuyển (gốc là xếp ca, không phải ý thức)."
+
+  - id: "m02_six_sigma_dmaic"
+    name_vi: "Six Sigma và quy trình DMAIC"
+    name_en: "Six Sigma / DMAIC"
+    origin: "Bill Smith (Motorola) đề xuất 1986 khi Motorola bị hàng điện tử Nhật vượt về chất lượng; Motorola đoạt giải Baldrige 1988; Mikel Harry và những người khác hệ thống hóa; Jack Welch đưa vào GE 1995. DMAIC là phiên bản 'khoa học hóa' của PDCA cho vấn đề đã có quy trình nhưng kết quả chưa đạt."
+    components:
+      - "Define: xác định vấn đề, phạm vi (SIPOC), Voice of Customer, Project Charter"
+      - "Measure: thu thập dữ liệu hiện trạng, đánh giá độ tin cậy phép đo, tính Cp/Cpk hiện tại"
+      - "Analyze: tìm nguyên nhân gốc (5-Why, FMEA, Fishbone), xác định biến số đầu vào ảnh hưởng nhất (Vital Few)"
+      - "Improve: đề xuất/thử giải pháp, pilot, đo Cp/Cpk sau cải tiến"
+      - "Control: Control Chart duy trì, chuyển giao cho Process Owner"
+    when_to_use: "Biến động chất lượng khó xác định nguyên nhân, quy trình có nhiều dữ liệu định lượng; dự án 3-6 tháng; cần ROI định lượng."
+    how_to_apply: ["Tính thiệt hại bằng tiền ở Define", "Đo trước, kết luận sau (không nhảy vào giải pháp cảm tính)", "Kiểm chứng nghi ngờ bằng thống kê", "Tính hiệu quả tài chính và hoàn vốn"]
+    how_to_read_results: "Mỗi dự án có Project Charter với mục tiêu tài chính cụ thể; so Cp/Cpk, DPMO, Sigma Level trước/sau."
+    pitfalls: ["Quan liêu, giấy tờ quá nhiều cho vấn đề đơn giản (dùng PDCA nhanh)", "Đòi hỏi kỹ năng thống kê, đào tạo Belt đắt (SME thuê Green/Black Belt theo dự án)", "Six Sigma tối ưu quy trình đã có, không tự tạo đột phá"]
+    example: "Xưởng gỗ Đồng Nai (giả định): lỗi sơn 15% -> 4%; xưởng cà phê Cao Nguyên Xanh: Cpk 0,595 -> 1,37."
+
+  - id: "m02_belt_system"
+    name_vi: "Hệ thống Belt trong Six Sigma"
+    name_en: "Six Sigma Belt System"
+    origin: "Phân cấp chuyên môn trong chương trình Six Sigma (Motorola, GE). Thời lượng đào tạo mang tính tham khảo, khác nhau theo đơn vị đào tạo."
+    components: ["White Belt: hiểu khái niệm, hỗ trợ (~1 ngày)", "Yellow Belt: tham gia dự án trong phạm vi công việc (~2-3 ngày)", "Green Belt: dẫn dắt dự án quy mô vừa, bán thời gian (~2 tuần)", "Black Belt: dẫn dắt dự án phức tạp toàn thời gian, đào tạo Green Belt (~4 tuần + dự án thực tế)", "Master Black Belt: cố vấn chiến lược, giám sát danh mục dự án toàn công ty (nhiều năm kinh nghiệm)"]
+    when_to_use: "Doanh nghiệp lớn/hướng xuất khẩu cần đội Belt chuyên trách; SME thuê Belt theo dự án."
+    how_to_apply: ["Chọn cấp Belt theo độ phức tạp dự án", "SME: Yellow/Green Belt nội bộ + tư vấn bên ngoài"]
+    how_to_read_results: "Cấp càng cao càng chịu trách nhiệm dự án phức tạp và đào tạo người khác."
+    pitfalls: ["Đào tạo Belt toàn thời gian quá sớm cho SME nhỏ"]
+    example: "GE đầu tư lớn vào đào tạo Black Belt/Green Belt, gắn với đánh giá và thăng tiến lãnh đạo."
+
+  - id: "m02_control_chart"
+    name_vi: "Biểu đồ kiểm soát (X-bar R, p)"
+    name_en: "Control Chart (Shewhart)"
+    origin: "Walter Shewhart (Bell Labs) 1924: lần đầu phân biệt biến động bình thường và bất thường bằng thống kê."
+    components: ["Đường trung tâm", "UCL/LCL ở +/- 3 sigma (do chính dữ liệu quy trình tạo ra)", "X-bar R cho dữ liệu liên tục theo mẫu con n", "Biểu đồ p cho tỷ lệ lỗi (dữ liệu đếm)", "Quy tắc bất thường (tham khảo): 1 điểm ngoài giới hạn; ~8 điểm liên tiếp một phía; ~6 điểm liên tiếp tăng/giảm dần"]
+    when_to_use: "Giai đoạn Control của DMAIC; muốn phát hiện sự cố trong 1 giờ thay vì sau cả lô; muốn tránh phạt oan/chỉnh máy liên tục."
+    how_to_apply:
+      - "Thu 10-20 mẫu giai đoạn ổn định; tính đường trung tâm và giới hạn"
+      - "Vẽ điểm mới; áp quy tắc bất thường"
+      - "Có tín hiệu: điều tra special cause (không phạt cá nhân)"
+      - "Ổn định xong mới tính Cp/Cpk"
+    how_to_read_results: "Ngoài giới hạn = special cause; trong giới hạn = common cause, muốn giảm phải đổi quy trình. In control khác Capable."
+    pitfalls: ["Nhầm giới hạn kiểm soát với giới hạn kỹ thuật", "Tampering: chỉnh khi chưa có tín hiệu", "Tính giới hạn từ dữ liệu chưa ổn định"]
+    example: "Xưởng cà phê: mẫu 11 X-bar 517,0 > UCL 513,43 do cảm biến lệch zero sau vệ sinh; phát hiện trong 1 giờ."
+
+  - id: "m02_fmea"
+    name_vi: "FMEA - Phân tích kiểu lỗi và ảnh hưởng"
+    name_en: "Failure Mode and Effects Analysis"
+    origin: "Quân đội Mỹ chuẩn hóa từ thập niên 1940, sau đó NASA và ngành ô tô áp dụng rộng rãi (chi tiết lịch sử cần tham khảo thêm)."
+    components: ["Công đoạn, Failure Mode", "Severity (S), Occurrence (O), Detection (D) thang 1-10 (D cao = khó phát hiện)", "RPN = S x O x D (1-1.000)", "Hành động khắc phục và chấm lại S', O', D', RPN mới"]
+    when_to_use: "Giai đoạn Analyze; hàng chục kiểu lỗi nhưng chỉ đủ nguồn lực xử lý vài cái."
+    how_to_apply: ["Liệt kê failure modes", "Chấm S, O, D", "Tính RPN và xếp hạng", "Đề ra hành động, chấm lại", "Xem riêng các lỗi S >= 9"]
+    how_to_read_results: "RPN cao ưu tiên trước; hai lỗi khác nhau có thể cùng RPN."
+    pitfalls: ["Chấm điểm chủ quan không nhất quán", "Bỏ lỗi Severity cao nhưng RPN thấp"]
+    example: "Giao đồ ăn online: nguội 252 > thiếu món 84 > sai địa chỉ 48; sau hộp giữ nhiệt + nhiệt kế RPN 72."
+
+  - id: "m02_lean_seven_wastes"
+    name_vi: "Bảy loại lãng phí (TIMWOOD) và lãng phí thứ 8"
+    name_en: "7 Wastes (Muda) / TIMWOOD"
+    origin: "Taiichi Ohno (Toyota Production System). Lãng phí thứ 8 (Skills/Talent) là bổ sung hiện đại."
+    components:
+      - "Transportation (vận chuyển thừa): nguyên liệu đi lại nhiều lần kho-bếp"
+      - "Inventory (tồn kho dư): nguyên liệu tươi tồn quá nhiều gây hỏng"
+      - "Motion (thao tác thừa): với/cúi nhiều lần không cần thiết"
+      - "Waiting (chờ đợi): khách chờ order, nhân viên chờ nguyên liệu"
+      - "Overproduction (sản xuất thừa): chuẩn bị quá nhiều món bỏ đi cuối ngày (lãng phí gốc theo Ohno vì che giấu và sinh ra lãng phí khác)"
+      - "Overprocessing (xử lý thừa): phê duyệt qua quá nhiều cấp"
+      - "Defects (lỗi): món sai phải làm lại"
+      - "Thứ 8: Skills/Talent waste - không khai thác ý tưởng và năng lực nhân viên"
+    when_to_use: "Chẩn đoán lãng phí rõ ràng, quan sát được trực tiếp; quick win trong vài tuần."
+    how_to_apply: ["Đi Gemba quan sát từng khâu", "Gán mỗi lãng phí vào một trong 7 loại", "Ưu tiên Overproduction", "Dùng 5S/Kanban/SMED/Poka-Yoke để xử lý"]
+    how_to_read_results: "Lean đo thành công bằng Lead Time, %VA, WIP giảm."
+    pitfalls: ["Chỉ cắt giảm mà không đầu tư con người (đẩy áp lực quá mức)", "JIT quá mức gây rủi ro gián đoạn cung ứng"]
+    example: "F&B: chuẩn bị dư món dự phòng bị bỏ cuối ngày (Overproduction); sản xuất: máy chờ nguyên liệu (Waiting)."
+
+  - id: "m02_5s"
+    name_vi: "5S"
+    name_en: "5S (Seiri, Seiton, Seiso, Seiketsu, Shitsuke)"
+    origin: "Nền tảng môi trường làm việc Lean của Toyota."
+    components: ["Seiri / Sort / Sàng lọc: loại vật dụng không cần", "Seiton / Set in Order / Sắp xếp: vị trí cố định, dễ lấy", "Seiso / Shine / Sạch sẽ: vệ sinh kết hợp kiểm tra", "Seiketsu / Standardize / Chuẩn hóa 3S trên", "Shitsuke / Sustain / Kỷ luật, thói quen duy trì"]
+    when_to_use: "Bước đầu tiên, gần như 0đ; môi trường lộn xộn che giấu lỗi, mất thời gian tìm dụng cụ (Motion/Waiting), dễ nhầm lẫn (Defects)."
+    how_to_apply: ["Sàng lọc", "Sắp xếp theo thứ tự thao tác, vị trí cố định, dán nhãn", "Vệ sinh cuối ca", "Chuẩn hóa bằng ảnh quầy mẫu", "Kiểm tra định kỳ hàng tuần"]
+    how_to_read_results: "Bài 7: đo thời gian tìm một món đồ trước/sau làm số liệu."
+    pitfalls: ["Làm một lần rồi bỏ (thiếu Shitsuke)"]
+    example: "Quầy pha chế trà sữa 3 cửa hàng (case 3.3)."
+
+  - id: "m02_kanban_pull"
+    name_vi: "Kanban và nguyên tắc Pull"
+    name_en: "Kanban / Pull system"
+    origin: "Taiichi Ohno, thập niên 1950, cảm hứng từ siêu thị Mỹ bổ sung hàng khi khách lấy đi."
+    components: ["Thẻ Kanban là tín hiệu kéo", "Bảng Kanban (Đã nhận đơn -> Đang chế biến -> Sẵn sàng -> Đã giao)", "Giới hạn WIP (vd tối đa 3 đơn đang chế biến)", "Số thẻ k = D x L x (1 + alpha)/C"]
+    when_to_use: "Tránh sản xuất thừa khi dự báo sai; tránh quá tải bếp làm ẩu nhiều món cùng lúc."
+    how_to_apply: ["Xác định D, L, alpha, C", "Tính k, làm tròn lên", "Đặt giới hạn WIP", "Chỉ bổ sung khi thẻ quay về"]
+    how_to_read_results: "Giảm dần số thẻ để lộ vấn đề tồn kho."
+    pitfalls: ["Alpha quá lớn", "Không điều chỉnh khi nhu cầu đổi"]
+    example: "Quán trà sữa: 120 phần/giờ, 0,5 giờ, 20%, khay 10 -> 8 khay."
+
+  - id: "m02_smed"
+    name_vi: "SMED - Giảm thời gian chuyển đổi"
+    name_en: "Single-Minute Exchange of Die"
+    origin: "Shigeo Shingo, làm việc với Toyota thập niên 1950-60, giảm thay khuôn ép từ hàng giờ xuống dưới 10 phút."
+    components: ["Internal setup (máy phải dừng)", "External setup (làm được khi máy chạy)", "Ba nguyên tắc: tách; chuyển internal sang external; cải tiến internal"]
+    when_to_use: "Thời gian chuyển đổi dài buộc chạy lô lớn, tồn kho lớn."
+    how_to_apply: ["Quay video/ghi bước chuyển đổi", "Phân loại internal/external", "Chuyển việc chuẩn bị ra external", "Kẹp nhanh, dụng cụ chuẩn"]
+    how_to_read_results: "Downtime giảm, cho phép lô nhỏ, linh hoạt."
+    pitfalls: ["Chỉ tăng tốc thao tác mà không tách bước"]
+    example: "Máy đóng gói đổi túi 60 -> 20 phút (giảm 66,7%), 6 lần/ngày tiết kiệm 4 giờ."
+
+  - id: "m02_poka_yoke"
+    name_vi: "Poka-Yoke (chống lỗi)"
+    name_en: "Poka-Yoke / Mistake-proofing"
+    origin: "Shigeo Shingo hệ thống hóa thập niên 1960 từ nhận định 'con người sẽ sai, hãy thiết kế để sai không thể xảy ra'."
+    components: ["Dạng ngăn ngừa (không cho làm sai)", "Dạng cảnh báo (phát hiện ngay khi sai)"]
+    when_to_use: "Lỗi do con người lặp lại; điểm có nguy cơ lỗi cao."
+    how_to_apply: ["Xác định lỗi", "Chọn ngăn ngừa hoặc cảnh báo", "Thử nghiệm 2 tuần", "Đo tỷ lệ lỗi trước/sau"]
+    how_to_read_results: "Phòng ngừa (Prevention) rẻ hơn thẩm định/sửa chữa theo Rule of Ten."
+    pitfalls: ["Chỉ dựa vào cẩn thận của con người"]
+    example: "USB chỉ cắm một chiều; POS bắt buộc nhập đủ thông tin; khuôn đóng gói chỉ vừa đúng loại; checklist tick đủ trước xuất kho; cân điện tử đèn xanh/đỏ; load cell báo đỏ khi ngoài 500-520 g."
+
+  - id: "m02_jidoka_andon"
+    name_vi: "Jidoka và Andon"
+    name_en: "Jidoka / Andon"
+    origin: "Jidoka thường được dẫn đến máy dệt tự dừng khi đứt sợi của Sakichi Toyoda (cuối thế kỷ 19); trụ cột thứ hai của TPS cùng JIT."
+    components: ["Jidoka: máy/quy trình tự dừng khi bất thường để lỗi không trôi xuống công đoạn sau", "Andon: đèn/dây kéo/nút báo vấn đề, công nhân có quyền kích hoạt, đội trưởng đến xử lý ngay", "Genchi Genbutsu: đi và xem tận nơi"]
+    when_to_use: "Chặn lỗi tại nguồn, văn hóa dừng lại khi có lỗi, dịch vụ có thể 'giữ đơn'."
+    how_to_apply: ["Trao quyền dừng cho nhân viên tuyến đầu", "Quy ước tín hiệu", "Quản lý đến xử lý ngay", "5-Why cuối tuần"]
+    how_to_read_results: "So chi phí dừng (45 triệu) với lỗi lọt khách (600 triệu) trong case giả định."
+    pitfalls: ["Văn hóa chất lượng yếu đi khi tăng trưởng quá nhanh (thu hồi lớn khoảng 2009-2010 của Toyota theo nhiều báo cáo)"]
+    example: "Nhà hàng: bất kỳ nhân viên nào được 'giữ món' khi thấy món sai/thiếu (bài 9)."
+
+  - id: "m02_compare_three"
+    name_vi: "So sánh TQM, Six Sigma, Lean và chọn phương pháp"
+    name_en: "TQM vs Six Sigma vs Lean"
+    origin: "Tổng hợp của tài liệu."
+    components:
+      - "TQM: văn hóa/triết lý; công cụ PDCA, 7 QC Tools, ISO 9001; đo bằng hài lòng KH; kỹ năng thống kê thấp; kết quả dài hạn"
+      - "Six Sigma: giảm biến động bằng thống kê; DMAIC, FMEA, Control Chart, Cpk; đo DPMO, Sigma, RPN; kỹ năng thống kê cao; kết quả trung hạn 3-6 tháng"
+      - "Lean: loại bỏ lãng phí, tăng tốc; VSM, Kanban, 5S, SMED, Poka-Yoke; đo Lead Time, %VA, WIP; kết quả có thể thấy trong vài tuần"
+      - "Lean Six Sigma: Lean cho quick win, DMAIC cho vấn đề phức tạp, trong khung văn hóa TQM"
+    when_to_use: "Chọn phương pháp theo loại vấn đề."
+    how_to_apply: ["Văn hóa/thái độ: TQM", "Biến động khó tìm nguyên nhân: Six Sigma DMAIC", "Chờ đợi/lãng phí rõ: Lean", "Phức tạp, cần cả tốc độ và độ chính xác: Lean Six Sigma"]
+    how_to_read_results: "Mỗi phương pháp có ưu và nhược riêng (xem pitfalls module)."
+    pitfalls: ["TQM chậm, khó ROI; Six Sigma quan liêu; Lean đẩy áp lực/rủi ro JIT"]
+    example: "Xem bảng mức độ phù hợp trong decision_rules."
+
+  - id: "m02_project_selection"
+    name_vi: "Ma trận chọn dự án cải tiến đầu tiên"
+    name_en: "Weighted project selection matrix"
+    origin: "Công cụ chọn dự án của tài liệu (trọng số khuyến nghị)."
+    components: ["Tác động tài chính 30%", "Tác động khách hàng 25%", "Khả năng thực thi (dữ liệu, nguồn lực 2-3 tháng) 20%", "Khả năng nhân rộng 15%", "Cam kết của đội ngũ 10%"]
+    when_to_use: "SME nguồn lực ít cần chọn dự án đầu tiên."
+    how_to_apply: ["Liệt kê ứng viên", "Chấm 1-10 theo 5 tiêu chí", "Tính điểm có trọng số (m02_project_score)", "Chọn quick win"]
+    how_to_read_results: "Điểm cao nhất, ưu tiên dễ thành công nhanh."
+    pitfalls: ["Chọn vấn đề quá phức tạp ngay từ đầu"]
+    example: "Trà sữa: vị không đồng nhất 8,1 > giao trễ 6,3 > lỗi in hóa đơn 5,2."
+
+  - id: "m02_haccp"
+    name_vi: "HACCP và điểm kiểm soát tới hạn (CCP)"
+    name_en: "Hazard Analysis and Critical Control Points"
+    origin: "Phát triển thập niên 1960 trong chương trình thực phẩm cho phi hành gia (theo nguồn)."
+    components: ["Phân tích mối nguy", "Xác định điểm kiểm soát tới hạn (CCP)", "Theo dõi liên tục tại CCP"]
+    when_to_use: "Ngành thực phẩm an toàn cao; không chỉ kiểm thành phẩm cuối."
+    how_to_apply: ["Tìm CCP trong quy trình (vd thanh trùng 72 độ C, 15 giây)", "Đo liên tục bằng cảm biến, hiệu chuẩn định kỳ (Prevention)", "Tính Cpl cho giới hạn một phía"]
+    how_to_read_results: "Chỉ cần sigma tăng gấp đôi, tỷ lệ không đạt tăng ~718 lần (minh họa)."
+    pitfalls: ["Chỉ kiểm vi sinh sau (Appraisal) thay cho kiểm soát quy trình"]
+    example: "Vinamilk (minh họa định lượng là giả định, số nhà máy/quốc gia xuất khẩu/chứng nhận cần kiểm chứng)."
+
+procedures:
+  - id: "m02_proc_dmaic_sme"
+    name: "Dự án DMAIC đơn giản hóa cho SME"
+    steps:
+      - "Define: tính thiệt hại bằng tiền (số lỗi x chi phí xử lý), viết Project Charter (vấn đề, mục tiêu định lượng, phạm vi, thành viên, thời gian, lợi ích)"
+      - "Measure: Check Sheet tối thiểu 2 tuần (200 mẫu trong ví dụ), kiểm tra dụng cụ đo, tính DPMO/Sigma hiện tại hoặc Cp/Cpk"
+      - "Analyze: Pareto, phân tầng (ca/máy/lô), Fishbone, 5-Why; kiểm định ý nghĩa thống kê (z hai tỷ lệ)"
+      - "Improve: giải pháp (hút ẩm, đào tạo, thay bộ phận, Poka-Yoke), pilot, đo lại"
+      - "Control: Check Sheet hàng ngày, biểu đồ p/X-bar R, quy tắc phản ứng, SOP, Process Owner"
+      - "Tính tiết kiệm và hoàn vốn"
+    outputs: "Hiệu quả tài chính, Sigma/Cpk mới, SOP và control chart vận hành"
+
+  - id: "m02_proc_capability_study"
+    name: "Đánh giá năng lực quy trình (Cp/Cpk)"
+    steps:
+      - "Xác định USL/LSL từ nhu cầu khách hàng"
+      - "Kiểm tra hệ thống đo lường (dụng cụ đã hiệu chuẩn)"
+      - "Thu dữ liệu và vẽ histogram kiểm tra giả định chuẩn"
+      - "Vẽ control chart xác nhận quy trình ổn định"
+      - "Tính mu, sigma, Cp, Cpk; ppm ngoài giới hạn; Sigma Level"
+      - "Chẩn đoán: Cp cao mà Cpk thấp = lệch tâm, chỉnh trung bình; cả hai thấp = giảm biến động"
+      - "Quy ra tiền (túi ngoài giới hạn, chi phí dư cân)"
+    outputs: "Cp, Cpk, ppm, Sigma Level, chẩn đoán lệch tâm hay biến động, tổn thất bằng tiền"
+
+  - id: "m02_proc_setup_control_chart"
+    name: "Thiết lập biểu đồ kiểm soát X-bar R"
+    steps:
+      - "Chọn n (vd 5) và tần suất (vd mỗi giờ)"
+      - "Thu ~10-20 mẫu giai đoạn ổn định"
+      - "Tính X-bar từng mẫu, R từng mẫu, grand mean, Rbar"
+      - "Tính UCL/LCL của X-bar (A2) và R (D3, D4)"
+      - "Vẽ điểm mới; áp quy tắc bất thường"
+      - "Có tín hiệu: điều tra nguyên nhân đặc biệt, sửa, ghi nhận"
+      - "Sau khi ổn định mới tính sigma_hat = Rbar/d2 và Cp/Cpk"
+    outputs: "Đường giới hạn, quy tắc phản ứng, ước lượng sigma và năng lực"
+
+  - id: "m02_proc_coq_baseline"
+    name: "Lập baseline chi phí chất lượng (COQ)"
+    steps:
+      - "Liệt kê chi phí vào 4 nhóm: Prevention, Appraisal, Internal Failure, External Failure"
+      - "Cộng tổng COQ và chia doanh thu"
+      - "So sánh phương án (kiểm tra cuối chuyền vs phòng ngừa)"
+      - "Chuyển dịch chi tiêu sang Prevention nếu failure cao"
+    outputs: "COQ/doanh thu, cơ cấu 4 nhóm, đề xuất dịch chuyển ngân sách"
+
+  - id: "m02_proc_roadmap_sme"
+    name: "Lộ trình triển khai Quality Management 12 tháng cho tổ chức mới bắt đầu"
+    steps:
+      - "Tháng 1-2 Nền tảng: cam kết lãnh đạo, đào tạo 7 QC Tools cho quản lý, 5S khu vực chính"
+      - "Tháng 3-4 Đo lường: Check Sheet thu dữ liệu lỗi, tính COQ baseline"
+      - "Tháng 5-8 Phân tích và cải tiến: chọn 1-2 vấn đề ưu tiên (Pareto), PDCA/DMAIC đơn giản, thử Poka-Yoke/SMED"
+      - "Tháng 9-12 Chuẩn hóa và mở rộng: SOP, Control Chart, mở rộng sang bộ phận khác"
+    outputs: "Hệ thống chất lượng nền tảng, baseline COQ, 1-2 dự án có kết quả, SOP và Control Chart"
+
+  - id: "m02_proc_five_why_fishbone"
+    name: "Tìm nguyên nhân gốc bằng Fishbone + 5-Why + dữ liệu"
+    steps:
+      - "Nêu vấn đề đo được (vd tỷ lệ phàn nàn 12%)"
+      - "Fishbone 6M liệt kê nguyên nhân tiềm năng"
+      - "Phân tầng dữ liệu theo ca/máy/lô để thu hẹp"
+      - "5-Why trên nhánh nghi ngờ chính tới nguyên nhân hệ thống"
+      - "Kiểm chứng bằng dữ liệu/kiểm định trước khi hành động"
+    outputs: "Nguyên nhân gốc có bằng chứng và hướng cải tiến"
+
+decision_rules:
+  - "Nếu Cp >= 1,33 nhưng Cpk thấp hơn rõ (ví dụ 1,07) thì vấn đề là LỆCH TÂM: chỉnh trung bình về giữa USL-LSL trước, chưa cần giảm biến động."
+  - "Nếu cả Cp và Cpk đều < 1 thì biến động quá lớn: phải cải tiến quy trình sâu (thay thiết bị, kiểm soát nguyên liệu), không chỉ chỉnh máy."
+  - "Nếu Cpk < 1,00 thì quy trình không đủ năng lực và chắc chắn sinh lỗi; 1,00-1,33 tạm chấp nhận, kiểm soát chặt; >= 1,33 đạt nhiều ngành; >= 1,67 rất tốt."
+  - "Nếu quy trình có điểm ngoài UCL/LCL hoặc chuỗi bất thường thì dừng, điều tra special cause (không phạt cá nhân); nếu quy trình ổn định mà vẫn có lỗi thì thay đổi hệ thống/quy trình."
+  - "Nếu chưa ổn định (không in control) thì KHÔNG tính Cpk; ổn định trước, năng lực sau."
+  - "Nếu đang 'cài dư' (mu cao hơn mục tiêu) để tránh thiếu cân thì giảm sigma trước, rồi mới hạ trung bình; hạ trung bình mà giữ sigma sẽ làm tỷ lệ ngoài giới hạn vọt lên."
+  - "Nếu vấn đề là văn hóa/thái độ thì chọn TQM; nếu biến động khó tìm nguyên nhân thì Six Sigma DMAIC; nếu lãng phí rõ, quan sát được thì Lean; nếu phức tạp cần cả tốc độ và độ chính xác thì Lean Six Sigma."
+  - "Nếu là SME 1-10 người thì dùng 5S, Poka-Yoke đơn giản, Check Sheet; 10-50 người thêm PDCA, Fishbone, Pareto, control chart cơ bản; chỉ doanh nghiệp lớn/xuất khẩu mới cần full DMAIC, Belt, ISO, QMS."
+  - "Nếu vấn đề đơn giản thì dùng PDCA nhanh; chỉ dùng DMAIC đầy đủ cho vấn đề phức tạp."
+  - "Nếu nghi ngờ chênh lệch giữa hai nhóm (ca, máy) thì kiểm định z hai tỷ lệ (|z| > 1,96) trước khi kết luận, nhất là mẫu nhỏ."
+  - "Nếu có nhiều loại lỗi thì Pareto chọn vital few (nhóm chiếm ~80% đầu); nếu dữ liệu không theo 80/20 (như bài 10 là 80/50) thì ưu tiên 3-4 loại đầu."
+  - "Nếu có kiểu lỗi Severity >= 9 thì giữ kiểm soát nghiêm dù RPN thấp (FMEA)."
+  - "Nếu lỗi có thể phát hiện sớm hơn thì đầu tư Prevention/Poka-Yoke (rẻ hơn gấp ~10 lần mỗi giai đoạn muộn theo Rule of Ten) thay vì kiểm tra 100% cuối chuyền."
+  - "Nếu nhiều bước nối tiếp thì tính RTY; mỗi bước FPY cao vẫn có thể cho RTY thấp; cải tiến bước FPY thấp nhất trước."
+  - "Nếu sản phẩm có nhiều cơ hội lỗi (hàng chục đến hàng trăm) thì mục tiêu 4 sigma (99,38%) chưa đủ: n = 100 chỉ còn ~53,6% sản phẩm hoàn hảo; cần 5-6 sigma."
+  - "Nếu thông số chỉ có một giới hạn (nhiệt độ thanh trùng tối thiểu) thì dùng Cpl/Cpu một phía."
+  - "Nếu ứng viên dự án nhiều thì chấm ma trận trọng số và chọn quick win dễ thành công."
+  - "Nếu thiếu dữ liệu định lượng thì thu Check Sheet tối thiểu 2 tuần trước khi kết luận nguyên nhân."
+  - "Nếu có nhà cung cấp giá thấp nhất nhưng chất lượng không ổn thì cân nhắc tổng chi phí (Deming điểm 4)."
+  - "Nếu áp dụng JIT/giảm tồn kho triệt để thì đánh giá rủi ro nhà cung cấp và gián đoạn cung ứng trước."
+  - "Nếu chuẩn bị mở rộng/nhượng quyền thì chuẩn hóa chất lượng bằng SOP và cân nhắc VSATTP/ISO cơ bản nếu ngành yêu cầu."
+  - "Nếu nhân viên che giấu lỗi thì xây an toàn tâm lý khi báo lỗi và tập trung vào hệ thống (Deming điểm 8)."
+
+benchmarks:
+  - {metric: "Bảng Sigma - DPMO - Yield (có shift 1,5)", value: "2 sigma 308.537 (69,1%); 3 sigma 66.807 (93,3%); 4 sigma 6.210 (99,38%); 5 sigma 233 (99,977%); 6 sigma 3,4 (99,99966%)", context: "Tính lại bằng Python, khớp bảng nguồn", confidence: "high"}
+  - {metric: "3 sigma không shift (hai phía)", value: "~2.700 DPMO", context: "Khi không dùng quy ước shift 1,5 sigma", confidence: "medium"}
+  - {metric: "Cpk đánh giá", value: "< 1,00 không đủ; 1,00-1,33 tạm chấp nhận; >= 1,33 đạt nhiều ngành; >= 1,67 rất tốt; ~1,50 ~ 6 sigma có shift (3,4 DPMO một phía)", context: "Quy ước tham khảo, ngưỡng tùy ngành", confidence: "medium"}
+  - {metric: "Xác suất ngoài giới hạn kiểm soát 3 sigma", value: "~0,27% khi quy trình ổn định", context: "Cơ sở của control chart", confidence: "high"}
+  - {metric: "Quy tắc Rule of Ten", value: "~10 lần chi phí mỗi giai đoạn muộn hơn", context: "Quy tắc kinh nghiệm, không phải định luật", confidence: "medium"}
+  - {metric: "Tỷ lệ vấn đề chất lượng do hệ thống (Deming)", value: "~94%", context: "Ước tính kinh nghiệm của Deming, không phải số liệu thực nghiệm chính xác", confidence: "low"}
+  - {metric: "Hằng số biểu đồ kiểm soát", value: "n=3: A2 1,023, D4 2,574, d2 1,693; n=4: 0,729, 2,282, 2,059; n=5: 0,577, 2,114, 2,326; n=6: 0,483, 2,004, 2,534; D3 = 0 với n <= 6", context: "Bảng tra chuẩn", confidence: "high"}
+  - {metric: "COQ minh họa", value: "COQ 15,5% -> 8,5% doanh thu khi đầu tư phòng ngừa", context: "Giả định minh họa, không phải benchmark ngành", confidence: "low"}
+  - {metric: "Thời lượng đào tạo Belt", value: "White 1 ngày; Yellow 2-3 ngày; Green 2 tuần; Black 4 tuần + dự án", context: "Tham khảo, khác nhau theo đơn vị đào tạo", confidence: "low"}
+  - {metric: "Motorola tiết kiệm công bố 1986-2001", value: "~16 tỷ USD", context: "Công bố của công ty, chưa kiểm chứng độc lập; chỉ dùng như bậc độ lớn", confidence: "low"}
+  - {metric: "GE tiết kiệm công bố 1996-2000", value: "hơn ~12 tỷ USD", context: "Tài liệu thường dẫn; nguồn khác đưa số khác; chưa kiểm chứng", confidence: "low"}
+  - {metric: "Chi phí công cụ/tư vấn", value: "Google Sheets/Excel miễn phí; Minitab ~1.500 USD/năm; SigmaXL ~500 USD/năm; tư vấn ISO 9001 30-80 triệu đồng", context: "Ước tính, cần kiểm tra giá hiện hành", confidence: "low"}
+
+pitfalls:
+  - "Áp dụng Six Sigma đầy đủ ngay từ đầu cho SME: quá phức tạp, nhân viên không áp dụng được; bắt đầu với PDCA và 7 QC Tools."
+  - "Chỉ kiểm tra ở khâu cuối, không đầu tư phòng ngừa: chi phí cao theo Rule of Ten, phát hiện muộn."
+  - "Đổ lỗi cho nhân viên thay vì xem hệ thống: nhân viên sợ hãi, che giấu lỗi (Deming)."
+  - "Không có dữ liệu định lượng, chỉ cảm nhận: giải pháp sai trọng tâm; thu Check Sheet tối thiểu 2 tuần."
+  - "Tampering: chỉnh máy/công thức mỗi khi thấy một kết quả lệch làm biến động tăng; chỉ can thiệp khi có tín hiệu đặc biệt."
+  - "Bù biến động bằng cách 'cài dư' (chi phí ẩn 25 triệu/tháng trong case): giảm sigma trước, rồi mới hạ trung bình."
+  - "Tính Cpk khi quy trình chưa ổn định hoặc dữ liệu không chuẩn: kiểm tra control chart/histogram trước."
+  - "Số liệu thiếu tin cậy do dụng cụ đo sai: kiểm tra hệ thống đo lường trước khi phân tích."
+  - "Chương trình chất lượng chỉ là khẩu hiệu: lãnh đạo tham gia Gemba Walk, gắn KPI chất lượng vào đánh giá."
+  - "Chỉ tập trung số liệu, bỏ quên con người/văn hóa: kết hợp TQM (văn hóa) với Six Sigma (công cụ)."
+  - "Giảm tồn kho quá mức theo JIT gây rủi ro gián đoạn cung ứng (bài học COVID-19)."
+  - "Lean chỉ cắt giảm mà không đầu tư con người: đẩy áp lực quá mức lên nhân viên."
+  - "Nhầm USL/LSL (khách hàng) với UCL/LCL (quy trình) và nhầm 'in control' với 'capable'."
+  - "Hiểu 6 sigma = 0,002 DPMO: thực ra 3,4 DPMO do quy ước shift 1,5 (tranh cãi trong giới thống kê)."
+  - "Dùng RPN máy móc: hai lỗi khác nhau có thể cùng RPN; xem riêng Severity >= 9."
+  - "Làm ISO để có chứng chỉ thay vì duy trì kỷ luật."
+  - "Six Sigma quá cứng nhắc có thể làm chậm đổi mới ở R&D (thường nhắc 3M thập niên 2000; thông tin báo chí, còn tranh luận)."
+  - "Coi số liệu công bố Motorola/GE (hàng chục tỷ USD) như số kiểm toán: chỉ là ước tính/công bố chưa kiểm chứng."
+
+sme_vn_guidance:
+  - "SME 1-10 nhân viên: 5S, Poka-Yoke đơn giản, Check Sheet giấy; chủ doanh nghiệp tự làm; chi phí gần như 0; chứng nhận không bắt buộc; đo khi có vấn đề rõ."
+  - "SME 10-50 nhân viên: PDCA, Fishbone, Pareto, control chart cơ bản; quản lý chất lượng kiêm nhiệm; ước tính 5-20 triệu đồng (đào tạo cơ bản, dụng cụ đo); VSATTP nếu là F&B; đo hàng tuần/tháng. (Ước tính, cần xác nhận.)"
+  - "Doanh nghiệp lớn/xuất khẩu: full DMAIC, Belt chuyên trách, ISO 9001/14001/22000, HACCP, QMS tích hợp ERP; hàng trăm triệu đến hàng tỷ đồng (ước tính)."
+  - "Công cụ: Google Sheets/Excel miễn phí (NORM.S.DIST, NORM.S.INV, STDEV.S); Minitab ~1.500 USD/năm; SigmaXL (Excel add-in) ~500 USD/năm; Canva/PowerPoint vẽ Fishbone; Trello/Asana (miễn phí bản cơ bản) cho PDCA/DMAIC tracking và Kanban; tư vấn ISO 9001 local 30-80 triệu đồng. Tất cả là ước tính, cần kiểm tra giá hiện hành."
+  - "Thuê tư vấn Green/Black Belt theo dự án thay vì đào tạo nội bộ toàn thời gian."
+  - "Dự án đầu tiên nên là quick win chi phí thấp (vd cân điện tử 500.000đ/cái; hút ẩm 18 triệu/máy; load cell + vít tải mới 50 triệu trong case giả định minh họa)."
+  - "Nhiều cải tiến có thể thấy hiệu quả vài tuần (Lean) nên hợp SME vốn ít; VSATTP/ISO cơ bản khi chuẩn bị mở rộng/nhượng quyền/xuất khẩu/đấu thầu (cần xác nhận quy định hiện hành)."
+  - "Thông tin Vinamilk (số nhà máy ~13, trên 50 quốc gia xuất khẩu, chứng nhận cụ thể) là thông tin công bố trước đây, cần kiểm chứng với báo cáo thường niên mới nhất."
+
+case_lessons:
+  - name: "Motorola và General Electric - nguồn gốc Six Sigma"
+    type: "success"
+    setup: "Giữa thập niên 1980 Motorola mất thị phần vào tay điện tử Nhật; Bill Smith (1986) nhận ra sản phẩm ít sửa trong nhà máy thì ít hỏng ở khách; Motorola chuyển từ % lỗi sang DPMO, đạt giải Baldrige 1988. Jack Welch đưa Six Sigma vào GE 1995 gắn với thăng tiến lãnh đạo."
+    key_calculations:
+      - "Yield sản phẩm 100 cơ hội lỗi = (1-d)^100: 3 sigma ~0,1%; 4 sigma ~53,6%; 5 sigma ~97,7%; 6 sigma ~99,97%"
+      - "Motorola công bố tiết kiệm ~16 tỷ USD (1986-2001); GE công bố hơn ~12 tỷ USD (1996-2000): ước tính công bố, chưa kiểm chứng"
+    lesson: "Cam kết lãnh đạo cao nhất là điều kiện thành công; 99,38% mỗi cơ hội nghe tốt nhưng với sản phẩm phức tạp nghĩa là gần nửa phải sửa; Six Sigma tối ưu quy trình có sẵn, không tự tạo đột phá (R&D cần cách khác); SME cần tư duy 'đo trước, kết luận sau' chứ không bê nguyên chương trình tập đoàn."
+    data_reliability: "unverified"
+
+  - name: "Vinamilk - ISO 9001, ISO 22000/HACCP và kiểm soát quy trình"
+    type: "success"
+    setup: "Doanh nghiệp sữa hàng đầu VN, sản phẩm rủi ro an toàn cao và xuất khẩu cần chứng nhận quốc tế; ví dụ định lượng là giả định minh họa về điểm kiểm soát tới hạn thanh trùng HTST 72 độ C 15 giây (LSL = 72), mu = 74 độ C."
+    key_calculations:
+      - "Kịch bản A sigma 0,5: Cpl = 1,333, z = 4,0, ~31,7 ppm"
+      - "Kịch bản B sigma 1,0: Cpl = 0,667, z = 2,0, ~22.750 ppm (2,3%)"
+      - "Sigma gấp đôi thì tỷ lệ không đạt tăng ~718 lần"
+      - "Ánh xạ COQ: đào tạo HACCP/hiệu chuẩn/đánh giá nhà cung cấp = Prevention; xét nghiệm vi sinh/audit = Appraisal; hủy lô = Internal; thu hồi/khiếu nại/mất uy tín = External (đắt nhất)"
+    lesson: "ISO là công cụ duy trì kỷ luật, không phải đích đến; ngành an toàn cao ưu tiên Prevention và kiểm soát quy trình liên tục vì External Failure có thể làm sụp đổ thương hiệu."
+    data_reliability: "illustrative"
+
+  - name: "Chuỗi trà sữa 'Trà Hạ Long' - 5S, Poka-Yoke, biểu đồ p"
+    type: "sme"
+    setup: "3 cửa hàng Hà Nội, 9.000 đơn/tháng, 12% đơn phàn nàn vị không đồng nhất; Fishbone cho thấy Method (không công thức định lượng), Man (đào tạo kém), Measurement (cốc đong khác nhau). Giả định minh họa (tên giả)."
+    key_calculations:
+      - "Thiệt hại: 9.000 x 12% = 1.080 đơn x 28.000 = 30.240.000đ/tháng"
+      - "Sau 6 tuần: 12% -> 3% (270 đơn); giảm 810 đơn x 28.000 = 22.680.000đ/tháng"
+      - "Đầu tư 6 cân x 500.000 + 1.000.000 vật tư = 4.000.000đ; hoàn vốn ~0,18 tháng (~5 ngày)"
+      - "Biểu đồ p sau cải tiến: pbar 3%, n 300, UCL 5,95%; tuần 22/300 = 7,33% > UCL cho tín hiệu special cause"
+    lesson: "5S + Poka-Yoke (cân điện tử định lượng) chi phí 4 triệu giảm tổn thất ~22,7 triệu/tháng; control chart p giúp tìm đúng nguyên nhân (nhân viên mới ca tối cửa hàng 2) thay vì mắng cả ba cửa hàng; đào tạo nhân viên mới 2 tuần -> 5 ngày."
+    data_reliability: "illustrative"
+
+  - name: "Toyota - Jidoka, Andon và văn hóa dừng chuyền"
+    type: "success"
+    setup: "Mọi công nhân có quyền kích hoạt Andon; đội trưởng đến xử lý ngay (Genchi Genbutsu). Phân tích chi phí là giả định minh họa: biên 15 triệu/xe, 30 xe mang lỗi, sửa cuối chuyền 2 triệu/xe, lọt khách 20 triệu/xe. Toyota có thu hồi lớn khoảng 2009-2010 (theo nhiều báo cáo) thường được phân tích do tăng trưởng quá nhanh làm yếu văn hóa chất lượng."
+    key_calculations: ["(A) dừng chuyền 3 xe x 15 triệu = 45 triệu", "(B) 30 xe x 2 triệu = 60 triệu", "(C) 30 xe x 20 triệu = 600 triệu (chưa tính uy tín)", "5-Why: cầu chì cháy -> ... -> không có bộ lọc (gốc)"]
+    lesson: "Dừng chuyền mất sản lượng nhưng rẻ nhất; trao quyền báo cáo/dừng cho tuyến đầu + nguyên nhân gốc bền hơn kiểm tra cuối chuyền; văn hóa chất lượng cần duy trì liên tục; SME dịch vụ: quyền tạm dừng đơn hàng sai."
+    data_reliability: "illustrative"
+
+  - name: "Xưởng đồ gỗ 'Gỗ Việt Đồng Nai' - DMAIC đơn giản hóa"
+    type: "sme"
+    setup: "25 công nhân, 1.600 SP/tháng, lỗi sơn 15%, chi phí xử lý 450.000đ/SP; lỗi sơn chiếm 60% tổng chi phí lỗi (giả định minh họa)."
+    key_calculations:
+      - "Thiệt hại: 240 SP x 450.000 = 108 triệu/tháng (tổng chi phí lỗi 180 triệu)"
+      - "Measure: 30/200 = 15%, DPMO 150.000 -> 2,54 sigma"
+      - "Pareto: bong tróc 46,7% + không đều màu 33,3% = 80%"
+      - "Phân tầng: ca sáng 9/110 = 8,2%; ca chiều 21/90 = 23,3%; z ~2,99 > 1,96 (p ~0,003)"
+      - "Improve: 2 máy hút ẩm x 18 triệu + đào tạo 4 triệu = 40 triệu; lỗi 15% -> 4% (64 SP); tiết kiệm 176 x 450.000 = ~79,2 triệu/tháng; hoàn vốn ~0,5 tháng; 2,54 -> 3,25 sigma"
+    lesson: "Tinh thần DMAIC không cần chứng chỉ; kiểm chứng nghi ngờ bằng kiểm định (mẫu nhỏ 8% vs 23% có thể chỉ may rủi); tìm nguyên nhân (độ ẩm, kỹ thuật phun) thay vì đổ lỗi cho thợ sơn."
+    data_reliability: "illustrative"
+
+  - name: "Xưởng đóng gói cà phê 'Cao Nguyên Xanh' - Cp/Cpk và X-bar R"
+    type: "sme"
+    setup: "Đắk Lắk, 12 nhân sự, 40.000 túi 500 g/tháng, spec 500-520 g, mục tiêu 510 g, giá giả định 250đ/g. Ban đầu mu = 512,5, sigma = 4,2 do cài máy cao để tránh thiếu cân (giả định minh họa, kiểm tra bằng Python)."
+    key_calculations:
+      - "Trước: Cp 0,794; Cpk 0,595 (lệch về USL); DPMO ~38.532; ~3,27 sigma; ~1.541 túi ngoài giới hạn; tổn thất ~18,5 + 25 = ~43,5 triệu/tháng"
+      - "Cải tiến: thay vít tải, load cell (Poka-Yoke cảnh báo), đo ẩm đầu vào, hiệu chuẩn cân; đầu tư 50 triệu"
+      - "X-bar R từ 10 mẫu đầu: grand mean 510,26; Rbar 5,5; UCL/LCL X-bar 513,43/507,09; UCL_R 11,63; mẫu 11 = 517,0 ngoài kiểm soát"
+      - "Sau: sigma_hat 2,36; Cp 1,41; Cpk 1,37; DPMO ~26; ~5,54 sigma; ~1 túi lỗi/tháng; chi phí dư cân 2,6 triệu"
+      - "Tiết kiệm ~40,9 triệu/tháng; hoàn vốn ~1,2 tháng; chỉ hạ mu về 510 mà giữ sigma 4,2 thì ~17.268 ppm (~690 túi)"
+    lesson: "Dùng Cp và Cpk cùng nhau; đừng dùng dư cân che biến động; ổn định trước, năng lực sau; chất lượng cao hơn VÀ chi phí thấp hơn đồng thời (bác bỏ 'chất lượng tốn tiền'); cần kiểm tra giả định phân phối chuẩn bằng histogram."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "DPMO và Sigma Level của xưởng may"
+    inputs: {units: 5000, opportunities: 4, defects: 45}
+    steps:
+      - "Tổng cơ hội = 5.000 x 4 = 20.000"
+      - "DPMO = 45/20.000 x 10^6 = 2.250"
+      - "Yield = 1 - 2.250/10^6 = 99,775%"
+      - "Sigma Level = Phi_inv(0,99775) + 1,5 = 2,84 + 1,5 = 4,34"
+    result: "4,34 sigma: khá tốt nhưng còn xa 6 sigma (bài 1 tương tự: 2.000 hộp x 3 điểm, 30 lỗi -> 5.000 DPMO, 99,5%, 4,08 sigma)"
+  - name: "Cp và Cpk của trục máy (lệch tâm)"
+    inputs: {USL: 25.10, LSL: 24.90, mu: 25.02, sigma: 0.025}
+    steps:
+      - "Cp = 0,20/0,15 = 1,333"
+      - "(USL - mu)/(3 sigma) = 0,08/0,075 = 1,067; (mu - LSL)/(3 sigma) = 0,12/0,075 = 1,600; Cpk = 1,067"
+      - "Chẩn đoán: lệch về phía USL; chỉnh về 25,00 thì Cpk = 1,333"
+      - "ppm: z_USL = 3,2 -> ~687; z_LSL = 4,8 -> ~0,8; tổng ~688 ppm; nếu đúng tâm 2 x (1 - Phi(4)) ~63 ppm"
+    result: "Cpk = 1,067 < Cp = 1,333 (giả định minh họa)"
+  - name: "Cp, Cpk, ppm của tấm gỗ (bài 11)"
+    inputs: {USL: 20.5, LSL: 19.5, mu: 20.1, sigma: 0.12}
+    steps:
+      - "Cp = 1,0/(6 x 0,12) = 1,389"
+      - "(USL - mu)/(3 sigma) = 0,4/0,36 = 1,111; (mu - LSL)/(3 sigma) = 0,6/0,36 = 1,667; Cpk = 1,111"
+      - "z_USL = 3,33 -> ~429 ppm; z_LSL = 5,0 -> ~0,3 ppm"
+    result: "Tiềm năng tốt nhưng lệch về USL; chỉnh về 20,0 thì Cpk = 1,389"
+  - name: "Cp, Cpk và quy đổi tiền: xưởng cà phê trước cải tiến"
+    inputs: {USL: 520, LSL: 500, mu: 512.5, sigma: 4.2, bags_per_month: 40000}
+    steps:
+      - "Cp = 20/25,2 = 0,794; Cpk = min(0,595; 0,992) = 0,595"
+      - "ppm: dưới 500 ~1.459; trên 520 ~37.073; tổng ~38.532 DPMO -> ~3,27 sigma; ~1.541 túi/tháng"
+      - "Chi phí túi ngoài giới hạn ~1.541 x 12.000 = ~18,5 triệu; dư cân (512,5 - 510) x 250 x 40.000 = 25 triệu; tổng ~43,5 triệu/tháng"
+    result: "Tổn thất ~43,5 triệu/tháng (giả định minh họa)"
+  - name: "Thiết lập biểu đồ X-bar R (n = 5) và phát hiện tín hiệu"
+    inputs: {grand_mean: 510.26, Rbar: 5.5, n: 5, A2: 0.577, D4: 2.114, d2: 2.326}
+    steps:
+      - "X-bar 10 mẫu đầu: 510,2; 510,8; 510,0; 509,6; 510,2; 510,4; 510,8; 510,4; 510,6; 509,6 -> grand mean 510,26"
+      - "R: 6;6;4;6;5;6;5;5;6;6 -> Rbar 5,5"
+      - "UCL/LCL X-bar = 510,26 +/- 0,577 x 5,5 = 513,43 / 507,09; UCL_R = 11,63; LCL_R = 0"
+      - "Mẫu 11: X-bar 517,0 > UCL, R = 4: trung bình nhảy, phân tán không đổi (cảm biến lệch zero); mẫu 12 trở lại 510,0 sau hiệu chuẩn"
+      - "sigma_hat = 5,5/2,326 = 2,36; Cp = 1,41; Cpk = min(1,373; 1,447) = 1,37; ppm ~26 (19 + 7); ~5,54 sigma"
+    result: "Cpk 0,595 -> 1,37; DPMO 38.532 -> ~26; tiết kiệm ~40,9 triệu/tháng"
+  - name: "Biểu đồ p (bài 14)"
+    inputs: {pbar: 0.04, n: 200}
+    steps:
+      - "sqrt(0,04 x 0,96/200) = 0,01386; UCL = 0,04 + 0,0416 = 8,16%; LCL = max(0; -0,16%) = 0"
+      - "Ngày 14 lỗi = 7% < UCL: trong kiểm soát (biến động ngẫu nhiên, không truy cứu cá nhân)"
+      - "Ngày 18 lỗi = 9% > UCL: ngoài kiểm soát, điều tra special cause"
+    result: "UCL 8,16%; 18 lỗi là tín hiệu bất thường"
+  - name: "RTY quy trình 4 bước và 5 bước"
+    inputs: {fpy_4: [0.97, 0.95, 0.99, 0.98], fpy_5: [0.98, 0.98, 0.98, 0.98, 0.98]}
+    steps:
+      - "4 bước: 0,97 x 0,95 x 0,99 x 0,98 = 0,894 = 89,4%; ưu tiên bước 2 (95%)"
+      - "5 bước mỗi bước 98%: 0,98^5 = 90,4% (~9,6 SP/100 làm lại); mỗi bước 99%: 0,99^5 = 95,1%"
+    result: "RTY 89,4% và 90,4% (giả định minh họa)"
+  - name: "Kanban và SMED"
+    inputs: {D: 120, L: 0.5, alpha: 0.2, C: 10, setup_before: 60, setup_after: 20}
+    steps:
+      - "k = 120 x 0,5 x 1,2/10 = 7,2 -> 8 khay"
+      - "SMED: 60 phút -> 20 phút, giảm 66,7%; 6 lần/ngày tiết kiệm 240 phút (4 giờ)"
+    result: "8 khay; giảm 66,7% thời gian đổi loại túi"
+  - name: "FMEA giao đồ ăn online"
+    inputs: {failure_modes: ["Giao sai địa chỉ (8,3,2)", "Đồ ăn nguội (6,6,7)", "Thiếu món (7,4,3)"]}
+    steps: ["RPN = 48; 252; 84", "Ưu tiên đồ ăn nguội (252); sau cải tiến O 6->3, D 7->4: RPN = 6x3x4 = 72 (giảm 71%)"]
+    result: "Xử lý 'đồ ăn nguội' trước"
+  - name: "Chấm điểm dự án và Pareto"
+    inputs: {weights: [0.30, 0.25, 0.20, 0.15, 0.10]}
+    steps:
+      - "A (8,9,8,7,8) = 8,1; B (7,8,4,6,5) = 6,3; C (4,3,9,5,7) = 5,2 -> chọn A"
+      - "Pareto bài 10 (120,85,60,40,30,25,15,10,8,7; tổng 400): 80% đạt ở loại thứ 5; thực tế 80/50"
+    result: "Chọn dự án A; ưu tiên 3-4 loại lỗi đầu"
+  - name: "So sánh COQ hai phương án (bài 6)"
+    inputs: {revenue: 10000, A: [50, 400, 600, 500], B: [300, 200, 250, 100]}
+    steps: ["A = 1.550 (15,5%); B = 850 (8,5%)", "Tiết kiệm 700 triệu/năm; Prevention tăng 250"]
+    result: "Phương án B rẻ hơn (giả định minh họa)"
+
+practice_questions:
+  - {q: "Tính DPMO và Sigma Level cho 2.000 hộp, mỗi hộp 3 điểm kiểm tra, 30 lỗi.", a: "Cơ hội 6.000; DPMO 5.000; yield 99,5%; Sigma = Phi_inv(0,995) + 1,5 = 2,576 + 1,5 ~ 4,08."}
+  - {q: "Vẽ Fishbone 6M cho 'khách phàn nàn giao hàng trễ' của shop online.", a: "Man (đóng gói chậm, thiếu nhân sự cao điểm); Machine (máy in vận đơn lỗi); Material (thiếu hộp/bao bì); Method (không có quy trình chốt đơn trước cut-off); Measurement (không đo thời gian từng khâu); Environment (mưa bão, cao điểm sale). Sau đó Check Sheet + Pareto chọn nhánh chính."}
+  - {q: "Lập FMEA cho pha chế cà phê (>= 3 failure modes), tính RPN và ưu tiên.", a: "Sai tỷ lệ 7x5x6 = 210; nhiệt độ nước 5x4x5 = 100; nhầm đơn 6x4x4 = 96; cốc bẩn 9x2x3 = 54. Ưu tiên sai tỷ lệ (Poka-Yoke máy định lượng/cân; sau cải tiến O=2, D=3: 42, giảm 80%); cốc bẩn S = 9 vẫn giữ vệ sinh nghiêm ngặt."}
+  - {q: "Áp dụng 5-Why cho 'nhân viên thường xuyên đi trễ'.", a: "Ca 7h nhưng xe buýt tới 7h05 -> lịch ca theo giờ mở cửa, không theo thực tế di chuyển -> chưa ai khảo sát nơi ở nhân viên. Gốc: quy trình xếp ca không dựa trên dữ liệu (hệ thống quản lý kiểm soát được), không phải thiếu ý thức."}
+  - {q: "Thiết kế một giải pháp Poka-Yoke cho quy trình hay sai do con người.", a: "Xác định lỗi; chọn dạng ngăn ngừa (khuôn/đồ gá chỉ lắp đúng một cách) hoặc cảnh báo (đèn/âm thanh/checklist bắt buộc); thử 2 tuần; đo tỷ lệ lỗi trước/sau."}
+  - {q: "So sánh COQ của 'kiểm tra 100% cuối chuyền' với 'đầu tư phòng ngừa' cho xưởng doanh thu 10.000 triệu/năm.", a: "A: 50+400+600+500 = 1.550 (15,5%); B: 300+200+250+100 = 850 (8,5%); B tiết kiệm 700 triệu/năm dù Prevention tăng 250 (giả định minh họa)."}
+  - {q: "Thực hiện 5S cho bàn làm việc/tủ bếp, chụp ảnh trước/sau.", a: "Đo thời gian tìm một món đồ trước/sau làm số liệu."}
+  - {q: "Lập Project Charter DMAIC đơn giản cho một vấn đề chất lượng bạn từng gặp.", a: "Dùng template 7 mục; mục tiêu phải có con số và thời hạn."}
+  - {q: "Đề xuất áp dụng 'Andon Cord' cho một quy trình dịch vụ (call center, nhà hàng).", a: "Nhà hàng: nhân viên nào cũng được 'giữ món' khi thấy sai/thiếu; quy ước tín hiệu; quản lý đến xử lý ngay; ghi lại để 5-Why cuối tuần."}
+  - {q: "Dựng Pareto cho 400 lỗi, 10 loại: 120, 85, 60, 40, 30, 25, 15, 10, 8, 7.", a: "Tích lũy: 30,0 - 51,3 - 66,3 - 76,3 - 83,8 - 90,0 - 93,8 - 96,3 - 98,3 - 100%. 80% đạt ở loại thứ 5 (50% số loại ~84% lỗi): '80/50'. Ưu tiên 3-4 loại đầu."}
+  - {q: "Tấm gỗ 20,0 +/- 0,5 mm; mu = 20,1; sigma = 0,12. Tính Cp, Cpk, ppm.", a: "Cp 1,389; Cpk 1,111; z_USL 3,33 -> ~429 ppm; z_LSL 5,0 -> ~0,3 ppm. Lệch về USL; chỉnh về 20,0 thì Cpk 1,389."}
+  - {q: "X-bar R với n = 4, grand mean 50,2, Rbar 3,0. Tính giới hạn và sigma_hat.", a: "A2 0,729, D4 2,282, d2 2,059: UCL_X = 52,39; LCL_X = 48,01; UCL_R = 6,85; LCL_R = 0; sigma_hat = 1,46."}
+  - {q: "Quy trình 4 bước FPY 97%, 95%, 99%, 98%. Tính RTY.", a: "RTY = 89,4%; hơn 10% làm lại ít nhất một lần; ưu tiên bước 2 (95%)."}
+  - {q: "Biểu đồ p: n = 200/ngày, pbar = 4%. Ngày 14 lỗi và 18 lỗi có ngoài kiểm soát không?", a: "UCL = 8,16%, LCL = 0. 14 lỗi (7%) trong kiểm soát; 18 lỗi (9%) ngoài kiểm soát, điều tra."}
+  - {q: "Quán bán 60 cốc trà đào/giờ, bổ sung 0,75 giờ, đệm 25%, khay 5 cốc. Số thẻ Kanban?", a: "k = 60 x 0,75 x 1,25/5 = 11,25 -> 12 thẻ."}
+  - {q: "Vì sao 6 sigma ứng với 3,4 DPMO chứ không phải 0,002?", a: "Quy ước Motorola: trung bình trôi 1,5 sigma, nên 6 sigma ngắn hạn = 4,5 sigma dài hạn, (1 - Phi(4,5)) x 10^6 = 3,4. Không shift thì hai phía ~0,002 DPMO."}
+  - {q: "Vì sao chỉ hạ trung bình từ 512,5 về 510 g mà không giảm sigma lại tệ hơn?", a: "Với sigma 4,2 g, z = +/-2,38, mỗi phía ~8.634 ppm, tổng ~17.268 ppm (~690 túi/tháng) so với ~26 DPMO sau khi giảm sigma xuống 2,36."}
+
+checklist:
+  - "Lãnh đạo cam kết nguồn lực và trực tiếp tham gia (Champion)"
+  - "Nhân viên được phép báo lỗi mà không bị trừng phạt"
+  - "Đã chọn dự án đầu tiên bằng ma trận trọng số, ưu tiên quick win"
+  - "Đã tính COQ hiện tại (baseline) cho 4 nhóm chi phí"
+  - "Có Check Sheet thu thập dữ liệu lỗi tối thiểu 2 tuần"
+  - "Dụng cụ đo đã được kiểm tra/hiệu chuẩn"
+  - "Đã xác định USL/LSL từ nhu cầu khách hàng"
+  - "Có Pareto xác định vital few"
+  - "Đã vẽ Fishbone 6M và kiểm chứng nguyên nhân bằng dữ liệu, không chỉ cảm nhận"
+  - "Đã chạy 5-Why đến nguyên nhân hệ thống"
+  - "Đã tính Cp, Cpk và so sánh trước/sau cải tiến (sau khi xác nhận quy trình ổn định)"
+  - "Đã thử nghiệm quy mô nhỏ (pilot) trước khi nhân rộng"
+  - "Đã triển khai 5S và Poka-Yoke ở các điểm lỗi cao"
+  - "Đã thiết lập biểu đồ kiểm soát (X-bar R hoặc p) và quy tắc phản ứng khi có tín hiệu"
+  - "Đã chuẩn hóa bằng SOP và đào tạo"
+  - "Đã tính hiệu quả tài chính và thời gian hoàn vốn"
+  - "Có lịch rà soát định kỳ (PDCA), mở rộng sang vấn đề tiếp theo"
+  - "Đã kiểm tra giả định phân phối chuẩn (histogram) trước khi dùng công thức Cp/Cpk/ppm"
+  - "Số liệu công bố của công ty quốc tế được gắn nhãn ước tính/chưa kiểm chứng"
+
+excel_google_sheets_templates:
+  - name: "Công thức Excel cho năng lực quy trình"
+    description: "Giả sử dữ liệu ở A2:A201, LSL ở E1, USL ở E2"
+    formulas:
+      - "Trung bình: =AVERAGE(A2:A201); độ lệch chuẩn mẫu: =STDEV.S(A2:A201)"
+      - "Cp: =(E2-E1)/(6*STDEV.S(A2:A201))"
+      - "Cpk: =MIN((E2-AVERAGE(A2:A201)),(AVERAGE(A2:A201)-E1))/(3*STDEV.S(A2:A201))"
+      - "DPMO từ Cpk (hai phía gần đúng theo nguồn): =(NORM.S.DIST(-(3*Cpk),TRUE))*1000000"
+      - "Sigma Level từ DPMO: =NORM.S.INV(1-DPMO/1000000)+1.5"
+  - name: "Check Sheet"
+    description: "Bảng cột: Ngày | Ca làm (Sáng/Chiều/Tối) | Loại lỗi (mô tả cụ thể) | Số lượng (đếm vạch) | Ghi chú; thu tối thiểu 2 tuần."
+  - name: "Project Charter DMAIC đơn giản hóa"
+    description: "7 mục: Tên dự án; Vấn đề; Mục tiêu định lượng (giảm tỷ lệ lỗi từ X% xuống Y%); Phạm vi; Thành viên; Thời gian hoàn thành; Lợi ích tài chính ước tính."
+  - name: "Bảng FMEA"
+    description: "Cột: Công đoạn | Failure Mode | S | O | D | RPN | Hành động khắc phục | S' | O' | D' | RPN mới."
+  - name: "Bảng Pareto, X-bar R, biểu đồ p, ma trận chọn dự án"
+    description: "Pareto: =SUM($B$2:B2)/SUM($B$2:$B$11); X-bar R: cột mẫu, X-bar, R, UCL/LCL theo A2, D3, D4; biểu đồ p: UCL = pbar + 3*SQRT(pbar*(1-pbar)/n), LCL = MAX(0, ...); ma trận dự án: SUMPRODUCT(trọng số, điểm)."

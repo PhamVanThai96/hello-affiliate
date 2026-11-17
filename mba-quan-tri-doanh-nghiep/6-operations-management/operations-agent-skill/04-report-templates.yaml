@@ -1,0 +1,131 @@
+# 04-report-templates.yaml — Mẫu báo cáo/bảng biểu đầu ra chuẩn
+common_structure:
+  - "1. Tóm tắt điều hành (kết luận + con số chính + khuyến nghị trong 3-5 dòng)"
+  - "2. Bối cảnh và dữ liệu đầu vào (kèm nhãn VERIFIED/GIẢ ĐỊNH/MINH HỌA/CHƯA KIỂM CHỨNG)"
+  - "3. Phương pháp và công thức sử dụng (và vì sao chọn; nêu giả định)"
+  - "4. Tính toán từng bước (bảng, có đơn vị)"
+  - "5. Phân tích độ nhạy / kịch bản"
+  - "6. Diễn giải ý nghĩa kinh doanh và so sánh benchmark (ghi độ tin cậy)"
+  - "7. Phương án và khuyến nghị (rẻ -> đắt, ưu/nhược, điều kiện thay đổi khuyến nghị)"
+  - "8. Rủi ro, giả định, giới hạn, chuyên gia cần xác nhận và disclaimer"
+  - "9. Bước hành động tiếp theo (ai, làm gì, khi nào, đo bằng chỉ số nào)"
+
+templates:
+  rpt_process_diagnosis:
+    title: "Báo cáo chẩn đoán quy trình (VSM / năng lực / lãng phí)"
+    tables:
+      - name: "Bảng VSM theo bước"
+        columns: [Bước, Người/máy, "CT (phút)", "Chờ trước bước (phút)", Loại (VA/NVA-N/NVA), "Năng lực (đơn vị/giờ)", Utilization, Ghi chú]
+      - name: "Chỉ số tổng"
+        columns: ["Throughput time", "Tổng thời gian tạo giá trị", PCE, "Takt time", "Công đoạn nghẽn", "WIP đo được", "WIP theo Little"]
+      - name: "Lãng phí (7 Wastes) và Pareto"
+        columns: [Loại lãng phí, Biểu hiện, "Thời gian/chi phí mất", "% tích lũy", "Hành động ECRS"]
+      - name: "Phương án cải tiến"
+        columns: [Phương án, Chi phí, "PCE/throughput time kỳ vọng", "Hoàn vốn", Rủi ro]
+  rpt_quality:
+    title: "Báo cáo chất lượng (lỗi, năng lực quy trình, chi phí chất lượng)"
+    tables:
+      - name: "Baseline lỗi"
+        columns: [Chỉ số, Giá trị, "Đơn vị/cơ hội", "Ghi chú"]
+        rows_hint: [FPY, RTY, DPMO, Sigma level, Yield]
+      - name: "Pareto lỗi"
+        columns: [Loại lỗi, "Số lượng", "% ", "% tích lũy", "Chi phí/lỗi", "Tổng thiệt hại"]
+      - name: "Năng lực quy trình"
+        columns: [CTQ, LSL, USL, Trung bình, Sigma, Cp, Cpk, "ppm ngoài giới hạn", "Kết luận"]
+      - name: "Biểu đồ kiểm soát"
+        columns: [Biểu đồ, CL, UCL, LCL, "Điểm ngoài kiểm soát", "Nguyên nhân đặc biệt"]
+      - name: "Chi phí chất lượng (COQ)"
+        columns: [Nhóm (phòng ngừa/thẩm định/lỗi nội bộ/lỗi bên ngoài), "Chi phí (đồng/năm)", "% doanh thu"]
+      - name: "Kế hoạch cải tiến (DMAIC)"
+        columns: [Nguyên nhân gốc, Hành động, Người phụ trách, Hạn, "KPI mục tiêu", RPN]
+  rpt_supply_chain:
+    title: "Báo cáo chuỗi cung ứng (nhà cung cấp, rủi ro, Bullwhip)"
+    tables:
+      - name: "Supplier Scorecard"
+        columns: [Nhà cung cấp, "Chất lượng", "Giá/TCO", "Giao hàng (OTD)", "Linh hoạt", "Tài chính", "Điểm có trọng số", "Tỷ trọng phân bổ"]
+      - name: "TCO / landed cost"
+        columns: [Phương án, "Giá mua", "Vận chuyển", "Thuế/phí", "Tồn kho/hao hụt", "Lỗi/giao trễ", "Tổng TCO/đơn vị"]
+      - name: "Ma trận Kraljic"
+        columns: [Mặt hàng, "Tác động lợi nhuận", "Rủi ro nguồn cung", Nhóm, "Chiến lược"]
+      - name: "Rủi ro nguồn cung"
+        columns: [Rủi ro, "P", "I", "R = P x I", "Chi phí phòng ngừa", "Lợi ích ròng", "Quyết định"]
+      - name: "Bullwhip"
+        columns: [Tầng, "Phương sai đơn hàng", "Phương sai nhu cầu", "BW", "Nguyên nhân nghi ngờ", "Giải pháp"]
+  rpt_inventory_plan:
+    title: "Kế hoạch tồn kho theo SKU"
+    tables:
+      - name: "Phân loại ABC (ABC-XYZ)"
+        columns: [SKU, "Nhu cầu năm", "Giá trị sử dụng năm", "% tích lũy", Nhóm]
+      - name: "Chính sách theo SKU"
+        columns: [SKU, Nhóm, "Hệ thống (s,Q)/(R,S)", D, S, H, EOQ, "Q áp dụng", "Mức phục vụ/Z", "Safety stock", ROP, "Order-up-to"]
+      - name: "Tổng chi phí so sánh"
+        columns: [Phương án, "Chi phí đặt hàng", "Chi phí lưu kho", "Chi phí mua", "Tổng chi phí", "Ghi chú (sức chứa, hạn dùng)"]
+      - name: "KPI tồn kho"
+        columns: [KPI (vòng quay, DIO, stockout rate, fill rate, accuracy, obsolete %), "Trước", "Sau/Mục tiêu", "Vốn giải phóng"]
+      - name: "Hàng chậm cần xử lý"
+        columns: [SKU, "Giá trị tồn", "Số ngày tồn", "Biện pháp (khuyến mãi/trả NCC/thanh lý)", "Thu hồi vốn dự kiến"]
+  rpt_capacity:
+    title: "Báo cáo phân tích năng lực và nhân sự"
+    tables:
+      - name: "Năng lực hiện tại"
+        columns: [Công đoạn/nguồn lực, "Năng lực thiết kế", "Năng lực hiệu quả", "Sản lượng thực", "Hiệu suất", "Utilization", "Ràng buộc?"]
+      - name: "Hòa vốn mở rộng"
+        columns: [Phương án, "Chi phí cố định", "Biến phí/đơn vị", "Giá bán", "Q hòa vốn", "Biên an toàn", "% năng lực mới tại hòa vốn"]
+      - name: "Kịch bản/EMV/NPV"
+        columns: [Kịch bản nhu cầu, "Xác suất", "Phương án", "NPV/Lợi nhuận", "EMV"]
+      - name: "Hàng đợi và xếp ca"
+        columns: [Khung giờ, "Lambda (khách/giờ)", "Mu", "Số quầy c", "Rho", "Xác suất chờ (Erlang C)", "Wq", "Chi phí nhân sự"]
+      - name: "So sánh Chase/Level/Mixed"
+        columns: [Chiến lược, "Lương", "Tăng ca", "Tuyển/sa thải", "Lưu kho", "Thiếu hàng/thuê ngoài", "Tổng chi phí"]
+  rpt_project:
+    title: "Báo cáo lịch dự án và EVM"
+    tables:
+      - name: "Bảng CPM"
+        columns: [Việc, "Tiền nhiệm", "a/m/b", te, "Phương sai", ES, EF, LS, LF, Float, "Đường găng?"]
+      - name: "Xác suất kịp hạn"
+        columns: ["Te dự án", "Sigma dự án", "Hạn", Z, "Xác suất kịp hạn", "Ngày cam kết (85-90%)"]
+      - name: "EVM"
+        columns: [PV, EV, AC, CV, SV, CPI, SPI, EAC, ETC, VAC, TCPI]
+      - name: "Phương án crash"
+        columns: [Việc (float = 0), "Ngày rút", "Chi phí/ngày", "Lợi ích/ngày", "Lợi ròng", "Đường găng mới?"]
+      - name: "Risk register"
+        columns: [Rủi ro, P, "Tác động", EMV, "Chiến lược (tránh/giảm/chuyển/chấp nhận)", "Chủ rủi ro", "Quỹ dự phòng"]
+  rpt_forecast:
+    title: "Báo cáo dự báo và sai số"
+    tables:
+      - name: "So sánh mô hình (backtesting)"
+        columns: [Mô hình, "Tham số", MAD, RMSE, "MAPE/WAPE", Bias, "Chọn?"]
+      - name: "Dự báo kỳ tới"
+        columns: [Kỳ, "Dự báo", "Khoảng dự báo", "Chỉ số mùa vụ", "Ghi chú sự kiện"]
+      - name: "Giám sát"
+        columns: [Kỳ, "Thực tế", "Dự báo", "Sai số", "Tích lũy sai số", "Tracking Signal", "Hành động"]
+      - name: "Từ dự báo sang quyết định"
+        columns: [Quyết định, "Đầu vào từ dự báo", "Safety stock/năng lực/nhân sự", "Bất đối xứng chi phí thiếu/dư"]
+  rpt_layout_line:
+    title: "Báo cáo bố trí mặt bằng và cân bằng chuyền"
+    tables:
+      - name: "Ma trận Từ-Đến"
+        columns: [Từ, Đến, "Tải/ngày", "Khoảng cách hiện tại", "Khoảng cách đề xuất", "Load-Distance trước", "Load-Distance sau"]
+      - name: "Quan hệ REL"
+        columns: [Cặp khu, "Mức gần kề (A/E/I/O/U/X)", "Lý do", TCR]
+      - name: "Chuyền / trạm"
+        columns: [Trạm, "Việc phân bổ", "Thời gian trạm", "Cycle time", "Nhàn rỗi", "Hiệu suất"]
+      - name: "Phương án layout"
+        columns: [Phương án (Process/Cell/Product), "Chi phí chuyển đổi", "Chi phí vận chuyển/năm", "Lead time", "Hoàn vốn", "Rủi ro an toàn/PCCC (cần chuyên gia)"]
+      - name: "Bán lẻ/quán"
+        columns: [Khu, "Diện tích", "Doanh thu/m2", "Hệ số sử dụng", "Vùng nóng/lạnh", "Hành động"]
+  rpt_toc_plan:
+    title: "Kế hoạch TOC / DBR"
+    tables:
+      - name: "Xác định ràng buộc"
+        columns: [Công đoạn, "Năng lực", "Nhu cầu", Utilization, "WIP phía trước", "Ràng buộc?", "Loại ràng buộc"]
+      - name: "Exploit (hành động không tốn vốn)"
+        columns: [Nguồn lãng phí tại ràng buộc, "Thời gian mất/ngày", "Hành động", "Tăng đầu ra", "Delta T"]
+      - name: "Product mix theo T/CU"
+        columns: [Sản phẩm, "Giá bán", TVC, "T/đơn vị", "Phút ràng buộc/đơn vị", "T/CU", "Nhu cầu", "Phân bổ", "Throughput"]
+      - name: "Throughput accounting"
+        columns: [T, I, OE, "Lợi nhuận ròng = T - OE", "ROI = (T - OE)/I", "T/OE", "T/I"]
+      - name: "Buffer DBR"
+        columns: [Loại buffer (ràng buộc/vận chuyển/lắp ráp), "Kích thước (giờ)", "Vùng hiện tại (Xanh/Vàng/Đỏ)", "Nguyên nhân gốc", "Hành động"]
+      - name: "Elevate"
+        columns: [Phương án nâng cấp, "Chi phí", "Delta T/tháng", "Hoàn vốn", "Ràng buộc mới dự kiến"]

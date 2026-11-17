@@ -1,0 +1,82 @@
+# 00-README.yaml — ĐIỂM VÀO. Agent mới: đọc file này TRƯỚC, rồi làm theo load_order.
+skill:
+  id: operations-agent-skill
+  version: 1.0
+  language: vi (thuật ngữ Anh trong ngoặc)
+  created: 2026-11-17
+  purpose: >
+    Bộ tri thức đã chắt lọc từ giáo trình "Quản trị vận hành" (MBA ứng dụng SME Việt Nam)
+    để một agent vận hành tư vấn, giải đáp, tính toán, lập bảng biểu/báo cáo và đề xuất phương án
+    cho các vấn đề vận hành: quy trình, chất lượng, chuỗi cung ứng, tồn kho, năng lực, dự án,
+    dự báo nhu cầu, bố trí mặt bằng và lý thuyết ràng buộc (TOC).
+  source_material: >
+    9 file markdown trong thư mục cha (01-process-design-analysis.md ... 09-theory-of-constraints.md).
+    Skill này tự đủ (self-contained): agent không cần đọc file markdown gốc để làm việc;
+    markdown gốc chỉ để tham chiếu sâu thêm nếu có.
+  portability: >
+    Chỉ gồm YAML (+ 1 script Python tùy chọn). Copy nguyên thư mục operations-agent-skill/ sang máy khác là dùng được.
+    Không có đường dẫn tuyệt đối, không phụ thuộc phần mềm ngoài. Script kiểm tra cần python3 + pyyaml.
+  scope_in_one_line: >
+    Phân tích - tính toán - chẩn đoán - so sánh phương án - lập kế hoạch vận hành cho SME;
+    KHÔNG thay thế kỹ sư, chuyên gia an toàn lao động, hay kết luận pháp lý/tiêu chuẩn chính thức.
+
+how_to_bootstrap:    # dành cho agent mới hoàn toàn
+  step_1: Đọc toàn bộ file này.
+  step_2: Đọc 01-agent-profile.yaml (vai trò, nguyên tắc, kỷ luật tính toán, nhãn độ tin cậy) — BẮT BUỘC tuân thủ.
+  step_3: Đọc SCHEMA.yaml để hiểu cấu trúc các module.
+  step_4: Với mỗi yêu cầu của người dùng, dùng 02-decision-router.yaml để chọn module + playbook.
+  step_5: Nạp module cần dùng trong modules/ (đọc đầy đủ phần liên quan), tra công thức ở 06-formulas-index.yaml, chạy playbook ở 03-playbooks.yaml.
+  step_6: Trình bày kết quả theo 04-report-templates.yaml; tra thuật ngữ ở 05-glossary.yaml.
+  note_on_context: >
+    Mỗi module rất lớn (65-120 KB). Nếu giới hạn ngữ cảnh chặt: luôn nạp 00, 01, 02; chỉ nạp thêm 1-3 module liên quan
+    (router chỉ ra module chính + module phụ cho mỗi tình huống) và chỉ đọc các khóa cần thiết
+    (formulas, procedures, decision_rules, checklist, pitfalls) thay vì đọc toàn bộ file.
+
+load_order:
+  always: [00-README.yaml, 01-agent-profile.yaml, 02-decision-router.yaml]
+  on_demand: [03-playbooks.yaml, 04-report-templates.yaml, 05-glossary.yaml, 06-formulas-index.yaml, "modules/*.yaml"]
+  reference_only: [SCHEMA.yaml]
+
+file_index:
+  - {file: 00-README.yaml, role: Điểm vào, hướng dẫn nạp skill}
+  - {file: SCHEMA.yaml, role: Định nghĩa cấu trúc dữ liệu}
+  - {file: 01-agent-profile.yaml, role: Vai trò, phạm vi, nguyên tắc, workflow, kỷ luật tính toán, disclaimer}
+  - {file: 02-decision-router.yaml, role: Định tuyến câu hỏi -> module/công thức/playbook, chuỗi module cho bài toán đa chiều}
+  - {file: 03-playbooks.yaml, role: Kịch bản giải quyết vấn đề vận hành end-to-end}
+  - {file: 04-report-templates.yaml, role: Mẫu báo cáo/bảng biểu đầu ra}
+  - {file: 05-glossary.yaml, role: Thuật ngữ Việt-Anh và ký hiệu của cả 9 module}
+  - {file: 06-formulas-index.yaml, role: Registry mọi công thức (sinh tự động, có biểu thức Python chạy được)}
+  - {file: modules/m01-process-design-analysis.yaml, role: "Thiết kế & phân tích quy trình: VSM, SIPOC, takt, PCE, Little, utilization, Cp/Cpk, 7 Wastes, RACI"}
+  - {file: modules/m02-quality-management.yaml, role: "Quản trị chất lượng: TQM, Six Sigma (DPMO, DMAIC), SPC, FMEA, COQ, Lean, Kanban, SMED, Poka-Yoke"}
+  - {file: modules/m03-supply-chain-management.yaml, role: "Chuỗi cung ứng: Bullwhip, Fisher, Kraljic, Scorecard, TCO, S&OP, rủi ro, KPI chuỗi"}
+  - {file: modules/m04-inventory-management.yaml, role: "Tồn kho: EOQ, ROP, safety stock, ABC, newsvendor, order-up-to, chiết khấu, gộp rủi ro, DIO"}
+  - {file: modules/m05-capacity-planning.yaml, role: "Hoạch định năng lực: hiệu suất/utilization, hòa vốn, M/M/1, Erlang C, Aggregate Planning, đường cong học tập, real option"}
+  - {file: modules/m06-project-management.yaml, role: "Quản trị dự án: WBS, CPM, PERT, crashing, EVM, rủi ro, Scrum/Kanban"}
+  - {file: modules/m07-forecasting.yaml, role: "Dự báo: MA, SES, Holt, Holt-Winters, hồi quy, mùa vụ, MAD/MAPE/Bias, Tracking Signal"}
+  - {file: modules/m08-layout-strategy.yaml, role: "Bố trí mặt bằng: Process/Product/Cell, Load-Distance, CoG, Line Balancing, ROC, layout bán lẻ"}
+  - {file: modules/m09-theory-of-constraints.yaml, role: "TOC: 5 bước tập trung, T-I-OE, T/CU, DBR, buffer, CCPM, DBM, OEE"}
+
+cross_skill_links:
+  finance: "3-financial-management/finance-agent-skill (NPV/IRR/WACC cho quyết định đầu tư năng lực/layout/tự động hóa; CCC, vốn lưu động)"
+  strategic: "1-strategic-management/strategic-agent-skill (chiến lược cạnh tranh, scenario planning cho hoạch định năng lực dài hạn)"
+  rule: "Khi bài toán vượt ra ngoài vận hành (định giá đầu tư, WACC, chiến lược), nêu rõ và chỉ sang skill tương ứng thay vì tự chế công thức."
+
+maintenance:
+  validate: "python3 tools/build_and_validate.py   # kiểm tra YAML, trùng id, sinh lại 06-formulas-index.yaml"
+  update_rule: "Sửa module trong modules/, rồi chạy lại script để cập nhật 06-formulas-index.yaml."
+
+data_reliability_notes: >
+  Mỗi case_lessons trong module có data_reliability (verified/illustrative/unverified).
+  Case SME (xưởng may, quán cà phê, xưởng gỗ, phòng khám...) là số liệu giả định minh họa tự nhất quán.
+  Số liệu công ty thật (Toyota, Amazon, Zara, Walmart, Vinamilk, Boeing, Highlands, FPT, Grab, VinFast...)
+  trong case study phần lớn chưa kiểm chứng nguồn: chỉ dùng minh họa phương pháp, giữ nhãn "chưa kiểm chứng".
+  Benchmark ngành (utilization, OEE, DIO, mức phục vụ, tỷ lệ chi phí chuỗi), giá phần mềm/thiết bị và quy định VN
+  (ISO, HACCP, lao động, an toàn, thuế) là ước lượng tham khảo, cần xác nhận lại trước khi dùng cho quyết định thật.
+
+conventions_for_calculation:
+  expression_python: >
+    Biểu thức hoặc đoạn code Python minh họa cách tính; tên biến khớp mục variables và example.inputs.
+    Một số công thức cần math/numpy/scipy (vd Erlang C, Z từ mức phục vụ, Monte Carlo) hoặc nhiều dòng:
+    coi là mã tham chiếu, không nhất thiết eval một dòng.
+  id_convention: "<module id>_<tên_ngắn>, vd m04_eoq, m06_cpi_spi. Một số tên trùng nghĩa ở nhiều module (utilization, takt_time, ccc, cv, little...): chọn id theo module đang phân tích và ghi rõ."
+  units_note: "Luôn thống nhất đơn vị thời gian (phút/giờ/ngày/năm) và tiền tệ (đồng/nghìn/triệu) trước khi thay số."

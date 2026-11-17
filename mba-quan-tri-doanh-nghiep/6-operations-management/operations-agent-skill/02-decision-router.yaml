@@ -1,0 +1,198 @@
+# 02-decision-router.yaml — Định tuyến: câu hỏi/tình huống -> module + công thức + playbook
+# Cách dùng: khớp từ khóa/ý định của người dùng với `triggers`, nạp `modules` (chính trước, phụ sau),
+# tra `key_formulas` trong 06-formulas-index.yaml, chạy `playbook` trong 03-playbooks.yaml.
+routes:
+  - id: r_process_slow
+    situation: "Khách chờ lâu, đơn tồn, giao trễ, quy trình rườm rà; chủ muốn thuê thêm người"
+    triggers: [chờ lâu, hàng đợi dài, giao trễ, đơn tồn, quy trình chậm, rườm rà, lead time dài, VSM, SIPOC, flowchart, lãng phí, 7 wastes, PCE, throughput time, thuê thêm người]
+    modules: [m01, m09, m05]
+    key_formulas: [m01_throughput_time, m01_pce, m01_littles_law_wait, m01_stage_capacity, m01_process_capacity, m01_utilization]
+    playbook: pb_process_diagnosis
+  - id: r_bottleneck
+    situation: "Xưởng/dịch vụ bận rộn, tăng ca nhưng đơn trễ, một công đoạn có hàng chờ, các công đoạn khác nhàn rỗi"
+    triggers: [nút thắt, cổ chai, bottleneck, điểm nghẽn, ràng buộc, constraint, TOC, tăng ca vẫn trễ, hàng chờ trước máy, drum buffer rope, exploit, elevate]
+    modules: [m09, m01, m05]
+    key_formulas: [m09_utilization, m09_system_output, m09_wip_accumulation, m09_exploit_capacity_gain, m01_process_capacity, m09_elevate_payback]
+    playbook: pb_bottleneck_toc
+  - id: r_takt_staffing
+    situation: "Tính nhịp sản xuất, số người cần, công đoạn nào lệch nhịp khách hàng"
+    triggers: [takt time, nhịp sản xuất, số người cần, công đoạn lệch nhịp, cycle time, nhu cầu ngày, cân bằng công việc]
+    modules: [m01, m08, m05]
+    key_formulas: [m01_takt_time, m01_staff_required, m01_line_efficiency, m08_min_stations, m08_line_efficiency]
+    playbook: pb_line_balancing
+  - id: r_defects
+    situation: "Tỷ lệ lỗi cao, sản phẩm/dịch vụ không đồng đều giữa ca/cửa hàng, khách phàn nàn"
+    triggers: [tỷ lệ lỗi cao, lỗi, phế phẩm, khiếu nại, không đồng nhất, six sigma, DPMO, sigma level, Cp, Cpk, biểu đồ kiểm soát, SPC, DMAIC, fishbone, 5 why, poka-yoke, FMEA]
+    modules: [m02, m01, m09]
+    key_formulas: [m02_fpy, m02_rty, m02_dpmo, m02_sigma_level, m02_cp, m02_cpk, m02_xbar_limits, m02_r_limits, m02_p_chart, m02_rpn, m02_pareto]
+    playbook: pb_quality_defects
+  - id: r_coq
+    situation: "Muốn quy đổi chất lượng kém ra tiền và chọn dự án cải tiến chất lượng đầu tiên"
+    triggers: [chi phí chất lượng, COQ, cost of quality, chi phí sửa lỗi, rework, quy luật 1-10-100, chọn dự án cải tiến, hoàn vốn dự án chất lượng, NPS]
+    modules: [m02, m01, m06]
+    key_formulas: [m02_coq, m02_rule_of_ten, m02_defect_cost_payback, m02_project_score, m02_two_proportion_z, m02_stop_vs_run_cost]
+    playbook: pb_quality_cost_improvement
+  - id: r_lean_kanban
+    situation: "Giảm lãng phí, 5S, Kanban, chuyển đổi nhanh, chống lỗi tại nguồn"
+    triggers: [lean, 5S, kanban, pull, JIT, SMED, đổi khuôn, poka-yoke, jidoka, andon, kaizen, muda, giảm lãng phí]
+    modules: [m02, m04, m01]
+    key_formulas: [m02_kanban, m02_smed, m04_kanban_cards, m01_smed_min_batch]
+    playbook: pb_quality_defects
+  - id: r_inventory_policy
+    situation: "Mỗi lần nhập bao nhiêu, khi nào đặt lại, giữ tồn kho an toàn bao nhiêu"
+    triggers: [EOQ, nhập bao nhiêu, khi nào đặt hàng, điểm đặt hàng lại, ROP, tồn kho an toàn, safety stock, mức phục vụ, ABC, order-up-to, kiểm kê, FEFO, MOQ]
+    modules: [m04, m07, m03]
+    key_formulas: [m04_eoq, m04_holding_cost_rate, m04_total_cost_tc, m04_rop, m04_service_level_z, m04_safety_stock_demand, m04_safety_stock_demand_leadtime, m04_order_up_to, m04_abc_value]
+    playbook: pb_inventory_policy
+  - id: r_overstock_stockout
+    situation: "Tồn kho quá nhiều (ứ đọng, vốn chôn) hoặc thiếu hàng (hết hàng bán chạy); nghịch lý vừa thừa vừa thiếu"
+    triggers: [tồn kho quá nhiều, hàng ứ đọng, hàng chậm luân chuyển, thiếu hàng, hết hàng, stockout, vòng quay tồn kho, DIO, vốn chôn trong hàng, hàng tồn lâu]
+    modules: [m04, m07, m03, m09]
+    key_formulas: [m04_inventory_turnover, m04_dio, m04_ccc, m04_abc_value, m04_safety_stock_demand, m04_inventory_kpis, m07_bias, m07_tracking_signal]
+    playbook: pb_overstock_stockout_diagnosis
+  - id: r_seasonal_perishable
+    situation: "Hàng thời vụ/vòng đời ngắn/dễ hỏng đặt một lần (Tết, Trung thu, hàng tươi, thời trang)"
+    triggers: [hàng thời vụ, Tết, Trung thu, đặt một lần, newsvendor, hàng tươi, hạn sử dụng, thời trang theo mùa, thừa hay thiếu, markdown]
+    modules: [m04, m07, m03]
+    key_formulas: [m04_newsvendor_cr, m04_newsvendor_q, m04_newsvendor_expected_cost, m07_cost_asymmetry_threshold, m07_early_sales_extrapolation]
+    playbook: pb_seasonal_newsvendor
+  - id: r_quantity_discount
+    situation: "Nhà cung cấp chào chiết khấu khi mua số lượng lớn; gộp kho; ký gửi/VMI"
+    triggers: [chiết khấu số lượng, mua nhiều giảm giá, gộp kho, kho tập trung, ký gửi, VMI, risk pooling, nhiều kho, thiếu hàng có kế hoạch]
+    modules: [m04, m03]
+    key_formulas: [m04_quantity_discount_tc, m04_risk_pooling, m04_eoq_backorder, m03_centralization_breakeven]
+    playbook: pb_inventory_policy
+  - id: r_forecast_build
+    situation: "Cần dự báo nhu cầu để đặt hàng/lập kế hoạch; chọn mô hình dự báo"
+    triggers: [dự báo, forecast, moving average, trung bình động, san bằng mũ, Holt, Holt-Winters, hồi quy, mùa vụ, xu hướng, MAD, MAPE, RMSE, backtesting, sản phẩm mới, Delphi]
+    modules: [m07, m04, m05]
+    key_formulas: [m07_moving_average, m07_weighted_moving_average, m07_ses, m07_holt, m07_holt_winters, m07_seasonal_index, m07_decomposition_forecast, m07_mad, m07_mse_rmse, m07_mape, m07_wape]
+    playbook: pb_forecast_build
+  - id: r_forecast_wrong
+    situation: "Dự báo nhu cầu sai/lệch một chiều; mô hình hỏng sau biến động thị trường"
+    triggers: [dự báo sai, dự báo luôn thấp, dự báo luôn cao, bias, tracking signal, mô hình hỏng, structural break, sai số lớn, độ chính xác dự báo]
+    modules: [m07, m03, m04]
+    key_formulas: [m07_bias, m07_tracking_signal, m07_mape, m07_wape, m07_safety_stock_from_error, m07_cost_asymmetry_threshold]
+    playbook: pb_forecast_diagnosis
+  - id: r_capacity_expand
+    situation: "Có nên mua thêm máy/mở chi nhánh/thuê thêm xưởng; công suất đang dùng bao nhiêu %"
+    triggers: [mở rộng công suất, mua thêm máy, mở chi nhánh, công suất, năng lực, utilization, hiệu suất, hòa vốn năng lực, capacity cushion, lead lag match, quá tải, dư công suất]
+    modules: [m05, m09, m07, m01]
+    key_formulas: [m05_efficiency, m05_utilization, m05_system_capacity, m05_breakeven_qty, m05_margin_of_safety, m05_capacity_cushion, m05_capacity_for_target_util, m05_emv, m05_annuity_npv, m05_staged_option_npv]
+    playbook: pb_capacity_expansion
+  - id: r_service_queue
+    situation: "Dịch vụ có khách chờ (quán, phòng khám, siêu thị, call center): cần bao nhiêu quầy/nhân viên mỗi khung giờ"
+    triggers: [hàng đợi, khách xếp hàng, thời gian chờ, số quầy, số nhân viên theo giờ, M/M/1, M/M/c, Erlang C, xếp ca, cao điểm, call center]
+    modules: [m05, m01, m07]
+    key_formulas: [m05_mm1_rho_wq, m05_mm1_lq_w, m05_erlang_c, m05_mmc_wq, m05_little_law, m01_queue_wait_factor]
+    playbook: pb_service_queue_staffing
+  - id: r_seasonal_aggregate
+    situation: "Nhu cầu mùa vụ: tuyển thêm, tăng ca, tích kho hay thuê ngoài"
+    triggers: [mùa vụ, cao điểm, chase, level, aggregate planning, hoạch định tổng hợp, tuyển thời vụ, tăng ca, tích kho trước mùa]
+    modules: [m05, m04, m07]
+    key_formulas: [m05_aggregate_cost, m07_seasonal_index, m05_crp_hours]
+    playbook: pb_seasonal_aggregate_plan
+  - id: r_make_outsource
+    situation: "Tự đầu tư hay thuê ngoài/gia công; đơn hàng ngắn hạn vs dài hạn"
+    triggers: [thuê ngoài, gia công, outsource, tự làm hay thuê, thầu phụ, make or buy, hòa vốn tự làm, năng lực linh hoạt]
+    modules: [m05, m03, m09]
+    key_formulas: [m05_breakeven_own_outsource, m05_operating_leverage_breakeven, m05_annuity_npv, m03_tco]
+    playbook: pb_make_or_outsource
+  - id: r_project_deadline
+    situation: "Dự án có hạn giao; cần đường găng, xác suất kịp hạn, cam kết ngày giao"
+    triggers: [dự án trễ hạn, đường găng, critical path, CPM, PERT, xác suất kịp hạn, WBS, Gantt, float, cam kết ngày giao, tiến độ dự án, mở chi nhánh, fit-out]
+    modules: [m06, m09, m05]
+    key_formulas: [m06_cpm_forward_backward, m06_pert_te, m06_pert_sigma, m06_project_sigma, m06_prob_on_time, m06_late_cost]
+    playbook: pb_project_schedule_pert
+  - id: r_project_control
+    situation: "Dự án đang chạy: đã chi nhiều nhưng không biết làm được bao nhiêu; muốn rút ngắn lịch; quỹ dự phòng rủi ro"
+    triggers: [EVM, earned value, CPI, SPI, vượt ngân sách, chậm tiến độ, EAC, crashing, fast-tracking, rút ngắn dự án, risk register, quỹ dự phòng, scope creep, thay đổi phạm vi]
+    modules: [m06, m09, m02]
+    key_formulas: [m06_ev_variances, m06_cpi_spi, m06_eac_cpi, m06_eac_onetime, m06_eac_cpi_spi, m06_etc_vac, m06_tcpi, m06_crash_cost_slope, m06_crash_net_benefit, m06_emv, m06_contingency_reserve]
+    playbook: pb_project_control_crash
+  - id: r_agile_method
+    situation: "Chọn Waterfall/Agile/Hybrid; Scrum, Kanban, velocity, đa dự án tranh chấp nguồn lực"
+    triggers: [waterfall, agile, scrum, kanban dự án, sprint, velocity, backlog, PMO, đa dự án, xung đột nguồn lực, resource leveling]
+    modules: [m06, m09, m05]
+    key_formulas: [m06_velocity_forecast, m06_resource_utilization, m06_wait_time, m09_project_buffer_50]
+    playbook: pb_project_control_crash
+  - id: r_layout
+    situation: "Bố trí lại xưởng/kho/cửa hàng/quán: giảm đi lại, chọn loại layout, chọn vị trí kho"
+    triggers: [bố trí mặt bằng, layout, xếp lại xưởng, giảm đi lại, load-distance, center of gravity, vị trí kho, process layout, product layout, cell, cellular, REL chart, từ-đến, 5S sắp xếp]
+    modules: [m08, m01, m05, m04]
+    key_formulas: [m08_load_distance, m08_material_handling_cost, m08_rectilinear_distance, m08_center_of_gravity, m08_rel_tcr, m08_layout_breakeven, m08_layout_total_cost, m08_walk_hours]
+    playbook: pb_layout_redesign
+  - id: r_retail_layout
+    situation: "Layout cửa hàng bán lẻ/quán: doanh thu trên m2, vùng nóng, dòng khách, đa kênh"
+    triggers: [layout bán lẻ, cửa hàng, siêu thị mini, vùng nóng, tầm mắt, doanh thu trên mét vuông, dòng khách, chuẩn hóa layout chuỗi, dark store, mua bốc phát]
+    modules: [m08, m04, m05]
+    key_formulas: [m08_sales_per_m2, m08_space_utilization, m08_impulse_value, m08_standardization_payback, m08_aisle_capacity]
+    playbook: pb_layout_redesign
+  - id: r_assembly_line
+    situation: "Chuyền lắp ráp/chuyền may có người chờ, người quá tải; số trạm; cell"
+    triggers: [cân bằng chuyền, line balancing, số trạm, RPW, chuyền may, lắp ráp, takt, cell, group technology, ROC, one-piece flow, tự động hóa]
+    modules: [m08, m01, m05, m09]
+    key_formulas: [m08_takt_time, m08_min_stations, m08_rpw, m08_line_efficiency, m08_line_idle, m08_line_output, m08_roc_binary_value, m08_batch_lead_time, m08_onepiece_lead_time, m08_automation_payback]
+    playbook: pb_line_balancing
+  - id: r_supply_disruption
+    situation: "Chuỗi cung ứng gián đoạn, phụ thuộc một nhà cung cấp, rủi ro nguồn cung"
+    triggers: [chuỗi cung ứng gián đoạn, phụ thuộc một nhà cung cấp, đơn nguồn, đa nguồn, rủi ro nguồn cung, nhà cung cấp trễ hàng, resilience, kế hoạch dự phòng, rủi ro P x I]
+    modules: [m03, m04, m06]
+    key_formulas: [m03_risk_score, m03_disruption_loss, m03_prevention_breakeven, m03_safety_stock_ref, m04_safety_stock_demand_leadtime]
+    playbook: pb_supply_risk
+  - id: r_supplier_selection
+    situation: "Chọn/đánh giá/phân bổ nhà cung cấp; nhập khẩu vs trong nước; phân loại mua hàng"
+    triggers: [chọn nhà cung cấp, đánh giá nhà cung cấp, scorecard, TCO, landed cost, nhập khẩu hay mua trong nước, Kraljic, thu mua chiến lược, tập trung hóa thu mua, perfect order, OTD]
+    modules: [m03, m02, m04]
+    key_formulas: [m03_supplier_score, m03_tco, m03_tco_supplier_unit, m03_perfect_order, m03_otd, m03_centralization_breakeven]
+    playbook: pb_supplier_selection
+  - id: r_bullwhip
+    situation: "Đơn hàng dao động mạnh hơn nhu cầu thật; kho lúc tràn lúc cạn dọc chuỗi"
+    triggers: [bullwhip, hiệu ứng cái roi da, đơn hàng dao động, nhà phân phối đặt hàng thất thường, kho lúc tràn lúc cạn, khuyến mãi theo đợt, S&OP, CPFR]
+    modules: [m03, m07, m04]
+    key_formulas: [m03_bullwhip_ratio, m03_bullwhip_lower_bound, m03_cv, m03_wape, m03_perfect_order]
+    playbook: pb_bullwhip_chain
+  - id: r_toc_mix
+    situation: "Nhiều sản phẩm dùng chung một nguồn lực khan hiếm; chọn product mix; kế toán Throughput"
+    triggers: [product mix, nguồn lực khan hiếm, T/CU, throughput accounting, chọn sản phẩm ưu tiên, giá tối thiểu, bếp trưởng, máy laser, throughput, net profit theo T I OE]
+    modules: [m09, m05, m01]
+    key_formulas: [m09_throughput, m09_net_profit_roi, m09_productivity_turns, m09_tcu, m09_product_mix_allocation, m09_breakeven_price_tcu]
+    playbook: pb_toc_product_mix
+  - id: r_dbr
+    situation: "Đồng bộ lịch sản xuất quanh ràng buộc: Drum-Buffer-Rope, buffer, giảm WIP/lead time; dự án CCPM"
+    triggers: [drum buffer rope, DBR, buffer, quản lý bộ đệm, WIP quá nhiều, lead time dài, CCPM, chuỗi tới hạn, project buffer, replenishment, DBM, OEE]
+    modules: [m09, m04, m06, m01]
+    key_formulas: [m09_buffer_size, m09_buffer_penetration, m09_little, m09_project_buffer_50, m09_project_buffer_rss, m09_oee, m09_inventory_release_value, m09_dbm_replenishment_buffer]
+    playbook: pb_toc_dbr
+  - id: r_theory_question
+    situation: "Câu hỏi khái niệm/so sánh framework (TQM vs Six Sigma vs Lean; Push vs Pull; Fisher; Kraljic; VSM vs Service Blueprint...)"
+    triggers: [là gì, khác nhau thế nào, so sánh, khi nào dùng, giải thích, TQM, Lean, Agile, Fisher, Kraljic, SCOR, ECRS, SIPOC, service blueprint]
+    modules: [m01, m02, m03, m09]
+    key_formulas: []
+    playbook: null
+    note: "Đọc concepts/frameworks của module liên quan; trả lời ngắn + ví dụ SME; chỉ chạy tính toán nếu người dùng yêu cầu."
+
+chaining_rules:
+  - when: "TOC + năng lực + tồn kho (xưởng bận nhưng đơn trễ, định mua máy)"
+    chain: ["m09 xác định ràng buộc (utilization/WIP)", "m01 đo năng lực từng công đoạn, takt, Little", "m05 kiểm tra hiệu suất/hòa vốn/real option trước khi đầu tư", "m04 giảm tồn kho che khuất (buffer thay vì tồn kho tràn lan)", "playbook: pb_bottleneck_toc rồi pb_capacity_expansion"]
+  - when: "Tồn kho thừa/thiếu do dự báo sai"
+    chain: ["m07 đo Bias/MAPE/Tracking Signal, chọn lại mô hình", "m04 tính lại safety stock từ sai số dự báo, ABC, EOQ/ROP", "m03 kiểm tra Bullwhip/lead time nhà cung cấp, S&OP", "playbook: pb_forecast_diagnosis rồi pb_overstock_stockout_diagnosis"]
+  - when: "Mở rộng công suất có dự báo tăng trưởng"
+    chain: ["m07 dự báo nhu cầu dài hạn và tăng trưởng", "m05 đo năng lực hiện tại, hòa vốn, Lead/Lag/Match, cây quyết định/real option", "m09 chỉ nâng ràng buộc; m01 kiểm tra nút thắt mới", "finance-agent-skill NPV/WACC nếu đầu tư lớn", "playbook: pb_forecast_build rồi pb_capacity_expansion"]
+  - when: "Tái bố trí xưởng để giảm lead time"
+    chain: ["m01 vẽ dòng chảy/VSM, đo khoảng cách và WIP", "m08 Load-Distance, REL, chọn Process/Cell/Product", "m05 Line Balancing/takt nếu chuyền", "m09 bảo đảm tối ưu quanh ràng buộc, không tối ưu cục bộ", "playbook: pb_process_diagnosis rồi pb_layout_redesign"]
+  - when: "Cải tiến chất lượng làm giảm nút thắt/tồn kho"
+    chain: ["m02 baseline COQ/DPMO, tìm nguyên nhân gốc", "m09 ưu tiên lỗi tại ràng buộc (mỗi phế phẩm tại ràng buộc mất T)", "m01 chuẩn hóa SOP/poka-yoke", "m04 giảm safety stock khi chất lượng nhà cung cấp ổn", "playbook: pb_quality_defects"]
+  - when: "Dự án mở chi nhánh/nhà máy (lịch + nguồn lực + layout)"
+    chain: ["m06 WBS, CPM/PERT, EVM, rủi ro", "m08 layout chi nhánh theo dòng khách/dòng chảy", "m05 năng lực nhân sự/thiết bị khi vận hành", "m09 CCPM nếu dự án luôn trễ", "playbook: pb_project_schedule_pert, pb_layout_redesign"]
+  - when: "Chuỗi cung ứng nhiều tầng đứt gãy/đơn hàng nhảy múa"
+    chain: ["m03 chẩn đoán Bullwhip, Fisher, Kraljic, rủi ro P x I", "m07 chia sẻ dự báo (CPFR), giảm sai số", "m04 safety stock với lead time biến động, VMI/ký gửi", "m06 nếu cần dự án đa nguồn hóa", "playbook: pb_bullwhip_chain, pb_supply_risk"]
+  - when: "Thuê ngoài hay đầu tư tự động hóa"
+    chain: ["m05 hòa vốn own vs outsource, hiệu suất hiện tại", "m08 hoàn vốn tự động hóa/layout", "m09 chỉ đầu tư tại ràng buộc (Delta T)", "finance-agent-skill NPV nếu khoản lớn", "playbook: pb_make_or_outsource, pb_capacity_expansion"]
+
+clarifying_questions_default:
+  - "Bạn kinh doanh/sản xuất gì, quy mô (số người, sản lượng/ngày, số cửa hàng/xưởng)?"
+  - "Vấn đề cụ thể là gì (chờ lâu, trễ, lỗi, hết/thừa hàng, chi phí cao) và đã xảy ra bao lâu? Có dữ liệu đo (thời gian chu kỳ, sản lượng, số lỗi, tồn kho, nhu cầu lịch sử) không?"
+  - "Mục tiêu và ràng buộc (ngân sách, thời gian, mức dịch vụ mong muốn, an toàn/chất lượng bắt buộc)?"
+  - "Đã thử gì rồi? Công đoạn/nguồn lực nào đang quá tải hoặc nhàn rỗi?"
+  - "Đơn vị và kỳ dữ liệu bạn có (ngày/tuần/tháng; đồng/nghìn/triệu)?"

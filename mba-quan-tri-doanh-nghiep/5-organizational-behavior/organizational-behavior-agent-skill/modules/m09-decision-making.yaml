@@ -1,0 +1,1149 @@
+id: "m09"
+name_vi: "Ra quyết định (Bounded Rationality, Thiên kiến, Groupthink và các kỹ thuật)"
+name_en: "Decision Making"
+source_file: "09-decision-making.md"
+purpose: >
+  Giúp chủ SME và nhà quản lý chọn đúng cách ra quyết định theo từng loại vấn đề (chẩn đoán trước, chọn công cụ sau),
+  nhận diện và giảm các thiên kiến nhận thức/groupthink, và định lượng quyết định bằng ma trận trọng số, giá trị kỳ vọng (EV),
+  cây quyết định, cost-benefit, điểm hòa vốn, quy tắc forward-looking (loại chi phí chìm) và Prospect Theory.
+when_to_use:
+  - "Chủ SME phải chọn giữa nhiều phương án (mua máy, thuê ngoài, mở chi nhánh, giữ nguyên) và cần so sánh có hệ thống"
+  - "Cần chọn nhà cung cấp/ứng viên/dự án theo nhiều tiêu chí (ma trận trọng số, kiểm tra độ nhạy)"
+  - "Cần tính giá trị kỳ vọng, xác suất hòa vốn giữa hai phương án, hoặc cost-benefit (B/C, ROI)"
+  - "Dự án đang lỗ, chủ nói 'đã bỏ nhiều tiền rồi' (sunk cost / escalation of commitment)"
+  - "Nghi ngờ quyết định bị méo bởi thiên kiến (neo, xác nhận, tự tin quá mức, framing, loss aversion...)"
+  - "Cuộc họp ra quyết định im lặng, ai cũng gật đầu (groupthink, HiPPO, Abilene paradox, social loafing)"
+  - "Không biết nên quyết nhanh bằng trực giác hay phân tích kỹ; phân biệt quyết định Type 1/Type 2"
+  - "Cần chẩn đoán loại vấn đề (Cynefin) để chọn cách tiếp cận: SOP, phân tích, thử nghiệm hay hành động khẩn cấp"
+  - "Cần phân vai quyết định (RAPID/DACI/RACI) và chọn mức tham gia của nhân viên (Vroom-Yetton-Jago)"
+  - "Cần kỹ thuật nhóm: brainstorming/NGT/Delphi/Six Thinking Hats/pre-mortem/devil's advocate"
+prerequisites: ["m03"]
+related_modules:
+  - "m03: Team dynamics - groupthink, social loafing, ra quyết định nhóm"
+  - "m02: Leadership styles - phong cách ra quyết định (Vroom-Yetton-Jago) gắn với phong cách lãnh đạo"
+  - "m05: Power and politics - HiPPO, mindguards, áp lực lên người phản đối"
+  - "m06: Conflict management - bất đồng mang tính xây dựng (dialectical inquiry, devil's advocate)"
+  - "m07: Change management - status quo bias, kháng cự thay đổi, nudge"
+  - "m08: Emotional intelligence - cảm xúc, loss aversion, decision fatigue"
+  - "m10: People insight - thiên kiến khi tuyển dụng/đánh giá người (halo effect)"
+
+concepts:
+  - term_vi: "Ra quyết định"
+    term_en: "Decision Making"
+    definition: "Quá trình chọn một trong hai hay nhiều lựa chọn dựa trên thông tin, kinh nghiệm và đánh giá để đạt mục tiêu cụ thể."
+    why_it_matters: >
+      Mọi hoạt động quản trị cuối cùng là chuỗi quyết định. Chất lượng quyết định = chất lượng con người + chất lượng quy trình;
+      cùng một nhóm cố vấn (Bay of Pigs vs khủng hoảng Cuba) cho kết quả khác hẳn khi quy trình khác.
+  - term_vi: "Quyết định có cấu trúc / phi cấu trúc"
+    term_en: "Programmed vs Non-programmed decisions"
+    definition: "Programmed: có quy tắc, lặp lại, rủi ro thấp (phê duyệt đơn nghỉ, xếp ca). Non-programmed: mới, không có quy tắc, rủi ro cao (mở chi nhánh, dừng dòng sản phẩm, xử lý khủng hoảng)."
+    why_it_matters: "Quyết định programmed nên tự động hóa/SOP để dành năng lượng cho non-programmed; ngoài ra phân loại theo cấp độ Strategic (3-5+ năm), Tactical (6-18 tháng), Operational (ngày-tuần) và theo quy mô cá nhân vs nhóm."
+  - term_vi: "Mô hình ra quyết định hữu tỉ cổ điển"
+    term_en: "Classical Rational Decision Model"
+    definition: "Giả định người quyết định có đủ thông tin, xét mọi phương án, dùng logic để tối đa hóa giá trị kỳ vọng, mục tiêu rõ ràng và nhất quán."
+    why_it_matters: >
+      Gốc từ kinh tế học cổ điển và lý thuyết Expected Utility (von Neumann & Morgenstern, 1944); tổ tiên là 'đại số đạo đức' của Benjamin Franklin (1772).
+      Là chuẩn tham chiếu (công cụ chuẩn tắc: NÊN làm gì), không mô tả người ta THỰC SỰ làm gì; dùng để phát hiện chỗ ta lệch khỏi chuẩn.
+  - term_vi: "Tính hữu tỉ bị giới hạn"
+    term_en: "Bounded Rationality"
+    definition: "Người quyết định bị giới hạn bởi nhận thức (working memory 7±2, có thể chỉ ~4 khối theo Cowan 2001), thông tin (bất đối xứng, chi phí, quá tải), thời gian và ràng buộc tổ chức, nên chọn 'đủ tốt' chứ không 'tốt nhất'."
+    why_it_matters: >
+      Herbert Simon (Administrative Behavior 1947; A Behavioral Model of Rational Choice 1955; Nobel Kinh tế 1978) thấy Homo economicus không khớp cách tổ chức thực sự quyết định.
+      Với SME: coi giới hạn là điều kiện thiết kế quy trình (đặt ngưỡng, giới hạn số phương án, đặt hạn chót) thay vì tự trách vì 'phân tích chưa đủ'.
+  - term_vi: "Chọn phương án đủ tốt vs tối đa hóa"
+    term_en: "Satisficing vs Maximizing"
+    definition: "Satisficing: đặt mức kỳ vọng chấp nhận được (aspiration level) và dừng khi gặp phương án đầu tiên đạt mức đó. Maximizing: xét tất cả để chọn tốt nhất."
+    why_it_matters: "Simon ghép 'satisfy + suffice'. Hợp lý khi hệ quả đảo ngược được và thời gian hạn chế; maximizing chỉ đáng khi hệ quả lớn, khó đảo ngược, đủ thời gian và dữ liệu. Satisficing đúng nghĩa là đặt ngưỡng và dừng, không phải bỏ qua dữ liệu."
+  - term_vi: "Heuristic (phỏng đoán tư duy)"
+    term_en: "Heuristics"
+    definition: "Đường tắt tư duy cho kết quả nhanh, thường đúng nhưng có thể sai theo hệ thống: availability, anchoring, representativeness, confirmation, sunk cost."
+    why_it_matters: "Tversky & Kahneman (1974, Science, 'Judgment under Uncertainty') chỉ ra sai lệch là có hệ thống chứ không ngẫu nhiên, nên có thể dự đoán và phòng ngừa."
+  - term_vi: "Ra quyết định trực giác / mô hình RPD"
+    term_en: "Intuitive Decision / Recognition-Primed Decision (RPD)"
+    definition: "Chuyên gia nhận ra tình huống giống mẫu đã gặp, chạy mô phỏng trong đầu phương án đầu tiên nảy ra rồi hành động (Recognition - Evaluation - Mental simulation - Action), thay vì so sánh nhiều phương án."
+    why_it_matters: >
+      Gary Klein (Klein, Calderwood & Clinton-Cirocco 1986; sách Sources of Power 1998) nghiên cứu chỉ huy chữa cháy và thấy họ gần như không so sánh phương án.
+      Kahneman & Klein (2009) đồng thuận: trực giác chỉ đáng tin khi môi trường có quy luật tương đối ổn định VÀ người quyết định có nhiều cơ hội học kèm phản hồi nhanh. Mốc '>=10 năm kinh nghiệm' chỉ là quy ước thực hành, không phải ngưỡng khoa học.
+  - term_vi: "Hệ thống 1 và Hệ thống 2"
+    term_en: "System 1 and System 2 (Kahneman)"
+    definition: "System 1: tự động, nhanh, ít tốn sức, dễ bị thiên kiến. System 2: có chủ ý, chậm, tốn sức, ít thiên kiến hơn."
+    why_it_matters: "Kahneman (Nobel 2002; Thinking, Fast and Slow 2011). Quyết định quan trọng cần chủ động kích hoạt System 2 (checklist, quy trình, pre-mortem) vì System 1 là mặc định."
+  - term_vi: "Thiên kiến nhận thức"
+    term_en: "Cognitive Biases"
+    definition: "Sai lệch có hệ thống khi đánh giá và quyết định. File nguồn mô tả 13: anchoring, availability, representativeness, confirmation, hindsight, overconfidence, sunk cost, loss aversion, framing, status quo, recency, halo, Dunning-Kruger (chi tiết ở framework m09_bias_catalog)."
+    why_it_matters: "Vì sai có quy luật nên có thể thiết kế biện pháp khử thiên kiến (debias) thay vì chỉ 'cố gắng khách quan'."
+  - term_vi: "Chi phí chìm và quyết định hướng về tương lai"
+    term_en: "Sunk cost and forward-looking decision"
+    definition: "Chi phí đã chi và không thu hồi được không nên ảnh hưởng quyết định; chỉ so sánh lợi ích và chi phí TƯƠNG LAI giữa các phương án."
+    why_it_matters: "Khoản chìm giống nhau ở mọi nhánh nên không phải biến quyết định. Hai dự án cùng sunk 100M có thể cho quyết định ngược nhau (dừng vs tiếp tục) vì giá trị ròng tương lai khác nhau."
+  - term_vi: "Tư duy nhóm"
+    term_en: "Groupthink"
+    definition: "Khao khát hòa hợp trong nhóm lấn át việc đánh giá thực tế các phương án; nhóm bỏ qua tư duy phản biện và không đánh giá rủi ro."
+    why_it_matters: >
+      Irving Janis (Yale; Victims of Groupthink 1972, mở rộng 1982) phân tích Vịnh Con Heo, Trân Châu Cảng, leo thang chiến tranh Việt Nam. Lỗi không ở năng lực cá nhân mà ở động lực nhóm:
+      nhóm gắn kết quá cao thì nhu cầu 'không phá vỡ đồng thuận' lấn át nhu cầu đánh giá thực tế. Có 8 triệu chứng và 6 nhóm nguyên nhân (xem framework m09_groupthink).
+  - term_vi: "Phân cực nhóm và dịch chuyển rủi ro"
+    term_en: "Group Polarization and Risky Shift"
+    definition: "Sau thảo luận nhóm đẩy quan điểm đa số về phía cực đoan hơn (cả mạo hiểm lẫn thận trọng); risky shift là nhóm chọn mức rủi ro cao hơn cá nhân."
+    why_it_matters: "Stoner (1961) phát hiện risky shift; Moscovici & Zavalloni (1969) tổng quát hóa thành phân cực nhóm. Nguyên nhân gợi ý: trách nhiệm bị khuếch tán ('thất bại thì không phải lỗi mình')."
+  - term_vi: "Lười biếng xã hội"
+    term_en: "Social Loafing"
+    definition: "Cá nhân giảm nỗ lực khi làm nhóm so với làm một mình vì nỗ lực bị 'pha loãng', không ai đo đóng góp riêng."
+    why_it_matters: "Ringelmann (cuối thế kỷ 19, kéo dây), Latané, Williams & Harkins (1979) đặt tên. Cách giảm: giao phần việc cá nhân rõ ràng, đo đóng góp riêng, chia nhóm nhỏ 3-5 người."
+  - term_vi: "Nghịch lý Abilene"
+    term_en: "Abilene Paradox"
+    definition: "Nhóm quyết định điều không ai thực sự muốn vì ai cũng tưởng người khác muốn và ngại phản đối."
+    why_it_matters: "Jerry Harvey (1974), câu chuyện gia đình ở Coleman, Texas lái xe đến Abilene. Ví dụ doanh nghiệp: CEO tưởng nhân viên thích an toàn hơn tăng trưởng nên cắt giảm; nhóm tưởng khách thích đơn giản nên bỏ tính năng khách dùng hằng ngày."
+  - term_vi: "Quyết định Type 1 / Type 2"
+    term_en: "Type 1 vs Type 2 decisions (Amazon/Bezos)"
+    definition: "Type 1: khó hoặc không thể đảo ngược, cần cân nhắc kỹ. Type 2: dễ đảo ngược, nên quyết nhanh bởi cá nhân/nhóm nhỏ."
+    why_it_matters: "Tránh áp quy trình nặng cho mọi quyết định (analysis paralysis). Nguồn: các thư gửi cổ đông của Jeff Bezos (2015-2016) và mô tả công khai; chi tiết nội bộ Amazon có thể khác theo thời kỳ."
+  - term_vi: "Lý thuyết triển vọng"
+    term_en: "Prospect Theory"
+    definition: "Người ta đánh giá kết quả theo điểm tham chiếu (thường là hiện trạng), nhạy với mất mát hơn được lợi (hệ số ~2,25), và méo mó khi nhìn xác suất (xác suất nhỏ bị đánh giá quá cao, xác suất lớn bị đánh giá quá thấp)."
+    why_it_matters: "Kahneman & Tversky (1979, Econometrica) giải thích các hành vi Expected Utility không giải thích được: mua bảo hiểm và vé số cùng lúc, từ chối cược có EV dương. Tham số 0,88 và 2,25 theo Tversky & Kahneman (1992)."
+  - term_vi: "Cú hích và kiến trúc lựa chọn"
+    term_en: "Nudge and Choice Architecture"
+    definition: "Thay đổi nhỏ trong cách bố trí lựa chọn (mặc định, thứ tự, mô tả) để hướng người ta tới lựa chọn tốt hơn mà không cấm hay áp đặt."
+    why_it_matters: "Thaler (Nobel 2017) và Sunstein (Nudge, 2008): 'libertarian paternalism'. Ví dụ mặc định opt-out cho hiến tạng (Johnson & Goldstein 2003; nhiều nước opt-out trên 90%, số liệu khác nhau theo nguồn, ước tính) và tự động đăng ký hưu trí (Madrian & Shea 2001)."
+  - term_vi: "Chi phí cơ hội của phân tích và quá tải phân tích"
+    term_en: "Analysis paralysis / opportunity cost of analysis"
+    definition: "Thu thập dữ liệu và họp vô tận khiến không bao giờ quyết, bỏ lỡ cơ hội (ví dụ mặt bằng vị trí vàng phải quyết trong 1 tuần)."
+    why_it_matters: "Giải pháp: đặt hạn chót, quy tắc 80/20 (quyết khi có ~80% thông tin cần), satisficing; Bezos nêu khoảng 70% thông tin."
+  - term_vi: "Bình thường hóa sai lệch"
+    term_en: "Normalization of Deviance"
+    definition: "Những lần 'suýt hỏng mà không có tai nạn' dần được coi là chấp nhận được, đẩy gánh nặng chứng minh từ 'chứng minh an toàn mới làm' thành 'chứng minh nguy hiểm mới dừng'."
+    why_it_matters: "Diane Vaughan (1996) phân tích Challenger. Bài học: cần quy tắc dừng cứng (hard stop) do người độc lập có quyền quyết, không bị áp lực doanh số/lịch trình lấn át."
+
+
+formulas:
+  - id: "m09_weighted_decision_matrix"
+    name_vi: "Điểm ma trận quyết định có trọng số"
+    name_en: "Weighted Scoring / Decision Matrix score"
+    expression_latex: 'S_j=\sum_{i=1}^{n} w_i\,s_{ij},\qquad \sum_i w_i=1'
+    expression_python: "sum(wi*si for wi, si in zip(weights, scores))"
+    excel: "=SUMPRODUCT(weights_range, scores_range)"
+    variables:
+      - {symbol: "w_i (weights)", meaning: "Trọng số tiêu chí i, gán TRƯỚC khi chấm điểm, tổng = 100%", unit: "tỷ lệ (0-1)"}
+      - {symbol: "s_ij (scores)", meaning: "Điểm của phương án j ở tiêu chí i (thang 1-5 hoặc 1-10, 5 là tốt nhất; với Rủi ro/Áp lực dòng tiền thì 5 = rủi ro/áp lực thấp)", unit: "điểm"}
+      - {symbol: "S_j", meaning: "Tổng điểm có trọng số của phương án j", unit: "điểm"}
+    when_to_use: "Chọn giữa 3-5 phương án khi mỗi phương án tốt ở tiêu chí này nhưng kém ở tiêu chí khác (rẻ nhưng chậm, nhanh nhưng đắt)."
+    why_it_works: >
+      Não người dễ chỉ chú ý tiêu chí nổi bật nhất. Ma trận buộc (1) liệt kê rõ tiêu chí (3-6 tiêu chí, độc lập nhau), (2) cân đối mức quan trọng bằng trọng số trước khi nhìn điểm,
+      (3) chấm từng ô riêng lẻ thay vì phán đoán tổng thể. Tổ tiên là 'đại số đạo đức' của Benjamin Franklin (thư gửi Joseph Priestley, 1772).
+    assumptions:
+      - "Tiêu chí độc lập nhau (không tính trùng cùng một yếu tố hai lần)"
+      - "Điểm chấm trên cùng một thang và cùng chiều (5 luôn là tốt nhất)"
+      - "Trọng số phản ánh đúng ưu tiên của người ra quyết định và được chốt trước khi chấm"
+    pitfalls:
+      - "Kết quả rất nhạy với trọng số: đổi trọng số có thể đảo thứ hạng (ví dụ Việt Phát: D vượt B khi tăng trọng số Dòng tiền lên 30%)"
+      - "Ma trận không phản ánh chi phí cơ hội của việc không làm gì; phải đối chiếu thêm với EV"
+      - "Khác biệt điểm nhỏ (ví dụ 87,8 vs 87,05) là không có ý nghĩa, chọn theo tiêu chí phụ"
+      - "Chấm điểm chủ quan, dễ chịu ảnh hưởng của halo effect/anchoring; nên để nhiều người chấm độc lập"
+    interpretation: "Phương án điểm cao nhất là ứng viên; luôn thử đổi trọng số (kiểm tra độ nhạy) và chỉ tin kết luận khi thứ hạng bền. Chênh dưới ~1 điểm trên thang 100 coi như hòa."
+    example:
+      inputs: {weights: [0.4, 0.3, 0.2, 0.1], scores: [5, 4, 3, 4]}
+      steps:
+        - "Option 1: 5x0,4 + 4x0,3 + 3x0,2 + 4x0,1 = 2,0 + 1,2 + 0,6 + 0,4 = 4,2"
+        - "Option 2 (điểm 3,5,4,3) = 1,2 + 1,5 + 0,8 + 0,3 = 3,8; Option 3 (điểm 4,3,5,5) = 1,6 + 0,9 + 1,0 + 0,5 = 4,0"
+      result: "Option 1 (4,2) > Option 3 (4,0) > Option 2 (3,8); chọn Option 1, dự phòng Option 3."
+
+  - id: "m09_normalized_criteria_score"
+    name_vi: "Chuẩn hóa điểm tiêu chí về thang 0-100 (tiêu chí càng thấp càng tốt)"
+    name_en: "Criterion normalization (lower-is-better, best = 100)"
+    expression_latex: 'score_{price,j}=\frac{p_{min}}{p_j}\times 100'
+    expression_python: "p_min / p * 100"
+    excel: "=MIN(price_range)/B2*100"
+    variables:
+      - {symbol: "p_min", meaning: "Giá (hoặc chi phí) thấp nhất trong các phương án", unit: "USD/yard hoặc tiền tệ bất kỳ"}
+      - {symbol: "p", meaning: "Giá của phương án đang chấm", unit: "cùng đơn vị với p_min"}
+    when_to_use: "Đưa các tiêu chí khác đơn vị (giá, % đạt, tuần giao hàng) về cùng thang 0-100 trước khi nhân trọng số (ví dụ chọn nhà cung cấp vải)."
+    why_it_works: "Phương án rẻ nhất được 100, phương án đắt hơn bị trừ điểm tỷ lệ nghịch với giá; tiêu chí càng cao càng tốt (chất lượng % đạt) dùng thẳng giá trị; tiêu chí giao hàng dùng bảng quy ước (1 tuần = 100, 2 tuần = 70, 4 tuần = 40)."
+    assumptions:
+      - "Quy ước điểm giao hàng là giả định minh họa của giáo trình, cần đặt theo thực tế doanh nghiệp"
+    pitfalls:
+      - "Chỉ số Chất lượng/Giá đơn lẻ bỏ qua giao hàng và MOQ nên có thể chọn sai (C có Chất lượng/Giá cao nhất = 50 nhưng bị loại vì giao 4 tuần và MOQ lớn)"
+      - "Nên có bước loại trừ (screening) theo ràng buộc cứng như MOQ/vốn lưu động trước khi chấm điểm"
+    interpretation: "Điểm tổng = 0,4 x điểm giá + 0,35 x điểm chất lượng + 0,25 x điểm giao hàng. Chênh lệch nhỏ giữa hai phương án đầu nghĩa là cả hai đều chấp nhận được."
+    example:
+      inputs: {p_min: 1.8, p: 2.5}
+      steps:
+        - "Giá A = 2,5 USD: điểm giá = 1,8/2,5 x 100 = 72; B (2,0) = 90; C (1,8) = 100"
+        - "Tổng điểm A = 0,4x72 + 0,35x95 + 0,25x100 = 87,05; B = 0,4x90 + 0,35x98 + 0,25x70 = 87,8; C = 0,4x100 + 0,35x90 + 0,25x40 = 81,5"
+        - "MOQ x giá: A = 12.500 USD; B = 20.000; C = 36.000 (gấp ~2,9 lần A)"
+      result: "B 87,8 xấp xỉ A 87,05 > C 81,5; chọn B (chất lượng cao hơn) hoặc A nếu dòng tiền eo hẹp; C bị loại sớm. (Số liệu giả định minh họa.)"
+
+  - id: "m09_expected_value"
+    name_vi: "Giá trị kỳ vọng (EV)"
+    name_en: "Expected Value"
+    expression_latex: 'EV=\sum_k p_k\,x_k,\qquad \sum_k p_k=1;\quad EV_{net}=EV-I'
+    expression_python: "sum(p*x for p, x in zip(probs, payoffs)) - investment"
+    excel: "=SUMPRODUCT(prob_range, payoff_range)-investment"
+    variables:
+      - {symbol: "p_k (probs)", meaning: "Xác suất của kịch bản k, tổng = 1", unit: "tỷ lệ"}
+      - {symbol: "x_k (payoffs)", meaning: "Giá trị (lợi nhuận/thiệt hại) của kịch bản k", unit: "triệu VND"}
+      - {symbol: "I (investment)", meaning: "Vốn đầu tư ban đầu (0 nếu payoff đã là lãi ròng)", unit: "triệu VND"}
+    when_to_use: "So sánh phương án có kết cục không chắc chắn trên cây quyết định (mở rộng hay không, mua máy hay thuê ngoài)."
+    why_it_works: >
+      Gom các kết cục có xác suất thành một con số trung bình dài hạn. Gốc: trao đổi thư Pascal-Fermat (1654) về xác suất; Daniel Bernoulli (1738) lưu ý giá trị của tiền không tuyến tính với số tiền (khái niệm độ thỏa dụng).
+    assumptions:
+      - "Xác suất ước lượng được và không bị overconfidence bóp méo"
+      - "Payoff cùng đơn vị thời gian; ví dụ Việt Phát là tích lũy 3 năm CHƯA chiết khấu (thực tế nên chiết khấu NPV)"
+    pitfalls:
+      - "EV chỉ là trung bình dài hạn: kịch bản xấu lớn hơn khả năng chịu lỗ (risk capacity) có thể giết doanh nghiệp dù EV dương (bài học LTCM)"
+      - "Xác suất kịch bản do chính người đề xuất ước lượng thường lạc quan"
+      - "Prospect Theory: nhiều người từ chối cược EV dương hoặc EV = 0 vì ác cảm mất mát"
+    interpretation: "Chọn phương án EV ròng cao nhất NẾU kịch bản xấu nhất vẫn chịu được; EV > 0 chưa đủ để quyết."
+    example:
+      inputs: {probs: [0.5, 0.3, 0.2], payoffs: [2400, 1500, 600], investment: 1200}
+      steps:
+        - "EV gộp A (mua CNC) = 0,5x2400 + 0,3x1500 + 0,2x600 = 1200 + 450 + 120 = 1770"
+        - "EV ròng A = 1770 - 1200 = 570 triệu"
+        - "EV gộp B (thuê gia công; payoff 1300/900/500) = 650 + 270 + 100 = 1020; EV ròng B = 1020 - 150 = 870 triệu"
+      result: "B hơn A 300 triệu vì vốn A gấp 8 lần B. Cây mở rộng cơ bản: 0,6x300 + 0,4x(-200) = +100 triệu."
+
+  - id: "m09_breakeven_probability"
+    name_vi: "Xác suất hòa EV giữa hai phương án"
+    name_en: "Break-even probability between two options"
+    expression_latex: 'p^{*}=\frac{(r_B-r_A)+(I_A-I_B)}{(h_A-r_A)-(h_B-r_B)}\quad(h=high,\ r=rest)'
+    expression_python: "(rest_B - rest_A - I_B + I_A) / ((high_A - rest_A) - (high_B - rest_B))"
+    excel: "=(restB-restA-IB+IA)/((highA-restA)-(highB-restB))"
+    variables:
+      - {symbol: "p*", meaning: "Xác suất kịch bản Cao tại đó hai phương án có EV ròng bằng nhau", unit: "tỷ lệ"}
+      - {symbol: "high_X", meaning: "Payoff gộp của phương án X ở kịch bản Cao", unit: "triệu VND"}
+      - {symbol: "rest_X", meaning: "Payoff kỳ vọng ở các kịch bản còn lại của X (chia theo tỷ lệ cố định, vd Trung bình:Thấp = 60:40)", unit: "triệu VND"}
+      - {symbol: "I_X", meaning: "Vốn đầu tư của phương án X", unit: "triệu VND"}
+    when_to_use: "Kiểm tra mức tự tin tối thiểu vào kịch bản tốt để phương án vốn lớn đáng chọn hơn phương án vốn nhỏ."
+    why_it_works: "EV ròng mỗi phương án tuyến tính theo p: EV_X = p x high_X + (1-p) x rest_X - I_X. Đặt EV_A = EV_B rồi giải p. Nếu p* rất cao (gần 100%) thì phương án vốn lớn chỉ thắng khi gần như chắc chắn nhu cầu cao."
+    assumptions:
+      - "Phần xác suất còn lại (1-p) chia theo tỷ lệ cố định giữa các kịch bản còn lại"
+    pitfalls:
+      - "Đổi tỷ lệ chia phần còn lại hoặc payoff sẽ đổi p*; cần chạy độ nhạy"
+    interpretation: "p* = 92,9% so với niềm tin 50% của chủ xưởng: chọn A là dấu hiệu overconfidence; B là lựa chọn bền hơn."
+    example:
+      inputs: {high_A: 2400, rest_A: 1140, I_A: 1200, high_B: 1300, rest_B: 740, I_B: 150}
+      steps:
+        - "rest_A = 0,6x1500 + 0,4x600 = 1140; rest_B = 0,6x900 + 0,4x500 = 740"
+        - "EV ròng A = 2400p + 1140(1-p) - 1200; EV ròng B = 1300p + 740(1-p) - 150"
+        - "A = B => 1140 + 1260p - 1200 = 740 + 560p - 150 => 700p = 650 => p = 0,9286"
+      result: "p* ~ 92,9%: A chỉ vượt B nếu gần như chắc chắn (>92,9%) nhu cầu cao. (Giả định minh họa.)"
+
+  - id: "m09_forward_looking_value"
+    name_vi: "Giá trị ròng hướng về tương lai (loại chi phí chìm)"
+    name_en: "Forward-looking net value (ignore sunk costs)"
+    expression_latex: 'V_{fwd}=B_{future}-C_{future}\quad(\text{không chứa } C_{sunk})'
+    expression_python: "future_benefit - future_cost"
+    excel: "=future_benefit-future_cost"
+    variables:
+      - {symbol: "B_future", meaning: "Lợi ích kỳ vọng còn lại nếu tiếp tục (kể cả giá trị thanh lý nếu có)", unit: "triệu VND"}
+      - {symbol: "C_future", meaning: "Chi phí kỳ vọng còn lại nếu tiếp tục (vận hành, hoặc phí thoát nếu dừng)", unit: "triệu VND"}
+      - {symbol: "V_fwd", meaning: "Giá trị ròng tương lai của một nhánh; so sánh giữa nhánh tiếp tục và nhánh dừng", unit: "triệu VND"}
+    when_to_use: "Dự án/chi nhánh/phần mềm đang lỗ và có áp lực đã bỏ ra rồi; cần quyết định tiếp tục, thu hẹp hay dừng."
+    why_it_works: "Chi phí chìm xuất hiện giống hệt ở cả hai nhánh nên triệt tiêu khi so sánh; chỉ phần còn lại thay đổi giữa các lựa chọn. Câu kiểm tra: 'Nếu hôm nay chưa chi đồng nào, ta có bắt đầu dự án này với chi phí tương lai còn lại không?'"
+    assumptions:
+      - "Ước lượng lợi ích/chi phí tương lai đủ trung thực (không bị bóp méo bởi escalation of commitment)"
+      - "Chi phí cơ hội của nguồn lực chuyển sang nơi khác có thể cộng thêm"
+    pitfalls:
+      - "Nhầm lẫn dừng là mất 1,5 tỷ: 1 tỷ đã mất ở cả hai nhánh"
+      - "Quên tính phí thoát (phá hợp đồng thuê, thanh lý) và giá trị thanh lý ở nhánh dừng"
+      - "Dự án cùng sunk 100M có thể cho quyết định ngược nhau; đừng dùng sunk để biện minh"
+    interpretation: "Nhánh nào có giá trị ròng tương lai cao hơn thì chọn; nếu V_fwd của nhánh tiếp tục < nhánh dừng thì dừng/thu hẹp."
+    example:
+      inputs: {future_benefit: 6000, future_cost: 7500}
+      steps:
+        - "Vsmart giả định (tỷ đồng): tiếp tục 3 năm = 6.000 - 7.500 = -1.500; dừng ngay = -800 (phí đóng dây chuyền giả định)"
+        - "Dừng tốt hơn 700 (giả định); Concorde minh họa: tiếp tục 450 - 600 = -150 vs dừng 0"
+        - "SME: tiếp tục dự án chi thêm 500 để thu 300 = -200 (so với dừng = 0), dù sunk 1 tỷ"
+      result: "-1.500 so với -800: dừng tốt hơn. (Số liệu Vsmart/Concorde là giả định minh họa, không phải số thật.)"
+
+  - id: "m09_cost_benefit"
+    name_vi: "Phân tích chi phí - lợi ích (Net Benefit, B/C, ROI)"
+    name_en: "Cost-Benefit Analysis"
+    expression_latex: 'NB=B-C,\qquad BCR=\frac{B}{C},\qquad ROI=\frac{NB}{C}'
+    expression_python: "{'net_benefit': benefits - costs, 'bcr': benefits / costs, 'roi_on_total_cost': (benefits - costs) / costs}"
+    excel: "=B-C ; =B/C ; =(B-C)/C"
+    variables:
+      - {symbol: "B (benefits)", meaning: "Tổng lợi ích (tăng lợi nhuận gộp, tiết kiệm chi phí, giá trị thương hiệu ước tính)", unit: "triệu VND"}
+      - {symbol: "C (costs)", meaning: "Tổng chi phí (vốn đầu tư, vận hành cả vòng đời, chi phí cơ hội, tổn thất kỳ vọng do rủi ro = xác suất x thiệt hại)", unit: "triệu VND"}
+      - {symbol: "NB", meaning: "Lợi ích ròng", unit: "triệu VND"}
+      - {symbol: "BCR", meaning: "Tỷ số Lợi ích/Chi phí", unit: "lần"}
+    when_to_use: "Đánh giá một dự án/khoản đầu tư xem tổng lợi ích có vượt tổng chi phí không và vượt bao nhiêu."
+    why_it_works: "Jules Dupuit (Pháp, 1844) dùng so sánh lợi ích với chi phí bằng tiền khi đánh giá công trình công cộng; chính phủ Mỹ chuẩn hóa (Flood Control Act 1936). Đưa mọi khía cạnh về cùng đơn vị tiền để trả lời đáng làm không."
+    assumptions:
+      - "Các khoản mục quy về cùng đơn vị thời gian (ví dụ tổng cả vòng đời 3 năm); thực tế nên chiết khấu về giá trị hiện tại (xem topic Time Value of Money ở bộ finance)"
+    pitfalls:
+      - "Bản cũ tính ROI = lợi ích ròng / vốn đầu tư ban đầu (125%) gây hiểu nhầm vì chi phí vận hành và rủi ro không nằm trong mẫu số; chuẩn là ROI trên TỔNG chi phí (62,5%)"
+      - "Khoản lợi ích mềm (giá trị thương hiệu 50M) là ước tính; phải kiểm tra độ bền bằng cách loại ra"
+    interpretation: "Tiến hành nếu NB > 0 và B/C > 1 và vẫn dương khi thử tình huống xấu. Ví dụ: loại 50M thương hiệu, NB còn 200M, B/C = 1,5 vẫn dương."
+    example:
+      inputs: {benefits: 650, costs: 400}
+      steps:
+        - "Lợi ích = 500 (tăng doanh thu/lợi nhuận gộp) + 100 (tiết kiệm) + 50 (thương hiệu) = 650"
+        - "Chi phí = 200 (vốn) + 100 (vận hành 3 năm) + 50 (cơ hội) + 50 (rủi ro) = 400"
+        - "NB = 650 - 400 = 250; B/C = 650/400 = 1,625; ROI trên tổng chi phí = 250/400 = 62,5%"
+        - "Kiểm tra độ bền: bỏ 50 thương hiệu: NB = 200; B/C = 600/400 = 1,5"
+      result: "NB = 250 triệu, B/C = 1,625, ROI = 62,5% (giả định minh họa); kết luận vẫn dương khi loại lợi ích mềm."
+
+  - id: "m09_prospect_value"
+    name_vi: "Hàm giá trị Prospect Theory"
+    name_en: "Prospect Theory value function"
+    expression_latex: 'v(x)=\begin{cases} x^{\alpha} & x\ge 0\\ -\lambda\,(-x)^{\alpha} & x<0\end{cases},\quad \alpha=0{,}88,\ \lambda=2{,}25'
+    expression_python: "x**alpha if x >= 0 else -lam * (-x)**alpha"
+    excel: "=IF(x>=0, x^0.88, -2.25*(-x)^0.88)"
+    variables:
+      - {symbol: "x", meaning: "Kết quả so với điểm tham chiếu (lãi dương, lỗ âm)", unit: "đơn vị tùy ý (VND, triệu VND)"}
+      - {symbol: "alpha", meaning: "Độ cong giảm dần của giá trị (0,88 < 1: lợi/lỗ tăng nhưng chậm dần)", unit: "không thứ nguyên"}
+      - {symbol: "lam (lambda)", meaning: "Hệ số ác cảm mất mát (Tversky & Kahneman 1992 ước lượng ~2,25)", unit: "lần"}
+    when_to_use: "Giải thích vì sao người ta từ chối cược EV >= 0, vì sao cùng phương án trình bày kiểu lãi hay lỗ dẫn tới phản ứng khác nhau (framing), và thiết kế bảng giá/ưu đãi."
+    why_it_works: "Kahneman & Tversky (1979, Econometrica): 3 ý chính là điểm tham chiếu, ác cảm mất mát, trọng số xác suất. 0,88 biểu diễn nhạy cảm giảm dần (mất 1.000 không đau gấp 10 lần mất 100); 2,25 biểu diễn mất mát đau hơn được lợi."
+    assumptions:
+      - "Tham số 0,88 và 2,25 là ước lượng trung bình từ thí nghiệm (Tversky & Kahneman 1992), thay đổi theo cá nhân/văn hóa"
+      - "Phiên bản đơn giản bỏ qua hàm trọng số xác suất"
+    pitfalls:
+      - "Là mô hình MÔ TẢ hành vi, không phải chuẩn nên làm; đừng dùng để biện minh quyết định bảo thủ"
+      - "Điểm tham chiếu do cách trình bày quyết định; cần chuẩn hóa điểm tham chiếu khi so sánh"
+    interpretation: "Giá trị tâm lý của cược 50-50 thắng/thua 1.000 là âm (~ -272,8) dù EV = 0: để chấp nhận phải có lợi ích lớn hơn mất mát khoảng 2 lần."
+    example:
+      inputs: {x_gain: 1000, x_loss: -1000, alpha: 0.88, lam: 2.25}
+      steps:
+        - "EV thuần = 0,5x1000 + 0,5x(-1000) = 0"
+        - "v(+1000) = 1000^0,88 ~ 436,5; v(-1000) = -2,25 x 1000^0,88 ~ -982,2"
+        - "Giá trị tâm lý = 0,5x436,5 + 0,5x(-982,2) ~ -272,8"
+      result: "Giá trị tâm lý ~ -272,8 < 0: đa số người từ chối cược dù EV = 0. Cược 50-50 thắng 150k/thua 100k có EV +25k nhưng vẫn bị từ chối."
+
+  - id: "m09_breakeven_revenue"
+    name_vi: "Doanh thu hòa vốn và lợi nhuận vận hành tháng"
+    name_en: "Break-even revenue / monthly operating profit"
+    expression_latex: 'R_{BE}=\frac{F}{1-v},\qquad \pi=R(1-v)-F'
+    expression_python: "fixed_cost / (1 - var_cost_ratio)"
+    excel: "=F/(1-v) ; =R*(1-v)-F"
+    variables:
+      - {symbol: "F (fixed_cost)", meaning: "Tổng chi phí cố định hằng tháng (nhân sự + mặt bằng + chi phí khác)", unit: "triệu VND/tháng"}
+      - {symbol: "v (var_cost_ratio)", meaning: "Tỷ lệ chi phí biến đổi/giá vốn trên doanh thu (biên đóng góp = 1 - v)", unit: "tỷ lệ"}
+      - {symbol: "R", meaning: "Doanh thu tháng", unit: "triệu VND/tháng"}
+    when_to_use: "Trước khi mở chi nhánh/cửa hàng mới hoặc kiểm tra kế hoạch dựa trên doanh số neo từ nơi khác."
+    why_it_works: "Lợi nhuận bằng biên đóng góp nhân doanh thu trừ chi phí cố định; hòa vốn khi bằng 0. Giúp biết ngưỡng tối thiểu để không lỗ, thay vì tin kỳ vọng neo (anchoring)."
+    assumptions:
+      - "Chi phí cố định không đổi theo doanh thu; giá vốn tỷ lệ tuyến tính"
+    pitfalls:
+      - "Không tính hòa vốn trước khi quyết định là sai sót của chủ Trà Vườn (giả định minh họa)"
+      - "Bỏ khấu hao/vốn đầu tư thiết bị khi tính hòa vốn vận hành (không phải hoàn vốn đầu tư)"
+    interpretation: "So doanh thu hòa vốn với doanh thu thực tế khả dĩ (dùng base rate, không dùng neo); Trà Vườn cần 65% doanh thu kế hoạch mới hòa vốn."
+    example:
+      inputs: {fixed_cost: 210, var_cost_ratio: 0.35, R_plan: 500, R_actual: 200}
+      steps:
+        - "Kế hoạch (neo): 500 x 0,65 - 210 = 325 - 210 = +115 triệu/tháng"
+        - "Thực tế: 200 x 0,65 - 210 = 130 - 210 = -80 triệu/tháng (lỗ 960 triệu/năm)"
+        - "Hòa vốn: 210 / 0,65 ~ 323 triệu/tháng = ~64,6% doanh thu kế hoạch (nguồn ghi ~65%)"
+      result: "Doanh thu hòa vốn ~323 triệu/tháng; thực tế 200 triệu thấp hơn hòa vốn. (Giả định minh họa.)"
+
+  - id: "m09_leverage_loss_threshold"
+    name_vi: "Đòn bẩy và ngưỡng chịu lỗ (risk capacity)"
+    name_en: "Leverage and loss-absorption threshold"
+    expression_latex: 'L=\frac{A}{E},\qquad \text{ngưỡng chịu lỗ}=\frac{E}{A}=\frac{1}{L}'
+    expression_python: "{'leverage': assets / equity, 'loss_threshold': equity / assets}"
+    excel: "=A/E ; =E/A"
+    variables:
+      - {symbol: "A (assets)", meaning: "Tổng tài sản", unit: "tỷ USD/VND (cùng đơn vị)"}
+      - {symbol: "E (equity)", meaning: "Vốn chủ sở hữu", unit: "cùng đơn vị với A"}
+    when_to_use: "Kiểm tra khả năng chịu lỗ trước khi chấp nhận quyết định có EV dương nhưng kịch bản xấu lớn; cảnh báo overconfidence vào mô hình."
+    why_it_works: "Tài sản giảm giá đúng bằng phần vốn chủ thì vốn chủ về 0; đòn bẩy càng cao thì ngưỡng càng mỏng. Sai số nhỏ của mô hình bị khuếch đại thành phá sản (bài học LTCM)."
+    assumptions:
+      - "Số liệu LTCM (vốn chủ ~4,7 tỷ USD, tài sản ~124,5 tỷ USD) lấy từ Lowenstein, When Genius Failed, là ước tính"
+    pitfalls:
+      - "Chỉ nhìn EV mà bỏ qua risk capacity (kịch bản -200M với vốn chủ 250M)"
+      - "SME: nợ ngắn hạn tài trợ tài sản dài hạn làm đòn bẩy nguy hiểm hơn con số trên bảng cân đối"
+    interpretation: "Đòn bẩy 26,5 lần: chỉ cần tài sản giảm ~3,8% là vốn chủ về 0. SME nên giữ đệm tiền mặt tối thiểu 3-6 tháng chi phí cố định."
+    example:
+      inputs: {assets: 124.5, equity: 4.7}
+      steps:
+        - "Đòn bẩy = 124,5 / 4,7 ~ 26,5 lần"
+        - "Ngưỡng chịu lỗ = 4,7 / 124,5 ~ 3,8%"
+      result: "Đòn bẩy ~26,5 lần, ngưỡng lỗ ~3,8% (số LTCM là ước tính)."
+
+  - id: "m09_payback_trigger"
+    name_vi: "Thời gian hoàn vốn của quyền chọn mở rộng (real option trigger)"
+    name_en: "Payback months for expansion trigger"
+    expression_latex: 'T=\frac{I}{S_{month}}'
+    expression_python: "investment / monthly_saving"
+    excel: "=I/S"
+    variables:
+      - {symbol: "I (investment)", meaning: "Vốn đầu tư mở rộng (ví dụ mua CNC)", unit: "triệu VND"}
+      - {symbol: "S (monthly_saving)", meaning: "Chi phí thuê ngoài hằng tháng được thay thế hoàn toàn", unit: "triệu VND/tháng"}
+    when_to_use: "Đặt điều kiện kích hoạt mua sắm lớn (Type 1) sau khi chọn phương án đảo ngược được (Type 2), dựa trên dữ liệu thật."
+    why_it_works: "Giữ quyền chọn: chọn phương án rẻ, đảo ngược được trước; chỉ cam kết khoản lớn khi chi phí thuê vượt ngưỡng liên tục, đã có dữ liệu thật thay cho dự báo."
+    assumptions:
+      - "Giả định chi phí thuê được thay hoàn toàn bằng máy (bỏ qua vận hành, khấu hao, chiết khấu)"
+    pitfalls:
+      - "Đặt điều kiện kích hoạt bằng văn bản từ đầu; không để cảm tính sau này"
+    interpretation: "Việt Phát: nếu chi phí thuê > 60 triệu/tháng trong 6 tháng liên tiếp thì xem xét mua CNC; hoàn vốn ước tính 20 tháng."
+    example:
+      inputs: {investment: 1200, monthly_saving: 60}
+      steps: ["T = 1200 / 60 = 20 tháng"]
+      result: "20 tháng (giả định minh họa)."
+
+frameworks:
+  - id: "m09_rational_8_steps"
+    name_vi: "Mô hình hữu tỉ 8 bước"
+    name_en: "Rational Decision-Making Model (8 steps)"
+    origin: "Từ kinh tế học cổ điển, Expected Utility (von Neumann & Morgenstern 1944); tổ tiên là 'moral algebra' của Franklin (1772). Dùng làm chuẩn tham chiếu (chuẩn tắc), không mô tả hành vi thực."
+    components:
+      - "1. Problem Identification: nhận biết lệch so với kỳ vọng, 5 Why, xác định phạm vi (SME doanh số giảm 20%: do thị trường, chất lượng, giá hay cạnh tranh?)"
+      - "2. Clarify Objectives: mục tiêu SMART, ưu tiên, ràng buộc ngân sách-thời gian-nhân lực"
+      - "3. Generate Alternatives: tối thiểu 3-5, không quá 10, bao gồm status quo, brainstorming không phê phán"
+      - "4. Evaluate Alternatives: ma trận trọng số, tính lợi nhuận/thời gian/rủi ro/tác động, sensitivity analysis"
+      - "5. Select Best Alternative: so điểm, nhất trí nhóm, có kế hoạch B"
+      - "6. Implement: 5W1H, phân bổ nguồn lực, truyền thông, milestone"
+      - "7. Control and Feedback: KPI, tần suất kiểm tra, báo cáo kế hoạch vs thực tế, điều chỉnh"
+      - "8. Evaluate Results: so kết quả với mục tiêu, vì sao thành/bại, bài học, có cần quyết định mới không"
+    when_to_use: "Quyết định chiến lược, hệ quả lớn, khó đảo ngược, đủ thời gian và dữ liệu."
+    how_to_apply:
+      - "Chẩn đoán vấn đề thật bằng 5 Why trước khi liệt kê giải pháp"
+      - "Chốt mục tiêu và ràng buộc bằng văn bản"
+      - "Sinh >= 3 phương án thật sự khác nhau + 'không làm gì'"
+      - "Chấm điểm bằng ma trận trọng số/EV, kiểm tra độ nhạy"
+      - "Chọn, ghi Decision Log, nêu kế hoạch dự phòng, triển khai và theo dõi KPI"
+    how_to_read_results: "Đây là chuẩn để so sánh: khi quyết định thực tế lệch khỏi 8 bước, hãy xác định lệch ở đâu (thông tin, phương án, tiêu chí) và do giới hạn nào (nhận thức, thông tin, thời gian)."
+    pitfalls:
+      - "Giả sử đủ thông tin, xét mọi phương án, dự báo chính xác, mục tiêu duy nhất, đủ thời gian: cả 5 giả định thường vi phạm trong thực tế"
+      - "Áp dụng cho mọi quyết định dẫn đến analysis paralysis"
+    example: "Chọn mở rộng sản xuất: 5 Why xác định nút thắt, 4 phương án (CNC, thuê ngoài, showroom, giữ nguyên), ma trận 5 tiêu chí, EV 3 kịch bản (xem case Nội thất Việt Phát)."
+
+  - id: "m09_bounded_rationality_satisficing"
+    name_vi: "Tính hữu tỉ giới hạn và Satisficing (quy trình 'đủ tốt')"
+    name_en: "Bounded Rationality / Satisficing procedure"
+    origin: "Herbert Simon (1947, 1955; Nobel 1978)."
+    components:
+      - "Giới hạn nhận thức: working memory 7±2 (Miller 1956; Cowan 2001 gợi ý ~4 khối), tốc độ xử lý, heuristics"
+      - "Giới hạn thông tin: bất đối xứng, chi phí thu thập, quá tải (dashboard 50 KPI -> chỉ nhìn top 3)"
+      - "Giới hạn thời gian: áp lực cạnh tranh, chi phí cơ hội của việc phân tích"
+      - "Giới hạn tổ chức (institutional constraints)"
+    when_to_use: "Quyết định operational/tactical, hệ quả đảo ngược được, thời gian hạn chế (SME thường nên ưu tiên satisficing vì thị trường nhanh, thông tin thiếu, nguồn lực hạn chế)."
+    how_to_apply:
+      - "Giới hạn tập phương án (chỉ xét ứng viên đã có thông tin, 3-5 phương án đầu tiên)"
+      - "Đặt trọng số đơn giản và ngưỡng tối thiểu từng tiêu chí (aspiration level)"
+      - "Áp bước loại trừ theo ràng buộc cứng (ví dụ MOQ/vốn lưu động) trước khi chấm điểm"
+      - "Chuẩn hóa điểm 0-100, tính điểm tổng, dừng khi đã có phương án đạt ngưỡng; nếu chênh điểm không đáng kể thì chọn theo tiêu chí phụ"
+      - "Ghi thời gian quyết định (3 ngày, 1 người so với 3-4 tuần, 5 người)"
+    how_to_read_results: "Satisficing: xem 3-5 phương án, vài ngày, rủi ro medium (có thể bỏ lỡ). Maximizing: xem tất cả, vài tuần/tháng, rủi ro thấp nhưng mất thời gian."
+    pitfalls:
+      - "Hiểu nhầm satisficing là làm ẩu/bỏ qua dữ liệu"
+      - "Dùng satisficing cho quyết định Type 1 khó đảo ngược"
+    example: "Chọn nhà cung cấp vải A/B/C (giả định minh họa): B 87,8 ~ A 87,05 > C 81,5, C bị loại vì giao 4 tuần và MOQ 36.000 USD."
+
+  - id: "m09_rpd"
+    name_vi: "Mô hình ra quyết định theo nhận dạng (RPD)"
+    name_en: "Recognition-Primed Decision (Klein)"
+    origin: "Gary Klein và cộng sự (1986), nghiên cứu chỉ huy chữa cháy; sách Sources of Power (1998); Kahneman & Klein (2009) về điều kiện của trực giác chuyên gia."
+    components:
+      - "Stage 1 Recognition: 'cái này tôi đã gặp'"
+      - "Stage 2 Evaluation: nhanh chóng khớp với pattern"
+      - "Stage 3 Mental simulation: hình dung kết quả của phương án đầu tiên"
+      - "Stage 4 Action: hành động ngay"
+      - "Điều kiện thành công: Experience (>= 10 năm là quy ước thực hành), Feedback nhanh, Pattern recognition, Stable environment"
+    when_to_use: "Khủng hoảng/khẩn cấp, vận hành hằng ngày với quản lý có kinh nghiệm. Tránh khi môi trường không ổn định (crypto, thời trang), feedback chậm (chiến lược 5 năm), hoặc bias lớn."
+    how_to_apply:
+      - "Kiểm tra 4 điều kiện (kinh nghiệm, phản hồi nhanh, nhận dạng mẫu, môi trường ổn định)"
+      - "Nếu đủ: dùng trực giác + mô phỏng nhanh, kết hợp checklist an toàn"
+      - "Nếu thiếu điều kiện: chuyển sang phân tích/hybrid (structured interview + gut feeling cho tuyển dụng; MVP + phản hồi cho ra mắt sản phẩm)"
+    how_to_read_results: "Gợi ý tỷ trọng cho SME: Operational 60% trực giác / 40% hợp lý (checklist an toàn); Strategic 20% trực giác / 80% hợp lý. Thời gian vài giây-vài phút (minh họa)."
+    pitfalls:
+      - "Nhầm cảm giác tự tin với độ chính xác của trực giác (overconfidence)"
+      - "Con số '>= 10 năm' không phải ngưỡng khoa học cứng"
+    example: "Khủng hoảng: trực giác trước, phân tích sau. Tuyển dụng chiến lược: structured interview (✓✓✓) thay vì chỉ gut feeling."
+
+  - id: "m09_system1_system2"
+    name_vi: "Hai hệ thống tư duy (System 1 / System 2)"
+    name_en: "Kahneman's System 1 and System 2"
+    origin: "Kahneman và Tversky (1974); Kahneman (Nobel 2002), Thinking, Fast and Slow (2011); Tversky mất năm 1996 nên không đồng nhận giải."
+    components:
+      - "System 1 (Fast): tự động, ít tốn sức, tải nhận thức thấp, dễ bị thiên kiến (đọc từ, nhận mặt quen, lái xe quen)"
+      - "System 2 (Slow): có chủ ý, tốn sức, tải cao, ít thiên kiến hơn nhưng chậm (giải toán, quyết định phức tạp)"
+    when_to_use: "Giải thích vì sao quyết định quan trọng cần quy trình chủ động kích hoạt System 2."
+    how_to_apply:
+      - "Nhận diện quyết định đang do System 1 dẫn dắt (cảm giác nhanh, 'hiển nhiên')"
+      - "Buộc dừng: checklist, viết lý do, pre-mortem, dữ liệu base rate"
+    how_to_read_results: "System 2 không miễn nhiễm thiên kiến và tốn năng lượng (xem decision fatigue); dùng cho quyết định quan trọng, không cho mọi việc."
+    pitfalls:
+      - "Cho rằng chỉ cần 'cố gắng nghĩ kỹ hơn' là hết thiên kiến"
+    example: "Chủ quán thấy tin một nhà hàng bị phạt (System 1) rồi chi 500 triệu; System 2 hỏi tỷ lệ thực tế của quán mình."
+
+  - id: "m09_bias_catalog"
+    name_vi: "Danh mục 13 thiên kiến nhận thức và cách khử (debias)"
+    name_en: "Catalog of 13 cognitive biases and debiasing"
+    origin: "Tversky & Kahneman (1974 và các nghiên cứu sau); hindsight, halo, Dunning-Kruger (Kruger & Dunning 1999) từ các hướng nghiên cứu tâm lý khác."
+    components:
+      - "1 Anchoring (neo): số đầu tiên chi phối. Ví dụ Trà Vườn neo 500 triệu. Debias: base rate (vd 60% chi nhánh 1 = 300M), bỏ neo, pre-mortem"
+      - "2 Availability (sẵn có): xác suất theo độ dễ nhớ (tin quán bị kiện, mất một nhân tài rồi tăng lương cả công ty). Debias: dữ liệu/base rate thay vì tin đơn lẻ"
+      - "3 Representativeness (điển hình): giống prototype bỏ qua base rate (founder từ Google = thành công; thống kê 70-90% startup thất bại là ước tính). Debias: base rate, tách từng yếu tố"
+      - "4 Confirmation (xác nhận): chỉ tìm thông tin ủng hộ niềm tin. Debias: devil's advocate, tìm 3 lý do sai, decision journal"
+      - "5 Hindsight (nhìn lại): 'tôi đã biết từ đầu'. Debias: ghi giả định/rủi ro trước khi quyết (decision log), kiểm tra biên bản"
+      - "6 Overconfidence (tự tin quá mức): 90% tài xế tin trên trung bình; CEO dự báo 30% thực tế 5%; LTCM. Debias: pre-mortem, hiệu chỉnh độ tự tin (calibration), thêm người hoài nghi"
+      - "7 Sunk cost (chi phí chìm): tiếp tục vì đã chi. Debias: frame forward, zero-based thinking, kill fee mindset"
+      - "8 Loss aversion (ác cảm mất mát): mất đau gấp ~2-2,5 lần (2,25). Debias: reframe, danh mục rủi ro, tính EV thay vì cảm xúc"
+      - "9 Framing (cách trình bày): bệnh dịch 600 người (200 cứu được vs 400 chết); '95% uptime' vs 'down 5%'; lương 15M +20% vs -17%. Debias: trình bày nhiều khung, trung tính, kiểm tra giá trị thật"
+      - "10 Status quo: ưu tiên hiện trạng (Excel 10 năm thay vì phần mềm 5M tiết kiệm 20M/năm; giữ giá 5 năm). Debias: rà soát bắt buộc định kỳ, đặt thay đổi làm mặc định, tính chi phí không thay đổi"
+      - "11 Recency (gần đây): quá coi trọng dữ liệu mới (tháng Tết, Q3 giảm). Debias: bình quân 3 năm, phân biệt bất thường/xu hướng/mùa vụ, baseline"
+      - "12 Halo (ánh sáng): một đặc điểm tốt lan sang toàn bộ (tuyển từ FPT/Viettel; VC có 1 thành công). Debias: đánh giá từng đặc điểm, tham chiếu >= 3 nơi làm cũ, hỏi điểm yếu"
+      - "13 Dunning-Kruger: người kém đánh giá mình quá cao. Đường cong 'đỉnh ngu dốt - thung lũng' là minh họa hóa; một số nhà thống kê cho rằng một phần là hiện tượng thống kê. Debias: học thêm, phản hồi ngang hàng, đo tỷ lệ thành công thực"
+    when_to_use: "Rà soát quyết định quan trọng trước khi chốt; chẩn đoán vì sao một quyết định đã thất bại."
+    how_to_apply:
+      - "Đọc danh sách và đánh dấu thiên kiến nghi ngờ theo ngữ cảnh (dự báo = anchoring/overconfidence; tin tức = availability; tuyển dụng = halo/confirmation; dừng dự án = sunk cost/loss aversion)"
+      - "Áp biện pháp debias tương ứng (base rate, pre-mortem, devil's advocate, decision log)"
+      - "Ghi vào Decision Log các giả định gốc để chống hindsight bias"
+    how_to_read_results: "Một quyết định thường dính nhiều thiên kiến cùng lúc (Trà Vườn: anchoring + confirmation + overconfidence + sunk cost)."
+    pitfalls:
+      - "Con số thống kê trong giáo trình (70-90% startup thất bại, hiến tạng opt-out >90%) là ước tính, cần tra nguồn trước khi dùng làm base rate thật"
+      - "Chỉ gọi tên thiên kiến mà không đổi quy trình thì vô ích"
+    example: "Chi nhánh 2 Trà Vườn (xem case_lessons)."
+
+  - id: "m09_groupthink"
+    name_vi: "Groupthink: 8 triệu chứng, 6 nguyên nhân và 5 biện pháp phòng tránh"
+    name_en: "Groupthink (Janis)"
+    origin: "Irving Janis (Yale), Victims of Groupthink (1972), mở rộng Groupthink (1982), từ phân tích Vịnh Con Heo, Trân Châu Cảng, leo thang chiến tranh Việt Nam."
+    components:
+      - "Triệu chứng 1 Illusion of Invulnerability: tin quá mức vào thành công, hạ thấp rủi ro"
+      - "Triệu chứng 2 Collective Rationalization: bác bỏ cảnh báo bằng lý do hợp lý hóa ('đội ngũ có động lực')"
+      - "Triệu chứng 3 Belief in Inherent Morality: tin mục tiêu đạo đức nên bỏ qua vấn đề đạo đức của phương tiện"
+      - "Triệu chứng 4 Stereotyped Beliefs: nhìn đối thủ/out-group đơn giản, tiêu cực"
+      - "Triệu chứng 5 Direct Pressure on Dissenters: gây áp lực/mỉa mai người phản đối ('anh không tin tầm nhìn của tôi?')"
+      - "Triệu chứng 6 Self-Censorship: cá nhân tự im lặng để giữ hòa khí"
+      - "Triệu chứng 7 Illusion of Unanimity: im lặng bị hiểu là đồng ý (vote 8-0 nhưng 2 người miễn cưỡng)"
+      - "Triệu chứng 8 Mindguards: người chủ động lọc thông tin phản biện khỏi lãnh đạo"
+      - "Nguyên nhân (antecedents): high cohesion, isolation, directive leader, no methodical procedure, time pressure & stress, external threats"
+      - "Phòng tránh: (1) Devil's advocate; (2) Dialectical inquiry; (3) Second-chance meeting; (4) Multiple groups (Red/Blue team); (5) Outside experts/external review"
+    when_to_use: "Nhóm quyết định hẹp, lãnh đạo mạnh, bí mật, áp lực thời gian, im lặng khi chốt."
+    how_to_apply:
+      - "Chấm tick 8 triệu chứng và 6 nguyên nhân cho nhóm hiện tại"
+      - "Tách người đề xuất và người phản biện; để lãnh đạo vắng mặt ở vòng thảo luận đầu; yêu cầu >= 3 phương án thật khác nhau"
+      - "Cho phép góp ý bằng văn bản ẩn danh; người nêu ý kiến độc lập (viết riêng trước)"
+      - "Dialectical inquiry: dựng thesis/antithesis, tranh luận giả định, rồi tổng hợp (vd 'giữ chi nhánh 6 tháng, nếu KPI không cải thiện thì đóng')"
+      - "Second-chance meeting 1-2 tuần sau khi chốt để xem lại; chậm và có thể bị coi là lãnh đạo yếu"
+      - "Devil's advocate: giao vai tìm 5-10 lý do thất bại; hạn chế: nếu luôn là cùng một người, nhóm sẽ tune out"
+    how_to_read_results: "Có >= 3 triệu chứng cùng 2 nguyên nhân nền (cohesion cao, lãnh đạo chỉ đạo) = rủi ro cao; cần thay đổi quy trình, không chỉ thay người."
+    pitfalls:
+      - "Đồng thuận bề ngoài giữa nhiều cơ quan chưa chắc là nhiều bằng chứng độc lập (có thể một nguồn được trích lại, case WMD Iraq)"
+      - "Chỉ có thể chủ động phòng ngừa, không phải mặc định tự khỏi (Cuba 1962 chứng minh có thể)"
+    example: "Bay of Pigs 1961 (thất bại) vs Cuba 1962 (cùng ExComm, quy trình khác)."
+
+  - id: "m09_group_phenomena"
+    name_vi: "Hiện tượng nhóm khác: Polarization, Social Loafing, Abilene Paradox và ưu/nhược điểm ra quyết định nhóm"
+    name_en: "Other group phenomena and group-decision trade-offs"
+    origin: "Stoner 1961; Moscovici & Zavalloni 1969; Ringelmann; Latané, Williams & Harkins 1979; Jerry Harvey 1974."
+    components:
+      - "Ưu: đa dạng góc nhìn, chất lượng phân tích, buy-in, chia sẻ rủi ro, rà soát kỹ"
+      - "Nhược: xung đột, chậm, thỏa hiệp ở mẫu số chung thấp nhất, risky shift, trách nhiệm khuếch tán"
+      - "Group Polarization / Risky Shift"
+      - "Social Loafing (giảm nỗ lực khi nhóm đông)"
+      - "Abilene Paradox (cùng làm điều không ai muốn)"
+    when_to_use: "Quyết định cần buy-in và đa góc nhìn nhưng nhóm đông, nhiều rủi ro tạo thêm."
+    how_to_apply:
+      - "Chia nhóm nhỏ 3-5, giao phần việc cá nhân, đo đóng góp riêng (chống social loafing)"
+      - "Hỏi từng người ý muốn thật (chống Abilene); bỏ phiếu kín khi nhạy cảm"
+      - "Chạy pre-mortem/devil's advocate để cân bằng risky shift"
+    how_to_read_results: "Nhóm đông 10 người: chỉ 2-3 người nói là dấu hiệu loafing; sau thảo luận mà thái độ cực đoan hơn là phân cực."
+    pitfalls:
+      - "Cho rằng 'cả nhóm cùng quyết' luôn an toàn hơn cá nhân (risky shift cho thấy ngược lại)"
+    example: "Brainstorming họp 10 người ít ý hơn 10 người viết riêng rồi gộp."
+
+  - id: "m09_brainstorming_ngt_delphi"
+    name_vi: "Brainstorming, NGT và Delphi (kỹ thuật sinh ý tưởng/đồng thuận/dự báo)"
+    name_en: "Brainstorming, Nominal Group Technique, Delphi"
+    origin: "Alex Osborn, Applied Imagination (1953); Diehl & Stroebe (1987) phát hiện họp truyền thống tạo ít ý hơn làm riêng gộp lại (production blocking, e ngại bị đánh giá, social loafing); NGT do Andre Delbecq và Andrew Van de Ven (cuối 1960-đầu 1970); Delphi do RAND (thập niên 1950, Olaf Helmer, Norman Dalkey) dự báo công nghệ quân sự."
+    components:
+      - "Brainstorming - 6 quy tắc Osborn: hoãn phê phán, khuyến khích ý tưởng điên rồ, phát triển ý tưởng người khác (Yes, And), tập trung/giới hạn thời gian (vd 30 phút), một người nói một lúc, số lượng sinh chất lượng ở pha phát sinh"
+      - "NGT 6 bước: viết ý tưởng riêng (5 phút), round-robin, làm rõ, thảo luận/đánh giá, bỏ phiếu/xếp hạng (kín nếu nhạy cảm), kết quả = ý xếp cao nhất"
+      - "Delphi: chuyên gia ẩn danh, nhiều vòng (thường 2-3), tổng hợp trung vị và khoảng, chuyên gia xem rồi chỉnh, hội tụ"
+    when_to_use: "Brainstorming/brainwriting: sinh ý. NGT: cần đồng thuận có cấu trúc, tránh lấn át. Delphi: dự báo (xu hướng thị trường, mức độ áp dụng AI), đánh giá rủi ro."
+    how_to_apply:
+      - "Thực hành tốt hiện nay: viết ý tưởng riêng trước, rồi mới chia sẻ (brainwriting hoặc NGT)"
+      - "Delphi ví dụ: dự báo % SME Việt Nam áp dụng AI năm 2030; vòng 1 trả lời 30%, 50%, 70%, 40%, 60% -> trung vị 50%, khoảng 30-70%; vòng 2 chuyên gia xem rồi chỉnh, hội tụ ~50%"
+    how_to_read_results: "NGT cho danh sách xếp hạng; Delphi cho trung vị và khoảng phân tán sau hội tụ (phân tán còn lớn tức bất đồng thật)."
+    pitfalls:
+      - "Họp brainstorming truyền thống mất lợi thế khi vẫn bị chi phối bởi người nói to"
+      - "Delphi cần chuyên gia thật sự và cam kết nhiều vòng"
+    example: "Bài toán 'tăng giữ chân khách': loyalty program, giá rẻ hơn, hỗ trợ tốt hơn, gamification, cộng đồng -> chọn top 3 -> đánh giá."
+
+  - id: "m09_six_hats"
+    name_vi: "Sáu chiếc mũ tư duy"
+    name_en: "Six Thinking Hats (de Bono)"
+    origin: "Edward de Bono (1985): họp thường rối vì mọi người cùng lúc dùng nhiều kiểu tư duy; giải pháp là tư duy song song (parallel thinking), cả nhóm đội cùng một mũ tại một thời điểm."
+    components:
+      - "Trắng: dữ kiện, số liệu"
+      - "Đỏ: cảm xúc, trực giác (không cần giải thích)"
+      - "Đen: phán đoán thận trọng, rủi ro, điểm yếu"
+      - "Vàng: lạc quan, lợi ích, cơ hội"
+      - "Xanh lá: sáng tạo, ý tưởng thay thế"
+      - "Xanh dương: quy trình, tổng kết, bước tiếp theo (thường mở đầu và kết thúc)"
+    when_to_use: "Cần khớp nhóm, tránh tranh cãi cá nhân, muốn đủ góc nhìn."
+    how_to_apply:
+      - "Mỗi mũ 5-10 phút, cả nhóm cùng chuyển mũ cùng lúc"
+      - "Thứ tự gợi ý: Trắng, Đỏ, Đen, Vàng, Xanh lá, Xanh dương"
+    how_to_read_results: "Quyết định cuối ghi ở mũ xanh dương (tóm tắt + bước tiếp)."
+    pitfalls:
+      - "Cho phép người dùng mũ không đúng lượt biến thành tranh cãi"
+    example: "Mũ đen: 'Nếu timeline trượt, đội rời đi thì sao?'; mũ xanh lá: 'song song hay thuê ngoài?'"
+
+  - id: "m09_premortem"
+    name_vi: "Pre-mortem (phân tích cái chết trước)"
+    name_en: "Pre-mortem (Klein)"
+    origin: "Gary Klein (2007, HBR 'Performing a Project Premortem'), dựa trên prospective hindsight: giả định sự việc đã xảy ra giúp nêu được nhiều lý do hơn (Mitchell, Russo & Pennington 1989, thường trích cải thiện ~30%, ước tính). Cho phép người ngại phản đối nói ra vì đây là trò chơi giả định."
+    components:
+      - "Imagine: 1 năm sau dự án thất bại hoàn toàn"
+      - "Viết riêng lý do (10 phút), chia sẻ (20 phút), gom nhóm (10 phút), thảo luận (30 phút), hành động giảm thiểu rủi ro hàng đầu (20 phút) = ~90 phút"
+    when_to_use: "Quyết định rủi ro, chiến lược, trước khi cam kết nguồn lực."
+    how_to_apply:
+      - "Giả sử 12 tháng sau thất bại, mỗi người viết riêng nguyên nhân"
+      - "Chia sẻ, gom cụm, đánh giá xác suất/tác động từng cụm"
+      - "Lập biện pháp giảm thiểu và chỉ số cảnh báo sớm kèm ngưỡng (xem worksheet)"
+    how_to_read_results: "Danh sách top failure modes kèm Probability/Impact/Mitigation và Monitoring metrics."
+    pitfalls:
+      - "Làm xong rồi để đó; cần gắn vào KPI và rà soát"
+    example: "Việt Phát phương án B: đối tác giao trễ (TB/Cao: phạt trễ, 2 đối tác song song); lộ bản vẽ (Thấp/Cao: NDA, chia nhỏ); giá thuê tăng (TB/TB: giá khung 12 tháng); đội kỹ thuật mất động lực (TB/TB: họp minh bạch, đào tạo)."
+
+  - id: "m09_decision_tree_ev"
+    name_vi: "Cây quyết định (Decision Tree) với EV"
+    name_en: "Decision Tree"
+    origin: "Pascal-Fermat (1654) về xác suất; Daniel Bernoulli (1738) về độ thỏa dụng phi tuyến."
+    components:
+      - "Nút quyết định (START: mở rộng / không mở rộng)"
+      - "Nhánh kết cục có xác suất (thành công 60% +500M - chi phí 200M = +300M; thất bại 40% = -200M)"
+      - "EV từng nhánh và so sánh"
+    when_to_use: "Quyết định có kết cục không chắc chắn, xác suất ước lượng được."
+    how_to_apply:
+      - "Vẽ cây, gán xác suất (tổng 1) và payoff ròng"
+      - "Tính EV bằng công thức m09_expected_value"
+      - "Kiểm tra kịch bản xấu so với khả năng chịu lỗ (risk capacity)"
+      - "Tính xác suất hòa EV giữa phương án (m09_breakeven_probability)"
+    how_to_read_results: "EV(Expand) = 0,6x300 + 0,4x(-200) = +100M > EV(No expand) = 0 nên Expand, TRỪ khi -200M đe dọa sự sống còn (vốn chủ 250M)."
+    pitfalls:
+      - "EV chỉ là trung bình dài hạn, bỏ qua tail risk (LTCM)"
+    example: "Việt Phát: EV ròng A = 570M, B = 870M."
+
+  - id: "m09_ooda"
+    name_vi: "Vòng lặp OODA"
+    name_en: "OODA Loop (Boyd)"
+    origin: "John Boyd (phi công, nhà chiến lược Không quân Mỹ), từ không chiến Triều Tiên (F-86 vs MiG-15; tỷ lệ ~10:1 là ước tính còn tranh luận); lý thuyết phát triển 1970s-1990s."
+    components:
+      - "Observe: thu thập thông tin"
+      - "Orient: diễn giải qua mô hình tư duy (kinh nghiệm, văn hóa, niềm tin); là trọng tâm"
+      - "Decide: chọn hành động"
+      - "Act: thực hiện; rồi quan sát kết quả và lặp"
+    when_to_use: "Môi trường cạnh tranh nhanh, khủng hoảng, startup lặp theo tuần."
+    how_to_apply:
+      - "Thiết lập chu kỳ ngắn (SME: quan sát dữ liệu bán hàng tuần này, chỉnh khuyến mãi tuần sau)"
+      - "Cập nhật mô hình tư duy (Orient) khi dữ liệu mới mâu thuẫn"
+    how_to_read_results: "Bên hoàn thành vòng nhanh hơn khiến đối thủ phản ứng với tình huống cũ."
+    pitfalls:
+      - "Hiểu OODA chỉ là 'làm nhanh': Orient sai thì vòng nhanh nhưng lệch hướng"
+      - "Không coi Top Gun (Hải quân, 1969) là bản triển khai OODA; ý tưởng song song"
+    example: "Startup: quan sát hành vi người dùng - quyết tính năng - ra mắt - học (mỗi tuần)."
+
+  - id: "m09_cynefin"
+    name_vi: "Khung Cynefin"
+    name_en: "Cynefin Framework (Snowden)"
+    origin: "Dave Snowden (IBM, ~1999); Kurtz & Snowden (2003) 'The new dynamics of strategy' (IBM Systems Journal). Giải quyết việc dùng một cách tiếp cận (phân tích-kế hoạch-thực hiện) cho mọi vấn đề. Phát âm 'kun-ev-in', nghĩa xứ Wales 'môi trường sống'."
+    components:
+      - "Simple/Clear: nhân quả rõ, best practice; Sense - Categorize - Respond; SOP, checklist, tự động hóa; rủi ro tự mãn"
+      - "Complicated: nhiều đáp án đúng, cần chuyên gia; Sense - Analyze - Respond; root cause, ma trận quyết định"
+      - "Complex: nhân quả chỉ hiện ra khi nhìn lại; Probe - Sense - Respond; MVP, A/B test, Agile, thử nghiệm nhỏ an toàn"
+      - "Chaotic: không thấy quan hệ nhân quả; Act - Sense - Respond; hành động quyết đoán, kế hoạch khủng hoảng, hậu kiểm"
+      - "Confusion/Disorder: chưa rõ miền; tách vấn đề thành phần nhỏ và xếp vào miền phù hợp"
+    when_to_use: "Trước khi chọn công cụ: chẩn đoán loại vấn đề."
+    how_to_apply:
+      - "Q1: Nhân quả có rõ và dự đoán được? Có: Simple/Complicated. Không: Complex/Chaotic. Chưa biết: Disorder"
+      - "Q2: (nếu không rõ) có thể thử nghiệm để học không? Có: Complex; Không: Chaotic"
+      - "Q3: (nếu rõ) cần chuyên gia phân tích? Có: Complicated; Không: Simple"
+      - "Chọn kỹ thuật và phong cách quyết định (Vroom-Yetton) khớp miền"
+    how_to_read_results: "Sai miền dẫn tới sai công cụ: phân tích 3 tuần cho vấn đề Complex vẫn không ra đáp án; thử nghiệm cho vấn đề Simple là lãng phí."
+    pitfalls:
+      - "Coi mọi thứ là Simple (tự mãn) rồi rơi xuống Chaotic khi môi trường đổi"
+    example: "Công ty sản xuất 100 NV: lập lịch sản xuất (Simple, AI); nâng hiệu suất nhà máy mới (Complicated, AII/CI); thâm nhập Đông Nam Á (Complex, CII, thí điểm 3-6 tháng); khủng hoảng hủy đơn/NCC đóng cửa (Chaotic, AI)."
+
+  - id: "m09_rapid_daci_raci"
+    name_vi: "Phân vai quyết định: RAPID, DACI, RACI"
+    name_en: "RAPID / DACI / RACI"
+    origin: "RAPID: Paul Rogers và Marcia Blenko (Bain), HBR 2006 'Who Has the D?'. Quan sát: chậm vì không rõ ai quyết, không phải thiếu dữ liệu."
+    components:
+      - "RAPID: Recommend (đề xuất), Agree (phải đồng ý/ký duyệt, có thể trả lại), Perform (thực hiện), Input (góp ý không có quyền phủ quyết), Decide (MỘT người duy nhất chốt)"
+      - "DACI: Driver (dẫn dắt, thu thập thông tin), Approver (quyết cuối), Contributors, Informed"
+      - "RACI: Responsible, Accountable (chỉ một người cho mỗi nhiệm vụ), Consulted, Informed"
+    when_to_use: "Quyết định chậm, họp-xin ý kiến vô tận, trách nhiệm không rõ."
+    how_to_apply:
+      - "Liệt kê quyết định và gán đúng 1 người D/Accountable"
+      - "Chỉ định R, A, P, I trước khi bắt đầu"
+      - "Ví dụ Việt Phát: R = trưởng sản xuất, A = kế toán trưởng, P = quản đốc, I = kinh doanh/QC, D = chủ xưởng"
+    how_to_read_results: "Mỗi quyết định phải có đúng một D; nếu nhiều người 'cùng quyết' thì chưa rõ vai."
+    pitfalls:
+      - "Nhiều người cùng là Accountable/Decide"
+      - "Cho phép Input có quyền phủ quyết ngầm"
+    example: "Tính năng mới: R = PM, A = VP Product, P = Engineering, I = Design/Support, D = CEO."
+
+  - id: "m09_eisenhower"
+    name_vi: "Ma trận Eisenhower"
+    name_en: "Eisenhower Matrix"
+    origin: "Dwight D. Eisenhower (phát biểu 1954) phân biệt khẩn cấp và quan trọng; Stephen Covey phổ biến ma trận 4 ô (The 7 Habits, 1989)."
+    components:
+      - "Q1 Quan trọng + Khẩn cấp: LÀM NGAY (khủng hoảng, deadline, khiếu nại nghiêm trọng) ~40%"
+      - "Q2 Quan trọng + Không khẩn cấp: LÊN LỊCH (chiến lược, đào tạo, quan hệ, phòng ngừa) ~50%"
+      - "Q3 Không quan trọng + Khẩn cấp: ỦY QUYỀN ~7%"
+      - "Q4 Không quan trọng + Không khẩn cấp: LOẠI BỎ ~3%"
+    when_to_use: "Chủ SME sống ở Q1 (chữa cháy hằng ngày); phân bổ thời gian."
+    how_to_apply:
+      - "Phân loại việc tuần theo 4 ô; ủy quyền Q3, loại Q4"
+      - "Dành lịch cố định cho Q2 (quy trình, đào tạo, hệ thống)"
+    how_to_read_results: "Tỷ lệ phân bổ 40/50/7/3 là minh họa. Dấu hiệu quản trị tốt: Q1 giảm dần nhờ đầu tư Q2."
+    pitfalls:
+      - "Nhầm khẩn cấp với quan trọng (tin nhắn, cuộc gọi)"
+    example: "Chủ xưởng dành sáng thứ Hai cho Q2: viết SOP, đào tạo quản đốc."
+
+  - id: "m09_vroom_yetton_jago"
+    name_vi: "Mô hình Vroom-Yetton-Jago (phong cách ra quyết định theo tình huống)"
+    name_en: "Vroom-Yetton-Jago Decision Model"
+    origin: "Vroom & Yetton (1973): không có phong cách đúng mọi lúc, câu hỏi là mức tham gia của nhân viên cho tình huống này. Vroom & Jago (1988) mở rộng; Vroom (2000) hai chế độ: ưu tiên thời gian (time-driven) hoặc phát triển nhân sự (development-driven)."
+    components:
+      - "AI Autocratic I: lãnh đạo tự quyết bằng thông tin có sẵn (khi gấp, giải pháp rõ, mức quan trọng thấp; SOP hằng ngày)"
+      - "AII Autocratic II: lãnh đạo thu thập thông tin rồi tự quyết (gấp nhưng cần dữ liệu; phân bổ ngân sách)"
+      - "CI Consultative I: tham vấn từng người rồi quyết (quan trọng vừa; tuyển dụng)"
+      - "CII Consultative II: thảo luận cả nhóm rồi lãnh đạo quyết (quan trọng, nhóm góp ý có ích; đổi chiến lược)"
+      - "GII Group II: nhóm đồng thuận, lãnh đạo điều phối (rất quan trọng, cần buy-in, có thời gian; văn hóa)"
+      - "Câu hỏi thuộc tính vấn đề (rút gọn 7): cấu trúc vấn đề, chuyên môn lãnh đạo, mức cần cam kết, khả năng chấp nhận quyết định độc đoán, chia sẻ mục tiêu, khả năng xung đột, chuyên môn của cấp dưới"
+    when_to_use: "Chọn mức tham gia của nhân viên theo tình huống."
+    how_to_apply:
+      - "Trả lời 7 câu hỏi rút gọn và đi theo cây tới phong cách phù hợp"
+      - "Founder SME: AI cho operational, AII cho tactical (ngân sách, nhà cung cấp), CII cho strategic (hướng sản phẩm, vào thị trường)"
+      - "Tránh GII cho mọi quyết định (chậm, founder chìm trong quy trình)"
+    how_to_read_results: "Quyết định Type 2 nhưng cần cam kết của đội kỹ thuật (Việt Phát): chọn CII."
+    pitfalls:
+      - "Danh sách 7 thuộc tính trong giáo trình là rút gọn; bản gốc dùng cây/ma trận chi tiết hơn"
+    example: "Việt Phát bàn với đội kỹ thuật rồi chủ xưởng quyết (CII)."
+
+  - id: "m09_type1_type2_amazon"
+    name_vi: "Hệ thống ra quyết định kiểu Amazon (Type 1/Type 2, 70% thông tin, 6-Pager, Disagree and Commit, Working Backwards)"
+    name_en: "Amazon decision system"
+    origin: "Thư gửi cổ đông của Jeff Bezos (đặc biệt 2015-2016) và mô tả công khai về văn hóa Amazon; chi tiết nội bộ có thể khác theo thời kỳ."
+    components:
+      - "Type 1/Type 2: quyết nhanh việc đảo ngược được, cân nhắc kỹ việc không đảo ngược được"
+      - "Quy tắc ~70% thông tin: đợi 90% thường quá chậm (satisficing có kỷ luật)"
+      - "6-Pager: bản tường thuật ~6 trang thay slide, đọc im lặng đầu họp, buộc tư duy mạch lạc"
+      - "Disagree and commit: tranh luận gay gắt rồi cam kết thực hiện"
+      - "Working Backwards: viết trước thông cáo báo chí (PR) và FAQ như thể sản phẩm đã ra mắt"
+    when_to_use: "Muốn quyết nhanh mà vẫn kỷ luật; tránh analysis paralysis, HiPPO, sunk cost."
+    how_to_apply:
+      - "SME rút gọn: bản tường thuật 1-2 trang cho mỗi quyết định Type 1"
+      - "Gắn nhãn Type 1/Type 2 cho mọi quyết định; Type 2 ủy quyền cho nhóm nhỏ"
+    how_to_read_results: "Hệ thống xử lý 3 điểm yếu: bounded rationality (đủ thông tin), groupthink/HiPPO (đọc im lặng, phản biện văn bản), sunk cost (coi Type 2 là thử nghiệm có thể rút lui)."
+    pitfalls:
+      - "Sao chép nguyên văn tốn công soạn thảo, không phù hợp quy mô SME"
+    example: "Việt Phát: mua CNC = Type 1; thuê gia công = Type 2, ưu tiên làm trước."
+
+  - id: "m09_nudge"
+    name_vi: "Nudge và kiến trúc lựa chọn"
+    name_en: "Nudge / Choice Architecture"
+    origin: "Thaler & Sunstein, Nudge (2008); Thaler Nobel 2017; 'libertarian paternalism'."
+    components:
+      - "Mặc định (default), thứ tự, cách mô tả"
+      - "Ví dụ hiến tạng (opt-out > opt-in), hưu trí tự động tham gia (Madrian & Shea 2001)"
+    when_to_use: "Thiết kế chính sách nhân sự, giá, form mua hàng."
+    how_to_apply:
+      - "SME VN: mặc định tự trích một phần thưởng vào quỹ dự phòng/bảo hiểm bổ sung của nhân viên (vẫn có quyền rút lui)"
+      - "Upsell: mặc định 'đã thêm món' (bỏ chọn nếu không muốn) so với 'thêm món' (chọn) cho tỷ lệ chuyển đổi cao hơn"
+    how_to_read_results: "Cùng lựa chọn, khác mặc định, khác kết quả."
+    pitfalls:
+      - "Dùng nudge để thao túng; nguyên tắc đạo đức: giúp người ta chọn tốt hơn, nêu rõ lựa chọn"
+      - "Số liệu opt-out >90% là ước tính, khác nhau theo nguồn"
+    example: "Phụ thu thẻ 5% (cảm giác mất) vs giảm 5% tiền mặt (cảm giác được), cùng số tiền."
+
+  - id: "m09_technique_matching"
+    name_vi: "Bảng chọn kỹ thuật theo tình huống và so sánh framework"
+    name_en: "Technique-to-situation matching and comparison"
+    origin: "Tổng hợp mục X-XI của giáo trình."
+    components:
+      - "Khủng hoảng: OODA, Cynefin Chaotic (Act-Sense-Respond)"
+      - "Chiến lược (thị trường mới, M&A): Rational + Pre-mortem + Devil's advocate + nhiều kịch bản"
+      - "Vấn đề phức hợp: Cynefin Complex, MVP, A/B test"
+      - "Cần đồng thuận nhóm: NGT, Six Hats, thảo luận nhóm"
+      - "Ý tưởng mới: Brainstorming, Mũ xanh lá, Design Thinking"
+      - "Giảm thiểu rủi ro: Pre-mortem, Red Team, sensitivity analysis"
+      - "Vận hành hằng ngày: SOP + Satisficing, Eisenhower, AI/AII nhanh"
+      - "Dự báo: Delphi, base rate, time series"
+      - "Rõ trách nhiệm: RAPID, DACI, RACI"
+      - "Đánh giá có cấu trúc: Decision matrix, Cost-benefit, Decision tree"
+      - "Chống groupthink: Devil's advocate, Dialectical inquiry, Second-chance meeting"
+      - "Thời gian tham khảo (phút, minh họa): Rational 300-1000; Bounded 30-120; Intuitive RPD 1-5; Brainstorm 30-60; NGT 60-120; Delphi 120-300; Pre-mortem 90; Cynefin 60-120; RAPID 30-60; OODA theo chu kỳ"
+    when_to_use: "Chọn nhanh công cụ khi nhận được một tình huống ra quyết định."
+    how_to_apply:
+      - "Xác định loại quyết định (cấu trúc, cấp độ, Type 1/2, Cynefin)"
+      - "Tra bảng ở components để chọn kỹ thuật chính + kỹ thuật chống thiên kiến"
+    how_to_read_results: "Không có framework nào phù hợp mọi tình huống; xuất sắc là chọn công cụ khớp bối cảnh."
+    pitfalls:
+      - "Dùng một công cụ cho mọi việc"
+    example: "Tuyển dụng chiến lược: structured interview + chấm điểm trọng số + phản biện; khủng hoảng: Act-Sense-Respond."
+
+procedures:
+  - id: "m09_proc_diagnose_choose_tool"
+    name: "Chẩn đoán loại quyết định rồi chọn công cụ"
+    steps:
+      - "Phân loại: Programmed hay Non-programmed; Strategic/Tactical/Operational; cá nhân hay nhóm"
+      - "Phân Type 1 (khó đảo ngược) hay Type 2 (đảo ngược được)"
+      - "Chẩn đoán Cynefin: nhân quả rõ? cần chuyên gia? thử nghiệm được? hay khủng hoảng?"
+      - "Chọn phương pháp: Simple = SOP; Complicated = phân tích/ma trận/EV; Complex = MVP/thử nghiệm nhỏ; Chaotic = hành động trước, OODA"
+      - "Chọn phong cách (AI/AII/CI/CII/GII) và phân vai RAPID (1 người D)"
+      - "Chọn cách trực giác/hợp lý/hybrid theo bảng: kinh nghiệm + môi trường ổn định + phản hồi nhanh thì trực giác"
+    outputs: "Hồ sơ chẩn đoán: loại quyết định, miền Cynefin, Type, kỹ thuật, phong cách, người D."
+  - id: "m09_proc_weighted_matrix"
+    name: "Ma trận quyết định có trọng số (4 bước) + kiểm tra độ nhạy"
+    steps:
+      - "Chốt 3-6 tiêu chí độc lập; loại phương án vi phạm ràng buộc cứng (MOQ, vốn lưu động)"
+      - "Gán trọng số trước khi chấm điểm, tổng 100%"
+      - "Chấm từng ô cùng thang (1-5), nhớ chiều 'tốt nhất = 5'"
+      - "Nhân điểm x trọng số rồi cộng (m09_weighted_decision_matrix)"
+      - "Đổi trọng số (ví dụ tăng Dòng tiền lên 30%, giảm ROI xuống 15%) và xem thứ hạng có đảo không"
+      - "Đối chiếu với EV/chi phí cơ hội của phương án 'không làm gì' rồi quyết định"
+    outputs: "Bảng điểm, thứ hạng, kết luận về độ bền thứ hạng."
+  - id: "m09_proc_ev_tree"
+    name: "Cây quyết định và EV cho quyết định đầu tư"
+    steps:
+      - "Liệt kê phương án và 3 kịch bản nhu cầu (Cao/Trung bình/Thấp) với xác suất tổng 1"
+      - "Lập payoff mỗi kịch bản (tích lũy kỳ vọng, nên chiết khấu); trừ vốn đầu tư"
+      - "Tính EV ròng (m09_expected_value)"
+      - "Tính xác suất hòa EV (m09_breakeven_probability) và so với mức tự tin thực"
+      - "Kiểm tra kịch bản xấu nhất so với khả năng chịu lỗ (m09_leverage_loss_threshold)"
+      - "Nếu phương án vốn lớn chỉ thắng khi xác suất rất cao, chọn phương án đảo ngược được kèm điều kiện kích hoạt (real option)"
+    outputs: "EV ròng từng phương án, p*, khuyến nghị và điều kiện kích hoạt."
+  - id: "m09_proc_sunk_cost_check"
+    name: "Kiểm tra bẫy chi phí chìm"
+    steps:
+      - "Liệt kê chi phí đã chi (sunk) và gạch khỏi bảng"
+      - "Lập bảng nhánh tiếp tục và nhánh dừng/thu hẹp, chỉ gồm lợi ích và chi phí tương lai (kể cả phí thoát, giá trị thanh lý, chi phí cơ hội)"
+      - "Tính giá trị ròng tương lai mỗi nhánh (m09_forward_looking_value)"
+      - "Hỏi: 'Nếu hôm nay chưa chi đồng nào, ta có bắt đầu dự án này không?'"
+      - "Nếu không, dừng/thu hẹp; viết điều kiện thoát (exit criteria) cho dự án sau"
+    outputs: "So sánh nhánh tiếp tục và dừng, quyết định, exit criteria."
+  - id: "m09_proc_premortem"
+    name: "Chạy pre-mortem 90 phút"
+    steps:
+      - "Giả sử 12 tháng sau dự án thất bại hoàn toàn"
+      - "Mỗi người viết độc lập nguyên nhân (10 phút)"
+      - "Chia sẻ (20 phút), gom cụm (10 phút), thảo luận sâu (30 phút)"
+      - "Lập biện pháp cho top rủi ro (20 phút): xác suất, tác động, mitigation, chỉ số cảnh báo sớm và ngưỡng"
+    outputs: "Bảng failure modes, mitigation, monitoring metrics."
+  - id: "m09_proc_groupthink_prevention"
+    name: "Quy trình phòng groupthink cho quyết định lớn"
+    steps:
+      - "Đánh giá 6 nguyên nhân nền và 8 triệu chứng"
+      - "Giao vai devil's advocate/red team cho người KHÔNG soạn kế hoạch"
+      - "Yêu cầu >= 3 phương án thật sự khác nhau, ý kiến viết độc lập trước, có kênh góp ý ẩn danh"
+      - "Chia nhóm nhỏ làm song song; lãnh đạo vắng mặt ở vòng đầu"
+      - "Họp second-chance sau 1-2 tuần; xin chuyên gia bên ngoài rà soát"
+    outputs: "Quyết định có phản biện chính thức, ghi nhận bất đồng."
+  - id: "m09_proc_decision_log"
+    name: "Ghi Decision Log và hậu kiểm"
+    steps:
+      - "Ghi quyết định, bối cảnh, các phương án, phân tích ưu/nhược, phương án chọn, lý do"
+      - "Ghi giả định chính (tương lai, dữ liệu, nguồn lực), rủi ro và biện pháp, bước tiếp theo, ngày rà soát"
+      - "Sau 1 năm ghi OUTCOME và LESSON; rà soát hằng quý chất lượng quyết định"
+    outputs: "Decision Log dùng để học và chống hindsight bias."
+
+decision_rules:
+  - "Nếu quyết định thuộc Type 2 (đảo ngược được) thì quyết nhanh bởi cá nhân/nhóm nhỏ với khoảng 70% thông tin; nếu Type 1 thì cân nhắc kỹ, pre-mortem và phản biện."
+  - "Nếu hệ quả đảo ngược được và thời gian hạn chế thì dùng satisficing (đặt ngưỡng và dừng); nếu hệ quả lớn, khó đảo ngược và đủ dữ liệu thì tiến gần maximizing."
+  - "Nếu môi trường ổn định, người quyết có kinh nghiệm và phản hồi nhanh thì tin trực giác; nếu môi trường không ổn định, phản hồi chậm hoặc dễ bias (tuyển dụng, chiến lược) thì dùng phân tích có cấu trúc."
+  - "Nếu quyết định có chi phí chìm thì loại chi phí chìm và chỉ so sánh lợi ích/chi phí tương lai giữa các nhánh; nếu 'hôm nay chưa chi' mà không bắt đầu thì dừng."
+  - "Nếu EV dương nhưng kịch bản xấu lớn hơn khả năng chịu lỗ thì không chọn chỉ vì EV; phải giảm quy mô hoặc thử nghiệm nhỏ."
+  - "Nếu hai phương án chênh điểm ma trận dưới ~1 điểm (thang 100) thì coi là hòa và chọn theo tiêu chí phụ/dòng tiền; nếu thứ hạng đảo khi đổi trọng số thì phải đối chiếu EV và chi phí cơ hội."
+  - "Nếu phương án vốn lớn chỉ thắng khi xác suất kịch bản tốt rất cao (p* gần 100%) thì chọn phương án nhỏ, đảo ngược được kèm điều kiện kích hoạt."
+  - "Nếu vấn đề thuộc miền Complex thì thử nghiệm nhỏ (probe) có giới hạn thiệt hại trước khi cam kết lớn; nếu Chaotic thì hành động ổn định tình hình trước, phân tích sau."
+  - "Nếu cuộc họp im lặng, vote nhất trí quá nhanh, lãnh đạo mạnh và nhóm khép kín thì nghi groupthink: giao devil's advocate, viết ý kiến độc lập, họp second-chance."
+  - "Nếu có nhiều người cùng 'quyết' hoặc quyết chậm vì xin ý kiến vô tận thì phân vai RAPID với đúng một D."
+  - "Nếu dự báo dựa vào một mốc duy nhất (doanh số chi nhánh 1, 1 franchisee thành công) thì dùng base rate, trung vị và phân vị thấp (25%) và tính doanh thu hòa vốn trước khi cam kết."
+  - "Nếu quyết định cần buy-in của người thực hiện nhưng cần nhanh thì dùng CII (thảo luận nhóm rồi lãnh đạo quyết); GII chỉ cho quyết định rất quan trọng, cần buy-in và đủ thời gian."
+  - "Nếu rủi ro an toàn/chất lượng thì đặt ngưỡng dừng cứng (hard stop) do người độc lập quyết, không để áp lực doanh số/lịch trình lấn át; chống bình thường hóa sai lệch."
+  - "Nếu bắt đầu dự án thì viết exit criteria ngay (ví dụ sau 12 tháng biên lợi nhuận gộp < X% thì đóng) thay vì tranh luận khi đã lỗ."
+  - "Nếu quyết định quan trọng thì lên lịch buổi sáng (năng lượng cao) và tự động hóa/ủy quyền quyết định Type 2 để giảm decision fatigue."
+
+benchmarks:
+  - {metric: "Số phương án nên xét", value: "tối thiểu 3-5, không quá 10 (bao gồm status quo)", context: "Bước 3 của mô hình hữu tỉ", confidence: "medium"}
+  - {metric: "Số tiêu chí ma trận trọng số", value: "3-6 tiêu chí độc lập; trọng số tổng 100%; thang 1-5", context: "Quy trình 4 bước", confidence: "medium"}
+  - {metric: "Working memory", value: "7±2 mục (Miller 1956); có thể chỉ ~4 khối (Cowan 2001)", context: "Báo cáo nên 3-5 số liệu chính, phần còn lại ở phụ lục", confidence: "medium"}
+  - {metric: "Hệ số ác cảm mất mát", value: "~2,25 (khoảng 2-2,5)", context: "Tversky & Kahneman 1992; mất đau gấp ~2 lần lợi cùng độ lớn", confidence: "medium"}
+  - {metric: "Tham số hàm giá trị", value: "alpha = 0,88; lambda = 2,25", context: "Prospect Theory (ước lượng trung bình, thay đổi theo cá nhân)", confidence: "medium"}
+  - {metric: "Tỷ trọng trực giác/hợp lý cho SME", value: "Operational 60/40; Strategic 20/80", context: "Gợi ý giáo trình, không phải ngưỡng khoa học", confidence: "low"}
+  - {metric: "Kinh nghiệm cho trực giác chuyên gia", value: ">= 10 năm", context: "Quy ước thực hành; điều kiện quan trọng hơn là môi trường ổn định và phản hồi nhanh", confidence: "low"}
+  - {metric: "Phân bổ thời gian Eisenhower", value: "Q1 40%, Q2 50%, Q3 7%, Q4 3%", context: "Minh họa; mục tiêu là giảm dần Q1", confidence: "low"}
+  - {metric: "Thông tin để quyết", value: "~70% (Bezos); quy tắc 80/20 (80% quyết định với 20% dữ liệu)", context: "Chống analysis paralysis; trích từ thư cổ đông và quy tắc phổ biến", confidence: "medium"}
+  - {metric: "Thời gian pre-mortem", value: "~90 phút (10 + 20 + 10 + 30 + 20)", context: "Quy trình Klein", confidence: "medium"}
+  - {metric: "Số vòng Delphi", value: "2-3 vòng đến khi hội tụ", context: "Thực hành phổ biến", confidence: "medium"}
+  - {metric: "Kích thước nhóm giảm social loafing", value: "3-5 người", context: "Giáo trình gợi ý", confidence: "low"}
+  - {metric: "Đệm tiền mặt cho SME", value: "tối thiểu 3-6 tháng chi phí cố định", context: "Bài học LTCM/đòn bẩy; mức tham khảo", confidence: "low"}
+  - {metric: "Tỷ lệ startup thất bại", value: "70-90% tùy định nghĩa", context: "Dùng làm base rate; giáo trình ghi rõ là ước tính, cần tra nguồn", confidence: "low"}
+  - {metric: "Cải thiện của prospective hindsight", value: "~30%", context: "Mitchell, Russo & Pennington 1989 thường được trích; ước tính", confidence: "low"}
+
+pitfalls:
+  - "Áp mô hình hữu tỉ đầy đủ cho mọi quyết định gây analysis paralysis; chọn mức độ phân tích theo Type 1/2 và Cynefin."
+  - "Tin ma trận trọng số mà không kiểm tra độ nhạy; ma trận không phản ánh chi phí cơ hội của 'không làm gì'."
+  - "Dùng EV mà bỏ qua khả năng chịu lỗ và tail risk (LTCM, Challenger)."
+  - "Neo vào một con số (doanh số chi nhánh 1, 1 franchisee thành công) thay vì base rate và survivorship bias."
+  - "Chỉ nghe báo cáo xác nhận niềm tin; thiếu người phản biện độc lập."
+  - "Rơi vào escalation of commitment: không đặt exit criteria từ đầu, đổ thêm tiền vì 'đã bỏ ra rồi'."
+  - "HiPPO: ý kiến người có chức vụ cao áp đảo; giải pháp: dữ liệu, xếp hạng ẩn danh, lãnh đạo nói sau cùng."
+  - "Illusion of control: đánh giá quá cao khả năng kiểm soát kết quả; giải pháp: base rate, khiêm tốn, quản trị rủi ro."
+  - "Decision fatigue: quyết định về sau kém hơn (Danziger 2011 về thẩm phán là gợi ý, kết quả còn tranh luận, không phải quy luật chắc chắn)."
+  - "Hiểu sai Dunning-Kruger (đường cong 'đỉnh ngu dốt' là minh họa hóa; một phần là hiện tượng thống kê)."
+  - "Hiểu OODA là 'chỉ làm nhanh' và bỏ qua Orient; Top Gun không phải bản triển khai OODA."
+  - "Dùng devil's advocate cố định một người, nhóm sẽ tune out; nên thể chế hóa vai trò và luân phiên."
+  - "Trình bày framing thao túng (50% off vs trả nửa giá); dùng ngôn ngữ trung tính khi cần công bằng."
+  - "Dùng số liệu thật chưa kiểm chứng của công ty quốc tế/Vingroup như thể đã kiểm chứng; con số định lượng trong case là giả định minh họa."
+
+sme_vn_guidance:
+  - "Văn hóa quyết định: quy trình rõ (không ad-hoc), khuyến khích phản biện (devil's advocate), nhận diện thiên kiến, khiêm tốn học hỏi."
+  - "Bắt đầu nhỏ: Decision Log (học theo thời gian), một framework (ma trận quyết định) thành thạo rồi thêm công cụ; pre-mortem cho quyết định rủi ro."
+  - "Cân bằng tốc độ và chất lượng: Type 2 nhanh, Type 1 cẩn trọng; đừng để chủ nghĩa hoàn hảo làm tê liệt."
+  - "Rà soát hằng quý: 'Chất lượng quyết định của ta thế nào?' (cao/vừa/thấp); đối chiếu kết quả với Decision Log."
+  - "Founder SME: AI cho operational, AII cho tactical, CII cho strategic; tránh GII cho mọi việc."
+  - "Chủ SME thường sống ở Q1 (chữa cháy); đầu tư Q2 (quy trình, đào tạo, hệ thống) để giảm Q1."
+  - "Mở chi nhánh/nhượng quyền: tính doanh thu hòa vốn trước, thử pop-up/kiosk 3 tháng, thử 2-3 cửa hàng trước khi nhân rộng; dùng trung vị và phân vị 25% thay vì trung bình của người thành công."
+  - "Đưa vào hồ sơ dự án điều kiện dừng/kích hoạt viết sẵn (ví dụ chi phí thuê > 60 triệu/tháng trong 6 tháng liên tiếp thì xem xét mua máy)."
+  - "Quyết định mặt bằng/cơ hội cần tốc độ: quyết trong vài ngày với ma trận tối giản; chi phí khảo sát thị trường chuyên nghiệp (ví dụ ~100M VND) có thể không xứng, thay bằng nguồn miễn phí (Facebook, Google Trends); số 100M là ví dụ minh họa trong nguồn."
+  - "Giữ đệm tiền mặt 3-6 tháng chi phí cố định, tránh nợ ngắn hạn tài trợ tài sản dài hạn (bài học LTCM)."
+  - "Phân vai RAPID/RACI: kế toán trưởng xác nhận dòng tiền (Agree), một người duy nhất chốt (chủ DN hoặc người được ủy quyền)."
+  - "Nudge ở SME VN: mặc định tự trích một phần thưởng vào quỹ dự phòng/bảo hiểm bổ sung của nhân viên (vẫn được rút lui); cần xác nhận pháp lý lao động/thuế/bảo hiểm tại Việt Nam trước khi áp dụng (cần xác nhận)."
+  - "Phần mềm kế toán 5 triệu tiết kiệm 20 triệu/năm (ví dụ trong nguồn) là minh họa status quo bias; giá và hiệu quả thực tế cần xác nhận theo từng nhà cung cấp."
+  - "Quyết định tuyển dụng: dùng structured interview + chấm điểm trọng số, kiểm tra tham chiếu >= 3 nơi làm cũ, hỏi điểm yếu; cẩn thận halo effect với người từ tập đoàn lớn."
+
+case_lessons:
+  - name: "Apple iPhone (2007) - tối đa hóa một tiêu chí, thỏa mãn tiêu chí còn lại"
+    type: "success"
+    setup: "Thị trường điện thoại do Nokia, BlackBerry, Motorola chi phối; iPhone ra mắt tháng 6/2007 với đa chạm, chỉ có mạng EDGE (chưa 3G), chưa có App Store (2008), giá khởi điểm ~499 USD (4GB) và 599 USD (8GB)."
+    key_calculations:
+      - "Giao diện cảm ứng đa chạm: maximizing (đầu tư tối đa); tốc độ mạng: satisficing (EDGE); ứng dụng bên thứ ba: hoãn đến 2008; giá cao nhắm early adopters"
+      - "Không quyết vội: dự án chạy nhiều năm; 'good enough' nằm ở phạm vi tính năng, không ở chất lượng lõi"
+    lesson: "Chọn 1-2 tiêu chí quyết định để tối đa hóa, các tiêu chí còn lại chỉ cần vượt ngưỡng; lập bảng 'tiêu chí - ngưỡng tối thiểu - tiêu chí tối đa hóa' trước khi ra mắt."
+    data_reliability: "unverified"
+  - name: "OODA Loop - John Boyd (F-86 vs MiG-15)"
+    type: "success"
+    setup: "Chiến tranh Triều Tiên 1950-53: F-86 hạ gục MiG-15 theo tỷ lệ thường trích ~10:1 (ước tính, còn tranh luận) dù MiG-15 vượt trội ở một số thông số."
+    key_calculations:
+      - "Boyd: thắng do chu kỳ OODA nhanh hơn, không do máy bay mạnh nhất từng thông số"
+      - "Top Gun Hải quân (1969) cải thiện tỷ lệ ~12:1 giai đoạn 1972-73 (ước tính), là dòng tư tưởng song song, không phải triển khai OODA"
+    lesson: "Trong cạnh tranh nhanh, tốc độ học và điều chỉnh quan trọng hơn độ hoàn hảo của một quyết định; SME rút ngắn chu kỳ chỉnh khuyến mãi từ tháng xuống tuần."
+    data_reliability: "unverified"
+  - name: "Devil's Advocate - Giáo hội Công giáo và Intel (1985)"
+    type: "success"
+    setup: "Advocatus Diaboli trong phong thánh (cải tổ 1983, Gioan Phaolô II). Intel giữa thập niên 1980 thua lỗ chip nhớ DRAM vì cạnh tranh giá từ hãng Nhật; Andy Grove hỏi Gordon Moore (theo hồi ký Grove) 'nếu hội đồng thay chúng ta, CEO mới sẽ làm gì'."
+    key_calculations:
+      - "Câu trả lời: rời DRAM, tập trung vi xử lý"
+    lesson: "Phản biện hiệu quả nhất khi thể chế hóa thành vai trò/quy trình; câu hỏi 'nếu bắt đầu lại hôm nay ta có chọn con đường này?' là công cụ phá sunk cost."
+    data_reliability: "unverified"
+  - name: "Vingroup dừng sản xuất điện thoại Vsmart (2021)"
+    type: "success"
+    setup: "Công khai: Vsmart ra mắt cuối 2018; 2021 Vingroup công bố dừng điện thoại, TV, thiết bị gia dụng thông minh để tập trung VinFast và công nghệ. Số liệu tài chính chi tiết KHÔNG kiểm chứng; phần định lượng là giả định minh họa."
+    key_calculations:
+      - "Tiếp tục 3 năm: doanh thu thêm 6.000 - chi phí 7.500 = -1.500 (tỷ đồng, giả định)"
+      - "Dừng ngay: phí đóng dây chuyền -800 (giả định); dừng tốt hơn 700"
+    lesson: "Bỏ chi phí quá khứ khỏi bảng, chỉ so tương lai; quyết định dừng khó về cảm xúc nhưng đúng về tài chính; đặt exit criteria ngay từ lúc khởi động dự án."
+    data_reliability: "illustrative"
+  - name: "Vịnh Con Heo (1961) - Groupthink"
+    type: "failure"
+    setup: "Tháng 4/1961, ~1.400 người lưu vong Cuba do CIA huấn luyện đổ bộ; thất bại trong ~3 ngày, hơn 1.000 người bị bắt (số xấp xỉ)."
+    key_calculations:
+      - "Triệu chứng: bất khả chiến bại (uy tín CIA sau Guatemala 1954), hợp lý hóa (người dân sẽ nổi dậy), khuôn mẫu (quân Castro yếu), tự kiểm duyệt (Schlesinger), mindguard, ảo tưởng nhất trí"
+      - "Antecedents: nhóm gắn kết, tách biệt chuyên gia bên ngoài, thủ tục thiếu cấu trúc"
+    lesson: "Nhóm thông minh vẫn quyết tệ khi quy trình triệt tiêu bất đồng; trước khoản đầu tư lớn tổ chức phiên phản biện chính thức với người không soạn kế hoạch và cho góp ý ẩn danh."
+    data_reliability: "unverified"
+  - name: "Tàu con thoi Challenger (1986) - bình thường hóa sai lệch"
+    type: "failure"
+    setup: "28/1/1986 phóng ở ~36°F (~2°C), thấp hơn lần lạnh nhất trước đó (~53°F); nổ sau 73 giây, 7 người chết. Kỹ sư Morton Thiokol (Boisjoly) cảnh báo O-ring, ban quản lý đảo ngược khuyến nghị dưới áp lực NASA."
+    key_calculations:
+      - "Gánh nặng chứng minh bị đảo ngược: từ 'chứng minh an toàn mới phóng' thành 'chứng minh nguy hiểm mới hoãn'"
+      - "Dữ liệu O-ring nhiệt độ thấp ít điểm bị coi là không đủ chứng minh"
+    lesson: "'Chưa xảy ra sự cố' bị đọc thành 'an toàn' (Vaughan 1996); cần hard stop do người độc lập quyết; SME thiết lập ngưỡng dừng cho an toàn thực phẩm/kho bãi không bị áp lực doanh số lấn át. Columbia 2003 cho thấy bài học không được thể chế hóa thì lặp lại."
+    data_reliability: "unverified"
+  - name: "Tình báo WMD Iraq (2002-2003)"
+    type: "failure"
+    setup: "NIE tháng 10/2002 kết luận Iraq còn WMD; xâm lược tháng 3/2003; không tìm thấy kho như mô tả. Báo cáo Senate Select Committee 2004 và Ủy ban WMD 2005."
+    key_calculations:
+      - "Nguồn đơn lẻ độ tin cậy thấp (Curveball) dùng làm bằng chứng chính; thiếu bằng chứng bị diễn giải là bằng chứng che giấu"
+    lesson: "Đồng thuận giữa nhiều cơ quan có thể chỉ là một nguồn được trích nhiều lần; hỏi 'nghe từ bao nhiêu khách độc lập' khi nhân viên báo 'khách muốn tính năng X'."
+    data_reliability: "unverified"
+  - name: "Concorde - bẫy chi phí chìm"
+    type: "failure"
+    setup: "Hiệp ước Anh-Pháp 1962; chi phí cuối ~1,3-1,5 tỷ bảng (ước tính); bay thương mại 1976, ~20 chiếc, ngừng 2003; hiệp ước không dễ rút lui đơn phương."
+    key_calculations:
+      - "Minh họa: sunk 400 (bỏ qua); tiếp tục = 450 - 600 = -150; dừng = 0"
+    lesson: "Câu kiểm tra: 'Nếu hôm nay chưa chi đồng nào, tôi có bắt đầu dự án với chi phí tương lai còn lại không?'. Nếu không thì dừng."
+    data_reliability: "illustrative"
+  - name: "LTCM (1998) - tự tin quá mức và đòn bẩy"
+    type: "failure"
+    setup: "Quỹ phòng hộ thành lập 1994 (Scholes và Merton, Nobel 1997). Đầu 1998 vốn chủ ~4,7 tỷ USD, tài sản ~124,5 tỷ USD (Lowenstein, ước tính). Nga vỡ nợ 8/1998; quỹ lỗ ~4,6 tỷ USD; Fed New York điều phối nhóm ngân hàng tư nhân cứu (~3,6 tỷ USD, không phải tiền ngân sách)."
+    key_calculations:
+      - "Đòn bẩy = 124,5/4,7 ~ 26,5 lần"
+      - "Ngưỡng chịu lỗ = 4,7/124,5 ~ 3,8%"
+    lesson: "Đòn bẩy biến sai số nhỏ thành phá sản; SME hạn chế nợ ngắn hạn tài trợ tài sản dài hạn và giữ đệm tiền 3-6 tháng chi phí cố định; tính EV phải kèm risk capacity."
+    data_reliability: "unverified"
+  - name: "Trà Vườn - mở chi nhánh 2 vì neo doanh số chi nhánh 1"
+    type: "sme"
+    setup: "Chuỗi trà sữa giả định: chi nhánh 1 TP.HCM doanh thu 500 triệu/tháng; chi nhánh 2 vốn 3.000 triệu, thuê 80 triệu/tháng (gấp đôi). Chi phí giả định: giá vốn 35%, nhân sự 100, mặt bằng 80, khác 30 (cố định 210 triệu/tháng)."
+    key_calculations:
+      - "Kế hoạch (neo 500): 500x0,65 - 210 = +115 triệu/tháng"
+      - "Thực tế 200 triệu/tháng: 200x0,65 - 210 = -80 triệu/tháng (lỗ 960 triệu/năm)"
+      - "Hòa vốn: 210/0,65 ~ 323 triệu/tháng (~65% kế hoạch)"
+      - "Sau 6 tháng: tiếp tục 12 tháng = -960 + 600 (thanh lý) = -360; đóng ngay = -480 (phá hợp đồng thuê) + 900 (thanh lý) = +420; chênh 780 triệu nghiêng về đóng"
+    lesson: "Thiên kiến: anchoring, confirmation, overconfidence, sunk cost; thử nghiệm nhỏ (kiosk/pop-up 3 tháng = Probe Cynefin), tính hòa vốn trước, viết điều kiện đóng cửa."
+    data_reliability: "illustrative"
+  - name: "Chuỗi bánh mì nhượng quyền - neo, xác nhận, tự tin"
+    type: "sme"
+    setup: "Cửa hàng bánh mì thành công 10 triệu/ngày; mục tiêu 10 cửa hàng franchise năm 1. Chủ chỉ nghe franchisee tự báo 5-7 triệu/ngày (trung bình 7), dự báo 10x7 = 70 triệu/ngày. 8 cửa hàng thực tế: 5; 3; 2,5; 2; 2; 1,5; 1; 0,5 triệu/ngày."
+    key_calculations:
+      - "Tổng = 17,5 triệu/ngày; trung bình = 17,5/8 ~ 2,19 (~31% kế hoạch)"
+      - "Royalty 5% x 17,5 = 0,875 triệu/ngày; chi phí hỗ trợ giả định 2 triệu/ngày; lỗ -1,125 triệu/ngày ~ -33,75 triệu/tháng (30 ngày)"
+    lesson: "Survivorship bias và neo; thu thập dữ liệu toàn bộ franchisee, dùng trung vị và phân vị 25%, chạy pre-mortem, thử 2-3 cửa hàng trước khi nhân rộng."
+    data_reliability: "illustrative"
+  - name: "Khủng hoảng tên lửa Cuba (1962) - khắc phục groupthink"
+    type: "success"
+    setup: "Tháng 10/1962 ExComm có ~13 ngày; cùng nhóm cố vấn như Bay of Pigs nhưng quy trình khác (Janis 1982)."
+    key_calculations:
+      - "4 phương án thật khác nhau: không kích, xâm lược, phong tỏa, ngoại giao"
+      - "Chia nhóm nhỏ song song; Kennedy đôi khi vắng mặt; giao vai phản biện cho Robert Kennedy và Ted Sorensen; mô phỏng phản ứng leo thang của Liên Xô"
+      - "Kết quả: phong tỏa; Liên Xô rút tên lửa ngày 28/10; có thỏa thuận ngầm rút tên lửa Jupiter khỏi Thổ Nhĩ Kỳ"
+    lesson: "Cùng lãnh đạo, kết quả khác vì quy trình khác; khi quyết lớn tách người đề xuất và phản biện, chủ vắng mặt vòng đầu, yêu cầu >= 3 phương án thật khác nhau."
+    data_reliability: "unverified"
+  - name: "Amazon - quy trình hóa việc ra quyết định"
+    type: "success"
+    setup: "Thư cổ đông Jeff Bezos 2015-2016: Type 1/Type 2, quy tắc ~70% thông tin, 6-Pager, Disagree and commit, Working Backwards."
+    key_calculations:
+      - "Xử lý 3 điểm yếu: bounded rationality (đủ thông tin), groupthink/HiPPO (đọc im lặng, phản biện văn bản), sunk cost (Type 2 là thử nghiệm)"
+    lesson: "SME không cần sao chép nguyên văn: rút gọn thành bản tường thuật 1-2 trang cho mỗi quyết định Type 1."
+    data_reliability: "unverified"
+  - name: "Công ty sản xuất 100 nhân viên dùng Cynefin chọn kỹ thuật"
+    type: "sme"
+    setup: "Minh họa lấy cảm hứng từ thực tế SME: lập lịch sản xuất (Simple), nâng hiệu suất nhà máy mới (Complicated), thâm nhập thị trường Đông Nam Á (Complex), khủng hoảng (Chaotic)."
+    key_calculations:
+      - "Simple: Sense-Categorize-Respond, AI; Complicated: Sense-Analyze-Respond, AII/CI; Complex: Probe-Sense-Respond, CII, thí điểm 3-6 tháng 1-2 khách; Chaotic: Act-Sense-Respond, AI"
+    lesson: "Chẩn đoán sai miền dẫn đến sai công cụ; thâm nhập thị trường mới là Complex nên chạy thí điểm có giới hạn thiệt hại và điều kiện mở rộng/dừng."
+    data_reliability: "illustrative"
+  - name: "Nội thất Việt Phát - chọn giữa CNC, thuê gia công, showroom, giữ nguyên"
+    type: "sme"
+    setup: "Xưởng gỗ Bình Dương, 45 nhân viên, doanh thu ~18 tỷ/năm; 4 phương án A mua CNC (1.200 triệu), B thuê gia công + khuôn/kiểm tra (150), C showroom 2 TP.HCM, D giữ nguyên; website 400 triệu đã chi kém hiệu quả."
+    key_calculations:
+      - "Ma trận: A 3,45; B 3,85; C 2,45; D 3,65 (B > D > A > C)"
+      - "Độ nhạy (Dòng tiền 30%, ROI 15%): A 3,15; B 4,15; D 4,25 nên D vượt B"
+      - "EV ròng A = 1770 - 1200 = 570; B = 1020 - 150 = 870 (chênh 300)"
+      - "Xác suất hòa p* ~ 92,9%"
+      - "Website: 120x2 = 240 chi phí vs 90x2 = 180 lợi ích = -60 triệu nên dừng/giảm quy mô, bỏ qua 400 sunk"
+      - "Real option: chi phí thuê > 60 triệu/tháng trong 6 tháng liên tiếp thì xem mua CNC; hoàn vốn 1200/60 = 20 tháng"
+    lesson: "Ma trận phải kiểm tra độ nhạy và đối chiếu EV; ưu tiên quyết định Type 2 trước, Type 1 sau khi có dữ liệu; xử lý sunk cost riêng; ghi điều kiện kích hoạt/đóng; CII + RAPID (D = chủ xưởng); pre-mortem phương án B."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Chọn nhà cung cấp vải bằng satisficing có trọng số và sàng lọc MOQ (giả định minh họa)"
+    inputs: {price_usd_per_yard: {A: 2.5, B: 2.0, C: 1.8}, quality_pct: {A: 95, B: 98, C: 90}, delivery_score: {A: 100, B: 70, C: 40}, weights: {price: 0.40, quality: 0.35, delivery: 0.25}, moq_yards: {A: 5000, B: 10000, C: 20000}}
+    steps:
+      - "Điểm giá = (1,8 / giá) x 100: A = 72; B = 90; C = 100. Điểm chất lượng = % đạt. Điểm giao hàng quy ước: 1 tuần 100, 2 tuần 70, 4 tuần 40"
+      - "A = 0,4x72 + 0,35x95 + 0,25x100 = 28,8 + 33,25 + 25 = 87,05"
+      - "B = 0,4x90 + 0,35x98 + 0,25x70 = 36 + 34,3 + 17,5 = 87,8"
+      - "C = 0,4x100 + 0,35x90 + 0,25x40 = 40 + 31,5 + 10 = 81,5"
+      - "MOQ x giá: A = 12.500; B = 20.000; C = 36.000 USD (C gấp ~2,9 lần A). Chỉ số Chất lượng/Giá: A 38; B 49; C 50 (bỏ qua giao hàng/MOQ nên đánh lừa)"
+    result: "B 87,8 ~ A 87,05 > C 81,5. Chọn B (chất lượng cao hơn, giảm lỗi); nếu dòng tiền eo hẹp thì A; C bị loại sớm. Thời gian quyết định 3 ngày, 1 người so với 3-4 tuần, 5 người."
+  - name: "Cây quyết định EV cho quyết định mở rộng"
+    inputs: {p_success: 0.6, gain_if_success: 300, p_fail: 0.4, loss_if_fail: -200, equity: 250}
+    steps:
+      - "Thành công: +500M doanh thu/lợi nhuận - 200M chi phí = +300M; thất bại = -200M"
+      - "EV(Expand) = 0,6x300 + 0,4x(-200) = 180 - 80 = +100M; EV(Không mở rộng) = 0"
+      - "Kiểm tra risk capacity: nếu vốn chủ chỉ 250M thì -200M chiếm 80% vốn chủ, đe dọa sống còn"
+    result: "EV +100M ủng hộ mở rộng, nhưng với vốn chủ 250M cần giảm quy mô/thử nghiệm nhỏ hoặc chia giai đoạn vì kịch bản xấu rất nặng; không quyết chỉ bằng EV."
+  - name: "Cost-benefit dự án 3 năm với kiểm tra độ bền"
+    inputs: {benefits: {revenue_gain: 500, savings: 100, brand: 50}, costs: {capex: 200, opex_3y: 100, opportunity: 50, risk_expected_loss: 50}}
+    steps:
+      - "Tổng lợi ích = 500 + 100 + 50 = 650; tổng chi phí = 200 + 100 + 50 + 50 = 400"
+      - "Net Benefit = 650 - 400 = 250; B/C = 1,625; ROI trên tổng chi phí = 250/400 = 62,5% (ROI trên vốn đầu tư ban đầu 125% chỉ tham khảo, mẫu số khác)"
+      - "Bỏ giá trị thương hiệu 50: lợi ích 600; NB = 200; B/C = 1,5"
+    result: "Dự án đáng cân nhắc: NB > 0, B/C > 1 và vẫn vững khi loại lợi ích mềm (giả định minh họa; thực tế nên chiết khấu)."
+  - name: "Prospect Theory: cược 50-50 thắng/thua 1.000"
+    inputs: {gain: 1000, loss: -1000, alpha: 0.88, lam: 2.25}
+    steps:
+      - "EV = 0,5x1000 + 0,5x(-1000) = 0"
+      - "v(1000) = 1000^0,88 ~ 436,5; v(-1000) = -2,25 x 1000^0,88 ~ -982,2"
+      - "Giá trị tâm lý = 0,5x436,5 + 0,5x(-982,2) ~ -272,8"
+    result: "Âm: đa số người từ chối dù EV = 0; để chấp nhận phải có lợi ích gấp ~2 lần mất mát."
+  - name: "Chi nhánh trà sữa: doanh thu hòa vốn và quyết định forward-looking sau 6 tháng (giả định minh họa)"
+    inputs: {fixed_cost: 210, cogs_ratio: 0.35, revenue_plan: 500, revenue_actual: 200, close_penalty: 480, close_salvage: 900, continue_salvage: 600}
+    steps:
+      - "Lợi nhuận kế hoạch = 500x0,65 - 210 = +115; thực tế = 200x0,65 - 210 = -80 triệu/tháng"
+      - "Hòa vốn = 210/0,65 ~ 323 triệu/tháng"
+      - "Tiếp tục 12 tháng: 12x(-80) + 600 = -360; đóng ngay: -480 + 900 = +420; chênh 780; bỏ qua 3.000 sunk"
+    result: "Đóng cửa tốt hơn 780 triệu. Lẽ ra nên pop-up 3 tháng và tính hòa vốn (323 triệu) trước khi cam kết 3.000 triệu."
+  - name: "Nội thất Việt Phát: ma trận, độ nhạy, EV, p* và quyền chọn mở rộng"
+    inputs: {weights: [0.30, 0.25, 0.15, 0.15, 0.15], scores: {A: [4,3,3,5,2], B: [3,4,5,3,5], C: [3,2,2,3,2], D: [1,5,5,4,5]}, probs: [0.5, 0.3, 0.2], payoffs_A: [2400, 1500, 600], payoffs_B: [1300, 900, 500], invest_A: 1200, invest_B: 150}
+    steps:
+      - "Tổng điểm: A 3,45; B 3,85; C 2,45; D 3,65"
+      - "Đổi trọng số (ROI 15%, Rủi ro 25%, Tốc độ 15%, Phù hợp 15%, Dòng tiền 30%): A 3,15; B 4,15; D 4,25 (D vượt B)"
+      - "EV ròng A = 570; B = 870"
+      - "p* = 650/700 ~ 92,9%"
+      - "Real option: chi phí thuê > 60 triệu/tháng trong 6 tháng liên tiếp thì xem mua CNC; hoàn vốn 1200/60 = 20 tháng"
+    result: "Chọn B (CII, RAPID: D = ông Phát), kèm điều kiện kích hoạt CNC; dừng/giảm quy mô website (giá trị ròng -60 triệu; 400 sunk bỏ qua). Số liệu giả định minh họa."
+  - name: "Chuỗi bánh mì nhượng quyền: sai số do neo và survivorship bias (giả định minh họa)"
+    inputs: {planned_per_store: 7, stores_planned: 10, actual_daily: [5, 3, 2.5, 2, 2, 1.5, 1, 0.5], royalty: 0.05, support_cost_per_day: 2}
+    steps:
+      - "Dự báo 10x7 = 70 triệu/ngày; thực tế 8 cửa hàng tổng 17,5, trung bình 2,19 (~31%)"
+      - "Royalty = 17,5x5% = 0,875; trừ hỗ trợ 2 = -1,125 triệu/ngày ~ -33,75 triệu/tháng"
+    result: "Dự báo dựa vào người thành công sai nặng; dùng trung vị/phân vị 25% và thử 2-3 cửa hàng trước khi nhân rộng."
+
+practice_questions:
+  - q: "Dự án đã chi 100M; tiếp tục cần thêm 80M chi phí và kỳ vọng thu 50M. Dự án khác cũng đã chi 100M, cần thêm 30M và thu 200M. Quyết định?"
+    a: "Dự án 1: 50 - 80 = -30M nên dừng. Dự án 2: 200 - 30 = +170M nên tiếp tục. Chi phí chìm 100M không phải biến quyết định."
+  - q: "Chi 1 tỷ cho dự án; cần thêm 500 triệu để thu 300 triệu tương lai. Dừng có 'lỗ 1,5 tỷ' không?"
+    a: "Không. 1 tỷ đã mất ở cả hai nhánh. Tiếp tục: 300 - 500 = -200 triệu so với dừng = 0 nên dừng tốt hơn 200 triệu."
+  - q: "Mở rộng: thành công (60%) lãi ròng +300M, thất bại (40%) -200M, vốn chủ 250M. Có nên mở?"
+    a: "EV = 0,6x300 + 0,4x(-200) = +100M > 0; nhưng kịch bản xấu -200M chiếm 80% vốn chủ; cân nhắc giảm quy mô hoặc thử nghiệm nhỏ (risk capacity)."
+  - q: "Hãy tính điểm ma trận: tiêu chí A (40%), B (30%), C (20%), D (10%); Option 1 điểm 5,4,3,4; Option 3 điểm 4,3,5,5."
+    a: "Option 1 = 2,0+1,2+0,6+0,4 = 4,2; Option 3 = 1,6+0,9+1,0+0,5 = 4,0."
+  - q: "Cược 50% thắng 150.000 VND, 50% thua 100.000 VND: EV là bao nhiêu và vì sao nhiều người từ chối?"
+    a: "EV = +25.000 VND. Do loss aversion (hệ số ~2,25), nỗi đau mất 100k lớn hơn niềm vui nhận 150k hơn nhiều nên giá trị tâm lý âm."
+  - q: "Cuộc họp 8-0 đồng ý rất nhanh, CEO mạnh, họp kín. Bạn nghi điều gì và làm gì?"
+    a: "Groupthink (ảo tưởng nhất trí, tự kiểm duyệt, lãnh đạo chỉ đạo, nhóm khép kín). Giao devil's advocate, viết ý kiến độc lập/ẩn danh, second-chance meeting, chuyên gia bên ngoài, yêu cầu >= 3 phương án thật khác nhau."
+  - q: "Phân loại: (a) lập lịch ca làm, (b) thâm nhập thị trường Lào, (c) NCC chính phá sản đột ngột."
+    a: "(a) Simple: SOP/AI. (b) Complex: Probe-Sense-Respond, thí điểm 3-6 tháng, CII. (c) Chaotic: Act-Sense-Respond, OODA, AI khẩn cấp, hậu kiểm sau."
+  - q: "Chi nhánh mới có chi phí cố định 210 triệu/tháng, giá vốn 35%. Doanh thu hòa vốn là bao nhiêu? Neo kế hoạch 500 triệu có khôn ngoan không?"
+    a: "210/0,65 ~ 323 triệu/tháng (~65% kế hoạch). Neo 500 chưa kiểm chứng; nên dùng base rate, thử pop-up trước."
+  - q: "Ma trận cho thấy A thắng nhưng đổi trọng số chút là D thắng. Bạn làm gì?"
+    a: "Kết luận không bền; đối chiếu EV, chi phí cơ hội của 'không làm gì', chạy pre-mortem; chọn phương án đảo ngược được (Type 2) với điều kiện kích hoạt."
+  - q: "Phân biệt Devil's Advocate, Dialectical Inquiry và Red Team."
+    a: "Devil's Advocate: một người cố ý phản đối tìm lý do thất bại. Dialectical inquiry: dựng hai phương án đối lập (thesis/antithesis), tranh luận rồi tổng hợp. Red Team: nhóm độc lập đóng vai đối thủ/kẻ tấn công để stress-test (ví dụ xâm nhập hệ thống)."
+
+checklist:
+  - "Đã xác định đúng vấn đề (5 Why, không nhầm triệu chứng với nguyên nhân)?"
+  - "Mục tiêu rõ, đo được (SMART) và đã ghi ràng buộc ngân sách/thời gian/nhân lực?"
+  - "Đã phân loại Programmed/Non-programmed và Strategic/Tactical/Operational?"
+  - "Đã chẩn đoán Cynefin (Simple/Complicated/Complex/Chaotic)?"
+  - "Đã xếp Type 1 hay Type 2?"
+  - "Có >= 3 phương án thực sự khác nhau, gồm 'không làm gì'?"
+  - "Đã dùng công cụ phân tích phù hợp (ma trận, cây quyết định, cost-benefit)?"
+  - "Đã thử đổi trọng số để kiểm tra độ nhạy?"
+  - "Đã tính EV và khả năng chịu lỗ ở kịch bản xấu nhất?"
+  - "Đã loại chi phí chìm khỏi phân tích?"
+  - "Đã có điểm hòa vốn và điều kiện thoát (exit criteria)?"
+  - "Đã kiểm tra thiên kiến chính (anchoring, confirmation, overconfidence, sunk cost, loss aversion, framing, status quo, recency, halo)?"
+  - "Đã dùng base rate thay vì ví dụ nổi bật?"
+  - "Có người phản biện (devil's advocate/red team) không tham gia soạn kế hoạch?"
+  - "Đã chạy pre-mortem cho quyết định lớn?"
+  - "Mọi người đã nêu ý kiến độc lập (viết riêng trước) để tránh groupthink/HiPPO?"
+  - "Đã nghe người thực hiện và các bên chịu ảnh hưởng?"
+  - "Đã chọn phong cách phù hợp (AI/AII/CI/CII/GII)?"
+  - "Đã phân vai RAPID/DACI/RACI và chỉ có một người chốt quyết định cuối?"
+  - "Có kế hoạch triển khai 5W1H, chủ sở hữu, mốc thời gian?"
+  - "Có KPI và ngưỡng cảnh báo sớm?"
+  - "Đã ghi Decision Log (giả định, rủi ro, lý do chọn, ngày rà soát)?"
+  - "Đã lên lịch hậu kiểm (so sánh kết quả với kỳ vọng, ghi bài học)?"
+
+excel_google_sheets_templates:
+  - name: "Decision Log"
+    description: "Một dòng cho mỗi quyết định: PROJECT, DATE, DECISION, CONTEXT, ALTERNATIVES (A/B/C), ANALYSIS (ưu/nhược), CHOSEN, RATIONALE, KEY ASSUMPTIONS (3), RISKS + mitigation (3), NEXT STEPS, REVIEW DATE; sau 1 năm điền OUTCOME và LESSON."
+  - name: "Pre-Mortem Worksheet"
+    description: "PROJECT, DATE, kịch bản 'thất bại 1 năm sau', danh sách nguyên nhân (viết độc lập), TOP FAILURE MODES (Probability H/M/L, Impact H/M/L, Mitigation), MONITORING (chỉ số cảnh báo sớm và ngưỡng chấp nhận)."
+  - name: "Six Thinking Hats Template"
+    description: "DECISION; sáu ô: WHITE (dữ kiện), RED (cảm xúc), BLACK (rủi ro), YELLOW (kết quả tốt nhất), GREEN (phương án thay thế), BLUE (tóm tắt, quyết định)."
+  - name: "Cynefin Diagnostic Worksheet"
+    description: "PROBLEM STATEMENT; 3 câu hỏi chẩn đoán (nhân quả rõ? thử nghiệm được? cần chuyên gia?) -> DOMAIN, MATCHED RESPONSE, TECHNIQUE, DECISION STYLE (AI/AII/CI/CII/GII)."
+  - name: "Ma trận trọng số (Google Sheets)"
+    description: "Cột tiêu chí và trọng số (tổng 100%), cột điểm mỗi phương án; tổng điểm bằng SUMPRODUCT(trọng số, điểm); thêm khối 'trọng số thay thế' để kiểm tra độ nhạy và bảng EV (SUMPRODUCT(xác suất, payoff) - vốn)."

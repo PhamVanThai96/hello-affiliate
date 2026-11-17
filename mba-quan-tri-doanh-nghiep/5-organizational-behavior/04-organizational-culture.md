@@ -231,7 +231,7 @@ Mức độ mà các thành viên tổ chức chấp nhận sự phân phối qu
 - Quyết định tập trung ở lãnh đạo
 - Khoảng cách giữa boss và nhân viên lớn
 - Nhân viên tránh chất vấn lãnh đạo
-- Ví dụ: Mexico (81), India (77), Philippines (64)
+- Ví dụ: Mexico (81), India (77), Philippines (94)
 
 **Chỉ số thấp (< 40):**
 - Bình đẳng được đề cao
@@ -253,7 +253,7 @@ Mức độ thoải mái với sự không chắc chắn và thay đổi.
 - Thích sự cân bằng công việc-cuộc sống rõ ràng
 - Tránh rủi ro, thích công việc ổn định
 - Căng thẳng cao nếu quy tắc không rõ ràng
-- Ví dụ: Greece (100), Belgium (75), Japan (92)
+- Ví dụ: Greece (100), Belgium (94), Japan (92)
 
 **Chỉ số thấp (< 40):**
 - Thoải mái với sự không chắc chắn
@@ -280,7 +280,7 @@ Mức độ mà tổ chức tập trung vào cá nhân hay nhóm.
 **Chỉ số thấp (< 40) – Collectivism (Tập thể):**
 - Trung thành với nhóm
 - Quyết định tập thể
-- Lương dựa trên năng lực
+- Lương và thăng tiến gắn với thâm niên, quan hệ nhóm
 - Hòa hợp được đề cao
 - Ví dụ: Guatemala (6), Ecuador (8), Indonesia (14)
 
@@ -319,13 +319,13 @@ Mức độ mà văn hóa tổ chức chấp nhận thay đổi và tập trung 
 - Đầu tư vào các dự án dài hạn
 - Bền vững là ưu tiên
 - Chấp nhận mất mát ngắn hạn cho lợi ích dài hạn
-- Ví dụ: Hong Kong (96), Taiwan (93), Japan (88)
+- Ví dụ: South Korea (100), Taiwan (93), Japan (88)
 
 **Chỉ số thấp (< 40) – Short-Term Orientation:**
 - Tập trung kết quả nhanh
 - ROI ngắn hạn được ưu tiên
 - Kết quả quý sau quý trước được chú trọng
-- Ví dụ: Pakistan (0), Nigeria (13), Philippines (27)
+- Ví dụ: Nigeria (13), Philippines (27), USA (26)
 
 **Ứng dụng tổ chức:**
 - Văn hóa LTO cao: R&D, công ty công nghệ lâu đời, cải tiến quy trình
@@ -340,14 +340,14 @@ Mức độ mà văn hóa tổ chức cho phép thỏa mãn nhu cầu cá nhân 
 - Các nhân viên có sự linh hoạt
 - Niềm vui trong công việc được đề cao
 - Tham gia tự do
-- Ví dụ: Venezuela (67), Mexico (97), Colombia (100)
+- Ví dụ: Venezuela (100), Mexico (97), Colombia (83)
 
 **Chỉ số thấp (< 40) – Restraint (Kiềm chế):**
 - Tuân thủ chặt chẽ các chuẩn mực
 - Kiểm soát các nhu cầu cá nhân
 - Công việc nghiêm túc
 - Hạn chế tham gia xã hội
-- Ví dụ: Pakistan (0), Egypt (6), Lithuania (16)
+- Ví dụ: Pakistan (0), Egypt (4), Lithuania (16)
 
 ### 3.3 So Sánh Chỉ Số Giữa Các Quốc Gia
 
@@ -357,7 +357,7 @@ Mức độ mà văn hóa tổ chức cho phép thỏa mãn nhu cầu cá nhân 
 | **USA** | 40 | 46 | 91 | 62 | 26 | 68 |
 | **Japan** | 54 | 92 | 46 | 95 | 88 | 42 |
 | **Germany** | 35 | 65 | 67 | 66 | 83 | 40 |
-| **South Korea** | 60 | 85 | 18 | 60 | 100 | 29 |
+| **South Korea** | 60 | 85 | 18 | 39 | 100 | 29 |
 | **Thailand** | 64 | 64 | 20 | 34 | 32 | 45 |
 | **Singapore** | 74 | 8 | 20 | 48 | 72 | 46 |
 | **India** | 77 | 40 | 48 | 56 | 51 | 26 |
@@ -375,9 +375,9 @@ Mức độ mà văn hóa tổ chức cho phép thỏa mãn nhu cầu cá nhân 
 | **LTO (80)** | Rất Cao | Hướng dài hạn, tiết kiệm, kiên nhẫn, quy hoạch lâu dài |
 | **IVR (35)** | Thấp | Kiềm chế, tuân thủ quy chuẩn, công việc nghiêm túc, ít tự do cá nhân |
 
-> **Lưu ý**: các chỉ số trên lấy từ dữ liệu công bố của Hofstede Insights, làm tròn gần đúng; riêng LTO của Việt Nam được các nguồn công bố ở mức khác nhau (thường trong khoảng 57-80 tùy phiên bản dữ liệu), cần kiểm tra lại trên hofstede-insights.com trước khi trích dẫn. Chỉ số quốc gia là *xu hướng trung bình*, không mô tả từng cá nhân hay từng doanh nghiệp.
+> **Lưu ý**: các ví dụ quốc gia ở mục 3.2 và bảng 3.3 cũng là số làm tròn từ dữ liệu công bố của Hofstede Insights (có thể khác nhau giữa các phiên bản dữ liệu). Các chỉ số trên lấy từ dữ liệu công bố của Hofstede Insights, làm tròn gần đúng; riêng LTO của Việt Nam được các nguồn công bố ở mức khác nhau (thường trong khoảng 57-80 tùy phiên bản dữ liệu), cần kiểm tra lại trên hofstede-insights.com trước khi trích dẫn. Chỉ số quốc gia là *xu hướng trung bình*, không mô tả từng cá nhân hay từng doanh nghiệp.
 
-**Ý hàm cho tổ chức Việt Nam:** Các tổ chức Việt thường có cấu trúc phân cấp, hướng dài hạn, giá trị tập thể, và cần quy trình rõ ràng. Lãnh đạo nên là những người được tôn trọng, các quyết định thường tập trung ở trên.
+**Ý hàm cho tổ chức Việt Nam:** Các tổ chức Việt thường có cấu trúc phân cấp, giá trị tập thể và hướng dài hạn; UAI thấp cho thấy sự thoải mái với mơ hồ và thay đổi, nhưng điều này không có nghĩa là không cần quy trình: do PDI cao, nhân viên thường chờ sếp chỉ dẫn rõ. Lãnh đạo nên là người được tôn trọng, và các quyết định thường tập trung ở cấp trên.
 
 ### 3.5 So Sánh Vietnam vs. USA vs. Japan
 
@@ -479,7 +479,7 @@ LINH HOẠT, NỘI BỘ
 **Đặc điểm:**
 - Tổ chức như một gia đình lớn
 - Lãnh đạo cơ bản là người hướng dẫn, cố vấn
-- Sự lợi ích chính là sự phát triển con người
+- Mục tiêu chính là sự phát triển con người
 - Tập trung vào các mối quan hệ, gắn kết, sự trung thành
 - Sự kiểm soát được coi là hợp tác, đồng ý
 
@@ -495,7 +495,7 @@ LINH HOẠT, NỘI BỘ
 - Thiếu tiêu chuẩn, có thể không chuyên nghiệp
 - Chậm thích ứng với thay đổi
 
-**Ví dụ tổ chức:** Zappos (trước khi bán cho Amazon), các startup gia đình, tổ chức phi lợi nhuận nhỏ
+**Ví dụ tổ chức:** Zappos (giai đoạn đầu, xem 14.2), các doanh nghiệp gia đình, tổ chức phi lợi nhuận nhỏ
 
 #### **2. Adhocracy Culture (Văn Hóa Tập Hợp / Sáng Tạo) – Góc Trên Bên Phải**
 
@@ -506,7 +506,7 @@ LINH HOẠT, NGOÀI
 │   (Sáng Tạo / Tập Hợp)       │
 │                              │
 │  • Năng động, nhanh          │
-│  • Lãnh đạo là bộ lão        │
+│  • Lãnh đạo là nhà tiên phong│
 │  • Tập trung vào đổi mới     │
 │  • Giá trị: Sáng tạo         │
 │                              │
@@ -515,9 +515,9 @@ LINH HOẠT, NGOÀI
 
 **Đặc điểm:**
 - Tổ chức như một startup, dự án tạm thời
-- Lãnh đạo cơ bản là người sáng tạo, lấy phiêu dạo
-- Sự lợi ích chính là sáng tạo, đổi mới
-- Tập trung vào những điều mới, thử nghiệm, quân sự
+- Lãnh đạo cơ bản là nhà sáng tạo, người tiên phong chấp nhận mạo hiểm
+- Mục tiêu chính là sáng tạo, đổi mới
+- Tập trung vào những điều mới, thử nghiệm, mạo hiểm
 - Sự kiểm soát thông qua các mục tiêu, tính linh hoạt
 
 **Ưu điểm:**
@@ -552,8 +552,8 @@ LINH HOẠT, NGOÀI
 
 **Đặc điểm:**
 - Tổ chức như một cơ chế cạnh tranh
-- Lãnh đạo cơ bản là chiến lược gia, cơ bộ doanh thương
-- Sự lợi ích chính là thắng, thị phần, lợi nhuận
+- Lãnh đạo cơ bản là chiến lược gia, nhà điều hành hướng kết quả
+- Mục tiêu chính là thắng, thị phần, lợi nhuận
 - Tập trung vào các mục tiêu, các kết quả, sự hiệu quả
 - Sự kiểm soát thông qua kết quả, lợi nhuận
 
@@ -590,7 +590,7 @@ LINH HOẠT, NGOÀI
 **Đặc điểm:**
 - Tổ chức như một máy
 - Lãnh đạo cơ bản là quản lý, điều phối viên
-- Sự lợi ích chính là ổn định, hiệu quả, dự đoán được
+- Mục tiêu chính là ổn định, hiệu quả, dự đoán được
 - Tập trung vào các quy trình, quy tắc, trách nhiệm rõ ràng
 - Sự kiểm soát thông qua chính sách, quy trình
 
@@ -604,7 +604,7 @@ LINH HOẠT, NGOÀI
 - Chậm phản ứng thay đổi
 - Ít sáng tạo, lấy quy trình làm ưu tiên
 - Nhân viên có thể cảm thấy bị kiểm soát quá mức
-- Có thể trở nên cục bộ
+- Có thể trở nên đóng kín, cục bộ giữa các phòng ban
 
 **Ví dụ tổ chức:** Công ty bảo hiểm, ngân hàng truyền thống, chính phủ, quân đội, các tập đoàn lớn
 
@@ -614,7 +614,7 @@ LINH HOẠT, NGOÀI
 |------|------|------|------|------|
 | **Trục** | Linh hoạt, nội bộ | Linh hoạt, ngoài | Ổn định, ngoài | Ổn định, nội bộ |
 | **Tính chất** | Gia đình | Startup | Công ty | Máy |
-| **Lãnh đạo** | Cha mẹ | Bộ lão | Chiến lược gia | Quản lý |
+| **Lãnh đạo** | Cha mẹ | Nhà tiên phong | Chiến lược gia | Quản lý |
 | **Động lực nhân viên** | Trung thành, cơ hội phát triển | Sáng tạo, mạo hiểm | Thưởng, kết quả | Bảo mật việc làm |
 | **Quyết định** | Đồng ý | Sáng tạo | Cạnh tranh | Quy trình |
 | **Gắn kết** | Truyền thống | Tương lai | Thắng | Quy tắc |
@@ -641,7 +641,7 @@ OCAI là một công cụ do Cameron & Quinn phát triển để đánh giá vă
 
 2. **Phong Cách Lãnh Đạo** - Lãnh đạo ở đây thường là loại nào?
    - Clan: Hướng dẫn, cố vấn
-   - Adhocracy: Tư duy cao, tính năng động
+   - Adhocracy: Nhà đổi mới, chấp nhận mạo hiểm
    - Market: Chiến lược gia, công việc định hướng
    - Hierarchy: Quản lý, điều phối
 
@@ -659,7 +659,7 @@ OCAI là một công cụ do Cameron & Quinn phát triển để đánh giá vă
 
 5. **Tiêu Chuẩn Thành Công** - Thành công được định nghĩa như thế nào?
    - Clan: Làm việc là một nhóm, sự phát triển con người
-   - Adhocracy: Sáng tạo, tính đúng đắn
+   - Adhocracy: Sản phẩm mới, tăng trưởng nhờ đổi mới
    - Market: Thi đua thị trường, lợi nhuận
    - Hierarchy: Hiệu quả, ít sai sót
 
@@ -671,39 +671,23 @@ OCAI là một công cụ do Cameron & Quinn phát triển để đánh giá vă
 
 ### 4.6 Ví Dụ Kết Quả OCAI
 
-**Công Ty Công Nghệ (Công Nghệ Lớn) - Kết Quả Đánh Giá Hiện Tại:**
+**Ví dụ (giả định minh họa): công ty công nghệ 300 người.** Mỗi người chia 100 điểm cho 4 loại văn hóa; số dưới đây là trung bình toàn công ty.
 
-```
-        Clan
-         ▲
-        5│     *
-         │    * *
-        4│   *   *
-         │  *     *
-        3│ *       *
-         │*─────────*─────→ Adhocracy
-        2│ *       *
-         │  *     *
-        1│   *   *
-         │    * *
-        0└─────*───────
-            Market
-            
-Clan: 2, Adhocracy: 8, Market: 7, Hierarchy: 3
-```
+| Loại văn hóa | Hiện tại (Now) | Mong muốn (Preferred) | Chênh lệch (Pref - Now) |
+|------|------|------|------|
+| Clan | 15 | 22 | +7 |
+| Adhocracy | 35 | 32 | -3 |
+| Market | 32 | 26 | -6 |
+| Hierarchy | 18 | 20 | +2 |
+| **Tổng** | 100 | 100 | |
 
-**Giải thích:**
-- Cao nhất: Adhocracy (sáng tạo, đổi mới là ưu tiên)
-- Cao thứ hai: Market (kết quả, hiệu suất quan trọng)
-- Thấp: Clan (mối quan hệ cá nhân kém), Hierarchy (quy trình kém)
-- Kết quả: Tổ chức sáng tạo nhưng thiếu sự chăm sóc con người
+*Kiểm tra*: 15+35+32+18 = 100; 22+32+26+20 = 100. *Tổng độ lệch tuyệt đối* = 7 + 3 + 6 + 2 = **18 điểm**.
 
-**Văn Hóa Mong Muốn (Nếu Muốn Cân Bằng Hơn):**
-
-```
-Clan: 4, Adhocracy: 7, Market: 6, Hierarchy: 5
-→ Thêm cân bằng Clan (quan tâm con người) và Hierarchy (quy trình)
-```
+**Cách đọc từng bước:**
+1. **Nhìn loại trội nhất ở "Hiện tại"**: Adhocracy (35) rồi Market (32) nghĩa là công ty thiên về sáng tạo và kết quả.
+2. **Nhìn loại thấp nhất**: Clan (15) và Hierarchy (18) cho thấy thiếu chăm sóc con người và thiếu quy trình.
+3. **So với "Mong muốn"**: nhân viên muốn tăng Clan (+7) và Hierarchy (+2), giảm Market (-6) và Adhocracy (-3). Tức họ không muốn bỏ sáng tạo, nhưng muốn *bớt áp lực kết quả và thêm sự quan tâm*.
+4. **Kết luận**: hướng cải thiện hợp lý là bổ sung Clan (cố vấn, phản hồi, phúc lợi) và chuẩn hóa quy trình tối thiểu, thay vì thay đổi toàn bộ.
 
 ### 4.7 Sử Dụng Mô Hình trong Thực Tế
 
@@ -733,30 +717,20 @@ Daniel R. Denison, một chuyên gia văn hóa tổ chức, đã phát triển m
 Mô hình Denison xác định bốn khía cạnh cơ bản của văn hóa tổ chức mạnh:
 
 ```
-                       LINH HOẠT (Flexibility)
+                    LINH HOẠT (Flexibility)
                               │
-             THÍCH ỨNG    ────┼────    HƯỚNG NGOÀI
-           (Adaptability)     │      (External Focus)
-                         ┌────┼────┐
-                         │    │    │
-              BÊN NGOÀI  │    │    │  NGOÀI
-            (External)  │    │    │
-                         │ D │ D │
-                         │   E   │
-                TỔNG HỢP │  N  │ PHÂN BIỆT
-              (Integrate)│  I  │(Differentiate)
-                         │ S  │
-                         │  O  │
-                         │ N  │
-                         │    │    │
-              BÊN TRONG  │    │    │ TRONG
-            (Internal)  │    │    │
-                         └────┼────┘
-                    NHIỆM VỤ     NHẤT QUÁN
-                   (Mission)  (Consistency)
+        ADAPTABILITY          │          INVOLVEMENT
+        (Thích ứng)           │          (Tham gia)
+        Hướng ngoài           │          Hướng trong
+  ────────────────────────────┼────────────────────────────
+        MISSION               │          CONSISTENCY
+        (Sứ mệnh)             │          (Nhất quán)
+        Hướng ngoài           │          Hướng trong
                               │
-                       ỔN ĐỊNH (Stability)
+                    ỔN ĐỊNH (Stability)
 ```
+
+Trục ngang: **hướng ngoài** (thị trường, khách hàng) so với **hướng trong** (con người, hệ thống nội bộ). Trục dọc: **linh hoạt** so với **ổn định**. Tâm của mô hình là **niềm tin và giả định cốt lõi** (tương ứng Tầng 3 của Schein).
 
 #### **1. Mission – Nhiệm Vụ (Hướng Ngoài & Ổn Định)**
 
@@ -771,7 +745,7 @@ Mức độ mà tổ chức có một hình ảnh rõ ràng về mục đích, m
 **Đặc điểm của Mission yếu:**
 - Mục tiêu không rõ ràng
 - Thiếu hướng chiến lược dài hạn
-- Quyết định lách qua, không có kế hoạch
+- Quyết định tùy tiện, thiếu kế hoạch
 
 **Ứng dụng:** Tổ chức cần có sứ mệnh rõ ràng để hướng dẫn những quyết định, cấp phát tài nguyên, và động lực nhân viên.
 
@@ -783,13 +757,13 @@ Mức độ mà tổ chức có khả năng cảm nhận những thay đổi tro
 - Tổ chức lắng nghe khách hàng
 - Cơ cấu tổ chức linh hoạt
 - Sáng tạo được khuyến khích
-- Thực bại được coi là cơ hội học hỏi
+- Thất bại được coi là cơ hội học hỏi
 
 **Đặc điểm của Adaptability yếu:**
 - Bỏ lỡ tín hiệu thị trường
 - Cấu trúc cứng nhắc
 - Chống đổi mới
-- Sợ sàng tạo
+- Sợ sáng tạo
 
 **Ứng dụng:** Trong thời đại thay đổi nhanh, các tổ chức cần khả năng thích ứng cao.
 
@@ -798,7 +772,7 @@ Mức độ mà tổ chức có khả năng cảm nhận những thay đổi tro
 Mức độ mà nhân viên được tham gia vào quyết định, cảm thấy có vị trí, và được trao quyền.
 
 **Đặc điểm của Involvement mạnh:**
-- Quyều định phân cấp
+- Quyết định phân quyền, xuống cấp thấp
 - Nhân viên được trao quyền
 - Làm việc theo nhóm
 - Nhân viên cảm thấy quyền sở hữu
@@ -840,34 +814,36 @@ Mức độ mà tổ chức có những tiêu chuẩn nội bộ nhất quán, g
 
 ### 5.4 Kết Nối Giữa Bốn Khía Cạnh và Hiệu Suất
 
-Nghiên cứu của Denison cho thấy sự kết nối trực tiếp:
+Nghiên cứu của Denison (khảo sát nhiều công ty, theo dõi nhiều năm) cho thấy các công ty có điểm cao ở cả bốn khía cạnh thường có kết quả tốt hơn về lợi nhuận, tăng trưởng doanh thu và mức hài lòng. Mỗi khía cạnh liên quan mạnh hơn tới một nhóm chỉ số:
 
-```
-Khoảng cách 8 năm từ 1.400 công ty:
-- Mission cao (+12% tăng trưởng doanh thu)
-- Adaptability cao (+14% ROI)
-- Involvement cao (+13% lợi nhuận)
-- Consistency cao (+10% ROI)
+| Khía cạnh | Thường liên quan mạnh hơn tới |
+|------|------|
+| Mission | Tăng trưởng doanh thu, lợi nhuận |
+| Adaptability | Doanh thu mới, thị phần, đổi mới |
+| Involvement | Chất lượng sản phẩm, sự gắn bó của nhân viên |
+| Consistency | Hiệu quả vận hành, ROA |
 
-TỰA: Tất cả bốn khía cạnh đều có tác động tích cực
-đến hiệu suất tài chính.
-```
+> **Lưu ý**: các tài liệu phổ thông thường trích những con số phần trăm cụ thể cho từng khía cạnh nhưng không thống nhất giữa các nguồn; do đó tài liệu này chỉ nêu *xu hướng*, không nêu con số chính xác. Hãy dùng xu hướng để đặt giả thuyết, rồi đối chiếu với chỉ số của chính doanh nghiệp.
+
+**Tại sao cần cả bốn?** Denison gọi đây là "nghịch lý" (paradox): hướng ngoài và hướng trong, linh hoạt và ổn định cạnh tranh nhau về nguồn lực. Doanh nghiệp xuất sắc không chọn một bên mà *quản lý được sự căng thẳng giữa chúng* (ví dụ vừa nhất quán vừa thích ứng).
 
 ### 5.5 Công Cụ Đánh Giá: Denison Culture Survey
 
 **Cấu trúc:**
 - 60 câu hỏi (5 câu hỏi cho mỗi 12 yếu tố con)
 - Thang 5 điểm (Rất không đồng ý → Rất đồng ý)
-- Kết quả: profil văn hóa với điểm số từ 1-5 cho mỗi khía cạnh
+- Kết quả: hồ sơ văn hóa với điểm số từ 1-5 cho mỗi khía cạnh
 
 **12 Yếu Tố Con:**
 
 | Khía Cạnh | Yếu Tố Con 1 | Yếu Tố Con 2 | Yếu Tố Con 3 |
 |------|------|------|------|
-| **Mission** | Định hướng chiến lược | Mục tiêu & hiệu suất | Giáo dục & phát triển |
-| **Adaptability** | Nhận biết thay đổi | Lãnh đạo sáng tạo | Sự cân bằng công việc |
-| **Involvement** | Quyền & trách nhiệm | Sự hợp tác & teamwork | Sự trao quyền |
-| **Consistency** | Giá trị cốt lõi | Tiêu chuẩn hành vi | Tính liên kết & tương thích |
+| **Mission** | Định hướng & ý đồ chiến lược (Strategic Direction & Intent) | Mục tiêu (Goals & Objectives) | Tầm nhìn (Vision) |
+| **Adaptability** | Tạo ra thay đổi (Creating Change) | Hướng về khách hàng (Customer Focus) | Học hỏi của tổ chức (Organizational Learning) |
+| **Involvement** | Trao quyền (Empowerment) | Định hướng đội nhóm (Team Orientation) | Phát triển năng lực (Capability Development) |
+| **Consistency** | Giá trị cốt lõi (Core Values) | Sự đồng thuận (Agreement) | Phối hợp & tích hợp (Coordination & Integration) |
+
+*Ghi chú*: tên 12 yếu tố con theo công bố của Denison Consultants; bản dịch tiếng Việt là của tài liệu này, nên đối chiếu thuật ngữ gốc khi dùng chính thức.
 
 ### 5.6 Ví Dụ: Một Công Ty Sản Xuất
 
@@ -880,10 +856,12 @@ Involvement:   ▰▰▰▰▰ 4.2  (Rất Mạnh)
 Consistency:   ▰▰▰▰░ 3.8  (Mạnh)
 ```
 
-**Giải thích:**
-- Công ty có sứ mệnh rõ ràng, nhân viên được trao quyền
-- Nhưng lại chậm thích ứng với thay đổi thị trường
-- Khuyến nghị: Tăng cường khả năng sáng tạo, lắng nghe khách hàng
+**Giải thích từng bước (số liệu giả định minh họa):**
+1. Điểm trung bình = (4,0 + 2,5 + 4,2 + 3,8) / 4 = **3,625**. Con số này trông "ổn" nhưng che giấu một điểm yếu rõ rệt.
+2. Chênh lệch cao nhất và thấp nhất = 4,2 - 2,5 = **1,7 điểm**: mất cân bằng lớn. Nên đọc từng khía cạnh thay vì chỉ nhìn trung bình.
+3. Hai khía cạnh *hướng trong* (Involvement 4,2; Consistency 3,8) mạnh: nhân viên gắn kết, giá trị nhất quán. Khía cạnh *hướng ngoài và linh hoạt* (Adaptability 2,5) yếu: công ty "đẹp bên trong" nhưng chậm nghe thị trường.
+4. Công ty sản xuất này rơi vào mẫu hình "gắn kết nhưng đóng kín": rủi ro bị đối thủ vượt khi thị trường đổi.
+5. **Khuyến nghị**: tăng tiếp xúc khách hàng (gặp khách hàng, ghi nhận phản hồi), lập dự án thử nghiệm nhỏ, đưa chỉ số phản hồi khách hàng vào KPI.
 
 ---
 
@@ -917,7 +895,7 @@ Trung tâm tập trung quyền lực, bức xạ ra ngoài
 
 **Đặc điểm:**
 - Tập trung quyền lực ở số ít người (thường là người sáng lập)
-- Quyết định nhanh, chuyên chuyên
+- Quyết định nhanh, mang tính chuyên quyền
 - Dựa trên mối quan hệ cá nhân hơn là quy tắc
 - Kiểm soát dựa trên sự kiểm tra trực tiếp
 
@@ -985,14 +963,14 @@ Dựa trên hình mẫu của Athena – thần chiến lược, giải quyết 
        \  /
         ○○
         
-Ma lưới với các nút liên kết, tập trung vào dự án
+Mạng lưới với các nút liên kết, tập trung vào dự án
 ```
 
 **Đặc điểm:**
 - Tổ chức quanh các dự án, nhiệm vụ
 - Quyền lực dựa trên chuyên môn, năng lực
 - Đội làm việc liên chức năng
-- Lãnh đạo là trình quản lý dự án
+- Lãnh đạo là người quản lý dự án
 
 **Ưu điểm:**
 - Linh hoạt, thích ứng nhanh
@@ -1047,7 +1025,7 @@ Các cá nhân độc lập, tổ chức phục vụ cá nhân
 |------|------|------|------|------|
 | **Tương ứng** | Zeus | Apollo | Athena | Dionysus |
 | **Cơ sở Quyền** | Người | Quy tắc | Năng lực | Cá nhân |
-| **Cấu trúc** | Trung tâm | Phân cấp | Ma lưới | Xen kẽ |
+| **Cấu trúc** | Trung tâm | Phân cấp | Mạng lưới | Xen kẽ |
 | **Quyết định** | Nhanh | Chậm | Trung bình | Thương lượng |
 | **Sáng tạo** | Trung bình | Thấp | Cao | Rất cao |
 | **Ổn định** | Cao | Rất cao | Trung bình | Thấp |
@@ -1065,18 +1043,18 @@ Terrence Deal và Allan Kennedy, dựa trên sách nổi tiếng "Corporate Cult
 
 
 ```
-                PHẢN HỒI NHANH
-                      │
-         RỦI RO CAO   │   RỦI RO CAO
-       (TOUGH GUY)   │   (WORK HARD)
-                     │   PLAY HARD
-                ─────┼─────
-       RỦI RO THẤP   │   RỦI RO THẤP
-      (WORK SOFT)   │  (BET YOUR
-     NO FEEDBACK    │   COMPANY)
-                     │
-                PHẢN HỒI CHẬM
+                      PHẢN HỒI NHANH
+                            │
+   TOUGH GUY / MACHO        │   WORK HARD, PLAY HARD
+   (rủi ro CAO)             │   (rủi ro THẤP)
+ ───────────────────────────┼───────────────────────────
+   BET-YOUR-COMPANY         │   PROCESS (Work Soft)
+   (rủi ro CAO)             │   (rủi ro THẤP)
+                            │
+                      PHẢN HỒI CHẬM
 ```
+
+**Cách đọc**: trục ngang là mức rủi ro của quyết định (trái = cao, phải = thấp); trục dọc là tốc độ biết quyết định đúng hay sai (trên = nhanh, dưới = chậm).
 
 ### 7.2 Bốn Loại Văn Hóa
 
@@ -1090,19 +1068,19 @@ Rủi ro cao, phản hồi nhanh.
 - Động lực từ thử thách
 - Công việc yêu cầu sự dũng cảm
 
-**Ví dụ:** Pháp lý, tiếp thị, bán hàng, cung cấp sáng tạo
+**Ví dụ:** Cảnh sát, bác sĩ phẫu thuật, tư vấn quản lý, đầu tư mạo hiểm, xây dựng, truyền thông - giải trí
 
 #### **2. Work Hard Play Hard Culture (Văn Hóa Làm Nhiều Chơi Nhiều)**
 
 Rủi ro thấp, phản hồi nhanh.
 
 **Đặc điểm:**
-- Tập trung vào khối lượng công việc
+- Tập trung vào khối lượng công việc và số lượt tiếp xúc khách hàng
 - Năng suất cao, vui vẻ
 - Động lực từ bán hàng, kết quả
 - Công việc yêu cầu nguồn lực lớn
 
-**Ví dụ:** Bán hàng, tiếp thị, công ty bất động sản
+**Ví dụ:** Bán lẻ, bán hàng trực tiếp, công ty bất động sản, công ty phần mềm bán hàng
 
 #### **3. Bet Your Company Culture (Văn Hóa Đặt Cược)**
 
@@ -1111,33 +1089,33 @@ Rủi ro cao, phản hồi chậm.
 **Đặc điểm:**
 - Tập trung vào dự án dài hạn
 - Đầu tư lớn, kết quả xa
-- Động lực từ khả năng đạt được
+- Động lực từ tầm nhìn dài hạn và sự chính xác
 - Công việc yêu cầu tài chính, chiến lược
 
-**Ví dụ:** Ngân hàng đầu tư, công ty dầu khí, R&D công nghệ
+**Ví dụ:** Công ty dầu khí, hàng không vũ trụ, R&D công nghệ, ngân hàng đầu tư
 
-#### **4. Work Soft No Feedback Culture (Văn Hóa Anh Hùng Vô Danh)**
+#### **4. Process Culture – Văn Hóa Quy Trình (còn gọi Work Soft / No Feedback)**
 
 Rủi ro thấp, phản hồi chậm.
 
 **Đặc điểm:**
 - Tập trung vào quy trình
-- Ít động lực lối công việc
-- Công việc yêu cầu sự tương thích
-- Thường xảy ra tham nhũng
+- Ít động lực từ kết quả tức thời
+- Công việc yêu cầu tuân thủ đúng quy trình
+- Dễ rơi vào hình thức hóa, quan liêu nếu thiếu phản hồi
 
-**Ví dụ:** Bộ phận hành chính công, một số bộ phận chính phủ
+**Ví dụ:** Ngân hàng, bảo hiểm, cơ quan hành chính công
 
 ### 7.3 So Sánh với Hofstede & Cameron-Quinn
 
-**Mối liên hệ giữa Deal & Kennedy với các mô hình khác:**
+**Mối liên hệ giữa Deal & Kennedy với các mô hình khác** (tương ứng gần đúng, do tác giả tài liệu này suy luận, không phải bảng chính thức của các tác giả):
 
 | Deal & Kennedy | Hofstede (MAS) | Cameron-Quinn | Handy |
 |------|------|------|------|
 | **Tough Guy** | Cao | Market | Power |
 | **Work Hard Play Hard** | Cao | Market | Task |
 | **Bet Your Company** | Cao | Adhocracy | Task |
-| **Work Soft** | Thấp | Hierarchy | Role |
+| **Process (Work Soft)** | Thấp | Hierarchy | Role |
 
 ---
 
@@ -1255,13 +1233,15 @@ Liệu bạn nên kiểm soát môi trường hay thích ứng với nó?
 
 ### 8.3 So Sánh Vietnam, USA, Japan
 
+> **Lưu ý**: bảng dưới là **ước lượng định tính** theo xu hướng thường được nêu trong tài liệu về Trompenaars; Việt Nam không có dữ liệu chính thức nổi bật trong khảo sát gốc, và một số chiều (như Neutral/Emotional của Mỹ) có thể khác nhau giữa các nguồn. Dùng để gợi ý thảo luận, không dùng như kết luận.
+
 | Chiều | **Vietnam** | **USA** | **Japan** |
 |------|------|------|------|
 | **Universalism ↔ Particularism** | Particularism | Universalism | Particularism |
 | **Individualism ↔ Communitarianism** | Communitarianism | Individualism | Communitarianism |
 | **Neutral ↔ Emotional** | Neutral | Emotional | Neutral |
 | **Specific ↔ Diffuse** | Diffuse | Specific | Diffuse |
-| **Achievement ↔ Ascription** | Ascription | Achievement | Achievement |
+| **Achievement ↔ Ascription** | Ascription | Achievement | Ascription |
 | **Sequential ↔ Synchronic** | Synchronic | Sequential | Synchronic |
 | **Inner ↔ Outer directed** | Outer-directed | Inner-directed | Outer-directed |
 
@@ -1273,7 +1253,7 @@ Liệu bạn nên kiểm soát môi trường hay thích ứng với nó?
 
 | Mô Hình | **Tác Giả** | **Năm** | **Số Lượng Chiều** | **Cách Tiếp Cận** | **Ứng Dụng Chính** |
 |------|------|------|------|------|------|
-| **Schein 3-Level** | Edgar Schein | 1984 | 3 tầng | Chiều sâu cấp độ | Phân tích văn hóa sâu |
+| **Schein 3-Level** | Edgar Schein | 1985 | 3 tầng | Chiều sâu cấp độ | Phân tích văn hóa sâu |
 | **Hofstede** | Geert Hofstede | 1980 (6D: 2010) | 6 chiều | So sánh quốc gia | Tổ chức quốc tế |
 | **Cameron-Quinn (CVF)** | Kim Cameron, Robert Quinn | 1983 | 4 loại (2 trục) | 2×2 ma trận | Cân bằng văn hóa |
 | **Denison** | Daniel Denison | 1990 | 4 khía cạnh | Liên kết hiệu suất | Đo lường và cải thiện |
@@ -1372,7 +1352,7 @@ TROMPENAARS       │
 - Hiệu suất không ổn định
 - Chi phí giao dịch cao
 - Nhân viên không biết mong đợi điều gì
-- Dễ bị sự lựa chọn có chọn lọc (người tốt nhất rời đi)
+- Dễ rơi vào "chọn lọc ngược" (người giỏi nhất rời đi trước)
 
 **Ví dụ:** Những công ty sau thôn tính, tổ chức chính phủ không có sứ mệnh rõ ràng, công ty đang rơi vào cuộc khủng hoảng
 
@@ -1418,60 +1398,60 @@ TROMPENAARS       │
 | **Hỗ trợ** | Chỉ trích, không được hỗ trợ |
 | **Đa dạng** | Được kỳ thị, phân biệt đối xử |
 | **Sai sót** | Bị trừng phạt, che giấu |
-| **Xung đột** | Được đánh bại lợi dụng, trả thù |
+| **Xung đột** | Bị lợi dụng để triệt hạ đối thủ, trả thù |
 | **Thắc mắc** | Bị dập tắt, sợ hãi |
 | **Công bằng** | Cảm giác không công bằng |
 
 **Kết quả:**
-- Nhân viên sợ hãi, đội sách
+- Nhân viên sợ hãi, chỉ đối phó
 - Hiệu suất thấp, sai sót cao
 - Turnover cao
 - Sáng tạo thấp, không có đề xuất
 - Rủi ro đạo đức cao
 - Khách hàng không hài lòng
-- Có thể dẫn đến scandale công cộng
+- Có thể dẫn đến bê bối công khai
 
 ### 10.3 Ví Dụ Healthy Culture: Southwest Airlines
 
-**Lịch sử:** Southwest Airlines được thành lập năm 1971 với sứ mệnh mang lái bay tới tất cả mọi người.
+**Lịch sử:** Southwest Airlines được thành lập năm 1971 với sứ mệnh đưa chuyến bay giá rẻ đến với đông đảo mọi người.
 
 **Giá trị cốt lõi:**
-- Tinh thần dân chủ, vui vẻ (fun)
-- Tình yêu thương (love)
-- Quyết tâm (determination)
+- Warrior Spirit (tinh thần chiến binh)
+- Servant's Heart (tấm lòng phục vụ)
+- Fun-LUVing Attitude (thái độ vui vẻ, yêu thương)
 
 **Manifestations:**
 - Nhân viên có thể mặc quần short, quần jeans (vi phạm tiêu chuẩn ngành)
 - Phi hành đoàn hát, trêu đùa trên máy bay
-- Lãnh đạo làm công việc sân tây (CEO đẩy xe đẩy)
+- Lãnh đạo thường được kể lại là tham gia hỗ trợ công việc mặt đất (theo câu chuyện nội bộ của công ty)
 - Nhân viên được trao quyền quyết định để hài lòng khách hàng
 
 **Kết quả:**
-- Nhân viên turnover thấp (20-30% ngành, 5% Southwest)
+- Turnover thấp hơn mức chung của ngành (ước tính minh họa; cần kiểm chứng nguồn)
 - Lợi nhuận cao nhất trong ngành
 - Khách hàng trung thành cao
 - Danh tiếng tuyệt vời
 
 ### 10.4 Ví Dụ Toxic Culture: Enron
 
-**Lịch sử:** Enron là một công ty năng lượng lớn nhất tại Mỹ, sau đó sụp đổ với vụ bê bối kế toán lớn nhất lịch sử.
+**Lịch sử:** Enron là một công ty năng lượng lớn của Mỹ, sau đó sụp đổ trong một vụ bê bối kế toán lớn nhất lịch sử lúc bấy giờ.
 
 **Giá trị tuyên bố:**
 - "Tôn trọng, Tính trung thực, Giao tiếp, Xuất sắc"
 
 **Giá trị thực tế:**
-- Thắng không có cách gì để thắng
-- Nếu bạn không kiếm được tiền, bạn ra đi
-- Những người lợi ích cá nhân hơn những người bàng hoàng
+- Đạt chỉ tiêu lợi nhuận bằng mọi giá
+- Ai không tạo ra lợi nhuận ghi nhận thì bị loại
+- Lợi ích cá nhân được đặt trên lợi ích công ty
 
 **Manifestations:**
-- Cạnh tranh nội bộ khốc liệt, nhân viên bị đánh giá xếp hạng buộc
-- Tính bất thực cao, con số được làm nịp
-- Người chỉ trích bị sa thải
-- Văn hóa sợ hãi, lợi ích cá nhân
+- Cạnh tranh nội bộ khốc liệt, nhân viên bị xếp hạng bắt buộc
+- Con số tài chính bị "làm đẹp"
+- Người chỉ trích bị trả đũa (theo các báo cáo sau vụ việc)
+- Văn hóa sợ hãi, ưu tiên lợi ích cá nhân
 
 **Kết quả:**
-- Vụ bê bối kế toán lớn nhất lịch sử (2001)
+- Vụ bê bối kế toán lớn nhất lịch sử vào thời điểm đó (2001)
 - Công ty phá sản, hàng nghìn nhân viên mất việc (khoảng 4.000 người bị sa thải ngay đợt đầu; ước tính)
 - Nhiều lãnh đạo bị bắt
 - Vốn hóa thị trường đỉnh khoảng $60-70 tỷ USD bị xóa sạch (ước tính)
@@ -1582,7 +1562,7 @@ John Kotter, một nhà lãnh đạo nổi tiếng, đã đề xuất mô hình 
 - Sử dụng sự tin tưởng tăng lên từ những chiến thắng
 - Đẩy mạnh dự án lớn hơn
 - Tiếp tục giao tiếp
-- Nạp đầu những người mới vào liên minh
+- Đưa thêm người mới vào liên minh
 
 **Nguy hiểm:** Công ty thường tuyên bố chiến thắng quá sớm và quay trở lại hành vi cũ
 
@@ -1597,7 +1577,7 @@ John Kotter, một nhà lãnh đạo nổi tiếng, đã đề xuất mô hình 
 - Chuẩn bị cho thế hệ lãnh đạo tiếp theo
 - Giáo dục nhân viên mới vào giá trị mới
 
-**Thời gian:** Thay đổi văn hóa thường mất 3-5 năm để "dán" vào DNA tổ chức
+**Thời gian:** Thay đổi văn hóa thường mất 3-5 năm để ăn sâu vào "DNA" tổ chức
 
 ### 11.2 Những Lỗi Phổ Biến trong Thay Đổi Văn Hóa
 
@@ -1607,7 +1587,7 @@ John Kotter, một nhà lãnh đạo nổi tiếng, đã đề xuất mô hình 
 | **Lãnh Đạo Yếu** | Người không theo dõi nếu lãnh đạo không cam kết | Cam kết của lãnh đạo cấp cao, đặc biệt là CEO |
 | **Tầm Nhìn Không Rõ** | Nhân viên không biết hướng đi | Phát triển và giao tiếp tầm nhìn rõ ràng |
 | **Không Trao Quyền** | Nhân viên muốn thay đổi nhưng không thể | Loại bỏ rào cản cấu trúc |
-| **Chiến Thắng Nhanh Không Đủ** | Động lực giảm, mọi người quay trở lại cũ | Tạo ra những chiến thắng sớm, khí nhất |
+| **Chiến Thắng Nhanh Không Đủ** | Động lực giảm, mọi người quay trở lại cũ | Tạo những chiến thắng sớm và công bố rộng rãi |
 | **Thay Đổi Quá Nhanh** | Nhân viên kiệt sức, năng suất giảm | Đi chậm nhưng chắc chắn |
 | **Tuyên Bố Chiến Thắng Quá Sớm** | Quay trở lại hành vi cũ | Duy trì động lực dài hạn, khoảng 3-5 năm |
 
@@ -1618,10 +1598,10 @@ John Kotter, một nhà lãnh đạo nổi tiếng, đã đề xuất mô hình 
 | Khía Cạnh | Hoạt Động |
 |------|------|
 | **Giá Trị** | Người sáng lập nên rõ ràng về giá trị cá nhân và giá trị công ty |
-| **Hành Vi mô phỏng** | Người sáng lập là tấm gương sáng |
+| **Hành vi làm gương** | Người sáng lập là tấm gương sáng |
 | **Quy Tắc** | Ít quy tắc, nhưng những quy tắc nào có thì phải áp dụng nhất quán |
 | **Tuyển Dụng** | Tuyển dụng những người chia sẻ giá trị |
-| **Câu Chuyện** | Tạo những câu chuyện sớm, thuyết tình về tại sao chúng tôi tồn tại |
+| **Câu Chuyện** | Tạo những câu chuyện sớm, có sức thuyết phục về lý do chúng tôi tồn tại |
 
 **Năm 2-5: Nhu Cầu Phát Triển**
 
@@ -1639,9 +1619,9 @@ John Kotter, một nhà lãnh đạo nổi tiếng, đã đề xuất mô hình 
 |------|------|
 | **Người Lãnh Đạo** | Chuẩn bị thế hệ lãnh đạo tiếp theo |
 | **Subcultures** | Quản lý các văn hóa khác nhau trong bộ phận |
-| **Ngoại Phòng** | Xây dựng các câu chuyện cụ thể cho từng bộ phận |
+| **Truyền thông nội bộ** | Xây dựng các câu chuyện cụ thể cho từng bộ phận |
 | **Mở Rộng** | Thích ứng văn hóa khi mở rộng địa lý |
-| **Thương Vụ** | Chuẩn bị cho thương vụ M&A tiềm năng |
+| **M&A** | Chuẩn bị cho thương vụ M&A tiềm năng |
 
 ---
 
@@ -1649,7 +1629,7 @@ John Kotter, một nhà lãnh đạo nổi tiếng, đã đề xuất mô hình 
 
 ### 12.1 Tại Sao Đo Lường Văn Hóa?
 
-"Điều gì được đo lường sẽ được quản lý" – Peter Drucker
+"Điều gì được đo lường sẽ được quản lý" (câu thường gán cho Peter Drucker, nguồn gốc chưa xác thực chắc chắn)
 
 Đo lường văn hóa giúp:
 - Hiểu rõ tình trạng hiện tại
@@ -1659,6 +1639,8 @@ John Kotter, một nhà lãnh đạo nổi tiếng, đã đề xuất mô hình 
 - Xác định các lĩnh vực cần cải thiện
 
 ### 12.2 Các Công Cụ Đo Lường Chính
+
+> **Lưu ý**: số câu hỏi, thời gian làm bài và chi phí của từng công cụ dưới đây là **ước tính tham khảo**; cần xác nhận với nhà cung cấp trước khi lập ngân sách.
 
 #### **1. OCAI (Organizational Culture Assessment Instrument) – Cameron & Quinn**
 
@@ -1683,7 +1665,7 @@ John Kotter, một nhà lãnh đạo nổi tiếng, đã đề xuất mô hình 
 **Đặc điểm:**
 - 60 câu hỏi, thang 5 điểm
 - Đo 12 yếu tố con thuộc 4 khía cạnh chính
-- Kết quả: Profil chi tiết
+- Kết quả: Hồ sơ chi tiết
 - Thời gian: 15-20 phút
 - Chi phí: ~$20-50 mỗi người
 
@@ -1781,31 +1763,19 @@ John Kotter, một nhà lãnh đạo nổi tiếng, đã đề xuất mô hình 
 
 ### 12.4 Ví Dụ: Kết Quả Khảo Sát Thực Tế
 
-**Công Ty A: Công Ty Công Nghệ 500 nhân viên**
+**Công ty A: công ty công nghệ 500 nhân viên (giả định minh họa)**
 
-```
-OCAI Results (Now vs. Preferred):
+| Loại văn hóa | Hiện tại (Now) | Mong muốn (Preferred) | Chênh lệch |
+|------|------|------|------|
+| Clan | 20 | 25 | +5 |
+| Adhocracy | 40 | 35 | -5 |
+| Market | 30 | 20 | -10 |
+| Hierarchy | 10 | 20 | +10 |
+| **Tổng** | 100 | 100 | |
 
-        Clan
-         ▲
-        5│ P     N
-         │ * *   * *
-        4│ *   *   *
-         │ *     *
-        3│ *       *
-         │*─────────*─────→ Adhocracy
-        2│ *       *
-         │  *     *
-        1│   *   *
-         │    * *
-        0└─────────*
-            Market
-            
-Now:  Clan=3, Adhocracy=4.5, Market=3, Hierarchy=1.5
-Preferred: Clan=3.5, Adhocracy=4, Market=2, Hierarchy=2.5
+*Kiểm tra*: 20+40+30+10 = 100; 25+35+20+20 = 100. Tổng độ lệch tuyệt đối = 5 + 5 + 10 + 10 = **30 điểm**.
 
-Insight: Công ty cần tăng cường lãnh đạo, quy trình, và hỗ trợ (Hierarchy)
-```
+**Cách đọc**: nhân viên muốn giảm áp lực kết quả (Market -10) và thêm quy trình, vai trò rõ ràng (Hierarchy +10). Nghĩa là công ty đang *thiếu cấu trúc*, không thiếu sáng tạo. Hành động ưu tiên: chuẩn hóa quy trình cốt lõi và vai trò (Hierarchy), giảm thúc ép chỉ tiêu ngắn hạn, bổ sung chăm sóc con người (Clan +5).
 
 ### 12.5 Những Tuyên Bố Khảo Sát Văn Hóa Tốt
 
@@ -1858,7 +1828,7 @@ THANG ĐÁNH GIÁ: 1 = Hoàn toàn không đồng ý, 5 = Hoàn toàn đồng ý
 
 **Thách thức:**
 - Hai văn hóa khác nhau cần phải kết hợp
-- Mất khúc bổ cổ phiếu hoặc tài năng hàng đầu
+- Mất nhân tài chủ chốt
 - Sẽ mất 2-3 năm để tích hợp
 
 **Mô hình tốt nhất:**
@@ -1873,13 +1843,13 @@ THANG ĐÁNH GIÁ: 1 = Hoàn toàn không đồng ý, 5 = Hoàn toàn đồng ý
 - Bước 4: Giao tiếp rõ ràng "chúng ta sẽ lấy cái gì từ công ty A, cái gì từ công ty B"
 - Bước 5: Chuẩn bị cho "sốc văn hóa" – mọi người sẽ cảm thấy "chúng tôi không còn là chúng tôi nữa"
 
-**Ví dụ:** Daimler (Đức) + Chrysler (USA) = Thất bại (Daimler không thể tiếp nhận giá trị của Chrysler)
+**Ví dụ:** Daimler (Đức) + Chrysler (USA) = Thất bại (xem phân tích chi tiết ở 14.9)
 
 #### **Startup Thành Hình**
 
 **Tình huống:**
 - Công ty từ 10-50 nhân viên lớn lên thành 100-500
-- Không thể tất cả người sáng lập biết ai là ai
+- Người sáng lập không còn biết hết mọi người
 - Cần quy trình, nhưng không muốn mất sáng tạo
 
 **Mô hình tốt nhất:**
@@ -1893,12 +1863,12 @@ THANG ĐÁNH GIÁ: 1 = Hoàn toàn không đồng ý, 5 = Hoàn toàn đồng ý
 - Bước 3: Thêm "Hierarchy" (quy trình, vai trò) nhưng giữ "Adhocracy"
 - Bước 4: Tạo "integrator roles" (người kết nối Adhocracy và Hierarchy)
 
-**Nguy hiểm:** Mất tài năng vì "quá công ty"
+**Nguy hiểm:** Mất tài năng vì công ty trở nên "quá quy trình"
 
 #### **Tổ Chức Chính Phủ / Công Vụ**
 
 **Tình huống:**
-- Thường là "Hierarchy culture" yếu + "Role culture"
+- Thường là Hierarchy culture (theo CVF) kết hợp Role culture (theo Handy)
 - Chậm thích ứng, thiếu sáng tạo
 - Cần thay đổi mà không thể sa thải người
 
@@ -1919,7 +1889,7 @@ THANG ĐÁNH GIÁ: 1 = Hoàn toàn không đồng ý, 5 = Hoàn toàn đồng ý
 
 **Tình huống:**
 - Văn hóa của mẹ công ty vs. những nơi địa phương
-- Làm cách nào để "glokal" (toàn cầu cục bộ)?
+- Làm cách nào để "glocal" (toàn cầu hóa nhưng thích ứng địa phương)?
 
 **Mô hình tốt nhất:**
 1. **Hofstede 6 Dimensions** – Để hiểu khác biệt quốc gia
@@ -1928,7 +1898,7 @@ THANG ĐÁNH GIÁ: 1 = Hoàn toàn không đồng ý, 5 = Hoàn toàn đồng ý
 
 **Quá trình:**
 - Bước 1: Áp dụng Hofstede để hiểu điểm khác biệt chính
-- Bước 2: Xác định "Core values" sẽ bằng tất cả (không thay đổi)
+- Bước 2: Xác định "Core values" chung cho tất cả (không thay đổi)
 - Bước 3: Xác định "Flexible values" có thể thích ứng với các nước (thay đổi được)
 - Bước 4: Đào tạo lãnh đạo địa phương về "cách chúng tôi", nhưng cho phép địa phương thích ứng
 
@@ -1936,7 +1906,7 @@ THANG ĐÁNH GIÁ: 1 = Hoàn toàn không đồng ý, 5 = Hoàn toàn đồng ý
 - Core (không thay đổi): Trung thực, khách hàng trung tâm, đạo đức
 - Flexible (có thể thích ứng): Phong cách lãnh đạo, cách giao tiếp, sự chính thức
 
-#### **Công Ty Ngoài Khủng Hoảng**
+#### **Công Ty Trong Khủng Hoảng**
 
 **Tình huống:**
 - Công ty sắp sụp đổ hoặc bị mua lại
@@ -1960,292 +1930,240 @@ THANG ĐÁNH GIÁ: 1 = Hoàn toàn không đồng ý, 5 = Hoàn toàn đồng ý
 
 ## Phần 14: Các Trường Hợp Nghiên Cứu Chi Tiết (Case Studies)
 
-> **Lưu ý về dữ liệu**: Các bảng "Kết Quả" của case doanh nghiệp quốc tế và Việt Nam (Netflix, Zappos, Toyota, FPT Telecom, Vingroup, Uber, Wells Fargo...) là **số liệu ước tính/minh họa** tổng hợp từ báo chí và tài liệu công khai, chưa kiểm chứng từng nguồn; dùng để hiểu *xu hướng và cơ chế*, không trích dẫn như số liệu chính xác. Riêng case "STCo" của FPT Telecom mang tính mô hình minh họa hóa. Các case tự thiết kế (14.10, 14.11) là **giả định minh họa**.
+> **Lưu ý về dữ liệu**: Các case 14.1 đến 14.9 dùng sự kiện công khai ở mức chắc chắn; mọi số liệu *định lượng* gắn nhãn "ước tính" là làm tròn từ báo chí và tài liệu công khai, chưa kiểm chứng từng nguồn; còn phép tính gắn nhãn "giả định minh họa" do tác giả tự thiết kế để thực hành phương pháp. Case "STCo" của FPT Telecom (14.4) là mô hình minh họa hóa, không phải khung chính thức của FPT. Các case 14.10 và 14.11 là kịch bản **giả định minh họa**. Mỗi case phân tích theo trình tự: bối cảnh, vấn đề, phân tích từng bước theo mô hình của bài, ý nghĩa kinh doanh, bài học cho SME.
 
-### 14.1 Thành Công: Netflix – Freedom & Responsibility Culture
+### 14.1 Thành Công: Netflix – Văn Hóa "Tự Do & Trách Nhiệm" (Freedom & Responsibility)
 
-#### **Bối Cảnh:**
-Netflix được thành lập vào năm 1997 bởi Reed Hastings và Marc Randolph, bắt đầu như một dịch vụ DVD qua bưu chính. Vào những năm 2000, Reed Hastings nhận ra rằng để cạnh tranh với Blockbuster, công ty cần một văn hóa hoàn toàn khác – một văn hóa cho phép các quyết định nhanh, sáng tạo, và không sợ sai sót.
-
-#### **Vấn Đề:**
-- DVD qua bưu chính là ngành chậm, kiểm soát chặt
-- Blockbuster kiểm soát bằng quy tắc, phạt chậm trả
-- Netflix cần để các kỹ sư sáng tạo, không bị khóa bởi các quy tắc
-
-#### **Giải Pháp - Văn Hóa "Freedom & Responsibility":**
-
-**Giá trị cốt lõi:**
-1. **Judgment** (Phán xét): Nhân viên được trao quyền phán xét, không cần xin phép
-2. **Communication** (Giao tiếp): Giao tiếp rõ ràng, trung thực, thường xuyên
-3. **Efficiency** (Hiệu quả): Lãng phí thời gian được coi là sai lầm tồi tệ nhất
-4. **Courage** (Dũng cảm): Thách thức hiện trạng, thử các cách mới
-5. **Innovation** (Đổi mới): Thất bại được coi là học tập
-6. **Inclusion** (Bao dung): Mọi ý kiến được lắng nghe
-
-**Manifestations:**
-- **Không có phê duyệt trước**: Không cần xin phép chi tiêu đến một số tiền nhất định (ví dụ: $10,000)
-- **Không có chính sách chi tiêu du lịch**: "Hành động với khôn ngoan" – nếu tiền du lịch hợp lý, hãy chi
-- **Không có "bây giờ" / "sau này"**: Quyết định được đưa ra nhanh, không cần đợi
-- **Tìm kiếm tài năng, không tuân thủ**: Tuyển dụng người tốt nhất, từ bất kỳ nơi nào, không quan tâm đến tiêu chí thông thường
-- **Phân tích lợi ích của sai sót**: Khi có sai sót, được phân tích "chúng ta học được gì"
-- **Cộng tác học**: Các nhóm đa chức năng làm việc cùng nhau, không chính trị bộ phận
-
-**Công cụ (Netflix Culture Deck):**
-- Netflix tạo một PowerPoint 124 trang gọi là "Netflix Culture Deck" giải thích giá trị này
-- Được chia sẻ công khai, trở thành "bible" của văn hóa Netflix
-- Được cập nhật khi văn hóa phát triển
-
-#### **Kết Quả:**
-
-| Chỉ Số | Kết Quả |
-|------|------|
-| **Turnover Nhân Viên** | Thấp trong ngành công nghệ (10-15%) |
-| **Tốc Độ Ra Mắt Tính Năng** | 10x nhanh hơn Blockbuster |
-| **Khách Hàng Hạnh Phúc** | NPS 70-80 (rất cao) |
-| **Năng Suất** | 2-3x so với công ty tương tự |
-| **Tăng Trưởng** | Từ $200 triệu (2000) → $30+ tỷ (2023) |
-
-#### **Bài Học:**
-
-1. **Tự do không có nghĩa là vô chính phủ**: Netflix vẫn có các giá trị rõ ràng, chỉ là không có quy tắc chi tiết
-2. **Sải rộng hơn là cao hơn**: Tuyển dụng người tốt hơn, trả lương cao hơn, ít người nhưng năng suất cao
-3. **Sai sót là phần của đổi mới**: Không có sai sót, không có đổi mới
-4. **Văn hóa không thể sao chép**: Blockbuster không thể sao chép, vì họ bị kinh tế mô hình cũ
-5. **Phù hợp tổ chức là quan trọng**: Văn hóa tự do này phù hợp với công nghệ, không phù hợp với mọi ngành
-
-#### **Thách Thức:**
-- Khó tuyển dụng ở các nước có văn hóa phân cấp cao (như Nhật Bản, Hàn Quốc)
-- Một số lãnh đạo cũ không thích văn hóa này (quá tự do)
-- Khi Netflix lớn hơn, "sự hiệu quả" bắt đầu có nghĩa là "chi tiêu ít hơn", điều này gây ra friction
-
-### 14.2 Thành Công: Zappos Holacracy
+> **Lưu ý nguồn**: các sự kiện công khai (năm thành lập, Culture Deck, các nguyên tắc "keeper test", "context not control") lấy từ tài liệu Netflix công bố và sách *No Rules Rules* (Hastings & Meyer, 2020). Mọi con số gắn nhãn *giả định minh họa* là do tác giả tự thiết kế để thực hành phương pháp, không phải số liệu của Netflix.
 
 #### **Bối Cảnh:**
-Zappos, một công ty bán giày trực tuyến, được thành lập năm 1999 bởi Nick Swinmurn và được mua lại bởi Tony Hsieh vào năm 2000. Hsieh tin rằng nếu bạn muốn hạnh phúc khách hàng, trước tiên bạn cần nhân viên hạnh phúc.
+Netflix thành lập năm 1997 (Reed Hastings và Marc Randolph) với mô hình thuê DVD qua bưu điện, chuyển sang phát trực tuyến (streaming) từ năm 2007. Năm 2001, sau vỡ bong bóng dot-com, công ty phải sa thải một phần nhân sự. Hastings nhận thấy một điều khiến ông thay đổi cách quản lý: những người giỏi nhất ở lại và năng suất của đội nhỏ còn *tăng* lên, trong khi quy trình ngày càng nặng nề khi công ty lớn. Từ đó ông xây dựng một văn hóa dựa trên "mật độ nhân tài" (talent density) và bỏ bớt kiểm soát. Năm 2009, Netflix công bố bộ slide văn hóa (Culture Deck, hơn 100 slide) và nó lan truyền rộng rãi trong ngành công nghệ.
 
-#### **Vấn Đề:**
-- Bán hàng trực tuyến là ngành cạnh tranh, lợi nhuận thấp
-- Khách hàng có thể đi đến Amazon hoặc những nơi khác
-- Điều duy nhất Zappos có thể khác biệt với là dịch vụ khách hàng
+#### **Vấn Đề Kinh Doanh:**
+- Ngành giải trí thay đổi từ DVD sang internet; sản phẩm thay đổi theo từng năm nên công ty cần ra quyết định nhanh, thử nghiệm liên tục.
+- Đối thủ truyền thống (như Blockbuster) vận hành bằng quy trình và kiểm soát chặt, phù hợp ổn định nhưng chậm phản ứng.
+- Câu hỏi quản trị: làm sao giữ được tốc độ và sáng tạo khi công ty lớn lên mà không rơi vào "bệnh quy trình"?
 
-#### **Giải Pháp - Văn Hóa Zap:**
+#### **Phân Tích Bước 1: Mô hình 3 tầng của Schein (Phần 2)**
 
-**Core Values (10 giá trị):**
-1. **Deliver WOW** (Gây sốc): Vượt qua kỳ vọng khách hàng
-2. **Embrace Change** (Chấp nhận Thay Đổi)
-3. **Create Fun & A Little Weirdness** (Tạo Vui Vẻ & Kỳ Quặc)
-4. **Be Adventurous, Creative, Open-Minded** (Dám Mạo Hiểm, Sáng Tạo)
-5. **Pursue Growth & Learning** (Theo Đuổi Phát Triển & Học Tập)
-6. **Build Strong Relationships** (Xây Dựng Mối Quan Hệ Mạnh)
-7. **Build a Positive Team & Family Spirit** (Xây Dựng Tinh Thần Gia Đình)
-8. **Do More with Less** (Làm Nhiều Hơn Với Ít Hơn)
-9. **Be Passionate & Determined** (Nhiệt Tình & Kiên Quyết)
-10. **Be Humble** (Khiêm Tốn)
+| Tầng | Quan sát tại Netflix | Ý nghĩa |
+|------|------|------|
+| **Artifacts** | Culture Deck công khai; không có chính sách phép năm cố định; chính sách chi tiêu chỉ gói trong một câu ("hành động vì lợi ích tốt nhất của Netflix"); lương cao theo mặt bằng thị trường | Hiện vật cho thấy công ty *tin người* và *trả cao để đổi lấy ít quy tắc* |
+| **Espoused Values** | Các giá trị công bố (phiên bản công khai gần đây gồm: Judgment – phán đoán, Communication – giao tiếp, Curiosity – tò mò, Courage – dũng cảm, Passion – đam mê, Selflessness – vị tha, Innovation – đổi mới, Inclusion – bao dung, Integrity – chính trực; *nội dung các phiên bản có thay đổi theo năm, cần đối chiếu bản mới nhất*) | Danh sách dài nhưng mỗi giá trị đi kèm hành vi cụ thể, không chỉ khẩu hiệu |
+| **Basic Assumptions** | "Người giỏi, được cung cấp đủ bối cảnh, sẽ quyết định đúng hơn quy trình"; "Công ty là một đội thể thao chuyên nghiệp, không phải một gia đình" (ý của Hastings: giữ người vì họ đang đóng góp xuất sắc cho vai trò hiện tại, không vì thâm niên) | Đây là phần quyết định hành vi, và nó khác hẳn các tổ chức đặt "ổn định việc làm" lên trước |
 
-**Manifestations:**
-- **Dịch Vụ Khách Hàng 24/7**: Không có giới hạn thời gian cuộc gọi
-- **Hoàn Lại Miễn Phí**: Hoàn lại không cần hỏi, không cần lý do
-- **Văn Phòng Công Khai**: Không có văn phòng riêng, CEO ngồi cũng cấp với nhân viên
-- **Văn Hóa Kỳ Quặc**: Khuyến khích nhân viên tự do ăn mặc, trang trí bàn làm việc, thể hiện cá tính "kỳ quặc"
-- **Đào tạo Nội bộ**: Đầu tư lớn vào phát triển nhân viên
-- **Tuần lễ làm việc linh hoạt**: Nhân viên chọn giờ làm việc của họ
+*Tại sao điều này quan trọng*: nếu chỉ nhìn Artifacts (không có chính sách phép) mà không hiểu Assumption phía sau (tin người + trả cao + sẵn sàng chia tay người không còn phù hợp), người bắt chước sẽ bỏ chính sách phép mà không có hệ thống đi kèm, và kết quả là hỗn loạn.
 
-**Sau này: Chuyển sang Holacracy (2013)**
-- Zappos chuyển sang tổ chức dựa trên vai trò (Holacracy) thay vì bộ phận truyền thống
-- Không có chức danh công việc, mỗi người đóng nhiều vai trò
-- Quyết định được đưa ra ở cấp địa phương, không được phê duyệt từ trên xuống
-- Kết quả: Một số nhân viên yêu nó, một số ghét nó (20% rời khỏi)
+#### **Phân Tích Bước 2: Ba cơ chế vận hành ("văn hóa" phải có cơ chế thì mới chạy)**
 
-#### **Kết Quả:**
+1. **Mật độ nhân tài (Talent density)**: trả lương ở mức cao nhất thị trường cho ít người hơn. *Phép tính minh họa (giả định)*: nhóm A gồm 10 người "đủ tốt", chi phí 100 mỗi người, tổng 1.000, đầu ra mỗi người = 1 đơn vị, tổng 10. Nhóm B gồm 5 người xuất sắc, chi phí 200 mỗi người, tổng 1.000, đầu ra mỗi người = 3 đơn vị, tổng 15. Cùng chi phí 1.000 nhưng B cho đầu ra 15 so với 10 (hiệu quả **1,5 lần**). Thêm vào đó, số kênh giao tiếp trong nhóm tính theo n(n-1)/2: nhóm 10 người có 45 kênh, nhóm 5 người chỉ có 10 kênh; ít kênh hơn nghĩa là ít họp, ít xung đột phối hợp. (Giả định 3 đơn vị/người là rất mạnh; thực tế mức chênh phải được kiểm chứng, đây chỉ để minh họa *logic*.)
+2. **"Keeper test" (phép thử giữ người)**: người quản lý tự hỏi "nếu nhân viên này xin nghỉ, mình có sẵn sàng đấu tranh để giữ không?". Nếu không, nhân viên nhận khoản thôi việc hào phóng và rời đi. Cơ chế này giữ cho tiêu chuẩn luôn cao, nhưng cái giá là tâm lý bất an, vì vậy Netflix phải đi kèm giao tiếp thẳng thắn và gói thôi việc tốt.
+3. **"Bối cảnh thay vì kiểm soát" (Context, not control)**: thay vì duyệt từng quyết định, lãnh đạo dành thời gian giải thích mục tiêu, rủi ro và số liệu. *Phép tính minh họa (giả định)*: nếu mỗi quyết định phải qua 3 cấp duyệt, mỗi cấp mất 2 ngày, thì mỗi quyết định trễ 3 x 2 = 6 ngày; với 40 quyết định mỗi tháng, tổng độ trễ tích lũy là 6 x 40 = **240 ngày công chờ đợi** mỗi tháng. Bỏ lớp duyệt nhưng bù bằng "bối cảnh" thì chi phí chuyển từ *thời gian chờ* sang *thời gian giải thích* ở đầu quy trình.
 
-| Chỉ Số | Kết Quả |
-|------|------|
-| **Doanh Số** | $1.6 tỷ (2009) |
-| **Nhân Viên Hạnh Phúc** | 97% sẽ giới thiệu công ty (eNPS ~80) |
-| **Khách Hàng Trung Thành** | 75% lặp lại mua |
-| **Giữ Lại Nhân Viên** | 95%+ ở lại sau 6 tháng (cao trong bán hàng) |
-| **Thời Gian Đào Tạo** | 4 tuần (vs. 1 tuần trong ngành) |
+#### **Phân Tích Bước 3: Khung Cameron & Quinn (Phần 4)**
 
-**Amazon mua lại Zappos (2009) với giá khoảng $1.2 tỷ USD** (số liệu công bố rộng rãi trên báo chí; Amazon cam kết giữ nguyên văn hóa riêng của Zappos).
+*Giả định minh họa* (không phải kết quả OCAI thật của hai công ty), chia 100 điểm:
 
-#### **Bài Học:**
+| Loại văn hóa | Mô hình "kiểm soát và quy trình" (giống kiểu Blockbuster) | Mô hình Netflix | Chênh lệch tuyệt đối |
+|------|------|------|------|
+| Clan | 15 | 15 | 0 |
+| Adhocracy | 10 | 40 | 30 |
+| Market | 35 | 30 | 5 |
+| Hierarchy | 40 | 15 | 25 |
+| **Tổng** | 100 | 100 | **60** |
 
-1. **Văn Hóa Clan (Zappos) có thể tạo ra lợi thế cạnh tranh**: Khi sản phẩm tương tự nhau, văn hóa là sự khác biệt
-2. **Khách hàng là kết quả của văn hóa tốt**: Không phải khác cách, mà là nhân viên hạnh phúc
-3. **Có thể quá tiên tiến**: Holacracy quá tiên tiến ngay cả cho Zappos, một số người không thích
-4. **Dạy giá trị ngay từ ngày tuyển dụng**: Zappos kiểm tra phù hợp giá trị, không chỉ kỹ năng
-5. **Vui vẻ là một giá trị chính thức**: Kỳ quặc, vui vẻ tạo nên sự khác biệt
+*Diễn giải*: khác biệt lớn nhất nằm ở **Adhocracy (+30)** và **Hierarchy (-25)**; tức là Netflix đổi *quy trình lấy thử nghiệm*. Clan gần như không đổi, phù hợp với lập trường "đội thể thao, không phải gia đình". Tổng khác biệt 60 trên thang 200 là rất lớn, đủ giải thích vì sao "bắt chước" văn hóa này mà không đổi hệ thống thưởng, tuyển dụng thì khó thành công.
 
-#### **Thách Thức:**
-- Khó mở rộng khi phát triển
-- Holacracy quá phức tạp cho một số công ty
-- Amazon đã giảm một số phần "kỳ quặc" sau khi mua (ít kỳ quặc hơn)
+#### **Phân Tích Bước 4: Kết quả kinh doanh (ước tính công khai)**
+- Doanh thu: khoảng **272 triệu USD (2003)** và khoảng **33,7 tỷ USD (2023)** (làm tròn từ báo cáo công khai, nên đối chiếu lại nguồn gốc). Bội số tăng = 33.723 / 272 = **khoảng 124 lần**; tốc độ tăng trưởng kép trong 20 năm = (124)^(1/20) - 1 = **khoảng 27,3% mỗi năm**.
+- Công ty chuyển từ DVD sang streaming rồi sang sản xuất nội dung gốc, ba lần thay đổi mô hình kinh doanh lớn mà một tổ chức quy trình nặng khó làm được. *Lưu ý*: tăng trưởng này còn do thời điểm thị trường, vốn, nội dung, và công nghệ; văn hóa là một yếu tố góp phần, không phải nguyên nhân duy nhất.
 
-### 14.3 Thành Công: Toyota Kaizen Culture
+#### **Ý Nghĩa Kinh Doanh:**
+Văn hóa của Netflix không phải "tự do tuyệt đối" mà là **tự do đi kèm ba điều kiện**: (1) người đủ giỏi, (2) thông tin minh bạch, (3) hậu quả rõ ràng nếu hiệu suất giảm. Thiếu một điều kiện, tự do biến thành hỗn loạn.
+
+#### **Bài Học & Khuyến Nghị Cho SME:**
+1. Đừng sao chép Artifacts (bỏ chấm công, bỏ phê duyệt) khi chưa có nền tảng: tuyển chọn kỹ, chia sẻ số liệu, hệ thống đánh giá minh bạch.
+2. Với SME Việt Nam (PDI cao theo Hofstede), "tự do" cần được *cho phép rõ ràng* bằng quy tắc nhỏ ("quyết định dưới X đồng không cần hỏi") vì nhân viên có thể không dám tự quyết nếu chưa được sếp nói rõ.
+3. "Keeper test" khó áp dụng nguyên văn ở Việt Nam do tâm lý gắn bó và luật lao động; dùng phiên bản mềm: phản hồi hai chiều định kỳ.
+4. Cảnh báo: văn hóa gắt có thể tạo áp lực cao; Netflix cần cân bằng bằng gói thôi việc tốt và minh bạch lý do.
+
+### 14.2 Thành Công Có Điều Kiện: Zappos – Văn Hóa Dịch Vụ "WOW" và Thử Nghiệm Holacracy
+
+> **Lưu ý nguồn**: các sự kiện công khai (năm thành lập, Amazon mua lại năm 2009, chương trình "The Offer", chuyển sang Holacracy khoảng 2013-2015) theo báo chí và sách *Delivering Happiness* (Hsieh, 2010). Các con số định lượng mới trong mục này được gắn nhãn *giả định minh họa*.
 
 #### **Bối Cảnh:**
-Toyota, công ty ô tô Nhật Bản, đã được xây dựng sau Thế chiến II trên nền tảng "Kaizen" (cải thiện liên tục). Trong những năm 1950-1970, Toyota đã lên tiếng từ công ty sản xuất nhỏ sang một trong những công ty ô tô lớn nhất thế giới.
+Zappos là công ty bán giày trực tuyến, thành lập năm 1999 (Nick Swinmurn); Tony Hsieh tham gia từ năm 2000 và sau đó là CEO. Năm 2009 Amazon mua lại Zappos với giá được báo chí đưa tin khoảng 1,2 tỷ USD (cả tiền mặt và cổ phiếu, ước tính) và cam kết giữ Zappos vận hành khá độc lập. Hsieh qua đời năm 2020.
 
-#### **Vấn Đề:**
-- Sau chiến tranh, Nhật Bản cần tái xây dựng sản xuất
-- Mỹ kiểm soát chất lượng bằng kiểm tra cuối cùng (lỗi được phát hiện sau)
-- Toyota muốn kiểm soát chất lượng ở mỗi bước
+#### **Vấn Đề Kinh Doanh:**
+Bán giày trực tuyến thời kỳ đầu có rào cản lớn: khách không thử được giày, sợ đổi trả. Sản phẩm không khác biệt (cùng thương hiệu ở nhiều nơi). Do đó lợi thế chỉ còn là **trải nghiệm khách hàng**, mà trải nghiệm thì do *con người* tạo ra. Hsieh kết luận: muốn khách hài lòng lâu dài, phải xây một văn hóa khiến nhân viên *muốn* tạo ra trải nghiệm đó, thay vì tuân theo kịch bản.
 
-#### **Giải Pháp - Văn Hóa Kaizen:**
+#### **Phân Tích Bước 1: Từ giá trị đến hành vi (Schein)**
 
-**Nguyên Tắc Kaizen:**
-1. **Kaizen** (改善): Cải thiện liên tục, từ từ nhưng chắc chắn
-2. **Gemba** (現場): Làm việc nơi hành động xảy ra, không ở các phòng họp
-3. **Muda** (無駄): Loại bỏ lãng phí
-4. **Respect for People** (Tôn Trọng Con Người): Tất cả ý kiến được lắng nghe
-5. **Continuous Learning** (Học Tập Liên Tục): Không bao giờ dừng cải thiện
+| Tầng | Zappos | Nhận xét |
+|------|------|------|
+| **Artifacts** | Tổng đài không giới hạn thời lượng cuộc gọi, không kịch bản cứng; đổi trả miễn phí; văn phòng trang trí cá tính; đào tạo tân binh nhiều tuần | Hành vi cho thấy dịch vụ được ưu tiên hơn chỉ số "thời gian xử lý mỗi cuộc gọi" |
+| **Espoused Values** | 10 giá trị cốt lõi, ví dụ "Deliver WOW through service", "Create fun and a little weirdness", "Build a positive team and family spirit", "Be humble" | Rõ ràng, đặt tên cụ thể và được dùng khi tuyển dụng |
+| **Basic Assumptions** | "Nhân viên vui và được tin tưởng sẽ phục vụ khách tốt hơn kịch bản"; "văn hóa là yếu tố khác biệt khi sản phẩm giống nhau" | Quyết định các lựa chọn không có trong sổ tay |
 
-**Manifestations:**
-- **Suggestion System**: Mọi nhân viên được khuyến khích đề xuất cải thiện (1 triệu đề xuất/năm ở Toyota)
-- **Stop-the-Line Authority**: Bất kỳ nhân viên nào có thể dừng dây chuyền sản xuất nếu phát hiện lỗi
-- **Continuous Training**: Đào tạo liên tục về kỹ thuật và Kaizen
-- **Respect for Long-Service**: Trung thành với nhân viên, không sa thải dễ dàng
-- **Genchi Genbutsu**: Đi tới nơi, xem bằng mắt, hiểu vấn đề thực sự
-- **Elimination of Waste**: 7 loại lãng phí (overproduction, defects, inventory, etc.)
+#### **Phân Tích Bước 2: Cơ chế bảo vệ văn hóa – chương trình "The Offer"**
+Zappos trả cho tân binh một khoản tiền (công khai nhiều năm là khoảng 2.000 USD) nếu họ chọn nghỉ sau khóa đào tạo. *Lý do kinh tế*: lọc ra người không hợp văn hóa *trước khi* họ gây thiệt hại.
 
-**Hệ Thống Just-In-Time (JIT):**
-- Nhân viên tạo ra chỉ những gì cần, không tạo kho hàng
-- Bất kỳ sai sót nào sẽ làm gián đoạn toàn bộ dây chuyền
-- Điều này tạo ra sức ép để mọi người tập trung vào chất lượng
+*Phép tính minh họa (giả định)*: tuyển 100 người mỗi năm, 3% nhận khoản tiền này.
+- Chi phí chương trình = 100 x 3% x 2.000 = **6.000 USD**.
+- Giả sử 3 người này nếu ở lại sẽ nghỉ hoặc làm kém, tốn mỗi người 6 tháng lương (lương năm giả định 35.000 USD, nên 17.500 USD) = 3 x 17.500 = **52.500 USD**.
+- Lợi ích ròng = 52.500 - 6.000 = **46.500 USD**; tỷ lệ lợi ích/chi phí = 52.500 / 6.000 = **8,75 lần**.
+Phép tính chỉ đúng khi giả định "nếu ở lại thì sẽ gây thiệt hại"; nó cho thấy *logic*: một khoản nhỏ trả trước thay thế một khoản lớn trả sau.
 
-#### **Kết Quả:**
+#### **Phân Tích Bước 3: CVF và Denison**
+- **CVF**: Zappos thiên về **Clan + Adhocracy** (gia đình, sáng tạo). Điểm mạnh: gắn kết, dịch vụ vượt kỳ vọng. Điểm yếu cố hữu của Clan: khó ra quyết định "khó" (kỷ luật, loại người) và thiếu tiêu chuẩn.
+- **Denison**: *Involvement* (trao quyền) và *Consistency* (giá trị chung) rất cao; *Mission* (định hướng chiến lược) rõ ràng ở mảng dịch vụ; *Adaptability* mạnh ở cấp cá nhân nhưng yếu ở cấp cấu trúc khi công ty lớn lên.
 
-| Chỉ Số | Kết Quả |
-|------|------|
-| **Tỷ Lệ Lỗi** | 10x thấp hơn ngành ô tô |
-| **Năng Suất** | 2x so với ô tô Mỹ (1960s) |
-| **Giữ Lại Nhân Viên** | >95% (vô cùng cao) |
-| **Sự Hài Lòng Khách Hàng** | Hàng đầu trong ngành |
-| **Doanh Số Toàn Cầu** | Toyota là nhà sản xuất ô tô lớn nhất thế giới |
-| **Giá Cổ Phiếu** | Tăng 50x từ 1950s đến 2000s |
+#### **Phân Tích Bước 4: Thử nghiệm Holacracy và hệ quả**
+Từ khoảng 2013, Zappos chuyển sang Holacracy: bỏ chức danh và quản lý theo tầng, thay bằng "vai trò" và "vòng tròn" tự quản. Đến năm 2015, công ty đưa ra một khoản đề nghị rời công ty cho những ai không muốn đi theo mô hình mới; báo chí đưa tin khoảng 14% nhân viên (khoảng 210 người trên ~1.500, ước tính; 210/1.500 = 14%) đã chọn nhận. Theo Handy (Phần 6), đây là bước đi từ **Role/Power** sang **Task + Person** một cách cực đoan: quyền lực dựa trên vai trò linh hoạt thay vì quản lý trực tiếp. Hệ quả thường được nêu: người thích tự chủ hài lòng; người cần hướng dẫn rõ hoặc cần lộ trình thăng tiến thì bối rối; tốc độ quyết định không luôn nhanh hơn do nhiều thủ tục họp.
 
-#### **Bài Học:**
+#### **Ý Nghĩa Kinh Doanh:**
+Văn hóa dịch vụ của Zappos có **lợi thế cạnh tranh thật** (khó sao chép vì nằm ở con người), nhưng Holacracy cho thấy **cải cách cấu trúc quá mạnh** có chi phí chuyển đổi cao. Hai việc này khác nhau: văn hóa giá trị là phần được khen, thử nghiệm cấu trúc là phần còn gây tranh cãi.
 
-1. **Văn Hóa Đặc Biệt Cho Sản Xuất**: Kaizen hoạt động rất tốt cho sản xuất, nơi có thể đo lường liên tục
-2. **Tôn Trọng Con Người Tạo Ra Chất Lượng**: Khi nhân viên cảm thấy tôn trọng, họ chăm sóc công việc
-3. **Sai Sót Nhanh Chóng Được Phát Hiện = Chất Lượng Cao**: Hệ thống cho phép phát hiện sai sót sớm
-4. **Sáng Tạo Từ Dưới Lên**: Không phải tất cả ý tưởng đến từ quản lý, mà từ sàn công xưởng
-5. **Tính Ổn Định & Dự Đoán được**: Kaizen là quá trình chậm, chắc chắn, không phải quay đầu từ từ
-6. **Tính Ổn Định Việc Làm = Trung Thành**: Toyota không sa thải, mà là tái huấn luyện
+#### **Bài Học & Khuyến Nghị Cho SME:**
+1. Chọn người theo giá trị ngay từ tuyển dụng; thử nghiệm bằng thử việc có tiêu chí hành vi rõ ràng.
+2. Nếu muốn làm "dịch vụ xuất sắc", phải đổi chỉ số đo lường (bỏ chỉ số thời lượng cuộc gọi, thay bằng mức hài lòng).
+3. Đừng đổi cấu trúc và văn hóa cùng lúc; đổi từng bước, thử nghiệm ở một bộ phận (pilot).
+4. Với PDI cao ở Việt Nam, mô hình "không có sếp" khó áp dụng nguyên mẫu; dùng "sếp là người hỗ trợ" thay vì "không có sếp".
 
-#### **Thách Thức & Cảnh Báo:**
-- Kaizen có thể quá chậm cho các ngành thay đổi nhanh (công nghệ)
-- Năm 2009-2011, Toyota gặp vấn đề với phanh (nhớ: Sẽ quá phức tạp để lỗi được phát hiện nhanh chóng)
-- Văn hóa tôn trọng có thể trở thành "tôn trọng sếp" thay vì "tôn trọng khác biệt"
+### 14.3 Thành Công: Toyota – Văn Hóa Cải Tiến Liên Tục (Kaizen) và "Tôn Trọng Con Người"
 
-### 14.4 Thành Công Việt Nam: FPT Telecom STCo Culture
+> **Lưu ý nguồn**: Hệ thống sản xuất Toyota (TPS) do Taiichi Ohno và các cộng sự phát triển từ thập niên 1950; "The Toyota Way" được công bố chính thức năm 2001. Số liệu định lượng mới trong mục này là *giả định minh họa*.
 
 #### **Bối Cảnh:**
-FPT (Công ty Công nghệ FPT Software Telecom) là công ty con của FPT, công ty công nghệ lớn nhất Việt Nam. Vào những năm 2010, FPT Telecom muốn xây dựng văn hóa "STCo" (Support-Transform-Collaborate).
+Sau Thế chiến II, Nhật Bản thiếu vốn, thiếu nguyên liệu và thị trường nội địa nhỏ, không thể áp dụng sản xuất hàng loạt quy mô lớn kiểu Mỹ. Toyota phải sản xuất nhiều mẫu với số lượng nhỏ, ít tồn kho và ít lãng phí. Từ đó hình thành TPS với hai trụ cột: **Just-in-Time** và **Jidoka** (tự động hóa có trí tuệ: máy và người đều có quyền dừng khi phát hiện bất thường).
 
-#### **Vấn Đề:**
-- Công ty Việt truyền thống: Phân cấp cao, sợ sai sót
-- Cấp dưới không dám đề xuất ý kiến khác
-- Chuyên môn cao nhưng không sáng tạo
-- Bị cạnh tranh bởi các công ty Mỹ ở Việt Nam
+#### **Vấn Đề Kinh Doanh:**
+Mô hình kiểm tra chất lượng cuối chuyền chỉ phát hiện lỗi khi đã tốn nguyên liệu và công đoạn. Câu hỏi: làm sao phát hiện lỗi *ngay tại nơi xảy ra* và để *người làm việc* sửa gốc rễ mà không cần chờ phòng chất lượng?
 
-#### **Giải Pháp - Văn Hóa STCo:**
+#### **Phân Tích Bước 1: Mô hình 3 tầng của Schein**
 
-**S – Support (Hỗ Trợ):**
-- Lãnh đạo hỗ trợ nhân viên phát triển
-- Không sợ sai sót, sai sót là cơ hội học hỏi
-- Đào tạo, mentoring, coaching liên tục
+| Tầng | Toyota | Ý nghĩa |
+|------|------|------|
+| **Artifacts** | Dây giật Andon (mọi công nhân có thể dừng chuyền), bảng quản lý trực quan ở xưởng, tiêu chuẩn công việc dán tại chỗ, họp ngắn đầu ca, hộp đề xuất cải tiến | Quy trình *làm cho vấn đề nhìn thấy được* |
+| **Espoused Values** | Hai trụ cột của Toyota Way: **Cải tiến liên tục** và **Tôn trọng con người**; "Genchi Genbutsu" (đến tận nơi xem tận mắt) | Rõ ràng, nhất quán lâu năm |
+| **Basic Assumptions** | "Vấn đề là cơ hội, không phải lỗi của người"; "người làm trực tiếp hiểu quy trình nhất"; "ổn định việc làm đổi lấy tận tâm cải tiến" | Đây là lý do công nhân dám dừng chuyền: văn hóa không trừng phạt người báo lỗi |
 
-**T – Transform (Chuyển Đổi):**
-- Các nhân viên được trao quyền chuyển đổi (tự động hóa, hiệu quả)
-- Nếu có cách nào tốt hơn, bạn được khuyến khích đề xuất
-- Thay đổi quy trình không phải từ trên xuống
+#### **Phân Tích Bước 2: Kinh tế học của việc phát hiện lỗi sớm**
+*Quy tắc ước lượng 1-10-100 (nhiều tài liệu quản lý chất lượng nhắc đến, chỉ mang tính minh họa)*: chi phí sửa lỗi tăng khoảng 10 lần mỗi khi lỗi đi thêm một giai đoạn. *Phép tính minh họa (giả định)*: sản xuất 10.000 sản phẩm mỗi tháng, tỷ lệ lỗi 2% nên có 10.000 x 2% = **200 lỗi**.
+- Phát hiện ngay tại công đoạn (chi phí 5 USD mỗi lỗi): 200 x 5 = **1.000 USD**.
+- Phát hiện ở kiểm tra cuối (50 USD mỗi lỗi): 200 x 50 = **10.000 USD**.
+- Phát hiện khi khách đã nhận (500 USD mỗi lỗi, gồm bảo hành, uy tín): 200 x 500 = **100.000 USD**.
+Chênh lệch giữa hai kịch bản cực đoan là **99.000 USD mỗi tháng**. Lý do công nhân được quyền dừng chuyền là: *dừng chuyền một lúc rẻ hơn rất nhiều* so với để lỗi trôi đi. Cũng vì vậy văn hóa không đổ lỗi là điều kiện bắt buộc: nếu người báo lỗi bị phạt, họ sẽ không giật dây Andon.
 
-**Co – Collaborate (Hợp Tác):**
-- Các bộ phận làm việc cùng nhau, không cô lập
-- Đội đa chức năng tạo ra các giải pháp
-- Chia sẻ kiến thức, không "giữ" bí mật để có quyền lực
+*"5 Whys"* (hỏi "tại sao" 5 lần) là công cụ tư duy đi kèm, tương tự phương pháp phát hiện giả định ở Phần 2.5: máy dừng, hỏi vì sao quá tải, vì sao thiếu bôi trơn, vì sao bơm không hoạt động, vì sao trục mòn, vì sao không có lưới lọc bụi; gốc rễ là chưa có lưới lọc, không phải "công nhân vận hành sai".
 
-**Manifestations:**
-- **Innovation Lab**: Không gian để nhân viên thử nghiệm các ý tưởng mới
-- **Reverse Mentoring**: Nhân viên trẻ dạy quản lý cấp cao về công nghệ
-- **Open Door Policy**: CEO có thể nói chuyện trực tiếp với bất kỳ nhân viên nào
-- **Project-Based Learning**: Nhân viên học thông qua các dự án, không chỉ đào tạo
-- **Dữ Liệu Công Khai**: Kết quả doanh số, tài chính được chia sẻ công khai
+#### **Phân Tích Bước 3: Hofstede, CVF và Denison**
+- **Hofstede (Nhật Bản)**: UAI 92 (thích quy tắc chuẩn hóa) cộng LTO 88 (nghĩ dài hạn) lý giải vì sao tiêu chuẩn công việc và cải tiến từng bước được chấp nhận; PDI 54 vừa phải nên quản lý và công nhân tương tác trực tiếp ở hiện trường (gemba).
+- **CVF**: **Hierarchy + Clan** (quy trình chặt, nhưng gắn bó). Adhocracy (đột phá) *không phải thế mạnh*, đó là lý do Toyota cải tiến từng bước tốt hơn so với đổi mới đột phá.
+- **Denison**: *Consistency* và *Involvement* rất cao; *Adaptability* ở mức tốt nhưng chậm hơn trong thay đổi lớn (ví dụ trễ chuyển sang xe điện thuần pin so với nhiều đối thủ theo nhận định của báo chí, đây là nhận xét thường gặp chứ không phải kết luận kiểm chứng).
 
-#### **Kết Quả:**
+#### **Phân Tích Bước 4: Ví dụ ứng dụng định lượng cho một xưởng SME (giả định)**
+Xưởng 100 công nhân; mỗi người đề xuất trung bình 1 ý tưởng mỗi tháng, tức **1.200 ý tưởng mỗi năm**; 40% được áp dụng, tức **480 ý tưởng**; mỗi ý tưởng được áp dụng tiết kiệm trung bình 500.000 VNĐ mỗi năm.
+- Tiết kiệm = 480 x 0,5 triệu = **240 triệu VNĐ mỗi năm**.
+- Thưởng 50.000 VNĐ cho *mỗi ý tưởng được nộp* (không chỉ ý tưởng được áp dụng) = 1.200 x 0,05 triệu = **60 triệu VNĐ**.
+- Lợi ích ròng = 240 - 60 = **180 triệu VNĐ**; ROI = 180 / 60 = **300%** (chưa tính giảm lỗi, giảm tai nạn).
+*Tại sao thưởng cả ý tưởng không được dùng*: để người ta tiếp tục nộp ý tưởng; nếu chỉ thưởng ý tưởng thành công, người sợ bị từ chối sẽ ngừng nộp.
 
-| Chỉ Số | Kết Quả |
-|------|------|
-| **Tuyển Dụng Tài Năng** | Tuyển dụng được những người tốt nhất từ các công ty Mỹ |
-| **Giữ Lại Nhân Viên** | Turnover giảm 60% so với ngành Việt |
-| **Năng Suất** | Tăng 40% trong 3 năm |
-| **Doanh Số** | Tăng trưởng 25%/năm |
-| **eNPS** | 60+ (so với 20-30 ở công ty Việt truyền thống) |
-| **Danh Tiếng** | Được xem là một trong những nơi làm việc tốt nhất ở Việt Nam |
+#### **Ý Nghĩa Kinh Doanh & Hạn Chế:**
+Văn hóa Kaizen hiệu quả khi *môi trường ổn định, có quy trình để chuẩn hóa*. Nó là lợi thế bền vững vì khó sao chép: đối thủ có thể mua cùng máy móc nhưng không mua được thói quen hàng nghìn người cùng cải tiến. Hạn chế: (1) cải tiến từng bước chậm trong ngành đổi nhanh; (2) khi tăng trưởng quá nhanh, thói quen kiểm soát chất lượng có thể bị loãng; giai đoạn thu hồi xe năm 2009-2011 (báo chí liên hệ với việc mở rộng quá nhanh và phản ứng chậm với phản hồi khách hàng) là cảnh báo; (3) "tôn trọng" có thể thành "ngại phản biện cấp trên" nếu văn hóa thiên về thứ bậc.
 
-#### **Bài Học:**
+#### **Bài Học & Khuyến Nghị Cho SME:**
+1. Bắt đầu bằng **làm cho vấn đề nhìn thấy được** (bảng, màu, dừng khi có lỗi) trước khi bàn đến "tinh thần cải tiến".
+2. Tạo an toàn khi báo lỗi: tuyên bố công khai "báo lỗi sớm được khen, giấu lỗi bị phạt".
+3. Thưởng *hành vi đề xuất* nhỏ nhưng đều đặn thay vì thưởng lớn hiếm hoi.
+4. Với PDI cao ở Việt Nam, quản lý phải **xuống xưởng làm mẫu** (đúng tinh thần gemba) thì công nhân mới dám nói.
 
-1. **Văn Hóa Western Có Thể Hoạt Động Ở Việt Nam**: Không cần phải "giữ Việt Nam truyền thống", nhân viên trẻ muốn tự do
-2. **Lãnh Đạo Mô Hình Hóa Là Quan Trọng Nhất**: Nếu lãnh đạo nói "không sợ sai sót" nhưng trừng phạt sai sót, không ai tin
-3. **Phục Vụ (Support) + Quyền Lực = Hiệu Suất**: Nhân viên Việt thích có người hướng dẫn (cao PDI) + được trao quyền
-4. **Công Nghệ Cần Văn Hóa Khác**: Công nghệ cần sáng tạo, nên cần văn hóa Adhocracy + hỗ trợ
-5. **Có Thể Thay Đổi Văn Hóa Trong 3-5 Năm**: Nếu lãnh đạo cam kết và nhất quán
+### 14.4 Thành Công Việt Nam: FPT Telecom – Mô Hình Văn Hóa "STCo" (Minh Họa Hóa)
 
-#### **Thách Thức:**
-- Khi mở rộng địa lý, STCo không luôn được áp dụng
-- Một số quản lý cấp giữa không thích "không phân cấp"
-- Mở rộng quy mô và áp lực lợi nhuận khi niêm yết (IPO) gây áp lực lợi nhuận, mâu thuẫn với STCo
-
-### 14.5 Thành Công Việt Nam: Vingroup "Speed Culture"
+> **Lưu ý quan trọng về dữ liệu**: FPT Telecom là công ty con của FPT, hoạt động trong lĩnh vực viễn thông và internet. Bộ giá trị chính thức của FPT công bố nhiều năm là "Tôn trọng, Đổi mới, Đồng đội" (cùng các chuẩn mực "Gương mẫu, Chí công, Kỷ luật" cho đội ngũ lãnh đạo; *cần đối chiếu nguồn chính thức của FPT*). Khung **"STCo" (Support - Transform - Collaborate)** trong mục này là **mô hình minh họa do tác giả tài liệu thiết kế** dựa trên tinh thần chung, *không phải khung chính thức của FPT*. Toàn bộ chỉ số định lượng dưới đây là **giả định minh họa**, không phải số liệu của FPT.
 
 #### **Bối Cảnh:**
-Vingroup, công ty đa ngành lớn nhất Việt Nam (bất động sản, bán lẻ, công nghệ), được lãnh đạo bởi Phạm Nhật Vượng. Vào những năm 2010-2020, Vingroup đã mở rộng nhanh chóng từ bất động sản sang các ngành khác.
+Một doanh nghiệp công nghệ - viễn thông lớn của Việt Nam, tăng trưởng qua nhiều thập niên, hàng chục nghìn nhân sự trên cả nước, nhiều tầng quản lý. Môi trường kinh doanh: cạnh tranh gay gắt với các nhà mạng khác (Viettel, VNPT), khách hàng mong đợi dịch vụ nhanh, kỹ thuật thay đổi liên tục.
 
-#### **Vấn Đề:**
-- Cạnh tranh gay gắt từ các công ty nước ngoài
-- Thị trường Việt phát triển nhanh, cần quyết định nhanh
-- Cần sự nhanh nhạy và sáng tạo
+#### **Vấn Đề Kinh Doanh (giả định để phân tích):**
+Doanh nghiệp Việt thường có **PDI cao (70)** và **IDV thấp (20)** theo Hofstede: cấp dưới ngại phản biện, quyết định dồn lên trên, người giỏi "giữ" kiến thức. Với dịch vụ viễn thông cần xử lý sự cố nhanh tại hiện trường, độ trễ "chờ sếp duyệt" làm giảm mức hài lòng khách hàng.
 
-#### **Giải Pháp - Văn Hóa "Speed":**
+#### **Phân Tích Bước 1: Chẩn đoán trạng thái ban đầu**
+- **Handy (Phần 6)**: gần với **Role Culture** (Apollo): nhiều tầng, quy trình, vai trò rõ nhưng chậm thích ứng.
+- **Hofstede**: PDI cao khiến "phản biện sếp" bị coi là thiếu tôn trọng. Đây không phải lỗi của cá nhân, mà là *tập quán quốc gia*, vì vậy cần cơ chế an toàn thay vì chỉ kêu gọi "hãy dám nói".
+- **Schein**: Artifacts (họp báo cáo từng cấp) và Espoused Values (có thể đã ghi "đổi mới") thường nhất quán với nhau, nhưng giả định ngầm là "cấp trên biết đúng hơn", làm giảm sáng kiến thật.
 
-**Nguyên Tắc:**
-1. **Speed Over Perfection** (Tốc Độ Hơn Hoàn Hảo): Nhanh 80% hơn hoàn hảo 100%
-2. **Entrepreneurship** (Tinh Thần Kinh Doanh): Mỗi bộ phận như một startup nhỏ
-3. **Action-Oriented** (Định Hướng Hành Động): Nói ít, làm nhiều
-4. **Customer-Centric** (Khách Hàng Trung Tâm): Khách hàng định hình sản phẩm, không ngược lại
-5. **Big Dream, Small Step** (Mơ Lớn, Bước Nhỏ): Tầm nhìn lớn nhưng đạt từng bước
+#### **Phân Tích Bước 2: Thiết kế "STCo" như một bộ cơ chế (không chỉ khẩu hiệu)**
 
-**Manifestations:**
-- **OKR (Objectives & Key Results)**: Mục tiêu rõ ràng hàng quý, không có "dự án kéo dài"
-- **Cross-Functional Teams**: Các bộ phận khác nhau làm việc cùng nhau trên các dự án
-- **Customer Feedback Loop**: Phản hồi khách hàng trực tiếp định hình sản phẩm
-- **Rapid Prototyping**: Tạo sản phẩm prototype nhanh chóng, thử nghiệm, lặp lại
-- **Decision-Making Authority**: Các bộ phận có quyền tự quyết định trong KPI của họ
-- **Celebration of Speed**: Tìm kiếm nhanh chóng được khen ngợi, ngay cả nếu không hoàn hảo
+| Thành tố | Mục tiêu hành vi | Cơ chế cụ thể (minh họa) | Vì sao hợp với bối cảnh Việt Nam |
+|------|------|------|------|
+| **S – Support** | Quản lý coi hỗ trợ cấp dưới là nhiệm vụ chính | Chỉ số KPI quản lý có thành phần "tỷ lệ nhân viên được huấn luyện"; coaching hàng tháng | PDI cao: nhân viên *mong đợi sếp dẫn dắt*; biến kỳ vọng đó thành hỗ trợ thay vì ra lệnh |
+| **T – Transform** | Nhân viên dám đề xuất cải tiến quy trình | Phòng thử nghiệm ý tưởng; "cổng nhanh" xét ý tưởng trong 2 tuần; quỹ nhỏ cho thử nghiệm | UAI thấp (30): người Việt sẵn sàng thử; thiếu là kênh và quyền để thử |
+| **Co – Collaborate** | Chia sẻ kiến thức xuyên bộ phận | Đội liên chức năng cho từng sự cố lớn; thưởng chia sẻ tri thức | IDV thấp: tinh thần tập thể là điểm mạnh, chỉ cần đưa ra *ngoài ranh giới phòng ban* |
 
-#### **Kết Quả:**
+#### **Phân Tích Bước 3: Đo lường sự thay đổi bằng khảo sát (số liệu giả định minh họa)**
+Khảo sát 3 câu (thang 1-5) trước và sau 3 năm:
 
-| Chỉ Số | Kết Quả |
-|------|------|
-| **Tốc Độ Ra Mắt Sản Phẩm** | 3-6 tháng vs. 1-2 năm ở công ty khác |
-| **Tỷ Lệ Thắng Thị Trường** | Bán lẻ (VinMart), công nghệ (VinSmart), khách sạn (Merperle) |
-| **Doanh Số** | Tăng trưởng 20-30%/năm |
-| **Giá Cổ Phiếu** | Tăng 10x từ 2010-2021 |
-| **Nhân Viên Hạnh Phúc** | Được xem là nơi làm việc năng động (nhưng cũng áp lực cao) |
+| Câu hỏi | Trước | Sau | Thay đổi |
+|------|------|------|------|
+| Tôi dám phản biện ý kiến sếp khi thấy chưa hợp lý | 2,4 | 3,6 | +1,2 |
+| Sai sót được xem là cơ hội học hỏi | 2,8 | 3,7 | +0,9 |
+| Tôi được tự quyết trong phạm vi vai trò của mình | 3,0 | 3,8 | +0,8 |
+| **Trung bình** | **(2,4+2,8+3,0)/3 = 2,73** | **(3,6+3,7+3,8)/3 = 3,70** | **+0,97** |
 
-#### **Bài Học:**
+*Diễn giải*: câu "dám phản biện" tăng nhiều nhất vì ban đầu thấp nhất (tác động của PDI cao). Nếu chỉ khảo sát *một lần* ở thời điểm sau, ta không biết mức đã tăng bao nhiêu; thiết kế đo "trước/sau" mới chứng minh được văn hóa đổi thật, không chỉ cảm giác.
 
-1. **Speed Culture Hoạt Động Cho Các Ngành Nhanh Thay Đổi**: Bất động sản Việt, bán lẻ, công nghệ cần tốc độ
-2. **Không Cần Hoàn Hảo Để Thắng**: 80% nhanh hơn 100% muộn – khách hàng sẽ giới thiệu điều gì là tốt
-3. **Leadership Mạnh Mẽ Là Cần Thiết**: Không phải tất cả công ty có thể "Speed" – cần lãnh đạo có tầm nhìn
-4. **Có Cái Giá**: Nhân viên công ty Vingroup làm việc nhiều hơn (60+ giờ/tuần), burn-out cao
-5. **Scale Là Thách Thức**: Speed culture tốt ở các công ty 100-1000 người, nhưng khó mở rộng >10,000
+#### **Phân Tích Bước 4: Kết nối với tiền**
+Giả định 5.000 nhân viên, tỷ lệ nghỉ việc hàng năm giảm từ 20% xuống 15%: tiết kiệm 5.000 x 5% = **250 người nghỉ ít hơn**. Nếu chi phí thay thế mỗi người = 40% lương năm (giả định lương năm 150 triệu VNĐ nên 60 triệu), tiết kiệm = 250 x 60 = **15.000 triệu VNĐ (15 tỷ VNĐ) mỗi năm**. Con số này chỉ là *phép tính minh họa phương pháp*; điều quan trọng là SME cũng có thể tự tính theo quy mô của mình (xem Case 14.11).
 
-#### **Thách Thức & Cảnh Báo:**
-- Áp lực cao, nhiều nhân viên rời đi để tìm cân bằng cuộc sống
-- Một số sản phẩm ra mắt quá nhanh không đủ kiểm tra chất lượng (ví dụ: VinSmart ban đầu bị chỉ trích)
-- Tương lai: Bao lâu Vingroup có thể duy trì "speed" khi phát triển?
+#### **Ý Nghĩa Kinh Doanh:**
+Mô hình cho thấy **cách "dịch" một ý tưởng văn hóa phương Tây (trao quyền, phản biện) sang bối cảnh PDI cao**: không bỏ tôn trọng thứ bậc, mà cho quản lý một vai trò mới (người hỗ trợ), và cho nhân viên một **kênh an toàn** để đề xuất.
+
+#### **Bài Học & Khuyến Nghị Cho SME:**
+1. Không nên chỉ treo giá trị "đổi mới": phải tạo **kênh + quỹ + quyền** để thử.
+2. Cho phép phản biện qua các kênh *ít rủi ro thể diện* (hộp góp ý ẩn danh, họp nhóm nhỏ) trước khi mong đợi phản biện trực tiếp.
+3. Đo KPI của *quản lý* theo mức phát triển đội ngũ, vì hành vi của quản lý quyết định văn hóa.
+4. Cảnh báo: khi mở rộng địa lý hoặc chịu áp lực lợi nhuận, các cơ chế mềm dễ bị bỏ; phải gắn vào KPI và quy trình tuyển dụng.
+
+### 14.5 Thành Công Có Giá Phải Trả: Vingroup – Văn Hóa "Tốc Độ" và Quy Mô Lớn
+
+> **Lưu ý nguồn**: các sự kiện công khai (VinFast thành lập 2017, nhà máy Hải Phòng hoàn thành khoảng 21 tháng theo công bố, VinSmart dừng mảng điện thoại năm 2021 để tập trung cho xe điện) có thể kiểm chứng từ thông cáo và báo chí. Các "nguyên tắc văn hóa" và con số mô phỏng bên dưới là **mô tả khái quát của tác giả/giả định minh họa**, không phải văn bản chính thức của tập đoàn.
+
+#### **Bối Cảnh:**
+Vingroup do ông Phạm Nhật Vượng sáng lập, phát triển từ bất động sản (Vincom, Vinhomes) sang bán lẻ, du lịch (Vinpearl), giáo dục, y tế, và công nghiệp (VinFast ô tô và xe điện, VinSmart điện thoại). Điểm nổi bật được nhắc nhiều: **tốc độ triển khai dự án lớn**, ví dụ nhà máy ô tô VinFast ở Hải Phòng được xây dựng trong khoảng hai năm từ 2017 đến 2019 (theo công bố của tập đoàn).
+
+#### **Vấn Đề Kinh Doanh:**
+Đi vào những ngành mà đối thủ đã có hàng chục năm kinh nghiệm (ô tô, điện thoại) nghĩa là chỉ có thể cạnh tranh bằng **tốc độ học và tốc độ triển khai**, chấp nhận rủi ro. Câu hỏi quản trị: loại văn hóa nào cho phép làm nhanh gấp nhiều lần mà không sụp đổ vì sai sót?
+
+#### **Phân Tích Bước 1: Đặc điểm văn hóa theo Handy và Deal & Kennedy**
+- **Handy**: gần với **Power Culture (Zeus)**: quyền lực và tầm nhìn tập trung vào người sáng lập; quyết định lớn được đưa ra nhanh. Thế mạnh: tốc độ, nhất quán với một tầm nhìn. Rủi ro: phụ thuộc vào một người, cấp dưới ít khi phản biện.
+- **Deal & Kennedy**: các mảng như bất động sản và bán lẻ gần với **Tough Guy** (rủi ro cao, phản hồi nhanh từ thị trường); mảng sản xuất ô tô gần với **Bet-Your-Company** (rủi ro rất cao, phản hồi chậm nhiều năm). Hai loại này cần *tính cách quản trị khác nhau*: tốc độ phù hợp ở loại đầu; với loại sau, phải cân bằng thêm *thử nghiệm kỹ và kỷ luật*.
+
+#### **Phân Tích Bước 2: Hofstede cho thấy vì sao "tốc độ" có đất sống ở Việt Nam**
+- PDI cao (70): quyết định tập trung, nhân viên chấp nhận mệnh lệnh nên triển khai nhanh.
+- UAI thấp (30): chấp nhận rủi ro và mơ hồ, sẵn sàng bắt đầu khi chưa đủ thông tin.
+- LTO cao (theo bảng dữ liệu): sẵn lòng chịu lỗ giai đoạn đầu cho mục tiêu dài hạn.
+Ba đặc điểm này cùng "đẩy" về phía một mô hình quyết định nhanh, tập trung, chịu rủi ro; tuy nhiên đó chính là mô hình dễ *mệt mỏi* nếu kéo dài.
+
+#### **Phân Tích Bước 3: Khi nào "nhanh 80%" thắng "chậm 100%"? (phép tính giả định)**
+Giả sử một quyết định có giá trị 100 nếu đúng, thua lỗ 40 nếu sai. Phương án **nhanh** có xác suất đúng 70%; phương án **chậm** (phân tích kỹ hơn) có xác suất đúng 85% nhưng đến muộn, mất 25% giá trị (đối thủ vào trước).
+- EV nhanh = 0,70 x 100 + 0,30 x (-40) = 70 - 12 = **58**.
+- EV chậm = 0,85 x (100 x 0,75) + 0,15 x (-40) = 63,75 - 6 = **57,75**.
+Hai phương án gần như hòa. Tìm xác suất đúng *tối thiểu* của phương án chậm để thắng: p x 75 + (1-p) x (-40) = 58, nên 115p = 98 và p = **khoảng 85,2%**. Kết luận: chỉ khi phân tích kỹ nâng xác suất đúng lên *trên* 85,2% (tức tăng hơn 15 điểm so với 70%) thì chậm mới đáng. Trong thị trường mà tốc độ rất quan trọng (mất 25% giá trị nếu trễ) và việc sửa sai khá rẻ, **nhanh là hợp lý**. Ngược lại, nếu sai sót *không thể sửa* (an toàn, pháp lý, chất lượng xe) thì mức lỗ khi sai phải lớn hơn nhiều, và phép tính đổi hướng, nghĩa là cần phân tích kỹ.
+
+#### **Phân Tích Bước 4: Cái giá của văn hóa tốc độ**
+- **Quá tải giờ làm**: nếu 60 giờ mỗi tuần là điển hình (giả định), so với mức bình thường tối đa 48 giờ mỗi tuần theo Bộ luật Lao động 2019, phần làm thêm là 12 giờ mỗi tuần, tức 12 x 52 / 12 = **52 giờ mỗi tháng**, vượt giới hạn làm thêm 40 giờ mỗi tháng của luật. Cần kiểm tra hợp đồng và chế độ thực tế; đây là *rủi ro tuân thủ và kiệt sức* nếu đúng như giả định.
+- **Sai lầm do tốc độ**: nhiều dự án vào thị trường mới bị đánh giá là chưa đủ thời gian hoàn thiện; mảng điện thoại VinSmart bị dừng năm 2021 để tập trung nguồn lực cho ô tô điện. Điều này cho thấy tốc độ *giúp bắt đầu nhanh* nhưng không thay thế được việc *chọn đúng chỗ để dừng*.
+- **Phụ thuộc vào lãnh đạo**: Power Culture hoạt động tốt khi người sáng lập còn quyết liệt; nhưng cần có thế hệ kế cận và quy trình để tồn tại khi quy mô tăng.
+
+#### **Ý Nghĩa Kinh Doanh:**
+Văn hóa tốc độ là **công cụ cạnh tranh có điều kiện**: hiệu quả khi (1) quyết định có thể sửa được, (2) thị trường thưởng cho người đến trước, (3) có vốn và lãnh đạo chịu rủi ro. Nó trở thành gánh nặng khi quá nhiều quyết định "không đảo ngược được" hoặc khi con người kiệt sức.
+
+#### **Bài Học & Khuyến Nghị Cho SME:**
+1. Phân loại quyết định: **đảo ngược được** (cứ làm nhanh, thử và sửa) và **không đảo ngược được** (giá, cam kết hợp đồng lớn, an toàn thực phẩm: phải kiểm tra kỹ).
+2. Nếu làm "tốc độ", phải trả bằng tiền, thời gian nghỉ, chỉ số sức khỏe đội ngũ, không chỉ bằng khẩu hiệu.
+3. Giới hạn thời gian làm thêm theo luật, và theo dõi tỷ lệ nghỉ việc theo bộ phận để phát hiện kiệt sức sớm.
+4. Xây dựng song song "chiếc phanh": một nhóm độc lập đánh giá rủi ro, có quyền dừng dự án.
 
 ### 14.6 Thất Bại: Enron – Toxic Competitive Culture
 
@@ -2266,7 +2184,7 @@ Enron (Houston, Mỹ) từ công ty đường ống khí đốt trở thành "c�
 
 1. **Hệ thống đánh giá hiệu suất gắt gao (thường gọi "rank and yank")**: nhân viên bị xếp hạng định kỳ, nhóm thấp nhất thường bị loại. *Hệ quả logic*: nếu bị đo bằng lợi nhuận ghi nhận ngắn hạn, cách rẻ nhất để "tăng điểm" là chọn cách *ghi nhận* doanh thu sớm chứ không phải tạo giá trị thật.
 2. **Kế toán "mark-to-market" cho hợp đồng dài hạn**: lợi nhuận tương lai ước tính được ghi vào hôm nay. Ai cũng biết con số là ước lượng chủ quan, nhưng văn hóa thưởng cho người ước lượng *lạc quan* nhất.
-3. **Im lặng được tưởng thưởng, báo động bị trừng phạt**: người đặt câu hỏi bị coi là "không đủ thông minh" hoặc bị điều chuyển. Kết quả: thông tin xấu không đi lên (đối lập với khái niệm an toàn tâm lý ở Phần 10.1).
+3. **Im lặng được tưởng thưởng, báo động bị trừng phạt**: người đặt câu hỏi bị coi là "không đủ thông minh" hoặc bị điều chuyển. Kết quả: thông tin xấu không đi lên (đối lập với văn hóa lành mạnh có an toàn tâm lý ở Phần 10.2).
 4. **Kiểm soát bên ngoài bị vô hiệu hóa bằng quan hệ lợi ích**: kiểm toán viên (Arthur Andersen) vừa kiểm toán vừa tư vấn cho Enron nên có xung đột lợi ích. Khi văn hóa nội bộ không tự điều chỉnh, tầng bảo vệ bên ngoài cũng bị bẻ cong.
 5. **Điểm vỡ**: khi thị trường nghi ngờ và giá cổ phiếu giảm, các khoản nợ ngoài bảng cân đối lộ ra, niềm tin sụp đổ trong vài tháng.
 
@@ -2279,73 +2197,118 @@ Khoảng cách giữa Tầng 2 (giá trị tuyên bố) và Tầng 3 (giả đ�
 3. Nếu sai sót không được phép nói ra thì sai sót sẽ được che giấu cho đến khi phát nổ.
 4. **Khuyến nghị hành động cho SME**: soát lại KPI thưởng (có khuyến khích đi đường tắt không?), thiết lập kênh báo cáo ẩn danh, và để người không có lợi ích trực tiếp kiểm tra số liệu quan trọng.
 
-### 14.7 Thất Bại: Uber dưới Kalanick – "Bro Culture"
+### 14.7 Thất Bại Rồi Tái Thiết: Uber Thời Kalanick – "Văn Hóa Thắng Bằng Mọi Giá"
+
+> **Lưu ý nguồn**: các sự kiện công khai (bài viết của Susan Fowler tháng 2/2017, cuộc điều tra do cựu Bộ trưởng Tư pháp Eric Holder dẫn dắt, Kalanick từ chức tháng 6/2017, Dara Khosrowshahi nhậm chức CEO tháng 8/2017, IPO tháng 5/2019) có trong báo chí công khai. Các điểm số Denison trong mục này là **giả định minh họa** để thực hành phương pháp, không phải kết quả khảo sát thật của Uber.
 
 #### **Bối Cảnh:**
-Uber, công ty gọi xe, được thành lập vào năm 2009 bởi Travis Kalanick và Garrett Camp. Vào những năm 2010-2017, Uber phát triển nhanh chóng từ một startup nhỏ sang một công ty $70 tỷ.
+Uber thành lập năm 2009 (Travis Kalanick và Garrett Camp), mở rộng cực nhanh ra hàng trăm thành phố, được định giá khoảng 70 tỷ USD vào cuối năm 2016. Kalanick là CEO từ 2010 đến 2017. Trong giai đoạn này, Uber có bộ giá trị nội bộ gồm 14 mục (công khai trên báo chí) với những cụm như "always be hustlin'" (luôn xông xáo), "toe-stepping" (dám giẫm lên chân người khác, tức va chạm), "principled confrontation" (đối đầu có nguyên tắc), "champion's mindset" (tư duy nhà vô địch).
 
-#### **Vấn Đề:**
-- Văn hóa "bro" – lúc đầu là năng động, sáng tạo
-- Nhưng sau này trở thành "bro" = không tính đến quy tắc, chính phủ, an toàn khách hàng
-- Tính hiếu thắng quá mức, nhân viên sợ hãi, bị áp dụng
+Tháng 2/2017, cựu kỹ sư Susan Fowler đăng bài mô tả quấy rối tình dục và phản ứng thờ ơ của bộ phận nhân sự. Sau đó là một loạt vụ việc: bê bối công cụ tránh cơ quan quản lý (thường gọi Greyball), kiện tụng liên quan đến bí mật công nghệ xe tự lái, và vụ giấu rò rỉ dữ liệu năm 2016 bằng khoản trả cho kẻ tấn công. Một cuộc rà soát nội bộ và bên ngoài đưa ra khuyến nghị cải tổ (báo chí đưa tin 47 khuyến nghị), nhiều nhân sự bị sa thải sau điều tra, và Kalanick từ chức tháng 6/2017.
 
-#### **Giải Pháp Được Coi Là Nếu Cần:**
-- **Thay đổi lãnh đạo** (2017): Travis Kalanick từ chức
-- **Văn hóa mới**: "14 Leadership Behaviors" – tập trung vào trách nhiệm xã hội
-- **Kiêm chế**: Giáo dục nhân viên về tính phân biệt đối xử, tấn công tình dục
-- **Minh bạch**: Bắt đầu chia sẻ dữ liệu về tính đa dạng, an toàn
+#### **Vấn Đề Kinh Doanh:**
+Câu hỏi quản trị: làm thế nào một công ty tăng trưởng ngoạn mục và được định giá cao lại rơi vào khủng hoảng niềm tin trong vài tháng? Câu trả lời nằm ở **cách văn hóa biến một chiến lược "tăng trưởng trên hết" thành hành vi hằng ngày**.
 
-#### **Kết Quả (2017-2023):**
+#### **Phân Tích Bước 1: Mô hình 3 tầng của Schein**
 
-| Chỉ Số | Kết Quả |
-|------|------|
-| **Turnover Nhân Viên** | Giảm từ 60%+ xuống 30-40% |
-| **Tính Đa Dạng** | Tăng nữ giới & người da màu ở các vai trò lãnh đạo |
-| **Danh Tiếng** | Cải thiện, nhưng "Uber" vẫn còn từ "aggressive" |
-| **Hiệu Suất Tài Chính** | Vẫn tăng trưởng, mặc dù chậm hơn |
-| **IPO (2019)** | Thành công mặc dù lo ngại về văn hóa |
+| Tầng | Quan sát | Nhận xét |
+|------|------|------|
+| **Artifacts** | Bộ 14 giá trị treo công khai; thưởng và vinh danh cho người "thắng" thị trường; câu chuyện nội bộ ca ngợi việc "lách" quy định địa phương | Hiện vật phát đi tín hiệu "kết quả lớn hơn quy tắc" |
+| **Espoused Values** | Đổi mới, tăng trưởng, "meritocracy" (trọng người giỏi) | Nghe tích cực, nhưng đo "người giỏi" bằng tăng trưởng chứ không bằng cách làm |
+| **Basic Assumptions** | "Quy định là rào cản cần vượt qua"; "ai mang về tăng trưởng thì được tha thứ"; "xung đột nội bộ là bình thường, người yếu sẽ bị đào thải" | Chính các giả định này khiến khiếu nại bị bỏ qua nếu người bị khiếu nại là "ngôi sao" |
 
-#### **Bài Học:**
+#### **Phân Tích Bước 2: Cơ chế từ văn hóa đến khủng hoảng (từng bước)**
+1. **Thưởng theo tăng trưởng, không theo cách đạt được**: người quản lý nhận thưởng khi doanh số tăng, không bị trừ điểm khi vi phạm chuẩn mực.
+2. **Ngôi sao được bảo vệ**: khi có khiếu nại về hành vi, bộ phận nhân sự đối chiếu với giá trị của người đó cho công ty; đây là cơ chế biến "văn hóa" thành "thiên vị".
+3. **Kênh báo cáo mất tín nhiệm**: nhân viên thấy người khiếu nại không được bảo vệ nên ngừng báo cáo hoặc rời đi; nghĩa là thông tin xấu *không đi lên*.
+4. **Nội bộ che giấu, bên ngoài phát hiện**: vấn đề tích tụ cho đến khi bị công bố công khai (bài viết của Fowler, kiện tụng), và lúc đó chi phí cao hơn nhiều.
+5. **Điểm vỡ**: nhà đầu tư và đối tác mất niềm tin vào quản trị; hội đồng quản trị buộc lãnh đạo thay đổi.
 
-1. **"Bro Culture" Có Giới Hạn**: Tốt cho startup nhanh, nhưng không thể mở rộng
-2. **Lãnh Đạo Tác Động Văn Hóa Trực Tiếp**: Khi Kalanick rời đi, có một cơ hội thay đổi
-3. **Áp Lực Tài Chính Có Thể Biện Minh Cho Đạo Đức Xấu**: Nếu sếp nói "Chúng ta cần thắng", áp lực được tạo ra
-4. **Phụ Nữ & Người Thiểu Số Bị Ảnh Hưởng Nhất**: "Bro culture" thường thiếu tính bao dung
-5. **Thay Đổi Văn Hóa Là Có Thể, Nhưng Cần Thay Đổi Lãnh Đạo**: Không đủ để nói "thay đổi", lãnh đạo phải thay đổi
+#### **Phân Tích Bước 3: Cameron & Quinn, Deal & Kennedy và Denison**
+- **CVF**: lệch cực đoan về **Market** (thắng, tăng trưởng) với **Adhocracy** (liều lĩnh); thiếu **Clan** (chăm sóc con người) và **Hierarchy** (quy trình tuân thủ). Mô hình "thiếu hai chân" nên dễ đổ.
+- **Deal & Kennedy**: **Tough Guy** (rủi ro cao, phản hồi nhanh từ thị trường): hợp với môi trường đua giành thị trường, nhưng khi không có kiểm soát đạo đức thì xuất hiện hành vi cực đoan.
+- **Denison (giả định minh họa, thang 1-5)**:
 
-### 14.8 Thất Bại: Wells Fargo Sales Pressure Culture
+| Khía cạnh | Giai đoạn khủng hoảng (giả định) | Sau cải tổ 2-3 năm (giả định) | Thay đổi |
+|------|------|------|------|
+| Mission | 4,2 | 4,1 | -0,1 |
+| Adaptability | 4,0 | 3,8 | -0,2 |
+| Involvement | 2,1 | 3,4 | +1,3 |
+| Consistency | 2,6 | 3,7 | +1,1 |
+| **Trung bình** | (4,2+4,0+2,1+2,6)/4 = **3,23** | (4,1+3,8+3,4+3,7)/4 = **3,75** | **+0,52** |
+
+*Diễn giải*: hai khía cạnh *hướng ngoài* (Mission, Adaptability) vốn mạnh nên điểm trung bình 3,23 che giấu sự mất cân đối: **Involvement (2,1) và Consistency (2,6) rất thấp**, tức nhân viên không có tiếng nói và hành vi không nhất quán với chuẩn mực. Sau cải tổ, hai khía cạnh yếu tăng mạnh (+1,3 và +1,1) trong khi hai khía cạnh mạnh giảm nhẹ vì công ty chậm lại để chuẩn hóa. Điểm trung bình tăng 0,52 nhưng điều quan trọng là **độ chênh giữa cao nhất và thấp nhất thu hẹp** (từ 4,2 - 2,1 = 2,1 xuống 4,1 - 3,4 = 0,7).
+
+#### **Phân Tích Bước 4: Can thiệp và vì sao hiệu quả**
+- **Thay lãnh đạo (2017)**: vì giả định nằm ở hành vi *của người đứng đầu*, nên thay đổi biểu tượng quan trọng hơn bất kỳ tờ giấy nào. Theo Schein, lãnh đạo là người *nhúng* văn hóa vào tổ chức qua điều họ chú ý, thưởng và phạt.
+- **Thay giá trị**: bộ giá trị mới (khoảng 8 chuẩn mực văn hóa theo công bố của công ty, có các cụm như "do the right thing. Period." và "celebrate differences"). *Điểm đáng chú ý*: giá trị mới chỉ có ý nghĩa khi đi kèm thay đổi hệ thống: cải tổ bộ phận nhân sự, kênh khiếu nại độc lập, công bố báo cáo đa dạng.
+- **Chi phí**: nhiều nhân sự lãnh đạo thay đổi, giai đoạn tái cấu trúc kéo dài, nhưng công ty vẫn IPO năm 2019. Điều này cho thấy mô hình kinh doanh có giá trị, nhưng văn hóa phải trả giá bằng thời gian và danh tiếng.
+
+#### **Ý Nghĩa Kinh Doanh:**
+Văn hóa "thắng bằng mọi giá" cho kết quả ngắn hạn tốt nhưng tạo **rủi ro đuôi** (rare but huge): vụ việc hiếm nhưng thiệt hại lớn (kiện tụng, mất đối tác, mất nhân tài, mất niềm tin nhà đầu tư). Doanh nghiệp cần định giá rủi ro này như một khoản chi phí.
+
+#### **Bài Học & Khuyến Nghị Cho SME:**
+1. Một chiến lược "tăng trưởng trên hết" cần có **rào chắn đạo đức**: danh sách điều *không bao giờ làm* dù doanh số cao.
+2. Có **kênh khiếu nại độc lập** với người bị khiếu nại; với SME nhỏ, có thể là cố vấn bên ngoài hoặc cổ đông không điều hành.
+3. Áp dụng quy tắc "**không ngoại lệ cho ngôi sao**": hành vi sai bị xử lý như nhau.
+4. Đo lường văn hóa bằng khảo sát *Involvement* (tiếng nói) và *Consistency* (nhất quán) hằng quý; đừng chỉ nhìn doanh số.
+
+### 14.8 Thất Bại: Wells Fargo – Văn Hóa Áp Lực Bán Chéo (Sales Pressure Culture)
+
+> **Lưu ý nguồn**: các sự kiện công khai (bài điều tra của LA Times năm 2013, thỏa thuận xử phạt tháng 9/2016, John Stumpf từ chức tháng 10/2016, giới hạn tài sản của Cục Dự trữ Liên bang năm 2018, thỏa thuận 3 tỷ USD với cơ quan Mỹ năm 2020) lấy từ báo chí và thông cáo công khai; các con số làm tròn. Phần ví dụ tính toán về mục tiêu bán chéo là **giả định minh họa**.
 
 #### **Bối Cảnh:**
-Wells Fargo, ngân hàng Mỹ lớn, dưới sự lãnh đạo của John Stumpf (CEO 2007-2016), tạo ra một văn hóa "sales at all cost".
+Wells Fargo là một trong những ngân hàng bán lẻ lớn nhất Mỹ, nổi tiếng với chiến lược **bán chéo** (cross-sell): bán nhiều sản phẩm cho mỗi khách hàng (thẻ, tài khoản tiết kiệm, bảo hiểm...). Ban lãnh đạo công khai mục tiêu "Eight is great" (tám sản phẩm cho mỗi hộ khách hàng). Tờ LA Times đăng loạt bài vào năm 2013 về áp lực bán hàng ở chi nhánh; tháng 9/2016, các cơ quan quản lý Mỹ công bố thỏa thuận phạt tổng cộng khoảng 185 triệu USD vì nhân viên mở **hàng triệu tài khoản không được khách hàng cho phép** (con số được nêu ở thời điểm đó là khoảng 2 triệu, các rà soát sau đó nêu số cao hơn); khoảng 5.300 nhân viên bị sa thải trong nhiều năm. CEO John Stumpf từ chức tháng 10/2016.
 
-#### **Vấn Đề:**
-- Mục tiêu "Cross-sell" (bán nhiều sản phẩm) quá cao
-- Để đạt được mục tiêu, nhân viên tạo ra các tài khoản giả
-- Năm 2016, tờ LA Times báo cáo rằng hàng triệu tài khoản giả đã được tạo
+#### **Vấn Đề Kinh Doanh:**
+Chỉ tiêu bán chéo cao có hợp lý về chiến lược (khách hàng gắn bó hơn, doanh thu mỗi khách hàng cao hơn). Vấn đề là *cách biến chỉ tiêu thành hành vi*: khi mục tiêu quá cao so với nhu cầu thật của khách hàng, nhân viên có hai lựa chọn: bán thật khó hoặc **làm giả**.
 
-#### **Giải Pháp Nếu Cần:**
-- **Thay đổi lãnh đạo**: John Stumpf từ chức (2016)
-- **Hủy bỏ mục tiêu "Cross-sell"** và thay thế bằng mục tiêu "Customer Satisfaction"
-- **Kiêm chế**: Nhân viên được bảo vệ nếu họ từ chối bán những gì khách hàng không cần
-- **Bồi thường**: Bồi thường cho khách hàng bị ảnh hưởng
+#### **Phân Tích Bước 1: Tính toán khoảng cách chỉ tiêu (giả định minh họa)**
+Giả sử một chi nhánh phụ trách 1.000 hộ khách hàng, trung bình thật đang có 6 sản phẩm mỗi hộ, mục tiêu lãnh đạo là 8 sản phẩm.
+- Tổng sản phẩm hiện có = 1.000 x 6 = **6.000**.
+- Tổng sản phẩm mục tiêu = 1.000 x 8 = **8.000**.
+- Khoảng cách = 8.000 - 6.000 = **2.000 sản phẩm** phải bán thêm.
+- Với 10 nhân viên bán hàng: 2.000 / 10 = **200 sản phẩm mỗi người** trong chu kỳ mục tiêu.
+Nếu nhu cầu thực của khách hàng đã bão hòa quanh mức 6, mục tiêu này *không thể đạt bằng bán thật*; đạt được chỉ bằng cách ép khách mua thứ họ không cần hoặc mở tài khoản không có sự đồng ý. *Đây là lý do cần tính "mục tiêu có khả thi theo nhu cầu thực không" trước khi giao chỉ tiêu.*
 
-#### **Kết Quả (2017-2023):**
+#### **Phân Tích Bước 2: Lý thuyết thưởng phạt**
+Steven Kerr (1975) viết bài nổi tiếng "On the folly of rewarding A, while hoping for B" (về sự dại dột khi thưởng cho A nhưng hy vọng có B). Tại Wells Fargo: **thưởng cho số lượng sản phẩm bán (A)** nhưng **hy vọng khách hàng được phục vụ tốt (B)**. Hệ quả logic: nhân viên chọn A. Áp lực kèm theo (chỉ tiêu theo ngày, họp đốc thúc, nguy cơ mất việc nếu không đạt) làm hành vi sai trở nên "hợp lý" với cá nhân dù có hại cho tổ chức.
 
-| Chỉ Số | Kết Quả |
-|------|------|
-| **Phạt Liên Bang** | $3 tỷ USD phạt |
-| **Danh Tiếng** | Bị coi là nơi tồi tệ để làm việc/giao dịch |
-| **Doanh Số** | Tăng trưởng chậm hơn các ngân hàng khác |
-| **Nhân Viên Hạnh Phúc** | eNPS rất thấp |
-| **Tuân Thủ Quản Lý** | Được giám sát chặt chẽ bởi cơ quan liên bang |
+#### **Phân Tích Bước 3: Mô hình 3 tầng của Schein**
 
-#### **Bài Học:**
+| Tầng | Wells Fargo | Nhận xét |
+|------|------|------|
+| **Artifacts** | Slogan "Eight is great", bảng theo dõi doanh số theo ngày, các cuộc họp đốc thúc chỉ tiêu | Hiện vật nhấn mạnh *con số bán* |
+| **Espoused Values** | Công bố cam kết đạo đức, phục vụ khách hàng | Rõ ràng, nhưng không đi cùng hệ thống thưởng phạt |
+| **Basic Assumptions** | "Chỉ tiêu là bắt buộc"; "người không đạt chỉ tiêu là người yếu"; "đừng hỏi cách làm miễn đạt kết quả" | Giả định này quyết định hành vi và dập tắt báo cáo sai phạm |
 
-1. **Lợi Nhuận Không Phải Lý Do Duy Nhất**: Nếu bạn chỉ tập trung vào lợi nhuận, bạn sẽ thất bại ở dài hạn
-2. **Hệ Thống Phần Thưởng Sai Lầm = Hành Vi Sai Lầm**: Nếu bạn phần thưởng "cross-sell", con người sẽ cross-sell bằng mọi cách
-3. **Đạo Đức Không Thể Kép Cơ**: Nếu lãnh đạo nói "ethical", nhưng mục tiêu không phải, mọi người sẽ lựa chọn mục tiêu
-4. **Nhân viên Có Lương Tâm**: Khi các tài khoản giả được tạo, nhân viên báo cáo – họ không muốn làm sai
-5. **Thay Đổi Văn Hóa Cần Thay Đổi Hệ Thống Phần Thưởng**: Để thay đổi hành vi, thay đổi những gì được phần thưởng
+*Tại sao nhân viên không báo cáo*: các báo cáo nêu rằng nhiều người gọi đường dây đạo đức nội bộ bị sa thải hoặc bị trả đũa; vì vậy giả định ngầm "báo cáo là nguy hiểm" được củng cố. Đây là biểu hiện của văn hóa sợ hãi (xem Phần 10.2: Toxic Culture).
+
+#### **Phân Tích Bước 4: CVF, Hofstede và Deal & Kennedy**
+- **CVF**: lệch cực đoan về **Market** (kết quả, thắng); yếu **Clan** và yếu **Hierarchy theo nghĩa kiểm soát tuân thủ** (có quy trình nhưng không giám sát hành vi sai).
+- **Hofstede (Mỹ: MAS 62, IDV 91, LTO 26)**: văn hóa quốc gia thiên về thành tích cá nhân và kết quả ngắn hạn; áp lực cá nhân đạt kết quả theo quý là phù hợp bối cảnh nhưng khiến *nhân viên chịu trách nhiệm một mình*, khó dựa vào tập thể để chống lại mệnh lệnh sai.
+- **Deal & Kennedy**: **Work Hard, Play Hard** (rủi ro cá nhân thấp, phản hồi nhanh bằng chỉ tiêu hằng ngày): khuyến khích *khối lượng hoạt động* hơn là chất lượng; khi áp lực tăng, hành vi chuyển dần thành "tough guy" (gian lận để sống sót).
+
+#### **Phân Tích Bước 5: Chi phí của sai lầm (số liệu công khai, làm tròn)**
+- Phạt 2016: khoảng **185 triệu USD**; thỏa thuận 2020 với cơ quan Mỹ: khoảng **3 tỷ USD**; tổng cộng khoảng 185 + 3.000 = **3.185 triệu USD (khoảng 3,2 tỷ USD)**.
+- Phí khách hàng bị tính sai theo công bố của cơ quan quản lý năm 2016 là khoảng **2,6 triệu USD** phải hoàn lại. Tỷ lệ phạt so với phí sai = 185 / 2,6 = **khoảng 71 lần**; cho thấy "lợi" từ hành vi gian lận nhỏ hơn rất nhiều so với tổn thất.
+- Ngoài tiền phạt: giới hạn quy mô tài sản do Fed áp đặt từ 2018, thay đổi lãnh đạo, mất niềm tin khách hàng, chi phí tuân thủ kéo dài nhiều năm.
+
+#### **Phân Tích Bước 6: Biện pháp sửa chữa và vì sao phải đổi hệ thống thưởng**
+1. **Bỏ chỉ tiêu bán chéo cứng** và thay bằng chỉ số chất lượng (mức hài lòng, tỷ lệ khách hàng giữ lại).
+2. **Thay lãnh đạo** và bổ sung kiểm soát tuân thủ độc lập.
+3. **Bảo vệ người tố cáo** và kênh báo cáo độc lập khỏi quản lý trực tiếp.
+4. **Hoàn tiền cho khách hàng** để khôi phục niềm tin.
+*Nguyên tắc*: chỉ viết giá trị mới thì vô ích khi hệ thống thưởng vẫn dạy điều ngược lại (so Enron 14.6 và Uber 14.7).
+
+#### **Ý Nghĩa Kinh Doanh:**
+Trường hợp Wells Fargo cho thấy một **chỉ số thưởng đơn lẻ có thể chi phối cả văn hóa**. Nếu một KPI đo *số lượng*, nó sẽ kéo toàn bộ hành vi về số lượng, bất chấp tuyên bố giá trị đẹp đến đâu.
+
+#### **Bài Học & Khuyến Nghị Cho SME:**
+1. Với mỗi KPI doanh số, hãy hỏi: "Nhân viên có thể đạt KPI này bằng cách *gian lận* hay *làm cho khách hàng thiệt* không?". Nếu có, thêm KPI cân bằng (hài lòng, tỷ lệ hủy, khiếu nại).
+2. Kiểm tra *tính khả thi theo nhu cầu thật* trước khi giao chỉ tiêu (như phép tính 2.000 sản phẩm bên trên).
+3. Có đường dây phản ánh độc lập, cam kết không trả đũa.
+4. Ở SME Việt Nam (chủ doanh nghiệp tập trung quyền lực, PDI cao), mệnh lệnh miệng "phải đạt doanh số" mạnh hơn văn bản; chủ doanh nghiệp phải *tự nói* "đừng làm sai để đạt doanh số".
 
 ### 14.9 Thất Bại M&A: Daimler-Chrysler Culture Clash
 
@@ -2571,7 +2534,7 @@ CULTURE AUDIT CHECKLIST
 □ LÃNH ĐẠO
   □ Lãnh đạo mô hình hóa các giá trị không?
   □ Lãnh đạo hỏi ý kiến hay chỉ áp lực kết quả?
-  □ Lãnh đạo là "cha mẹ", "quản lý", "chiến lược gia", hay "bộ lão"?
+  □ Lãnh đạo là "cha mẹ", "quản lý", "chiến lược gia", hay "nhà tiên phong"?
   □ Sự thay đổi lãnh đạo ảnh hưởng lớn không?
 
 □ HIỆU SUẤT KINH DOANH
@@ -2602,7 +2565,7 @@ Người tham gia: 15-20 người từ các cấp độ khác nhau
 
 ═══════════════════════════════════════════════════════════════
 
-PHẦN 1: SỬ DỤNG LỊCH SỬ (30 phút)
+PHẦN 1: NHÌN LẠI LỊCH SỬ (30 phút)
 
 Câu hỏi:
 1. "Khi nào chúng tôi cảm thấy tự hào nhất về công ty này?" (2-3 ví dụ)
@@ -2614,7 +2577,7 @@ Ghi chép:
 
 ═══════════════════════════════════════════════════════════════
 
-PHẦN 2: KHÁM PHÁ GIẢI PHÁP CÓ SẴN (30 phút)
+PHẦN 2: THAM KHẢO DANH SÁCH GIÁ TRỊ PHỔ BIẾN (30 phút)
 
 Giới Thiệu Các Giá Trị Phổ Biến:
 
@@ -2683,7 +2646,7 @@ VALUE: INTEGRITY
 
 ═══════════════════════════════════════════════════════════════
 
-PHẦN 4: THỰC HIỆN DỰA TRÊN (90 phút)
+PHẦN 4: TỔNG HỢP & ĐỒNG THUẬN (90 phút)
 
 Lãnh đạo cấp cao tóm tắt:
 - Những giá trị mà nhóm xác định
@@ -2721,12 +2684,12 @@ Hành Vi KHÔNG Dự Kiến:
 
 ═══════════════════════════════════════════════════════════════
 
-PHẦN 6: VĂN HÓA DỰA TRÊN (30 phút)
+PHẦN 6: CÔNG BỐ & CAM KẾT (30 phút)
 
 Lãnh đạo cấp cao công bố:
 "Từ bây giờ, những giá trị này sẽ hướng dẫn những quyết định của chúng tôi.
 Chúng ta sẽ tuyển dụng dựa trên những giá trị này.
-Chúng ta sẽ phần thưởng những người sống theo những giá trị này.
+Chúng ta sẽ khen thưởng những người sống theo những giá trị này.
 Nếu ai đó không tuân thủ những giá trị này, chúng tôi sẽ nói chuyện."
 
 Tiếp theo:
@@ -2748,18 +2711,18 @@ CULTURE CHANGE PLAN
 PROJECT: [Tên Dự Án Thay Đổi]
 TIMELINE: [Tháng bắt đầu - Tháng kết thúc, thường 2-3 năm]
 SPONSOR: [CEO/Lãnh Đạo Cấp Cao]
-OWNER: [CHO hoặc Trưởng Bộ Phận Nhân Sự]
+OWNER: [CHRO hoặc Trưởng Bộ Phận Nhân Sự]
 
 ═══════════════════════════════════════════════════════════════
 
-BƯỚC 1: TẠO SỰ CẤP BỘC (Tháng 1-2)
+BƯỚC 1: TẠO SỰ CẤP BÁCH (Tháng 1-2)
 
 Mục Tiêu: 75%+ nhân viên chấp nhận rằng thay đổi là cần thiết
 
 Hoạt Động:
 □ Phân tích dữ liệu (turnover, customer satisfaction, hiệu suất)
 □ Xác định rủi ro (nếu chúng ta không thay đổi)
-□ Tạo tuyên bố sự cấp bộc: "[Vấn đề] sẽ dẫn đến [hậu quả] trong [thời gian]"
+□ Tạo tuyên bố sự cấp bách: "[Vấn đề] sẽ dẫn đến [hậu quả] trong [thời gian]"
 □ Chia sẻ dữ liệu rộng rãi (không che giấu)
 
 Ví Dụ Tuyên Bố:
@@ -2786,7 +2749,7 @@ Hoạt Động:
 
 ═══════════════════════════════════════════════════════════════
 
-BƯỚC 3: PHÁT TRIỂN TẦMVHÌN & CHIẾN LƯỢC (Tháng 3-4)
+BƯỚC 3: PHÁT TRIỂN TẦM NHÌN & CHIẾN LƯỢC (Tháng 3-4)
 
 Mục Tiêu: Tầm nhìn rõ ràng mà mọi người hiểu
 
@@ -2805,7 +2768,7 @@ Ví Dụ Tầm Nhìn:
 
 ═══════════════════════════════════════════════════════════════
 
-BƯỚC 4: GHI TIẾP TẦM NHÌN (Tháng 4-6)
+BƯỚC 4: GIAO TIẾP TẦM NHÌN (Tháng 4-6)
 
 Mục Tiêu: 100% nhân viên hiểu tầm nhìn
 
@@ -2875,7 +2838,7 @@ Cảnh Báo:
 
 ═════════════════════════════════════════════════════════════
 
-BƯỚC 8: NẮN CHẶT THAY ĐỔI VÀO VĂN HÓA (Tháng 24-36)
+BƯỚC 8: NEO THAY ĐỔI VÀO VĂN HÓA (Tháng 24-36)
 
 Mục Tiêu: Những thay đổi trở thành "cách chúng ta làm việc ở đây"
 
@@ -3058,7 +3021,7 @@ Văn hóa hoàn toàn dựa vào một người sáng lập (ví dụ: Steve Job
 - Dạy văn hóa tới tất cả nhân viên, không chỉ những người gần người sáng lập
 
 **Ví Dụ:**
-- Apple dưới Steve Jobs là một tài. Khi Steve rời (2004-2011), Apple khá cơ bản. Khi Steve quay lại (2011), Apple trở lại mạnh mẽ. (Nhưng khi Steve qua đời năm 2011, Tim Cook duy trì được văn hóa)
+- Apple gắn chặt với Steve Jobs: ông rời công ty năm 1985 và trở lại năm 1997; sau khi ông qua đời năm 2011, Tim Cook tiếp quản và duy trì được nhiều nét văn hóa, nhưng việc giữ "hồn" của người sáng lập vẫn là thách thức thường được thảo luận
 
 #### **3. Culture Drift – Văn Hóa Trôi Dạt**
 
@@ -3073,7 +3036,7 @@ Khi công ty phát triển, văn hóa ban đầu bị "trôi dạt". Những nh�
 **Cách Tránh:**
 - Dạy văn hóa tích cực khi onboarding
 - Nhắc nhở thường xuyên (all-hands, internal communications)
-- Khi khách hàng mới, đảm bảo giá trị không thay đổi
+- Khi có nhân viên mới hoặc mở rộng quy mô, đảm bảo giá trị cốt lõi không bị pha loãng
 - Thừa nhận sự thay đổi nhưng bảo vệ "lõi cốt lõi"
 
 **Ví Dụ:**
@@ -3093,11 +3056,10 @@ Công ty mẹ áp đặt văn hóa giống nhau ở tất cả các quốc gia /
 **Cách Tránh:**
 - Xác định "giá trị cốt lõi" (không thay đổi ở bất kỳ nơi nào)
 - Cho phép "giá trị linh hoạt" (có thể thích ứng địa phương)
-- Tuyên dụng lãnh đạo địa phương để hiểu bối cảnh địa phương
+- Tuyển dụng lãnh đạo địa phương để hiểu bối cảnh địa phương
 
 **Ví Dụ:**
-- Microsoft cố gắng áp đặt văn hóa toàn cầu, gặp khó khăn ở Nhật Bản (PDI quá cao, không thích "mở cửa policy")
-- Google thích ứng văn hóa "mở" để từng bộ phận có "twist" địa phương
+- Một công ty Mỹ áp nguyên chính sách "cửa luôn mở" (open-door) ở nước PDI cao thường thấy nhân viên địa phương ít dám bước vào gặp sếp (suy luận minh họa từ Hofstede, không phải ghi nhận về một công ty cụ thể)
 
 #### **5. Thay Đổi Quá Nhanh – Burnout**
 
@@ -3115,12 +3077,12 @@ Tổ chức cố gắng thay đổi quá nhanh. Nhân viên kiệt sức, không
 - Cân bằng "cấp bách" với "bền vững"
 
 **Ví Dụ:**
-- Vingroup's "Speed" culture gây burnout → nhân viên giỏi rời đi
+- Văn hóa tốc độ với cường độ cao kéo dài dễ gây kiệt sức và nhân sự giỏi rời đi (xem phân tích ở 14.5)
 
 #### **6. Sợ Sai Sót = Che Giấu Sai Sót**
 
 **Vấn Đề:**
-Tổ chức nói "không sợ sai sót" nhưng lên tiếng trừng phạt. Nhân viên bắt đầu che giấu sai sót.
+Tổ chức nói "không sợ sai sót" nhưng trên thực tế vẫn trừng phạt. Nhân viên bắt đầu che giấu sai sót.
 
 **Hậu Quả:**
 - Sai sót được che giấu phát nổ trở lại (như Enron, Wells Fargo)
@@ -3223,7 +3185,7 @@ Tổ chức nói "không sợ sai sót" nhưng lên tiếng trừng phạt. Nhâ
 13. Deal, T. E., & Kennedy, A. A. (1982). *Corporate Cultures: The Rites and Rituals of Corporate Life*. Addison-Wesley.
 14. Deal, T. E., & Kennedy, A. A. (2000). *Corporate Cultures: The Rites and Rituals of Corporate Life* (Revised ed.). Jossey-Bass.
 
-**Trompenaars & Giai Phóng Quốc Tế:**
+**Trompenaars & Văn Hóa Liên Quốc Gia:**
 15. Trompenaars, F. (1993). *Riding the Waves of Culture: Understanding Diversity in Global Business*. Nicholas Brealey Publishing.
 16. Trompenaars, F., & Hampden-Turner, C. (1997). *Riding the Waves of Culture: Understanding Diversity in Global Business* (2nd ed.). Nicholas Brealey Publishing.
 
@@ -3232,7 +3194,7 @@ Tổ chức nói "không sợ sai sót" nhưng lên tiếng trừng phạt. Nhâ
 18. Kotter, J. P. (2012). *Leading Change* (Updated ed.). Harvard Business Review Press.
 19. Kotter, J. P., & Cohen, D. S. (2002). *The Heart of Change: Real-Life Stories of How People Change Their Organizations*. Harvard Business School Press.
 
-**Hành Đời Sống & Văn Hóa Công Ty:**
+**Văn Hóa Công Ty Xuất Sắc & Bền Vững:**
 20. Collins, J. C., & Porras, J. I. (1994). *Built to Last: Successful Habits of Visionary Companies*. HarperBusiness.
 21. Collins, J. C. (2001). *Good to Great: Why Some Companies Make the Leap and Others Don't*. HarperBusiness.
 22. Peters, T. J., & Waterman Jr., R. H. (1982). *In Search of Excellence: Lessons from America's Best-Run Companies*. Harper & Row.
@@ -3260,7 +3222,9 @@ Tổ chức nói "không sợ sai sót" nhưng lên tiếng trừng phạt. Nhâ
 33. Deloitte. *Global Human Capital Trends 2023*. [Xu hướng nhân sự toàn cầu]
 34. Harvard Business Review. *Organizational Culture* (Nhiều bài viết). [https://hbr.org/]
 
-### Tài Liệu Vietnamized (Về Văn Hóa Việt Nam)
+### Tài Liệu Về Văn Hóa Doanh Nghiệp Việt Nam
+
+> **Cảnh báo**: hai mục dưới đây chưa được kiểm chứng thông tin xuất bản (tác giả, nhà xuất bản, năm). Cần tra cứu thư mục thực tế trước khi trích dẫn; không nên dựa vào chúng như nguồn xác thực.
 
 35. Trần, V. T. (2015). *Văn Hóa Doanh Nghiệp Việt Nam*. Nhà Xuất Bản Lao Động. [Chuẩn mực, điểm mạnh, điểm yếu của văn hóa doanh nghiệp Việt]
 36. Phạm, N. V. (2020). *Lãnh Đạo & Văn Hóa Công Ty Việt Nam*. Nhà Xuất Bản Trẻ. [Thách thức khi phát triển văn hóa ở Việt Nam]

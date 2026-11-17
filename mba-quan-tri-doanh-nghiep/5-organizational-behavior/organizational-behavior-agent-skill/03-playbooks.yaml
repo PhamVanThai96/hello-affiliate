@@ -1,0 +1,936 @@
+# 03-playbooks.yaml — Kịch bản giải quyết vấn đề hành vi tổ chức end-to-end
+# Mỗi playbook: intake -> steps (tham chiếu id module) -> refs (id kiểm chứng) -> sanity -> output (-> decision).
+# Mọi id trong refs tồn tại trong modules/ (đã kiểm bằng script). Dữ liệu số do người dùng cung cấp hoặc gắn nhãn GIẢ ĐỊNH.
+playbooks:
+  pb_motivation_diagnosis:
+    goal: Chẩn đoán vì sao một nhóm nhân viên thiếu động lực và chọn can thiệp có ngân sách, đo được
+    modules:
+    - m01
+    - m08
+    - m04
+    intake:
+    - nhóm/vị trí, số người, thời gian bị ảnh hưởng
+    - triệu chứng quan sát được (đi trễ, lỗi, nghỉ việc, ít đề xuất)
+    - cơ chế lương/thưởng/KPI hiện tại
+    - dữ liệu nghỉ việc, lương, khảo sát (nếu có)
+    - thay đổi gần đây (lãnh đạo, KPI, chính sách)
+    steps:
+    - Liệt kê hành vi quan sát được; tách khỏi diễn giải ('lười' là nhãn, 'đến trễ 8 lần/tháng' là bằng chứng)
+    - Chọn ống kính bằng m01_theory_by_context; chạy khảo sát m01_p_survey nếu có thể (ẩn danh)
+    - 'Herzberg: phân loại điều đang than phiền là yếu tố duy trì (lương, điều kiện, quan hệ) hay yếu tố thúc đẩy (thành tựu, ghi nhận, trách nhiệm); sửa duy trì trước để hết bất mãn, thúc đẩy sau để tạo
+      động lực'
+    - 'Vroom: ước lượng E (nỗ lực dẫn tới kết quả), I (kết quả dẫn tới thưởng), V (giá trị phần thưởng); điểm động lực = E x I x V, bất kỳ thành phần bằng 0 thì động lực bằng 0; chỉ ra thành phần thấp nhất'
+    - 'Adams: so tỷ lệ Output/Input của người dùng với người so sánh; tỷ lệ khác 1 báo hiệu cảm giác bất công'
+    - 'SDT/JCM: kiểm tra Autonomy, Competence, Relatedness và thiết kế công việc (MPS) nếu công việc đơn điệu'
+    - 'Quy chi phí: chi phí nghỉ việc năm hiện tại (m01_turnover_cost), so với chi phí can thiệp'
+    - Chọn 1-3 can thiệp theo 3 tầng (m01_three_tier_framework), đặt chỉ số theo dõi và mốc 30/60/90 ngày
+    refs:
+      frameworks:
+      - m01_theory_by_context
+      - m01_herzberg
+      - m01_vroom_diagnosis
+      - m01_equity_adams
+      - m01_sdt
+      - m01_jcm
+      - m01_three_tier_framework
+      formulas:
+      - m01_vroom_motivation
+      - m01_equity_ratio
+      - m01_mps
+      - m01_turnover_cost
+      - m01_survey_scoring
+      - m01_program_roi
+      procedures:
+      - m01_p_diagnose
+      - m01_p_survey
+    sanity:
+    - điểm Vroom nằm trong thang đã khai báo, nêu thành phần yếu nhất
+    - có ít nhất 2 giả thuyết nguyên nhân cạnh tranh
+    - khảo sát ẩn danh và nêu cỡ mẫu
+    - chi phí nghỉ việc có nhãn số thật hay GIẢ ĐỊNH
+    - không kết luận tính cách của một cá nhân từ một khảo sát
+    decision: Chọn can thiệp nhắm đúng thành phần yếu nhất (E, I hay V) hoặc yếu tố duy trì đang thiếu; không tăng thưởng khi vấn đề là niềm tin E hoặc bất công Adams
+    output: 'Báo cáo chẩn đoán động lực (rpt_motivation_diagnosis): bằng chứng, chẩn đoán theo lý thuyết, chi phí, can thiệp ưu tiên, chỉ số theo dõi'
+  pb_reward_kpi_design:
+    goal: Thiết kế hoặc sửa hệ thống thưởng/KPI để khuyến khích đúng hành vi và tránh hệ quả ngoài ý muốn
+    modules:
+    - m01
+    - m04
+    - m09
+    intake:
+    - mục tiêu kinh doanh gắn với KPI
+    - KPI/thưởng hiện tại và hành vi thực tế (có gaming không)
+    - năng suất hiện tại, dữ liệu đo
+    - ngân sách thưởng
+    - mức độ kiểm soát của nhân viên đối với kết quả
+    steps:
+    - 'Liệt kê hành vi công ty THỰC SỰ muốn; so với hành vi KPI hiện tại thưởng (Kerr: thưởng A, hy vọng B) bằng m04_proc_kpi_integrity_check'
+    - Tính mức kéo giãn của mốc KPI so với năng suất hiện tại (m01_kpi_stretch_gap); mục tiêu khó nhưng khả thi theo Locke, quá gắt làm E tụt về 0
+    - Kiểm tra E, I, V của KPI bằng Vroom; đảm bảo nhân viên tin nỗ lực dẫn tới kết quả đo được và thưởng đến đúng hạn
+    - Thiết kế công thức thưởng (m01_bonus_formula) và chạy m01_p_reward_design; kết hợp thưởng tài chính với ghi nhận phi tài chính
+    - 'Nếu cân nhắc tăng lương: tính điểm hòa vốn năng suất (m01_wage_breakeven_productivity)'
+    - Tính ROI và độ nhạy (m01_program_roi); chạy pre-mortem ngắn cho cách KPI có thể bị lách
+    refs:
+      frameworks:
+      - m01_goal_setting
+      - m01_reinforcement
+      - m01_vroom_diagnosis
+      - m01_equity_adams
+      formulas:
+      - m01_kpi_stretch_gap
+      - m01_bonus_formula
+      - m01_wage_breakeven_productivity
+      - m01_program_roi
+      - m01_vroom_motivation
+      procedures:
+      - m01_p_reward_design
+      - m01_p_fix_failed_kpi
+      - m04_proc_kpi_integrity_check
+    sanity:
+    - tổng trọng số KPI bằng 100%
+    - mốc KPI không vượt xa năng suất lịch sử mà không có lý do
+    - có kiểm tra gaming và chất lượng song song với số lượng
+    - ngân sách thưởng nằm trong khả năng chi trả
+    decision: Triển khai thử nghiệm nhỏ nếu ROI thận trọng dương và không có rủi ro gaming lớn; nếu mốc KPI kéo giãn quá lớn thì hạ mốc hoặc chia mốc theo bậc
+    output: Bảng KPI/thưởng đề xuất (rpt_reward_kpi_design) + ROI + kế hoạch thử nghiệm 1-2 kỳ
+  pb_turnover_cost_roi:
+    goal: Lượng hóa chi phí nghỉ việc và đánh giá khoản chi để giữ người có đáng không
+    modules:
+    - m01
+    - m02
+    - m04
+    - m08
+    intake:
+    - số nhân sự bình quân và số người nghỉ trong kỳ
+    - lương trung bình và chi phí tuyển, đào tạo, thời gian hụt năng suất
+    - lý do nghỉ việc (phỏng vấn thôi việc)
+    - kết quả eNPS nếu có
+    - ngân sách chương trình giữ người
+    steps:
+    - Tính tỷ lệ nghỉ việc (m02_turnover_rate), nêu rõ kỳ và định nghĩa (tự nguyện/không tự nguyện)
+    - Tính chi phí nghỉ việc (m02_turnover_cost) tách các thành phần; gắn nhãn số thật hay GIẢ ĐỊNH
+    - Tính chi phí thay thế tăng thêm nếu nghỉ việc tăng (m01_replacement_cost_delta) để thấy rủi ro biên
+    - 'Phân tích nguyên nhân theo nhóm: tiền, quản lý trực tiếp, phát triển, văn hóa; dùng eNPS (m02_enps) như chỉ báo sớm'
+    - Chọn can thiệp (lương, huấn luyện quản lý, lộ trình, ghi nhận) và tính ROI (m01_program_roi) với 3 kịch bản; m01_p_roi
+    - Xác định hoàn vốn, độ nhạy theo mức giảm nghỉ việc đạt được
+    refs:
+      frameworks:
+      - m01_three_tier_framework
+      - m02_performance_metrics_map
+      formulas:
+      - m02_turnover_rate
+      - m02_turnover_cost
+      - m01_replacement_cost_delta
+      - m01_program_roi
+      - m02_enps
+      - m02_roi_intervention
+      procedures:
+      - m01_p_roi
+      - m02_proc_diagnose_cost
+    sanity:
+    - tỷ lệ nghỉ việc trong [0,1] và nhất quán kỳ
+    - chi phí thay thế có đủ các thành phần, không đếm trùng
+    - ROI nêu rõ phần cải thiện quy cho can thiệp và giả định
+    - cỡ mẫu eNPS nhỏ phải cảnh báo
+    decision: Đầu tư khi ROI thận trọng vẫn dương hoặc hoàn vốn trong ngưỡng chấp nhận; nếu nguyên nhân chính là quản lý trực tiếp thì ưu tiên phát triển quản lý hơn tăng phúc lợi chung
+    output: Bảng chi phí nghỉ việc + ROI 3 kịch bản (rpt_turnover_roi)
+  pb_leadership_style_choice:
+    goal: Chọn và điều chỉnh phong cách lãnh đạo theo mức sẵn sàng của từng nhân sự, giai đoạn tổ chức và tình huống
+    modules:
+    - m02
+    - m08
+    - m01
+    intake:
+    - vai trò và số người quản lý
+    - nhiệm vụ cụ thể cần giao
+    - năng lực và động lực hiện tại của từng người (bằng chứng hành vi)
+    - giai đoạn tổ chức, mức khẩn cấp
+    - phong cách hiện tại và phản hồi nhận được
+    steps:
+    - 'Xác định tình huống bằng m02_decision_tree: loại nhiệm vụ, thời gian, rủi ro, mức khủng hoảng'
+    - Chẩn đoán D-level cho từng người theo nhiệm vụ cụ thể, từ điểm Năng lực và Động lực (m02_dlevel_diagnosis; m02_proc_diagnose_d)
+    - 'Ghép S-style tương ứng (SLII: S1 chỉ đạo, S2 huấn luyện, S3 hỗ trợ, S4 ủy quyền); D-level thay đổi theo nhiệm vụ nên một người có thể có nhiều D'
+    - Đối chiếu với giai đoạn tổ chức (m02_style_by_stage) và nguy cơ 'văn hóa không scale' (m02_proc_scale_style)
+    - Tính tỷ lệ khớp phong cách trong đội (m02_style_fit_rate) để thấy lệch ở đâu
+    - Đặt kế hoạch điều chỉnh 30 ngày, chỉ số theo dõi (eNPS, nghỉ việc, chất lượng bàn giao)
+    refs:
+      frameworks:
+      - m02_situational_sii
+      - m02_decision_tree
+      - m02_style_by_situation
+      - m02_style_by_stage
+      - m02_classic_styles
+      - m02_path_goal
+      formulas:
+      - m02_dlevel_diagnosis
+      - m02_style_fit_rate
+      - m02_enps
+      - m02_turnover_rate
+      procedures:
+      - m02_proc_choose_style
+      - m02_proc_diagnose_d
+      - m02_proc_scale_style
+    sanity:
+    - D-level gắn với nhiệm vụ cụ thể, không gắn nhãn cả con người
+    - chẩn đoán dựa trên hành vi quan sát
+    - khuyến nghị không rập khuôn một phong cách cho mọi người
+    - lưu ý khoảng cách quyền lực VN khi ủy quyền
+    decision: Chọn S-style theo D-level của từng nhiệm vụ; khủng hoảng thì tạm chỉ đạo (S1) có giải thích; ủy quyền (S4) chỉ khi năng lực và động lực đều cao
+    output: Bảng ghép nhân sự - D-level - S-style - hành động (rpt_leadership_style_plan)
+  pb_leader_360_development:
+    goal: Đo điểm mù của lãnh đạo/founder bằng 360 độ và lập kế hoạch phát triển 90 ngày có đo lường
+    modules:
+    - m02
+    - m08
+    intake:
+    - người được đánh giá và vai trò
+    - danh sách người đánh giá (cấp trên, ngang hàng, cấp dưới) và cam kết ẩn danh
+    - mục tiêu phát triển
+    - điểm tự đánh giá và điểm của người khác
+    - chi phí chương trình
+    steps:
+    - Thiết kế 360 độ (m02_360; m08_proc_diagnose_leader_eq) với tối thiểu 3 người đánh giá mỗi nhóm để giữ ẩn danh
+    - Tính điểm trung bình theo domain và gap tổng (m08_domain_mean_overall_gap); tính khoảng cách điểm mù tự đánh giá trừ người khác (m08_blind_spot_gap)
+    - 'Nếu dùng MLQ: tính điểm yếu tố (m02_mlq_factor_score)'
+    - Chọn 1-2 năng lực ưu tiên có gap lớn và tác động cao; nếu founder charismatic/độc đoán thì thiết lập đối trọng (m02_proc_guardrails)
+    - Lập kế hoạch 90 ngày (m08_proc_90_day; m02_plan_90days) với hành vi cụ thể, người giám sát, mốc đo lại
+    - Tính ROI can thiệp (m02_roi_intervention) và theo dõi eNPS (m02_enps)
+    refs:
+      frameworks:
+      - m02_360
+      - m02_mlq
+      - m02_commitment_3
+      - m02_plan_90days
+      - m08_goleman_4_domains_esci
+      - m08_90_day_plan
+      formulas:
+      - m08_blind_spot_gap
+      - m08_domain_mean_overall_gap
+      - m02_mlq_factor_score
+      - m02_enps
+      - m02_roi_intervention
+      procedures:
+      - m08_proc_diagnose_leader_eq
+      - m08_proc_90_day
+      - m02_proc_guardrails
+    sanity:
+    - ẩn danh được bảo vệ
+    - điểm trong thang và câu đảo điểm đã xử lý
+    - gap dương lớn nghĩa là tự đánh giá cao hơn người khác
+    - không dùng điểm 360 để kỷ luật
+    decision: Tập trung vào 1-2 điểm mù gây tổn thất lớn nhất; chỉ mở rộng khi hành vi mới ổn định và được người khác ghi nhận
+    output: Báo cáo 360 + kế hoạch 90 ngày (rpt_leader_360_plan)
+  pb_team_diagnosis_rebuild:
+    goal: Chẩn đoán một nhóm đang kẹt ở đâu và lập kế hoạch sửa/xây nhóm trong 1-2 việc ưu tiên
+    modules:
+    - m03
+    - m06
+    - m02
+    - m10
+    intake:
+    - thành phần nhóm, vai trò, thời gian tồn tại
+    - triệu chứng (cãi nhau, im lặng, trễ hạn, né trách nhiệm)
+    - mục tiêu nhóm và đo lường hiện tại
+    - kết quả pulse survey nếu có
+    - phong cách lãnh đạo hiện tại
+    steps:
+    - 'Chạy chẩn đoán nhanh m03_proc_diagnose_team: xác định giai đoạn Tuckman và dấu hiệu Storming mãn tính'
+    - 'Lencioni: tìm tầng hỏng thấp nhất trong chuỗi tin cậy - tranh luận - cam kết - trách nhiệm - kết quả; sửa từ dưới lên'
+    - Đo an toàn tâm lý (m03_psych_safety_score) và pulse 5 yếu tố Aristotle (m03_pulse_average)
+    - 'Belbin: tính độ phủ vai trò (m03_belbin_coverage), tìm vai trò thiếu và ''điểm yếu cho phép'''
+    - 'GRPI: kiểm tra Goals, Roles, Processes, Interpersonal theo thứ tự; lập Team Charter và RACI nếu vai trò mờ'
+    - Tính chi phí chậm trễ do Storming (m03_storming_delay_cost) và ROI can thiệp (m03_team_program_roi)
+    - Chọn 1-2 việc làm ngay (m03_proc_build_trust hoặc m03_proc_fix_toxic_team nếu độc hại), đặt cuộc họp nhìn lại và chỉ số theo dõi
+    refs:
+      frameworks:
+      - m03_tuckman
+      - m03_lencioni
+      - m03_project_aristotle
+      - m03_psych_safety
+      - m03_belbin
+      - m03_grpi
+      - m03_team_charter
+      - m03_raci
+      - m03_t7
+      formulas:
+      - m03_psych_safety_score
+      - m03_pulse_average
+      - m03_belbin_coverage
+      - m03_storming_delay_cost
+      - m03_storming_overrun_ratio
+      - m03_team_program_roi
+      procedures:
+      - m03_proc_diagnose_team
+      - m03_proc_new_team
+      - m03_proc_build_trust
+      - m03_proc_fix_toxic_team
+    sanity:
+    - pulse ẩn danh và cỡ mẫu đủ
+    - không kết luận 'cá nhân là vấn đề' trước khi kiểm tra cấu trúc (mục tiêu, vai trò, quy trình)
+    - tối đa 1-2 can thiệp tại một thời điểm
+    decision: Sửa tầng thấp nhất của chuỗi Lencioni trước; nếu vấn đề là cấu trúc (GRPI) thì sửa cấu trúc trước khi can thiệp tâm lý
+    output: Hồ sơ nhóm (rpt_team_profile) + kế hoạch can thiệp
+  pb_group_decision_quality:
+    goal: 'Nâng chất lượng quyết định nhóm: phân vai, tránh groupthink, tranh luận rồi cam kết, ghi nhật ký quyết định'
+    modules:
+    - m09
+    - m03
+    - m05
+    intake:
+    - quyết định cần đưa ra, tác động và khả năng đảo ngược
+    - những ai tham gia và ai quyết định cuối
+    - dấu hiệu groupthink (đồng thuận nhanh, không ai phản biện)
+    - thời hạn quyết định
+    steps:
+    - Phân loại quyết định (Type 1 đảo ngược khó, Type 2 dễ) và chọn kỹ thuật (m09_proc_diagnose_choose_tool; m09_technique_matching)
+    - Phân vai quyết định bằng RAPID/DACI/RACI (m09_rapid_daci_raci); chọn mức tham gia theo Vroom-Yetton-Jago
+    - 'Kiểm tra triệu chứng groupthink và áp dụng biện pháp phòng ngừa (m09_proc_groupthink_prevention): người phản biện được chỉ định, ý kiến viết trước khi họp, lãnh đạo nói sau'
+    - Chạy pre-mortem 90 phút cho quyết định lớn (m09_proc_premortem)
+    - Giải xung đột nội dung bằng điểm có trọng số (m03_weighted_decision_score), sau đó cam kết (m03_proc_commit_decision)
+    - Ghi Decision Log gồm giả định, tiêu chí, ngày hậu kiểm (m09_proc_decision_log)
+    refs:
+      frameworks:
+      - m09_groupthink
+      - m09_group_phenomena
+      - m09_rapid_daci_raci
+      - m09_vroom_yetton_jago
+      - m09_premortem
+      - m09_type1_type2_amazon
+      - m03_model_selection
+      formulas:
+      - m03_weighted_decision_score
+      - m09_weighted_decision_matrix
+      procedures:
+      - m09_proc_diagnose_choose_tool
+      - m09_proc_groupthink_prevention
+      - m09_proc_premortem
+      - m03_proc_commit_decision
+      - m09_proc_decision_log
+    sanity:
+    - mỗi quyết định có đúng một người chịu trách nhiệm cuối
+    - trọng số cộng 100%
+    - ý kiến bất đồng được ghi lại
+    - thời hạn quyết định phù hợp mức đảo ngược
+    decision: Quyết định Type 2 thì quyết nhanh với khoảng 70% thông tin; Type 1 thì thêm phản biện và pre-mortem trước khi cam kết
+    output: Biên bản/ma trận quyết định (rpt_decision_matrix) + Decision Log
+  pb_decision_matrix_ev:
+    goal: Chọn giữa các phương án bằng ma trận trọng số, giá trị kỳ vọng và kiểm tra thiên kiến
+    modules:
+    - m09
+    - m05
+    intake:
+    - các phương án (2-5)
+    - tiêu chí và mức quan trọng
+    - dữ liệu chi phí, lợi ích, xác suất
+    - khoản đã chi (chi phí chìm)
+    - mức chịu rủi ro tối đa
+    steps:
+    - Chẩn đoán loại quyết định (Cynefin) và kỹ thuật phù hợp (m09_proc_diagnose_choose_tool)
+    - 'Ma trận trọng số (m09_proc_weighted_matrix): tiêu chí, trọng số cộng 100%, chuẩn hóa tiêu chí ''càng thấp càng tốt'' (m09_normalized_criteria_score), tính điểm (m09_weighted_decision_matrix)'
+    - 'Với phương án có rủi ro: cây quyết định và EV (m09_proc_ev_tree; m09_expected_value), tính xác suất hòa EV (m09_breakeven_probability)'
+    - Loại chi phí chìm; so sánh giá trị ròng hướng tới tương lai (m09_proc_sunk_cost_check; m09_forward_looking_value)
+    - Chi phí - lợi ích và hòa vốn nếu cần (m09_cost_benefit; m09_breakeven_revenue); kiểm tra ngưỡng chịu lỗ (m09_leverage_loss_threshold)
+    - Rà thiên kiến bằng m09_bias_catalog (anchoring, xác nhận, tự tin quá mức); chạy độ nhạy trọng số rồi chốt
+    refs:
+      frameworks:
+      - m09_cynefin
+      - m09_bias_catalog
+      - m09_decision_tree_ev
+      - m09_technique_matching
+      - m09_rational_8_steps
+      - m09_ooda
+      formulas:
+      - m09_weighted_decision_matrix
+      - m09_normalized_criteria_score
+      - m09_expected_value
+      - m09_breakeven_probability
+      - m09_forward_looking_value
+      - m09_cost_benefit
+      - m09_breakeven_revenue
+      - m09_leverage_loss_threshold
+      procedures:
+      - m09_proc_diagnose_choose_tool
+      - m09_proc_weighted_matrix
+      - m09_proc_ev_tree
+      - m09_proc_sunk_cost_check
+    sanity:
+    - tổng trọng số = 100%
+    - tổng xác suất mỗi nút = 100%
+    - điểm trong thang và chiều điểm nhất quán
+    - đổi trọng số 10-20% có làm đổi thứ hạng không
+    - chi phí chìm không nằm trong so sánh
+    decision: Chọn phương án điểm cao nhất VÀ nằm trong ngưỡng chịu lỗ; nếu hai phương án chênh nhỏ trong độ nhạy thì chọn phương án dễ đảo ngược hơn
+    output: Ma trận quyết định có trọng số + bảng EV + khuyến nghị (rpt_decision_matrix)
+  pb_culture_diagnosis_ocai:
+    goal: Chẩn đoán văn hóa hiện tại và mong muốn bằng OCAI/CVF, Schein và khảo sát, quy ra con số
+    modules:
+    - m04
+    - m03
+    - m01
+    - m02
+    intake:
+    - quy mô, ngành, giai đoạn
+    - điểm OCAI Now/Preferred (mỗi hồ sơ 4 loại cộng 100)
+    - kết quả khảo sát văn hóa 20 câu, eNPS
+    - dữ liệu nghỉ việc
+    - khoảng cách tuyên bố - thực tế (poster vs hành vi)
+    steps:
+    - 'Chạy m04_proc_diagnose_culture: quan sát 3 tầng Schein (artifacts, espoused values, basic assumptions) và khoảng cách tuyên bố - thực tế'
+    - 'OCAI (m04_proc_ocai_survey): thu điểm Now và Preferred cho Clan/Adhocracy/Market/Hierarchy, mỗi hồ sơ cộng 100'
+    - Tính gap OCAI (m04_ocai_gap) và đọc loại nào cần tăng/giảm
+    - 'Nếu cần: Denison (m04_denison_average_spread) và khảo sát 20 câu (m04_survey_score_change)'
+    - Tính eNPS (m04_enps), tỷ lệ và chi phí nghỉ việc (m04_turnover_rate; m04_turnover_cost) để quy văn hóa ra tiền
+    - Kiểm tra văn hóa phụ giữa các bộ phận (m04_proc_subculture_management) và dấu hiệu độc hại (m04_healthy_vs_toxic_diagnostic)
+    - Ưu tiên 1-2 thay đổi hành vi có thể làm trong 90 ngày
+    refs:
+      frameworks:
+      - m04_schein_three_levels
+      - m04_cvf_ocai
+      - m04_denison_model
+      - m04_model_comparison
+      - m04_healthy_vs_toxic_diagnostic
+      - m04_culture_survey_20q
+      - m04_hofstede_dimensions
+      formulas:
+      - m04_ocai_gap
+      - m04_denison_average_spread
+      - m04_survey_score_change
+      - m04_enps
+      - m04_turnover_rate
+      - m04_turnover_cost
+      procedures:
+      - m04_proc_diagnose_culture
+      - m04_proc_ocai_survey
+      - m04_proc_subculture_management
+    sanity:
+    - mỗi hồ sơ OCAI cộng đúng 100
+    - khảo sát ẩn danh, cỡ mẫu nêu rõ
+    - gap là tổng độ lệch tuyệt đối, không phải phần trăm
+    - 'không kết luận ''văn hóa tốt/xấu'' tuyệt đối: chỉ phù hợp hay không phù hợp chiến lược'
+    decision: Thu hẹp gap ở loại văn hóa gắn trực tiếp với chiến lược; nếu khoảng cách lớn do hệ thống thưởng/KPI dạy sai hành vi thì sửa cơ chế trước khi truyền thông giá trị
+    output: Báo cáo văn hóa OCAI (rpt_culture_ocai)
+  pb_culture_build_change:
+    goal: 'Xây hoặc đổi văn hóa theo giai đoạn: giá trị cốt lõi, cơ chế, Kotter, Việt hóa, ROI'
+    modules:
+    - m04
+    - m07
+    - m02
+    - m05
+    intake:
+    - giai đoạn công ty và quy mô
+    - văn hóa hiện tại và mong muốn (kết quả pb_culture_diagnosis_ocai)
+    - người dẫn dắt và liên minh
+    - ngân sách và khung thời gian
+    - ràng buộc văn hóa VN (khoảng cách quyền lực, thể diện)
+    steps:
+    - Xác định giá trị cốt lõi qua workshop (m04_core_values_workshop) và chuyển thành hành vi quan sát được
+    - Chọn lộ trình theo giai đoạn (m04_startup_culture_stages) hoặc Kotter 8 bước (m04_proc_change_culture; m04_kotter_8_steps)
+    - Kiểm tra KPI/thưởng đang dạy hành vi gì (m04_proc_kpi_integrity_check) và chỉnh cơ chế
+    - Việt hóa thực hành phương Tây sang bối cảnh PDI cao (m04_proc_localize_for_vn) và tính khoảng cách văn hóa nếu có đối tác nước ngoài (m04_hofstede_cultural_distance)
+    - 'Neo vào văn hóa: tuyển, thăng chức, ghi nhận (m07_proc_anchor)'
+    - Tính ROI chương trình (m04_culture_roi) và tiết kiệm nghỉ việc (m04_turnover_saving), đo lại bằng eNPS và khảo sát
+    refs:
+      frameworks:
+      - m04_kotter_8_steps
+      - m04_startup_culture_stages
+      - m04_core_values_workshop
+      - m04_context_playbooks
+      - m04_hofstede_dimensions
+      formulas:
+      - m04_culture_roi
+      - m04_turnover_saving
+      - m04_survey_score_change
+      - m04_enps
+      - m04_hofstede_cultural_distance
+      procedures:
+      - m04_proc_change_culture
+      - m04_proc_localize_for_vn
+      - m04_proc_kpi_integrity_check
+      - m07_proc_anchor
+    sanity:
+    - giá trị có hành vi minh họa và có hệ quả (thưởng/phạt)
+    - lãnh đạo cấp cao làm gương
+    - ROI nêu giả định và thời gian đo
+    - không sao chép nguyên văn văn hóa công ty nước ngoài
+    decision: Chỉ đổi văn hóa khi có người bảo trợ cấp cao và cơ chế khớp; nếu chưa, bắt đầu từ 2-3 hành vi mẫu và sửa hệ thống thưởng
+    output: Kế hoạch xây/đổi văn hóa 12-24 tháng (rpt_culture_change_plan)
+  pb_ma_cultural_integration:
+    goal: Đánh giá khoảng cách văn hóa và kế hoạch hợp nhất sau M&A hoặc sáp nhập đội ngũ
+    modules:
+    - m04
+    - m06
+    - m07
+    - m05
+    intake:
+    - 'hai bên: quy mô, quốc gia, ngành, văn hóa quản lý'
+    - điểm OCAI/Hofstede mỗi bên (hoặc ước lượng có nhãn)
+    - kế hoạch hợp nhất (nhanh/chậm, giữ/xóa thương hiệu)
+    - nhân sự then chốt cần giữ
+    - ngân sách tích hợp
+    steps:
+    - 'Cultural due diligence (m04_proc_ma_due_diligence): thu dữ liệu văn hóa hai bên'
+    - Tính khoảng cách Hofstede (m04_hofstede_cultural_distance) và chênh lệch hồ sơ OCAI (m04_ocai_profile_difference)
+    - Xác định văn hóa phụ cần giữ (m04_proc_subculture_management) và điểm va chạm (ra quyết định, rủi ro, thứ bậc)
+    - Chọn chiến lược hợp nhất (m04_context_playbooks) và cách giải quyết xung đột phù hợp văn hóa VN (m06_vn_culture_playbook)
+    - Tính chi phí thay thế nếu ép hợp nhất gây nghỉ việc (m06_turnover_replacement_cost; m04_turnover_cost)
+    - Lập bản đồ stakeholder và kế hoạch giữ người then chốt
+    refs:
+      frameworks:
+      - m04_context_playbooks
+      - m04_hofstede_dimensions
+      - m04_cvf_ocai
+      - m06_vn_culture_playbook
+      formulas:
+      - m04_hofstede_cultural_distance
+      - m04_ocai_profile_difference
+      - m06_turnover_replacement_cost
+      - m04_turnover_cost
+      procedures:
+      - m04_proc_ma_due_diligence
+      - m04_proc_subculture_management
+    sanity:
+    - hồ sơ Hofstede VN và quốc gia khác gắn nhãn ước tính
+    - không kết luận văn hóa bên nào 'tốt hơn'
+    - chi phí nghỉ việc ghi rõ giả định tỷ lệ
+    decision: 'Khoảng cách lớn: hợp nhất từng bước, giữ văn hóa phụ ở nơi tạo giá trị; không ép đồng nhất nhanh khi nhân sự then chốt dễ rời đi'
+    output: Báo cáo rủi ro văn hóa M&A và kế hoạch hợp nhất (rpt_ma_culture)
+  pb_power_map_influence:
+    goal: Lập bản đồ quyền lực, đếm liên minh và thiết kế kế hoạch ảnh hưởng đạo đức cho một quyết định
+    modules:
+    - m05
+    - m02
+    - m04
+    - m06
+    intake:
+    - quyết định/dự án cần thông qua
+    - danh sách stakeholder, vai trò, quyền biểu quyết/phủ quyết
+    - quan hệ phụ thuộc giữa các bên
+    - mục tiêu và nguồn lực của người cần ảnh hưởng
+    - bối cảnh văn hóa (thứ bậc, gia đình)
+    steps:
+    - 'Lập power map (m05_proc_power_map): nguồn quyền lực (French & Raven), mức phụ thuộc (m05_emerson_dependence), tỷ lệ quyền lực (m05_power_ratio)'
+    - Phân loại stakeholder trên ma trận Mendelow (m05_mendelow_class)
+    - 'Nếu có biểu quyết: đếm liên minh, ngưỡng 2/3, quyền phủ quyết, biên an toàn (m05_proc_count_coalition; m05_cloture_threshold; m05_coalition_margin; m05_veto_check)'
+    - Thiết kế kế hoạch ảnh hưởng (m05_proc_influence_plan; m05_influence_canvas) chọn chiến thuật Yukl/Cialdini phù hợp từng người
+    - Kiểm tra đạo đức 5 lăng kính (m05_proc_ethics_check; m05_velasquez_score) trước khi hành động
+    - Phòng thủ và giảm chính trị mặt tối nếu cần (m05_proc_defend; m05_proc_reduce_politics)
+    refs:
+      frameworks:
+      - m05_french_raven
+      - m05_emerson_balancing
+      - m05_mendelow_grid
+      - m05_power_map
+      - m05_influence_canvas
+      - m05_yukl_9
+      - m05_cialdini_7
+      - m05_velasquez_5
+      formulas:
+      - m05_emerson_dependence
+      - m05_power_ratio
+      - m05_mendelow_class
+      - m05_cloture_threshold
+      - m05_coalition_margin
+      - m05_veto_check
+      - m05_velasquez_score
+      - m05_dependence_index_sme
+      procedures:
+      - m05_proc_power_map
+      - m05_proc_count_coalition
+      - m05_proc_influence_plan
+      - m05_proc_ethics_check
+    sanity:
+    - số phiếu cộng khớp tổng số thành viên
+    - điểm Velasquez trong thang 0-2 mỗi lăng kính
+    - không đề xuất thao túng, lừa dối hay đe dọa
+    - nhãn giả định cho điểm quyền lực/quan tâm
+    decision: Chỉ thực hiện chiến thuật vượt qua kiểm tra đạo đức; ưu tiên liên minh minh bạch dựa trên lợi ích chung
+    output: Power map + kế hoạch ảnh hưởng (rpt_power_map)
+  pb_conflict_diagnosis_resolution:
+    goal: Chẩn đoán xung đột (loại, mức leo thang, nguồn gốc), chọn cách xử lý và đo chi phí
+    modules:
+    - m06
+    - m03
+    - m08
+    - m10
+    intake:
+    - các bên, vai trò, quyền lực tương đối
+    - diễn biến sự việc theo thời gian và hành vi cụ thể
+    - mục tiêu, lợi ích, lo ngại mỗi bên
+    - đã thử gì
+    - ảnh hưởng đến công việc (trễ hạn, nghỉ việc, doanh thu)
+    steps:
+    - 'Điền biểu mẫu chẩn đoán m06_conflict_diagnosis_template / m06_proc_diagnose_conflict: tách sự kiện khỏi diễn giải'
+    - Phân loại theo Jehn (nhiệm vụ, quan hệ, quy trình) và xác định bậc Glasl; bậc 1-3 tự giải, 4-6 cần can thiệp có cấu trúc/hòa giải, 7-9 cần bên thứ ba mạnh
+    - Xác định phong cách TKI của các bên (m06_tki_scoring) và điều chỉnh theo Dual Concern
+    - Phân tích trường lực (m06_force_field_net) để thấy lực đẩy/lực cản giải quyết
+    - Tính chi phí xung đột hằng tháng và tỷ lệ trên lợi nhuận (m06_conflict_cost; m06_conflict_cost_ratio)
+    - 'Chọn can thiệp: IBR (m06_proc_ibr_negotiation), hòa giải (m06_proc_mediation) hoặc quy trình sớm của quản lý (m06_proc_early_intervention_manager); điều chỉnh theo văn hóa thể diện VN'
+    - So sánh kịch bản leo thang với giải quyết sớm (m06_escalation_profit_scenarios)
+    refs:
+      frameworks:
+      - m06_jehn_conflict_types
+      - m06_glasl
+      - m06_tki
+      - m06_dual_concern
+      - m06_conflict_diagnosis_template
+      - m06_lewin_force_field
+      - m06_mediation_process
+      - m06_vn_culture_playbook
+      - m10_conflict_by_layer
+      formulas:
+      - m06_conflict_cost
+      - m06_conflict_cost_ratio
+      - m06_tki_scoring
+      - m06_force_field_net
+      - m06_escalation_profit_scenarios
+      procedures:
+      - m06_proc_diagnose_conflict
+      - m06_proc_early_intervention_manager
+      - m06_proc_mediation
+      - m06_proc_ibr_negotiation
+    sanity:
+    - nghe cả hai bên trước khi kết luận
+    - bậc Glasl dựa trên hành vi quan sát
+    - chi phí xung đột có giả định rõ
+    - không gắn nhãn tính cách; không ép hòa hợp giả tạo
+    - vấn đề quấy rối/pháp lý chuyển kênh chuyên trách
+    decision: 'Chọn can thiệp theo bậc Glasl: sớm thì IBR/đối thoại, bậc 4-6 thì hòa giải, cao hơn thì bên thứ ba; mốc đánh giá lại sau 2-4 tuần'
+    output: Biên bản chẩn đoán xung đột (rpt_conflict_record) + kế hoạch can thiệp
+  pb_negotiation_prep:
+    goal: 'Chuẩn bị đàm phán theo lợi ích: ZOPA, BATNA, mốc giá, phương án tích hợp'
+    modules:
+    - m06
+    - m08
+    - m05
+    - m10
+    intake:
+    - đối tượng đàm phán, quan hệ dài hạn hay một lần
+    - mục tiêu, giá giữ chỗ (reservation price) và BATNA của mình
+    - ước lượng của đối phương
+    - các vấn đề đàm phán có thể trao đổi
+    - thời hạn và quyền lực
+    steps:
+    - Xác định BATNA/WATNA hai bên và tính giá giữ chỗ (m06_seller_reservation_price; m06_buyer_reservation_price; m06_max_cogs_for_margin)
+    - Tính ZOPA (m06_zopa) và kiểm tra có tồn tại không (m06_zopa_batna_process)
+    - Tách vị trí khỏi lợi ích (IBR, m06_proc_ibr_negotiation); liệt kê các vấn đề có thể trao đổi
+    - 'Tích hợp: mở rộng miếng bánh, log rolling (m06_log_rolling_value), thỏa thuận có điều kiện; phân chia thì dùng anchoring (m06_anchoring_share) và kế hoạch nhượng bộ'
+    - Chia thặng dư theo giá chốt (m06_surplus_share)
+    - Đọc đối phương như giả thuyết (m10_proc_read_person) và chuẩn bị kiểm soát cảm xúc (m08_proc_resolve_conflict)
+    refs:
+      frameworks:
+      - m06_ibr
+      - m06_zopa_batna_process
+      - m06_integrative_tactics
+      - m06_distributive_negotiation
+      - m08_win_win_conflict_framework
+      - m10_value_extraction
+      formulas:
+      - m06_zopa
+      - m06_surplus_share
+      - m06_anchoring_share
+      - m06_seller_reservation_price
+      - m06_buyer_reservation_price
+      - m06_log_rolling_value
+      - m06_max_cogs_for_margin
+      procedures:
+      - m06_proc_ibr_negotiation
+      - m08_proc_resolve_conflict
+      - m10_proc_read_person
+    sanity:
+    - giá giữ chỗ người bán nhỏ hơn hoặc bằng người mua mới có ZOPA
+    - ước lượng về đối phương gắn nhãn giả định
+    - không đặt BATNA ảo
+    - không dùng kỹ thuật lừa dối
+    decision: Chỉ rời bàn khi đề nghị kém hơn BATNA; ưu tiên phương án tích hợp nếu quan hệ dài hạn
+    output: Bản chuẩn bị đàm phán (rpt_negotiation_prep)
+  pb_dispute_continue_or_settle:
+    goal: Quyết định tiếp tục tranh chấp hay dàn xếp bằng giá trị kỳ vọng và loại chi phí chìm
+    modules:
+    - m06
+    - m09
+    intake:
+    - giá trị tranh chấp, xác suất thắng thua ước lượng
+    - chi phí tiếp tục (luật sư, thời gian, cơ hội)
+    - đề nghị dàn xếp hiện có
+    - khoản đã chi
+    - tác động quan hệ/uy tín
+    steps:
+    - Liệt kê các nhánh và xác suất (loại trừ nhau, cộng 100%)
+    - Tính EV tiếp tục so với dàn xếp (m06_ev_continue_vs_settle; m09_expected_value)
+    - Loại chi phí chìm (m06_proc_stop_or_continue; m09_forward_looking_value)
+    - Tính thời gian hoàn vốn nếu có (m06_payback_months) và độ nhạy xác suất
+    - So sánh hòa giải, trọng tài, tòa án (m06_adr_comparison), nhắc cần luật sư xác nhận pháp lý
+    - Ghi quyết định vào Decision Log
+    refs:
+      frameworks:
+      - m06_adr_comparison
+      - m06_pitfalls_toolkit
+      - m09_decision_tree_ev
+      formulas:
+      - m06_ev_continue_vs_settle
+      - m09_expected_value
+      - m09_forward_looking_value
+      - m06_payback_months
+      procedures:
+      - m06_proc_stop_or_continue
+      - m09_proc_sunk_cost_check
+    sanity:
+    - xác suất là ước lượng chủ quan, nêu nhãn
+    - có phân tích độ nhạy
+    - không để chi phí chìm quyết định
+    - ý kiến pháp lý cần luật sư
+    decision: Dàn xếp khi EV dàn xếp cao hơn EV tiếp tục theo ước lượng thận trọng và quan hệ có giá trị
+    output: Bảng EV tiếp tục/dàn xếp + khuyến nghị
+  pb_change_rollout:
+    goal: Kiểm tra điều kiện, thiết kế lộ trình và xử lý kháng cự cho một thay đổi trong SME, kèm hoàn vốn
+    modules:
+    - m07
+    - m04
+    - m02
+    - m03
+    intake:
+    - thay đổi cần làm, phạm vi, người bị ảnh hưởng
+    - lý do khẩn cấp và tầm nhìn
+    - đội dẫn dắt và người bảo trợ
+    - kháng cự quan sát được
+    - chi phí một lần và lợi ích dự kiến
+    steps:
+    - 'Chẩn đoán sẵn sàng (m07_proc_readiness_diagnosis): D x V x F > R (m07_beckhard_harris); thấp một yếu tố thì sửa yếu tố đó trước'
+    - Chấm bảng Kotter 8 bước (m07_kotter_scorecard) để biết bước nào đang thiếu
+    - Lập bản đồ stakeholder (m07_stakeholder_analysis) và lực trường Lewin (m07_force_field_balance)
+    - Chẩn đoán điểm nghẽn từng nhóm bằng ADKAR (m07_proc_adkar_cycle; m07_adkar_score)
+    - Chọn cách xử lý kháng cự (m07_proc_resistance_handling) và kế hoạch giao tiếp lặp 7-10 lần (m07_comm_repetition; m07_comm_plan)
+    - Tính lợi ích ròng, chi phí một lần và hoàn vốn theo đường cong chấp nhận (m07_proc_change_roi; m07_change_net_benefit; m07_change_onetime_cost; m07_change_payback; m07_adoption_rate)
+    - Neo vào văn hóa (m07_proc_anchor) và đặt chỉ số dẫn dắt/kết quả (m07_change_metrics)
+    refs:
+      frameworks:
+      - m07_kotter_8_steps
+      - m07_adkar
+      - m07_lewin_three_stage
+      - m07_stakeholder_analysis
+      - m07_resistance_strategies
+      - m07_change_governance
+      - m07_comm_plan
+      - m07_change_metrics
+      - m07_change_pitfalls_table
+      formulas:
+      - m07_beckhard_harris
+      - m07_kotter_scorecard
+      - m07_force_field_balance
+      - m07_adkar_score
+      - m07_adoption_rate
+      - m07_comm_repetition
+      - m07_change_net_benefit
+      - m07_change_onetime_cost
+      - m07_change_payback
+      procedures:
+      - m07_proc_readiness_diagnosis
+      - m07_proc_kotter_rollout
+      - m07_proc_adkar_cycle
+      - m07_proc_resistance_handling
+      - m07_proc_change_roi
+      - m07_proc_anchor
+    sanity:
+    - điểm D, V, F, R là phán đoán, ghi bằng chứng
+    - hoàn vốn dựa trên đường cong chấp nhận thực tế, không giả định 100% ngay
+    - kháng cự được lắng nghe như thông tin
+    - người bảo trợ cụ thể
+    decision: Chỉ khởi động khi D x V x F > R; nếu không thì tăng D (khẩn cấp), V (tầm nhìn) hoặc F (bước đầu khả thi) hoặc giảm R trước
+    output: Kế hoạch thay đổi (rpt_change_plan)
+  pb_eq_development:
+    goal: 'Phát triển trí tuệ cảm xúc cho lãnh đạo/quản lý: đo điểm mù, quy trình khi bị kích hoạt, phản hồi, ROI'
+    modules:
+    - m08
+    - m02
+    - m06
+    - m10
+    intake:
+    - vai trò và tình huống kích hoạt cảm xúc
+    - điểm tự đánh giá 12 câu hoặc 360
+    - phản hồi của đồng nghiệp
+    - ngân sách và thời gian
+    - bối cảnh văn hóa (thể diện)
+    steps:
+    - Tự đánh giá nhanh (m08_eq_self_assessment_score) và 360 nếu có (m08_proc_diagnose_leader_eq; m08_blind_spot_gap; m08_domain_mean_overall_gap)
+    - Chọn 1-2 năng lực ESCI ưu tiên
+    - Huấn luyện quy trình phản hồi khi bị kích hoạt (m08_proc_calm_response; m08_amygdala_pause_protocol)
+    - Thực hành phản hồi và khen cụ thể, riêng tư, giữ thể diện (m08_proc_give_feedback)
+    - Chọn phong cách lãnh đạo theo tình huống (m08_proc_choose_leadership_style)
+    - Lập kế hoạch 90 ngày (m08_proc_90_day) và tính ROI (m08_proc_eq_program_roi; m08_eq_program_roi; m08_replacement_cost)
+    refs:
+      frameworks:
+      - m08_goleman_4_domains_esci
+      - m08_goleman_6_leadership_styles
+      - m08_amygdala_pause_protocol
+      - m08_empathy_map
+      - m08_eq_vietnam_lens
+      - m08_eq_in_work_contexts
+      - m08_90_day_plan
+      formulas:
+      - m08_eq_self_assessment_score
+      - m08_blind_spot_gap
+      - m08_domain_mean_overall_gap
+      - m08_eq_program_roi
+      - m08_replacement_cost
+      procedures:
+      - m08_proc_diagnose_leader_eq
+      - m08_proc_calm_response
+      - m08_proc_give_feedback
+      - m08_proc_choose_leadership_style
+      - m08_proc_90_day
+      - m08_proc_eq_program_roi
+    sanity:
+    - điểm tự chấm chỉ tham khảo, không phải đo lường lâm sàng
+    - không gán nhãn 'EQ thấp' cho cá nhân
+    - ROI nêu rõ giả định về giảm nghỉ việc
+    - hỗ trợ chuyên gia nếu có dấu hiệu sức khỏe tinh thần
+    decision: Tập trung 1-2 hành vi cụ thể mỗi 30 ngày, đo lại bằng phản hồi người khác chứ không chỉ tự đánh giá
+    output: Kế hoạch phát triển EQ 90 ngày (rpt_eq_plan)
+  pb_people_reading_discipline:
+    goal: 'Đọc người có kỷ luật trước cuộc gặp/phỏng vấn/đàm phán: giả thuyết thay vì nhãn, kiểm chứng theo thời gian'
+    modules:
+    - m10
+    - m08
+    - m01
+    - m03
+    intake:
+    - đối tượng, bối cảnh gặp, mục tiêu cuộc gặp
+    - dữ liệu hành vi đã quan sát (nếu có)
+    - rủi ro nếu hiểu sai
+    - thời gian và cơ hội kiểm chứng
+    steps:
+    - 'Chạy m10_proc_read_person và quy trình 3 bước (m10_three_step_reading): quan sát hành vi thô, ghi giả thuyết, đặt câu hỏi kiểm chứng'
+    - Phân tích giả thuyết 6 bước (m10_hypothesis_analysis) để chống hiệu ứng lừa dối lần đầu gặp và Halo
+    - Chiếu giả thuyết lên bản đồ 7 tầng (m10_seven_layer_map) chỉ ở Tầng 1-4; không suy diễn Tầng 5-7
+    - Dùng bộ câu hỏi theo tầng (m10_question_bank; m10_value_extraction) và 5 nguyên tắc vàng (m10_golden_rules)
+    - Điều chỉnh cách giao tiếp theo bảng tham chiếu nhanh (m10_quick_reference_table), giữ khả năng sửa giả thuyết
+    - Đặt điểm kiểm chứng sau 2-4 tuần bằng hành vi thật
+    refs:
+      frameworks:
+      - m10_three_step_reading
+      - m10_hypothesis_analysis
+      - m10_seven_layer_map
+      - m10_golden_rules
+      - m10_question_bank
+      - m10_value_extraction
+      - m10_quick_reference_table
+      formulas:
+      - m10_turnover_rate
+      procedures:
+      - m10_proc_read_person
+    sanity:
+    - kết luận ghi là giả thuyết, không phải sự thật
+    - không suy luận từ tuổi, giới, vùng miền, ngoại hình
+    - không dùng làm căn cứ duy nhất để quyết định về con người
+    - không thu thập thông tin riêng tư không cần thiết
+    decision: Hành động theo giả thuyết ít rủi ro nhất và kiểm chứng; nếu hành vi thật mâu thuẫn thì sửa giả thuyết
+    output: Phiếu đọc người dạng giả thuyết (rpt_people_reading)
+  pb_manager_selection_structured:
+    goal: Chọn/thăng chức người quản lý bằng tiêu chí rõ, phỏng vấn có cấu trúc và ma trận trọng số, tránh phân biệt đối xử
+    modules:
+    - m10
+    - m02
+    - m09
+    - m01
+    intake:
+    - vai trò, nhiệm vụ then chốt và giai đoạn đội
+    - danh sách ứng viên và bằng chứng hành vi
+    - tiêu chí và trọng số
+    - đội hiện tại (cần bổ trợ gì)
+    - chi phí thay thế nếu chọn sai
+    steps:
+    - Xác định phong cách/năng lực vai trò cần theo giai đoạn (m02_style_by_situation) và tiêu chí đo được
+    - Phỏng vấn có cấu trúc và đọc người như giả thuyết (m10_proc_select_candidate; m10_question_bank)
+    - Chấm ma trận trọng số (m09_proc_weighted_matrix; m09_weighted_decision_matrix; m09_normalized_criteria_score), trọng số cộng 100%
+    - Kiểm tra bổ trợ đội và tổ hợp rủi ro (m10_proc_build_team; m10_risky_combinations)
+    - Ước tính chi phí chọn sai (m10_replacement_cost)
+    - Ghi Decision Log và kế hoạch theo dõi 90 ngày (m09_proc_decision_log)
+    refs:
+      frameworks:
+      - m10_three_step_reading
+      - m10_hypothesis_analysis
+      - m10_question_bank
+      - m10_risky_combinations
+      - m09_technique_matching
+      formulas:
+      - m09_weighted_decision_matrix
+      - m09_normalized_criteria_score
+      - m10_replacement_cost
+      procedures:
+      - m10_proc_select_candidate
+      - m10_proc_build_team
+      - m09_proc_weighted_matrix
+      - m09_proc_decision_log
+    sanity:
+    - tiêu chí liên quan trực tiếp đến công việc
+    - không dùng tiêu chí bị cấm (giới, tuổi, thai sản, vùng miền, tôn giáo...)
+    - mọi ứng viên cùng bộ câu hỏi
+    - điểm dựa trên bằng chứng hành vi
+    - pháp lý lao động cần xác nhận
+    decision: Chọn ứng viên điểm cao nhất có bằng chứng hành vi; mô hình tính cách chỉ làm câu hỏi phụ, không quyết định
+    output: Ma trận chọn quản lý + Decision Log (rpt_decision_matrix)
+  pb_org_health_check:
+    goal: Rà soát sức khỏe tổ chức tổng thể từ eNPS, nghỉ việc, văn hóa, lãnh đạo, nhóm để tìm 1-3 đòn bẩy ưu tiên
+    modules:
+    - m04
+    - m01
+    - m02
+    - m03
+    intake:
+    - quy mô, cơ cấu, giai đoạn
+    - tỷ lệ nghỉ việc và lý do
+    - kết quả khảo sát/eNPS
+    - phản hồi về quản lý trực tiếp
+    - nhóm có vấn đề nổi bật
+    steps:
+    - 'Đo nền: tỷ lệ nghỉ việc (m02_turnover_rate), eNPS (m02_enps; m04_enps), pulse (m03_pulse_average), khảo sát động lực (m01_survey_scoring)'
+    - Khảo sát văn hóa 20 câu (m04_culture_survey_20q; m04_proc_ocai_survey) và pulse nhóm (m03_proc_pulse_and_measure)
+    - Chẩn đoán lãnh đạo/nhóm bằng T7 (m03_t7) và 3 tầng can thiệp (m01_three_tier_framework)
+    - 'Tách nguyên nhân gốc: quản lý trực tiếp, hệ thống thưởng, văn hóa, thiết kế công việc; kiểm tra healthy vs toxic (m04_healthy_vs_toxic_diagnostic)'
+    - So sánh thay đổi trước-sau (m04_survey_score_change) nếu đã can thiệp
+    - Chọn 1-3 đòn bẩy, ngân sách và chỉ số theo dõi
+    refs:
+      frameworks:
+      - m04_culture_survey_20q
+      - m03_pulse_survey
+      - m01_three_tier_framework
+      - m04_healthy_vs_toxic_diagnostic
+      - m03_t7
+      formulas:
+      - m02_enps
+      - m03_pulse_average
+      - m04_survey_score_change
+      - m01_survey_scoring
+      - m04_enps
+      - m02_turnover_rate
+      procedures:
+      - m01_p_survey
+      - m03_proc_pulse_and_measure
+      - m04_proc_ocai_survey
+    sanity:
+    - khảo sát ẩn danh, đủ cỡ mẫu
+    - không kết luận từ một chỉ số
+    - dữ liệu nghỉ việc đồng kỳ
+    decision: Chọn can thiệp có tác động lớn nhất theo dữ liệu, ưu tiên sửa quản lý trực tiếp và cơ chế trước chương trình phúc lợi
+    output: Báo cáo sức khỏe tổ chức (rpt_org_health)
+  pb_clarify_request:
+    goal: Làm rõ yêu cầu mơ hồ, ghi biên bản và nhắc việc cho các quyết định về con người
+    modules: []
+    intake:
+    - câu hỏi gốc của người dùng
+    - bối cảnh doanh nghiệp (nếu có)
+    - đầu ra mong muốn
+    steps:
+    - Tóm tắt yêu cầu thành JSON {muc_tieu, pham_vi, dau_ra, con_thieu}
+    - Hỏi tối đa 3 câu để lấp chỗ thiếu then chốt (xem clarifying_questions_default trong 02-decision-router.yaml)
+    - Sàng lọc ranh giới (sức khỏe tinh thần, pháp lý, phân biệt đối xử) và chuyển hướng nếu cần
+    - Sau khi đủ dữ liệu, chọn route trong 02-decision-router.yaml
+    - 'Với biên bản họp: ghi quyết định, người phụ trách, hạn, rủi ro; không ghi nhận xét cá nhân không cần thiết'
+    refs:
+      frameworks: []
+      formulas: []
+      procedures: []
+    sanity:
+    - không bịa dữ liệu để lấp chỗ thiếu
+    - bảo mật thông tin nhân sự
+    output: JSON làm rõ yêu cầu hoặc biên bản họp (rpt_meeting_minutes)

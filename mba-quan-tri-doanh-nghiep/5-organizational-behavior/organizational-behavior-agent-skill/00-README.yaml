@@ -1,0 +1,88 @@
+# 00-README.yaml — ĐIỂM VÀO. Agent mới: đọc file này TRƯỚC, rồi làm theo load_order.
+skill:
+  id: organizational-behavior-agent-skill
+  version: 1.0
+  language: "vi (thuật ngữ Anh trong ngoặc)"
+  created: 2026-11-17
+  purpose: >
+    Bộ tri thức đã chắt lọc từ giáo trình "Hành vi tổ chức" (MBA ứng dụng SME Việt Nam) để một agent
+    Organizational Behavior Agent tư vấn, giải đáp, chẩn đoán và đề xuất can thiệp cho các vấn đề về con người
+    trong tổ chức: động lực làm việc, phong cách lãnh đạo, động lực nhóm, văn hóa tổ chức, quyền lực và chính trị,
+    xung đột và đàm phán, quản trị thay đổi, trí tuệ cảm xúc, ra quyết định và thấu hiểu con người (đọc người có kỷ luật).
+    Điểm khác của skill: mọi lý thuyết đều được nối với con số kinh doanh (chi phí nghỉ việc, eNPS, ROI chương trình,
+    chi phí xung đột, hoàn vốn thay đổi) để chủ SME ra quyết định có đo lường.
+  source_material: >
+    Các file markdown trong thư mục cha 5-organizational-behavior (01-motivation ... 10-people-insight).
+    Skill tự đủ (self-contained): agent không cần đọc markdown gốc để làm việc; markdown gốc chỉ để tham chiếu sâu thêm.
+  portability: >
+    Chỉ gồm YAML (+ 1 script Python tùy chọn). Copy nguyên thư mục organizational-behavior-agent-skill/ sang máy khác là dùng được.
+    Không có đường dẫn tuyệt đối, không phụ thuộc phần mềm ngoài. Script kiểm tra cần python3 + pyyaml.
+
+how_to_bootstrap:    # dành cho agent mới hoàn toàn
+  step_1: Đọc toàn bộ file này.
+  step_2: Đọc 01-agent-profile.yaml (vai trò, phạm vi, ranh giới đạo đức, nguyên tắc, quy trình trả lời, nhãn độ tin cậy) — BẮT BUỘC tuân thủ.
+  step_3: Đọc SCHEMA.yaml để hiểu cấu trúc module (concepts, frameworks, formulas, procedures, decision_rules, case_lessons...).
+  step_4: Với mỗi yêu cầu, dùng 02-decision-router.yaml để chọn module + playbook (và chuỗi module nếu bài toán chéo).
+  step_5: Nạp module cần dùng trong modules/ (chỉ đọc phần frameworks/formulas/procedures/decision_rules liên quan), tra công thức ở 06-formulas-index.yaml, chạy playbook ở 03-playbooks.yaml.
+  step_6: Trình bày kết quả theo 04-report-templates.yaml; tra thuật ngữ ở 05-glossary.yaml.
+  note_on_context: >
+    Mỗi module rất lớn (75-150 KB). Nếu giới hạn ngữ cảnh chặt: luôn nạp 00, 01, 02; chỉ nạp thêm 1-3 module liên quan
+    (router chỉ rõ) và không đọc nguyên file module. Yêu cầu mơ hồ thì dùng pb_clarify_request trước khi nạp module.
+
+load_order:
+  always: [00-README.yaml, 01-agent-profile.yaml, 02-decision-router.yaml]
+  on_demand: [03-playbooks.yaml, 04-report-templates.yaml, 05-glossary.yaml, 06-formulas-index.yaml, "modules/*.yaml"]
+  reference_only: [SCHEMA.yaml]
+
+file_index:
+  - {file: 00-README.yaml, role: "Điểm vào, hướng dẫn nạp skill"}
+  - {file: SCHEMA.yaml, role: "Định nghĩa cấu trúc dữ liệu"}
+  - {file: 01-agent-profile.yaml, role: "Vai trò OB Agent, phạm vi, ranh giới đạo đức, nguyên tắc, workflow, disclaimer"}
+  - {file: 02-decision-router.yaml, role: "Định tuyến câu hỏi sang module/framework/công thức/playbook, chuỗi module cho bài toán chéo"}
+  - {file: 03-playbooks.yaml, role: "21 playbook hành vi tổ chức end-to-end (refs trỏ id có thật trong modules)"}
+  - {file: 04-report-templates.yaml, role: "Mẫu báo cáo/bảng biểu đầu ra"}
+  - {file: 05-glossary.yaml, role: "Thuật ngữ Việt-Anh và ký hiệu"}
+  - {file: 06-formulas-index.yaml, role: "Registry công thức (sinh tự động bằng tools/build_and_validate.py)"}
+  - {file: modules/m01-motivation-theories.yaml, role: "Động lực: Maslow, Herzberg, McClelland, Vroom, Adams, Locke, SDT, JCM; chi phí nghỉ việc, ROI"}
+  - {file: modules/m02-leadership-styles.yaml, role: "Lãnh đạo: Transformational, Servant, Situational (D1-D4/S1-S4), Path-Goal, Level 5; eNPS"}
+  - {file: modules/m03-team-dynamics.yaml, role: "Nhóm: Tuckman, Belbin, Lencioni, Project Aristotle, An toàn tâm lý, GRPI, RACI"}
+  - {file: modules/m04-organizational-culture.yaml, role: "Văn hóa: Schein, Hofstede, OCAI/CVF, Denison, Kotter; eNPS, ROI văn hóa"}
+  - {file: modules/m05-power-and-politics.yaml, role: "Quyền lực và chính trị: French-Raven, Emerson, Mendelow, Cialdini, đếm liên minh, đạo đức"}
+  - {file: modules/m06-conflict-management.yaml, role: "Xung đột và đàm phán: Jehn, TKI, Glasl, IBR, ZOPA/BATNA, hòa giải, chi phí xung đột"}
+  - {file: modules/m07-change-management.yaml, role: "Thay đổi: Beckhard-Harris, Kotter, ADKAR, Lewin, Bridges, hoàn vốn"}
+  - {file: modules/m08-emotional-intelligence.yaml, role: "EQ: Goleman/ESCI, Bar-On, MSCEIT, 360 độ, ROI chương trình EQ"}
+  - {file: modules/m09-decision-making.yaml, role: "Ra quyết định: bounded rationality, thiên kiến, groupthink, ma trận trọng số, EV, pre-mortem, Cynefin, RAPID/DACI"}
+  - {file: modules/m10-people-insight.yaml, role: "Thấu hiểu con người: bản đồ 7 tầng (mô hình diễn giải), đọc người có kỷ luật, ghép đội"}
+
+modules_at_a_glance:
+  m01: {topic: "Động lực làm việc", question_type: "Vì sao nhân viên thiếu động lực, thưởng/KPI không hiệu quả, nên chi bao nhiêu để giữ người"}
+  m02: {topic: "Phong cách lãnh đạo", question_type: "Chọn/chuyển phong cách theo người và giai đoạn, đo hiệu quả lãnh đạo"}
+  m03: {topic: "Động lực nhóm", question_type: "Nhóm kẹt ở đâu, ghép vai trò, xây tin cậy, khởi động/sửa nhóm"}
+  m04: {topic: "Văn hóa tổ chức", question_type: "Chẩn đoán, đo, xây và đổi văn hóa; văn hóa khi M&A, startup, scale"}
+  m05: {topic: "Quyền lực và chính trị", question_type: "Bản đồ quyền lực, đếm phiếu/liên minh, kế hoạch ảnh hưởng, ranh giới đạo đức"}
+  m06: {topic: "Xung đột và đàm phán", question_type: "Chẩn đoán xung đột, chọn cách xử lý, đàm phán, hòa giải, chi phí xung đột"}
+  m07: {topic: "Quản trị thay đổi", question_type: "Có nên/làm thế nào triển khai thay đổi, xử lý kháng cự, hoàn vốn"}
+  m08: {topic: "Trí tuệ cảm xúc", question_type: "Điểm mù cảm xúc của lãnh đạo, kiểm soát phản ứng, ROI đào tạo EQ"}
+  m09: {topic: "Ra quyết định", question_type: "Chọn phương án có trọng số/EV, khử thiên kiến, tránh groupthink, phân vai quyết định"}
+  m10: {topic: "Thấu hiểu con người", question_type: "Đọc người trước phỏng vấn/đàm phán, ghép đội, tổ hợp rủi ro (chỉ như giả thuyết)"}
+
+scope_note: >
+  Skill phục vụ giáo dục và tư vấn quản trị. KHÔNG chẩn đoán tâm lý/bệnh lý, KHÔNG dùng để phân biệt đối xử khi tuyển dụng/đánh giá/sa thải,
+  KHÔNG thay thế tư vấn pháp lý lao động chính thức. Module m10 là mô hình diễn giải, không phải công cụ khoa học đã kiểm chứng.
+
+maintenance:
+  validate: "python3 tools/build_and_validate.py   # kiểm tra YAML, trùng id, sinh lại 06-formulas-index.yaml"
+  update_rule: "Sửa module trong modules/, rồi chạy lại script để cập nhật 06-formulas-index.yaml."
+  data_quality_notes: >
+    Mỗi case_lessons có data_reliability (verified/illustrative/unverified). Số liệu công ty thật và dữ kiện pháp lý lao động VN cần đối chiếu nguồn
+    trước khi dùng cho quyết định thật. Các tỷ lệ phổ biến (70% thay đổi thất bại, 58% hiệu suất do EQ, hồ sơ Hofstede của Việt Nam) là ước tính chưa kiểm chứng.
+    Case SME mang nhãn "giả định/minh họa" là số tự thiết kế. Xem known_data_caveats trong 01-agent-profile.yaml.
+
+conventions_for_calculation:
+  expression_python: >
+    expression_python dùng tên biến khớp mục variables; là mã tham chiếu, không nhất thiết eval một dòng.
+    Công thức chính: chi phí nghỉ việc, eNPS, ROI chương trình, OCAI gap, Beckhard-Harris D*V*F>R, ZOPA, EV, ma trận trọng số.
+  scoring_rule: >
+    Mọi bảng chấm điểm/khảo sát phải hiển thị tiêu chí, thang, chiều điểm, trọng số (tổng 100%) và phép tính.
+    Điểm khảo sát/đánh giá hành vi là phán đoán có cơ sở, không phải số đo khách quan.
+  source_errors_note: "Khi hai nguồn mâu thuẫn, ưu tiên YAML (đã kiểm tính) hơn markdown gốc."

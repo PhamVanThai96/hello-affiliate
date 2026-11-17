@@ -1,0 +1,926 @@
+id: "m07"
+name_vi: "Dự báo nhu cầu (Demand Forecasting)"
+name_en: "Demand Forecasting"
+source_file: "07-forecasting.md"
+purpose: >
+  Ước lượng nhu cầu tương lai từ dữ liệu lịch sử và yếu tố liên quan để ra quyết định vận hành TRƯỚC khi biết nhu cầu thật
+  (đặt hàng, tồn kho, năng lực, nhân sự, tài chính). Module hướng dẫn chọn kỹ thuật (MA/WMA, SES, Holt, Holt-Winters,
+  hồi quy, phân rã mùa vụ, định tính), đo sai số (MAD, MSE, RMSE, MAPE, Bias, WAPE), giám sát bằng Tracking Signal và
+  nối dự báo với tồn kho an toàn cho SME Việt Nam.
+when_to_use:
+  - "Cần dự báo doanh số/nhu cầu kỳ tới để đặt hàng, lập lịch sản xuất, xếp ca nhân sự"
+  - "Chọn mô hình: chuỗi đi ngang, có xu hướng, có mùa vụ, hay sản phẩm mới chưa có lịch sử?"
+  - "Dự báo luôn thấp/cao hơn thực tế (Bias một chiều) và cần chẩn đoán nguyên nhân"
+  - "So sánh các mô hình bằng MAD/RMSE/MAPE/Bias và backtesting"
+  - "Tính chỉ số mùa vụ (Tết, Trung thu, mùa hè) và dự báo theo phân rã"
+  - "Thiết lập Tracking Signal để phát hiện mô hình hỏng hoặc thị trường đổi cấu trúc"
+  - "Tính tồn kho an toàn từ sai số dự báo thay vì đệm cố định +10%"
+  - "Sản phẩm mới/mẫu mới không có lịch sử: Delphi, đặt thử, ngoại suy từ tốc độ bán sớm"
+  - "Muốn biết nên đầu tư ARIMA/Prophet/Machine Learning hay dừng ở Excel"
+prerequisites: ["m04"]
+related_modules:
+  - "m04: dự báo là đầu vào của EOQ, Safety Stock, ROP, Newsvendor; sai số dự báo càng lớn thì tồn kho an toàn càng cao"
+  - "m03: CPFR, S&OP, hiệu ứng Bullwhip; dự báo tổng hợp chính xác hơn nhờ Risk Pooling"
+  - "m05: dự báo dài hạn là bước đầu của hoạch định năng lực và Aggregate Planning (Lead/Lag/Match)"
+  - "m06: ước lượng PERT là một dạng dự báo định tính có cấu trúc"
+  - "m08: dự báo tăng trưởng quy mô ảnh hưởng thiết kế layout linh hoạt, dễ mở rộng"
+
+concepts:
+  - term_vi: "Dự báo"
+    term_en: "Forecasting"
+    definition: "Ước lượng sự kiện tương lai bằng cách phân tích dữ liệu lịch sử và các yếu tố liên quan để hỗ trợ quyết định về nhu cầu, tồn kho, năng lực, nhân sự, tài chính."
+    why_it_matters: "Mọi quyết định vận hành phải đưa ra trước khi biết nhu cầu thật (nhà hàng đặt hải sản từ 4 giờ sáng, nhà máy đặt nguyên liệu trước 4-8 tuần, thuê mặt bằng trước 3-5 năm). Đoán thấp thì thiếu hàng (Stockout) mất doanh thu và khách; đoán cao thì dư hàng (Overstock) chôn vốn, hàng hỏng. Dự báo làm cho việc đoán có hệ thống, đo được và cải thiện được."
+  - term_vi: "Bốn nguyên lý dự báo"
+    term_en: "Four forecasting principles"
+    definition: "(1) Dự báo hầu như luôn sai nên phải đo sai số; (2) dự báo nhóm tổng hợp chính xác hơn từng SKU (Risk Pooling); (3) ngắn hạn chính xác hơn dài hạn; (4) phải giám sát liên tục (Tracking Signal)."
+    why_it_matters: "Risk Pooling: cộng nhiều chuỗi độc lập thì sai số ngẫu nhiên bù trừ (dư của A bù thiếu của B) nên sai số tương đối của tổng nhỏ hơn. Tương lai xa chịu nhiều cú sốc chưa xảy ra. Mô hình tốt hôm nay có thể kém vào quý sau."
+  - term_vi: "Phân loại theo chân trời"
+    term_en: "Forecast horizon"
+    definition: "Ngắn hạn (dưới 3 tháng): lập lịch, đặt hàng, nhân sự; trung hạn (3 tháng-2 năm): Aggregate Planning, ngân sách; dài hạn (trên 2 năm): năng lực, đầu tư nhà máy, sản phẩm mới."
+    why_it_matters: "Mỗi chân trời cần công cụ khác nhau: mô hình mùa vụ cho vận hành, mô hình nhân quả vĩ mô cho đầu tư (bài học Case Vinamilk)."
+  - term_vi: "Định tính vs định lượng"
+    term_en: "Qualitative vs Quantitative"
+    definition: "Định tính (Delphi, ý kiến chuyên gia, nghiên cứu thị trường) dựa trên ý kiến khi thiếu dữ liệu. Định lượng gồm chuỗi thời gian (Time Series) và nhân quả (Causal/Regression), dựa trên dữ liệu số."
+    why_it_matters: "Định tính dùng khi sản phẩm/thị trường mới hoặc cần tích hợp thông tin mô hình số không thấy (chính sách, công nghệ, đối thủ). Định lượng dùng khi có đủ lịch sử tin cậy và quan hệ giữa các biến ổn định."
+  - term_vi: "Phương pháp theo vòng đời sản phẩm"
+    term_en: "Method by product life cycle"
+    definition: "Giới thiệu: định tính (Delphi, nghiên cứu thị trường). Tăng trưởng: định tính + định lượng đơn giản (Holt, hồi quy xu hướng). Trưởng thành: Holt-Winters, hồi quy, phân rã mùa vụ. Suy thoái: định lượng + giám sát xu hướng giảm."
+    why_it_matters: "Lượng dữ liệu và độ ổn định của xu hướng thay đổi theo giai đoạn nên phương pháp phải đổi theo."
+  - term_vi: "Bốn thành phần chuỗi thời gian"
+    term_en: "Time series components (T, S, C, R)"
+    definition: "Xu hướng (Trend), Mùa vụ (Seasonality, chu kỳ cố định), Chu kỳ (Cyclical, dao động dài hạn không cố định thường gắn kinh tế vĩ mô), Ngẫu nhiên (Random/Irregular)."
+    why_it_matters: "Một con số doanh số là hỗn hợp nhiều lực, mỗi lực cần cách xử lý riêng. Không tách ra sẽ nhầm mùa vụ thành tăng trưởng (đặt quá tay) hoặc nhiễu thành xu hướng."
+  - term_vi: "Mô hình cộng và mô hình nhân"
+    term_en: "Additive vs Multiplicative decomposition"
+    definition: "Cộng: Y = T + S + C + R, hợp khi biên độ mùa vụ ổn định (+50 đơn vị). Nhân: Y = T x S x C x R, hợp khi biên độ tỷ lệ quy mô (+20%)."
+    why_it_matters: "Trong kinh doanh, doanh số tăng thì đỉnh mùa vụ cũng cao theo nên mô hình nhân thường hợp lý hơn; các ví dụ mùa vụ trong module dùng mô hình nhân."
+  - term_vi: "Độ trễ của trung bình động khi có xu hướng"
+    term_en: "Moving-average lag"
+    definition: "MA(n) phản ánh mức trung bình n kỳ trước nên trễ khoảng (n+1)/2 kỳ; Bias kỳ vọng ~ độ dốc x (n+1)/2 (dương nếu xu hướng tăng)."
+    why_it_matters: "Giải thích vì sao MA và SES luôn dự báo thấp khi nhu cầu tăng: xu hướng thật 5.93 thùng/tháng, n=3 cho độ trễ 11.87, sát Bias quan sát 11.96. Kết luận: MA/SES chỉ hợp chuỗi đi ngang."
+  - term_vi: "Sai số dự báo"
+    term_en: "Forecast error"
+    definition: "e_t = Y_t - F_t (thực tế trừ dự báo; e > 0 nghĩa là dự báo thấp hơn thực tế)."
+    why_it_matters: "Quy ước dấu quyết định cách đọc Bias và Tracking Signal: dương = dự báo thấp (nguy cơ thiếu hàng), âm = dự báo cao (nguy cơ dư hàng)."
+  - term_vi: "Backtesting (kiểm định ngược) và ngoài mẫu"
+    term_en: "Backtesting / out-of-sample"
+    definition: "Chia dữ liệu thành phần huấn luyện (ước lượng tham số) và phần kiểm tra (giấu đi, dự báo rồi so thực tế). Chọn phương pháp theo sai số phần kiểm tra."
+    why_it_matters: "Sai số trong mẫu của hồi quy (MAD 4.11, MAPE 2.66%) không so sánh công bằng với sai số ngoài mẫu của MA/SES/Holt vì đường hồi quy đã nhìn thấy cả 12 điểm. Kiểm tra nên bao gồm đủ một chu kỳ mùa vụ, không chọn mô hình từ cửa sổ ngắn (SES may mắn ở Case 9)."
+  - term_vi: "Overfitting"
+    term_en: "Overfitting"
+    definition: "Mô hình khớp quá mức dữ liệu quá khứ (kể cả nhiễu), kém trên dữ liệu mới."
+    why_it_matters: "Thêm biến luôn làm R2 tăng kể cả biến vô nghĩa. Phòng bằng R2 hiệu chỉnh, kiểm tra dấu hệ số có hợp lý kinh doanh, đánh giá ngoài mẫu, quy tắc 10-15 quan sát cho mỗi biến độc lập."
+  - term_vi: "Biến động cấu trúc"
+    term_en: "Structural break"
+    definition: "Nhu cầu nhảy sang mức mới (vd mất 40% nhu cầu do đổi hành vi tiêu dùng) khiến mô hình lịch sử lỗi thời."
+    why_it_matters: "SES với alpha 0.2 mất nhiều tháng mới học mức mới; Tracking Signal báo động ngay tháng đầu (-6.28 trong Case 5). Cần quy trình reset mô hình và tín hiệu định tính sớm."
+  - term_vi: "Ranh giới nhu cầu bị cắt cụt do hết hàng"
+    term_en: "Censored demand (stockout)"
+    definition: "Doanh số khi hết hàng thấp hơn nhu cầu thật."
+    why_it_matters: "Phải làm sạch/đánh dấu hết hàng, khuyến mãi lớn, sự cố trước khi ước lượng; nếu không mô hình học nhu cầu thấp giả. Mẫu hết hàng trong 3 ngày được coi là hot, không chia cho 0.35 (Case 6)."
+  - term_vi: "Bất đối xứng chi phí thiếu/dư"
+    term_en: "Cost asymmetry of under/over-forecast"
+    definition: "Chi phí thiếu hàng (Cu) và dư hàng (Co) thường khác nhau; quyết định đặt hàng tối ưu phụ thuộc cả dự báo lẫn tỷ lệ chi phí."
+    why_it_matters: "Case Walmart: Cu = 180, Co = 60 nên chỉ cần xác suất bão trên 25% là nên tăng tồn kho (cùng tư duy Newsvendor, m04). Độ chính xác điểm không phải mục đích tự thân."
+  - term_vi: "Dữ liệu thay thế"
+    term_en: "Alternative data"
+    definition: "Google Trends, mạng xã hội, thời tiết, ảnh vệ tinh (lưu lượng bãi đỗ xe), dữ liệu giao dịch thẻ tổng hợp."
+    why_it_matters: "Phát hiện sớm thay đổi trước khi xuất hiện trong doanh số; SME bắt đầu với vài biến quan trọng nhất (thời tiết, lịch sự kiện)."
+  - term_vi: "Giới hạn của độ phức tạp"
+    term_en: "When to stop investing in complexity"
+    definition: "Không dùng mô hình phức tạp khi: lịch sử dưới 2-3 năm; hàng nghìn SKU mà thiếu nguồn lực tinh chỉnh; thị trường đổi cấu trúc thường xuyên."
+    why_it_matters: "Sai lầm chuyển đổi số phổ biến là cho rằng càng phức tạp càng chính xác. SME bắt đầu từ SES, Holt hoặc phân rã mùa vụ trên Excel; chỉ đầu tư ML khi nền dữ liệu vững, có người duy trì và đã chứng minh lợi ích đo bằng tiền."
+  - term_vi: "Dự báo tổng hợp trước, phân bổ sau"
+    term_en: "Top-down aggregate then allocate"
+    definition: "Dự báo nhóm tổng hợp trước rồi phân bổ xuống SKU/khu vực theo tỷ trọng lịch sử; kết hợp POS thời gian thực để điều chỉnh chi tiết."
+    why_it_matters: "Dự báo từng SKU khi dữ liệu không đủ chỉ khuếch đại nhiễu."
+
+formulas:
+  - id: "m07_moving_average"
+    name_vi: "Trung bình động n kỳ"
+    name_en: "Moving Average (MA_n)"
+    expression_latex: 'MA_n=\frac{\sum_{i=1}^{n}Y_{t-i+1}}{n}'
+    expression_python: "sum(y[-n:])/n"
+    excel: "=AVERAGE(B2:B4)"
+    variables:
+      - {symbol: "y", meaning: "danh sách doanh số lịch sử, mới nhất ở cuối", unit: "đơn vị hàng/kỳ"}
+      - {symbol: "n", meaning: "số kỳ gần nhất lấy trung bình", unit: "kỳ"}
+    when_to_use: "Nhu cầu ổn định, đi ngang, không xu hướng, không mùa vụ; muốn lọc nhiễu nhanh và đơn giản."
+    why_it_works: "Phương pháp Naive (tháng sau = tháng này) quá nhạy với nhiễu (1 tháng khuyến mãi làm méo dự báo). Lấy trung bình n kỳ gần nhất để nhiễu lúc cao lúc thấp triệt tiêu, chỉ còn mức nền. Dự báo kỳ t+1 chính là MA_n tính tại kỳ t."
+    assumptions: ["Nhu cầu quanh một mức không đổi", "Các kỳ gần nhất đại diện cho kỳ tới"]
+    pitfalls:
+      - "n lớn thì mượt nhưng phản ứng chậm; n nhỏ phản ứng nhanh nhưng dễ bị nhiễu kéo"
+      - "Trễ khoảng (n+1)/2 kỳ khi có xu hướng: luôn dự báo thấp khi nhu cầu tăng (Bias = MAD = 11.96 trong bộ mẫu)"
+      - "Phải lưu n giá trị cho mỗi mã hàng"
+    interpretation: "Trên bộ mẫu 12 tháng MA3 cho MAD 11.96, RMSE 12.88, MAPE 7.37%, Bias +11.96: 9/9 sai số đều dương, dấu hiệu mô hình thiếu xu hướng."
+    example:
+      inputs: {y: [178, 185, 181], n: 3}
+      steps: ["Dự báo tháng 13 = (178 + 185 + 181) / 3 = 544 / 3"]
+      result: "181.33 thùng"
+
+  - id: "m07_weighted_moving_average"
+    name_vi: "Trung bình động có trọng số"
+    name_en: "Weighted Moving Average (WMA)"
+    expression_latex: 'WMA=\sum_i w_i\,Y_{t-i+1},\quad \sum_i w_i=1'
+    expression_python: "sum(w[i]*y[-1-i] for i in range(len(w)))"
+    excel: "=SUMPRODUCT(B2:B4, D2:D4)"
+    variables:
+      - {symbol: "y", meaning: "doanh số lịch sử, mới nhất ở cuối", unit: "đơn vị hàng/kỳ"}
+      - {symbol: "w", meaning: "trọng số, w[0] cho kỳ gần nhất, tổng bằng 1", unit: "không có"}
+    when_to_use: "Giống MA nhưng muốn tin dữ liệu mới hơn; hoặc tách chuỗi theo ngày trong tuần (WMA riêng các ngày thứ Bảy)."
+    why_it_works: "Dữ liệu gần đây phản ánh tình trạng hiện tại tốt hơn nên gán trọng số cao hơn, giảm độ trễ so với MA đều trọng số."
+    assumptions: ["Trọng số cộng bằng 1", "Chuỗi không có xu hướng mạnh (nếu có vẫn trễ)"]
+    pitfalls: ["Trọng số do người dùng chọn, không tối ưu tự động", "Vẫn trễ khi có xu hướng (Bias +10.12 trên bộ mẫu)"]
+    interpretation: "Trên bộ mẫu WMA 0.5/0.3/0.2 cho MAD 10.12, RMSE 11.57, MAPE 6.24%, tốt hơn MA3 nhẹ."
+    example:
+      inputs: {y: [178, 185, 181], w: [0.5, 0.3, 0.2]}
+      steps: ["0.5 x 181 + 0.3 x 185 + 0.2 x 178 = 90.5 + 55.5 + 35.6"]
+      result: "181.6 thùng"
+
+  - id: "m07_ses"
+    name_vi: "San bằng số mũ đơn"
+    name_en: "Simple Exponential Smoothing (SES)"
+    expression_latex: 'F_{t+1}=\alpha Y_t+(1-\alpha)F_t = F_t+\alpha(Y_t-F_t)'
+    expression_python: "alpha*y_t + (1-alpha)*f_t"
+    excel: "=$J$1*B2+(1-$J$1)*C2"
+    variables:
+      - {symbol: "alpha", meaning: "hệ số san bằng, 0 < alpha < 1", unit: "không có"}
+      - {symbol: "y_t", meaning: "thực tế kỳ hiện tại", unit: "đơn vị hàng"}
+      - {symbol: "f_t", meaning: "dự báo đã có cho kỳ hiện tại", unit: "đơn vị hàng"}
+    when_to_use: "Nhu cầu đi ngang có nhiễu; hàng nghìn mã hàng cần tự động hoá (chỉ nhớ 1 số mỗi mã)."
+    why_it_works: "Robert G. Brown (giữa thập niên 1950, phụ tùng Hải quân Mỹ, hàng trăm nghìn mã, máy tính yếu) cần công thức chỉ nhớ một con số mỗi mã và có trọng số giảm dần êm ái, không bỏ rơi đột ngột kỳ thứ n+1 như MA. Dự báo mới = dự báo cũ + một phần sai số vừa mắc; alpha là mức tin vào sai số vừa rồi. Khai triển: trọng số dữ liệu cách k kỳ là alpha(1-alpha)^k, giảm theo cấp số nhân."
+    assumptions: ["Không xu hướng, không mùa vụ", "Khởi tạo F1 = Y1 (hoặc trung bình vài kỳ đầu)"]
+    pitfalls:
+      - "Trễ khi có xu hướng: Bias vẫn dương và TS xấp xỉ 10-11 với mọi alpha trên bộ mẫu; chữa bằng Holt, không phải tăng alpha mãi"
+      - "alpha cao tốt cho chuỗi có xu hướng/đổi mức nhưng nhạy nhiễu; chuỗi đi ngang thì alpha thấp tốt hơn"
+      - "Chọn alpha bằng cách thử 0.1-0.9 trên lịch sử, chọn alpha làm MAD/MSE nhỏ nhất (Excel Solver); cần backtesting"
+    interpretation: "Bộ mẫu: alpha 0.1 MAD 27.46; alpha 0.3 MAD 16.10, MAPE 10.04%; alpha 0.7 MAD 8.57, MAPE 5.43%. Trọng số dữ liệu: alpha 0.3 lần lượt 0.300, 0.210, 0.147, 0.103."
+    example:
+      inputs: {alpha: 0.3, y_t: 181, f_t: 169.75}
+      steps: ["F13 = 0.3 x 181 + 0.7 x 169.75 = 54.3 + 118.825"]
+      result: "173.12 thùng"
+
+  - id: "m07_holt"
+    name_vi: "San bằng số mũ điều chỉnh xu hướng (Holt)"
+    name_en: "Holt linear trend (double exponential smoothing)"
+    expression_latex: 'L_t=\alpha Y_t+(1-\alpha)(L_{t-1}+T_{t-1});\; T_t=\beta(L_t-L_{t-1})+(1-\beta)T_{t-1};\; F_{t+h}=L_t+hT_t'
+    expression_python: "(lambda Ln: (Ln, beta*(Ln-L)+(1-beta)*T, Ln+(beta*(Ln-L)+(1-beta)*T)))(alpha*y_t+(1-alpha)*(L+T))"
+    excel: "=B2*alpha+(1-alpha)*(L_prev+T_prev) ; FORECAST.ETS cho phiên bản có mùa vụ"
+    variables:
+      - {symbol: "alpha", meaning: "hệ số san bằng mức", unit: "không có"}
+      - {symbol: "beta", meaning: "hệ số san bằng xu hướng", unit: "không có"}
+      - {symbol: "y_t", meaning: "thực tế kỳ t", unit: "đơn vị hàng"}
+      - {symbol: "L", meaning: "mức đã san bằng kỳ t-1", unit: "đơn vị hàng"}
+      - {symbol: "T", meaning: "độ dốc đã san bằng kỳ t-1 (tăng/giảm mỗi kỳ)", unit: "đơn vị hàng/kỳ"}
+    when_to_use: "Chuỗi có xu hướng tăng/giảm, chưa có mùa vụ."
+    why_it_works: "Charles C. Holt (1957) mở rộng SES: theo dõi hai đại lượng, mức hiện tại L và độ dốc T, mỗi cái có hệ số riêng. Mức mới = pha trộn quan sát mới và mức cũ cộng đà tăng; độ dốc mới = pha trộn độ dốc vừa quan sát (L_t - L_{t-1}) và độ dốc cũ. Dự báo h kỳ = L + h x T. Giải quyết độ trễ của MA/SES."
+    assumptions: ["Xu hướng gần tuyến tính, thay đổi chậm", "Khởi tạo L1 = Y1, T1 = (Y4 - Y1)/3 (độ dốc trung bình thay vì một cặp quan sát dễ nhiễu)"]
+    pitfalls:
+      - "Khởi tạo T1 = Y2 - Y1 = 12 trên bộ mẫu làm dự báo vượt thực tế nhiều hơn (TS = -8.1)"
+      - "Ngoại suy xu hướng liên tục: Case 9 Holt tệ hơn cả MA3 vì 6 tháng đầu năm 3 giảm theo mùa"
+      - "Không xử lý mùa vụ; cần chọn alpha, beta và khởi tạo"
+    interpretation: "Bộ mẫu (alpha 0.5, beta 0.3): MAD 5.63, RMSE 6.53, MAPE 3.65%, Bias -1.27, TS -2.47 (trong +-4); giảm MAD khoảng 34% so với SES alpha 0.7; sai số có dương có âm."
+    example:
+      inputs: {alpha: 0.5, beta: 0.3, y_t: 132, L: 120, T: 7}
+      steps: ["Dự báo tháng 2 = 120 + 7 = 127, sai số +5", "L2 = 0.5 x 132 + 0.5 x 127 = 129.5", "T2 = 0.3 x (129.5 - 120) + 0.7 x 7 = 7.75", "F3 = L2 + T2 = 137.25"]
+      result: "(L2, T2, F3) = (129.5, 7.75, 137.25)"
+
+  - id: "m07_holt_winters"
+    name_vi: "Holt-Winters nhân (ba tham số)"
+    name_en: "Holt-Winters multiplicative"
+    expression_latex: 'L_t=\alpha\frac{Y_t}{s_{t-p}}+(1-\alpha)(L_{t-1}+T_{t-1});\; T_t=\beta(L_t-L_{t-1})+(1-\beta)T_{t-1};\; s_t=\gamma\frac{Y_t}{L_t}+(1-\gamma)s_{t-p};\; F_{t+h}=(L_t+hT_t)s_{t+h-p}'
+    expression_python: "(lambda Ln: (Ln, beta*(Ln-L)+(1-beta)*T, gamma*y_t/Ln+(1-gamma)*s))(alpha*y_t/s+(1-alpha)*(L+T))"
+    excel: "FORECAST.ETS(target_date, values, timeline, seasonality)"
+    variables:
+      - {symbol: "alpha, beta, gamma", meaning: "hệ số san bằng mức, xu hướng, mùa vụ", unit: "không có"}
+      - {symbol: "y_t", meaning: "thực tế kỳ t", unit: "đơn vị hàng"}
+      - {symbol: "L, T", meaning: "mức và độ dốc kỳ t-1", unit: "đơn vị hàng; đơn vị hàng/kỳ"}
+      - {symbol: "s", meaning: "chỉ số mùa vụ của cùng vị trí chu kỳ trước (s_{t-p})", unit: "không có (tỷ số)"}
+      - {symbol: "p", meaning: "độ dài chu kỳ: 12 (tháng), 4 (quý), 7 (ngày trong tuần)", unit: "kỳ"}
+    when_to_use: "Chuỗi có cả xu hướng và mùa vụ với biên độ tỷ lệ quy mô, đã có 2-3 chu kỳ đầy đủ (24-36 tháng)."
+    why_it_works: "Peter R. Winters (1960, sinh viên của Holt) thêm tham số gamma theo dõi chỉ số mùa vụ cho từng vị trí trong chu kỳ. Dòng đầu chia Y cho chỉ số mùa vụ cũ để gỡ mùa vụ trước khi cập nhật mức; dòng cuối nhân lại chỉ số của đúng kỳ cần dự báo."
+    assumptions: ["Mùa vụ tỷ lệ với mức (dạng nhân)", "Tối thiểu 2-3 chu kỳ để khởi tạo"]
+    pitfalls: ["Ít dữ liệu thì ước lượng mùa vụ không đáng tin; khi chỉ có 24-30 tháng phân rã bằng Excel đơn giản và tốt hơn (Case 9)", "Ba tham số và khởi tạo nhạy"]
+    interpretation: "Bước cập nhật: nếu thực tế cao hơn dự báo ở kỳ cao điểm thì chỉ số mùa vụ nhích lên."
+    example:
+      inputs: {alpha: 0.3, beta: 0.1, gamma: 0.2, y_t: 630, L: 500, T: 5, s: 1.2}
+      steps: ["Dự báo trước đó = (500 + 5) x 1.2 = 606 (thực tế 630)", "L_t = 0.3 x 630/1.2 + 0.7 x 505 = 511.0", "T_t = 0.1 x (511 - 500) + 0.9 x 5 = 5.6", "s_t = 0.2 x 630/511 + 0.8 x 1.2 = 1.2066", "Kỳ sau có chỉ số 0.9: F = (511 + 5.6) x 0.9 = 464.94"]
+      result: "(L_t, T_t, s_t) = (511.0, 5.6, 1.2066); F kỳ sau = 464.94 (số giả định minh họa)"
+
+  - id: "m07_ols_regression"
+    name_vi: "Hồi quy tuyến tính đơn (OLS) / hồi quy xu hướng"
+    name_en: "Simple linear regression (Ordinary Least Squares)"
+    expression_latex: 'Y=a+bX;\quad b=\frac{n\sum XY-\sum X\sum Y}{n\sum X^2-(\sum X)^2};\quad a=\bar Y-b\bar X'
+    expression_python: "(lambda b: (b, sum(y)/n - b*sum(x)/n))((n*sum(xi*yi for xi,yi in zip(x,y)) - sum(x)*sum(y))/(n*sum(xi*xi for xi in x) - sum(x)**2))"
+    excel: "=SLOPE(Y,X) ; =INTERCEPT(Y,X) ; =FORECAST.LINEAR(13,B2:B13,A2:A13) ; =TREND(...)"
+    variables:
+      - {symbol: "x", meaning: "biến độc lập (thời gian t = 1,2,... hoặc quảng cáo, giá)", unit: "tùy biến"}
+      - {symbol: "y", meaning: "biến phụ thuộc (doanh số)", unit: "đơn vị hàng"}
+      - {symbol: "n", meaning: "số quan sát", unit: "quan sát"}
+      - {symbol: "b", meaning: "hệ số góc: Y đổi bao nhiêu khi X tăng 1", unit: "đơn vị Y / đơn vị X"}
+      - {symbol: "a", meaning: "hệ số chặn: Y khi X = 0", unit: "đơn vị Y"}
+    when_to_use: "Dự báo xu hướng theo thời gian, hoặc mô hình nhân quả để trả lời câu hỏi nếu tăng quảng cáo/giảm giá thì doanh số đổi bao nhiêu."
+    why_it_works: "Chuỗi thời gian chỉ nhìn lịch sử chính biến doanh số, còn nhà quản lý cần quan hệ nhân quả. OLS chọn đường thẳng làm tổng bình phương sai số nhỏ nhất: bình phương để sai số dương/âm không triệt tiêu, phạt nặng sai số lớn và cho công thức đóng (không thử sai). Nguồn gốc: Legendre/Gauss đầu thế kỷ 19 (thiên văn); thuật ngữ regression gắn với Francis Galton thập niên 1880."
+    assumptions: ["Quan hệ tuyến tính, ổn định theo thời gian", "Không ngoại suy xa ngoài vùng dữ liệu (có thể bão hoà)"]
+    pitfalls: ["Sai số trong mẫu không so được với sai số ngoài mẫu của MA/SES/Holt; cần backtesting", "Xu hướng tuyến tính mãi mãi, không tự thích nghi như Holt", "Chuỗi có mùa vụ: hồi quy thô bị mùa vụ làm lệch độ dốc"]
+    interpretation: "Bộ mẫu: Y = 116.35 + 5.934 t; dự báo tháng 13 = 193.48, tháng 14 = 199.42."
+    example:
+      inputs: {x: [1,2,3,4,5,6,7,8,9,10,11,12], y: [120,132,128,141,150,147,160,172,165,178,185,181], n: 12}
+      steps: ["Sum X = 78, Sum Y = 1859, Sum XY = 12932, Sum X^2 = 650", "b = (12 x 12932 - 78 x 1859) / (12 x 650 - 78^2) = 10182/1716 = 5.934", "a = 154.92 - 5.934 x 6.5 = 116.35", "F13 = 116.35 + 5.934 x 13 = 193.48"]
+      result: "b = 5.934 thùng/tháng; a = 116.35; F13 = 193.48"
+
+  - id: "m07_r_squared"
+    name_vi: "Hệ số xác định R2, sai số chuẩn hồi quy và khoảng dự báo"
+    name_en: "Coefficient of determination, standard error of regression"
+    expression_latex: 'R^2=1-\frac{SSE}{SST};\; SSE=\sum(Y_t-\hat Y_t)^2;\; SST=\sum(Y_t-\bar Y)^2;\; s_e=\sqrt{\frac{SSE}{n-2}}'
+    expression_python: "(1 - sse/sst, (sse/(n-2))**0.5)"
+    excel: "=RSQ(Y,X) ; =STEYX(Y,X)"
+    variables:
+      - {symbol: "sse", meaning: "tổng bình phương phần dư (chưa giải thích)", unit: "đơn vị Y bình phương"}
+      - {symbol: "sst", meaning: "tổng biến động của Y quanh trung bình", unit: "đơn vị Y bình phương"}
+      - {symbol: "n", meaning: "số quan sát", unit: "quan sát"}
+    when_to_use: "Đo mức mô hình hồi quy giải thích biến động; ước khoảng dự báo +-2 s_e."
+    why_it_works: "R2 là tỷ lệ biến động của Y mà mô hình giải thích; s_e là độ lệch chuẩn điển hình quanh đường hồi quy (n-2 bậc tự do vì ước lượng 2 tham số). Khoảng dự báo xấp xỉ +-2 s_e."
+    assumptions: ["Sai số xấp xỉ chuẩn, độc lập"]
+    pitfalls: ["R2 luôn tăng khi thêm biến: dùng R2 hiệu chỉnh khi đa biến", "R2 cao không bảo đảm dự báo tốt ngoài mẫu"]
+    interpretation: "Bộ mẫu: R2 = 0.9523 (thời gian giải thích 95.2% biến động), s_e = 5.02 thùng, tháng 13 nằm trong khoảng khoảng 183-203 thùng."
+    example:
+      inputs: {sse: 252.29, sst: 5286.92, n: 12}
+      steps: ["R2 = 1 - 252.29/5286.92 = 0.9523", "s_e = sqrt(252.29/10) = 5.02"]
+      result: "R2 = 0.9523; s_e = 5.02"
+
+  - id: "m07_multiple_regression"
+    name_vi: "Hồi quy đa biến"
+    name_en: "Multiple linear regression"
+    expression_latex: 'Y=a+b_1X_1+b_2X_2+\dots+b_kX_k;\quad R^2_{adj}=1-(1-R^2)\frac{n-1}{n-k-1}'
+    expression_python: "a + b1*x1 + b2*x2"
+    excel: "=LINEST(Y, X1:X2, TRUE, TRUE)"
+    variables:
+      - {symbol: "a", meaning: "hệ số chặn", unit: "đơn vị Y"}
+      - {symbol: "b1, b2", meaning: "hệ số của giá và quảng cáo (giữ biến kia không đổi)", unit: "đơn vị Y / đơn vị X"}
+      - {symbol: "x1, x2", meaning: "giá bán (nghìn đồng), chi phí quảng cáo (triệu đồng)", unit: "nghìn đồng; triệu đồng"}
+    when_to_use: "Khi có yếu tố nhân quả rõ (giá, quảng cáo, thời tiết, khuyến mãi) và cần trả lời câu hỏi nếu... thì..."
+    why_it_works: "Tách tác động riêng của từng biến khi giữ các biến khác không đổi; cho phép tích hợp biến ngoài (Walmart: thời tiết/sự kiện; Coca-Cola: nhiệt độ + GDP)."
+    assumptions: ["Quan hệ tuyến tính, biến độc lập đầy đủ chất lượng", "Ít nhất 10-15 quan sát cho mỗi biến độc lập"]
+    pitfalls: ["Overfitting với ít quan sát (8 quan sát và 3 tham số dễ học thuộc nhiễu)", "Dấu hệ số phải hợp lý kinh doanh (giá tăng mà bán nhiều hơn là sai)", "Thêm biến thứ hai chỉ cải thiện R2 từ 0.9903 lên 0.9962: cân nhắc chi phí thu thập"]
+    interpretation: "Ví dụ giả định minh họa 8 quan sát: Y = 308.12 - 4.14 X1 + 14.46 X2, R2 = 0.9962, R2 hiệu chỉnh = 0.9947. Giá tăng 1 nghìn thì bán giảm 4.14; thêm 1 triệu quảng cáo thì tăng 14.46."
+    example:
+      inputs: {a: 308.12, b1: -4.14, b2: 14.46, x1: 29, x2: 8}
+      steps: ["Dự báo giá 29, quảng cáo 8: 308.12 - 4.14 x 29 + 14.46 x 8", "= 308.12 - 120.06 + 115.68"]
+      result: "303.74 đơn vị (tính chính xác bằng LINEST ra 303.75; số giả định minh họa)"
+
+  - id: "m07_seasonal_index"
+    name_vi: "Chỉ số mùa vụ (phương pháp trung bình đơn giản)"
+    name_en: "Seasonal index"
+    expression_latex: 'S_q=\frac{\bar Y_q}{\bar Y};\quad \sum_q S_q=p'
+    expression_python: "[sum(col)/len(col)/(sum(map(sum, data))/(len(data)*len(data[0]))) for col in zip(*data)]"
+    excel: "=AVERAGE(quý q các năm)/AVERAGE(toàn bộ)"
+    variables:
+      - {symbol: "data", meaning: "ma trận doanh số: hàng = năm, cột = quý/tháng", unit: "đơn vị hàng"}
+      - {symbol: "S_q", meaning: "chỉ số mùa vụ của vị trí q trong chu kỳ", unit: "không có (tỷ số)"}
+      - {symbol: "p", meaning: "số kỳ trong chu kỳ (4 quý, 12 tháng)", unit: "kỳ"}
+    when_to_use: "Tách mùa khỏi tăng trưởng: quý 3 cao hơn quý 1 là do doanh nghiệp lớn hay chỉ do mùa?"
+    why_it_works: "Chỉ số = mức trung bình của kỳ đó chia mức trung bình chung; 1.20 nghĩa là kỳ đó thường cao hơn trung bình 20%. Dùng chỉ số thay vì bằng cùng kỳ năm trước giúp không lặp lại phần nhiễu ngẫu nhiên của năm đó."
+    assumptions: ["Mô hình nhân", "Ít nhất 2-3 chu kỳ", "Tổng chỉ số bằng p (kiểm tra; chuẩn hoá nếu lệch)"]
+    pitfalls: ["Chỉ có 2 năm thì mỗi chỉ số chỉ là trung bình 2 quan sát (Case 9): cập nhật khi có năm thứ 3", "Phương pháp trung bình đơn giản lẫn ảnh hưởng xu hướng; bản nâng cao chia theo đường xu hướng (Y/T) rồi chuẩn hoá"]
+    interpretation: "Giải khát 3 năm (giả định minh họa): Q1 0.731, Q2 1.092, Q3 1.359, Q4 0.817, tổng 4.000. Đỉnh Q3 cao gấp 1.92 lần đáy Q1 nên cần kế hoạch tích trữ có chủ đích."
+    example:
+      inputs: {data: [[80,120,150,90],[88,132,162,98],[95,141,177,106]]}
+      steps: ["Trung bình quý: 87.67; 131.00; 163.00; 98.00; trung bình chung 1439/12 = 119.92", "S = 87.67/119.92 = 0.731; 1.092; 1.359; 0.817"]
+      result: "S = [0.731, 1.092, 1.359, 0.817], tổng = 4.000"
+
+  - id: "m07_decomposition_forecast"
+    name_vi: "Dự báo bằng phân rã: gỡ mùa vụ, hồi quy xu hướng, nhân lại chỉ số"
+    name_en: "Decomposition forecast (deseasonalize, trend, reseasonalize)"
+    expression_latex: 'Y^{adj}_t=\frac{Y_t}{S};\;\hat Y^{adj}_t=a+bt;\;F_t=(a+bt)\times S'
+    expression_python: "(a + b*t)*S"
+    excel: "=FORECAST.LINEAR(t, Y_adj, t_range) * S"
+    variables:
+      - {symbol: "a, b", meaning: "hệ số chặn và độ dốc của hồi quy trên chuỗi đã gỡ mùa vụ", unit: "đơn vị hàng; đơn vị hàng/kỳ"}
+      - {symbol: "t", meaning: "chỉ số thời gian của kỳ cần dự báo", unit: "kỳ"}
+      - {symbol: "S", meaning: "chỉ số mùa vụ của vị trí chu kỳ tương ứng", unit: "không có"}
+    when_to_use: "Chuỗi có xu hướng và mùa vụ nhưng chỉ có 24-36 tháng; muốn giải thích được với chủ DN và làm trong Excel."
+    why_it_works: "Gỡ mùa vụ trước rồi hồi quy cho xu hướng sạch (hồi quy thô bị lệch vì dữ liệu kết thúc ở mùa cao điểm kéo độ dốc); làm hai lần hồi quy. Dự báo = xu hướng x chỉ số mùa vụ. Đơn giản hơn Holt-Winters (3 tham số nhạy) mà hiệu quả khi ít dữ liệu."
+    assumptions: ["Mô hình nhân", "Xu hướng tuyến tính ổn định", "Mùa vụ ổn định"]
+    pitfalls: ["Phải cập nhật hồi quy và chỉ số khi có dữ liệu mới", "Xu hướng chậm lại (TS -3.73 ở Case 9) thì dự báo cao hệ thống"]
+    interpretation: "Giải khát: trend gỡ mùa vụ 105.52 + 2.215 t; năm 4 Q1 98.2, Q2 149.1, Q3 188.6, Q4 115.2 (tổng 551.1, +6.2%). Case Mây Núi: t=25, trend 602.7, S=1.155 cho F=695.9."
+    example:
+      inputs: {a: 105.52, b: 2.215, t: 13, S: 0.731}
+      steps: ["Trend = 105.52 + 2.215 x 13 = 134.315", "F = 134.315 x 0.731"]
+      result: "98.2 nghìn thùng (Q1 năm 4, giả định minh họa)"
+
+  - id: "m07_mad"
+    name_vi: "Sai số tuyệt đối trung bình (MAD)"
+    name_en: "Mean Absolute Deviation (MAD)"
+    expression_latex: 'MAD=\frac{\sum|Y_t-F_t|}{n}'
+    expression_python: "sum(abs(a-f) for a,f in zip(y,fc))/len(y)"
+    excel: "=AVERAGE(E2:E13) (cột E = |sai số|)"
+    variables:
+      - {symbol: "y", meaning: "danh sách thực tế", unit: "đơn vị hàng"}
+      - {symbol: "fc", meaning: "danh sách dự báo cùng kỳ", unit: "đơn vị hàng"}
+    when_to_use: "Đo độ lớn sai số theo đơn vị hàng; dễ giải thích nhất."
+    why_it_works: "Trả lời: sai số lớn cỡ nào theo đơn vị hàng? Dùng giá trị tuyệt đối để sai số dương/âm không triệt tiêu."
+    assumptions: ["So sánh các mô hình trên cùng cửa sổ đo"]
+    pitfalls: ["Không cho biết thiên lệch một chiều (dùng Bias/TS)", "Không so được giữa sản phẩm quy mô khác nhau (dùng MAPE/WAPE)"]
+    interpretation: "Bộ mẫu MA3 11.96; WMA 10.12; SES 0.3 16.10; SES 0.7 8.57; Holt 5.63."
+    example:
+      inputs: {y: [100,110,90,120,105,115], fc: [95,108,100,110,112,100]}
+      steps: ["|e| = 5, 2, 10, 10, 7, 15; tổng 49", "MAD = 49/6"]
+      result: "8.17"
+
+  - id: "m07_mse_rmse"
+    name_vi: "MSE và RMSE"
+    name_en: "Mean Squared Error / Root MSE"
+    expression_latex: 'MSE=\frac{\sum(Y_t-F_t)^2}{n};\quad RMSE=\sqrt{MSE}'
+    expression_python: "(sum((a-f)**2 for a,f in zip(y,fc))/len(y))**0.5"
+    excel: "=SQRT(AVERAGE(F2:F13)) (cột F = sai số bình phương)"
+    variables:
+      - {symbol: "y", meaning: "danh sách thực tế", unit: "đơn vị hàng"}
+      - {symbol: "fc", meaning: "danh sách dự báo", unit: "đơn vị hàng"}
+    when_to_use: "Phạt nặng sai số lớn; RMSE liên hệ trực tiếp độ lệch chuẩn sai số nên dùng trong công thức Safety Stock."
+    why_it_works: "Bình phương phạt nặng ngoại lệ; MSE có đơn vị bình phương nên lấy căn để về đơn vị gốc. Nếu sai số xấp xỉ chuẩn thì RMSE xấp xỉ 1.25 x MAD (căn của pi/2 = 1.2533); RMSE lớn hơn nhiều lần MAD nghĩa là có vài sai số rất lớn."
+    assumptions: ["Sai số xấp xỉ chuẩn khi dùng quan hệ RMSE ~ 1.25 MAD"]
+    pitfalls: ["Chỉ 9 điểm thì quan hệ 1.25 x MAD không khớp (14.95 so với 12.88)", "RMSE trong mẫu quá lạc quan; dùng RMSE ngoài mẫu cho safety stock"]
+    interpretation: "Bài 3: MSE 83.83, RMSE 9.16 > MAD 8.17 do vài sai số lớn (15, 10, -10). Bộ mẫu Holt: MSE 42.62, RMSE 6.53."
+    example:
+      inputs: {y: [100,110,90,120,105,115], fc: [95,108,100,110,112,100]}
+      steps: ["e^2 = 25, 4, 100, 100, 49, 225; tổng 503", "MSE = 503/6 = 83.83", "RMSE = sqrt(83.83)"]
+      result: "RMSE 9.16 (MSE 83.83)"
+
+  - id: "m07_mape"
+    name_vi: "Sai số phần trăm tuyệt đối trung bình (MAPE) và Forecast Accuracy"
+    name_en: "Mean Absolute Percentage Error (MAPE)"
+    expression_latex: 'MAPE=\frac{1}{n}\sum\left|\frac{Y_t-F_t}{Y_t}\right|\times100\%;\quad Accuracy=1-MAPE'
+    expression_python: "sum(abs(a-f)/a for a,f in zip(y,fc))/len(y)*100"
+    excel: "=AVERAGE(G2:G13) (cột G = |e|/Y)"
+    variables:
+      - {symbol: "y", meaning: "danh sách thực tế (khác 0)", unit: "đơn vị hàng"}
+      - {symbol: "fc", meaning: "danh sách dự báo", unit: "đơn vị hàng"}
+    when_to_use: "So sánh độ chính xác giữa sản phẩm/quy mô khác nhau."
+    why_it_works: "Chuẩn hoá sai số theo quy mô thực tế để thành tỷ lệ phần trăm, so sánh được các chuỗi khác cỡ."
+    assumptions: ["Y_t khác 0"]
+    pitfalls: ["Không xác định khi Y = 0 (hàng bán chậm nhiều ngày bằng 0): dùng WAPE, sMAPE, MASE (Hyndman & Koehler 2006)", "Thiên về phạt dự báo quá cao hơn quá thấp"]
+    interpretation: "Ngưỡng tham khảo tùy ngành: dưới 10% rất chính xác; 10-20% tốt; 20-50% chấp nhận được; trên 50% kém. KPI mục tiêu tham khảo: MAPE dưới 20%, Accuracy trên 80%."
+    example:
+      inputs: {y: [100,110,90,120,105,115], fc: [95,108,100,110,112,100]}
+      steps: ["% sai số: 5.00, 1.82, 11.11, 8.33, 6.67, 13.04; tổng 45.97", "MAPE = 45.97/6"]
+      result: "7.66% (rất chính xác, dưới 10%)"
+
+  - id: "m07_bias"
+    name_vi: "Độ lệch trung bình (Bias)"
+    name_en: "Forecast Bias (Mean Error)"
+    expression_latex: 'Bias=\frac{\sum(Y_t-F_t)}{n}'
+    expression_python: "sum(a-f for a,f in zip(y,fc))/len(y)"
+    excel: "=AVERAGE(D2:D13)"
+    variables:
+      - {symbol: "y", meaning: "danh sách thực tế", unit: "đơn vị hàng"}
+      - {symbol: "fc", meaning: "danh sách dự báo", unit: "đơn vị hàng"}
+    when_to_use: "Phát hiện dự báo thừa/thiếu có hệ thống (không chỉ độ lớn)."
+    why_it_works: "Mô hình tốt có sai số lúc dương lúc âm nên trung bình gần 0; mô hình sai cấu trúc có sai số cùng chiều nên Bias xa 0."
+    assumptions: ["Quy ước e = Y - F"]
+    pitfalls: ["Sai số dương và âm bù trừ nên Bias nhỏ không có nghĩa MAD nhỏ"]
+    interpretation: "Bias dương = dự báo thấp hơn thực tế (nguy cơ thiếu hàng); âm = dự báo cao (nguy cơ dư). Bộ mẫu: MA3 +11.96, Holt -1.27."
+    example:
+      inputs: {y: [100,110,90,120,105,115], fc: [95,108,100,110,112,100]}
+      steps: ["Tổng e = 5 + 2 - 10 + 10 - 7 + 15 = 15", "Bias = 15/6"]
+      result: "2.5"
+
+  - id: "m07_wape"
+    name_vi: "WAPE (sai số % có trọng số theo doanh số)"
+    name_en: "Weighted Absolute Percentage Error"
+    expression_latex: 'WAPE=\frac{\sum|e_t|}{\sum Y_t}'
+    expression_python: "sum(abs(a-f) for a,f in zip(y,fc))/sum(y)"
+    excel: "=SUMPRODUCT(ABS(B2:B13-C2:C13))/SUM(B2:B13)"
+    variables:
+      - {symbol: "y", meaning: "danh sách thực tế", unit: "đơn vị hàng"}
+      - {symbol: "fc", meaning: "danh sách dự báo", unit: "đơn vị hàng"}
+    when_to_use: "Hàng bán rời rạc, nhiều kỳ bằng 0 nên MAPE không xác định."
+    why_it_works: "Chia tổng sai số tuyệt đối cho tổng doanh số nên không bị chia cho 0 từng kỳ và ít nhạy kỳ doanh số nhỏ. Nguồn nêu WAPE cùng sMAPE, MASE như phương án thay MAPE."
+    assumptions: ["Tổng doanh số khác 0"]
+    pitfalls: ["Nguồn chỉ nêu định nghĩa, không có ví dụ số: ví dụ dưới đây do module tính trên Bài 3"]
+    interpretation: "Càng thấp càng tốt; đọc như tỷ lệ phần trăm sai số trên tổng doanh số."
+    example:
+      inputs: {y: [100,110,90,120,105,115], fc: [95,108,100,110,112,100]}
+      steps: ["Tổng |e| = 49; tổng Y = 640", "WAPE = 49/640"]
+      result: "0.0766 (7.66%)"
+
+  - id: "m07_tracking_signal"
+    name_vi: "Tín hiệu theo dõi (Tracking Signal)"
+    name_en: "Tracking Signal (TS)"
+    expression_latex: 'TS=\frac{\sum(Y_t-F_t)}{MAD}'
+    expression_python: "sum(e)/(sum(abs(x) for x in e)/len(e))"
+    excel: "=SUM(D2:D13)/AVERAGE(E2:E13)"
+    variables:
+      - {symbol: "e", meaning: "danh sách sai số e_t = Y_t - F_t", unit: "đơn vị hàng"}
+    when_to_use: "Giám sát hằng tháng để phát hiện mô hình lệch hoặc thị trường đổi cấu trúc."
+    why_it_works: "MAD chỉ cho biết lớn đến đâu, không cho biết cùng chiều hay không. Mô hình tốt có tổng sai số lũy kế gần 0; mô hình lệch thì tổng trôi xa 0. TS = tổng sai số lũy kế bằng bao nhiêu lần sai số trung bình, cảnh báo sớm như đèn báo động."
+    assumptions: ["Ngưỡng thường dùng +-4 (có tổ chức dùng +-3 đến +-6 tùy chi phí sai lệch)"]
+    pitfalls: ["Không theo dõi TS thì chỉ thấy sai số lớn và cho là một tháng xấu", "Phải có quy trình phản ứng: ai reset, trong bao lâu", "Nếu mọi sai số cùng dấu thì TS tăng đều 1 mỗi kỳ (TS = n)"]
+    interpretation: "SES alpha 0.3 trên bộ mẫu: TS chạm 4.0 ở tháng 5, vượt ngưỡng tháng 6, cuối 11.0. Case 5: TS -1 đến +1 khi ổn định, rơi xuống -6.28 ngay tháng đầu sau cú sốc. Holt TS -2.47 (an toàn)."
+    example:
+      inputs: {e: [3, -2, 4, 6, 5, 8, 7]}
+      steps: ["Tổng e = 31; MAD = 35/7 = 5.0", "TS = 31/5 = 6.2; TS kỳ 5 = 16/4 = 4.0; kỳ 6 = 24/4.67 = 5.14"]
+      result: "TS = 6.2 (chạm 4.0 ở kỳ 5, vượt ngưỡng kỳ 6)"
+
+  - id: "m07_safety_stock_from_error"
+    name_vi: "Tồn kho an toàn từ sai số dự báo"
+    name_en: "Safety stock from forecast error"
+    expression_latex: 'SS=z\,\sigma_e\sqrt{L}'
+    expression_python: "z*sigma_e*L**0.5"
+    excel: "=NORM.S.INV(service_level)*sigma_e*SQRT(L)"
+    variables:
+      - {symbol: "z", meaning: "hệ số mức dịch vụ (95% là 1.65)", unit: "không có"}
+      - {symbol: "sigma_e", meaning: "độ lệch chuẩn sai số dự báo (dùng RMSE ngoài mẫu)", unit: "đơn vị hàng/kỳ"}
+      - {symbol: "L", meaning: "thời gian chờ hàng tính theo số kỳ dự báo", unit: "kỳ"}
+    when_to_use: "Nối dự báo với tồn kho (m04): đặt đệm theo sai số thay vì +10-20% cố định."
+    why_it_works: "Sai số dự báo là nguồn bất định cần bảo hiểm; sai số cộng dồn qua L kỳ chờ nên nhân căn L (không nhân căn L thì thiếu). Dự báo tốt hơn thì RMSE nhỏ hơn nên giảm tồn kho an toàn."
+    assumptions: ["Sai số độc lập giữa các kỳ, xấp xỉ chuẩn", "RMSE ngoài mẫu đại diện (RMSE trong mẫu quá lạc quan: 8.71 so với 18.75 ngoài mẫu ở Case 9)"]
+    pitfalls: ["Dùng sai số trong mẫu làm thiếu đệm", "Với chu kỳ đặt hàng 1 tháng và chờ 1 tháng, bảo vệ 1 kỳ dự báo (L = 1)"]
+    interpretation: "Case 9: SS = 1.65 x 18.75 = 30.9 kg nhờ dự báo phân rã; nếu dùng MA3 (RMSE 67.66) SS = 111.6 kg, chênh 80.7 kg (~12.1 triệu đồng vốn lưu động)."
+    example:
+      inputs: {z: 1.65, sigma_e: 25, L: 2}
+      steps: ["SS = 1.65 x 25 x sqrt(2) = 41.25 x 1.4142", "Nếu RMSE cải thiện còn 15: SS = 1.65 x 15 x 1.4142 = 35.0"]
+      result: "58.3 đơn vị (giảm còn 35.0 nếu RMSE = 15, tiết kiệm 23.3)"
+
+  - id: "m07_cost_asymmetry_threshold"
+    name_vi: "Ngưỡng xác suất để tăng tồn kho (bất đối xứng chi phí thiếu/dư)"
+    name_en: "Stocking threshold from under/over cost"
+    expression_latex: 'p\,C_u>(1-p)\,C_o\;\Rightarrow\;p>\frac{C_o}{C_u+C_o}'
+    expression_python: "co/(cu+co)"
+    excel: "=Co/(Cu+Co)"
+    variables:
+      - {symbol: "cu", meaning: "chi phí thiếu hàng nếu sự kiện xảy ra mà không chuẩn bị", unit: "USD hoặc VNĐ"}
+      - {symbol: "co", meaning: "chi phí dư hàng nếu chuẩn bị mà sự kiện không xảy ra", unit: "USD hoặc VNĐ"}
+    when_to_use: "Quyết định có điều chỉnh tồn kho theo dự báo sự kiện bất định (bão, khuyến mãi, lễ)."
+    why_it_works: "Tăng tồn kho khi chi phí kỳ vọng của việc không tăng lớn hơn chi phí kỳ vọng của việc tăng; cùng tư duy Newsvendor (m04)."
+    assumptions: ["Case Walmart là minh họa giả định, không phải số liệu công bố của Walmart"]
+    pitfalls: ["Cần ước lượng đúng p (xác suất thời tiết) và Cu, Co"]
+    interpretation: "Cu = 180, Co = 60 thì p > 0.25: thiệt hại thiếu gấp 3 lần thiệt hại dư nên chỉ cần xác suất bão vượt 25% là chuẩn bị."
+    example:
+      inputs: {cu: 180, co: 60}
+      steps: ["Cu = 400 x 0.45 = 180 USD; Co = 400 x 0.15 = 60 USD", "p* = 60/(180+60)"]
+      result: "0.25"
+
+  - id: "m07_demand_growth_capacity"
+    name_vi: "Tăng trưởng nhu cầu và thời điểm cần thêm công suất"
+    name_en: "Demand growth via income elasticity and capacity trigger time"
+    expression_latex: 'g=\varepsilon\cdot g_{GDP}+g_{pop};\quad n=\frac{\ln(U_{max}\cdot C/D_0)}{\ln(1+g)}'
+    expression_python: "math.log(umax*cap/d0)/math.log(1+g)"
+    excel: "=LN(Umax*Cap/D0)/LN(1+g)"
+    variables:
+      - {symbol: "g", meaning: "tăng trưởng nhu cầu/năm = độ co giãn thu nhập x tăng GDP/người + tăng dân số", unit: "tỷ lệ/năm"}
+      - {symbol: "umax", meaning: "mức sử dụng công suất tối đa cho phép (0.9)", unit: "tỷ lệ"}
+      - {symbol: "cap", meaning: "công suất hiện tại (125)", unit: "chỉ số"}
+      - {symbol: "d0", meaning: "nhu cầu hiện tại (100)", unit: "chỉ số"}
+    when_to_use: "Dự báo dài hạn theo vĩ mô để xác định mốc đầu tư công suất; kèm độ nhạy theo kịch bản."
+    why_it_works: "Độ co giãn 0.8 nghĩa là thu nhập tăng 1% thì nhu cầu tăng 0.8%; cộng với tăng dân số. Giải D0 x (1+g)^n = Umax x C."
+    assumptions: ["Số liệu Vinamilk/Case 2 hoàn toàn giả định minh họa; doanh nghiệp không công bố mô hình nội bộ", "Độ co giãn 0.8, GDP/người +6%/năm, dân số +0.9%/năm"]
+    pitfalls: ["Rất nhạy: chênh 1.5 điểm % GDP làm chỉ số nhu cầu sau 5 năm lệch 7.5 điểm (134.5 so với 127.0, ~6% công suất cỡ 125)", "Nên chạy 3 kịch bản và đầu tư theo giai đoạn"]
+    interpretation: "g = 5.7%/năm; mốc xây nhà máy mới 2.12 năm (nhà máy mất 18-30 tháng nên phải quyết định ngay); sau 5 năm nhu cầu 131.9 (+31.9%)."
+    example:
+      inputs: {umax: 0.9, cap: 125, d0: 100, g: 0.057}
+      steps: ["g = 0.8 x 6% + 0.9% = 5.7%", "n = ln(1.125)/ln(1.057)"]
+      result: "2.12 năm"
+
+  - id: "m07_early_sales_extrapolation"
+    name_vi: "Dự báo nhu cầu vòng đời từ tốc độ bán sớm"
+    name_en: "Life-cycle demand from early-sales share"
+    expression_latex: 'D_{life}=\frac{S_{3d}}{\rho},\quad \rho=0.35'
+    expression_python: "s3d/rho"
+    excel: "=Doanh_so_3_ngay/0.35"
+    variables:
+      - {symbol: "s3d", meaning: "doanh số 3 ngày đầu của một mẫu (chưa hết hàng)", unit: "cái"}
+      - {symbol: "rho", meaning: "tỷ lệ nhu cầu cả vòng đời xảy ra trong 3 ngày đầu (35% là giả định minh họa Case 6)", unit: "tỷ lệ"}
+    when_to_use: "Mẫu mới mỗi tháng, không có lịch sử từng mẫu (thời trang online, đồ theo trend)."
+    why_it_works: "Dùng tỷ lệ trên toàn bộ danh mục làm lịch sử thay cho lịch sử từng mẫu; kết hợp đặt thử nhỏ rồi bổ sung nhanh."
+    assumptions: ["Mẫu hết hàng trong 3 ngày là hot, nhu cầu bị cắt cụt nên không chia cho 0.35", "Tỷ lệ 0.35 giả định minh họa, cần kiểm tra định kỳ (nếu là 50% thì công thức đổi hẳn)"]
+    pitfalls: ["Giá vốn bổ sung gấp cao hơn 8.3% nhưng vẫn rẻ hơn chi phí chôn vốn mẫu ế"]
+    interpretation: "Mẫu bán 38 cái trong 3 ngày thì dự báo 108.6 cái (đặt bổ sung đến khoảng 110); dưới 40 thì không đặt thêm."
+    example:
+      inputs: {s3d: 38, rho: 0.35}
+      steps: ["38/0.35 = 108.6, làm tròn 110; đặt thêm 70 so với 40 ban đầu"]
+      result: "108.6 cái (giả định minh họa)"
+
+frameworks:
+  - id: "m07_method_selection"
+    name_vi: "Sơ đồ chọn phương pháp dự báo"
+    name_en: "Forecasting method selection tree"
+    origin: "Tổng hợp thực hành trong tài liệu nguồn (mục 5.4) dựa trên đặc điểm dữ liệu."
+    components:
+      - "Câu hỏi 1: có lịch sử đáng tin cậy (từ 1-2 năm)? Không thì dùng định tính (Delphi, chuyên gia, nghiên cứu thị trường)"
+      - "Câu hỏi 2: có mùa vụ rõ? Có thì Holt-Winters hoặc phân rã + hồi quy (thường có xu hướng kèm theo)"
+      - "Câu hỏi 3: không mùa vụ, có xu hướng? Có thì Holt hoặc hồi quy xu hướng; không thì SES hoặc trung bình động"
+      - "Câu hỏi 4: có yếu tố nhân quả rõ (giá, quảng cáo, thời tiết)? Thêm hồi quy đa biến"
+    when_to_use: "Bắt đầu mọi bài toán dự báo mới; chọn mô hình ứng viên cho backtesting."
+    how_to_apply:
+      - "Vẽ biểu đồ chuỗi, nhận diện xu hướng/mùa vụ/nhiễu (mục 1.6)"
+      - "Chọn 2-3 mô hình ứng viên theo sơ đồ (không dùng một mô hình cho mọi sản phẩm; phân loại theo ABC/Fisher)"
+      - "Backtesting trên phần dữ liệu giấu, so MAD/RMSE/MAPE/Bias/TS"
+      - "Chọn mô hình có sai số thấp và không lệch (TS trong +-4)"
+    how_to_read_results: "Không chọn theo một chỉ số: kết hợp độ lớn sai số và độ lệch (Bài 9); mô hình đơn giản/tổ hợp thường cạnh tranh."
+    pitfalls: ["Chọn từ cửa sổ kiểm tra ngắn (SES may mắn ở Case 9)", "Dùng MA/SES cho chuỗi có xu hướng"]
+    example: "Mây Núi: có xu hướng + mùa vụ + 24 tháng dữ liệu nên chọn phân rã + hồi quy (MAPE 2.76%) thay vì Holt (14.45%)."
+
+  - id: "m07_time_series_decomposition"
+    name_vi: "Phân rã chuỗi thời gian (T, S, C, R)"
+    name_en: "Time series decomposition"
+    origin: "Khung cổ điển phân tích chuỗi thời gian; mô hình cộng và nhân."
+    components: ["Xu hướng T", "Mùa vụ S", "Chu kỳ C", "Ngẫu nhiên R", "Mô hình cộng (T+S+C+R) hoặc nhân (TxSxCxR)"]
+    when_to_use: "Khi cần tách mùa khỏi tăng trưởng; nền tảng cho chỉ số mùa vụ và dự báo phân rã."
+    how_to_apply:
+      - "Hồi quy xu hướng thô trên dữ liệu"
+      - "Tính Y/T cho từng kỳ, lấy trung bình theo vị trí chu kỳ, chuẩn hoá để tổng bằng p"
+      - "Chia Y cho S (gỡ mùa vụ), hồi quy lần hai ra xu hướng sạch"
+      - "Dự báo = xu hướng x S; backtest trên giai đoạn giấu"
+    how_to_read_results: "Chuỗi đã gỡ mùa vụ không còn răng cưa, xu hướng tăng đều (giải khát: 109.4... 129.7)."
+    pitfalls: ["Nhầm mùa vụ thành tăng trưởng", "Chu kỳ C khác mùa vụ ở chỗ không có tần suất cố định"]
+    example: "Case 9: chỉ số mùa vụ T12 = 1.176, T7 = 0.865; trend gỡ mùa vụ 398.30 + 8.175 t."
+
+  - id: "m07_error_metric_suite"
+    name_vi: "Bộ chỉ số đánh giá sai số + backtesting"
+    name_en: "Forecast error measurement suite"
+    origin: "MAD/MSE/MAPE chuẩn; WAPE/sMAPE/MASE đề xuất bởi Hyndman và Koehler (2006) làm phương án thay MAPE."
+    components: ["MAD (độ lớn theo đơn vị)", "MSE/RMSE (phạt sai số lớn, dùng safety stock)", "MAPE (so sánh quy mô khác nhau)", "Bias và TS (thiên lệch)"]
+    when_to_use: "Mọi lần đánh giá và so sánh mô hình."
+    how_to_apply: ["Chia train/test (giấu ít nhất 1 chu kỳ mùa vụ)", "Tính cả 5-6 chỉ số trên cùng cửa sổ đo", "Đọc kết hợp độ lớn và độ lệch"]
+    how_to_read_results: "MAPE dưới 10% rất chính xác; TS ngoài +-4 là mô hình lệch dù MAPE thấp."
+    pitfalls: ["Cửa sổ đo khác nhau (MA3 cần 3 kỳ khởi động) làm so sánh méo; nên đo trên cùng cửa sổ (tháng 4-12 SES 0.7 có MAD 9.10 và MAPE 5.60%)"]
+    example: "Bài 9: mô hình B MAPE thấp nhất nhưng TS +7.2 nên loại; chọn C (MAPE 7%, TS +1.5)."
+
+  - id: "m07_delphi"
+    name_vi: "Phương pháp Delphi"
+    name_en: "Delphi Method"
+    origin: "Dalkey và Helmer, RAND Corporation, thập niên 1950-1960; dự báo công nghệ quân sự khi không có lịch sử và nhằm hạn chế ảnh hưởng của người có chức vị cao (groupthink)."
+    components: ["Nhóm 5-10 chuyên gia (bán hàng, sản xuất, người dùng)", "Ẩn danh", "Nhiều vòng phản hồi (trung vị, khoảng tứ phân vị, tóm tắt lý do)", "Tiêu chí dừng"]
+    when_to_use: "Sản phẩm hoàn toàn mới, không có dữ liệu lịch sử."
+    how_to_apply:
+      - "Vòng 1: mỗi chuyên gia ước lượng điểm và khoảng"
+      - "Tổng hợp trung vị và khoảng, gửi lại, yêu cầu người cực đoan nêu lý do"
+      - "Lặp đến khi khoảng dao động thu hẹp dưới 15-20% trung vị hoặc không đổi giữa hai vòng"
+    how_to_read_results: "Dùng trung vị làm dự báo, kèm khoảng để thể hiện bất định (ví dụ 380, khoảng 350-450)."
+    pitfalls: ["Chủ quan, tốn thời gian, khó lượng hoá độ tin cậy"]
+    example: "Giả định minh họa: 5 chuyên gia qua 3 vòng, khoảng 200-800 thu hẹp về 350-450, trung vị ổn định 380."
+
+  - id: "m07_cpfr"
+    name_vi: "Hoạch định, dự báo và bổ sung hợp tác (CPFR)"
+    name_en: "Collaborative Planning, Forecasting and Replenishment"
+    origin: "Hiệp hội VICS (ngành bán lẻ Mỹ), cuối thập niên 1990; chuẩn hoá cách nhà sản xuất và nhà bán lẻ cùng lập dự báo (chi tiết ở m03)."
+    components: ["Dữ liệu và nhận định chung giữa đối tác chuỗi cung ứng"]
+    when_to_use: "Mở rộng dự báo ra ngoài nội bộ, hạn chế Bullwhip."
+    how_to_apply: ["Chia sẻ dữ liệu POS/tồn kho với đối tác", "Thống nhất một dự báo chung"]
+    how_to_read_results: "Dự báo chung chính xác hơn dự báo đơn lẻ từng bên."
+    pitfalls: ["Cần mức tin cậy và chia sẻ dữ liệu giữa các bên"]
+    example: "Nhà sản xuất và chuỗi bán lẻ cùng lập dự báo một mã hàng."
+
+  - id: "m07_advanced_methods"
+    name_vi: "Phương pháp nâng cao: ARIMA, Prophet, Machine Learning"
+    name_en: "ARIMA, Prophet, ML"
+    origin: "ARIMA: Box và Jenkins 1970 (Time Series Analysis). Prophet: nhóm dữ liệu Facebook/Meta 2017 mã nguồn mở. M-Competitions của Makridakis từ 1982 (M3, M4 2018, M5 2020)."
+    components: ["ARIMA(p,d,q): AR tự hồi quy, I sai phân, MA theo sai số quá khứ; chọn tham số qua ACF/PACF hoặc auto.arima/pmdarima", "Prophet: nhiều mùa vụ chồng chéo, ngày lễ, chịu dữ liệu thiếu", "ML: Random Forest, XGBoost/LightGBM, LSTM"]
+    when_to_use: "Nhiều SKU và nhiều biến đầu vào chất lượng, chuỗi đủ dài, có đội duy trì mô hình."
+    how_to_apply: ["Chứng minh lợi ích bằng tiền trước khi đầu tư", "Dùng tổ hợp (ensemble) trung bình nhiều mô hình đơn giản làm lựa chọn an toàn"]
+    how_to_read_results: "Theo tổng kết công bố của ban tổ chức (cần đối chiếu nguồn): M4 2018 ML thuần kém mô hình thống kê, đội thắng dùng mô hình lai; M5 2020 LightGBM dẫn đầu khi có giá, khuyến mãi, sự kiện."
+    pitfalls: ["Overfitting, tốn hạ tầng, khó giải thích", "Dừng đầu tư độ phức tạp khi lịch sử dưới 2-3 năm, nhiều SKU thiếu nguồn lực, thị trường đổi cấu trúc"]
+    example: "Grab (ước tính/minh họa): ô lưới địa lý x 15-30 phút, ML phù hợp vì dữ liệu lớn nhiều biến và cập nhật gần thời gian thực."
+
+  - id: "m07_method_comparison"
+    name_vi: "Bảng so sánh ưu nhược điểm các phương pháp"
+    name_en: "Method comparison table"
+    origin: "Mục 2.11 của nguồn."
+    components:
+      - "Trung bình động: rất thấp; trễ khi có xu hướng; vài kỳ dữ liệu"
+      - "SES: thấp; cần chọn alpha, trễ khi có xu hướng, không mùa vụ"
+      - "Holt: thấp-trung bình; xử lý xu hướng, Bias gần 0; vài chục kỳ"
+      - "Holt-Winters: trung bình; xu hướng + mùa vụ; 2-3 chu kỳ"
+      - "Phân rã + hồi quy: thấp-trung bình; dễ làm Excel, xu hướng tuyến tính cố định; 2 chu kỳ trở lên"
+      - "Hồi quy đa biến: trung bình-cao; trả lời nếu...thì, rủi ro overfitting"
+      - "ARIMA: cao; chuỗi dài tương đối ổn định"
+      - "ML: rất cao; dữ liệu lớn nhiều biến"
+      - "Định tính: thấp; không cần dữ liệu số nhưng chủ quan, tốn thời gian"
+    when_to_use: "Cân nhắc đánh đổi độ phức tạp, dữ liệu, giải thích được."
+    how_to_apply: ["Đối chiếu yêu cầu dữ liệu của mô hình với dữ liệu sẵn có"]
+    how_to_read_results: "Chọn mô hình đơn giản nhất đạt sai số đủ tốt."
+    pitfalls: ["Dùng cùng 1 mô hình cho mọi sản phẩm"]
+    example: "Aggregate vs chi tiết: dự báo tổng hợp trước, phân bổ top-down theo tỷ trọng lịch sử."
+
+  - id: "m07_forecast_capability_assessment"
+    name_vi: "Tự đánh giá năng lực dự báo (10 câu Có/Không)"
+    name_en: "Forecasting maturity self-assessment"
+    origin: "Mục 4.6 của nguồn."
+    components: ["Dữ liệu lịch sử có cấu trúc 2 năm", "Đo sai số hằng tháng", "Phân công trách nhiệm", "Tích hợp định tính", "Dùng công cụ chuyên dụng", "Phân loại theo ABC", "Feedback loop bán hàng-sản xuất-dự báo", "Cập nhật tham số định kỳ", "Kế hoạch dự phòng", "Đo lợi ích tài chính"]
+    when_to_use: "Chẩn đoán mức trưởng thành trước khi đầu tư công cụ."
+    how_to_apply: ["Đếm số mục Có"]
+    how_to_read_results: "0-3 điểm sơ khai (xây nền dữ liệu); 4-6 trung bình (chuẩn hoá quy trình); 7-10 trưởng thành (cân nhắc ARIMA/ML)."
+    pitfalls: ["Đầu tư ML khi mới ở mức sơ khai"]
+    example: "SME có dữ liệu Excel 2 năm nhưng không đo sai số: khoảng 2-3 điểm nên bắt đầu bằng MAPE và TS."
+
+procedures:
+  - id: "m07_proc_7_steps"
+    name: "Quy trình 7 bước xây dựng hệ thống dự báo"
+    steps:
+      - "Bước 1: xác định mục đích và tần suất (ngắn/trung/dài hạn; theo SKU hay nhóm)"
+      - "Bước 2: thu thập và làm sạch dữ liệu (loại/đánh dấu khuyến mãi lớn, sự cố, hết hàng)"
+      - "Bước 3: phân tích thành phần chuỗi (xu hướng, mùa vụ, chu kỳ, nhiễu)"
+      - "Bước 4: chọn phương pháp theo đặc điểm dữ liệu (sơ đồ chọn phương pháp)"
+      - "Bước 5: áp dụng mô hình và tính dự báo trên Excel/phần mềm"
+      - "Bước 6: đo sai số và kiểm định (MAD, RMSE, MAPE, TS; backtesting trên dữ liệu giấu)"
+      - "Bước 7: giám sát và điều chỉnh liên tục (cập nhật định kỳ, cảnh báo sớm)"
+    outputs: "Dự báo có số sai số kèm theo, quy trình cập nhật và quy tắc reset."
+
+  - id: "m07_proc_compare_models"
+    name: "So sánh mô hình bằng backtesting (kiểu Case Mây Núi)"
+    steps:
+      - "Nhận diện thành phần chuỗi; chọn mô hình nhân hay cộng"
+      - "Chia 24 tháng huấn luyện, giấu 6 tháng kiểm tra"
+      - "Chạy mô hình ứng viên (MA3, SES, Holt, phân rã) trên phần huấn luyện, dự báo 6 tháng kiểm tra"
+      - "Tính MAD, RMSE, MAPE, Bias, TS cho từng mô hình trên cùng cửa sổ"
+      - "Chọn mô hình tốt và không lệch; cẩn thận may mắn cục bộ (SES phẳng); kiểm tra thêm một chu kỳ mùa vụ"
+      - "Dùng RMSE ngoài mẫu tính safety stock; cập nhật mỗi tháng"
+    outputs: "Mô hình được chọn, bảng sai số, tồn kho an toàn mục tiêu."
+
+  - id: "m07_proc_seasonal_decomposition"
+    name: "Dự báo bằng phân rã trong Excel (hai lần hồi quy)"
+    steps:
+      - "Hồi quy xu hướng thô: b = (n.SumXY - SumX.SumY)/(n.SumX2 - SumX^2); a = Ybar - b.Xbar"
+      - "Tính Y/T từng tháng, trung bình theo tháng của các năm, chuẩn hoá nhân 12/tổng"
+      - "Chia Y cho S để gỡ mùa vụ; hồi quy lần hai ra a', b'"
+      - "Dự báo F = (a' + b' t) x S; so với dữ liệu giấu"
+      - "Cập nhật khi có năm mới (đặc biệt chỉ số mùa vụ mới chỉ là trung bình 2 quan sát)"
+    outputs: "Bảng chỉ số mùa vụ, đường xu hướng, dự báo 6-12 tháng."
+
+  - id: "m07_proc_tracking_response"
+    name: "Quy trình giám sát và phản ứng với Tracking Signal"
+    steps:
+      - "Tính TS hằng tháng = tổng sai số lũy kế / MAD lũy kế"
+      - "Nếu |TS| vượt 4: rà soát mô hình, kiểm tra cú sốc (structural break), khuyến mãi, hết hàng"
+      - "Nếu do đổi mức (như mất 40% nhu cầu): reset, lấy mức mới bằng trung bình vài tháng sau cú sốc thay vì chờ mô hình tự học"
+      - "Nếu do xu hướng bị bỏ sót: chuyển từ MA/SES sang Holt; nếu do mùa vụ: chuyển sang phân rã/Holt-Winters"
+      - "Ghi người ra quyết định reset và thời hạn xử lý"
+    outputs: "Mô hình được reset hoặc đổi, nhật ký điều chỉnh có lý do."
+
+  - id: "m07_proc_new_product"
+    name: "Dự báo sản phẩm mới không có lịch sử"
+    steps:
+      - "Giai đoạn giới thiệu: dùng Delphi (3 vòng, ẩn danh) và nghiên cứu thị trường"
+      - "Đặt thử số lượng nhỏ (Case 6: 40 cái/mẫu)"
+      - "Theo dõi tốc độ bán sớm (3 ngày đầu), tính nhu cầu vòng đời = doanh số sớm / tỷ lệ lịch sử (0.35 giả định minh họa)"
+      - "Mẫu hết hàng sớm là hot: đặt bổ sung đến mức đủ (160 cái trong ví dụ); dưới 40 thì không đặt thêm"
+      - "Khi tích luỹ đủ dữ liệu chuyển sang Holt/hồi quy xu hướng"
+    outputs: "Số lượng đặt ban đầu và quy tắc bổ sung."
+
+  - id: "m07_proc_wma_weekday"
+    name: "WMA theo ngày trong tuần để đặt nguyên liệu tươi"
+    steps:
+      - "Tách riêng chuỗi từng ngày trong tuần (ví dụ riêng các thứ Bảy)"
+      - "Tính WMA với trọng số 0.4/0.3/0.2/0.1 cho 4 tuần gần nhất"
+      - "Đặt hàng = WMA x 1.05 (đệm nhỏ thay vì cao nhất 4 tuần x 1.1)"
+      - "Điều chỉnh định tính (mưa x 0.85 giả định, sự kiện)"
+      - "Theo dõi Bias; nếu dương kéo dài (doanh số đang tăng) thêm Holt hoặc cộng 4%"
+    outputs: "Lượng mua cho từng ngày; dư giảm từ 8.62% xuống 1.75% (giả định minh họa)."
+
+decision_rules:
+  - "Nếu chuỗi đi ngang, nhiễu, không xu hướng/mùa vụ thì dùng MA hoặc SES; nếu có xu hướng thì dùng Holt hoặc hồi quy xu hướng."
+  - "Nếu chuỗi có mùa vụ lặp lại rõ và có 24-36 tháng thì dùng phân rã mùa vụ hoặc Holt-Winters; nếu ít dữ liệu hơn 2 chu kỳ thì dùng phân rã đơn giản trên Excel."
+  - "Nếu sản phẩm/thị trường mới, không có lịch sử thì dùng Delphi, nghiên cứu thị trường hoặc đặt thử nhỏ và ngoại suy tốc độ bán sớm."
+  - "Nếu Bias dương một chiều và TS vượt +4 thì mô hình dự báo thấp có hệ thống (thiếu xu hướng hoặc nhu cầu tăng); chuyển sang Holt/hồi quy hoặc thêm điều chỉnh."
+  - "Nếu Tracking Signal vượt +-4 (hoặc +-3 đến +-6 tùy chi phí sai lệch) thì rà soát và reset mô hình; không chờ mô hình tự học."
+  - "Nếu so sánh hai mô hình mà MAPE thấp hơn nhưng TS ngoài ngưỡng thì loại mô hình lệch; chọn mô hình không lệch có MAPE thấp nhất (Bài 9)."
+  - "Nếu cần tính tồn kho an toàn thì dùng RMSE ngoài mẫu nhân z và căn thời gian chờ, không dùng đệm cố định +10-20%."
+  - "Nếu hàng bán rời rạc (nhiều kỳ bằng 0) thì dùng WAPE/sMAPE/MASE thay MAPE."
+  - "Nếu alpha cần chọn: chuỗi đi ngang dùng alpha thấp; chuỗi đổi mức/xu hướng cần alpha cao; chọn bằng thử 0.1-0.9 và backtest."
+  - "Nếu thêm biến vào hồi quy chỉ cải thiện R2 vài phần trăm hoặc dưới 10-15 quan sát mỗi biến thì không thêm; dùng R2 hiệu chỉnh và kiểm dấu hệ số."
+  - "Nếu dự báo cho từng SKU nhiễu lớn thì dự báo nhóm tổng hợp trước rồi phân bổ theo tỷ trọng (Risk Pooling)."
+  - "Nếu dự báo dài hạn thì chạy kịch bản (cơ sở/lạc quan/bi quan) và đầu tư theo giai đoạn thay vì cam kết một lần."
+  - "Nếu xác suất sự kiện (bão, khuyến mãi) vượt Co/(Cu+Co) thì tăng tồn kho trước."
+  - "Nếu lịch sử dưới 2-3 năm, nhiều SKU thiếu nguồn lực hoặc thị trường đổi cấu trúc thường xuyên thì không đầu tư mô hình phức tạp (ARIMA/ML); chỉ đầu tư khi đã chứng minh lợi ích đo bằng tiền."
+  - "Nếu doanh số bị cắt cụt do hết hàng, khuyến mãi lớn hoặc sự cố thì làm sạch hoặc đánh dấu trước khi ước lượng mô hình."
+
+benchmarks:
+  - {metric: "MAPE đánh giá nhanh", value: "dưới 10% rất chính xác; 10-20% tốt; 20-50% chấp nhận được; trên 50% kém", context: "Ngưỡng tham khảo tùy ngành, mục 2.7", confidence: "medium"}
+  - {metric: "Tracking Signal", value: "trong +-4 (một số tổ chức dùng +-3 đến +-6)", context: "Kiểm soát thiên lệch", confidence: "medium"}
+  - {metric: "Forecast Accuracy KPI", value: "1 - MAPE trên 80% (MAPE dưới 20%)", context: "Mục tiêu tham khảo tùy ngành", confidence: "low"}
+  - {metric: "RMSE so với MAD", value: "RMSE xấp xỉ 1.25 x MAD nếu sai số chuẩn", context: "Căn của pi/2; chỉ 9 điểm thì lệch", confidence: "high"}
+  - {metric: "Dữ liệu tối thiểu cho mùa vụ", value: "2-3 chu kỳ (24-36 tháng dữ liệu tháng)", context: "Holt-Winters/ phân rã", confidence: "medium"}
+  - {metric: "Số quan sát cho mỗi biến độc lập", value: "10-15", context: "Quy tắc kinh nghiệm chống overfitting", confidence: "medium"}
+  - {metric: "Mức dịch vụ 95%", value: "z = 1.65", context: "Tồn kho an toàn", confidence: "high"}
+  - {metric: "Chi phí đầu tư công cụ dự báo (ước tính)", value: "Khởi nghiệp 0-5 triệu VNĐ (Excel); Tăng trưởng 10-100 triệu/năm; Mở rộng 200 triệu-1 tỷ/năm; DN lớn 2-20+ tỷ/năm", context: "Ước tính trong nguồn", confidence: "low"}
+  - {metric: "Chấm điểm năng lực dự báo", value: "0-3 sơ khai; 4-6 trung bình; 7-10 trưởng thành", context: "10 mục tự đánh giá", confidence: "medium"}
+  - {metric: "Hệ số trọng số WMA ví dụ", value: "0.5/0.3/0.2 (3 kỳ); 0.4/0.3/0.2/0.1 (4 kỳ)", context: "Ví dụ minh họa, do người dùng chọn", confidence: "medium"}
+
+pitfalls:
+  - "Dùng cùng một mô hình cho mọi sản phẩm: phân loại theo ABC/Fisher trước."
+  - "Dùng MA/SES cho chuỗi có xu hướng: Bias xấp xỉ độ dốc x (n+1)/2, dự báo luôn thấp."
+  - "Bỏ qua mùa vụ khi có chu kỳ rõ: thiếu ở cao điểm, dư ở thấp điểm."
+  - "Không loại outlier (khuyến mãi một lần, sự cố, hết hàng) trước khi dự báo."
+  - "Không đo sai số dự báo nên không biết mô hình tốt hay xấu."
+  - "Chọn mô hình theo sai số trong mẫu, không backtesting: overfitting; so sánh sai cửa sổ đo."
+  - "Chọn mô hình từ cửa sổ kiểm tra quá ngắn rồi may mắn (SES phẳng Case 9)."
+  - "Chỉ dùng dự báo định lượng, bỏ qua tín hiệu định tính; bỏ lỡ structural break (Case 5)."
+  - "Dự báo quá chi tiết (từng SKU) khi dữ liệu không đủ."
+  - "Đặt đệm cố định +10-20% thay vì tính từ RMSE và mức dịch vụ."
+  - "Dùng RMSE trong mẫu cho safety stock (quá lạc quan)."
+  - "Ngoại suy tuyến tính ngoài vùng dữ liệu (GDP quá cao, quảng cáo bão hoà)."
+  - "Không có quy trình phản ứng khi TS vượt ngưỡng (ai reset, bao lâu)."
+  - "Tin rằng mô hình càng phức tạp càng chính xác."
+  - "Bài tập/ví dụ khởi tạo Holt sai: T1 = Y2 - Y1 quá nhiễu."
+
+sme_vn_guidance:
+  - "Lộ trình: (1) thu thập 24-36 tháng dữ liệu bán hàng có cấu trúc; (2) SES/phân rã mùa vụ trên Excel/Google Sheets; (3) đo MAPE/MAD và Tracking Signal hằng tháng; (4) bổ sung điều chỉnh định tính; (5) khi quy mô đủ lớn mới mua phần mềm/thuê Demand Planner; ML chỉ khi đã chứng minh lợi ích bằng tiền."
+  - "Công cụ: Excel (FORECAST.LINEAR, TREND, SLOPE, INTERCEPT, RSQ, FORECAST.ETS) có sẵn trong Office; Google Sheets miễn phí; Python (statsmodels, Prophet) miễn phí; Power BI + Python vài triệu/tháng (ước tính, cần xác nhận); SAP IBP/Oracle Demantra/Blue Yonder hàng tỷ/năm (ước tính, cần xác nhận)."
+  - "Ngân sách theo giai đoạn (ước tính, cần xác nhận): khởi nghiệp 0-5 triệu; tăng trưởng 10-100 triệu/năm; mở rộng 200 triệu-1 tỷ/năm; DN lớn 2-20+ tỷ/năm."
+  - "SME F&B (hải sản, buffet): tách chuỗi theo ngày trong tuần, WMA 4 tuần, đệm 5%, điều chỉnh thời tiết (Đà Nẵng)."
+  - "SME thời trang online: đặt thử 40 cái/mẫu, đo bán 3 ngày đầu, đặt bổ sung nhanh dù giá vốn cao hơn 8.3%."
+  - "SME mùa vụ (cà phê Tết, bánh Trung thu, giải khát): chỉ số mùa vụ + hồi quy xu hướng; cập nhật khi có năm mới; hạn dùng ngắn nên không tích trữ lâu."
+  - "SME bán sỉ: nhân xanh đặt trước 1 tháng nên L = 1 kỳ trong công thức safety stock; thiếu hàng mất khách sỉ."
+  - "Phân biệt thiếu hàng vs bán chậm: ghi lại ngày hết hàng để không học nhu cầu thấp giả."
+  - "Dữ liệu vĩ mô tham chiếu dài hạn: báo cáo Tổng cục Thống kê Việt Nam (gso.gov.vn)."
+
+case_lessons:
+  - name: "Walmart - dự báo tích hợp thời tiết và sự kiện"
+    type: "success"
+    setup: "Hàng nghìn cửa hàng chịu tác động bão, nắng nóng, sự kiện. Chuyện thường kể (qua báo chí, sách dữ liệu lớn; chưa kiểm chứng) là Pop-Tarts tăng vọt trước bão. Phần tính toán là giả định minh họa."
+    key_calculations:
+      - "Nền 200 hộp/ngày, hệ số bão 3.0 thì 600 hộp, chênh 400 hộp"
+      - "Cu = 400 x 0.45 = 180 USD; Co = 400 x 0.15 = 60 USD/cửa hàng"
+      - "Ngưỡng p > 60/(180+60) = 0.25; 500 cửa hàng thiếu đồng loạt mất 500 x 180 = 90000 USD/ngày"
+    lesson: "Tích hợp biến nhân quả khi chúng giải thích biến động lớn lịch sử không thấy; quyết định đặt hàng phụ thuộc cả dự báo lẫn bất đối xứng chi phí thiếu/dư. SME bắt đầu với vài biến quan trọng nhất."
+    data_reliability: "illustrative"
+  - name: "Vinamilk - mùa vụ ngắn hạn và nhân khẩu học dài hạn"
+    type: "success"
+    setup: "Sữa chua/sữa lạnh/kem tăng mùa hè, quà biếu dịp Tết; dài hạn do dân số, thu nhập. Mô tả khái quát, doanh nghiệp không công bố mô hình nội bộ; toàn bộ số là giả định minh họa."
+    key_calculations:
+      - "Chỉ số mùa vụ Q1 0.731, Q2 1.092, Q3 1.359, Q4 0.817; năm 4: 98.2; 149.1; 188.6; 115.2 (tổng 551.1 nghìn thùng)"
+      - "Sản xuất đều 137.8 nghìn thùng/quý: Q3 thiếu 50.8, Q1 dư 39.6"
+      - "g = 0.8 x 6% + 0.9% = 5.7%/năm; n = ln(1.125)/ln(1.057) = 2.12 năm; sau 5 năm 131.9"
+    lesson: "Hai chân trời hai công cụ: mùa vụ cho vận hành, hồi quy vĩ mô cho đầu tư; nhà máy mất 18-30 tháng nên mốc 2.1 năm nghĩa là quyết định ngay; chạy nhiều kịch bản."
+    data_reliability: "illustrative"
+  - name: "Coca-Cola - hồi quy theo khu vực"
+    type: "success"
+    setup: "Hiện diện hơn 200 quốc gia/vùng; khí hậu, thu nhập, văn hoá, sự kiện thể thao. Mô tả khái quát, số liệu giả định minh họa."
+    key_calculations:
+      - "Mô hình giả định Y = 5 + 1.2 x nhiệt độ + 0.002 x GDP/người"
+      - "A (28 độ C, 4000 USD): 46.6 lít/người/năm, khí hậu đóng góp 33.6 (72%)"
+      - "B (12 độ C, 40000 USD): 99.4; thu nhập đóng góp 80 (80%); sự kiện +8% ở A thì 50.3"
+    lesson: "Mô hình phân tán theo khu vực + biến địa phương chính xác hơn một mô hình chung; kết hợp định tính từ đội địa phương; thận trọng ngoại suy ngoài vùng dữ liệu (bão hoà)."
+    data_reliability: "illustrative"
+  - name: "Grab - dự báo nhu cầu theo thời gian thực"
+    type: "success"
+    setup: "Ô lưới địa lý nhỏ theo khung 15-30 phút, nhiều biến; ML phù hợp. Mô tả khái quát, không phải công thức thực của Grab."
+    key_calculations:
+      - "Dự báo 120 yêu cầu/15 phút, cung 80 tài xế: cầu/cung 1.5"
+      - "MAPE 15%: nhu cầu 102-138, cầu/cung 1.275-1.725"
+      - "Quy tắc giả định m = 1 + 0.8 x (tỷ lệ - 1): hệ số giá 1.22-1.58"
+    lesson: "ML hợp khi dữ liệu lớn, nhiều biến, cập nhật nhanh, có đội kỹ thuật; luôn kèm biên độ sai số và giới hạn điều chỉnh; SME áp dụng ý tưởng chia theo khung giờ/khu vực bằng bảng tính."
+    data_reliability: "illustrative"
+  - name: "Bán lẻ thời trang truyền thống - structural break"
+    type: "failure"
+    setup: "Dự báo thuần lịch sử (MA, SES cơ bản) không thấy tín hiệu mạng xã hội/hậu COVID-19. Mô phỏng giả định: 1000 đơn vị/tháng trong 8 tháng rồi giảm 40% còn 600; SES alpha 0.2."
+    key_calculations:
+      - "7 tháng ổn định: TS từ -0.16 đến +1.08"
+      - "Tháng 9 (thực tế 620, dự báo 1002.7): e = -382.7, TS = -6.28, vượt ngưỡng ngay"
+      - "Tháng 14: dự báo 736.9 so với thực tế 595 (cao 24%); tổng dư 1457.6 đơn vị, giá vốn 200000 đồng/đơn vị khoảng 291.5 triệu đồng hàng đặt thừa"
+    lesson: "Dự báo thuần lịch sử mù trước biến động cấu trúc; bắt buộc có TS và quy trình reset (lấy mức mới bằng trung bình vài tháng sau cú sốc); bổ sung tín hiệu định tính."
+    data_reliability: "illustrative"
+  - name: "Cửa hàng thời trang online - đặt thử và tốc độ bán 3 ngày đầu"
+    type: "sme"
+    setup: "10 nhân viên, 20 mẫu mới/tháng, không có lịch sử từng mẫu; trước đây đặt đều 120 cái/mẫu. Giả định: 4 mẫu hot (220), 6 mẫu trung bình (110), 10 mẫu ế (30); bán 300000, vốn 180000, xả 90000 đồng; 35% nhu cầu trong 3 ngày đầu."
+    key_calculations:
+      - "Cách cũ: đặt 2400, bán 1440, tồn 960 (40%), lợi nhuận gộp sau xả 86.4 triệu"
+      - "Cách mới: 800 đặt thử + 900 bổ sung = 1700, bán 1600, tồn 100 (5.9%); lợi nhuận gộp 480000 + 9000 - 319500 = 169.5 triệu (+83.1 triệu, +96%)"
+      - "Mẫu hot vẫn mất 4 x (220 - 160) = 240 cái do trần 160"
+    lesson: "Không có lịch sử từng mẫu vẫn dự báo từ tỷ lệ danh mục; chi phí đặt gấp (+8.3%) rẻ hơn chôn vốn mẫu ế; theo dõi lại tỷ lệ 35%; con số cũ -30% tồn kho trong bản nháp không có căn cứ nên đã bị thay."
+    data_reliability: "illustrative"
+  - name: "Buffet hải sản Đà Nẵng - WMA theo ngày trong tuần"
+    type: "sme"
+    setup: "Nguyên liệu tươi, khó dự báo thứ Bảy. Chuỗi 12 tuần: 300, 320, 310, 340, 335, 350, 330, 365, 360, 380, 370, 395. Mất 120000 đồng/suất dư, 150000 đồng/suất thiếu. Giả định minh họa."
+    key_calculations:
+      - "F5 = 0.4x340 + 0.3x310 + 0.2x320 + 0.1x300 = 323; thực tế 335"
+      - "WMA (8 tuần): MAD 16.75, MAPE 4.60%, Bias +14.38; MA4 MAD 19.06; Naive MAD 16.88, MAPE 4.64%"
+      - "Mua cũ 3157 suất dư 272 (8.62%); mới 2909.5 (module tính lại 2908.5) dư 50.85 (1.75%), thiếu 27.35; tiết kiệm ròng 32.64 - 6.10 - 4.10 = 22.44 triệu trong 8 tuần"
+      - "Tuần 13: 381 khách; mưa x 0.85 = 324"
+    lesson: "Lợi ích chính là chính sách mua (WMA x 1.05) thay vì max x 1.1 và tách riêng từng ngày, không phải độ chính xác điểm (WMA ngang Naive); thêm điều chỉnh xu hướng vì Bias dương; số cũ lãng phí 15% xuống 5% không có căn cứ đã bị thay."
+    data_reliability: "illustrative"
+  - name: "Dự báo vĩ mô làm đầu vào kế hoạch dài hạn - phân tích độ nhạy"
+    type: "success"
+    setup: "Dùng độ co giãn 0.8 và dân số 0.9%/năm; dự báo GDP bình quân đầu người bất định. Ví dụ chung, không khẳng định doanh nghiệp cụ thể."
+    key_calculations:
+      - "GDP 6.5% thì g = 6.1%, sau 5 năm 134.5"
+      - "GDP 5.0% thì g = 4.9%, sau 5 năm 127.0"
+      - "Chênh 7.5 điểm chỉ số, khoảng 6% công suất của nhà máy cỡ 125"
+    lesson: "Dùng kịch bản và đầu tư theo giai đoạn linh hoạt; kết hợp dự báo vĩ mô uy tín với kiểm tra độ nhạy."
+    data_reliability: "illustrative"
+  - name: "Cơ sở rang xay cà phê Mây Núi (Lâm Đồng) - chọn mô hình xu hướng + mùa vụ"
+    type: "sme"
+    setup: "12 nhân viên, bán sỉ cho khoảng 80 quán và online; tên và số liệu là giả định minh họa. 24 tháng huấn luyện, 6 tháng kiểm tra (664, 670, 584, 580, 562, 545 kg); giá vốn 150000 đồng/kg; mô hình nhân."
+    key_calculations:
+      - "Hồi quy thô: b = 242856/27600 = 8.799; a = 390.84; chỉ số mùa vụ T1 1.155 ... T7 0.865 ... T12 1.176 (chuẩn hoá nhân 12/12.0046)"
+      - "Hồi quy lần hai trên chuỗi gỡ mùa vụ: 398.30 + 8.175 t"
+      - "6 tháng kiểm tra: phân rã MAD 16.87, RMSE 18.75, MAPE 2.76%, Bias -10.5, TS -3.73; MA3 MAD 59.83, MAPE 10.43%; SES 0.2 MAD 38.50; Holt MAD 82.59, MAPE 14.45%"
+      - "SS = 1.65 x 18.75 = 30.9 kg; MA3 cần 111.6 kg, chênh 80.7 kg (~12.1 triệu đồng); F31 = 651.7 x 0.865 = 563.8 kg; tồn mục tiêu ~595 kg"
+    lesson: "Nhìn dữ liệu trước rồi chọn mô hình; phân rã bằng Excel hơn Holt-Winters khi chỉ 24-30 tháng; SES đẹp do may mắn; theo dõi TS gần -4 (xu hướng năm 3 chậm lại); dùng RMSE ngoài mẫu cho safety stock; hạn chế chỉ có 2 năm."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "MA3, WMA, SES, Holt trên bộ mẫu 12 tháng"
+    inputs: {Y: [120,132,128,141,150,147,160,172,165,178,185,181]}
+    steps:
+      - "MA3 tháng 4-12: MAD 11.96, RMSE 12.88, MAPE 7.37%, Bias +11.96; F13 = 181.33"
+      - "WMA 0.5/0.3/0.2: MAD 10.12; F13 = 181.6"
+      - "SES alpha 0.3 (F1 = 120): MAD 16.10, MAPE 10.04%, TS 11.0; F13 = 173.12; alpha 0.7: MAD 8.57, F13 = 181.24"
+      - "Holt (alpha 0.5, beta 0.3, L1 = 120, T1 = 7): MAD 5.63, MAPE 3.65%, Bias -1.27, TS -2.47; F13 = 190.60; F14 = 195.51"
+      - "Hồi quy: Y = 116.35 + 5.934 t, F13 = 193.48"
+    result: "Holt tốt nhất trong các mô hình ngoài mẫu; MA/SES luôn lệch thấp do xu hướng. Đã verify bằng Python."
+  - name: "Mây Núi: dự báo phân rã và safety stock tháng 7 năm 3"
+    inputs: {trend: "398.30 + 8.175 t", S7: 0.865, rmse_oos: 18.75, z: 1.65}
+    steps:
+      - "t = 31: xu hướng = 398.30 + 8.175 x 31 = 651.7"
+      - "F31 = 651.7 x 0.865 = 563.8 kg"
+      - "SS = 1.65 x 18.75 = 30.9 kg"
+      - "Tồn kho mục tiêu = 563.8 + 30.9 = 594.7, khoảng 595 kg"
+    result: "~595 kg (giả định minh họa; đã verify)"
+  - name: "Chỉ số mùa vụ quý (Bài 5)"
+    inputs: {year1: [60,90,120,70], year2: [66,99,132,77], growth: 0.10}
+    steps:
+      - "Trung bình quý: 63; 94.5; 126; 73.5; trung bình chung 357/4 = 89.25"
+      - "S = 0.706; 1.059; 1.412; 0.824 (tổng 4)"
+      - "Năm 3 = 374 x 1.10 = 411.4; mỗi quý = 102.85 x S"
+    result: "72.6; 108.9; 145.2; 84.7 (tổng 411.4)"
+  - name: "Walmart: ngưỡng tăng tồn kho trước bão"
+    inputs: {cu: 180, co: 60}
+    steps: ["p x 180 > (1-p) x 60", "p > 60/240 = 0.25"]
+    result: "Tăng tồn kho nếu xác suất bão trên 25% (giả định minh họa)"
+  - name: "Tracking Signal theo từng kỳ (Bài 7)"
+    inputs: {e: [3, -2, 4, 6, 5, 8, 7]}
+    steps: ["Lũy kế: 3, 1, 5, 11, 16, 24, 31", "MAD lũy kế: 3, 2.5, 3, 3.75, 4, 4.67, 5", "TS = 1.0; 0.4; 1.67; 2.93; 4.0; 5.14; 6.2"]
+    result: "Chạm 4.0 ở kỳ 5, vượt ngưỡng ở kỳ 6; nên rà soát mô hình"
+  - name: "Phản ứng structural break (Bài 11)"
+    inputs: {Y: [100,100,60,60,60,60], alpha: 0.5}
+    steps: ["F2 = 100; F3 = 100; F4 = 0.5x60 + 0.5x100 = 80 (lệch 33%)", "F5 = 70 (lệch 16.7%); F6 = 65 (lệch 8.3%, đạt ±10%)"]
+    result: "Mất 3 tháng sau cú sốc; alpha cao hội tụ nhanh nhưng nhạy nhiễu; reset nhanh hơn chờ học"
+  - name: "Delphi ba vòng"
+    inputs: {rounds: "R1: 200;350;500;300;800; R2: 300;380;450;350;550; R3: 350;380;420;360;450"}
+    steps: ["Khoảng dao động 600 (200-800) thu về 250 (300-550) rồi 100 (350-450)", "Trung vị 350 rồi 380 rồi 380"]
+    result: "Dự báo định tính 380 đơn vị/tháng, khoảng 350-450 (giả định minh họa)"
+
+practice_questions:
+  - q: "Bài 1: doanh số 50, 55, 53, 58, 60, 57. Tính MA3 và WMA 0.5/0.3/0.2 cho tháng 4-7 và so MAD tháng 4-6."
+    a: "MA3: 52.67; 55.33; 57.00; 58.33. WMA: 53.0; 55.9; 58.0; 58.1. MAD MA3 = 3.33, WMA = 3.37 (tương đương)."
+  - q: "Bài 2: cùng chuỗi, SES alpha 0.4, F1 = 50. Tính F2-F7, MAD, MSE, MAPE tháng 2-6 và TS."
+    a: "F: 50; 52.0; 52.4; 54.64; 56.784; 56.87. MAD 3.44; MSE 17.23; MAPE 5.99%; TS = 5.0 vượt +-4, dự báo thấp có hệ thống vì chuỗi tăng, nên cân nhắc Holt."
+  - q: "Bài 3: thực tế 100,110,90,120,105,115; dự báo 95,108,100,110,112,100. Tính các chỉ số."
+    a: "MAD 8.17; MSE 83.83; RMSE 9.16; MAPE 7.66% (rất chính xác); Bias 2.5; TS 1.84 (không lệch hệ thống)."
+  - q: "Bài 4: X = 2..7 (triệu quảng cáo), Y = 30,34,41,43,50,52. Tìm a, b, R2 và dự báo X = 8."
+    a: "b = 480/105 = 4.571; a = 21.095; R2 = 0.9796; dự báo 57.67 nghìn sản phẩm; ngoại suy X = 8 cần thận trọng vì có thể bão hoà."
+  - q: "Bài 5: năm 1: 60,90,120,70; năm 2: 66,99,132,77; năm 3 tăng 10%. Chỉ số mùa vụ và dự báo."
+    a: "S = 0.706; 1.059; 1.412; 0.824; dự báo 72.6; 108.9; 145.2; 84.7 (tổng 411.4)."
+  - q: "Bài 6: L = 200, T = 10, Y = 215, alpha 0.4, beta 0.2. Tính L_t, T_t, F_{t+1}, F_{t+3}."
+    a: "Dự báo trước 210 (sai số +5); L = 212.0; T = 10.4; F_{t+1} = 222.4; F_{t+3} = 243.2."
+  - q: "Bài 7: sai số +3,-2,+4,+6,+5,+8,+7. Tính TS và kỳ vượt ngưỡng."
+    a: "TS = 1.0; 0.4; 1.67; 2.93; 4.0; 5.14; 6.2; vượt ngưỡng ở kỳ 6."
+  - q: "Bài 8: RMSE sai số hằng tuần 25, chờ 2 tuần, mức dịch vụ 95%. Tính safety stock; nếu RMSE giảm còn 15?"
+    a: "SS = 1.65 x 25 x sqrt(2) = 58.3 (không nhân căn L chỉ 41.25); RMSE 15 thì 35.0, giảm 23.3."
+  - q: "Bài 9: A MAPE 8%, Bias -1, TS -0.8; B MAPE 6%, Bias +9, TS +7.2; C MAPE 7%, Bias +1.5, TS +1.5. Chọn mô hình nào?"
+    a: "Chọn C: B có MAPE thấp nhất nhưng TS +7.2 ngoài +-4 (dự báo thấp hệ thống, thiếu hàng); A và C không lệch, C có MAPE thấp hơn. Không chọn theo một chỉ số duy nhất."
+  - q: "Bài 10: thiết kế Delphi 3 vòng cho sản phẩm mới."
+    a: "5-10 chuyên gia (bán hàng, sản xuất, người dùng); vòng 1 ước lượng điểm + khoảng; vòng 2 phản hồi trung vị, khoảng tứ phân vị và lý do; dừng khi khoảng dao động dưới 15-20% trung vị hoặc không đổi giữa hai vòng."
+  - q: "Bài 11: chuỗi 100,100,60,60,60,60; SES alpha 0.5. Sau bao lâu dự báo trong +-10% của 60?"
+    a: "F4 = 80, F5 = 70, F6 = 65 (lệch 8.3%): 3 tháng sau cú sốc; reset mô hình nhanh hơn."
+  - q: "Case 7: tại sao WMA không hơn Naive về độ chính xác mà vẫn tiết kiệm 22.44 triệu?"
+    a: "Lợi ích đến từ chính sách mua WMA x 1.05 thay vì max 4 tuần x 1.1 và tách riêng từng ngày; Bias dương cho thấy nên thêm Holt."
+  - q: "Case 9: vì sao SES alpha 0.2 (MAD 38.5) có vẻ khá hơn MA3 nhưng không nên chọn?"
+    a: "Mức phẳng 581.9 tình cờ nằm giữa mùa cao và thấp nên sai số hai phía bù trừ; kiểm tra thêm mùa cao điểm sẽ sai nặng; cần kiểm tra trên đủ một chu kỳ."
+  - q: "Bài 12 (tổng hợp): thu thập 12-24 tháng doanh số, so MA3 và SES alpha 0.1/0.3/0.7; xây bảng Excel tính sai số; xác định vòng đời và phương pháp; đề xuất lộ trình nâng cấp từ Excel lên phân rã/Holt-Winters."
+    a: "Gợi ý: vẽ chuỗi, nhận diện thành phần, backtesting trên cùng cửa sổ, báo cáo MAD/RMSE/MAPE/Bias/TS, đối chiếu lộ trình ngân sách (0-5 triệu rồi 10-100 triệu/năm), mô hình đơn giản trước, ML sau khi chứng minh lợi ích."
+
+checklist:
+  - "Đã thu thập dữ liệu lịch sử có cấu trúc (kỳ, SKU, khu vực), tối thiểu 24 tháng nếu cần ước lượng mùa vụ."
+  - "Đã làm sạch: loại/đánh dấu khuyến mãi lớn, sự cố, hết hàng (nhu cầu thật cao hơn doanh số bị cắt cụt)."
+  - "Đã phân tích thành phần chuỗi: xu hướng, mùa vụ, chu kỳ, nhiễu."
+  - "Đã chọn phương pháp theo đặc điểm dữ liệu, không dùng một mô hình cho mọi sản phẩm."
+  - "Sản phẩm mới/không lịch sử: đã có phương pháp định tính (Delphi, đặt thử, nghiên cứu thị trường)."
+  - "Đã thử 2-3 mô hình đối chứng (MA, SES/Holt, phân rã) và backtesting trên dữ liệu giấu."
+  - "Đã tính MAD, RMSE, MAPE, Bias trên dữ liệu kiểm tra."
+  - "Đã thiết lập Tracking Signal (+-4) và quy trình phản ứng (ai reset, trong bao lâu)."
+  - "Đã có kế hoạch cập nhật định kỳ alpha, beta, chỉ số mùa vụ."
+  - "Đã dùng RMSE ngoài mẫu tính tồn kho an toàn thay vì đệm cố định."
+  - "Đã có điều chỉnh định tính (khuyến mãi, thời tiết, đối thủ, sự kiện) và ghi lý do."
+  - "Đã có feedback loop bán hàng - sản xuất - kế hoạch và đo lợi ích tài chính."
+  - "Đã có kế hoạch dự phòng khi dự báo sai lệch lớn."
+  - "Rủi ro: structural break (thấp, cao), dữ liệu kém (trung bình, cao), sự kiện bất thường (trung bình), chọn sai phương pháp (trung bình), overfitting (trung bình) đã có biện pháp giảm thiểu."
+
+excel_google_sheets_templates:
+  - name: "Bảng tính dự báo và đo sai số"
+    description: "Cột: Kỳ | Thực tế Y | Dự báo F | Sai số Y-F | |Sai số| | Sai số^2 | %Sai số; dưới cùng MAD, MSE, RMSE, MAPE, Bias, TS (kiểm tra +-4)."
+    formulas: ["Sai số =B2-C2", "|e| =ABS(D2)", "e^2 =D2^2", "%e =ABS(D2)/B2", "MAD =AVERAGE(E2:E13)", "RMSE =SQRT(AVERAGE(F2:F13))", "MAPE =AVERAGE(G2:G13)", "TS =SUM(D2:D13)/AVERAGE(E2:E13)"]
+  - name: "San bằng số mũ"
+    description: "Ô J1 chứa alpha; dự báo kỳ sau =$J$1*B2+(1-$J$1)*C2; chọn alpha bằng Solver tối thiểu MAD/MSE."
+    formulas: ["=$J$1*B2+(1-$J$1)*C2"]
+  - name: "Hồi quy xu hướng"
+    description: "Dự báo kỳ 13 và R2."
+    formulas: ["=FORECAST.LINEAR(13,B2:B13,A2:A13)", "=RSQ(B2:B13,A2:A13)", "=SLOPE / =INTERCEPT / =TREND", "=FORECAST.ETS (Holt-Winters)"]
+  - name: "Python tham khảo (numpy)"
+    description: "Hàm ses(y, alpha) và metrics(y, f) trả MAD, RMSE, MAPE, Bias, TS; chạy bộ mẫu alpha 0.3 cho MAD 16.10, RMSE 17.27, MAPE 10.04%, Bias +16.10, TS 11.0, F13 = 173.12."
+    formulas: ["statsmodels (ARIMA, Holt-Winters), Prophet"]
+  - name: "KPI và sổ rủi ro dự báo"
+    description: "KPI: MAPE dưới 20% (tùy ngành), Bias gần 0, Accuracy = 1 - MAPE trên 80%, TS trong +-4. Risk register 5 dòng: structural break, dữ liệu kém, sự kiện bất thường, chọn sai phương pháp, overfitting."
+    formulas: []

@@ -1,0 +1,2497 @@
+# 06-formulas-index.yaml — SINH TỰ ĐỘNG bởi tools/build_and_validate.py từ modules/*.yaml. Không sửa tay.
+total: 207
+formulas:
+- id: m01_throughput_time
+  module: m01
+  name_vi: Thời gian thông lượng
+  name_en: Throughput Time
+  expression_latex: \text{TT} = t_{xuly} + t_{cho} + t_{dichuyen} + t_{kiemtra}
+  expression_python: t_process + t_wait + t_move + t_inspect
+  excel: '=SUM(D:D)/60 + SUM(E:E)  (D: CT giây, E: chờ phút)'
+  variables:
+  - t_process
+  - t_wait
+  - t_move
+  - t_inspect
+  when_to_use: Đo tổng thời gian từ khi yêu cầu vào đến khi giao kết quả (đơn hàng, khách tại quán, hồ sơ).
+- id: m01_process_velocity
+  module: m01
+  name_vi: Vận tốc quy trình
+  name_en: Process Velocity
+  expression_latex: \text{Velocity} = \frac{\text{Throughput Time}}{\text{VA Time}}
+  expression_python: tt / va
+  excel: =TT/VA
+  variables:
+  - tt
+  - va
+  when_to_use: Biểu đạt 'khách mất gấp bao nhiêu lần thời gian cần thiết'.
+- id: m01_pce
+  module: m01
+  name_vi: Hiệu suất chu kỳ quy trình
+  name_en: Process Cycle Efficiency (PCE)
+  expression_latex: \text{PCE} = \frac{\text{VA Time}}{\text{Throughput Time}} = \frac{1}{\text{Process Velocity}}
+  expression_python: va / tt
+  excel: =SUMIF(B:B,"VA",D:D)/60/Throughput
+  variables:
+  - va
+  - tt
+  when_to_use: Đo % thời gian thực sự tạo giá trị; xác định cải tiến nên nhắm vào thời gian chờ hay thời gian xử lý.
+- id: m01_littles_law_wait
+  module: m01
+  name_vi: Định luật Little (tính thời gian trong hệ thống)
+  name_en: Little's Law (W = L / lambda)
+  expression_latex: W = \frac{L}{\lambda}
+  expression_python: L / lam
+  excel: =L/lambda
+  variables:
+  - L
+  - lam
+  when_to_use: Suy ra thời gian trung bình ở trong hệ thống từ WIP và tốc độ đến; kiểm tra số liệu đo có khớp nhau.
+- id: m01_littles_law_wip
+  module: m01
+  name_vi: Định luật Little (tính WIP mục tiêu)
+  name_en: Little's Law (L = lambda x W)
+  expression_latex: L = \lambda \times W
+  expression_python: lam * W
+  excel: =lambda*W
+  variables:
+  - lam
+  - W
+  when_to_use: Đặt mục tiêu thời gian chờ rồi suy ra WIP cho phép; ước lượng chồng việc dở dang (ví dụ 146 đơn ở Nhà Xinh).
+- id: m01_effective_arrival
+  module: m01
+  name_vi: Tốc độ đến thực sự vào hệ thống
+  name_en: Effective arrival rate (after walk-away)
+  expression_latex: \lambda = D \times (1 - p_{bo})
+  expression_python: D * (1 - p_walkaway)
+  excel: null
+  variables:
+  - D
+  - p_walkaway
+  when_to_use: Chuẩn bị lambda cho Little's Law và utilization khi có khách bỏ đi.
+- id: m01_takt_time
+  module: m01
+  name_vi: Nhịp sản xuất
+  name_en: Takt Time
+  expression_latex: \text{Takt} = \frac{T_{khadung}}{\text{Nhu cau}}
+  expression_python: t_avail / demand
+  excel: =Tkhadung/Nhucau
+  variables:
+  - t_avail
+  - demand
+  when_to_use: Xác định nhịp tối đa cho phép mỗi đơn vị để đáp ứng nhu cầu; so với CT từng công đoạn để thấy ai không theo
+    kịp.
+- id: m01_staff_required
+  module: m01
+  name_vi: Số người cần theo Takt
+  name_en: Required staff at a stage
+  expression_latex: n = \frac{CT}{\text{Takt}}
+  expression_python: ct / takt
+  excel: null
+  variables:
+  - ct
+  - takt
+  when_to_use: Ước tính số người/máy tối thiểu mỗi công đoạn để không vượt Takt.
+- id: m01_stage_capacity
+  module: m01
+  name_vi: Năng lực công đoạn
+  name_en: Stage Capacity
+  expression_latex: \text{Cap}_i = \frac{n_i \times T_{khadung}}{CT_i}
+  expression_python: n * t_avail / ct
+  excel: =C2*23400/D2
+  variables:
+  - n
+  - t_avail
+  - ct
+  when_to_use: Tính số đơn vị tối đa công đoạn xử lý được (khách/giờ, đơn/ngày) để tìm nút thắt.
+- id: m01_process_capacity
+  module: m01
+  name_vi: Năng lực quy trình (nút thắt)
+  name_en: Process Capacity (Bottleneck)
+  expression_latex: \text{Cap}_{qt} = \min_i \text{Cap}_i
+  expression_python: min(caps)
+  excel: '=MIN(P:P); nút thắt: =INDEX(A:A,MATCH(MIN(P:P),P:P,0))'
+  variables:
+  - caps
+  when_to_use: Xác định sản lượng tối đa của chuỗi công đoạn nối tiếp và công đoạn nào là nút thắt.
+- id: m01_utilization
+  module: m01
+  name_vi: Mức sử dụng
+  name_en: Utilization (rho)
+  expression_latex: \rho = \frac{\text{Nhu cau}}{\text{Nang luc}}
+  expression_python: demand / capacity
+  excel: =Nhu_cau/P2 (cảnh báo nếu > 85%)
+  variables:
+  - demand
+  - capacity
+  when_to_use: Đánh giá công đoạn đầy đến mức nào; cảnh báo vùng nguy hiểm.
+- id: m01_queue_wait_factor
+  module: m01
+  name_vi: Hệ số chờ hàng đợi
+  name_en: Queueing wait factor rho/(1-rho)
+  expression_latex: \frac{\rho}{1-\rho}
+  expression_python: rho / (1 - rho)
+  excel: null
+  variables:
+  - rho
+  when_to_use: Giải thích cho chủ DN vì sao 'công suất vừa đủ' vẫn tồn đơn; đặt ngưỡng thiết kế.
+- id: m01_line_efficiency
+  module: m01
+  name_vi: Hiệu suất cân bằng chuyền
+  name_en: Line Balancing Efficiency
+  expression_latex: \eta = \frac{\sum CT_i}{N \times CT_{max}}
+  expression_python: sum(cts) / (len(cts) * max(cts))
+  excel: =SUM(CT)/(COUNT(CT)*MAX(CT))
+  variables:
+  - cts
+  when_to_use: Đo mức mất cân bằng tải giữa các trạm; tìm thao tác chuyển từ trạm chậm sang trạm nhanh.
+- id: m01_cp
+  module: m01
+  name_vi: Chỉ số năng lực quy trình Cp
+  name_en: Process Capability Cp
+  expression_latex: C_p = \frac{USL - LSL}{6\sigma}
+  expression_python: (usl - lsl) / (6 * sigma)
+  excel: =(USL-LSL)/(6*STDEV(range))
+  variables:
+  - usl
+  - lsl
+  - sigma
+  when_to_use: Đo độ phân tán của quy trình so với dải cho phép (rót đồ uống, nhiệt độ, kích thước).
+- id: m01_cpk
+  module: m01
+  name_vi: Chỉ số năng lực quy trình Cpk
+  name_en: Process Capability Cpk
+  expression_latex: C_{pk} = \min\left(\frac{USL-\mu}{3\sigma},\ \frac{\mu-LSL}{3\sigma}\right)
+  expression_python: min((usl - mu) / (3 * sigma), (mu - lsl) / (3 * sigma))
+  excel: =MIN((USL-AVERAGE(r))/(3*STDEV(r)),(AVERAGE(r)-LSL)/(3*STDEV(r)))
+  variables:
+  - usl
+  - lsl
+  - mu
+  - sigma
+  when_to_use: Đo năng lực có tính cả độ lệch tâm; so sánh Cp với Cpk để biết nên giảm phân tán hay căn chỉnh tâm.
+- id: m01_out_of_spec_rate
+  module: m01
+  name_vi: Tỷ lệ ngoài giới hạn lý thuyết (ppm)
+  name_en: Out-of-spec rate (normal tail)
+  expression_latex: P = \left[1-\Phi\left(\frac{USL-\mu}{\sigma}\right)\right] + \Phi\left(\frac{LSL-\mu}{\sigma}\right)
+  expression_python: ((1 - 0.5*(1 + math.erf((usl - mu)/sigma/math.sqrt(2)))) + 0.5*(1 + math.erf((lsl - mu)/sigma/math.sqrt(2))))
+    * 1e6
+  excel: null
+  variables:
+  - usl
+  - lsl
+  - mu
+  - sigma
+  when_to_use: Đổi Cp/Cpk thành số lỗi mỗi triệu lần (minh họa tác động chuẩn hóa).
+- id: m01_cv
+  module: m01
+  name_vi: Hệ số biến thiên
+  name_en: Coefficient of Variation (CV)
+  expression_latex: CV = \frac{\sigma}{\bar{x}}
+  expression_python: sd / mean
+  excel: null
+  variables:
+  - sd
+  - mean
+  when_to_use: So sánh mức nhất quán thao tác giữa nhiều người trước/sau SOP.
+- id: m01_standard_time
+  module: m01
+  name_vi: Thời gian chuẩn (Time Study)
+  name_en: Standard Time
+  expression_latex: \text{Normal} = \bar{t}_{obs} \times R;\quad \text{Standard} = \text{Normal} \times (1 + A)
+  expression_python: sum(obs) / len(obs) * rating * (1 + allowance)
+  excel: =AVERAGE(F2:O2)*Rating*(1+Allowance)
+  variables:
+  - obs
+  - rating
+  - allowance
+  when_to_use: Xây định mức nhân sự và so sánh trước/sau cải tiến cho thao tác lặp lại.
+- id: m01_smed_min_batch
+  module: m01
+  name_vi: Lô tối thiểu theo thời gian đổi khuôn
+  name_en: Minimum batch size from changeover (SMED logic)
+  expression_latex: S/(S+R) \le f \Rightarrow R \ge S\frac{1-f}{f};\ \text{Batch}_{min} = R \times r
+  expression_python: S * (1 - f) / f * rate
+  excel: null
+  variables:
+  - S
+  - f
+  - rate
+  when_to_use: Giải thích vì sao rút ngắn thời gian đổi khuôn cho phép lô nhỏ, ít tồn kho, thời gian chờ ngắn (nền Just-in-Time).
+- id: m01_handoff_wait
+  module: m01
+  name_vi: Thời gian chờ bàn giao (Swimlane)
+  name_en: Handoff wait
+  expression_latex: T_{handoff} = N_{handoff} \times \bar{w}
+  expression_python: n_handoff * w_avg
+  excel: null
+  variables:
+  - n_handoff
+  - w_avg
+  when_to_use: Định lượng rủi ro bàn giao trong quy trình liên phòng ban.
+- id: m01_payback_months
+  module: m01
+  name_vi: Thời gian hoàn vốn cải tiến
+  name_en: Payback (months)
+  expression_latex: \text{Payback} = \frac{I}{B_{thang}}
+  expression_python: invest / benefit_month
+  excel: null
+  variables:
+  - invest
+  - benefit_month
+  when_to_use: Quy đổi cải tiến quy trình ra tiền và thời gian hoàn vốn.
+- id: m01_roi_simple
+  module: m01
+  name_vi: ROI cải tiến theo kỳ
+  name_en: Simple ROI
+  expression_latex: \text{ROI} = \frac{B - C}{C}
+  expression_python: (benefit - cost) / cost
+  excel: null
+  variables:
+  - benefit
+  - cost
+  when_to_use: Chứng minh khoản đầu tư công cụ (POS...) có lời trong 6 tháng.
+- id: m01_breakeven_customers
+  module: m01
+  name_vi: Số khách thêm để hòa vốn công cụ
+  name_en: Break-even extra customers
+  expression_latex: N = \frac{C_{thang}}{AOV \times GM}
+  expression_python: cost_month / (aov * gm)
+  excel: null
+  variables:
+  - cost_month
+  - aov
+  - gm
+  when_to_use: Kiểm tra nhanh ngưỡng rủi ro của một khoản đầu tư phần mềm.
+- id: m02_coq
+  module: m02
+  name_vi: Tổng chi phí chất lượng (COQ) và tỷ lệ COQ/doanh thu
+  name_en: Total Cost of Quality
+  expression_latex: \text{Total COQ} = P + A + IF + EF \qquad \text{COQ\%} = \frac{\text{Total COQ}}{\text{Revenue}} \times
+    100\%
+  expression_python: P + A + IF + EF
+  excel: =SUM(P:EF) ; =TotalCOQ/Revenue
+  variables:
+  - P
+  - A
+  - IF
+  - EF
+  when_to_use: Lập baseline chi phí chất lượng; so sánh phương án 'kiểm tra cuối chuyền' với 'đầu tư phòng ngừa'; thuyết phục
+    lãnh đạo đầu tư vào chất lượng.
+- id: m02_rule_of_ten
+  module: m02
+  name_vi: Chi phí sửa lỗi theo giai đoạn (Quy luật 1-10-100)
+  name_en: Rule of Ten (cost escalation of defects)
+  expression_latex: C_k = N \times c \times 10^{k},\quad k=0,1,2
+  expression_python: '[defects * unit_cost * 10**k for k in range(3)]'
+  excel: null
+  variables:
+  - N (defects)
+  - c (unit_cost)
+  - k
+  when_to_use: Minh họa tại sao phòng ngừa/dừng sớm (Poka-Yoke, Jidoka) rẻ hơn kiểm tra cuối hoặc xử lý khiếu nại.
+- id: m02_variance_decomposition
+  module: m02
+  name_vi: Phân rã phương sai biến động
+  name_en: Variance decomposition (common + special causes)
+  expression_latex: \sigma^2_{\text{total}} = \sigma^2_{\text{common}} + \sigma^2_{\text{special}}
+  expression_python: var_common + var_special
+  excel: null
+  variables:
+  - var_common
+  - var_special
+  when_to_use: Giải thích vì sao cần phân biệt hai loại nguyên nhân trước khi can thiệp.
+- id: m02_fpy
+  module: m02
+  name_vi: Tỷ lệ đạt lần đầu (FPY)
+  name_en: First Pass Yield
+  expression_latex: FPY = \frac{\text{Số sản phẩm đạt ngay lần đầu, không rework}}{\text{Tổng số sản phẩm đưa vào}}
+  expression_python: good_first_pass / total_in
+  excel: null
+  variables:
+  - good_first_pass
+  - total_in
+  when_to_use: Đo chất lượng từng bước, lộ ra 'nhà máy ẩn' mà tỷ lệ thành phẩm cuối chuyền che giấu.
+- id: m02_rty
+  module: m02
+  name_vi: Tỷ lệ đạt xuyên suốt (RTY)
+  name_en: Rolled Throughput Yield
+  expression_latex: RTY = FPY_1 \times FPY_2 \times \dots \times FPY_n = \prod_{i=1}^{n} FPY_i
+  expression_python: prod(fpy_list)
+  excel: null
+  variables:
+  - fpy_list
+  when_to_use: Quy trình nhiều bước nối tiếp; chứng minh mỗi bước 'trông rất tốt' vẫn có thể cho tổng thể kém.
+- id: m02_dpmo
+  module: m02
+  name_vi: Lỗi trên triệu cơ hội (DPMO) và Yield
+  name_en: Defects Per Million Opportunities
+  expression_latex: DPMO = \frac{\text{Số lỗi}}{\text{Số đơn vị} \times \text{Số cơ hội lỗi/đơn vị}} \times 1.000.000 \qquad
+    Yield = 1 - \frac{DPMO}{10^6}
+  expression_python: defects / (units * opportunities) * 1e6
+  excel: =Defects/(Units*Opportunities)*1000000
+  variables:
+  - defects
+  - units
+  - opportunities
+  when_to_use: So sánh mức chất lượng giữa các quy trình phức tạp khác nhau.
+- id: m02_sigma_level
+  module: m02
+  name_vi: Sigma Level từ DPMO (có shift 1,5)
+  name_en: Sigma Level
+  expression_latex: \text{Sigma Level} = \Phi^{-1}\!\left(1-\frac{DPMO}{10^6}\right) + 1{,}5
+  expression_python: Phi_inv(1 - dpmo/1e6) + 1.5
+  excel: =NORM.S.INV(1-DPMO/1000000)+1.5
+  variables:
+  - dpmo
+  - Phi_inv
+  when_to_use: Đổi DPMO/Yield thành thước đo sigma để so sánh và đặt mục tiêu.
+- id: m02_dpmo_from_sigma
+  module: m02
+  name_vi: DPMO từ Sigma Level (bảng sigma - DPMO)
+  name_en: DPMO from Sigma Level
+  expression_latex: DPMO = \bigl(1-\Phi(\sigma_{L}-1{,}5)\bigr)\times 10^6
+  expression_python: (1 - Phi(sigma_level - 1.5)) * 1e6
+  excel: =(1-NORM.S.DIST(Sigma-1.5,TRUE))*1000000
+  variables:
+  - sigma_level
+  when_to_use: Dựng bảng tham chiếu; giải thích tại sao 6 sigma = 3,4 DPMO.
+- id: m02_multi_opportunity_yield
+  module: m02
+  name_vi: Yield của sản phẩm nhiều cơ hội lỗi
+  name_en: Product yield with n defect opportunities
+  expression_latex: Y = (1-d)^{n},\quad d=\frac{DPMO}{10^6}
+  expression_python: (1 - dpmo/1e6) ** n
+  excel: null
+  variables:
+  - dpmo
+  - n
+  when_to_use: Giải thích tại sao sản phẩm phức tạp (nhiều linh kiện/mối hàn) cần 6 sigma chứ không dừng ở 3-4 sigma.
+- id: m02_cp
+  module: m02
+  name_vi: Chỉ số tiềm năng quy trình Cp
+  name_en: Process Capability Cp
+  expression_latex: C_p = \frac{USL - LSL}{6\sigma}
+  expression_python: (USL - LSL) / (6 * sigma)
+  excel: =(USL-LSL)/(6*STDEV.S(range))
+  variables:
+  - USL
+  - LSL
+  - sigma
+  when_to_use: Kiểm tra quy trình có TIỀM NĂNG đáp ứng khoảng cho phép nếu được chỉnh đúng tâm.
+- id: m02_cpk
+  module: m02
+  name_vi: Chỉ số năng lực thực tế Cpk
+  name_en: Process Capability Cpk
+  expression_latex: C_{pk} = \min\!\left(\frac{USL-\mu}{3\sigma},\ \frac{\mu-LSL}{3\sigma}\right)
+  expression_python: min((USL - mu) / (3 * sigma), (mu - LSL) / (3 * sigma))
+  excel: =MIN((USL-AVERAGE(range)),(AVERAGE(range)-LSL))/(3*STDEV.S(range))
+  variables:
+  - USL
+  - LSL
+  - mu
+  - sigma
+  when_to_use: Đánh giá năng lực THỰC TẾ có tính lệch tâm; chẩn đoán vấn đề do biến động hay do lệch tâm.
+- id: m02_one_sided_cpl
+  module: m02
+  name_vi: Cpl / Cpu cho giới hạn một phía và tỷ lệ không đạt
+  name_en: One-sided capability (Cpl, Cpu) and nonconformance
+  expression_latex: C_{pl} = \frac{\mu - LSL}{3\sigma},\quad z=\frac{\mu-LSL}{\sigma},\quad \text{ppm}=\Phi(-z)\times10^6
+  expression_python: ((mu - LSL) / (3 * sigma), Phi(-(mu - LSL) / sigma) * 1e6)
+  excel: null
+  variables:
+  - mu
+  - LSL
+  - sigma
+  when_to_use: Thông số chỉ có một giới hạn (vd nhiệt độ thanh trùng tối thiểu 72 độ C; nhiệt cao hơn không vi phạm an toàn).
+- id: m02_cpk_to_ppm
+  module: m02
+  name_vi: Tỷ lệ ngoài giới hạn (ppm) hai phía
+  name_en: Out-of-spec rate (ppm), two-sided
+  expression_latex: \text{ppm} = \bigl[\Phi(-\tfrac{USL-\mu}{\sigma}) + \Phi(-\tfrac{\mu-LSL}{\sigma})\bigr]\times 10^6
+  expression_python: (Phi(-(USL - mu) / sigma) + Phi(-(mu - LSL) / sigma)) * 1e6
+  excel: =(NORM.S.DIST(-3*Cpk,TRUE))*1000000   (gần đúng hai phía theo nguồn)
+  variables:
+  - USL
+  - LSL
+  - mu
+  - sigma
+  when_to_use: Quy Cp/Cpk thành tỷ lệ sản phẩm lỗi và số túi/cái ngoài giới hạn mỗi tháng, rồi quy ra tiền.
+- id: m02_xbar_limits
+  module: m02
+  name_vi: Giới hạn kiểm soát biểu đồ X-bar
+  name_en: X-bar control chart limits
+  expression_latex: UCL_{\bar X} = \bar{\bar X} + A_2\bar R,\quad LCL_{\bar X} = \bar{\bar X} - A_2\bar R,\quad A_2=\frac{3}{d_2\sqrt
+    n}
+  expression_python: (grand_mean - A2 * Rbar, grand_mean, grand_mean + A2 * Rbar)
+  excel: null
+  variables:
+  - grand_mean
+  - Rbar
+  - A2
+  when_to_use: Theo dõi trung bình quy trình theo thời gian với dữ liệu liên tục (khối lượng, kích thước) lấy mẫu con n sản
+    phẩm.
+- id: m02_r_limits
+  module: m02
+  name_vi: Giới hạn kiểm soát biểu đồ R
+  name_en: R control chart limits
+  expression_latex: UCL_R = D_4\bar R,\quad LCL_R = D_3\bar R
+  expression_python: (D3 * Rbar, Rbar, D4 * Rbar)
+  excel: null
+  variables:
+  - Rbar
+  - D3
+  - D4
+  when_to_use: Theo dõi độ phân tán (biến động trong mẫu) song song với biểu đồ X-bar.
+- id: m02_sigma_hat
+  module: m02
+  name_vi: Ước lượng sigma từ Rbar
+  name_en: Sigma estimate from average range
+  expression_latex: \hat\sigma = \frac{\bar R}{d_2}
+  expression_python: Rbar / d2
+  excel: null
+  variables:
+  - Rbar
+  - d2
+  when_to_use: Ước lượng sigma quy trình từ biểu đồ kiểm soát để tính Cp/Cpk sau cải tiến.
+- id: m02_p_chart
+  module: m02
+  name_vi: Biểu đồ kiểm soát p (tỷ lệ lỗi)
+  name_en: p control chart
+  expression_latex: UCL_p = \bar p + 3\sqrt{\frac{\bar p(1-\bar p)}{n}},\quad LCL_p = \max\!\Bigl(0,\ \bar p - 3\sqrt{\frac{\bar
+    p(1-\bar p)}{n}}\Bigr)
+  expression_python: (max(0, pbar - 3 * sqrt(pbar * (1 - pbar) / n)), pbar, pbar + 3 * sqrt(pbar * (1 - pbar) / n))
+  excel: null
+  variables:
+  - pbar
+  - n
+  when_to_use: 'Dữ liệu đếm (đạt/không đạt, có/không phàn nàn): theo dõi tỷ lệ lỗi theo ngày/tuần.'
+- id: m02_rpn
+  module: m02
+  name_vi: Số ưu tiên rủi ro FMEA (RPN)
+  name_en: Risk Priority Number
+  expression_latex: RPN = S \times O \times D
+  expression_python: S * O * D
+  excel: null
+  variables:
+  - S
+  - O
+  - D
+  when_to_use: Xếp thứ tự ưu tiên xử lý các kiểu lỗi (failure modes) khi nguồn lực có hạn; chấm lại sau cải tiến.
+- id: m02_kanban
+  module: m02
+  name_vi: Số thẻ Kanban
+  name_en: Number of Kanban cards
+  expression_latex: k = \frac{D \times L \times (1+\alpha)}{C}
+  expression_python: ceil(D * L * (1 + alpha) / C)
+  excel: null
+  variables:
+  - D
+  - L
+  - alpha
+  - C
+  when_to_use: 'Thiết kế hệ thống pull: tính số thẻ/khay lưu hành giữa hai công đoạn.'
+- id: m02_smed
+  module: m02
+  name_vi: Thời gian chuyển đổi SMED
+  name_en: Setup time reduction (SMED)
+  expression_latex: \text{Setup} = \text{Internal} + \text{External};\quad \text{Giảm}\% = \frac{S_0-S_1}{S_0}
+  expression_python: ((setup_before - setup_after) / setup_before, (setup_before - setup_after) * changes_per_day)
+  excel: null
+  variables:
+  - setup_before
+  - setup_after
+  - changes_per_day
+  when_to_use: Chuyển đổi loại sản phẩm/khuôn mất lâu buộc chạy lô lớn và tồn kho nhiều.
+- id: m02_pareto
+  module: m02
+  name_vi: Phần trăm tích lũy Pareto
+  name_en: Pareto cumulative percentage
+  expression_latex: \text{Cum\%}_i = \frac{\sum_{j\le i} f_j}{\sum f}\times 100\%
+  expression_python: '[round(sum(counts[:i + 1]) / sum(counts) * 100, 1) for i in range(len(counts))]'
+  excel: =SUM($B$2:B2)/SUM($B$2:$B$11)
+  variables:
+  - counts
+  when_to_use: Chọn vital few nguyên nhân/lỗi để xử lý trước khi nguồn lực có hạn.
+- id: m02_project_score
+  module: m02
+  name_vi: Điểm chọn dự án cải tiến (ma trận trọng số)
+  name_en: Weighted project selection score
+  expression_latex: Score = \sum_i w_i s_i
+  expression_python: sum(w * s for w, s in zip(weights, scores))
+  excel: null
+  variables:
+  - weights
+  - scores
+  when_to_use: SME nguồn lực ít cần chọn dự án đầu tiên có xác suất thành công cao.
+- id: m02_two_proportion_z
+  module: m02
+  name_vi: Kiểm định z hai tỷ lệ (so sánh tỷ lệ lỗi giữa hai nhóm)
+  name_en: Two-proportion z-test
+  expression_latex: z = \frac{p_2 - p_1}{\sqrt{\hat p(1-\hat p)\left(\frac{1}{n_1}+\frac{1}{n_2}\right)}}
+  expression_python: (p2 - p1) / sqrt(p_pool * (1 - p_pool) * (1 / n1 + 1 / n2))
+  excel: null
+  variables:
+  - p1, p2
+  - p_pool
+  - n1, n2
+  when_to_use: 'Giai đoạn Analyze: kiểm chứng nghi ngờ (vd lỗi tập trung ca chiều) có ý nghĩa thống kê hay chỉ may rủi.'
+- id: m02_defect_cost_payback
+  module: m02
+  name_vi: Thiệt hại do lỗi, tiết kiệm và hoàn vốn dự án chất lượng
+  name_en: Defect loss, savings and payback
+  expression_latex: \text{Loss}=N\times r\times c;\quad \text{Savings}=N(r_0-r_1)c;\quad \text{Payback}=\frac{I}{\text{Savings}}
+  expression_python: (orders * r0 * cost, orders * (r0 - r1) * cost, invest / (orders * (r0 - r1) * cost))
+  excel: null
+  variables:
+  - orders
+  - r0, r1
+  - cost
+  - invest
+  when_to_use: Định lượng tiền cho bước Define/Measure và chứng minh ROI cho chủ SME.
+- id: m02_overfill_cost
+  module: m02
+  name_vi: Chi phí dư cân/cài dư để che biến động
+  name_en: Overfill (giveaway) cost
+  expression_latex: C_{over} = (\mu - T)\times p \times V
+  expression_python: (mu - target) * price_per_g * volume
+  excel: null
+  variables:
+  - mu
+  - target
+  - price_per_g
+  - volume
+  when_to_use: 'Doanh nghiệp cài máy cao ''cho chắc'' để tránh thiếu cân: tính chi phí ẩn thường xuyên.'
+- id: m02_stop_vs_run_cost
+  module: m02
+  name_vi: So sánh chi phí dừng chuyền (Andon) với cho chạy tiếp
+  name_en: Stop-the-line vs run-on cost
+  expression_latex: C_A = n_{stop}\, m;\ C_B = N f;\ C_C = N e
+  expression_python: '{''andon_stop'': stopped_units * margin, ''end_of_line_fix'': affected * fix_cost, ''escape_to_customer'':
+    affected * escape_cost}'
+  excel: null
+  variables:
+  - stopped_units
+  - margin
+  - affected
+  - fix_cost
+  - escape_cost
+  when_to_use: Biện luận kinh tế cho văn hóa 'dừng lại khi có lỗi' (Jidoka/Andon).
+- id: m02_nps
+  module: m02
+  name_vi: Chỉ số NPS (KPI chất lượng dịch vụ)
+  name_en: Net Promoter Score
+  expression_latex: NPS = \%\text{Promoters} - \%\text{Detractors}
+  expression_python: pct_promoters - pct_detractors
+  excel: null
+  variables:
+  - pct_promoters
+  - pct_detractors
+  when_to_use: KPI dịch vụ/TQM để có 'bằng chứng sớm' cho cải tiến văn hóa.
+- id: m03_bullwhip_ratio
+  module: m03
+  name_vi: Tỷ số Bullwhip (khuếch đại phương sai)
+  name_en: Bullwhip ratio
+  expression_latex: BW = \frac{\mathrm{Var}(\text{don hang dat len thuong nguon})}{\mathrm{Var}(\text{nhu cau cuoi})}
+  expression_python: pvariance(orders) / pvariance(demand)
+  excel: =VAR.P(C2:C13)/VAR.P(B2:B13)
+  variables:
+  - orders
+  - demand
+  when_to_use: Chẩn đoán đơn hàng thất thường, kho lúc dư lúc thiếu; đo từng tầng (tiệm so với nhu cầu thực, nhà máy so với
+    nhu cầu thực).
+- id: m03_bullwhip_lower_bound
+  module: m03
+  name_vi: Cận dưới Bullwhip (Chen, Drezner, Ryan, Simchi-Levi 2000)
+  name_en: Bullwhip lower bound, order-up-to with moving-average forecast
+  expression_latex: BW \ge 1 + \frac{2L}{p} + \frac{2L^{2}}{p^{2}}
+  expression_python: 1 + 2*L/p + 2*L**2/p**2
+  excel: null
+  variables:
+  - L
+  - p
+  when_to_use: Ước lượng mức khuếch đại tối thiểu do chính phương pháp dự báo + lead time; biện minh cho việc rút ngắn lead
+    time.
+- id: m03_cv
+  module: m03
+  name_vi: Hệ số biến thiên (CV)
+  name_en: Coefficient of variation
+  expression_latex: CV = \frac{\sigma}{\mu}
+  expression_python: pstdev(x) / mean(x)
+  excel: null
+  variables:
+  - x
+  when_to_use: So sánh độ dao động giữa các mắt xích có quy mô trung bình khác nhau; báo cáo cho người không quen phương sai.
+- id: m03_supplier_score
+  module: m03
+  name_vi: Điểm nhà cung cấp có trọng số (Supplier Scorecard)
+  name_en: Weighted supplier score
+  expression_latex: S = \sum_{i=1}^{n} w_i \cdot s_i, \qquad \sum w_i = 100\%
+  expression_python: sum(w*s for w, s in zip(weights, scores))
+  excel: =SUMPRODUCT(B2:B6, C2:C6) ; xếp loại =IF(D8>4,"Chiến lược",IF(D8>=3,"Duy trì","Cải thiện"))
+  variables:
+  - weights
+  - scores
+  when_to_use: Đánh giá, xếp hạng và theo dõi nhà cung cấp theo quý; quyết định phân bổ tỷ trọng đơn hàng.
+- id: m03_tco
+  module: m03
+  name_vi: Tổng chi phí sở hữu / chi phí đưa về kho (TCO / Landed Cost)
+  name_en: Total Cost of Ownership / Landed Cost
+  expression_latex: \mathrm{TCO} = P + F + D + H + Q + L
+  expression_python: P + F + D + H + Q + L
+  excel: =P+F+D+H+Q+L (D = thuế% x giá CIF; H = Giá x lãi suất x ngày/365)
+  variables:
+  - P
+  - F
+  - D
+  - H
+  - Q
+  - L
+  when_to_use: 'So sánh nhà cung cấp, nhập khẩu vs nội địa, quyết định outsource: mọi lúc giá niêm yết chênh nhau nhưng chi
+    phí ẩn khác nhau.'
+- id: m03_tco_supplier_unit
+  module: m03
+  name_vi: TCO đơn giản theo thùng (giá + lỗi + giao trễ)
+  name_en: Simplified per-unit supplier TCO
+  expression_latex: \mathrm{TCO} = \mathrm{Gia} + \mathrm{TyLeLoi} \times \mathrm{Gia} \times 2 + (1 - \mathrm{OTD}) \times
+    60
+  expression_python: gia + loi*gia*he_so_loi + (1-otd)*phi_tre
+  excel: null
+  variables:
+  - gia
+  - loi
+  - he_so_loi
+  - otd
+  - phi_tre
+  when_to_use: So sánh nhanh các nhà máy cùng chủng loại trong nội địa khi chưa có phí vận chuyển/thuế khác nhau.
+- id: m03_perfect_order
+  module: m03
+  name_vi: Tỷ lệ đơn hàng hoàn hảo (Perfect Order Fulfillment)
+  name_en: Perfect Order Fulfillment
+  expression_latex: \mathrm{POF} = OT \times IF \times ND \times CD
+  expression_python: ot * if_ * nd * cd
+  excel: null
+  variables:
+  - ot
+  - if_
+  - nd
+  - cd
+  when_to_use: Đo độ tin cậy giao hàng theo cách khách hàng cảm nhận; KPI cốt lõi SCOR.
+- id: m03_otd
+  module: m03
+  name_vi: Tỷ lệ giao đúng hạn (OTD)
+  name_en: On-Time Delivery
+  expression_latex: \mathrm{OTD} = \frac{\text{so don giao dung han}}{\text{tong so don}}
+  expression_python: don_dung_han / tong_don
+  excel: null
+  variables:
+  - don_dung_han
+  - tong_don
+  when_to_use: Chấm điểm nhà cung cấp (trọng số 25%) và đo dịch vụ giao hàng của chính mình.
+- id: m03_ccc
+  module: m03
+  name_vi: Chu kỳ chuyển hóa tiền (Cash-to-Cash, CCC)
+  name_en: Cash-to-Cash Cycle Time
+  expression_latex: \mathrm{CCC} = \mathrm{DIO} + \mathrm{DSO} - \mathrm{DPO}; \ \mathrm{DIO} = \frac{\text{Ton kho BQ}}{\text{GVHB}}
+    \times 365, \ \mathrm{DSO} = \frac{\text{Phai thu BQ}}{\text{Doanh thu}} \times 365, \ \mathrm{DPO} = \frac{\text{Phai
+    tra BQ}}{\text{GVHB}} \times 365
+  expression_python: ton_kho/gvhb*365 + phai_thu/doanh_thu*365 - phai_tra/gvhb*365
+  excel: null
+  variables:
+  - ton_kho
+  - phai_thu
+  - phai_tra
+  - gvhb
+  - doanh_thu
+  when_to_use: Đo số ngày tiền doanh nghiệp 'nằm' trong chuỗi trước khi quay lại thành tiền mặt; chọn đòn bẩy giảm vốn lưu
+    động.
+- id: m03_wape
+  module: m03
+  name_vi: Độ chính xác dự báo (WAPE)
+  name_en: Forecast Accuracy via WAPE
+  expression_latex: \mathrm{WAPE} = \frac{\sum |A_t - F_t|}{\sum A_t}, \quad \mathrm{Accuracy} = 1 - \mathrm{WAPE}
+  expression_python: 1 - sum(abs(a-f) for a, f in zip(actual, forecast)) / sum(actual)
+  excel: null
+  variables:
+  - actual
+  - forecast
+  when_to_use: Đánh giá dự báo cho S&OP/đặt hàng; so sánh nhiều mặt hàng.
+- id: m03_sc_cost_pct
+  module: m03
+  name_vi: Chi phí chuỗi cung ứng trên doanh thu
+  name_en: Supply Chain Cost % Revenue
+  expression_latex: \text{SC Cost \%} = \frac{\text{chi phi mua, kho, van tai, ton kho, quan tri}}{\text{Doanh thu}}
+  expression_python: chi_phi_chuoi / doanh_thu
+  excel: null
+  variables:
+  - chi_phi_chuoi
+  - doanh_thu
+  when_to_use: KPI cân bằng với độ tin cậy/tốc độ để tránh chỉ tối ưu chi phí.
+- id: m03_risk_score
+  module: m03
+  name_vi: Điểm rủi ro P x I
+  name_en: Risk score
+  expression_latex: R = P \times I
+  expression_python: p * i
+  excel: null
+  variables:
+  - p
+  - i
+  when_to_use: Lập sổ tay rủi ro (risk register) và xếp thứ tự ưu tiên xử lý.
+- id: m03_prevention_breakeven
+  module: m03
+  name_vi: Lợi ích ròng của biện pháp phòng ngừa rủi ro
+  name_en: Risk mitigation net benefit and breakeven probability
+  expression_latex: \text{Dang lam khi } C \lesssim p \times L \times (1 - r); \quad \text{Loi ich rong} = pL(1-r) - C; \quad
+    p^{*} = \frac{C}{L(1-r)}
+  expression_python: p*L*(1-r) - C
+  excel: null
+  variables:
+  - p
+  - L
+  - r
+  - C
+  when_to_use: Quyết định đa nguồn, tồn kho an toàn, bảo hiểm cho nguyên liệu/NCC nút thắt hoặc chiến lược.
+- id: m03_disruption_loss
+  module: m03
+  name_vi: Tổn thất một lần gián đoạn nguồn cung (L)
+  name_en: Single-disruption loss (SME wood workshop)
+  expression_latex: L = DT_{\text{thang}} \times \frac{\text{tuan}}{4} \times \%\text{mat} \times CM + \text{Phat} + \text{Mat
+    KH}
+  expression_python: doanh_thu_thang*tuan/4*ty_le_mat*cm + phat + mat_kh
+  excel: null
+  variables:
+  - doanh_thu_thang
+  - tuan
+  - ty_le_mat
+  - cm
+  - phat
+  - mat_kh
+  when_to_use: Định lượng L cho công thức phòng ngừa rủi ro.
+- id: m03_centralization_breakeven
+  module: m03
+  name_vi: Hòa vốn tập trung hóa thu mua
+  name_en: Centralized procurement breakeven
+  expression_latex: N^{*} = \frac{F_{\text{co dinh}}}{s - v}, \quad s = \text{chi nguyen lieu moi cua hang} \times \%\text{giam
+    gia}
+  expression_python: ceil(co_dinh / (chi_nvl*giam_gia - bien_doi))
+  excel: null
+  variables:
+  - co_dinh
+  - chi_nvl
+  - giam_gia
+  - bien_doi
+  when_to_use: Chuỗi nhiều cửa hàng cân nhắc kho trung chuyển và đội thu mua tập trung.
+- id: m03_network_routes
+  module: m03
+  name_vi: 'Số tuyến mạng lưới: trực tiếp vs qua DC'
+  name_en: 'Network routes: direct vs via DC'
+  expression_latex: \text{Truc tiep} = n \times m; \quad \text{Qua DC} = n + m
+  expression_python: (n*m, n+m)
+  excel: null
+  variables:
+  - n
+  - m
+  when_to_use: Biện minh kho trung tâm/cross-docking để giảm độ phức tạp tuyến.
+- id: m03_interfaces
+  module: m03
+  name_vi: Số cặp giao diện giữa n nhà cung cấp
+  name_en: Pairwise interfaces n(n-1)/2
+  expression_latex: \frac{n(n-1)}{2}
+  expression_python: n*(n-1)/2
+  excel: null
+  variables:
+  - n
+  when_to_use: Đánh giá chi phí phối hợp khi outsource nhiều NCC (bài học Boeing 787).
+- id: m03_safety_stock_ref
+  module: m03
+  name_vi: Tồn kho an toàn (tham chiếu sang m04)
+  name_en: Safety stock (see m04)
+  expression_latex: SS = z \cdot \sigma \cdot \sqrt{L}
+  expression_python: z * sigma * sqrt(L)
+  excel: null
+  variables:
+  - z
+  - sigma
+  - L
+  when_to_use: 'Lượng hóa lợi ích giảm Bullwhip: sigma đơn giảm thì đệm cần thiết giảm.'
+- id: m04_holding_cost_rate
+  module: m04
+  name_vi: Chi phí lưu kho một đơn vị (H = i x P)
+  name_en: Unit Holding Cost
+  expression_latex: H = i \times P
+  expression_python: i * P
+  excel: =i*P
+  variables:
+  - i
+  - P
+  when_to_use: 'Trước khi tính EOQ/chiết khấu: quy đổi tỷ lệ lưu kho sang VNĐ/đơn vị/năm.'
+- id: m04_eoq
+  module: m04
+  name_vi: Lượng đặt hàng kinh tế (EOQ)
+  name_en: Economic Order Quantity
+  expression_latex: Q^{*} = \sqrt{\dfrac{2DS}{H}}
+  expression_python: sqrt(2*D*S/H)
+  excel: =SQRT(2*D*S/H)
+  variables:
+  - D
+  - S
+  - H
+  when_to_use: Quyết định đặt BAO NHIÊU mỗi lần khi nhu cầu tương đối ổn định (hàng nhóm A, nhu cầu liên tục).
+- id: m04_eoq_orders_cycle
+  module: m04
+  name_vi: Số lần đặt hàng và chu kỳ đặt hàng tối ưu
+  name_en: Optimal Number of Orders and Order Cycle
+  expression_latex: N^{*} = \dfrac{D}{Q^{*}}, \quad T^{*} = \dfrac{\text{Ngay lam viec}}{N^{*}}
+  expression_python: (D/Q, working_days/(D/Q))
+  excel: null
+  variables:
+  - D
+  - Q
+  - working_days
+  when_to_use: Chuyển EOQ thành lịch đặt hàng thực tế (bao lâu đặt một lần).
+- id: m04_total_cost_tc
+  module: m04
+  name_vi: Tổng chi phí tồn kho biến đổi TC(Q) và TC tối ưu
+  name_en: Total Variable Inventory Cost
+  expression_latex: TC(Q) = \dfrac{D}{Q}S + \dfrac{Q}{2}H, \qquad TC^{*} = \sqrt{2DSH}
+  expression_python: (D/Q)*S + (Q/2)*H
+  excel: =D/Q*S+Q/2*H
+  variables:
+  - D
+  - Q
+  - S
+  - H
+  when_to_use: So sánh chính sách đặt hiện tại với EOQ, hoặc tính thiệt hại khi đặt lệch Q; đánh giá tiết kiệm khi chuyển
+    sang EOQ.
+- id: m04_rop
+  module: m04
+  name_vi: Điểm đặt hàng lại (ROP)
+  name_en: Reorder Point
+  expression_latex: ROP = d \times L + SS
+  expression_python: d*L + SS
+  excel: =d*L+SS
+  variables:
+  - d
+  - L
+  - SS
+  when_to_use: Quyết định đặt KHI NÀO trong hệ thống liên tục; dán bảng ROP tại kho / cảnh báo trong phần mềm.
+- id: m04_service_level_z
+  module: m04
+  name_vi: Hệ số Z theo mức phục vụ
+  name_en: Service Level Z-score
+  expression_latex: Z = \Phi^{-1}(\text{service level})
+  expression_python: NormalDist().inv_cdf(service_level)
+  excel: =NORM.S.INV(service_level)
+  variables:
+  - service_level
+  when_to_use: Chuyển mức phục vụ mong muốn thành số độ lệch chuẩn đệm trong công thức SS.
+- id: m04_safety_stock_demand
+  module: m04
+  name_vi: Tồn kho an toàn (nhu cầu biến động, lead time cố định)
+  name_en: Safety Stock - demand variability
+  expression_latex: SS = Z \times \sigma_d \times \sqrt{L}
+  expression_python: Z*sigma_d*sqrt(L)
+  excel: =NORM.S.INV(service)*sigma_d*SQRT(L)
+  variables:
+  - Z
+  - sigma_d
+  - L
+  when_to_use: Tính đệm khi lead time ổn định (nhà cung cấp nội địa gần, giao đúng hạn).
+- id: m04_safety_stock_demand_leadtime
+  module: m04
+  name_vi: Tồn kho an toàn (cả nhu cầu và lead time biến động)
+  name_en: Safety Stock - demand and lead time variability
+  expression_latex: SS = Z \times \sqrt{L\,\sigma_d^{2} + d^{2}\,\sigma_L^{2}}
+  expression_python: Z*sqrt(L*sigma_d**2 + d**2*sigma_L**2)
+  excel: =Z*SQRT(L*sigma_d^2+d^2*sigma_L^2)
+  variables:
+  - Z
+  - L
+  - sigma_d
+  - d
+  - sigma_L
+  when_to_use: 'Hàng nhập khẩu, NCC giao thất thường (xe trễ, thời tiết, tàu biển): thường ở VN biến động lead time gây thiếu
+    hàng nhiều hơn biến động nhu cầu.'
+- id: m04_safety_stock_periodic
+  module: m04
+  name_vi: Tồn kho an toàn hệ thống định kỳ
+  name_en: Safety Stock - periodic review
+  expression_latex: SS = Z \times \sigma_d \times \sqrt{R + L}
+  expression_python: Z*sigma_d*sqrt(R+L)
+  excel: null
+  variables:
+  - Z
+  - sigma_d
+  - R
+  - L
+  when_to_use: 'Hệ thống (R,S): đệm phải bảo vệ suốt R+L ngày vì giữa 2 lần kiểm tra không ai đặt hàng.'
+- id: m04_order_up_to
+  module: m04
+  name_vi: Mức tồn mục tiêu hệ thống định kỳ (order-up-to S)
+  name_en: Order-Up-To Level (R,S)
+  expression_latex: S = d\,(R+L) + Z\,\sigma_d\sqrt{R+L}, \qquad \text{Qty dat} = S - (\text{ton hien co} + \text{hang dang
+    ve})
+  expression_python: d*(R+L) + Z*sigma_d*sqrt(R+L)
+  excel: null
+  variables:
+  - d
+  - R
+  - L
+  - Z
+  - sigma_d
+  when_to_use: SME kiểm kê thủ công, hàng giá trị thấp/có hạn dùng, đặt gộp nhiều mã chung một NCC (nhóm C).
+- id: m04_quantity_discount_tc
+  module: m04
+  name_vi: Tổng chi phí có chiết khấu số lượng
+  name_en: Total Cost with Quantity Discount
+  expression_latex: TC = \dfrac{D}{Q}S + \dfrac{Q}{2}H + DP, \quad H = iP
+  expression_python: D/Q*S + Q/2*(i*P) + D*P
+  excel: null
+  variables:
+  - D
+  - Q
+  - S
+  - i
+  - P
+  when_to_use: NCC giảm giá theo bậc số lượng; cần chọn bậc tối ưu theo TỔNG chi phí, không phải giá thấp nhất.
+- id: m04_eoq_backorder
+  module: m04
+  name_vi: EOQ có thiếu hàng có kế hoạch
+  name_en: EOQ with Planned Backorders
+  expression_latex: Q^{*}_{b} = \sqrt{\dfrac{2DS}{H}}\sqrt{\dfrac{H+B}{B}}, \quad I_{max} = Q^{*}_{b}\dfrac{B}{H+B}
+  expression_python: (sqrt(2*D*S/H)*sqrt((H+B)/B), sqrt(2*D*S/H)*sqrt((H+B)/B)*B/(H+B))
+  excel: null
+  variables:
+  - D
+  - S
+  - H
+  - B
+  when_to_use: 'Make-to-order, hàng đặt trước: khách chấp nhận chờ.'
+- id: m04_abc_value
+  module: m04
+  name_vi: Giá trị sử dụng năm và % tích lũy (phân loại ABC)
+  name_en: Annual Usage Value and Cumulative Share (ABC)
+  expression_latex: V_k = D_k \times P_k, \qquad \text{Cum}_k = \dfrac{\sum_{j \le k} V_j}{\sum V}
+  expression_python: D_k*P_k
+  excel: null
+  variables:
+  - D_k
+  - P_k
+  when_to_use: Phân nhóm SKU để phân bổ nguồn lực kiểm soát; làm lại trên Excel mỗi 6 tháng.
+- id: m04_cycle_count_workload
+  module: m04
+  name_vi: Tải công việc kiểm kê theo chu kỳ
+  name_en: Cycle Counting Workload
+  expression_latex: \text{Luot dem} = \sum_g n_g f_g, \qquad \text{SKU/ngay} = \dfrac{\text{Luot dem}}{\text{ngay lam viec}}
+  expression_python: (nA*fA + nB*fB + nC*fC, (nA*fA + nB*fB + nC*fC)/working_days)
+  excel: null
+  variables:
+  - nA
+  - fA
+  - nB
+  - fB
+  - nC
+  - fC
+  - working_days
+  when_to_use: Thiết kế lịch cycle counting khả thi cho nhân viên kho kiêm nhiệm.
+- id: m04_kanban_cards
+  module: m04
+  name_vi: Số thẻ Kanban
+  name_en: Number of Kanban Cards
+  expression_latex: N = \dfrac{d \times L \times (1+\alpha)}{C}
+  expression_python: d*L*(1+alpha)/C
+  excel: null
+  variables:
+  - d
+  - L
+  - alpha
+  - C
+  when_to_use: 'Thiết kế vòng kéo JIT: tồn tối đa trong vòng = N x C. Làm tròn N lên.'
+- id: m04_inventory_turnover
+  module: m04
+  name_vi: Vòng quay tồn kho
+  name_en: Inventory Turnover
+  expression_latex: \text{Vong quay} = \dfrac{COGS}{\overline{Inv}}, \quad \overline{Inv} = \dfrac{Inv_{dau} + Inv_{cuoi}}{2}
+  expression_python: COGS / ((inv_begin + inv_end)/2)
+  excel: =COGS/AVERAGE(inv_begin, inv_end)
+  variables:
+  - COGS
+  - inv_begin
+  - inv_end
+  when_to_use: Đo tồn kho nhiều hay ít so với quy mô bán; benchmark theo ngành.
+- id: m04_dio
+  module: m04
+  name_vi: Số ngày tồn kho (DIO)
+  name_en: Days Inventory Outstanding
+  expression_latex: DIO = \dfrac{365}{\text{Vong quay}}
+  expression_python: 365 / turnover
+  excel: null
+  variables:
+  - turnover
+  when_to_use: Diễn giải vòng quay thành số ngày hàng nằm kho.
+- id: m04_ccc
+  module: m04
+  name_vi: Chu kỳ chuyển đổi tiền mặt (CCC) và vốn giải phóng
+  name_en: Cash Conversion Cycle and Cash Released
+  expression_latex: CCC = DIO + DSO - DPO, \qquad \text{Von giai phong} = \dfrac{COGS \times \Delta DIO}{365}
+  expression_python: (DIO + DSO - DPO, COGS*delta_dio/365)
+  excel: null
+  variables:
+  - DIO
+  - DSO
+  - DPO
+  - COGS
+  - delta_dio
+  when_to_use: Chuyển cải tiến tồn kho thành dòng tiền; làm việc với CFO/ngân hàng.
+- id: m04_newsvendor_cr
+  module: m04
+  name_vi: Tỷ lệ tới hạn Newsvendor (Critical Ratio)
+  name_en: Newsvendor Critical Ratio
+  expression_latex: CR = \dfrac{C_u}{C_u + C_o}, \quad C_u = p - c, \quad C_o = c - s
+  expression_python: (p - c) / ((p - c) + (c - s))
+  excel: null
+  variables:
+  - p
+  - c
+  - s
+  when_to_use: Hàng vòng đời ngắn chỉ có một cơ hội đặt (bánh trung thu, mứt Tết, hoa, thời trang theo mùa, vé sự kiện).
+- id: m04_newsvendor_q
+  module: m04
+  name_vi: Số lượng đặt tối ưu Newsvendor (nhu cầu chuẩn)
+  name_en: Newsvendor Optimal Quantity
+  expression_latex: Q^{*} = \mu + Z_{CR}\,\sigma = F^{-1}(CR)
+  expression_python: NormalDist(mu, sigma).inv_cdf(CR)
+  excel: =NORM.INV(Cu/(Cu+Co), mu, sigma)
+  variables:
+  - mu
+  - sigma
+  - CR
+  when_to_use: 'Sau khi có CR: tra phân vị CR của phân phối nhu cầu.'
+- id: m04_newsvendor_expected_cost
+  module: m04
+  name_vi: Chi phí bất định kỳ vọng Newsvendor (thừa + thiếu)
+  name_en: Newsvendor Expected Overage + Underage Cost
+  expression_latex: E[\text{du}] = \sigma\,[z\Phi(z) + \varphi(z)], \quad E[\text{thieu}] = E[\text{du}] - z\sigma, \quad
+    \text{Cost} = C_o E[\text{du}] + C_u E[\text{thieu}]
+  expression_python: Co*sigma*(z*NormalDist().cdf(z) + NormalDist().pdf(z)) + Cu*(sigma*(z*NormalDist().cdf(z) + NormalDist().pdf(z))
+    - z*sigma)
+  excel: null
+  variables:
+  - sigma
+  - z
+  - Cu
+  - Co
+  when_to_use: Định lượng giá trị của việc giảm bất định (đặt muộn, lô nhỏ, đặt bổ sung); case Zara/thời trang.
+- id: m04_risk_pooling
+  module: m04
+  name_vi: Gộp rủi ro (tồn kho an toàn khi gộp kho)
+  name_en: Risk Pooling Safety Stock
+  expression_latex: \sigma_{pool} = \sigma\sqrt{n + n(n-1)\rho}, \quad SS_{pool} = Z\,\sigma_{pool}\sqrt{L}
+  expression_python: Z*sigma*sqrt(n + n*(n-1)*rho)*sqrt(L)
+  excel: null
+  variables:
+  - Z
+  - sigma
+  - n
+  - rho
+  - L
+  when_to_use: Cân nhắc gộp nhiều kho khu vực thành kho trung tâm; hàng biến động lớn, giá trị cao, không cần giao siêu tốc.
+- id: m04_inventory_kpis
+  module: m04
+  name_vi: KPI tồn kho (stockout rate, accuracy, obsolete %, fill rate, chi phí lưu kho/doanh thu)
+  name_en: Inventory KPIs
+  expression_latex: \text{Stockout rate} = \dfrac{\text{So lan het hang}}{\text{Tong so lan kiem tra}}, \quad \text{Accuracy}
+    = \dfrac{\text{SKU khop}}{\text{Tong SKU}}
+  expression_python: (stockouts/checks, matched_sku/total_sku)
+  excel: null
+  variables:
+  - stockouts
+  - checks
+  - matched_sku
+  - total_sku
+  when_to_use: 'Theo dõi hằng tháng sau khi triển khai hệ thống tồn kho; mục tiêu tham khảo: stockout < 5%, accuracy > 95%,
+    obsolete (tồn > 6-12 tháng / tổng tồn) < 5%, fill rate > 95%, chi phí lưu kho/doanh thu 2-6% tùy ngành (tham khảo).'
+- id: m04_investment_payback
+  module: m04
+  name_vi: Hoàn vốn đầu tư công nghệ kho (RFID vs mã vạch)
+  name_en: Technology Payback (RFID vs Barcode)
+  expression_latex: \text{Payback} = \dfrac{\Delta Invest}{\text{Loi ich rong/nam}}
+  expression_python: delta_invest / (labor_saving + extra_gross_profit - recurring_cost)
+  excel: null
+  variables:
+  - delta_invest
+  - labor_saving
+  - extra_gross_profit
+  - recurring_cost
+  when_to_use: Quyết định RFID/IoT/WMS phải dựa trên bài toán kinh tế, không theo trào lưu.
+- id: m05_efficiency
+  module: m05
+  name_vi: Hiệu suất
+  name_en: Efficiency
+  expression_latex: \text{Efficiency} = \frac{\text{Actual Output}}{\text{Effective Capacity}} \times 100\%
+  expression_python: actual_output / effective_capacity
+  excel: =Thuc_te/Hieu_qua
+  variables:
+  - actual_output
+  - effective_capacity
+  when_to_use: Đo chất lượng quản lý vận hành trong giới hạn thực tế; quyết định có nên cải tiến vận hành trước khi đầu tư.
+- id: m05_utilization
+  module: m05
+  name_vi: Mức sử dụng
+  name_en: Utilization
+  expression_latex: \text{Utilization} = \frac{\text{Actual Output}}{\text{Design Capacity}} \times 100\%
+  expression_python: actual_output / design_capacity
+  excel: =Thuc_te/Thiet_ke
+  variables:
+  - actual_output
+  - design_capacity
+  when_to_use: Đo mức khai thác tài sản đã đầu tư; cân nhắc có đầu tư thêm không.
+- id: m05_system_capacity
+  module: m05
+  name_vi: Năng lực hệ thống nối tiếp (nút thắt)
+  name_en: Serial System Capacity (Bottleneck)
+  expression_latex: \text{Capacity}_{sys} = \min_i (\text{rate}_i \times \text{hours})
+  expression_python: min(rates) * hours_per_month
+  excel: null
+  variables:
+  - rates
+  - hours_per_month
+  when_to_use: Xác định nút thắt, năng lực thiết kế hệ thống; tính lại sau mỗi lần nâng một công đoạn.
+- id: m05_breakeven_qty
+  module: m05
+  name_vi: Sản lượng hòa vốn
+  name_en: Break-Even Quantity
+  expression_latex: Q^{*} = \frac{FC}{P - VC}
+  expression_python: fc / (price - vc)
+  excel: =FC/(P-VC)
+  variables:
+  - fc
+  - price
+  - vc
+  when_to_use: 'Trước mọi quyết định mở rộng năng lực (mua máy, mở chi nhánh): bán tối thiểu bao nhiêu thì chi phí cố định
+    mới được bù, so với năng lực mới và dự báo nhu cầu.'
+- id: m05_margin_of_safety
+  module: m05
+  name_vi: Biên an toàn và lợi nhuận tại mức nhu cầu
+  name_en: Margin of Safety
+  expression_latex: \text{MoS} = \frac{D - Q^{*}}{D}, \quad \pi = (D - Q^{*})(P - VC)
+  expression_python: (demand - q_star) / demand
+  excel: null
+  variables:
+  - demand
+  - q_star
+  when_to_use: Đo nhu cầu có thể thấp hơn dự báo bao nhiêu % trước khi dự án bắt đầu lỗ.
+- id: m05_breakeven_own_outsource
+  module: m05
+  name_vi: Hòa vốn giữa tự làm và thuê ngoài
+  name_en: Own vs Outsource Break-Even
+  expression_latex: Q^{*}_{own/out} = \frac{FC_{own}}{VC_{out} - VC_{own}}
+  expression_python: fc_own / (vc_out - vc_own)
+  excel: =FC_own/(VC_out-VC_own)
+  variables:
+  - fc_own
+  - vc_own
+  - vc_out
+  when_to_use: Tự đầu tư hay thuê ngoài/gia công cho cùng một khối lượng; cốt lõi của Lead hay Lag cho SME.
+- id: m05_mm1_rho_wq
+  module: m05
+  name_vi: 'Hàng đợi M/M/1: hệ số sử dụng và thời gian chờ'
+  name_en: M/M/1 Utilization and Waiting Time
+  expression_latex: \rho = \frac{\lambda}{\mu}, \qquad W_q = \frac{\lambda}{\mu(\mu - \lambda)}
+  expression_python: lam / (mu * (mu - lam))
+  excel: =lambda/(mu*(mu-lambda))
+  variables:
+  - lam
+  - mu
+  when_to_use: Một quầy/một nhân viên phục vụ; ước lượng thời gian chờ và độ dài hàng khi nhu cầu thay đổi.
+- id: m05_mm1_lq_w
+  module: m05
+  name_vi: 'Hàng đợi M/M/1: độ dài hàng, số khách trong hệ thống, thời gian trong hệ thống'
+  name_en: M/M/1 Lq, Ls, W
+  expression_latex: L_q = \frac{\lambda^2}{\mu(\mu-\lambda)}, \quad L_s = \frac{\lambda}{\mu-\lambda}, \quad W = \frac{1}{\mu-\lambda}
+  expression_python: lam**2 / (mu * (mu - lam))
+  excel: null
+  variables:
+  - lam
+  - mu
+  when_to_use: Cần số khách trung bình xếp hàng (Lq), trong hệ thống (Ls), tổng thời gian trong hệ thống W = Wq + 1/mu.
+- id: m05_erlang_c
+  module: m05
+  name_vi: Xác suất phải chờ Erlang C (M/M/c)
+  name_en: Erlang C Probability of Waiting
+  expression_latex: P_w = \frac{\frac{a^c}{c!(1-\rho)}}{\sum_{k=0}^{c-1}\frac{a^k}{k!} + \frac{a^c}{c!(1-\rho)}}, \quad a
+    = \frac{\lambda}{\mu}, \; \rho = \frac{a}{c}
+  expression_python: ((lam/mu)**c / (math.factorial(c) * (1 - lam/(c*mu)))) / (sum((lam/mu)**k / math.factorial(k) for k in
+    range(c)) + (lam/mu)**c / (math.factorial(c) * (1 - lam/(c*mu))))
+  excel: =(POISSON.DIST(c,a,FALSE)/(1-a/c))/((POISSON.DIST(c,a,FALSE)/(1-a/c))+POISSON.DIST(c-1,a,TRUE))
+  variables:
+  - lam
+  - mu
+  - c
+  when_to_use: 'Có nhiều quầy chung một hàng đợi (ngân hàng, sân bay, call center, quầy pha chế): tính xác suất khách phải
+    chờ và dùng cho Wq.'
+- id: m05_mmc_wq
+  module: m05
+  name_vi: Thời gian chờ trung bình M/M/c
+  name_en: M/M/c Average Waiting Time
+  expression_latex: W_q = \frac{P_w}{c\mu - \lambda}
+  expression_python: pw / (c * mu - lam)
+  excel: =Pw/(c*mu-lambda)
+  variables:
+  - pw
+  - c
+  - mu
+  - lam
+  when_to_use: Tìm số quầy c nhỏ nhất để Wq đạt mục tiêu dịch vụ (ví dụ <= 1 phút) theo từng khung giờ.
+- id: m05_learning_curve
+  module: m05
+  name_vi: Đường cong học tập (mô hình đơn vị)
+  name_en: Learning Curve (Unit Model)
+  expression_latex: T_n = T_1 \times n^{\log_2(r)}
+  expression_python: t1 * n ** math.log2(r)
+  excel: =T1*n^(LOG(r,2))
+  variables:
+  - t1
+  - n
+  - r
+  when_to_use: Dự báo năng suất ramp-up của người/máy/chuyền mới, lập kế hoạch giao hàng và dòng tiền 3-6 tháng đầu.
+- id: m05_learning_cumulative
+  module: m05
+  name_vi: Tổng giờ tích lũy theo đường cong học tập
+  name_en: Cumulative Hours under Learning Curve
+  expression_latex: \sum_{i=1}^{N} T_1 \cdot i^{\log_2 r}
+  expression_python: sum(t1 * i ** math.log2(r) for i in range(1, N + 1))
+  excel: null
+  variables:
+  - t1
+  - r
+  - N
+  when_to_use: Tính tổng giờ công cho một lô N đơn vị đầu để lập kế hoạch năng lực/dòng tiền.
+- id: m05_line_cycle_time
+  module: m05
+  name_vi: Nhịp sản xuất tối đa cho phép
+  name_en: Cycle Time
+  expression_latex: C = \frac{\text{Available time per day}}{\text{Required output per day}}
+  expression_python: available_time / required_output
+  excel: null
+  variables:
+  - available_time
+  - required_output
+  when_to_use: 'Bước đầu cân bằng chuyền: mỗi trạm không được mất quá C phút cho mỗi sản phẩm để giao đủ sản lượng mục tiêu.'
+- id: m05_line_min_stations
+  module: m05
+  name_vi: Số trạm làm việc tối thiểu
+  name_en: Theoretical Minimum Number of Stations
+  expression_latex: N_{min} = \left\lceil \frac{\sum t_i}{C} \right\rceil
+  expression_python: math.ceil(sum(task_times) / cycle_time)
+  excel: null
+  variables:
+  - task_times
+  - cycle_time
+  when_to_use: Cận dưới số trạm khi thiết kế/cân bằng chuyền.
+- id: m05_line_balance_efficiency
+  module: m05
+  name_vi: Hiệu suất cân bằng chuyền
+  name_en: Balance Efficiency
+  expression_latex: \text{Efficiency} = \frac{\sum t_i}{N_{actual} \times C} \times 100\%
+  expression_python: sum(task_times) / (n_actual * cycle_time)
+  excel: null
+  variables:
+  - task_times
+  - n_actual
+  - cycle_time
+  when_to_use: Đánh giá một phương án chia trạm; so sánh các cách chia.
+- id: m05_crp_hours
+  module: m05
+  name_vi: Giờ cần tại trung tâm làm việc (CRP)
+  name_en: Capacity Requirements at a Work Center
+  expression_latex: \text{Hours}_k = \sum_j (\text{Qty}_j \times \text{Std hours}_{j,k})
+  expression_python: sum(q * h for q, h in zip(qtys, std_hours))
+  excel: null
+  variables:
+  - qtys
+  - std_hours
+  when_to_use: 'Kiểm tra khả thi MPS/MRP: trung tâm/máy nào quá tải và thiếu bao nhiêu giờ.'
+- id: m05_capacity_cushion
+  module: m05
+  name_vi: Năng lực dự phòng
+  name_en: Capacity Cushion
+  expression_latex: \text{Cushion} = 100\% - \text{Utilization Rate}
+  expression_python: 1 - utilization
+  excel: null
+  variables:
+  - utilization
+  when_to_use: Chọn mức đệm phù hợp đặc thù ngành; đánh giá hệ thống vận hành quá sát 100%.
+- id: m05_capacity_for_target_util
+  module: m05
+  name_vi: Năng lực cần tăng để đạt mức sử dụng mục tiêu
+  name_en: Capacity Increase to Reach Target Utilization
+  expression_latex: \Delta = \frac{U_{now}}{U_{target}} - 1
+  expression_python: u_now / u_target - 1
+  excel: null
+  variables:
+  - u_now
+  - u_target
+  when_to_use: Xác định cần tăng bao nhiêu % năng lực để khôi phục đệm.
+- id: m05_aggregate_cost
+  module: m05
+  name_vi: Tổng chi phí Aggregate Planning (Chase/Level/Mixed)
+  name_en: Aggregate Plan Total Cost
+  expression_latex: TC = c_{reg} Q_{reg} + c_{ot} Q_{ot} + c_{inv} \sum_t I_t + c_{hire} H + c_{fire} F
+  expression_python: c_reg*q_reg + c_ot*q_ot + c_inv*inv_months + c_hire*hires + c_fire*fires
+  excel: null
+  variables:
+  - c_reg
+  - q_reg
+  - c_ot
+  - q_ot
+  - c_inv
+  - inv_months
+  - c_hire
+  - hires
+  - c_fire
+  - fires
+  when_to_use: So sánh các kế hoạch tổng hợp trong 3-18 tháng khi nhu cầu theo mùa; kiểm tra độ nhạy theo chi phí lưu kho.
+- id: m05_operating_leverage_breakeven
+  module: m05
+  name_vi: Doanh thu hòa vốn với chi phí cố định và biến đổi theo tỷ lệ
+  name_en: Break-Even Revenue (Operating Leverage)
+  expression_latex: R^{*} = \frac{FC}{1 - v_{ratio} - f_{ratio}}
+  expression_python: fc / (1 - v_ratio - f_ratio)
+  excel: null
+  variables:
+  - fc
+  - v_ratio
+  - f_ratio
+  when_to_use: Stress test cấu trúc chi phí trước sụt giảm nhu cầu; so sánh cấu trúc cứng với linh hoạt.
+- id: m05_emv
+  module: m05
+  name_vi: Giá trị tiền tệ kỳ vọng
+  name_en: Expected Monetary Value (EMV)
+  expression_latex: EMV = \sum_i p_i V_i
+  expression_python: sum(p * v for p, v in zip(probs, values))
+  excel: =SUMPRODUCT(probs, values)
+  variables:
+  - probs
+  - values
+  when_to_use: So sánh phương án năng lực (mua máy/thuê ngoài/chờ) dưới bất định.
+- id: m05_annuity_npv
+  module: m05
+  name_vi: NPV dự án năng lực với dòng tiền đều hằng năm
+  name_en: Annuity NPV for a Capacity Investment
+  expression_latex: NPV = CF \times \sum_{t=1}^{n}\frac{1}{(1+r)^t} - I_0
+  expression_python: cf * sum(1 / (1 + r) ** t for t in range(1, n + 1)) - i0
+  excel: =-CAPEX+PV(rate,n,-NetCashflow)
+  variables:
+  - cf
+  - r
+  - n
+  - i0
+  when_to_use: Biến mỗi nhánh cây quyết định thành NPV; so sánh mua máy/thuê ngoài.
+- id: m05_staged_option_npv
+  module: m05
+  name_vi: NPV phương án chờ rồi quyết (real option)
+  name_en: Staged / Wait-then-Invest NPV
+  expression_latex: NPV_D = \frac{CF^{out}}{1+r} + \sum_{t=2}^{5}\frac{CF^{own}}{(1+r)^t} - \frac{I_0}{1+r}
+  expression_python: cf_out/(1+r) + sum(cf_own/(1+r)**t for t in range(2, 6)) - i0/(1+r)
+  excel: null
+  variables:
+  - cf_out
+  - cf_own
+  - i0
+  - r
+  when_to_use: 'Nhu cầu bất định, chi phí chờ nhỏ: thuê ngoài năm đầu để quan sát nhu cầu rồi mới quyết mua máy.'
+- id: m05_triangular_sample
+  module: m05
+  name_vi: Rút mẫu phân phối tam giác (Monte Carlo)
+  name_en: Triangular Distribution Sampling
+  expression_latex: D = \begin{cases} a + \sqrt{u(b-a)(m-a)} & u < \frac{m-a}{b-a} \\ b - \sqrt{(1-u)(b-a)(b-m)} & \text{otherwise}\end{cases}
+  expression_python: a + math.sqrt(u*(b-a)*(m-a)) if u < (m-a)/(b-a) else b - math.sqrt((1-u)*(b-a)*(b-m))
+  excel: =IF(u<(m-a)/(b-a), a+SQRT(u*(b-a)*(m-a)), b-SQRT((1-u)*(b-a)*(b-m)))
+  variables:
+  - a
+  - m
+  - b
+  - u
+  when_to_use: Mô phỏng nhu cầu liên tục từ 3 con số dễ ước lượng; ước lượng P(NPV < 0).
+- id: m05_little_law
+  module: m05
+  name_vi: Định luật Little
+  name_en: Little's Law
+  expression_latex: L = \lambda W
+  expression_python: lam * w
+  excel: null
+  variables:
+  - lam
+  - w
+  when_to_use: Kiểm tra chéo kết quả hàng đợi (Lq = lambda x Wq; Ls = lambda x W). Chi tiết ở m01.
+- id: m06_cpm_forward_backward
+  module: m06
+  name_vi: 'CPM: Forward/Backward pass (ES, EF, LS, LF, Float)'
+  name_en: CPM early/late times and float
+  expression_latex: ES_j=\max_{i\in pred(j)}EF_i,\; EF_j=ES_j+d_j,\; LF_i=\min_{j\in succ(i)}LS_j,\; LS_i=LF_i-d_i,\; Float_i=LS_i-ES_i
+  expression_python: '[max(EF_pred), ES + d, min(LS_succ), LF - d, LS - ES]'
+  excel: 'ES: =MAX(EF các việc trước); EF: =ES+d; LF: =MIN(LS các việc sau); LS: =LF-d; Float: =LS-ES'
+  variables:
+  - d
+  - ES/EF
+  - LS/LF
+  when_to_use: Xác định tổng thời gian tối thiểu, đường găng và float của từng việc.
+- id: m06_pert_te
+  module: m06
+  name_vi: Thời gian kỳ vọng PERT
+  name_en: PERT expected time
+  expression_latex: t_e=\frac{t_o+4t_m+t_p}{6}
+  expression_python: (to + 4*tm + tp)/6
+  excel: =(to+4*tm+tp)/6
+  variables:
+  - to
+  - tm
+  - tp
+  when_to_use: Việc có độ bất định cao, chưa có dữ liệu lịch sử chắc chắn.
+- id: m06_pert_sigma
+  module: m06
+  name_vi: Độ lệch chuẩn và phương sai công việc (PERT)
+  name_en: PERT activity standard deviation
+  expression_latex: \sigma=\frac{t_p-t_o}{6},\; Var=\sigma^2
+  expression_python: (tp - to)/6
+  excel: =(tp-to)/6
+  variables:
+  - to
+  - tp
+  when_to_use: Đo độ bất định của từng việc để cộng phương sai trên đường găng.
+- id: m06_project_sigma
+  module: m06
+  name_vi: Độ lệch chuẩn toàn dự án
+  name_en: Project standard deviation
+  expression_latex: \sigma_{project}=\sqrt{\sum_{i\in CP}\sigma_i^2}
+  expression_python: sum(v**2 for v in sigmas_cp)**0.5
+  excel: =SQRT(SUMSQ(sigma_cp))
+  variables:
+  - sigmas_cp
+  when_to_use: Tính xác suất kịp hạn.
+- id: m06_prob_on_time
+  module: m06
+  name_vi: Xác suất hoàn thành trước hạn
+  name_en: Probability of on-time completion
+  expression_latex: z=\frac{D-T_e}{\sigma_{project}},\; P=\Phi(z)
+  expression_python: 0.5*(1+math.erf(((D - Te)/sigma_project)/math.sqrt(2)))
+  excel: =NORM.S.DIST((D-Te)/sigma,TRUE)
+  variables:
+  - D
+  - Te
+  - sigma_project
+  when_to_use: 'Trước khi cam kết ngày giao với khách; tìm hạn đạt độ tin cậy 95%: T = Te + 1,645σ.'
+- id: m06_crash_cost_slope
+  module: m06
+  name_vi: Chi phí crash mỗi ngày
+  name_en: Crash cost slope
+  expression_latex: CS=\frac{C_{crash}-C_{normal}}{T_{normal}-T_{crash}}
+  expression_python: (C_crash - C_normal)/(T_normal - T_crash)
+  excel: =(Ccrash-Cnormal)/(Tnormal-Tcrash)
+  variables:
+  - C_crash
+  - C_normal
+  - T_normal
+  - T_crash
+  when_to_use: Xếp hạng việc găng để crash từ rẻ đến đắt; so với lợi ích/ngày (phạt trễ, doanh thu mất).
+- id: m06_crash_net_benefit
+  module: m06
+  name_vi: Lợi ròng của crashing
+  name_en: Net benefit of crashing
+  expression_latex: NB=\text{ngày rút}\times B_{day}-\sum(\text{ngày rút}_i\times CS_i)
+  expression_python: sum(days)*benefit_per_day - sum(d*s for d,s in zip(days,slopes))
+  excel: =SUM(days)*benefit - SUMPRODUCT(days,slopes)
+  variables:
+  - days
+  - slopes
+  - benefit_per_day
+  when_to_use: Chốt gói crashing tối ưu.
+- id: m06_fasttrack_duration
+  module: m06
+  name_vi: Thời lượng sau fast-tracking (chồng lấn)
+  name_en: Fast-tracked duration
+  expression_latex: T=\sum d_i-\sum overlap_i
+  expression_python: sum(d) - sum(overlap)
+  excel: null
+  variables:
+  - d
+  - overlap
+  when_to_use: Ước tính mức rút ngắn khi chạy song song.
+- id: m06_ev_variances
+  module: m06
+  name_vi: Chênh lệch chi phí và tiến độ (CV, SV)
+  name_en: Cost and schedule variance
+  expression_latex: CV=EV-AC,\; SV=EV-PV
+  expression_python: (EV - AC, EV - PV)
+  excel: =EV-AC ; =EV-PV
+  variables:
+  - PV
+  - EV
+  - AC
+  when_to_use: Báo cáo tiến độ định kỳ bằng tiền.
+- id: m06_cpi_spi
+  module: m06
+  name_vi: Chỉ số hiệu suất chi phí và tiến độ (CPI, SPI)
+  name_en: CPI and SPI
+  expression_latex: CPI=\frac{EV}{AC},\; SPI=\frac{EV}{PV}
+  expression_python: (EV/AC, EV/PV)
+  excel: =EV/AC ; =EV/PV
+  variables:
+  - EV
+  - AC
+  - PV
+  when_to_use: Theo dõi hằng tuần (dự án từ vài trăm triệu); cảnh báo đỏ nếu <0,9, vàng 0,9-0,95 (mẫu trong nguồn).
+- id: m06_eac_cpi
+  module: m06
+  name_vi: EAC theo xu hướng CPI
+  name_en: EAC (typical performance)
+  expression_latex: EAC=\frac{BAC}{CPI}
+  expression_python: BAC/CPI
+  excel: =BAC/CPI
+  variables:
+  - BAC
+  - CPI
+  when_to_use: Nếu hiệu suất hiện tại kéo dài đến hết dự án.
+- id: m06_eac_onetime
+  module: m06
+  name_vi: EAC khi sai lệch chỉ một lần
+  name_en: EAC (atypical variance)
+  expression_latex: EAC=AC+(BAC-EV)
+  expression_python: AC + (BAC - EV)
+  excel: =AC+(BAC-EV)
+  variables:
+  - AC
+  - BAC
+  - EV
+  when_to_use: 'Kịch bản lạc quan: phần còn lại đúng kế hoạch.'
+- id: m06_eac_cpi_spi
+  module: m06
+  name_vi: EAC kịch bản bi quan (CPI x SPI)
+  name_en: EAC (cost and schedule indices)
+  expression_latex: EAC=AC+\frac{BAC-EV}{CPI\times SPI}
+  expression_python: AC + (BAC - EV)/(CPI*SPI)
+  excel: null
+  variables:
+  - AC
+  - BAC
+  - EV
+  - CPI
+  - SPI
+  when_to_use: Kịch bản xấu khi cả chi phí và tiến độ đều lệch.
+- id: m06_etc_vac
+  module: m06
+  name_vi: ETC và VAC
+  name_en: Estimate to complete and Variance at completion
+  expression_latex: ETC=EAC-AC,\; VAC=BAC-EAC
+  expression_python: (EAC - AC, BAC - EAC)
+  excel: null
+  variables:
+  - EAC
+  - AC
+  - BAC
+  when_to_use: Biết còn phải chi bao nhiêu và vượt/tiết kiệm bao nhiêu.
+- id: m06_tcpi
+  module: m06
+  name_vi: Chỉ số hiệu suất cần đạt (TCPI)
+  name_en: To-Complete Performance Index
+  expression_latex: TCPI=\frac{BAC-EV}{BAC-AC}
+  expression_python: (BAC - EV)/(BAC - AC)
+  excel: =(BAC-EV)/(BAC-AC)
+  variables:
+  - BAC
+  - EV
+  - AC
+  when_to_use: Kiểm tra mục tiêu giữ nguyên BAC có thực tế không.
+- id: m06_emv
+  module: m06
+  name_vi: Giá trị tiền tệ kỳ vọng của rủi ro (EMV)
+  name_en: Expected Monetary Value
+  expression_latex: EMV=P\times I
+  expression_python: P*I
+  excel: =P*I
+  variables:
+  - P
+  - I
+  when_to_use: Xếp hạng rủi ro và lập quỹ dự phòng bằng tổng EMV.
+- id: m06_contingency_reserve
+  module: m06
+  name_vi: Quỹ dự phòng từ EMV
+  name_en: Contingency reserve
+  expression_latex: Reserve=\sum_i P_iI_i,\; ratio=\frac{Reserve}{BAC}
+  expression_python: sum(p*i for p,i in zip(P,I))
+  excel: null
+  variables:
+  - P
+  - I
+  when_to_use: Chốt dự phòng ngân sách.
+- id: m06_velocity_forecast
+  module: m06
+  name_vi: Dự báo số sprint còn lại theo velocity
+  name_en: Velocity-based forecast
+  expression_latex: N=\frac{Backlog}{\bar v},\; \bar v=\frac{1}{k}\sum v_i
+  expression_python: backlog_left/(sum(v)/len(v))
+  excel: =backlog/AVERAGE(v)
+  variables:
+  - backlog_left
+  - v
+  when_to_use: Dự đoán ngày xong khi backlog biết; chạy thêm biến thể với 3 sprint gần nhất khi velocity đang tăng.
+- id: m06_resource_utilization
+  module: m06
+  name_vi: Hiệu suất sử dụng nguồn lực
+  name_en: Resource utilization
+  expression_latex: U=\frac{\sum demand}{\sum capacity}
+  expression_python: sum(demand)/sum(capacity)
+  excel: =SUM(demand)/SUM(capacity)
+  variables:
+  - demand
+  - capacity
+  when_to_use: Kiểm tra tải đa dự án; phát hiện ngày vượt công suất.
+- id: m06_late_cost
+  module: m06
+  name_vi: Chi phí trễ hạn tích lũy
+  name_en: Cost of delay
+  expression_latex: Cost=days\times c_{day}
+  expression_python: days*c_day
+  excel: null
+  variables:
+  - days
+  - c_day
+  when_to_use: So chi phí trễ với chi phí tránh trễ.
+- id: m06_defect_cost_stage
+  module: m06
+  name_vi: Chi phí sửa lỗi theo giai đoạn phát hiện
+  name_en: Cost of change by stage
+  expression_latex: C=\sum_s n_s c_s
+  expression_python: sum(n*c for n,c in zip(counts,unit_costs))
+  excel: null
+  variables:
+  - counts
+  - unit_costs
+  when_to_use: Chứng minh lợi ích kiểm tra sớm.
+- id: m06_wait_time
+  module: m06
+  name_vi: Thời gian chờ phụ thuộc chéo (tính năng-tuần)
+  name_en: Cross-team dependency wait
+  expression_latex: W=n\times share\times wait
+  expression_python: n*share*wait
+  excel: null
+  variables:
+  - n
+  - share
+  - wait
+  when_to_use: Chứng minh giá trị phối hợp Scrum of Scrums.
+- id: m07_moving_average
+  module: m07
+  name_vi: Trung bình động n kỳ
+  name_en: Moving Average (MA_n)
+  expression_latex: MA_n=\frac{\sum_{i=1}^{n}Y_{t-i+1}}{n}
+  expression_python: sum(y[-n:])/n
+  excel: =AVERAGE(B2:B4)
+  variables:
+  - y
+  - n
+  when_to_use: Nhu cầu ổn định, đi ngang, không xu hướng, không mùa vụ; muốn lọc nhiễu nhanh và đơn giản.
+- id: m07_weighted_moving_average
+  module: m07
+  name_vi: Trung bình động có trọng số
+  name_en: Weighted Moving Average (WMA)
+  expression_latex: WMA=\sum_i w_i\,Y_{t-i+1},\quad \sum_i w_i=1
+  expression_python: sum(w[i]*y[-1-i] for i in range(len(w)))
+  excel: =SUMPRODUCT(B2:B4, D2:D4)
+  variables:
+  - y
+  - w
+  when_to_use: Giống MA nhưng muốn tin dữ liệu mới hơn; hoặc tách chuỗi theo ngày trong tuần (WMA riêng các ngày thứ Bảy).
+- id: m07_ses
+  module: m07
+  name_vi: San bằng số mũ đơn
+  name_en: Simple Exponential Smoothing (SES)
+  expression_latex: F_{t+1}=\alpha Y_t+(1-\alpha)F_t = F_t+\alpha(Y_t-F_t)
+  expression_python: alpha*y_t + (1-alpha)*f_t
+  excel: =$J$1*B2+(1-$J$1)*C2
+  variables:
+  - alpha
+  - y_t
+  - f_t
+  when_to_use: Nhu cầu đi ngang có nhiễu; hàng nghìn mã hàng cần tự động hoá (chỉ nhớ 1 số mỗi mã).
+- id: m07_holt
+  module: m07
+  name_vi: San bằng số mũ điều chỉnh xu hướng (Holt)
+  name_en: Holt linear trend (double exponential smoothing)
+  expression_latex: L_t=\alpha Y_t+(1-\alpha)(L_{t-1}+T_{t-1});\; T_t=\beta(L_t-L_{t-1})+(1-\beta)T_{t-1};\; F_{t+h}=L_t+hT_t
+  expression_python: '(lambda Ln: (Ln, beta*(Ln-L)+(1-beta)*T, Ln+(beta*(Ln-L)+(1-beta)*T)))(alpha*y_t+(1-alpha)*(L+T))'
+  excel: =B2*alpha+(1-alpha)*(L_prev+T_prev) ; FORECAST.ETS cho phiên bản có mùa vụ
+  variables:
+  - alpha
+  - beta
+  - y_t
+  - L
+  - T
+  when_to_use: Chuỗi có xu hướng tăng/giảm, chưa có mùa vụ.
+- id: m07_holt_winters
+  module: m07
+  name_vi: Holt-Winters nhân (ba tham số)
+  name_en: Holt-Winters multiplicative
+  expression_latex: L_t=\alpha\frac{Y_t}{s_{t-p}}+(1-\alpha)(L_{t-1}+T_{t-1});\; T_t=\beta(L_t-L_{t-1})+(1-\beta)T_{t-1};\;
+    s_t=\gamma\frac{Y_t}{L_t}+(1-\gamma)s_{t-p};\; F_{t+h}=(L_t+hT_t)s_{t+h-p}
+  expression_python: '(lambda Ln: (Ln, beta*(Ln-L)+(1-beta)*T, gamma*y_t/Ln+(1-gamma)*s))(alpha*y_t/s+(1-alpha)*(L+T))'
+  excel: FORECAST.ETS(target_date, values, timeline, seasonality)
+  variables:
+  - alpha, beta, gamma
+  - y_t
+  - L, T
+  - s
+  - p
+  when_to_use: Chuỗi có cả xu hướng và mùa vụ với biên độ tỷ lệ quy mô, đã có 2-3 chu kỳ đầy đủ (24-36 tháng).
+- id: m07_ols_regression
+  module: m07
+  name_vi: Hồi quy tuyến tính đơn (OLS) / hồi quy xu hướng
+  name_en: Simple linear regression (Ordinary Least Squares)
+  expression_latex: Y=a+bX;\quad b=\frac{n\sum XY-\sum X\sum Y}{n\sum X^2-(\sum X)^2};\quad a=\bar Y-b\bar X
+  expression_python: '(lambda b: (b, sum(y)/n - b*sum(x)/n))((n*sum(xi*yi for xi,yi in zip(x,y)) - sum(x)*sum(y))/(n*sum(xi*xi
+    for xi in x) - sum(x)**2))'
+  excel: =SLOPE(Y,X) ; =INTERCEPT(Y,X) ; =FORECAST.LINEAR(13,B2:B13,A2:A13) ; =TREND(...)
+  variables:
+  - x
+  - y
+  - n
+  - b
+  - a
+  when_to_use: Dự báo xu hướng theo thời gian, hoặc mô hình nhân quả để trả lời câu hỏi nếu tăng quảng cáo/giảm giá thì doanh
+    số đổi bao nhiêu.
+- id: m07_r_squared
+  module: m07
+  name_vi: Hệ số xác định R2, sai số chuẩn hồi quy và khoảng dự báo
+  name_en: Coefficient of determination, standard error of regression
+  expression_latex: R^2=1-\frac{SSE}{SST};\; SSE=\sum(Y_t-\hat Y_t)^2;\; SST=\sum(Y_t-\bar Y)^2;\; s_e=\sqrt{\frac{SSE}{n-2}}
+  expression_python: (1 - sse/sst, (sse/(n-2))**0.5)
+  excel: =RSQ(Y,X) ; =STEYX(Y,X)
+  variables:
+  - sse
+  - sst
+  - n
+  when_to_use: Đo mức mô hình hồi quy giải thích biến động; ước khoảng dự báo +-2 s_e.
+- id: m07_multiple_regression
+  module: m07
+  name_vi: Hồi quy đa biến
+  name_en: Multiple linear regression
+  expression_latex: Y=a+b_1X_1+b_2X_2+\dots+b_kX_k;\quad R^2_{adj}=1-(1-R^2)\frac{n-1}{n-k-1}
+  expression_python: a + b1*x1 + b2*x2
+  excel: =LINEST(Y, X1:X2, TRUE, TRUE)
+  variables:
+  - a
+  - b1, b2
+  - x1, x2
+  when_to_use: Khi có yếu tố nhân quả rõ (giá, quảng cáo, thời tiết, khuyến mãi) và cần trả lời câu hỏi nếu... thì...
+- id: m07_seasonal_index
+  module: m07
+  name_vi: Chỉ số mùa vụ (phương pháp trung bình đơn giản)
+  name_en: Seasonal index
+  expression_latex: S_q=\frac{\bar Y_q}{\bar Y};\quad \sum_q S_q=p
+  expression_python: '[sum(col)/len(col)/(sum(map(sum, data))/(len(data)*len(data[0]))) for col in zip(*data)]'
+  excel: =AVERAGE(quý q các năm)/AVERAGE(toàn bộ)
+  variables:
+  - data
+  - S_q
+  - p
+  when_to_use: 'Tách mùa khỏi tăng trưởng: quý 3 cao hơn quý 1 là do doanh nghiệp lớn hay chỉ do mùa?'
+- id: m07_decomposition_forecast
+  module: m07
+  name_vi: 'Dự báo bằng phân rã: gỡ mùa vụ, hồi quy xu hướng, nhân lại chỉ số'
+  name_en: Decomposition forecast (deseasonalize, trend, reseasonalize)
+  expression_latex: Y^{adj}_t=\frac{Y_t}{S};\;\hat Y^{adj}_t=a+bt;\;F_t=(a+bt)\times S
+  expression_python: (a + b*t)*S
+  excel: =FORECAST.LINEAR(t, Y_adj, t_range) * S
+  variables:
+  - a, b
+  - t
+  - S
+  when_to_use: Chuỗi có xu hướng và mùa vụ nhưng chỉ có 24-36 tháng; muốn giải thích được với chủ DN và làm trong Excel.
+- id: m07_mad
+  module: m07
+  name_vi: Sai số tuyệt đối trung bình (MAD)
+  name_en: Mean Absolute Deviation (MAD)
+  expression_latex: MAD=\frac{\sum|Y_t-F_t|}{n}
+  expression_python: sum(abs(a-f) for a,f in zip(y,fc))/len(y)
+  excel: =AVERAGE(E2:E13) (cột E = |sai số|)
+  variables:
+  - y
+  - fc
+  when_to_use: Đo độ lớn sai số theo đơn vị hàng; dễ giải thích nhất.
+- id: m07_mse_rmse
+  module: m07
+  name_vi: MSE và RMSE
+  name_en: Mean Squared Error / Root MSE
+  expression_latex: MSE=\frac{\sum(Y_t-F_t)^2}{n};\quad RMSE=\sqrt{MSE}
+  expression_python: (sum((a-f)**2 for a,f in zip(y,fc))/len(y))**0.5
+  excel: =SQRT(AVERAGE(F2:F13)) (cột F = sai số bình phương)
+  variables:
+  - y
+  - fc
+  when_to_use: Phạt nặng sai số lớn; RMSE liên hệ trực tiếp độ lệch chuẩn sai số nên dùng trong công thức Safety Stock.
+- id: m07_mape
+  module: m07
+  name_vi: Sai số phần trăm tuyệt đối trung bình (MAPE) và Forecast Accuracy
+  name_en: Mean Absolute Percentage Error (MAPE)
+  expression_latex: MAPE=\frac{1}{n}\sum\left|\frac{Y_t-F_t}{Y_t}\right|\times100\%;\quad Accuracy=1-MAPE
+  expression_python: sum(abs(a-f)/a for a,f in zip(y,fc))/len(y)*100
+  excel: =AVERAGE(G2:G13) (cột G = |e|/Y)
+  variables:
+  - y
+  - fc
+  when_to_use: So sánh độ chính xác giữa sản phẩm/quy mô khác nhau.
+- id: m07_bias
+  module: m07
+  name_vi: Độ lệch trung bình (Bias)
+  name_en: Forecast Bias (Mean Error)
+  expression_latex: Bias=\frac{\sum(Y_t-F_t)}{n}
+  expression_python: sum(a-f for a,f in zip(y,fc))/len(y)
+  excel: =AVERAGE(D2:D13)
+  variables:
+  - y
+  - fc
+  when_to_use: Phát hiện dự báo thừa/thiếu có hệ thống (không chỉ độ lớn).
+- id: m07_wape
+  module: m07
+  name_vi: WAPE (sai số % có trọng số theo doanh số)
+  name_en: Weighted Absolute Percentage Error
+  expression_latex: WAPE=\frac{\sum|e_t|}{\sum Y_t}
+  expression_python: sum(abs(a-f) for a,f in zip(y,fc))/sum(y)
+  excel: =SUMPRODUCT(ABS(B2:B13-C2:C13))/SUM(B2:B13)
+  variables:
+  - y
+  - fc
+  when_to_use: Hàng bán rời rạc, nhiều kỳ bằng 0 nên MAPE không xác định.
+- id: m07_tracking_signal
+  module: m07
+  name_vi: Tín hiệu theo dõi (Tracking Signal)
+  name_en: Tracking Signal (TS)
+  expression_latex: TS=\frac{\sum(Y_t-F_t)}{MAD}
+  expression_python: sum(e)/(sum(abs(x) for x in e)/len(e))
+  excel: =SUM(D2:D13)/AVERAGE(E2:E13)
+  variables:
+  - e
+  when_to_use: Giám sát hằng tháng để phát hiện mô hình lệch hoặc thị trường đổi cấu trúc.
+- id: m07_safety_stock_from_error
+  module: m07
+  name_vi: Tồn kho an toàn từ sai số dự báo
+  name_en: Safety stock from forecast error
+  expression_latex: SS=z\,\sigma_e\sqrt{L}
+  expression_python: z*sigma_e*L**0.5
+  excel: =NORM.S.INV(service_level)*sigma_e*SQRT(L)
+  variables:
+  - z
+  - sigma_e
+  - L
+  when_to_use: 'Nối dự báo với tồn kho (m04): đặt đệm theo sai số thay vì +10-20% cố định.'
+- id: m07_cost_asymmetry_threshold
+  module: m07
+  name_vi: Ngưỡng xác suất để tăng tồn kho (bất đối xứng chi phí thiếu/dư)
+  name_en: Stocking threshold from under/over cost
+  expression_latex: p\,C_u>(1-p)\,C_o\;\Rightarrow\;p>\frac{C_o}{C_u+C_o}
+  expression_python: co/(cu+co)
+  excel: =Co/(Cu+Co)
+  variables:
+  - cu
+  - co
+  when_to_use: Quyết định có điều chỉnh tồn kho theo dự báo sự kiện bất định (bão, khuyến mãi, lễ).
+- id: m07_demand_growth_capacity
+  module: m07
+  name_vi: Tăng trưởng nhu cầu và thời điểm cần thêm công suất
+  name_en: Demand growth via income elasticity and capacity trigger time
+  expression_latex: g=\varepsilon\cdot g_{GDP}+g_{pop};\quad n=\frac{\ln(U_{max}\cdot C/D_0)}{\ln(1+g)}
+  expression_python: math.log(umax*cap/d0)/math.log(1+g)
+  excel: =LN(Umax*Cap/D0)/LN(1+g)
+  variables:
+  - g
+  - umax
+  - cap
+  - d0
+  when_to_use: Dự báo dài hạn theo vĩ mô để xác định mốc đầu tư công suất; kèm độ nhạy theo kịch bản.
+- id: m07_early_sales_extrapolation
+  module: m07
+  name_vi: Dự báo nhu cầu vòng đời từ tốc độ bán sớm
+  name_en: Life-cycle demand from early-sales share
+  expression_latex: D_{life}=\frac{S_{3d}}{\rho},\quad \rho=0.35
+  expression_python: s3d/rho
+  excel: =Doanh_so_3_ngay/0.35
+  variables:
+  - s3d
+  - rho
+  when_to_use: Mẫu mới mỗi tháng, không có lịch sử từng mẫu (thời trang online, đồ theo trend).
+- id: m08_layout_total_cost
+  module: m08
+  name_vi: Tổng chi phí của một layout
+  name_en: Layout total cost
+  expression_latex: TC = FC + VC \times Q
+  expression_python: fc + vc * q
+  excel: =FC + VC*Q
+  variables:
+  - fc
+  - vc
+  - q
+  when_to_use: So sánh tổng chi phí hai phương án layout ở một mức sản lượng cụ thể.
+- id: m08_layout_breakeven
+  module: m08
+  name_vi: Sản lượng hoà vốn giữa Process và Product layout
+  name_en: Process vs Product layout break-even volume
+  expression_latex: Q^* = \frac{FC_{product} - FC_{process}}{VC_{process} - VC_{product}}
+  expression_python: (fc_product - fc_process) / (vc_process - vc_product)
+  excel: =(FC_product-FC_process)/(VC_process-VC_product)
+  variables:
+  - fc_product
+  - fc_process
+  - vc_process
+  - vc_product
+  when_to_use: Quyết định có đầu tư dây chuyền chuyên dụng (product) thay máy đa năng (process) hay không.
+- id: m08_rel_tcr
+  module: m08
+  name_vi: Tổng điểm gần kề (TCR) trong REL Chart
+  name_en: Total Closeness Rating
+  expression_latex: TCR_i = \sum_{j \ne i} score(rel_{ij}),\quad A=4,E=3,I=2,O=1,U=0,X=-1
+  expression_python: sum(scores)
+  excel: =SUM(range_diem_quan_he)
+  variables:
+  - scores
+  when_to_use: Xếp hạng mức 'trung tâm' của từng bộ phận trước khi vẽ Block Layout (SLP bước 3-5).
+- id: m08_material_handling_cost
+  module: m08
+  name_vi: Tổng chi phí vận chuyển nội bộ
+  name_en: Total Material Handling Cost
+  expression_latex: \text{Total Cost} = \sum_i \sum_j X_{ij} \cdot C_{ij} \cdot D_{ij}
+  expression_python: sum(x * c * d for x, c, d in zip(X, C, D))
+  excel: =SUMPRODUCT(X, C, D)
+  variables:
+  - X
+  - C
+  - D
+  when_to_use: Quy tải x quãng đường ra tiền để so sánh phương án và tính hoàn vốn di dời.
+- id: m08_load_distance
+  module: m08
+  name_vi: Load-Distance (khoảng cách có trọng số)
+  name_en: Load-Distance / Weighted Distance
+  expression_latex: LD = \sum_i \sum_j f_{ij} \times d_{ij}
+  expression_python: sum(f * d for f, d in zip(loads, dists))
+  excel: =SUMPRODUCT(Tải, Khoảng_cách)
+  variables:
+  - loads
+  - dists
+  when_to_use: Đánh giá và so sánh phương án bố trí theo quy trình; dùng làm hàm mục tiêu cho Pairwise Exchange.
+- id: m08_rectilinear_distance
+  module: m08
+  name_vi: Khoảng cách rectilinear (Manhattan)
+  name_en: Rectilinear distance
+  expression_latex: d = |x_i - x_j| + |y_i - y_j|
+  expression_python: abs(x1 - x2) + abs(y1 - y2)
+  excel: =ABS(x1-x2)+ABS(y1-y2)
+  variables:
+  - x1
+  - y1
+  - x2
+  - y2
+  when_to_use: Tính d_ij trong Load-Distance cho xưởng/kho có lối đi vuông góc.
+- id: m08_center_of_gravity
+  module: m08
+  name_vi: Phương pháp trọng tâm (vị trí kho trung tâm)
+  name_en: Center of Gravity
+  expression_latex: C_x = \frac{\sum_i x_i W_i}{\sum_i W_i},\quad C_y = \frac{\sum_i y_i W_i}{\sum_i W_i}
+  expression_python: (sum(x * w for x, w in zip(xs, ws)) / sum(ws), sum(y * w for y, w in zip(ys, ws)) / sum(ws))
+  excel: =SUMPRODUCT(x,W)/SUM(W) ; =SUMPRODUCT(y,W)/SUM(W)
+  variables:
+  - xs
+  - ys
+  - ws
+  when_to_use: Chọn điểm xuất phát cho kho/DC phục vụ nhiều cửa hàng/khách có sản lượng khác nhau.
+- id: m08_takt_time
+  module: m08
+  name_vi: Takt time
+  name_en: Takt time
+  expression_latex: \text{Takt time} = \frac{\text{Thời gian khả dụng mỗi ngày}}{\text{Nhu cầu mỗi ngày}}
+  expression_python: available_time / demand
+  excel: =Thời_gian_khả_dụng/Nhu_cầu
+  variables:
+  - available_time
+  - demand
+  when_to_use: Xác định nhịp chuyền và chu kỳ C tối đa khi cân bằng chuyền.
+- id: m08_min_stations
+  module: m08
+  name_vi: Số trạm tối thiểu lý thuyết
+  name_en: Theoretical minimum number of stations
+  expression_latex: N_{min} = \left\lceil \frac{\sum t_i}{C} \right\rceil
+  expression_python: math.ceil(sum_t / c)
+  excel: =ROUNDUP(SUM(Thời_gian)/Chu_kỳ,0)
+  variables:
+  - sum_t
+  - c
+  when_to_use: Chặn dưới số trạm trước khi phân bổ task.
+- id: m08_line_efficiency
+  module: m08
+  name_vi: Hiệu suất chuyền và độ trễ cân bằng
+  name_en: Line efficiency and balance delay
+  expression_latex: E = \frac{\sum t_i}{N \times C} \times 100\%,\quad \text{Balance Delay} = 100\% - E
+  expression_python: sum_t / (n * c)
+  excel: =SUM(Thời_gian)/(Số_trạm*Chu_kỳ)
+  variables:
+  - sum_t
+  - n
+  - c
+  when_to_use: Đánh giá mức độ cân bằng; so sánh phương án phân bổ.
+- id: m08_line_idle
+  module: m08
+  name_vi: Thời gian nhàn rỗi mỗi chu kỳ
+  name_en: Idle time per cycle
+  expression_latex: \text{Idle} = N \times C - \sum t_i
+  expression_python: n * c - sum_t
+  excel: =Số_trạm*Chu_kỳ-SUM(Thời_gian)
+  variables:
+  - n
+  - c
+  - sum_t
+  when_to_use: Biết tổng thời gian đứng chờ để giao việc phụ hoặc xem có bỏ được một trạm.
+- id: m08_rpw
+  module: m08
+  name_vi: Trọng số vị trí (RPW)
+  name_en: Ranked Positional Weight
+  expression_latex: RPW_i = t_i + \sum_{j \in \text{task theo sau } i} t_j
+  expression_python: t_i + sum(t_after)
+  excel: =t_i+SUM(thời_gian_các_task_theo_sau)
+  variables:
+  - t_i
+  - t_after
+  when_to_use: Xếp thứ tự ưu tiên khi phân bổ task vào trạm (Helgeson-Birnie 1961).
+- id: m08_line_output
+  module: m08
+  name_vi: Sản lượng chuyền theo chu kỳ thực
+  name_en: Line output at actual cycle
+  expression_latex: \text{Output} = \frac{\text{Thời gian khả dụng}}{\text{Chu kỳ thực}}
+  expression_python: available_time / cycle
+  excel: =Thời_gian_khả_dụng/Chu_kỳ
+  variables:
+  - available_time
+  - cycle
+  when_to_use: 'Kiểm tra nhạy cảm: nếu trạm nút cổ chai chậm đi thì mất bao nhiêu sản lượng.'
+- id: m08_roc_binary_value
+  module: m08
+  name_vi: Giá trị nhị phân hàng/cột (ROC)
+  name_en: ROC binary value
+  expression_latex: V = \sum_k a_k \cdot 2^{n-k}
+  expression_python: int(''.join(map(str, row)), 2)
+  excel: =BIN2DEC(chuỗi_nhị_phân)
+  variables:
+  - row
+  when_to_use: 'Mỗi vòng ROC: tính giá trị nhị phân rồi sắp xếp giảm dần, lặp đến khi hàng và cột không đổi.'
+- id: m08_batch_lead_time
+  module: m08
+  name_vi: Lead time theo lô (batch-and-queue)
+  name_en: Batch lead time
+  expression_latex: T_{batch} = n \times Q \times t
+  expression_python: n_ops * batch * t
+  excel: =n*Q*t
+  variables:
+  - n_ops
+  - batch
+  - t
+  when_to_use: Cơ sở so sánh với one-piece flow khi cân nhắc chuyển sang cell.
+- id: m08_onepiece_lead_time
+  module: m08
+  name_vi: Lead time dòng chảy từng chi tiết (cell)
+  name_en: One-piece flow lead time
+  expression_latex: T_{cell} = n \times t + (Q - 1) \times t
+  expression_python: n_ops * t + (batch - 1) * t
+  excel: =n*t+(Q-1)*t
+  variables:
+  - n_ops
+  - batch
+  - t
+  when_to_use: Ước lượng lợi ích lead time khi chuyển process layout sang cell.
+- id: m08_littles_law
+  module: m08
+  name_vi: Định luật Little
+  name_en: Little's Law
+  expression_latex: WIP = Throughput \times Lead\ Time
+  expression_python: throughput * lead_time
+  excel: =Throughput*LeadTime
+  variables:
+  - throughput
+  - lead_time
+  when_to_use: Quy đổi giảm lead time thành giảm WIP và vốn lưu động giải phóng.
+- id: m08_sales_per_m2
+  module: m08
+  name_vi: Doanh thu trên mét vuông
+  name_en: Sales per square meter
+  expression_latex: \text{Sales per m}^2 = \frac{\text{Doanh thu tháng}}{\text{Diện tích trưng bày}}
+  expression_python: revenue / display_area
+  excel: =Doanh_thu/Diện_tích_trưng_bày
+  variables:
+  - revenue
+  - display_area
+  when_to_use: KPI chính cho layout bán lẻ; so với chính mình theo thời gian và giữa cửa hàng cùng chuỗi.
+- id: m08_space_utilization
+  module: m08
+  name_vi: Hệ số sử dụng không gian
+  name_en: Space Utilization
+  expression_latex: \text{Space Utilization} = \frac{\text{Diện tích hữu ích}}{\text{Tổng diện tích}}
+  expression_python: useful_area / total_area
+  excel: =Diện_tích_hữu_ích/Tổng_diện_tích
+  variables:
+  - useful_area
+  - total_area
+  when_to_use: Đo hiệu quả dùng mặt bằng, phát hiện diện tích chết.
+- id: m08_aisle_capacity
+  module: m08
+  name_vi: Sức chứa kho theo thiết kế lối đi
+  name_en: Warehouse capacity by aisle design
+  expression_latex: Capacity = \left\lfloor \frac{W}{D + A} \right\rfloor \times 2 \times \left\lfloor \frac{L}{p} \right\rfloor
+    \times levels
+  expression_python: int(width // (rack_depth + aisle)) * 2 * int(length // pallet_w) * levels
+  excel: =INT(W/(D+A))*2*INT(L/p)*Tầng
+  variables:
+  - width
+  - rack_depth
+  - aisle
+  - length
+  - pallet_w
+  - levels
+  when_to_use: So sánh lối đi rộng (xe nâng thường) và lối hẹp (xe chuyên dụng) về sức chứa.
+- id: m08_labor_cost_per_worker
+  module: m08
+  name_vi: Chi phí lao động một công nhân mỗi năm
+  name_en: Annual labor cost per worker
+  expression_latex: C_{worker} = w \times 12 \times (1 + r_{ins})
+  expression_python: monthly_wage * 12 * (1 + ins_rate)
+  excel: =Lương*12*(1+Tỷ_lệ_bảo_hiểm)
+  variables:
+  - monthly_wage
+  - ins_rate
+  when_to_use: Đầu vào cho payback tự động hoá và tiết kiệm cân bằng chuyền.
+- id: m08_automation_payback
+  module: m08
+  name_vi: Thời gian hoàn vốn tự động hoá
+  name_en: Automation payback
+  expression_latex: \text{Payback (năm)} = \frac{\text{Đầu tư}}{\text{Lao động tiết kiệm/năm} - \text{Chi phí vận hành/bảo
+    trì/năm}}
+  expression_python: capex / (n_workers * cost_per_worker - opex)
+  excel: =Đầu_tư/(Số_CN*Chi_phí_CN-Vận_hành)
+  variables:
+  - capex
+  - n_workers
+  - cost_per_worker
+  - opex
+  when_to_use: Quyết định đầu tư AGV/robot kho.
+- id: m08_resource_capacity_per_hour
+  module: m08
+  name_vi: Năng lực một nguồn lực theo giờ
+  name_en: Resource capacity per hour
+  expression_latex: \text{Năng lực} = \frac{3600}{t}
+  expression_python: 3600 / t_sec
+  excel: =3600/t
+  variables:
+  - t_sec
+  when_to_use: Tìm nút cổ chai ở quán, quầy, trạm.
+- id: m08_utilization
+  module: m08
+  name_vi: Mức sử dụng so với nhu cầu
+  name_en: Utilization (demand / capacity)
+  expression_latex: U = \frac{\text{Nhu cầu}}{\text{Năng lực}}
+  expression_python: demand / capacity
+  excel: =Nhu_cầu/Năng_lực
+  variables:
+  - demand
+  - capacity
+  when_to_use: Kiểm tra ổn định hàng đợi và mục tiêu thiết kế.
+- id: m08_system_capacity
+  module: m08
+  name_vi: Năng lực hệ thống = nguồn lực hẹp nhất
+  name_en: System capacity as min of resources
+  expression_latex: Cap = \min\left(\frac{n_c T e_c}{t_c},\ \frac{n_d T e_d}{t_d}\right)
+  expression_python: min(n_chairs * T * eff_c / t_c, n_docs * T * eff_d / t_d)
+  excel: =MIN(n_ghe*T*hs_ghe/t_ghe, n_bs*T*hs_bs/t_bs)
+  variables:
+  - n_chairs
+  - T
+  - eff_c
+  - t_c
+  - n_docs
+  - eff_d
+  - t_d
+  when_to_use: Trước khi chi tiền mở rộng một nguồn lực (thêm ghế) để biết có thực sự tăng năng lực.
+- id: m08_impulse_value
+  module: m08
+  name_vi: Giá trị mua bốc phát kỳ vọng theo số khu đi qua
+  name_en: Expected impulse purchase value
+  expression_latex: E = n_{zone} \times p \times v
+  expression_python: n_zones * p * v
+  excel: =n_khu*p*v
+  variables:
+  - n_zones
+  - p
+  - v
+  when_to_use: Minh hoạ lợi ích Loop layout so với Free-flow.
+- id: m08_walk_hours
+  module: m08
+  name_vi: Giờ đi bộ lấy hàng mỗi ngày
+  name_en: Daily picking walk hours
+  expression_latex: H = \frac{N_{lines} \times \bar d}{v \times 3600}
+  expression_python: lines * avg_dist / (speed * 3600)
+  excel: =Dòng*KC_TB/(V*3600)
+  variables:
+  - lines
+  - avg_dist
+  - speed
+  when_to_use: Đánh giá lợi ích slotting theo ABC (đưa SKU nhóm A gần khu đóng gói).
+- id: m08_standardization_payback
+  module: m08
+  name_vi: Hoàn vốn chuẩn hoá layout chuỗi
+  name_en: Layout standardization payback
+  expression_latex: T = \frac{Capex}{(S_{std} - S_{non}) \times A \times GM}
+  expression_python: capex / ((s_std - s_non) * area * gm)
+  excel: =Chi_phí/((S_chuẩn-S_không)*Diện_tích*Biên_gộp)
+  variables:
+  - capex
+  - s_std
+  - s_non
+  - area
+  - gm
+  when_to_use: Quyết định nhân rộng layout chuẩn trong chuỗi.
+- id: m08_pct_reduction
+  module: m08
+  name_vi: Mức giảm tương đối
+  name_en: Relative reduction
+  expression_latex: \Delta\% = \frac{before - after}{before}
+  expression_python: (before - after) / before
+  excel: =(Trước-Sau)/Trước
+  variables:
+  - before
+  - after
+  when_to_use: Báo cáo hiệu quả layout trước/sau.
+- id: m09_throughput
+  module: m09
+  name_vi: Throughput (T)
+  name_en: Throughput
+  expression_latex: T = \text{Doanh thu bán hàng} - \text{Chi phí hoàn toàn biến đổi (TVC)}
+  expression_python: revenue - tvc
+  excel: =B2-C2
+  variables:
+  - revenue
+  - tvc
+  when_to_use: Mọi phân tích TOC; thay cho 'lãi gộp sau phân bổ nhân công/chi phí chung'.
+- id: m09_net_profit_roi
+  module: m09
+  name_vi: Lợi nhuận ròng và ROI theo T-I-OE
+  name_en: Net Profit and ROI (TOC)
+  expression_latex: NP = T - OE, \qquad ROI = \frac{T - OE}{I}
+  expression_python: (T - OE, (T - OE) / I)
+  excel: =B2-B3 ; =(B2-B3)/B4
+  variables:
+  - T
+  - OE
+  - I
+  when_to_use: 'Đánh giá hiệu quả hệ thống và so sánh ba đòn bẩy: tăng T, giảm OE, giảm I.'
+- id: m09_productivity_turns
+  module: m09
+  name_vi: Năng suất T/OE và vòng quay đầu tư T/I
+  name_en: Throughput productivity and investment turns
+  expression_latex: \text{Năng suất} = \frac{T}{OE}, \qquad \text{Vòng quay} = \frac{T}{I}
+  expression_python: (T / OE, T / I)
+  excel: =B2/B3 ; =B2/B4
+  variables:
+  - T
+  - OE
+  - I
+  when_to_use: Chỉ số phụ để theo dõi hiệu quả dùng chi phí vận hành và vốn.
+- id: m09_utilization
+  module: m09
+  name_vi: Tỷ lệ sử dụng công đoạn (nhận diện ràng buộc)
+  name_en: Resource utilization
+  expression_latex: \text{Tỷ lệ sử dụng} = \frac{\text{Dòng chảy thực tế}}{\text{Năng lực tối đa}}
+  expression_python: flow / capacity
+  excel: =B2/C2
+  variables:
+  - flow
+  - capacity
+  when_to_use: 'Bước Identify: lập bảng năng lực từng công đoạn; công đoạn tiến tới 100% khi dòng chảy bằng đầu ra hệ thống
+    là ràng buộc.'
+- id: m09_system_output
+  module: m09
+  name_vi: Đầu ra hệ thống và đầu ra tối đa theo ràng buộc
+  name_en: System output = min of capacities and demand
+  expression_latex: \text{Đầu ra} = \min(C_1, C_2, \dots, C_n, D)
+  expression_python: min(capacities + [demand])
+  excel: =MIN(B2:B5, D1)
+  variables:
+  - capacities
+  - demand
+  when_to_use: Xác định ràng buộc (vật lý nếu min là một công đoạn, thị trường nếu min là nhu cầu) và tính đầu ra sau khi
+    Exploit/Elevate.
+- id: m09_wip_accumulation
+  module: m09
+  name_vi: Tồn đọng WIP do công đoạn nhanh chạy hết công suất
+  name_en: WIP build-up before a slower step
+  expression_latex: \text{WIP tích lũy} = (C_{truoc} - C_{sau}) \times h
+  expression_python: (c_up - c_down) * hours
+  excel: null
+  variables:
+  - c_up
+  - c_down
+  - hours
+  when_to_use: Định lượng cái giá của tối ưu cục bộ trước khi đề xuất Subordinate/DBR.
+- id: m09_tcu
+  module: m09
+  name_vi: Throughput trên mỗi đơn vị ràng buộc (T/CU)
+  name_en: Throughput per Constraint Unit
+  expression_latex: T/CU = \frac{\text{Giá bán} - \text{NVL trực tiếp}}{\text{Thời gian xử lý tại ràng buộc (phút)}}
+  expression_python: (price - material) / minutes
+  excel: =(B2-C2)/D2
+  variables:
+  - price
+  - material
+  - minutes
+  when_to_use: Nhiều sản phẩm dùng chung một ràng buộc và cần xếp ưu tiên product mix.
+- id: m09_product_mix_allocation
+  module: m09
+  name_vi: Phân bổ product mix theo T/CU (greedy)
+  name_en: Product mix allocation by T/CU
+  expression_latex: q_i = \min\left(D_i,\ \left\lfloor \frac{M_{con\,lai}}{m_i} \right\rfloor\right),\ \text{theo thứ tự }
+    T/CU \text{ giảm dần}
+  expression_python: "def product_mix(products, minutes):\n    # products: list of dict(name, price, material, mins, demand)\n\
+    \    rows = sorted(products, key=lambda p: (p['price'] - p['material']) / p['mins'], reverse=True)\n    left, out, total\
+    \ = minutes, [], 0\n    for p in rows:\n        q = min(p['demand'], int(left // p['mins']))\n        out.append((p['name'],\
+    \ q)); left -= q * p['mins']; total += q * (p['price'] - p['material'])\n    return out, total\n"
+  excel: Sắp bảng theo T/CU giảm dần; I2 =MIN(E2,ROUNDDOWN($K$1/D2,0)); các dòng sau trừ phút đã dùng bằng SUMPRODUCT
+  variables:
+  - products
+  - minutes
+  when_to_use: Chọn số lượng mỗi sản phẩm khi năng lực ràng buộc không đủ cho toàn bộ nhu cầu.
+- id: m09_breakeven_price_tcu
+  module: m09
+  name_vi: Giá tối thiểu để một sản phẩm đạt T/CU mục tiêu
+  name_en: Minimum price to reach target T/CU
+  expression_latex: P_{min} = M + (T/CU)_{muc\,tieu} \times m
+  expression_python: material + target_tcu * minutes
+  excel: null
+  variables:
+  - material
+  - target_tcu
+  - minutes
+  when_to_use: 'Khi sản phẩm T/CU thấp vẫn có khách: tăng giá đến mức đáng làm, hoặc chỉ nhận khi ràng buộc còn rảnh.'
+- id: m09_exploit_capacity_gain
+  module: m09
+  name_vi: Mức tăng năng lực nhờ Exploit và tác động T
+  name_en: Capacity gain from Exploit
+  expression_latex: \Delta C\% = \frac{C_{sau}}{C_{truoc}} - 1, \qquad \Delta T = \Delta q \times t
+  expression_python: (c_after / c_before - 1, (c_after - c_before) * t_unit)
+  excel: null
+  variables:
+  - c_before
+  - c_after
+  - t_unit
+  when_to_use: Định lượng Exploit (giảm chuyển đổi, chờ vật tư, nghỉ trưa luân phiên, kiểm tra trước khi vào ràng buộc).
+- id: m09_little
+  module: m09
+  name_vi: Định luật Little (WIP - lead time)
+  name_en: Little's Law
+  expression_latex: WIP = T_h \times LT \;\Rightarrow\; LT = \frac{WIP}{T_h}
+  expression_python: wip / throughput_rate
+  excel: =B2/B3
+  variables:
+  - wip
+  - throughput_rate
+  when_to_use: Chứng minh giảm WIP bằng DBR rút ngắn lead time mà đầu ra không đổi; tính lead time chờ trước ràng buộc.
+- id: m09_buffer_size
+  module: m09
+  name_vi: Kích thước buffer khởi đầu của DBR
+  name_en: Initial DBR buffer size
+  expression_latex: B_0 \approx 50\% \times LT_{hien\,tai} \quad (\text{và buffer lượng} = B \times \text{tốc độ ràng buộc})
+  expression_python: (0.5 * lead_time, 0.5 * lead_time * rate)
+  excel: null
+  variables:
+  - lead_time
+  - rate
+  when_to_use: Thiết lập ban đầu buffer trước ràng buộc, rồi chỉnh theo dữ liệu Buffer Management.
+- id: m09_buffer_penetration
+  module: m09
+  name_vi: Mức tiêu hao buffer và vùng Xanh/Vàng/Đỏ
+  name_en: Buffer Penetration
+  expression_latex: \text{Buffer Penetration} = \frac{\text{Thời gian buffer đã tiêu hao}}{\text{Tổng thời gian buffer}} \times
+    100\%
+  expression_python: consumed / total * 100
+  excel: =B2/C2
+  variables:
+  - consumed
+  - total
+  when_to_use: Theo dõi hằng ngày từng lệnh sản xuất/đơn hàng/dự án thay vì từng công đoạn.
+- id: m09_project_buffer_50
+  module: m09
+  name_vi: Project Buffer theo quy tắc 50% (CCPM)
+  name_en: CCPM project buffer, 50% rule
+  expression_latex: B = 50\% \times \sum_i \tfrac{1}{2} s_i, \qquad \text{Lịch} = \sum \tfrac{1}{2}s_i + B
+  expression_python: (sum(s) * 0.5, sum(s) * 0.5 * 0.5, sum(s) * 0.5 * 1.5)
+  excel: null
+  variables:
+  - s
+  when_to_use: 'Thiết lập lịch dự án CCPM: cắt ước lượng 50%, gom dự phòng thành một buffer cuối chuỗi.'
+- id: m09_project_buffer_rss
+  module: m09
+  name_vi: Project Buffer theo căn bậc hai tổng bình phương (RSS)
+  name_en: CCPM buffer, Root Sum of Squares
+  expression_latex: B = \sqrt{\sum_i d_i^2}, \quad d_i = \text{phần cắt của nhiệm vụ } i
+  expression_python: sum(d_i ** 2 for d_i in d) ** 0.5
+  excel: null
+  variables:
+  - d
+  when_to_use: Cách tính chặt chẽ hơn quy tắc 50%, đặc biệt chuỗi dài nhiều nhiệm vụ.
+- id: m09_oee
+  module: m09
+  name_vi: Hiệu suất tổng thể thiết bị (OEE)
+  name_en: Overall Equipment Effectiveness
+  expression_latex: OEE = A \times P \times Q, \quad A = \frac{t_{chay}}{t_{kehoach}},\ P = \frac{q_{thuc}}{q_{lytuong}},\
+    Q = \frac{q_{dat}}{q_{thuc}}
+  expression_python: (t_run / t_plan) * (q_actual / q_ideal) * (q_good / q_actual)
+  excel: =B1*B2*B3
+  variables:
+  - t_run
+  - t_plan
+  - q_actual
+  - q_ideal
+  - q_good
+  when_to_use: 'Chỉ đo TẠI RÀNG BUỘC để tìm dư địa Exploit (A: dừng máy; P: chạy chậm; Q: lỗi).'
+- id: m09_elevate_payback
+  module: m09
+  name_vi: Thời gian hoàn vốn của quyết định Elevate
+  name_en: Payback of an Elevate investment
+  expression_latex: \text{Hoàn vốn} = \frac{\text{Vốn đầu tư}}{\Delta T - \Delta OE}
+  expression_python: capex / (delta_t - delta_oe)
+  excel: =B1/(B2-B3)
+  variables:
+  - capex
+  - delta_t
+  - delta_oe
+  when_to_use: Trước mọi khoản Elevate; so với Exploit và với phương án đầu tư sai chỗ.
+- id: m09_inventory_release_value
+  module: m09
+  name_vi: Vốn giải phóng và tiết kiệm lãi do giảm tồn kho
+  name_en: Capital released by WIP/inventory reduction
+  expression_latex: \text{Vốn giải phóng} = \Delta WIP \times v, \qquad \text{Tiết kiệm lãi} = \text{Vốn giải phóng} \times
+    r
+  expression_python: (d_wip * unit_value, d_wip * unit_value * rate)
+  excel: null
+  variables:
+  - d_wip
+  - unit_value
+  - rate
+  when_to_use: Định lượng lợi ích tài chính của Subordinate/DBR hoặc Replenishment.
+- id: m09_dbm_replenishment_buffer
+  module: m09
+  name_vi: Buffer bổ sung và điều chỉnh động (DBM)
+  name_en: Replenishment buffer and DBM adjustment
+  expression_latex: B = d \times L \times k, \qquad B_{moi} \approx \tfrac{4}{3} B \ (\text{khi liên tiếp vùng Đỏ})
+  expression_python: (d * L * k, d * L * k * 4 / 3)
+  excel: null
+  variables:
+  - d
+  - L
+  - k
+  when_to_use: Thiết lập buffer cho từng mặt hàng/điểm bán; chia vùng 1/3 (Xanh >= 2/3 buffer, Vàng 1/3-2/3, Đỏ < 1/3 buffer).

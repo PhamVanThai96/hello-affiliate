@@ -1,0 +1,922 @@
+id: "m06"
+name_vi: "Quản trị dự án"
+name_en: "Project Management"
+source_file: "06-project-management.md"
+purpose: >
+  Lập kế hoạch, dự báo và kiểm soát một nỗ lực có điểm bắt đầu và kết thúc (mở chi nhánh, fit-out quán,
+  ra mắt sản phẩm, triển khai phần mềm): xác định đường găng (CPM), xác suất kịp hạn (PERT), cách rút ngắn
+  lịch có chọn lọc (crashing/fast-tracking), đo sức khỏe dự án giữa chừng (EVM), định lượng rủi ro (EMV) và chọn
+  phương pháp luận (Waterfall/Agile/Hybrid). Số liệu ví dụ trong nguồn là giả định minh họa trừ khi ghi khác.
+when_to_use:
+  - "Khách/chủ đầu tư cam kết ngày hoàn thành và cần biết xác suất kịp hạn (vd fit-out quán cam kết 42 ngày)"
+  - "Cần tìm đường găng, float, việc nào được phép trễ mà không ảnh hưởng tổng tiến độ"
+  - "Muốn rút ngắn dự án: nên crash việc nào, tốn bao nhiêu, có đáng tiền không"
+  - "Dự án đang chạy: đã chi 60% ngân sách nhưng không biết làm được bao nhiêu - cần CPI/SPI/EAC"
+  - "Cần lập quỹ dự phòng rủi ro (contingency reserve) từ EMV"
+  - "Chọn Waterfall, Agile/Scrum hay Hybrid cho một dự án; dự báo số sprint còn lại bằng velocity"
+  - "Quản lý nhiều dự án đồng thời, xung đột nguồn lực (thiết bị/nhân sự trùng ngày)"
+  - "Lập WBS, Gantt, Risk Register, change control để chống scope creep"
+prerequisites: ["m01"]
+related_modules:
+  - "m01: Phân tích quy trình, RACI - công cụ quy trình liên quan đến dự án"
+  - "m05: Hoạch định công suất - nguồn lực đa dự án, hiệu suất sử dụng cao (>85-90%) cần dự phòng"
+  - "m07: Dự báo - ước lượng thời gian/chi phí dựa trên kỹ thuật dự báo"
+  - "m09: Theory of Constraints - Critical Chain Project Management, nút thắt cho đa dự án"
+  - "m02: Quản lý chất lượng - chất lượng là yếu tố trung tâm tam giác ràng buộc"
+
+concepts:
+  - term_vi: "Dự án và quản trị dự án"
+    term_en: "Project and Project Management"
+    definition: "Dự án là nỗ lực tạm thời (có đầu và cuối) tạo ra sản phẩm/dịch vụ/kết quả duy nhất, khác vận hành (operations) lặp lại liên tục. Quản trị dự án là áp dụng kiến thức, kỹ năng, công cụ để đáp ứng yêu cầu trong giới hạn phạm vi, thời gian, chi phí, chất lượng."
+    why_it_matters: "Vận hành lặp lại nên tối ưu dần bằng kinh nghiệm; dự án chỉ làm một lần, không có lần thử trước, sai về tiến độ/ngân sách trả giá ngay. Vì vậy cần công cụ dự báo trước (CPM/PERT), đo giữa chừng (EVM) và kiểm soát thay đổi."
+  - term_vi: "Tam giác ràng buộc"
+    term_en: "Triple Constraint / Iron Triangle"
+    definition: "Phạm vi - Thời gian - Chi phí ràng buộc lẫn nhau, Chất lượng ở trung tâm chịu ảnh hưởng của cả ba."
+    why_it_matters: "Muốn rút ngắn thời gian chỉ có 3 lựa chọn: tăng chi phí (thêm người/tăng ca), giảm phạm vi, hoặc hy sinh chất lượng. Không có lựa chọn miễn phí; mọi quyết định phải nêu rõ đánh đổi."
+  - term_vi: "Vòng đời dự án (PMBOK)"
+    term_en: "Project Life Cycle"
+    definition: "4 giai đoạn: Khởi tạo (charter, stakeholders) -> Hoạch định (WBS, lịch, ngân sách, rủi ro) -> Thực thi và Giám sát -> Kết thúc (nghiệm thu, bài học)."
+    why_it_matters: "Ảnh hưởng của stakeholders và rủi ro cao nhất ở đầu, giảm dần; chi phí thay đổi tăng dần theo tiến độ. Do đó hoạch định và quản trị rủi ro sớm có lợi suất cao nhất."
+  - term_vi: "Cơ cấu phân chia công việc"
+    term_en: "WBS (Work Breakdown Structure)"
+    definition: "Chia dự án theo sản phẩm bàn giao thành các cấp nhỏ dần đến gói công việc (work package) ước lượng/giao/theo dõi được."
+    why_it_matters: "Lỗi phổ biến nhất là bỏ sót việc (phát sinh chi phí) hoặc giao việc mơ hồ. Không ước lượng được thứ chưa liệt kê. WBS là nền móng: Gantt, CPM, EVM đều lấy danh sách việc từ WBS."
+  - term_vi: "Quy tắc 100%"
+    term_en: "100% Rule"
+    definition: "Tổng công việc các cấp con = 100% công việc cấp cha: không bỏ sót, không trùng. Gói việc tốt khoảng 8-80 giờ (quy tắc kinh nghiệm), 1 người chịu trách nhiệm, có tiêu chí hoàn thành."
+    why_it_matters: "Phân rã theo sản phẩm bàn giao (deliverable) thay vì động từ hành động để tránh liệt kê trùng."
+  - term_vi: "Biểu đồ Gantt"
+    term_en: "Gantt Chart"
+    definition: "Thanh ngang theo trục thời gian, cho thấy bắt đầu/kết thúc và phụ thuộc giữa các việc. Henry Gantt khoảng 1910-1915 (Hoa Kỳ); Karol Adamiecki (Ba Lan) có sơ đồ tương tự trước đó."
+    why_it_matters: "Danh sách việc khó cho thấy ai làm gì khi nào, việc nào chồng nhau. Gantt là công cụ TRÌNH BÀY cho người không chuyên; CPM mới là công cụ PHÂN TÍCH. Gantt không cho thấy đường găng, khó đọc khi hàng trăm việc."
+  - term_vi: "Đường găng"
+    term_en: "Critical Path"
+    definition: "Chuỗi phụ thuộc dài nhất từ đầu đến cuối dự án; mọi việc trên đó có float = 0; trễ 1 ngày ở đó thì cả dự án trễ 1 ngày."
+    why_it_matters: "CPM (Kelley của Remington Rand và Walker của DuPont, khoảng 1957) ra đời để DuPont bảo trì nhà máy hóa chất với thời gian dừng máy ngắn nhất. Việc chạy song song thì việc chậm nhất quyết định thời điểm xong; nên tổng thời gian = chuỗi dài nhất. Dồn sự chú ý/nguồn lực vào đường găng."
+  - term_vi: "Độ trễ cho phép"
+    term_en: "Float / Slack"
+    definition: "Float = LS - ES = LF - EF; số ngày một việc có thể trễ mà không làm trễ dự án."
+    why_it_matters: "Float là tài nguyên miễn phí để san tải nguồn lực (resource leveling). Lưu ý float của chuỗi không găng là DÙNG CHUNG cả chuỗi, không phải mỗi việc 4 ngày riêng biệt."
+  - term_vi: "PERT"
+    term_en: "Program Evaluation and Review Technique"
+    definition: "Hải quân Hoa Kỳ cùng Booz Allen Hamilton và Lockheed khoảng 1958 cho chương trình tên lửa Polaris; dùng 3 ước lượng (lạc quan, khả dĩ nhất, bi quan) và phân phối Beta, lấy trung bình có trọng số."
+    why_it_matters: "CPM giả định thời gian chắc chắn (hợp lý với bảo trì đã làm nhiều lần). Việc chưa ai làm thì kỹ sư chỉ nói được khoảng. t_e lệch về phía bi quan vì việc chậm thường chậm nhiều, việc nhanh chỉ nhanh chút."
+  - term_vi: "Rút ngắn lịch: Crashing và Fast-tracking"
+    term_en: "Schedule Compression"
+    definition: "Crashing = thêm nguồn lực để rút thời lượng việc TRÊN đường găng (tốn tiền trực tiếp, lợi ích giảm dần). Fast-tracking = chạy song song việc vốn nối tiếp (ít tốn tiền, rủi ro làm lại - rework)."
+    why_it_matters: "Rút việc ngoài đường găng không giảm tổng thời gian nên là chi tiêu vô ích. Quyết định dựa trên phân tích cận biên: chi phí biên 1 ngày so với lợi ích biên (phạt trễ, doanh thu mất)."
+  - term_vi: "Quản lý giá trị thu được"
+    term_en: "EVM (Earned Value Management)"
+    definition: "Quy đổi tiến độ công việc thực tế ra tiền theo ngân sách kế hoạch; ba đại lượng PV, EV, AC; Bộ Quốc phòng Hoa Kỳ chuẩn hóa thập niên 1960 (C/SCSC), PMI đưa vào PMBOK."
+    why_it_matters: "Nhà thầu báo 'đã chi 50% ngân sách' nhưng không ai biết đã làm được bao nhiêu % việc. Chi 50% mà xong 30% là thảm họa, xong 70% là rất tốt. EVM đo cả chi phí lẫn tiến độ bằng một thước chung là tiền."
+  - term_vi: "Quản trị rủi ro dự án"
+    term_en: "Project Risk Management"
+    definition: "Nghĩ trước và chuẩn bị tiền/thời gian dự phòng đúng chỗ. Ma trận xác suất - tác động, EMV = P x I, 4 chiến lược: né tránh, giảm thiểu, chuyển giao, chấp nhận."
+    why_it_matters: "Không loại bỏ bất ngờ mà thay xử lý hoảng loạn bằng dự phòng có tính toán; tổng EMV là cơ sở hợp lý cho contingency reserve."
+  - term_vi: "Kiểm soát thay đổi và scope creep"
+    term_en: "Change Control / Scope Creep"
+    definition: "Mọi thay đổi phạm vi phải đánh giá tác động lên tiến độ-chi phí trước khi duyệt; scope creep là phạm vi phình ra không kiểm soát."
+    why_it_matters: "Nguyên nhân kinh điển của thất bại (Denver Airport): thay đổi được chấp nhận mà không điều chỉnh lịch/ngân sách."
+  - term_vi: "Waterfall, Agile, Hybrid"
+    term_en: "Methodologies"
+    definition: "Waterfall: tuần tự theo giai đoạn. Agile: chu kỳ ngắn (sprint), phản hồi liên tục. Hybrid: Waterfall cho khung tổng thể + Agile cho triển khai chi tiết."
+    why_it_matters: "Waterfall giả định biết rõ yêu cầu từ đầu. Với phần mềm/sản phẩm số, khách chỉ biết mình muốn gì sau khi thấy sản phẩm thật; giao sau 10 tháng mới biết sai là quá đắt. Agile giữ chi phí sai sót nhỏ."
+  - term_vi: "Scrum và Agile Manifesto"
+    term_en: "Scrum / Agile Manifesto"
+    definition: "Scrum: Sutherland và Schwaber giới thiệu chính thức khoảng 1995, ý tưởng 'scrum' từ Takeuchi và Nonaka (1986); Agile Manifesto do 17 nhà phát triển phần mềm công bố 2001. Vai trò: Product Owner (ưu tiên backlog), Scrum Master (gỡ trở ngại), Development Team. Sprint 1-4 tuần."
+    why_it_matters: "Scrum không làm tổng khối lượng nhanh hơn, nhưng làm sai lầm lộ ra sớm, giảm lãng phí tính năng không cần, và ra MVP sớm. Các mốc năm là mốc thường trích trong giáo trình; lệch 1-2 năm giữa các nguồn là bình thường."
+  - term_vi: "Kanban và WIP"
+    term_en: "Kanban / Work In Progress limit"
+    definition: "Luồng liên tục, bảng Kanban có giới hạn WIP; không cần vai trò cố định; đổi ưu tiên bất kỳ lúc nào."
+    why_it_matters: "Hợp đội vận hành/hỗ trợ có luồng việc liên tục; Scrum hợp đội phát triển sản phẩm có chu kỳ rõ."
+  - term_vi: "PMO và PPM"
+    term_en: "Project Management Office / Project Portfolio Management"
+    definition: "PMO chuẩn hóa quy trình, đào tạo, báo cáo (Supportive thấp / Controlling trung bình / Directive cao). PPM ưu tiên danh mục dự án theo giá trị chiến lược và khả thi/rủi ro, rà soát hàng quý để tiếp tục/tạm dừng/hủy."
+    why_it_matters: "Tránh phân tán nguồn lực; doanh nghiệp mới thường bắt đầu từ Supportive PMO."
+  - term_vi: "San phẳng nguồn lực"
+    term_en: "Resource Leveling / Resource Histogram"
+    definition: "Cộng dồn nhu cầu nguồn lực theo ngày giữa các dự án rồi dời việc có float để không vượt công suất."
+    why_it_matters: "Xung đột chỉ lộ khi cộng dồn; vấn đề thường là phân bổ theo thời gian chứ không phải tổng công suất (tổng 9 < 10 nhưng ngày 12 cần 3 bộ khi có 2)."
+
+formulas:
+  - id: "m06_cpm_forward_backward"
+    name_vi: "CPM: Forward/Backward pass (ES, EF, LS, LF, Float)"
+    name_en: "CPM early/late times and float"
+    expression_latex: 'ES_j=\max_{i\in pred(j)}EF_i,\; EF_j=ES_j+d_j,\; LF_i=\min_{j\in succ(i)}LS_j,\; LS_i=LF_i-d_i,\; Float_i=LS_i-ES_i'
+    expression_python: "[max(EF_pred), ES + d, min(LS_succ), LF - d, LS - ES]"
+    excel: "ES: =MAX(EF các việc trước); EF: =ES+d; LF: =MIN(LS các việc sau); LS: =LF-d; Float: =LS-ES"
+    variables:
+      - {symbol: "d", meaning: "Thời lượng việc", unit: "ngày"}
+      - {symbol: "ES/EF", meaning: "Bắt đầu/kết thúc sớm nhất", unit: "ngày"}
+      - {symbol: "LS/LF", meaning: "Bắt đầu/kết thúc muộn nhất mà dự án không trễ", unit: "ngày"}
+    when_to_use: "Xác định tổng thời gian tối thiểu, đường găng và float của từng việc."
+    why_it_works: "ES lấy MAX vì việc chỉ bắt đầu được khi TẤT CẢ việc trước đã xong (chờ việc chậm nhất). LF lấy MIN vì việc phải xong kịp trước khi việc sau nào cần bắt đầu SỚM nhất. Float = 0 nghĩa là không còn dư địa."
+    assumptions: ["Thời lượng cố định (CPM)", "Quan hệ phụ thuộc kết thúc-bắt đầu", "Nguồn lực đủ"]
+    pitfalls:
+      - "Float của chuỗi không găng dùng chung, không cộng riêng từng việc"
+      - "Rút việc ngoài đường găng không giảm tổng thời gian"
+      - "Lịch tĩnh nhanh lỗi thời, phải cập nhật liên tục"
+    interpretation: "Tổng thời gian = EF lớn nhất; đường găng = chuỗi float 0. Dồn giám sát vào đường găng."
+    example:
+      inputs: {A: [3, "-"], B: [5, "-"], C: [4, "A"], D: [6, "B"], E: [2, "C,D"]}
+      steps:
+        - "Forward: A 0-3, B 0-5, C 3-7, D 5-11, E ES=max(7,11)=11, EF=13"
+        - "Backward: E LF=13, LS=11; D LS=5, C LS=7, B LS=0, A LS=4"
+        - "Float: A=4, B=0, C=4, D=0, E=0"
+      result: "Đường găng B-D-E = 13 ngày; A và C float 4 ngày (dùng chung); đường A-C-E dài 9 ngày."
+  - id: "m06_pert_te"
+    name_vi: "Thời gian kỳ vọng PERT"
+    name_en: "PERT expected time"
+    expression_latex: 't_e=\frac{t_o+4t_m+t_p}{6}'
+    expression_python: "(to + 4*tm + tp)/6"
+    excel: "=(to+4*tm+tp)/6"
+    variables:
+      - {symbol: "to", meaning: "Thời gian lạc quan", unit: "ngày"}
+      - {symbol: "tm", meaning: "Thời gian khả dĩ nhất", unit: "ngày"}
+      - {symbol: "tp", meaning: "Thời gian bi quan", unit: "ngày"}
+    when_to_use: "Việc có độ bất định cao, chưa có dữ liệu lịch sử chắc chắn."
+    why_it_works: "Giả định phân phối Beta; xấp xỉ trung bình bằng trọng số 4 cho giá trị khả dĩ nhất và 1 cho mỗi đầu mút (tổng 6). t_e > t_m khi phân phối lệch phải."
+    assumptions: ["Phân phối Beta", "Ba ước lượng khách quan"]
+    pitfalls: ["Ước lượng ba điểm vẫn chủ quan", "Lạc quan quá mức làm thấp tp"]
+    interpretation: "Dùng t_e thay d trong CPM."
+    example:
+      inputs: {to: 4, tm: 6, tp: 14}
+      steps: ["(4 + 24 + 14)/6 = 42/6"]
+      result: "t_e = 7 ngày (> t_m = 6 do lệch phải)"
+  - id: "m06_pert_sigma"
+    name_vi: "Độ lệch chuẩn và phương sai công việc (PERT)"
+    name_en: "PERT activity standard deviation"
+    expression_latex: '\sigma=\frac{t_p-t_o}{6},\; Var=\sigma^2'
+    expression_python: "(tp - to)/6"
+    excel: "=(tp-to)/6"
+    variables:
+      - {symbol: "to", meaning: "Thời gian lạc quan", unit: "ngày"}
+      - {symbol: "tp", meaning: "Thời gian bi quan", unit: "ngày"}
+    when_to_use: "Đo độ bất định của từng việc để cộng phương sai trên đường găng."
+    why_it_works: "Gần như toàn bộ phân phối (khoảng ±3σ) nằm giữa lạc quan và bi quan, nên khoảng cách đó xấp xỉ 6σ."
+    assumptions: ["Phân phối gần chuẩn trong ±3σ"]
+    pitfalls: ["Khoảng rộng = bất định cao, cần giám sát kỹ"]
+    interpretation: "σ lớn nghĩa là việc rủi ro về tiến độ."
+    example:
+      inputs: {to: 4, tp: 14}
+      steps: ["(14-4)/6 = 1,667"]
+      result: "σ = 1,67 ngày, phương sai 2,78"
+  - id: "m06_project_sigma"
+    name_vi: "Độ lệch chuẩn toàn dự án"
+    name_en: "Project standard deviation"
+    expression_latex: '\sigma_{project}=\sqrt{\sum_{i\in CP}\sigma_i^2}'
+    expression_python: "sum(v**2 for v in sigmas_cp)**0.5"
+    excel: "=SQRT(SUMSQ(sigma_cp))"
+    variables:
+      - {symbol: "sigmas_cp", meaning: "Danh sách σ các việc trên đường găng", unit: "ngày"}
+    when_to_use: "Tính xác suất kịp hạn."
+    why_it_works: "Phương sai của tổng các biến độc lập bằng tổng phương sai; chỉ lấy việc trên đường găng."
+    assumptions: ["Các việc độc lập", "Một đường găng chi phối"]
+    pitfalls: ["Merge bias: bỏ qua đường gần găng nên đánh giá thấp rủi ro", "Độc lập không phải lúc nào cũng đúng"]
+    interpretation: "Phương sai cộng, không phải σ cộng."
+    example:
+      inputs: {sigmas_cp: [1.3333, 1.3333, 1.6667, 0.6667, 0.3333, 1.3333]}
+      steps: ["Tổng phương sai ~ 8,667 (A,C,D,E,F,G)", "căn = 2,94"]
+      result: "σ_project ~ 2,94 ngày"
+  - id: "m06_prob_on_time"
+    name_vi: "Xác suất hoàn thành trước hạn"
+    name_en: "Probability of on-time completion"
+    expression_latex: 'z=\frac{D-T_e}{\sigma_{project}},\; P=\Phi(z)'
+    expression_python: "0.5*(1+math.erf(((D - Te)/sigma_project)/math.sqrt(2)))"
+    excel: "=NORM.S.DIST((D-Te)/sigma,TRUE)"
+    variables:
+      - {symbol: "D", meaning: "Hạn cam kết", unit: "ngày"}
+      - {symbol: "Te", meaning: "Tổng t_e đường găng", unit: "ngày"}
+      - {symbol: "sigma_project", meaning: "σ dự án", unit: "ngày"}
+    when_to_use: "Trước khi cam kết ngày giao với khách; tìm hạn đạt độ tin cậy 95%: T = Te + 1,645σ."
+    why_it_works: "Định lý giới hạn trung tâm: tổng nhiều thời gian độc lập xấp xỉ phân phối chuẩn."
+    assumptions: ["Xấp xỉ chuẩn", "Độc lập", "Đường găng không đổi"]
+    pitfalls: ["Đánh giá thấp rủi ro khi nhiều đường gần găng", "Cam kết hạn = Te chỉ có xác suất ~50%"]
+    interpretation: "z=0 -> 50%; z=1 -> 84,1%; z=1,645 -> 95%."
+    example:
+      inputs: {D: 42, Te: 39.6667, sigma_project: 2.9439}
+      steps: ["z = (42-39,67)/2,94 = 0,79", "Phi(0,79) ~ 0,786"]
+      result: "~78,6% kịp hạn (21,4% rủi ro trễ); hạn 95% ~ 44,5 ngày"
+  - id: "m06_crash_cost_slope"
+    name_vi: "Chi phí crash mỗi ngày"
+    name_en: "Crash cost slope"
+    expression_latex: 'CS=\frac{C_{crash}-C_{normal}}{T_{normal}-T_{crash}}'
+    expression_python: "(C_crash - C_normal)/(T_normal - T_crash)"
+    excel: "=(Ccrash-Cnormal)/(Tnormal-Tcrash)"
+    variables:
+      - {symbol: "C_crash", meaning: "Chi phí khi crash", unit: "triệu VNĐ"}
+      - {symbol: "C_normal", meaning: "Chi phí bình thường", unit: "triệu VNĐ"}
+      - {symbol: "T_normal", meaning: "Thời gian bình thường", unit: "ngày"}
+      - {symbol: "T_crash", meaning: "Thời gian crash", unit: "ngày"}
+    when_to_use: "Xếp hạng việc găng để crash từ rẻ đến đắt; so với lợi ích/ngày (phạt trễ, doanh thu mất)."
+    why_it_works: "Là chi phí biên để mua thêm 1 ngày; logic phân tích cận biên: crash khi chi phí biên < lợi ích biên."
+    assumptions: ["Chi phí tuyến tính giữa normal và crash", "Chỉ việc trên đường găng"]
+    pitfalls: ["Quên kiểm tra đường găng song song mới xuất hiện (phải rút đồng thời)", "Crash việc ngoài đường găng"]
+    interpretation: "Crash theo thứ tự slope thấp nhất đến khi slope >= lợi ích/ngày."
+    example:
+      inputs: {C_crash: 168, C_normal: 150, T_normal: 8, T_crash: 6}
+      steps: ["(168-150)/(8-6) = 9"]
+      result: "Việc E: 9 triệu/ngày"
+  - id: "m06_crash_net_benefit"
+    name_vi: "Lợi ròng của crashing"
+    name_en: "Net benefit of crashing"
+    expression_latex: 'NB=\text{ngày rút}\times B_{day}-\sum(\text{ngày rút}_i\times CS_i)'
+    expression_python: "sum(days)*benefit_per_day - sum(d*s for d,s in zip(days,slopes))"
+    excel: "=SUM(days)*benefit - SUMPRODUCT(days,slopes)"
+    variables:
+      - {symbol: "days", meaning: "Số ngày rút từng việc", unit: "ngày"}
+      - {symbol: "slopes", meaning: "Chi phí crash/ngày từng việc", unit: "triệu VNĐ/ngày"}
+      - {symbol: "benefit_per_day", meaning: "Lợi ích mỗi ngày rút", unit: "triệu VNĐ/ngày"}
+    when_to_use: "Chốt gói crashing tối ưu."
+    why_it_works: "Tổng lợi ích trừ tổng chi phí biên; dừng khi slope >= lợi ích biên (hòa vốn, không crash)."
+    assumptions: ["Lợi ích mỗi ngày cố định"]
+    pitfalls: ["Không tính đường găng mới sau khi rút"]
+    interpretation: "NB > 0 thì gói crash đáng làm."
+    example:
+      inputs: {days: [2, 2, 1, 1], slopes: [9, 10, 10, 12], benefit_per_day: 15}
+      steps: ["Chi phí 18+20+10+12 = 60", "Lợi ích 6 x 15 = 90"]
+      result: "Lợi ròng 30 triệu; lịch 40 -> 34 ngày; D (15/ngày) hòa vốn nên không crash"
+  - id: "m06_fasttrack_duration"
+    name_vi: "Thời lượng sau fast-tracking (chồng lấn)"
+    name_en: "Fast-tracked duration"
+    expression_latex: 'T=\sum d_i-\sum overlap_i'
+    expression_python: "sum(d) - sum(overlap)"
+    variables:
+      - {symbol: "d", meaning: "Thời lượng từng hạng mục tuần tự", unit: "tháng"}
+      - {symbol: "overlap", meaning: "Độ chồng lấn với hạng mục trước", unit: "tháng"}
+    when_to_use: "Ước tính mức rút ngắn khi chạy song song."
+    why_it_works: "Hạng mục sau bắt đầu sớm 'overlap' trước khi hạng mục trước xong."
+    assumptions: ["Chồng lấn không gây làm lại (thực tế có rủi ro rework)"]
+    pitfalls: ["Mỗi điểm chồng lấn là điểm rủi ro rework"]
+    interpretation: "Giả định minh họa VinFast, không phải số thật."
+    example:
+      inputs: {d: [6, 5, 8, 7], overlap: [0, 2, 3, 3]}
+      steps: ["Tuần tự 26", "Fast-track 26 - 8 = 18", "Rút 8/26"]
+      result: "18 tháng, rút ~30,8% (giả định minh họa)"
+  - id: "m06_ev_variances"
+    name_vi: "Chênh lệch chi phí và tiến độ (CV, SV)"
+    name_en: "Cost and schedule variance"
+    expression_latex: 'CV=EV-AC,\; SV=EV-PV'
+    expression_python: "(EV - AC, EV - PV)"
+    excel: "=EV-AC ; =EV-PV"
+    variables:
+      - {symbol: "PV", meaning: "Giá trị kế hoạch của việc lẽ ra xong", unit: "triệu VNĐ"}
+      - {symbol: "EV", meaning: "Giá trị kế hoạch của việc thực sự xong", unit: "triệu VNĐ"}
+      - {symbol: "AC", meaning: "Chi phí thực tế", unit: "triệu VNĐ"}
+    when_to_use: "Báo cáo tiến độ định kỳ bằng tiền."
+    why_it_works: "Quy cả tiến độ và chi phí về cùng thước tiền; âm = vượt chi phí/chậm."
+    assumptions: ["EV tính theo % hoàn thành từng gói x ngân sách gói"]
+    pitfalls: ["SV bằng tiền không nói chậm bao nhiêu ngày", "Chỉ nhìn AC mà không đo EV"]
+    interpretation: "CV<0 vượt chi; SV<0 chậm."
+    example:
+      inputs: {PV: 430, EV: 382, AC: 410}
+      steps: ["CV = 382-410 = -28", "SV = 382-430 = -48"]
+      result: "CV -28, SV -48 (triệu VNĐ)"
+  - id: "m06_cpi_spi"
+    name_vi: "Chỉ số hiệu suất chi phí và tiến độ (CPI, SPI)"
+    name_en: "CPI and SPI"
+    expression_latex: 'CPI=\frac{EV}{AC},\; SPI=\frac{EV}{PV}'
+    expression_python: "(EV/AC, EV/PV)"
+    excel: "=EV/AC ; =EV/PV"
+    variables:
+      - {symbol: "EV", meaning: "Earned Value", unit: "triệu VNĐ"}
+      - {symbol: "AC", meaning: "Actual Cost", unit: "triệu VNĐ"}
+      - {symbol: "PV", meaning: "Planned Value", unit: "triệu VNĐ"}
+    when_to_use: "Theo dõi hằng tuần (dự án từ vài trăm triệu); cảnh báo đỏ nếu <0,9, vàng 0,9-0,95 (mẫu trong nguồn)."
+    why_it_works: "Tỷ lệ chuẩn hóa: mỗi 1 đồng chi tạo bao nhiêu đồng giá trị (CPI), tốc độ so kế hoạch (SPI)."
+    assumptions: ["EV đo khách quan"]
+    pitfalls: ["SPI tính bằng tiền mất ý nghĩa về cuối dự án", "Hiệu suất quá khứ không chắc kéo dài"]
+    interpretation: ">1 tốt, <1 xấu."
+    example:
+      inputs: {PV: 430, EV: 382, AC: 410}
+      steps: ["CPI = 382/410 = 0,932", "SPI = 382/430 = 0,888"]
+      result: "CPI 0,93; SPI 0,89"
+  - id: "m06_eac_cpi"
+    name_vi: "EAC theo xu hướng CPI"
+    name_en: "EAC (typical performance)"
+    expression_latex: 'EAC=\frac{BAC}{CPI}'
+    expression_python: "BAC/CPI"
+    excel: "=BAC/CPI"
+    variables:
+      - {symbol: "BAC", meaning: "Tổng ngân sách kế hoạch", unit: "triệu VNĐ"}
+      - {symbol: "CPI", meaning: "Hiệu suất chi phí", unit: "lần"}
+    when_to_use: "Nếu hiệu suất hiện tại kéo dài đến hết dự án."
+    why_it_works: "Giả định mỗi đồng giá trị còn lại tốn 1/CPI đồng."
+    assumptions: ["CPI không đổi"]
+    pitfalls: ["Sai nếu nguyên nhân chỉ là sự cố một lần"]
+    interpretation: "EAC > BAC: dự báo vượt ngân sách."
+    example:
+      inputs: {BAC: 630, CPI: 0.9317}
+      steps: ["630/0,9317 = 676,2"]
+      result: "EAC 676,2 triệu, vượt 46,2"
+  - id: "m06_eac_onetime"
+    name_vi: "EAC khi sai lệch chỉ một lần"
+    name_en: "EAC (atypical variance)"
+    expression_latex: 'EAC=AC+(BAC-EV)'
+    expression_python: "AC + (BAC - EV)"
+    excel: "=AC+(BAC-EV)"
+    variables:
+      - {symbol: "AC", meaning: "Chi phí thực tế", unit: "triệu VNĐ"}
+      - {symbol: "BAC", meaning: "Ngân sách tổng", unit: "triệu VNĐ"}
+      - {symbol: "EV", meaning: "Earned Value", unit: "triệu VNĐ"}
+    when_to_use: "Kịch bản lạc quan: phần còn lại đúng kế hoạch."
+    why_it_works: "Đã chi AC cộng phần việc còn lại theo ngân sách gốc."
+    assumptions: ["Phần còn lại đúng kế hoạch"]
+    pitfalls: ["Lạc quan quá nếu nguyên nhân mang tính hệ thống"]
+    interpretation: "Là cận dưới trong 3 kịch bản."
+    example:
+      inputs: {AC: 410, BAC: 630, EV: 382}
+      steps: ["410 + 248 = 658"]
+      result: "EAC 658 triệu"
+  - id: "m06_eac_cpi_spi"
+    name_vi: "EAC kịch bản bi quan (CPI x SPI)"
+    name_en: "EAC (cost and schedule indices)"
+    expression_latex: 'EAC=AC+\frac{BAC-EV}{CPI\times SPI}'
+    expression_python: "AC + (BAC - EV)/(CPI*SPI)"
+    variables:
+      - {symbol: "AC", meaning: "Chi phí thực tế", unit: "triệu VNĐ"}
+      - {symbol: "BAC", meaning: "Ngân sách tổng", unit: "triệu VNĐ"}
+      - {symbol: "EV", meaning: "Earned Value", unit: "triệu VNĐ"}
+      - {symbol: "CPI", meaning: "CPI", unit: "lần"}
+      - {symbol: "SPI", meaning: "SPI", unit: "lần"}
+    when_to_use: "Kịch bản xấu khi cả chi phí và tiến độ đều lệch."
+    why_it_works: "Phần còn lại bị phạt cả chi phí và tiến độ (ép tiến độ tốn thêm)."
+    assumptions: ["Cả hai chỉ số kéo dài"]
+    pitfalls: ["Công thức này ở bảng case của nguồn, không có trong bảng công thức tổng hợp"]
+    interpretation: "Cận trên của khoảng EAC."
+    example:
+      inputs: {AC: 410, BAC: 630, EV: 382, CPI: 0.931707, SPI: 0.888372}
+      steps: ["248/(0,9317 x 0,8884) = 299,6", "410 + 299,6 = 709,6"]
+      result: "EAC 709,6 triệu"
+  - id: "m06_etc_vac"
+    name_vi: "ETC và VAC"
+    name_en: "Estimate to complete and Variance at completion"
+    expression_latex: 'ETC=EAC-AC,\; VAC=BAC-EAC'
+    expression_python: "(EAC - AC, BAC - EAC)"
+    variables:
+      - {symbol: "EAC", meaning: "Tổng chi phí dự báo", unit: "triệu VNĐ"}
+      - {symbol: "AC", meaning: "Chi phí đã chi", unit: "triệu VNĐ"}
+      - {symbol: "BAC", meaning: "Ngân sách", unit: "triệu VNĐ"}
+    when_to_use: "Biết còn phải chi bao nhiêu và vượt/tiết kiệm bao nhiêu."
+    why_it_works: "Phần còn lại = tổng dự báo trừ đã chi."
+    assumptions: ["EAC đáng tin"]
+    pitfalls: ["EAC chọn sai kịch bản"]
+    interpretation: "VAC<0: vượt ngân sách dự báo."
+    example:
+      inputs: {EAC: 676.178, AC: 410, BAC: 630}
+      steps: ["ETC = 266,2", "VAC = -46,2"]
+      result: "ETC 266,2; VAC -46,2 triệu"
+  - id: "m06_tcpi"
+    name_vi: "Chỉ số hiệu suất cần đạt (TCPI)"
+    name_en: "To-Complete Performance Index"
+    expression_latex: 'TCPI=\frac{BAC-EV}{BAC-AC}'
+    expression_python: "(BAC - EV)/(BAC - AC)"
+    excel: "=(BAC-EV)/(BAC-AC)"
+    variables:
+      - {symbol: "BAC", meaning: "Ngân sách", unit: "triệu VNĐ"}
+      - {symbol: "EV", meaning: "Earned Value", unit: "triệu VNĐ"}
+      - {symbol: "AC", meaning: "Chi phí thực tế", unit: "triệu VNĐ"}
+    when_to_use: "Kiểm tra mục tiêu giữ nguyên BAC có thực tế không."
+    why_it_works: "Giá trị còn phải làm chia ngân sách còn lại."
+    assumptions: ["BAC còn hiệu lực"]
+    pitfalls: ["TCPI >> CPI hiện tại nghĩa là mục tiêu phi thực tế"]
+    interpretation: ">1 phải làm tốt hơn đến nay; 1,13 = tốt hơn 13%."
+    example:
+      inputs: {BAC: 630, EV: 382, AC: 410}
+      steps: ["248/220 = 1,127"]
+      result: "TCPI 1,13 -> xin điều chỉnh ngân sách hoặc cắt phạm vi"
+  - id: "m06_emv"
+    name_vi: "Giá trị tiền tệ kỳ vọng của rủi ro (EMV)"
+    name_en: "Expected Monetary Value"
+    expression_latex: 'EMV=P\times I'
+    expression_python: "P*I"
+    excel: "=P*I"
+    variables:
+      - {symbol: "P", meaning: "Xác suất xảy ra (0-1)", unit: "tỷ lệ"}
+      - {symbol: "I", meaning: "Thiệt hại nếu xảy ra", unit: "triệu VNĐ"}
+    when_to_use: "Xếp hạng rủi ro và lập quỹ dự phòng bằng tổng EMV."
+    why_it_works: "Thiệt hại bình quân dài hạn; tổng EMV là dự phòng hợp lý."
+    assumptions: ["Rủi ro độc lập", "P, I ước lượng được"]
+    pitfalls: ["P, I chủ quan", "Bỏ qua rủi ro xác suất thấp thiệt hại cực lớn"]
+    interpretation: "Dự phòng/BAC 5-10% (quy tắc kinh nghiệm cho xây dựng nhỏ)."
+    example:
+      inputs: {P: 0.3, I: 45}
+      steps: ["0,3 x 45 = 13,5"]
+      result: "EMV máy espresso trễ 13,5 triệu"
+  - id: "m06_contingency_reserve"
+    name_vi: "Quỹ dự phòng từ EMV"
+    name_en: "Contingency reserve"
+    expression_latex: 'Reserve=\sum_i P_iI_i,\; ratio=\frac{Reserve}{BAC}'
+    expression_python: "sum(p*i for p,i in zip(P,I))"
+    variables:
+      - {symbol: "P", meaning: "Danh sách xác suất", unit: "tỷ lệ"}
+      - {symbol: "I", meaning: "Danh sách thiệt hại", unit: "triệu VNĐ"}
+    when_to_use: "Chốt dự phòng ngân sách."
+    why_it_works: "Cộng kỳ vọng thiệt hại từng rủi ro."
+    assumptions: ["Danh mục rủi ro đầy đủ"]
+    pitfalls: ["Kỳ vọng không phải kịch bản xấu nhất"]
+    interpretation: "Case: 33,5 triệu = 5,3% BAC."
+    example:
+      inputs: {P: [0.3, 0.4, 0.25, 0.2], I: [45, 30, 20, 15]}
+      steps: ["13,5+12+5+3 = 33,5", "33,5/630 = 5,3%"]
+      result: "Quỹ 33,5 triệu (5,3% BAC)"
+  - id: "m06_velocity_forecast"
+    name_vi: "Dự báo số sprint còn lại theo velocity"
+    name_en: "Velocity-based forecast"
+    expression_latex: 'N=\frac{Backlog}{\bar v},\; \bar v=\frac{1}{k}\sum v_i'
+    expression_python: "backlog_left/(sum(v)/len(v))"
+    excel: "=backlog/AVERAGE(v)"
+    variables:
+      - {symbol: "backlog_left", meaning: "Story points còn lại", unit: "điểm"}
+      - {symbol: "v", meaning: "Velocity các sprint đã xong", unit: "điểm/sprint"}
+    when_to_use: "Dự đoán ngày xong khi backlog biết; chạy thêm biến thể với 3 sprint gần nhất khi velocity đang tăng."
+    why_it_works: "Tốc độ trung bình quá khứ ngoại suy sang tương lai."
+    assumptions: ["Đội ổn định", "Thang story point nhất quán"]
+    pitfalls: ["Dùng velocity đánh giá cá nhân/ép đội", "Velocity tăng do học việc thì trung bình toàn bộ thấp hơn thực"]
+    interpretation: "Làm tròn lên; báo khoảng (trung bình toàn bộ và 3 sprint gần nhất)."
+    example:
+      inputs: {backlog_left: 124, v: [14, 18, 21, 23]}
+      steps: ["v = 19", "124/19 = 6,5 -> 7 sprint", "3 gần nhất 20,67 -> 6 sprint"]
+      result: "Còn 6-7 sprint; tổng 10-11 sprint (20-22 tuần)"
+  - id: "m06_resource_utilization"
+    name_vi: "Hiệu suất sử dụng nguồn lực"
+    name_en: "Resource utilization"
+    expression_latex: 'U=\frac{\sum demand}{\sum capacity}'
+    expression_python: "sum(demand)/sum(capacity)"
+    excel: "=SUM(demand)/SUM(capacity)"
+    variables:
+      - {symbol: "demand", meaning: "Nhu cầu theo ngày", unit: "bộ-ngày"}
+      - {symbol: "capacity", meaning: "Công suất theo ngày", unit: "bộ-ngày"}
+    when_to_use: "Kiểm tra tải đa dự án; phát hiện ngày vượt công suất."
+    why_it_works: "Tỷ lệ cao nghĩa là không còn dư địa; xung đột thường do phân bổ thời gian."
+    assumptions: ["Nhu cầu theo ngày biết"]
+    pitfalls: ["Tổng đủ vẫn có ngày thiếu"]
+    interpretation: ">85-90% cần nguồn lực dự phòng."
+    example:
+      inputs: {demand: [1, 2, 3, 2, 1], capacity: [2, 2, 2, 2, 2]}
+      steps: ["9/10 = 90%", "Ngày 12 thiếu 1"]
+      result: "90%, xung đột ngày 12"
+  - id: "m06_late_cost"
+    name_vi: "Chi phí trễ hạn tích lũy"
+    name_en: "Cost of delay"
+    expression_latex: 'Cost=days\times c_{day}'
+    expression_python: "days*c_day"
+    variables:
+      - {symbol: "days", meaning: "Số ngày trễ", unit: "ngày"}
+      - {symbol: "c_day", meaning: "Chi phí cố định mỗi ngày", unit: "triệu USD/ngày"}
+    when_to_use: "So chi phí trễ với chi phí tránh trễ."
+    why_it_works: "Mỗi ngày trễ là khoản cố định, nên có thể lớn hơn chi phí nguồn lực để tránh (logic crashing)."
+    assumptions: ["Chi phí/ngày hằng"]
+    pitfalls: ["Số Denver (~1 triệu USD/ngày, 16 tháng, ~560 triệu USD) là ước tính chưa kiểm chứng"]
+    interpretation: "Cùng bậc độ lớn với mức vượt chi phí."
+    example:
+      inputs: {days: 480, c_day: 1}
+      steps: ["16 x 30 = 480", "480 x 1"]
+      result: "~480 triệu USD (ước tính)"
+  - id: "m06_defect_cost_stage"
+    name_vi: "Chi phí sửa lỗi theo giai đoạn phát hiện"
+    name_en: "Cost of change by stage"
+    expression_latex: 'C=\sum_s n_s c_s'
+    expression_python: "sum(n*c for n,c in zip(counts,unit_costs))"
+    variables:
+      - {symbol: "counts", meaning: "Số lỗi bắt ở mỗi giai đoạn", unit: "lỗi"}
+      - {symbol: "unit_costs", meaning: "Chi phí tương đối mỗi lỗi", unit: "đơn vị"}
+    when_to_use: "Chứng minh lợi ích kiểm tra sớm."
+    why_it_works: "Chi phí sửa tăng rất nhanh theo giai đoạn."
+    assumptions: ["Tỷ lệ 1:10:100 và 80/15/5 là giả định minh họa"]
+    pitfalls: ["Không phải số liệu thật Boeing"]
+    interpretation: "7,3% so với phát hiện muộn."
+    example:
+      inputs: {counts: [800, 150, 50], unit_costs: [1, 10, 100]}
+      steps: ["800 + 1500 + 5000 = 7300", "so 100000"]
+      result: "7.300 đơn vị = 7,3%"
+  - id: "m06_wait_time"
+    name_vi: "Thời gian chờ phụ thuộc chéo (tính năng-tuần)"
+    name_en: "Cross-team dependency wait"
+    expression_latex: 'W=n\times share\times wait'
+    expression_python: "n*share*wait"
+    variables:
+      - {symbol: "n", meaning: "Số tính năng mỗi quý", unit: "tính năng"}
+      - {symbol: "share", meaning: "Tỷ lệ có phụ thuộc chéo", unit: "tỷ lệ"}
+      - {symbol: "wait", meaning: "Tuần chờ mỗi tính năng", unit: "tuần"}
+    when_to_use: "Chứng minh giá trị phối hợp Scrum of Scrums."
+    why_it_works: "Quy phụ thuộc về thời gian chờ đo được."
+    assumptions: ["Giả định minh họa"]
+    pitfalls: ["Không phải dữ liệu thật của Tiki"]
+    interpretation: "Giảm 50% từ 24 xuống 12."
+    example:
+      inputs: {n: 30, share: 0.4, wait: 2}
+      steps: ["12 x 2 = 24", "12 x 1 = 12"]
+      result: "24 -> 12 tính năng-tuần (giả định minh họa)"
+
+frameworks:
+  - id: "m06_triple_constraint"
+    name_vi: "Tam giác ràng buộc dự án"
+    name_en: "Triple Constraint"
+    origin: "Nguyên lý nền tảng của quản trị dự án (PMBOK)."
+    components: ["Phạm vi (Scope)", "Thời gian (Time)", "Chi phí (Cost)", "Chất lượng ở trung tâm"]
+    when_to_use: "Khi có yêu cầu đổi một trong ba yếu tố."
+    how_to_apply: ["Xác định yếu tố khách muốn đổi", "Liệt kê đánh đổi ở hai yếu tố còn lại", "Chọn: tăng chi phí, giảm phạm vi hoặc hy sinh chất lượng, ghi vào change control"]
+    how_to_read_results: "Không có lựa chọn miễn phí; quyết định phải nêu rõ cái giá."
+    pitfalls: ["Hứa rút hạn mà không đổi gì"]
+    example: "Khai trương quán sớm 10 ngày: thuê thêm thợ/tăng ca (cost), bỏ tranh tường/bảng hiệu 3D (scope), hoặc làm ẩu (quality)."
+  - id: "m06_life_cycle"
+    name_vi: "Vòng đời dự án PMBOK"
+    name_en: "Project Life Cycle"
+    origin: "PMI/PMBOK (PMI thành lập 1969; PMBOK xuất bản lần đầu giữa thập niên 1990)."
+    components: ["Khởi tạo", "Hoạch định", "Thực thi và Giám sát", "Kết thúc"]
+    when_to_use: "Cấu trúc hóa mọi dự án."
+    how_to_apply: ["Khởi tạo: mục tiêu, phạm vi, stakeholders, charter", "Hoạch định: kế hoạch, nguồn lực, lịch Gantt/CPM/PERT, ngân sách, rủi ro, chất lượng", "Thực thi/giám sát: theo dõi tiến độ-chi phí-chất lượng, rủi ro, thay đổi", "Kết thúc: nghiệm thu, bài học, giải phóng nguồn lực"]
+    how_to_read_results: "Đầu tư nhiều ở giai đoạn đầu vì chi phí thay đổi tăng dần."
+    pitfalls: ["Bỏ qua bài học kinh nghiệm"]
+    example: "Boeing 777: kiểm tra 3D sớm."
+  - id: "m06_wbs"
+    name_vi: "WBS"
+    name_en: "Work Breakdown Structure"
+    origin: "Công cụ chuẩn của PMBOK."
+    components: ["Cấp 1: giai đoạn/sản phẩm bàn giao", "Cấp 2: hạng mục", "Cấp 3: gói công việc 8-80 giờ"]
+    when_to_use: "Mọi dự án, kể cả nhỏ."
+    how_to_apply: ["Phân rã theo deliverable", "Kiểm tra quy tắc 100%", "Giao 1 người chịu trách nhiệm mỗi gói", "Ghi tiêu chí hoàn thành"]
+    how_to_read_results: "Gói đủ nhỏ để ước lượng, giao, theo dõi."
+    pitfalls: ["Phân rã theo động từ gây trùng", "Gói quá lớn hoặc không chủ"]
+    example: "Website: Thiết kế / Phát triển / Kiểm thử / Triển khai."
+  - id: "m06_gantt"
+    name_vi: "Biểu đồ Gantt"
+    name_en: "Gantt Chart"
+    origin: "Henry Gantt khoảng 1910-1915; Adamiecki trước đó."
+    components: ["Thanh ngang theo thời gian", "Phụ thuộc", "Milestone"]
+    when_to_use: "Trình bày lịch cho người không chuyên."
+    how_to_apply: ["Tính CPM trước", "Vẽ Gantt", "Tô nổi bật thanh đường găng"]
+    how_to_read_results: "Thấy việc chồng nhau và mốc; không tự thấy đường găng."
+    pitfalls: ["Dùng Gantt thay CPM", "Quá nhiều việc"]
+    example: "Excel/Google Sheets/Trello."
+  - id: "m06_cpm"
+    name_vi: "CPM (Phương pháp đường găng)"
+    name_en: "Critical Path Method"
+    origin: "James Kelley (Remington Rand) và Morgan Walker (DuPont), khoảng 1957, bảo trì nhà máy hóa chất."
+    components: ["Danh sách việc + d + predecessor", "Sơ đồ mạng", "Forward pass", "Backward pass", "Float", "Đường găng"]
+    when_to_use: "Thời lượng khá chắc chắn; cần biết việc nào quyết định tổng thời gian."
+    how_to_apply: ["Liệt kê việc, thời gian, phụ thuộc", "Vẽ mạng", "Forward pass ES/EF (max)", "Backward pass LF/LS (min) từ LF việc cuối = EF cuối", "Float = LS - ES", "Đường găng = chuỗi float 0 (có thể nhiều đường)"]
+    how_to_read_results: "Tổng thời gian = EF cuối; giám sát chặt việc float 0, linh hoạt việc float dương."
+    pitfalls: ["Bỏ sót đường găng song song", "Giả định thời gian cố định", "Không cập nhật"]
+    example: "Mạng 5 việc: B-D-E = 13 ngày; A,C float 4. Dồn tiền thuê người cho C vô ích."
+  - id: "m06_pert"
+    name_vi: "PERT"
+    name_en: "PERT"
+    origin: "Hải quân Mỹ, Booz Allen Hamilton, Lockheed, khoảng 1958, tên lửa Polaris."
+    components: ["to, tm, tp", "t_e", "σ", "σ_project", "z và Φ(z)"]
+    when_to_use: "Việc bất định cao, cần xác suất kịp hạn."
+    how_to_apply: ["Thu ước lượng 3 điểm", "Tính t_e, σ", "Chạy CPM với t_e", "Cộng phương sai đường găng", "Tính z, tra Φ"]
+    how_to_read_results: "Hạn = Te chỉ ~50%; đòi 95% thì cộng 1,645σ."
+    pitfalls: ["Merge bias", "Chủ quan", "Độc lập"]
+    example: "Hạnh Phúc Fit-out: Te 39,67, σ 2,94, hạn 42 ngày = 78,6%."
+  - id: "m06_compression"
+    name_vi: "Crashing và Fast-tracking"
+    name_en: "Schedule compression"
+    origin: "Kỹ thuật chuẩn rút ngắn lịch (CPM)."
+    components: ["Crashing", "Fast-tracking", "Thuật toán crash tối thiểu chi phí"]
+    when_to_use: "Cần xong sớm hơn lịch CPM."
+    how_to_apply: ["Xác định đường găng và slope từng việc", "Crash 1 ngày việc slope thấp nhất còn rút được", "Cập nhật lịch, kiểm tra đường găng song song mới (nếu có phải rút đồng thời)", "Lặp đến mục tiêu hoặc slope >= lợi ích/ngày"]
+    how_to_read_results: "Gói crash hợp lý khi tổng chi phí < tổng lợi ích."
+    pitfalls: ["Crash việc ngoài găng", "Fast-track gây rework", "Không so với lợi ích kinh doanh"]
+    example: "Fit-out: rút 6 ngày giá 60 triệu, lợi ròng 30 triệu."
+  - id: "m06_evm"
+    name_vi: "EVM"
+    name_en: "Earned Value Management"
+    origin: "Bộ Quốc phòng Mỹ thập niên 1960 (C/SCSC), vào PMBOK."
+    components: ["PV, EV, AC", "CV, SV", "CPI, SPI", "EAC, ETC, VAC, TCPI"]
+    when_to_use: "Giám sát giữa chừng, dự án vài trăm triệu trở lên, hằng tuần."
+    how_to_apply: ["Chốt BAC và PV theo lịch", "EV = % xong từng gói x ngân sách gói", "Ghi AC", "Tính chỉ số", "Chọn EAC phù hợp nguyên nhân", "Cảnh báo màu: đỏ <0,9; vàng 0,9-0,95"]
+    how_to_read_results: "CPI<1 vượt chi; SPI<1 chậm; TCPI>1 mục tiêu khó."
+    pitfalls: ["Chỉ theo dõi tiền chi", "EV chủ quan"]
+    example: "Ngày 25: CPI 0,93, SPI 0,89, EAC 676,2 triệu."
+  - id: "m06_risk_matrix"
+    name_vi: "Ma trận rủi ro và 4 chiến lược"
+    name_en: "Probability-Impact Matrix"
+    origin: "Thực hành PMBOK."
+    components: ["Xác suất thấp/cao x tác động thấp/cao", "Thấp-Thấp: chấp nhận", "Cao tác động, thấp xác suất: giám sát chặt", "Cao xác suất, thấp tác động: kế hoạch dự phòng", "Cao-Cao: ưu tiên xử lý ngay", "Avoid/Mitigate/Transfer/Accept"]
+    when_to_use: "Lập Risk Register, cập nhật định kỳ."
+    how_to_apply: ["Liệt kê rủi ro", "Gán P, I", "Tính EMV và xếp hạng", "Chọn chiến lược", "Tổng EMV = dự phòng"]
+    how_to_read_results: "Ưu tiên EMV cao và ô Cao-Cao."
+    pitfalls: ["Lập một lần rồi bỏ"]
+    example: "Máy nhập khẩu trễ: giảm thiểu bằng đặt sớm; thợ nghỉ: chuyển giao qua thầu phụ."
+  - id: "m06_scrum"
+    name_vi: "Scrum"
+    name_en: "Scrum"
+    origin: "Sutherland và Schwaber khoảng 1995; Takeuchi và Nonaka (1986)."
+    components: ["PO, Scrum Master, Dev Team", "Sprint 1-4 tuần", "Planning, Daily 15 phút, Review, Retrospective", "Product/Sprint Backlog"]
+    when_to_use: "Yêu cầu chưa rõ hoàn toàn, sản phẩm số."
+    how_to_apply: ["PO ưu tiên backlog theo giá trị", "Sprint Planning", "Daily Scrum", "Sprint Review demo", "Retrospective cải tiến"]
+    how_to_read_results: "Theo dõi velocity, burndown, sprint goal achievement rate."
+    pitfalls: ["Dùng velocity ép đội", "Đổi phạm vi giữa sprint"]
+    example: "Startup 15 người: Waterfall trễ 66,7% (10 vs 6 tháng), chuyển Scrum sprint 2 tuần."
+  - id: "m06_kanban"
+    name_vi: "Kanban"
+    name_en: "Kanban"
+    origin: "Phương pháp luồng liên tục (nguồn không nêu nguồn gốc)."
+    components: ["Bảng Kanban", "Giới hạn WIP", "Cycle time, Lead time"]
+    when_to_use: "Đội vận hành/hỗ trợ."
+    how_to_apply: ["Vẽ cột trạng thái", "Đặt WIP", "Kéo việc theo luồng", "Đo cycle/lead time"]
+    how_to_read_results: "Cycle time thấp = luồng tốt."
+    pitfalls: ["Không giới hạn WIP"]
+    example: "Bảng Trello cho đội hỗ trợ."
+  - id: "m06_agile_metrics"
+    name_vi: "Chỉ số Agile"
+    name_en: "Agile metrics"
+    origin: "Thực hành Scrum/Kanban."
+    components: ["Velocity", "Burndown", "Burnup", "Cycle Time", "Lead Time", "Sprint Goal Achievement Rate"]
+    when_to_use: "Theo dõi và dự báo đội Agile."
+    how_to_apply: ["Ghi velocity mỗi sprint", "Burndown phát hiện sớm trễ sprint", "Burnup theo dõi thay đổi phạm vi"]
+    how_to_read_results: "Velocity ổn định qua các sprint là tốt."
+    pitfalls: ["Đánh giá cá nhân bằng velocity"]
+    example: "Velocity 19 điểm/sprint."
+  - id: "m06_method_choice"
+    name_vi: "Cây quyết định chọn phương pháp luận"
+    name_en: "Methodology decision tree"
+    origin: "Sơ đồ trong nguồn."
+    components: ["Yêu cầu rõ/ít đổi?", "Pháp lý/kỹ thuật chặt?", "Waterfall / Hybrid / Agile"]
+    when_to_use: "Đầu mỗi dự án."
+    how_to_apply: ["Yêu cầu rõ, ít đổi và pháp lý chặt: Waterfall (CPM/PERT, Gantt)", "Yêu cầu rõ nhưng pháp lý không chặt: Hybrid", "Yêu cầu chưa rõ: Agile/Scrum"]
+    how_to_read_results: "Hội nghị: Hybrid; xây nhà: Waterfall; app: Agile."
+    pitfalls: ["Waterfall cho yêu cầu chưa rõ"]
+    example: "Xây nhà Waterfall; app Scrum; hội nghị Hybrid."
+  - id: "m06_pmo_ppm"
+    name_vi: "PMO và PPM"
+    name_en: "PMO / Portfolio Management"
+    origin: "Thực hành doanh nghiệp lớn."
+    components: ["Supportive/Controlling/Directive PMO", "Ma trận giá trị chiến lược x khả thi/rủi ro"]
+    when_to_use: "Nhiều dự án đồng thời."
+    how_to_apply: ["Bắt đầu Supportive PMO", "Chuẩn hóa ước lượng và Definition of Done", "Rà soát danh mục hàng quý"]
+    how_to_read_results: "Tiếp tục/tạm dừng/hủy."
+    pitfalls: ["Quy trình nặng nề"]
+    example: "PMO Controlling chuẩn hóa story points cho nhiều nhóm."
+  - id: "m06_resource_leveling"
+    name_vi: "San phẳng nguồn lực"
+    name_en: "Resource leveling"
+    origin: "Kỹ thuật lập lịch."
+    components: ["Resource histogram", "Float", "Thuê ngoài", "Mua thêm"]
+    when_to_use: "Xung đột nguồn lực đa dự án."
+    how_to_apply: ["Cộng nhu cầu theo ngày", "Dời việc có float", "Thuê ngoài ngày đỉnh", "Mua thêm nếu lặp lại"]
+    how_to_read_results: "Ưu tiên rẻ nhất: dùng float trước."
+    pitfalls: ["Excel rời từng dự án"]
+    example: "2 bộ AS-AL, 3 sự kiện: dời sự kiện 3 sang 13-15."
+  - id: "m06_scrum_of_scrums"
+    name_vi: "Scrum of Scrums"
+    name_en: "Scrum of Scrums"
+    origin: "Cơ chế phối hợp nhiều nhóm Scrum."
+    components: ["Đại diện mỗi nhóm", "Họp 2-3 lần/tuần 15-30 phút (gợi ý bài tập; case dùng hằng tuần)", "Bảng phụ thuộc chung", "Definition of Done chung"]
+    when_to_use: "Nhiều nhóm Scrum song song."
+    how_to_apply: ["Mỗi nhóm cử 1 đại diện", "Báo: đã làm gì ảnh hưởng nhóm khác, sắp làm gì, bị chặn bởi nhóm nào"]
+    how_to_read_results: "Đo bằng thời gian chờ."
+    pitfalls: ["Thiếu chuẩn hóa tối thiểu"]
+    example: "Thời gian chờ giảm 50% (giả định minh họa)."
+  - id: "m06_change_control_8steps"
+    name_vi: "Quy trình 8 bước quản trị dự án"
+    name_en: "8-step PMBOK process for SME"
+    origin: "Tổng hợp theo PMBOK trong nguồn."
+    components: ["Charter", "WBS", "Ước lượng", "Lịch CPM/Gantt", "Rủi ro và nguồn lực", "Thực thi và giám sát EVM", "Change control", "Closing và lessons learned"]
+    when_to_use: "Khung triển khai cho SME."
+    how_to_apply: ["Đi tuần tự 8 bước"]
+    how_to_read_results: "Dùng làm checklist."
+    pitfalls: ["Bỏ bước 7 và 8"]
+    example: "Fit-out quán cà phê."
+
+procedures:
+  - id: "m06_proc_commit_date"
+    name: "Cam kết ngày giao dự án bằng PERT/CPM"
+    steps:
+      - "Lập WBS và danh sách việc, phụ thuộc"
+      - "Thu to/tm/tp mỗi việc, tính t_e và σ"
+      - "Chạy CPM bằng t_e để tìm đường găng và Te"
+      - "σ_project = căn tổng phương sai đường găng"
+      - "Tính z và Φ(z) cho hạn dự kiến; tìm hạn 95% = Te + 1,645σ"
+      - "Nếu xác suất thấp: crash có chọn lọc hoặc thương lượng hạn"
+    outputs: "Hạn cam kết kèm xác suất kịp hạn."
+  - id: "m06_proc_crash"
+    name: "Crashing tối thiểu chi phí"
+    steps:
+      - "Liệt kê việc găng, chi phí crash/ngày, tối đa ngày rút"
+      - "Xác định lợi ích/ngày (phạt, doanh thu mất)"
+      - "Crash việc slope thấp nhất < lợi ích"
+      - "Sau mỗi bước kiểm tra đường găng song song"
+      - "Dừng khi slope >= lợi ích; tính lợi ròng"
+    outputs: "Lịch mới, tổng chi phí crash, lợi ròng."
+  - id: "m06_proc_evm_weekly"
+    name: "Báo cáo EVM hằng tuần"
+    steps:
+      - "Tính PV theo lịch gốc đến ngày báo cáo"
+      - "EV = tổng % xong x ngân sách gói"
+      - "Nhập AC"
+      - "Tính CV, SV, CPI, SPI"
+      - "Tính EAC 3 kịch bản, ETC, VAC, TCPI"
+      - "Xác định nguyên nhân gốc, hành động (crash việc rẻ, báo khách, xin điều chỉnh)"
+    outputs: "Bảng cảnh báo và dự báo."
+  - id: "m06_proc_risk"
+    name: "Lập Risk Register và quỹ dự phòng"
+    steps:
+      - "Liệt kê tối thiểu 8 rủi ro, 4 nhóm"
+      - "Gán P và I; EMV = P x I"
+      - "Xếp hạng giảm dần"
+      - "Chọn avoid/mitigate/transfer/accept"
+      - "Tổng EMV = quỹ dự phòng; kiểm tra tỷ lệ so BAC"
+    outputs: "Risk Register và contingency reserve."
+  - id: "m06_proc_resource"
+    name: "Quản lý xung đột nguồn lực đa dự án"
+    steps:
+      - "Lập resource pool"
+      - "Cộng nhu cầu theo ngày/tuần"
+      - "Quy tắc ưu tiên: dự án găng, hạn cứng trước"
+      - "Dùng float san tải"
+      - "Thuê ngoài; cân nhắc mua nếu lặp lại"
+      - "Họp phân bổ hằng tuần"
+    outputs: "Lịch nguồn lực không vượt công suất."
+  - id: "m06_proc_velocity"
+    name: "Dự báo hoàn thành Scrum"
+    steps:
+      - "Ghi story points mỗi sprint"
+      - "Tính velocity trung bình và trung bình 3 sprint gần nhất"
+      - "Số sprint còn lại = backlog/velocity"
+      - "Báo khoảng; xác định điểm MVP theo backlog ưu tiên giá trị"
+    outputs: "Khoảng số sprint/tuần và mốc MVP."
+
+decision_rules:
+  - "Nếu việc có float > 0 thì không crash nó; nếu muốn rút tổng thời gian thì chỉ crash việc float = 0."
+  - "Nếu crash tạo ra đường găng song song (hai chuỗi bằng nhau) thì phải rút đồng thời cả hai hoặc chọn việc chung."
+  - "Nếu chi phí crash/ngày < lợi ích/ngày thì crash; nếu bằng thì hòa vốn, không crash; nếu lớn hơn thì dừng."
+  - "Nếu xác suất kịp hạn < 85-90% và trễ gây phạt lớn thì crash/đàm phán hạn; hạn = Te chỉ ~50%."
+  - "Nếu yêu cầu ổn định và pháp lý chặt (xây dựng, sản xuất) thì Waterfall với CPM/PERT; yêu cầu chưa rõ (phần mềm) thì Agile/Scrum; xen kẽ thì Hybrid."
+  - "Nếu CPI hoặc SPI < 0,9 thì cảnh báo đỏ; 0,9-0,95 vàng."
+  - "Nếu nguyên nhân lệch là sự cố một lần thì dùng EAC = AC + (BAC - EV); nếu mang tính hệ thống thì BAC/CPI; nếu cả chi phí và tiến độ xấu thì chạy thêm kịch bản bi quan."
+  - "Nếu TCPI vượt xa CPI hiện tại thì xin điều chỉnh ngân sách hoặc cắt phạm vi."
+  - "Nếu có thay đổi phạm vi thì chạy change control đánh giá tác động lịch/chi phí trước khi duyệt."
+  - "Nếu công nghệ mới/chưa làm thì dùng PERT, thời lượng bi quan xa, có phương án dự phòng, thử nghiệm tích hợp sớm."
+  - "Nếu hiệu suất sử dụng nguồn lực > 85-90% thì cần dự phòng; ưu tiên dời việc có float trước khi thuê/mua."
+  - "Nếu velocity đang tăng do học việc thì báo khoảng (trung bình toàn bộ và 3 sprint gần nhất)."
+  - "Nếu dự án SME có giá trị từ vài trăm triệu thì theo dõi CPI/SPI hằng tuần."
+  - "Nếu rút ngắn lịch không tạo doanh thu/lợi ích thì không crash."
+  - "Nếu có nhiều đường gần găng thì tăng buffer vì PERT đánh giá thấp rủi ro."
+
+benchmarks:
+  - {metric: "Quỹ dự phòng rủi ro / BAC", value: "5-10%", context: "Dự án xây dựng nhỏ (quy tắc kinh nghiệm trong nguồn)", confidence: "medium"}
+  - {metric: "Tỷ lệ hoàn thành đúng hạn", value: "> 90%", context: "KPI dự án tham khảo", confidence: "low"}
+  - {metric: "Tỷ lệ vượt ngân sách", value: "< 10%", context: "KPI tham khảo", confidence: "low"}
+  - {metric: "CPI, SPI", value: "> 1,0 tốt; đỏ < 0,9; vàng 0,9-0,95", context: "Mẫu bảng EVM", confidence: "medium"}
+  - {metric: "Gói công việc WBS", value: "8-80 giờ", context: "Quy tắc kinh nghiệm", confidence: "medium"}
+  - {metric: "Hiệu suất sử dụng nguồn lực", value: "> 85-90% cần dự phòng", context: "Liên hệ m05", confidence: "medium"}
+  - {metric: "Sprint", value: "1-4 tuần", context: "Scrum", confidence: "high"}
+  - {metric: "Độ tin cậy 95%", value: "Te + 1,645σ", context: "PERT", confidence: "high"}
+  - {metric: "Chi phí công cụ khởi nghiệp", value: "0 - 5 triệu/năm", context: "Trello, Google Sheets (cần xác nhận giá)", confidence: "low"}
+  - {metric: "Chi phí công cụ tăng trưởng", value: "20 - 100 triệu/năm", context: "Asana, Notion, Jira cơ bản (cần xác nhận)", confidence: "low"}
+  - {metric: "Chi phí công cụ mở rộng", value: "200 triệu - 1 tỷ/năm", context: "MS Project, Jira Enterprise + PMO nhỏ (cần xác nhận)", confidence: "low"}
+  - {metric: "Chi phí doanh nghiệp lớn", value: "1 - 10+ tỷ/năm", context: "Primavera P6, PMO, đào tạo PMP (cần xác nhận)", confidence: "low"}
+  - {metric: "Denver Airport", value: "Trễ ~16 tháng, +~560 triệu USD, ~1 triệu USD/ngày", context: "Số công khai thường trích, chưa kiểm chứng", confidence: "low"}
+
+pitfalls:
+  - "Không xác định đường găng nên tập trung nguồn lực sai chỗ."
+  - "Scope creep không kiểm soát (Denver Airport)."
+  - "Ước lượng quá lạc quan; không dùng PERT 3 điểm và dữ liệu lịch sử."
+  - "Áp Waterfall cho dự án yêu cầu chưa rõ."
+  - "Không quản lý xung đột nguồn lực đa dự án (Excel rời)."
+  - "Chỉ theo dõi tiền chi mà không đo EV."
+  - "Crash việc ngoài đường găng."
+  - "Cộng float riêng từng việc trong chuỗi chung."
+  - "Fast-tracking không quản lý giao diện, gây rework."
+  - "Ép tiến độ khi chưa kiểm thử tích hợp."
+  - "Dùng velocity để đánh giá cá nhân."
+  - "Lịch CPM tĩnh không cập nhật."
+
+sme_vn_guidance:
+  - "Bắt đầu: WBS đơn giản cho mọi dự án; Gantt cơ bản bằng Excel/Google Sheets/Trello trước khi mua phần mềm."
+  - "Dự án rõ yêu cầu (xây dựng, sản xuất): Waterfall + CPM; yêu cầu thay đổi (phần mềm): Scrum đơn giản."
+  - "Dự án từ vài trăm triệu: theo dõi CPI/SPI hằng tuần; bảng EVM Excel với conditional formatting."
+  - "Đa dự án (sự kiện, fit-out): công cụ như Trello, Asana; cộng dồn nhu cầu theo ngày."
+  - "Công cụ: Trello miễn phí - 5 USD/user/tháng; Asana, Notion miễn phí - 15 USD; Jira 10-20 USD; MS Project vài triệu/license; Primavera P6 hàng chục-trăm triệu (giá tham khảo, cần xác nhận trên trang nhà cung cấp)."
+  - "Nhân sự SME thường kiêm nhiệm (founder, trưởng nhóm); doanh nghiệp lớn có PM/PMO và PMP."
+  - "Hợp đồng thầu: hạn cứng nên có phạt trễ; chốt bản vẽ có chữ ký + change control; nghiệm thu PCCC cần tư vấn kiểm tra sớm (cần xác nhận quy định hiện hành)."
+
+case_lessons:
+  - name: "Boeing 777 (thiết kế số, nhóm liên chức năng)"
+    type: "success"
+    setup: "Phát triển đầu thập niên 1990, bay lần đầu 1994, khai thác 1995; CAD 3D (CATIA), nhóm Working Together; số chi tiết hàng triệu là ước tính."
+    key_calculations: ["Giả định 1:10:100 chi phí sửa lỗi", "80% bắt ở thiết kế, 15% chế tạo thử, 5% ráp thực: 800 + 1.500 + 5.000 = 7.300 đơn vị = 7,3% của 100.000"]
+    lesson: "Phát hiện xung đột sớm rẻ hơn gấp nhiều lần; phá tường chức năng; đường găng phải cập nhật liên tục. Mức ngân sách cụ thể chưa kiểm chứng."
+    data_reliability: "unverified"
+  - name: "VinFast xây nhà máy Hải Phòng (fast-tracking + crashing)"
+    type: "success"
+    setup: "Khoảng 21 tháng (khởi công 2017, xong giữa 2019 theo thông tin công khai); mô hình rút gọn là giả định minh họa."
+    key_calculations: ["Tuần tự 6+5+8+7 = 26 tháng", "Fast-track 6+3+5+4 = 18 tháng, rút 8 tháng (30,8%)"]
+    lesson: "Rút ngắn mạnh cần nguồn lực mạnh; fast-tracking đòi quản lý giao diện; mục tiêu thời gian phải gắn lợi ích kinh doanh."
+    data_reliability: "illustrative"
+  - name: "Hệ thống hành lý Sân bay Denver"
+    type: "failure"
+    setup: "Thập niên 1990; trễ khoảng 16 tháng, thêm ~560 triệu USD (ước tính, chưa kiểm chứng)."
+    key_calculations: ["16 x 30 = 480 ngày x 1 triệu USD/ngày ~ 480 triệu USD (ước tính)"]
+    lesson: "Scope creep, rủi ro công nghệ chưa dùng PERT, phối hợp yếu, ép tiến độ bỏ thử nghiệm; mỗi ngày trễ là chi phí cố định."
+    data_reliability: "unverified"
+  - name: "Startup app đặt đồ ăn chuyển Waterfall sang Scrum"
+    type: "sme"
+    setup: "15 người Hà Nội; kế hoạch 6 tháng, thực tế 10 tháng; backlog 200 điểm; velocity 14,18,21,23."
+    key_calculations: ["Trễ (10-6)/6 = 66,7%", "v = 19; còn 124; 124/19 = 6,5 -> 7 sprint", "3 gần nhất 20,67 -> 6 sprint; tổng 10-11 sprint", "MVP 80 điểm: sau sprint 5 tích lũy 98"]
+    lesson: "Scrum làm sai lầm lộ sớm; velocity để dự báo, không để ép; ưu tiên theo giá trị để ra MVP sớm."
+    data_reliability: "illustrative"
+  - name: "Công ty tổ chức sự kiện đa dự án"
+    type: "sme"
+    setup: "20 nhân viên, 2 bộ AS-AL, 3 sự kiện ngày 10-12, 11-13, 12-14."
+    key_calculations: ["Nhu cầu 1,2,3,2,1 = 9 vs công suất 10 -> 90%", "Ngày 12 thiếu 1", "Dời sự kiện 3 sang 13-15: tải 1,2,2,2,1,1", "Thuê ngoài 3 triệu/ngày (giả định)"]
+    lesson: "Xung đột lộ khi cộng dồn; dùng float trước tiên; >85-90% cần dự phòng."
+    data_reliability: "illustrative"
+  - name: "Thương mại điện tử đa nhóm Scrum (Scrum of Scrums)"
+    type: "sme"
+    setup: "Tình huống minh họa, không phải dữ liệu thật của công ty nào (kể cả Tiki)."
+    key_calculations: ["30 x 40% = 12 tính năng phụ thuộc", "12 x 2 = 24 -> 12 x 1 = 12 tính năng-tuần (giảm 50%)"]
+    lesson: "Phụ thuộc chéo là nguồn trễ chính; chuẩn hóa tối thiểu (DoD, thang ước lượng); đo thời gian chờ."
+    data_reliability: "illustrative"
+  - name: "Hạnh Phúc Fit-out (quán cà phê 80 m2)"
+    type: "sme"
+    setup: "BAC 630 triệu; hạn 42 ngày; mất 15 triệu/ngày trễ (toàn bộ giả định minh họa)."
+    key_calculations: ["Te 39,67; σ 2,94; z 0,79; P 78,6%; hạn 95% ~44,5", "Đường găng A-C-D-E-F-G; B float 15,67", "Crash E,C,G,A: 60 triệu, lợi 90, ròng 30; lịch 34 ngày", "Ngày 25: PV 430, EV 382, AC 410; CPI 0,93, SPI 0,89; EAC 676,2/658/709,6; TCPI 1,13", "EMV tổng 33,5 = 5,3% BAC"]
+    lesson: "Dồn giám sát C-D-E dù lo máy nhập khẩu; cam kết 42 ngày chỉ 78,6%; crash có chọn lọc; EVM hằng tuần; quỹ dự phòng từ EMV."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "CPM dự án 8 việc (Bài 2)"
+    inputs: {A: "3, -", B: "4, A", C: "2, A", D: "5, B", E: "6, C", F: "3, D+E", G: "4, B", H: "2, F+G"}
+    steps:
+      - "Forward: A 0-3; B 3-7; C 3-5; D 7-12; E 5-11; F ES=max(12,11)=12, EF=15; G 7-11; H ES=max(15,11)=15, EF=17"
+      - "Backward từ LF(H)=17: F LF 15 LS 12; G LF 15 LS 11; D LS 7; E LF 12 LS 6; C LS 4; B LF=min(LS D 7, LS G 11)=7 LS 3; A LS 0"
+      - "Float: C=1, E=1, G=4, các việc còn lại 0"
+    result: "Đường găng A-B-D-F-H = 17 ngày; chuỗi A-C-E-F-H = 16 ngày nên C, E float 1; G float 4. (đã verify Python)"
+  - name: "PERT 5 việc nối tiếp, xác suất xong trong 30 ngày (Bài 3)"
+    inputs: {activities: "(2,4,6), (3,5,13), (1,2,3), (6,9,18), (4,4,10)", D: 30}
+    steps:
+      - "t_e = 4, 6, 2, 10, 5 => Te = 27"
+      - "Phương sai = 0,444 + 2,778 + 0,111 + 4 + 1 = 8,333; σ = 2,89"
+      - "z = (30-27)/2,89 = 1,04; Phi ~ 0,85"
+    result: "Xác suất ~85% (đã verify Python)"
+  - name: "EVM Bài 5"
+    inputs: {BAC: 500, PV: 200, EV: 180, AC: 210}
+    steps: ["CV = -30; SV = -20", "CPI = 0,857; SPI = 0,90", "EAC = 500/0,857 = 583,3; VAC = -83,3"]
+    result: "Vượt chi phí, chậm 10%; không cải thiện thì vượt ngân sách ~16,7% (đã verify Python)"
+  - name: "Crashing Bài 4 (đường găng song song)"
+    inputs: {slopes: "A 3 (max1), B 2 (max1), D 1,5 (max2), F 4 (max1), H 5 (max1), E 2 (max1)", target: "rút 2 ngày từ 17"}
+    steps:
+      - "Crash D 1 ngày (1,5): A-B-D-F-H = 16, trùng A-C-E-F-H = 16 -> hai đường găng"
+      - "Giảm tiếp 1 ngày phải giảm cả hai: việc chung A (3) rẻ hơn D+E (3,5)"
+      - "Kiểm tra: A-B-D-F-H = 15; A-C-E-F-H = 15; A-B-G-H = 12"
+    result: "Chi phí 1,5 + 3 = 4,5 triệu; dự án còn 15 ngày"
+  - name: "Xác suất kịp hạn tổng hợp (Bài 12)"
+    inputs: {Te: 50, variance: 16, D: 54}
+    steps: ["σ = 4", "z = (54-50)/4 = 1,0", "Phi(1) = 0,841"]
+    result: "~84% kịp hạn, 16% rủi ro trễ"
+  - name: "Velocity Bài 6"
+    inputs: {v: [21, 25, 23, 27, 24], backlog_left: 168}
+    steps: ["Trung bình 120/5 = 24", "168/24 = 7"]
+    result: "7 sprint (~14 tuần nếu sprint 2 tuần)"
+  - name: "Fit-out: xác suất kịp hạn 42 ngày và crash (tóm tắt case)"
+    inputs: {Te: 39.67, sigma: 2.94, D: 42}
+    steps: ["z = 0,79 -> 78,6%", "Crash E 2 ngày (18), C 2 ngày (20), G 1 (10), A 1 (12) = 60 triệu", "Lợi 6 x 15 = 90 -> ròng 30; không đường găng mới (A5+B11+F3+G3 = 22)"]
+    result: "Lịch 40 -> 34 ngày; lợi ròng 30 triệu"
+
+practice_questions:
+  - {q: "Lập WBS ít nhất 3 cấp cho một dự án thực tế (sự kiện, ra mắt sản phẩm, app).", a: "Cấp 1 giai đoạn/deliverable; cấp 2 hạng mục; cấp 3 gói 8-80 giờ; kiểm tra quy tắc 100%."}
+  - {q: "CPM cho 8 việc A3, B4(A), C2(A), D5(B), E6(C), F3(D,E), G4(B), H2(F,G).", a: "Tổng 17 ngày; đường găng A-B-D-F-H; float C=1, E=1, G=4."}
+  - {q: "PERT 5 việc nối tiếp, xác suất xong trong 30 ngày.", a: "Te 27, σ 2,89, z 1,04, ~85%."}
+  - {q: "Crash 2 ngày cho dự án Bài 2 với chi phí đã cho.", a: "D 1 ngày + A 1 ngày = 4,5 triệu, còn 15 ngày; chú ý đường găng song song."}
+  - {q: "BAC 500, PV 200, EV 180, AC 210: tính chỉ số và EAC.", a: "CV -30, SV -20, CPI 0,857, SPI 0,90, EAC 583,3, VAC -83,3."}
+  - {q: "Velocity 21,25,23,27,24, backlog còn 168.", a: "24 điểm/sprint, 7 sprint."}
+  - {q: "Chọn phương pháp cho xây nhà, phát triển app, tổ chức hội nghị.", a: "Waterfall; Agile/Scrum; Hybrid."}
+  - {q: "Phân tích nguyên nhân gốc Denver Airport.", a: "Nhóm: scope creep, rủi ro công nghệ, phối hợp, ép tiến độ; mỗi nhóm một biện pháp bằng công cụ trong bài (change control, PERT, họp stakeholders, thử nghiệm tích hợp); dùng xương cá/5 Whys."}
+  - {q: "Lập ma trận rủi ro tối thiểu 8 rủi ro, 4 nhóm.", a: "Gán P, I, EMV = P x I, xếp hạng, tổng EMV = dự phòng, chọn 1 trong 4 chiến lược."}
+  - {q: "Thiết kế quy trình quản lý xung đột nguồn lực đa dự án.", a: "Resource pool, cộng dồn theo ngày, quy tắc ưu tiên, dùng float, thuê ngoài, họp tuần."}
+  - {q: "Xây Scrum of Scrums cho 4 nhóm.", a: "1 đại diện/nhóm; họp 2-3 lần/tuần 15-30 phút; 3 câu hỏi; bảng phụ thuộc chung và DoD."}
+  - {q: "Te = 50, tổng phương sai 16, hạn 54.", a: "σ 4, z 1,0, ~84,1%."}
+
+checklist:
+  - "Mọi dự án có WBS trước khi bắt đầu"
+  - "Đã xác định đường găng cho dự án nhiều việc phụ thuộc"
+  - "Có quy trình change control chính thức"
+  - "Có công cụ theo dõi tập trung cho đa dự án"
+  - "Đội được đào tạo cơ bản Waterfall vs Agile để chọn phương pháp"
+  - "Có lessons learned sau mỗi dự án"
+  - "Dùng ít nhất một chỉ số định lượng (CPI, SPI hoặc velocity)"
+  - "Ma trận rủi ro được cập nhật định kỳ"
+  - "Stakeholders chính được xác định và giao tiếp thường xuyên"
+  - "Ước lượng 3 điểm (PERT) cho việc bất định cao"
+  - "Có quỹ dự phòng từ EMV"
+  - "Đã kiểm tra float trước khi crash"
+  - "KPI: CPI, SPI > 1; đúng hạn > 90%; vượt ngân sách < 10%; velocity ổn định"
+  - "Risk Register mẫu: yêu cầu đổi liên tục, thành viên chủ chốt nghỉ, ước lượng sai, xung đột nguồn lực, nhà thầu phụ giao chậm, phụ thuộc chéo nhóm Scrum"
+
+excel_google_sheets_templates:
+  - name: "Bảng CPM cơ bản"
+    columns: "Công việc | Thời gian | Phụ thuộc | ES | EF | LS | LF | Float | Đường găng?"
+    formulas: "ES = MAX(EF việc trước); EF = ES + d; LF = MIN(LS việc sau); LS = LF - d; Float = LS - ES (0 = đường găng)"
+  - name: "Bảng EVM hằng tuần"
+    columns: "Tuần | PV | EV | AC | CV | SV | CPI | SPI | EAC = BAC/CPI | Cảnh báo"
+    formulas: "CV = EV-AC; SV = EV-PV; CPI = EV/AC; SPI = EV/PV; conditional formatting: đỏ nếu < 0,9, vàng 0,9-0,95; EV = % hoàn thành gói x ngân sách gói"
+  - name: "Risk Register / EMV"
+    columns: "Rủi ro | Xác suất | Thiệt hại | EMV | Chiến lược | Chủ sở hữu"
+    formulas: "EMV = P x I; dự phòng = SUM(EMV)"
+  - name: "Resource histogram"
+    columns: "Ngày | Nhu cầu từng dự án | Tổng nhu cầu | Công suất | Chênh lệch"
+    formulas: "Chênh lệch = Công suất - Tổng nhu cầu; U = SUM(nhu cầu)/SUM(công suất)"

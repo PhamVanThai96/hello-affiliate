@@ -1,0 +1,1170 @@
+id: "m08"
+name_vi: "Chiến lược bố trí mặt bằng"
+name_en: "Layout Strategy"
+source_file: "08-layout-strategy.md"
+purpose: >
+  Quyết định đặt cái gì ở đâu (máy, trạm, kho, quầy, lối đi) sao cho dòng chảy vật liệu, con người và
+  thông tin ngắn, trơn và rẻ nhất. Module cung cấp công cụ định lượng (Load-Distance, Center of Gravity,
+  Line Balancing, ROC, break-even layout, payback tự động hoá) và quy trình SLP rút gọn cho SME Việt Nam.
+  Lưu ý nguồn: mọi số liệu case có nhãn "giả định minh họa" do tác giả tự thiết kế, không phải số thật của doanh nghiệp được nhắc tên.
+when_to_use:
+  - "Chọn loại layout (Process, Product, Fixed-Position, Cellular) theo khối lượng và chủng loại"
+  - "Xưởng/kho có nhân công vận chuyển chạy suốt ngày: muốn xếp lại các khu để giảm quãng đường (Load-Distance)"
+  - "Chọn vị trí kho/trung tâm phân phối phục vụ nhiều điểm giao (Center of Gravity)"
+  - "Chuyền lắp ráp có người chờ, người quá tải: tính takt time, số trạm, cân bằng chuyền (RPW)"
+  - "Xưởng nhiều mã sản phẩm: lập cell bằng Group Technology / ROC"
+  - "So sánh đầu tư dây chuyền chuyên dụng với máy đa năng (break-even layout)"
+  - "Quán cà phê/nhà hàng/phòng khám giờ cao điểm bị tắc: tìm nút cổ chai và đường đi nhân viên"
+  - "Cửa hàng bán lẻ: vùng nóng/lạnh, loop/grid/free-flow, doanh thu trên m2"
+  - "Có nên đầu tư AGV/robot kho không (payback)"
+  - "Chuỗi nhiều chi nhánh cần playbook layout chuẩn hoá"
+prerequisites: ["m01", "m05"]
+related_modules:
+  - "m01: chiến lược quy trình và ma trận Volume-Variety quyết định loại layout"
+  - "m05: capacity planning - Line Balancing gắn với Product Layout, năng lực = min các nguồn lực"
+  - "m03: supply chain - cross-docking, mạng lưới phân phối liên quan layout kho; Center of Gravity chọn vị trí kho"
+  - "m04: inventory - phân loại ABC quyết định vị trí lưu trữ (slotting)"
+  - "m09: theory of constraints - nút cổ chai, tối ưu cục bộ không tăng năng lực toàn hệ"
+
+concepts:
+  - term_vi: "Bố trí mặt bằng"
+    term_en: "Facility Layout"
+    definition: "Sắp xếp vật lý máy móc, trạm làm việc, kho, quầy, lối đi, khu chờ trong một không gian để dòng chảy vật liệu, người, thông tin ngắn và trơn nhất."
+    why_it_matters: >
+      Khác phần lớn quyết định vận hành vì (1) tốn kém và khó đảo ngược (dời dây chuyền = dừng sản xuất, đi lại điện nước),
+      (2) tác động lặp lại hằng ngày (một mét thừa x hàng trăm chuyến x hàng nghìn ngày), (3) ràng buộc năng lực: trần công suất
+      và chi phí đơn vị phụ thuộc máy được đặt ở đâu, không chỉ số máy. Với bán lẻ/dịch vụ layout còn dẫn dắt hành vi và quyết định doanh thu trên m2.
+  - term_vi: "Lịch sử phát triển layout"
+    term_en: "Layout history"
+    definition: "Henry Ford 1913 (dây chuyền lắp ráp di động, xe Model T); Mitrofanov thập niên 1950 (Group Technology); Salveson 1955 (bài toán cân bằng chuyền); Muther 1961 (SLP, tái bản 1973); Toyota 1950-1970s (Ohno: cell, one-piece flow, takt); King 1980 (ROC); Underhill 1999 (Why We Buy)."
+    why_it_matters: "Dòng tiến hoá: từ bố trí 'đặt máy chỗ tiện' đến coi layout là bài toán tối ưu có dữ liệu (khối lượng, khoảng cách, thời gian) và có quy trình (SLP). Nguồn nêu 'nên đối chiếu nguồn gốc khi trích dẫn chính thức'."
+  - term_vi: "Ma trận khối lượng - chủng loại"
+    term_en: "Volume-Variety matrix"
+    definition: "Chủng loại cao + khối lượng thấp: Process; chủng loại cao + khối lượng vừa/cao: Cellular; chủng loại thấp + khối lượng cao: Product; khối lượng = 1: Fixed-Position."
+    why_it_matters: >
+      Mỗi layout là một canh bạc giữa chi phí cố định (thiết bị chuyên dụng) và chi phí biến đổi mỗi đơn vị (nhân công, vận chuyển, chờ).
+      Process: FC thấp, VC cao (đi vòng, chờ nhiều). Product: FC cao, VC thấp (chảy thẳng). Do đó khối lượng quyết định layout; SME mới khởi nghiệp hiếm khi nên bắt đầu bằng dây chuyền cố định.
+  - term_vi: "Bốn loại layout"
+    term_en: "Process / Product / Fixed-Position / Cellular layout"
+    definition: "Process: gom máy/chức năng giống nhau (bệnh viện, xưởng cơ khí theo đơn). Product: xếp theo trình tự công đoạn (chuyền lắp ráp, chuyền may). Fixed-Position: sản phẩm đứng yên, nguồn lực đến (tàu, nhà, lắp đặt). Cellular: gom máy thành cell xử lý một họ sản phẩm (Group Technology)."
+    why_it_matters: "Process linh hoạt nhưng vận chuyển cao, WIP lớn; Product năng suất cao nhưng cứng nhắc (một trạm hỏng dừng cả chuyền); Cellular là đường giữa: linh hoạt + giảm WIP nhưng phân tích GT ban đầu phức tạp, máy trùng lặp."
+  - term_vi: "Layout bán lẻ và dịch vụ"
+    term_en: "Retail / Service layout (Grid, Free-Flow, Loop)"
+    definition: "Grid: dãy kệ song song (siêu thị, hiệu thuốc). Free-Flow: bố trí tự do (thời trang). Loop/Racetrack: một lối chính dẫn qua mọi khu (IKEA, khu ẩm thực/rạp ở tầng trên TTTM). Dịch vụ có servicescape: khách và nhân viên cùng nằm trong không gian."
+    why_it_matters: "Ngoài giảm di chuyển, layout bán lẻ tối đa hoá doanh thu trên m2 bằng cách dẫn dắt khách qua khu trọng yếu; servicescape phải cân bằng hiệu quả phục vụ (đường đi nhân viên ngắn) và trải nghiệm (riêng tư, âm thanh, ánh sáng)."
+  - term_vi: "Chi phí vận chuyển nội bộ"
+    term_en: "Material Handling Cost"
+    definition: "Chi phí di chuyển vật liệu giữa các bộ phận, xấp xỉ tỷ lệ với số lượt x quãng đường x đơn giá mỗi lượt-mét."
+    why_it_matters: "Vận chuyển không tạo thêm giá trị cho khách nên là một dạng lãng phí (waste). Đây là lý do Load-Distance chỉ cần so tải x khoảng cách khi đơn giá như nhau."
+  - term_vi: "Sơ đồ quan hệ hoạt động và TCR"
+    term_en: "Activity Relationship Chart (REL) / Total Closeness Rating"
+    definition: "Bảng tam giác ghi mức cần gần nhau A/E/I/O/U/X (kèm lý do); TCR = tổng điểm quan hệ của một bộ phận (A=4, E=3, I=2, O=1, U=0, X=-1; quy ước điểm có thể khác giữa tài liệu)."
+    why_it_matters: "Không phải quan hệ nào cũng đo được bằng số chuyến (quản đốc cần gần xưởng để giám sát; khu sơn phải xa khu hàn vì tia lửa). Muther đưa REL để ghi cả yếu tố định tính. Bộ phận TCR cao đặt ở trung tâm."
+  - term_vi: "Load-Distance (Weighted Distance)"
+    term_en: "Load-Distance"
+    definition: "LD = tổng (tải giữa i,j x khoảng cách i,j); khoảng cách rectilinear (Manhattan) vì xe nâng không đi chéo xuyên tường."
+    why_it_matters: "Biến trực giác 'các bộ phận nối tiếp thì đặt cạnh nhau' thành con số để so phương án và thuyết phục chủ doanh nghiệp (từ 2,3 triệu xuống 1,4 triệu đồng/ngày trong ví dụ)."
+  - term_vi: "Phương pháp trọng tâm"
+    term_en: "Center of Gravity"
+    definition: "Toạ độ trung bình có trọng số khối lượng của các điểm cần phục vụ; điểm càng nhiều hàng càng kéo tâm về phía mình (như tâm khối lượng trong vật lý)."
+    why_it_matters: "Chọn vị trí kho/DC phục vụ nhiều điểm có sản lượng khác nhau. Chỉ là điểm xuất phát: tối thiểu hoá khoảng cách chim bay có trọng số xấp xỉ, bỏ qua giá thuê đất, hạ tầng, giờ cấm tải nội đô."
+  - term_vi: "Takt time"
+    term_en: "Takt time"
+    definition: "Thời gian khả dụng mỗi ngày / nhu cầu mỗi ngày = nhịp mà mỗi sản phẩm phải rời chuyền để theo kịp nhu cầu. 'Takt' là tiếng Đức nghĩa là nhịp, Toyota dùng."
+    why_it_matters: "Làm nhanh hơn takt là sản xuất dư (lãng phí), chậm hơn là thiếu hàng. Thời gian khả dụng phải trừ giờ nghỉ, họp đầu ca, bảo trì định kỳ."
+  - term_vi: "Cân bằng dây chuyền"
+    term_en: "Assembly Line Balancing"
+    definition: "Chia các task vào các trạm sao cho thời gian mỗi trạm gần bằng nhau, không vượt chu kỳ C, tuân thủ thứ tự tiền nhiệm."
+    why_it_matters: "Chuyền chỉ chạy nhanh bằng trạm chậm nhất, trạm khác phải chờ (idle time). Salveson (1955) phát biểu bài toán; Helgeson và Birnie (1961) đề xuất RPW. Chu kỳ C phải nằm giữa thời gian task dài nhất (task không thể chia giữa hai trạm) và takt time."
+  - term_vi: "Trọng số vị trí"
+    term_en: "Ranked Positional Weight (RPW)"
+    definition: "RPW_i = t_i + tổng thời gian mọi task theo sau i; ưu tiên xếp task RPW cao vào trạm sớm."
+    why_it_matters: "Task có nhiều việc phía sau phụ thuộc vào nó, nếu bị trì hoãn sẽ làm nghẽn cả chuỗi nên được xếp sớm."
+  - term_vi: "Group Technology và cell"
+    term_en: "Group Technology / Cellular layout"
+    definition: "Nhóm chi tiết có hình dáng/quy trình gia công tương tự thành họ; gom máy cần thiết làm trọn một họ vào một cell, chi tiết chảy như mini product layout."
+    why_it_matters: "Mitrofanov (Liên Xô, thập niên 1950): loạt nhỏ đạt hiệu quả gần hàng loạt. Giải quyết bài toán process layout linh hoạt nhưng chờ lâu/WIP nhiều, product layout hiệu quả nhưng chỉ khi khối lượng lớn. Toyota tích hợp vào TPS."
+  - term_vi: "Rank Order Clustering"
+    term_en: "Rank Order Clustering (ROC, King 1980)"
+    definition: "Thuật toán lập cell: coi mỗi hàng/cột của ma trận máy-chi tiết là số nhị phân, sắp xếp giảm dần luân phiên đến khi không đổi để các số 1 tụ thành khối chéo."
+    why_it_matters: "Tự động hoá việc nhóm máy - chi tiết thay vì thử bằng mắt. Thực tế hiếm khi tách sạch; phần tử ngoại lệ xử lý bằng nhân đôi máy hoặc chạy liên cell."
+  - term_vi: "Dòng chảy từng chi tiết"
+    term_en: "One-piece flow vs batch-and-queue"
+    definition: "One-piece flow: chuyển từng chi tiết sang công đoạn kế ngay; batch-and-queue: xong cả lô mới chuyển."
+    why_it_matters: "Trong layout theo lô mỗi chi tiết chờ 99 chi tiết khác trước khi sang trạm kế. Cell xoá thời gian chờ này (lead time lô 100 chi tiết: 800 giảm còn 206 phút). Điều kiện: công đoạn cân bằng, máy gần nhau, công nhân đa kỹ năng."
+  - term_vi: "Định luật Little"
+    term_en: "Little's Law"
+    definition: "WIP = Throughput x Lead Time."
+    why_it_matters: "Với throughput không đổi, giảm lead time đồng nghĩa giảm WIP tương ứng, giải phóng vốn lưu động và diện tích."
+  - term_vi: "Systematic Layout Planning"
+    term_en: "SLP (Muther 1961, tái bản 1973)"
+    definition: "Quy trình 6 bước: P-Q, dòng chảy vật liệu, quan hệ hoạt động, nhu cầu không gian, Block Layout, đánh giá + Detailed Layout."
+    why_it_matters: "Tránh hai sai lầm: vẽ ngay khi chưa hiểu dòng chảy, và chỉ nhìn vận chuyển mà bỏ yếu tố định tính. Điểm mạnh: tạo nhiều phương án rồi chấm điểm thay vì bảo vệ phương án đầu tiên."
+  - term_vi: "Vùng nóng - vùng lạnh và tầm mắt"
+    term_en: "Hot Zone / Cold Zone, Eye-Level Selling"
+    definition: "Vùng nóng: khu khách thấy đầu tiên hoặc gần quầy thu ngân (mua bốc phát); vùng lạnh: góc khuất. Tầm mắt khoảng 1,4-1,7 m thường được chú ý nhiều hơn."
+    why_it_matters: "Khách rẽ theo thói quen và chỉ dừng nơi có kích thích thị giác: đặt hàng lợi nhuận cao/mới ở vùng nóng, hàng thiết yếu (sữa, gạo) sâu bên trong để khách đi xuyên cửa hàng. Mức chênh theo tầm mắt tuỳ ngành, cần đo bằng dữ liệu riêng, không áp con số chung (Underhill 1999 là nền tảng quan sát khoa học)."
+  - term_vi: "Dòng chảy một chiều và 5S"
+    term_en: "One-way flow, 5S, Aisle design"
+    definition: "One-way: dòng vật liệu/khách theo một hướng, tránh cắt ngang. 5S (Seiri, Seiton, Seiso, Seiketsu, Shitsuke): sàng lọc, sắp xếp, sạch sẽ, săn sóc, sẵn sàng. Lối đi: cân bằng mật độ lưu trữ và an toàn/tốc độ."
+    why_it_matters: "Mỗi lần dòng chảy cắt nhau là điểm nghẽn tiềm năng; one-way biến nhiều giao điểm thành đường thẳng dễ cân bằng. 5S giữ layout không hỏng sau vài tháng (mỗi vật có chỗ của nó)."
+  - term_vi: "Goods-to-Person, AGV/AMR, Dark Store, Omnichannel"
+    term_en: "Goods-to-Person, AGV/AMR, Dark Store, Omnichannel"
+    definition: "Goods-to-Person: hàng đến người lấy bằng robot thay vì người đi đến hàng. Dark Store: chỉ phục vụ giao online. Omnichannel: cửa hàng vừa bán trực tiếp vừa lấy hàng/giao từ cửa hàng, cần khu soạn đơn riêng phía sau."
+    why_it_matters: "Amazon (qua Kiva Systems, mua lại 2012) tiên phong robot di chuyển kệ đến trạm cố định; không cần lối đi cho người nên tăng mật độ, nhưng mức tăng cụ thể phụ thuộc cấu hình, không nên trích con số chung; đầu tư rất cao nên chỉ hợp doanh nghiệp lớn, khối lượng ổn định."
+  - term_vi: "Layout module và layout cố định"
+    term_en: "Flexible (modular) vs fixed layout"
+    definition: "Module (kệ có bánh xe, vách ghép): vốn ban đầu cao hơn, chi phí thay đổi sau thấp. Cố định: rẻ ban đầu, hợp sản xuất ổn định."
+    why_it_matters: "Phải so bằng chi phí vòng đời, không chỉ vốn ban đầu; doanh nghiệp tăng trưởng nhanh, hay đổi sản phẩm nên cân nhắc module."
+
+formulas:
+  - id: "m08_layout_total_cost"
+    name_vi: "Tổng chi phí của một layout"
+    name_en: "Layout total cost"
+    expression_latex: 'TC = FC + VC \times Q'
+    expression_python: "fc + vc * q"
+    excel: "=FC + VC*Q"
+    variables:
+      - {symbol: "fc", meaning: "Chi phí cố định (thiết bị, dây chuyền, đồ gá)", unit: "VNĐ"}
+      - {symbol: "vc", meaning: "Chi phí biến đổi mỗi đơn vị (nhân công, vận chuyển, chờ)", unit: "VNĐ/đơn vị"}
+      - {symbol: "q", meaning: "Sản lượng", unit: "đơn vị"}
+    when_to_use: "So sánh tổng chi phí hai phương án layout ở một mức sản lượng cụ thể."
+    why_it_works: "Mỗi layout là canh bạc giữa FC và VC: process layout FC thấp VC cao, product layout FC cao VC thấp."
+    assumptions: ["VC không đổi theo sản lượng", "Cùng phạm vi chi phí cho hai phương án"]
+    pitfalls: ["Quên nhu cầu bất định: FC cao chỉ hợp lý khi chắc chắn đạt sản lượng trong vòng đời thiết bị"]
+    interpretation: "Phương án có TC thấp hơn tại Q dự kiến là rẻ hơn; xem điểm hoà vốn để biết ngưỡng đổi phương án."
+    example:
+      inputs: {fc: 200000000, vc: 90000, q: 10000}
+      steps: ["Process layout tại Q=10.000: 200.000.000 + 90.000 x 10.000 = 1.100.000.000", "Product layout (FC 900 triệu, VC 40.000) tại Q=10.000 = 1.300.000.000"]
+      result: "Process rẻ hơn tại Q=10.000 (1,10 tỷ so với 1,30 tỷ); giả định minh họa"
+  - id: "m08_layout_breakeven"
+    name_vi: "Sản lượng hoà vốn giữa Process và Product layout"
+    name_en: "Process vs Product layout break-even volume"
+    expression_latex: 'Q^* = \frac{FC_{product} - FC_{process}}{VC_{process} - VC_{product}}'
+    expression_python: "(fc_product - fc_process) / (vc_process - vc_product)"
+    excel: "=(FC_product-FC_process)/(VC_process-VC_product)"
+    variables:
+      - {symbol: "fc_product", meaning: "Chi phí cố định product layout", unit: "VNĐ"}
+      - {symbol: "fc_process", meaning: "Chi phí cố định process layout", unit: "VNĐ"}
+      - {symbol: "vc_process", meaning: "Chi phí biến đổi mỗi đơn vị của process layout", unit: "VNĐ/đơn vị"}
+      - {symbol: "vc_product", meaning: "Chi phí biến đổi mỗi đơn vị của product layout", unit: "VNĐ/đơn vị"}
+    when_to_use: "Quyết định có đầu tư dây chuyền chuyên dụng (product) thay máy đa năng (process) hay không."
+    why_it_works: "Đặt TC hai phương án bằng nhau: chênh lệch vốn cố định chia cho phần tiết kiệm biến đổi mỗi đơn vị cho biết cần bán bao nhiêu đơn vị để thu hồi chênh lệch đầu tư."
+    assumptions: ["VC_process > VC_product", "Chi phí tuyến tính theo Q", "Cùng vòng đời thiết bị"]
+    pitfalls: ["Nhu cầu thấp/bất định thì giữ process (rẻ, linh hoạt)", "Không gồm giá trị linh hoạt đổi mẫu"]
+    interpretation: "Q dự kiến > Q* thì chọn product; Q dự kiến < Q* thì chọn process."
+    example:
+      inputs: {fc_product: 900000000, fc_process: 200000000, vc_process: 90000, vc_product: 40000}
+      steps: ["Chênh FC = 900.000.000 - 200.000.000 = 700.000.000", "Chênh VC = 90.000 - 40.000 = 50.000", "Q* = 700.000.000 / 50.000 = 14.000", "Kiểm chứng: tại 14.000 cả hai = 1.460.000.000; tại 10.000 process 1,10 tỷ so với product 1,30 tỷ; tại 20.000 product 1,70 tỷ so với process 2,00 tỷ"]
+      result: "Q* = 14.000 đơn vị (giả định minh họa)"
+  - id: "m08_rel_tcr"
+    name_vi: "Tổng điểm gần kề (TCR) trong REL Chart"
+    name_en: "Total Closeness Rating"
+    expression_latex: 'TCR_i = \sum_{j \ne i} score(rel_{ij}),\quad A=4,E=3,I=2,O=1,U=0,X=-1'
+    expression_python: "sum(scores)"
+    excel: "=SUM(range_diem_quan_he)"
+    variables:
+      - {symbol: "scores", meaning: "Danh sách điểm quan hệ của bộ phận với các bộ phận khác theo thang A=4..X=-1", unit: "điểm"}
+    when_to_use: "Xếp hạng mức 'trung tâm' của từng bộ phận trước khi vẽ Block Layout (SLP bước 3-5)."
+    why_it_works: "Quy đổi quan hệ định tính (giám sát, an toàn) thành điểm để cộng; bộ phận nhiều quan hệ mạnh nên ở giữa để gần nhiều bộ phận khác."
+    assumptions: ["Quy ước điểm có thể khác giữa tài liệu (nguồn ghi rõ)"]
+    pitfalls: ["Quan hệ X (không nên gần) trừ điểm nhưng không thay thế ràng buộc an toàn/PCCC thực tế"]
+    interpretation: "TCR cao đặt ở trung tâm, TCR thấp ra rìa."
+    example:
+      inputs: {scores: [4, 4, 2]}
+      steps: ["Sản xuất: K-S (A=4) + S-D (A=4) + S-V (I=2) = 10", "Kho = 4+3+0 = 7; Đóng gói = 3+4+1 = 8; Văn phòng = 0+2+1 = 3"]
+      result: "TCR Sản xuất = 10 (trung tâm), Đóng gói 8, Kho 7, Văn phòng 3 (rìa)"
+  - id: "m08_material_handling_cost"
+    name_vi: "Tổng chi phí vận chuyển nội bộ"
+    name_en: "Total Material Handling Cost"
+    expression_latex: '\text{Total Cost} = \sum_i \sum_j X_{ij} \cdot C_{ij} \cdot D_{ij}'
+    expression_python: "sum(x * c * d for x, c, d in zip(X, C, D))"
+    excel: "=SUMPRODUCT(X, C, D)"
+    variables:
+      - {symbol: "X", meaning: "Danh sách số lượt di chuyển mỗi cặp bộ phận", unit: "lượt/ngày"}
+      - {symbol: "C", meaning: "Đơn giá mỗi lượt trên mỗi mét", unit: "VNĐ/lượt/mét"}
+      - {symbol: "D", meaning: "Khoảng cách mỗi cặp", unit: "mét"}
+    when_to_use: "Quy tải x quãng đường ra tiền để so sánh phương án và tính hoàn vốn di dời."
+    why_it_works: "Chi phí vận chuyển gần như tỷ lệ thuận với số lượt, quãng đường và đơn giá."
+    assumptions: ["Đơn giá tuyến tính theo mét", "Đơn giá có thể khác theo cặp"]
+    pitfalls: ["Đơn giá giả định cần ước từ lương + hao mòn xe thực tế"]
+    interpretation: "So tổng chi phí/ngày giữa các phương án; nhân 26 ngày để ra tháng."
+    example:
+      inputs: {X: [120, 100, 100, 10, 5], C: [200, 200, 200, 200, 200], D: [20, 20, 20, 40, 40]}
+      steps: ["Kho-SX 120x20x200 = 480.000; SX-ĐG 400.000; ĐG-KTP 400.000; Kho-ĐG 80.000; SX-KTP 40.000", "Tổng = 1.400.000 đồng/ngày (phương án 2); phương án 1 tốn 2.300.000"]
+      result: "1.400.000 đồng/ngày; tiết kiệm 900.000/ngày (39%), khoảng 23,4 triệu/tháng (26 ngày); giả định minh họa"
+  - id: "m08_load_distance"
+    name_vi: "Load-Distance (khoảng cách có trọng số)"
+    name_en: "Load-Distance / Weighted Distance"
+    expression_latex: 'LD = \sum_i \sum_j f_{ij} \times d_{ij}'
+    expression_python: "sum(f * d for f, d in zip(loads, dists))"
+    excel: "=SUMPRODUCT(Tải, Khoảng_cách)"
+    variables:
+      - {symbol: "loads", meaning: "Tải giữa các cặp bộ phận", unit: "lượt/ngày"}
+      - {symbol: "dists", meaning: "Khoảng cách giữa các cặp (rectilinear)", unit: "mét"}
+    when_to_use: "Đánh giá và so sánh phương án bố trí theo quy trình; dùng làm hàm mục tiêu cho Pairwise Exchange."
+    why_it_works: "Khi đơn giá như nhau mọi cặp có thể bỏ đi, chỉ so tải x khoảng cách; LD nhỏ nghĩa là công di chuyển nhỏ."
+    assumptions: ["Đơn giá vận chuyển như nhau mọi cặp", "Tải ổn định (đếm 3-5 ngày)"]
+    pitfalls: ["Bỏ qua quan hệ định tính (an toàn, giám sát): kết hợp REL Chart", "Pairwise Exchange là heuristic, không bảo đảm tối ưu toàn cục"]
+    interpretation: "Giảm LD so với hiện trạng; đổi ra tiền qua đơn giá."
+    example:
+      inputs: {loads: [90, 80, 70, 60, 55, 15, 10, 20, 5, 10], dists: [20, 20, 10, 20, 20, 20, 10, 20, 30, 10]}
+      steps: ["Layout hiện tại Tân An: 1.800+1.600+700+1.200+1.100+300+100+400+150+100 = 7.450", "Layout đề xuất (sau 3 vòng hoán đổi): LD = 4.700", "Giảm 2.750 (36,9%)"]
+      result: "LD hiện tại 7.450 chuyến.m/ngày; đề xuất 4.700 (vét cạn 720 hoán vị xác nhận tối ưu); giả định minh họa"
+  - id: "m08_rectilinear_distance"
+    name_vi: "Khoảng cách rectilinear (Manhattan)"
+    name_en: "Rectilinear distance"
+    expression_latex: 'd = |x_i - x_j| + |y_i - y_j|'
+    expression_python: "abs(x1 - x2) + abs(y1 - y2)"
+    excel: "=ABS(x1-x2)+ABS(y1-y2)"
+    variables:
+      - {symbol: "x1", meaning: "Toạ độ x điểm 1", unit: "mét"}
+      - {symbol: "y1", meaning: "Toạ độ y điểm 1", unit: "mét"}
+      - {symbol: "x2", meaning: "Toạ độ x điểm 2", unit: "mét"}
+      - {symbol: "y2", meaning: "Toạ độ y điểm 2", unit: "mét"}
+    when_to_use: "Tính d_ij trong Load-Distance cho xưởng/kho có lối đi vuông góc."
+    why_it_works: "Xe nâng/xe đẩy không đi đường chéo xuyên tường, chỉ đi theo lối vuông góc."
+    assumptions: ["Lối đi dạng lưới"]
+    pitfalls: ["Dùng đường chim bay làm ngắn khoảng cách thực"]
+    interpretation: "Khoảng cách thực tế giữa tâm hai ô."
+    example:
+      inputs: {x1: 0, y1: 0, x2: 20, y2: 10}
+      steps: ["Lưới 2 hàng x 3 cột, mỗi ô 10 m. Kho gỗ ở ô (0,0), Lắp ráp ở hàng 2 cột 3 = (10; 20) m", "d = |0-20| + |0-10| = 30 m (đúng với cặp Kho gỗ-Lắp ráp = 30 m trong layout hiện tại)"]
+      result: "30 m"
+  - id: "m08_center_of_gravity"
+    name_vi: "Phương pháp trọng tâm (vị trí kho trung tâm)"
+    name_en: "Center of Gravity"
+    expression_latex: 'C_x = \frac{\sum_i x_i W_i}{\sum_i W_i},\quad C_y = \frac{\sum_i y_i W_i}{\sum_i W_i}'
+    expression_python: "(sum(x * w for x, w in zip(xs, ws)) / sum(ws), sum(y * w for y, w in zip(ys, ws)) / sum(ws))"
+    excel: "=SUMPRODUCT(x,W)/SUM(W) ; =SUMPRODUCT(y,W)/SUM(W)"
+    variables:
+      - {symbol: "xs", meaning: "Toạ độ x các điểm", unit: "km"}
+      - {symbol: "ys", meaning: "Toạ độ y các điểm", unit: "km"}
+      - {symbol: "ws", meaning: "Khối lượng vận chuyển đến/từ mỗi điểm", unit: "kiện/ngày"}
+    when_to_use: "Chọn điểm xuất phát cho kho/DC phục vụ nhiều cửa hàng/khách có sản lượng khác nhau."
+    why_it_works: "Trung bình có trọng số của toạ độ như tâm khối lượng vật lý: điểm nhiều hàng kéo tâm về phía mình."
+    assumptions: ["Chi phí tỷ lệ với khoảng cách chim bay", "Bỏ qua địa hình và mạng đường"]
+    pitfalls: ["Bỏ qua giá thuê đất, hạ tầng, hạn chế giờ xe tải nội đô: coi là điểm xuất phát rồi cân nhắc địa điểm khả thi quanh đó"]
+    interpretation: "Tâm gần điểm nhiều hàng nhất; kiểm chứng bằng tổng khối lượng x khoảng cách chim bay."
+    example:
+      inputs: {xs: [2, 8, 5, 10], ys: [9, 7, 2, 3], ws: [400, 300, 500, 200]}
+      steps: ["Tổng W = 1.400; tổng xW = 7.700; tổng yW = 7.300", "Cx = 7.700/1.400 = 5,5 km; Cy = 7.300/1.400 = 5,21 km", "Tổng kiện.km tại tâm khoảng 5.613,5; tại C 5.815,4 (cao hơn 3,6%); tại A 7.705,3 (cao hơn 37%)"]
+      result: "Tâm (5,5; 5,21) km; giả định minh họa"
+  - id: "m08_takt_time"
+    name_vi: "Takt time"
+    name_en: "Takt time"
+    expression_latex: '\text{Takt time} = \frac{\text{Thời gian khả dụng mỗi ngày}}{\text{Nhu cầu mỗi ngày}}'
+    expression_python: "available_time / demand"
+    excel: "=Thời_gian_khả_dụng/Nhu_cầu"
+    variables:
+      - {symbol: "available_time", meaning: "Thời gian sản xuất khả dụng mỗi ngày (đã trừ nghỉ, họp, bảo trì)", unit: "giây"}
+      - {symbol: "demand", meaning: "Nhu cầu mỗi ngày", unit: "sản phẩm"}
+    when_to_use: "Xác định nhịp chuyền và chu kỳ C tối đa khi cân bằng chuyền."
+    why_it_works: "Cần 210 sản phẩm trong 25.200 giây thì trung bình cứ 120 giây phải có một sản phẩm rời chuyền; nhanh hơn là sản xuất dư, chậm hơn là thiếu hàng."
+    assumptions: ["Nhu cầu ổn định", "Thời gian khả dụng đã trừ nghỉ/bảo trì"]
+    pitfalls: ["Quên trừ giờ nghỉ, họp đầu ca", "Chọn C < thời gian task dài nhất (không khả thi)"]
+    interpretation: "C phải thoả: thời gian task dài nhất <= C <= takt."
+    example:
+      inputs: {available_time: 25200, demand: 210}
+      steps: ["Ca 8 giờ, nghỉ 1 giờ: 7 giờ = 25.200 giây", "Takt = 25.200 / 210 = 120 giây; task dài nhất 70 giây < 120 nên C = 120 chọn được"]
+      result: "120 giây"
+  - id: "m08_min_stations"
+    name_vi: "Số trạm tối thiểu lý thuyết"
+    name_en: "Theoretical minimum number of stations"
+    expression_latex: 'N_{min} = \left\lceil \frac{\sum t_i}{C} \right\rceil'
+    expression_python: "math.ceil(sum_t / c)"
+    excel: "=ROUNDUP(SUM(Thời_gian)/Chu_kỳ,0)"
+    variables:
+      - {symbol: "sum_t", meaning: "Tổng thời gian mọi task", unit: "giây"}
+      - {symbol: "c", meaning: "Chu kỳ chuyền", unit: "giây"}
+    when_to_use: "Chặn dưới số trạm trước khi phân bổ task."
+    why_it_works: "Không thể có 3,54 trạm; 3 trạm không đủ chỗ cho tổng thời gian nên phải làm tròn lên 4."
+    assumptions: ["Task chia được tuỳ ý (lý thuyết)"]
+    pitfalls: ["Ràng buộc tiền nhiệm và độ lớn task có thể buộc dùng nhiều trạm hơn N_min (vd nhu cầu 280/ngày: N_min=5 nhưng cần 6)"]
+    interpretation: "N thực tế = N_min là tối ưu về số trạm."
+    example:
+      inputs: {sum_t: 425, c: 120}
+      steps: ["425/120 = 3,54", "Làm tròn lên = 4"]
+      result: "N_min = 4"
+  - id: "m08_line_efficiency"
+    name_vi: "Hiệu suất chuyền và độ trễ cân bằng"
+    name_en: "Line efficiency and balance delay"
+    expression_latex: 'E = \frac{\sum t_i}{N \times C} \times 100\%,\quad \text{Balance Delay} = 100\% - E'
+    expression_python: "sum_t / (n * c)"
+    excel: "=SUM(Thời_gian)/(Số_trạm*Chu_kỳ)"
+    variables:
+      - {symbol: "sum_t", meaning: "Tổng thời gian mọi task", unit: "giây"}
+      - {symbol: "n", meaning: "Số trạm thực tế", unit: "trạm"}
+      - {symbol: "c", meaning: "Chu kỳ chuyền", unit: "giây"}
+    when_to_use: "Đánh giá mức độ cân bằng; so sánh phương án phân bổ."
+    why_it_works: "E cho biết bao nhiêu phần trăm thời gian trả lương thực sự dành cho việc có ích; phần còn lại là thời gian đứng chờ."
+    assumptions: ["Mọi trạm dùng chu kỳ C"]
+    pitfalls: ["Hiệu suất không tăng đơn điệu theo sản lượng", "100% tải trạm nút cổ chai thì chậm 5% là mất sản lượng"]
+    interpretation: "KPI thường nhắm trên 85% (tuỳ ngành). Ghế: 88,5% tốt; chuyền Tân An cũ 70,8% kém."
+    example:
+      inputs: {sum_t: 425, n: 4, c: 120}
+      steps: ["E = 425 / (4 x 120) = 425/480 = 88,5%", "Idle = 480 - 425 = 55 giây; Balance Delay = 11,5%", "Chuyền cũ Tân An: 425 / (6 x 100) = 70,8%"]
+      result: "88,5%"
+  - id: "m08_line_idle"
+    name_vi: "Thời gian nhàn rỗi mỗi chu kỳ"
+    name_en: "Idle time per cycle"
+    expression_latex: '\text{Idle} = N \times C - \sum t_i'
+    expression_python: "n * c - sum_t"
+    excel: "=Số_trạm*Chu_kỳ-SUM(Thời_gian)"
+    variables:
+      - {symbol: "n", meaning: "Số trạm", unit: "trạm"}
+      - {symbol: "c", meaning: "Chu kỳ", unit: "giây"}
+      - {symbol: "sum_t", meaning: "Tổng thời gian task", unit: "giây"}
+    when_to_use: "Biết tổng thời gian đứng chờ để giao việc phụ hoặc xem có bỏ được một trạm."
+    why_it_works: "Công suất thời gian N x C trừ phần việc thực = phần lãng phí."
+    assumptions: ["Như hiệu suất chuyền"]
+    pitfalls: ["Tối ưu cục bộ một trạm mà bỏ qua trạm nút cổ chai"]
+    interpretation: "Trạm có thời gian rảnh là chỗ giao thêm việc phụ hoặc đệm khi nhu cầu tăng."
+    example:
+      inputs: {n: 4, c: 120, sum_t: 425}
+      steps: ["Rảnh từng trạm: 30 + 15 + 0 + 10 = 55 giây", "4 x 120 - 425 = 55"]
+      result: "55 giây/chu kỳ"
+  - id: "m08_rpw"
+    name_vi: "Trọng số vị trí (RPW)"
+    name_en: "Ranked Positional Weight"
+    expression_latex: 'RPW_i = t_i + \sum_{j \in \text{task theo sau } i} t_j'
+    expression_python: "t_i + sum(t_after)"
+    excel: "=t_i+SUM(thời_gian_các_task_theo_sau)"
+    variables:
+      - {symbol: "t_i", meaning: "Thời gian task i", unit: "giây"}
+      - {symbol: "t_after", meaning: "Danh sách thời gian các task theo sau i (trực tiếp và gián tiếp)", unit: "giây"}
+    when_to_use: "Xếp thứ tự ưu tiên khi phân bổ task vào trạm (Helgeson-Birnie 1961)."
+    why_it_works: "Task có nhiều việc phụ thuộc phía sau nếu trì hoãn sẽ nghẽn cả chuỗi nên xếp sớm."
+    assumptions: ["Có sơ đồ tiền nhiệm đầy đủ"]
+    pitfalls: ["Chỉ cộng task kề sau mà quên task gián tiếp", "RPW là heuristic, không bảo đảm tối ưu"]
+    interpretation: "Phân bổ theo RPW giảm dần; mỗi trạm chọn task RPW cao nhất đủ điều kiện tiền nhiệm và còn vừa thời gian."
+    example:
+      inputs: {t_i: 40, t_after: [35, 45, 55, 70]}
+      steps: ["Task B: theo sau là D, E, G, I", "RPW(B) = 40 + 35 + 45 + 55 + 70 = 245", "RPW(A)=425; C=200; E=170; D=160; F=140; G=125; H=110; I=70", "Thứ tự: A,B,C,E,D,F,G,H,I; phân bổ: {A,B}=90, {C,E}=105, {D,F,G}=120, {H,I}=110"]
+      result: "RPW(B) = 245; chuyền ghế 4 trạm, E = 88,5% (giả định minh họa)"
+  - id: "m08_line_output"
+    name_vi: "Sản lượng chuyền theo chu kỳ thực"
+    name_en: "Line output at actual cycle"
+    expression_latex: '\text{Output} = \frac{\text{Thời gian khả dụng}}{\text{Chu kỳ thực}}'
+    expression_python: "available_time / cycle"
+    excel: "=Thời_gian_khả_dụng/Chu_kỳ"
+    variables:
+      - {symbol: "available_time", meaning: "Thời gian khả dụng", unit: "giây"}
+      - {symbol: "cycle", meaning: "Chu kỳ thực = thời gian trạm chậm nhất", unit: "giây"}
+    when_to_use: "Kiểm tra nhạy cảm: nếu trạm nút cổ chai chậm đi thì mất bao nhiêu sản lượng."
+    why_it_works: "Chuyền chạy nhanh bằng trạm chậm nhất nên chu kỳ thực quyết định sản lượng."
+    assumptions: ["Không có buffer giữa trạm"]
+    pitfalls: ["Cân bằng 100% tải không dư dự phòng"]
+    interpretation: "So với nhu cầu để thấy thiếu hụt hoặc sản xuất dư."
+    example:
+      inputs: {available_time: 25200, cycle: 126}
+      steps: ["Trạm 3 chậm 5%: 120 x 1,05 = 126 giây", "25.200 / 126 = 200 ghế, thiếu 10 ghế (4,8% nhu cầu 210)", "Chuyền cũ: chu kỳ 100 giây cho 252 ghế/ngày, dư 20% so với nhu cầu"]
+      result: "200 ghế/ngày"
+  - id: "m08_roc_binary_value"
+    name_vi: "Giá trị nhị phân hàng/cột (ROC)"
+    name_en: "ROC binary value"
+    expression_latex: 'V = \sum_k a_k \cdot 2^{n-k}'
+    expression_python: "int(''.join(map(str, row)), 2)"
+    excel: "=BIN2DEC(chuỗi_nhị_phân)"
+    variables:
+      - {symbol: "row", meaning: "Danh sách 0/1 của hàng (hoặc cột), cột/hàng trái nhất có trọng số lớn nhất", unit: "bit"}
+    when_to_use: "Mỗi vòng ROC: tính giá trị nhị phân rồi sắp xếp giảm dần, lặp đến khi hàng và cột không đổi."
+    why_it_works: "Trọng số luỹ thừa 2 buộc các số 1 dồn về trái/trên, làm các khối cell hiện ra trên đường chéo."
+    assumptions: ["Ma trận máy-chi tiết nhị phân"]
+    pitfalls: ["Phần tử ngoại lệ (số 1 ngoài khối): nhân đôi máy hoặc chạy liên cell"]
+    interpretation: "Khi ma trận không đổi giữa hai vòng thì dừng; mỗi khối chéo là một cell."
+    example:
+      inputs: {row: [1, 0, 1, 0, 0, 1]}
+      steps: ["M1 = 101001 = 41; M2 = 010110 = 22; M3 = 101000 = 40; M4 = 010100 = 20; M5 = 000110 = 6", "Thứ tự hàng: M1, M3, M2, M4, M5", "Cột (hàng mới) P1=24, P2=6, P3=24, P4=7, P5=5, P6=16 thì thứ tự P1,P3,P6,P4,P2,P5", "Kết quả: Cell 1 = {M1,M3} làm {P1,P3,P6}; Cell 2 = {M2,M4,M5} làm {P2,P4,P5}, không phần tử ngoại lệ"]
+      result: "41 (M1); 2 cell tách sạch; giả định minh họa"
+  - id: "m08_batch_lead_time"
+    name_vi: "Lead time theo lô (batch-and-queue)"
+    name_en: "Batch lead time"
+    expression_latex: 'T_{batch} = n \times Q \times t'
+    expression_python: "n_ops * batch * t"
+    excel: "=n*Q*t"
+    variables:
+      - {symbol: "n_ops", meaning: "Số công đoạn", unit: "công đoạn"}
+      - {symbol: "batch", meaning: "Cỡ lô", unit: "chi tiết"}
+      - {symbol: "t", meaning: "Thời gian mỗi chi tiết mỗi công đoạn", unit: "phút"}
+    when_to_use: "Cơ sở so sánh với one-piece flow khi cân nhắc chuyển sang cell."
+    why_it_works: "Cả lô xong công đoạn này mới sang công đoạn sau nên mỗi chi tiết chờ cả lô."
+    assumptions: ["Công đoạn cân bằng", "Chưa tính chờ giữa khu và vận chuyển"]
+    pitfalls: ["Đây là cận dưới; thực tế còn cộng chờ và vận chuyển"]
+    interpretation: "Đối chiếu với lead time cell."
+    example:
+      inputs: {n_ops: 4, batch: 100, t: 2}
+      steps: ["4 x 100 x 2 = 800 phút"]
+      result: "800 phút (giả định minh họa)"
+  - id: "m08_onepiece_lead_time"
+    name_vi: "Lead time dòng chảy từng chi tiết (cell)"
+    name_en: "One-piece flow lead time"
+    expression_latex: 'T_{cell} = n \times t + (Q - 1) \times t'
+    expression_python: "n_ops * t + (batch - 1) * t"
+    excel: "=n*t+(Q-1)*t"
+    variables:
+      - {symbol: "n_ops", meaning: "Số công đoạn", unit: "công đoạn"}
+      - {symbol: "batch", meaning: "Số chi tiết", unit: "chi tiết"}
+      - {symbol: "t", meaning: "Thời gian mỗi công đoạn", unit: "phút"}
+    when_to_use: "Ước lượng lợi ích lead time khi chuyển process layout sang cell."
+    why_it_works: "Chi tiết đầu ra sau n x t, sau đó cứ mỗi t có thêm một chi tiết; xoá thời gian chờ cả lô."
+    assumptions: ["Các công đoạn trong cell cân bằng (cùng t)", "Máy gần nhau"]
+    pitfalls: ["Công đoạn lệch nhịp thì nút cổ chai quyết định"]
+    interpretation: "Giảm so với batch = (T_batch - T_cell)/T_batch."
+    example:
+      inputs: {n_ops: 4, batch: 100, t: 2}
+      steps: ["4 x 2 + 99 x 2 = 8 + 198 = 206 phút", "Giảm (800 - 206)/800 = 74,3%", "Bài 4: lô 50, 5 công đoạn, 3 phút: 750 phút so với 162 phút, giảm 78,4%"]
+      result: "206 phút (giảm 74,3%); giả định minh họa"
+  - id: "m08_littles_law"
+    name_vi: "Định luật Little"
+    name_en: "Little's Law"
+    expression_latex: 'WIP = Throughput \times Lead\ Time'
+    expression_python: "throughput * lead_time"
+    excel: "=Throughput*LeadTime"
+    variables:
+      - {symbol: "throughput", meaning: "Sản lượng ra", unit: "đơn vị/ngày"}
+      - {symbol: "lead_time", meaning: "Lead time", unit: "ngày"}
+    when_to_use: "Quy đổi giảm lead time thành giảm WIP và vốn lưu động giải phóng."
+    why_it_works: "Hàng tồn trong hệ thống = tốc độ ra x thời gian ở lại trong hệ thống."
+    assumptions: ["Hệ thống ổn định, throughput không đổi"]
+    pitfalls: ["Giả định throughput không đổi khi layout thay đổi cần kiểm chứng"]
+    interpretation: "Lead time giảm 25% thì WIP trung bình giảm 25%."
+    example:
+      inputs: {throughput: 400, lead_time: 12}
+      steps: ["Xưởng may: WIP trước = 400 x 12 = 4.800 áo", "Sau (lead time 9 ngày) = 400 x 9 = 3.600 áo; giảm 1.200 áo", "Vốn lưu động giải phóng = 1.200 x 80.000 = 96 triệu đồng"]
+      result: "4.800 áo (giả định minh họa)"
+  - id: "m08_sales_per_m2"
+    name_vi: "Doanh thu trên mét vuông"
+    name_en: "Sales per square meter"
+    expression_latex: '\text{Sales per m}^2 = \frac{\text{Doanh thu tháng}}{\text{Diện tích trưng bày}}'
+    expression_python: "revenue / display_area"
+    excel: "=Doanh_thu/Diện_tích_trưng_bày"
+    variables:
+      - {symbol: "revenue", meaning: "Doanh thu tháng", unit: "VNĐ/tháng"}
+      - {symbol: "display_area", meaning: "Diện tích trưng bày", unit: "m2"}
+    when_to_use: "KPI chính cho layout bán lẻ; so với chính mình theo thời gian và giữa cửa hàng cùng chuỗi."
+    why_it_works: "Mặt bằng là nguồn lực khan hiếm; layout tốt dẫn khách qua khu giá trị cao nên doanh thu/m2 tăng."
+    assumptions: ["Diện tích trưng bày xác định nhất quán"]
+    pitfalls: ["Doanh thu/m2 cao nhưng biên gộp thấp chưa chắc tốt: ghép với biên lợi nhuận gộp"]
+    interpretation: "So với benchmark ngành/chuỗi, không có ngưỡng chung."
+    example:
+      inputs: {revenue: 1800000000, display_area: 120}
+      steps: ["1.800.000.000 / 120 = 15.000.000 đồng/m2/tháng"]
+      result: "15 triệu đồng/m2/tháng (giả định minh họa)"
+  - id: "m08_space_utilization"
+    name_vi: "Hệ số sử dụng không gian"
+    name_en: "Space Utilization"
+    expression_latex: '\text{Space Utilization} = \frac{\text{Diện tích hữu ích}}{\text{Tổng diện tích}}'
+    expression_python: "useful_area / total_area"
+    excel: "=Diện_tích_hữu_ích/Tổng_diện_tích"
+    variables:
+      - {symbol: "useful_area", meaning: "Diện tích hữu ích (trưng bày, kho, quầy)", unit: "m2"}
+      - {symbol: "total_area", meaning: "Tổng diện tích", unit: "m2"}
+    when_to_use: "Đo hiệu quả dùng mặt bằng, phát hiện diện tích chết."
+    why_it_works: "Tỷ lệ diện tích tạo giá trị trên tổng diện tích đang trả tiền thuê."
+    assumptions: ["Định nghĩa diện tích hữu ích nhất quán"]
+    pitfalls: ["Quá cao có thể nghĩa là lối đi chật, mất an toàn"]
+    interpretation: "Mục tiêu tham khảo > 70%."
+    example:
+      inputs: {useful_area: 520, total_area: 700}
+      steps: ["520 / 700 = 74,3%"]
+      result: "74,3% (đạt mục tiêu > 70%)"
+  - id: "m08_aisle_capacity"
+    name_vi: "Sức chứa kho theo thiết kế lối đi"
+    name_en: "Warehouse capacity by aisle design"
+    expression_latex: 'Capacity = \left\lfloor \frac{W}{D + A} \right\rfloor \times 2 \times \left\lfloor \frac{L}{p} \right\rfloor \times levels'
+    expression_python: "int(width // (rack_depth + aisle)) * 2 * int(length // pallet_w) * levels"
+    excel: "=INT(W/(D+A))*2*INT(L/p)*Tầng"
+    variables:
+      - {symbol: "width", meaning: "Chiều rộng kho", unit: "m"}
+      - {symbol: "rack_depth", meaning: "Độ sâu giá kệ đôi (2 hàng)", unit: "m"}
+      - {symbol: "aisle", meaning: "Bề rộng lối đi", unit: "m"}
+      - {symbol: "length", meaning: "Chiều dài kho", unit: "m"}
+      - {symbol: "pallet_w", meaning: "Bề rộng pallet", unit: "m"}
+      - {symbol: "levels", meaning: "Số tầng kệ", unit: "tầng"}
+    when_to_use: "So sánh lối đi rộng (xe nâng thường) và lối hẹp (xe chuyên dụng) về sức chứa."
+    why_it_works: "Mỗi module = giá kệ + lối đi; module nhiều hơn thì nhiều vị trí pallet hơn trên cùng diện tích."
+    assumptions: ["Kệ đôi 2 hàng", "Lối chính tối thiểu khoảng 3-3,5 m cho xe nâng quay đầu, lối phụ 1,5-2 m cho người (kiểm tra theo loại xe và quy chuẩn thực tế)"]
+    pitfalls: ["Lối hẹp cần xe chuyên dụng đắt hơn và kỹ thuật cao hơn: so khoản đầu tư với giá trị diện tích tiết kiệm"]
+    interpretation: "Tăng sức chứa % = B/A - 1."
+    example:
+      inputs: {width: 36, rack_depth: 2.4, aisle: 3.5, length: 40, pallet_w: 1.2, levels: 3}
+      steps: ["A (lối 3,5 m): module 5,9 m, floor(36/5,9)=6; 2 x 33 = 66 vị trí/tầng; 6 x 66 x 3 = 1.188 pallet", "B (lối 2,0 m): module 4,4 m, 8 module; 8 x 66 x 3 = 1.584 pallet", "Tăng 1.584/1.188 - 1 = 33,3%"]
+      result: "1.188 pallet (A); 1.584 (B), +33,3% (giả định minh họa)"
+  - id: "m08_labor_cost_per_worker"
+    name_vi: "Chi phí lao động một công nhân mỗi năm"
+    name_en: "Annual labor cost per worker"
+    expression_latex: 'C_{worker} = w \times 12 \times (1 + r_{ins})'
+    expression_python: "monthly_wage * 12 * (1 + ins_rate)"
+    excel: "=Lương*12*(1+Tỷ_lệ_bảo_hiểm)"
+    variables:
+      - {symbol: "monthly_wage", meaning: "Lương tháng", unit: "triệu VNĐ"}
+      - {symbol: "ins_rate", meaning: "Tỷ lệ bảo hiểm công ty đóng thêm (giả định 21,5%, cần xác nhận quy định hiện hành)", unit: "tỷ lệ"}
+    when_to_use: "Đầu vào cho payback tự động hoá và tiết kiệm cân bằng chuyền."
+    why_it_works: "Chi phí thật của một công nhân gồm lương + bảo hiểm bắt buộc phía doanh nghiệp."
+    assumptions: ["Tỷ lệ bảo hiểm 21,5% là giả định của nguồn"]
+    pitfalls: ["Bỏ sót chi phí phụ (đào tạo, phúc lợi)"]
+    interpretation: "Dùng làm tiết kiệm mỗi công nhân thay thế."
+    example:
+      inputs: {monthly_wage: 10, ins_rate: 0.215}
+      steps: ["10 x 12 x 1,215 = 145,8 triệu/năm; tháng = 12,15 triệu (2 công nhân = 24,3 triệu/tháng)"]
+      result: "145,8 triệu đồng/năm (giả định minh họa)"
+  - id: "m08_automation_payback"
+    name_vi: "Thời gian hoàn vốn tự động hoá"
+    name_en: "Automation payback"
+    expression_latex: '\text{Payback (năm)} = \frac{\text{Đầu tư}}{\text{Lao động tiết kiệm/năm} - \text{Chi phí vận hành/bảo trì/năm}}'
+    expression_python: "capex / (n_workers * cost_per_worker - opex)"
+    excel: "=Đầu_tư/(Số_CN*Chi_phí_CN-Vận_hành)"
+    variables:
+      - {symbol: "capex", meaning: "Chi phí đầu tư ban đầu", unit: "triệu VNĐ"}
+      - {symbol: "n_workers", meaning: "Số công nhân thay thế", unit: "người"}
+      - {symbol: "cost_per_worker", meaning: "Chi phí một công nhân mỗi năm", unit: "triệu VNĐ/năm"}
+      - {symbol: "opex", meaning: "Chi phí vận hành và bảo trì mỗi năm (điện, bảo trì, phần mềm)", unit: "triệu VNĐ/năm"}
+    when_to_use: "Quyết định đầu tư AGV/robot kho."
+    why_it_works: "Lợi ích ròng = lao động tiết kiệm trừ chi phí hệ thống; chia vốn cho lợi ích ròng ra số năm thu hồi."
+    assumptions: ["Chưa tính tăng sức chứa, giảm sai sót, rủi ro tăng lương", "Lợi ích ròng dương"]
+    pitfalls: ["Mẫu số <= 0 thì không hoàn vốn", "Hệ thống phải chạy tỷ lệ sử dụng cao"]
+    interpretation: "Nguyên tắc thường dùng: hoàn vốn dưới 2-3 năm. SME nên tối ưu layout thủ công trước."
+    example:
+      inputs: {capex: 4500, n_workers: 12, cost_per_worker: 145.8, opex: 450}
+      steps: ["Tiết kiệm lao động = 12 x 145,8 = 1.749,6 triệu", "Lợi ích ròng = 1.749,6 - 450 = 1.299,6 triệu", "Payback = 4.500 / 1.299,6 = 3,5 năm", "6 công nhân: 10,6 năm; 24 công nhân (vận hành 550 triệu): 1,5 năm", "Bài 14: 3.000 / (8 x 9 x 12 x 1,215 - 300) = 4,0 năm (chưa nên đầu tư)"]
+      result: "3,5 năm (kho vừa); chỉ kho lớn mới thuyết phục; giả định minh họa"
+  - id: "m08_resource_capacity_per_hour"
+    name_vi: "Năng lực một nguồn lực theo giờ"
+    name_en: "Resource capacity per hour"
+    expression_latex: '\text{Năng lực} = \frac{3600}{t}'
+    expression_python: "3600 / t_sec"
+    excel: "=3600/t"
+    variables:
+      - {symbol: "t_sec", meaning: "Thời gian nguồn lực dùng cho một đơn/khách", unit: "giây"}
+    when_to_use: "Tìm nút cổ chai ở quán, quầy, trạm."
+    why_it_works: "Số đơn tối đa trong một giờ = 3.600 giây chia thời gian xử lý của nguồn lực chậm nhất."
+    assumptions: ["Xử lý tuần tự một đơn tại một thời điểm"]
+    pitfalls: ["Tính thời gian cả đi lại, chờ giao cắt, không chỉ thời gian pha chế"]
+    interpretation: "So với nhu cầu để ra mức sử dụng."
+    example:
+      inputs: {t_sec: 95}
+      steps: ["Quán cà phê trước: 15+100+20+20 = 155 s thì 3.600/155 = 23,2 đơn/giờ", "Sau: 75+12+8 = 95 s thì 3.600/95 = 37,9 đơn/giờ"]
+      result: "37,9 đơn/giờ (giả định minh họa)"
+  - id: "m08_utilization"
+    name_vi: "Mức sử dụng so với nhu cầu"
+    name_en: "Utilization (demand / capacity)"
+    expression_latex: 'U = \frac{\text{Nhu cầu}}{\text{Năng lực}}'
+    expression_python: "demand / capacity"
+    excel: "=Nhu_cầu/Năng_lực"
+    variables:
+      - {symbol: "demand", meaning: "Nhu cầu giờ cao điểm", unit: "đơn/giờ"}
+      - {symbol: "capacity", meaning: "Năng lực của nút cổ chai", unit: "đơn/giờ"}
+    when_to_use: "Kiểm tra ổn định hàng đợi và mục tiêu thiết kế."
+    why_it_works: "U > 100% thì hàng đợi tăng không ngừng, khách bỏ đi."
+    assumptions: ["Nhu cầu ổn định trong giờ cao điểm"]
+    pitfalls: ["Thiết kế sát 100% không còn dự phòng"]
+    interpretation: "Mục tiêu thiết kế khoảng 80-85% giờ cao điểm."
+    example:
+      inputs: {demand: 32, capacity: 37.9}
+      steps: ["Trước: 32 / 23,2 = 138% (hàng đợi tăng)", "Sau: 32 / 37,9 = 84% (ổn định)", "Doanh thu mất trước = 8,8 x 2 x 55.000 x 30 = khoảng 29 triệu/tháng"]
+      result: "84% sau tái bố trí"
+  - id: "m08_system_capacity"
+    name_vi: "Năng lực hệ thống = nguồn lực hẹp nhất"
+    name_en: "System capacity as min of resources"
+    expression_latex: 'Cap = \min\left(\frac{n_c T e_c}{t_c},\ \frac{n_d T e_d}{t_d}\right)'
+    expression_python: "min(n_chairs * T * eff_c / t_c, n_docs * T * eff_d / t_d)"
+    excel: "=MIN(n_ghe*T*hs_ghe/t_ghe, n_bs*T*hs_bs/t_bs)"
+    variables:
+      - {symbol: "n_chairs", meaning: "Số ghế", unit: "ghế"}
+      - {symbol: "T", meaning: "Thời gian mở cửa", unit: "phút/ngày"}
+      - {symbol: "eff_c", meaning: "Hiệu suất ghế", unit: "tỷ lệ"}
+      - {symbol: "t_c", meaning: "Thời gian ghế mỗi bệnh nhân", unit: "phút"}
+      - {symbol: "n_docs", meaning: "Số bác sĩ", unit: "người"}
+      - {symbol: "eff_d", meaning: "Hiệu suất bác sĩ", unit: "tỷ lệ"}
+      - {symbol: "t_d", meaning: "Thời gian bác sĩ mỗi bệnh nhân", unit: "phút"}
+    when_to_use: "Trước khi chi tiền mở rộng một nguồn lực (thêm ghế) để biết có thực sự tăng năng lực."
+    why_it_works: "Năng lực toàn hệ thống bị chặn bởi nguồn lực hẹp nhất (nút cổ chai, TOC)."
+    assumptions: ["Các nguồn lực độc lập", "Hiệu suất như giả định"]
+    pitfalls: ["Tối ưu cục bộ một khu mà quên nút cổ chai toàn hệ"]
+    interpretation: "Nút cổ chai chuyển sang nguồn lực khác sau khi nới."
+    example:
+      inputs: {n_chairs: 3, T: 540, eff_c: 0.8, t_c: 45, n_docs: 2, eff_d: 0.85, t_d: 25}
+      steps: ["Ghế: 3 x 540 x 0,8 / 45 = 28,8; bác sĩ: 2 x 540 x 0,85 / 25 = 36,72 (lấy 36)", "Trước: min = 28,8 (ghế là nút cổ chai, khoảng 29)", "Sau 5 ghế: ghế 48 > bác sĩ 36 nên năng lực 36 (+25%, không phải +67%)", "Cần 48 x 25 / (540 x 0,85) = 2,61 nên 3 bác sĩ"]
+      result: "28,8 bệnh nhân/ngày (giả định minh họa)"
+  - id: "m08_impulse_value"
+    name_vi: "Giá trị mua bốc phát kỳ vọng theo số khu đi qua"
+    name_en: "Expected impulse purchase value"
+    expression_latex: 'E = n_{zone} \times p \times v'
+    expression_python: "n_zones * p * v"
+    excel: "=n_khu*p*v"
+    variables:
+      - {symbol: "n_zones", meaning: "Số khu khách đi qua", unit: "khu"}
+      - {symbol: "p", meaning: "Xác suất mua bốc phát mỗi khu được nhìn thấy", unit: "tỷ lệ"}
+      - {symbol: "v", meaning: "Giá trị món bốc phát trung bình", unit: "VNĐ"}
+    when_to_use: "Minh hoạ lợi ích Loop layout so với Free-flow."
+    why_it_works: "Mô hình tuyến tính đơn giản: nhiều khu nhìn thấy thì nhiều cơ hội mua."
+    assumptions: ["Xác suất độc lập, giả định minh họa (0,8% mỗi khu, 120.000 đồng/món)"]
+    pitfalls: ["Đánh đổi: khách chỉ muốn mua nhanh khó chịu, cần lối tắt"]
+    interpretation: "Loop gấp khoảng 2,3 lần free-flow trong ví dụ."
+    example:
+      inputs: {n_zones: 50, p: 0.008, v: 120000}
+      steps: ["Free-flow: 22 x 0,008 x 120.000 = 21.120", "Loop: 50 x 0,008 x 120.000 = 48.000", "Chênh +26.880 đồng (khoảng 2,3 lần)"]
+      result: "48.000 đồng/khách (giả định minh họa, không phải số IKEA)"
+  - id: "m08_walk_hours"
+    name_vi: "Giờ đi bộ lấy hàng mỗi ngày"
+    name_en: "Daily picking walk hours"
+    expression_latex: 'H = \frac{N_{lines} \times \bar d}{v \times 3600}'
+    expression_python: "lines * avg_dist / (speed * 3600)"
+    excel: "=Dòng*KC_TB/(V*3600)"
+    variables:
+      - {symbol: "lines", meaning: "Số dòng lấy hàng mỗi ngày", unit: "dòng"}
+      - {symbol: "avg_dist", meaning: "Quãng đường đi bộ trung bình mỗi dòng", unit: "mét"}
+      - {symbol: "speed", meaning: "Tốc độ đi bộ", unit: "m/giây"}
+    when_to_use: "Đánh giá lợi ích slotting theo ABC (đưa SKU nhóm A gần khu đóng gói)."
+    why_it_works: "Pareto: 20% SKU chiếm khoảng 80% lượt lấy nên rút ngắn quãng đường nhóm A giảm mạnh tổng đi bộ."
+    assumptions: ["Tốc độ 1 m/s", "Giả định minh họa, mô tả Tiki chỉ ở mức nguyên lý"]
+    pitfalls: ["Phân loại ABC phải cập nhật định kỳ vì hàng bán chạy đổi theo mùa"]
+    interpretation: "Giờ tiết kiệm chia 7 giờ hiệu dụng ra số người tương đương."
+    example:
+      inputs: {lines: 5000, avg_dist: 38, speed: 1}
+      steps: ["Trước: 5.000 x 38 = 190.000 m = 52,8 giờ", "Sau (21 m): 105.000 m = 29,2 giờ (giảm 44,7%)", "Tiết kiệm 23,6 giờ, khoảng 3,4 người (7 giờ hiệu dụng)"]
+      result: "52,8 giờ/ngày trước"
+  - id: "m08_standardization_payback"
+    name_vi: "Hoàn vốn chuẩn hoá layout chuỗi"
+    name_en: "Layout standardization payback"
+    expression_latex: 'T = \frac{Capex}{(S_{std} - S_{non}) \times A \times GM}'
+    expression_python: "capex / ((s_std - s_non) * area * gm)"
+    excel: "=Chi_phí/((S_chuẩn-S_không)*Diện_tích*Biên_gộp)"
+    variables:
+      - {symbol: "capex", meaning: "Chi phí chuẩn hoá mỗi cửa hàng", unit: "triệu VNĐ"}
+      - {symbol: "s_std", meaning: "Doanh thu/m2 cửa hàng chuẩn", unit: "triệu VNĐ/m2/tháng"}
+      - {symbol: "s_non", meaning: "Doanh thu/m2 cửa hàng không chuẩn", unit: "triệu VNĐ/m2/tháng"}
+      - {symbol: "area", meaning: "Diện tích cửa hàng", unit: "m2"}
+      - {symbol: "gm", meaning: "Biên lợi nhuận gộp", unit: "tỷ lệ"}
+    when_to_use: "Quyết định nhân rộng layout chuẩn trong chuỗi."
+    why_it_works: "Lợi nhuận gộp tăng thêm mỗi tháng so với chi phí chuẩn hoá cho số tháng thu hồi."
+    assumptions: ["Chênh doanh thu hoàn toàn do layout (cần kiểm chứng bằng thí điểm có đối chứng)"]
+    pitfalls: ["Cửa hàng chuẩn có thể ở vị trí tốt hơn: thí điểm 2 cửa hàng so với 2 đối chứng"]
+    interpretation: "Nếu mức tăng thực chỉ bằng nửa giả định thì hoàn vốn khoảng 5,4 tháng, vẫn hợp lý."
+    example:
+      inputs: {capex: 85, s_std: 13.2, s_non: 12.0, area: 120, gm: 0.22}
+      steps: ["Chênh 1,2 triệu/m2/tháng; x 120 m2 = 144 triệu/tháng", "x 22% = 31,68 triệu lợi nhuận gộp/tháng", "85 / 31,68 = 2,7 tháng; 9 cửa hàng: đầu tư 765 triệu, tăng 285,12 triệu/tháng"]
+      result: "2,7 tháng (giả định minh họa)"
+  - id: "m08_pct_reduction"
+    name_vi: "Mức giảm tương đối"
+    name_en: "Relative reduction"
+    expression_latex: '\Delta\% = \frac{before - after}{before}'
+    expression_python: "(before - after) / before"
+    excel: "=(Trước-Sau)/Trước"
+    variables:
+      - {symbol: "before", meaning: "Giá trị trước thay đổi (LD, chi phí, lead time)", unit: "tuỳ chỉ tiêu"}
+      - {symbol: "after", meaning: "Giá trị sau thay đổi", unit: "tuỳ chỉ tiêu"}
+    when_to_use: "Báo cáo hiệu quả layout trước/sau."
+    why_it_works: "Chuẩn hoá để so sánh giữa các chỉ tiêu."
+    assumptions: ["Cùng điều kiện đo"]
+    pitfalls: ["Chỉ tin kết quả khi có đo trước/sau và đối chứng"]
+    interpretation: "Dương là cải thiện."
+    example:
+      inputs: {before: 7450, after: 4700}
+      steps: ["(7.450 - 4.700)/7.450 = 36,9%", "Tiết kiệm 2.750 x 300 đồng = 825.000 đồng/ngày = 21,45 triệu/tháng (26 ngày); di dời 60 triệu thì hoàn vốn 2,8 tháng"]
+      result: "36,9% (giả định minh họa)"
+
+frameworks:
+  - id: "m08_layout_type_selection"
+    name_vi: "Chọn loại layout theo Volume-Variety"
+    name_en: "Layout type selection"
+    origin: "Gắn với chiến lược quy trình (module m01) và ma trận khối lượng - chủng loại; Ford 1913 (product), Mitrofanov 1950s (cell), Toyota (cell/one-piece flow)."
+    components:
+      - "Process: chủng loại cao, khối lượng thấp; linh hoạt, vận chuyển cao, WIP lớn, make-to-order"
+      - "Product: khối lượng lớn, ít mẫu; năng suất cao, một trạm hỏng dừng cả chuyền"
+      - "Fixed-Position: sản phẩm cố định lớn (tàu, nhà, lắp đặt); nguồn lực di chuyển"
+      - "Cellular: khối lượng trung bình, họ sản phẩm tương tự; linh hoạt + giảm WIP, máy trùng lặp"
+    when_to_use: "Đầu quy trình thiết kế layout, khi mở rộng sản lượng hoặc đổi cơ cấu sản phẩm."
+    how_to_apply:
+      - "Hỏi: sản phẩm đa dạng, khối lượng thấp? Có thì Process (hoặc thử Cellular nếu có họ sản phẩm)"
+      - "Không: sản phẩm cố định lớn? Có thì Fixed-Position"
+      - "Không: khối lượng lớn, ít mẫu mã? Có thì Product; không thì Cellular"
+      - "Định lượng bằng break-even Q* giữa hai phương án (m08_layout_breakeven)"
+    how_to_read_results: "Q dự kiến > Q* thì đầu tư chuyên dụng; nhu cầu thấp/bất định thì giữ Process."
+    pitfalls: ["Bắt đầu SME mới bằng dây chuyền cố định", "Quên chi phí máy trùng lặp khi lên Cellular"]
+    example: "FC 200 triệu/VC 90.000 (process) so với FC 900 triệu/VC 40.000 (product): Q* = 14.000 (giả định minh họa)."
+  - id: "m08_fixed_position_layout"
+    name_vi: "Layout vị trí cố định cho công trường/thi công SME"
+    name_en: "Fixed-Position layout principles"
+    origin: "Nguồn trình bày như nguyên tắc thực hành (không gán tác giả)."
+    components: ["Vị trí kho vật liệu", "Khu gia công", "Lối cho cẩu/xe", "Lối thoát hiểm"]
+    when_to_use: "Nhà thầu xây dựng, hoàn thiện nội thất, đội lắp điều hoà."
+    how_to_apply:
+      - "Đặt vật liệu dùng nhiều và nặng nhất gần điểm sử dụng"
+      - "Sắp xếp theo thứ tự thi công (dùng trước đặt dễ lấy)"
+      - "Chừa lối cho cẩu/xe và lối thoát hiểm"
+      - "Xếp xe, vật tư, dụng cụ theo thứ tự thao tác tại hiện trường"
+    how_to_read_results: "Bài toán là đặt kho/khu gia công/lối đi quanh sản phẩm đứng yên."
+    pitfalls: ["Chi phí di chuyển nguồn lực cao, khó tối ưu không gian công trường"]
+    example: "Nhà thầu nội thất xếp vật tư theo thứ tự lắp đặt từng phòng."
+  - id: "m08_rel_chart"
+    name_vi: "Sơ đồ quan hệ hoạt động (REL Chart)"
+    name_en: "Activity Relationship Chart"
+    origin: "Muther (SLP, 1961): ghi mức cần gần nhau kể cả lý do định tính vì không phải quan hệ nào cũng đo bằng số chuyến."
+    components: ["Bảng tam giác bộ phận x bộ phận", "Mã A/E/I/O/U/X + lý do", "Điểm A=4,E=3,I=2,O=1,U=0,X=-1", "TCR mỗi bộ phận"]
+    when_to_use: "SLP bước 3; kết hợp From-To khi có cả quan hệ định tính (giám sát, an toàn)."
+    how_to_apply:
+      - "Liệt kê 4-5+ bộ phận; lập bảng tam giác"
+      - "Gán mã quan hệ kèm lý do cho từng cặp"
+      - "Tính TCR mỗi bộ phận"
+      - "Bộ phận TCR cao đặt giữa, TCR thấp ra rìa; cặp X tách xa"
+    how_to_read_results: "Mẫu Kho/SX/ĐG/VP: TCR SX=10 (giữa), ĐG=8, Kho=7, VP=3 (rìa). Là cơ sở vẽ Block Layout."
+    pitfalls: ["Quy ước điểm khác nhau giữa tài liệu", "Bỏ qua lý do ghi kèm làm khó rà soát sau"]
+    example: "Khu sơn và khu hàn mã X (tia lửa); kho hoá chất và khu ăn mã X."
+  - id: "m08_from_to_load_distance"
+    name_vi: "Ma trận Từ-Đến và Load-Distance, Pairwise Exchange"
+    name_en: "From-To Chart, Load-Distance and Pairwise Exchange"
+    origin: "Công cụ phân tích dòng chảy trong SLP; Pairwise Exchange là heuristic hoán đổi."
+    components: ["From-To Chart (tải giữa các cặp)", "Khoảng cách rectilinear giữa tâm ô", "LD = tổng tải x khoảng cách", "Hoán đổi từng cặp bộ phận"]
+    when_to_use: "Có dữ liệu thực số lượt di chuyển giữa các bộ phận (layout theo quy trình)."
+    how_to_apply:
+      - "Đếm số chuyến giữa các cặp trong 3-5 ngày, lấy trung bình/ngày"
+      - "Chia mặt bằng thành lưới ô; tính khoảng cách rectilinear"
+      - "Tính LD hiện tại"
+      - "Thử mọi hoán đổi cặp (6 bộ phận: 15 cặp), chọn hoán đổi giảm nhiều nhất"
+      - "Lặp đến khi không còn cải thiện; đổi ra tiền và tính hoàn vốn di dời"
+    how_to_read_results: "Tân An: 7.450 xuống 4.700 sau 3 vòng (Cưa cắt-Kho TP, Sơn-Kho TP, Lắp ráp-Kho TP); vét cạn 720 hoán vị cũng 4.700 nên tối ưu."
+    pitfalls: ["Heuristic không bảo đảm tối ưu toàn cục", "Bỏ qua ràng buộc định tính và PCCC"]
+    example: "Xếp theo dòng chảy: 2,3 triệu xuống 1,4 triệu đồng/ngày (giảm 39%), khoảng 23,4 triệu/tháng (giả định minh họa)."
+  - id: "m08_cog_siting"
+    name_vi: "Chọn vị trí kho bằng Center of Gravity"
+    name_en: "Center of Gravity siting"
+    origin: "Tương tự tâm khối lượng vật lý (không gán tác giả trong nguồn)."
+    components: ["Toạ độ điểm (x,y)", "Khối lượng W", "Cx, Cy"]
+    when_to_use: "Chọn điểm xuất phát cho kho/DC phục vụ nhiều điểm giao."
+    how_to_apply:
+      - "Lập bảng toạ độ x,y và W từng điểm"
+      - "Tính xW, yW, tổng"
+      - "Cx = tổng xW / tổng W; Cy tương tự"
+      - "Kiểm chứng bằng tổng W x khoảng cách ở các địa điểm khả thi quanh tâm"
+      - "Cân nhắc giá thuê, hạ tầng, giờ cấm tải"
+    how_to_read_results: "Tâm là điểm xuất phát, không phải đáp án cuối."
+    pitfalls: ["Đường chim bay khác đường phố thật", "Bỏ qua giá thuê đất, giờ lưu thông xe tải"]
+    example: "4 cửa hàng: tâm (5,5; 5,21) km; bài 3: (28,33; 20) (giả định minh họa)."
+  - id: "m08_line_balancing_rpw"
+    name_vi: "Cân bằng dây chuyền bằng RPW"
+    name_en: "Line Balancing with Ranked Positional Weight"
+    origin: "Salveson 1955 (phát biểu bài toán); Helgeson và Birnie 1961 (RPW); takt từ Toyota."
+    components: ["Takt time và chu kỳ C", "N_min", "Sơ đồ tiền nhiệm", "RPW", "Phân bổ trạm", "Hiệu suất, idle, balance delay"]
+    when_to_use: "Product layout/chuyền lắp ráp, chuyền may; tính số người cần theo nhu cầu."
+    how_to_apply:
+      - "Tính takt = thời gian khả dụng / nhu cầu; chọn C với max(t_i) <= C <= takt"
+      - "N_min = ceil(tổng t / C)"
+      - "Tính RPW mỗi task = t_i + tổng thời gian task theo sau"
+      - "Sắp thứ tự RPW giảm dần; mỗi trạm chọn task RPW cao nhất đã đủ tiền nhiệm và còn vừa C"
+      - "Kiểm tra tiền nhiệm; tính E, idle, balance delay; kiểm tra nhạy cảm (trạm nút cổ chai chậm 5%)"
+      - "Nếu cần: chia nhỏ task hoặc giảm thời gian task bằng đồ gá"
+    how_to_read_results: "Chuyền ghế: 4 trạm {A,B}90, {C,E}105, {D,F,G}120, {H,I}110; E=88,5%; trạm 3 là nút cổ chai 0 dư. Nhu cầu 280: N_min 5 nhưng thực tế 6 (78,7%)."
+    pitfalls: ["Cân bằng tải 100% không dự phòng", "Hiệu suất không tăng đơn điệu theo sản lượng", "Quên kiểm tra tiền nhiệm"]
+    example: "Xưởng Tân An: chuyền 6 công nhân E=70,8% thành 4 công nhân E=88,5%, tiết kiệm 24,3 triệu/tháng (giả định minh họa)."
+  - id: "m08_cellular_gt_roc"
+    name_vi: "Lập cell bằng Group Technology và ROC"
+    name_en: "Cellular layout with Group Technology / ROC"
+    origin: "Mitrofanov (Liên Xô, 1950s) Group Technology; King 1980 ROC; Toyota TPS tích hợp one-piece flow."
+    components: ["Ma trận máy-chi tiết nhị phân", "Giá trị nhị phân hàng/cột", "Sắp xếp luân phiên đến ổn định", "Khối chéo = cell", "Phần tử ngoại lệ"]
+    when_to_use: "Khối lượng trung bình, nhiều mã sản phẩm có quy trình tương tự; muốn giảm WIP và lead time."
+    how_to_apply:
+      - "Lập ma trận máy x chi tiết (1 = cần máy đó)"
+      - "Tính giá trị nhị phân mỗi hàng, sắp xếp giảm dần"
+      - "Tính giá trị nhị phân mỗi cột theo thứ tự hàng mới, sắp giảm dần"
+      - "Lặp đến khi không đổi; đọc các khối chéo là cell"
+      - "Xử lý phần tử ngoại lệ: nhân đôi máy hoặc chạy liên cell"
+      - "Thí điểm 1 cell cho sản phẩm bán chạy nhất; đo lead time rồi nhân rộng"
+    how_to_read_results: "Ví dụ 5 máy x 6 chi tiết: Cell 1 {M1,M3}/{P1,P3,P6}; Cell 2 {M2,M4,M5}/{P2,P4,P5}, không ngoại lệ."
+    pitfalls: ["Phân tích GT ban đầu phức tạp", "Cell chỉ hiệu quả khi công đoạn cân bằng, công nhân đa kỹ năng, nhu cầu họ sản phẩm ổn định"]
+    example: "Lô 100 chi tiết, 4 công đoạn x 2 phút: 800 phút xuống 206 phút (-74,3%) (giả định minh họa)."
+  - id: "m08_slp"
+    name_vi: "Systematic Layout Planning (SLP)"
+    name_en: "Systematic Layout Planning"
+    origin: "Richard Muther 1961 (tái bản 1973): thay thế việc vẽ ngay theo cảm tính bằng quy trình 6 bước kết hợp định lượng và định tính."
+    components:
+      - "1 Phân tích P-Q (Pareto sản phẩm)"
+      - "2 Dòng chảy vật liệu (Flow process chart, From-To)"
+      - "3 Quan hệ hoạt động (REL, TCR)"
+      - "4 Nhu cầu không gian, Relationship Diagram"
+      - "5 Block Layout (2-3 phương án)"
+      - "6 Đánh giá, chọn phương án, Detailed Layout (Load-Distance, ma trận trọng số)"
+    when_to_use: "Thiết kế/tái thiết kế layout toàn bộ mặt bằng."
+    how_to_apply:
+      - "Theo 6 bước; tạo nhiều phương án Block Layout"
+      - "Chấm điểm chung theo định lượng (Load-Distance) và định tính (an toàn, linh hoạt)"
+      - "Chi tiết hoá với cột, điện nước, PCCC, lối đi"
+    how_to_read_results: "Chọn phương án điểm cao nhất, không bảo vệ phương án đầu tiên."
+    pitfalls: ["Chỉ nhìn vận chuyển bỏ yếu tố định tính", "Vẽ trước khi hiểu dòng chảy"]
+    example: "Rút gọn 6 bước cho SME ở procedure m08_sme_6_steps."
+  - id: "m08_retail_layout_models"
+    name_vi: "Mô hình layout bán lẻ: Grid, Free-Flow, Loop; vùng nóng/lạnh; tầm mắt"
+    name_en: "Retail layout models and zone techniques"
+    origin: "Underhill 1999 (Why We Buy) quan sát hành vi khách; thông lệ ngành bán lẻ."
+    components: ["Grid: tối ưu diện tích, ít gợi ý mua", "Free-Flow: khám phá, hao diện tích", "Loop: mọi khu được thấy, khó chịu nếu mua nhanh", "Hot/Cold Zone", "Eye-Level Selling 1,4-1,7 m", "Sales per m2", "Phân bổ không gian theo lợi nhuận gộp/m2 và khu tạo lưu lượng"]
+    when_to_use: "Thiết kế cửa hàng, siêu thị mini, hiệu thuốc, thời trang."
+    how_to_apply:
+      - "Chọn mô hình theo hàng hoá và thương hiệu"
+      - "Đặt hàng lợi nhuận cao/mới ở vùng nóng gần lối vào và thu ngân; hàng thiết yếu sâu bên trong"
+      - "Để sản phẩm bổ trợ cạnh nhau; luôn để khách thấy lối ra/lối tắt"
+      - "Đo Sales per m2 và footfall (đếm tay 3-5 ngày) trước/sau thay đổi"
+    how_to_read_results: "So Sales per m2 với chính mình và cửa hàng cùng chuỗi, ghép với biên gộp."
+    pitfalls: ["Áp con số chênh lệch tầm mắt chung", "Gộp tác dụng layout với sự kiện, khuyến mại, thương hiệu"]
+    example: "Cửa hàng 120 m2 doanh thu 1,8 tỷ/tháng: 15 triệu đồng/m2 (giả định minh họa)."
+  - id: "m08_flow_principles"
+    name_vi: "Nguyên tắc dòng chảy một chiều, 5S, lối đi"
+    name_en: "One-way flow, 5S and aisle design"
+    origin: "5S: phương pháp tổ chức nơi làm việc Nhật Bản (Seiri, Seiton, Seiso, Seiketsu, Shitsuke)."
+    components: ["One-way: nguyên liệu vào một đầu, thành phẩm ra đầu kia", "5S", "Lối chính khoảng 3-3,5 m cho xe nâng, lối phụ 1,5-2 m cho người (kiểm tra thực tế)"]
+    when_to_use: "Nhà máy, nhà hàng, kho, quán nhỏ; làm trước mọi đầu tư vì gần như không tốn vốn."
+    how_to_apply:
+      - "Vẽ đường đi nhân viên/khách, loại giao cắt và đi ngược chiều"
+      - "Áp 5S: mỗi vật có chỗ của nó"
+      - "Cân bằng mật độ lưu trữ và an toàn khi chọn lối đi"
+    how_to_read_results: "Quán cà phê: thời gian mỗi đơn 200 xuống 140 giây (-30%)."
+    pitfalls: ["Lối hẹp cần xe chuyên dụng đắt hơn"]
+    example: "Quán 80 m2 đưa khu pha liền kề quầy order, mức sử dụng bartender 138% xuống 84% (giả định minh họa)."
+  - id: "m08_automation_decision"
+    name_vi: "Quyết định tự động hoá kho (AGV/AMR) và layout đa kênh"
+    name_en: "Warehouse automation and omnichannel layout decision"
+    origin: "Kiva Systems (Amazon mua 2012) tiên phong Goods-to-Person."
+    components: ["So Person-to-Goods và AGV/AMR (mật độ, đầu tư, tốc độ, mở rộng)", "Payback", "Dark Store", "Omnichannel: khu soạn đơn phía sau", "Layout module và layout cố định (so chi phí vòng đời)"]
+    when_to_use: "Kho thương mại điện tử, chuỗi bán lẻ có kênh online."
+    how_to_apply:
+      - "Tối ưu layout thủ công và slotting trước"
+      - "Tính payback (m08_automation_payback); chỉ làm khi dưới 2-3 năm và sử dụng cao"
+      - "Với omnichannel: tách khu soạn đơn online khỏi lối khách"
+    how_to_read_results: "Kho 6 công nhân 10,6 năm; 12 công nhân 3,5 năm; 24 công nhân 1,5 năm (giả định minh họa)."
+    pitfalls: ["Tự động hoá khi chưa đủ quy mô", "Bỏ qua rủi ro tăng lương và giá trị phụ (chưa tính)"]
+    example: "AGV 4,5 tỷ đồng, vận hành 450 triệu/năm."
+  - id: "m08_chain_playbook"
+    name_vi: "Playbook layout cho chuỗi"
+    name_en: "Chain layout playbook"
+    origin: "Thông lệ chuỗi bán lẻ; mô tả Long Châu chỉ theo thông lệ ngành, không kiểm chứng."
+    components: ["Nguyên tắc bất biến (vị trí quầy tư vấn, thứ tự khu)", "Biến thể theo diện tích được phê duyệt trước (60/90/120 m2)", "Quy trình xin ngoại lệ có phê duyệt"]
+    when_to_use: "Chuỗi nhiều chi nhánh, mở rộng nhanh."
+    how_to_apply:
+      - "Xác định nguyên tắc bất biến"
+      - "Lập bảng tỷ lệ diện tích theo biến thể (quầy dược sĩ 28/25/22%, TPCN 30%, chăm sóc cá nhân 12/15/18%, chờ 6/7/8%, kho 14/13/12%, lối đi 10%)"
+      - "Thí điểm 2 cửa hàng so với 2 đối chứng trước khi nhân rộng"
+    how_to_read_results: "Chuẩn hoá không cứng nhắc: có bất biến + biến thể + ngoại lệ."
+    pitfalls: ["Mỗi cửa hàng một kiểu: khó đào tạo, khó so sánh, trải nghiệm không nhất quán"]
+    example: "Chuỗi 12 siêu thị mini: 9 không chuẩn doanh thu 12,0 so với 13,2 triệu/m2 (giả định minh họa)."
+
+procedures:
+  - id: "m08_sme_6_steps"
+    name: "Quy trình 6 bước thiết kế lại layout cho SME (rút gọn từ SLP)"
+    steps:
+      - "1 Thu thập dữ liệu khối lượng/tần suất di chuyển (From-To Chart), đếm thực tế 3-5 ngày; phỏng vấn nhân viên vận hành (khu nào tắc, đi lại nhiều giữa khu nào, khu nào bất an toàn, đề xuất gì)"
+      - "2 Xây REL Chart (cả lý do an toàn, giám sát) và TCR"
+      - "3 Xác định nhu cầu không gian từng bộ phận, dự trù tăng trưởng 20-30%"
+      - "4 Lập Block Layout 2-3 phương án dựa trên REL và diện tích"
+      - "5 Chi tiết hoá: cột nhà, điện nước, lối thoát hiểm, lối đi, PCCC"
+      - "6 Mô phỏng/thử quy mô nhỏ, đánh giá bằng Load-Distance và KPI, lấy phản hồi rồi triển khai; đo lại sau 3-6 tháng"
+    outputs: "Quyết định layout, kế hoạch triển khai và KPI theo dõi."
+  - id: "m08_cheap_to_costly_roadmap"
+    name: "Lộ trình layout từ rẻ đến đắt cho SME"
+    steps:
+      - "Vẽ sơ đồ mặt bằng hiện tại, đánh dấu điểm tắc nghẽn và đường đi nhân viên"
+      - "Thu thập số chuyến giữa các khu chính"
+      - "Áp one-way flow và 5S trước (gần như không tốn vốn)"
+      - "Thử thay đổi nhỏ (dời một quầy/kệ), đo thời gian phục vụ/năng suất"
+      - "Khi quy mô đủ lớn mới cân nhắc tư vấn, phần mềm mô phỏng, tự động hoá"
+      - "Quy tắc: thay đổi hoàn tác được trong một ngày thì thử ngay; cần xây lại thì phải mô phỏng và tính hoàn vốn"
+    outputs: "Chuỗi thay đổi từ thấp đến cao rủi ro."
+  - id: "m08_balance_line_procedure"
+    name: "Cân bằng chuyền từng bước"
+    steps:
+      - "Takt = thời gian khả dụng / nhu cầu; kiểm tra max(t_i) <= C <= takt"
+      - "N_min = ceil(sum t / C)"
+      - "Vẽ sơ đồ tiền nhiệm; tính RPW"
+      - "Phân bổ trạm theo RPW, tuân tiền nhiệm, tổng trạm <= C"
+      - "Tính E, idle, balance delay; kiểm tra nhạy cảm trạm đầy"
+      - "Cải tiến: chia nhỏ task, đồ gá; giao việc phụ cho trạm rảnh"
+    outputs: "Bảng trạm-task, số người cần, hiệu suất."
+  - id: "m08_cell_pilot_procedure"
+    name: "Chuyển sang cell có thí điểm"
+    steps:
+      - "Lập ma trận máy-chi tiết, chạy ROC"
+      - "Chọn họ sản phẩm bán chạy và ổn định; thí điểm 1 cell"
+      - "Đào tạo đa kỹ năng ít nhất 2 công đoạn liền kề; cân bằng công việc trong cell"
+      - "Đo lead time, WIP (Little), chi phí máy trùng lặp"
+      - "Nhân rộng nếu đạt"
+    outputs: "Cell vận hành, lead time đo thực."
+  - id: "m08_automation_evaluation"
+    name: "Đánh giá đầu tư tự động hoá"
+    steps:
+      - "Tối ưu layout thủ công và slotting ABC trước"
+      - "Tính chi phí một công nhân và số công nhân thay thế"
+      - "Payback = capex / (tiết kiệm lao động - vận hành)"
+      - "Chỉ làm khi payback dưới 2-3 năm, khối lượng ổn định, nhiều ca"
+      - "Cộng lợi ích phụ (sức chứa, sai sót) và rủi ro tăng lương như phân tích bổ sung"
+    outputs: "Quyết định đầu tư hoặc hoãn."
+  - id: "m08_chain_standardization_pilot"
+    name: "Chuẩn hoá layout chuỗi có đối chứng"
+    steps:
+      - "Xây playbook (bất biến, biến thể, ngoại lệ)"
+      - "Chuẩn hoá thí điểm 2 cửa hàng, giữ 2 cửa hàng đối chứng cùng thời gian"
+      - "So doanh thu/m2 trước/sau; chỉ nhân rộng khi chênh lệch ổn định"
+      - "Tính hoàn vốn với mức tăng thực (thử 50% giả định)"
+    outputs: "Quyết định nhân rộng."
+
+decision_rules:
+  - "Nếu sản phẩm đa dạng, khối lượng thấp, làm theo đơn thì Process layout; nếu có họ sản phẩm tương tự thì thử Cellular."
+  - "Nếu khối lượng lớn, ít mẫu mã thì Product layout; nếu sản phẩm quá lớn không di chuyển được thì Fixed-Position."
+  - "Nếu nhu cầu dự kiến > Q* (break-even) thì đầu tư dây chuyền; nếu thấp hoặc bất định thì giữ Process."
+  - "Nếu các bộ phận nối tiếp nhau có tải lớn thì xếp liền kề theo dòng chảy; kiểm chứng bằng Load-Distance."
+  - "Nếu có quan hệ định tính (an toàn, giám sát) thì dùng REL Chart và X cho cặp phải xa nhau, không chỉ dựa vào Load-Distance."
+  - "Nếu chọn vị trí kho phục vụ nhiều điểm thì tính Center of Gravity làm điểm xuất phát rồi xét thuê đất, hạ tầng, giờ cấm tải."
+  - "Nếu N thực tế = N_min thì tối ưu số trạm; nếu N > N_min thì chia nhỏ task hoặc giảm thời gian task bằng đồ gá."
+  - "Nếu trạm nút cổ chai tải 100% C thì để dư 5-10% và kiểm tra nhạy cảm; chậm 5% là mất khoảng 4,8% sản lượng."
+  - "Nếu mức sử dụng nút cổ chai > 100% thì hàng đợi không ổn định; thiết kế mục tiêu 80-85% giờ cao điểm."
+  - "Nếu thêm một nguồn lực (ghế khám) mà nguồn khác (bác sĩ) là nút cổ chai thì không tăng năng lực: tính min các nguồn lực trước."
+  - "Nếu payback tự động hoá > 2-3 năm thì chưa đầu tư, tối ưu layout thủ công trước; chỉ hợp lý khi số công nhân thay thế lớn hoặc khối lượng tăng chắc chắn."
+  - "Nếu thay đổi layout hoàn tác được trong một ngày thì thử ngay; nếu cần xây lại thì mô phỏng và tính hoàn vốn."
+  - "Nếu mở rộng chuỗi thì xây playbook có biến thể được phê duyệt và thí điểm có đối chứng trước khi nhân rộng."
+  - "Nếu SME mới khởi nghiệp thì ưu tiên layout linh hoạt, chi phí thấp, công cụ miễn phí; tăng trưởng nhanh thì chuẩn hoá để nhân rộng."
+  - "Nếu hàng chạy nhanh (nhóm A theo ABC) thì đặt gần khu đóng gói; cập nhật phân loại theo mùa."
+  - "Nếu bán lẻ có kênh online thì dành khu soạn đơn riêng phía sau để không cản lối và trải nghiệm khách."
+
+benchmarks:
+  - {metric: "Space Utilization", value: "> 70%", context: "Diện tích hữu ích / tổng diện tích (mục tiêu tham khảo của nguồn)", confidence: "medium"}
+  - {metric: "Hiệu suất chuyền", value: "thường nhắm trên 85% (tuỳ ngành)", context: "E = sum t / (N x C); ví dụ ghế 88,5%, chuyền cũ 70,8%", confidence: "medium"}
+  - {metric: "Mức sử dụng nút cổ chai giờ cao điểm", value: "khoảng 80-85%", context: "Trên 100% thì hàng đợi không ổn định", confidence: "medium"}
+  - {metric: "Payback tự động hoá", value: "dưới 2-3 năm", context: "Nguyên tắc thường dùng; hệ thống chạy tỷ lệ sử dụng cao", confidence: "medium"}
+  - {metric: "Không gian dự phòng tăng trưởng", value: "20-30%", context: "Dự trù khi thiết kế layout", confidence: "medium"}
+  - {metric: "Lối chính xe nâng / lối phụ người", value: "3-3,5 m / 1,5-2 m", context: "Tham khảo, kiểm tra theo loại xe và quy chuẩn thực tế", confidence: "low"}
+  - {metric: "Tầm mắt bán hàng", value: "1,4-1,7 m", context: "Mức chênh cụ thể tuỳ ngành, không áp con số chung", confidence: "low"}
+  - {metric: "Dự phòng trạm nút cổ chai", value: "5-10% thời gian", context: "Kiểm tra nhạy cảm chuyền", confidence: "medium"}
+  - {metric: "Thời gian thu thập dữ liệu From-To / footfall", value: "3-5 ngày", context: "Đếm thực tế", confidence: "medium"}
+  - {metric: "Thời gian triển khai", value: "cửa hàng nhỏ 1-2 tuần khảo sát + 1-2 tuần thiết kế + 1-2 tuần thi công; xưởng vừa 2-4 + 4-6 + 4-8 tuần; nhà máy/kho lớn 1-2 + 2-3 + 3-6 tháng", context: "Ước tính theo quy mô dự án", confidence: "low"}
+  - {metric: "Chi phí đầu tư theo giai đoạn", value: "khởi đầu 0-2 triệu; tăng trưởng 10-50 triệu; mở rộng hàng trăm triệu đến hàng tỷ VNĐ", context: "Ước tính tham khảo, cần xác minh", confidence: "low"}
+  - {metric: "Employee Satisfaction Score", value: "trên 4/5", context: "KPI về không gian làm việc", confidence: "low"}
+
+pitfalls:
+  - "Không dự trù không gian tăng trưởng: cải tạo tốn kém khi mở rộng (dự trù 20-30%)."
+  - "Bỏ qua an toàn lao động/PCCC: tham vấn quy chuẩn từ đầu."
+  - "Thiết kế dựa trực giác, không dữ liệu: dùng From-To và REL từ số thực."
+  - "Không thử nghiệm/mô phỏng trước khi triển khai toàn bộ."
+  - "Tối ưu cục bộ một khu mà quên nút cổ chai toàn hệ (thêm ghế khám nhưng thiếu bác sĩ)."
+  - "Cân bằng chuyền tải 100% không dự phòng: một trạm chậm là mất sản lượng."
+  - "Đầu tư tự động hoá khi chưa đủ quy mô: tính payback trước."
+  - "Không đo lại sau thay đổi: đo KPI trước/sau và đánh giá lại sau 3-6 tháng."
+  - "Kết luận 'do layout' khi chưa kiểm chứng: thiếu cửa hàng đối chứng."
+  - "Quyết định đơn phương bỏ qua nhân viên vận hành, quản lý sản xuất, an toàn/PCCC, khách hàng, chủ nhà/đơn vị thi công."
+  - "Phân loại ABC slotting không cập nhật theo mùa."
+  - "Chỉ định lượng hoặc chỉ định tính: cần kết hợp cả From-To/Load-Distance và thông tin từ người dùng không gian hằng ngày."
+
+sme_vn_guidance:
+  - "Khởi đầu miễn phí: giấy vẽ tay, mô hình giấy tỷ lệ, Google Sheets/Excel (Load-Distance, line balancing), draw.io (miễn phí), Floorplanner/SketchUp bản miễn phí, đếm tay footfall."
+  - "Khi tăng trưởng: Visio (theo gói Microsoft), AutoCAD (giá thay đổi, ước tính vài triệu đến hàng chục triệu VNĐ/năm, cần xác minh), tư vấn layout 10-50 triệu (ước tính, cần xác minh)."
+  - "Doanh nghiệp lớn: FlexSim/Arena từ hàng chục triệu VNĐ/năm (ước tính, kiểm tra nhà cung cấp); tư vấn kỹ sư công nghiệp hàng trăm triệu đến hàng tỷ."
+  - "Giá công cụ thay đổi theo thời gian/khu vực: mọi mức giá nêu là để so sánh cấp độ, cần xác minh trước khi lập ngân sách."
+  - "Pháp lý: PCCC, lối thoát hiểm, an toàn lao động phải tham vấn quy chuẩn hiện hành (cần xác nhận với cơ quan có thẩm quyền); thay đổi kết cấu/điện nước cần chủ nhà đồng ý."
+  - "Tỷ lệ bảo hiểm 21,5% công ty đóng thêm là giả định minh họa của nguồn: cần xác nhận theo quy định hiện hành."
+  - "Thương lượng vị trí gần dòng khách chính trong trung tâm thương mại, không chỉ nhìn giá thuê/m2; đo footfall 3-5 ngày bằng đếm tay."
+  - "Thí điểm một cell hoặc một cửa hàng trước khi nhân rộng; công nhân may/xưởng cần đa kỹ năng ít nhất hai công đoạn liền kề."
+  - "Ma trận đầu tư theo giai đoạn: startup linh hoạt và rẻ; tăng trưởng nhanh chuẩn hoá playbook; trưởng thành tối ưu hiệu suất và cân nhắc tự động hoá; tái cấu trúc đánh giá lại toàn bộ."
+  - "Rủi ro theo chiến lược: thay đổi nhỏ từng phần (vốn thấp, dễ hoàn tác); thiết kế lại toàn mặt bằng (khó hoàn tác); xây xưởng/kho mới (rủi ro cao nếu dự báo sai); AGV/robot (rất khó hoàn tác)."
+
+case_lessons:
+  - name: "Toyota: Cellular layout, one-piece flow, takt"
+    type: "success"
+    setup: "TPS tổ chức máy theo cell/chuyền theo công đoạn, công nhân đa kỹ năng, one-piece flow thay lô lớn; takt nối nhịp sản xuất với nhu cầu. Phần mô tả định tính; số liệu đi kèm là mô hình minh họa, không phải của Toyota."
+    key_calculations:
+      - "Lô 100 chi tiết, 4 công đoạn x 2 phút: theo lô 800 phút; cell 8 + 99 x 2 = 206 phút (-74%)"
+      - "WIP tại trạm: tới 100 chi tiết so với 1-2 chi tiết; Little: throughput không đổi thì WIP giảm tương ứng lead time"
+    lesson: "Giảm chờ không cần máy nhanh hơn, chỉ cần sắp xếp lại không gian và cách chảy. Điều kiện: công đoạn cân bằng, công nhân đa kỹ năng, nhu cầu họ sản phẩm ổn định; SME bắt đầu bằng cell thí điểm cho sản phẩm bán chạy nhất."
+    data_reliability: "illustrative"
+  - name: "IKEA: Loop layout dẫn dắt hành vi"
+    type: "success"
+    setup: "Khách đi một lối chính qua các phòng mẫu trước khi tới kho tự lấy và thu ngân. Mô tả định tính; số liệu là mô hình minh họa."
+    key_calculations:
+      - "Giả định 50 khu, 0,8%/khu, 120.000 đồng/món"
+      - "Free-flow thấy 22 khu: 21.120 đồng/khách; Loop 50 khu: 48.000 (+26.880, khoảng 2,3 lần)"
+    lesson: "Layout bán lẻ là công cụ tác động hành vi; đánh đổi là khách mua nhanh khó chịu nên cần lối tắt. SME: đặt sản phẩm bổ trợ cạnh nhau, một lối chính qua khu lợi nhuận cao, luôn để thấy lối ra."
+    data_reliability: "illustrative"
+  - name: "Vincom: layout trung tâm thương mại và dòng khách"
+    type: "success"
+    setup: "Anchor tenant (siêu thị, rạp, ẩm thực) đặt xa lối vào/tầng trên để dòng khách qua gian hàng nhỏ. Mô tả theo thông lệ ngành, thiết kế cụ thể không kiểm chứng."
+    key_calculations:
+      - "10.000 khách/ngày; lưu lại 85 lên 110 phút; 2.000 đồng/phút khách"
+      - "Doanh thu khách thuê/khách 170.000 lên 220.000 (+29,4%); tăng 500 triệu/ngày"
+      - "Thu theo doanh thu 8%: 40 triệu/ngày, khoảng 1,2 tỷ/tháng"
+    lesson: "Layout quyết định giá trị mỗi m2 cho thuê và khả năng giữ khách thuê nhỏ. Quan hệ tuyến tính là đơn giản hoá thô; phải phân biệt với tác dụng sự kiện/khuyến mại và đo bằng people counter trước/sau."
+    data_reliability: "illustrative"
+  - name: "Chuỗi siêu thị mini mở rộng không chuẩn hoá layout"
+    type: "failure"
+    setup: "12 cửa hàng 120 m2: 3 theo mẫu chuẩn, 9 mỗi nơi một kiểu; khách khó tìm hàng, nhân viên học lại, khó so sánh hiệu suất."
+    key_calculations:
+      - "Doanh thu/m2: 12,0 so với 13,2 triệu/tháng; chênh 1,2 x 120 = 144 triệu/cửa hàng/tháng"
+      - "Biên gộp 22%: +31,68 triệu/tháng; chi phí chuẩn hoá 85 triệu thì hoàn vốn 2,7 tháng"
+      - "9 cửa hàng: đầu tư 765 triệu; +285,12 triệu/tháng; nếu mức tăng thực bằng nửa thì khoảng 5,4 tháng"
+    lesson: "Xây playbook (nguyên tắc vị trí nhóm hàng, kích thước chuẩn, biến thể) trước khi nhân chuỗi; thí điểm 2 cửa hàng với 2 đối chứng vì 3 cửa hàng chuẩn có thể ở vị trí tốt hơn."
+    data_reliability: "illustrative"
+  - name: "Quán cà phê 80 m2 Hà Nội tái bố trí quầy"
+    type: "sme"
+    setup: "Giờ cao điểm 7-9 giờ 32 đơn/giờ, 55.000 đồng/đơn, 2 pha chế + 1 thu ngân; quầy order, máy pha, kho ly/đá ở ba nơi xa nhau, giao đồ cắt ngang hàng chờ."
+    key_calculations:
+      - "Thời gian mỗi đơn 200 xuống 140 giây (-30%): bỏ đi 15, pha 100 xuống 75, giao 20 xuống 12, chờ giao cắt 20 xuống 8"
+      - "Bartender: 155 giây thì 23,2 đơn/giờ; sau 95 giây thì 37,9 đơn/giờ"
+      - "Sử dụng 32/23,2 = 138% thành 32/37,9 = 84%"
+      - "Doanh thu mất trước: 8,8 x 2 x 55.000 x 30 = khoảng 29 triệu/tháng"
+    lesson: "Nút cổ chai thường là nhân viên đứng giữa nhiều di chuyển, không phải máy; mục tiêu thiết kế sử dụng 80-85%; 5S + one-way flow rẻ nhất."
+    data_reliability: "illustrative"
+  - name: "Phòng khám nha khoa TP.HCM với layout module"
+    type: "sme"
+    setup: "80 m2, mở 540 phút, 3 ghế dọc hành lang, khu tiệt trùng cuối hành lang; chuyển thành mỗi ghế là cell có vách, khu tiệt trùng ở giữa."
+    key_calculations:
+      - "Ghế: 540 x 0,8 / 45 = 9,6 ca/ghế; 3 ghế 28,8; 5 ghế 48"
+      - "Bác sĩ (2 người, 25 phút, 85%): 2 x 540 x 0,85 / 25 = 36,7 lấy 36"
+      - "Năng lực trước min(28,8; 36) khoảng 29; sau min(48; 36) = 36 (+25%, không phải +67%); cần 48 x 25 / (540 x 0,85) = 2,61 nên 3 bác sĩ"
+      - "Y tá đi bộ: trước 29 x 3 x 2 x 14 = 2.436 m/ngày; sau 36 x 3 x 2 x 6 = 1.296 m (-47%)"
+      - "Doanh thu thêm 7 x 1,2 triệu x 26 = 218,4 triệu/tháng"
+    lesson: "Mở rộng ghế không tăng năng lực nếu bác sĩ là nút cổ chai (TOC); xem toàn hệ thống trước khi chi tiền cải tạo."
+    data_reliability: "illustrative"
+  - name: "Xưởng may Bình Dương chuyển từ Process sang Cellular"
+    type: "sme"
+    setup: "200 công nhân, lead time 12 ngày, 30% là di chuyển/chờ giữa các khu; chuyển 8 cell khoảng 25 người, đa kỹ năng."
+    key_calculations:
+      - "Di chuyển/chờ 12 x 30% = 3,6 ngày; tạo giá trị 8,4 ngày"
+      - "Mục tiêu giảm 25%: lead time 9 ngày, chờ còn 0,6 ngày (giảm 83% khoảng này)"
+      - "400 áo/ngày: WIP 4.800 xuống 3.600 (-1.200 áo); x 80.000 đồng = 96 triệu vốn lưu động giải phóng"
+    lesson: "Lead time ngắn giúp nhận đơn nhỏ, đổi mẫu nhanh; trách nhiệm chất lượng theo cell. Rủi ro: máy trùng lặp, cân bằng cell, công nhân cần thời gian học; thử một cell trước."
+    data_reliability: "illustrative"
+  - name: "Tiki (micro-fulfillment, ABC slotting) và Long Châu (playbook chuỗi)"
+    type: "success"
+    setup: "Tiki: điểm lưu trữ gần khu dân cư, hàng bán chạy gần khu đóng gói (nguyên lý ABC). Long Châu: bộ tiêu chuẩn layout kèm biến thể phê duyệt (theo thông lệ ngành, không kiểm chứng). Số liệu là giả định minh họa."
+    key_calculations:
+      - "5.000 dòng/ngày: 38 m xuống 21 m; 190.000 m xuống 105.000 m (-44,7%); 52,8 giờ xuống 29,2 giờ; tiết kiệm 23,6 giờ, khoảng 3,4 người"
+      - "Playbook theo 60/90/120 m2: quầy dược sĩ 28/25/22%, TPCN 30%, chăm sóc cá nhân 12/15/18%, chờ 6/7/8%, kho 14/13/12%, lối đi 10%"
+    lesson: "Đổi vị trí lưu trữ là cải tiến layout rẻ nhất, cần cập nhật theo mùa. Chuẩn hoá tốt có bất biến, biến thể, quy trình ngoại lệ."
+    data_reliability: "illustrative"
+  - name: "Xưởng nội thất Tân An (Đồng Nai): Load-Distance và Line Balancing"
+    type: "sme"
+    setup: "40 lao động, bàn ghế văn phòng, nhu cầu 210 ghế/ngày, 25.200 giây/ngày; thực tập sinh 3 tuần làm hai việc. Toàn bộ số liệu tự thiết kế (giả định minh họa), nguồn ghi đã verify bằng Python."
+    key_calculations:
+      - "Phần A: 10 cặp tải, lưới 2x3 ô 10 m; LD hiện tại 7.450; hoán đổi vòng 1 Cưa cắt-Kho TP (5.100), vòng 2 Sơn-Kho TP (4.800), vòng 3 Lắp ráp-Kho TP (4.700), vòng 4 dừng; vét cạn 720 hoán vị cũng 4.700"
+      - "Giảm 2.750 chuyến.m (-36,9%); x 300 đồng = 825.000 đồng/ngày = 21,45 triệu/tháng; di dời 60 triệu, hoàn vốn 2,8 tháng"
+      - "Phần B: chuyền cũ 6 công nhân chu kỳ 100 giây, 252 ghế/ngày (dư 20%), E = 425/600 = 70,8%; sau 4 trạm, C=120, E=88,5%"
+      - "Năng suất 52,5 so với 35 ghế/người/ngày (+50%); tiết kiệm 2 x 10 triệu x 1,215 = 24,3 triệu/tháng; đồ gá 15 triệu"
+      - "Tổng: 45,75 triệu/tháng tiết kiệm, đầu tư 75 triệu, hoàn vốn 1,6 tháng; trạm 3 chậm 5% thì 200 ghế (thiếu 10)"
+    lesson: "Dữ liệu đếm chuyến 5 ngày và Excel đủ giảm hơn 1/3 chi phí vận chuyển; cân bằng chuyền gắn takt cho biết cần bao nhiêu người; luôn kiểm tra nhạy cảm; làm chuyền lắp ráp trước (không di dời máy) rồi mới di dời mặt bằng."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Break-even Process vs Product (Bài 16)"
+    inputs: {fc_process: 150000000, vc_process: 80000, fc_product: 600000000, vc_product: 35000}
+    steps:
+      - "Q* = (600 - 150) triệu / (80.000 - 35.000) = 450.000.000 / 45.000 = 10.000"
+      - "Tại 8.000: process = 150 + 0,08 x 8.000 = 790 triệu; product = 600 + 0,035 x 8.000 = 880 triệu, chọn process"
+      - "Tại 12.000: process 1.110 triệu; product 1.020 triệu, chọn product"
+    result: "Q* = 10.000; 8.000 chọn Process, 12.000 chọn Product (giả định minh họa)"
+  - name: "Load-Distance và so sánh thứ tự bộ phận (Bài 7)"
+    inputs: {positions_ABCD_order_ACBD: "A=0,C=15,B=30,D=45", loads: "A-B 60, B-C 40, C-D 30, A-C 10, B-D 20", rate: 250}
+    steps:
+      - "Thứ tự A,C,B,D: A-B 30, B-C 15, C-D 30, A-C 15, B-D 15; LD = 1.800+600+900+150+300 = 3.750; chi phí 937.500 đồng/ngày"
+      - "Thứ tự A,B,C,D: A-B 15, B-C 15, C-D 15, A-C 30, B-D 30; LD = 900+600+450+300+600 = 2.850; chi phí 712.500 đồng/ngày"
+      - "Tiết kiệm 225.000 đồng/ngày (24%), khoảng 5,85 triệu/tháng (26 ngày); A,B,C,D cũng tối ưu trong 24 hoán vị"
+    result: "Chọn A,B,C,D: LD 2.850 (giả định minh họa)"
+  - name: "Pairwise Exchange 3 bộ phận (Bài 12)"
+    inputs: {slots_m: "S1=0, S2=10, S3=40", freq: "A-B 50, A-C 20, B-C 30", current: "A ở S1, C ở S2, B ở S3"}
+    steps:
+      - "Hiện tại: A-B 40, A-C 10, B-C 30; WD = 50x40 + 20x10 + 30x30 = 3.100"
+      - "Thử 6 hoán vị: (A,C,B)=3.100; (B,A,C)=2.300; (C,B,A)=2.600; (A,B,C)=2.200; (B,C,A)=2.900; (C,A,B)=2.900"
+      - "Tốt nhất: A ở S1, B ở S2, C ở S3 (hoán đổi B và C): 50x10 + 20x40 + 30x30 = 2.200; giảm (3.100-2.200)/3.100 = 29%"
+    result: "WD 3.100 xuống 2.200 (-29%) vì cặp A-B tải lớn nhất cần gần nhất"
+  - name: "Center of Gravity 3 điểm (Bài 3)"
+    inputs: {points: "(10;20) W=200; (40;10) W=300; (30;50) W=100"}
+    steps:
+      - "Tổng W = 600"
+      - "Cx = (2.000 + 12.000 + 3.000)/600 = 17.000/600 = 28,33"
+      - "Cy = (4.000 + 3.000 + 5.000)/600 = 20"
+    result: "(28,33; 20), gần điểm khối lượng lớn nhất"
+  - name: "Line Balancing 8 task (Bài 15)"
+    inputs: {tasks_s: "A12, B18(A), C9(A), D14(B), E10(C), F15(D,E), G8(F), H6(G)", demand: 900, available_min: 450}
+    steps:
+      - "Khả dụng 27.000 giây; takt = 27.000/900 = 30 giây; tổng 92 giây; N_min = ceil(92/30) = ceil(3,07) = 4"
+      - "RPW: A92, B61, C48, D43, E39, F29, G14, H6"
+      - "Phân bổ C=30: T1 {A,B}=30; T2 {C,D}=23; T3 {E,F}=25; T4 {G,H}=14"
+      - "E = 92/(4x30) = 76,7%; idle 28 giây; nhận xét: tổng chỉ vượt 90 giây có 2 giây, giảm xuống <= 90 thì chỉ cần 3 trạm"
+    result: "4 trạm, E 76,7%"
+  - name: "Payback AGV 3 tỷ thay 8 công nhân (Bài 14)"
+    inputs: {capex_trieu: 3000, workers: 8, wage_trieu: 9, ins: 0.215, opex_trieu: 300}
+    steps:
+      - "Lao động tiết kiệm = 8 x 9 x 12 x 1,215 = 1.049,76 triệu/năm"
+      - "Lợi ích ròng = 1.049,76 - 300 = 749,76"
+      - "Payback = 3.000/749,76 = 4,0 năm, vượt ngưỡng 2-3 năm"
+    result: "Chưa nên đầu tư; tối ưu layout thủ công trước"
+  - name: "TCR cho 4 bộ phận Kho/SX/ĐG/VP"
+    inputs: {rel: "K-S A, K-D E, K-V U, S-D A, S-V I, D-V O"}
+    steps:
+      - "Kho = 4+3+0 = 7; SX = 4+4+2 = 10; ĐG = 3+4+1 = 8; VP = 0+2+1 = 3"
+      - "SX giữa, ĐG và Kho ôm hai phía, VP ra rìa"
+    result: "Thứ tự TCR: SX 10 > ĐG 8 > Kho 7 > VP 3"
+  - name: "ROC 5 máy x 6 chi tiết"
+    inputs: {matrix: "M1 101001, M2 010110, M3 101000, M4 010100, M5 000110"}
+    steps:
+      - "Hàng: 41, 22, 40, 20, 6 thì M1, M3, M2, M4, M5"
+      - "Cột: P1=24, P2=6, P3=24, P4=7, P5=5, P6=16 thì P1, P3, P6, P4, P2, P5; lặp thấy không đổi"
+    result: "Cell 1 {M1,M3} x {P1,P3,P6}; Cell 2 {M2,M4,M5} x {P2,P4,P5}"
+  - name: "Chọn lối đi kho (sức chứa)"
+    inputs: {warehouse_m: "36 x 40", rack_depth: 2.4, pallet_w: 1.2, levels: 3}
+    steps:
+      - "Lối 3,5 m: 6 module x 66 x 3 = 1.188 pallet; lối 2,0 m: 8 module x 66 x 3 = 1.584 pallet"
+      - "Tăng 33,3% sức chứa nhưng cần xe lối hẹp và kỹ thuật cao hơn"
+    result: "Lối hẹp +33,3% sức chứa; phải so với chi phí thiết bị (giả định minh họa)"
+
+practice_questions:
+  - q: "Tính vị trí kho trung tâm bằng Center of Gravity cho 3 điểm: (10;20) W=200; (40;10) W=300; (30;50) W=100."
+    a: "(28,33; 20): Cx = 17.000/600, Cy = 12.000/600."
+  - q: "4 bộ phận A,B,C,D tại 0, 15, 30, 45 m; tải A-B 60, B-C 40, C-D 30, A-C 10, B-D 20; đơn giá 250. So sánh A-C-B-D với A-B-C-D."
+    a: "A-C-B-D: LD 3.750 (937.500 đ/ngày); A-B-C-D: LD 2.850 (712.500 đ/ngày); tiết kiệm 225.000 đ/ngày (24%), khoảng 5,85 triệu/tháng."
+  - q: "3 bộ phận, vị trí 0/10/40 m, tần suất A-B 50, A-C 20, B-C 30; hiện A ở S1, C ở S2, B ở S3. Hoán đổi nào tốt nhất?"
+    a: "Hoán đổi B và C (A S1, B S2, C S3): WD 3.100 xuống 2.200 (-29%), vì cặp A-B tải lớn nhất cần gần nhất."
+  - q: "8 task A12, B18(A), C9(A), D14(B), E10(C), F15(D,E), G8(F), H6(G); 900 sp/ngày, 450 phút. Tính takt, N_min, phân bổ RPW, hiệu suất."
+    a: "Takt 30 giây; N_min 4; {A,B}=30, {C,D}=23, {E,F}=25, {G,H}=14; E = 76,7%, idle 28 giây."
+  - q: "Process FC 150 triệu VC 80.000; Product FC 600 triệu VC 35.000. Điểm hoà vốn và chọn cho 8.000 và 12.000 sp?"
+    a: "Q* = 10.000; 8.000: process (790 so với 880 triệu); 12.000: product (1.020 so với 1.110 triệu)."
+  - q: "Cửa hàng 700 m2 tổng, 520 m2 hữu ích, doanh thu 1,8 tỷ/tháng, trưng bày 120 m2. Space Utilization và Sales per m2?"
+    a: "74,3% (đạt > 70%); 15.000.000 đồng/m2/tháng."
+  - q: "AGV 3 tỷ thay 8 công nhân (9 triệu/tháng, bảo hiểm 21,5%), vận hành 300 triệu/năm: có nên đầu tư?"
+    a: "Payback 4,0 năm, vượt 2-3 năm: chưa nên; tối ưu layout thủ công trước; nên khi số công nhân lớn/nhiều ca/khối lượng tăng chắc."
+  - q: "Lô 50 chi tiết, 5 công đoạn, mỗi công đoạn 3 phút: lead time theo lô và cell?"
+    a: "Lô 750 phút; cell 5 x 3 + 49 x 3 = 162 phút, giảm 78,4%; trừ chi phí máy trùng lặp."
+  - q: "Vì sao mở rộng một nguồn lực (thêm ghế khám) có thể không tăng năng lực hệ thống?"
+    a: "Năng lực = min các nguồn lực: 5 ghế = 48 ca nhưng 2 bác sĩ chỉ 36 ca nên năng lực chỉ +25%; cần 3 bác sĩ để dùng hết 5 ghế (TOC)."
+  - q: "Vì sao takt time là thời gian khả dụng chia nhu cầu và N_min phải làm tròn lên?"
+    a: "25.200 s / 210 sp = 120 s/sp: nhanh hơn là dư, chậm hơn là thiếu; 3,54 trạm không khả thi, 3 trạm không đủ tổng thời gian nên phải 4."
+  - q: "Vì sao hiệu suất chuyền không tăng đơn điệu khi sản lượng tăng?"
+    a: "Ràng buộc tiền nhiệm và độ lớn task: nhu cầu 150: 84,3%; 210: 88,5%; 252: 85,0%; 280: N_min 5 nhưng thực tế 6 trạm, 78,7%; cải thiện bằng chia nhỏ task/đồ gá."
+  - q: "Thiết kế quán cà phê giảm tắc giờ cao điểm bằng one-way flow."
+    a: "Lập bảng thời gian mỗi đơn, bỏ thành phần đi lại/chờ, tính 3.600 / thời gian nguồn lực nút cổ chai và so với nhu cầu (mục tiêu sử dụng 80-85%)."
+  - q: "Giải thích Hot/Cold Zone và ứng dụng; layout omnichannel khác bán lẻ truyền thống ở đâu?"
+    a: "Vùng nóng đặt hàng lợi nhuận cao/mới, hàng thiết yếu sâu bên trong; omnichannel cần khu soạn đơn phía sau để việc soạn đơn online không cản lối khách."
+
+checklist:
+  - "Luồng di chuyển chính không bị cắt ngang/chồng chéo?"
+  - "Có dữ liệu thực tần suất di chuyển (From-To) thay vì ước lượng cảm tính?"
+  - "Đã tính Load-Distance hoặc chi phí vận chuyển nội bộ trước và sau thay đổi?"
+  - "Đã lập ít nhất 2-3 phương án Block Layout để so sánh?"
+  - "Đã xác định nút cổ chai của toàn hệ thống (không chỉ một khu)?"
+  - "Với chuyền: đã tính takt, số trạm, hiệu suất và trạm nút cổ chai có dư thời gian?"
+  - "Đã dự trù không gian tăng trưởng ít nhất 20%?"
+  - "Đã kiểm tra PCCC, lối thoát hiểm, an toàn lao động?"
+  - "Đã tham vấn nhân viên vận hành trực tiếp (câu hỏi: khu tắc nghẽn, đi lại nhiều, khu bất an toàn, đề xuất thay đổi)?"
+  - "Đã thử quy mô nhỏ hoặc mô phỏng trước khi triển khai toàn bộ?"
+  - "Đã đánh giá tác động đến trải nghiệm nhân viên (ánh sáng, tiếng ồn, nghỉ ngơi)?"
+  - "Với chuỗi: đã có playbook và biến thể được phê duyệt trước?"
+  - "Đã xác định ai giám sát và đánh giá lại layout sau 3-6 tháng?"
+  - "KPI theo dõi: Material Handling Cost, Load-Distance, Space Utilization (>70%), Sales per m2, Travel Distance, Order Picking Time, Throughput per m2, hiệu suất chuyền, lead time, Employee Satisfaction, Absenteeism, Return on Layout Investment, Aisle Utilization, Layout Change Frequency"
+  - "Rủi ro đã đăng ký: thiếu không gian mở rộng, vi phạm PCCC, layout chuỗi không nhất quán, tự động hoá sai quy mô, không tham vấn nhân viên, cân bằng chuyền quá chặt, tối ưu cục bộ bỏ sót nút cổ chai"
+  - "Mức trưởng thành: Sơ khai (ghi tần suất cơ bản), Cơ bản (REL + From-To), Trung bình (one-way flow, playbook nếu mở rộng), Nâng cao (mô phỏng, tối ưu KPI, cân nhắc tự động hoá)"
+
+excel_google_sheets_templates:
+  - name: "Material Handling Cost Worksheet"
+    description: "Cột: Cặp bộ phận | Tần suất/ngày | Khoảng cách (m) | Đơn giá (đồng/lượt/mét) | Chi phí/ngày. Công thức: =B2*C2*D2; tổng =SUM(E2:E6) hoặc =SUMPRODUCT(B2:B6,C2:C6,D2:D6); khoảng cách rectilinear =ABS(x1-x2)+ABS(y1-y2); Load-Distance =SUMPRODUCT(Tải,Khoảng_cách)."
+  - name: "Line Balancing Sheet"
+    description: "Cột: Task | Thời gian | Tiền nhiệm | RPW | Trạm | Thời gian trạm. Takt =Thời_gian_khả_dụng/Nhu_cầu (=25200/210); N_min =ROUNDUP(SUM(Thời_gian)/Chu_kỳ,0); hiệu suất =SUM(Thời_gian)/(Số_trạm*Chu_kỳ); rảnh =Số_trạm*Chu_kỳ-SUM(Thời_gian); kiểm tra =IF(SUMIF(Cột_trạm,n,Cột_thời_gian)>Chu_kỳ,\"VƯỢT\",\"OK\")."
+  - name: "REL Chart tam giác"
+    description: "Bảng bộ phận x bộ phận với mã A/E/I/O/U/X và lý do; TCR = cộng điểm (A=4,E=3,I=2,O=1,U=0,X=-1)."
+  - name: "Bảng Center of Gravity"
+    description: "Cột x, y, W, xW, yW; Cx =SUMPRODUCT(x,W)/SUM(W), Cy tương tự."
+  - name: "Công cụ ngoài bảng tính"
+    description: "draw.io (miễn phí), Visio, Floorplanner, SketchUp bản miễn phí, AutoCAD, FlexSim/Arena, people counter hoặc đếm tay; giá ước tính cần xác minh."

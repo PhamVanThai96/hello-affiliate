@@ -1,0 +1,1320 @@
+id: "m06"
+name_vi: "Quản lý xung đột (Conflict Management)"
+name_en: "Conflict Management"
+source_file: "06-conflict-management.md"
+purpose: >
+  Giúp nhà quản lý/chủ SME chẩn đoán đúng loại và mức leo thang của xung đột (Jehn, Glasl), nhận diện phong cách
+  xử lý của mình và đối phương (TKI, Dual Concern), đàm phán theo lợi ích (IBR, ZOPA/BATNA, tích hợp vs phân chia),
+  biết khi nào cần hòa giải, và đo chi phí xung đột bằng tiền để ra quyết định can thiệp sớm. Có lớp điều chỉnh
+  cho văn hóa Việt Nam (thể diện, thứ bậc) và đội remote/hybrid.
+when_to_use:
+  - "Hai trưởng bộ phận/hai đồng sáng lập/chủ và chuyên gia (bếp trưởng, kỹ sư) đang bất đồng, tránh mặt nhau hoặc nói xấu nhau"
+  - "Cần biết xung đột đang ở bậc leo thang nào (Glasl) và nên can thiệp bằng hình thức gì"
+  - "Muốn biết phong cách xử lý xung đột của mình/đội (TKI) và nên chuyển mode nào trong tình huống cụ thể"
+  - "Chuẩn bị đàm phán với đối tác/khách hàng/nhà cung cấp: tính ZOPA, BATNA, mốc mở đầu (anchoring), tìm phương án mở rộng bánh"
+  - "Cần thuyết phục chủ doanh nghiệp rằng xung đột nội bộ tốn tiền: đo chi phí xung đột và tỷ lệ so với lợi nhuận"
+  - "Quyết định tiếp tục kiện/tranh chấp hay dàn xếp (bẫy chi phí chìm)"
+  - "Thiết kế quy trình hòa giải, kịch bản mediation, thỏa thuận cổ đông có điều khoản giải quyết tranh chấp"
+  - "Xung đột trong đội remote/hybrid, trong M&A (hợp nhất văn hóa), hoặc do văn hóa né tránh/hòa hợp giả tạo"
+prerequisites: ["m03", "m04"]
+related_modules:
+  - "m03: Team dynamics - an toàn tâm lý, vai trò nhóm; task conflict chỉ có lợi khi an toàn tâm lý đủ cao"
+  - "m04: Organizational culture - văn hóa thể diện/thứ bậc quyết định phong cách xung đột; hợp nhất văn hóa trong M&A"
+  - "m05: Power and politics - xung đột gắn với quyền lực, liên minh (Glasl bậc 4), tranh giành địa vị"
+  - "m07: Change management - thay đổi là nguồn xung đột; Lewin force field dùng chung"
+  - "m08: Emotional intelligence - empathy, kiểm soát phản ứng tit-for-tat"
+  - "m09: Decision making - groupthink, hòa hợp giả tạo, sunk cost, giá trị kỳ vọng"
+  - "m10: People insight - chẩn đoán cá nhân/cặp đối đầu"
+
+concepts:
+  - term_vi: "Xung đột"
+    term_en: "Conflict"
+    definition: "Tình huống hai hay nhiều bên cảm thấy mục tiêu, quyền lợi, giá trị hoặc quan hệ của mình bị đe dọa/không tương thích với bên kia. Đặc trưng: bất đồng, có nhận thức, có tương tác phản ứng, có tác động tới hiệu suất/quan hệ."
+    why_it_matters: "Không mặc định là xấu: nếu quản lý đúng có thể tạo động lực thay đổi tích cực. Mục tiêu quản lý là đúng loại, đúng mức, đúng cách chứ không phải 0 xung đột."
+  - term_vi: "Ba loại xung đột theo Jehn"
+    term_en: "Task / Relationship / Process Conflict (Jehn 1995)"
+    definition: "Task: bất đồng nội dung công việc/phương pháp. Relationship: bất hòa cá nhân, thù oán (gần như luôn tiêu cực). Process: bất đồng về cách làm, phân việc, trách nhiệm (trung bình)."
+    why_it_matters: >
+      Trước Jehn (1995) nhiều nghiên cứu gộp mọi bất đồng làm một nên kết quả mâu thuẫn (lúc xung đột tăng hiệu suất, lúc giảm) vì đo những thứ khác nhau:
+      tranh luận ý tưởng khác ghét bỏ con người. Tách loại giúp trả lời câu hỏi thực dụng: nên khuyến khích hay dập tắt. Lưu ý (De Dreu & Weingart 2003, meta-analysis):
+      task conflict nhìn chung cũng tương quan âm yếu với hiệu suất nhóm; chỉ có lợi khi có an toàn tâm lý. Task conflict dễ trượt thành relationship conflict nếu quản lý kém.
+  - term_vi: "Năm cấp độ xung đột"
+    term_en: "Levels of conflict"
+    definition: "Nội tâm (intrapersonal), người-người (interpersonal), trong nhóm (intra-group), giữa nhóm/phòng ban (inter-group), cấp tổ chức (với bên ngoài: công đoàn, nhà cung cấp)."
+    why_it_matters: "Xác định đúng cấp để chọn can thiệp: interpersonal dùng đối thoại/mediation, inter-group cần mục tiêu chung/cơ chế phối hợp, organizational cần đàm phán/pháp lý."
+  - term_vi: "Ba quan điểm lịch sử về xung đột"
+    term_en: "Traditional / Human Relations / Interactionist views (Robbins 1974)"
+    definition: "Truyền thống (~1930-40s): xung đột xấu, cần loại bỏ. Quan hệ con người (~1940s-70s): tự nhiên, chấp nhận và xử lý khi xảy ra. Tương tác (~1970s đến nay): cần thiết để tổ chức không trì trệ, khuyến khích ở mức tối ưu và quản lý."
+    why_it_matters: "Chủ SME hay giữ quan điểm truyền thống ('trong nhà không được cãi nhau') dẫn đến hòa hợp giả tạo. Quan điểm tương tác là nền của đường cong tối ưu."
+  - term_vi: "Xung đột chức năng vs bất chức năng"
+    term_en: "Functional vs Dysfunctional Conflict"
+    definition: "Chức năng: xoay quanh công việc/mục tiêu, cường độ vừa, ngắn hạn, có kết thúc, tăng sáng tạo, người ta thấy được nghe. Bất chức năng: xoay quanh cá nhân/cảm xúc, cường độ cao không kiểm soát, kéo dài, giảm hiệu suất, tăng turnover."
+    why_it_matters: "Giúp quyết định khuyến khích hay can thiệp. Dấu hiệu theo dõi thực dụng: turnover, gossip, trễ deadline do phối hợp kém, tần suất họp chữa cháy."
+  - term_vi: "Đường cong tối ưu xung đột (chữ U ngược)"
+    term_en: "Optimal Conflict Curve"
+    definition: "Hiệu suất/sáng tạo cao nhất ở mức xung đột vừa phải (Zone 2); quá thấp (Zone 1) thì trì trệ, groupthink; quá cao (Zone 3) thì căng thẳng, sụp đổ."
+    why_it_matters: >
+      Logic tương tự quy luật Yerkes-Dodson (1908): kích thích quá thấp thì thờ ơ, quá cao thì quá tải. Quá ít bất đồng thì không ai phản biện ý sai (groupthink, Janis 1972; xem Kodak, Boeing);
+      quá nhiều thì năng lượng đổ vào chống nhau. CẢNH BÁO: là mô hình khái niệm, không có điểm tối ưu đo được (kiểu 40%); mỗi tổ chức có ngưỡng chịu khác nhau (SME gia đình thường thấp hơn công ty công nghệ) - hãy theo dõi tín hiệu thay vì tìm con số.
+  - term_vi: "Nguồn gốc xung đột"
+    term_en: "Sources of conflict"
+    definition: "Tài nguyên thiếu hụt, mục tiêu không tương thích, giao tiếp kém, khác biệt cơ cấu, khác biệt cá nhân, khác biệt giá trị, thẩm quyền mơ hồ, phụ thuộc lẫn nhau, thay đổi, cạnh tranh địa vị. Mô hình 'bầu trời xung đột' xếp theo tầng: môi trường > cấu trúc tổ chức/khí hậu nhóm > yếu tố cá nhân > xung đột xuất hiện."
+    why_it_matters: "Chẩn đoán gốc để chữa căn nguyên (vd phạm vi trách nhiệm mơ hồ thì sửa vai trò, không phải bắt hai người làm hòa)."
+  - term_vi: "Hai chiều TKI: quyết đoán và hợp tác"
+    term_en: "Assertiveness and Cooperativeness (Thomas-Kilmann 1974, 2002)"
+    definition: "Assertiveness: mức nỗ lực thỏa mãn nhu cầu của mình. Cooperativeness: mức nỗ lực thỏa mãn nhu cầu bên kia. Kết hợp cho 5 mode: Competing, Collaborating, Compromising, Avoiding, Accommodating."
+    why_it_matters: >
+      Gốc từ Managerial Grid của Blake & Mouton (1964); Thomas & Kilmann tái diễn giải thành quan tâm mục tiêu của mình vs của đối phương và xây công cụ đo phong cách mặc định.
+      Giải quyết quan niệm sai rằng chỉ có một cách đúng (thường là hợp tác): không có mode tốt tuyệt đối, mỗi mode là công cụ cho một hoàn cảnh. Giá trị: nhận ra mình lạm dụng mode nào và chủ động chuyển mode.
+      Bản quyền: bộ TKI chính thức (30 cặp lựa chọn bắt buộc) thuộc CPP/Kilmann Diagnostics; bảng Likert 25 câu trong tài liệu là bản tự soạn để học tập.
+  - term_vi: "Mô hình Dual Concern"
+    term_en: "Dual Concern Model (Pruitt & Rubin 1986)"
+    definition: "Chiến lược xung đột là kết quả của hai động cơ độc lập: quan tâm kết quả của mình và quan tâm kết quả của bên kia. Bốn chiến lược: Forcing (cao/thấp), Problem Solving (cao/cao), Yielding (thấp/cao), Inaction (thấp/thấp). Không có Compromising rõ ràng (xem là trung gian)."
+    why_it_matters: "Giải thích VÌ SAO người ta chọn chiến lược, không chỉ chọn gì: muốn đổi hành vi thì đổi động cơ (làm cho đối tác thấy lợi ích của họ gắn với lợi ích của mình). Dự đoán: problem solving chỉ xảy ra khi cả hai bên đặt mục tiêu cao cho mình VÀ quan tâm bên kia."
+  - term_vi: "Vị trí và lợi ích"
+    term_en: "Position vs Interest"
+    definition: "Vị trí = điều bạn nói muốn; lợi ích = lý do vì sao bạn muốn. Vị trí thường xung khắc, lợi ích thường có điểm chung. Tìm lợi ích bằng hỏi 'Tại sao?' nhiều lần."
+    why_it_matters: "Đàm phán theo vị trí (positional bargaining) thường cho thỏa thuận kém, tốn thời gian, hỏng quan hệ. Ví dụ quả cam: chia đôi thì mỗi người nhận nửa thứ cần; tách theo lợi ích (một người cần vỏ, một người cần nước) thì mỗi người 100% thứ mình cần."
+  - term_vi: "Phương pháp Getting to Yes (IBR)"
+    term_en: "Interest-Based Relational approach (Fisher, Ury, Patton 1981/2011)"
+    definition: "5 nguyên tắc: tách người khỏi vấn đề; tập trung lợi ích không phải vị trí; tạo lựa chọn có lợi cho cả hai; dùng tiêu chí khách quan; biết BATNA/WATNA/ZOPA."
+    why_it_matters: "Ý tưởng 'tích hợp' có từ Mary Parker Follett (thập niên 1920, Creative Experience 1924); Fisher & Ury (Harvard Negotiation Project, 1981) hệ thống hóa. Ghi chú: bản gốc có 4 nguyên tắc cộng BATNA; WATNA và ZOPA do giáo trình đàm phán sau bổ sung (ZOPA thường gắn với Raiffa 1982), tài liệu gộp thành nguyên tắc 5 cho dễ học."
+  - term_vi: "BATNA, WATNA"
+    term_en: "Best / Worst Alternative to a Negotiated Agreement"
+    definition: "BATNA: phương án tốt nhất nếu đàm phán thất bại; quyết định mức giữ chỗ (walk-away). WATNA: phương án tệ nhất nếu không đạt thỏa thuận (rủi ro phải tránh)."
+    why_it_matters: "Sức mạnh đàm phán đến từ phương án thay thế, không phải từ độ lớn tiếng. Chiến lược: tăng BATNA của mình, hạ BATNA bên kia, mở rộng ZOPA."
+  - term_vi: "Vùng thỏa thuận khả dĩ"
+    term_en: "ZOPA (Zone of Possible Agreement)"
+    definition: "Khoảng giá mà cả hai bên đều thấy tốt hơn BATNA. Mỗi bên có mức giữ chỗ (reservation value) suy từ BATNA: người bán Rs (thấp nhất chịu bán), người mua Rb (cao nhất chịu mua). ZOPA tồn tại khi Rb >= Rs; độ rộng = Rb - Rs là thặng dư có thể chia."
+    why_it_matters: "Cho biết có đáng đàm phán không và bánh lớn cỡ nào. Cuộc chiến thật là ai chiếm phần thặng dư (anchoring) hoặc làm bánh to hơn (đàm phán tích hợp). Nếu không có ZOPA phải đổi bài toán (nâng giá trị bên mua hoặc hạ BATNA bên bán)."
+  - term_vi: "Thang leo thang 9 bậc"
+    term_en: "Glasl's 9 Stages of Conflict Escalation"
+    definition: "Friedrich Glasl (Áo; xuất bản tiếng Đức 1980, tiếng Anh Confronting Conflict 1999): 9 bậc gộp 3 vùng - Win-Win (1-3), Win-Lose (4-6), Lose-Lose (7-9)."
+    why_it_matters: "TKI cho biết mình xử lý thế nào nhưng không cho biết xung đột nặng đến đâu; cách can thiệp phụ thuộc mức độ. Glasl quan sát leo thang theo logic dự đoán được: càng lên cao các bên càng thu hẹp nhận thức, hình thành hình ảnh thù địch, mất khả năng tự dừng. Can thiệp sớm là then chốt."
+  - term_vi: "Phân tích trường lực (Lewin)"
+    term_en: "Lewin's Field Theory / Force Field Analysis"
+    definition: "Hành vi tại mỗi thời điểm là cân bằng giữa lực thúc đẩy và lực cản. Vận dụng cho xung đột: chấm điểm 1-5 từng lực; giải bằng giảm lực cản, tăng lực thúc đẩy, hoặc đổi 'trường' (tái định khung vấn đề)."
+    why_it_matters: "Khi hai bên kẹt, phản xạ là đẩy mạnh hơn, nhưng tăng lực đẩy làm lực cản tăng theo và căng thẳng tăng (cân bằng mới ở mức căng cao hơn). Giảm lực cản (hiểu và gỡ nỗi lo bên đối diện) hiệu quả hơn. Kurt Lewin (1890-1947) phát triển chủ yếu cho quản lý thay đổi; ở đây là vận dụng."
+  - term_vi: "Hòa giải, trọng tài, tòa án"
+    term_en: "Mediation / Arbitration / Litigation"
+    definition: "Hòa giải: bên thứ ba trung lập giúp các bên tự quyết (tự nguyện, bảo mật cao, rẻ nhất, dễ giữ quan hệ). Trọng tài: trọng tài viên quyết, ràng buộc theo thỏa thuận. Tòa án: thẩm phán quyết, cưỡng chế, công khai, đắt/dài."
+    why_it_matters: "Ở bậc 4-5 Glasl hai bên chỉ nghe để phản bác; mediator (1) chuyển thông điệp không mang cảm xúc, (2) cho phép nhượng bộ mà không mất mặt ('mediator đề xuất'), (3) kiểm soát quy trình để bên yếu thế vẫn được nghe."
+  - term_vi: "Đàm phán phân chia vs tích hợp"
+    term_en: "Distributive vs Integrative Negotiation (Walton & McKersie 1965)"
+    definition: "Phân chia: chia bánh cố định (win-lose, giữ bí mật thông tin, anchoring/bluff). Tích hợp: mở rộng bánh (win-win, chia sẻ thông tin, dựa lợi ích). Cùng một cuộc đàm phán có hai động lực song song: chia giá trị có sẵn và tạo thêm giá trị."
+    why_it_matters: "Sai lầm người mới: fixed-pie bias (mặc định mọi thứ là bánh cố định) nên bỏ lỡ cơ hội làm bánh to. Quy tắc: TẠO giá trị trước, CHIA giá trị sau. Giá trị tích hợp xuất hiện khi hai bên định giá khác nhau cùng một thứ (tiền sớm, thời gian giao, thương hiệu, rủi ro)."
+  - term_vi: "Anchoring (đặt mốc)"
+    term_en: "Anchoring"
+    definition: "Người ra mốc đầu tiên kéo kết quả về phía mình; nếu hai bên nhượng bộ đối xứng, kết quả xấp xỉ điểm giữa hai mốc mở đầu."
+    why_it_matters: "Cùng một ZOPA, mốc táo bạo nhưng biện minh được bằng tiêu chí khách quan có thể chiếm 75% thặng dư thay vì 50%; mốc phi lý khiến đối phương bỏ bàn (mất ZOPA)."
+  - term_vi: "Log rolling và thỏa thuận có điều kiện"
+    term_en: "Log Rolling / Contingent Agreements"
+    definition: "Log rolling: mỗi bên nhường điều mình ít coi trọng để lấy điều mình coi trọng hơn. Contingent agreement: gắn giá với kết quả thực tế (earn-out, thưởng theo doanh số) khi hai bên bất đồng về dự báo tương lai."
+    why_it_matters: "Biến chênh lệch định giá/dự báo giữa hai bên thành giá trị chung thay vì tranh cãi."
+  - term_vi: "Văn hóa thể diện và xung đột Việt Nam"
+    term_en: "Face-Negotiation Theory (Ting-Toomey) và đặc điểm văn hóa VN"
+    definition: "Xu hướng trung bình ở VN: giữ thể diện (tránh làm mất mặt công khai), giao tiếp gián tiếp, khoảng cách quyền lực cao, tập thể trước cá nhân. Hệ quả: hay dùng Avoiding/Accommodating, ít Competing công khai, ít feedback trực tiếp đi lên."
+    why_it_matters: >
+      Trong văn hóa tập thể, giữ thể diện cho cả mình và đối phương quan trọng ngang giải quyết vấn đề (Ting-Toomey, face-negotiation theory; tài liệu cite 1985 trong thân bài và 1988 trong danh mục tham khảo - cần kiểm chứng năm).
+      Chỉ số Hofstede cho VN (xấp xỉ, cần kiểm tra bản cập nhật): khoảng cách quyền lực ~70, chủ nghĩa cá nhân ~20/100, né tránh bất định ~30. Cảnh báo khuôn mẫu hóa: khác biệt lớn theo vùng, thế hệ (Gen Z thẳng hơn), ngành, loại hình (gia đình vs FDI); coi là giả thuyết cần kiểm chứng với đội của bạn.
+  - term_vi: "Hòa hợp giả tạo"
+    term_en: "False Harmony (liên quan Groupthink - Janis 1972, Abilene Paradox - Harvey 1974)"
+    definition: "Mọi người tỏ ra hòa hợp nhưng thực chất né tranh luận, xung đột ngầm tích tụ. Abilene paradox: cả nhóm làm việc không ai thực sự muốn vì mỗi người tưởng người khác muốn."
+    why_it_matters: "Nguy hiểm vì bề ngoài êm khiến lãnh đạo tin không có vấn đề trong khi thông tin quan trọng bị giữ lại - cơ chế đứng sau Kodak và Boeing."
+  - term_vi: "Chi phí chìm trong xung đột"
+    term_en: "Sunk Cost Fallacy in Conflict"
+    definition: "Tiếp tục xung đột/kiện tụng vì đã đầu tư nhiều, dù tương lai không còn lợi."
+    why_it_matters: "Chi phí chìm không thu hồi được và không nên xuất hiện trong phép tính; quyết định phải dựa trên lợi ích/chi phí tương lai. Câu hỏi thử: nếu bắt đầu từ hôm nay có chọn cuộc chiến này không?"
+
+frameworks:
+  - id: "m06_jehn_conflict_types"
+    name_vi: "Phân loại xung đột Jehn + cấp độ xung đột"
+    name_en: "Jehn Task/Relationship/Process + Levels of Conflict"
+    origin: "Karen Jehn 1995 (ASQ 40(2)); De Dreu & Weingart 2003 meta-analysis; Jehn & Bendersky 2003."
+    components:
+      - "Task: nội dung công việc/phương pháp (có thể tích cực nếu mức vừa và có an toàn tâm lý)"
+      - "Relationship: cá nhân, thù oán (gần như luôn tiêu cực)"
+      - "Process: ai làm gì, khi nào, như thế nào (trung bình, phụ thuộc độ rõ cơ cấu)"
+      - "Cấp độ: intrapersonal, interpersonal, intra-group, inter-group, organizational"
+    when_to_use: "Bước đầu chẩn đoán: quyết định nên khuyến khích hay dập tắt xung đột."
+    how_to_apply:
+      - "Mô tả xung đột 3 dòng, gán loại (task/relationship/process) và cấp độ"
+      - "Hỏi: tranh luận đang về ý tưởng hay về con người?"
+      - "Task: giữ khung tranh luận chuyên môn, đảm bảo an toàn tâm lý; Relationship: xử lý sớm bằng đối thoại/hòa giải; Process: làm rõ vai trò/quy trình"
+      - "Theo dõi dấu hiệu task conflict trượt sang relationship conflict (công kích cá nhân, tránh mặt)"
+    how_to_read_results: "Task vừa phải + an toàn tâm lý = có thể khuyến khích; relationship = can thiệp sớm; process = sửa cơ cấu."
+    pitfalls:
+      - "Đọc 'task conflict tích cực' như giấy phép cãi tùy tiện (meta-analysis cho thấy tương quan âm yếu với hiệu suất)"
+      - "Bỏ qua việc xung đột process (thẩm quyền mơ hồ) thường là gốc của xung đột quan hệ"
+    example: "Chủ nhà hàng vs bếp trưởng (Case 4): task conflict về chiến lược mở rộng sẽ thành relationship conflict nếu chủ unilateral mở chi nhánh."
+  - id: "m06_optimal_conflict_curve"
+    name_vi: "Đường cong tối ưu xung đột"
+    name_en: "Optimal Conflict Curve (functional vs dysfunctional)"
+    origin: "Quan điểm tương tác (Robbins 1974); logic Yerkes-Dodson 1908; Groupthink Janis 1972."
+    components:
+      - "Zone 1: ít xung đột - trì trệ, groupthink, lạc hậu"
+      - "Zone 2: vừa phải - động lực, sáng tạo, hiệu quả (mục tiêu)"
+      - "Zone 3: nhiều - căng thẳng, khủng hoảng, sụp đổ"
+    when_to_use: "Đánh giá 'sức khỏe xung đột' của tổ chức và quyết định khuyến khích hay hạ nhiệt."
+    how_to_apply:
+      - "Liệt kê tín hiệu: turnover, gossip, trễ deadline do phối hợp, số cuộc họp chữa cháy, mức độ phản biện thực sự trong họp"
+      - "Phân vùng: im lặng bất thường + quyết định không bị thách thức = nghi Zone 1; công kích cá nhân/chia phe = Zone 3"
+      - "Zone 1: khuyến khích phản biện (devil's advocate, thưởng người dám nói); Zone 3: hạ nhiệt (mediation, vai trò rõ, mục tiêu chung)"
+    how_to_read_results: "Định tính. Không có ngưỡng số đo được; mỗi tổ chức có ngưỡng chịu riêng."
+    pitfalls:
+      - "Tìm 'điểm tối ưu 40%' - mô hình chỉ để định hướng tư duy"
+      - "Chủ SME giữ quan điểm truyền thống nên đẩy tổ chức vào Zone 1"
+    example: "Kodak/Boeing: quá ít bất đồng được nói ra (Zone 1 + suppress) dẫn đến quyết định tệ mà không ai dám phản biện."
+  - id: "m06_conflict_sources_climate"
+    name_vi: "Nguồn gốc xung đột và Bầu trời xung đột"
+    name_en: "Sources of Conflict + Conflict Climate Model"
+    origin: "Tổng hợp tài liệu; mô hình tầng: môi trường > cấu trúc/khí hậu nhóm > cá nhân > xung đột xuất hiện."
+    components:
+      - "10 nguồn: tài nguyên khan hiếm, mục tiêu không tương thích, giao tiếp kém, khác biệt cơ cấu, khác biệt cá nhân, khác biệt giá trị, thẩm quyền mơ hồ, phụ thuộc lẫn nhau, thay đổi, cạnh tranh địa vị"
+      - "Tầng: Environmental > Organizational structures (power, resources, goals) + Team climate (trust, communication, cohesion) > Individual factors (personality, values, expectations, past experiences) > Conflict emergence"
+    when_to_use: "Tìm căn nguyên để phòng ngừa, thay vì chỉ xử lý triệu chứng."
+    how_to_apply:
+      - "Với mỗi xung đột, đánh dấu 1-3 nguồn chính trong 10 nguồn"
+      - "Xác định tầng gốc: cấu trúc (vai trò, KPI, nguồn lực) hay nhóm (tin cậy) hay cá nhân"
+      - "Sửa ở tầng cao nhất có thể (vd KPI xung khắc Sales-Finance, thẩm quyền mơ hồ)"
+    how_to_read_results: "Nguồn cấu trúc (mục tiêu, thẩm quyền, tài nguyên) sửa được bằng thiết kế; nguồn cá nhân/giá trị cần đối thoại/hòa giải."
+    pitfalls:
+      - "Quy mọi xung đột về 'cá tính' trong khi gốc là KPI/thẩm quyền"
+    example: "Sales muốn giá rẻ, Finance muốn lợi nhuận cao (mục tiêu không tương thích); hai trưởng phòng cùng quản một nhân viên (thẩm quyền mơ hồ)."
+  - id: "m06_tki"
+    name_vi: "Thomas-Kilmann Conflict Mode Instrument (TKI) - 5 mode"
+    name_en: "Thomas-Kilmann Conflict Mode Instrument"
+    origin: "Kenneth Thomas & Ralph Kilmann 1974 (cập nhật 2002), dựa trên Managerial Grid (Blake & Mouton 1964). Bản quyền CPP/Kilmann Diagnostics."
+    components:
+      - "Competing (cao quyết đoán/thấp hợp tác): win-lose, nhanh, dùng quyền lực/chuyên môn"
+      - "Collaborating (cao/cao): win-win, tìm nhu cầu thật, chậm nhưng bền, cần tin cậy"
+      - "Compromising (trung/trung): mỗi bên nhượng một phần, nhanh vừa, giữ quan hệ, không giải quyết căn nguyên"
+      - "Avoiding (thấp/thấp): né, hoãn; hợp với vấn đề nhỏ/chưa đúng lúc; lâu dài thành bom hẹn giờ"
+      - "Accommodating (thấp/cao): lose-win, nhường; hợp khi mình sai hoặc vấn đề quan trọng hơn với họ; kéo dài thì kiệt sức/bị lợi dụng"
+    when_to_use: "Biết phong cách mặc định của mình/đối phương và chọn mode theo tình huống thay vì phản xạ."
+    how_to_apply:
+      - "Chấm bảng 25 câu Likert (5 câu/mode, tổng 5-25/mode) - xem công thức m06_tki_scoring"
+      - "Mode cao nhất = preferred; cao thứ hai = backup; còn lại = ít dùng"
+      - "Xác định cặp phong cách của hai bên, cảnh báo cặp nguy hiểm (Competing x Avoiding)"
+      - "Dùng bảng chẩn đoán tình huống để chọn mode mục tiêu và đặt kế hoạch chuyển mode"
+    how_to_read_results: "Điểm cao nhất thường từ ~20 trở lên (ngưỡng minh họa của tài liệu, không phải chuẩn của TKI chính thức). Điểm cao không phải xấu; vấn đề là lạm dụng một mode."
+    pitfalls:
+      - "Coi Collaborating là 'luôn đúng' - tốn thời gian, cần tin cậy, có thể bị lợi dụng, và không khả thi khi nhu cầu không thể cùng thỏa"
+      - "Dùng bản Likert tự soạn thay công cụ chính thức cho quyết định nhân sự"
+      - "Nhầm Avoiding chiến lược (hoãn có chủ đích) với né tránh thụ động"
+    example: "Case 12: An = Competing 22; Bình = Avoiding 21, backup Accommodating 18 -> cặp Competing x Avoiding, cần chuyển cả hai về Collaborating (An giảm ép, Bình tăng lên tiếng)."
+  - id: "m06_tki_situation_table"
+    name_vi: "Bảng chọn mode theo tình huống (8 tình huống/mode)"
+    name_en: "TKI Situational Diagnosis Table"
+    origin: "Tổng hợp trong tài liệu (mục 4.3, 4.5, 11.1)."
+    components:
+      - "Competing: khẩn cấp; vấn đề không quan trọng; bảo vệ quyền lợi quan trọng; có chuyên môn rõ; đối phương không hợp tác; thiết lập ranh giới; quyết định sống còn; mục tiêu cao hơn"
+      - "Collaborating: quan hệ dài hạn; vấn đề phức tạp cần sáng tạo; cả hai có thông tin quan trọng; mục tiêu dài hạn chung; bất đồng phản ánh quan điểm hợp lệ; xây tin cậy; lợi ích từ đa dạng; chữa căn nguyên"
+      - "Compromising: quyền lực tương đương; không sống chết; deadline gấp; cần đồng ý tức thì; tránh leo thang; giữ quan hệ trong khi tiến hành; nhu cầu chia được; tài nguyên hạn chế"
+      - "Avoiding: vấn đề quá nhỏ; sẽ tự giải quyết; thời điểm không phù hợp; chưa có cơ hội; liên quan người khác; giữ bình yên; bảo vệ bản thân; thận trọng pháp lý (thu thập bằng chứng)"
+      - "Accommodating: vấn đề quan trọng hơn với họ; mình sai; duy trì hòa bình tạm; quan hệ quyền lực rõ; giáo dục; cộng đồng trước bản thân; chịu ngắn hạn vì dài hạn; xây good will"
+    when_to_use: "Chọn mode trước một cuộc nói chuyện khó."
+    how_to_apply:
+      - "Trả lời: khẩn không? quan hệ dài hạn không? hai bên cân sức không? vấn đề lớn hay nhỏ? mình sai không?"
+      - "Khẩn cấp -> Competing; dài hạn/phức tạp/căn nguyên -> Collaborating; deadline + cân sức -> Compromising; nhỏ/chưa đúng lúc -> Avoiding (tạm); mình sai/họ quan trọng hơn -> Accommodating"
+      - "Xung đột đã leo bậc 4+ -> Mediation; đàm phán hợp đồng phức tạp -> IBR + Negotiation; xung đột nội bộ -> TKI + Dual Concern + IBR; 3+ bên -> Mediation + Negotiation"
+    how_to_read_results: "Mode là công cụ, đổi mode theo tình huống; có thể kết hợp theo giai đoạn (Case 9, 10)."
+    pitfalls:
+      - "Dùng Avoiding cho quyết định chiến lược dài hạn (Kodak)"
+      - "Compromising quá sớm khi còn cơ hội mở rộng bánh"
+    example: "Case 9 Nam Phi: Collaborating (1990-92) -> Compromising có cấu trúc (1992-94) -> IBR từng vấn đề (1995+)."
+  - id: "m06_dual_concern"
+    name_vi: "Mô hình Dual Concern (Pruitt & Rubin)"
+    name_en: "Dual Concern Model"
+    origin: "Pruitt & Rubin 1986, Social Conflict: Escalation, Stalemate, and Settlement."
+    components:
+      - "Forcing (cao own/thấp other) ~ Competing"
+      - "Problem Solving (cao/cao) ~ Collaborating"
+      - "Yielding (thấp own/cao other) ~ Accommodating"
+      - "Inaction (thấp/thấp) ~ Avoiding"
+    when_to_use: "Hiểu động cơ đằng sau hành vi của đối phương và thiết kế cách thay đổi động cơ đó."
+    how_to_apply:
+      - "Đánh giá mức quan tâm kết quả của mình và của bên kia ở mỗi bên"
+      - "Nếu muốn đối tác hợp tác: gắn lợi ích của họ với lợi ích của mình để nâng 'quan tâm bên kia'"
+      - "Nếu một bên 'inaction': kiểm tra họ có BATNA tốt (không cần thỏa thuận) hay ngại va chạm"
+    how_to_read_results: "Problem solving chỉ xảy ra khi cả hai bên cao ở cả hai chiều."
+    pitfalls:
+      - "Diễn giải né tránh luôn là ngại va chạm - có thể là thật sự không quan tâm vì có lựa chọn khác"
+    example: "Chủ shop né nhà cung cấp chậm hàng có thể do cả hai động cơ thấp vì có nhà cung cấp thay thế."
+  - id: "m06_ibr"
+    name_vi: "Đàm phán theo lợi ích (IBR / Getting to Yes) - 5 nguyên tắc"
+    name_en: "Interest-Based Relational Approach"
+    origin: "Fisher, Ury, Patton (Harvard Negotiation Project) 1981, tái bản 2011; gốc ý tưởng tích hợp: Follett 1924."
+    components:
+      - "1. Tách người khỏi vấn đề (empathy, nghe để hiểu, ngồi cạnh nhau chống vấn đề)"
+      - "2. Tập trung lợi ích, không phải vị trí (hỏi 'tại sao?' nhiều lần)"
+      - "3. Tạo lựa chọn cùng có lợi (brainstorm không phê phán, tìm lợi ích khác nhau, chia việc theo thế mạnh, đổi phạm vi)"
+      - "4. Dùng tiêu chí khách quan (giá thị trường, chuẩn ngành, dữ liệu lịch sử, ý kiến chuyên gia)"
+      - "5. BATNA, WATNA, ZOPA"
+    when_to_use: "Đàm phán chính thức, hợp đồng, xung đột đồng sáng lập/cổ đông, bất đồng chiến lược; là bộ kỹ năng để đạt Collaborating."
+    how_to_apply:
+      - "Chuẩn bị tâm thế: 'chúng ta không tranh cãi nhau, chúng ta cùng giải bài toán X'"
+      - "Liệt kê vị trí hai bên; hỏi 'tại sao?' ít nhất 2 lần để ra lợi ích thật; ghi lợi ích chung"
+      - "Brainstorm 5-6 phương án trước khi đánh giá; chấm từng phương án: A được gì, B được gì, khả thi?"
+      - "Chọn tiêu chí khách quan, tìm BATNA/WATNA/ZOPA của cả hai"
+      - "Chốt: ai làm gì, khi nào, thế nào, ngày soát xét; viết thành văn bản, ký, đặt lịch follow-up"
+    how_to_read_results: "Nếu thỏa mãn được lợi ích của cả hai bằng phương án mới thay vì chia đôi vị trí, đó là thành công. Khi không còn cách mở rộng bánh thì dùng Compromising."
+    pitfalls:
+      - "Nhầm vị trí và lợi ích (dừng ở 'tại sao' lần 1)"
+      - "Dùng IBR với đối phương không chân thành - dễ bị lợi dụng"
+      - "Chọn một vị trí thay vì tạo phương án: ví dụ remote vs văn phòng có ít nhất 4 phương án (hybrid core hours, theo dự án, họp toàn đội theo quý, async-first)"
+    example: "Giá $100 vs $80: hỏi lợi ích -> A cần biên, B cần giá thấp -> B thanh toán ngay, A chiết khấu sớm (thay vì chốt $90)."
+  - id: "m06_zopa_batna_process"
+    name_vi: "Quy trình ZOPA-BATNA"
+    name_en: "BATNA / WATNA / ZOPA analysis"
+    origin: "BATNA từ Fisher & Ury; ZOPA gắn với Raiffa 1982."
+    components:
+      - "Mức giữ chỗ người bán Rs và người mua Rb suy từ BATNA"
+      - "ZOPA = [Rs; Rb] nếu Rb >= Rs; độ rộng Rb - Rs"
+      - "Chia thặng dư theo giá P: người bán P - Rs, người mua Rb - P"
+    when_to_use: "Trước mọi đàm phán giá/điều khoản."
+    how_to_apply:
+      - "Liệt kê các phương án nếu không có thỏa thuận; BATNA = phương án tốt nhất"
+      - "Ước lượng BATNA đối phương (kể cả chi phí chuyển đổi)"
+      - "Kiểm tra Rb >= Rs; tính độ rộng ZOPA và điểm giữa"
+      - "Kiểm tra đề xuất của mình nằm trong ZOPA trước khi đưa ra"
+      - "Nếu không có ZOPA: nâng giá trị bên mua, hạ BATNA bên bán, hoặc thêm biến để mở rộng bánh"
+      - "Chiến lược: tăng BATNA mình, hạ BATNA họ, mở rộng ZOPA"
+    how_to_read_results: "ZOPA rộng = nhiều dư địa; đề xuất ngoài ZOPA = đối phương rời bàn."
+    pitfalls:
+      - "Ước lượng sai BATNA đối phương (không tính chi phí chuyển đổi)"
+      - "Lộ BATNA/giá giữ chỗ của mình"
+    example: "Case 12: ZOPA phụ phí giao nhanh = [36,24; 43,2] triệu/đơn; phụ phí 7% (42,8) nằm trong, 10% (44) nằm ngoài."
+  - id: "m06_integrative_tactics"
+    name_vi: "Đàm phán tích hợp: expand pie, log rolling, contingent agreement"
+    name_en: "Integrative Negotiation Tactics"
+    origin: "Walton & McKersie 1965; Follett 1924; Fisher & Ury 1981."
+    components:
+      - "Identify Interests (hỏi tại sao)"
+      - "Expand the Pie (thêm biến ngoài tiền: thời gian, chuyển giao công nghệ, quyền tiếp cận thị trường, bảo hành)"
+      - "Log Rolling (đổi chéo: cam kết đơn 12 tháng đổi ưu tiên giao hàng; thanh toán sớm đổi chiết khấu)"
+      - "Contingent Agreements (earn-out, thưởng theo doanh số khi bất đồng dự báo)"
+    when_to_use: "Khi hai bên có nhiều biến chưa được đưa lên bàn hoặc định giá khác nhau."
+    how_to_apply:
+      - "Hỏi: bạn đánh giá điều gì khác tôi?"
+      - "Lập danh sách các biến và mỗi bên cho điểm mức quan trọng"
+      - "Ghép chéo: nhường điều ít quan trọng, lấy điều quan trọng hơn"
+      - "Tính giá trị tạo thêm bằng chênh lệch định giá (xem m06_log_rolling_value)"
+    how_to_read_results: "Cả hai đều tốt hơn so với giữ nguyên giá và điều kiện cũ thì là tích hợp thành công."
+    pitfalls:
+      - "Fixed-pie bias"
+      - "Bỏ qua điều khoản phụ (thanh toán, giao hàng, bảo hành)"
+    example: "Hợp đồng 1.000 triệu, thanh toán sớm 20 ngày đổi chiết khấu 0,75%: người bán lời thêm 2,36 triệu, người mua 2,02 triệu."
+  - id: "m06_distributive_negotiation"
+    name_vi: "Đàm phán phân chia: anchoring, signaling, concession, ultimatum"
+    name_en: "Distributive Negotiation Tactics"
+    origin: "Walton & McKersie 1965."
+    components:
+      - "Anchoring: ra mốc đầu tiên"
+      - "Signaling: phát tín hiệu về BATNA"
+      - "Concession strategy: nhượng bộ chậm, nhỏ, đối xứng"
+      - "Ultimatum: chốt ranh giới cuối"
+    when_to_use: "Mặc cả giá thuần túy (bánh cố định, quan hệ ngắn hạn)."
+    how_to_apply:
+      - "Tính ZOPA và mốc mở đầu có thể biện minh bằng tiêu chí khách quan"
+      - "Nếu đối phương ra mốc trước, đặt lại khung bằng dữ liệu thay vì bám mốc của họ"
+      - "Nhượng bộ giảm dần, đối xứng, mỗi lần kèm điều kiện đổi lại"
+    how_to_read_results: "Xem công thức m06_anchoring_share: 75% / 50% / 0% thặng dư tùy mốc."
+    pitfalls:
+      - "Mốc phi lý làm đối phương bỏ bàn"
+      - "Hỏng quan hệ dài hạn, cảm giác bị đánh cắp"
+    example: "Mốc bán 55, mốc mua 30 -> điểm giữa 42,5 -> người bán nhận 75% thặng dư."
+  - id: "m06_glasl"
+    name_vi: "Thang leo thang 9 bậc của Glasl"
+    name_en: "Glasl's 9 Stages of Conflict Escalation"
+    origin: "Friedrich Glasl (tư vấn tổ chức người Áo, trường phái Hà Lan); tiếng Đức 1980 (Konfliktmanagement), tiếng Anh Confronting Conflict 1999."
+    components:
+      - "Vùng Win-Win (bậc 1-3): 1 Hardened Positions (quan điểm cứng, còn nói chuyện); 2 Debate & Polemics (tranh luận căng); 3 Deeds, Not Words (hành động đơn phương thay lời nói)"
+      - "Vùng Win-Lose (bậc 4-6): 4 Images & Coalitions (hình ảnh xấu, tập hợp phe, gossip); 5 Loss of Face (cố ý làm đối phương mất mặt công khai); 6 Threats & Ultimatums (đe dọa, tối hậu thư)"
+      - "Vùng Lose-Lose (bậc 7-9): 7 Limited Destructive Acts (gây hại cụ thể: tài chính, pháp lý); 8 Fragmentation & Annihilation (xóa sổ đối phương); 9 Together Into the Abyss (cùng rơi vào vực thẳm)"
+      - "Can thiệp (bảng đơn giản hóa cho SME): 1-2 đối thoại/tự hòa giải; 3 hòa giải nội bộ/điều phối; 4-5 hòa giải chuyên nghiệp; 6 quản lý cấp cao + hòa giải; 7 pháp lý + quản lý; 8-9 tòa/trọng tài"
+    when_to_use: "Đo mức độ xung đột và chọn hình thức can thiệp phù hợp; cảnh báo sớm."
+    how_to_apply:
+      - "Quan sát dấu hiệu hành vi: còn nói chuyện? hành động đơn phương? chia phe/gossip? công khai làm mất mặt? tối hậu thư? gây hại cụ thể? kiện tụng?"
+      - "Gán bậc (có thể chạm hai bậc liền kề, vd bậc 4 có dấu hiệu bậc 5)"
+      - "Chọn can thiệp theo vùng: Win-Win - chính các bên + quản lý; Win-Lose - bên thứ ba trung lập; Lose-Lose - thẩm quyền/quyền lực (pháp lý, tòa, trọng tài)"
+      - "Đặt lịch follow-up để bắt xung đột tái phát ở bậc 1-2"
+    how_to_read_results: "Can thiệp ở bậc 1-2 thường chỉ cần một cuộc nói chuyện thẳng; bậc 4-5 cần bên thứ ba và quan hệ khó phục hồi trọn vẹn; từ bậc 7 hầu như không thể quay lại như cũ."
+    pitfalls:
+      - "Dùng các tỷ lệ phần trăm 'xác suất giải quyết theo bậc' (kiểu 80%/30%) - đó chỉ là trực giác của người đào tạo, Glasl không công bố; KHÔNG dùng như thống kê"
+      - "Coi ranh giới bậc là cứng: Glasl gốc đề xuất các hình thức can thiệp chồng lấp (1-3 moderation; 3-5 process consultation; 5-7 mediation; 6-8 arbitration/phán quyết; 7-9 power intervention)"
+      - "Dùng mediation khi có bạo lực/đe dọa an toàn"
+    example: "Case 12: không họp chung, nhắn qua nhân viên, kể xấu nhau, một lần phê bình trước toàn xưởng -> bậc 4 chạm bậc 5 -> mời hòa giải viên ngoài."
+  - id: "m06_lewin_force_field"
+    name_vi: "Phân tích trường lực Lewin cho xung đột"
+    name_en: "Lewin Force Field Analysis for Conflict"
+    origin: "Kurt Lewin (1890-1947), Field Theory; Frontiers in Group Dynamics 1947. Vận dụng từ quản lý thay đổi sang xung đột."
+    components:
+      - "Lực thúc đẩy (driving forces) và lực cản (restraining forces), chấm 1-5"
+      - "3 cách giải: giảm lực cản, tăng lực thúc đẩy, đổi trường (reframe vấn đề)"
+    when_to_use: "Hai bên kẹt giữa hai nhóm lực (vd remote vs văn phòng), cần cách dịch chuyển mà không ai thua."
+    how_to_apply:
+      - "Liệt kê lực thúc đẩy (phía đề xuất) và lực cản (phía lo ngại), chấm từng lực 1-5"
+      - "Tính tổng hai phía và chênh lệch"
+      - "Nhắm vào lực cản lớn nhất (nỗi lo thật) và thiết kế biện pháp giảm (KPI theo đầu ra, lịch 2 ngày văn phòng)"
+      - "Chấm lại sau can thiệp; chênh lệch tăng nghĩa là hệ thống dịch chuyển"
+    how_to_read_results: "Case remote: thúc đẩy 15 vs cản 13 (giằng co); sau giảm cản còn 10, chênh +5 -> chuyển sang hybrid."
+    pitfalls:
+      - "Tăng lực đẩy (thêm lý do ủng hộ) làm lực cản tăng theo (có thể 15-16)"
+      - "Chấm điểm chủ quan - cần chấm cùng các bên"
+    example: "Chính sách remote công ty 40 người (giả định minh họa): xem worked example m06_force_field_net."
+  - id: "m06_mediation_process"
+    name_vi: "Quy trình hòa giải (Mediation) 5-7 bước và kịch bản mediator"
+    name_en: "Mediation Process and Script"
+    origin: "Mục 8.3 và 15.4 của tài liệu."
+    components:
+      - "5 bước: Opening; Individual statements (10-15 phút mỗi bên, không cắt ngang); Identifying interests; Generating options (brainstorm không phê phán); Agreement/Action plan (viết ra, follow-up)"
+      - "Kịch bản 7 pha: Opening 5-10p (ground rules: tôn trọng, trung thực, lắng nghe không ngắt, bảo mật); Opening statements 15-20p (tóm tắt trung lập, B nhắc lại lời A); Interests 15-20p; Options 20-30p; Narrowing & agreement 15-20p; Documenting 10-15p (what/when/how/success criteria/follow-up); Closing 5p"
+      - "Vai trò mediator: lắng nghe không phán xét, giúp hiểu lợi ích lẫn nhau, tìm điểm chung, đề xuất lựa chọn nhưng các bên quyết, viết thỏa thuận rõ"
+    when_to_use: "Glasl bậc 4-6; hai bên không thể tự giải; cần giữ quan hệ dài hạn; muốn tránh tòa; vấn đề phức tạp nhiều tôn chỉ. KHÔNG dùng khi: bậc 1-3 (tự giải trước), bậc 8+ (quá muộn, cần tòa), có bạo lực/đe dọa."
+    how_to_apply:
+      - "Gặp từng bên riêng trước"
+      - "Thống nhất ground rules, xin đồng ý bằng lời"
+      - "Mỗi bên nói không bị ngắt; mediator tóm tắt trung lập; bên kia diễn đạt lại để kiểm tra lắng nghe"
+      - "Chuyển từ vị trí sang lợi ích ('Vì sao điều đó quan trọng với bạn?'), chốt lợi ích chung"
+      - "Brainstorm 6-8 phương án, đánh giá theo 3 câu: đáp ứng A? đáp ứng B? khả thi?"
+      - "Tinh chỉnh 1-2 phương án triển vọng, viết thỏa thuận (what/when/how/tiêu chí/follow-up), cả hai ký"
+      - "Follow-up sau 2-4 tuần"
+    how_to_read_results: "Thỏa thuận có người chịu trách nhiệm, thời hạn, tiêu chí thành công và ngày soát xét là thỏa thuận có khả năng bền."
+    pitfalls:
+      - "Mediator phán xử thay các bên (kiểm soát quy trình, không kiểm soát kết quả)"
+      - "Không văn bản hóa"
+      - "Bỏ follow-up"
+    example: "Case 11 và 12: hòa giải viên ngoài, họp lại sau 2 tuần, 1 tháng, 3 tháng."
+  - id: "m06_adr_comparison"
+    name_vi: "So sánh Hòa giải - Trọng tài - Tòa án (bối cảnh pháp lý VN)"
+    name_en: "Mediation vs Arbitration vs Litigation"
+    origin: "Mục 8.3. Bối cảnh VN (tham khảo, CẦN KIỂM TRA văn bản hiện hành): Luật Hòa giải, đối thoại tại Tòa án (2020, hiệu lực 2021); Luật Trọng tài thương mại (2010); Bộ luật Lao động (2019) quy định hòa giải viên lao động."
+    components:
+      - "Ai quyết: các bên / trọng tài viên / thẩm phán"
+      - "Tính chất: tự nguyện, không ràng buộc đến khi ký / ràng buộc theo thỏa thuận trọng tài / ràng buộc, cưỡng chế"
+      - "Bảo mật: cao / thường cao / thường công khai"
+      - "Chi phí-thời gian: thấp nhất / trung bình / cao-dài"
+      - "Quan hệ sau đó: dễ giữ / thường tổn hại / thường tổn hại"
+    when_to_use: "Chọn cơ chế giải quyết tranh chấp; soạn điều khoản trong thỏa thuận cổ đông/hợp đồng."
+    how_to_apply:
+      - "Với tranh chấp cổ đông/đồng sáng lập: đưa điều khoản hòa giải rồi trọng tài vào Thỏa thuận cổ đông ngay từ đầu"
+      - "Chọn hòa giải khi muốn giữ quan hệ và bảo mật; trọng tài/tòa khi cần phán quyết ràng buộc"
+    how_to_read_results: "Chi phí, thời gian và tổn hại quan hệ tăng từ hòa giải đến tòa án."
+    pitfalls:
+      - "Dùng trích dẫn luật VN không kiểm tra lại văn bản hiện hành (cần xác nhận với luật sư)"
+    example: "Case 3 và 8: điều khoản cơ chế quyết định đầu tư lớn, drag-along, tag-along, exit clause sau 10 năm trong thỏa thuận cổ đông."
+  - id: "m06_vn_culture_playbook"
+    name_vi: "Chiến lược xung đột phù hợp văn hóa Việt Nam (blended approach)"
+    name_en: "Vietnam Culture-Adapted Conflict Approach"
+    origin: "Mục XII; dựa trên Ting-Toomey (face-negotiation) và chỉ số Hofstede (xấp xỉ, cần kiểm chứng)."
+    components:
+      - "1. Tối ưu Avoiding/Accommodating: nói riêng với sếp trước, dùng câu hỏi ('Sếp cho em hiểu thêm vì sao quyết định này ạ?')"
+      - "2. Tôn trọng thứ bậc khi Collaborating: xin ý kiến, đề xuất như gợi ý, không nói 'cả sếp và tôi đều sai'"
+      - "3. Dùng bên thứ ba/người bình định: người thân, đồng nghiệp được tôn trọng, sếp cao hơn - không nhất thiết mediator chính thức"
+      - "4. Bảo vệ mặt cả hai bên: không nói 'bạn sai', nói 'cả hai cùng muốn điều tốt nhất, hãy kết hợp'"
+      - "5. Ngôn ngữ lịch sự ('em xin ý kiến sếp', 'nếu không phiền...')"
+      - "Blended: giữ mặt công khai (Accommodating) + nói chuyện riêng (Collaborating sau hậu trường) + tìm giải pháp cả hai 'dạ' (Compromising/Collaborating) + công bố công khai bằng uy tín người lãnh đạo cao hơn"
+    when_to_use: "Xung đột có yếu tố thứ bậc, thâm niên, thể diện (SME gia đình, chuyên gia lâu năm, đội đông thế hệ)."
+    how_to_apply:
+      - "Nói chuyện riêng trước, không phê bình công khai"
+      - "Hỏi ý kiến người có thâm niên trước khi ra quyết định ảnh hưởng đến họ"
+      - "Mở 'kênh nói an toàn' cho cấp dưới (cổng xác nhận, 1-1 định kỳ, khảo sát ẩn danh)"
+      - "Cho bên kia cơ hội giữ thể diện (để họ đề xuất giải pháp)"
+    how_to_read_results: "Dấu hiệu tốt: người cấp dưới dám nói điều khó nghe; dấu hiệu xấu: toàn 'dạ' trong họp nhưng than phiền riêng."
+    pitfalls:
+      - "Over-avoiding: bom hẹn giờ, giận lặng lẽ"
+      - "Competing công khai với người cấp trên: bị coi là thách thức quyền lực"
+      - "Ít feedback trực tiếp đi lên: sếp tiếp tục sai, tổ chức không học"
+      - "Khuôn mẫu hóa: đặc điểm chỉ là xu hướng trung bình, khác biệt theo vùng/thế hệ/ngành/loại hình"
+    example: "Case 12: tôn trọng thâm niên Bình (hỏi riêng trước), không phê bình trước xưởng, cho An giữ thể diện bằng đề xuất chính sách giao nhanh."
+  - id: "m06_remote_conflict"
+    name_vi: "Thực hành xung đột trong đội remote/hybrid"
+    name_en: "Remote/Hybrid Conflict Practices"
+    origin: "Mục XIII."
+    components:
+      - "Đặc thù: thiếu tín hiệu phi ngôn ngữ, hiểu lầm qua chat/email, độ trễ async, ít bonding nên ít tin cậy, vấn đề nhỏ dễ bị lên kênh chung (nhanh chạm Glasl bậc 4)"
+      - "6 thực hành: ưu tiên đồng bộ (video call 15 phút thay vì email); 1-1 không công khai ở kênh nhóm; kiểm tra hiểu biết (diễn đạt lại); thiết lập ground rules (không tranh cãi công khai, gọi 1-1, kênh chung chỉ thông báo kết quả); xây tin cậy bằng họp định kỳ (1-1 tuần có phần cá nhân, team bonding tháng, off-site quý); feedback liên tục tuần/hai tuần"
+    when_to_use: "Đội phân tán/hybrid có dấu hiệu hiểu lầm hoặc tranh cãi trong chat."
+    how_to_apply:
+      - "Đặt ground rules cho đội ngay từ đầu"
+      - "Khi thấy tranh cãi trong chat: nhắn riêng, chuyển sang video call"
+      - "Thông báo kết quả với đội sau khi giải quyết (nếu cần)"
+    how_to_read_results: "Giảm số tranh cãi công khai trên kênh chung, thời gian đến lúc giải quyết ngắn hơn."
+    pitfalls:
+      - "Giải quyết bằng email/chat dài (dễ hiểu lầm và leo thang)"
+      - "Tranh cãi công khai ở kênh nhóm (áp lực lớn, leo thang nhanh)"
+    example: "Thay vì email 'Tớ không đồng ý cách này', gọi video 15 phút giải thích."
+  - id: "m06_pitfalls_toolkit"
+    name_vi: "Ba nhóm bẫy: hòa hợp giả tạo, bẫy leo thang, chi phí chìm"
+    name_en: "False Harmony, Escalation Traps, Sunk Cost"
+    origin: "Mục XVI; Groupthink (Janis 1972), Abilene Paradox (Harvey 1974)."
+    components:
+      - "False harmony - triệu chứng: 'dạ' trong họp rồi than riêng; không ai nói không đồng ý; quyết định không ai dốc sức; gossip ngầm"
+      - "Bẫy 1 Tit-for-tat: công kích - phản công - leo thang. Cách tránh: tạm dừng, nói lại khi bình tĩnh, xin lỗi, tìm mediator"
+      - "Bẫy 2 Winner-take-all: A thắng, B chuẩn bị trả đũa. Cách tránh: reframe win-win; thỏa hiệp lần này, hợp tác lần sau, hoặc hybrid"
+      - "Bẫy 3 Kêu gọi bên thứ ba/liên minh (Glasl bậc 4). Cách tránh: giải quyết 1-1 hoặc mediation trung lập trước khi tìm đồng minh"
+      - "Sunk cost: quyết định theo lợi ích tương lai, bỏ chi phí chìm"
+    when_to_use: "Rà soát khi xung đột kéo dài, khi tổ chức êm bất thường, hoặc khi cân nhắc tiếp tục một cuộc chiến."
+    how_to_apply:
+      - "False harmony: khuyến khích bất đồng lành mạnh (CEO nói 'tôi muốn nghe phản đối', tự nhận sai), 1-1 hỏi 'bạn có gì chưa nói?', khảo sát ẩn danh 'điều gì chưa được nói', thưởng người dám thách thức"
+      - "Escalation: nhận diện vòng lặp, ngắt vòng bằng tạm dừng/xin lỗi/bên thứ ba trung lập"
+      - "Sunk cost: tính giá trị kỳ vọng tương lai (m06_ev_continue_vs_settle); hỏi 'nếu bắt đầu từ hôm nay có chọn không?'"
+    how_to_read_results: "Quyết định đúng khi so sánh các phương án chỉ bằng chi phí/lợi ích sắp tới."
+    pitfalls:
+      - "Coi sự im lặng là đồng thuận"
+    example: "Case 6 Kodak và Case 7 Boeing (false harmony/suppress); Case 5 Apple-Samsung (sunk cost, tit-for-tat kéo dài)."
+  - id: "m06_conflict_diagnosis_template"
+    name_vi: "Biểu mẫu chẩn đoán xung đột 8 phần (A-H)"
+    name_en: "Conflict Diagnosis Form"
+    origin: "Mục 15.1; dùng khi phát hiện sớm (Glasl 1-3)."
+    components:
+      - "A Thông tin cơ bản (ngày, người liên quan, người điền, mức cấp bách 1-10)"
+      - "B Vấn đề là gì (mô tả 3 dòng, loại task/relationship/process)"
+      - "C Bậc Glasl"
+      - "D Mode hiện tại TKI của A, B; nên chuyển mode nào; vì sao"
+      - "E Lợi ích IBR: position/interest của A, B; lợi ích chung"
+      - "F Giải pháp tạm trong 24h: làm gì, gặp ai, format (1-1/mediation/họp nhóm)"
+      - "G Kế hoạch leo thang: escalate lên ai, khi nào (1 tuần/2 tuần/1 tháng), có gọi mediator không"
+      - "H Phòng ngừa: làm gì để không lặp lại, theo dõi thế nào, tần suất"
+    when_to_use: "Mọi ca xung đột cần xử lý có hệ thống."
+    how_to_apply:
+      - "Điền lần lượt A đến H; không bỏ phần E (lợi ích)"
+      - "Phần G: đặt mốc thời gian cụ thể để không bị Avoiding"
+    how_to_read_results: "Biểu mẫu hoàn chỉnh cho biết: loại, bậc, mode, lợi ích, hành động 24h, ngưỡng leo thang, biện pháp phòng ngừa."
+    pitfalls:
+      - "Điền theo quan điểm một bên (nên nghe từng bên riêng)"
+    example: "Dùng cho Case 11 (bậc 3) và Case 12 (bậc 4)."
+  - id: "m06_conflict_cost_method"
+    name_vi: "Phương pháp đo chi phí xung đột bằng tiền"
+    name_en: "Monetizing the Cost of Conflict"
+    origin: "Case 12 và phụ lục A của tài liệu (giả định minh họa)."
+    components:
+      - "4 khoản: phạt trễ hạn hợp đồng; chi phí chữa cháy (tăng ca, vận chuyển gấp); lợi nhuận gộp mất do mất đơn; chi phí thay người (nghỉ việc)"
+      - "Chỉ số: C/EBIT (ngưỡng ~20-30% là tín hiệu cần can thiệp - ngưỡng minh họa, không phải chuẩn nghiên cứu)"
+    when_to_use: "Thuyết phục người ra quyết định ưu tiên xử lý xung đột nội bộ."
+    how_to_apply:
+      - "Lấy 3 tháng sổ đơn hàng gần nhất: số đơn trễ, số đơn mất, số người nghỉ"
+      - "Tính từng khoản theo công thức m06_conflict_cost, tổng hợp theo tháng"
+      - "So với lợi nhuận hoạt động (EBIT); so sánh trước/sau can thiệp; trừ chi phí chương trình mới; tính thời gian hoàn vốn của hòa giải"
+    how_to_read_results: "Case 12: chi phí xung đột 127,67 triệu = 84% EBIT 152 triệu; sau can thiệp còn 45,33 triệu."
+    pitfalls:
+      - "Bỏ qua thiệt hại không đo được (uy tín, tri thức, tinh thần) nên số tính chỉ là cận dưới"
+      - "Lẫn lộn đơn vị tháng và năm"
+    example: "Hòa giải 12 triệu một lần hoàn vốn trong ~0,17 tháng (~5 ngày) trong giả định Case 12."
+
+formulas:
+  - id: "m06_zopa"
+    name_vi: "Vùng thỏa thuận khả dĩ (ZOPA)"
+    name_en: "Zone of Possible Agreement"
+    expression_latex: 'ZOPA \neq \emptyset \iff R_b \ge R_s;\quad W = R_b - R_s'
+    expression_python: "{'exists': Rb >= Rs, 'width': Rb - Rs, 'midpoint': (Rb + Rs) / 2}"
+    excel: "=IF(Rb>=Rs, Rb-Rs, \"Không có ZOPA\")"
+    variables:
+      - {symbol: "Rs", meaning: "Mức giữ chỗ người bán (thấp nhất chịu bán), suy từ BATNA", unit: "tiền (cùng đơn vị với Rb)"}
+      - {symbol: "Rb", meaning: "Mức giữ chỗ người mua (cao nhất chịu mua), suy từ BATNA", unit: "tiền"}
+    when_to_use: "Trước đàm phán giá/điều khoản để biết có đáng đàm phán không và thặng dư lớn cỡ nào."
+    why_it_works: "Mỗi bên chỉ đồng ý khi tốt hơn phương án thay thế (BATNA). Vùng giá nằm giữa hai mức giữ chỗ là nơi cả hai cùng thấy có lợi; độ rộng là tổng thặng dư có thể chia."
+    assumptions:
+      - "Mức giữ chỗ ước lượng đúng (đặc biệt của đối phương)"
+      - "Chỉ một biến (giá); nhiều biến thì thặng dư có thể mở rộng"
+    pitfalls:
+      - "Quên chi phí chuyển đổi khi ước lượng BATNA đối phương"
+      - "Lộ mức giữ chỗ của mình"
+    interpretation: "Rb >= Rs: có ZOPA, độ rộng là bánh có thể chia. Rb < Rs: không có ZOPA; phải đổi bài toán (nâng giá trị bên mua, hạ BATNA bên bán, thêm biến)."
+    example:
+      inputs: {Rs: 35, Rb: 45}
+      steps:
+        - "Rs = 35 triệu USD (BATNA bán cho công ty D), Rb = 45 triệu USD"
+        - "Rb >= Rs: 45 >= 35 nên có ZOPA"
+        - "Độ rộng = 45 - 35 = 10 triệu USD; điểm giữa = 40"
+        - "Nếu Rb = 30 thì 30 < 35: không có ZOPA"
+      result: "ZOPA = [35; 45], rộng 10 triệu USD, điểm giữa 40 (giả định minh họa)"
+  - id: "m06_surplus_share"
+    name_vi: "Phần thặng dư mỗi bên nhận theo giá chốt"
+    name_en: "Surplus Share at Price P"
+    expression_latex: 'S_{seller} = \frac{P - R_s}{R_b - R_s},\quad S_{buyer} = 1 - S_{seller}'
+    expression_python: "(P - Rs) / (Rb - Rs)"
+    excel: "=(P-Rs)/(Rb-Rs)"
+    variables:
+      - {symbol: "P", meaning: "Giá chốt", unit: "tiền"}
+      - {symbol: "Rs", meaning: "Mức giữ chỗ người bán", unit: "tiền"}
+      - {symbol: "Rb", meaning: "Mức giữ chỗ người mua", unit: "tiền"}
+    when_to_use: "Đánh giá một mức giá chốt chia thặng dư thế nào giữa hai bên."
+    why_it_works: "Người bán nhận P - Rs (hơn mức tối thiểu), người mua nhận Rb - P; chia cho tổng thặng dư để ra tỷ lệ."
+    assumptions:
+      - "P nằm trong ZOPA (Rs <= P <= Rb)"
+    pitfalls:
+      - "P ngoài ZOPA cho tỷ lệ ngoài [0;1] - nghĩa là một bên thiệt so với BATNA"
+    interpretation: "0% = người bán chạm BATNA; 100% = người mua chạm BATNA; 50% = chia đều."
+    example:
+      inputs: {P: 42.5, Rs: 35, Rb: 45}
+      steps:
+        - "Người bán nhận 42,5 - 35 = 7,5; người mua nhận 45 - 42,5 = 2,5"
+        - "Tỷ lệ người bán = 7,5 / 10 = 75%"
+        - "Với P = 40: 5/10 = 50%"
+      result: "75% thặng dư thuộc người bán khi P = 42,5 (giả định minh họa)"
+  - id: "m06_anchoring_share"
+    name_vi: "Hiệu ứng anchoring: điểm giữa hai mốc mở đầu"
+    name_en: "Anchoring Midpoint Outcome"
+    expression_latex: 'P \approx \frac{A_s + A_b}{2},\quad S_{seller} = \frac{P - R_s}{R_b - R_s}'
+    expression_python: "((A_s + A_b) / 2 - Rs) / (Rb - Rs)"
+    excel: "=(((A_s+A_b)/2)-Rs)/(Rb-Rs)"
+    variables:
+      - {symbol: "A_s", meaning: "Mốc mở đầu của người bán", unit: "tiền"}
+      - {symbol: "A_b", meaning: "Mốc mở đầu của người mua", unit: "tiền"}
+      - {symbol: "Rs", meaning: "Mức giữ chỗ người bán", unit: "tiền"}
+      - {symbol: "Rb", meaning: "Mức giữ chỗ người mua", unit: "tiền"}
+    when_to_use: "Giải thích vì sao ra mốc đầu tiên có lợi và chọn mốc mở đầu."
+    why_it_works: "Nếu hai bên nhượng bộ đối xứng thì kết quả xấp xỉ điểm giữa hai mốc mở đầu; mốc bên nào càng xa BATNA của họ (nhưng còn biện minh được) thì kéo điểm giữa về phía bên đó."
+    assumptions:
+      - "Nhượng bộ đối xứng"
+      - "Mốc không phi lý đến mức đối phương rời bàn"
+      - "Mô hình đơn giản hóa của tài liệu (minh họa), không phải quy luật chính xác"
+    pitfalls:
+      - "Mốc quá phi lý làm mất ZOPA"
+      - "Kết quả chạm BATNA (0%) khi đối phương ra mốc rất thấp và mình phải phản ứng"
+    interpretation: "Bảng của tài liệu: (55;30) -> P = 42,5, 75%; (50;30) -> 40, 50%; (45;25) -> 35, 0%."
+    example:
+      inputs: {A_s: 55, A_b: 30, Rs: 35, Rb: 45}
+      steps:
+        - "P = (55 + 30)/2 = 42,5"
+        - "Phần người bán = (42,5 - 35)/(45 - 35) = 0,75"
+        - "Mốc (50;30): P = 40 -> 50%; mốc (45;25): P = 35 -> 0%"
+      result: "75% / 50% / 0% theo ba tình huống mốc (giả định minh họa)"
+  - id: "m06_seller_reservation_price"
+    name_vi: "Giá giữ chỗ tối thiểu của người bán theo biên gộp mục tiêu"
+    name_en: "Seller Reservation Price from Minimum Margin"
+    expression_latex: 'P_{min} = \frac{C}{1 - m}'
+    expression_python: "cost / (1 - m)"
+    excel: "=cost/(1-m)"
+    variables:
+      - {symbol: "cost", meaning: "Giá vốn của đơn hàng", unit: "triệu đồng"}
+      - {symbol: "m", meaning: "Biên gộp tối thiểu chấp nhận (tỷ lệ 0-1)", unit: "không thứ nguyên"}
+    when_to_use: "Xác định giá sàn khi báo giá dịch vụ gấp/đơn đặc biệt (ví dụ giao nhanh)."
+    why_it_works: "Biên gộp m = (P - C)/P nên P = C/(1 - m): giá thấp nhất vẫn giữ được biên mục tiêu."
+    assumptions:
+      - "Giá vốn ước tính đúng (đã gồm chi phí tăng ca có kế hoạch)"
+    pitfalls:
+      - "Quên cộng chi phí phát sinh của dịch vụ gấp vào giá vốn"
+    interpretation: "P_min chính là Rs của người bán trong ZOPA."
+    example:
+      inputs: {cost: 30.8, m: 0.15}
+      steps:
+        - "Giá vốn tiêu chuẩn = 40 x 72% = 28,8; giao nhanh +2,0 tăng ca = 30,8"
+        - "P_min = 30,8 / (1 - 0,15) = 36,235"
+      result: "Rs ~ 36,24 triệu/đơn (Case 12, giả định minh họa)"
+  - id: "m06_buyer_reservation_price"
+    name_vi: "Giá giữ chỗ tối đa của người mua theo phương án thay thế"
+    name_en: "Buyer Reservation Price from Alternative Supplier"
+    expression_latex: 'R_b = P_{alt} - K_{switch}'
+    expression_python: "P_alt - K_switch"
+    excel: "=P_alt-K_switch"
+    variables:
+      - {symbol: "P_alt", meaning: "Giá của nhà cung cấp thay thế đáp ứng cùng yêu cầu", unit: "triệu đồng"}
+      - {symbol: "K_switch", meaning: "Chi phí chuyển đổi sang nhà cung cấp thay thế", unit: "triệu đồng"}
+    when_to_use: "Ước lượng BATNA/mức giữ chỗ của khách hàng/đối tác."
+    why_it_works: "Người mua không trả quá mức họ phải trả nếu chuyển sang phương án thay thế (kể cả chi phí chuyển đổi)."
+    assumptions:
+      - "Biết hoặc ước lượng được giá thay thế"
+    pitfalls:
+      - "Không tính chi phí chuyển đổi nên đánh giá thấp sức mạnh thương lượng của mình"
+    interpretation: "Là Rb trong ZOPA; đề xuất giá cao hơn Rb sẽ làm khách chuyển nhà cung cấp."
+    example:
+      inputs: {P_alt: 44, K_switch: 0.8}
+      steps:
+        - "Rb = 44 - 0,8 = 43,2 triệu"
+        - "Ghép với Rs = 36,24: ZOPA = [36,24; 43,2], rộng 6,96, điểm giữa ~39,72"
+        - "Phụ phí 7% -> giá 42,8 (trong ZOPA); phụ phí 10% -> 44 (ngoài ZOPA)"
+      result: "Rb = 43,2 triệu/đơn (Case 12, giả định minh họa)"
+  - id: "m06_log_rolling_value"
+    name_vi: "Giá trị tạo thêm từ log rolling (thanh toán sớm đổi chiết khấu)"
+    name_en: "Integrative Value from Log Rolling (early payment)"
+    expression_latex: 'V_{created} = \frac{d}{365}(r_s - r_b)\,V;\quad G_s = \frac{d}{365} r_s V - D V,\; G_b = D V - \frac{d}{365} r_b V'
+    expression_python: "{'seller_value': days/365*r_s*V, 'buyer_cost': days/365*r_b*V, 'created': days/365*(r_s - r_b)*V, 'seller_gain': days/365*r_s*V - disc*V, 'buyer_gain': disc*V - days/365*r_b*V}"
+    excel: "=days/365*(r_s-r_b)*V"
+    variables:
+      - {symbol: "V", meaning: "Giá trị hợp đồng", unit: "triệu đồng"}
+      - {symbol: "days", meaning: "Số ngày thanh toán sớm", unit: "ngày"}
+      - {symbol: "r_s", meaning: "Chi phí vốn/lãi vay năm của người bán", unit: "tỷ lệ/năm"}
+      - {symbol: "r_b", meaning: "Chi phí vốn năm của người mua", unit: "tỷ lệ/năm"}
+      - {symbol: "disc", meaning: "Tỷ lệ chiết khấu người bán cho (D)", unit: "tỷ lệ của V"}
+    when_to_use: "Khi hai bên có chi phí vốn/định giá thời gian khác nhau; minh họa nguyên lý giá trị tích hợp."
+    why_it_works: "Giá trị tạo thêm = chênh lệch định giá cùng một điều khoản giữa hai bên: người bán quý tiền sớm hơn (vay đắt) so với giá người mua phải trả cho việc trả sớm. Chiết khấu nằm giữa hai mức định giá chia đều lợi ích."
+    assumptions:
+      - "Lãi đơn, 365 ngày/năm"
+      - "Chiết khấu nằm giữa chi phí của người mua và lợi ích của người bán"
+    pitfalls:
+      - "Chiết khấu vượt lợi ích tiết kiệm lãi của người bán thì người bán thua"
+    interpretation: "Cả hai lời khi chiết khấu D*V nằm giữa hai mức định giá. Nguyên tắc: hỏi bạn đánh giá điều gì khác tôi."
+    example:
+      inputs: {V: 1000, days: 20, r_s: 0.18, r_b: 0.10, disc: 0.0075}
+      steps:
+        - "Người bán tiết kiệm lãi: 20/365 x 18% x 1000 = 9,86 triệu"
+        - "Người mua mất lợi ích tiền: 20/365 x 10% x 1000 = 5,48 triệu"
+        - "Giá trị tạo thêm = 9,86 - 5,48 = 4,38 triệu"
+        - "Chiết khấu 0,75% = 7,5 triệu: người bán lời 9,86 - 7,5 = 2,36; người mua lời 7,5 - 5,48 = 2,02"
+      result: "Tạo thêm 4,38 triệu/1.000 triệu hợp đồng; hai bên lời 2,36 và 2,02 triệu (giả định minh họa)"
+  - id: "m06_conflict_cost"
+    name_vi: "Chi phí xung đột hằng tháng"
+    name_en: "Monthly Cost of Conflict"
+    expression_latex: 'C = n_{late} V \pi + n_{late} k + n_{lost} V g + n_{quit} c_{rep}'
+    expression_python: "n_late*V*pen + n_late*k + n_lost*V*g + n_quit*c_rep"
+    excel: "=n_late*V*pen+n_late*k+n_lost*V*g+n_quit*c_rep"
+    variables:
+      - {symbol: "n_late", meaning: "Số đơn trễ hạn trong tháng", unit: "đơn"}
+      - {symbol: "V", meaning: "Giá trị đơn trung bình", unit: "triệu đồng/đơn"}
+      - {symbol: "pen", meaning: "Tỷ lệ phạt hợp đồng khi trễ", unit: "tỷ lệ của V"}
+      - {symbol: "k", meaning: "Chi phí chữa cháy mỗi đơn trễ (tăng ca, vận chuyển gấp)", unit: "triệu đồng/đơn"}
+      - {symbol: "n_lost", meaning: "Số đơn mất do khách rời đi", unit: "đơn"}
+      - {symbol: "g", meaning: "Biên gộp", unit: "tỷ lệ"}
+      - {symbol: "n_quit", meaning: "Số người nghỉ việc quy đổi theo tháng", unit: "người/tháng"}
+      - {symbol: "c_rep", meaning: "Chi phí thay thế một người", unit: "triệu đồng/người"}
+    when_to_use: "Đưa xung đột nội bộ về ngôn ngữ tiền để chủ doanh nghiệp ưu tiên xử lý."
+    why_it_works: "Xung đột không hiện trên báo cáo tài chính nhưng để lại dấu vết trong các khoản chi cụ thể (phạt, chữa cháy, mất khách, nghỉ việc). Cộng các khoản này biến chuyện cá tính thành con số so sánh được với lợi nhuận."
+    assumptions:
+      - "Các khoản chi quy được cho xung đột (đơn trễ do phối hợp kém, không do nguyên nhân khác)"
+      - "Số liệu lấy từ sổ đơn hàng 3 tháng gần nhất"
+    pitfalls:
+      - "Bỏ khoản không đo được (uy tín, tri thức) nên chỉ là cận dưới"
+      - "Gán mọi đơn trễ cho xung đột"
+    interpretation: "So với EBIT hằng tháng (m06_conflict_cost_ratio)."
+    example:
+      inputs: {n_late: 18, V: 40, pen: 0.02, k: 3.5, n_lost: 3, g: 0.28, n_quit: 0.6666667, c_rep: 25}
+      steps:
+        - "Phạt trễ: 18 x 40 x 2% = 14,4"
+        - "Chữa cháy: 18 x 3,5 = 63,0"
+        - "Mất đơn: 3 x 40 x 28% = 33,6"
+        - "Nghỉ việc: (2/3) x 25 = 16,67"
+        - "Tổng = 127,67 triệu/tháng; sau can thiệp (6 đơn trễ, 1 đơn mất, 1/3 người nghỉ) = 4,8 + 21,0 + 11,2 + 8,33 = 45,33"
+      result: "C trước = 127,67; sau = 45,33; tiết kiệm 82,33 triệu/tháng (Case 12, giả định minh họa)"
+  - id: "m06_conflict_cost_ratio"
+    name_vi: "Tỷ lệ chi phí xung đột trên lợi nhuận hoạt động"
+    name_en: "Conflict Cost to EBIT Ratio"
+    expression_latex: 'R = \frac{C}{EBIT}'
+    expression_python: "C / EBIT"
+    excel: "=C/EBIT"
+    variables:
+      - {symbol: "C", meaning: "Chi phí xung đột trong kỳ", unit: "triệu đồng"}
+      - {symbol: "EBIT", meaning: "Lợi nhuận hoạt động cùng kỳ", unit: "triệu đồng"}
+    when_to_use: "Quyết định mức ưu tiên xử lý xung đột."
+    why_it_works: "Chi phí tuyệt đối khó cảm nhận; so với lợi nhuận cho biết xung đột đang ăn bao nhiêu phần giá trị tạo ra."
+    assumptions:
+      - "Cùng kỳ, cùng đơn vị"
+    pitfalls:
+      - "Ngưỡng 20-30% chỉ là ngưỡng minh họa của tài liệu, không phải chuẩn nghiên cứu"
+    interpretation: "Trên ~20-30% là tín hiệu cần can thiệp (minh họa). Case 12: 84%."
+    example:
+      inputs: {C: 127.6667, EBIT: 152}
+      steps:
+        - "Lợi nhuận hoạt động Tâm Việt: gộp 672 (28% x 2.400) - cố định 520 = 152"
+        - "R = 127,67 / 152 = 84,0%"
+      result: "Xung đột nuốt ~84% lợi nhuận hoạt động (giả định minh họa)"
+  - id: "m06_ev_continue_vs_settle"
+    name_vi: "Giá trị kỳ vọng: tiếp tục tranh chấp so với dàn xếp"
+    name_en: "Expected Value of Continuing vs Settling (ignore sunk cost)"
+    expression_latex: 'EV_{continue} = p \cdot W - C_{future};\quad \Delta = S - EV_{continue}'
+    expression_python: "{'ev_continue': p*W - C_future, 'settle': S, 'advantage_settle': S - (p*W - C_future)}"
+    excel: "=p*W-C_future"
+    variables:
+      - {symbol: "p", meaning: "Xác suất thắng", unit: "tỷ lệ"}
+      - {symbol: "W", meaning: "Giá trị nhận được nếu thắng", unit: "tỷ đồng"}
+      - {symbol: "C_future", meaning: "Chi phí cần bỏ thêm từ nay đến phán quyết (KHÔNG gồm chi phí đã chi)", unit: "tỷ đồng"}
+      - {symbol: "S", meaning: "Giá trị dàn xếp ngay", unit: "tỷ đồng"}
+    when_to_use: "Quyết định tiếp tục kiện/tranh chấp hay dàn xếp; kiểm tra bẫy chi phí chìm."
+    why_it_works: "Chi phí đã chi không thay đổi dù chọn phương án nào nên không ảnh hưởng quyết định; chỉ dòng tiền và xác suất tương lai mới khác nhau giữa các lựa chọn."
+    assumptions:
+      - "Bỏ qua chiết khấu thời gian và chi phí cơ hội của sự chú ý quản lý (đơn giản hóa)"
+      - "Xác suất thắng ước tính hợp lý"
+    pitfalls:
+      - "Cộng chi phí chìm vào phép tính"
+      - "Lạc quan quá mức về xác suất thắng"
+    interpretation: "Delta dương: dàn xếp tốt hơn tiếp tục."
+    example:
+      inputs: {p: 0.3, W: 4, C_future: 2, S: 1}
+      steps:
+        - "Chi phí chìm 3 tỷ đã chi: loại khỏi phép tính"
+        - "Tiếp tục: 0,3 x 4 - 2 = -0,8 tỷ"
+        - "Dàn xếp: +1,0 tỷ; chênh lệch = 1,8 tỷ nghiêng về dàn xếp"
+      result: "Dàn xếp hơn tiếp tục kiện 1,8 tỷ đồng (giả định minh họa)"
+  - id: "m06_ev_innovation_budget"
+    name_vi: "Giá trị kỳ vọng ròng của ngân sách đầu tư theo trần % EBIT"
+    name_en: "Expected Net Value of Capped Investment (Case VietGame)"
+    expression_latex: 'EV_{net} = p \cdot G - \alpha \cdot EBIT \cdot T'
+    expression_python: "p*G - alpha*EBIT*T"
+    excel: "=p*G-alpha*EBIT*T"
+    variables:
+      - {symbol: "p", meaning: "Xác suất thành công", unit: "tỷ lệ"}
+      - {symbol: "G", meaning: "Giá trị gia tăng nếu thành công", unit: "tỷ đồng"}
+      - {symbol: "alpha", meaning: "Tỷ lệ EBIT dành cho đầu tư (trần)", unit: "tỷ lệ"}
+      - {symbol: "EBIT", meaning: "EBIT mảng hiện tại mỗi năm", unit: "tỷ đồng/năm"}
+      - {symbol: "T", meaning: "Số năm đầu tư", unit: "năm"}
+    when_to_use: "Chuyển tranh luận cảm tính (rủi ro/không rủi ro) giữa hai đồng sáng lập thành tranh luận bằng số, tìm trần đầu tư chung."
+    why_it_works: "Tiêu chí khách quan (nguyên tắc 4 IBR) thay thế cảm tính: so sánh kỳ vọng với chi phí cho từng mức trần để tìm phương án mà cả hai chấp nhận."
+    assumptions:
+      - "Đơn giản hóa, bỏ qua chiết khấu và phân kỳ"
+      - "Giải ngân theo đợt với điểm dừng làm giảm rủi ro thực tế"
+    pitfalls:
+      - "Coi EV dương là chắc chắn; cần cơ chế dừng/mốc"
+    interpretation: "Case: 40% EBIT -> -460 tỷ (Phúc phản đối có cơ sở); 15% -> +140 tỷ (phương án tích hợp)."
+    example:
+      inputs: {p: 0.25, G: 2000, alpha: 0.15, EBIT: 800, T: 3}
+      steps:
+        - "Kỳ vọng 0,25 x 2.000 = 500 tỷ"
+        - "Phương án Minh (40%): chi 0,4 x 800 x 3 = 960 -> 500 - 960 = -460"
+        - "Phương án tích hợp (15%): chi 0,15 x 800 x 3 = 360 -> 500 - 360 = +140; EBIT game còn 680"
+      result: "EV ròng +140 tỷ với trần 15% EBIT (giả định minh họa; VietGame hư cấu)"
+  - id: "m06_tki_scoring"
+    name_vi: "Chấm điểm TKI Likert 25 câu"
+    name_en: "TKI Likert Scoring (25 items)"
+    expression_latex: 'S_k = \sum_{i=1}^{5} x_{k,i},\quad 5 \le S_k \le 25'
+    expression_python: "{k: sum(v) for k, v in items.items()}"
+    excel: "=SUM(range_5_cau)"
+    variables:
+      - {symbol: "items", meaning: "Từ điển mode -> 5 điểm Likert (1-5) của các câu thuộc mode", unit: "điểm"}
+    when_to_use: "Xác định phong cách mặc định (preferred) và dự phòng (backup) của một người."
+    why_it_works: "Mỗi mode có 5 câu mô tả hành vi; tổng điểm 5-25 cho biết mức thường dùng; so sánh giữa 5 mode cho hồ sơ phong cách."
+    assumptions:
+      - "Bản Likert tự soạn để học tập, KHÔNG thay công cụ TKI chính thức (30 cặp lựa chọn bắt buộc)"
+      - "Ngưỡng ~20 trở lên là ngưỡng minh họa"
+    pitfalls:
+      - "Dùng để ra quyết định nhân sự"
+      - "Tự đánh giá có thiên lệch mong muốn xã hội"
+    interpretation: "Cao nhất = preferred; cao thứ hai = backup; còn lại ít dùng. Điểm cao không xấu; vấn đề là lạm dụng một mode và cặp phong cách nguy hiểm của hai bên (Competing x Avoiding)."
+    example:
+      inputs:
+        items:
+          Competing: [5, 5, 4, 5, 3]
+          Collaborating: [3, 3, 3, 3, 3]
+          Compromising: [3, 3, 3, 3, 2]
+          Avoiding: [2, 2, 1, 2, 1]
+          Accommodating: [2, 2, 2, 1, 2]
+      steps:
+        - "Competing = 5+5+4+5+3 = 22; Collaborating = 15; Compromising = 14; Avoiding = 8; Accommodating = 9"
+        - "Preferred = Competing (22), backup = Collaborating (15)"
+        - "Bình: Avoiding 21, Accommodating 18 -> cặp An x Bình = Competing x Avoiding"
+      result: "An: Competing 22 / Collaborating 15 (Case 12, giả định minh họa)"
+  - id: "m06_force_field_net"
+    name_vi: "Chênh lệch trường lực Lewin"
+    name_en: "Force Field Net Score"
+    expression_latex: 'N = \sum F_{drive} - \sum F_{restrain}'
+    expression_python: "sum(drive) - sum(restrain)"
+    excel: "=SUM(drive)-SUM(restrain)"
+    variables:
+      - {symbol: "drive", meaning: "Danh sách điểm 1-5 của các lực thúc đẩy", unit: "điểm"}
+      - {symbol: "restrain", meaning: "Danh sách điểm 1-5 của các lực cản", unit: "điểm"}
+    when_to_use: "Hai bên kẹt về một chính sách (remote vs văn phòng), cần xem can thiệp nào dịch chuyển hệ thống."
+    why_it_works: "Hành vi là cân bằng các lực; giảm lực cản dịch chuyển cân bằng mà không tăng căng thẳng như đẩy mạnh thêm lực thúc đẩy."
+    assumptions:
+      - "Chấm điểm chủ quan, nên cùng chấm với các bên"
+      - "Các lực độc lập và cộng được (đơn giản hóa)"
+    pitfalls:
+      - "Tăng lực đẩy làm lực cản tăng theo"
+    interpretation: "Chênh lệch dương lớn: hệ thống dịch chuyển; gần 0: giằng co."
+    example:
+      inputs: {drive: [4, 3, 5, 3], restrain: [2, 3, 3, 2]}
+      steps:
+        - "Thúc đẩy: 4+3+5+3 = 15; cản trước: 4+4+3+2 = 13 (chênh +2); cản sau can thiệp: 2+3+3+2 = 10"
+        - "Chênh lệch sau = 15 - 10 = +5 (KPI theo đầu ra giảm 'lo hiệu suất' 4 xuống 2; lịch 2 ngày văn phòng giảm 'lo văn hóa' 4 xuống 3)"
+      result: "N = +5 sau can thiệp, so với +2 trước (giả định minh họa; công ty 40 người)"
+  - id: "m06_max_cogs_for_margin"
+    name_vi: "Giá vốn tối đa theo biên gộp mục tiêu và biên gộp thực"
+    name_en: "Max COGS for Target Margin / Gross Margin"
+    expression_latex: 'C_{max} = P(1 - m);\quad m = \frac{P - C}{P}'
+    expression_python: "{'max_cogs': P*(1 - m_target), 'margin_design': (P - C_design)/P, 'margin_compromise': (P - (C_design + P*(1 - m_target))/2)/P, 'margin_collab': (P - C_collab)/P}"
+    excel: "=P*(1-m_target)"
+    variables:
+      - {symbol: "P", meaning: "Giá bán lẻ", unit: "USD"}
+      - {symbol: "m_target", meaning: "Biên gộp tối thiểu yêu cầu", unit: "tỷ lệ"}
+      - {symbol: "C_design", meaning: "Giá vốn thiết kế không ràng buộc chi phí", unit: "USD"}
+      - {symbol: "C_collab", meaning: "Giá vốn sau khi đổi cách làm (quy mô, thiết kế cho sản xuất)", unit: "USD"}
+    when_to_use: "Xung đột chất lượng vs giá/chi phí giữa bộ phận sản phẩm và vận hành; so ba phương án Competing, Compromising, Collaborating bằng số."
+    why_it_works: "Biến cuộc tranh luận thành bài toán có mục tiêu đo được (biên gộp), cho thấy Compromising (chia đôi chênh lệch) có thể khiến cả hai không đạt mục tiêu, trong khi đổi biến số (quy mô, thiết kế) đạt mục tiêu mà không cắt trải nghiệm cốt lõi."
+    assumptions:
+      - "Số của Case 1 là giả định minh họa, KHÔNG phải số liệu Apple"
+    pitfalls:
+      - "Dùng như số liệu thật của Apple"
+    interpretation: "Biên thiết kế 35,9% (không đạt 45%); thỏa hiệp 40,5% (vẫn không đạt, sản phẩm bị cắt nửa); hợp tác 45,9% (đạt)."
+    example:
+      inputs: {P: 499, m_target: 0.45, C_design: 320, C_collab: 270}
+      steps:
+        - "Giá vốn tối đa = 499 x 0,55 = 274,45"
+        - "Thiết kế gốc: (499-320)/499 = 35,9% - không đạt"
+        - "Chia đôi: (320 + 274,45)/2 ~ 297 -> biên 40,5% - không đạt"
+        - "Collaborating: giá vốn 270 -> biên 45,9% - đạt"
+      result: "Chỉ Collaborating đạt biên mục tiêu 45% (giả định minh họa)"
+  - id: "m06_blended_margin"
+    name_vi: "Biên gộp bình quân gia quyền theo danh mục sản phẩm"
+    name_en: "Blended Gross Margin of Tiered Portfolio"
+    expression_latex: 'm_{avg} = \frac{\sum_i R_i m_i}{\sum_i R_i}'
+    expression_python: "sum(r*m for r, m in zip(rev, margin)) / sum(rev)"
+    excel: "=SUMPRODUCT(rev,margin)/SUM(rev)"
+    variables:
+      - {symbol: "rev", meaning: "Doanh thu từng tầng sản phẩm", unit: "triệu USD"}
+      - {symbol: "margin", meaning: "Biên gộp từng tầng", unit: "tỷ lệ"}
+    when_to_use: "Giải xung đột chất lượng vs giá bằng phân tầng sản phẩm (Premium/Standard/Budget); kiểm tra cannibalization."
+    why_it_works: "Mỗi lãnh đạo thắng ở đúng khách hàng của mình; tầng biên cao kéo biên bình quân lên, tầng biên thấp mở rộng quy mô/hấp thụ công suất dư."
+    assumptions:
+      - "Không có cannibalization đáng kể giữa các tầng"
+    pitfalls:
+      - "Tầng Budget biên 10% chỉ nên tồn tại nếu mở rộng thị phần hoặc hấp thụ công suất dư"
+      - "Khách Standard chuyển xuống Budget (cannibalization)"
+    interpretation: "Case 11: lợi nhuận gộp tăng ~109% trong khi doanh thu +60% nhờ cả quy mô và cơ cấu."
+    example:
+      inputs: {rev: [5, 12, 3], margin: [0.40, 0.20, 0.10]}
+      steps:
+        - "Doanh thu = 5+12+3 = 20; lợi nhuận gộp = 2,0 + 2,4 + 0,3 = 4,7; biên = 4,7/20 = 23,5%"
+        - "Doanh thu trước = 20/1,6 = 12,5; lợi nhuận gộp cũ (18%) = 2,25"
+        - "Tăng lợi nhuận gộp = 4,7/2,25 - 1 ~ 109%"
+      result: "Biên bình quân 23,5%; lợi nhuận gộp +109% (May XYZ, giả định minh họa)"
+  - id: "m06_turnover_replacement_cost"
+    name_vi: "Chi phí thay thế nhân sự do nghỉ việc khi ép hợp nhất văn hóa"
+    name_en: "Turnover Replacement Cost (M&A integration)"
+    expression_latex: 'C_{turn} = N \cdot q \cdot (\rho \cdot w)'
+    expression_python: "N * q * (rho * w)"
+    excel: "=N*q*(rho*w)"
+    variables:
+      - {symbol: "N", meaning: "Số nhân sự công ty bị mua", unit: "người"}
+      - {symbol: "q", meaning: "Tỷ lệ nghỉ việc 12 tháng", unit: "tỷ lệ"}
+      - {symbol: "rho", meaning: "Chi phí thay thế bằng tỷ lệ lương năm (giả định 50%)", unit: "tỷ lệ"}
+      - {symbol: "w", meaning: "Lương năm trung bình", unit: "triệu đồng/người"}
+    when_to_use: "Biện minh cho hợp nhất văn hóa theo giai đoạn thay vì ép hợp nhất ngay."
+    why_it_works: "Quy mất nhân tài thành tiền: mỗi người nghỉ tốn chi phí tuyển, đào tạo, mất năng suất; giảm tỷ lệ nghỉ vài chục điểm phần trăm tiết kiệm hàng tỷ đồng."
+    assumptions:
+      - "Chi phí thay thế 50% lương năm và tỷ lệ nghỉ 25% (ép) / 5% (theo giai đoạn) là giả định minh họa"
+    pitfalls:
+      - "Chưa tính mất khách và tri thức (thường lớn hơn nhiều)"
+    interpretation: "Chênh lệch giữa hai chiến lược là lợi ích tối thiểu của cách làm chậm mà chắc."
+    example:
+      inputs: {N: 300, q: 0.25, rho: 0.5, w: 240}
+      steps:
+        - "Chi phí thay một người = 0,5 x 240 = 120 triệu"
+        - "Ép hợp nhất: 300 x 25% = 75 người x 120 = 9.000 triệu"
+        - "Theo giai đoạn: 300 x 5% = 15 người x 120 = 1.800 triệu"
+        - "Chênh lệch 60 người, 7.200 triệu (7,2 tỷ)"
+      result: "Ép hợp nhất: 9.000 triệu; theo giai đoạn: 1.800 triệu; tiết kiệm 7.200 triệu (giả định minh họa)"
+  - id: "m06_escalation_profit_scenarios"
+    name_vi: "Lợi nhuận 3 năm: leo thang xung đột vs hòa giải sớm"
+    name_en: "3-Year Profit: Escalation vs Early Mediation"
+    expression_latex: 'Pr = \sum_{t=1}^{3} (R_t \cdot m_t - L_t)'
+    expression_python: "sum(r*m - L for r, m, L in zip(revs, margins, legal))"
+    excel: "=SUMPRODUCT(revs,margins)-SUM(legal)"
+    variables:
+      - {symbol: "revs", meaning: "Doanh thu từng năm", unit: "tỷ đồng"}
+      - {symbol: "margins", meaning: "Biên ròng từng năm trước phí pháp lý/hòa giải", unit: "tỷ lệ"}
+      - {symbol: "legal", meaning: "Chi phí pháp lý (kịch bản A) hoặc hòa giải/cải tổ quản trị (kịch bản B) từng năm", unit: "tỷ đồng"}
+    when_to_use: "Lập luận kinh tế cho can thiệp sớm với cổ đông/đồng sáng lập."
+    why_it_works: "So hai quỹ đạo tương lai: leo thang làm doanh thu và biên giảm và tốn phí pháp lý; hòa giải sớm tốn ít và giữ đà tăng trưởng."
+    assumptions:
+      - "Toàn bộ là giả định minh họa (doanh nghiệp hư cấu Ánh Sáng): A giảm DT 10%/năm, biên 1% -> -1% -> -2%, phí pháp lý 6 tỷ/năm; B tăng 15%/năm, biên 3,5%, chi phí 0,4 tỷ/năm"
+    pitfalls:
+      - "Dùng số minh họa như dự báo thật"
+      - "Chưa tính thiệt hại không đo được"
+    interpretation: "Chi phí hòa giải 1,2 tỷ chỉ bằng ~0,4% chênh lệch 293 tỷ."
+    example:
+      inputs:
+        revs: [1620, 1458, 1312.2]
+        margins: [0.01, -0.01, -0.02]
+        legal: [6, 6, 6]
+      steps:
+        - "Kịch bản A: năm 1 = 16,2 - 6 = 10,2; năm 2 = -14,58 - 6 = -20,58; năm 3 = -26,24 - 6 = -32,24; tổng -42,62"
+        - "Kịch bản B: DT = 2.070 / 2.380,5 / 2.737,6; lợi nhuận = DT x 3,5% - 0,4 = 72,05 / 82,92 / 95,42; tổng 250,38"
+        - "Chênh lệch = 250,38 - (-42,62) = 293,0 tỷ; 1,2/293 ~ 0,4%"
+      result: "A: -42,62 tỷ; B: +250,38 tỷ; chênh lệch 293 tỷ đồng (giả định minh họa)"
+  - id: "m06_payback_months"
+    name_vi: "Thời gian hoàn vốn (tháng) của khoản đầu tư giải quyết xung đột/mở rộng"
+    name_en: "Payback in Months"
+    expression_latex: 'T = \frac{I}{\Delta \pi}'
+    expression_python: "I / d_profit"
+    excel: "=I/d_profit"
+    variables:
+      - {symbol: "I", meaning: "Vốn/chi phí bỏ ra một lần", unit: "triệu đồng"}
+      - {symbol: "d_profit", meaning: "Lợi nhuận tăng thêm mỗi tháng", unit: "triệu đồng/tháng"}
+    when_to_use: "Đánh giá hòa giải/mở chi nhánh từng bước (Case 4, Case 12)."
+    why_it_works: "Thời gian để dòng lợi nhuận tăng thêm bù lại khoản bỏ ra."
+    assumptions:
+      - "Lợi nhuận tăng thêm ổn định; bỏ qua giá trị thời gian của tiền"
+    pitfalls:
+      - "Dùng payback đơn giản cho quyết định lớn mà không NPV (xem tài chính)"
+    interpretation: "Case 12: hòa giải 12 triệu hoàn vốn ~0,17 tháng; Case 4: chi nhánh 2 vốn 1,5 tỷ hoàn vốn ~41,7 tháng (~3,5 năm) nên mở từng chi nhánh một, có cổng chất lượng 90% hài lòng."
+    example:
+      inputs: {I: 1500, d_profit: 36}
+      steps:
+        - "Chi nhánh 2 (Case 4): doanh thu 240, biên 15% -> lợi nhuận 36 triệu/tháng; hệ thống 120 + 36 = 156 (+30%)"
+        - "Hoàn vốn = 1.500 / 36 = 41,7 tháng"
+        - "Case 12: lợi nhuận tăng ròng = 82,33 + 8,0 - 21 = 69,33/tháng; hòa giải 12 triệu: 12/69,33 = 0,17 tháng"
+      result: "41,7 tháng (chi nhánh 2); 0,17 tháng (hòa giải Case 12) - giả định minh họa"
+  - id: "m06_fast_delivery_surcharge"
+    name_vi: "Kiểm tra phụ phí dịch vụ gấp bằng ZOPA và biên"
+    name_en: "Rush Surcharge Check (ZOPA + Margin)"
+    expression_latex: 'P = P_0(1+s),\; m = \frac{P - C_{rush}}{P},\; \Delta \pi = n \cdot (P_0 s - k_{rush})'
+    expression_python: "{'price': P0*(1+s), 'in_zopa': Rs <= P0*(1+s) <= Rb, 'margin': (P0*(1+s) - C_rush)/(P0*(1+s)), 'monthly_extra_profit': n*(P0*s - k_rush)}"
+    excel: "=P0*(1+s)"
+    variables:
+      - {symbol: "P0", meaning: "Giá tiêu chuẩn", unit: "triệu đồng"}
+      - {symbol: "s", meaning: "Tỷ lệ phụ phí", unit: "tỷ lệ"}
+      - {symbol: "C_rush", meaning: "Giá vốn giao nhanh", unit: "triệu đồng"}
+      - {symbol: "Rs", meaning: "Giá giữ chỗ tối thiểu (xem m06_seller_reservation_price)", unit: "triệu đồng"}
+      - {symbol: "Rb", meaning: "Giá giữ chỗ tối đa của khách (xem m06_buyer_reservation_price)", unit: "triệu đồng"}
+      - {symbol: "n", meaning: "Số đơn giao nhanh mỗi tháng (hạn mức)", unit: "đơn"}
+      - {symbol: "k_rush", meaning: "Chi phí tăng ca có kế hoạch mỗi đơn", unit: "triệu đồng/đơn"}
+    when_to_use: "Thiết kế chính sách giao nhanh có phụ phí để giải xung đột Kinh doanh vs Sản xuất."
+    why_it_works: "Phụ phí nằm trong ZOPA khách chấp nhận và bù chi phí tăng ca nên chương trình tự trang trải thay vì cướp lợi nhuận của sản xuất."
+    assumptions:
+      - "Hạn mức số đơn (<= 10/tháng) được tôn trọng"
+    pitfalls:
+      - "Phụ phí ngoài ZOPA (10% -> 44 > 43,2)"
+      - "Vượt hạn mức khiến mọi đơn đều gấp"
+      - "Bỏ họp theo dõi sau 1 tháng"
+    interpretation: "Phụ phí 7%: giá 42,8, biên 28,0% (xấp xỉ biên chuẩn 28%), lợi nhuận thêm +8 triệu/tháng."
+    example:
+      inputs: {P0: 40, s: 0.07, C_rush: 30.8, Rs: 36.2353, Rb: 43.2, n: 10, k_rush: 2.0}
+      steps:
+        - "Giá = 40 x 1,07 = 42,8 trong [36,24; 43,2]"
+        - "Biên = (42,8 - 30,8)/42,8 = 28,0%"
+        - "Doanh thu thêm 10 x 40 x 7% = 28; tăng ca 10 x 2,0 = 20 -> +8 triệu/tháng"
+        - "Phụ phí 10% -> 44 > 43,2: ngoài ZOPA"
+      result: "Phụ phí 7% hợp lý: trong ZOPA, biên 28,0%, +8 triệu/tháng (Case 12, giả định minh họa)"
+
+procedures:
+  - id: "m06_proc_diagnose_conflict"
+    name: "Chẩn đoán một ca xung đột (từ phát hiện đến chọn can thiệp)"
+    steps:
+      - "Nghe từng bên RIÊNG trước (không phán xét); hỏi 'Bạn và X đang phối hợp thế nào?' thay vì 'Có xung đột không?'"
+      - "Phân loại: task/relationship/process (Jehn) và cấp độ (cá nhân, nhóm, liên nhóm, tổ chức)"
+      - "Tìm nguồn gốc trong 10 nguồn (mục tiêu, thẩm quyền, tài nguyên, giao tiếp...) - ưu tiên nguồn cấu trúc"
+      - "Gán bậc Glasl theo hành vi quan sát được; chọn hình thức can thiệp theo vùng (Win-Win/Win-Lose/Lose-Lose)"
+      - "Chẩn đoán mode TKI của từng bên và cặp phong cách; xác định mode mục tiêu (thường Collaborating)"
+      - "Tìm vị trí và lợi ích của từng bên (hỏi 'tại sao?' >= 2 lần), ghi lợi ích chung"
+      - "Đo chi phí xung đột bằng tiền (m06_conflict_cost) để xác định mức ưu tiên"
+      - "Chọn hành động 24 giờ, kênh (1-1/hòa giải/họp nhóm) và ngưỡng leo thang (ai, khi nào)"
+    outputs: "Biểu mẫu chẩn đoán A-H hoàn chỉnh; quyết định can thiệp; chi phí xung đột; lịch follow-up."
+  - id: "m06_proc_ibr_negotiation"
+    name: "Chuẩn bị và dẫn dắt đàm phán theo lợi ích (IBR)"
+    steps:
+      - "Tách người khỏi vấn đề: soạn câu mở ('chúng ta cùng giải bài toán ...'), chuẩn bị thể hiện empathy"
+      - "Liệt kê vị trí; hỏi 'tại sao?' để tìm lợi ích; ghi lợi ích chung"
+      - "Xác định BATNA/WATNA của cả hai; tính Rs, Rb và ZOPA (m06_zopa); kiểm tra đề xuất của mình nằm trong ZOPA"
+      - "Brainstorm 5-6 phương án không phê phán; thêm biến ngoài tiền (thời gian, bảo hành, thanh toán...); tìm chênh lệch định giá để log rolling"
+      - "Chuẩn bị tiêu chí khách quan (giá thị trường, chuẩn ngành, dữ liệu lịch sử, chuyên gia, luật)"
+      - "Nếu có yếu tố phân chia: ra mốc có thể biện minh; nhượng bộ chậm, nhỏ, đối xứng"
+      - "Chốt: ai làm gì, khi nào, thế nào, tiêu chí thành công, ngày soát xét; viết ra, ký, đặt lịch follow-up"
+    outputs: "Thỏa thuận tích hợp có văn bản; BATNA/ZOPA đã tính; phương án dự phòng."
+  - id: "m06_proc_mediation"
+    name: "Tổ chức một buổi hòa giải (khi Glasl bậc 4-6)"
+    steps:
+      - "Kiểm tra điều kiện: bậc 4-6, không có bạo lực/đe dọa an toàn, các bên đồng ý tham gia"
+      - "Chọn mediator trung lập (ngoài hoặc người được cả hai nể trọng); gặp từng bên riêng trước"
+      - "Mở đầu 5-10 phút: vai trò mediator, ground rules (tôn trọng, trung thực, không ngắt, bảo mật), xin đồng ý"
+      - "Trình bày mở đầu 15-20 phút: mỗi bên 10-15 phút; mediator tóm tắt trung lập; bên kia nhắc lại bằng lời mình"
+      - "Tìm lợi ích 15-20 phút: từ vị trí sang lợi ích, chốt lợi ích chung"
+      - "Tạo phương án 20-30 phút: brainstorm 6-8 phương án, đánh giá A/B/khả thi"
+      - "Thu hẹp và chốt 15-20 phút; viết thỏa thuận 10-15 phút (what/when/how/tiêu chí/follow-up), ký"
+      - "Kết thúc 5 phút; follow-up sau 2 tuần, 1 tháng, 3 tháng"
+    outputs: "Thỏa thuận văn bản, lịch follow-up, KPI/khuyến khích chung nếu liên quan."
+  - id: "m06_proc_early_intervention_manager"
+    name: "Quy trình quản lý 6 pha (phòng ngừa đến follow-up)"
+    steps:
+      - "Pha 1 Phòng ngừa: vai trò rõ, giao tiếp minh bạch, 1-1 định kỳ, văn hóa feedback, phân bổ nguồn lực công bằng, mục tiêu chung, đào tạo quản lý, chính sách HR/đường leo thang rõ"
+      - "Pha 2 Phát hiện sớm (Glasl 1-2): dấu hiệu không nói chuyện, nói chuyện riêng, giảm hợp tác liên nhóm, hành vi 'thua không phục'; hỏi gián tiếp; đặt 1-1 sớm"
+      - "Pha 3 Can thiệp sớm (Glasl 2-3): gặp từng người riêng, nghe không phán xét, chẩn đoán TKI, phân loại, tự điều phối đối thoại; chưa xong sau 1-2 buổi thì gọi mediator ngoài"
+      - "Pha 4 Hòa giải (Glasl 3-5): mediator chuyên nghiệp, theo kịch bản, thỏa thuận văn bản, follow-up 2 tuần, lưu hồ sơ"
+      - "Pha 5 Leo thang (Glasl 5+): HR, pháp chế, ban lãnh đạo, trọng tài/tòa; ghi chép đầy đủ (email, sự việc, dòng thời gian); bảo vệ lợi ích công ty và nhân viên khác"
+      - "Pha 6 Follow-up: 2 tuần, 1 tháng, hằng quý, hằng năm; bài học kinh nghiệm"
+    outputs: "Chu trình phòng ngừa - phát hiện - can thiệp - theo dõi đóng vòng."
+  - id: "m06_proc_stop_or_continue"
+    name: "Quyết định tiếp tục hay dừng/dàn xếp một tranh chấp"
+    steps:
+      - "Liệt kê ba phương án: tiếp tục, dàn xếp, hợp tác (cùng tìm giải pháp)"
+      - "Loại chi phí chìm khỏi phép tính"
+      - "Với mỗi phương án tính giá trị kỳ vọng tương lai (m06_ev_continue_vs_settle); thêm chi phí cơ hội (sự chú ý quản lý, thị phần, quan hệ chuỗi cung ứng)"
+      - "Hỏi: 'Nếu bắt đầu từ hôm nay (không biết chi phí chìm), tôi có chọn cuộc chiến này không?'"
+    outputs: "Quyết định dựa trên lợi ích/chi phí tương lai."
+  - id: "m06_proc_remote_conflict"
+    name: "Xử lý xung đột trong đội remote/hybrid"
+    steps:
+      - "Đặt ground rules: không tranh cãi công khai ở kênh chung; bất đồng thì gọi 1-1; kênh chung chỉ thông báo kết quả"
+      - "Khi thấy căng thẳng trong chat: nhắn riêng, chuyển sang video 15 phút"
+      - "Kiểm tra hiểu biết: 'Tớ hiểu đúng ý bạn chưa? Tớ diễn đạt lại nhé'"
+      - "Duy trì 1-1 tuần có phần cá nhân, team bonding tháng, off-site quý nếu có thể; feedback tuần/hai tuần"
+    outputs: "Giảm hiểu lầm, giảm leo thang công khai."
+
+decision_rules:
+  - "Nếu khẩn cấp (an toàn, cháy nổ, quyết định sống còn) thì dùng Competing; nếu vấn đề phức tạp, quan hệ dài hạn và cần giải quyết căn nguyên thì dùng Collaborating"
+  - "Nếu hai bên cân sức, có deadline và vấn đề chia được thì dùng Compromising; nếu còn cơ hội mở rộng bánh thì thử Collaborating/IBR trước khi chia đôi"
+  - "Nếu vấn đề nhỏ hoặc thời điểm chưa phù hợp thì Avoiding có chủ đích (hoãn, đặt ngày quay lại); nếu là quyết định chiến lược dài hạn thì tuyệt đối không Avoiding (bài học Kodak)"
+  - "Nếu mình sai hoặc vấn đề quan trọng hơn với bên kia thì Accommodating; nếu bạn thường xuyên nhường rồi thấy bị lợi dụng thì đang lạm dụng mode này"
+  - "Nếu Glasl bậc 1-3 thì để các bên/quản lý tự đối thoại và điều phối; nếu bậc 4-6 thì cần bên thứ ba trung lập (hòa giải); nếu bậc 7-9 thì cần pháp lý/trọng tài/tòa"
+  - "Nếu xung đột đã có bạo lực/đe dọa an toàn hoặc ở bậc 8+ thì không dùng mediation; chuyển sang pháp lý/cơ quan chức năng"
+  - "Nếu hai vị trí xung khắc hoàn toàn thì đừng chia đôi, hỏi 'mỗi bên cần gì' và tìm cách tách các lợi ích (Camp David: chủ quyền vs an ninh)"
+  - "Nếu Rb >= Rs thì có ZOPA và nên đàm phán; nếu Rb < Rs thì đổi bài toán (nâng giá trị bên mua, hạ BATNA bên bán, thêm biến) hoặc rời bàn nếu BATNA của mình tốt hơn"
+  - "Nếu đề xuất giá/phụ phí của mình nằm ngoài ZOPA thì sẽ bị từ chối; hạ về trong ZOPA trước khi đưa ra"
+  - "Nếu có thể ra mốc đầu tiên bằng tiêu chí khách quan thì nên ra mốc (anchoring); nếu mốc không biện minh được thì đừng ra (mất ZOPA)"
+  - "Nếu hai bên định giá khác nhau cùng một điều khoản (tiền sớm, thời gian giao, rủi ro) thì dùng log rolling; nếu bất đồng về dự báo tương lai thì dùng thỏa thuận có điều kiện (earn-out)"
+  - "Nếu C/EBIT vượt ~20-30% (ngưỡng minh họa) thì xung đột đã tốn kém đáng kể: ưu tiên can thiệp và trình số cho chủ doanh nghiệp"
+  - "Nếu cặp phong cách là Competing x Avoiding thì thiết kế kênh nói an toàn cho bên Avoiding và giảm ép ở bên Competing (cả hai hướng về Collaborating)"
+  - "Nếu họp toàn 'dạ' rồi than riêng, hoặc quyết định không ai dốc sức thì nghi hòa hợp giả tạo: khuyến khích phản biện, 1-1, khảo sát ẩn danh"
+  - "Nếu bị tấn công bằng lời thì đừng phản công ngay: tạm dừng, hẹn nói lại khi bình tĩnh, xin lỗi nếu cần, tìm mediator"
+  - "Nếu đang kiện/tranh chấp kéo dài thì bỏ chi phí chìm, so sánh giá trị kỳ vọng tương lai giữa tiếp tục và dàn xếp"
+  - "Nếu xung đột có yếu tố thứ bậc/thể diện (VN) thì nói riêng trước, không phê bình công khai, dùng người trung gian được nể trọng, cho bên kia giữ thể diện"
+  - "Nếu đội remote có tranh cãi trong chat thì chuyển sang video 1-1 và chỉ thông báo kết quả lên kênh chung"
+  - "Nếu hợp nhất văn hóa sau M&A thì hợp nhất theo giai đoạn (Compromising tạm thời -> Collaborating -> hợp nhất), tôn trọng cả hai văn hóa; ép hợp nhất ngay gây chảy máu nhân tài"
+  - "Nếu xung đột giữa cổ đông/đồng sáng lập thì đưa cơ chế ra quyết định, drag/tag-along, điều khoản hòa giải rồi trọng tài và exit vào Thỏa thuận cổ đông từ đầu"
+  - "Nếu bất đồng chiến lược về mức đầu tư thì chuyển thành tranh luận bằng số: giá trị kỳ vọng theo từng mức trần % EBIT, giải ngân theo đợt với mốc và điểm dừng"
+
+benchmarks:
+  - {metric: "Điểm TKI Likert cao nhất (preferred mode)", value: "~20 trở lên trên thang 5-25 mỗi mode", context: "Ngưỡng minh họa của tài liệu cho bản Likert tự soạn; KHÔNG phải chuẩn TKI chính thức", confidence: "low"}
+  - {metric: "Tỷ lệ chi phí xung đột / lợi nhuận hoạt động", value: "~20-30% là tín hiệu cần can thiệp", context: "Ngưỡng minh họa, không chuẩn nghiên cứu; Case 12 giả định ra 84%", confidence: "low"}
+  - {metric: "Chi phí thay thế một nhân viên", value: "50% lương năm (giả định)", context: "Giả định minh họa trong Case 10; tỷ lệ thực tế phụ thuộc ngành/vị trí", confidence: "low"}
+  - {metric: "Tỷ lệ nghỉ việc khi ép hợp nhất văn hóa vs theo giai đoạn", value: "25% vs 5% trong 12 tháng", context: "Giả định minh họa (Case 10); retention 95% ở cuối giai đoạn 3", confidence: "low"}
+  - {metric: "Mô hình Hofstede cho Việt Nam", value: "Khoảng cách quyền lực ~70; chủ nghĩa cá nhân ~20/100; né tránh bất định ~30", context: "Xấp xỉ theo bảng công khai Hofstede Insights; nên kiểm tra phiên bản cập nhật; chỉ là xu hướng trung bình", confidence: "medium"}
+  - {metric: "Thời lượng mediation theo pha", value: "Opening 5-10p; statements 15-20p; interests 15-20p; options 20-30p; agreement 15-20p; document 10-15p; closing 5p (tổng ~85-125 phút)", context: "Khung kịch bản của tài liệu (cộng gộp là phép tính của người distill)", confidence: "medium"}
+  - {metric: "Lịch follow-up sau thỏa thuận", value: "2 tuần, 1 tháng, 3 tháng (hòa giải); hằng quý và hằng năm rà soát tổ chức", context: "Khuyến nghị thực hành trong tài liệu", confidence: "medium"}
+  - {metric: "Cổng chất lượng trước khi mở chi nhánh tiếp theo", value: "90% hài lòng khách hàng ngang quán gốc", context: "Điều kiện trong Case 4 (giả định minh họa)", confidence: "low"}
+  - {metric: "Hạn mức đơn giao nhanh", value: "<= 10 đơn/tháng, cổng xác nhận 24 giờ, đóng băng kế hoạch 5 ngày", context: "Thiết kế của Case 12 (giả định minh họa)", confidence: "low"}
+  - {metric: "Tỷ lệ 'xác suất giải quyết' theo bậc Glasl (80%/30%...)", value: "KHÔNG DÙNG", context: "Trực giác của người đào tạo, không phải thống kê nghiên cứu; Glasl không công bố", confidence: "low"}
+
+pitfalls:
+  - "Coi 'không có xung đột' là tốt: tổ chức êm bất thường có thể là hòa hợp giả tạo hoặc Zone 1 (groupthink)"
+  - "Đọc 'task conflict tích cực' như giấy phép tranh cãi: chỉ có lợi khi có an toàn tâm lý; meta-analysis cho thấy tương quan âm yếu với hiệu suất"
+  - "Cho rằng Collaborating luôn đúng; thực tế là mode tốn thời gian, cần tin cậy, có thể bị lợi dụng"
+  - "Dùng Avoiding ở cấp chiến lược (Kodak) hoặc suppress xung đột an toàn (Boeing)"
+  - "Dùng Competing kéo dài khi hai bên cân sức và phụ thuộc lẫn nhau (Apple-Samsung)"
+  - "Đàm phán theo vị trí, bỏ qua lợi ích; fixed-pie bias, quên thêm biến ngoài tiền"
+  - "Đưa đề xuất ngoài ZOPA, hoặc lộ BATNA/mức giữ chỗ của mình"
+  - "Để xung đột leo thang qua bậc 4-5 mới can thiệp (khó phục hồi quan hệ); không đo chi phí xung đột bằng tiền nên chủ không ưu tiên"
+  - "Kêu gọi đồng minh (bên thứ ba) trước khi giải quyết 1-1/hòa giải trung lập (leo thang bậc 4)"
+  - "Winner-take-all: thắng hết khiến bên thua chuẩn bị trả đũa"
+  - "Bẫy chi phí chìm: tiếp tục kiện vì đã chi nhiều"
+  - "Phê bình công khai người cấp trên/người có thâm niên trong bối cảnh VN; quên giữ thể diện hai bên"
+  - "Khuôn mẫu hóa văn hóa Việt Nam; đặc điểm chỉ là xu hướng trung bình cần kiểm chứng với đội"
+  - "Dùng các số liệu minh họa/giả định (hoặc số ước tính case quốc tế) như dữ liệu thật; ghi nhãn rõ khi trình bày"
+  - "Giải quyết xung đột remote bằng email/chat dài hoặc ở kênh chung"
+  - "Thỏa thuận không văn bản hóa, thiếu người chịu trách nhiệm/tiêu chí/ngày soát xét, bỏ follow-up"
+  - "Chỉ có KPI riêng cho từng bên, không có KPI/khuyến khích chung nên xung đột tái phát"
+
+sme_vn_guidance:
+  - "Chủ SME thường giữ quan điểm 'trong nhà không được cãi nhau' nên dễ rơi vào hòa hợp giả tạo; chủ động mở kênh phản biện an toàn (1-1 định kỳ, khảo sát ẩn danh, thưởng người dám nói)"
+  - "Xung đột chủ - chuyên gia (bếp trưởng, kỹ sư, quản đốc): tôn trọng chuyên môn/thâm niên (giao vai trò Quality Manager/mentor), mở rộng từng bước có cổng chất lượng (Case 4), không mở 5 chi nhánh cùng lúc"
+  - "Xung đột Kinh doanh - Sản xuất: hai mức thời hạn (tiêu chuẩn 21 ngày, giao nhanh 14 ngày có phụ phí và hạn mức), cửa sổ đóng băng kế hoạch, bảng công suất dùng chung Google Sheets, KPI chung (giao đúng hạn >= 90% + biên gộp)"
+  - "Xung đột chất lượng vs giá: phân tầng sản phẩm Premium/Standard/Budget và KPI riêng từng tầng + thưởng chung; theo dõi cannibalization"
+  - "Hòa giải viên ngoài: dùng cố vấn có kinh nghiệm SME; chi phí hòa giải trong Case 12 giả định ~12 triệu đồng một lần (minh họa, cần báo giá thật); coi là rẻ so với chi phí xung đột"
+  - "Thỏa thuận cổ đông/đồng sáng lập nên có: cơ chế quyết định đầu tư lớn, quyền drag-along/tag-along, điều khoản exit sau thời hạn (vd 10 năm), điều khoản hòa giải rồi trọng tài - CẦN xác nhận với luật sư theo luật hiện hành"
+  - "Pháp lý VN tham khảo (CẦN kiểm tra văn bản hiện hành): Luật Hòa giải, đối thoại tại Tòa án 2020 (hiệu lực 2021); Luật Trọng tài thương mại 2010; Bộ luật Lao động 2019 (hòa giải viên lao động)"
+  - "Công cụ rẻ: Google Sheets cho bảng công suất/biểu mẫu chẩn đoán/bảng tính ZOPA; công cụ lập lịch nhẹ ~3 triệu/tháng và điều phối sản xuất ~18 triệu/tháng (giá giả định minh họa trong Case 12, cần xác nhận)"
+  - "Văn hóa VN: nói riêng trước, dùng người bình định được nể trọng, ngôn ngữ 'xin ý kiến', cho bên kia giữ thể diện; kênh nói an toàn cho cấp dưới (cổng xác nhận 24 giờ)"
+  - "Công ty gia đình: ngưỡng chịu xung đột thường thấp hơn công ty công nghệ; cần phân vai rõ (CEO/COO), KPI chung và cơ chế ra quyết định tài chính lớn (vd cả hai phê duyệt)"
+
+case_lessons:
+  - name: "Case 1 - Jobs và Cook (Apple): Collaborating, phân vai bổ sung"
+    type: "success"
+    setup: "Jobs định hình sản phẩm, Cook vận hành (đóng bớt kho, thu hẹp nhà cung cấp). Mô hình phân vai bổ sung, không phải bản ghi các cuộc thương lượng cụ thể (các giai thoại 'họp bao nhiêu lần' mang tính giai thoại; Jobs nghiêng về Competing)."
+    key_calculations:
+      - "Minh họa giả định (KHÔNG phải số liệu Apple): giá bán 499 USD, biên gộp tối thiểu 45% -> giá vốn tối đa 274,45"
+      - "Thiết kế gốc giá vốn 320 -> biên 35,9% (không đạt)"
+      - "Compromising chia đôi chênh lệch -> giá vốn ~297 -> biên 40,5% (cả hai không đạt)"
+      - "Collaborating (quy mô, thiết kế cho sản xuất) -> giá vốn 270 -> biên 45,9% (đạt)"
+    lesson: "Compromising cho kết quả ở giữa nhưng cả hai không đạt mục tiêu; Collaborating thành công vì đổi cách làm ra sản phẩm. Cần mục tiêu chung đo được, chuyên môn bổ sung, tôn trọng nhau; tốn thời gian."
+    data_reliability: "illustrative"
+  - name: "Case 2 - Camp David 1978 (Ai Cập - Israel): IBR"
+    type: "success"
+    setup: "13 ngày (5-17/9/1978), Carter làm trung gian; hiệp ước ký 26/3/1979, Israel rút khỏi Sinai tháng 4/1982; Nobel Hòa bình 1978 cho Sadat và Begin. Diễn giải từ thông tin công khai."
+    key_calculations:
+      - "Vị trí xung khắc: Ai Cập đòi rút hết Sinai; Israel đòi giữ một phần"
+      - "Lợi ích tương thích: chủ quyền (Ai Cập) và an ninh (Israel) thỏa mãn cùng lúc bằng cách tách 'ai sở hữu đất' khỏi 'ai đóng quân'"
+      - "Văn bản đơn nhất (one-text procedure) thay mặc cả qua lại; lực lượng giám sát MFO (1981-82)"
+    lesson: "Khi vị trí xung khắc hoàn toàn đừng chia đôi, hãy hỏi mỗi bên cần gì. Bên thứ ba có uy tín/nguồn lực tạo bánh mới. Giới hạn: vấn đề Palestine chỉ xử lý mức khung; Sadat bị ám sát 1981; 'hòa bình lạnh' - IBR giải tốt khi lợi ích tách rời được."
+    data_reliability: "unverified"
+  - name: "Case 3 - VietGame: hai đồng sáng lập bất đồng mức đầu tư AI"
+    type: "sme"
+    setup: "Doanh nghiệp hư cấu: doanh thu 4.000 tỷ, EBIT 20% = 800 tỷ. Minh đề xuất 40% EBIT cho AI, Phúc đề xuất <= 5%."
+    key_calculations:
+      - "Giá trị kỳ vọng AI: 0,25 x 2.000 = 500 tỷ"
+      - "Phương án Minh: chi 0,4 x 800 x 3 = 960 -> EV ròng -460 tỷ (Phúc phản đối có cơ sở)"
+      - "Phương án tích hợp: trần 15% EBIT x 3 năm = 360 -> EV ròng +140 tỷ; EBIT game còn 680 tỷ"
+      - "Cơ chế: soát xét mốc mỗi quý, không đạt 2 quý liên tiếp thì dừng giải ngân đợt sau"
+    lesson: "Chuyển tranh luận cảm tính thành tranh luận bằng số (tiêu chí khách quan); mỗi bên có hàng rào bảo vệ lợi ích; xử lý bất đồng đồng sáng lập trước khi thành xung đột quyền lực, đưa cơ chế vào thỏa thuận cổ đông."
+    data_reliability: "illustrative"
+  - name: "Case 4 - Nhà hàng ABC: chủ (Hùng) vs bếp trưởng (Huệ)"
+    type: "sme"
+    setup: "Hùng muốn mở 5 chi nhánh trong 2 năm và chuẩn hóa; Huệ muốn giữ chất lượng handmade, dọa từ chức. Doanh nghiệp hư cấu."
+    key_calculations:
+      - "Hiện tại: 600 - 210 - 150 - 72 - 48 = 120 triệu/tháng (20%)"
+      - "Nếu Huệ từ chức: 450 - 171 - 150 - 72 - 36 = 21 triệu -> mất 99 triệu/tháng"
+      - "Chi nhánh 2: doanh thu 240, biên 15% -> +36 triệu/tháng; hệ thống 156 (+30%)"
+      - "Hoàn vốn chi nhánh 2: 1.500/36 ~ 41,7 tháng; 5 chi nhánh cùng lúc cần 7,5 tỷ"
+    lesson: "Lợi ích thêm 36 triệu không bù được thiệt hại 99 triệu nếu mất bếp trưởng nên giữ chuyên gia là điều kiện của mở rộng. Giải pháp: 1 chi nhánh năm đầu, Huệ làm Quality Manager, chuẩn hóa một phần (sơ chế, nước sốt), cổng chất lượng 90% hài lòng. Kết quả giả định: doanh thu +40%."
+    data_reliability: "illustrative"
+  - name: "Case 5 - Apple vs Samsung (patent war): Competing kéo dài"
+    type: "failure"
+    setup: "Kiện từ 4/2011; bồi thẩm đoàn 8/2012 tuyên ~1,05 tỷ USD (về sau điều chỉnh); hòa giải bí mật 2018; gần 7 năm. Samsung đồng thời là nhà cung cấp linh kiện lớn của Apple (phụ thuộc lẫn nhau). Số liệu làm tròn từ nguồn công khai."
+    key_calculations:
+      - "TKI: cả hai Competing; Dual Concern: quan tâm bên kia ~0; Glasl ~bậc 6-7"
+      - "Khung chi phí-lợi ích (không phải số liệu tài chính hai hãng): tiền bồi thường cỡ 1 tỷ USD nhỏ so với quy mô doanh thu; chi phí pháp lý, thời gian lãnh đạo, rủi ro chuỗi cung ứng, chi phí cơ hội"
+    lesson: "Competing kéo dài hại cả hai khi cân sức và phụ thuộc lẫn nhau; tính thiệt hại gián tiếp (nhà cung cấp, danh tiếng) chứ không chỉ thắng/thua từng phiên tòa; tránh bẫy chi phí chìm. Giả định thay thế: cross-license có điều kiện + trọng tài nhanh."
+    data_reliability: "unverified"
+  - name: "Case 6 - Kodak: Avoiding chiến lược"
+    type: "failure"
+    setup: "Sasson phát minh máy ảnh số 1975; Kodak có làm digital nhưng không chọn dứt điểm giữa phim (biên cao, lợi nhuận chính) và số (ăn mòn phim); Chapter 11 tháng 1/2012. Tỷ trọng doanh thu/lợi nhuận phim là ước tính minh họa."
+    key_calculations:
+      - "Không có phép tính chính; cơ chế: chia vốn nhỏ giọt cho cả hai -> cả hai underfunded -> thị phần giảm -> phim lỗ"
+    lesson: "Avoiding là tệ nhất cho quyết định chiến lược dài hạn: vấn đề không giải quyết, đối thủ giành thế chủ động, đến khi quá muộn. Lãnh đạo phải điều phối thảo luận (Collaborating) và ra quyết định rõ về phân bổ nguồn lực. Không đơn giản hóa thành 'Kodak bỏ qua digital'."
+    data_reliability: "unverified"
+  - name: "Case 7 - Boeing 737 MAX: suppress xung đột an toàn"
+    type: "failure"
+    setup: "2015-2019; xung đột engineering (an toàn, MCAS cần giám sát độc lập, thêm đào tạo) vs commercial (chi phí, cạnh tranh Airbus); lãnh đạo đứng về commercial, cảnh báo bị dismiss. Diễn giải công khai."
+    key_calculations:
+      - "Hai vụ rơi: Lion Air 10/2018 (189 người) + Ethiopian 3/2019 (157 người) = 346 người tử vong"
+      - "Cấm bay toàn cầu từ 3/2019 ~20 tháng ở Mỹ; tổn thất tài chính ước tính hơn 20 tỷ USD (số làm tròn/ước tính); CEO từ chức 12/2019"
+    lesson: "Suppress xung đột tệ hơn Competing/Avoiding: thiệt hại tăng theo cấp số nhân khi vỡ ra; nhân viên không dám nêu vấn đề; văn hóa im lặng dẫn đến thảm họa. Cần quy trình leo thang vấn đề an toàn lên Chief Safety Officer/Board (phần 'nếu dùng IBR' là diễn giải giả định)."
+    data_reliability: "unverified"
+  - name: "Case 8 - Chuỗi siêu thị Ánh Sáng: leo thang Glasl 4 đến 9"
+    type: "failure"
+    setup: "Hai cổ đông lớn (bà Linh, ông Minh, 30-35% mỗi người) tranh quyền; liên minh, mất mặt, đe dọa, kiện tụng 3-5 năm; công ty hư cấu, ~1000 nhân viên."
+    key_calculations:
+      - "Trước: doanh thu 1.800 tỷ, biên ròng 3% -> 54 tỷ/năm"
+      - "Kịch bản A (leo thang): lợi nhuận ròng 10,2 / -20,58 / -32,24 -> tổng -42,62 tỷ"
+      - "Kịch bản B (hòa giải bậc 3-4): 72,05 / 82,92 / 95,42 -> tổng 250,38 tỷ"
+      - "Chênh lệch 293,0 tỷ; chi phí hòa giải 1,2 tỷ ~0,4% chênh lệch"
+    lesson: "Can thiệp sớm (bậc 3-4) là lập luận kinh tế rõ nhất. Mediation + cải tổ quản trị (CEO/COO, KPI riêng, quy tắc quyết định, drag/tag-along, exit sau 10 năm) giảm nguy cơ tái phát; xung đột cổ đông thường bị suppress rồi vỡ ra ở năm 3-5."
+    data_reliability: "illustrative"
+  - name: "Case 9 - Mandela và de Klerk (Nam Phi 1990-1994): kết hợp nhiều mode"
+    type: "success"
+    setup: "Mandela được thả 2/1990 sau 27 năm tù; CODESA cuối 1991; bầu cử dân chủ 4/1994; Chính phủ đoàn kết dân tộc; Hiến pháp tạm thời 1993, chính thức 1996; TRC từ 1995; Nobel Hòa bình 1993 cho Mandela và de Klerk. BATNA của cả hai là nội chiến. Diễn giải công khai."
+    key_calculations:
+      - "1990-92 Collaborating (xây tin cậy, kênh trực tiếp -> CODESA); 1992-94 Compromising có cấu trúc (GNU, hiến pháp bảo vệ thiểu số); 1995+ IBR từng vấn đề (TRC, đất đai willing buyer - willing seller, B-BBEE)"
+    lesson: "Kết hợp mode theo giai đoạn là tinh vi, không phải yếu kém: Collaborating xây tin cậy, Compromising giúp chấp nhận thua từng phần, IBR tạo giải pháp bền. Giới hạn: bất bình đẳng kinh tế và đất đai vẫn là thách thức; thỏa thuận chính trị không tự giải quyết kinh tế-xã hội."
+    data_reliability: "unverified"
+  - name: "Case 10 - M&A tích hợp: Compromising rồi Collaborating"
+    type: "sme"
+    setup: "Công ty A (phần mềm, 500 người, văn hóa startup) mua B (dịch vụ, 300 người, văn hóa corporate); tích hợp 12 tháng; giả định minh họa."
+    key_calculations:
+      - "Chi phí thay một người = 50% x 240 = 120 triệu"
+      - "Ép hợp nhất (nghỉ 25% = 75 người): 9.000 triệu; theo giai đoạn (5% = 15 người): 1.800 triệu; chênh lệch 7.200 triệu (7,2 tỷ)"
+      - "Giai đoạn: 1-3 tháng Compromising (giữ nguyên team/quy trình, chỉ tích hợp Finance, HR, Sales); 3-9 tháng Collaborating (lai Agile + tài liệu, nhóm chéo); 9-12 tháng hợp nhất; retention 95%"
+    lesson: "Không ép hợp nhất văn hóa ngay: compromise tạm thời để mọi người thích nghi, hợp tác dần, tôn trọng cả hai văn hóa; chậm mà chắc thường rẻ hơn (chưa tính mất khách/tri thức)."
+    data_reliability: "illustrative"
+  - name: "Case 11 - Công ty May XYZ: Glasl + TKI + IBR + Mediation"
+    type: "sme"
+    setup: "200 người, Hà Nội; Giám đốc Kỹ thuật (chất lượng) vs Giám đốc Kinh doanh (giá cạnh tranh); phát hiện ở Glasl bậc 3; hòa giải viên ngoài. Giả định minh họa (đơn vị triệu USD/6 tháng)."
+    key_calculations:
+      - "Doanh thu: Premium 5 + Standard 12 + Budget 3 = 20; lợi nhuận gộp 2,0 + 2,4 + 0,3 = 4,7; biên bình quân 23,5%"
+      - "Doanh thu trước = 20/1,6 = 12,5; lợi nhuận gộp cũ (biên 18% giả định) = 2,25; lợi nhuận gộp tăng 4,7/2,25 - 1 ~ 109%"
+    lesson: "Xung đột chất lượng vs giá không phải tổng bằng không: phân tầng sản phẩm cho mỗi giám đốc thắng đúng khách của mình; KPI riêng + thưởng chung; follow-up hàng tháng; theo dõi cannibalization và tầng Budget."
+    data_reliability: "illustrative"
+  - name: "Case 12 - Cơ khí Tâm Việt: Kinh doanh (An) vs Sản xuất (Bình)"
+    type: "sme"
+    setup: "45 nhân sự, 60 đơn/tháng x 40 triệu = 2.400 doanh thu, biên gộp 28% = 672, cố định 520 -> EBIT 152 triệu/tháng. An (Competing) hứa 14 ngày không hỏi sản xuất; Bình (Avoiding) cần 21 ngày, im lặng và bất hợp tác ngầm. Glasl bậc 4 chạm bậc 5. Giả định minh họa toàn bộ."
+    key_calculations:
+      - "Chi phí xung đột trước 127,67 triệu/tháng = 84% EBIT; sau 45,33; tiết kiệm 82,33"
+      - "ZOPA phụ phí giao nhanh: Rs = 30,8/0,85 = 36,24; Rb = 44 - 0,8 = 43,2; rộng 6,96; phụ phí 7% = 42,8 trong ZOPA (biên 28,0%), 10% = 44 ngoài ZOPA"
+      - "Giao nhanh 10 đơn: +28 doanh thu - 20 tăng ca = +8 triệu/tháng"
+      - "Lợi nhuận tăng ròng = 82,33 + 8 - 21 = 69,33 triệu/tháng (EBIT mới ~221,33, +45,6%); hòa giải 12 triệu hoàn vốn ~0,17 tháng"
+    lesson: "Tính xung đột ra tiền để chủ ưu tiên; chẩn đoán đúng (Glasl bậc 4 -> hòa giải; cặp Competing x Avoiding -> kênh nói an toàn); tích hợp (hai mức thời hạn + phụ phí) hơn thỏa hiệp 17-18 ngày; tôn trọng thâm niên; tránh bẫy phụ phí ngoài ZOPA, vượt hạn mức, bỏ họp theo dõi."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Ví dụ 1 - ZOPA, thặng dư và anchoring (mua bán công ty con)"
+    inputs: {Rs: 35, Rb: 45, "mốc bán": 55, "mốc mua": 30}
+    steps:
+      - "Có ZOPA vì Rb = 45 >= Rs = 35; độ rộng = 10 triệu USD; điểm giữa 40"
+      - "Mốc (55; 30): P = 42,5; người bán nhận (42,5-35)/10 = 75%"
+      - "Mốc (50; 30): P = 40; 50%; mốc (45; 25): P = 35; 0%"
+      - "Nếu Rb = 30 < Rs = 35 thì không có ZOPA; phải đổi bài toán"
+    result: "ZOPA [35; 45]; anchoring đổi phần thặng dư từ 50% lên 75% hoặc xuống 0% (giả định minh họa)"
+  - name: "Ví dụ 2 - Log rolling với điều khoản thanh toán"
+    inputs: {V: 1000, days: 20, r_s: 0.18, r_b: 0.10, disc: 0.0075}
+    steps:
+      - "Người bán tiết kiệm 20/365 x 18% x 1000 = 9,86 triệu; người mua mất 20/365 x 10% x 1000 = 5,48 triệu"
+      - "Giá trị tạo thêm = 4,38 triệu"
+      - "Chiết khấu 0,75% = 7,5: bán lời 2,36; mua lời 2,02"
+    result: "Cả hai tốt hơn so với giữ nguyên giá và thanh toán chậm (giả định minh họa)"
+  - name: "Ví dụ 3 - Chi phí xung đột và hoàn vốn hòa giải (Tâm Việt)"
+    inputs: {n_late_before: 18, n_late_after: 6, V: 40, pen: 0.02, k: 3.5, n_lost_before: 3, n_lost_after: 1, g: 0.28, c_rep: 25, EBIT: 152}
+    steps:
+      - "Trước: 14,4 + 63,0 + 33,6 + 16,67 = 127,67; sau: 4,8 + 21,0 + 11,2 + 8,33 = 45,33"
+      - "Tỷ lệ C/EBIT = 127,67/152 = 84%; tiết kiệm = 82,33"
+      - "Trừ chi phí mới 21 (điều phối 18 + công cụ 3), cộng giao nhanh +8: tăng ròng 69,33 triệu/tháng"
+      - "Hoàn vốn hòa giải: 12/69,33 ~ 0,17 tháng"
+    result: "EBIT 152 -> ~221,33 triệu/tháng (+45,6%) (giả định minh họa)"
+  - name: "Ví dụ 4 - Bẫy chi phí chìm trong kiện tụng"
+    inputs: {sunk: 3, C_future: 2, p: 0.3, W: 4, S: 1}
+    steps:
+      - "Bỏ chi phí chìm 3 tỷ"
+      - "Tiếp tục: 0,3 x 4 - 2 = -0,8; dàn xếp: +1,0"
+      - "Chênh lệch nghiêng về dàn xếp 1,8 tỷ"
+    result: "Nên dàn xếp (giả định minh họa)"
+  - name: "Ví dụ 5 - Lewin force field cho chính sách remote"
+    inputs: {drive: [4, 3, 5, 3], restrain_before: [4, 4, 3, 2], restrain_after: [2, 3, 3, 2]}
+    steps:
+      - "Thúc đẩy = 15; cản trước = 13 (chênh +2, giằng co)"
+      - "Giảm 'lo hiệu suất' 4 -> 2 bằng KPI theo đầu ra; 'lo văn hóa' 4 -> 3 bằng 2 ngày văn phòng"
+      - "Cản sau = 10; chênh +5: dịch chuyển sang hybrid"
+    result: "Chênh lệch +5 mà không ai phải thua (giả định minh họa)"
+  - name: "Ví dụ 6 - Chọn mode TKI cho cặp An - Bình"
+    inputs: {An: {Competing: 22, Collaborating: 15, Compromising: 14, Avoiding: 8, Accommodating: 9}, Binh: {Competing: 10, Collaborating: 12, Compromising: 15, Avoiding: 21, Accommodating: 18}}
+    steps:
+      - "An: preferred Competing (22), backup Collaborating (15); Bình: preferred Avoiding (21), backup Accommodating (18)"
+      - "Cặp Competing x Avoiding: An ép, Bình lùi và bất hợp tác ngầm, vấn đề tích tụ rồi nổ (hòa hợp giả tạo)"
+      - "Vì quan hệ dài hạn và vấn đề phức tạp, mode mục tiêu của cả hai là Collaborating: An giảm ép, Bình tăng lên tiếng (cổng xác nhận 24 giờ)"
+    result: "Thiết kế quy trình giúp Bình có kênh nói an toàn và An không cần ép (giả định minh họa)"
+
+practice_questions:
+  - q: "Nêu ba loại xung đột theo Jehn và cho biết loại nào cần can thiệp sớm nhất; vì sao không nên đọc 'task conflict là tích cực' như giấy phép tranh cãi?"
+    a: "Task, Relationship, Process. Relationship cần xử lý sớm vì gần như luôn tiêu cực. Meta-analysis De Dreu & Weingart 2003 cho thấy task conflict cũng tương quan âm yếu với hiệu suất; chỉ có lợi khi có an toàn tâm lý đủ cao."
+  - q: "Người bán có BATNA 35 triệu USD, người mua tối đa 45. Tính ZOPA; nếu mốc bán 55 và mốc mua 30 (nhượng bộ đối xứng) thì người bán chiếm bao nhiêu % thặng dư?"
+    a: "ZOPA [35; 45], rộng 10; điểm giữa hai mốc = 42,5; người bán nhận 7,5/10 = 75%."
+  - q: "Hợp đồng 1.000 triệu, người bán vay 18%/năm, người mua có chi phí vốn 10%/năm, thanh toán sớm 20 ngày. Tính giá trị tạo thêm và đề xuất mức chiết khấu cả hai cùng lời."
+    a: "Người bán tiết kiệm 9,86; người mua mất 5,48; tạo thêm 4,38 triệu. Chiết khấu giữa 5,48 và 9,86 triệu (0,55%-0,99% giá trị), ví dụ 0,75% = 7,5 triệu: bán lời 2,36, mua lời 2,02."
+  - q: "Công ty đã chi 3 tỷ cho vụ kiện, cần thêm 2 tỷ, xác suất thắng 30% được 4 tỷ; đối phương đề nghị dàn xếp 1 tỷ. Nên làm gì?"
+    a: "Bỏ chi phí chìm. Tiếp tục: 0,3 x 4 - 2 = -0,8 tỷ; dàn xếp: +1,0 tỷ; chênh 1,8 tỷ nghiêng về dàn xếp."
+  - q: "Quán có chi phí xung đột 127,67 triệu/tháng, EBIT 152 triệu. Tính tỷ lệ và nêu hàm ý quản trị."
+    a: "127,67/152 = 84%. Xung đột nuốt gần hết lợi nhuận; cần ưu tiên can thiệp (ngưỡng 20-30% chỉ là minh họa)."
+  - q: "Hai bên không họp chung, nhắn qua nhân viên, kể xấu nhau, một lần phê bình trước toàn xưởng. Bậc Glasl và can thiệp phù hợp?"
+    a: "Bậc 4 (Images & Coalitions) chạm bậc 5 (Loss of Face); cần hòa giải bởi bên thứ ba trung lập, không tự giải."
+  - q: "Chủ muốn mở 5 chi nhánh; bếp trưởng dọa từ chức vì sợ mất chất lượng. Vị trí và lợi ích mỗi bên? Đề xuất tích hợp?"
+    a: "Vị trí: mở 5 chi nhánh / không chuẩn hóa. Lợi ích: Hùng - lợi nhuận, chống bị copy; Huệ - tự hào nghề, giữ danh tiếng, tránh phải đào tạo hàng loạt. Giải pháp: 1 chi nhánh trước, Huệ làm Quality Manager, chuẩn hóa một phần (sơ chế/nước sốt), cổng 90% hài lòng, soát xét thực đơn mỗi tháng."
+  - q: "Vì sao Compromising chia đôi chênh lệch giá vốn lại không đạt mục tiêu biên 45% trong Case 1, còn Collaborating đạt?"
+    a: "Chia đôi cho giá vốn ~297 -> biên 40,5% < 45% và sản phẩm bị cắt; Collaborating đổi biến số (quy mô, thiết kế cho sản xuất) đạt giá vốn 270 -> biên 45,9%. Compromising dung hòa hai ý, không tạo ý mới."
+  - q: "Phụ phí giao nhanh nên bao nhiêu nếu giá chuẩn 40, giá vốn giao nhanh 30,8, biên tối thiểu 15%, khách có phương án 44 và chi phí chuyển đổi 0,8?"
+    a: "Rs = 36,24; Rb = 43,2; ZOPA [36,24; 43,2]. Phụ phí 7% -> 42,8 trong ZOPA, biên 28%; 10% -> 44 ngoài ZOPA."
+  - q: "Vì sao không nên ép hợp nhất văn hóa ngay sau M&A (300 nhân sự, lương 240 triệu/năm, chi phí thay 50% lương)?"
+    a: "Ép: nghỉ 25% = 75 người x 120 = 9.000 triệu; theo giai đoạn nghỉ 5% = 15 người x 120 = 1.800 triệu; tiết kiệm 7.200 triệu, chưa tính mất khách và tri thức (giả định minh họa)."
+  - q: "Làm sao nói với sếp rằng quyết định của sếp có vấn đề mà vẫn giữ thể diện (bối cảnh VN)?"
+    a: "Nói riêng trước, dùng câu hỏi ('Sếp cho em hiểu thêm vì sao quyết định này ạ?'), đề xuất như gợi ý, không công khai thách thức; có thể nhờ người trung gian được nể trọng."
+  - q: "Vì sao tổ chức quá 'êm' lại đáng lo? Nêu dấu hiệu và biện pháp."
+    a: "Có thể là hòa hợp giả tạo/groupthink (Zone 1). Dấu hiệu: 'dạ' trong họp rồi than riêng, không ai nói không đồng ý, quyết định không ai dốc sức, gossip ngầm. Biện pháp: lãnh đạo chủ động xin phản biện và tự nhận sai, 1-1, khảo sát ẩn danh, thưởng người dám thách thức, khung 'bất đồng giúp quyết định tốt hơn'."
+  - q: "Thực hành tự phản tư (từ bảng TKI): hồ sơ ví dụ Collaborating 24, Compromising 18, Competing 14, Accommodating 12, Avoiding 8 cho thấy gì? Rủi ro?"
+    a: "Preferred Collaborating (người tìm win-win), backup Compromising khi gấp, ít Avoiding. Rủi ro: tốn thời gian khi cần quyết định nhanh; có thể bị lợi dụng nếu đối phương không chân thành; cần luyện Competing khi khẩn cấp."
+
+checklist:
+  - "Đã xác định loại xung đột (task/relationship/process) theo Jehn và cấp độ chưa?"
+  - "Đã xác định bậc Glasl và chọn can thiệp tương ứng (1-3 đối thoại; 4-6 hòa giải; 7-9 pháp lý)?"
+  - "Đã nghe từng bên riêng trước khi đưa hai bên ngồi cùng nhau?"
+  - "Đã ước tính chi phí xung đột bằng tiền (đơn trễ, tăng ca, mất khách, nghỉ việc) và so với EBIT?"
+  - "Biết phong cách TKI mặc định của mình và đối phương; cặp phong cách có nguy hiểm không (Competing x Avoiding)?"
+  - "Mode chọn phù hợp tình huống (khẩn cấp, quan hệ dài hạn, cân sức...), không chỉ theo thói quen? Nếu Avoiding, có chủ đích và có ngày quay lại?"
+  - "Đã tách vị trí khỏi lợi ích của cả hai (hỏi 'tại sao?' >= 2 lần)?"
+  - "Đã liệt kê ít nhất 5-6 phương án trước khi đánh giá; có ít nhất một phương án mở rộng bánh?"
+  - "Đã chuẩn bị tiêu chí khách quan (giá thị trường, dữ liệu lịch sử, chuẩn ngành)?"
+  - "Đã xác định BATNA của mình và ước lượng BATNA của đối phương; đã tính ZOPA và đề xuất nằm trong ZOPA?"
+  - "Nói chuyện riêng trước, không phê bình công khai; tôn trọng thứ bậc/thâm niên nhưng mở kênh an toàn cho cấp dưới?"
+  - "Dùng bên thứ ba được cả hai nể trọng khi xung đột từ bậc 4?"
+  - "Thỏa thuận ghi rõ ai làm gì, khi nào, tiêu chí thành công, ngày soát xét; cả hai ký?"
+  - "Có KPI/khuyến khích chung để giảm xung đột lặp lại?"
+  - "Xung đột cổ đông/đồng sáng lập: đã có điều khoản hòa giải rồi trọng tài trong thỏa thuận cổ đông (xác nhận với luật sư)?"
+  - "Đã đặt lịch follow-up 2 tuần, 1 tháng, 3 tháng; có theo dõi tín hiệu cảnh báo sớm (gossip, né họp, trễ phối hợp, turnover)?"
+  - "Đã tránh bẫy chi phí chìm - quyết định dựa trên lợi ích/chi phí tương lai?"
+  - "Có cơ chế để người dưới dám phản biện (tránh hòa hợp giả tạo, văn hóa im lặng)?"
+  - "Số liệu minh họa/ước tính đã ghi chú rõ; các phép tính (chi phí, ZOPA, kỳ vọng) đã kiểm tra độc lập?"
+  - "Manager self-check: tôi có làm mẫu hành vi xung đột lành mạnh, tạo an toàn tâm lý, 1-1 đủ thường xuyên, biết khi nào leo thang?"
+  - "Team/Tổ chức self-check: mục tiêu chung, giao tiếp minh bạch, kênh nêu lo ngại an toàn, đường leo thang rõ, đào tạo quản lý, rà soát xung đột định kỳ, không suppress?"
+
+excel_google_sheets_templates:
+  - "Bảng chi phí xung đột hằng tháng: cột số đơn trễ, số đơn mất, người nghỉ; công thức =n_late*V*pen + n_late*k + n_lost*V*g + n_quit*c_rep; so với EBIT, trước/sau can thiệp"
+  - "Máy tính ZOPA: ô Rs, Rb, P; =IF(Rb>=Rs, Rb-Rs, \"Không có ZOPA\"); =(P-Rs)/(Rb-Rs) cho phần thặng dư; bảng anchoring theo ba cặp mốc"
+  - "Bảng chấm TKI 25 câu: SUM theo từng nhóm 5 câu; xếp hạng preferred/backup; hồ sơ hai bên cạnh nhau"
+  - "Bảng trường lực Lewin: danh sách lực thúc đẩy/lực cản (điểm 1-5), tổng và chênh lệch trước/sau can thiệp"
+  - "Biểu mẫu IBR: vị trí - 'tại sao' 1 - 'tại sao' 2 - lợi ích thật - lợi ích chung; bảng đánh giá phương án (A gain Y/M/N, B gain Y/M/N, khả thi Y/N)"
+  - "Bảng kế hoạch công suất dùng chung (Google Sheets) cập nhật hằng ngày cho xung đột Kinh doanh - Sản xuất"
+  - "Biểu mẫu chẩn đoán xung đột A-H và theo dõi follow-up (2 tuần, 1 tháng, 3 tháng)"

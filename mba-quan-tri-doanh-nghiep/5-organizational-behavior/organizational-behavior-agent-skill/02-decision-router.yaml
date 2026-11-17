@@ -1,0 +1,194 @@
+# 02-decision-router.yaml — Định tuyến: câu hỏi/tình huống -> module + framework + công thức + playbook
+# Cách dùng: khớp từ khóa/ý định với `triggers`, nạp `modules`, ưu tiên `frameworks`/`formulas`/`procedures` liệt kê (id có thật trong modules/), chạy `playbook` trong 03-playbooks.yaml.
+# Module: m01 động lực | m02 lãnh đạo | m03 nhóm | m04 văn hóa | m05 quyền lực-chính trị | m06 xung đột | m07 thay đổi | m08 EQ | m09 ra quyết định | m10 thấu hiểu con người
+routes:
+  - id: r_motivation_diagnosis
+    triggers: [nhân viên mất động lực, làm cho có, thiếu nhiệt huyết, không muốn cố gắng, lười, năng suất thấp, nghỉ việc nhiều, chán việc, burnout công việc, vì sao họ không nỗ lực]
+    modules: [m01, m08, m04]
+    frameworks: [m01_theory_by_context, m01_herzberg, m01_vroom_diagnosis, m01_equity_adams, m01_sdt]
+    formulas: [m01_vroom_motivation, m01_equity_ratio, m01_turnover_cost, m01_mps]
+    procedures: [m01_p_diagnose, m01_p_survey]
+    playbook: pb_motivation_diagnosis
+  - id: r_reward_kpi
+    triggers: [thiết kế thưởng, KPI gây hậu quả, KPI quá gắt, gaming KPI, lương thưởng, tăng lương có hiệu quả không, hệ thống thưởng, OKR, đặt mục tiêu, chia thưởng]
+    modules: [m01, m04, m09]
+    frameworks: [m01_goal_setting, m01_reinforcement, m01_vroom_diagnosis, m04_culture_measurement_tools]
+    formulas: [m01_kpi_stretch_gap, m01_bonus_formula, m01_wage_breakeven_productivity, m01_program_roi]
+    procedures: [m01_p_reward_design, m01_p_fix_failed_kpi, m04_proc_kpi_integrity_check]
+    playbook: pb_reward_kpi_design
+  - id: r_turnover_cost
+    triggers: [chi phí nghỉ việc, tỷ lệ nghỉ việc, turnover, giữ chân nhân viên, retention, thay người tốn bao nhiêu, ROI chương trình giữ người, ngân sách phúc lợi]
+    modules: [m01, m02, m04, m08]
+    frameworks: [m01_three_tier_framework, m02_performance_metrics_map]
+    formulas: [m02_turnover_rate, m02_turnover_cost, m01_replacement_cost_delta, m01_program_roi, m02_enps]
+    procedures: [m01_p_roi, m02_proc_diagnose_cost]
+    playbook: pb_turnover_cost_roi
+  - id: r_leadership_style
+    triggers: [chọn phong cách lãnh đạo, tôi nên lãnh đạo thế nào, lãnh đạo tình huống, ủy quyền hay chỉ đạo, quản lý nhân viên mới, quản lý nhân viên giỏi, transformational, servant leadership, độc đoán hay dân chủ, S1 S2 S3 S4, phong cách của tôi, chuyển từ làm sang quản lý]
+    modules: [m02, m08, m01]
+    frameworks: [m02_situational_sii, m02_decision_tree, m02_style_by_situation, m02_style_by_stage, m02_classic_styles, m02_path_goal]
+    formulas: [m02_dlevel_diagnosis, m02_style_fit_rate]
+    procedures: [m02_proc_choose_style, m02_proc_diagnose_d, m02_proc_scale_style]
+    playbook: pb_leadership_style_choice
+  - id: r_leader_assessment
+    triggers: [đánh giá lãnh đạo, 360 độ, điểm mù của sếp, phản hồi 360, kế hoạch phát triển lãnh đạo, MLQ, eNPS lãnh đạo, ROI đào tạo lãnh đạo, cam kết nhân viên, founder charismatic, đối trọng cho founder]
+    modules: [m02, m08]
+    frameworks: [m02_360, m02_mlq, m02_commitment_3, m02_plan_90days, m08_goleman_4_domains_esci]
+    formulas: [m02_enps, m02_mlq_factor_score, m02_roi_intervention, m08_blind_spot_gap, m08_domain_mean_overall_gap]
+    procedures: [m02_proc_guardrails, m08_proc_diagnose_leader_eq, m08_proc_90_day]
+    playbook: pb_leader_360_development
+  - id: r_team_diagnosis
+    triggers: [nhóm không hiệu quả, nhóm cãi nhau, nhóm thiếu tin cậy, mới lập nhóm, nhóm bị kẹt, Tuckman, Belbin, Lencioni, 5 rối loạn, an toàn tâm lý, họp không ai nói, nhóm độc hại, nhóm remote, nhóm không cam kết, đồng sáng lập bất đồng, ghép vai trò trong nhóm]
+    modules: [m03, m06, m02, m10]
+    frameworks: [m03_tuckman, m03_lencioni, m03_project_aristotle, m03_psych_safety, m03_belbin, m03_grpi, m03_t7, m03_team_charter, m03_raci]
+    formulas: [m03_psych_safety_score, m03_pulse_average, m03_belbin_coverage, m03_storming_delay_cost, m03_team_program_roi]
+    procedures: [m03_proc_diagnose_team, m03_proc_new_team, m03_proc_build_trust, m03_proc_fix_toxic_team, m03_proc_cofounder_agreement]
+    playbook: pb_team_diagnosis_rebuild
+  - id: r_team_decision
+    triggers: [ra quyết định nhóm, họp mãi không quyết, ai là người quyết định, groupthink, tư duy bầy đàn, ai cũng gật đầu, tranh luận rồi cam kết, phân vai quyết định, RAPID, DACI, Disagree and Commit, devil's advocate]
+    modules: [m09, m03, m05]
+    frameworks: [m09_groupthink, m09_group_phenomena, m09_rapid_daci_raci, m09_vroom_yetton_jago, m09_premortem, m09_brainstorming_ngt_delphi, m03_model_selection]
+    formulas: [m03_weighted_decision_score, m09_weighted_decision_matrix]
+    procedures: [m09_proc_groupthink_prevention, m09_proc_premortem, m03_proc_commit_decision, m09_proc_decision_log]
+    playbook: pb_group_decision_quality
+  - id: r_decision_choose
+    triggers: [chọn giữa các phương án, ma trận quyết định, nên đầu tư hay không, phân tích rủi ro quyết định, giá trị kỳ vọng, cây quyết định, chi phí chìm, thiên kiến nhận thức, anchoring, tự tin quá mức, Cynefin, OODA, quyết định nhanh hay chậm, Type 1 Type 2]
+    modules: [m09, m05]
+    frameworks: [m09_technique_matching, m09_cynefin, m09_bias_catalog, m09_decision_tree_ev, m09_type1_type2_amazon, m09_ooda, m09_rational_8_steps]
+    formulas: [m09_weighted_decision_matrix, m09_normalized_criteria_score, m09_expected_value, m09_breakeven_probability, m09_forward_looking_value, m09_cost_benefit, m09_breakeven_revenue, m09_leverage_loss_threshold]
+    procedures: [m09_proc_diagnose_choose_tool, m09_proc_weighted_matrix, m09_proc_ev_tree, m09_proc_sunk_cost_check]
+    playbook: pb_decision_matrix_ev
+  - id: r_culture_diagnosis
+    triggers: [văn hóa công ty, đánh giá văn hóa, OCAI, văn hóa clan market, Schein, Denison, văn hóa độc hại, văn hóa không đồng nhất, poster treo tường khác thực tế, giá trị cốt lõi, core values, văn hóa mạnh yếu, văn hóa phụ, khảo sát văn hóa]
+    modules: [m04, m03, m01, m02]
+    frameworks: [m04_schein_three_levels, m04_cvf_ocai, m04_denison_model, m04_model_comparison, m04_healthy_vs_toxic_diagnostic, m04_culture_survey_20q, m04_culture_measurement_tools, m04_hofstede_dimensions]
+    formulas: [m04_ocai_gap, m04_denison_average_spread, m04_survey_score_change, m04_enps, m04_turnover_rate, m04_turnover_cost]
+    procedures: [m04_proc_diagnose_culture, m04_proc_ocai_survey, m04_proc_subculture_management]
+    playbook: pb_culture_diagnosis_ocai
+  - id: r_culture_change
+    triggers: [đổi văn hóa, xây văn hóa từ đầu, văn hóa không scale, workshop giá trị cốt lõi, văn hóa startup, văn hóa khi mở rộng, ROI chương trình văn hóa, Việt hóa thực hành văn hóa, văn hóa tốc độ, ngân hàng nước ngoài mua lại]
+    modules: [m04, m07, m02, m05]
+    frameworks: [m04_kotter_8_steps, m04_startup_culture_stages, m04_core_values_workshop, m04_context_playbooks, m07_kotter_8_steps]
+    formulas: [m04_culture_roi, m04_turnover_saving, m04_survey_score_change, m04_enps, m04_hofstede_cultural_distance]
+    procedures: [m04_proc_change_culture, m04_proc_localize_for_vn, m04_proc_kpi_integrity_check, m07_proc_anchor]
+    playbook: pb_culture_build_change
+  - id: r_ma_culture
+    triggers: [mua lại công ty, sáp nhập, M&A văn hóa, hợp nhất hai công ty, văn hóa sau sáp nhập, cultural due diligence, hợp nhất đội ngũ, hai văn hóa va chạm]
+    modules: [m04, m06, m07, m05]
+    frameworks: [m04_context_playbooks, m04_hofstede_dimensions, m04_cvf_ocai, m06_vn_culture_playbook]
+    formulas: [m04_hofstede_cultural_distance, m04_ocai_profile_difference, m06_turnover_replacement_cost, m04_turnover_cost]
+    procedures: [m04_proc_ma_due_diligence, m04_proc_subculture_management]
+    playbook: pb_ma_cultural_integration
+  - id: r_power_politics
+    triggers: [ai thực sự có quyền, bản đồ quyền lực, chính trị nội bộ, phe phái, liên minh, thuyết phục sếp, ảnh hưởng không có quyền, stakeholder, quyền phủ quyết, đếm phiếu hội đồng, cổ đông bất đồng, key person, người then chốt, kế hoạch ảnh hưởng, bị chơi xấu]
+    modules: [m05, m02, m04, m06]
+    frameworks: [m05_french_raven, m05_emerson_balancing, m05_mendelow_grid, m05_power_map, m05_influence_canvas, m05_yukl_9, m05_cialdini_7, m05_velasquez_5]
+    formulas: [m05_emerson_dependence, m05_power_ratio, m05_coalition_margin, m05_veto_check, m05_mendelow_class, m05_velasquez_score, m05_dependence_index_sme]
+    procedures: [m05_proc_power_map, m05_proc_count_coalition, m05_proc_influence_plan, m05_proc_ethics_check, m05_proc_defend, m05_proc_reduce_politics]
+    playbook: pb_power_map_influence
+  - id: r_conflict_diagnosis
+    triggers: [xung đột giữa hai trưởng nhóm, hai phòng ban cãi nhau, chủ và bếp trưởng mâu thuẫn, hai người không nói chuyện, xung đột nội bộ, leo thang xung đột, Glasl, TKI, né tránh xung đột, nên hòa giải hay xử lý, xung đột đồng sáng lập, kinh doanh với sản xuất đổ lỗi]
+    modules: [m06, m03, m08, m10]
+    frameworks: [m06_jehn_conflict_types, m06_glasl, m06_tki, m06_dual_concern, m06_conflict_diagnosis_template, m06_lewin_force_field, m06_mediation_process, m06_adr_comparison, m06_vn_culture_playbook, m10_conflict_by_layer]
+    formulas: [m06_conflict_cost, m06_conflict_cost_ratio, m06_force_field_net, m06_tki_scoring, m06_escalation_profit_scenarios]
+    procedures: [m06_proc_diagnose_conflict, m06_proc_early_intervention_manager, m06_proc_mediation, m06_proc_remote_conflict, m10_proc_conflict_triage]
+    playbook: pb_conflict_diagnosis_resolution
+  - id: r_negotiation
+    triggers: [đàm phán, thương lượng giá, ZOPA, BATNA, đàm phán với nhà cung cấp, đàm phán với khách hàng, đàm phán lương, win-win, Getting to Yes, anchoring khi đàm phán, log rolling, chuẩn bị cuộc đàm phán, mở rộng miếng bánh]
+    modules: [m06, m08, m05, m10]
+    frameworks: [m06_ibr, m06_zopa_batna_process, m06_integrative_tactics, m06_distributive_negotiation, m08_win_win_conflict_framework, m10_value_extraction]
+    formulas: [m06_zopa, m06_surplus_share, m06_anchoring_share, m06_seller_reservation_price, m06_buyer_reservation_price, m06_log_rolling_value, m06_max_cogs_for_margin]
+    procedures: [m06_proc_ibr_negotiation, m08_proc_resolve_conflict, m10_proc_read_person]
+    playbook: pb_negotiation_prep
+  - id: r_dispute_decision
+    triggers: [có nên kiện, tiếp tục tranh chấp hay dàn xếp, giá trị kỳ vọng tranh chấp, hòa giải hay trọng tài, nên nhượng bộ không, kéo dài vụ việc, chi phí chìm vụ tranh chấp]
+    modules: [m06, m09]
+    frameworks: [m06_adr_comparison, m06_pitfalls_toolkit, m09_decision_tree_ev]
+    formulas: [m06_ev_continue_vs_settle, m09_expected_value, m09_forward_looking_value, m06_payback_months]
+    procedures: [m06_proc_stop_or_continue, m09_proc_sunk_cost_check]
+    playbook: pb_dispute_continue_or_settle
+  - id: r_change_rollout
+    triggers: [triển khai thay đổi, chuyển đổi số nhân viên không dùng, nhân viên kháng cự, áp dụng phần mềm mới, thay đổi quy trình, tái cơ cấu, Kotter, ADKAR, Lewin, Beckhard-Harris, change management, kế hoạch giao tiếp thay đổi, hoàn vốn thay đổi, thay đổi thất bại, mệt mỏi vì thay đổi]
+    modules: [m07, m04, m02, m03]
+    frameworks: [m07_kotter_8_steps, m07_adkar, m07_lewin_three_stage, m07_stakeholder_analysis, m07_resistance_strategies, m07_change_governance, m07_comm_plan, m07_change_metrics, m07_change_pitfalls_table]
+    formulas: [m07_beckhard_harris, m07_adkar_score, m07_force_field_balance, m07_kotter_scorecard, m07_adoption_rate, m07_change_net_benefit, m07_change_onetime_cost, m07_change_payback]
+    procedures: [m07_proc_readiness_diagnosis, m07_proc_kotter_rollout, m07_proc_adkar_cycle, m07_proc_resistance_handling, m07_proc_change_roi, m07_proc_anchor]
+    playbook: pb_change_rollout
+  - id: r_emotional_intelligence
+    triggers: [EQ, trí tuệ cảm xúc, nóng nảy với nhân viên, kiểm soát cảm xúc, bị kích hoạt, amygdala, đồng cảm, điểm mù cảm xúc, phản hồi khó, phản hồi tế nhị giữ thể diện, ROI đào tạo EQ, lãnh đạo khủng hoảng, đồng cảm quá mức, phong cách Goleman]
+    modules: [m08, m02, m06, m10]
+    frameworks: [m08_goleman_4_domains_esci, m08_goleman_6_leadership_styles, m08_amygdala_pause_protocol, m08_empathy_map, m08_eq_vietnam_lens, m08_eq_in_work_contexts, m08_90_day_plan]
+    formulas: [m08_blind_spot_gap, m08_domain_mean_overall_gap, m08_eq_self_assessment_score, m08_eq_program_roi, m08_replacement_cost]
+    procedures: [m08_proc_diagnose_leader_eq, m08_proc_calm_response, m08_proc_give_feedback, m08_proc_choose_leadership_style, m08_proc_90_day, m08_proc_eq_program_roi]
+    playbook: pb_eq_development
+  - id: r_people_reading
+    triggers: [đọc người, hiểu tính cách, phỏng vấn ứng viên quản lý, lần đầu gặp đối tác, đánh giá một người, ghép đội bổ trợ, tổ hợp rủi ro, bản đồ 7 tầng, hiệu ứng hào quang, động cơ cốt lõi của nhân viên, cách giao tiếp với từng kiểu người, người này có đáng tin không]
+    modules: [m10, m08, m01, m03]
+    frameworks: [m10_three_step_reading, m10_hypothesis_analysis, m10_seven_layer_map, m10_golden_rules, m10_question_bank, m10_compatibility_matrix, m10_risky_combinations, m10_team_composition, m10_quick_reference_table, m10_value_extraction]
+    formulas: [m10_turnover_rate, m10_replacement_cost]
+    procedures: [m10_proc_read_person, m10_proc_select_candidate, m10_proc_build_team, m10_proc_conflict_triage]
+    playbook: pb_people_reading_discipline
+  - id: r_hiring_leader
+    triggers: [chọn người quản lý, tuyển cửa hàng trưởng, thăng chức ai, tiêu chí chọn quản lý, phỏng vấn có cấu trúc, ai phù hợp vai trò, chọn kế nhiệm]
+    modules: [m10, m02, m09, m01]
+    frameworks: [m10_three_step_reading, m10_hypothesis_analysis, m10_question_bank, m09_technique_matching, m02_style_by_situation]
+    formulas: [m09_weighted_decision_matrix, m09_normalized_criteria_score, m10_replacement_cost]
+    procedures: [m10_proc_select_candidate, m09_proc_weighted_matrix, m09_proc_decision_log]
+    playbook: pb_manager_selection_structured
+  - id: r_org_health_check
+    triggers: [khảo sát nhân viên, khảo sát gắn kết, pulse survey, sức khỏe tổ chức, tổng thể nhân sự, tại sao công ty tôi, rà soát tổ chức, chẩn đoán tổ chức, nhiều vấn đề con người cùng lúc]
+    modules: [m04, m01, m02, m03]
+    frameworks: [m04_culture_survey_20q, m03_pulse_survey, m01_three_tier_framework, m04_healthy_vs_toxic_diagnostic, m03_t7]
+    formulas: [m02_enps, m03_pulse_average, m04_survey_score_change, m01_survey_scoring, m04_enps, m02_turnover_rate]
+    procedures: [m01_p_survey, m03_proc_pulse_and_measure, m04_proc_ocai_survey]
+    playbook: pb_org_health_check
+  - id: r_cross_module
+    triggers: [vấn đề tổng hợp, nhiều nguyên nhân, nhân viên nghỉ vì sếp hay văn hóa, đội ngũ rối ren, tăng trưởng nhanh làm vỡ tổ chức, công ty gia đình, chuyển giao thế hệ, tổ chức ở giai đoạn scale]
+    modules: [m02, m04, m03, m01, m07]
+    frameworks: [m02_style_by_stage, m04_startup_culture_stages, m03_t7, m01_three_tier_framework]
+    formulas: [m02_turnover_cost, m02_enps]
+    procedures: [m02_proc_scale_style]
+    playbook: pb_org_health_check
+  - id: r_clarify
+    triggers: [giúp tôi với nhân sự, không biết bắt đầu từ đâu, làm rõ yêu cầu, tóm tắt yêu cầu, biên bản, ghi chú cuộc họp, nhắc việc, phân công, action items, mơ hồ]
+    modules: []   # chỉ nạp module sau khi làm rõ
+    playbook: pb_clarify_request
+  - id: r_boundary_redirect
+    triggers: [sa thải hợp pháp, kỷ luật lao động theo luật, tranh chấp lao động tòa án, hợp đồng lao động điều khoản, quấy rối, bạo hành, trầm cảm, tự tử, bệnh tâm lý, chẩn đoán rối loạn, dùng tính cách để loại ứng viên, theo dõi lén nhân viên]
+    modules: []   # ngoài phạm vi: nêu giới hạn, chuyển chuyên gia; chỉ hỗ trợ phần quản trị thuộc phạm vi
+    playbook: null
+  - id: r_finance_handoff
+    triggers: [tính NPV, IRR, WACC, định giá, mô hình dòng tiền, báo cáo tài chính chi tiết]
+    modules: []   # ngoài phạm vi: chuyển chuyên gia tài chính; ROI/hoàn vốn đơn giản dùng công thức m01_program_roi, m07_change_payback
+    playbook: null
+  - id: r_concept_qa
+    triggers: [là gì, giải thích, tại sao, khác nhau, lịch sử, ai tạo ra, khi nào dùng, so sánh Maslow Herzberg, so sánh Tuckman Belbin]
+    modules: []   # chọn theo chủ đề; xem why_it_matters và origin trong module liên quan; nhắc giới hạn và bối cảnh VN
+    playbook: null
+
+chaining_rules:   # bài toán chéo nhiều module: thứ tự gọi
+  - when: "Nhân viên nghỉ việc nhiều, không rõ do lương, sếp hay văn hóa"
+    chain: [m02 turnover và eNPS đo hiện trạng, m01 Herzberg/Equity chẩn đoán động lực, m02 style_fit và 360, m04 khảo sát văn hóa 20 câu, m01 ROI can thiệp]
+  - when: "Công ty tăng trưởng nhanh, tổ chức bắt đầu vỡ (scale)"
+    chain: [m02 chuyển phong cách theo giai đoạn, m04 startup_culture_stages và giá trị cốt lõi, m03 RACI/Charter cho nhóm mới, m07 Kotter cho thay đổi lớn, m09 phân vai RAPID/DACI]
+  - when: "Triển khai công nghệ/quy trình mới gặp kháng cự"
+    chain: [m07 Beckhard-Harris kiểm tra điều kiện, m07 ADKAR chẩn đoán điểm nghẽn từng nhóm, m05 stakeholder/Power-Interest, m01 Desire (động lực, WIIFM), m08 đồng cảm khi nói chuyện, m07 hoàn vốn]
+  - when: "Hai trưởng nhóm/phòng ban xung đột kéo dài"
+    chain: [m06 Jehn + Glasl chẩn đoán, m03 Lencioni/an toàn tâm lý, m10 conflict_by_layer, m06 TKI và IBR/hòa giải, m06 đo chi phí xung đột, m05 kiểm tra yếu tố quyền lực]
+  - when: "Chuẩn bị đàm phán lớn (nhà cung cấp, nhà đầu tư, đối tác)"
+    chain: [m06 ZOPA/BATNA và IBR, m05 power map/Emerson, m10 đọc người như giả thuyết, m08 kiểm soát cảm xúc, m09 ma trận/EV để chốt phương án]
+  - when: "Quyết định lớn cần sự đồng thuận của nhóm/hội đồng"
+    chain: [m09 chẩn đoán loại quyết định và công cụ, m05 đếm liên minh/Veto, m09 premortem + devil's advocate, m03 tranh luận rồi cam kết, m09 Decision Log]
+  - when: "Đổi văn hóa hoặc hợp nhất sau M&A"
+    chain: [m04 OCAI/Hofstede đo khoảng cách, m04 cultural due diligence, m07 Kotter 8 bước, m05 stakeholder, m01 hệ thống thưởng khớp hành vi mong muốn, m04 eNPS/ROI theo dõi]
+  - when: "Phát triển một nhà lãnh đạo/founder"
+    chain: [m08 360 độ tìm điểm mù, m02 chọn/chuyển phong cách, m02 guardrails nếu charismatic, m08 kế hoạch 90 ngày, m02 eNPS/ROI theo dõi]
+  - when: "Tuyển hoặc thăng chức vị trí quản lý"
+    chain: [m02 phong cách yêu cầu theo giai đoạn, m10 đọc người như giả thuyết + phỏng vấn có cấu trúc, m09 ma trận trọng số, m03 ghép đội bổ trợ, kiểm tra không phân biệt đối xử]
+
+clarifying_questions_default:   # hỏi khi thiếu
+  - Vấn đề cụ thể là gì (triệu chứng quan sát được: ai làm gì, từ khi nào, bao nhiêu lần) và mục tiêu mong muốn?
+  - Quy mô (số nhân sự), ngành, mô hình (gia đình/startup/sản xuất/dịch vụ), giai đoạn phát triển và cơ cấu quản lý?
+  - Dữ liệu sẵn có (tỷ lệ nghỉ việc, lương, KPI, khảo sát, biên bản, phản hồi) và ngân sách/thời gian can thiệp?
+  - Ai là người ra quyết định, ai bị ảnh hưởng, và những ràng buộc (pháp lý, văn hóa, quan hệ gia đình)?
+  - Đầu ra mong muốn (chẩn đoán, kế hoạch hành động, báo cáo, kịch bản trao đổi, tính ROI)?

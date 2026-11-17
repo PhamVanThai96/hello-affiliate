@@ -1,0 +1,884 @@
+# m07 - Quản lý thay đổi (distill từ 07-change-management.md)
+id: "m07"
+name_vi: "Quản trị thay đổi"
+name_en: "Change Management"
+source_file: "07-change-management.md"
+purpose: >
+  Giúp lãnh đạo/chủ SME đưa một thay đổi (công nghệ, quy trình, cấu trúc, văn hóa) đi đến cùng thay vì chết giữa đường:
+  chẩn đoán có nên khởi động không (Beckhard-Harris), vạch lộ trình tổ chức (Kotter 8 bước), chẩn đoán từng người kẹt ở đâu (ADKAR),
+  hiểu phản ứng tâm lý (Lewin, Bridges, Kübler-Ross), kiểm tra tính đồng bộ (7-S), xử lý kháng cự, giao tiếp, đo lường (adoption, hoàn vốn theo đường cong chấp nhận).
+  Luận điểm xuyên suốt của nguồn: thành bại của thay đổi quyết định bởi con người, không bởi công nghệ hay kế hoạch kỹ thuật.
+when_to_use:
+  - "Chủ/CEO chuẩn bị triển khai thay đổi lớn: phần mềm POS/ERP/CRM, tái cấu trúc, đổi chiến lược, chuyển đổi số, đổi văn hóa, cổ phần hóa."
+  - "Hỏi 'nên khởi động thay đổi bây giờ không, nên đầu tư vào đâu trước?' -> Beckhard-Harris D x V x F > R."
+  - "Nhân viên không làm theo hệ thống mới dù đã đào tạo -> chẩn đoán ADKAR, tìm barrier point (thường là Desire chứ không phải Knowledge)."
+  - "Thay đổi chạy được vài tháng rồi tụt về cách cũ -> kiểm tra Kotter bước 7-8, Reinforcement, HR systems, 7-S."
+  - "Cần lộ trình thay đổi có thứ tự, có dấu hiệu thành công từng bước, kế hoạch quick wins và kế hoạch giao tiếp."
+  - "Có người/nhóm kháng cự (quản lý cấp trung, nhân viên lớn tuổi) -> chọn chiến lược xử lý (Kotter-Schlesinger, stakeholder analysis)."
+  - "Cần tính hoàn vốn/ROI của dự án thay đổi có yếu tố con người (adoption có độ trễ)."
+  - "KHÔNG dùng cho tối ưu quy trình thuần kỹ thuật không đụng đến hành vi con người; Beckhard-Harris và các điểm số 0-1 chỉ là heuristic chẩn đoán, không phải dự báo định lượng."
+prerequisites: ["m04"]
+related_modules:
+  - "m04 - Văn hóa tổ chức: Kotter bước 8 và 7-S (Shared values) chính là neo thay đổi vào văn hóa"
+  - "m02 - Phong cách lãnh đạo: Change Sponsor, làm gương, coaching/empowerment khi thay đổi"
+  - "m03 - Động lực nhóm: coalition, champions, early adopters"
+  - "m01 - Động lực cá nhân: Desire trong ADKAR, lợi ích cá nhân, khen thưởng quick wins"
+  - "m05 - Quyền lực và chính trị: kháng cự của quản lý cấp trung, sợ mất quyền lực/vị thế"
+  - "m06 - Quản lý xung đột: đối thoại với người kháng cự, thương lượng quyền lợi"
+  - "m08 - Trí tuệ cảm xúc: nhận diện cảm xúc mất mát (Bridges, Kübler-Ross)"
+  - "m09 - Ra quyết định: nudge, default, framing, thiên kiến"
+  - "Chiến lược (strategic-agent-skill): thay đổi chiến lược cần 7-S đồng bộ; Scenario/BSC để theo dõi"
+  - "Tài chính (finance-agent-skill): NPV/payback có tính độ trễ adoption"
+
+concepts:
+  - term_vi: "Quản lý thay đổi"
+    term_en: "Change Management"
+    definition: >
+      Tập hợp phương pháp, công cụ, kỹ năng để dẫn dắt cá nhân, nhóm và tổ chức chuyển từ trạng thái hiện tại sang trạng thái mong muốn (định nghĩa theo Prosci).
+      Phạm vi: Organizational Change Management, Project Change Management, Business Change, Cultural Change, Technological Change.
+    why_it_matters: >
+      Bối cảnh ra đời trong nguồn: Kurt Lewin (thập niên 1940) coi thay đổi là quá trình có giai đoạn; thập niên 1960-1980 Beckhard, Harris, Schein, Peters và Waterman phát hiện
+      vấn đề lớn nhất không ở kế hoạch kỹ thuật mà ở con người; thập niên 1990-2000 Kotter (1995) và Prosci/Hiatt hệ thống hóa. Người làm giỏi luôn dùng ít nhất hai ống kính:
+      tổ chức (làm gì ở cấp công ty, Kotter) và cá nhân (từng người kẹt ở đâu, ADKAR).
+  - term_vi: "Phân loại thay đổi"
+    term_en: "Types of change (incremental/transformational, planned/emergent, reactive/proactive, adaptive/generative)"
+    definition: >
+      Incremental (cải tiến nhỏ, rủi ro thấp, hàng tháng) vs Transformational (toàn diện, rủi ro cao, 1-3 năm, kháng cự mạnh); Planned (có roadmap, vd ERP 18 tháng) vs Emergent (phát sinh, vd làm việc từ xa do COVID-19);
+      Reactive (phản ứng áp lực ngoài) vs Proactive (chủ động tạo lợi thế); Adaptive (dùng kinh nghiệm cũ) vs Generative/non-adaptive (phải học cách làm hoàn toàn mới, vd bán lẻ truyền thống sang e-commerce).
+    why_it_matters: "Loại thay đổi quyết định mức kháng cự, thời gian và công cụ cần dùng: thay đổi generative/transformational cần Kotter đầy đủ và quản lý tâm lý sâu, thay đổi incremental dùng Lewin hoặc nudge là đủ."
+  - term_vi: "Tỷ lệ thất bại khoảng 70%"
+    term_en: "The 70% failure claim"
+    definition: "Con số khoảng 70% sáng kiến thay đổi không đạt mục tiêu được trích rất phổ biến (Kotter, McKinsey...). Nguồn nhấn mạnh đây là ước lượng thay đổi theo nguồn và định nghĩa thất bại, một số nhà nghiên cứu còn phản biện."
+    why_it_matters: >
+      Dùng như cảnh báo mức rủi ro, không phải số liệu chính xác. Các tỷ lệ đi kèm từng nguyên nhân (55%, 60%, 65%, 30%, 50%) cũng là ước tính/minh họa; điều quan trọng cần rút ra là thứ tự nguyên nhân.
+      Mười nguyên nhân: thiếu lãnh đạo cấp cao tham gia, kế hoạch/tầm nhìn mơ hồ, thiếu tham gia của nhân viên, giao tiếp kém, kháng cự quản lý cấp trung, thiếu kỹ năng/tài nguyên,
+      không có quick wins, hệ thống không đồng bộ (vd khen thưởng đi ngược mục tiêu), đổi hướng giữa đường, tuyên bố chiến thắng quá sớm.
+  - term_vi: "Cảm giác khẩn cấp (nền tảng đang cháy)"
+    term_en: "Sense of urgency / Burning platform"
+    definition: "Nhận thức chung rằng thay đổi là cần thiết và phải bắt đầu ngay, vừa lý trí vừa cảm xúc. Urgency khác panic: phải kèm lối thoát (thay đổi là cách thoát khỏi khủng hoảng) và có thể đến từ cơ hội, không chỉ mối đe dọa."
+    why_it_matters: "Kotter cho rằng khoảng 50% thất bại do bước này làm kém. Không có urgency thì không ai hưởng ứng coalition. Urgency tốt nhất cần tạo khi còn đang thắng (bài học Kodak)."
+  - term_vi: "Liên minh dẫn dắt"
+    term_en: "Guiding coalition"
+    definition: "Nhóm khoảng 10-50 người (tùy quy mô) có đủ bốn yếu tố: quyền lực chính thức (formal authority), chuyên môn (expertise), uy tín (credibility), ảnh hưởng (influence); gồm lãnh đạo cấp cao, chuyên gia, người có ảnh hưởng phi chính thức, change champions."
+    why_it_matters: "Một lãnh đạo đơn độc không thể thay đổi tổ chức: thay đổi kéo dài, mệt mỏi, cần người che chở và nói một giọng. Quá nhỏ (3-5 người) thiếu sức mạnh, quá lớn (100+) thành ủy ban vô dụng."
+  - term_vi: "Tầm nhìn thay đổi"
+    term_en: "Vision for change"
+    definition: "Hình ảnh rõ ràng, hấp dẫn, dễ hiểu về trạng thái tương lai; là mô tả định tính (khác mục tiêu có con số). Tiêu chí tốt: dễ hiểu (nói lại được trong 1-2 phút), gợi cảm xúc, khác biệt, khả thi; thường có 2-4 cột trụ."
+    why_it_matters: "Không có vision thì giao tiếp chỉ là truyền mệnh lệnh thiếu ý nghĩa; vision là la bàn khi quyết định khó. Vision càng được nhiều người cùng xây càng dễ được chấp nhận."
+  - term_vi: "Chiến thắng nhanh"
+    term_en: "Short-term wins / Quick wins"
+    definition: "Thắng lợi nhỏ, cụ thể, đo được, liên quan trực tiếp tới vision, đạt trong 3-6 tháng đầu; nên có 3-5 trong 6 tháng đầu (hàng tháng 1-2 nhỏ, hàng quý 1 lớn), do early adopters giỏi thực hiện, công bố công khai và thưởng sớm."
+    why_it_matters: "Thay đổi mất 12-24 tháng mới thấy kết quả; không có bằng chứng sớm người hoài nghi không đổi ý, người ủng hộ mất động lực và quay về cách cũ."
+  - term_vi: "Neo vào văn hóa"
+    term_en: "Anchoring new approaches in culture"
+    definition: "Bước cuối: biến cách làm mới thành bình thường mới qua tuyển dụng theo giá trị, onboarding, đánh giá/thăng tiến/thưởng, câu chuyện hình mẫu, nghi thức (rites and rituals), cấu trúc tổ chức, kiểm tra văn hóa định kỳ."
+    why_it_matters: "Nhân viên theo điều được thưởng chứ không theo điều được nói. Nếu HR/cấu trúc giữ cũ, hành vi quay lại cũ (regression). Thay đổi mất 3-5 năm để thành 'cách chúng ta là ai'."
+  - term_vi: "Hệ điều hành kép"
+    term_en: "Dual Operating System (Kotter, Accelerate, 2014)"
+    definition: "Hai hệ thống song song: Organization/Hierarchy lo ổn định và vận hành (Stability and Delivery), Movement/Network lo thay đổi và thử nghiệm (Change and Disruption) do mạng lưới tình nguyện viên dẫn dắt."
+    why_it_matters: "Kotter nhận thấy 8 Steps tuần tự, từ trên xuống, mất 3-5 năm quá chậm khi thị trường biến động nhanh. Giải pháp: năng lực thay đổi liên tục, gắn với một cơ hội lớn, chạy đồng thời thay vì tuần tự."
+  - term_vi: "Phương trình thay đổi"
+    term_en: "Change equation (Gleicher / Beckhard-Harris)"
+    definition: "D x V x F > R: bất mãn hiện trạng x tầm nhìn x bước đầu khả thi phải lớn hơn kháng cự/chi phí thay đổi."
+    why_it_matters: >
+      Ý tưởng gốc David Gleicher (Arthur D. Little, đầu thập niên 1960), Beckhard và Harris phổ biến trong Organizational Transitions (1977). Giải quyết bài toán: có nên khởi động thay đổi lúc này không và đầu tư thêm vào yếu tố nào.
+      Dùng phép nhân vì chỉ cần một yếu tố bằng 0 thì thay đổi không xảy ra. Một số tài liệu viết nhầm dạng C > D x V x F, dạng đúng là D x V x F > R.
+  - term_vi: "Điểm nghẽn ADKAR"
+    term_en: "Barrier point"
+    definition: "Yếu tố đầu tiên theo thứ tự A-D-K-A-R có điểm thấp (trong case Mộc Hương: không vượt quá 3,0 trên thang 1-5, ngưỡng giả định). Đó là chỗ phải can thiệp trước."
+    why_it_matters: "Năm yếu tố có thứ tự phụ thuộc: không có Ability nếu chưa Knowledge; Knowledge vô ích nếu chưa Desire. Nhà quản lý thường chẩn đoán sai, thấy người ta chưa làm theo thì cứ đào tạo thêm trong khi họ chưa muốn."
+  - term_vi: "Chuyển đổi tâm lý và thay đổi"
+    term_en: "Transition vs Change (Bridges)"
+    definition: "Change là sự kiện khách quan (chuyển sang Agile); Transition là quá trình tâm lý con người phải đi qua: Ending, Neutral Zone, New Beginning."
+    why_it_matters: "Lãnh đạo thường quản lý sự kiện mà bỏ quên quá trình tâm lý. Vùng trung lập (1-2 năm) là nơi thay đổi dễ thất bại nhất nếu lãnh đạo tuyên bố xong quá sớm và rút hỗ trợ."
+  - term_vi: "Phân tích lực trường"
+    term_en: "Force Field Analysis (Lewin)"
+    definition: "Hành vi nhóm ở trạng thái cân bằng giữa lực thúc đẩy (driving) và lực kìm hãm (restraining)."
+    why_it_matters: "Chỉ tăng lực đẩy (ép, đe dọa) thì lực kìm cũng tăng, căng thẳng tăng mà kết quả ít. Hiệu quả hơn là giảm lực kìm (hiểu nỗi sợ, tháo chướng ngại)."
+  - term_vi: "Nguồn gốc kháng cự"
+    term_en: "Sources of resistance"
+    definition: "Sáu nguồn: sợ hãi (mất việc, quyền lực, không biết, mất đặc quyền), không hiểu, thiếu năng lực/kỹ năng, bất đồng giá trị với hướng đi, tính cách (thích ổn định), thói quen."
+    why_it_matters: "Mỗi nguồn cần cách xử lý khác nhau; dùng nhầm công cụ (đào tạo cho người đang sợ mất việc) chỉ tốn thời gian. Nền tảng: Kotter và Schlesinger (HBR 1979): lợi ích cục bộ, hiểu sai/thiếu tin tưởng, đánh giá khác nhau về lợi hại, khả năng chịu đựng thay đổi thấp."
+  - term_vi: "Tuân thủ khác mong muốn"
+    term_en: "Compliance vs Desire"
+    definition: "Làm vì bị yêu cầu ('nếu công ty muốn thì tôi phải làm') là compliance, không phải desire."
+    why_it_matters: "Người compliance không tham gia tích cực; điểm Desire phải đo ở động lực thật, không phải sự phục tùng."
+  - term_vi: "Mệt mỏi vì thay đổi"
+    term_en: "Change fatigue"
+    definition: "Kiệt sức khi quá nhiều sáng kiến thay đổi cùng lúc hoặc đổi hướng liên tục."
+    why_it_matters: "Phải ưu tiên và làm tuần tự; chuẩn bị giai đoạn 2 để mọi người có điều đợi mong thay vì chán nản (Sears là ví dụ thất bại do đổi hướng liên tục)."
+  - term_vi: "Người bảo trợ thay đổi"
+    term_en: "Change Sponsor"
+    definition: "Thường là CEO/giám đốc cao cấp, chịu trách nhiệm làm thay đổi thành công, cấp nguồn lực, gỡ chướng ngại; không thể ủy quyền cho người khác vì phải thể hiện cam kết."
+    why_it_matters: "Thiếu executive sponsorship là một trong những pitfall lớn nhất; nhân viên theo hành động của lãnh đạo hơn lời nói."
+
+formulas:
+  - id: "m07_beckhard_harris"
+    name_vi: "Phương trình thay đổi Beckhard-Harris (kiểm tra điều kiện thay đổi)"
+    name_en: "Beckhard-Harris Change Equation"
+    expression_latex: 'D \times V \times F > R'
+    expression_python: "D * V * F > R"
+    excel: "=B1*B2*B3>B4"
+    variables:
+      - {symbol: "D", meaning: "Dissatisfaction: mức bất mãn với hiện trạng (tỷ lệ người đồng ý với phát biểu tương ứng)", unit: "0-1"}
+      - {symbol: "V", meaning: "Vision: mức hiểu/chia sẻ tầm nhìn về trạng thái mong muốn", unit: "0-1"}
+      - {symbol: "F", meaning: "First steps: mức rõ ràng của các bước đầu khả thi (ai làm gì tuần tới)", unit: "0-1"}
+      - {symbol: "R", meaning: "Resistance: kháng cự / chi phí thay đổi (thời gian, thói quen, vị thế)", unit: "0-1"}
+    when_to_use: "Chẩn đoán nhanh trước khi khởi động thay đổi, và lặp lại sau mỗi can thiệp để xem yếu tố nào cần đầu tư thêm."
+    why_it_works: >
+      Dùng phép nhân vì ba yếu tố thúc đẩy phải đồng thời có mặt: bất mãn mà không có tầm nhìn (V=0) chỉ có than phiền; có tầm nhìn đẹp mà ai cũng hài lòng (D=0) thì không ai rời vùng an toàn;
+      có D và V nhưng không biết bước đầu (F=0) thì tê liệt. Phép cộng cho phép một yếu tố cao bù yếu tố bằng 0, điều không đúng thực tế. Do đó khi tích nhỏ, cách rẻ nhất thường là nâng yếu tố thấp nhất (V, F) hoặc giảm R, không phải tạo thêm bất mãn.
+    assumptions: ["Các điểm số chấm cùng một thang (ví dụ 0-1) và do khảo sát nhanh trong tổ chức.", "Chỉ là công cụ gợi ý chẩn đoán, không phải kết quả thành công/thất bại tính ra."]
+    pitfalls:
+      - "Điểm chủ quan; không dùng làm công cụ dự báo định lượng."
+      - "Quan hệ nhân đơn giản hóa thực tế."
+      - "Viết nhầm dạng C > D x V x F; dạng đúng là D x V x F > R."
+      - "Thấy tích nhỏ rồi thúc ép mạnh hơn thay vì giảm R (lắng nghe, đào tạo, đảm bảo quyền lợi) hoặc nâng V, F."
+    interpretation: "Tích > R: điều kiện thúc đẩy đủ; sát ngưỡng thì phải tiếp tục giảm R thay vì coi như xong. Tích << R: dừng việc mua công cụ, đầu tư vào yếu tố yếu nhất trước."
+    example:
+      inputs: {D: 0.70, V: 0.40, F: 0.30, R: 0.50}
+      steps:
+        - "D x V x F = 0,70 x 0,40 x 0,30 = 0,084"
+        - "So với R = 0,50: 0,084 < 0,50, nên nếu bắt đầu ngay thì nhiều khả năng thất bại"
+        - "Yếu tố yếu nhất là V (0,40) và F (0,30), không phải D; chọn nâng V, F và giảm R trước khi mua thêm phần mềm"
+      result: "0.084 < 0.50 (không đạt)"
+  - id: "m07_adoption_rate"
+    name_vi: "Tỷ lệ chấp nhận cách làm mới"
+    name_en: "Adoption rate"
+    expression_latex: '\text{Adoption} = \dfrac{\text{Số người dùng đúng cách mới}}{\text{Tổng số người bị ảnh hưởng}}'
+    expression_python: "users_new / users_total"
+    excel: "=B1/B2"
+    variables:
+      - {symbol: "users_new", meaning: "Số người dùng đúng quy trình/cách làm mới", unit: "người"}
+      - {symbol: "users_total", meaning: "Tổng số người chịu ảnh hưởng của thay đổi", unit: "người"}
+    when_to_use: "Chỉ số dẫn dắt (leading indicator) hằng tháng; mục tiêu tham chiếu trong nguồn là 70%+ cho adoption."
+    why_it_works: "Đo hành vi thật (người dùng đúng cách mới) chứ không đo cảm xúc hay số người đã được đào tạo, nên là bằng chứng gần nhất cho việc thay đổi đang thực sự xảy ra."
+    assumptions: ["Có tiêu chí rõ thế nào là dùng đúng quy trình mới.", "Mẫu số cố định là toàn bộ nhân sự bị ảnh hưởng."]
+    pitfalls:
+      - "Đếm số người đã đăng nhập/đào tạo thay vì dùng đúng quy trình."
+      - "Chỉ nhìn tỷ lệ tổng, bỏ sót nhóm tránh né (vd 2 người ở tháng 9 cần nói chuyện 1-1)."
+    interpretation: "Mộc Hương: 56,9% (tháng 3), 83,3% (tháng 6), 91,7% (tháng 9). Dưới 70% thì điều chỉnh giao tiếp/hỗ trợ ngay."
+    example:
+      inputs: {users_new: 66, users_total: 72}
+      steps: ["Tháng 9: 66/72 = 0,9167", "Tháng 3: 41/72 = 0,5694; tháng 6: 60/72 = 0,8333"]
+      result: "91.7% (tháng 9)"
+  - id: "m07_adkar_score"
+    name_vi: "Điểm ADKAR trung bình và điểm nghẽn"
+    name_en: "ADKAR average score and barrier point"
+    expression_latex: '\bar{S} = \dfrac{A + D + K + Ab + R}{5}, \quad \text{barrier} = \text{yếu tố đầu tiên theo thứ tự A-D-K-A-R có } S_i \le \theta'
+    expression_python: "(A + D + K + Ab + R) / 5"
+    excel: "=AVERAGE(B2:B6)"
+    variables:
+      - {symbol: "A", meaning: "Awareness: nhận thức vì sao phải thay đổi", unit: "điểm 1-5"}
+      - {symbol: "D", meaning: "Desire: mong muốn tham gia", unit: "điểm 1-5"}
+      - {symbol: "K", meaning: "Knowledge: biết cách thay đổi", unit: "điểm 1-5"}
+      - {symbol: "Ab", meaning: "Ability: làm được một cách tự tin", unit: "điểm 1-5"}
+      - {symbol: "R", meaning: "Reinforcement: tiếp tục làm theo cách mới", unit: "điểm 1-5"}
+    when_to_use: "Khảo sát định kỳ (tháng 0, 3, 9...) để biết nhóm/cá nhân kẹt ở đâu và chọn biện pháp phù hợp."
+    why_it_works: "Vì năm yếu tố phụ thuộc theo thứ tự, trung bình chỉ cho cảm nhận tổng thể; giá trị chẩn đoán nằm ở yếu tố đầu tiên dưới ngưỡng (barrier point), nơi can thiệp có hiệu quả cao nhất. Ngưỡng 3,0 trong case là giả định của doanh nghiệp."
+    assumptions: ["Thang 1-5 thống nhất, ngưỡng nghẽn do doanh nghiệp tự đặt (case dùng 3,0).", "Khảo sát ẩn danh hoặc đủ tin cậy."]
+    pitfalls:
+      - "Đào tạo kỹ thuật khi Desire đang là điểm nghẽn."
+      - "Chỉ nhìn trung bình mà bỏ qua barrier point."
+      - "Đào tạo một lần rồi coi như có Knowledge/Ability; Reinforcement cần liên tục nhiều năm."
+    interpretation: "Mộc Hương: tháng 0 trung bình 2,60, barrier = Desire (2,6) -> truyền thông lợi ích cá nhân và cam kết không phạt; tháng 3 trung bình 3,58, barrier = Ability (3,0) -> kèm cặp thực hành; tháng 9 trung bình 4,14, theo dõi Reinforcement (3,9)."
+    example:
+      inputs: {A: 3.9, D: 2.6, K: 2.2, Ab: 1.9, R: 2.4}
+      steps:
+        - "Tháng 0: (3,9 + 2,6 + 2,2 + 1,9 + 2,4)/5 = 13,0/5 = 2,60"
+        - "Theo thứ tự A-D-K-A-R: A = 3,9 > 3,0 ổn; D = 2,6 <= 3,0 nên Desire là barrier point"
+        - "Hành động: giải thích lợi ích cá nhân, cam kết dữ liệu không dùng để phạt, thưởng người dẫn đầu; chưa đào tạo kỹ thuật đại trà"
+      result: "trung bình 2.60; barrier = Desire"
+  - id: "m07_force_field_balance"
+    name_vi: "Cân bằng lực trường (Lewin)"
+    name_en: "Force field balance"
+    expression_latex: '\Delta = \sum_i d_i - \sum_j r_j'
+    expression_python: "sum(driving) - sum(restraining)"
+    excel: "=SUM(B2:B4)-SUM(D2:D4)"
+    variables:
+      - {symbol: "driving", meaning: "Danh sách cường độ lực thúc đẩy (thang 1-5)", unit: "điểm"}
+      - {symbol: "restraining", meaning: "Danh sách cường độ lực kìm hãm (thang 1-5)", unit: "điểm"}
+    when_to_use: "Thay đổi nhỏ trong nhóm nhỏ; cần quyết định nên tăng lực đẩy hay giảm lực kìm."
+    why_it_works: "Lewin quan sát hành vi nhóm ở trạng thái cân bằng giữa hai loại lực. Tăng lực đẩy kéo theo lực kìm tăng (phản kháng), còn giảm lực kìm mở đường mà ít căng thẳng; do đó nên ưu tiên giảm lực kìm."
+    assumptions: ["Điểm cường độ chủ quan, do nhóm đồng thuận.", "Các lực độc lập tương đối."]
+    pitfalls:
+      - "Chỉ tăng áp lực khi chênh lệch nhỏ."
+      - "Coi điểm là đo lường chính xác."
+    interpretation: "Chênh lệch dương lớn thì thay đổi thuận lợi; chênh lệch nhỏ thì tập trung giảm lực kìm quan trọng nhất."
+    example:
+      inputs: {driving: [4, 5, 3], restraining: [4, 3, 3]}
+      steps:
+        - "Tổng đẩy = 4 + 5 + 3 = 12; tổng kìm = 4 + 3 + 3 = 10; chênh lệch = +2 (không đáng kể)"
+        - "Thay vì tăng áp lực (tổng đẩy lên 15), kèm cặp người lớn tuổi (4 -> 2) và cam kết không dùng dữ liệu để phạt (3 -> 1): tổng kìm = 2 + 1 + 3 = 6"
+        - "Chênh lệch mới = 12 - 6 = +6, lớn hơn mà ít căng thẳng hơn"
+      result: "+2 ban đầu; +6 sau khi giảm lực kìm"
+  - id: "m07_kotter_scorecard"
+    name_vi: "Bảng điểm Kotter (đánh giá chủ quan 8 bước)"
+    name_en: "Kotter scorecard"
+    expression_latex: 'S = \sum_{k=1}^{8} s_k, \; s_k \in \{0,1,2\}'
+    expression_python: "sum(scores)"
+    excel: "=SUM(B2:I2)"
+    variables:
+      - {symbol: "scores", meaning: "8 điểm theo từng bước (0 = thiếu/không có, 1 = có nhưng yếu/muộn, 2 = làm tốt)", unit: "điểm 0-2"}
+    when_to_use: "So sánh nhanh mức đầy đủ của các nỗ lực thay đổi (đang chạy hoặc case đã xảy ra) và phát hiện bước bị bỏ qua."
+    why_it_works: "Logic Kotter: chuỗi 8 bước có quan hệ nhân quả nên bỏ hoặc làm sơ sài một bước làm hỏng cả chuỗi; điểm 0 ở bất kỳ bước nào là cờ đỏ quan trọng hơn tổng điểm."
+    assumptions: ["Điểm do người biên soạn chấm chủ quan, không phải điểm chính thức."]
+    pitfalls:
+      - "Chỉ nhìn tổng điểm mà không nhìn các bước 0 điểm (Nokia có urgency 2 nhưng tổng 4/16)."
+      - "Chấm các case quốc tế dựa trên dữ liệu chưa kiểm chứng."
+    interpretation: "Trong nguồn: case thành công 14-15/16 không có bước 0; case thất bại 2-4/16, đều có ít nhất 5 bước 0 điểm."
+    example:
+      inputs: {scores: [2, 1, 1, 2, 2, 2, 2, 2]}
+      steps: ["IBM: 2+1+1+2+2+2+2+2 = 14", "Kodak [0,1,1,0,0,1,0,0] = 3; Nokia [2,0,1,1,0,0,0,0] = 4"]
+      result: "IBM 14/16; Kodak 3/16; Nokia 4/16"
+  - id: "m07_waste_saving"
+    name_vi: "Tiết kiệm hao hụt nguyên vật liệu hằng tháng"
+    name_en: "Monthly material waste saving"
+    expression_latex: 'S_w = \text{Rev} \times c \times (w_0 - w_1)'
+    expression_python: "rev * cogs_ratio * (w0 - w1)"
+    excel: "=B1*B2*(B3-B4)"
+    variables:
+      - {symbol: "rev", meaning: "Doanh thu tháng", unit: "triệu VNĐ"}
+      - {symbol: "cogs_ratio", meaning: "Tỷ lệ giá vốn NVL trên doanh thu", unit: "tỷ lệ"}
+      - {symbol: "w0", meaning: "Tỷ lệ hao hụt/thất thoát trước thay đổi trên giá trị NVL", unit: "tỷ lệ"}
+      - {symbol: "w1", meaning: "Tỷ lệ hao hụt mục tiêu sau thay đổi", unit: "tỷ lệ"}
+    when_to_use: "Lượng hóa lợi ích của số hóa kho/định mức ở quán ăn, tiệm bánh, bán lẻ."
+    why_it_works: "Hao hụt là chi phí chìm không ai nhìn thấy; quy đổi thành VNĐ/tháng cho chủ thấy rõ cái giá của việc không thay đổi, dùng làm số liệu urgency (Kotter bước 1) và đầu vào ROI."
+    assumptions: ["Tỷ lệ hao hụt trước/sau là ước tính, mục tiêu 4% là giả định của case."]
+    pitfalls:
+      - "Tính lợi ích ở trạng thái lý tưởng ngay từ tháng đầu (xem payback có độ trễ)."
+    interpretation: "Mộc Hương: hao hụt hiện tại 68,40 triệu/tháng, mục tiêu 36,48 triệu, tiết kiệm 31,92 triệu/tháng. Dữ liệu minh họa."
+    example:
+      inputs: {rev: 2400, cogs_ratio: 0.38, w0: 0.075, w1: 0.04}
+      steps: ["Giá vốn = 2.400 x 0,38 = 912 triệu", "Hao hụt trước = 912 x 7,5% = 68,40; sau = 912 x 4% = 36,48", "Tiết kiệm = 68,40 - 36,48 = 31,92 triệu/tháng"]
+      result: "31.92 triệu VNĐ/tháng"
+  - id: "m07_manual_time_saving"
+    name_vi: "Tiết kiệm thời gian báo cáo thủ công"
+    name_en: "Manual reporting time saving"
+    expression_latex: 'S_t = n \times h \times 4{,}33 \times c_h \times \rho'
+    expression_python: "n * h * 4.33 * cost_per_hour * reduction / 1e6"
+    excel: "=B1*B2*4.33*B3*B4/1000000"
+    variables:
+      - {symbol: "n", meaning: "Số người làm báo cáo thủ công", unit: "người"}
+      - {symbol: "h", meaning: "Số giờ mỗi người mỗi tuần", unit: "giờ/tuần"}
+      - {symbol: "cost_per_hour", meaning: "Chi phí giờ làm (giả định)", unit: "VNĐ/giờ"}
+      - {symbol: "reduction", meaning: "Tỷ lệ thời gian giảm được", unit: "tỷ lệ"}
+    when_to_use: "Lượng hóa lợi ích thời gian khi số hóa quy trình."
+    why_it_works: "Quy giờ công thành tiền (4,33 tuần/tháng), cho thấy lợi ích gián tiếp ngoài hao hụt; nhưng đây là thời gian giải phóng, không phải tiền mặt tiết kiệm trừ khi chuyển thành việc có giá trị."
+    assumptions: ["Chi phí giờ 45.000 VNĐ/giờ và giảm 75% là giả định minh họa của case."]
+    pitfalls: ["Tính toàn bộ giờ giải phóng như tiền mặt thực thu."]
+    interpretation: "Mộc Hương: 207,84 giờ/tháng, tương đương 9,35 triệu; giảm 75% tiết kiệm 7,01 triệu/tháng."
+    example:
+      inputs: {n: 6, h: 8, cost_per_hour: 45000, reduction: 0.75}
+      steps: ["Giờ = 6 x 8 x 4,33 = 207,84 giờ/tháng", "Chi phí = 207,84 x 45.000 = 9,35 triệu", "Giảm 75% = 7,01 triệu/tháng"]
+      result: "7.01 triệu VNĐ/tháng"
+  - id: "m07_change_net_benefit"
+    name_vi: "Lợi ích ròng ổn định hằng tháng của thay đổi"
+    name_en: "Steady-state monthly net benefit"
+    expression_latex: 'B_{net} = S_w + S_t - C_{run}'
+    expression_python: "waste_saving + time_saving - running_cost"
+    excel: "=B1+B2-B3"
+    variables:
+      - {symbol: "waste_saving", meaning: "Tiết kiệm hao hụt", unit: "triệu VNĐ/tháng"}
+      - {symbol: "time_saving", meaning: "Tiết kiệm thời gian", unit: "triệu VNĐ/tháng"}
+      - {symbol: "running_cost", meaning: "Chi phí vận hành mới (phí phần mềm)", unit: "triệu VNĐ/tháng"}
+    when_to_use: "Tính lợi ích ròng khi đã ổn định để đưa vào bảng hoàn vốn."
+    why_it_works: "Lợi ích ròng phải trừ chi phí vận hành phát sinh vĩnh viễn, không chỉ cộng lợi ích."
+    assumptions: ["Trạng thái ổn định đạt 100% (từ tháng 7 trong case)."]
+    pitfalls: ["Quên chi phí duy trì; dùng lợi ích ròng này để chia cho chi phí một lần thành payback ngây thơ."]
+    interpretation: "Mộc Hương: 31,92 + 7,01 - 2,7 = 36,23 triệu/tháng (khoảng 434,8 triệu/năm). Giả định minh họa."
+    example:
+      inputs: {waste_saving: 31.92, time_saving: 7.01, running_cost: 2.7}
+      steps: ["Tổng lợi ích = 31,92 + 7,01 = 38,93", "Phí phần mềm = 450.000 x 6 = 2,7 triệu/tháng", "Ròng = 38,93 - 2,7 = 36,23; năm = 36,23 x 12 = 434,8"]
+      result: "36.23 triệu VNĐ/tháng"
+  - id: "m07_change_onetime_cost"
+    name_vi: "Chi phí một lần của dự án thay đổi"
+    name_en: "One-time change cost"
+    expression_latex: 'C_0 = \sum_i c_i'
+    expression_python: "sum(items)"
+    excel: "=SUM(B2:B6)"
+    variables:
+      - {symbol: "items", meaning: "Danh sách hạng mục chi phí một lần (thiết bị, giờ công đào tạo, giảng viên, phụ cấp champion, tư vấn)", unit: "triệu VNĐ"}
+    when_to_use: "Lập ngân sách thay đổi, tránh chỉ tính giá phần mềm."
+    why_it_works: "Chi phí con người (giờ công đào tạo, phụ cấp champion) thường bị bỏ sót nhưng chiếm phần đáng kể; nguồn có checklist dự trù cả công cụ, đào tạo, thời gian nhân viên và người kèm cặp."
+    assumptions: ["Giảng viên 20 và tư vấn 30 triệu là giả định; giờ công đào tạo 60.000 VNĐ/giờ."]
+    pitfalls: ["Bỏ sót giờ công đào tạo và chi phí kèm cặp."]
+    interpretation: "Mộc Hương: 84,00 + 34,56 + 20,00 + 54,00 + 30,00 = 222,56 triệu."
+    example:
+      inputs: {items: [84.0, 34.56, 20.0, 54.0, 30.0]}
+      steps: ["Thiết bị = 6 x 14 = 84", "Giờ công đào tạo = 72 x 8 x 60.000 = 34,56", "Phụ cấp champion = 6 x 1,5 x 6 = 54", "Tổng = 222,56"]
+      result: "222.56 triệu VNĐ"
+  - id: "m07_change_payback"
+    name_vi: "Hoàn vốn thay đổi theo đường cong chấp nhận"
+    name_en: "Change payback with adoption ramp"
+    expression_latex: '\text{Payback} = \min\{m : \sum_{k=1}^{m} a_k B - c_{run}(m-1) - C_0 \ge 0\}'
+    expression_python: "next((m for m in range(1, 61) if sum(min(1, max(0, (k - 3) * 0.25)) * B for k in range(1, m + 1)) - run * max(m - 1, 0) - C0 >= 0), None)"
+    excel: "Dùng bảng lũy kế theo tháng, MATCH(TRUE, cumulative>=0, 0)"
+    variables:
+      - {symbol: "B", meaning: "Lợi ích gộp hằng tháng khi ổn định (trước chi phí vận hành)", unit: "triệu VNĐ/tháng"}
+      - {symbol: "run", meaning: "Chi phí vận hành hằng tháng, phát sinh từ tháng 2", unit: "triệu VNĐ/tháng"}
+      - {symbol: "C0", meaning: "Chi phí một lần", unit: "triệu VNĐ"}
+      - {symbol: "a_k", meaning: "Tỷ lệ lợi ích đạt được tháng k: tháng 1-3 = 0, tháng 4 = 25%, tháng 5 = 50%, tháng 6 = 75%, từ tháng 7 = 100%", unit: "tỷ lệ"}
+    when_to_use: "Ra quyết định đầu tư vào thay đổi; trình bày với chủ/ngân hàng thời gian hoàn vốn thực tế."
+    why_it_works: "Lợi ích chỉ xuất hiện khi con người dùng cách mới; vì adoption có độ trễ nên hoàn vốn thực kéo dài hơn ước tính ngây thơ. Tốc độ chấp nhận của con người, không phải giá phần mềm, quyết định thời gian hoàn vốn."
+    assumptions: ["Đường cong adoption và chi phí vận hành bắt đầu tháng 2 là giả định của case; chi phí một lần tại thời điểm 0; không chiết khấu."]
+    pitfalls:
+      - "Ước tính ngây thơ C0 / lợi ích ròng (222,56/36,23 ra khoảng 6,1 tháng) thấp hơn thực tế gần một nửa."
+    interpretation: "Mộc Hương: lũy kế tháng 6 khoảng -177,7; tháng 12 khoảng +39,7; hoàn vốn tháng 11; tháng 24 khoảng +474,6 (nguồn ghi 474,6, tính lại ra 474,56). Mỗi tháng chậm chấp nhận mất khoảng 36 triệu."
+    example:
+      inputs: {B: 38.9346, run: 2.7, C0: 222.56}
+      steps:
+        - "Tháng 6: lợi ích = (0,25 + 0,5 + 0,75) x 38,93 = 58,40; chi phí vận hành tháng 2-6 = 13,5; lũy kế = 58,40 - 13,5 - 222,56 = -177,66"
+        - "Tháng 10 = -32,72; tháng 11 = +3,51 (>= 0) nên hoàn vốn tháng 11"
+        - "Tháng 12 = +39,75; tháng 24 = +474,56"
+      result: "tháng 11"
+  - id: "m07_comm_repetition"
+    name_vi: "Quy tắc lặp thông điệp 7-10 lần"
+    name_en: "7-10 repetitions rule of thumb"
+    expression_latex: 'n_{msg} \ge 7\text{-}10'
+    expression_python: "n_messages >= 7"
+    variables:
+      - {symbol: "n_messages", meaning: "Số lần thông điệp được nghe qua các kênh khác nhau", unit: "lần"}
+    when_to_use: "Lập kế hoạch giao tiếp thay đổi: mỗi thông điệp cốt lõi nên được lặp qua nhiều kênh."
+    why_it_works: "Lần 1-3 chưa nghe, lần 4-6 nghe nhưng chưa tin, lần 7-10 bắt đầu hành động; mỗi lần nên đổi phương thức (town hall, video, email, quản lý kể chuyện, khách hàng nói). Là quy tắc kinh nghiệm của giới tư vấn, không phải hằng số khoa học."
+    assumptions: ["Quy tắc ngón tay cái, không chứng minh khoa học."]
+    pitfalls: ["Giao tiếp một lần rồi thôi; chỉ một kênh; trích con số 93% phi lời nói của Mehrabian như quy luật chung (sai, chỉ áp dụng cho giao tiếp cảm xúc/thái độ)."]
+    interpretation: "Dưới 7 lần thì chưa đủ để kỳ vọng hành động; nên đo reach (mục tiêu 90%+)."
+    example:
+      inputs: {n_messages: 8}
+      steps: ["8 lần qua town hall, video, email, quản lý kể chuyện, khách hàng... >= 7"]
+      result: "True"
+
+frameworks:
+  - id: "m07_kotter_8_steps"
+    name_vi: "Kotter 8 bước dẫn dắt thay đổi"
+    name_en: "Kotter's 8-Step Process for Leading Change"
+    origin: >
+      John P. Kotter, bài HBR 1995 'Leading Change: Why Transformation Efforts Fail' và sách Leading Change (1996), rút ra từ nghiên cứu hơn 100 công ty. Ra đời vì các nỗ lực thất bại thường do bỏ qua hoặc làm sơ sài một bước;
+      chuỗi 8 bước có logic nhân quả. Là mô hình tuyến tính hóa để dễ học, thực tế phải lặp và chạy song song một số bước.
+    components:
+      - "Giai đoạn A, tạo môi trường (muốn thay đổi): 1 Urgency, 2 Coalition, 3 Vision"
+      - "Giai đoạn B, huy động và trao khả năng (có thể thay đổi): 4 Communicate, 5 Remove obstacles, 6 Short-term wins"
+      - "Giai đoạn C, triển khai và duy trì (thay đổi ở lại): 7 Don't declare victory too soon, 8 Anchor in culture"
+    when_to_use: "Transformation lớn cần lộ trình tổng thể, có thứ tự và dấu hiệu thành công từng bước; phù hợp doanh nghiệp lớn, SME vận dụng rút gọn."
+    how_to_apply:
+      - "B1 Urgency: phân tích bên ngoài (PESTLE, Porter, SWOT), nói chuyện với khách hàng/nhân viên (vd gọi 20 khách hàng đã rời đi), chia sẻ dữ liệu công khai/dashboard, nêu cả cơ hội. Thành công: 75%+ quản lý cấp trung trở lên công khai nói cần thay đổi."
+      - "B2 Coalition: chọn cân bằng senior leaders, SME, influencers, champions; xây tin tưởng cá nhân; thống nhất tình huống, đích đến, lợi ích; nói một giọng (talking points); trao quyền; họp ngắn thường xuyên (hàng tuần lúc đầu). Thành công: 10-20% lãnh đạo hoặc 15-20 người."
+      - "B3 Vision: xác định giá trị lõi, 2-4 cột trụ, viết vision 1-2 đoạn ngắn mô tả hình ảnh, viết kịch bản một ngày của nhân viên trong tương lai, dùng câu chuyện/hình ảnh, thử nghiệm phản hồi. Thành công: 80%+ nhân viên diễn đạt lại bằng lời của họ."
+      - "B4 Communicate: lập kế hoạch giao tiếp (ai, cái gì, khi nào, ở đâu, bằng cách nào), lặp 7-10 lần đổi kênh, dùng nhiều kênh, kể chuyện cụ thể, nghe và hồi đáp (kể cả nói 'tôi không biết, sẽ tìm hiểu'), làm gương bằng hành động. Thành công: 75%+ nói lại chính xác tầm nhìn sau 1-2 tháng."
+      - "B5 Remove obstacles: hỏi nhân viên điều gì ngăn họ; xử lý con người kháng cự (coaching, mentor, chuyển vai, tế nhị mời rời đi), đơn giản hóa quy trình, nâng công nghệ, sửa cấu trúc và hệ thống thưởng phạt; lập Transformation Office 3-10 người; xử lý chướng ngại báo cáo trong 1-2 tuần và báo lại."
+      - "B6 Quick wins: chọn win đạt 3-6 tháng, đo được, liên quan vision; lập kế hoạch cụ thể (mục tiêu, thời hạn, đội 5-6 người giỏi và tự nguyện, người chịu trách nhiệm); cho phép làm 'ngoài quy trình'; công bố công khai; thưởng sớm. Thành công: 3-5 wins trong 6 tháng."
+      - "B7 Không tuyên bố thắng sớm: duy trì coalition và transformation team, lập kế hoạch Năm 1 quick wins, Năm 2 mid-term wins, Năm 3+ transformation hoàn chỉnh; giao tiếp/khen thưởng liên tục (bản tin tháng, review quý, kỷ niệm năm); chuẩn bị giai đoạn 2; liên tục dỡ chướng ngại mới."
+      - "B8 Anchor: tuyển dụng theo giá trị, onboarding, đánh giá/thăng tiến/thưởng theo giá trị mới, xử lý lỗi theo hướng học hỏi, kể câu chuyện hero và cautionary tale, nghi thức mới, cấu trúc phản ánh giá trị (matrix), culture assessment hằng năm."
+    how_to_read_results: "Chấm từng bước 0-2 (bảng điểm Kotter): bước nào điểm 0 là điểm nghẽn của toàn chuỗi; case thành công không có bước 0."
+    pitfalls:
+      - "Urgency quá cao gây hoảng loạn, chỉ nói đe dọa không nói cơ hội, chỉ lãnh đạo cấp cao nói, dữ liệu cũ, urgency mất sau 2-3 tháng."
+      - "Coalition chỉ gồm người đã đồng ý, quá nhỏ/quá lớn, CEO rút khỏi sau vài tháng."
+      - "Vision mơ hồ, quá kỹ thuật, không khớp giá trị, áp đặt từ trên, quá hứa hẹn; vision có quá nhiều con số."
+      - "Giao tiếp một lần, một chiều, nói một đằng làm một nẻo."
+      - "Loại bỏ chướng ngại quá nhanh/không công bằng gây sợ hãi, hoặc bỏ cả quy trình cũ cùng lúc gây hỗn loạn."
+      - "Quick win quá lớn, quá nhỏ, không công bố, chỉ ở một phòng ban."
+      - "Tuyên bố chiến thắng sau 12-18 tháng, rút nhân lực; không cập nhật HR hay cấu trúc."
+    example: "Mộc Hương (case giả định): 12 tháng, B1 tháng 1 (số liệu hao hụt 68,4 triệu/tháng), B2 coalition 8 người gồm 2 champion trẻ, B3 vision một câu, B6 thí điểm tiệm Hải Châu 6 tuần, B8 đưa độ chính xác tồn kho vào thưởng."
+  - id: "m07_kotter_accelerators"
+    name_vi: "Kotter 8 Accelerators và Hệ điều hành kép"
+    name_en: "Kotter's 8 Accelerators and Dual Operating System"
+    origin: "Kotter, Accelerate (2014). Phát hiện công ty vẫn thất bại dù theo đúng 8 Steps vì tốc độ: 8 Steps mất 3-5 năm, thị trường đã đổi nhiều lần. Chuyển từ dự án thay đổi sang năng lực thay đổi liên tục."
+    components:
+      - "Bốn điều chỉnh so với 8 Steps: chạy liên tục và đồng thời; do mạng lưới tình nguyện viên dẫn dắt; gắn với một cơ hội lớn; vận hành song song với hệ thống quản trị hiện có"
+      - "1 Urgency quanh big opportunity; 2 Guiding coalition; 3 Strategic vision và initiatives; 4 Enlist a volunteer army; 5 Enable action by removing barriers; 6 Generate and celebrate short-term wins; 7 Sustain acceleration; 8 Institute change"
+      - "Mỗi accelerator có hai vế: Organization/Hierarchy (kế hoạch, chính thức, từ trên xuống) và Movement/Network (thử nghiệm nhanh, phi chính thức, người tình nguyện từ mọi cấp)"
+    when_to_use: "Môi trường biến động nhanh, thị trường bị disruption; doanh nghiệp lớn cần vừa ổn định vận hành vừa tạo thay đổi."
+    how_to_apply:
+      - "Giữ vận hành hằng ngày ổn định (Organization) tạo dòng tiền."
+      - "Lập nhóm Movement tình nguyện chạy thử nghiệm nhanh quanh một cơ hội lớn, ngân sách và cách làm riêng."
+      - "Nhân rộng thắng lợi từ Movement vào Organization."
+    how_to_read_results: "Có hai nhịp: Organization tiếp tục tạo giá trị hiện tại, Movement tạo năng lực tương lai; ví dụ minh họa Microsoft thời Nadella (cách diễn giải của biên soạn, không do Kotter xác nhận): Windows/Office vs Azure/AI."
+    pitfalls: ["Để mảng cũ quyết định số phận mảng mới (Kodak)."]
+    example: "SME: giữ 4 chi nhánh vận hành như cũ, giao 1-2 người nhiệt tình thử cách mới ở 1 trong 5 chi nhánh rồi nhân rộng."
+  - id: "m07_lewin_three_stage"
+    name_vi: "Mô hình 3 giai đoạn của Lewin (Unfreeze-Change-Refreeze) và Force Field Analysis"
+    name_en: "Lewin's 3-Stage Model and Force Field Analysis"
+    origin: "Kurt Lewin, 1947, Frontiers in Group Dynamics. Ẩn dụ khối băng: muốn đổi hình dạng thì làm tan chảy (Unfreeze), nặn lại (Change), rồi đóng băng ở hình mới (Refreeze) để khỏi trở về hình cũ. Hạn chế: nhiều học giả hiện đại cho refreeze quá tĩnh, nên hiểu là neo vững hành vi mới."
+    components:
+      - "Unfreeze: tạo discomfort với cách cũ, chia sẻ tầm nhìn cái mới, xây tin tưởng để người ta thấy an toàn khi thay đổi"
+      - "Change: đào tạo, coaching/mentoring, thực hành thử-sai, vòng phản hồi; hỗn loạn và lỗi là bình thường"
+      - "Refreeze: cập nhật HR, cấu trúc, câu chuyện và nghi thức, tuyển dụng; cách cũ không còn được chấp nhận"
+      - "Force Field Analysis: lập bảng lực thúc đẩy và lực kìm hãm (cường độ 1-5), cộng tổng, giảm lực kìm"
+    when_to_use: "Thay đổi nhỏ-vừa, focused trong nhóm nhỏ; đơn giản, dễ nhớ."
+    how_to_apply:
+      - "Liệt kê lực thúc đẩy và lực kìm với cường độ 1-5."
+      - "Tính tổng hai phía (công thức m07_force_field_balance)."
+      - "Ưu tiên hành động làm giảm lực kìm lớn nhất thay vì tăng áp lực."
+    how_to_read_results: "Chênh lệch nhỏ (12 vs 10) nghĩa là thay đổi dễ sa lầy; giảm lực kìm xuống 6 cho chênh lệch lớn mà ít căng thẳng."
+    pitfalls: ["Chỉ tăng áp lực đẩy; hiểu refreeze là đóng băng mãi mãi."]
+    example: "Triển khai POS: đẩy 12 (khách chờ lâu 4, kiểm soát hao hụt 5, đối thủ dùng POS 3) vs kìm 10 (người lớn tuổi ngại phần mềm 4, sợ bị soi số liệu 3, chi phí đào tạo 3)."
+  - id: "m07_adkar"
+    name_vi: "Mô hình ADKAR (Prosci)"
+    name_en: "ADKAR Model"
+    origin: "Jeff Hiatt (Prosci), giới thiệu cuối thập niên 1990, phổ biến qua sách 2006. Ra đời vì nhà quản lý thường chẩn đoán sai chỗ kẹt (đào tạo thêm trong khi người ta chưa muốn); 5 yếu tố có thứ tự phụ thuộc nên yếu tố đầu tiên điểm thấp là barrier point cần can thiệp trước."
+    components:
+      - "A Awareness: biết vì sao phải thay đổi. Hỗ trợ: chia sẻ dữ liệu, câu chuyện khách hàng, lắng nghe lo lắng."
+      - "D Desire: muốn tham gia (lợi ích cá nhân, vision, quyền lựa chọn, coalition). Bẫy: compliance nhầm với desire."
+      - "K Knowledge: biết làm thế nào (đào tạo, coaching, tài liệu, thực hành an toàn). Bẫy: đào tạo một lần."
+      - "A Ability: làm được tự tin (thực hành có kèm cặp, feedback, công cụ, thời gian). Bẫy: biết cách là làm được."
+      - "R Reinforcement: duy trì (khen thưởng, hệ thống, tăng cường liên tục 3-5 năm, xử lý người quay lại cũ)"
+      - "ADKAR Assessment: 5 câu hỏi (hiểu vì sao phải đổi? muốn tham gia? biết cách? làm được tự tin? sẽ tiếp tục?); trả lời Không ở câu nào là chỗ cần hỗ trợ"
+    when_to_use: "Chẩn đoán từng nhân viên/nhóm kẹt ở đâu, chọn đúng biện pháp; dùng cho bất kỳ thay đổi nào."
+    how_to_apply:
+      - "Khảo sát 5 yếu tố thang 1-5 (hoặc 5 câu hỏi ADKAR Assessment) ở nhiều thời điểm (tháng 0, 3, 9)."
+      - "Tính trung bình và tìm barrier point (yếu tố đầu tiên theo thứ tự có điểm <= ngưỡng)."
+      - "Chọn can thiệp tương ứng: Awareness (dữ liệu, câu chuyện), Desire (lợi ích cá nhân, cam kết không phạt), Knowledge (đào tạo), Ability (kèm cặp thực hành), Reinforcement (KPI, thưởng, onboarding)."
+      - "Đo lại và theo dõi adoption rate song song."
+    how_to_read_results: "Trung bình tăng (2,60 -> 3,58 -> 4,14) cho thấy xu hướng; barrier point chuyển dịch (Desire -> Ability -> Reinforcement) cho biết giai đoạn can thiệp tiếp theo."
+    pitfalls:
+      - "Đào tạo kỹ thuật khi Desire đang là barrier."
+      - "Coi compliance là desire."
+      - "Dừng tăng cường sau 6 tháng."
+    example: "Mộc Hương tháng 0: Awareness 3,9 khá ổn nhưng Desire 2,6 là điểm nghẽn; tháng 3 barrier chuyển sang Ability (3,0)."
+  - id: "m07_mckinsey_7s"
+    name_vi: "Khung 7-S của McKinsey"
+    name_en: "McKinsey 7-S Framework"
+    origin: "Tom Peters, Robert Waterman, Richard Pascale, Anthony Athos (McKinsey, đầu thập niên 1980; phổ biến qua In Search of Excellence, 1982). Ra đời vì công ty hay chỉ chỉnh Strategy và Structure (yếu tố cứng) rồi thất vọng vì các yếu tố mềm không đổi theo. Nguồn lưu ý 7-S không phải mô hình quản lý thay đổi mà là công cụ kiểm tra tính đồng bộ (alignment)."
+    components:
+      - "Strategy (chiến lược), Structure (cấu trúc), Systems (hệ thống quy trình/công nghệ/HR)"
+      - "Shared Values (giá trị chia sẻ, trái tim), Style (phong cách lãnh đạo), Staff (nhân sự), Skills (kỹ năng/năng lực nổi trội)"
+    when_to_use: "Khi đổi chiến lược và cần kiểm tra mọi thành phần có cùng chiều không (ví dụ từ chi phí thấp sang đổi mới); phù hợp doanh nghiệp lớn."
+    how_to_apply:
+      - "Lập bảng 7 hàng, cột Cũ và Mới."
+      - "Rà soát chỗ lệch: nếu chỉ đổi Strategy mà Systems (phê duyệt 3 tháng), Shared values (khen thưởng chi phí thấp), Style (command and control) giữ nguyên thì thay đổi thất bại."
+      - "Lập hành động đồng bộ cho cả 7 yếu tố."
+    how_to_read_results: "Mỗi hàng không đồng bộ là một nguồn kháng cự hệ thống; ví dụ Sears: Strategy một đằng, Structure/Systems một nẻo."
+    pitfalls: ["Chỉ đổi Strategy mà bỏ 6 S còn lại."]
+    example: "Chi phí thấp -> đổi mới: silo -> cross-functional teams; phê duyệt 3 tháng -> Agile; 'tuân thủ, sợ lỗi' -> 'đổi mới, học từ lỗi'; tuyển 'growth mindset'."
+  - id: "m07_bridges_transition"
+    name_vi: "Mô hình chuyển tiếp của Bridges"
+    name_en: "Bridges' Transition Model (1991)"
+    origin: "William Bridges (Managing Transitions, 1991; Transitions, 1980). Phân biệt Change (sự kiện) và Transition (quá trình tâm lý)."
+    components:
+      - "Ending/Losing/Letting Go: công nhận nỗi buồn, mất mát, lắng nghe; đừng nói 'đây là cơ hội' khi người ta đang mất mát"
+      - "Neutral Zone: khó nhất, cách cũ bỏ rồi cách mới chưa ổn định; giao tiếp liên tục, hỗ trợ (coaching, đào tạo), tạo anchor points ổn định, tạo quick wins; kéo dài 1-2 năm, không tuyên bố xong sau 3-6 tháng"
+      - "New Beginning: ổn định, 'tôi làm được'; khen thưởng, chia sẻ câu chuyện thành công, tiếp tục học"
+    when_to_use: "Hiểu hành trình tâm lý khi thay đổi lớn; kiên nhẫn đúng cách trong giai đoạn giữa chừng."
+    how_to_apply:
+      - "Nhận diện nhóm đang ở giai đoạn nào."
+      - "Ending: lắng nghe, công nhận mất mát."
+      - "Neutral Zone: cập nhật tiến độ hằng tuần, anchor points, quick wins."
+      - "New Beginning: khen thưởng và học tiếp."
+    how_to_read_results: "Hỗn loạn và muốn quay lại cách cũ ở Neutral Zone là bình thường, không phải thất bại; rút hỗ trợ lúc này mới là thất bại."
+    pitfalls: ["Phủ nhận mất mát; tuyên bố xong Neutral Zone quá sớm; bỏ rơi mọi người ở giữa chừng."]
+    example: "LEGO: bỏ mảng cũ khi mảng mới chưa ổn định là đi qua Neutral Zone (nguồn gắn Bridges với giai đoạn này)."
+  - id: "m07_kubler_ross_curve"
+    name_vi: "Đường cong thay đổi Kübler-Ross"
+    name_en: "Kübler-Ross Change Curve"
+    origin: "Elisabeth Kübler-Ross, On Death and Dying (1969), mô tả 5 giai đoạn người bệnh đối diện mất mát; giới change management mượn vì nhân viên đối diện thay đổi lớn cũng có cảm xúc mất mát. Lưu ý của nguồn: các giai đoạn không nhất thiết tuần tự, không ai cũng đi qua đủ 5, mô hình gốc chưa kiểm chứng riêng cho doanh nghiệp."
+    components:
+      - "Denial -> chia sẻ dữ liệu, lý do"
+      - "Anger -> lắng nghe, không phản đối"
+      - "Bargaining -> linh hoạt thương lượng (làm từng bước, chậm hơn)"
+      - "Depression -> đừng để ở lâu, tạo quick wins nâng lên"
+      - "Acceptance -> ghi nhận, khen thưởng"
+    when_to_use: "Giúp lãnh đạo không diễn giải sai phản ứng: tức giận hay phủ nhận không có nghĩa nhân viên xấu."
+    how_to_apply: ["Nhận diện giai đoạn cảm xúc của từng người/nhóm.", "Chọn phản hồi tương ứng như danh sách trên."]
+    how_to_read_results: "Dùng làm lăng kính chẩn đoán cảm xúc, không phải mô hình dự báo."
+    pitfalls: ["Coi là chuỗi cứng tuần tự; coi phản ứng cảm xúc là thái độ xấu."]
+    example: "CEO nghe 'tôi ghét thay đổi này' từ trưởng ca: hiểu là giai đoạn Anger, lắng nghe trước khi giải thích."
+  - id: "m07_nudge_switch"
+    name_vi: "Nudge Theory và Switch Framework"
+    name_en: "Nudge Theory and Switch Framework"
+    origin: "Nudge (Richard Thaler và Cass Sunstein, 2008): con người không hoàn toàn lý trí, có thể đẩy nhẹ thay vì thuyết phục logic. Switch (Chip Heath và Dan Heath, 2010): Switch = Rider + Elephant + Path."
+    components:
+      - "Nudge: Default bias (đặt cách mới làm mặc định), Social proof ('80% team đã chuyển sang Agile'), Framing (cùng một sự thật, nói theo hướng tích cực: giảm chi phí IT 30% thay vì mất 10 triệu USD), Commitment and Consistency (xin cam kết nhỏ)"
+      - "Direct the Rider: lý trí cần hướng dẫn rõ từng bước"
+      - "Motivate the Elephant: cảm xúc mạnh hơn lý trí, phải cho thấy lợi ích cho họ"
+      - "Shape the Path: sửa môi trường để dễ hơn (dỡ chướng ngại, quick wins, nghi thức)"
+    when_to_use: "Thiết kế môi trường làm thay đổi dễ hơn, giải pháp nhỏ chi phí thấp."
+    how_to_apply: ["Đặt cách mới làm mặc định (vd mọi dự án mới tự dùng công cụ mới).", "Công bố tỷ lệ team đã chuyển (social proof).", "Cho Rider kế hoạch từng bước, cho Elephant lý do cảm xúc, sửa Path bằng cách đơn giản hóa form."]
+    how_to_read_results: "Nếu người hiểu nhưng không làm, thiếu Elephant (Desire) hoặc Path (môi trường), không phải thiếu Rider."
+    pitfalls: ["Chỉ dùng logic và dữ liệu; dùng nudge để thao túng thay vì giúp người ta làm điều họ cũng muốn."]
+    example: "Form nhập kho Mộc Hương rút từ 9 xuống 3 trường là Shape the Path."
+  - id: "m07_resistance_strategies"
+    name_vi: "Sáu cách tiếp cận xử lý kháng cự (Kotter và Schlesinger)"
+    name_en: "Kotter-Schlesinger six approaches to resistance"
+    origin: "Kotter và Leonard Schlesinger, Choosing Strategies for Change, HBR 1979."
+    components:
+      - "Giáo dục và giao tiếp: khi thiếu/sai thông tin; thuyết phục bền vững nhưng tốn thời gian"
+      - "Tham gia và cùng làm: người kháng cự có chuyên môn; tạo cam kết nhưng mất thời gian, có thể lệch hướng"
+      - "Hỗ trợ và tạo điều kiện: kháng cự vì sợ/lo/thiếu kỹ năng; giải quyết gốc rễ nhưng tốn tiền, không đảm bảo"
+      - "Thương lượng và đồng thuận: người mất quyền lợi rõ ràng; tránh kháng cự mạnh nhưng tốn kém, tạo tiền lệ"
+      - "Thao túng và mua chuộc (co-optation): nhanh rẻ nhưng mất lòng tin nếu bị phát hiện; nên tránh"
+      - "Cưỡng chế: cần tốc độ và có quyền lực; tạo oán giận, chỉ là phương án cuối"
+    when_to_use: "Sau khi chẩn đoán nguồn kháng cự (6 nguồn) để chọn cách tiếp cận."
+    how_to_apply:
+      - "Phân loại nguồn kháng cự của từng nhóm."
+      - "Chọn cách tiếp cận theo bảng, ưu tiên giáo dục, tham gia, hỗ trợ."
+      - "Biện pháp thực hành: lắng nghe, thông tin rõ ràng, hỗ trợ và đào tạo, giao tiếp 7-10 lần, quick wins, cho thời gian."
+      - "Nếu người tích cực cản trở: coaching có thời hạn (vd 6 tháng) -> chuyển vị trí -> thảo luận chia tay lịch sự, công bằng."
+    how_to_read_results: "Mỗi cách có đánh đổi tốc độ/chi phí/lòng tin; hai cách cuối đánh đổi lòng tin lấy tốc độ."
+    pitfalls: ["Dùng đào tạo cho người đang sợ mất việc.", "Loại bỏ quá nhanh khiến nhân viên sợ hãi."]
+    example: "Trưởng chi nhánh 55 tuổi từ chối hệ thống: coaching + mentor, sau 6 tuần bắt đầu chấp nhận, 3 tháng thành early adopter."
+  - id: "m07_stakeholder_analysis"
+    name_vi: "Phân tích các bên liên quan trong thay đổi"
+    name_en: "Stakeholder Analysis (Champions to Blockers)"
+    origin: "Công cụ thực hành trong nguồn: phân nhóm theo mức ủng hộ để dùng chiến lược khác nhau cho từng nhóm."
+    components:
+      - "Champions (all-in): giao thêm trách nhiệm, vai trò lãnh đạo"
+      - "Advocates (ủng hộ nhưng không quá hứng thú): hỗ trợ, coaching, khen thưởng"
+      - "Neutral: giao tiếp, lắng nghe, tạo urgency"
+      - "Resisters (kháng cự nhưng không hoạt động): hiểu lý do, hỗ trợ, cho thời gian"
+      - "Blockers (tích cực cản trở): quyết định di chuyển, coaching kỹ lưỡng hoặc yêu cầu rời"
+    when_to_use: "Trước khi triển khai, lập bản đồ nhân sự để phân bổ nguồn lực giao tiếp và hỗ trợ."
+    how_to_apply: ["Liệt kê nhóm/người bị ảnh hưởng.", "Xếp vào 5 nhóm.", "Gán chiến lược và người phụ trách theo bảng."]
+    how_to_read_results: "Tỷ lệ Champions/Advocates quyết định tốc độ lan tỏa; Blockers cần quyết định sớm vì sẽ thành 'cautionary tale' ngược nếu giữ nguyên."
+    pitfalls: ["Chỉ tập trung vào Blockers mà bỏ rơi Neutral (nhóm lớn nhất có thể kéo về phía ủng hộ)."]
+    example: "Mộc Hương: 2 champion nhân viên trẻ, ghép đôi bếp trưởng lớn tuổi với champion, nói chuyện 1-1 với 2 người tránh dùng hệ thống."
+  - id: "m07_change_governance"
+    name_vi: "Cấu trúc quản trị thay đổi (Change Governance)"
+    name_en: "Change Governance"
+    origin: "Cấu trúc vai trò thực hành trong nguồn (phần 9.1)."
+    components:
+      - "Change Sponsor: CEO/giám đốc cao cấp, cấp nguồn lực, gỡ chướng ngại, không ủy quyền được"
+      - "Change Manager: điều phối full-time, lập kế hoạch, giao tiếp, theo dõi, báo cáo"
+      - "Change Champions/Agents: người grassroots các phòng ban, truyền thông điệp, hỗ trợ, lắng nghe"
+      - "Transformation Office/PMO 3-10 người: nhịp độ và momentum, xác định chướng ngại, tạo quick wins"
+      - "Change Management Committee: đại diện phòng ban, họp hàng tuần/tháng xem tiến độ, vấn đề mới"
+    when_to_use: "Thay đổi lớn nhiều bộ phận; SME rút gọn: chủ là sponsor, 1 người điều phối, 2-6 champion."
+    how_to_apply: ["Chỉ định sponsor (là người đứng đầu).", "Chọn change manager và Transformation Office.", "Lập mạng champion mỗi phòng ban.", "Lập lịch họp committee."]
+    how_to_read_results: "Thiếu sponsor là cờ đỏ: không ai khác đủ quyền lực."
+    pitfalls: ["Giao việc cho người khác 'quản lý' thay đổi trong khi CEO không tham gia."]
+    example: "Sơ đồ: CEO (Sponsor) -> Change Manager -> Transformation Office, Communication Team, Training; Committee gồm CFO, COO, CHRO, CIO và champions."
+  - id: "m07_change_metrics"
+    name_vi: "Bộ chỉ số dẫn dắt và kết quả của thay đổi"
+    name_en: "Leading and Lagging indicators of change"
+    origin: "Phần 9.2 của nguồn: nếu không đo thì không quản lý được."
+    components:
+      - "Leading (đo hằng tháng): Awareness 80%+, Desire 70%+, Knowledge (hoàn thành đào tạo) 85%+, Ability 80%+, Champion Engagement 10-20 champions, Communication Reach 90%+, Sentiment (ủng hộ) 65%+, Adoption 70%+"
+      - "Lagging (đo hằng năm): doanh thu, giảm chi phí, năng suất, hài lòng khách hàng (NPS/CSAT), giữ chân nhân viên, time-to-market, chất lượng, đổi mới"
+      - "Nhịp đo: hằng tháng leading; hằng quý cả hai; hằng năm lagging toàn bộ"
+    when_to_use: "Thiết lập dashboard theo dõi thay đổi; chuyển indicator thành KPI hoặc Balanced Scorecard."
+    how_to_apply: ["Chọn 4-5 leading và 2-3 lagging gắn mục tiêu thay đổi.", "Đo hằng tháng, so với ngưỡng.", "Dưới ngưỡng thì điều chỉnh giao tiếp/hỗ trợ ngay."]
+    how_to_read_results: "Leading thấp báo trước thất bại sớm; lagging xác nhận giá trị thực."
+    pitfalls: ["Chỉ đo lagging nên phát hiện muộn.", "Ngưỡng 80%/70%/85% là ngưỡng thực hành của nguồn, không phải chuẩn khoa học."]
+    example: "Mộc Hương theo dõi adoption (56,9% -> 83,3% -> 91,7%) và ADKAR song song với hao hụt NVL."
+  - id: "m07_comm_plan"
+    name_vi: "Kế hoạch giao tiếp thay đổi"
+    name_en: "Change Communication Plan"
+    origin: "Phần 2.4 và 7 của nguồn (Kotter bước 4)."
+    components:
+      - "7 yếu tố: mục tiêu giao tiếp, đối tượng, thông điệp chính, kênh, tần suất, người giao tiếp, tone"
+      - "Mẫu 3 tháng: tháng 1 town hall + email FAQ + 1-on-1 + video; tháng 2 Slack update, workshop, câu chuyện early adopters; tháng 3 hỏi đáp, town hall công bố quick wins, 1-on-1 'bạn sẵn sàng không?'"
+      - "Nguyên tắc: Tell stories not data; Address emotions not just logic; Show don't tell"
+      - "Kênh: town hall, nhóm nhỏ/1-on-1, video/email, kênh phi chính thức, câu chuyện khách hàng/đối tác"
+    when_to_use: "Mọi dự án thay đổi, đặc biệt ở bước B4 và giai đoạn Neutral Zone."
+    how_to_apply: ["Đặt mục tiêu đo được (sau 3 tháng 80% hiểu tầm nhìn).", "Lập lịch theo tuần với kênh và người nói.", "Kèm kênh hai chiều (hỏi đáp, báo chướng ngại).", "Đo reach và độ hiểu."]
+    how_to_read_results: "Nhân viên tự dùng vision để ra quyết định và kể lại câu chuyện là dấu hiệu giao tiếp thành công."
+    pitfalls: ["Giao tiếp một chiều; nói một đằng làm một nẻo."]
+    example: "Một nhân viên đề xuất ý tưởng, CEO cho thử sprint 2 tuần: câu chuyện cụ thể hơn là nói 'chúng ta sẽ Agile hơn'."
+  - id: "m07_change_pitfalls_table"
+    name_vi: "Mười pitfall thường gặp khi thay đổi"
+    name_en: "Common change pitfalls"
+    origin: "Phần 9.3 của nguồn."
+    components:
+      - "Vision Too Vague: dành 2-4 tuần tạo vision rõ và thử với mọi người"
+      - "Change Fatigue: ưu tiên, làm tuần tự"
+      - "Leaders Not Walking the Talk: lãnh đạo làm gương"
+      - "Not Removing Obstacles: có cơ chế báo chướng ngại và xử lý nhanh"
+      - "Declaring Victory Too Soon: tiếp tục 3-5 năm"
+      - "No Quick Wins: lập kế hoạch 3-6 wins trong 6 tháng đầu"
+      - "Poor Communication: lặp 7-10 lần, đa kênh"
+      - "Resistance Not Addressed: lắng nghe và hỗ trợ hoặc chuyển vai"
+      - "No Executive Sponsorship: CEO là sponsor chính"
+      - "Culture Not Reinforced: cập nhật HR"
+    when_to_use: "Rà soát nhanh trước và trong triển khai."
+    how_to_apply: ["Đối chiếu từng pitfall với dự án.", "Gán hành động phòng ngừa."]
+    how_to_read_results: "Mỗi pitfall có mặt là một cờ đỏ cần xử lý."
+    pitfalls: []
+    example: "Case Sears: đổi hướng liên tục dẫn tới change fatigue và mất niềm tin."
+
+procedures:
+  - id: "m07_proc_readiness_diagnosis"
+    name: "Chẩn đoán sự sẵn sàng thay đổi (Beckhard-Harris) trước khi khởi động"
+    steps:
+      - "Khảo sát nhanh nhân sự bị ảnh hưởng, chấm D, V, F, R trên cùng thang 0-1 (tỷ lệ người đồng ý phát biểu tương ứng)."
+      - "Tính D x V x F và so với R."
+      - "Xác định yếu tố yếu nhất trong D, V, F; đó là chỗ đầu tư trước (thường V và F, không phải D)."
+      - "Nếu tích < R: chưa mua công cụ/triển khai; giải thích tầm nhìn, lập kế hoạch bước đầu rõ ràng, giảm R (lắng nghe, đào tạo, đảm bảo quyền lợi)."
+      - "Chấm lại sau can thiệp; khi tích vượt R (kể cả sát ngưỡng) thì tiếp tục giảm kháng cự thay vì coi là xong."
+    outputs: "Bảng D, V, F, R, tích số, kết luận và danh sách can thiệp ưu tiên."
+  - id: "m07_proc_kotter_rollout"
+    name: "Lộ trình thay đổi theo Kotter cho SME (12 tháng)"
+    steps:
+      - "Tháng 1 (Urgency): trình bày số liệu cụ thể (VNĐ/tháng) và 2-3 ví dụ mọi người nhận ra; kèm lối thoát."
+      - "Tháng 1-2 (Coalition): lập nhóm gồm chủ, quản lý vận hành, quản lý chi nhánh, kế toán và 1-2 champion trẻ được đồng nghiệp tin."
+      - "Tháng 2 (Vision): viết vision một câu mô tả hình ảnh tương lai và lợi ích cho người làm."
+      - "Tháng 2-4 (Communicate): họp ngắn đầu tuần, đăng ví dụ thành công, chủ đến từng chi nhánh cam kết cách dùng dữ liệu."
+      - "Tháng 3-5 (Remove obstacles): mua thiết bị, đơn giản hóa form, ghép đôi người lớn tuổi với champion, điều chỉnh KPI cho giai đoạn học việc."
+      - "Tháng 4-6 (Quick wins): chạy thí điểm 1 chi nhánh 6 tuần, công bố kết quả, thưởng nóng."
+      - "Tháng 7-9 (Momentum): nhân rộng theo đợt, không dừng sau thí điểm."
+      - "Tháng 10-12 (Anchor): đưa chỉ số vào KPI/thưởng, onboarding có buổi học ngày đầu."
+    outputs: "Lịch 12 tháng theo 8 bước, người phụ trách, quick wins và chỉ số theo dõi."
+  - id: "m07_proc_adkar_cycle"
+    name: "Chu trình chẩn đoán và can thiệp bằng ADKAR"
+    steps:
+      - "Khảo sát 5 yếu tố thang 1-5 (hoặc 5 câu hỏi ADKAR Assessment) ở nhiều thời điểm."
+      - "Tính trung bình, xác định barrier point theo thứ tự A-D-K-A-R với ngưỡng đặt trước (vd 3,0)."
+      - "Chọn can thiệp đúng barrier; không đào tạo kỹ thuật khi Desire là barrier."
+      - "Đo adoption (người dùng đúng quy trình mới / tổng nhân sự) song song."
+      - "Nói chuyện 1-1 với nhóm còn tránh né, tìm vai trò phù hợp trước khi tính tới chia tay."
+    outputs: "Bảng điểm ADKAR theo mốc thời gian, barrier point từng giai đoạn, kế hoạch can thiệp và adoption rate."
+  - id: "m07_proc_resistance_handling"
+    name: "Xử lý kháng cự và người cản trở"
+    steps:
+      - "Lắng nghe và xác định nguồn kháng cự (sợ hãi, không hiểu, thiếu năng lực, bất đồng giá trị, tính cách, thói quen)."
+      - "Phân nhóm bằng stakeholder analysis (Champions, Advocates, Neutral, Resisters, Blockers)."
+      - "Chọn cách tiếp cận Kotter-Schlesinger tương ứng; ưu tiên giáo dục, tham gia, hỗ trợ."
+      - "Với người kháng cự lạnh nhạt: coaching, mentor, thời gian (vd 6 tháng)."
+      - "Với Blockers tích cực cản trở: chuyển vai trò, nếu vẫn không phù hợp thì thảo luận chia tay lịch sự và công bằng."
+      - "Tránh thao túng, mua chuộc, cưỡng chế trừ khi bắt buộc."
+    outputs: "Bản đồ kháng cự, chiến lược theo nhóm, người phụ trách, mốc đánh giá lại."
+  - id: "m07_proc_change_roi"
+    name: "Tính hoàn vốn của dự án thay đổi theo đường cong chấp nhận"
+    steps:
+      - "Tính lợi ích ổn định: tiết kiệm hao hụt = rev x cogs_ratio x (w0 - w1); tiết kiệm thời gian = n x h x 4,33 x chi phí giờ x tỷ lệ giảm."
+      - "Trừ chi phí vận hành hằng tháng để ra lợi ích ròng."
+      - "Lập chi phí một lần: thiết bị, giờ công đào tạo, giảng viên, phụ cấp champion, tư vấn."
+      - "Dựng đường cong adoption theo tháng (vd 0% tháng 1-3, 25/50/75% tháng 4-6, 100% từ tháng 7)."
+      - "Lập bảng lũy kế theo tháng; payback là tháng đầu tiên lũy kế >= 0."
+      - "So với ước tính ngây thơ (C0 / lợi ích ròng) để cho chủ thấy tác động của độ trễ."
+    outputs: "Bảng lũy kế 24 tháng, tháng hoàn vốn, độ nhạy theo tốc độ chấp nhận."
+  - id: "m07_proc_anchor"
+    name: "Neo thay đổi vào văn hóa (Kotter bước 8)"
+    steps:
+      - "Cập nhật tuyển dụng: mô tả công việc và câu hỏi phỏng vấn theo giá trị mới; cho early adopters tham gia phỏng vấn."
+      - "Cập nhật onboarding: tuần đầu học giá trị, có mentor sống theo giá trị mới."
+      - "Cập nhật đánh giá, thăng tiến, thưởng theo hành vi mới; xử lý lỗi theo hướng học hỏi."
+      - "Kể câu chuyện hero và cautionary tale; thêm nghi thức mới (vd buổi chia sẻ bài học thất bại)."
+      - "Chỉnh cấu trúc (matrix/cross-functional) và kiểm tra bằng 7-S."
+      - "Culture assessment hằng năm, retrospective hằng quý, lãnh đạo tiếp tục làm gương."
+    outputs: "Hệ thống HR/onboarding/nghi thức cập nhật và lịch kiểm tra văn hóa."
+
+decision_rules:
+  - "Nếu D x V x F nhỏ hơn R thì chưa mua công cụ hoặc triển khai; đầu tư trước vào yếu tố yếu nhất trong D, V, F và giảm R."
+  - "Nếu một trong D, V, F bằng (hoặc gần) 0 thì thay đổi sẽ không xảy ra dù hai yếu tố còn lại rất cao (tích số bằng 0)."
+  - "Nếu nhân viên biết cần thay đổi nhưng không làm theo (Awareness cao, Desire thấp) thì can thiệp vào Desire (lợi ích cá nhân, cam kết không phạt), không đào tạo kỹ thuật."
+  - "Nếu Desire đủ nhưng Knowledge/Ability thấp thì đào tạo và kèm cặp thực hành có người hướng dẫn; đào tạo một lần là chưa đủ."
+  - "Nếu chênh lệch lực đẩy so với lực kìm nhỏ thì giảm lực kìm (kèm cặp, cam kết không phạt) thay vì tăng áp lực."
+  - "Nếu lãnh đạo nói một đằng làm một nẻo thì nhân viên tin hành động; sửa hành vi lãnh đạo trước khi giao tiếp thêm."
+  - "Nếu công ty đang thắng và không thấy khủng hoảng (Kodak) thì chủ động tạo urgency từ dự báo, và giao một nhóm có quyền lực và ngân sách riêng làm 'kẻ ăn mòn doanh thu của chính mình'."
+  - "Nếu công ty cạn tiền (IBM) thì ưu tiên cầm máu tài chính và chứng minh năng lực thực thi trước, tầm nhìn lớn sau."
+  - "Nếu urgency cao nhưng coalition và vision yếu (Nokia) thì chưa công bố chuyển hướng lớn; dựng coalition, vision đáng tin và quick wins trước để tránh tự làm sụt doanh thu mảng cũ."
+  - "Nếu có quick win đầu tiên thì công bố công khai và thưởng sớm (không chờ cuối năm); mục tiêu 3-5 wins trong 6 tháng đầu."
+  - "Nếu đã có kết quả đầu tiên sau 6-12 tháng thì không tuyên bố xong; duy trì coalition, lập giai đoạn 2 và cập nhật HR/cấu trúc."
+  - "Nếu nhân viên đang trong Neutral Zone/hỗn loạn thì tăng cập nhật tiến độ, anchor points và quick wins; không rút hỗ trợ."
+  - "Nếu người kháng cự vì sợ/thiếu kỹ năng thì hỗ trợ và đào tạo; vì không hiểu thì giáo dục và giao tiếp; vì mất quyền lợi rõ ràng thì thương lượng; tránh thao túng và cưỡng chế."
+  - "Nếu quản lý cấp trung cản trở tích cực thì coaching có thời hạn, rồi chuyển vai, rồi chia tay công bằng; không để họ thành 'câu chuyện cảnh báo' ngược (người cản trở vẫn còn nguyên)."
+  - "Nếu đổi chiến lược thì dùng 7-S kiểm tra đồng bộ: Strategy không đủ nếu Systems, Shared values, Style, Structure giữ cũ."
+  - "Nếu thay đổi nhỏ trong nhóm nhỏ thì dùng Lewin; transformation lớn dùng Kotter; chẩn đoán cá nhân dùng ADKAR; khởi động dùng Beckhard-Harris; hiểu cảm xúc dùng Bridges/Kübler-Ross; thiết kế môi trường dùng Nudge/Switch."
+  - "Nếu có nhiều sáng kiến thay đổi cùng lúc thì ưu tiên và làm tuần tự để tránh change fatigue."
+  - "Nếu tính ROI thay đổi thì tính payback theo đường cong chấp nhận, không theo trạng thái lý tưởng; mỗi tháng chậm chấp nhận mất đúng một tháng lợi ích."
+  - "Nếu KPI/thưởng đi ngược hành vi mong muốn thì sửa hệ thống thưởng; trong giai đoạn học việc không trừ thưởng vì sai sót và không dùng dữ liệu mới để phạt."
+
+benchmarks:
+  - {metric: "Tỷ lệ sáng kiến thay đổi thất bại", value: "khoảng 70% (ước lượng thay đổi theo nguồn và định nghĩa thất bại)", context: "Cảnh báo mức rủi ro, không phải số liệu chính xác; một số nhà nghiên cứu phản biện", confidence: "low"}
+  - {metric: "Tỷ lệ phần trăm từng nguyên nhân thất bại (55%, 60%, 65%, 30%, 50%)", value: "chỉ có ý nghĩa thứ tự nguyên nhân", context: "Gom từ thực hành tư vấn, không phải số liệu thống kê kiểm chứng", confidence: "low"}
+  - {metric: "Số lần lặp thông điệp để hành động", value: "7-10 lần (lần 1-3 chưa nghe, 4-6 nghe chưa tin, 7-10 hành động)", context: "Quy tắc kinh nghiệm của giới tư vấn, không phải hằng số khoa học", confidence: "low"}
+  - {metric: "Tỷ lệ giao tiếp phi lời nói 93%", value: "không nên dùng", context: "Hiểu sai nghiên cứu Mehrabian (1960s), chỉ áp dụng cho giao tiếp cảm xúc/thái độ", confidence: "low"}
+  - {metric: "Phần thất bại do bước tạo urgency kém (Kotter)", value: "khoảng 50%", context: "Số theo nguồn trích Kotter, mang tính ước lượng", confidence: "low"}
+  - {metric: "Quy mô guiding coalition", value: "10-50 người tùy quy mô; thành công khi 15-20 người hoặc 10-20% lãnh đạo; tránh 3-5 hoặc 100+", context: "Hướng dẫn thực hành của nguồn", confidence: "medium"}
+  - {metric: "Dấu hiệu thành công: urgency / vision / giao tiếp", value: "75%+ quản lý nói cần thay đổi; 80%+ nhân viên diễn đạt lại vision; 75%+ nói lại chính xác sau 1-2 tháng", context: "Ngưỡng thực hành của nguồn", confidence: "medium"}
+  - {metric: "Số quick wins và thời hạn", value: "3-5 trong 6 tháng đầu (hàng tháng 1-2 nhỏ, hàng quý 1 lớn), mỗi win đạt trong 3-6 tháng", context: "Hướng dẫn thực hành", confidence: "medium"}
+  - {metric: "Thời gian thay đổi thấm vào văn hóa", value: "3-5 năm; thay đổi hiển thị kết quả 12-24 tháng; Neutral Zone 1-2 năm", context: "Hướng dẫn thực hành", confidence: "medium"}
+  - {metric: "Thời gian xử lý chướng ngại được báo cáo", value: "1-2 tuần và báo lại cho người đã nêu", context: "Hướng dẫn thực hành Kotter bước 5", confidence: "medium"}
+  - {metric: "Quy mô Transformation Office", value: "3-10 người", context: "Hướng dẫn thực hành", confidence: "medium"}
+  - {metric: "Chỉ số dẫn dắt mục tiêu", value: "Awareness 80%+, Desire 70%+, Knowledge 85%+, Ability 80%+, Reach 90%+, Sentiment 65%+, Adoption 70%+, 10-20 champions", context: "Ngưỡng thực hành của nguồn, không phải chuẩn khoa học", confidence: "medium"}
+  - {metric: "Ngưỡng điểm nghẽn ADKAR", value: "3,0 trên thang 1-5", context: "Ngưỡng giả định trong case Mộc Hương; doanh nghiệp tự đặt", confidence: "low"}
+  - {metric: "Ngưỡng bảng điểm Kotter (case thành công)", value: "14-15/16, không bước nào 0; thất bại 2-4/16, có ít nhất 5 bước 0", context: "Chấm chủ quan của người biên soạn, không phải điểm chính thức", confidence: "low"}
+  - {metric: "Hoàn vốn thay đổi case Mộc Hương", value: "tháng 11 (ngây thơ 6,1 tháng)", context: "Giả định minh họa, adoption có độ trễ", confidence: "low"}
+
+pitfalls:
+  - "Coi công nghệ/kế hoạch kỹ thuật là yếu tố quyết định; bỏ quên con người, nguồn thất bại chính."
+  - "Mua công cụ và đào tạo kỹ thuật trước khi chẩn đoán (Beckhard-Harris) và tìm barrier point (ADKAR)."
+  - "Tạo urgency bằng hoảng loạn hoặc dữ liệu cũ; chỉ nói mối đe dọa mà không có lối thoát và cơ hội."
+  - "Vision toàn con số, quá kỹ thuật hoặc áp đặt từ trên xuống; thiếu kịch bản một ngày của nhân viên."
+  - "Lãnh đạo nói một đằng làm một nẻo; CEO rút khỏi liên minh sau vài tháng."
+  - "Giao tiếp một lần, một chiều, một kênh; nhắc lại ít hơn 7-10 lần."
+  - "Dùng dữ liệu mới để phạt nhân viên trong giai đoạn học việc, làm Desire tụt."
+  - "Loại bỏ chướng ngại/người kháng cự quá nhanh, thiếu công bằng, hoặc bỏ toàn bộ quy trình cũ cùng lúc."
+  - "Tuyên bố chiến thắng sau 6-18 tháng; rút coalition và Transformation team; không chuẩn bị giai đoạn 2."
+  - "HR, thưởng, cấu trúc đi ngược hành vi mới (Sears, 7-S lệch)."
+  - "Quá nhiều sáng kiến cùng lúc hoặc đổi hướng giữa đường gây change fatigue."
+  - "Tin tuyệt đối vào các điểm số (D, V, F, R, Kotter scorecard, ADKAR) và các con số 70%/93%/7-10 lần như hằng số khoa học."
+  - "Tính hoàn vốn theo trạng thái lý tưởng, bỏ qua đường cong adoption và chi phí con người."
+  - "Dùng Kübler-Ross như chuỗi cứng tuần tự; hiểu Lewin 'refreeze' là đóng băng mãi mãi."
+  - "Coi compliance là desire; giữ người cũ không phù hợp để họ kéo người khác quay lại cách cũ."
+
+sme_vn_guidance:
+  - "Giải thích rõ lợi ích cá nhân cho nhân viên (bớt việc thủ công, thu nhập, cơ hội học): nỗi lo mất việc/mất vị thế thường lớn hơn nỗi lo kỹ thuật."
+  - "Luôn chạy thí điểm ở một chi nhánh/ca/phòng trước khi nhân rộng; công bố kết quả và thưởng nóng để có bằng chứng và champion."
+  - "Chọn champion là người trẻ có kỹ năng số và được đồng nghiệp tin tưởng, không chỉ là người giỏi nhất."
+  - "Ghép nhân viên/bếp trưởng lâu năm với người kèm cặp thay vì để họ tự học."
+  - "Cam kết bằng văn bản hoặc lời hứa công khai về cách dùng dữ liệu (không phạt trong giai đoạn đầu)."
+  - "Lập ngân sách đầy đủ: thiết bị, giờ công đào tạo, phụ cấp champion, tư vấn, phí phần mềm; tính hoàn vốn theo đường cong chấp nhận (case Mộc Hương: 11 tháng chứ không phải 6 tháng)."
+  - "Có người chịu trách nhiệm theo dõi hậu triển khai ít nhất 6-12 tháng; neo vào KPI thưởng và onboarding."
+  - "Mô hình rút gọn cho SME: Beckhard-Harris (chẩn đoán) + Kotter (khung) + ADKAR (đo từng người); dùng Dual Operating System ở dạng thử nghiệm một chi nhánh trong khi các chi nhánh khác vận hành như cũ."
+  - "Thay đổi quan trọng nhất của nhiều SME là cắt bớt (sản phẩm, kênh, cửa hàng kém hiệu quả) để tập trung vào lõi (bài học LEGO)."
+  - "Cổ phần/thưởng gắn kết quả là công cụ 'Remove obstacles' và 'Anchor' mạnh trong văn hóa Việt Nam coi trọng ổn định (bài học Vinamilk, phân tích minh họa). Mọi chi phí phần mềm/thiết bị và đơn giá giờ công trong case là giả định; khi lập ngân sách thật cần xác nhận báo giá hiện hành."
+  - "Khi cần chia tay người không phù hợp, tuân thủ quy định pháp luật lao động hiện hành (cần xác nhận với chuyên gia pháp lý); nguồn chỉ nêu nguyên tắc công bằng, lịch sự."
+
+case_lessons:
+  - name: "IBM dưới thời Lou Gerstner (1993-2002)"
+    type: "success"
+    setup: "IBM lỗ lớn đầu thập niên 1990 (năm 1993 lỗ ròng khoảng 8 tỷ USD, ước tính làm tròn), lao động giảm từ khoảng 400.000 xuống khoảng 220.000 (ước tính), văn hóa phân cấp, các đơn vị bảo vệ lãnh địa; hội đồng quản trị cân nhắc chia nhỏ công ty. Tháng 4/1993 Gerstner (người ngoài ngành) được bổ nhiệm."
+    key_calculations:
+      - "Bảng điểm Kotter (chủ quan): 2,1,1,2,2,2,2,2 = 14/16"
+      - "Công ty quay lại có lãi năm 1994; Gerstner ở lại gần 10 năm"
+    lesson: "Thứ tự ưu tiên đúng: cầm máu tài chính trước, tầm nhìn sau; quyết định ngược đám đông (giữ IBM nguyên khối) dựa trên khách hàng; cam kết dài hạn của người đứng đầu; neo vào hệ thống thưởng gắn kết quả công ty. Khủng hoảng thật khiến urgency đến tự nhiên."
+    data_reliability: "unverified"
+  - name: "Microsoft dưới thời Satya Nadella (2014-nay)"
+    type: "success"
+    setup: "Cuối thời Ballmer 2013 bỏ lỡ di động, văn hóa 'know-it-all' cạnh tranh nội bộ. Tháng 2/2014 Nadella (lãnh đạo mảng cloud) làm CEO; vision hai tầng: cloud-first mobile-first và văn hóa 'learn-it-all' dựa trên Growth Mindset (Carol Dweck)."
+    key_calculations:
+      - "Vốn hóa khoảng 300 tỷ USD (2014) -> 1.000 tỷ (2019) -> 2.000 tỷ (2021) -> 3.000 tỷ (đầu 2024); số làm tròn ước tính"
+      - "Bảng điểm Kotter (chủ quan) 15/16, chỉ bước 5 (obstacles) điểm 1"
+    lesson: "Văn hóa là cơ chế để công nghệ mới sống được; thay đổi lớn có thể thành công không cần khủng hoảng thanh khoản nếu có urgency chiến lược; Dual Operating System: mảng cũ tạo tiền, mảng mới được nguồn lực (cách diễn giải của biên soạn, không do Kotter xác nhận)."
+    data_reliability: "unverified"
+  - name: "LEGO tái cấu trúc (2004-2014)"
+    type: "success"
+    setup: "Mở rộng quá rộng đầu thập niên 2000, lỗ năm 2003 khoảng 1,4 tỷ DKK (hơn 200 triệu USD, ước tính) và nợ lớn. Tháng 10/2004 Jørgen Vig Knudstorp làm CEO; bán Legoland cho Merlin (2005), cắt chủng loại linh kiện, quay về lõi."
+    key_calculations:
+      - "Bảng điểm Kotter (chủ quan) 15/16, bước 4 (communicate) điểm 1"
+      - "Gắn ADKAR: urgency = Awareness, quay về bản sắc = Desire, kỷ luật chi phí = Knowledge/Ability, duy trì danh mục = Reinforcement"
+    lesson: "Thay đổi quan trọng nhất đôi khi là cắt bớt, tập trung nguồn lực cho lõi; urgency minh bạch giúp nhân viên hiểu vì sao phải đau; quay về bản sắc khiến thay đổi được đón nhận về cảm xúc; công ty đi qua Neutral Zone khi bỏ mảng cũ."
+    data_reliability: "unverified"
+  - name: "Kodak không tạo urgency cho kỹ thuật số"
+    type: "failure"
+    setup: "Kodak có máy ảnh số đầu tiên (Steve Sasson, 1975) nhưng sợ ăn mòn doanh thu phim; nộp hồ sơ Chapter 11 tháng 1/2012."
+    key_calculations:
+      - "Bảng điểm Kotter (chủ quan) 3/16: bước 1, 4, 5, 7, 8 điểm 0"
+    lesson: "Thành công hiện tại làm mờ urgency (complacency); nghịch lý người thành công (Christensen 1997); vấn đề là mô hình kinh doanh và cơ cấu khuyến khích, không thiếu công nghệ; tạo urgency khi còn thắng và giao nhóm riêng có quyền lực, ngân sách."
+    data_reliability: "unverified"
+  - name: "Nokia: nền tảng đang cháy nhưng coalition yếu"
+    type: "failure"
+    setup: "2007 thị phần khoảng 40% (ước tính); tháng 2/2011 CEO Stephen Elop gửi memo 'Burning Platform' và chọn Windows Phone; bán mảng điện thoại cho Microsoft khoảng 5,4 tỷ EUR (công bố 9/2013)."
+    key_calculations:
+      - "Bảng điểm Kotter (chủ quan) 4/16: urgency 2 nhưng coalition 0, obstacles/wins/momentum/anchor 0"
+    lesson: "Urgency không thay thế được coalition và vision; công bố chuyển hướng quá sớm khi sản phẩm mới chưa sẵn sàng làm sụt doanh thu mảng cũ (hiệu ứng Osborne); văn hóa sợ nói thật lọc thông tin xấu."
+    data_reliability: "unverified"
+  - name: "Sears Holdings: có định hướng nhưng không triển khai"
+    type: "failure"
+    setup: "2005 Eddie Lampert sáp nhập Kmart và Sears; cắt chi tiêu vốn, đổi chiến lược liên tục, chia đơn vị cạnh tranh nội bộ (từ khoảng 2008); phá sản tháng 10/2018."
+    key_calculations:
+      - "Bảng điểm Kotter (chủ quan) 2/16"
+    lesson: "Vision không tự vận hành; hệ thống khuyến khích đi ngược tầm nhìn (bẫy 7-S); đổi hướng liên tục gây change fatigue; người ra chiến lược phải sở hữu cả khâu thực thi."
+    data_reliability: "unverified"
+  - name: "Vinamilk cổ phần hóa (phân tích minh họa)"
+    type: "success"
+    setup: "Cổ phần hóa khoảng cuối 2003, niêm yết đầu 2006; áp lực cạnh tranh sau WTO 2007. Mốc công khai có thật; chi tiết hành động từng bước theo Kotter là phân tích minh họa/giả định, không phải tư liệu nội bộ."
+    key_calculations:
+      - "Bảng điểm Kotter (minh họa) 14/16, bước 4 và 6 điểm 1"
+    lesson: "Chia sẻ lợi ích (cổ phần cho người lao động, thưởng theo kết quả) là công cụ Remove obstacles và Anchor rất mạnh; kỷ luật công bố thông tin sau niêm yết là 'neo' bên ngoài khiến thay đổi khó đảo ngược."
+    data_reliability: "illustrative"
+  - name: "Mộc Hương: chuỗi 6 tiệm bánh số hóa bằng Beckhard-Harris + Kotter + ADKAR (giả định minh họa)"
+    type: "sme"
+    setup: "6 tiệm, 72 nhân viên, doanh thu khoảng 2.400 triệu VNĐ/tháng; sổ giấy và Zalo, hao hụt ước 7,5% giá trị NVL (giá vốn 38% doanh thu), 6 quản lý mất 8 giờ/tuần báo cáo thủ công. Triển khai POS + kho + định mức trong 12 tháng. Toàn bộ số liệu tự thiết kế."
+    key_calculations:
+      - "Beckhard-Harris tháng 0: 0,70 x 0,40 x 0,30 = 0,084 < R 0,50 -> chưa sẵn sàng; sau can thiệp tháng 6: 0,70 x 0,80 x 0,70 = 0,392 > R 0,35"
+      - "ADKAR trung bình 2,60 -> 3,58 -> 4,14; barrier Desire (2,6) -> Ability (3,0) -> theo dõi Reinforcement (3,9)"
+      - "Adoption 41/72 = 56,9% (tháng 3), 60/72 = 83,3% (tháng 6), 66/72 = 91,7% (tháng 9)"
+      - "Hao hụt 68,40 -> 36,48 triệu/tháng; tiết kiệm 31,92 + 7,01 thời gian - 2,7 phí phần mềm = 36,23 triệu/tháng"
+      - "Chi phí một lần 222,56 triệu; hoàn vốn tháng 11 (ngây thơ 6,1 tháng); lũy kế tháng 12 +39,7 và tháng 24 +474,6 triệu"
+    lesson: "Chẩn đoán trước khi mua công cụ (yếu ở V và F, không phải ngân sách); ADKAR cho biết đào tạo gì và khi nào; quick win thí điểm tạo champion; hoàn vốn phải tính theo đường cong adoption; không dùng dữ liệu để phạt trong giai đoạn học việc; neo vào KPI và onboarding."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Chẩn đoán ba tình huống Beckhard-Harris"
+    inputs: {A: {D: 0.9, V: 0.2, F: 0.2, R: 0.40}, B: {D: 0.9, V: 0.7, F: 0.6, R: 0.40}, C: {D: 0.9, V: 0.7, F: 0.6, R: 0.30}}
+    steps:
+      - "A: 0,9 x 0,2 x 0,2 = 0,036 < 0,40 -> thất bại do thiếu V và F (rất bất mãn nhưng không biết đi đâu)"
+      - "B: 0,9 x 0,7 x 0,6 = 0,378 < 0,40 -> sát ngưỡng, cần giảm R"
+      - "C: giữ 0,378 nhưng R giảm còn 0,30 -> 0,378 > 0,30 đạt"
+      - "Từ A sang B đầu tư vào V và F (không tạo thêm bất mãn); từ B sang C giảm R (lắng nghe, đào tạo, đảm bảo quyền lợi) thay vì thúc ép"
+    result: "A không đạt (0.036), B sát ngưỡng (0.378 < 0.40), C đạt (0.378 > 0.30)"
+  - name: "Barrier point ADKAR qua ba mốc thời gian (Mộc Hương)"
+    inputs: {t0: {A: 3.9, D: 2.6, K: 2.2, Ab: 1.9, R: 2.4}, t3: {A: 4.4, D: 3.8, K: 3.6, Ab: 3.0, R: 3.1}, t9: {A: 4.5, D: 4.2, K: 4.1, Ab: 4.0, R: 3.9}, threshold: 3.0}
+    steps:
+      - "Tháng 0: trung bình 13,0/5 = 2,60; theo thứ tự A (3,9) ổn, D (2,6) <= 3,0 -> barrier Desire; nên giải thích lợi ích cá nhân, cam kết không phạt, thưởng người dẫn đầu; chưa đào tạo kỹ thuật"
+      - "Tháng 3: trung bình 17,9/5 = 3,58; D 3,8 và K 3,6 vượt ngưỡng, Ability 3,0 <= 3,0 -> barrier Ability; kèm cặp thực hành 1-1 từ champion"
+      - "Tháng 9: trung bình 20,7/5 = 4,14; tất cả từ 3,9; chỉ số cần nhìn tiếp là Reinforcement 3,9 để chống tái nghiện cách cũ"
+    result: "Trung bình 2.60 -> 3.58 -> 4.14; barrier Desire -> Ability -> Reinforcement (theo dõi)"
+  - name: "Hoàn vốn thay đổi theo đường cong adoption (Mộc Hương)"
+    inputs: {rev: 2400, cogs_ratio: 0.38, w0: 0.075, w1: 0.04, n: 6, h: 8, cost_per_hour: 45000, reduction: 0.75, running_cost: 2.7, C0: 222.56}
+    steps:
+      - "Giá vốn 912 triệu; hao hụt 68,40 -> 36,48; tiết kiệm hao hụt 31,92"
+      - "Giờ báo cáo 6 x 8 x 4,33 = 207,84 giờ -> 9,35 triệu; giảm 75% -> 7,01 triệu"
+      - "Lợi ích gộp 38,93; ròng sau phí phần mềm 36,23 triệu/tháng (434,8 triệu/năm)"
+      - "Chi phí một lần 84 + 34,56 + 20 + 54 + 30 = 222,56 triệu"
+      - "Ước tính ngây thơ 222,56 / 36,23 = 6,1 tháng"
+      - "Với adoption 0% tháng 1-3, 25/50/75% tháng 4-6, 100% từ tháng 7 và phí phần mềm từ tháng 2: lũy kế tháng 6 = -177,7; tháng 10 = -32,7; tháng 11 = +3,5; tháng 12 = +39,7; tháng 24 = +474,6"
+    result: "Hoàn vốn tháng 11 (không phải 6,1 tháng); mỗi tháng chậm chấp nhận mất khoảng 36 triệu"
+  - name: "Cân bằng lực trường triển khai POS"
+    inputs: {driving: [4, 5, 3], restraining: [4, 3, 3]}
+    steps:
+      - "Tổng đẩy 12, tổng kìm 10, chênh +2 (không đáng kể)"
+      - "Phương án tăng áp lực: đẩy lên 15, kìm cũng có xu hướng tăng, căng thẳng tăng"
+      - "Phương án giảm lực kìm: người lớn tuổi 4 -> 2 (kèm cặp), sợ bị soi 3 -> 1 (cam kết không phạt) -> tổng kìm 6, chênh +6"
+    result: "Giảm lực kìm cho chênh lệch +6 mà ít căng thẳng hơn so với +2 ban đầu"
+
+practice_questions:
+  - q: "Nhóm 40 người: D = 0,8; V = 0,5; F = 0,2; R = 0,3. Có nên khởi động thay đổi ngay? Nên đầu tư vào đâu? (Bài tập tự thiết kế)"
+    a: "D x V x F = 0,8 x 0,5 x 0,2 = 0,08 < 0,3, chưa nên. Yếu tố yếu nhất là F (0,2), rồi V (0,5): lập kế hoạch bước đầu rõ ràng (ai làm gì tuần tới) và giải thích tầm nhìn; có thể song song giảm R."
+  - q: "Vì sao phương trình dùng phép nhân thay vì cộng?"
+    a: "Vì chỉ cần một yếu tố bằng 0 thì thay đổi không thể xảy ra: bất mãn nhưng không có tầm nhìn chỉ than phiền; có tầm nhìn nhưng hài lòng thì không ai rời vùng an toàn; có D và V nhưng không biết bước đầu thì tê liệt. Phép cộng cho phép yếu tố cao bù yếu tố bằng 0."
+  - q: "Nhân viên có Awareness 4,2, Desire 2,4, Knowledge 3,5, Ability 3,2, Reinforcement 3,0. Barrier point? Việc đầu tiên?"
+    a: "Theo thứ tự A-D-K-A-R với ngưỡng 3,0, Desire (2,4) là barrier. Không đào tạo thêm; nói rõ lợi ích cá nhân, cam kết không dùng dữ liệu để phạt, cho họ lựa chọn tham gia/thưởng người dẫn đầu."
+  - q: "66 trong 72 nhân viên dùng quy trình mới. Adoption rate? Còn 6 người thì xử lý thế nào?"
+    a: "66/72 = 91,7%. Với người còn tránh: nói chuyện 1-1, chẩn đoán nguồn kháng cự (sợ, thiếu kỹ năng...), hỗ trợ/kèm cặp, tìm vai trò phù hợp trước khi tính tới chia tay lịch sự."
+  - q: "Tại sao hoàn vốn thực tế của dự án thay đổi dài hơn ước tính 'chi phí một lần / lợi ích ròng'?"
+    a: "Vì adoption có độ trễ: lợi ích chỉ xuất hiện khi con người dùng cách mới (ví dụ tháng 1-3 gần như bằng 0), lại phát sinh chi phí vận hành từ sớm; case Mộc Hương 6,1 tháng so với 11 tháng thực."
+  - q: "Phân biệt Kotter 8 Steps và ADKAR: dùng khi nào?"
+    a: "Kotter nhìn từ góc độ tổ chức/lãnh đạo (lộ trình làm gì ở cấp công ty); ADKAR nhìn từ góc độ cá nhân (từng người kẹt ở đâu). Dùng kết hợp: Kotter làm khung, ADKAR đo từng người, Beckhard-Harris chẩn đoán ban đầu."
+  - q: "Vì sao Nokia có urgency mạnh mà vẫn thất bại?"
+    a: "Urgency chỉ là điều kiện cần: coalition nội bộ yếu (0), vision gây tranh cãi, công bố chuyển hướng sớm làm doanh số Symbian sụt (hiệu ứng Osborne), thiếu quick wins; tổng 4/16 theo bảng điểm chủ quan."
+  - q: "Giải thích vì sao McKinsey 7-S cảnh báo việc chỉ đổi chiến lược."
+    a: "Strategy chỉ là một trong 7 yếu tố; nếu Systems (phê duyệt 3 tháng), Shared values (khen thưởng chi phí thấp), Style (command and control), Structure (silo) giữ cũ thì hành vi không đổi. Cần kiểm tra alignment cả 7 S."
+  - q: "Một quản lý cấp trung 15 năm kinh nghiệm cản trở Agile. Xử lý thế nào?"
+    a: "Mời workshop, giao mentor, cho 6 tháng thích ứng; nếu vẫn kháng cự thì chuyển vị trí phù hợp (vd quản lý hệ thống cũ); nếu vẫn không phù hợp thì thảo luận chia tay lịch sự, công bằng, tránh làm quá nhanh gây sợ hãi."
+  - q: "Điểm khác nhau giữa urgency và panic; vì sao Kodak thiếu urgency?"
+    a: "Urgency là cảm giác lý trí + cảm xúc rằng cần thay đổi ngay và có lối thoát; panic là sợ hãi hoang mang. Kodak đang lãi lớn từ phim nên thấy 'không có khủng hoảng'; urgency phải đến từ dự báo, không từ báo cáo lãi lỗ quý này."
+
+checklist:
+  - "Đã nêu lý do thay đổi bằng số liệu cụ thể và một câu chuyện khách hàng/nhân viên thật; urgency thực tế, không bịa, kèm lối thoát."
+  - "Đã chấm D, V, F, R và biết yếu tố nào yếu nhất."
+  - "Chủ/CEO cam kết thời gian dài (nhiều tháng đến vài năm), không rút khi có kết quả đầu tiên; có sponsor là người đứng đầu."
+  - "Có liên minh dẫn dắt đủ quyền lực, chuyên môn, uy tín, ít nhất 1-2 người ảnh hưởng phi chính thức."
+  - "Tầm nhìn viết được trong 1-2 câu và nhân viên bình thường nói lại được."
+  - "Đã lập bản đồ các bên liên quan (Champions, Advocates, Neutral, Resisters, Blockers)."
+  - "Đã dự trù ngân sách: công cụ + đào tạo + thời gian của nhân viên + người kèm cặp."
+  - "Đã xác định 3-5 quick wins khả thi trong 3-6 tháng đầu và người thực hiện."
+  - "Đã chọn chỉ số dẫn dắt (adoption, ADKAR) và chỉ số kết quả (chi phí, doanh thu, hài lòng khách hàng)."
+  - "Giao tiếp lặp lại, đa kênh; có kênh hai chiều để hỏi và báo chướng ngại."
+  - "Lãnh đạo làm gương (hành động trước lời nói)."
+  - "Đo ADKAR định kỳ; can thiệp vào barrier point thay vì đào tạo đại trà."
+  - "Chướng ngại được xử lý trong 1-2 tuần và báo lại cho người đã nêu."
+  - "Quick win được công bố và thưởng kịp thời, không chờ cuối năm."
+  - "Không dùng dữ liệu mới để phạt nhân viên trong giai đoạn học việc."
+  - "Xử lý người kháng cự công bằng: lắng nghe, hỗ trợ, chuyển vai trò, chia tay tôn trọng nếu cần."
+  - "Không tuyên bố xong khi chưa đạt dấu hiệu của bước 8; tránh quá nhiều sáng kiến cùng lúc."
+  - "KPI, đánh giá, thưởng, tuyển dụng, onboarding, quy trình, cấu trúc đã khớp cách làm mới (kiểm tra bằng 7-S)."
+  - "Có câu chuyện hình mẫu và nghi thức mới; đo lại chỉ số kết quả sau 6-12 tháng và kiểm tra tái nghiện cách cũ."
+  - "Đã ghi lại bài học và lên kế hoạch giai đoạn thay đổi tiếp theo."
+  - "SME: chạy thí điểm một chi nhánh; champion được đồng nghiệp tin; ghép đôi người lớn tuổi; cam kết dùng dữ liệu; tính hoàn vốn theo adoption; có người theo dõi hậu triển khai 6-12 tháng."
+
+excel_google_sheets_templates:
+  - name: "Bảng chẩn đoán Beckhard-Harris"
+    description: "Cột D, V, F, R (0-1) theo nhóm/phòng ban; ô tích =D*V*F; ô kết luận =IF(D*V*F>R,\"Đạt\",\"Chưa đạt\"); thêm ô yếu nhất bằng INDEX/MATCH trên MIN(D,V,F)."
+  - name: "Bảng ADKAR theo mốc thời gian"
+    description: "5 hàng A-D-K-A-R x các cột tháng 0, 3, 9; trung bình =AVERAGE(); barrier point = yếu tố đầu tiên có điểm <= ngưỡng (ô ngưỡng riêng, vd 3,0) bằng INDEX/MATCH; biểu đồ đường theo thời gian."
+  - name: "Dashboard adoption"
+    description: "Cột tuần/tháng, số người dùng đúng, tổng người; =users/total; conditional formatting đỏ khi dưới 70%; thêm chỉ số reach, sentiment, champion engagement."
+  - name: "Bảng lũy kế hoàn vốn thay đổi"
+    description: "Cột tháng 0-24; cột % adoption; lợi ích = % x lợi ích gộp; chi phí vận hành từ tháng 2; lũy kế = SUM(lợi ích) - SUM(chi phí vận hành) - chi phí một lần; payback bằng MATCH trên cột lũy kế >= 0."
+  - name: "Bản đồ stakeholder và Force Field"
+    description: "Bảng 5 nhóm (Champions...Blockers) với người, chiến lược, người phụ trách, hạn; bảng Force Field hai cột lực đẩy/lực kìm cường độ 1-5, tổng =SUM()."
+  - name: "Kế hoạch giao tiếp 12 tuần và Kotter scorecard"
+    description: "Cột tuần, đối tượng, kênh, người nói, nội dung, đã làm; đếm số lần mỗi thông điệp được lặp (mục tiêu >= 7); bảng Kotter scorecard 8 bước chấm 0-2."

@@ -1,0 +1,1051 @@
+# m03 - Động lực nhóm (distill từ 03-team-dynamics.md)
+id: "m03"
+name_vi: "Động lực nhóm (Tuckman, Belbin, Lencioni, Aristotle, An toàn tâm lý)"
+name_en: "Team Dynamics"
+source_file: "03-team-dynamics.md"
+purpose: >
+  Giúp nhà quản lý/chủ SME xây dựng, chẩn đoán và sửa chữa một nhóm làm việc: biết nhóm đang ở giai đoạn nào (Tuckman),
+  thiếu hành vi đóng góp nào (Belbin), tầng nào của chuỗi tin cậy - tranh luận - cam kết - trách nhiệm - kết quả đang hỏng (Lencioni),
+  5 yếu tố nào quyết định hiệu quả (Project Aristotle, An toàn tâm lý của Edmondson), rồi chọn công cụ (điều lệ nhóm, RACI,
+  retrospective, pulse survey) và chỉ số đo lường phù hợp. Nguyên tắc xuyên suốt: cách các thành viên tương tác quan trọng hơn việc ai ở trong nhóm.
+when_to_use:
+  - "Vừa lập nhóm/dự án mới hoặc có thay đổi nhân sự lớn và cần dự báo giai đoạn (Forming-Storming-Norming-Performing) cùng kiểu lãnh đạo tương ứng."
+  - "Nhóm đang cãi nhau ở tuần 3-6 và quản lý lo 'tuyển sai người' (cần phân biệt Storming bình thường với Storming mãn tính)."
+  - "Nhóm toàn người giỏi nhưng kết quả kém, trễ hạn, nghỉ việc nhiều: chẩn đoán bằng Lencioni, GRPI, Belbin, pulse survey."
+  - "Cần ghép nhóm/tuyển dụng cân bằng vai trò hành vi thay vì chỉ chọn người giỏi chuyên môn nhất."
+  - "Cần xây điều lệ nhóm, ma trận RACI, họp nhìn lại (retrospective), khảo sát nhanh an toàn tâm lý."
+  - "Nhóm từ xa (remote), nhóm đồng sáng lập startup (3-5 người), nhóm độc hại (hiệu suất thấp, xung đột cao, nghỉ việc nhiều)."
+  - "Cần chọn chỉ số đo nhóm: Team NPS, velocity, tỷ lệ hoàn thành OKR, attrition, cycle time và tính ROI chương trình phát triển nhóm."
+  - "Nhận diện bẫy nhóm: groupthink, social loafing, free rider, Abilene, né xung đột, information silo, burnout, micromanagement."
+prerequisites: []
+related_modules:
+  - "m01 - Lý thuyết động lực: Ý nghĩa/Tác động trong Aristotle gắn với động lực nội tại; thưởng nhóm gắn T7 yếu tố Phần thưởng"
+  - "m02 - Phong cách lãnh đạo: kiểu lãnh đạo (chỉ đạo, huấn luyện, hỗ trợ, ủy quyền) phải khớp từng giai đoạn Tuckman"
+  - "m04 - Văn hóa tổ chức: norms của giai đoạn Norming và An toàn tâm lý là hạt nhân văn hóa nhóm"
+  - "m05 - Quyền lực và chính trị: Storming là cuộc tranh giành địa vị/quyền lực; vách ngăn thông tin và triệt tiêu phản biện (Boeing, Challenger)"
+  - "m06 - Quản trị xung đột: phân biệt xung đột nội dung/quy trình/quan hệ; xung đột lành mạnh vs độc hại"
+  - "m07 - Quản trị thay đổi: nhân sự mới/thay đổi tổ chức đẩy nhóm quay lại Forming/Storming"
+  - "m08 - Trí tuệ cảm xúc: tự nhận thức, lắng nghe chủ động, bộc lộ điểm yếu là hành vi nền cho tin cậy"
+  - "m09 - Ra quyết định: Groupthink, Abilene, khung quyết định có trọng số, quyền quyết cuối của người chủ sản phẩm"
+  - "m10 - People insight: pulse survey, chỉ số gắn kết, attrition và chi phí thay thế nhân sự"
+
+concepts:
+  - term_vi: "Nhóm làm việc (Team) so với tập hợp người (Group)"
+    term_en: "Team vs Group"
+    definition: >
+      Theo Katzenbach và Smith (1993), team là nhóm nhỏ (thường 2-10 người) có kỹ năng bổ sung, cùng cam kết một mục đích chung,
+      mục tiêu hiệu suất và cách làm việc mà họ tự thấy phải chịu trách nhiệm chung với nhau. Group thì trách nhiệm cá nhân, kết quả là tổng cá nhân,
+      lãnh đạo một người, giao tiếp chủ yếu là thông báo.
+    why_it_matters: >
+      Gọi một bộ phận là 'team' không làm nó thành team. Phân biệt này cho biết phải đầu tư gì: group cần quản lý công việc,
+      team cần xây mục tiêu chung, trách nhiệm chung và tin cậy. Công thức hiệu quả trong nguồn chỉ là khái niệm minh họa,
+      không phải công thức định lượng: Team Effectiveness = (Individual Skills x Synergy) + Leadership + Environment + Culture.
+  - term_vi: "Các loại nhóm"
+    term_en: "Types of teams"
+    definition: >
+      Functional (cùng bộ phận, chuyên môn sâu nhưng cô lập), Cross-functional (đa chức năng, sáng tạo nhưng dễ xung đột), Self-managed (tự quản, cần luật bằng văn bản),
+      Virtual (từ xa, linh hoạt nhưng mất face time), Project (tạm thời 3-12 tháng, tập trung nhưng giải tán mất momentum), Agile/Scrum (sprint 2-4 tuần, 5-9 người, cần đào tạo và đổi văn hóa).
+    why_it_matters: "Mỗi loại có ưu/nhược khác nhau nên cùng một mô hình (vd Tuckman) áp vào phải chỉnh: dự án ngắn nén các giai đoạn, nhóm từ xa phải viết ra mọi chuẩn mực."
+  - term_vi: "Tuckman 5 giai đoạn phát triển nhóm"
+    term_en: "Tuckman Forming-Storming-Norming-Performing-Adjourning"
+    definition: "Nhóm đi qua Forming (hình thành), Storming (xung đột), Norming (chuẩn mực), Performing (hiệu suất cao), Adjourning (kết thúc)."
+    why_it_matters: >
+      Bruce Tuckman (1965) tổng hợp khoảng 50 nghiên cứu nhóm nhỏ và thấy chuỗi 4 giai đoạn đầu; Tuckman và Jensen (1977) thêm Adjourning.
+      Giải quyết nỗi hoảng của quản lý mới khi nhóm cãi nhau tuần 3-4: xung đột đầu kỳ là bình thường và cần thiết. Mỗi giai đoạn cần kiểu lãnh đạo khác
+      (chỉ đạo, huấn luyện, hỗ trợ, ủy quyền); dùng sai (ủy quyền hoàn toàn khi đang Forming) là nguyên nhân phổ biến khiến nhóm kẹt.
+      Giới hạn: mô hình mô tả xu hướng, không bắt buộc tuyến tính; thời lượng/năng suất từng giai đoạn trong nguồn chỉ là ước lượng minh họa.
+  - term_vi: "Storming mãn tính"
+    term_en: "Chronic storming"
+    definition: "Nhóm kẹt ở Storming quá lâu (nguồn nêu 6-12 tháng là 'rất bệnh'; Storming thường chỉ 2-6 tuần)."
+    why_it_matters: "Là dấu hiệu bệnh lý chứ không phải giai đoạn bình thường; nguyên nhân thường là không có cơ chế ra quyết định/thoát xung đột (xem case PayNhanh). Cần đặt 'hạn dùng' cho Storming."
+  - term_vi: "Ba loại xung đột nhóm"
+    term_en: "Content, process, relationship conflict"
+    definition: >
+      Xung đột nội dung (khác ý kiến cách giải bài toán, có lợi nếu xử lý đúng), xung đột quy trình (không đồng ý cách làm, có thể cải tiến quy trình),
+      xung đột quan hệ/cá nhân (không hợp tính cách, chỉ chảy máu năng lượng, cần xử lý ngay).
+    why_it_matters: "Không phải xung đột nào cũng xấu: khuyến khích tranh luận về ý tưởng, can thiệp tức khắc với xung đột quan hệ. Gộp chung các loại là sai lầm kinh điển của quản lý."
+  - term_vi: "Chuẩn mực nhóm và Điều lệ nhóm"
+    term_en: "Team norms and Team Charter"
+    definition: "Chuẩn mực công việc, giao tiếp, hành vi hình thành ở Norming; Team Charter là văn bản hóa mục tiêu, vai trò (RACI), luật làm việc, cách giải quyết bất đồng, hệ quả và cách ăn mừng."
+    why_it_matters: "Hầu hết xung đột Storming đến từ việc mỗi người ngầm hiểu 'luật chơi' khác nhau; điều lệ biến hiểu ngầm thành văn bản để tranh cãi quay về điều lệ thay vì cảm xúc."
+  - term_vi: "Mô hình vai trò nhóm Belbin"
+    term_en: "Belbin Team Roles"
+    definition: >
+      9 vai trò hành vi chia 3 nhóm. Tư duy: Plant (sáng tạo), Monitor Evaluator (thẩm định), Specialist (chuyên gia). Hành động: Shaper (thúc đẩy), Implementer (thực thi),
+      Completer Finisher (hoàn thiện). Con người: Resource Investigator (tìm nguồn lực), Coordinator (điều phối), Teamworker (gắn kết). Một người đóng 1-3 vai tùy tình huống.
+    why_it_matters: >
+      Meredith Belbin (Henley Management College, Anh, 1981) quan sát các nhóm quản lý trong trò mô phỏng và thấy 'Apollo team' gồm toàn người thông minh thường thua
+      vì mọi người cùng tranh ý tưởng mà không ai thực thi hoặc cùng giống nhau bỏ sót điểm yếu. Kết luận: hiệu suất phụ thuộc cân bằng hành vi đóng góp, không chỉ năng lực.
+      Ban đầu 8 vai, vai Specialist bổ sung cuối thập niên 1980. Đổi câu hỏi tuyển dụng từ 'ai giỏi nhất?' sang 'nhóm đang thiếu hành vi nào?'. Bộ trắc nghiệm là công cụ thương mại,
+      độ giá trị khoa học còn tranh luận: dùng làm ngôn ngữ chung, không dán nhãn cố định.
+  - term_vi: "Điểm yếu cho phép"
+    term_en: "Allowable weakness"
+    definition: "Hạn chế đi kèm mỗi vai trò mà nhóm nên chấp nhận và bù bằng vai khác (vd Plant bỏ qua chi tiết, Monitor Evaluator chậm quyết)."
+    why_it_matters: "Mặt mạnh và mặt yếu của một vai là hai mặt của cùng một hành vi, nên không nên đòi một người hoàn hảo mọi mặt; thay vào đó thiết kế nhóm để các vai bù nhau."
+  - term_vi: "5 rối loạn của nhóm (Lencioni)"
+    term_en: "Five Dysfunctions of a Team"
+    definition: "Chuỗi kim tự tháp từ đáy: (1) Thiếu tin cậy, (2) Sợ xung đột, (3) Thiếu cam kết, (4) Né trách nhiệm, (5) Không chú ý kết quả."
+    why_it_matters: >
+      Patrick Lencioni (2002, sách The Five Dysfunctions of a Team) trình bày dạng truyện ngụ ngôn dựa trên kinh nghiệm tư vấn: đây là mô hình thực hành, không phải kết quả nghiên cứu định lượng.
+      Logic nhân quả: không tin nhau nên không dám tranh luận thẳng; không tranh luận thì chỉ gật đầu giả, không cam kết thật; không cam kết rõ thì không có chuẩn để nhắc nhau;
+      không nhắc nhau thì mỗi người ưu tiên lợi ích cá nhân. Vì vậy sửa từ đáy lên; sửa tầng trên khi tầng dưới còn hỏng chỉ chữa triệu chứng.
+  - term_vi: "Project Aristotle (Google)"
+    term_en: "Project Aristotle - 5 team effectiveness factors"
+    definition: "5 yếu tố: An toàn tâm lý (quan trọng nhất), Đáng tin cậy (Dependability), Cấu trúc và rõ ràng (Structure & Clarity), Ý nghĩa (Meaning), Tác động (Impact)."
+    why_it_matters: >
+      Google (khoảng 2012-2015, thông tin công khai nhắc khoảng 180 nhóm qua bài NYT 2016 và trang re:Work) giả định nhóm hiệu quả là nhóm gồm người giỏi nhất nhưng phát hiện
+      cách thành viên tương tác quan trọng hơn ai ở trong nhóm. Đẩy việc 'chọn người giỏi' xuống sau 'tạo môi trường để người giỏi làm việc cùng nhau'.
+      Lưu ý: con số '50% impact' trong tiêu đề mục nguồn chỉ là cách nói minh họa, không phải tỷ lệ Google công bố.
+  - term_vi: "An toàn tâm lý"
+    term_en: "Psychological Safety (Amy Edmondson)"
+    definition: "Niềm tin rằng mình có thể chấp nhận rủi ro quan hệ giữa người với người nơi làm việc (hỏi câu ngớ ngẩn, nhận sai, bất đồng với sếp, thử nghiệm thất bại) mà không sợ hậu quả xấu cho hình ảnh, địa vị, sự nghiệp."
+    why_it_matters: >
+      Amy Edmondson (Harvard) công bố khái niệm năm 1999. Phát hiện nổi tiếng từ nghiên cứu bệnh viện: nhóm điều dưỡng tốt hơn lại báo cáo nhiều lỗi hơn, không phải mắc nhiều lỗi hơn mà vì dám báo cáo.
+      Hệ quả: chỉ đếm lỗi được báo cáo có thể hiểu sai hoàn toàn chất lượng nhóm; thiếu an toàn tâm lý khiến vấn đề bị che giấu, mà vấn đề ẩn thì không ai sửa. Là nền tảng của Lencioni tầng 1 và Aristotle yếu tố 1.
+  - term_vi: "GRPI"
+    term_en: "Goals, Roles, Processes, Interpersonal"
+    definition: "Mô hình chẩn đoán 4 yếu tố theo thứ tự G, R, P, I."
+    why_it_matters: "Richard Beckhard (1972, nhà tư vấn phát triển tổ chức Mỹ). Thứ tự ưu tiên vì sửa quan hệ cá nhân khi mục tiêu còn mù mờ thường vô ích: mâu thuẫn chỉ là hệ quả của việc không rõ ai làm gì để đạt gì."
+  - term_vi: "Mô hình hiệu suất nhóm Drexler-Sibbet"
+    term_en: "Drexler-Sibbet Team Performance Model"
+    definition: "7 giai đoạn: Orientation, Trust Building, Goal/Role Clarification, Commitment, Implementation, High Performance, Renewal (có thể quay vòng)."
+    why_it_matters: "Mở rộng Tuckman: tách riêng làm rõ mục tiêu - vai trò - cam kết vì nhiều nhóm thất bại đúng ở các bước này, và thêm Renewal cho nhóm dài hạn. Nguồn ghi năm công bố chính xác cần kiểm chứng."
+  - term_vi: "T7 - 7 đòn bẩy lãnh đạo nhóm"
+    term_en: "T7 Model"
+    definition: "Trust, Team composition, Task definition, Tools and resources, Team process, Team reward, Team learning."
+    why_it_matters: "Danh mục kiểm tra để nhà quản lý, vốn hay chỉ nhìn 'con người', nhớ cả yếu tố hệ thống (công cụ, phần thưởng, học tập). Nguồn gốc tác giả cần kiểm chứng (Larson & LaFasto/Hay Group hoặc Weiss & Katzenbach)."
+  - term_vi: "Tư duy bầy đàn"
+    term_en: "Groupthink"
+    definition: "Nhóm tin 'chúng ta quyết đúng' nên dập phản biện, ảo tưởng nhất trí, người giữ cổng che tin xấu."
+    why_it_matters: "Thuật ngữ của Irving Janis (thập niên 1970) từ phân tích các quyết định chính sách thất bại. Gắn với Norming (rủi ro Groupthink) và case Challenger. Phòng bằng red team, khuyến khích phản biện, đa dạng nền tảng."
+  - term_vi: "Chuẩn hóa độ lệch"
+    term_en: "Normalization of deviance (Diane Vaughan)"
+    definition: "Những hỏng hóc nhỏ lặp lại mà không gây tai nạn dần bị coi là bình thường."
+    why_it_matters: "Giải thích vì sao dữ liệu cảnh báo có sẵn mà vẫn thông qua quyết định rủi ro (Challenger). SME: lô hàng lỗi nhỏ lặp lại, hợp đồng sai, sự cố an toàn lao động."
+  - term_vi: "Nghịch lý Abilene"
+    term_en: "Abilene Paradox"
+    definition: "Nhóm quyết định làm điều không ai muốn vì mỗi người tưởng người khác muốn nên không ai nói ra."
+    why_it_matters: "Thuật ngữ của Jerry Harvey (1974), câu chuyện gia đình lái xe nóng bức đến Abilene. Khác Groupthink ở chỗ ai cũng biết trong lòng mà im lặng. Phòng bằng câu hỏi thẳng 'có ai KHÔNG đồng ý không?'."
+  - term_vi: "Lười biếng xã hội và người hưởng lợi không đóng góp"
+    term_en: "Social loafing and Free rider"
+    definition: "Social loafing: bớt nỗ lực khi trách nhiệm bị pha loãng trong nhóm đông. Free rider: hưởng lợi từ kết quả nhóm mà không bỏ công."
+    why_it_matters: "Nhóm nhỏ (dưới 7 người), đóng góp cá nhân nhìn thấy được, đánh giá chéo/360, thưởng theo đóng góp là các biện pháp chính."
+  - term_vi: "Silo thông tin"
+    term_en: "Information silo"
+    definition: "Tri thức bị khóa trong một người/nhóm (vd chỉ Bob biết cài máy chủ)."
+    why_it_matters: "Người đó nghỉ thì rối loạn, mất tri thức then chốt; phòng bằng tài liệu, đào tạo chéo, ghép cặp, wiki. Cũng là bước đầu của hiện tượng vách ngăn bộ phận (Boeing 737 MAX)."
+  - term_vi: "OKR"
+    term_en: "Objectives and Key Results"
+    definition: "Mục tiêu (O) kèm 2-3 kết quả then chốt (KR) đo được, có thời hạn, hướng vào kết quả/tác động thay vì hoạt động."
+    why_it_matters: "Công cụ làm rõ mục tiêu cho yếu tố Cấu trúc và rõ ràng và cho tầng 5 Lencioni. Ví dụ đúng: 'giữ chân người dùng 70% (từ 50%)' thay vì 'xây tính năng X'. Mục tiêu đủ tham vọng nên đạt khoảng 70-80%."
+  - term_vi: "Ma trận RACI"
+    term_en: "RACI matrix"
+    definition: "Responsible (người làm), Accountable (người chịu trách nhiệm cuối, chỉ một), Consulted (được hỏi trước), Informed (được thông báo sau)."
+    why_it_matters: "Chấm dứt tình trạng 'ai cũng nghĩ người khác làm' hoặc 'hai người cùng quyết, không ai chịu'. Quy tắc cứng: mỗi việc có ít nhất một R và đúng một A; quá nhiều C làm chậm quyết định."
+
+formulas:
+  - id: "m03_stage_capacity_forecast"
+    name_vi: "Dự báo năng lực giao hàng theo giai đoạn Tuckman"
+    name_en: "Stage-based capacity forecast"
+    expression_latex: 'Delivered = \sum_{k} n_k \times C \times r_k'
+    expression_python: "sum(n * capacity * r for n, r in stages)"
+    excel: "=SUMPRODUCT(B2:B5, C2:C5) * capacity"
+    variables:
+      - {symbol: "stages", meaning: "Danh sách (số sprint n_k, tỷ lệ năng suất r_k) của từng giai đoạn", unit: "sprint, tỷ lệ 0-1"}
+      - {symbol: "capacity", meaning: "Năng lực tối đa của nhóm ở 100% hiệu suất", unit: "điểm/sprint"}
+    when_to_use: "Lập kế hoạch dự án ngắn/trung hạn cho nhóm mới và kiểm tra backlog có vừa không khi tính đến Forming/Storming năng suất thấp."
+    why_it_works: >
+      Tuckman cho thấy năng suất không đều: nhóm chưa phải 100% ngay từ ngày đầu. Cộng điểm giao được ở từng giai đoạn (số sprint x năng lực x tỷ lệ năng suất)
+      cho thấy phần backlog thực sự giao được thay vì giả định công suất cố định.
+    assumptions:
+      - "Tỷ lệ năng suất lấy mức giữa dải minh họa của nguồn: Forming 25%, Storming 15%, Norming 70%, Performing 95% (nguồn gọi là ước lượng minh họa)."
+      - "Không có thay đổi nhân sự lớn làm nhóm nhảy lùi giai đoạn."
+    pitfalls:
+      - "Coi bảng tỷ lệ năng suất như quy luật; nhóm thật có thể nhảy lùi khi thêm người mới nên cần đo lại sau mỗi thay đổi nhân sự."
+      - "Quên so sánh với backlog và đệm rủi ro."
+    interpretation: "Delivered so với backlog: dư 10% trở lên là có đệm; chênh âm nghĩa là cần cắt phạm vi, thêm sprint hoặc rút ngắn Storming."
+    example:
+      inputs: {stages: [[4, 0.25], [4, 0.15], [8, 0.70], [8, 0.95]], capacity: 60}
+      steps:
+        - "Forming: 4 x 60 x 0,25 = 60; Storming: 4 x 60 x 0,15 = 36"
+        - "Norming: 8 x 60 x 0,70 = 336; Performing: 8 x 60 x 0,95 = 456"
+        - "Tổng = 60 + 36 + 336 + 456 = 888 điểm, so với backlog 800 dư 88 điểm (11%)"
+      result: "888 điểm (giả định minh họa của case Studio Rồng Việt)"
+  - id: "m03_storming_delay_cost"
+    name_vi: "Chi phí chậm trễ do Storming kéo dài"
+    name_en: "Storming delay cost"
+    expression_latex: 'Cost = \frac{Gap}{V_{perf}} \times \frac{w}{4{,}345} \times P'
+    expression_python: "(backlog - delivered) / perf_velocity * sprint_weeks / 4.345 * monthly_payroll"
+    variables:
+      - {symbol: "backlog", meaning: "Tổng điểm cần giao", unit: "điểm"}
+      - {symbol: "delivered", meaning: "Điểm thực tế giao được trong kịch bản xấu", unit: "điểm"}
+      - {symbol: "perf_velocity", meaning: "Điểm/sprint khi nhóm ở Performing", unit: "điểm/sprint"}
+      - {symbol: "sprint_weeks", meaning: "Số tuần mỗi sprint", unit: "tuần"}
+      - {symbol: "monthly_payroll", meaning: "Chi phí nhân sự nhóm mỗi tháng", unit: "triệu VNĐ/tháng"}
+    when_to_use: "Thuyết phục chủ doanh nghiệp đầu tư vào điều lệ nhóm/giải quyết xung đột bằng cách quy ra tiền cho phần chậm trễ."
+    why_it_works: "Phần thiếu hụt điểm chia cho tốc độ ở Performing cho số sprint phải kéo dài thêm; đổi sang tháng rồi nhân chi phí nhân sự hằng tháng cho biết mỗi tháng trễ tốn bao nhiêu."
+    assumptions: ["1 tháng khoảng 4,345 tuần.", "Chỉ tính chi phí nhân sự, chưa tính doanh thu bỏ lỡ và mất nhân sự."]
+    pitfalls: ["Làm tròn 0,6 tháng như nguồn cho 237,6 triệu thay vì 236,6 triệu; sai lệch nhỏ chấp nhận được nhưng nên ghi rõ."]
+    interpretation: "Kịch bản B của case: thiếu 74 điểm tương ứng khoảng 0,6 tháng, xấp xỉ 237 triệu VNĐ; chênh 162 điểm (18%) so với kịch bản A."
+    example:
+      inputs: {backlog: 800, delivered: 726, perf_velocity: 57, sprint_weeks: 2, monthly_payroll: 396}
+      steps:
+        - "Thiếu hụt = 800 - 726 = 74 điểm"
+        - "74 / 57 = 1,30 sprint = 2,6 tuần = khoảng 0,6 tháng"
+        - "0,6 x 396 = khoảng 237 triệu VNĐ (giả định minh họa)"
+      result: "khoảng 237 triệu VNĐ (236,6 nếu không làm tròn)"
+  - id: "m03_storming_overrun_ratio"
+    name_vi: "Tỷ lệ vượt ngưỡng Storming"
+    name_en: "Storming overrun ratio"
+    expression_latex: 'R = \frac{M \times 4{,}345}{6}'
+    expression_python: "months_in_storming * 4.345 / 6"
+    variables:
+      - {symbol: "months_in_storming", meaning: "Số tháng nhóm đã ở Storming", unit: "tháng"}
+    when_to_use: "Kiểm tra nhóm có đang Storming mãn tính không bằng cách so với giới hạn trên 6 tuần của khoảng thông thường (2-6 tuần)."
+    why_it_works: "Quy số tháng sang tuần rồi chia cho cận trên 6 tuần cho biết nhóm vượt mức bình thường bao nhiêu lần; vượt xa nghĩa là thiếu cơ chế thoát chứ không phải giai đoạn tự nhiên."
+    assumptions: ["Khoảng 2-6 tuần là ước lượng minh họa, không phải chuẩn học thuật."]
+    pitfalls: ["Dùng như phân loại cứng; nhóm có xung đột nội dung lành mạnh kéo dài khác với xung đột quan hệ."]
+    interpretation: "R trên 1: vượt ngưỡng; R khoảng 3,6 (5 tháng) là Storming mãn tính cần trọng tài/luật ra quyết định."
+    example:
+      inputs: {months_in_storming: 5}
+      steps: ["5 tháng x 4,345 = khoảng 21,7 tuần", "21,7 / 6 = khoảng 3,6 lần giới hạn trên"]
+      result: "3,6 lần (case PayNhanh, giả định minh họa)"
+  - id: "m03_runway"
+    name_vi: "Runway (số tháng còn sống) và vốn đã đốt"
+    name_en: "Runway"
+    expression_latex: 'Runway = \frac{Cash - Burn \times t}{Burn}'
+    expression_python: "(cash - burn * elapsed_months) / burn"
+    variables:
+      - {symbol: "cash", meaning: "Vốn hạt giống ban đầu", unit: "triệu VNĐ"}
+      - {symbol: "burn", meaning: "Chi phí hoạt động hằng tháng (burn rate)", unit: "triệu VNĐ/tháng"}
+      - {symbol: "elapsed_months", meaning: "Số tháng đã trôi qua", unit: "tháng"}
+    when_to_use: "Đánh giá cái giá của tranh cãi sáng lập viên kéo dài: mỗi tháng Storming đốt đúng bằng burn rate mà không tạo sản phẩm."
+    why_it_works: "Runway biến cảm xúc thành tiền thật: chia vốn còn lại cho tốc độ đốt tiền cho biết còn bao nhiêu tháng để ra mắt và gọi vốn tiếp."
+    assumptions: ["Burn rate không đổi, chưa có doanh thu."]
+    pitfalls: ["Quên tính theo tuần khi sát nước; ngay cả kịch bản cứu được cũng không có đệm."]
+    interpretation: "Case PayNhanh: runway ban đầu 10 tháng; sau 7 tháng đã đốt 70% vốn, còn 3 tháng, phải gọi vốn sớm hoặc cắt chi xuống khoảng 380 triệu/tháng để kéo runway."
+    example:
+      inputs: {cash: 4500, burn: 450, elapsed_months: 7}
+      steps: ["Runway ban đầu = 4.500 / 450 = 10 tháng", "Sau 7 tháng đã đốt 7 x 450 = 3.150 triệu = 70% vốn", "Còn (4.500 - 3.150) / 450 = 3 tháng"]
+      result: "3 tháng"
+  - id: "m03_psych_safety_score"
+    name_vi: "Điểm An toàn tâm lý (khảo sát 5 câu, có đảo điểm)"
+    name_en: "Psychological safety pulse score"
+    expression_latex: 'S = \frac{(6 - x_1) + x_2 + x_3 + (6 - x_4) + x_5}{5}'
+    expression_python: "((6 - x1) + x2 + x3 + (6 - x4) + x5) / 5"
+    excel: "=((6-B1)+B2+B3+(6-B4)+B5)/5"
+    variables:
+      - {symbol: "x1", meaning: "Câu 1: lỗi bị dùng để chống lại bạn (câu đảo)", unit: "điểm 1-5"}
+      - {symbol: "x2", meaning: "Câu 2: có thể nêu vấn đề và chủ đề khó", unit: "điểm 1-5"}
+      - {symbol: "x3", meaning: "Câu 3: dám mạo hiểm trong nhóm", unit: "điểm 1-5"}
+      - {symbol: "x4", meaning: "Câu 4: khó nhờ người khác giúp (câu đảo)", unit: "điểm 1-5"}
+      - {symbol: "x5", meaning: "Câu 5: các thành viên tin nhau", unit: "điểm 1-5"}
+    when_to_use: "Đo An toàn tâm lý hằng quý; theo dõi chiều thay đổi hơn là điểm tuyệt đối."
+    why_it_works: "Câu hỏi đảo chiều bắt người trả lời đọc kỹ; đảo điểm bằng 6 trừ điểm gốc đưa mọi câu về cùng chiều (cao = an toàn) để lấy trung bình."
+    assumptions: ["Khảo sát ẩn danh, thang 1-5.", "Ngưỡng là quy ước thực hành, không phải chuẩn Edmondson công bố."]
+    pitfalls: ["Quên đảo điểm câu 1 và 4.", "Khảo sát có thể không phản ánh cảm nhận thật nếu người trả lời sợ bị nhận diện."]
+    interpretation: "4,5-5: xuất sắc (duy trì); 3,5-4,5: tốt (tìm mảng cải thiện); 2,5-3,5: đáng lo (kế hoạch hành động); dưới 2,5: khủng hoảng (can thiệp khẩn)."
+    example:
+      inputs: {x1: 2, x2: 4, x3: 4, x4: 2, x5: 4}
+      steps: ["Đảo câu 1: 6 - 2 = 4; đảo câu 4: 6 - 2 = 4", "Trung bình = (4 + 4 + 4 + 4 + 4) / 5 = 4,0"]
+      result: "4,0: vùng Tốt"
+  - id: "m03_pulse_average"
+    name_vi: "Điểm trung bình pulse survey / 5 yếu tố"
+    name_en: "Pulse survey / factor average"
+    expression_latex: '\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i'
+    expression_python: "sum(scores) / len(scores)"
+    excel: "=AVERAGE(B2:B6)"
+    variables:
+      - {symbol: "scores", meaning: "Điểm các yếu tố/khía cạnh (đã đảo câu đảo)", unit: "điểm 1-5"}
+    when_to_use: "Chấm Aristotle (5 yếu tố), GRPI + An toàn tâm lý, hoặc pulse survey 25 câu; so sánh theo thời gian."
+    why_it_works: "Một con số tổng giúp theo dõi xu hướng và đáy tương ứng Storming; điểm thành phần thấp nhất chỉ ra can thiệp đầu tiên."
+    assumptions: ["Các yếu tố cùng thang 1-5 và trọng số bằng nhau."]
+    pitfalls: ["Chỉ nhìn trung bình mà bỏ qua yếu tố thấp nhất (vd An toàn tâm lý 2,5 là cảnh báo sớm).", "Điểm của case quốc tế là đánh giá định tính/minh họa của người viết."]
+    interpretation: "Pulse survey 25 câu: trên 4/5 nhóm khỏe; 3-4 cần theo dõi; dưới 3 có vấn đề. Đáy ở Storming rồi tăng đều là dấu hiệu nhóm đã qua Storming."
+    example:
+      inputs: {scores: [2.6, 3.1, 2.4, 2.2, 2.8]}
+      steps: ["GRPI + An toàn tâm lý của agency Nắng Mới: Goals 2,6; Roles 3,1; Processes 2,4; Interpersonal 2,2; Psych safety 2,8", "Trung bình = (2,6 + 3,1 + 2,4 + 2,2 + 2,8) / 5 = 2,62", "Sau 6-12 tháng: (3,9 + 4,1 + 3,8 + 3,7 + 4,0) / 5 = 3,90"]
+      result: "2,62 (giả định minh họa)"
+  - id: "m03_team_nps"
+    name_vi: "NPS của nhóm"
+    name_en: "Team Net Promoter Score"
+    expression_latex: 'NPS = \%Promoters - \%Detractors'
+    expression_python: "(promoters - detractors) / total * 100"
+    excel: "=(COUNTIF(A:A,\">=9\")-COUNTIF(A:A,\"<=6\"))/COUNT(A:A)*100"
+    variables:
+      - {symbol: "promoters", meaning: "Số người cho 9-10", unit: "người"}
+      - {symbol: "detractors", meaning: "Số người cho 0-6", unit: "người"}
+      - {symbol: "total", meaning: "Tổng số người trả lời", unit: "người"}
+    when_to_use: "Đo nhanh lòng tin và hài lòng tổng thể bằng một câu: 'bạn sẵn sàng giới thiệu nhóm này cho đồng nghiệp ở mức nào?' (thang 0-10)."
+    why_it_works: "Trừ % người chê khỏi % người ủng hộ; nhóm trung lập (7-8) không tính vì không chủ động lan truyền. Một câu hỏi nên dễ lặp lại và dễ so sánh."
+    assumptions: ["Ẩn danh, đủ cỡ mẫu.", "Cỡ nhóm nhỏ làm NPS biến động mạnh."]
+    pitfalls: ["Đọc điểm tuyệt đối của nhóm 5-10 người như số thống kê; nên xem chiều thay đổi."]
+    interpretation: "Trên 50 rất tốt; 30-50 tốt; 0-30 cần theo dõi; dưới 0 khủng hoảng (ngưỡng của nguồn)."
+    example:
+      inputs: {promoters: 5, detractors: 2, total: 10}
+      steps: ["Nhóm 10 người: 5 người 9-10 (50%), 3 người 7-8 (30%), 2 người 0-6 (20%)", "NPS = 50% - 20% = 30"]
+      result: "30 (vùng Tốt)"
+  - id: "m03_okr_completion"
+    name_vi: "Tỷ lệ hoàn thành OKR quý"
+    name_en: "OKR completion rate"
+    expression_latex: 'C = \frac{1}{m}\sum_{j=1}^{m} p_j'
+    expression_python: "sum(progress) / len(progress)"
+    variables:
+      - {symbol: "progress", meaning: "Tỷ lệ đạt của từng OKR (0-100)", unit: "%"}
+    when_to_use: "Đánh giá cuối quý mức đạt mục tiêu nhóm."
+    why_it_works: "Trung bình mức đạt từng OKR cho bức tranh chung; ngưỡng 70-80% phản ánh mục tiêu đủ tham vọng (stretch)."
+    assumptions: ["Các OKR có trọng số bằng nhau; nhóm tự chấm theo thang riêng nếu KR không có mẫu số tự nhiên (như uptime)."]
+    pitfalls: ["Đạt 90-100% liên tục có thể là mục tiêu quá dễ.", "Chấm OKR kiểu uptime 99,5% so 99,9% thành 70% cần quy ước chấm rõ từ đầu."]
+    interpretation: "70-80% tốt; 90-100% có thể quá dễ; dưới 70% là cam kết quá sức hoặc thực thi yếu."
+    example:
+      inputs: {progress: [80, 100, 70]}
+      steps: ["OKR 1: 80.000/100.000 người dùng = 80%", "OKR 2: NPS 52 so với mục tiêu 50 = 100%", "OKR 3: uptime 99,5% so với 99,9%, nhóm tự chấm 70%", "(80 + 100 + 70) / 3 = 83,3%"]
+      result: "khoảng 83%"
+  - id: "m03_attrition_rate"
+    name_vi: "Tỷ lệ nghỉ việc của nhóm"
+    name_en: "Team attrition rate"
+    expression_latex: 'Attrition = \frac{Leavers}{Headcount_{start}}'
+    expression_python: "leavers / headcount_start"
+    excel: "=B2/B1"
+    variables:
+      - {symbol: "leavers", meaning: "Số người nghỉ trong năm", unit: "người"}
+      - {symbol: "headcount_start", meaning: "Số người đầu năm", unit: "người"}
+    when_to_use: "Chỉ số sức khỏe con người cạnh chỉ số năng suất; luôn kèm chi phí thay thế."
+    why_it_works: "Nghỉ việc nhiều là hậu quả cuối của an toàn tâm lý thấp, vi quản lý, kiệt sức; chỉ số trễ nhưng dễ đo."
+    assumptions: ["Dùng số đầu năm làm mẫu số (nguồn); bỏ qua nhân sự mới vào trong năm."]
+    pitfalls: ["Quên tính chi phí thay thế nên đánh giá thấp lợi ích đầu tư vào nhóm."]
+    interpretation: "Dưới 10% rất tốt; 10-20% bình thường; trên 20% cao, cần điều tra nguyên nhân (ngưỡng của nguồn)."
+    example:
+      inputs: {leavers: 2, headcount_start: 10}
+      steps: ["2 / 10 = 0,2"]
+      result: "20% (mức cao)"
+  - id: "m03_turnover_cost"
+    name_vi: "Chi phí thay thế nhân sự nghỉ việc"
+    name_en: "Cost of turnover"
+    expression_latex: 'C = N \times m \times W'
+    expression_python: "n_leavers * months_of_salary * monthly_salary"
+    variables:
+      - {symbol: "n_leavers", meaning: "Số người nghỉ", unit: "người"}
+      - {symbol: "months_of_salary", meaning: "Chi phí thay thế mỗi người quy ra số tháng lương (giả định 4 trong case)", unit: "tháng"}
+      - {symbol: "monthly_salary", meaning: "Lương trung bình mỗi tháng", unit: "VNĐ"}
+    when_to_use: "Quy nghỉ việc ra tiền để biện minh đầu tư vào nhóm; so sánh kịch bản trước/sau can thiệp."
+    why_it_works: "Chi phí thay thế (tuyển, đào tạo, giảm năng suất giai đoạn đầu) thường quy ước vài tháng lương mỗi người; hệ số 4 tháng chỉ là giả định của case, không phải chuẩn."
+    assumptions: ["Hệ số 4 tháng lương là giả định minh họa của case.", "Chưa tính mất kiến thức, tinh thần, khách hàng."]
+    pitfalls: ["Dùng hệ số 4 như sự thật phổ quát; nên chạy kịch bản thận trọng."]
+    interpretation: "Case Nắng Mới: mỗi người nghỉ tốn 4 x 15 triệu = 60 triệu; giảm từ 4 xuống 1 người nghỉ tiết kiệm 180 triệu."
+    example:
+      inputs: {n_leavers: 3, months_of_salary: 4, monthly_salary: 15000000}
+      steps: ["Chi phí mỗi người = 4 x 15.000.000 = 60.000.000", "Giảm từ 4 xuống 1 người nghỉ = 3 người x 60.000.000"]
+      result: "180.000.000 VNĐ (giả định minh họa)"
+  - id: "m03_team_program_roi"
+    name_vi: "ROI và thời gian hoàn vốn chương trình phát triển nhóm"
+    name_en: "Team development program ROI and payback"
+    expression_latex: 'ROI = \frac{Benefit - Cost}{Cost}, \quad Payback = \frac{Cost}{Benefit/12}'
+    expression_python: "((benefit - cost) / cost, cost / (benefit / 12))"
+    variables:
+      - {symbol: "benefit", meaning: "Tổng lợi ích quy tiền trong 12 tháng (tiết kiệm nghỉ việc, giảm làm lại...)", unit: "VNĐ/năm"}
+      - {symbol: "cost", meaning: "Tổng chi phí chương trình (workshop, trắc nghiệm, coaching, giờ họp)", unit: "VNĐ"}
+    when_to_use: "Thuyết phục chủ doanh nghiệp rằng sửa vận hành nhóm rẻ hơn tuyển thêm người giỏi."
+    why_it_works: "Đưa chi phí và lợi ích vào cùng một bảng bằng tiền; payback đổi lợi ích năm thành lợi ích tháng."
+    assumptions: ["Lợi ích là giả định; luôn chạy thêm kịch bản thận trọng (vd chỉ giảm còn 2 người nghỉ: tiết kiệm 120 triệu, tổng lợi ích 210 triệu)."]
+    pitfalls: ["Chỉ tính lợi ích dễ đo; bỏ giá trị chưa tính (giữ khách, uy tín tuyển dụng).", "Thành công phụ thuộc cam kết giám đốc (nếu vẫn quở trách trước đám đông thì an toàn tâm lý sụp lại)."]
+    interpretation: "Case Nắng Mới: ROI 164%, hoàn vốn khoảng 4,5 tháng; chi phí sửa chỉ bằng khoảng 28% chi phí tuyển thêm 2 người (360 triệu/năm)."
+    example:
+      inputs: {benefit: 270000000, cost: 102337500}
+      steps: ["Chi phí = 30.000.000 + 14.400.000 + 36.000.000 + (12 x 1,5 x 13 = 234 giờ x 93.750 = 21.937.500) = 102.337.500", "Lợi ích = 180.000.000 (nghỉ việc) + 90.000.000 (làm lại 80 giờ/tháng x 93.750 x 12) = 270.000.000", "ROI = 167.662.500 / 102.337.500 = 1,64; Payback = 102.337.500 / 22.500.000 = 4,55 tháng"]
+      result: "ROI 164%, hoàn vốn khoảng 4,5 tháng (giả định minh họa)"
+  - id: "m03_hourly_cost"
+    name_vi: "Chi phí giờ làm việc (quy lương ra giờ)"
+    name_en: "Hourly cost"
+    expression_latex: 'h = \frac{W}{H}'
+    expression_python: "monthly_salary / hours_per_month"
+    variables:
+      - {symbol: "monthly_salary", meaning: "Lương trung bình tháng", unit: "VNĐ"}
+      - {symbol: "hours_per_month", meaning: "Số giờ làm việc/tháng (case dùng 160)", unit: "giờ"}
+    when_to_use: "Quy giá trị giờ họp retrospective, giờ làm lại (rework) ra tiền."
+    why_it_works: "Cho phép tính chi phí thời gian họp và lãng phí làm lại bằng cùng đơn vị tiền với lợi ích."
+    assumptions: ["160 giờ/tháng; chưa tính chi phí ngoài lương (bảo hiểm, văn phòng)."]
+    pitfalls: ["Dùng chi phí giờ lương thay cho chi phí cơ hội thực."]
+    interpretation: "15 triệu/160 giờ = 93.750 VNĐ/giờ."
+    example:
+      inputs: {monthly_salary: 15000000, hours_per_month: 160}
+      steps: ["15.000.000 / 160 = 93.750"]
+      result: "93.750 VNĐ/giờ"
+  - id: "m03_weighted_decision_score"
+    name_vi: "Điểm quyết định có trọng số (giải xung đột nội dung)"
+    name_en: "Weighted decision scoring"
+    expression_latex: 'S_a = \sum_i w_i \, s_{a,i}'
+    expression_python: "sum(w * s for w, s in zip(weights, scores))"
+    excel: "=SUMPRODUCT(weights, scores)"
+    variables:
+      - {symbol: "weights", meaning: "Trọng số tiêu chí (tổng bằng 1)", unit: "tỷ lệ"}
+      - {symbol: "scores", meaning: "Điểm phương án theo từng tiêu chí", unit: "điểm 1-5"}
+    when_to_use: "Giai đoạn Storming khi tranh luận kỹ thuật/nội dung bế tắc: thống nhất tiêu chí và trọng số trước rồi chấm."
+    why_it_works: "Chuyển tranh cãi cảm tính thành khung tiêu chí minh bạch; xung đột nội dung trở thành bằng chứng, chuẩn mực quyết định (Norming)."
+    assumptions: ["Trọng số và điểm là phán đoán nhóm đồng thuận; trọng số tổng 1."]
+    pitfalls: ["Chọn trọng số để hợp thức hóa quyết định đã có sẵn.", "Không chạy lại với trọng số khác để kiểm tra độ nhạy."]
+    interpretation: "Phương án điểm cao nhất thắng; chênh nhỏ thì xem lại tiêu chí. Case: làm lại ngay 3,9 so với giữ cách cũ 2,9 và làm lại sau beta 2,55."
+    example:
+      inputs: {weights: [0.35, 0.25, 0.20, 0.20], scores: [5, 3, 3, 4]}
+      steps: ["Tiêu chí: chất lượng cân bằng 0,35; rủi ro trễ 0,25; chi phí 0,20; tinh thần nhóm 0,20", "Làm lại ngay (sprint 2): 0,35x5 + 0,25x3 + 0,20x3 + 0,20x4 = 1,75 + 0,75 + 0,6 + 0,8 = 3,9", "Giữ cách cũ = 2,9; làm lại sau beta = 2,55"]
+      result: "3,9 (làm lại ngay là phương án chọn)"
+  - id: "m03_belbin_coverage"
+    name_vi: "Độ phủ 9 vai trò Belbin"
+    name_en: "Belbin role coverage"
+    expression_latex: 'Coverage = |\bigcup_p R_p| / 9'
+    expression_python: "len(set(roles)) / 9"
+    variables:
+      - {symbol: "roles", meaning: "Danh sách tất cả vai (chính + phụ) có mặt trong nhóm", unit: "vai"}
+    when_to_use: "Kiểm tra nhóm 5-9 người đã bao phủ đủ hành vi chưa và vai nào còn trống để chủ động bù."
+    why_it_works: "SME không cần đủ 9 người mà cần bao phủ đủ 9 hành vi; đếm số vai khác nhau (tập hợp, không đếm trùng) rồi nhóm theo Tư duy/Hành động/Con người."
+    assumptions: ["Vai do đánh giá/trắc nghiệm; một người 1-3 vai."]
+    pitfalls: ["Coi độ phủ 9/9 là đảm bảo kết quả (cân bằng vai không bằng kết quả nhóm).", "Quá tải một người khi vai chính và phụ cùng nhóm hành động."]
+    interpretation: "9/9 và 3-3-3 là cân bằng lý tưởng; 7/9 (case Rồng Việt) vẫn dùng được nếu nhận diện và bù hai vai khuyết (Shaper, Resource Investigator)."
+    example:
+      inputs: {roles: [Coordinator, Monitor Evaluator, Shaper, Resource Investigator, Implementer, Completer Finisher, Specialist, Plant, Teamworker, Resource Investigator]}
+      steps: ["Nhóm 5 người Alice-Bob-Carol-David-Emily có 10 vai gồm cả chính và phụ", "Resource Investigator xuất hiện 2 lần nhưng chỉ tính 1", "Số vai khác nhau = 9/9; Tư duy 3, Hành động 3, Con người 3"]
+      result: "1,0 (9/9)"
+  - id: "m03_impact_hours"
+    name_vi: "Tác động quy ra giờ (đo ý nghĩa)"
+    name_en: "Impact in hours"
+    expression_latex: 'H = U \times h'
+    expression_python: "users * hours_saved_per_user"
+    variables:
+      - {symbol: "users", meaning: "Số người dùng", unit: "người"}
+      - {symbol: "hours_saved_per_user", meaning: "Số giờ mỗi người tiết kiệm mỗi tuần", unit: "giờ/tuần"}
+    when_to_use: "Viết lại mục tiêu từ hoạt động sang tác động để nhóm thấy ý nghĩa công việc."
+    why_it_works: "Con số tác động tổng chạm đến động lực nội tại hơn 'giao đúng hạn'."
+    assumptions: ["Số người dùng và giờ tiết kiệm là mục tiêu/ước lượng, cần đo lại."]
+    pitfalls: ["Nhầm hoạt động (số dòng mã, điểm vận tốc) với tác động."]
+    interpretation: "Ví dụ nguồn: 100.000 người x 0,5 giờ = 50.000 giờ/tuần."
+    example:
+      inputs: {users: 100000, hours_saved_per_user: 0.5}
+      steps: ["100.000 x 0,5 = 50.000"]
+      result: "50.000 giờ/tuần"
+  - id: "m03_relative_change"
+    name_vi: "Thay đổi tuyệt đối và tương đối của chỉ số (vd churn)"
+    name_en: "Absolute and relative change"
+    expression_latex: 'RC = \frac{x_0 - x_1}{x_0}'
+    expression_python: "(x0 - x1) / x0"
+    variables:
+      - {symbol: "x0", meaning: "Giá trị ban đầu", unit: "%"}
+      - {symbol: "x1", meaning: "Giá trị sau", unit: "%"}
+    when_to_use: "Đánh giá mục tiêu nhóm: giảm churn từ 5% xuống 3% là giảm 2 điểm phần trăm (tương đối 40%)."
+    why_it_works: "Phân biệt điểm phần trăm với phần trăm tương đối tránh hiểu sai mức cải thiện giữa nhóm tập trung cá nhân và nhóm tập trung kết quả."
+    assumptions: ["Cùng cơ sở đo."]
+    pitfalls: ["Báo cáo tương đối nghe lớn nhưng không nói điểm phần trăm tuyệt đối."]
+    interpretation: "Case churn: kịch bản cá nhân 5% xuống 4,5% = 10% tương đối; kịch bản nhóm 5% xuống 3,2% = 36% tương đối."
+    example:
+      inputs: {x0: 5, x1: 3.2}
+      steps: ["Giảm tuyệt đối = 5 - 3,2 = 1,8 điểm phần trăm", "Tương đối = 1,8 / 5 = 36%", "Kịch bản xấu: (5 - 4,5)/5 = 10%; mục tiêu: (5 - 3)/5 = 40%"]
+      result: "36% tương đối"
+  - id: "m03_t7_priority"
+    name_vi: "Ưu tiên cải thiện từ kiểm toán T7"
+    name_en: "T7 audit priority"
+    expression_latex: 'k^* = \arg\min_k s_k'
+    expression_python: "min(scores, key=scores.get)"
+    variables:
+      - {symbol: "scores", meaning: "Điểm 1-10 cho từng trong 7 yếu tố T7", unit: "điểm"}
+    when_to_use: "Kiểm toán lãnh đạo nhóm theo quý: chấm 7 yếu tố, chọn 1-2 yếu tố thấp nhất cải thiện rồi chấm lại."
+    why_it_works: "Chọn điểm thấp nhất tập trung nguồn lực vào điểm nghẽn; nếu Trust thấp thì ưu tiên trước vì là nền tảng của các yếu tố khác."
+    assumptions: ["Tối đa 70 điểm (7 x 10); điểm do nhóm chấm."]
+    pitfalls: ["Cải thiện mọi yếu tố cùng lúc.", "Giả định lãnh đạo mạnh; nếu lãnh đạo yếu thì kiểm toán vô nghĩa."]
+    interpretation: "Ví dụ nguồn: Tin cậy 4, Phần thưởng 5, các yếu tố khác từ 7 trở lên, ưu tiên Tin cậy trước."
+    example:
+      inputs: {scores: {Trust: 4, Reward: 5, Composition: 7, Task: 8, Tools: 7, Process: 7, Learning: 8}}
+      steps: ["Tin cậy 4 là thấp nhất, Phần thưởng 5 là thấp thứ hai", "Ưu tiên Tin cậy (nền tảng), rồi Phần thưởng"]
+      result: "Trust"
+
+frameworks:
+  - id: "m03_team_types"
+    name_vi: "6 loại nhóm"
+    name_en: "Types of teams"
+    origin: "Phân loại thực hành trong nguồn; ví dụ Spotify Squads, Buffer (toàn remote), Scrum team là minh họa."
+    components:
+      - "Functional: cùng bộ phận, leader hành chính; ưu rõ ràng/chuyên sâu, nhược cô lập, đổi mới chậm"
+      - "Cross-functional: Marketing + IT + Sales + R&D, leader PM/Product Owner; ưu sáng tạo, nhược xung đột/dài dòng"
+      - "Self-managed: không leader truyền thống; ưu trách nhiệm cao, nhược khó quản lý, cần luật văn bản và đào tạo kỹ"
+      - "Virtual: phân tán địa lý, công cụ Slack/Zoom/Jira; ưu linh hoạt/chi phí thấp, nhược cô lập, mất face time"
+      - "Project: tạm thời 3-12 tháng, ba ràng buộc Scope-Time-Budget; nhược giải tán mất momentum"
+      - "Agile/Scrum: Scrum Master, Product Owner, Developers 5-9 người, sprint 2-4 tuần, daily standup, review, retrospective"
+    when_to_use: "Chọn cấu trúc nhóm phù hợp mục tiêu và nhận biết nhược điểm cần bù."
+    how_to_apply: ["Xác định mục tiêu (chuyên môn sâu, dự án, sản xuất, giao hàng nhanh)", "Chọn loại nhóm", "Chuẩn bị biện pháp bù nhược điểm (charter, RACI, công cụ, đào tạo)"]
+    how_to_read_results: "Không có loại nhóm tốt tuyệt đối; nhóm tự quản và Agile đòi hỏi trưởng thành văn hóa cao."
+    pitfalls: ["Sao chép tên gọi (Squad/Tribe) mà thiếu điều kiện nền."]
+    example: "Công ty 15 người nên bắt đầu bằng 2-3 nhóm nhỏ cross-functional với người sở hữu sản phẩm rõ ràng."
+  - id: "m03_tuckman"
+    name_vi: "Tuckman 5 giai đoạn phát triển nhóm"
+    name_en: "Tuckman's Stages of Group Development"
+    origin: "Bruce Tuckman (1965, nhà tâm lý Hải quân Mỹ) tổng hợp khoảng 50 nghiên cứu nhóm nhỏ (trị liệu, huấn luyện, thí nghiệm); Tuckman và Jensen (1977) thêm Adjourning."
+    components:
+      - "Forming (1-3 tuần, năng suất khoảng 20-30%): hào hứng nhưng lo lắng, im lặng, hỏi 'tôi là ai trong nhóm?'. Lãnh đạo: Directive (chỉ đạo), tạo an toàn tâm lý, charter, 1-1, icebreaker"
+      - "Storming (2-6 tuần, năng suất khoảng 10-20%, có thể âm): tranh quyền lực, bè nhóm, thách thức leader, chỉ trích. Lãnh đạo: Coaching"
+      - "Norming (2-8 tuần, năng suất khoảng 60-80%): hòa hợp, hình thành norms, nói 'chúng tôi'. Lãnh đạo: Supportive, văn bản hóa norms"
+      - "Performing (2 tháng trở lên, 90-100%): tự tổ chức, owner mentality, xung đột giải quyết nhanh. Lãnh đạo: Delegative, gỡ vướng, nối với mục đích"
+      - "Adjourning (1-2 tuần): kết thúc, retrospective cuối, knowledge transfer, ăn mừng, 1-1 chuyển tiếp. Lãnh đạo: Celebratory"
+    when_to_use: "Nhóm mới/dự án 3-12 tháng; mọi nhóm sau thay đổi nhân sự lớn; đặt kỳ vọng với các bên liên quan."
+    how_to_apply:
+      - "Xác định giai đoạn hiện tại từ dấu hiệu quan sát (xem components) và dữ liệu (pulse survey, velocity)"
+      - "Khớp kiểu lãnh đạo với giai đoạn (chỉ đạo, huấn luyện, hỗ trợ, ủy quyền, ghi nhận)"
+      - "Forming: Team Charter workshop khoảng 4 giờ, 1-1 mỗi người khoảng 30 phút, welcome lunch, onboarding công cụ/quy trình/văn hóa"
+      - "Storming: công khai bình thường hóa xung đột, phân loại nội dung/quy trình/quan hệ, đặt cơ chế quyết định (vote, leader, consensus) và giới hạn thời gian, 1-1, coaching không đóng dấu"
+      - "Norming: văn bản hóa norms thành charter, nhất quán công bằng, onboard người mới theo cách chúng ta làm việc, xử lý vi phạm ngay"
+      - "Performing: ủy quyền, gỡ vướng, nối mục đích, phát triển người, bảo vệ khỏi can thiệp ngoài, thách thức nâng chuẩn"
+      - "Adjourning: retrospective cuối 2 giờ (3 điều tốt, 3 pain point, learnings, gratitude round), tài liệu hóa, họp 1-1 chuyển tiếp"
+    how_to_read_results: "Mô hình mô tả xu hướng; nhóm có thể nhảy lùi (người mới vào làm nhóm về Forming/Storming); thời lượng và % năng suất là ước lượng minh họa."
+    pitfalls:
+      - "Forming: slow start, miscommunication, free rider, leader kiểm soát quá mức"
+      - "Storming: né xung đột (lặn ẩn), áp đặt 'tôi là leader', mất người giỏi, bè nhóm cứng lại, Storming mãn tính 6-12 tháng"
+      - "Norming: Groupthink, áp lực đồng thuận (introvert bị ép), không còn bất đồng, tưởng đã Performing nên lơi và rơi lại Storming"
+      - "Performing: tự mãn, quá tự tin, mất tập trung (thêm scope), người chủ chốt rời đi, burnout"
+      - "Giả định tuyến tính; không giải thích vì sao nhóm kẹt Storming; không nói cân bằng vai trò; không đo hiệu quả (chỉ năng suất)"
+    example: "Studio game 18 người: dự báo 888 điểm trong 24 sprint so với backlog 800; nếu Storming kéo thêm 4 sprint chỉ còn 726 (thiếu 74 điểm, khoảng 237 triệu VNĐ nhân sự)."
+  - id: "m03_storming_navigation"
+    name_vi: "Điều hướng Storming (6 bước)"
+    name_en: "Storming navigation"
+    origin: "Thực hành lãnh đạo nhóm trong nguồn, minh họa bằng tranh luận Microservices vs Monolith (giả định)."
+    components: ["Normalize", "Phân loại xung đột", "Cơ chế giải quyết", "1-1", "Coaching không punishing", "Giữ tin cậy vào leader"]
+    when_to_use: "Nhóm đang cãi nhau, chia bè, thách thức leader ở tuần 3-6."
+    how_to_apply:
+      - "Công khai xác nhận: 'conflict là bình thường', tránh nói 'phải yêu thương nhau'"
+      - "Phân biệt: xung đột nội dung thì khuyến khích tranh luận có cấu trúc; xung đột quan hệ thì ngăn chặn và can thiệp tức khắc"
+      - "Thỏa thuận trước cách quyết (vote, leader, consensus) và thời hạn, vd tranh luận 30 phút rồi quyết"
+      - "1-1 với từng người liên quan: hỏi tại sao không đồng ý, validate cảm xúc, bắc cầu sang quan điểm người kia"
+      - "Coaching: 'bạn có ý kiến hay, cách nói có thể nhẹ nhàng hơn' thay vì dán nhãn người gây rối"
+      - "Công bằng, công khai, quyết định rõ; ghi ADR (Architecture Decision Record): vì sao, ưu, nhược, phương án đã xét; check-in sau 2 tuần"
+    how_to_read_results: "Quyết định tốt = có tiêu chí (scalability, năng lực nhóm, timeline) và người phản đối được ghi nhận; ví dụ nguồn chọn Monolith trước nhưng kiến trúc cho phép tách service sau."
+    pitfalls: ["Né xung đột, áp đặt quyền leader, để bè nhóm kết tinh"]
+    example: "Debate 10 phút trình bày + 10 phút Q&A mỗi người, quyết định hybrid, Junior học Microservices trong dự án."
+  - id: "m03_belbin"
+    name_vi: "Belbin 9 vai trò nhóm"
+    name_en: "Belbin Team Role Model"
+    origin: "Meredith Belbin (1981, Henley Management College); sách Management Teams (1981), Team Roles at Work (1993); Specialist thêm cuối thập niên 1980."
+    components:
+      - "Plant (Tư duy): ý tưởng đột phá, lateral thinking; yếu: bỏ qua chi tiết/ràng buộc, giao tiếp kém; nhiều Plant gây tê liệt vì ý tưởng"
+      - "Monitor Evaluator (Tư duy): phân tích logic, bắt lỗi, tư duy chiến lược; yếu: hoài nghi, quyết chậm, ít nhiệt huyết"
+      - "Specialist (Tư duy): chiều sâu chuyên môn, đặt chuẩn; yếu: hẹp, cầu toàn, khó cộng tác, có thể kiêu ngạo"
+      - "Shaper (Hành động): thúc đẩy, thích thử thách, vượt chướng ngại; yếu: gay gắt, gây va chạm, đẩy quá mức; Shaper + Shaper xung đột liên tục"
+      - "Implementer (Hành động): thực tế, có tổ chức, đáng tin, đúng hạn; yếu: kém linh hoạt, kháng thay đổi, ít sáng tạo"
+      - "Completer Finisher (Hành động): tỉ mỉ, zero defect, theo đến cùng; yếu: cầu toàn, lo âu, vi mô, dễ kiệt sức khi áp lực hạn chót"
+      - "Resource Investigator (Con người): hướng ngoại, mạng lưới, tìm nguồn lực/đối tác; yếu: nông, dễ xao nhãng, theo đuổi đến cùng yếu"
+      - "Coordinator (Con người): điềm tĩnh, làm rõ mục tiêu, giao việc đúng người; leader chính thức thường là Coordinator; yếu: bị coi là kiểm soát, giao quá nhiều"
+      - "Teamworker (Con người): hợp tác, ngoại giao, hòa giải, nâng tinh thần; yếu: thiếu quyết đoán, quá mềm, tiếng nói yếu"
+    when_to_use: "Ghép nhóm, tuyển dụng, kế hoạch kế nhiệm, hiểu xung đột giữa hai vai đối nghịch (Shaper-Monitor, Plant-Monitor, Shaper-Teamworker)."
+    how_to_apply:
+      - "Liệt kê vai chính và vai phụ của từng người (trắc nghiệm hoặc quan sát/phỏng vấn hành vi)"
+      - "Đếm số vai khác nhau (tập hợp, không đếm trùng) và theo 3 nhóm Tư duy/Hành động/Con người"
+      - "Nhận diện khoảng trống và rủi ro quá tải (Carol vừa Implementer vừa Completer Finisher; Alice vừa Coordinator vừa Monitor Evaluator)"
+      - "Bù khoảng trống bằng tuyển hoặc phát triển; nhóm thiếu Teamworker sẽ xung đột, thiếu Monitor Evaluator sẽ tư duy bầy đàn, thiếu Resource Investigator sẽ khép kín"
+      - "Phỏng vấn hành vi: 'kể lần nhóm bất đồng bạn xử lý thế nào' thiên Teamworker; 'kể lần dẫn dắt đổi mới' thiên Plant/Shaper; 'đảm bảo chất lượng dự án thực thi' thiên Completer/Implementer"
+      - "Kế nhiệm: Coordinator phát triển từ Implementer hoặc Teamworker; Specialist tuyển trẻ và kèm cặp"
+    how_to_read_results: "Cân bằng lý tưởng là 9/9 vai, 3-3-3; không cần 9 người. Dùng làm ngôn ngữ chung, không dán nhãn."
+    pitfalls: ["Đánh giá chủ quan, thiên lệch văn hóa Anh, không đo kết quả nhóm, chi phí công cụ", "Tuyển hai Specialist giỏi nhất cạnh nhau dễ va chạm; nên ghép Specialist + Implementer + Teamworker"]
+    example: "Nhóm 5 người Alice (Coordinator/Monitor Evaluator), Bob (Shaper/RI), Carol (Implementer/CF), David (Specialist/Plant), Emily (Teamworker/RI) phủ 9/9 và cân bằng 3-3-3."
+  - id: "m03_lencioni"
+    name_vi: "5 rối loạn của nhóm (Lencioni)"
+    name_en: "Five Dysfunctions of a Team"
+    origin: "Patrick Lencioni (2002), mô hình thực hành dạng truyện ngụ ngôn từ kinh nghiệm tư vấn, không phải nghiên cứu định lượng."
+    components:
+      - "1. Absence of Trust: im lặng, che điểm yếu, phòng thủ, bè nhóm, đồn thổi. Nguyên nhân: lãnh đạo phòng thủ/không bộc lộ điểm yếu, tôn thờ cá nhân, tổn thương quá khứ, thiếu 1-1"
+      - "2. Fear of Conflict: hòa hợp giả tạo, thụ động gây hấn, họp kém, chôn vấn đề. Nguyên nhân: tin xung đột phá quan hệ, né cuộc nói khó, lãnh đạo dập tranh luận"
+      - "3. Lack of Commitment: quyết định mơ hồ, nói nước đôi, quay lại bàn quyết định cũ, thiếu cấp bách. Nguyên nhân: chưa tranh luận đủ, tê liệt phân tích, đòi đồng thuận 100%"
+      - "4. Avoidance of Accountability: hạ kỳ vọng, trễ hạn không hệ quả, người hưởng lợi không đóng góp, đổ lỗi bên ngoài. Nguyên nhân: chưa cam kết, sợ phá quan hệ, chuẩn không rõ"
+      - "5. Inattention to Results: tập trung mục tiêu cá nhân, ăn mừng cá nhân, tranh công. Nguyên nhân: không có mục tiêu nhóm, thưởng cá nhân, cái tôi"
+    when_to_use: "Nhóm giỏi nhưng kẹt; chẩn đoán trước khi tuyển thêm; nhóm startup/nhóm độc hại."
+    how_to_apply:
+      - "Chẩn đoán từ đáy lên: tầng nào hỏng đầu tiên (bằng chứng + điểm 1-5)"
+      - "Tin cậy (khó nhất, tối thiểu 2-3 tháng): lãnh đạo bộc lộ điểm yếu trước, 1-1 cá nhân, nói rõ an toàn tâm lý, nhất quán, lắng nghe chủ động"
+      - "Xung đột (tháng 2-3, song song tin cậy): định nghĩa lại xung đột là tích cực, quy trình tranh luận có giới hạn thời gian, làm gương, tách ý tưởng khỏi con người, điều phối"
+      - "Cam kết (tháng 3-4): xác nhận đã tranh luận xong, viết 'QUYẾT ĐỊNH + LÝ DO', hỏi cam kết rõ 'có', quyết nhanh, thống nhất hạn và tiêu chí thành công, cam kết công khai"
+      - "Trách nhiệm (liên tục từ tháng 4): chuẩn/chỉ số rõ (Definition of Done), đồng đội nhắc nhau, tiến độ công khai (kanban, burndown), hệ quả tự nhiên, ghi nhận người nhận trách nhiệm, xử lý sớm trong 24 giờ, 1-1 trước"
+      - "Kết quả (liên tục): OKR nhóm, chỉ số minh bạch, ăn mừng thắng lợi nhóm, nhóm trước cá nhân, hướng khách hàng, nhìn lại và lặp"
+      - "Quick wins: tháng 1 1-1 hằng tuần và công bố mục tiêu nhóm; tháng 2 tranh luận có cấu trúc + RACI; tháng 3 retrospective + định nghĩa hoàn thành"
+    how_to_read_results: "Tầng đáy hỏng thì biện pháp tầng trên (OKR, họp giao ban) vô hiệu. Xung đột lành mạnh: tập trung ý tưởng, tìm giải pháp tốt nhất, giả định thiện chí, có thể đổi ý, tranh luận rồi cam kết, công khai; độc hại ngược lại."
+    pitfalls: ["Xây tin cậy mất tháng; quy trách nhiệm cho lãnh đạo; có thể đơn giản hóa; không bàn thành phần nhóm (tuyển đúng người thế nào)"]
+    example: "Case Pixar Braintrust sửa từng tầng; case PayNhanh có Lencioni trung bình 1,7."
+  - id: "m03_project_aristotle"
+    name_vi: "Project Aristotle - 5 yếu tố nhóm hiệu quả"
+    name_en: "Google Project Aristotle"
+    origin: "Google khoảng 2012-2015, thông tin công khai khoảng 180 nhóm (NYT 2016, re:Work)."
+    components:
+      - "1. An toàn tâm lý (quan trọng nhất)"
+      - "2. Đáng tin cậy (Dependability): giao đúng điều đã hứa, đúng hạn, chất lượng nhất quán; hứa vừa phải, ước lượng cộng 10-20% cho ẩn số, báo sớm khi sắp trễ"
+      - "3. Cấu trúc và rõ ràng: rõ mục tiêu (OKR), vai trò (RACI), kế hoạch (mốc, phụ thuộc), ưu tiên (3 việc quan trọng nhất sprint)"
+      - "4. Ý nghĩa: hiểu vì sao công việc quan trọng (tác động người dùng, sứ mệnh, đổi mới, xã hội, phát triển cá nhân), không phải lương/chức danh"
+      - "5. Tác động: thấy công việc tạo khác biệt; đo bằng chỉ số dẫn trước (tương tác, chất lượng mã) và theo sau (giữ chân, doanh thu, NPS), chia sẻ tác động hằng tuần/tháng/quý"
+    when_to_use: "Chấm sức khỏe nhóm, đặc biệt nhóm từ xa và nhóm tri thức; khảo sát 19-25 câu."
+    how_to_apply: ["Chấm 5 yếu tố (thang 1-5) bằng pulse survey", "Lấy trung bình và yếu tố thấp nhất", "Lập kế hoạch cho 1-2 yếu tố thấp, nhất là An toàn tâm lý", "Đo lại hằng quý"]
+    how_to_read_results: "An toàn tâm lý thấp thì ý nghĩa cao cũng không cứu nhóm (case Challenger)."
+    pitfalls: ["Khảo sát có thể không phản ánh cảm nhận thật", "Nói 'cái gì' nhiều hơn 'vì sao'", "Bối cảnh Google không chắc áp dụng cho startup/cơ quan nhà nước", "Tác động dài hạn chưa rõ"]
+    example: "Studio Rồng Việt: trung bình 3,00 (tháng 2), 3,18 (tháng 4, đáy), 3,82 (tháng 8), 4,32 (tháng 12); giả định minh họa."
+  - id: "m03_psych_safety"
+    name_vi: "An toàn tâm lý (Edmondson) - 3 lớp, 4 hành vi, 7 cách xây"
+    name_en: "Psychological Safety framework"
+    origin: "Amy Edmondson (Harvard, 1999); The Fearless Organization (2018)."
+    components:
+      - "3 lớp: giữa người với người (không bị bẽ mặt), tổ chức (chính sách không trả thù người lên tiếng), tình huống (dự án/cuộc họp cụ thể)"
+      - "4 hành vi cho thấy an toàn cao: xin giúp đỡ, nhận lỗi, chất vấn quyết định, đưa ý tưởng mới"
+      - "Ma trận 2 trục (khung tư duy diễn giải của người viết): tiêu chuẩn cao + an toàn thấp = lo âu, kiệt sức; cao + cao = xuất sắc bền vững; thấp + cao = thoải mái, ít bứt phá; thấp + thấp = độc hại"
+    when_to_use: "Văn hóa sợ sai; nhóm im lặng trong họp; sau sự cố giấu lỗi; nhóm từ xa."
+    how_to_apply:
+      - "Lãnh đạo làm gương về sự dễ tổn thương (nói 'tôi chưa biết', 'tôi đã sai')"
+      - "Phản ứng đúng với tin xấu: 'may là phát hiện sớm, tác động thế nào, sửa ra sao, phòng lần sau thế nào' thay vì 'ai làm hỏng'"
+      - "Mời đóng góp sớm và thường xuyên ('tôi đang bỏ sót điều gì?')"
+      - "Đáp lại không phòng thủ ('bạn lo điều gì')"
+      - "Thừa nhận mình có thể sai"
+      - "Nêu rõ mục đích chung (cùng học để phục vụ người dùng)"
+      - "Lập chuẩn mực hành vi (ngắt lời để làm rõ được khuyến khích, bất đồng được trân trọng)"
+      - "Đo bằng khảo sát 5 câu hằng quý; kế hoạch hành động Q1 làm gương + phản ứng tin xấu, Q2 mời đóng góp + không phòng thủ, Q3 chuẩn mực + mục đích chung, khảo sát lại sau 3 tháng"
+    how_to_read_results: "4,5-5 xuất sắc; 3,5-4,5 tốt; 2,5-3,5 đáng lo; dưới 2,5 khủng hoảng (quy ước thực hành)."
+    pitfalls: ["Xây chậm 6-12 tháng", "Phụ thuộc lãnh đạo (lãnh đạo phòng thủ thì không xây được)", "Văn hóa công ty độc hại cản trở"]
+    example: "Edmondson ở bệnh viện: nhóm điều dưỡng tốt hơn báo cáo nhiều lỗi hơn vì dám báo cáo."
+  - id: "m03_grpi"
+    name_vi: "GRPI"
+    name_en: "GRPI Model (Beckhard)"
+    origin: "Richard Beckhard (1972), một số tài liệu sau bổ sung diễn giải."
+    components: ["G Goals: rõ ràng, đo được, khả thi, có thời hạn, đồng thuận", "R Roles: ai làm gì, ai quyết, ai chịu trách nhiệm (RACI)", "P Processes: họp, duyệt mã, kiểm thử, chuẩn hóa, cải tiến (retrospective, kaizen)", "I Interpersonal: tin cậy, giao tiếp mở, giải quyết xung đột sớm"]
+    when_to_use: "Chẩn đoán nhanh nhóm kém hiệu quả; mọi quy mô nhóm."
+    how_to_apply: ["Chấm từng yếu tố theo G, R, P, I (pulse survey 1-5)", "Sửa theo thứ tự: mục tiêu mơ hồ dùng OKR; vai trò chồng chéo dùng RACI; quy trình rối thiết kế lại luồng; quan hệ căng giải quyết xung đột/xây nhóm", "Đo lại"]
+    how_to_read_results: "Điểm thấp nhất cho thứ tự ưu tiên; mâu thuẫn cá nhân thường là hệ quả của G, R, P chưa rõ."
+    pitfalls: ["Rất cơ bản, chưa chỉ cách giải quyết xung đột, hướng dẫn triển khai nhẹ"]
+    example: "Agency Nắng Mới: Goals 2,6; Roles 3,1; Processes 2,4; Interpersonal 2,2; Psych safety 2,8."
+  - id: "m03_drexler_sibbet"
+    name_vi: "Drexler-Sibbet 7 giai đoạn"
+    name_en: "Drexler-Sibbet Team Performance Model"
+    origin: "Allan Drexler và David Sibbet, phát triển từ thập niên 1980-1990 (năm công bố chính xác cần kiểm chứng)."
+    components: ["Giai đoạn sớm: 1 Orientation, 2 Trust Building", "Giữa: 3 Goal/Role Clarification, 4 Commitment", "Muộn: 5 Implementation, 6 High Performance", "7 Renewal (tùy chọn): đánh giá lại, thử thách mới hoặc giải thể, có thể quay về Orientation"]
+    when_to_use: "Nhóm tổ chức dài hạn cần chu kỳ làm mới; muốn đặt tin cậy sớm thay vì coi xung đột là hiển nhiên."
+    how_to_apply: ["Xác định giai đoạn", "Hoàn thành từng giai đoạn trước khi sang tiếp", "Lập renewal định kỳ cho nhóm 6-18 tháng trở lên"]
+    how_to_read_results: "Khác Tuckman: 7 giai đoạn, có thể quay vòng, tách làm rõ mục tiêu - vai trò - cam kết."
+    pitfalls: ["Phức tạp, ít nổi tiếng, khó tìm tài liệu, khó triển khai"]
+    example: "Nhóm sản phẩm lâu dài chạy renewal mỗi quý cùng khảo sát nhanh."
+  - id: "m03_t7"
+    name_vi: "T7 - 7 đòn bẩy lãnh đạo nhóm"
+    name_en: "T7 Model"
+    origin: "Nguồn gốc cần kiểm chứng (Larson & LaFasto/Hay Group hoặc Weiss & Katzenbach)."
+    components:
+      - "1 Trust (liên kết Lencioni tầng 1, Edmondson)"
+      - "2 Team composition (Belbin)"
+      - "3 Task definition (Aristotle: Cấu trúc, Ý nghĩa)"
+      - "4 Tools and resources: công cụ giao tiếp, ngân sách, thời gian (GRPI: P)"
+      - "5 Team process: cách họp, ra quyết định, giải quyết xung đột, nhìn lại (GRPI: P)"
+      - "6 Team reward: thưởng, thăng tiến, ghi nhận gắn mục tiêu nhóm (Lencioni tầng 5)"
+      - "7 Team learning: đào tạo, chia sẻ tri thức, học từ thất bại không đổ lỗi"
+    when_to_use: "Kiểm toán lãnh đạo nhóm theo quý."
+    how_to_apply: ["Chấm 7 yếu tố từ 1 đến 10 (tối đa 70)", "Xác định 1-2 yếu tố thấp nhất", "Lập kế hoạch cải thiện quý tiếp theo", "Chấm lại"]
+    how_to_read_results: "Ưu tiên Trust nếu thấp vì là nền tảng."
+    pitfalls: ["Giả định lãnh đạo mạnh", "Kiểm toán dài", "Tài liệu hạn chế"]
+    example: "Trust 4 và Reward 5, các yếu tố khác 7 trở lên: làm Trust trước."
+  - id: "m03_model_selection"
+    name_vi: "Chọn mô hình theo hoàn cảnh (so sánh 8 mô hình)"
+    name_en: "Model comparison and scenario selection"
+    origin: "Tổng hợp trong nguồn (mục XI, XII, XIX)."
+    components:
+      - "Tuckman: giai đoạn, nhóm dự án, 2-12 tháng, đo năng suất"
+      - "Belbin: cân bằng vai trò, ghép nhóm/tuyển dụng"
+      - "Lencioni: rối loạn, sửa nhóm kẹt, 3-6 tháng, đo tin cậy/đồng thuận"
+      - "Aristotle: yếu tố động lực, đo an toàn tâm lý bằng khảo sát"
+      - "GRPI: chẩn đoán nhanh 4 yếu tố"
+      - "Drexler-Sibbet: toàn vòng đời 6-18 tháng"
+      - "T7: kiểm toán lãnh đạo"
+      - "An toàn tâm lý: nền tảng văn hóa, 6-12 tháng"
+      - "Dự án ngắn 3-6 tháng: Tuckman + RACI + Kanban/Scrum + retrospective hằng tuần"
+      - "Nhóm dài hạn 1-3 năm: Lencioni + Belbin + Aristotle (tháng 1-3 xây tin cậy, 4-6 tối ưu thành phần, 7 trở đi duy trì)"
+      - "Nhóm remote: Aristotle + An toàn tâm lý + GRPI; 1-1 2 tuần/lần, họp video cho quyết định quan trọng, viết ra chuẩn mực, cập nhật cả khi chưa có tin"
+      - "Nhóm sáng lập startup 3-5 người: Lencioni + Belbin + An toàn tâm lý; thỏa thuận đồng sáng lập, họp sáng lập hằng tuần 30 + 30 phút"
+      - "Nhóm độc hại: chẩn đoán tháng 1, xây lại tin cậy tháng 2, sửa hệ thống tháng 3-6 (retrospective 2 tuần/lần), duy trì từ tháng 6 (người gây độc không cải thiện sau 3 tháng thì giúp ra đi, tuyển theo văn hóa)"
+      - "Nhóm lớn 50 người trở lên: Spotify Squads (tự chủ + thống nhất định hướng)"
+    when_to_use: "Khi chưa biết bắt đầu từ đâu với một nhóm."
+    how_to_apply:
+      - "Chẩn đoán 5 phút: đo năng suất (velocity cao/thấp), đo tinh thần (pulse survey), xác định vấn đề"
+      - "Low trust thì Lencioni xây tin cậy; low clarity thì GRPI hoặc Aristotle; low commitment/accountability thì Lencioni; role unclear thì Belbin; không bền vững thì can thiệp burnout"
+      - "Chọn 1-2 việc sửa trong tháng 1; đo lại pulse survey/velocity hằng tháng"
+    how_to_read_results: "Nhóm mới dùng Tuckman; nhóm có vấn đề Lencioni; thành phần Belbin; văn hóa An toàn tâm lý; lãnh đạo T7."
+    pitfalls: ["Dùng một mô hình cho mọi vấn đề"]
+    example: "Agency Nắng Mới: GRPI chẩn đoán, Lencioni sửa từ đáy, Belbin lấp khoảng trống."
+  - id: "m03_team_charter"
+    name_vi: "Điều lệ nhóm (Team Charter)"
+    name_en: "Team Charter"
+    origin: "Công cụ thực hành giai đoạn Forming/Norming; mẫu trong nguồn với nhân vật minh họa."
+    components: ["Tầm nhìn (1-2 câu)", "Sứ mệnh", "Mục tiêu quý (tối đa 3)", "Vai trò và RACI", "Thành viên (điểm mạnh, cần phát triển)", "Luật làm việc (họp, mã nguồn, giao tiếp, tôn trọng, học tập, gắn kết)", "Định nghĩa thành công", "Cách giải quyết bất đồng", "Học tập và phát triển", "Rà soát hằng quý", "Hệ quả (đi trễ, vắng họp, không giúp đồng đội, chất lượng kém)", "Ăn mừng thành tích"]
+    when_to_use: "Viết trong Forming, rà lại mỗi quý hoặc khi đổi mục tiêu/vai trò."
+    how_to_apply: ["Workshop khoảng 4 giờ", "Cả nhóm cùng viết và ký", "Dán nơi ai cũng thấy", "Rà quý 3, 6, 9, 12"]
+    how_to_read_results: "Tranh cãi sau đó quay về điều lệ thay vì cảm xúc."
+    pitfalls: ["Chỉ lãnh đạo viết, nhóm không làm chủ"]
+    example: "Quy tắc: bất đồng nội dung sau 1 giờ chưa đồng thuận thì trưởng nhóm quyết; bất đồng quan hệ trao đổi 1-1."
+  - id: "m03_raci"
+    name_vi: "Ma trận RACI"
+    name_en: "RACI Matrix"
+    origin: "Công cụ làm rõ vai trò, dùng trong GRPI (R) và Aristotle (Cấu trúc)."
+    components: ["R Responsible: người thực hiện", "A Accountable: người quyết định/chịu trách nhiệm cuối, đúng một người mỗi dòng", "C Consulted: được hỏi trước khi quyết", "I Informed: được thông báo sau"]
+    when_to_use: "Vai trò chồng chéo, trễ hạn không ai nhận, quyết định liên chức năng, an toàn sản phẩm."
+    how_to_apply: ["Liệt kê quyết định/hoạt động theo hàng và người theo cột", "Gán R, A, C, I", "Rà: mỗi dòng có ít nhất 1 R và đúng 1 A (một người có thể A/R)", "Giảm C thừa"]
+    how_to_read_results: "Dòng không có A hoặc có 2 A là lỗ hổng trách nhiệm."
+    pitfalls: ["Quá nhiều C làm chậm quyết định"]
+    example: "Boeing 737 MAX: cần một A cho rủi ro hệ thống thay vì mỗi bộ phận một mảnh."
+  - id: "m03_retrospectives"
+    name_vi: "Họp nhìn lại: Start-Stop-Continue, 4L, Thuyền buồm"
+    name_en: "Retrospective formats"
+    origin: "Thực hành Agile; cơ chế để nhóm tự điều chỉnh quy trình (P trong GRPI) và nâng trách nhiệm (Lencioni tầng 4)."
+    components:
+      - "Start-Stop-Continue (1 giờ): viết im lặng 3 phút, thảo luận 10 phút mỗi phần, chọn 1-2 việc, giao việc/hạn"
+      - "4L: Liked, Learned, Lacked, Longed for; thêm khía cạnh cảm xúc cho nhóm mệt với SSC"
+      - "Thuyền buồm: Gió (đẩy tiến), Mây (rủi ro), Sóng (thách thức), Neo (kéo lại), Cá dưới nước (vấn đề ẩn chưa ai nói); hữu ích khi an toàn tâm lý còn thấp"
+    when_to_use: "Mỗi sprint hoặc 2 tuần/1 tháng; nhóm độc hại làm 2 tuần/lần."
+    how_to_apply: ["Chọn định dạng phù hợp tâm trạng nhóm", "Chọn tối đa 3 hành động có người phụ trách và hạn", "Đăng lên bảng/Notion", "Rà lại hành động ở lần sau"]
+    how_to_read_results: "Hành động cải tiến được thực hiện mới là thước đo thành công."
+    pitfalls: ["Họp xong không có hành động", "Lãnh đạo phản ứng phòng thủ với ý kiến"]
+    example: "Sailboat: Cá = kiệt sức làm cuối tuần, tri thức tập trung vào Bob, xung đột ngầm; hành động: 1-1, trả nợ kỹ thuật 20% năng lực 2 sprint, tuyển thêm 2 kỹ sư."
+  - id: "m03_pulse_survey"
+    name_vi: "Khảo sát nhanh động lực nhóm (25 câu)"
+    name_en: "Team Pulse Survey"
+    origin: "Công cụ trong nguồn; cảm nhận nhóm là chỉ số dẫn trước cho trễ hạn và nghỉ việc."
+    components: ["An toàn tâm lý (5 câu; câu 1 đảo)", "Đáng tin cậy (4)", "Rõ ràng (4)", "Ý nghĩa (3)", "Tác động (3)", "Bổ sung (3: gắn kết, sẵn lòng giới thiệu, nguy cơ kiệt sức câu đảo)", "Câu hỏi mở (3: cải thiện nhiều nhất, làm chậm, biết ơn)"]
+    when_to_use: "Định kỳ tháng hoặc quý, ẩn danh; trước và sau can thiệp."
+    how_to_apply: ["Chạy ẩn danh", "Đảo điểm câu đảo (1 và 22) rồi tính trung bình", "Chia sẻ kết quả với nhóm", "Cùng lập kế hoạch"]
+    how_to_read_results: "Trên 4/5 khỏe; 3-4 theo dõi; dưới 3 có vấn đề. Quan trọng là chiều thay đổi."
+    pitfalls: ["Khảo sát xong không hành động", "Không đủ ẩn danh"]
+    example: "Công cụ: Officevibe, Peakon, Culture Amp, hoặc Google Forms."
+  - id: "m03_dysfunction_pitfalls_map"
+    name_vi: "Bản đồ 10 bẫy nhóm"
+    name_en: "Ten team pitfalls"
+    origin: "Mục XVII nguồn: groupthink (Janis), Abilene (Harvey 1974), social loafing, free rider, né xung đột, silo, burnout, micromanagement, thiếu an toàn tâm lý, mục tiêu không rõ."
+    components:
+      - "Groupthink: red team, bỏ phiếu kín, đa dạng nền tảng; ví dụ Nokia/Kodak/Blockbuster chỉ là nhận định phổ biến mang tính minh họa, nhiều nguyên nhân"
+      - "Social loafing: nhóm dưới 7, trách nhiệm cá nhân rõ, đánh giá chéo"
+      - "Free rider: thưởng theo đóng góp, 360"
+      - "Abilene: hỏi thẳng 'có ai KHÔNG đồng ý?'"
+      - "Né xung đột: xử lý sớm, tranh luận rồi quyết"
+      - "Information silo: tài liệu, đào tạo chéo, ghép cặp, wiki"
+      - "Burnout: trên 50 giờ/tuần kéo dài, không nghỉ phép; lập kế hoạch thực tế, không làm sau 19h, theo dõi ngày ốm"
+      - "Micromanagement: ủy quyền, chỉ kiểm tra quyết định lớn/rủi ro lớn"
+      - "Thiếu an toàn tâm lý: xem m03_psych_safety"
+      - "Mục tiêu không rõ: OKR, gắn tác động, chỉ số công khai"
+    when_to_use: "Chẩn đoán nguyên nhân gốc của tầng hỏng trong chuỗi Lencioni."
+    how_to_apply: ["Đối chiếu từng bẫy với nhóm", "Chọn biện pháp phòng tương ứng"]
+    how_to_read_results: "Nhiều bẫy cùng xuất hiện thường cùng gốc là thiếu an toàn tâm lý."
+    pitfalls: ["Chỉ xử lý triệu chứng"]
+    example: "Cả nhóm đồng ý ra mắt thứ Sáu dù ai cũng lo chưa sẵn sàng là Abilene."
+  - id: "m03_case_analysis_flow"
+    name_vi: "Quy trình phân tích case nhóm 5 bước"
+    name_en: "Five-step team case analysis"
+    origin: "Quy trình chung trong mục XIV nguồn."
+    components: ["1 Tuckman: giai đoạn và kiểu lãnh đạo khớp chưa", "2 Belbin: đủ 3 nhóm hành vi chưa, cặp va chạm", "3 Lencioni: tầng nào hỏng đầu tiên (từ đáy)", "4 Aristotle: chấm 5 yếu tố", "5 Kết luận: sửa tầng nào, công cụ nào, chỉ số nào"]
+    when_to_use: "Phân tích bất kỳ nhóm/case nhóm nào."
+    how_to_apply: ["Thu thập bằng chứng", "Chấm điểm có lập luận", "Lập khuyến nghị theo thứ tự đáy lên", "Đo lại"]
+    how_to_read_results: "Điểm trung bình dưới 2,5 là khủng hoảng; yếu tố thấp nhất là điểm vào can thiệp."
+    pitfalls: ["Điểm của case quốc tế là đánh giá minh họa của người viết, không phải dữ liệu nội bộ"]
+    example: "Challenger Lencioni trung bình 1,6; Aristotle 2,7."
+
+procedures:
+  - id: "m03_proc_diagnose_team"
+    name: "Chẩn đoán nhóm trong 5 phút rồi lập kế hoạch 1-2 việc"
+    steps:
+      - "Đo năng suất: velocity cao hay thấp, trễ hạn, bug escape."
+      - "Đo tinh thần: pulse survey 5 câu hoặc 25 câu, attrition, ngày ốm."
+      - "Xác định vấn đề: tin cậy thấp thì Lencioni xây tin cậy; thiếu rõ ràng thì GRPI/Aristotle; thiếu cam kết/trách nhiệm thì Lencioni; vai trò không rõ thì Belbin; không bền vững thì can thiệp burnout."
+      - "Dùng GRPI theo thứ tự G, R, P, I để tránh sửa quan hệ khi mục tiêu còn mù mờ."
+      - "Chọn 1-2 việc sửa trong tháng 1 và đo lại pulse survey/velocity hằng tháng."
+    outputs: "Chẩn đoán có bằng chứng (điểm GRPI/Aristotle/Lencioni), 1-2 hành động ưu tiên, chỉ số theo dõi."
+  - id: "m03_proc_new_team"
+    name: "Khởi động nhóm mới (Forming đến Performing)"
+    steps:
+      - "Tuần 1-2 Forming: Team Charter workshop khoảng 4 giờ (mục tiêu, tiêu chí thành công, quy tắc, cách làm Agile/Waterfall/Hybrid, RACI), 1-1 khoảng 30 phút mỗi người, welcome lunch, onboarding công cụ/quy trình/văn hóa."
+      - "Nói trước với nhóm: xung đột tuần 3-4 là bình thường (Storming)."
+      - "Tuần 3-4 Storming: phân loại xung đột, đặt khung ra quyết định và giới hạn thời gian, 1-1, coaching."
+      - "Tuần 5-8 Norming: retrospective đều đặn, văn hóa hóa norms trong charter, onboard người mới."
+      - "Tuần 9 trở đi Performing: giảm quy trình, ủy quyền, tập trung giao hàng."
+      - "Kết thúc Adjourning: retrospective cuối, tài liệu hóa, ăn mừng, 1-1 chuyển tiếp."
+    outputs: "Charter, RACI, nhịp họp, norms, hồ sơ bài học."
+  - id: "m03_proc_build_trust"
+    name: "Xây tin cậy và an toàn tâm lý"
+    steps:
+      - "Đo ban đầu bằng khảo sát 5 câu (đảo câu 1 và 4)."
+      - "Quý 1: lãnh đạo bộc lộ điểm yếu, phản ứng đúng với tin xấu (giải quyết thay vì quy lỗi)."
+      - "Quý 2: mời đóng góp sớm, đáp lại không phòng thủ."
+      - "Quý 3: lập chuẩn mực hành vi, nêu rõ mục đích chung."
+      - "1-1 hằng tuần hoặc 2 tuần/lần (remote), hỏi về xuất thân, sở thích, mục tiêu, không chỉ tiến độ."
+      - "Khảo sát lại sau 3 tháng và điều chỉnh."
+    outputs: "Điểm an toàn tâm lý theo quý và hành vi lãnh đạo thay đổi."
+  - id: "m03_proc_commit_decision"
+    name: "Ra quyết định có cam kết (tranh luận rồi cam kết)"
+    steps:
+      - "Đặt hạn: tranh luận thứ Năm, quyết trước 17h thứ Sáu; chọn trước cách quyết (vote, leader quyết, consensus)."
+      - "Tranh luận ý tưởng, hỏi rõ 'có ai không đồng ý không?'; gọi tên nhẹ nhàng người ít nói."
+      - "Lãnh đạo nói: 'tôi sẽ quyết kể cả khi bạn không đồng ý, nhưng tôi đã nghe và đây là lý do tôi chọn X'."
+      - "Viết 'QUYẾT ĐỊNH + LÝ DO' và gửi nhóm; hỏi 'có điều gì cần làm rõ?'."
+      - "Hỏi cam kết: câu trả lời phải là 'có', không phải 'có lẽ'; ai không thể thì hỏi cần nguồn lực gì."
+      - "Thống nhất hạn và tiêu chí thành công đo bằng checklist/kế hoạch kiểm thử."
+    outputs: "Quyết định ghi văn bản, người cam kết, hạn, tiêu chí."
+  - id: "m03_proc_cofounder_agreement"
+    name: "Thỏa thuận đồng sáng lập (khung quyết định)"
+    steps:
+      - "Lập bảng loại quyết định, người quyết (A), người được hỏi (C), luật khi bất đồng."
+      - "Ví dụ: chiến lược sản phẩm/ra mắt CEO quyết (tranh luận tối đa 1 giờ, ghi lý do); tuân thủ/pháp lý/tài chính CFO quyết và có quyền phủ quyết với rủi ro pháp lý; thiết kế/UX Product quyết theo kiểm thử người dùng; liên chức năng cả ba, bế tắc trên 2 tuần mời cố vấn độc lập làm trọng tài."
+      - "Đặt trần Storming 6 tuần; quá hạn thì gọi cố vấn bên ngoài."
+      - "Ký trước khi nhận tiền, kèm vesting cổ phần."
+      - "Họp sáng lập hằng tuần: 30 phút nhanh + 30 phút chủ đề sâu; thứ Sáu ăn mừng."
+      - "Tính runway theo tuần để ra quyết định theo tiền thật."
+    outputs: "Cofounder Agreement, runway theo tuần."
+  - id: "m03_proc_fix_toxic_team"
+    name: "Sửa nhóm độc hại (4 giai đoạn)"
+    steps:
+      - "Tháng 1 Chẩn đoán: khảo sát nhanh (an toàn tâm lý, cam kết, trách nhiệm), phỏng vấn riêng giữ bí mật, cả nhóm trung thực nhìn lại."
+      - "Tháng 2 Xây lại tin cậy: xử lý vấn đề cụ thể (quản lý thiên vị thì đổi hành vi hoặc thay quản lý), lãnh đạo bộc lộ điểm yếu, xây chuẩn mực tôn trọng, công bằng, minh bạch."
+      - "Tháng 3-6 Sửa hệ thống: Lencioni từ đáy lên, kiểm GRPI, retrospective 2 tuần/lần."
+      - "Từ tháng 6 Duy trì: ăn mừng hồi phục; người gây độc không cải thiện sau kế hoạch 3 tháng thì giúp ra đi; tuyển thay thế ưu tiên phù hợp văn hóa."
+    outputs: "Kế hoạch 6 tháng, điểm khảo sát trước/sau."
+  - id: "m03_proc_remote_team"
+    name: "Vận hành nhóm từ xa"
+    steps:
+      - "Ưu tiên an toàn tâm lý cao hơn: 1-1 mỗi 2 tuần (cà phê online), họp video cho quyết định quan trọng, viết ra chuẩn mực."
+      - "Ghi lại mọi thứ (mục tiêu, vai trò, quy trình); ưu tiên không đồng bộ, họp trực tiếp khi gấp; nhắc thông điệp bằng nhiều dạng."
+      - "Hạn rõ; cập nhật tiến độ cả khi chưa có tin; sắp trễ thì báo sớm."
+      - "Công cụ: Slack/Zalo (tôn trọng giờ nghỉ), Zoom (1-1, tránh họp toàn thể quá nhiều), Jira/Trello (minh bạch việc), Notion/Wiki (tri thức)."
+    outputs: "Quy tắc giao tiếp đồng bộ/không đồng bộ và bộ công cụ."
+  - id: "m03_proc_pulse_and_measure"
+    name: "Thiết lập hệ thống đo nhóm"
+    steps:
+      - "Chọn chỉ số kết quả nhóm + ít nhất một chỉ số sức khỏe (NPS nhóm, nghỉ việc)."
+      - "Velocity ổn định ±10% giữa sprint; cảnh báo velocity tăng nhưng chất lượng giảm hoặc nhóm kiệt sức."
+      - "Chất lượng: bug escape dưới 5%, độ phủ kiểm thử trên 80%, API dưới 200 ms, uptime trên 99,9%, sự cố P1 dưới 1 mỗi tháng."
+      - "OKR 70-80%; attrition dưới 10% rất tốt; cycle time dưới 1 tuần nhanh; code review dưới 24 giờ tốt."
+      - "Gắn kết hằng năm (công ty lớn): hiểu sứ mệnh trên 80%, cơ hội phát triển trên 75%, quản lý hỗ trợ trên 70%, quý đồng nghiệp trên 80%, ở lại 2 năm trên 70%, hợp tác trên 75%."
+      - "Tính chi phí thay thế khi báo cáo ROI."
+    outputs: "Bảng chỉ số hằng tháng/quý."
+
+decision_rules:
+  - "Nếu nhóm mới cãi nhau ở tuần 3-6 thì coi là Storming bình thường: công khai nói đó là bình thường, phân loại xung đột, đặt khung ra quyết định; không kết luận 'tuyển sai người'."
+  - "Nếu Storming kéo quá 6 tuần (đặc biệt 6-12 tháng) mà không có luật ra quyết định thì coi là Storming mãn tính: thiết lập thỏa thuận quyết định, trọng tài hoặc cố vấn bên ngoài."
+  - "Nếu xung đột là nội dung hoặc quy trình thì khuyến khích tranh luận có giới hạn thời gian; nếu là xung đột quan hệ/cá nhân thì can thiệp ngay (1-1, hòa giải)."
+  - "Nếu nhóm đang Forming thì lãnh đạo chỉ đạo rõ (charter, vai trò, kỳ vọng); đừng ủy quyền hoàn toàn; nếu Performing thì ủy quyền và gỡ vướng, đừng vi mô."
+  - "Nếu nhóm toàn người giỏi nhưng kẹt thì chẩn đoán Lencioni và sửa từ tầng đáy (tin cậy), chưa tuyển thêm người giỏi."
+  - "Nếu tầng Tin cậy hỏng thì chưa triển khai OKR/họp giao ban/KPI mới vì sẽ vô hiệu; xây tin cậy trước."
+  - "Nếu mục tiêu mơ hồ hoặc vai trò chồng chéo thì dùng OKR/RACI trước khi nghĩ đến chuyện hòa giải quan hệ (GRPI theo thứ tự G, R, P, I)."
+  - "Nếu họp kết thúc mà mỗi người hiểu một kiểu thì viết 'QUYẾT ĐỊNH + LÝ DO + ai làm + hạn' và hỏi cam kết rõ ràng 'có'."
+  - "Nếu nhóm đạt đồng thuận 100% quá dễ hoặc ai cũng im lặng thì nghi ngờ Groupthink/Abilene: hỏi 'có ai KHÔNG đồng ý?', chỉ định red team, bỏ phiếu kín."
+  - "Nếu điểm an toàn tâm lý dưới 2,5 thì can thiệp khẩn (lãnh đạo bộc lộ điểm yếu, phản ứng không quy lỗi); 2,5-3,5 thì lập kế hoạch hành động theo quý."
+  - "Nếu nhóm thiếu Teamworker thì dự báo xung đột/tinh thần thấp; thiếu Monitor Evaluator thì tư duy bầy đàn; thiếu Resource Investigator thì khép kín; thiếu Completer Finisher thì lỗi chi tiết lọt ra khách."
+  - "Nếu có hai Shaper hoặc Shaper cạnh Monitor Evaluator mà không có Coordinator thì xung đột kéo dài: bổ sung Coordinator và cơ chế quyết định thay vì tìm người thắng."
+  - "Nếu có tổn hao nhân sự (attrition trên 20%) thì điều tra nguyên nhân và tính chi phí thay thế (vài tháng lương mỗi người) trước khi tuyển thêm."
+  - "Nếu có người mới vào hoặc thay đổi nhân sự lớn thì giả định nhóm nhảy lùi Forming/Storming, đo lại năng suất và chạy lại charter."
+  - "Nếu nhóm trên 7 người và có dấu hiệu social loafing thì chia nhóm nhỏ, theo dõi đóng góp cá nhân, đánh giá chéo."
+  - "Nếu nhân viên báo rủi ro mà phản ứng là 'đừng làm chậm tiến độ' thì đó là mầm Challenger: lập quyền phản đối chính thức, đổi gánh nặng chứng minh thành 'chứng minh an toàn mới phóng'."
+  - "Nếu một bộ phận hứa với khách điều bộ phận khác không biết (sales so với vận hành) thì lập quy trình thay đổi ảnh hưởng bộ phận khác phải thông báo và xác nhận văn bản."
+  - "Nếu velocity tăng nhưng chất lượng giảm hoặc nhóm làm trên 50 giờ/tuần kéo dài thì can thiệp burnout (giảm phạm vi/thêm nguồn lực), không ăn mừng chỉ số năng suất."
+  - "Nếu nhóm từ xa thì tăng 1-1, viết ra chuẩn mực, họp video cho quyết định quan trọng, cập nhật tiến độ chủ động."
+  - "Nếu startup 3 đồng sáng lập chia 33/33/33 thì bắt buộc có luật bất đồng (người quyết khi hòa hoặc trọng tài) trước khi nhận tiền."
+  - "Nếu sắp áp dụng mô hình Squad/Tribe cho công ty vài chục người thì bắt đầu bằng 2-3 nhóm nhỏ có chủ sản phẩm rõ ràng, không sao chép tên gọi."
+  - "Nếu dùng Belbin thì coi là ngôn ngữ thảo luận, không dùng để loại người hay dán nhãn cố định."
+
+benchmarks:
+  - {metric: "Quy mô nhóm (Katzenbach & Smith)", value: "2-10 người (thường gặp); Scrum 5-9; squad Spotify khoảng 5-8; tránh social loafing dưới 7", context: "Định nghĩa team và Agile", confidence: "medium"}
+  - {metric: "Tuckman: Forming", value: "1-3 tuần, năng suất khoảng 20-30%", context: "Ước lượng minh họa của nguồn", confidence: "low"}
+  - {metric: "Tuckman: Storming", value: "2-6 tuần, năng suất khoảng 10-20%; kéo 6-12 tháng là bệnh lý", context: "Ước lượng minh họa của nguồn", confidence: "low"}
+  - {metric: "Tuckman: Norming", value: "2-8 tuần, năng suất khoảng 60-80%", context: "Ước lượng minh họa của nguồn", confidence: "low"}
+  - {metric: "Tuckman: Performing", value: "2 tháng trở lên, 90-100%", context: "Ước lượng minh họa của nguồn", confidence: "low"}
+  - {metric: "Tuckman: Adjourning", value: "1-2 tuần", context: "Ước lượng minh họa của nguồn", confidence: "low"}
+  - {metric: "Performing team: velocity so với baseline", value: "+30%", context: "Chỉ số minh họa của nguồn, chưa kiểm chứng", confidence: "low"}
+  - {metric: "Bug escape rate", value: "Dưới 5% (Performing) so với 10-15% (nhóm thường)", context: "Nguồn minh họa; mục tiêu chất lượng", confidence: "low"}
+  - {metric: "Code review turnaround", value: "4 giờ (Performing) so với 24 giờ; dưới 24 giờ tốt, 24-48 chấp nhận, trên 48 chậm", context: "Nguồn minh họa", confidence: "low"}
+  - {metric: "Ngày ốm", value: "1-2 ngày/năm (Performing) so với 5-8 ngày/năm", context: "Nguồn minh họa", confidence: "low"}
+  - {metric: "Team NPS", value: "Performing trên 8/10; nhóm thường 5-7/10; NPS trên 50 rất tốt, 30-50 tốt, 0-30 theo dõi, dưới 0 khủng hoảng", context: "Ngưỡng nguồn", confidence: "low"}
+  - {metric: "Attrition", value: "Performing 5%; nhóm thường 15-20%; dưới 10% rất tốt, 10-20% bình thường, trên 20% cao", context: "Ngưỡng nguồn minh họa", confidence: "low"}
+  - {metric: "Ý tưởng cải tiến chủ động", value: "3-5 ý tưởng/tháng (Performing) so với dưới 1", context: "Nguồn minh họa", confidence: "low"}
+  - {metric: "Điểm An toàn tâm lý (khảo sát 5 câu)", value: "4,5-5 xuất sắc; 3,5-4,5 tốt; 2,5-3,5 đáng lo; dưới 2,5 khủng hoảng", context: "Quy ước thực hành, không phải chuẩn Edmondson", confidence: "low"}
+  - {metric: "Pulse survey 25 câu", value: "Trên 4/5 khỏe; 3-4 theo dõi; dưới 3 có vấn đề", context: "Ngưỡng nguồn", confidence: "low"}
+  - {metric: "Hoàn thành OKR", value: "70-80% tốt; 90-100% có thể quá dễ; dưới 70% quá sức hoặc yếu", context: "Ngưỡng nguồn", confidence: "medium"}
+  - {metric: "Velocity ổn định", value: "±10% giữa các sprint", context: "Mức khỏe mạnh nguồn", confidence: "low"}
+  - {metric: "Độ phủ kiểm thử, uptime, API, sự cố P1", value: "Trên 80%; trên 99,9%; dưới 200 ms; dưới 1 sự cố/tháng", context: "Mục tiêu chất lượng của nguồn", confidence: "low"}
+  - {metric: "Cycle time", value: "Dưới 1 tuần nhanh; 1-2 tuần bình thường; trên 2 tuần tìm điểm nghẽn", context: "Ngưỡng nguồn", confidence: "low"}
+  - {metric: "Ước lượng thời gian", value: "Cộng 10-20% cho ẩn số (không phải 50%)", context: "Nguồn: Đáng tin cậy", confidence: "low"}
+  - {metric: "Mức gắn kết hằng năm (công ty lớn)", value: "Hiểu sứ mệnh trên 80%; phát triển trên 75%; quản lý hỗ trợ trên 70%; quý đồng nghiệp trên 80%; ở lại 2 năm trên 70%; hợp tác trên 75%", context: "Mục tiêu nguồn", confidence: "low"}
+  - {metric: "Thời gian xây tin cậy", value: "Tối thiểu 2-3 tháng; An toàn tâm lý 6-12 tháng", context: "Ước tính nguồn", confidence: "low"}
+  - {metric: "Thời gian giải xung đột nội dung trong họp", value: "Khoảng 30 phút đến 1 giờ rồi người có quyền quyết", context: "Ví dụ nguồn", confidence: "low"}
+  - {metric: "Chi phí thay thế nhân sự", value: "Thường vài tháng lương mỗi người (case giả định 4 tháng)", context: "Hệ số case là giả định", confidence: "low"}
+  - {metric: "Số liệu Google Project Aristotle", value: "Khoảng 180 nhóm, 2012-2015", context: "Thông tin công khai; tiêu đề '50% impact' của nguồn chỉ là cách nói minh họa", confidence: "medium"}
+
+pitfalls:
+  - "Coi xung đột ở Storming là dấu hiệu thất bại hoặc 'tuyển sai người' thay vì bình thường hóa và dẫn dắt."
+  - "Dùng sai kiểu lãnh đạo cho sai giai đoạn (ủy quyền hoàn toàn khi Forming, vi quản khi Performing)."
+  - "Né xung đột hoặc áp đặt 'vì tôi là leader' khi Storming; để bè nhóm kết tinh."
+  - "Bỏ qua tầng tin cậy mà nhảy vào OKR, KPI, họp giao ban."
+  - "Đòi đồng thuận 100% nên không bao giờ quyết; hoặc hòa hợp giả tạo, gật đầu nhưng phá ngầm."
+  - "Quyết định mơ hồ ('có lẽ', 'còn tùy') khiến mỗi người hiểu một kiểu và quay lại bàn quyết định cũ."
+  - "Trễ hạn không hệ quả, chuẩn không rõ, lãnh đạo trừng phạt sai cách khiến nhóm ngừng lên tiếng."
+  - "Mục tiêu hoạt động (số dòng mã, số tính năng) thay cho kết quả (giữ chân, giảm churn); thưởng cá nhân lấn át mục tiêu nhóm."
+  - "Chỉ tuyển người giỏi nhất cùng kiểu (5 Shaper hoặc 2 Specialist) mà không cân bằng vai trò hành vi."
+  - "Dán nhãn Belbin cố định hoặc dùng để loại người; coi trắc nghiệm thương mại như bằng chứng khoa học cứng."
+  - "Đo năng suất đơn độc mà bỏ qua sức khỏe nhóm (burnout); vận tốc tăng nhưng chất lượng giảm."
+  - "Chỉ đếm lỗi được báo cáo để đánh giá chất lượng (nghịch lý Edmondson: nhóm tốt có thể báo nhiều lỗi hơn)."
+  - "Khảo sát pulse xong không hành động hoặc không ẩn danh; so điểm tuyệt đối thay vì chiều thay đổi."
+  - "Sao chép mô hình Spotify (Squad/Tribe/Guild) mà thiếu điều kiện; chính Spotify nói đó chỉ là ảnh chụp tại một thời điểm."
+  - "Chia cổ phần 33/33/33 mà không có luật bất đồng; không viết thỏa thuận đồng sáng lập trước khi nhận tiền."
+  - "Một bộ phận làm đúng phần mình nhưng không ai nhìn toàn bộ rủi ro (Boeing); bán hàng hứa điều vận hành không biết."
+  - "Phớt lờ cảnh báo vì 'lần nào cũng ổn' (chuẩn hóa độ lệch, Challenger)."
+  - "Tin các tỷ lệ năng suất/benchmark của nguồn là chuẩn học thuật: đa số là ước lượng minh họa."
+
+sme_vn_guidance:
+  - "Nhóm 5-15 người: dùng Team Charter 1 trang + RACI + họp nhanh 15 phút + retrospective hằng tháng; không cần triển khai mọi mô hình cùng lúc, chọn 1-2 việc mỗi tháng."
+  - "Chẩn đoán trước khi tuyển thêm: pulse survey 5 phút (Google Forms miễn phí) + GRPI; case Nắng Mới (giả định) cho thấy sửa vận hành có thể rẻ hơn tuyển thêm 2 người (chi phí sửa khoảng 28% chi phí tuyển)."
+  - "Công cụ gợi ý trong nguồn: Slack/Zalo, Zoom, Jira/Trello, Notion/Wiki, Google Workspace, Miro; pulse survey Officevibe, Peakon, Culture Amp (giá cần xác nhận); trắc nghiệm Belbin có phí (case giả định 1.200.000 VNĐ/người, cần xác nhận giá hiện hành)."
+  - "Quy đổi chi phí chương trình ra tiền theo giờ lương (lương/160 giờ) để thuyết phục chủ doanh nghiệp; ví dụ 15 triệu/tháng tương đương 93.750 VNĐ/giờ."
+  - "Nhóm sáng lập: viết Cofounder Agreement, vesting, luật bất đồng trước khi nhận tiền; cần xác nhận pháp lý chi tiết (loại hình công ty, điều lệ, cổ phần) với luật sư Việt Nam."
+  - "Remote giữa TP.HCM và Hà Nội: tôn trọng giờ nghỉ (tắt thông báo Slack/Zalo sau 19h), viết ra chuẩn mực, họp video cho quyết định quan trọng."
+  - "Văn hóa thứ bậc nặng ở nhiều doanh nghiệp Việt làm giảm lên tiếng: lãnh đạo chủ động hỏi 'có ai không đồng ý?', mời ý kiến trước, cho phép góp ý ẩn danh trong giai đoạn đầu."
+  - "Với nhóm game, phần mềm, agency: thử trên thiết bị cấu hình thấp phổ biến của người dùng Việt, ghi Definition of Done, chốt 'đã chốt gì, ai làm, hạn nào' cuối mỗi cuộc họp."
+  - "Các số tiền, tỷ lệ năng suất, lương trong case là giả định minh họa, cần thay bằng dữ liệu thật của doanh nghiệp trước khi ra quyết định."
+
+case_lessons:
+  - name: "SpaceX và chương trình Falcon (Tuckman)"
+    type: "success"
+    setup: "SpaceX thành lập 2002; Falcon 1 thất bại 3 lần đầu (2006, 2007, 2008), thành công lần 4 (28/9/2008); Falcon 9 bay 2010; hạ cánh tầng đẩy trên đất liền cuối 2015. Phần diễn giải nhóm/xung đột là minh họa."
+    key_calculations: ["Aristotle (chấm định tính của người viết): An toàn tâm lý 3, Đáng tin cậy 4, Cấu trúc 5, Ý nghĩa 5, Tác động 4; trung bình = (3+4+5+5+4)/5 = 4,2", "Điểm yếu nhất: An toàn tâm lý"]
+    lesson: "Thất bại phải được xử lý như dữ liệu (blameless postmortem), không tội lỗi; nhóm đã qua Norming nên thất bại chỉ kích hoạt vòng lặp cải tiến, không quay về Forming; Ý nghĩa giữ động lực. Kỳ vọng cao + tốc độ cao chỉ sống được nếu có an toàn tâm lý."
+    data_reliability: "unverified"
+  - name: "IDEO và xe đẩy siêu thị (Belbin)"
+    type: "success"
+    setup: "Năm 1999 chương trình Nightline quay IDEO thiết kế lại xe đẩy trong khoảng một tuần; danh sách vai Belbin và tranh luận là minh họa của người viết."
+    key_calculations: ["9 vai, mỗi vai 1 người: Tư duy 3 + Hành động 3 + Con người 3 = 9", "Cặp dễ va chạm: Plant-Monitor Evaluator, Shaper-Teamworker; Coordinator đặt khung tranh luận, Teamworker làm dịu"]
+    lesson: "Chuyển xung đột nội dung thành bằng chứng: làm mẫu thử 3 phương án trong 24 giờ rồi quan sát người dùng thật. SME 5 người không cần đủ 9 người mà cần bao phủ 9 hành vi và biết vai nào trống."
+    data_reliability: "illustrative"
+  - name: "Pixar Braintrust (Lencioni đảo ngược)"
+    type: "success"
+    setup: "Theo Creativity, Inc. (Ed Catmull, 2014): họp Braintrust, góp ý thẳng về tác phẩm, chỉ là ý kiến, đạo diễn giữ quyền quyết; Toy Story từng khủng hoảng kịch bản. Chi tiết còn lại là minh họa."
+    key_calculations: ["Tin cậy: người góp ý là đồng nghiệp cùng nghề, không có quyền hành chính", "Xung đột: góp ý thẳng trước cả nhóm về tác phẩm; Cam kết: đạo diễn quyết cuối, không biểu quyết", "Phép thử đảo ngược: nếu góp ý thành mệnh lệnh thì Cam kết rồi Tin cậy hỏng"]
+    lesson: "Chất lượng đến từ đường phản hồi thẳng thắn có cấu trúc: 3 luật (góp ý về sản phẩm không về người, chủ sản phẩm quyết cuối, mọi người đều nói). Rủi ro: lãnh đạo cấp cao áp đảo bằng uy quyền."
+    data_reliability: "illustrative"
+  - name: "Challenger (NASA, 1986): thiếu tin cậy và Groupthink"
+    type: "failure"
+    setup: "28/1/1986 Challenger nổ sau khoảng 73 giây, 7 phi hành gia thiệt mạng; O-ring không kín ở khoảng 2 độ C (36 độ F; chuyến lạnh nhất trước đó 53 độ F). Kỹ sư Morton Thiokol phản đối đêm trước nhưng quản lý đổi khuyến nghị sau họp kín (Báo cáo Ủy ban Rogers). Hội thoại là diễn giải."
+    key_calculations: ["Lencioni: 1,5; 2; 1,5; 1,5; 1,5; trung bình = 8/5 = 1,6 (khủng hoảng)", "Aristotle: 1,5; 3; 3; 4; 2; trung bình = 13,5/5 = 2,7"]
+    lesson: "Ý nghĩa cao không cứu nhóm khi an toàn tâm lý thấp. Cơ chế: ảo tưởng bất khả xâm phạm, áp lực đồng thuận, đảo gánh nặng chứng minh, chuẩn hóa độ lệch. Cứu: quyền dừng chính thức, đổi gánh nặng chứng minh, tách báo cáo an toàn khỏi áp lực lịch trình, ghi quyết định văn bản."
+    data_reliability: "illustrative"
+  - name: "Boeing 737 MAX (2018-2019): vách ngăn bộ phận"
+    type: "failure"
+    setup: "Lion Air 10/2018 (189 người chết) và Ethiopian Airlines 3/2019 (157 người chết): tổng 346; MCAS dùng một cảm biến góc tấn; bị cấm bay khoảng 20 tháng; CEO rời cuối 2019. Lập luận nội bộ nhóm là suy luận."
+    key_calculations: ["189 + 157 = 346 người chết", "Aristotle (minh họa): 2; 3; 2; 3; 2; trung bình = 12/5 = 2,4"]
+    lesson: "Mỗi khâu làm đúng phần mình nhưng không khâu nào thấy toàn bộ rủi ro. Cần nhóm liên chức năng, một A (Accountable) cho rủi ro hệ thống trong RACI, kênh báo cáo ngoài thứ bậc, minh bạch với người dùng cuối. SME: bán hàng hứa điều vận hành không biết."
+    data_reliability: "illustrative"
+  - name: "Studio game di động 'Rồng Việt' (Tuckman, SME Việt Nam)"
+    type: "sme"
+    setup: "Nhóm 18 người (1+3+4+4+4+2), backlog 800 điểm, 24 sprint (12 tháng), năng lực 60 điểm/sprint, lương 22 triệu/người nên 396 triệu/tháng. Toàn bộ là giả định minh họa, không phải số liệu VNG."
+    key_calculations: ["Kịch bản A: 60+36+336+456 = 888 điểm, dư 88 (11%)", "Kịch bản B (Storming 8 sprint): 60+72+252+342 = 726; thiếu 74 điểm = 1,3 sprint, khoảng 0,6 tháng, khoảng 237 triệu VNĐ; chênh 162 điểm (18%)", "Khung quyết định có trọng số: giữ cách cũ 2,9; làm lại ngay 3,9; làm lại sau beta 2,55", "Belbin 7/9 vai (thiếu Shaper, Resource Investigator)", "Aristotle trung bình 3,00; 3,18; 3,82; 4,32; đáy tháng 4 do An toàn tâm lý 2,5"]
+    lesson: "Dự báo Storming và nói trước; chuyển xung đột thành tiêu chuẩn (thử trên máy yếu, tiêu chí có trọng số); đo pulse survey để biết đang ở đáy hay hồi phục. Xử lý Storming chậm một chút biến dư 11% thành thiếu 9%."
+    data_reliability: "illustrative"
+  - name: "Startup ví điện tử 'PayNhanh' (kẹt Storming giữa đồng sáng lập, SME Việt Nam)"
+    type: "sme"
+    setup: "3 đồng sáng lập chia 34/33/33; vốn hạt giống 4,5 tỷ; burn 450 triệu/tháng (3x30 + 8x25 + 160); tranh cãi 5 tháng. Toàn bộ là giả định minh họa."
+    key_calculations: ["Runway = 4.500/450 = 10 tháng; sau 7 tháng đốt 3.150 triệu = 70%, còn 3 tháng", "Storming 5 tháng = 21,7 tuần = 3,6 lần giới hạn 6 tuần", "Lencioni: 1,5; 2; 1,5; 1,5; 2; trung bình = 1,7; Aristotle: 1,5; 2; 1,5; 3; 2; trung bình = 2,0", "Chi phí nghỉ việc: 3 người x 4 x 25 = 300 triệu"]
+    lesson: "Chia 33/33/33 mà không có luật bất đồng là công thức deadlock. Thỏa thuận đồng sáng lập (ai quyết gì, trọng tài, trần Storming 6 tuần, vesting) trước khi nhận tiền; tính runway theo tuần. CFO không sai khi ưu tiên tuân thủ nhưng cần khung để biến mối lo thành kế hoạch."
+    data_reliability: "illustrative"
+  - name: "Spotify Squads (Tuckman + Belbin + Aristotle)"
+    type: "success"
+    setup: "Năm 2012 Henrik Kniberg và Anders Ivarsson mô tả Squad, Tribe, Chapter, Guild; phương châm autonomy with alignment; chính Spotify nói đây là ảnh chụp một thời điểm. Diễn biến 13 tuần và số liệu là minh họa."
+    key_calculations: ["Tăng tương tác 22% so với mục tiêu 20% = 110%", "Squad khoảng 5-8 người có Product Owner"]
+    lesson: "Tự chủ phải đi kèm thống nhất định hướng; nhóm nhỏ giảm social loafing; tuyển đủ hành vi chứ không 5 người cùng kiểu xuất sắc. SME 15 người bắt đầu với 2-3 nhóm nhỏ; rủi ro lặp việc giữa các squad."
+    data_reliability: "illustrative"
+  - name: "Agency Digital 'Nắng Mới' (Đà Nẵng) - GRPI + Lencioni + Belbin (SME Việt Nam)"
+    type: "sme"
+    setup: "12 nhân sự, lương trung bình 15 triệu (93.750 VNĐ/giờ); 4/12 nghỉ trong 12 tháng; 12/20 dự án đúng hạn (60%). Toàn bộ giả định minh họa."
+    key_calculations: ["Pulse trước 2,62; sau 3,90", "Chi phí chương trình = 30.000.000 + 14.400.000 + 36.000.000 + 21.937.500 = 102.337.500", "Lợi ích = 180.000.000 (nghỉ việc 4 xuống 1) + 90.000.000 (rework 160 xuống 80 giờ/tháng) = 270.000.000", "ROI 164%, hoàn vốn khoảng 4,5 tháng; chi phí bằng khoảng 28% chi phí tuyển 2 người (360 triệu/năm); kịch bản thận trọng lợi ích 210 triệu"]
+    lesson: "Chẩn đoán trước khi chữa; sửa từ đáy lên; dùng Belbin lấp khoảng trống (Completer Finisher, Coordinator) thay vì tuyển thêm người giỏi; đo lại sau 3 và 6 tháng; kết quả phụ thuộc cam kết của giám đốc."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Dự báo giao hàng của nhóm mới theo Tuckman và chi phí Storming kéo dài"
+    inputs: {capacity: 60, backlog: 800, sprints_a: [[4, 0.25], [4, 0.15], [8, 0.70], [8, 0.95]], sprints_b: [[4, 0.25], [8, 0.15], [6, 0.70], [6, 0.95]], monthly_payroll_million_vnd: 396}
+    steps:
+      - "Kịch bản A: 60 + 36 + 336 + 456 = 888 điểm, dư 88 (11%)."
+      - "Kịch bản B (Storming 8 sprint): 4x60x0,25 = 60; 8x60x0,15 = 72; 6x60x0,70 = 252; 6x60x0,95 = 342; tổng = 726."
+      - "Thiếu 800 - 726 = 74 điểm; 74/57 = 1,3 sprint = 2,6 tuần = khoảng 0,6 tháng."
+      - "Chi phí nhân sự chậm trễ khoảng 0,6 x 396 = 237 triệu VNĐ; chênh với A là 162 điểm (18%)."
+    result: "Storming kéo dài biến dư 11% thành thiếu 9% (74/800), tốn khoảng 237 triệu VNĐ nhân sự (giả định minh họa)."
+  - name: "Tính điểm An toàn tâm lý và Team NPS"
+    inputs: {answers: {q1: 2, q2: 4, q3: 4, q4: 2, q5: 4}, nps_group: {promoters: 5, passives: 3, detractors: 2}}
+    steps:
+      - "Đảo câu 1 và 4 (câu đảo): 6 - 2 = 4 mỗi câu."
+      - "Trung bình = (4 + 4 + 4 + 4 + 4)/5 = 4,0: vùng Tốt (3,5-4,5)."
+      - "NPS: 5/10 = 50% ủng hộ; 2/10 = 20% chê; NPS = 50 - 20 = 30: vùng Tốt."
+      - "Hành động: tìm mảng cải thiện và theo dõi chiều thay đổi theo quý."
+    result: "An toàn tâm lý 4,0 (Tốt), Team NPS 30 (Tốt)."
+  - name: "Runway và chi phí của tranh cãi đồng sáng lập (PayNhanh)"
+    inputs: {cash_million: 4500, burn_million_per_month: 450, months: 7, months_in_storming: 5}
+    steps:
+      - "Runway ban đầu = 4.500/450 = 10 tháng."
+      - "Sau 7 tháng đốt 7 x 450 = 3.150 triệu = 70% vốn, còn 1.350 triệu = 3 tháng."
+      - "Storming 5 tháng = 5 x 4,345 = 21,7 tuần, gấp 3,6 lần giới hạn 6 tuần: Storming mãn tính."
+      - "Cần luật ra quyết định (Cofounder Agreement) hoặc trọng tài; gọi vốn bổ sung sớm hoặc cắt chi xuống khoảng 380 triệu/tháng để kéo runway."
+    result: "Còn 3 tháng runway sau 7 tháng chưa ra mắt; case thất bại do thiếu cơ chế thoát Storming (giả định minh họa)."
+  - name: "ROI chương trình phát triển nhóm (agency Nắng Mới)"
+    inputs: {workshop: 30000000, belbin_test: 14400000, coaching: 36000000, retro_hours: 234, hourly_cost: 93750, leavers_before: 4, leavers_after: 1, replace_months: 4, salary: 15000000, rework_hours_before: 160, rework_hours_after: 80}
+    steps:
+      - "Giờ lương = 15.000.000/160 = 93.750; giờ họp = 12 x 1,5 x 13 = 234 giờ; chi phí họp = 234 x 93.750 = 21.937.500."
+      - "Tổng chi phí = 30.000.000 + 14.400.000 + 36.000.000 + 21.937.500 = 102.337.500."
+      - "Tiết kiệm nghỉ việc = (4 - 1) x 4 x 15.000.000 = 180.000.000; tiết kiệm rework = 80 x 93.750 x 12 = 90.000.000; tổng 270.000.000."
+      - "ROI = (270.000.000 - 102.337.500)/102.337.500 = 164%; hoàn vốn = 102.337.500/(270.000.000/12) = 4,5 tháng."
+      - "Kịch bản thận trọng (chỉ còn 2 người nghỉ): lợi ích 120 + 90 = 210 triệu, vẫn dương."
+    result: "ROI 164%, hoàn vốn khoảng 4,5 tháng; chi phí sửa chỉ bằng khoảng 28% chi phí tuyển thêm 2 người (giả định minh họa)."
+  - name: "Kiểm tra độ phủ Belbin của nhóm 5 người"
+    inputs: {members: {Alice: [Coordinator, Monitor Evaluator], Bob: [Shaper, Resource Investigator], Carol: [Implementer, Completer Finisher], David: [Specialist, Plant], Emily: [Teamworker, Resource Investigator]}}
+    steps:
+      - "Liệt kê vai chính và phụ có mặt, loại trùng (Resource Investigator xuất hiện hai lần chỉ tính 1)."
+      - "Số vai khác nhau = 9/9."
+      - "Tư duy (Plant, Monitor Evaluator, Specialist) = 3; Hành động (Shaper, Implementer, Completer Finisher) = 3; Con người (Coordinator, Resource Investigator, Teamworker) = 3."
+      - "Rủi ro: Carol vừa Implementer vừa Completer Finisher dễ quá tải; Alice kiêm Coordinator và Monitor Evaluator cần cẩn thận để thẩm định không làm chậm điều phối."
+    result: "Độ phủ 9/9, cân bằng 3-3-3, hai điểm cần theo dõi quá tải."
+
+practice_questions:
+  - q: "Nhóm 6 người mới lập được 4 tuần và bắt đầu cãi nhau về cách làm việc. Quản lý nên kết luận gì và làm gì?"
+    a: "Khả năng cao là Storming (bình thường, 2-6 tuần). Công khai nói xung đột là bình thường, phân loại nội dung/quy trình/quan hệ, đặt khung ra quyết định và giới hạn thời gian, 1-1, coaching; can thiệp ngay nếu là xung đột quan hệ. Kiểu lãnh đạo: Coaching."
+  - q: "Vì sao Lencioni khuyên sửa từ tầng Tin cậy lên, không sửa Trách nhiệm trước?"
+    a: "Chuỗi nhân quả: không tin thì không tranh luận thẳng, không tranh luận thì không cam kết thật, không cam kết thì không có chuẩn để nhắc nhau. Sửa tầng trên khi tầng dưới hỏng chỉ chữa triệu chứng."
+  - q: "Nhóm 5 lập trình viên giỏi nhất ngành (đều Specialist) hay va chạm. Giải thích theo Belbin và đề xuất."
+    a: "Thiếu cân bằng vai (Specialist với Specialist đều 'cách của tôi mới đúng', không có Coordinator, Implementer, Teamworker). Ghép Specialist với Implementer và Teamworker, thêm Coordinator; tuyển theo khoảng trống hành vi."
+  - q: "Tính điểm An toàn tâm lý nếu câu 1 = 4, câu 2 = 3, câu 3 = 2, câu 4 = 4, câu 5 = 3."
+    a: "Đảo câu 1: 6-4=2; đảo câu 4: 6-4=2. Trung bình = (2+3+2+2+3)/5 = 2,4 (dưới 2,5: khủng hoảng, can thiệp khẩn)."
+  - q: "Nhóm 10 người: 4 người cho 9-10, 4 người cho 7-8, 2 người cho 0-6. Team NPS?"
+    a: "40% - 20% = 20: vùng cần theo dõi (0-30)."
+  - q: "Backlog 800 điểm, nhóm 60 điểm/sprint, kịch bản A 24 sprint cho 888 điểm. Nếu Storming kéo thêm 4 sprint (thành 8) và Norming, Performing còn 6 sprint mỗi giai đoạn thì kết quả? Cần làm gì?"
+    a: "726 điểm, thiếu 74 (khoảng 9%), tương đương 1,3 sprint (khoảng 0,6 tháng). Cắt phạm vi hoặc thêm 2 sprint, và đầu tư vào khung giải quyết xung đột để rút ngắn Storming."
+  - q: "Startup 3 đồng sáng lập chia 33/33/33 đang bất đồng liên tục, vốn 4,5 tỷ, burn 450 triệu/tháng. Cần làm gì ngay?"
+    a: "Ký Thỏa thuận đồng sáng lập: ai quyết gì (RACI), luật khi bất đồng (người quyết khi hòa hoặc trọng tài độc lập), trần Storming 6 tuần, vesting; tính runway theo tuần (10 tháng ban đầu, mỗi tháng tranh cãi đốt 450 triệu)."
+  - q: "Phân biệt Groupthink và Abilene Paradox."
+    a: "Groupthink: nhóm tin chắc quyết đúng, dập phản biện, ảo tưởng nhất trí (Janis). Abilene: ai cũng biết trong lòng không muốn nhưng tưởng người khác muốn nên im lặng (Harvey 1974). Phòng: hỏi 'có ai KHÔNG đồng ý?', red team, bỏ phiếu kín, an toàn tâm lý."
+  - q: "Một RACI có dòng 'Duyệt hợp đồng' với hai người cùng đánh A. Sai ở đâu?"
+    a: "Mỗi việc phải có đúng một A và ít nhất một R; hai A nghĩa là hai người cùng quyết và không ai chịu trách nhiệm cuối; chọn một A."
+  - q: "Agency 12 người, lương 15 triệu, chương trình phát triển nhóm tốn 102.337.500 VNĐ, lợi ích 270 triệu/năm. ROI và hoàn vốn?"
+    a: "ROI = (270 - 102,3375)/102,3375 = 164%; hoàn vốn = 102,3375/(270/12) = khoảng 4,5 tháng. Chạy thêm kịch bản thận trọng (lợi ích 210 triệu)."
+  - q: "Churn giảm từ 5% xuống 3,2% là giảm bao nhiêu điểm phần trăm và tương đối? Vì sao cần phân biệt?"
+    a: "1,8 điểm phần trăm và 36% tương đối; so với kịch bản xấu 0,5 điểm (10% tương đối). Tránh hiểu sai mức cải thiện."
+  - q: "Case Challenger cho bài học gì cho một xưởng SME?"
+    a: "Nếu nhân viên báo rủi ro mà bị phản hồi 'đừng làm chậm tiến độ' thì có nguy cơ sự cố (lô hàng lỗi, hợp đồng sai, an toàn lao động); lập quyền phản đối chính thức, đổi gánh nặng chứng minh, tách báo cáo an toàn khỏi áp lực lịch trình, ghi quyết định văn bản."
+
+checklist:
+  - "Đã viết Team Charter (mục tiêu, vai trò, quy tắc họp, cách ra quyết định) và RACI (mỗi việc 1 A, ít nhất 1 R)?"
+  - "Đã báo trước cho nhóm rằng xung đột giai đoạn đầu là bình thường (Storming)?"
+  - "Kiểu lãnh đạo có khớp giai đoạn Tuckman hiện tại không?"
+  - "Đã rà khoảng trống hành vi theo Belbin (nhất là Completer Finisher, Coordinator); nhóm không chỉ gồm một kiểu người?"
+  - "Lãnh đạo thừa nhận sai sót trước nhóm và phản hồi tin xấu bằng giải quyết vấn đề thay vì quy lỗi?"
+  - "Có kênh nói ý kiến trái chiều không bị trừng phạt; có quy tắc 'tranh luận trong họp, cam kết sau họp'?"
+  - "Mỗi cuộc họp chốt rõ: quyết gì, ai làm, hạn khi nào, tiêu chí thành công?"
+  - "Tiến độ công khai (kanban/burndown/OKR) để đồng đội nhắc nhau; trễ hạn/chất lượng kém được xử lý trong 24 giờ?"
+  - "Mục tiêu nhóm là kết quả (OKR) và được ăn mừng như thắng lợi nhóm?"
+  - "Chạy pulse survey định kỳ (tháng/quý), đảo điểm câu đảo, có hành động sau khảo sát?"
+  - "Theo dõi giao đúng hạn, attrition, cycle time, gắn kết; tính chi phí thay thế khi đánh giá ROI?"
+  - "Có biện pháp chống groupthink (red team, bỏ phiếu kín), social loafing/free rider, silo thông tin, burnout, micromanagement?"
+  - "Retrospective định kỳ (2 tuần hoặc 1 tháng) và có hành động cải tiến; rà lại chương trình sau 3 và 6 tháng bằng cùng bộ chỉ số?"
+  - "1-1 từng thành viên tháng này; kế hoạch phát triển cá nhân; phản hồi hằng tháng; nhận diện người tiềm năng và kèm cặp?"
+  - "Giá trị nhóm tạo ra có vượt chi phí nhóm; khách hàng hài lòng (NPS, phản hồi)?"
+
+excel_google_sheets_templates:
+  - "Team Charter (Google Docs/Notion): tầm nhìn, mục tiêu quý (tối đa 3), RACI, luật làm việc, cách giải quyết bất đồng, rà soát hằng quý."
+  - "Ma trận RACI (Google Sheets): cột = người, hàng = hoạt động; ô điều kiện kiểm tra mỗi hàng có ít nhất 1 R và đúng 1 A."
+  - "Pulse survey 25 câu (Google Forms): ẩn danh, thang 1-5; công thức đảo điểm =6-ô cho câu 1, 4 (và câu 22 kiểu đảo); AVERAGE theo từng yếu tố; biểu đồ theo quý."
+  - "Bảng chấm 5 yếu tố Aristotle / GRPI: 5 hàng x các tháng, AVERAGE và MIN để chỉ ra yếu tố ưu tiên."
+  - "T7 audit: 7 yếu tố x thang 10 (tối đa 70), hàm MIN/SMALL chọn 1-2 yếu tố cần cải thiện."
+  - "Dự báo năng lực Tuckman: bảng giai đoạn x số sprint x năng lực x tỷ lệ năng suất, =SUMPRODUCT so với backlog."
+  - "Bảng quyết định có trọng số: tiêu chí, trọng số (tổng 1), điểm từng phương án, =SUMPRODUCT."
+  - "Bảng chi phí/lợi ích chương trình nhóm (ROI, payback) và bảng runway theo tuần."
+  - "Retrospective board (Miro/Notion/Trello): Start-Stop-Continue, 4L, Thuyền buồm."
+  - "Dashboard chỉ số nhóm: velocity (±10%), bug escape, cycle time, NPS, attrition, OKR completion."

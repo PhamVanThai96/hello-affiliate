@@ -1,0 +1,1018 @@
+id: "m01"
+name_vi: "Thiết kế & Phân tích Quy trình"
+name_en: "Process Design & Analysis"
+source_file: "01-process-design-analysis.md"
+purpose: >
+  Giúp agent phân tích quy trình vận hành hiện có (đo thời gian, năng lực, nút thắt, lãng phí, biến động) và thiết kế lại
+  quy trình bằng công cụ chuẩn (Flowchart, SIPOC, VSM, Service Blueprint, BPMN, RACI, Swimlane, Process Capability, Process Mining,
+  Time and Motion Study, ECRS, 7 Wastes). Trả lời bài toán "đang chậm/lỗi/tồn đơn ở đâu, có nên thuê thêm người không, cải tiến bước nào
+  trước và đáng bao nhiêu tiền" bằng số liệu thay vì cảm tính. Là nền tảng cho 8 module vận hành còn lại.
+when_to_use:
+  - "Khách chờ lâu, hàng đợi dài, đơn tồn, giao trễ; chủ SME định thuê thêm người nhưng chưa biết nút thắt ở đâu"
+  - "Cần tính Throughput Time, Process Velocity, PCE (Process Cycle Efficiency) từ số liệu từng bước và thời gian chờ"
+  - "Cần tính Takt Time, năng lực từng công đoạn, mức sử dụng (utilization), hiệu suất cân bằng chuyền"
+  - "Dùng Little's Law (L = lambda x W) để kiểm tra số liệu WIP, thời gian chờ, tốc độ đến"
+  - "Chọn công cụ phân tích phù hợp (Flowchart, SIPOC, VSM, Service Blueprint, Swimlane, BPMN, Process Mining)"
+  - "Đánh giá năng lực quy trình (Cp, Cpk) so với giới hạn tiêu chuẩn LSL/USL (rót đồ uống, nhiệt độ thanh trùng...)"
+  - "Chuẩn hóa thao tác: đo Standard Time, đếm thao tác thừa, viết SOP, thiết kế RACI cho quy trình liên phòng ban"
+  - "Quy đổi cải tiến quy trình ra tiền (doanh thu tăng, chi phí rework giảm, hoàn vốn, ROI)"
+  - "Phân loại quy trình (Project/Jobbing/Batch/Mass/Continuous) và mức tiếp xúc khách hàng để chọn cách thiết kế"
+prerequisites: []
+related_modules:
+  - "m02: Quality Management - Six Sigma/SPC mở rộng Cp/Cpk, TQM; 7 Wastes mở rộng trong Lean"
+  - "m03: Supply Chain Management - dòng chảy vật chất và thông tin end-to-end, nhà cung cấp/khách hàng trong SIPOC"
+  - "m04: Inventory Management - WIP, lô sản xuất, tồn kho trung gian (Little's Law, SMED -> lô nhỏ)"
+  - "m05: Capacity Planning - năng lực, utilization, hàng đợi; mở rộng 1.5.4 và 1.5.5"
+  - "m06: Project Management - RACI, quản lý dự án cải tiến, PDCA/DMAIC"
+  - "m07: Forecasting - ước lượng nhu cầu (lambda, demand) làm đầu vào Takt Time và utilization"
+  - "m08: Layout Strategy - Rearrange để giảm khoảng cách di chuyển (Motion/Transport waste)"
+  - "m09: Theory of Constraints - nút thắt cổ chai, khai thác nút thắt (mở rộng 1.5.4)"
+
+concepts:
+  - term_vi: "Thiết kế quy trình / Phân tích quy trình"
+    term_en: "Process Design / Process Analysis"
+    definition: "Thiết kế: xác định cách tổ chức chuỗi công việc biến đầu vào (inputs) thành đầu ra có giá trị cho khách hàng. Phân tích: đo lường, đánh giá và cải tiến quy trình hiện có để loại bỏ lãng phí, giảm cycle time, nâng chất lượng."
+    why_it_matters: >
+      Thiết kế trả lời "quy trình NÊN như thế nào"; phân tích trả lời "quy trình THỰC TẾ đang ra sao và kém ở đâu". Hầu hết SME không thiết kế từ đầu
+      mà phân tích trước rồi thiết kế lại (quy trình đã tồn tại trong đầu chủ quán), nên trình tự đúng là: hiểu hiện tại (vẽ, đo) -> phát hiện vấn đề -> thiết kế lại.
+  - term_vi: "Mô hình biến đổi (Transformation Process)"
+    term_en: "Transformation Process Model"
+    definition: "Đầu vào (nguyên vật liệu, thông tin, khách hàng) + nguồn lực biến đổi (nhân lực, máy móc, cơ sở vật chất) -> quy trình -> đầu ra (sản phẩm, dịch vụ, giá trị gia tăng), có vòng phản hồi (feedback)."
+    why_it_matters: "Khung của Slack, Chambers và Johnston giúp nhìn mọi hoạt động (quán cà phê, xưởng may, kho TMĐT) như một quy trình biến đổi có thể đo và tối ưu."
+  - term_vi: "Lịch sử các công cụ"
+    term_en: "Origins of process tools"
+    definition: "Taylor (1880s-1911) Time Study; Gilbreth (1910s-1921) Motion Study và Process Chart (trình bày tại ASME 1921), ASME chuẩn hóa ký hiệu 1947; Ohno (1950s) TPS và 7 lãng phí; Little (1961) Little's Law; Chase (1978) Customer Contact Model; Shostack (1984) Service Blueprint; Rummler và Brache (1990) Swimlane; Rother và Shook (1999) VSM; van der Aalst (2000s) Process Mining."
+    why_it_matters: "Hiểu bối cảnh ra đời giải thích vì sao mỗi công cụ có hình dạng hiện nay: Toyota hậu chiến thiếu vốn/nguyên liệu nên phải loại lãng phí; dịch vụ bùng nổ nên cần công cụ có khách hàng 'tham gia'; ERP lưu event log nên có Process Mining."
+  - term_vi: "Ma trận Khối lượng - Đa dạng (loại quy trình)"
+    term_en: "Volume-Variety Matrix / Process Types"
+    definition: "Project (khối lượng rất thấp, đa dạng rất cao), Jobbing, Batch, Mass, Continuous (khối lượng rất cao, đa dạng rất thấp). Khối lượng càng lớn và đa dạng càng thấp thì càng nên chuẩn hóa/tự động hóa."
+    why_it_matters: "Không có 'quy trình tốt nhất' cho mọi doanh nghiệp (Hayes và Wheelwright, Harvard 1979). Chọn sai loại quy trình nghĩa là dùng sai công cụ quản lý: quán cà phê nhỏ ép vào dây chuyền công nghiệp sẽ cứng nhắc; nhà máy hàng loạt chạy như dự án đơn chiếc sẽ có chi phí đơn vị rất cao."
+  - term_vi: "Mô hình mức độ tiếp xúc khách hàng"
+    term_en: "Customer Contact Model (Chase, 1978)"
+    definition: "Pure Service (tiếp xúc cao: nhà hàng, salon), Mixed Service (front-office + back-office: ngân hàng, bệnh viện), Quasi-Manufacturing (tiếp xúc thấp: kho vận TMĐT, tổng đài xử lý đơn)."
+    why_it_matters: "Trong dịch vụ khách hàng có mặt trong quy trình, tự đánh giá chất lượng khi quy trình chạy và tạo biến động (đến lúc nào, gọi gì). Do đó phần 'khách nhìn thấy' (front/onstage) ưu tiên trải nghiệm và linh hoạt; phần 'khách không thấy' (back/backstage) tối đa hóa hiệu quả theo tư duy sản xuất hàng loạt. Là nguyên lý của Line of Visibility trong Service Blueprint."
+  - term_vi: "Thời gian thông lượng"
+    term_en: "Throughput Time / Lead Time"
+    definition: "Tổng thời gian từ lúc yêu cầu vào đến lúc giao kết quả = xử lý + chờ + di chuyển + kiểm tra."
+    why_it_matters: "Chủ DN hay chỉ nhìn thời gian làm việc, bỏ qua thời gian đơn hàng nằm chờ; khách hàng trả tiền cho kết quả, không trả cho thời gian chờ."
+  - term_vi: "Thời gian tạo giá trị / không tạo giá trị"
+    term_en: "Value-Added (VA), Necessary Non-Value-Added (NVA-N), Non-Value-Added (NVA)"
+    definition: "VA: thời gian thực sự biến đổi sản phẩm/dịch vụ theo hướng khách hàng sẵn sàng trả tiền. NVA-N: không tạo giá trị trực tiếp nhưng cần thiết (kiểm tra theo quy định). NVA: lãng phí thuần túy, có thể loại bỏ."
+    why_it_matters: "Phân loại này là nền của VSM và PCE: cải tiến phải nhắm vào NVA (đặc biệt thời gian chờ), không phải làm bước VA nhanh thêm vài giây."
+  - term_vi: "Hiệu suất chu kỳ quy trình / Vận tốc quy trình"
+    term_en: "PCE (Process Cycle Efficiency) / Process Velocity"
+    definition: "PCE = VA Time / Throughput Time (càng gần 100% càng tinh gọn); Process Velocity = Throughput Time / VA Time = 1/PCE (càng gần 1 càng tốt)."
+    why_it_matters: "Phơi bày phần 'thời gian chết'. Nhiều quy trình hành chính/dịch vụ có PCE chỉ vài phần trăm hoặc thấp hơn (ví dụ minh họa trong nguồn: 2,7%; 0,65%)."
+  - term_vi: "Định luật Little"
+    term_en: "Little's Law"
+    definition: "L = lambda x W: số việc trung bình trong hệ thống (WIP) = tốc độ đến x thời gian trung bình trong hệ thống; đúng với hầu hết hệ thống hàng đợi ổn định, không cần biết chi tiết bên trong."
+    why_it_matters: "John D. C. Little (MIT) chứng minh năm 1961. Logic như số xe trên đoạn đường = lưu lượng x thời gian đi qua. Cho thấy WIP và thời gian chờ là hai mặt một đồng xu: muốn rút ngắn thời gian giao hàng, cách hiệu quả nhất là giảm việc dở dang (nền tảng Lean/Kanban). Số bàn chỉ là chỗ chứa, không phải năng lực xử lý."
+  - term_vi: "Nhịp sản xuất"
+    term_en: "Takt Time"
+    definition: "Thời gian làm việc khả dụng trong kỳ chia cho nhu cầu khách hàng trong kỳ: nhịp tối đa để một đơn vị hoàn tất nhằm đáp ứng kịp nhu cầu."
+    why_it_matters: "'Takt' là chữ Đức nghĩa là nhịp (nhạc trưởng), dùng trong chế tạo máy bay Đức thập niên 1930, Toyota phổ biến trong TPS. Khớp nhịp làm việc với nhịp mua của khách: không nhanh hơn (dư thừa, tồn kho), không chậm hơn (thiếu hàng). Công đoạn có CT/số người lớn hơn Takt sẽ là điểm nghẽn."
+  - term_vi: "Năng lực, nút thắt, mức sử dụng"
+    term_en: "Capacity, Bottleneck, Utilization"
+    definition: "Năng lực công đoạn = n x T_khả dụng / CT; năng lực quy trình = min các công đoạn; mức sử dụng rho = nhu cầu / năng lực; nút thắt là công đoạn năng lực thấp nhất."
+    why_it_matters: "Chuỗi nối tiếp chỉ chạy nhanh bằng công đoạn chậm nhất (mắt xích yếu nhất). Cải tiến công đoạn không phải nút thắt không làm tăng sản lượng thêm chút nào; trực giác 'pha chế bận nhất' có thể sai (case quán cà phê: nút thắt là thu ngân)."
+  - term_vi: "Hiệu suất cân bằng chuyền"
+    term_en: "Line Efficiency / Line Balancing"
+    definition: "Tổng CT các công đoạn / (số công đoạn x CT lớn nhất). Phần còn lại (1 - hiệu suất) là năng lực lao động nhàn rỗi do dây chuyền mất cân bằng."
+    why_it_matters: "Cho biết bao nhiêu công sức bị lãng phí vì các trạm chờ trạm chậm nhất; dẫn tới giải pháp chuyển thao tác từ trạm chậm sang trạm nhanh."
+  - term_vi: "Vùng nguy hiểm khi mức sử dụng gần 100%"
+    term_en: "Queueing explosion near rho -> 1"
+    definition: "Khi đến và phục vụ ngẫu nhiên, thời gian chờ trung bình tỷ lệ gần như với rho/(1-rho): 50% -> 1; 80% -> 4; 90% -> 9; 97,4% -> ~37."
+    why_it_matters: "Trực giác sai là 'công suất đủ (rho < 100%) thì không phải chờ'. Thiết kế để nút thắt chạy ~70-85% nếu nhu cầu biến động ngẫu nhiên. Giải thích vì sao shop TMĐT dù năng lực 246 >= nhu cầu 240 vẫn tồn đơn."
+  - term_vi: "Gemba / Genchi Genbutsu / Ohno Circle"
+    term_en: "Gemba Walk, Genchi Genbutsu, Ohno Circle"
+    definition: "Gemba: hiện trường nơi công việc diễn ra. Genchi Genbutsu: đến hiện trường, tự mắt thấy (Toyota Way). Ohno Circle: kỹ sư đứng trong vòng tròn phấn quan sát dòng chảy nhiều giờ."
+    why_it_matters: "Phỏng vấn cho ra 'process as imagined' (quy trình như người ta tưởng); quan sát cho ra 'process as performed' (thực tế). SME áp dụng ngay: đứng 30-60 phút tại một điểm, ghi mọi lần chờ đợi."
+  - term_vi: "7 loại lãng phí (TIMWOOD)"
+    term_en: "7 Wastes (Muda): Transport, Inventory, Motion, Waiting, Overproduction, Overprocessing, Defects"
+    definition: "Danh mục lãng phí do Taiichi Ohno hệ thống hóa trong TPS."
+    why_it_matters: "Cho khung quét lãng phí có hệ thống sau khi vẽ và đo; lãng phí lớn nhất thường nằm ở thời gian chờ và tồn kho giữa các công đoạn, không phải máy chạy chậm."
+  - term_vi: "Biến động và năng lực quy trình"
+    term_en: "Variability and Process Capability"
+    definition: "Biến động là kẻ thù của chất lượng: quy trình vẽ đẹp vẫn có kết quả lúc đúng lúc sai. Cp đo độ phân tán so với dải cho phép; Cpk đo thêm độ lệch tâm."
+    why_it_matters: "Process Design phải đi kèm Process Control (SPC; Shewhart, Bell Labs 1920-30s). Trung bình đẹp chưa đủ: 5 công nhân trung bình 60 giây nhưng mỗi người một kiểu thì chất lượng mỗi người một kiểu."
+  - term_vi: "Nút thắt do mơ hồ trách nhiệm và bàn giao"
+    term_en: "Handoff and accountability ambiguity"
+    definition: "Mỗi lần đường đi cắt ngang giữa hai làn (bộ phận) là một điểm bàn giao (handoff) có thời gian chờ và nguy cơ thất lạc thông tin."
+    why_it_matters: "Chậm trễ liên phòng ban thường do bàn giao và trách nhiệm mơ hồ, không phải do bước công việc; Swimlane thấy điểm bàn giao, RACI chỉ rõ ai chịu trách nhiệm."
+  - term_vi: "Process Owner và SOP"
+    term_en: "Process Owner, Standard Operating Procedure"
+    definition: "Process Owner: người chịu trách nhiệm cuối cùng về hiệu suất quy trình (theo dõi KPI, cập nhật SOP, tiếp nhận phản hồi, rà soát định kỳ). SOP: tài liệu mô tả từng bước thực hiện chuẩn."
+    why_it_matters: "Sai lầm phổ biến là vẽ xong rồi cất ngăn kéo. Phải chỉ định Process Owner ngay từ bước 1 để duy trì sau dự án; SOP rút từ phân tích giúp đào tạo nhanh, nhân rộng (franchise/chuỗi)."
+  - term_vi: "Phân tích liệt và cứng nhắc hóa"
+    term_en: "Analysis paralysis and over-standardization"
+    definition: "Sa đà vẽ sơ đồ hoàn hảo mà không triển khai; hoặc chuẩn hóa quá chi tiết làm mất linh hoạt xử lý ngoại lệ trong dịch vụ."
+    why_it_matters: "Cần timeboxing giai đoạn phân tích, Pareto 80/20 chọn 1-3 vấn đề lớn nhất, chỉ chuẩn hóa bước lặp lại cao, giữ discretion cho nhân viên tuyến đầu."
+
+formulas:
+  - id: "m01_throughput_time"
+    name_vi: "Thời gian thông lượng"
+    name_en: "Throughput Time"
+    expression_latex: '\text{TT} = t_{xuly} + t_{cho} + t_{dichuyen} + t_{kiemtra}'
+    expression_python: "t_process + t_wait + t_move + t_inspect"
+    excel: "=SUM(D:D)/60 + SUM(E:E)  (D: CT giây, E: chờ phút)"
+    variables:
+      - {symbol: "t_process", meaning: "Tổng thời gian xử lý các bước", unit: "phút"}
+      - {symbol: "t_wait", meaning: "Tổng thời gian chờ giữa các bước", unit: "phút"}
+      - {symbol: "t_move", meaning: "Tổng thời gian di chuyển/vận chuyển", unit: "phút"}
+      - {symbol: "t_inspect", meaning: "Tổng thời gian kiểm tra", unit: "phút"}
+    when_to_use: "Đo tổng thời gian từ khi yêu cầu vào đến khi giao kết quả (đơn hàng, khách tại quán, hồ sơ)."
+    why_it_works: "Khách hàng cảm nhận toàn bộ thời gian, không chỉ phần 'làm việc'. Cộng cả chờ/di chuyển/kiểm tra mới thấy phần thời gian chết mà quan sát cảm tính bỏ sót."
+    assumptions: ["Đo thực tế bằng Gemba Walk, không dựa vào trí nhớ", "Cùng đơn vị thời gian cho mọi thành phần"]
+    pitfalls: ["Chỉ cộng thời gian xử lý, quên thời gian chờ giữa các bước", "Trộn giây, phút, giờ, ngày"]
+    interpretation: "So với VA Time để biết phần nào là lãng phí. Ví dụ minh họa: 1.727 phút (~28,8 giờ) trong đó VA chỉ 47 phút."
+    example:
+      inputs: {t_process: 47, t_wait: 1680, t_move: 0, t_inspect: 0}
+      steps:
+        - "VA = 2 + 5 + 10 + 30 = 47 phút (nhận đơn, kiểm tồn kho, đóng gói, giao)"
+        - "Chờ = 4 giờ (240 phút) + 1 ngày (1.440 phút) = 1.680 phút"
+        - "TT = 47 + 1.680 = 1.727 phút (~28,8 giờ)"
+      result: "Throughput Time = 1.727 phút"
+  - id: "m01_process_velocity"
+    name_vi: "Vận tốc quy trình"
+    name_en: "Process Velocity"
+    expression_latex: '\text{Velocity} = \frac{\text{Throughput Time}}{\text{VA Time}}'
+    expression_python: "tt / va"
+    excel: "=TT/VA"
+    variables:
+      - {symbol: "tt", meaning: "Throughput Time", unit: "phút"}
+      - {symbol: "va", meaning: "Value-Added Time", unit: "phút"}
+    when_to_use: "Biểu đạt 'khách mất gấp bao nhiêu lần thời gian cần thiết'."
+    why_it_works: "Nghịch đảo của PCE; càng gần 1 càng tinh gọn. Dễ truyền đạt cho chủ DN: 'đơn hàng nằm 36 lần lâu hơn thời gian thực sự làm'."
+    assumptions: ["VA Time phân loại đúng theo góc nhìn khách hàng sẵn sàng trả tiền"]
+    pitfalls: ["Đưa bước kiểm tra nội bộ hoặc chờ vào VA", "So sánh giữa các quy trình khác định nghĩa VA"]
+    interpretation: "Nguồn minh họa: 36,7 (đơn online ví dụ), 4,52 -> 2,09 (quán cà phê), 154,8 -> 54,6 (shop TMĐT Nhà Xinh)."
+    example:
+      inputs: {tt: 1727, va: 47}
+      steps: ["1.727 / 47 = 36,74"]
+      result: "Process Velocity ~ 36,7"
+  - id: "m01_pce"
+    name_vi: "Hiệu suất chu kỳ quy trình"
+    name_en: "Process Cycle Efficiency (PCE)"
+    expression_latex: '\text{PCE} = \frac{\text{VA Time}}{\text{Throughput Time}} = \frac{1}{\text{Process Velocity}}'
+    expression_python: "va / tt"
+    excel: "=SUMIF(B:B,\"VA\",D:D)/60/Throughput"
+    variables:
+      - {symbol: "va", meaning: "Value-Added Time", unit: "phút"}
+      - {symbol: "tt", meaning: "Throughput Time", unit: "phút"}
+    when_to_use: "Đo % thời gian thực sự tạo giá trị; xác định cải tiến nên nhắm vào thời gian chờ hay thời gian xử lý."
+    why_it_works: "Cho thấy phần lớn thời gian là chờ. Toyota/Lean kéo PCE tiến gần hơn đến 100% bằng cách cắt thời gian chờ và WIP."
+    assumptions: ["VA/TT đo trên cùng một đơn vị công việc và cùng cơ sở thời gian"]
+    pitfalls: ["Tối ưu bước VA 1 phút (cải thiện 0,06%) thay vì khoảng chờ chiếm 97%", "Quên tính thời gian chờ giữa các bước"]
+    interpretation: "Tham chiếu minh họa: 2,7% (đơn online), 22,1% -> 47,8% (quán cà phê), 0,65% -> 1,83% (Nhà Xinh); quy trình dịch vụ/hành chính thường chỉ vài %."
+    example:
+      inputs: {va: 47, tt: 1727}
+      steps: ["47 / 1.727 = 0,0272"]
+      result: "PCE ~ 2,7%; 97,3% thời gian là chờ"
+  - id: "m01_littles_law_wait"
+    name_vi: "Định luật Little (tính thời gian trong hệ thống)"
+    name_en: "Little's Law (W = L / lambda)"
+    expression_latex: 'W = \frac{L}{\lambda}'
+    expression_python: "L / lam"
+    excel: "=L/lambda"
+    variables:
+      - {symbol: "L", meaning: "Số việc/khách trung bình trong hệ thống (WIP)", unit: "đơn vị"}
+      - {symbol: "lam", meaning: "Tốc độ đến thực sự vào hệ thống (lambda)", unit: "đơn vị/giờ"}
+    when_to_use: "Suy ra thời gian trung bình ở trong hệ thống từ WIP và tốc độ đến; kiểm tra số liệu đo có khớp nhau."
+    why_it_works: "Sau khi ổn định, số người trong quán tại một thời điểm = lưu lượng vào x thời gian ở lại (như số xe trên đoạn đường). Đúng không cần biết cấu trúc bên trong."
+    assumptions: ["Hệ thống ổn định (vào = ra về dài hạn)", "lambda là số thực sự vào hệ thống, trừ khách bỏ đi (walk-away)", "Cùng đơn vị thời gian cho lambda và W"]
+    pitfalls: ["Dùng nhu cầu đến cửa thay vì khách thực sự vào hệ thống", "Dùng cho hệ thống đang quá tải/không ổn định", "Nhầm số bàn (chỗ chứa) với năng lực xử lý"]
+    interpretation: "Nhân 60 để ra phút nếu lambda theo giờ. Kết quả lệch nhiều so với đo bấm giờ = số liệu hoặc giả định có vấn đề."
+    example:
+      inputs: {L: 8, lam: 24}
+      steps: ["W = 8/24 = 0,3333 giờ", "x 60 = 20 phút"]
+      result: "W = 0,3333 giờ = 20 phút"
+  - id: "m01_littles_law_wip"
+    name_vi: "Định luật Little (tính WIP mục tiêu)"
+    name_en: "Little's Law (L = lambda x W)"
+    expression_latex: 'L = \lambda \times W'
+    expression_python: "lam * W"
+    excel: "=lambda*W"
+    variables:
+      - {symbol: "lam", meaning: "Tốc độ đến", unit: "đơn vị/giờ"}
+      - {symbol: "W", meaning: "Thời gian trung bình trong hệ thống", unit: "giờ"}
+    when_to_use: "Đặt mục tiêu thời gian chờ rồi suy ra WIP cho phép; ước lượng chồng việc dở dang (ví dụ 146 đơn ở Nhà Xinh)."
+    why_it_works: "Cùng định luật nhưng giải theo L: muốn W nhỏ với lambda không đổi thì phải giảm WIP, tức tăng tốc phục vụ chứ không giảm số bàn."
+    assumptions: ["Giống m01_littles_law_wait"]
+    pitfalls: ["Giữ L cố định và đòi W giảm: chỉ đạt khi lambda tăng (nhiều khách hơn, không phải mục tiêu)"]
+    interpretation: "Quán cà phê muốn W = 15 phút với lambda = 24 cần L = 6 (giảm từ 8): phải giảm thời gian xử lý mỗi đơn."
+    example:
+      inputs: {lam: 24, W: 0.25}
+      steps: ["L = 24 x 0,25 = 6 khách"]
+      result: "Cần giảm WIP từ 8 xuống 6 khách"
+  - id: "m01_effective_arrival"
+    name_vi: "Tốc độ đến thực sự vào hệ thống"
+    name_en: "Effective arrival rate (after walk-away)"
+    expression_latex: '\lambda = D \times (1 - p_{bo})'
+    expression_python: "D * (1 - p_walkaway)"
+    variables:
+      - {symbol: "D", meaning: "Nhu cầu đến cửa", unit: "khách/giờ"}
+      - {symbol: "p_walkaway", meaning: "Tỷ lệ khách thấy hàng dài bỏ đi", unit: "tỷ lệ thập phân"}
+    when_to_use: "Chuẩn bị lambda cho Little's Law và utilization khi có khách bỏ đi."
+    why_it_works: "Khách bỏ đi không bao giờ vào hệ thống nên không đóng góp WIP; dùng nhu cầu đến cửa sẽ đo sai."
+    assumptions: ["Tỷ lệ bỏ đi ước lượng từ quan sát"]
+    pitfalls: ["Dùng D thay vì lambda"]
+    interpretation: "Giảm walk-away (22% -> 9%) vừa tăng doanh thu vừa tăng utilization."
+    example:
+      inputs: {D: 34, p_walkaway: 0.22}
+      steps: ["34 x (1 - 0,22) = 26,52 khách/giờ"]
+      result: "lambda = 26,52 khách/giờ"
+  - id: "m01_takt_time"
+    name_vi: "Nhịp sản xuất"
+    name_en: "Takt Time"
+    expression_latex: '\text{Takt} = \frac{T_{khadung}}{\text{Nhu cau}}'
+    expression_python: "t_avail / demand"
+    excel: "=Tkhadung/Nhucau"
+    variables:
+      - {symbol: "t_avail", meaning: "Thời gian làm việc khả dụng trong kỳ", unit: "giây"}
+      - {symbol: "demand", meaning: "Nhu cầu khách hàng trong kỳ", unit: "đơn vị"}
+    when_to_use: "Xác định nhịp tối đa cho phép mỗi đơn vị để đáp ứng nhu cầu; so với CT từng công đoạn để thấy ai không theo kịp."
+    why_it_works: "Đồng bộ nhịp làm việc với nhịp mua: nhanh hơn thì tồn kho dư, chậm hơn thì thiếu hàng."
+    assumptions: ["T khả dụng đã trừ nghỉ/chuẩn bị (ví dụ 6,5 giờ hiệu quả)", "Nhu cầu ổn định trong kỳ"]
+    pitfalls: ["Dùng toàn bộ thời gian ca thay vì thời gian hiệu quả", "Nhầm Takt (theo nhu cầu) với Cycle Time (theo năng lực thực)"]
+    interpretation: "Công đoạn cần CT/Takt người (làm tròn lên) để theo kịp: 190/97,5 = 1,95 ~ 2 người."
+    example:
+      inputs: {t_avail: 23400, demand: 240}
+      steps: ["6,5 giờ = 23.400 giây", "23.400 / 240 = 97,5"]
+      result: "Takt = 97,5 giây/đơn"
+  - id: "m01_staff_required"
+    name_vi: "Số người cần theo Takt"
+    name_en: "Required staff at a stage"
+    expression_latex: 'n = \frac{CT}{\text{Takt}}'
+    expression_python: "ct / takt"
+    variables:
+      - {symbol: "ct", meaning: "Cycle Time công đoạn", unit: "giây/đơn"}
+      - {symbol: "takt", meaning: "Takt Time", unit: "giây/đơn"}
+    when_to_use: "Ước tính số người/máy tối thiểu mỗi công đoạn để không vượt Takt."
+    why_it_works: "Mỗi người ra 1 đơn sau CT giây; cần n người để trung bình ra 1 đơn mỗi Takt giây."
+    assumptions: ["Làm tròn lên số nguyên", "Chưa tính dự phòng utilization 70-85%"]
+    pitfalls: ["Làm tròn xuống", "Quên rằng 'vừa đủ' (rho ~ 97%) là vùng nguy hiểm"]
+    interpretation: "1,95 -> 2 người là vừa đủ, không dư địa; nên thiết kế sao cho rho ~ 80%."
+    example:
+      inputs: {ct: 190, takt: 97.5}
+      steps: ["190 / 97,5 = 1,949"]
+      result: "~2 người (không còn dư địa)"
+  - id: "m01_stage_capacity"
+    name_vi: "Năng lực công đoạn"
+    name_en: "Stage Capacity"
+    expression_latex: '\text{Cap}_i = \frac{n_i \times T_{khadung}}{CT_i}'
+    expression_python: "n * t_avail / ct"
+    excel: "=C2*23400/D2"
+    variables:
+      - {symbol: "n", meaning: "Số người/máy ở công đoạn", unit: "người"}
+      - {symbol: "t_avail", meaning: "Thời gian khả dụng trong kỳ", unit: "giây"}
+      - {symbol: "ct", meaning: "Cycle Time một đơn vị", unit: "giây"}
+    when_to_use: "Tính số đơn vị tối đa công đoạn xử lý được (khách/giờ, đơn/ngày) để tìm nút thắt."
+    why_it_works: "n người song song x (thời gian có / thời gian một đơn) = số đơn tối đa."
+    assumptions: ["CT là trung bình thực đo (>= 10 lần, nhiều người)", "Công đoạn song song hoàn toàn"]
+    pitfalls: ["Dùng CT lý thuyết thay vì thực đo", "Quên cộng thời gian đọc/hỏi lại/thanh toán vào CT"]
+    interpretation: "So sánh các công đoạn: nhỏ nhất là nút thắt. Ví dụ phở: 90; 144; 102,9 tô/giờ."
+    example:
+      inputs: {n: 2, t_avail: 23400, ct: 190}
+      steps: ["2 x 23.400 / 190 = 246,3 đơn/ngày"]
+      result: "Năng lực đóng gói = 246,3 đơn/ngày"
+  - id: "m01_process_capacity"
+    name_vi: "Năng lực quy trình (nút thắt)"
+    name_en: "Process Capacity (Bottleneck)"
+    expression_latex: '\text{Cap}_{qt} = \min_i \text{Cap}_i'
+    expression_python: "min(caps)"
+    excel: "=MIN(P:P); nút thắt: =INDEX(A:A,MATCH(MIN(P:P),P:P,0))"
+    variables:
+      - {symbol: "caps", meaning: "Danh sách năng lực từng công đoạn", unit: "đơn vị/kỳ"}
+    when_to_use: "Xác định sản lượng tối đa của chuỗi công đoạn nối tiếp và công đoạn nào là nút thắt."
+    why_it_works: "Chuỗi chỉ chắc bằng mắt xích yếu nhất; tăng công đoạn khác không nâng sản lượng."
+    assumptions: ["Công đoạn nối tiếp, mỗi đơn đi qua tất cả"]
+    pitfalls: ["Đầu tư cải tiến công đoạn không phải nút thắt", "Tin trực giác (nhìn ai bận nhất) thay vì tính"]
+    interpretation: "Mở rộng nút thắt (thêm người/rổ trụng) mới tăng sản lượng; sau khi mở, nút thắt có thể chuyển sang công đoạn khác."
+    example:
+      inputs: {caps: [26.67, 42.35]}
+      steps: ["Thu ngân 3600/135 = 26,7; pha chế 2 x 3600/170 = 42,4", "min = 26,7"]
+      result: "Nút thắt = thu ngân, 26,7 khách/giờ"
+  - id: "m01_utilization"
+    name_vi: "Mức sử dụng"
+    name_en: "Utilization (rho)"
+    expression_latex: '\rho = \frac{\text{Nhu cau}}{\text{Nang luc}}'
+    expression_python: "demand / capacity"
+    excel: "=Nhu_cau/P2 (cảnh báo nếu > 85%)"
+    variables:
+      - {symbol: "demand", meaning: "Nhu cầu/tốc độ đến thực vào công đoạn", unit: "đơn vị/kỳ"}
+      - {symbol: "capacity", meaning: "Năng lực công đoạn", unit: "đơn vị/kỳ"}
+    when_to_use: "Đánh giá công đoạn đầy đến mức nào; cảnh báo vùng nguy hiểm."
+    why_it_works: "Tỷ lệ thời gian công đoạn bận. Vì đến/phục vụ ngẫu nhiên, gần 100% thì hàng đợi tăng vọt (xem m01_queue_wait_factor)."
+    assumptions: ["Nhu cầu và năng lực cùng đơn vị, cùng kỳ"]
+    pitfalls: ["Coi rho < 100% là an toàn", "Nhắm 100% utilization làm mục tiêu"]
+    interpretation: "Thiết kế nút thắt ở 70-85% khi nhu cầu biến động. Nhà Xinh: 97,4% (nguy hiểm) -> 82,1%. Quán cà phê: 99,5% -> 64,5%."
+    example:
+      inputs: {demand: 240, capacity: 246.3158}
+      steps: ["240 / 246,3 = 0,974"]
+      result: "rho = 97,4% (vùng nguy hiểm)"
+  - id: "m01_queue_wait_factor"
+    name_vi: "Hệ số chờ hàng đợi"
+    name_en: "Queueing wait factor rho/(1-rho)"
+    expression_latex: '\frac{\rho}{1-\rho}'
+    expression_python: "rho / (1 - rho)"
+    variables:
+      - {symbol: "rho", meaning: "Mức sử dụng", unit: "tỷ lệ thập phân (0-1)"}
+    when_to_use: "Giải thích cho chủ DN vì sao 'công suất vừa đủ' vẫn tồn đơn; đặt ngưỡng thiết kế."
+    why_it_works: "Lý thuyết hàng đợi: thời gian chờ trung bình tỷ lệ gần như với rho/(1-rho) khi đến và phục vụ ngẫu nhiên; mẫu số tiến về 0 khi rho -> 1."
+    assumptions: ["Đến và phục vụ ngẫu nhiên", "Xấp xỉ tỷ lệ (nguồn nói 'tỷ lệ gần như'), không phải thời gian chờ tuyệt đối"]
+    pitfalls: ["Đọc hệ số như số phút", "Dùng khi rho >= 1 (hàng đợi vô hạn)"]
+    interpretation: "50% -> 1; 80% -> 4; 90% -> 9; 97,4% -> ~37 (nguồn làm tròn). Quy tắc ngón tay cái: nút thắt ở 70-85%."
+    example:
+      inputs: {rho: 0.8}
+      steps: ["0,8 / 0,2 = 4"]
+      result: "Chờ gấp 4 lần mốc 50%"
+  - id: "m01_line_efficiency"
+    name_vi: "Hiệu suất cân bằng chuyền"
+    name_en: "Line Balancing Efficiency"
+    expression_latex: '\eta = \frac{\sum CT_i}{N \times CT_{max}}'
+    expression_python: "sum(cts) / (len(cts) * max(cts))"
+    excel: "=SUM(CT)/(COUNT(CT)*MAX(CT))"
+    variables:
+      - {symbol: "cts", meaning: "Danh sách CT từng trạm (mỗi trạm 1 người)", unit: "giây"}
+    when_to_use: "Đo mức mất cân bằng tải giữa các trạm; tìm thao tác chuyển từ trạm chậm sang trạm nhanh."
+    why_it_works: "Nhịp chuyền do trạm chậm nhất quy định (N x CT_max là tổng 'thời gian có'), trong khi công việc thật là tổng CT; phần còn lại là nhàn rỗi."
+    assumptions: ["Mỗi trạm 1 người", "Công việc chia nhỏ được để chuyển thao tác"]
+    pitfalls: ["Áp dụng khi trạm có số người khác nhau mà không điều chỉnh"]
+    interpretation: "Quán phở 83,3% (16,7% nhàn rỗi); dây chuyền 4 trạm 76,8% -> 86,7% sau cân bằng."
+    example:
+      inputs: {cts: [40, 25, 35]}
+      steps: ["Tổng CT = 100", "3 x 40 = 120", "100/120 = 83,3%"]
+      result: "Hiệu suất = 83,3%, nhàn rỗi 16,7%"
+  - id: "m01_cp"
+    name_vi: "Chỉ số năng lực quy trình Cp"
+    name_en: "Process Capability Cp"
+    expression_latex: 'C_p = \frac{USL - LSL}{6\sigma}'
+    expression_python: "(usl - lsl) / (6 * sigma)"
+    excel: "=(USL-LSL)/(6*STDEV(range))"
+    variables:
+      - {symbol: "usl", meaning: "Giới hạn trên cho phép", unit: "đơn vị đo"}
+      - {symbol: "lsl", meaning: "Giới hạn dưới cho phép", unit: "đơn vị đo"}
+      - {symbol: "sigma", meaning: "Độ lệch chuẩn của quy trình", unit: "đơn vị đo"}
+    when_to_use: "Đo độ phân tán của quy trình so với dải cho phép (rót đồ uống, nhiệt độ, kích thước)."
+    why_it_works: "Quy trình ổn định chiếm khoảng 6 sigma (±3 sigma chứa ~99,73% kết quả với phân phối chuẩn); nếu dải cho phép rộng hơn dải đó thì đủ chỗ, Cp > 1. Xuất phát từ SPC (Shewhart, Bell Labs 1920-30s)."
+    assumptions: ["Phân phối ~ chuẩn", "Quy trình ổn định thống kê", "sigma ước lượng từ mẫu đủ lớn"]
+    pitfalls: ["Cp không phát hiện lệch tâm (dùng Cpk)", "Dùng khi dữ liệu không chuẩn/không ổn định"]
+    interpretation: "Cp >= 1,33 thường là đủ năng lực; Cp < 1: dải cho phép hẹp hơn dải quy trình, thường xuyên ngoài chuẩn."
+    example:
+      inputs: {usl: 520, lsl: 480, sigma: 8}
+      steps: ["(520 - 480) / (6 x 8) = 40/48 = 0,833"]
+      result: "Cp = 0,83 (không đủ năng lực)"
+  - id: "m01_cpk"
+    name_vi: "Chỉ số năng lực quy trình Cpk"
+    name_en: "Process Capability Cpk"
+    expression_latex: 'C_{pk} = \min\left(\frac{USL-\mu}{3\sigma},\ \frac{\mu-LSL}{3\sigma}\right)'
+    expression_python: "min((usl - mu) / (3 * sigma), (mu - lsl) / (3 * sigma))"
+    excel: "=MIN((USL-AVERAGE(r))/(3*STDEV(r)),(AVERAGE(r)-LSL)/(3*STDEV(r)))"
+    variables:
+      - {symbol: "usl", meaning: "Giới hạn trên cho phép", unit: "đơn vị đo"}
+      - {symbol: "lsl", meaning: "Giới hạn dưới cho phép", unit: "đơn vị đo"}
+      - {symbol: "mu", meaning: "Trung bình thực tế của quy trình", unit: "đơn vị đo"}
+      - {symbol: "sigma", meaning: "Độ lệch chuẩn", unit: "đơn vị đo"}
+    when_to_use: "Đo năng lực có tính cả độ lệch tâm; so sánh Cp với Cpk để biết nên giảm phân tán hay căn chỉnh tâm."
+    why_it_works: "Lấy phía gần giới hạn nhất (min) vì lỗi xảy ra ở phía sát giới hạn; chia 3 sigma là khoảng cách từ tâm đến một phía."
+    assumptions: ["Như Cp"]
+    pitfalls: ["Chỉ báo cáo Cp mà bỏ Cpk", "Chuẩn hóa SOP nhưng không đo Cpk để biết có giảm biến động thật"]
+    interpretation: "Cpk >= 1,33: đủ năng lực; Cpk < 1: thường xuyên ngoài giới hạn dù ổn định. Cp = Cpk nghĩa là đã đúng tâm; Cpk < Cp: còn dư địa căn tâm."
+    example:
+      inputs: {usl: 520, lsl: 480, mu: 505, sigma: 5}
+      steps: ["(520-505)/15 = 1,00", "(505-480)/15 = 1,67", "min = 1,00"]
+      result: "Cpk = 1,00 (Cp = 1,33, bị lệch tâm 5 ml)"
+  - id: "m01_out_of_spec_rate"
+    name_vi: "Tỷ lệ ngoài giới hạn lý thuyết (ppm)"
+    name_en: "Out-of-spec rate (normal tail)"
+    expression_latex: 'P = \left[1-\Phi\left(\frac{USL-\mu}{\sigma}\right)\right] + \Phi\left(\frac{LSL-\mu}{\sigma}\right)'
+    expression_python: "((1 - 0.5*(1 + math.erf((usl - mu)/sigma/math.sqrt(2)))) + 0.5*(1 + math.erf((lsl - mu)/sigma/math.sqrt(2)))) * 1e6"
+    variables:
+      - {symbol: "usl", meaning: "Giới hạn trên", unit: "đơn vị đo"}
+      - {symbol: "lsl", meaning: "Giới hạn dưới", unit: "đơn vị đo"}
+      - {symbol: "mu", meaning: "Trung bình", unit: "đơn vị đo"}
+      - {symbol: "sigma", meaning: "Độ lệch chuẩn", unit: "đơn vị đo"}
+    when_to_use: "Đổi Cp/Cpk thành số lỗi mỗi triệu lần (minh họa tác động chuẩn hóa)."
+    why_it_works: "Diện tích đuôi phân phối chuẩn ngoài [LSL, USL]. Hàm cần module math."
+    assumptions: ["Phân phối chuẩn", "Tham số mẫu là tham số thật"]
+    pitfalls: ["Đuôi rất nhạy với giả định chuẩn; coi là ước lượng minh họa"]
+    interpretation: "Giả định minh họa Vinamilk: sigma 1,0 (mu 138) -> ~45.500 ppm; sigma 0,5, mu 138,2 -> ~165 ppm (giảm ~275 lần)."
+    example:
+      inputs: {usl: 140, lsl: 136, mu: 138, sigma: 1.0}
+      steps: ["z = +/-2: mỗi đuôi 2,275%", "Tổng 4,55% = ~45.500 ppm"]
+      result: "~45.500 ppm"
+  - id: "m01_cv"
+    name_vi: "Hệ số biến thiên"
+    name_en: "Coefficient of Variation (CV)"
+    expression_latex: 'CV = \frac{\sigma}{\bar{x}}'
+    expression_python: "sd / mean"
+    variables:
+      - {symbol: "sd", meaning: "Độ lệch chuẩn mẫu của thời gian thao tác giữa các công nhân", unit: "giây"}
+      - {symbol: "mean", meaning: "Trung bình", unit: "giây"}
+    when_to_use: "So sánh mức nhất quán thao tác giữa nhiều người trước/sau SOP."
+    why_it_works: "Chuẩn hóa độ phân tán theo trung bình; trung bình giống nhau vẫn có thể che giấu mỗi người một kiểu."
+    assumptions: ["Dùng độ lệch chuẩn mẫu (n-1)"]
+    pitfalls: ["Chỉ nhìn trung bình", "Mẫu quá nhỏ (n = 5 trong ví dụ) -> chỉ để minh họa"]
+    interpretation: "Xưởng may: CV 20% -> 4,8% sau SOP hình ảnh."
+    example:
+      inputs: {sd: 12.0208, mean: 60.0}
+      steps: ["Trước: 12,0 / 60,0 = 20%", "Sau: 2,7 / 56,4 = 4,8%"]
+      result: "CV 20,0% -> 4,8%"
+  - id: "m01_standard_time"
+    name_vi: "Thời gian chuẩn (Time Study)"
+    name_en: "Standard Time"
+    expression_latex: '\text{Normal} = \bar{t}_{obs} \times R;\quad \text{Standard} = \text{Normal} \times (1 + A)'
+    expression_python: "sum(obs) / len(obs) * rating * (1 + allowance)"
+    excel: "=AVERAGE(F2:O2)*Rating*(1+Allowance)"
+    variables:
+      - {symbol: "obs", meaning: "Danh sách thời gian quan sát (10-20 lần)", unit: "giây"}
+      - {symbol: "rating", meaning: "Hệ số đánh giá tốc độ (100% = bình thường)", unit: "tỷ lệ thập phân"}
+      - {symbol: "allowance", meaning: "Dự phòng nghỉ ngơi/nhu cầu cá nhân/trễ (thường 10-20%)", unit: "tỷ lệ thập phân"}
+    when_to_use: "Xây định mức nhân sự và so sánh trước/sau cải tiến cho thao tác lặp lại."
+    why_it_works: "Rating quy đổi người bị bấm giờ về tốc độ chuẩn; Allowance cộng thêm vì không ai làm liên tục 100% thời gian. Có tài liệu dùng chia cho (1 - Allowance); hai cách gần nhau khi Allowance nhỏ."
+    assumptions: ["Rating chủ quan của người quan sát", "Thao tác lặp lại, ổn định"]
+    pitfalls: ["Dùng để 'ép năng suất' không cải thiện điều kiện (bài học chỉ trích Taylorism)", "Không có sự đồng thuận của nhân viên"]
+    interpretation: "Năng lực chuẩn = 3600 / Standard Time. Gấp áo: Standard ~ 25,13 giây -> ~143 chiếc/giờ/người."
+    example:
+      inputs: {obs: [22, 24, 21, 23, 25, 22, 23, 24, 22, 24], rating: 0.95, allowance: 0.15}
+      steps: ["Trung bình = 230/10 = 23,0", "Normal = 23,0 x 0,95 = 21,85", "Standard = 21,85 x 1,15 = 25,13", "3600/25,13 ~ 143 chiếc/giờ"]
+      result: "Standard Time = 25,13 giây/chiếc"
+  - id: "m01_smed_min_batch"
+    name_vi: "Lô tối thiểu theo thời gian đổi khuôn"
+    name_en: "Minimum batch size from changeover (SMED logic)"
+    expression_latex: 'S/(S+R) \le f \Rightarrow R \ge S\frac{1-f}{f};\ \text{Batch}_{min} = R \times r'
+    expression_python: "S * (1 - f) / f * rate"
+    variables:
+      - {symbol: "S", meaning: "Thời gian đổi khuôn/chuyển đổi", unit: "phút"}
+      - {symbol: "f", meaning: "Tỷ lệ đổi khuôn tối đa chấp nhận trên tổng thời gian máy", unit: "tỷ lệ thập phân"}
+      - {symbol: "rate", meaning: "Tốc độ máy", unit: "chi tiết/phút"}
+    when_to_use: "Giải thích vì sao rút ngắn thời gian đổi khuôn cho phép lô nhỏ, ít tồn kho, thời gian chờ ngắn (nền Just-in-Time)."
+    why_it_works: "Nếu đổi khuôn chiếm quá f tổng thời gian thì máy chủ yếu đứng; với f = 20% thì R >= 4S. S giảm -> lô tối thiểu giảm theo tỷ lệ; tồn kho trung bình ~ nửa lô; Little's Law đổi tồn kho thành thời gian chờ."
+    assumptions: ["Số liệu Toyota/SMED là ước tính/minh họa", "Tồn kho dở dang ~ nửa lô"]
+    pitfalls: ["Coi con số 240 phút -> 10 phút là số liệu thật đã kiểm chứng"]
+    interpretation: "Minh họa: S 240 -> 10 phút, lô 4.800 -> 200 (giảm 24 lần); W = (lô/2)/nhu cầu: 2,4 ngày -> 0,1 ngày với 1.000 chi tiết/ngày."
+    example:
+      inputs: {S: 240, f: 0.2, rate: 5}
+      steps: ["R >= 240 x 0,8/0,2 = 960 phút", "Lô = 960 x 5 = 4.800", "Sau SMED S = 10: R >= 40, lô = 200"]
+      result: "Lô tối thiểu 4.800 chi tiết (trước SMED)"
+  - id: "m01_handoff_wait"
+    name_vi: "Thời gian chờ bàn giao (Swimlane)"
+    name_en: "Handoff wait"
+    expression_latex: 'T_{handoff} = N_{handoff} \times \bar{w}'
+    expression_python: "n_handoff * w_avg"
+    variables:
+      - {symbol: "n_handoff", meaning: "Số lần đường đi cắt ngang giữa các làn", unit: "lần"}
+      - {symbol: "w_avg", meaning: "Thời gian chờ trung bình mỗi lần bàn giao", unit: "giờ"}
+    when_to_use: "Định lượng rủi ro bàn giao trong quy trình liên phòng ban."
+    why_it_works: "Mỗi bàn giao thêm thời gian chờ và nguy cơ thất lạc thông tin; đếm số lần cắt làn là thước đo đơn giản."
+    assumptions: ["Thời gian chờ mỗi lần xấp xỉ như nhau"]
+    pitfalls: ["Chỉ tính thời gian xử lý, bỏ chờ bàn giao"]
+    interpretation: "Khiếu nại qua 4 lần bàn giao x 4 giờ = 16 giờ chờ (chưa kể xử lý). Duyệt nghỉ phép 3 cấp x 1 ngày = 3 ngày."
+    example:
+      inputs: {n_handoff: 4, w_avg: 4}
+      steps: ["4 x 4 = 16 giờ"]
+      result: "16 giờ chờ bàn giao"
+  - id: "m01_payback_months"
+    name_vi: "Thời gian hoàn vốn cải tiến"
+    name_en: "Payback (months)"
+    expression_latex: '\text{Payback} = \frac{I}{B_{thang}}'
+    expression_python: "invest / benefit_month"
+    variables:
+      - {symbol: "invest", meaning: "Đầu tư một lần", unit: "VNĐ"}
+      - {symbol: "benefit_month", meaning: "Lợi ích ròng mỗi tháng", unit: "VNĐ/tháng"}
+    when_to_use: "Quy đổi cải tiến quy trình ra tiền và thời gian hoàn vốn."
+    why_it_works: "Đầu tư nhỏ (SOP, bàn đóng gói, POS) thường hoàn vốn trong 1-2 tháng; số tháng = vốn / lợi ích tháng."
+    assumptions: ["Lợi ích ổn định theo tháng", "Số liệu giả định minh họa"]
+    pitfalls: ["Chỉ tính rework, bỏ tiết kiệm khác (hoặc ngược lại) mà không ghi rõ"]
+    interpretation: "Xưởng may: 7,8 triệu / 8,64 triệu = 0,9 tháng (chỉ phần rework). Nhà Xinh: 10 / 8,99 = 1,1 tháng."
+    example:
+      inputs: {invest: 7800000, benefit_month: 8640000}
+      steps: ["Rework trước: 1.440 x 9.000 = 12.960.000", "Sau: 480 x 9.000 = 4.320.000", "Tiết kiệm 8.640.000/tháng", "7.800.000 / 8.640.000 = 0,90"]
+      result: "Hoàn vốn ~ 0,9 tháng"
+  - id: "m01_roi_simple"
+    name_vi: "ROI cải tiến theo kỳ"
+    name_en: "Simple ROI"
+    expression_latex: '\text{ROI} = \frac{B - C}{C}'
+    expression_python: "(benefit - cost) / cost"
+    variables:
+      - {symbol: "benefit", meaning: "Tổng lợi ích trong kỳ", unit: "VNĐ"}
+      - {symbol: "cost", meaning: "Tổng chi phí trong kỳ", unit: "VNĐ"}
+    when_to_use: "Chứng minh khoản đầu tư công cụ (POS...) có lời trong 6 tháng."
+    why_it_works: "Lãi ròng chia chi phí; dùng giả định thận trọng (50% hiệu quả case gốc) để tránh lạc quan."
+    assumptions: ["Hiệu quả mỗi điểm bán bằng 50% case gốc (giả định thận trọng)"]
+    pitfalls: ["Bỏ qua rủi ro hiệu quả thấp hơn"]
+    interpretation: "Bài 9: 6 tháng, lợi ích ~64,0 triệu, chi phí 12,0 triệu, ROI ~ 433%."
+    example:
+      inputs: {benefit: 63.99, cost: 12.0}
+      steps: ["7,11 x 0,5 = 3,555 triệu/điểm/tháng", "x 3 điểm = 10,665 triệu/tháng", "x 6 tháng = 63,99 triệu", "Chi phí POS 2 x 6 = 12 triệu"]
+      result: "ROI ~ 433%"
+  - id: "m01_breakeven_customers"
+    name_vi: "Số khách thêm để hòa vốn công cụ"
+    name_en: "Break-even extra customers"
+    expression_latex: 'N = \frac{C_{thang}}{AOV \times GM}'
+    expression_python: "cost_month / (aov * gm)"
+    variables:
+      - {symbol: "cost_month", meaning: "Chi phí công cụ mỗi tháng", unit: "VNĐ"}
+      - {symbol: "aov", meaning: "Giá trị trung bình mỗi khách", unit: "VNĐ"}
+      - {symbol: "gm", meaning: "Biên lợi nhuận gộp", unit: "tỷ lệ thập phân"}
+    when_to_use: "Kiểm tra nhanh ngưỡng rủi ro của một khoản đầu tư phần mềm."
+    why_it_works: "Lợi nhuận gộp mỗi khách thêm = AOV x GM; chia chi phí cố định cho nó."
+    assumptions: ["AOV và GM không đổi"]
+    pitfalls: ["Dùng doanh thu thay lợi nhuận gộp"]
+    interpretation: "POS 2.000.000đ/tháng, AOV 55.000đ, GM 65%: ~56 khách/tháng cho cả 3 điểm (~0,6 khách/ngày/điểm): rủi ro nhỏ."
+    example:
+      inputs: {cost_month: 2000000, aov: 55000, gm: 0.65}
+      steps: ["55.000 x 0,65 = 35.750", "2.000.000 / 35.750 = 55,9"]
+      result: "~56 khách/tháng"
+
+frameworks:
+  - id: "m01_flowchart"
+    name_vi: "Sơ đồ hóa quy trình"
+    name_en: "Process Flowcharting"
+    origin: "Frank và Lillian Gilbreth trình bày Process Chart tại ASME năm 1921 (vẽ từng bước theo thứ tự để phát hiện bước thừa); ASME chuẩn hóa ký hiệu (1947). Ra đời vì quy trình nằm trong đầu mỗi người một kiểu."
+    components:
+      - "Ký hiệu: Oval (bắt đầu/kết thúc), Rectangle (xử lý), Diamond (quyết định Y/N), D-shape (chờ/trì hoãn), Triangle (lưu trữ), Circle (kiểm tra)"
+    when_to_use: "Quy trình đơn giản, ít bước; cần cho mọi quy mô; bước đầu để 'nhìn thấy' quy trình."
+    how_to_apply:
+      - "Xác định điểm bắt đầu và kết thúc"
+      - "Liệt kê mọi bước theo trình tự thời gian"
+      - "Xác định điểm quyết định và nhánh rẽ"
+      - "Vẽ với ký hiệu chuẩn"
+      - "Xác thực với người thực hiện thực tế"
+      - "Tìm bước dư thừa, vòng lặp không cần thiết, bottleneck"
+    how_to_read_results: "Tìm bước trùng lặp, vòng lặp rework, nhánh chờ; kết hợp bấm giờ từng bước để định lượng."
+    pitfalls: ["Chỉ thể hiện trình tự logic, không có thời gian/chi phí/khối lượng", "Vẽ quá chi tiết ngay từ đầu gây rối mắt"]
+    example: "Quán cà phê: Khách xếp hàng -> Order ghi tay -> Đưa giấy cho pha chế -> Đọc order -> Pha chế -> Khách nhận -> Thu ngân tính tiền sau; kèm thời gian đo từng bước để tìm nút thắt."
+  - id: "m01_sipoc"
+    name_vi: "Sơ đồ SIPOC"
+    name_en: "SIPOC (Suppliers - Inputs - Process - Outputs - Customers)"
+    origin: "Công cụ cấp cao gắn với phong trào chất lượng và Six Sigma; nguồn gốc chính xác (người đặt tên, năm) không thống nhất giữa các tài liệu nên nguồn không nêu cụ thể."
+    components: ["S - Suppliers: ai cung cấp đầu vào", "I - Inputs: nguyên liệu, thông tin, yêu cầu", "P - Process: 4-6 bước chính cấp cao", "O - Outputs: sản phẩm/dịch vụ/thông tin tạo ra", "C - Customers: ai nhận và dùng đầu ra"]
+    when_to_use: "Họp kickoff dự án cải tiến để thống nhất phạm vi (điểm bắt đầu/kết thúc, khách hàng) trước khi đào sâu."
+    how_to_apply:
+      - "Điền theo thứ tự C -> O -> P -> I -> S (Reverse SIPOC) để thiết kế theo giá trị khách hàng, không theo ý nội bộ"
+      - "Chốt ranh giới quy trình: bắt đầu khi nào, kết thúc khi nào"
+      - "Chỉ định Process Owner"
+    how_to_read_results: "Phạm vi rõ -> chuyển sang Flowchart/VSM chi tiết. Nếu ranh giới còn tranh cãi thì chưa được đào sâu."
+    pitfalls: ["Quá cấp cao, không đủ chi tiết để cải tiến thật", "'Boil the ocean': phân tích lan man không giới hạn"]
+    example: "Nhà Xinh: phạm vi từ lúc đơn được tạo đến lúc bàn giao cho đơn vị vận chuyển; Process Owner = quản lý kho. Tuyển dụng: bắt đầu khi trưởng bộ phận gửi yêu cầu, kết thúc khi nhân viên ký hợp đồng và có mặt ngày đầu."
+  - id: "m01_vsm"
+    name_vi: "Sơ đồ chuỗi giá trị"
+    name_en: "Value Stream Mapping (VSM)"
+    origin: "Rother và Shook hệ thống hóa trong sách Learning to See (1999) từ kỹ thuật vẽ dòng chảy vật liệu và thông tin của Toyota Production System. Ra đời vì Flowchart không cho biết thời gian nằm ở đâu, mà thực tế sản phẩm chờ phần lớn thời gian."
+    components: ["Phân loại VA / NVA-N / NVA", "Dòng chảy vật chất và dòng chảy thông tin", "Cycle Time, Lead Time, %VA, WIP mỗi công đoạn", "Current State Map, Future State Map, Kaizen bursts"]
+    when_to_use: "Sản xuất, kho vận, SME sản xuất trở lên; cần định lượng thời gian chờ và %VA end-to-end."
+    how_to_apply:
+      - "Chọn sản phẩm/dịch vụ hoặc họ sản phẩm"
+      - "Vẽ Current State Map bằng Gemba Walk, ghi thời gian thực từng bước và thời gian chờ giữa các bước"
+      - "Tính Cycle Time, Lead Time, %VA, WIP"
+      - "Xác định Kaizen bursts"
+      - "Thiết kế Future State Map"
+      - "Lập kế hoạch hành động chuyển hiện trạng sang tương lai"
+    how_to_read_results: "Nhìn khoảng chờ lớn nhất (thường chiếm >90% thời gian) thay vì bước VA; tính Process Velocity/PCE trước và sau."
+    pitfalls: ["Tốn thời gian thu thập thực địa, không làm trên bàn giấy", "Khó áp dụng cho quy trình variety cao/volume thấp (dự án)", "Bỏ sót dòng thông tin ngược (backflow)"]
+    example: "Đơn online: VA 47 phút, chờ 1.680 phút, PCE 2,7% -> nhắm vào 2 khoảng chờ (4 giờ, 1 ngày) thay vì rút đóng gói 1 phút."
+  - id: "m01_service_blueprint"
+    name_vi: "Sơ đồ dịch vụ"
+    name_en: "Service Blueprint"
+    origin: "G. Lynn Shostack, Harvard Business Review 1984 (Designing Services That Deliver). Ra đời vì trong dịch vụ trải nghiệm bị định hình bởi cả phần khách thấy và không thấy, mà flowchart thường trộn lẫn."
+    components: ["Hành động khách hàng", "Line of Interaction", "Nhân viên tuyến đầu (onstage/visible)", "Line of Visibility", "Nhân viên hậu trường (backstage/invisible)", "Line of Internal Interaction", "Quy trình hỗ trợ (support)"]
+    when_to_use: "Dịch vụ, F&B, bán lẻ có tương tác trực tiếp và đồng thời với khách; xác định điểm chạm và nguyên nhân chờ."
+    how_to_apply:
+      - "Liệt kê hành động khách theo trình tự"
+      - "Tại mỗi điểm chạm ghi nhân viên tuyến đầu làm gì và thời gian khách chờ"
+      - "Kẻ Line of Visibility, ghi hành động hậu trường"
+      - "Đánh dấu điểm khách chờ lâu nhất rồi truy ngược xuống làn hậu trường tìm nguyên nhân"
+    how_to_read_results: "Khách chờ món 18 phút nhưng onstage ghi order chỉ 2 phút -> 16 phút ở backstage -> tối ưu bếp, không phải đào tạo thái độ phục vụ."
+    pitfalls: ["Phức tạp hơn flowchart", "Dễ chủ quan nếu thiếu dữ liệu thực tế từ khách/customer journey"]
+    example: "Sửa xe máy: khách chờ báo giá 40 phút, tiếp nhận onstage 3 phút, 37 phút backstage (thợ chưa kiểm tra xong, không có bảng giá chuẩn) -> sửa backstage."
+  - id: "m01_bpmn"
+    name_vi: "Mô hình hóa quy trình nghiệp vụ BPMN"
+    name_en: "Business Process Model and Notation"
+    origin: "Chuẩn hóa bởi Object Management Group (OMG), sau công nhận thành ISO/IEC 19510 (2013), để sơ đồ nghiệp vụ chuyển thẳng thành workflow chạy được khi giao cho IT."
+    components: ["Pool/Lane (phân trách nhiệm)", "Task", "Gateway (AND/OR/XOR)", "Event (bắt đầu/trung gian/kết thúc)", "Message Flow (đường nét đứt)"]
+    when_to_use: "Chuyển đổi số/ERP, tích hợp RPA/workflow engine, doanh nghiệp lớn nhiều phòng ban."
+    how_to_apply: ["Mô hình hóa bằng Bizagi, Camunda, Signavio", "Gán lane theo bộ phận/vai trò", "Chuyển thành workflow tự động"]
+    how_to_read_results: "Sơ đồ chạy được; kiểm tra gateway và message flow giữa các bên."
+    pitfalls: ["Đường cong học cao, cần phần mềm", "Thường quá phức tạp cho SME nhỏ"]
+    example: "Vinamilk áp dụng mô hình hóa kiểu BPMN và ERP từ thu mua sữa tươi đến phân phối (thông tin công khai tổng quát, cần kiểm chứng)."
+  - id: "m01_raci"
+    name_vi: "Ma trận trách nhiệm RACI"
+    name_en: "RACI Matrix"
+    origin: "Nguồn gốc cụ thể không thống nhất; dùng rộng rãi trong quản lý dự án nhiều thập kỷ. Ra đời vì chậm trễ liên phòng ban thường do mơ hồ trách nhiệm."
+    components: ["R - Responsible: người thực hiện (1 hoặc nhiều)", "A - Accountable: chịu trách nhiệm cuối cùng/phê duyệt (chỉ 1)", "C - Consulted: tham vấn trước (0 hoặc nhiều)", "I - Informed: chỉ cần thông báo (0 hoặc nhiều)"]
+    when_to_use: "Quy trình đi qua nhiều bộ phận; làm rõ ai làm gì ở từng bước."
+    how_to_apply: ["Lập bảng bước x vai trò", "Gán R/A/C/I", "Kiểm tra: mỗi hàng đúng 1 chữ A", "Mỗi hàng ít nhất 1 R", "Không cột nào toàn R (một người gánh quá nhiều)", "Không cột nào toàn I (có thể không cần xuất hiện)"]
+    how_to_read_results: "2 chữ A = không ai chịu trách nhiệm (finger-pointing). Một người vừa thực hiện vừa chịu trách nhiệm ghi R/A."
+    pitfalls: ["Bước thiếu A (lỗi trong bản gốc đã được sửa)", "Quá nhiều C làm chậm quyết định"]
+    example: "Duyệt khuyến mãi: Đề xuất (NV Marketing R, Trưởng phòng A); Duyệt ngân sách (Giám đốc TC A); Triển khai (Quản lý cửa hàng R/A). Hoàn tiền: CSKH R/A bước 1, Kho R/A bước 2, QL cửa hàng R/A duyệt, Kế toán R/A hoàn tiền."
+  - id: "m01_swimlane"
+    name_vi: "Sơ đồ làn bơi liên chức năng"
+    name_en: "Swimlane / Cross-Functional Flowchart"
+    origin: "Phổ biến hóa nhờ Rummler và Brache (1990). Ra đời vì flowchart không cho biết AI làm bước nào nên không thấy điểm bàn giao."
+    components: ["Làn (lane) = bộ phận/vai trò", "Bước công việc trong từng làn", "Đường đi cắt ngang làn = handoff"]
+    when_to_use: "Quy trình liên chức năng, SME vừa trở lên; tìm điểm bàn giao rủi ro cao."
+    how_to_apply: ["Vẽ các làn", "Đặt bước vào đúng làn", "Đếm số lần cắt ngang làn", "Đo thời gian chờ mỗi lần bàn giao", "Cân nhắc Eliminate cấp duyệt, Combine thông báo, phân quyền duyệt thay"]
+    how_to_read_results: "Nhiều lần cắt làn = nhiều chờ bàn giao và nguy cơ mất thông tin."
+    pitfalls: ["Rối khi >5-6 làn (khi đó dùng BPMN + phần mềm)"]
+    example: "Duyệt nghỉ phép 3 cấp (4 làn, 4 lần bàn giao); mỗi cấp 1 ngày -> 3 ngày chờ. Nghỉ <= 2 ngày chỉ cần Trưởng nhóm duyệt."
+  - id: "m01_process_capability_framework"
+    name_vi: "Phân tích năng lực quy trình"
+    name_en: "Process Capability Analysis"
+    origin: "Từ SPC (Shewhart, Bell Labs 1920-30s); chỉ số năng lực phát triển và phổ biến sau đó trong công nghiệp, đặc biệt Nhật và Mỹ."
+    components: ["USL, LSL, mu, sigma", "Cp (phân tán)", "Cpk (phân tán + lệch tâm)", "Ngưỡng 1,33"]
+    when_to_use: "Quy trình có tiêu chuẩn đo lường (ml, nhiệt độ, kích thước); kiểm tra chuẩn hóa đã giảm biến động thật chưa."
+    how_to_apply: ["Thu thập đủ mẫu đo", "Tính mu và sigma", "Tính Cp, Cpk", "Nếu Cpk < Cp: căn chỉnh tâm", "Nếu Cp thấp: giảm phân tán (SOP, dụng cụ chia vạch, đào tạo)"]
+    how_to_read_results: "Cpk >= 1,33 đủ năng lực; < 1 thường xuyên ngoài giới hạn."
+    pitfalls: ["Giả định phân phối chuẩn", "Chuẩn hóa chỉ có văn bản SOP mà không đo"]
+    example: "Rót trà sữa (LSL 480, USL 520): sigma 8, mu 500 -> Cp = Cpk = 0,83; sigma 5, mu 505 -> Cp 1,33, Cpk 1,00; chỉnh về tâm -> 1,33 (giả định minh họa)."
+  - id: "m01_process_mining"
+    name_vi: "Khai phá quy trình"
+    name_en: "Process Mining"
+    origin: "Giáo sư Wil van der Aalst (Hà Lan) và cộng sự phát triển từ những năm 2000, tận dụng ERP/CRM tự ghi event log. Ra đời vì phỏng vấn chỉ cho 'process as imagined'."
+    components: ["Event log: Case ID, Activity, Timestamp", "Phần mềm Celonis, Disco, ProM", "So sánh thực tế với SOP"]
+    when_to_use: "Doanh nghiệp vừa/lớn đã có ERP/CRM/ticket/POS số hóa; tìm độ lệch quy trình, vòng rework, bottleneck ẩn."
+    how_to_apply: ["Trích xuất log từ hệ thống", "Dựng lại sơ đồ thực tế bằng phần mềm", "So với SOP để tìm deviation, rework loop"]
+    how_to_read_results: "Dòng 'làm lại' xuất hiện nhiều = vòng rework mà nhân viên chưa từng nhắc khi phỏng vấn."
+    pitfalls: ["Cần dữ liệu số hóa đầy đủ; SME nhỏ thường chưa đủ (nhưng POS xuất Excel có timestamp có thể phân tích đơn giản)"]
+    example: "Log đơn DH001: Nhận đơn 08:02, Xác nhận 08:30, Đóng gói 11:45, Đóng gói (làm lại) 15:10 (giả định minh họa). Xu hướng: kết hợp AI để dự đoán và đề xuất can thiệp."
+  - id: "m01_time_motion_study"
+    name_vi: "Nghiên cứu thời gian và thao tác"
+    name_en: "Time and Motion Study"
+    origin: "Taylor (Time Study, cuối thế kỷ 19) và Frank & Lillian Gilbreth (Motion Study, đầu thế kỷ 20; Therbligs: 17 thao tác cơ bản, tên là 'Gilbreth' viết ngược gần đúng). Đi sâu xuống mức từng cử động."
+    components: ["Time Study (stopwatch, 10-20 lần, Rating, Allowance)", "Motion Study (Therbligs, thao tác thừa)"]
+    when_to_use: "Thao tác lặp lại (gấp áo, pha chế, đóng gói); xây định mức và loại thao tác thừa."
+    how_to_apply: ["Quay video/bấm giờ 10-20 lần", "Tính trung bình, Normal Time, Standard Time", "Tua chậm đếm thao tác thừa", "Bố trí lại quầy/nguyên liệu để giảm thao tác"]
+    how_to_read_results: "Standard Time làm cơ sở định mức; thao tác thừa nhận diện qua video."
+    pitfalls: ["Dùng để ép năng suất kiểu 'bóc lột' gây phản tác dụng (chỉ trích Taylorism)", "Phiên bản hiện đại phải có sự tham gia, đồng thuận của nhân viên"]
+    example: "Pha trà sữa: với tay lấy đá 2 lần thay vì 1 do sắp xếp sai. Gấp áo: bỏ 'đặt xuống rồi cầm lại để vuốt phẳng' (-2 giây, ~-9%) bằng Combine."
+  - id: "m01_ecrs"
+    name_vi: "Nguyên tắc ECRS"
+    name_en: "ECRS (Eliminate - Combine - Rearrange - Simplify)"
+    origin: "Bộ 4 câu hỏi dùng trong kỹ thuật công nghiệp (industrial engineering) để duyệt từng bước có hệ thống."
+    components: ["Eliminate: bước có cần thiết không, bỏ được không", "Combine: gộp 2 bước làm 1", "Rearrange: thứ tự tối ưu chưa (đưa kiểm tra lên sớm)", "Simplify: làm đơn giản/nhanh hơn (QR/mã vạch thay ghi tay)"]
+    when_to_use: "Sau khi vẽ và đo, để tìm cải tiến cho từng bước."
+    how_to_apply: ["Duyệt từng bước theo đúng thứ tự E -> C -> R -> S (Eliminate mang lại lợi ích lớn nhất vì loại bỏ hoàn toàn chi phí bước đó)"]
+    how_to_read_results: "Ưu tiên Eliminate; tính lại năng lực và utilization sau thiết kế."
+    pitfalls: ["Nhảy vào giải pháp phức tạp trước khi hỏi 'có cần bước này không'"]
+    example: "Amazon robot mang kệ: Eliminate việc đi bộ. Quán cà phê: Combine order+thanh toán trên POS; Eliminate giấy ghi tay; Rearrange giảm khoảng cách; Simplify phím tắt 10 món."
+  - id: "m01_seven_wastes"
+    name_vi: "7 loại lãng phí"
+    name_en: "7 Wastes (TIMWOOD)"
+    origin: "Taiichi Ohno hệ thống hóa trong Toyota Production System (1950s, Nhật hậu chiến thiếu vốn và nguyên liệu)."
+    components: ["T - Transport (bê nguyên liệu qua lại kho-quầy)", "I - Inventory (mua dư hết hạn)", "M - Motion (đi lại lấy ly ở quầy xa)", "W - Waiting (pha chế chờ order thu ngân)", "O - Overproduction (pha sẵn quá nhiều rồi đổ bỏ)", "O - Overprocessing (kiểm tra/ký duyệt nhiều lần không cần)", "D - Defects (làm sai món phải làm lại)"]
+    when_to_use: "Quét lãng phí khi Gemba Walk và đánh giá từng bước."
+    how_to_apply: ["Gắn nhãn mỗi bước NVA vào một trong 7 loại", "Ưu tiên theo mức chiếm thời gian/chi phí"]
+    how_to_read_results: "Lãng phí lớn nhất thường là chờ đợi và tồn kho giữa công đoạn."
+    pitfalls: ["Chỉ tìm lãng phí ở máy chạy chậm"]
+    example: "Kho TMĐT: Waiting (hàng đợi đóng gói 3,5 giờ), Overprocessing (nhiều lần duyệt)."
+  - id: "m01_volume_variety"
+    name_vi: "Ma trận khối lượng - đa dạng"
+    name_en: "Volume-Variety (Product-Process) Matrix"
+    origin: "Hayes và Wheelwright, Harvard 1979."
+    components: ["Project", "Jobbing", "Batch", "Mass", "Continuous"]
+    when_to_use: "Chọn cách tổ chức/công cụ quản lý phù hợp loại quy trình."
+    how_to_apply: ["Xác định khối lượng và đa dạng", "Xếp vào loại quy trình", "Chọn mức chuẩn hóa/tự động hóa tương ứng"]
+    how_to_read_results: "Khối lượng cao, đa dạng thấp: chuẩn hóa, SOP chi tiết, tự động hóa. Khối lượng thấp, đa dạng cao: linh hoạt, kỹ năng."
+    pitfalls: ["Áp dụng dây chuyền hàng loạt cho quy trình đơn chiếc và ngược lại"]
+    example: "Chuỗi siêu thị mini: Mass; chuỗi F&B: Batch; may đo veston: Jobbing; nhà máy bia: Continuous (phân loại minh họa)."
+  - id: "m01_customer_contact"
+    name_vi: "Mô hình mức độ tiếp xúc khách hàng"
+    name_en: "Customer Contact Model"
+    origin: "Richard Chase, Harvard Business Review 1978."
+    components: ["Pure Service", "Mixed Service", "Quasi-Manufacturing"]
+    when_to_use: "Thiết kế quy trình dịch vụ hỗn hợp (F&B, bán lẻ)."
+    how_to_apply: ["Tách phần front-office/onstage và back-office/backstage", "Front: ưu tiên trải nghiệm, linh hoạt", "Back: tối đa hiệu quả theo tư duy sản xuất"]
+    how_to_read_results: "Bảng so sánh Manufacturing vs Service: công cụ phù hợp nhất lần lượt VSM, Line Balancing, Time and Motion vs Service Blueprint, Customer Journey Mapping."
+    pitfalls: ["Chuẩn hóa cứng nhắc phần front-of-house"]
+    example: "Nhà hàng: bếp, kho, thu ngân nội bộ theo manufacturing; phục vụ khách theo service."
+  - id: "m01_seven_step_method"
+    name_vi: "Quy trình 7 bước phân tích và cải tiến"
+    name_en: "7-Step Process Improvement (PDCA/DMAIC variant)"
+    origin: "Biến thể thực dụng của PDCA (Shewhart đề xuất, Deming phổ biến) và DMAIC của Six Sigma."
+    components: ["1 Phạm vi (SIPOC)", "2 Thu thập dữ liệu hiện trạng (Gemba, bấm giờ)", "3 Vẽ sơ đồ hiện trạng", "4 Phân tích/Gap (bottleneck, 7 Wastes, Pareto)", "5 Thiết kế giải pháp và Future State", "6 Pilot và triển khai", "7 Chuẩn hóa và giám sát"]
+    when_to_use: "Mọi dự án cải tiến quy trình SME."
+    how_to_apply: ["Xem procedure m01_proc_7step"]
+    how_to_read_results: "Mỗi bước có thời gian điển hình, lỗi thường gặp và cách tránh (bảng trong nguồn)."
+    pitfalls: ["Bỏ bước phạm vi", "Chỉ phỏng vấn", "Triển khai đại trà không pilot", "Không chỉ định Process Owner"]
+    example: "Tổng hợp case: SIPOC -> Swimlane -> Takt/Capacity -> VSM -> ECRS -> Little's Law (Nhà Xinh)."
+  - id: "m01_pareto_gemba"
+    name_vi: "Pareto 80/20 và Gemba Walk"
+    name_en: "Pareto Principle and Gemba Walk"
+    origin: "Pareto: 80% vấn đề đến từ 20% nguyên nhân. Gemba: nguyên tắc Genchi Genbutsu của Toyota Way."
+    components: ["Pareto chọn 1-3 vấn đề lớn nhất", "Gemba Walk quan sát thực địa >= 30-60 phút"]
+    when_to_use: "Chọn ưu tiên cải tiến và thu thập dữ liệu thực."
+    how_to_apply: ["Tính phân bố lỗi theo công đoạn", "Tập trung nguồn lực vào công đoạn gây nhiều lỗi nhất"]
+    how_to_read_results: "Xưởng may: 1 trong 12 công đoạn (8%) gây 70% lỗi."
+    pitfalls: ["Cải tiến dàn trải", "Phỏng vấn thay quan sát"]
+    example: "Xưởng may: 1.440 sp rework/tháng, 1.008 (70%) từ công đoạn may cổ."
+  - id: "m01_tool_selection"
+    name_vi: "Sơ đồ chọn công cụ"
+    name_en: "Tool selection decision tree"
+    origin: "Tổng hợp trong nguồn (mục 5.5)."
+    components: ["Quy trình đơn giản -> Flowchart", "Sản xuất/kho vận cần đo chi tiết -> VSM", "Dịch vụ tương tác khách -> Service Blueprint", "Nhiều bộ phận -> Swimlane + RACI", "Có ERP/CRM log -> Process Mining"]
+    when_to_use: "Khi cần chọn công cụ phù hợp thay vì vẽ sơ đồ cho có."
+    how_to_apply: ["Xác định loại quy trình", "Chọn công cụ theo nhánh", "Xem bảng so sánh độ phức tạp/quy mô/định lượng"]
+    how_to_read_results: "Bảng: Flowchart/SIPOC/RACI thấp, mọi quy mô; VSM TB-cao, có định lượng; Service Blueprint TB, một phần; BPMN cao, doanh nghiệp lớn; Process Capability TB, có định lượng; Process Mining cao, có ERP/CRM; Time and Motion thấp-TB, có định lượng."
+    pitfalls: ["Dùng BPMN cho SME nhỏ"]
+    example: "Quán cà phê: Flowchart + bấm giờ + Little's Law + ECRS là đủ."
+
+procedures:
+  - id: "m01_proc_7step"
+    name: "Quy trình 7 bước phân tích và cải tiến quy trình SME"
+    steps:
+      - "Bước 1 Phạm vi (1-2 giờ SME, 1-2 ngày DN lớn): dùng SIPOC, giới hạn điểm bắt đầu/kết thúc, chọn Process Owner"
+      - "Bước 2 Thu thập dữ liệu (1 tuần SME, 2-4 tuần DN lớn): Gemba Walk, bấm giờ, phỏng vấn; dành >= 50% thời gian quan sát thực địa"
+      - "Bước 3 Vẽ hiện trạng (1-3 ngày): Flowchart hoặc VSM, vẽ high-level trước"
+      - "Bước 4 Phân tích (2-5 ngày): nút thắt, 7 Wastes, NVA, điểm lỗi; Pareto chọn 1-3 vấn đề"
+      - "Bước 5 Thiết kế (3-7 ngày): ECRS, ưu tiên quick win, đặt mục tiêu định lượng"
+      - "Bước 6 Pilot (2-4 tuần): 1 cửa hàng/1 ca, đo kết quả trước khi nhân rộng"
+      - "Bước 7 Chuẩn hóa: SOP, đào tạo, KPI, rà soát định kỳ"
+    outputs: "Quy trình mới đã pilot, SOP, KPI, Process Owner, kế hoạch rà soát."
+  - id: "m01_proc_find_bottleneck"
+    name: "Tìm nút thắt và kiểm tra khớp bằng Little's Law"
+    steps:
+      - "Bấm giờ CT từng công đoạn (>= 10 lần, nhiều người, giờ cao điểm), cộng cả thời gian đọc/hỏi lại/thanh toán"
+      - "Tính năng lực mỗi công đoạn = n x T khả dụng / CT; năng lực quy trình = min; nút thắt = công đoạn min"
+      - "Tính lambda thực (trừ walk-away) và utilization rho = lambda/năng lực"
+      - "Đo L (WIP) và kiểm W = L/lambda với thời gian đo bấm giờ"
+      - "Nếu rho > 85%: vùng nguy hiểm, mở rộng nút thắt trước khi làm gì khác"
+      - "Tính Takt Time và số người cần = CT/Takt"
+      - "Tính hiệu suất cân bằng chuyền; chuyển thao tác từ trạm chậm sang trạm nhanh nếu mất cân bằng"
+    outputs: "Nút thắt, rho từng công đoạn, WIP/W đã đối chiếu, đề xuất mở rộng đúng chỗ."
+  - id: "m01_proc_vsm_numbers"
+    name: "Dựng bảng VSM và tính PCE"
+    steps:
+      - "Liệt kê từng bước với CT và thời gian chờ trước bước; gán nhãn VA/NVA-N/NVA"
+      - "Cộng VA Time và tổng chờ; Throughput Time = xử lý + chờ"
+      - "Tính Process Velocity và PCE; Little's Law L = lambda x TT"
+      - "Xếp hạng khoảng chờ lớn nhất; áp ECRS"
+      - "Vẽ Future State, tính lại TT, VA, Velocity, PCE, rho; quy đổi ra tiền"
+    outputs: "Current/Future State, % giảm TT, PCE, WIP, lợi ích tài chính."
+  - id: "m01_proc_time_study"
+    name: "Time Study và Motion Study một thao tác"
+    steps:
+      - "Quay video 10-20 lần thực hiện, ghi thời gian"
+      - "Tính trung bình, chọn Rating (tốc độ so với chuẩn) và Allowance (10-20%)"
+      - "Standard Time = trung bình x Rating x (1 + Allowance); năng lực = 3600/Standard"
+      - "Tua chậm tìm thao tác thừa theo Therbligs; áp ECRS và bố trí lại nguồn lực"
+      - "Có sự đồng thuận của nhân viên; không dùng để ép năng suất"
+    outputs: "Standard Time, định mức, danh sách thao tác thừa đã loại."
+  - id: "m01_proc_raci_check"
+    name: "Lập và kiểm tra RACI"
+    steps:
+      - "Liệt kê bước (hàng) x vai trò (cột)"
+      - "Gán R/A/C/I; mỗi hàng đúng 1 A, ít nhất 1 R"
+      - "Không cột toàn R, không cột toàn I"
+      - "Giảm C không cần thiết; thống nhất với các bên"
+    outputs: "RACI không mơ hồ trách nhiệm."
+  - id: "m01_proc_sme_standardize"
+    name: "Chuẩn hóa SOP và duy trì cho SME"
+    steps:
+      - "Chỉ định Process Owner từ đầu"
+      - "Viết SOP ngắn, ưu tiên hình ảnh/video đặt tại nơi làm việc"
+      - "Đào tạo trực tiếp và giám sát 2-4 tuần đầu"
+      - "Thiết lập 2-3 KPI và người/ngày xem xét"
+      - "Rà soát 6-12 tháng/lần hoặc khi có thay đổi lớn; cross-training >= 2 người/quy trình quan trọng"
+    outputs: "SOP sống, KPI, giảm key-person risk."
+
+decision_rules:
+  - "Nếu chủ DN muốn thuê thêm người để giảm chờ thì trước hết tính năng lực từng công đoạn; chỉ thêm người ở công đoạn nút thắt, vì cải tiến công đoạn khác không tăng sản lượng."
+  - "Nếu utilization của nút thắt > 85% (nhất là >= 95%) thì coi là vùng nguy hiểm: hàng đợi gần như không hết dù công suất 'vừa đủ'; mở rộng nút thắt để rho về khoảng 70-85%."
+  - "Nếu PCE chỉ vài phần trăm (thời gian chờ chiếm >90%) thì nhắm vào các khoảng chờ giữa các bước, không rút ngắn bước VA vài giây."
+  - "Nếu muốn giảm thời gian chờ W với lambda không đổi thì phải giảm WIP L = lambda x W (tăng tốc phục vụ), không phải giảm số bàn/chỗ chứa."
+  - "Nếu một công đoạn có CT/số người lớn hơn Takt Time thì công đoạn đó là điểm nghẽn; thêm người/rút CT cho đến khi CT/n <= Takt (rồi kiểm utilization)."
+  - "Nếu Cpk < Cp thì quy trình lệch tâm: căn chỉnh về mục tiêu trước; nếu Cp < 1,33 thì giảm phân tán (SOP, dụng cụ chia vạch, đào tạo)."
+  - "Nếu Cpk < 1 thì quy trình thường xuyên tạo ngoài giới hạn dù ổn định thống kê: không dựa vào kiểm tra cuối chuyền, phải sửa quy trình."
+  - "Nếu trung bình thời gian thao tác giữa các công nhân giống nhau nhưng CV cao (ví dụ 20%) thì vấn đề là thiếu thao tác chuẩn: viết SOP hình ảnh và kiểm tra tại chỗ."
+  - "Nếu quy trình đi qua nhiều bộ phận và hay chậm thì vẽ Swimlane đếm số lần bàn giao rồi lập RACI; giảm cấp duyệt (Eliminate) và gộp thông báo (Combine)."
+  - "Nếu quy trình là dịch vụ có tiếp xúc khách thì dùng Service Blueprint; khách chờ lâu mà onstage nhanh thì sửa backstage, không đào tạo thái độ."
+  - "Nếu quy trình là sản xuất/kho vận cần đo thời gian chờ thì dùng VSM; nếu chỉ cần chốt phạm vi thì SIPOC; đã có ERP/CRM log thì dùng Process Mining."
+  - "Nếu có nhiều vấn đề cùng lúc thì dùng Pareto chọn 1-3 vấn đề tác động lớn nhất (ví dụ 1 công đoạn gây 70% lỗi)."
+  - "Nếu duyệt cải tiến từng bước thì đi theo thứ tự E -> C -> R -> S; Eliminate trước vì loại bỏ hoàn toàn chi phí của bước."
+  - "Nếu mô hình kinh doanh chưa ổn định (chưa đạt Product-Market Fit) thì chưa chuẩn hóa sâu; chuẩn hóa mạnh trước khi mở chuỗi/nhượng quyền."
+  - "Nếu nhu cầu biến động ngẫu nhiên thì thiết kế nút thắt ở 70-85% utilization, không nhắm 100%."
+  - "Nếu chưa có dữ liệu thì không ra quyết định: đo tối thiểu 3 ngày cao điểm (quán) hoặc 2-4 tuần dữ liệu trước thay đổi lớn."
+  - "Nếu đối tượng là hộ kinh doanh/SME rất nhỏ thì flowchart vẽ tay + bấm giờ + ECRS là đủ; chưa cần BPMN/ERP."
+  - "Nếu đã pilot thành công ở 1 điểm/1 ca thì mới nhân rộng; luôn đào tạo lại nhân viên và giám sát 2-4 tuần."
+  - "Nếu nhân viên chống đối thì cho tham gia vẽ và thiết kế (co-design), truyền thông mục tiêu giảm lãng phí chứ không cắt người."
+
+benchmarks:
+  - {metric: "Cpk đủ năng lực (capable)", value: ">= 1,33", context: "Quy tắc ngón tay cái trong nguồn; Cpk < 1: thường xuyên ngoài giới hạn", confidence: "medium"}
+  - {metric: "Mức sử dụng thiết kế cho nút thắt", value: "70-85%", context: "Quy tắc ngón tay cái khi nhu cầu biến động ngẫu nhiên (từ lý thuyết hàng đợi)", confidence: "medium"}
+  - {metric: "Hệ số chờ rho/(1-rho)", value: "50% -> 1; 80% -> 4; 90% -> 9; 97,4% -> ~37", context: "Xấp xỉ tỷ lệ thời gian chờ; nguồn làm tròn", confidence: "high"}
+  - {metric: "Allowance trong Standard Time", value: "10-20%", context: "Dự phòng nghỉ ngơi/nhu cầu cá nhân", confidence: "medium"}
+  - {metric: "Số lần quan sát Time Study", value: "10-20 lần", context: "Khuyến nghị nguồn", confidence: "medium"}
+  - {metric: "Thời gian Gemba Walk mỗi lần", value: "30-60 phút tại một điểm; >= 50% thời gian bước 2 là quan sát thực địa", context: "Khuyến nghị nguồn", confidence: "medium"}
+  - {metric: "Lượng dữ liệu tối thiểu trước khi ra quyết định", value: "2-4 tuần dữ liệu cho thay đổi lớn; >= 3 ngày cao điểm cho quán", context: "Sổ tay rủi ro và case quán cà phê", confidence: "medium"}
+  - {metric: "Giảm chi phí vận hành nhờ quy trình tốt", value: "thường được trích dẫn 20-50%", context: "Ước tính tham khảo, CHƯA kiểm chứng nguồn, phụ thuộc ngành và mức lãng phí ban đầu", confidence: "low"}
+  - {metric: "PCE điển hình quy trình dịch vụ/hành chính", value: "vài phần trăm hoặc thấp hơn", context: "Nguồn mô tả định tính; ví dụ minh họa 2,7%, 0,65%", confidence: "low"}
+  - {metric: "Chi phí công cụ theo giai đoạn SME", value: "0-300.000đ/tháng (0-1 điểm); 0,5-2 triệu (2-5 điểm); 3-10 triệu (6-20 điểm); chục đến trăm triệu (20+ điểm)", context: "Ước tính tham khảo cần kiểm tra lại giá hiện hành", confidence: "low"}
+  - {metric: "POS cho quán nhỏ (KiotViet/Sapo)", value: "200.000-500.000đ/tháng", context: "Giá tham khảo, cần kiểm tra bảng giá hiện hành", confidence: "low"}
+  - {metric: "Tốc độ lấy hàng Amazon (đi bộ vs robot mang kệ)", value: "67,5 giây vs 15 giây/lần (+12 giây thao tác)", context: "Giả định minh họa, không phải số liệu nội bộ đã kiểm chứng", confidence: "low"}
+  - {metric: "SMED đổi khuôn Toyota", value: "vài giờ -> dưới 10 phút (240 -> 10 phút trong minh họa)", context: "Thường được trích dẫn; con số cụ thể là ước tính/minh họa", confidence: "low"}
+  - {metric: "Hiệu quả tài chính case SME (POS quán cà phê)", value: "+6,63 khách/ngày, ~+6,9 triệu đ/tháng ròng", context: "Giả định minh họa, tự nhất quán", confidence: "low"}
+
+pitfalls:
+  - "Chỉ phỏng vấn mà không quan sát (Gemba) nên ghi 'process as imagined' thay vì 'process as performed'."
+  - "Chỉ đo thời gian xử lý, bỏ thời gian chờ giữa các bước nên PCE bị đánh giá quá cao."
+  - "Tin trực giác về nút thắt (ai bận nhất) thay vì tính năng lực: quán cà phê trực giác nói pha chế, số liệu chỉ ra thu ngân."
+  - "Cải tiến công đoạn không phải nút thắt: tốn tiền mà sản lượng toàn hệ thống không tăng."
+  - "Thiết kế capacity 'vừa đủ' (rho ~ 97%) rồi ngạc nhiên vì tồn đơn."
+  - "Dùng nhu cầu đến cửa thay vì lambda thực trong Little's Law/utilization (quên walk-away)."
+  - "Phân tích liệt: vẽ sơ đồ hoàn hảo mà không triển khai; không timeboxing."
+  - "Sao chép nguyên xi quy trình DN lớn cho SME; chuẩn hóa quá sớm khi chưa đạt Product-Market Fit."
+  - "Chỉ vẽ sơ đồ một lần rồi không cập nhật; không có Process Owner."
+  - "Thay đổi quy trình mà không đào tạo lại và giám sát nhân viên 2-4 tuần."
+  - "Không pilot, triển khai đại trà ngay."
+  - "Chuẩn hóa cứng nhắc quá mức trong dịch vụ; không có quy trình xử lý ngoại lệ."
+  - "RACI có 2 chữ A hoặc thiếu A (bản gốc từng thiếu A ở bước đề xuất)."
+  - "Dùng Time Study để ép năng suất, không có sự tham gia của nhân viên (bài học Taylorism)."
+  - "Quá nhiều KPI cùng lúc (paralysis by analysis): SME nên bắt đầu 2-3 KPI."
+  - "Phụ thuộc một người nắm quy trình (key person risk); không cross-training."
+  - "Over-investment công cụ (ERP/BPMN) vượt lợi ích thực tế khi SME mới bắt đầu."
+  - "Báo cáo Cp mà bỏ Cpk; chuẩn hóa chỉ có văn bản SOP mà không đo giảm biến động."
+
+sme_vn_guidance:
+  - "Hộ kinh doanh/SME 1-5 nhân viên: flowchart vẽ tay + bấm giờ bằng điện thoại + ECRS; chi phí công cụ gần 0 (giấy bút, Excel, Draw.io miễn phí). Chủ DN tự làm, rà soát khi có vấn đề rõ."
+  - "SME 10-50 nhân viên, 1-5 điểm bán: Flowchart + SIPOC + VSM cơ bản; công cụ 1-5 triệu đ/tháng (POS/CRM cơ bản); rà soát 6-12 tháng; cần 1 người vận hành kiêm chuẩn hóa SOP (giá tham khảo, cần kiểm tra hiện hành)."
+  - "Chuẩn bị nhượng quyền/chuỗi (6-20 điểm bán): ERP nhẹ 3-10 triệu đ/tháng, Operations Manager chuyên trách, SOP bằng văn bản/video có audit (ước tính, cần kiểm tra)."
+  - "Doanh nghiệp lớn (20+ điểm bán, 500+ nhân viên): Process Excellence Team (Six Sigma Green/Black Belt), ERP/MES/BI, văn hóa Kaizen; chứng nhận ISO 9001, HACCP khi xuất khẩu (cần kiểm chứng yêu cầu hiện hành)."
+  - "POS quán ăn/cà phê/bán lẻ nhỏ: KiotViet, Sapo ~200.000-500.000đ/tháng (cần xác nhận bảng giá); gộp order và thanh toán, phím tắt món bán chạy, thanh toán QR, đẩy order thẳng sang pha chế."
+  - "Công cụ vẽ: Draw.io miễn phí; Lucidchart ~90.000đ/tháng; Miro miễn phí/~200.000đ/tháng; Visio ~150.000đ/tháng; Bizagi Modeler miễn phí; Camunda mã nguồn mở; Disco có bản miễn phí giới hạn, Celonis theo gói doanh nghiệp (giá tham khảo, cần kiểm tra hiện hành)."
+  - "Quán cà phê: đo 3 ngày cao điểm trước khi thuê người/mua thiết bị; đo lambda, L và thời gian từng trạm."
+  - "Xưởng may gia công: SOP bằng hình ảnh dán tại trạm, kiểm tra tại chỗ, Pareto công đoạn gây nhiều lỗi; không cần máy mới."
+  - "Shop TMĐT: SIPOC -> Swimlane -> Takt/Capacity -> VSM -> ECRS; thương lượng số lần ĐVVC lấy hàng/ngày; máy in nhãn nhiệt; thiết kế nút thắt ~80%."
+  - "Mở rộng khi chưa chuẩn hóa quy trình dễ thất bại (tham chiếu case Soya Garden trong 99.CASE-STUDY của knowledge base; chuẩn hóa SOP giúp cửa hàng mới có lãi sớm trong case Bách Hóa Xanh - chưa kiểm chứng ở đây)."
+  - "Số liệu công ty lớn VN (Vinamilk: ERP/SAP, MES, ISO/HACCP, số nhà máy) là thông tin công khai tổng quát cần kiểm chứng với báo cáo thường niên mới nhất trước khi trích dẫn."
+
+case_lessons:
+  - name: "Toyota - nguồn gốc VSM và SMED"
+    type: "success"
+    setup: "Toyota hậu chiến thiếu vốn/nguyên liệu; Ohno phát triển TPS, Ohno Circle, vẽ dòng chảy vật chất và thông tin, nhận diện 7 Wastes; Shingo phát triển SMED."
+    key_calculations:
+      - "Với tỷ lệ đổi khuôn <= 20% thì R >= 4S"
+      - "S = 240 phút: R >= 960 phút, lô tối thiểu = 960 x 5 = 4.800 chi tiết"
+      - "S = 10 phút: R >= 40 phút, lô = 200 (giảm 24 lần); tồn kho ~ nửa lô: 2.400 -> 100"
+      - "Little's Law với nhu cầu 1.000/ngày: W = 2,4 ngày -> 0,1 ngày"
+    lesson: "Lãng phí không ở máy chạy chậm mà ở chờ và tồn kho giữa công đoạn; đổi khuôn nhanh -> lô nhỏ -> JIT. Quan sát thực địa (Gemba, Ohno Circle) quan trọng hơn họp. SME áp dụng được Gemba/ECRS ngay; SMED/JIT/kanban quy mô lớn thì chưa phù hợp."
+    data_reliability: "illustrative"
+  - name: "Vinamilk - chuẩn hóa quy trình sản xuất sữa"
+    type: "success"
+    setup: "Nhiều nhà máy, hàng trăm SKU; BPMN/ERP, SOP theo ISO 9001/HACCP, MES cảnh báo lệch. Thông tin hệ thống là công khai tổng quát cần kiểm chứng; số nhiệt độ/sigma là giả định minh họa."
+    key_calculations:
+      - "LSL 136, USL 140, mục tiêu 138 độ C"
+      - "Trước: sigma 1,0, mu 138: Cp = Cpk = 0,67; ngoài giới hạn ~4,55% (~45.500 ppm)"
+      - "Sau: sigma 0,5, mu 138,2: Cp = 1,33; Cpk = min(1,8; 2,2)/1,5 = 1,20; ~165 ppm"
+      - "Giảm phân tán một nửa làm tỷ lệ ngoài chuẩn giảm ~275 lần"
+    lesson: "Chuẩn hóa là điều kiện bắt buộc ở quy mô lớn/đa nhà máy/xuất khẩu; phải đo Cp/Cpk để biết có giảm biến động thật. Cpk < Cp (1,20 < 1,33) cho thấy còn dư địa căn tâm về 138; MES cảnh báo lệch tâm làm việc này."
+    data_reliability: "illustrative"
+  - name: "Amazon Fulfillment Center - đảo ngược quy trình lấy hàng"
+    type: "success"
+    setup: "Chaotic storage + robot (Kiva/Amazon Robotics) mang kệ đến người; đo thời gian thực. Số liệu ước tính/minh họa dựa trên mô tả phổ biến, không phải số nội bộ kiểm chứng."
+    key_calculations:
+      - "Chu kỳ lấy hàng: trước 67,5 + 12 = 79,5 giây; sau 15 + 12 = 27 giây"
+      - "Năng suất: 45,3 -> 133,3 món/giờ (~2,94 lần)"
+      - "Tiết kiệm 52,5 giây/lần x 1 tỷ lần/năm (giả định) ~ 14,6 triệu giờ ~ 7.000 nhân viên (2.080 giờ/năm)"
+    lesson: "Robot không làm khâu lấy nhanh hơn (12 giây không đổi); lợi thế đến từ Eliminate di chuyển (~85% chu kỳ). Với SME: hỏi 'có cần đi không?' trước khi tối ưu việc đi (xếp hàng bán chạy sát bàn đóng gói - Rearrange)."
+    data_reliability: "illustrative"
+  - name: "Quán cà phê specialty Q.1 TP.HCM tái thiết kế quy trình order"
+    type: "sme"
+    setup: "1 thu ngân + 2 pha chế, cao điểm 7h30-9h00 (90 phút), khách chờ 15-20 phút, 22% bỏ đi, AOV 55.000đ, biên gộp 65%. Giả định minh họa, đã kiểm nhất quán."
+    key_calculations:
+      - "Năng lực thu ngân = 3600/135 = 26,7 khách/giờ; pha chế 2 x 3600/170 = 42,4 đơn/giờ; nút thắt = thu ngân"
+      - "lambda = 34 x 0,78 = 26,52; rho = 99,5%; W = 8/26,52 = 18,1 phút (khớp đo 15-20)"
+      - "TT 18,1 phút, VA 4,0, Velocity 4,52, PCE 22,1%"
+      - "Sau POS: thu ngân 3600/75 = 48; pha chế 2 x 3600/150 = 48; lambda = 30,94; rho = 64,5%; W = 3,5/30,94 = 6,8 phút; Velocity 2,09"
+      - "Khách 90 phút cao điểm 39,8 -> 46,4 (+6,63/ngày); +364.650đ/ngày ~ 10,9 triệu/tháng; gộp 65% ~ 7,1 triệu; trừ POS 200.000đ ~ 6,9 triệu/tháng"
+    lesson: "Công cụ đơn giản (quan sát, bấm giờ, flowchart, Little's Law, ECRS) tìm ra nút thắt thật (thu ngân, không phải pha chế) và tăng lợi nhuận mà không thuê thêm người. Đo lambda, L và thời gian từng trạm 3 ngày cao điểm trước khi quyết."
+    data_reliability: "illustrative"
+  - name: "Xưởng may gia công Bình Dương chuẩn hóa SOP"
+    type: "sme"
+    setup: "40 công nhân, 8.000 sp/tháng, rework 18%, phạt hợp đồng 15 triệu/quý. 12 công đoạn, công đoạn 6 (may cổ) lệch lớn. Giả định minh họa."
+    key_calculations:
+      - "Thời gian may cổ 5 công nhân: trung bình 60,0, sd 12,0, CV 20% -> sau SOP trung bình 56,4, sd 2,7, CV 4,8%"
+      - "Rework 1.440 sp/tháng; 70% (1.008) từ may cổ, còn lại 432"
+      - "Sau: 480 sp (6%): cổ 150, khác 330"
+      - "Chi phí rework 9.000đ/sp: 12,96 -> 4,32 triệu/tháng (tiết kiệm 8,64); thêm phạt tránh 5 triệu/tháng = 13,64 triệu"
+      - "Đầu tư 3 + 4,8 = 7,8 triệu; hoàn vốn ~0,9 tháng (chỉ phần rework)"
+    lesson: "Vấn đề chất lượng SME sản xuất thường do thao tác thiếu nhất quán, không phải thiếu máy; SOP bằng hình ảnh + kiểm tra tại chỗ (Rearrange) hiệu quả cao. Luôn đo cả trung bình lẫn độ phân tán; Pareto: 1/12 công đoạn gây 70% lỗi."
+    data_reliability: "illustrative"
+  - name: "Shop TMĐT Nhà Xinh (hư cấu) - tồn đơn và VSM"
+    type: "sme"
+    setup: "8 nhân sự, 240 đơn/ngày, 14% giao trễ, định thuê thêm 2 người đóng gói. Giả định minh họa, tự nhất quán."
+    key_calculations:
+      - "Takt = 23.400/240 = 97,5 giây; năng lực: xác nhận 780, soạn 312, đóng gói 246,3, dán vận đơn 585 đơn/ngày"
+      - "rho đóng gói = 97,4% (hệ số ~37) -> nút thắt"
+      - "Chờ = 4,0 + 3,5 + 1,0 + 6,0 = 14,5 giờ = 870 phút; xử lý 7,33 phút; TT = 877,3 phút (~14,6 giờ); VA 5,67; Velocity 154,8; PCE 0,65%; L = 10 x 14,62 ~ 146 đơn"
+      - "Sau ECRS: soạn 390 (61,5%), đóng gói+dán 292,5 (82,1%); chờ 240 phút; TT = 245,7 phút (~4,1 giờ, -72%); VA 4,5; Velocity 54,6; PCE 1,83%; L ~ 41; dư địa +21,9%"
+      - "Đơn trễ 33,6 -> 4,8/ngày; tiết kiệm (33,6-4,8) x 12.000 x 26 = 8.985.600đ/tháng; đầu tư 10 triệu, hoàn vốn ~1,1 tháng"
+    lesson: "Đừng giải quyết triệu chứng bằng nhân sự: 99% thời gian đơn là chờ. Cảnh giác rho gần 100%; thiết kế nút thắt ~80%. Dùng đúng công cụ đúng giai đoạn: SIPOC -> Swimlane -> Takt/Capacity -> VSM -> ECRS -> Little's Law."
+    data_reliability: "illustrative"
+
+worked_examples:
+  - name: "Tìm nút thắt và kiểm tra Little's Law (quán cà phê)"
+    inputs: {thu_ngan_ct: 135, pha_che_ct: 170, so_pha_che: 2, nhu_cau_den_cua: 34, walkaway: 0.22, L: 8}
+    steps:
+      - "Năng lực thu ngân = 3600/135 = 26,67 khách/giờ; pha chế = 2 x 3600/170 = 42,35 đơn/giờ"
+      - "Năng lực quy trình = min = 26,67: thu ngân là nút thắt"
+      - "lambda = 34 x (1 - 0,22) = 26,52; rho = 26,52/26,67 = 99,5%"
+      - "W = L/lambda = 8/26,52 = 0,3017 giờ = 18,1 phút (khớp 15-20 phút đo thực tế)"
+    result: "Nút thắt = thu ngân, rho 99,5%, W ~ 18,1 phút"
+  - name: "Dựng VSM và PCE cho đơn hàng online"
+    inputs: {va_steps_min: [2, 5, 10, 30], wait_min: [240, 1440]}
+    steps:
+      - "VA = 2 + 5 + 10 + 30 = 47 phút"
+      - "Chờ = 240 + 1.440 = 1.680 phút"
+      - "TT = 1.727 phút (~28,8 giờ); Velocity = 36,7; PCE = 2,7%"
+      - "Hàm ý: rút đóng gói 1 phút chỉ cải thiện ~0,06%; nhắm vào 2 khoảng chờ chiếm 97%"
+    result: "PCE 2,7%; ưu tiên cắt thời gian chờ"
+  - name: "Takt Time, năng lực, utilization và số người (Nhà Xinh)"
+    inputs: {t_avail_s: 23400, demand: 240, stages: {xac_nhan: [2, 60], soan: [2, 150], dong_goi: [2, 190], dan_van_don: [1, 40]}}
+    steps:
+      - "Takt = 23.400/240 = 97,5 giây"
+      - "Năng lực = n x 23.400/CT: 780; 312; 246,3; 585 đơn/ngày"
+      - "rho = 30,8%; 76,9%; 97,4%; 41,0%"
+      - "Đóng gói cần 190/97,5 = 1,95 ~ 2 người, không còn dư địa; hệ số chờ 0,974/0,026 ~ 37"
+      - "Thêm người ở xác nhận/soạn không giúp; cắt chờ và rút CT đóng gói 190 -> 160 làm rho = 240/292,5 = 82,1%"
+    result: "Nút thắt = đóng gói (rho 97,4%); mục tiêu rho ~ 82%"
+  - name: "Cân bằng chuyền 4 trạm"
+    inputs: {cts: [40, 55, 70, 50], demand_per_hour: 45}
+    steps:
+      - "Năng lực: 90; 65,5; 51,4; 72 sản phẩm/giờ; nút thắt trạm 3 (70 giây), năng lực quy trình 51,4"
+      - "rho = 45/51,4 = 87,5%; Takt = 3600/45 = 80 giây"
+      - "Hiệu suất = 215/(4 x 70) = 76,8%; nhàn rỗi mỗi chu kỳ = 280 - 215 = 65 giây"
+      - "Chuyển 8 giây từ trạm 3 sang trạm 1: CT 48, 55, 62, 50; năng lực 3600/62 = 58,1 (+13%); hiệu suất 215/248 = 86,7%; rho = 77,5%"
+    result: "Sau cân bằng: năng lực 58,1/giờ, hiệu suất 86,7%, rho 77,5% (vùng an toàn)"
+  - name: "Cp/Cpk rót trà sữa"
+    inputs: {lsl: 480, usl: 520, cases: [[8, 500], [5, 505], [5, 500]]}
+    steps:
+      - "sigma 8, mu 500: Cp = 40/48 = 0,83; Cpk = 20/24 = 0,83"
+      - "sigma 5, mu 505: Cp = 40/30 = 1,33; Cpk = min(15, 25)/15 = 1,00"
+      - "sigma 5, mu 500: Cp = Cpk = 20/15 = 1,33"
+    result: "Cần giảm phân tán (cốc chia vạch, đào tạo) VÀ chỉnh về tâm để đạt Cpk 1,33"
+  - name: "Standard Time gấp áo"
+    inputs: {obs: [22, 24, 21, 23, 25, 22, 23, 24, 22, 24], rating: 0.95, allowance: 0.15}
+    steps: ["Trung bình = 23,0 giây", "Normal = 21,85", "Standard = 25,13", "Năng lực = 3600/25,13 ~ 143 chiếc/giờ"]
+    result: "Standard Time ~ 25,13 giây/chiếc"
+  - name: "ROI POS 3 điểm bán (Bài 9)"
+    inputs: {gp_case_trieu: 7.11, hieu_qua: 0.5, diem_ban: 3, chi_phi_pos_trieu: 2.0, thang: 6}
+    steps:
+      - "7,11 x 0,5 = 3,555 triệu/điểm; x 3 = 10,665 triệu/tháng"
+      - "Lãi ròng/tháng = 10,665 - 2,0 = 8,665 triệu"
+      - "6 tháng: lợi ích 63,99; chi phí 12,0; lãi ròng 51,99 triệu; ROI ~ 433%"
+      - "Hòa vốn: 2.000.000/(55.000 x 0,65) ~ 56 khách/tháng"
+    result: "ROI ~ 433% trong 6 tháng với giả định thận trọng 50%"
+
+practice_questions:
+  - q: "Quầy thu ngân có L = 6 khách và lambda = 45 khách/giờ. Tính W; muốn W = 5 phút thì L cần bao nhiêu?"
+    a: "W = 6/45 = 0,1333 giờ = 8 phút. L = 45 x 5/60 = 3,75 khách (giảm 37,5%) bằng cách tăng tốc phục vụ. Nếu giữ L = 6 thì chỉ đạt W = 5 phút khi lambda = 72/giờ."
+  - q: "Dây chuyền 4 trạm CT 40, 55, 70, 50 giây, nhu cầu 45/giờ: tìm năng lực, utilization, Takt, hiệu suất cân bằng, đề xuất cân bằng lại."
+    a: "Năng lực 51,4/giờ (trạm 3), rho 87,5%, Takt 80 giây, hiệu suất 76,8%. Chuyển 8 giây từ trạm 3 sang trạm 1: CT 48/55/62/50, năng lực 58,1, hiệu suất 86,7%, rho 77,5%."
+  - q: "Quán pha cà phê sữa đá 150 giây (8 bước). Dùng ECRS đề xuất cải tiến."
+    a: "Rearrange: đặt cà phê phin, sữa đặc, ly trong tầm với bỏ 2 lần đi lại (-20 giây). Combine: cho sữa đặc vào ly trước khi rót cà phê (-10 giây). 120 giây: 24 -> 30 ly/giờ (+25%)."
+  - q: "Dựng Future State quán cà phê sau POS và tính Velocity, PCE."
+    a: "Xếp hàng 1,70 + order 0,75 + thanh toán 0,50 + chuyển 0,08 + chờ pha 1,25 + pha 2,50 = 6,78 phút; VA = 3,25. Velocity 2,09 (từ 4,52, giảm 54%), PCE 47,8% (từ 22,1%), TT giảm 62%."
+  - q: "Cp/Cpk cho rót trà sữa (LSL 480, USL 520) với sigma 5, mu 505?"
+    a: "Cp = 1,33; Cpk = min(15, 25)/15 = 1,00 vì lệch tâm 5 ml; chỉnh mu về 500 sẽ có Cpk 1,33."
+  - q: "Vì sao RACI chỉ có 1 chữ A mỗi bước? Kiểm tra nhanh RACI thế nào?"
+    a: "Accountable là người bị hỏi khi có sự cố; 2 người A thì đá trách nhiệm. Kiểm tra: mỗi hàng đúng 1 A, >= 1 R, không cột toàn R, không cột toàn I."
+  - q: "Vì sao Process Mining khác phỏng vấn? Khi nào SME dùng được?"
+    a: "Process Mining tái tạo quy trình thực tế từ event log (process as performed) thay vì process as imagined; cần log số hóa (ERP/CRM). SME nhỏ có thể xuất Excel từ POS có timestamp để phân tích đơn giản."
+  - q: "So sánh Toyota và quán cà phê SME: nguyên tắc nào áp dụng trực tiếp, nguyên tắc nào không?"
+    a: "Áp dụng: Gemba/Ohno Circle, phân biệt VA/NVA, tìm chờ đợi và di chuyển, ECRS. Chưa phù hợp: SMED/JIT/kanban quy mô lớn, VSM đầy đủ dòng thông tin. Chung: đo trước, cải tiến sau."
+  - q: "Gấp áo 10 lần (22,24,21,23,25,22,23,24,22,24 giây), Rating 95%, Allowance 15%. Tính Standard Time."
+    a: "Trung bình 23,0; Normal 21,85; Standard 25,13 giây; ~143 chiếc/giờ. Bỏ thao tác thừa 2 giây (Combine) giảm ~9%."
+  - q: "Vẽ SIPOC tuyển dụng nhân viên mới cho SME 20 người; ranh giới ở đâu?"
+    a: "Bắt đầu khi trưởng bộ phận gửi yêu cầu tuyển; kết thúc khi nhân viên ký hợp đồng và có mặt ngày đầu (hội nhập thuộc quy trình khác). Process: xác nhận nhu cầu, đăng tin, sàng lọc, phỏng vấn, thư mời, nhận việc."
+  - q: "Khách chờ báo giá sửa xe 40 phút, tiếp nhận 3 phút. Dùng Service Blueprint chẩn đoán."
+    a: "37 phút ở backstage (kiểm tra xong chưa, không có bảng giá chuẩn): sửa hậu trường (bảng giá chuẩn, phân công người kiểm tra), không đào tạo thái độ nhân viên tiếp nhận."
+  - q: "Duyệt nghỉ phép 3 cấp, mỗi cấp 1 ngày. Rút ngắn thế nào?"
+    a: "Eliminate cấp duyệt (nghỉ <= 2 ngày chỉ Trưởng nhóm duyệt, HR ghi nhận); Combine thông báo trên hệ thống có nhắc tự động; phân quyền duyệt thay khi vắng."
+
+checklist:
+  - "Trước: đã xác định quy trình và ranh giới (SIPOC), khách hàng và giá trị họ trả tiền (VA/NVA), Process Owner, loại quy trình (Volume-Variety, mức tiếp xúc khách), timebox giai đoạn phân tích, thông báo nhân viên mục tiêu là giảm lãng phí không cắt người"
+  - "Trong: Gemba Walk >= 30-60 phút/lần cả cao điểm và thấp điểm; đo >= 10 lần/bước, nhiều người; ghi cả thời gian chờ giữa bước"
+  - "Trong: tính năng lực từng công đoạn và nút thắt (không dựa trực giác); tính Throughput Time, VA Time, Velocity/PCE"
+  - "Trong: kiểm khớp số liệu bằng Little's Law L = lambda x W (lambda trừ walk-away); dùng Pareto chọn 1-3 vấn đề"
+  - "Thiết kế: duyệt từng bước E -> C -> R -> S; tính lại năng lực và utilization (nút thắt 70-85%)"
+  - "Thiết kế: có quy trình xử lý ngoại lệ và phương án thủ công dự phòng khi hệ thống lỗi"
+  - "Triển khai: pilot 1 cửa hàng/1 ca; đào tạo trực tiếp, giám sát 2-4 tuần"
+  - "Sau: viết SOP (hình ảnh/video, đặt tại nơi làm việc); 2-3 KPI và người/ngày xem xét; so với mục tiêu định lượng; quy đổi ra tiền và hoàn vốn; lịch rà soát 6-12 tháng"
+  - "KPI nên theo dõi: Cycle Time trung bình, Process Velocity, Error Rate, Rework Rate, chi phí/giao dịch, thời gian chờ, tỷ lệ khách bỏ đi, tỷ lệ tuân thủ SOP"
+  - "Rủi ro: key person (cross-training >= 2 người), kháng cự (co-design), cứng nhắc (exception handling), KPI không ai xem (gán Process Owner), over-investment công cụ"
+  - "Với RACI: mỗi hàng đúng 1 A, ít nhất 1 R, không cột toàn R hoặc toàn I"
+  - "Số liệu ước tính/giả định minh họa phải gắn nhãn; kiểm tra số học trước khi trích dẫn"
+
+excel_google_sheets_templates:
+  - name: "Bảng ghi VSM/Time Study (Excel/Google Sheets)"
+    structure: "A tên bước; B loại VA/NVA-N/NVA; C số người n; D CT giây = AVERAGE(F2:O2) (10 lần đo); E thời gian chờ trước bước (phút); P năng lực = C2*23400/D2; Q rho = Nhu_cau/P2 (cảnh báo > 85%)"
+    summary_formulas: "Throughput Time = SUM(D:D)/60 + SUM(E:E); PCE = SUMIF(B:B,\"VA\",D:D)/60/Throughput; Nút thắt = INDEX(A:A,MATCH(MIN(P:P),P:P,0))"
+  - name: "Khung SIPOC 5 cột"
+    structure: "Suppliers | Inputs | Process (5-7 bước cấp cao) | Outputs | Customers; điền theo thứ tự C -> O -> P -> I -> S"
+  - name: "Checklist Gemba Walk"
+    structure: "Đứng quan sát 30-60 phút tại điểm bắt đầu; ghi thời gian bắt đầu/kết thúc MỖI bước; đếm số lần gián đoạn/chờ; ghi ngoại lệ; phỏng vấn nhanh 'bước nào mất thời gian nhất?'; chụp ảnh/quay video nếu được phép; so với SOP tìm gap"
+  - name: "RACI và Risk Register"
+    structure: "Bảng bước x vai trò với R/A/C/I; sổ tay rủi ro gồm rủi ro, khả năng, mức ảnh hưởng, biện pháp"
+  - name: "Sơ đồ chọn công cụ"
+    structure: "Đơn giản -> Flowchart; sản xuất/kho -> VSM; dịch vụ -> Service Blueprint; nhiều bộ phận -> Swimlane + RACI; có log ERP/CRM -> Process Mining"

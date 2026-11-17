@@ -1,0 +1,507 @@
+# 04-report-templates.yaml — Mẫu báo cáo/bảng biểu đầu ra chuẩn
+common_structure:
+- 1. Tóm tắt điều hành (kết luận, phát hiện chính, khuyến nghị trong 3-5 dòng)
+- 2. Bối cảnh và dữ liệu đầu vào (kèm nhãn VERIFIED / GIẢ ĐỊNH / CHƯA KIỂM CHỨNG)
+- 3. Lý thuyết/khung sử dụng, lý do chọn và giới hạn
+- 4. Phân tích từng bước (bảng bằng chứng, điểm, công thức, phép tính)
+- 5. Phân tích độ nhạy/giả thuyết cạnh tranh
+- 6. Diễn giải ý nghĩa kinh doanh và con số quy đổi
+- 7. Phương án can thiệp và khuyến nghị (ưu/nhược, điều kiện thay đổi khuyến nghị)
+- 8. Rủi ro, giả định, giới hạn đạo đức và disclaimer
+- 9. Chỉ số theo dõi và bước tiếp theo (người phụ trách, hạn)
+templates:
+  rpt_motivation_diagnosis:
+    title: Báo cáo chẩn đoán động lực làm việc
+    tables:
+    - name: Bằng chứng quan sát
+      columns:
+      - Hành vi/số liệu
+      - Nguồn
+      - Thời gian
+      - Độ tin cậy
+    - name: Chẩn đoán theo lý thuyết
+      columns:
+      - Lý thuyết
+      - Phát hiện
+      - Bằng chứng
+      - Hàm ý can thiệp
+    - name: Điểm Vroom (E x I x V)
+      columns:
+      - Nhóm
+      - E
+      - I
+      - V
+      - Điểm E x I x V
+      - Thành phần yếu nhất
+    - name: Chi phí và ROI
+      columns:
+      - Hạng mục
+      - Giá trị (triệu VNĐ)
+      - Giả định
+      - Nhãn dữ liệu
+    - name: Can thiệp ưu tiên
+      columns:
+      - Can thiệp
+      - Tầng
+      - Chi phí
+      - Người phụ trách
+      - Hạn
+      - Chỉ số thành công
+  rpt_reward_kpi_design:
+    title: Báo cáo thiết kế thưởng và KPI
+    tables:
+    - name: Hành vi mong muốn và KPI
+      columns:
+      - Hành vi mong muốn
+      - KPI
+      - Công thức
+      - Nguồn dữ liệu
+      - Trọng số
+      - Rủi ro gaming
+    - name: Kiểm tra mốc KPI
+      columns:
+      - KPI
+      - Năng suất hiện tại
+      - Mốc đề xuất
+      - Mức kéo giãn
+      - Nhận xét
+    - name: Công thức thưởng
+      columns:
+      - Cấp độ
+      - Điều kiện
+      - Mức thưởng
+      - Chi phí dự kiến
+    - name: ROI và độ nhạy
+      columns:
+      - Kịch bản
+      - Lợi ích
+      - Chi phí
+      - ROI
+  rpt_turnover_roi:
+    title: Báo cáo chi phí nghỉ việc và ROI giữ người
+    tables:
+    - name: Tỷ lệ nghỉ việc
+      columns:
+      - Kỳ
+      - Nhân sự bình quân
+      - Số nghỉ
+      - Tỷ lệ
+      - Ghi chú
+    - name: Chi phí mỗi vị trí nghỉ
+      columns:
+      - Thành phần
+      - Giá trị (triệu VNĐ)
+      - Giả định
+      - Nhãn dữ liệu
+    - name: Nguyên nhân nghỉ việc
+      columns:
+      - Nhóm nguyên nhân
+      - Số ca
+      - Tỷ trọng
+      - Bằng chứng
+    - name: ROI can thiệp 3 kịch bản
+      columns:
+      - Kịch bản
+      - Giảm nghỉ việc
+      - Tiết kiệm
+      - Chi phí
+      - ROI
+      - Hoàn vốn
+  rpt_leadership_style_plan:
+    title: Kế hoạch phong cách lãnh đạo theo tình huống
+    tables:
+    - name: Ghép nhân sự và phong cách
+      columns:
+      - Nhân sự
+      - Nhiệm vụ
+      - Năng lực
+      - Động lực
+      - D-level
+      - S-style đề xuất
+      - Hành động cụ thể
+    - name: Độ khớp phong cách
+      columns:
+      - Nhóm
+      - Số người
+      - Khớp
+      - Tỷ lệ khớp
+      - Nhận xét
+    - name: Chỉ số theo dõi
+      columns:
+      - Chỉ số
+      - Hiện tại
+      - Mục tiêu 90 ngày
+      - Cách đo
+  rpt_leader_360_plan:
+    title: Báo cáo 360 độ và kế hoạch phát triển 90 ngày
+    tables:
+    - name: Điểm theo domain/năng lực
+      columns:
+      - Domain/Năng lực
+      - Tự đánh giá
+      - Cấp trên
+      - Ngang hàng
+      - Cấp dưới
+      - Gap điểm mù
+    - name: Ưu tiên phát triển
+      columns:
+      - Năng lực
+      - Gap
+      - Tác động
+      - Hành vi cần đổi
+      - Người giám sát
+    - name: Kế hoạch 90 ngày
+      columns:
+      - Mốc
+      - Hành động
+      - Chỉ số
+      - Người phụ trách
+    - name: ROI và eNPS
+      columns:
+      - Chỉ số
+      - Trước
+      - Sau
+      - Ghi chú
+    notes:
+    - Ẩn danh bắt buộc; không dùng để kỷ luật.
+  rpt_team_profile:
+    title: Hồ sơ nhóm
+    tables:
+    - name: Tổng quan nhóm
+      columns:
+      - Nhóm
+      - Số người
+      - Giai đoạn Tuckman
+      - Tầng Lencioni hỏng
+      - Chỉ số an toàn tâm lý
+    - name: Vai trò Belbin
+      columns:
+      - Thành viên
+      - Vai trò chính
+      - Vai trò phụ
+      - Điểm yếu cho phép
+    - name: Pulse 5 yếu tố Aristotle
+      columns:
+      - Yếu tố
+      - Điểm
+      - Thang
+      - Ghi chú
+    - name: Can thiệp ưu tiên
+      columns:
+      - Việc
+      - Mục tiêu
+      - Người phụ trách
+      - Hạn
+      - Chỉ số
+  rpt_decision_matrix:
+    title: Ma trận quyết định có trọng số
+    tables:
+    - name: Tiêu chí và trọng số
+      columns:
+      - Tiêu chí
+      - Trọng số (%)
+      - Chiều điểm
+      - Nguồn bằng chứng
+    - name: Điểm phương án
+      columns:
+      - Phương án
+      - Điểm từng tiêu chí
+      - Điểm có trọng số
+      - Hạng
+    - name: Giá trị kỳ vọng
+      columns:
+      - Nhánh
+      - Xác suất
+      - Giá trị
+      - Đóng góp EV
+    - name: Độ nhạy
+      columns:
+      - Thay đổi trọng số
+      - Phương án dẫn đầu
+      - Ghi chú
+    - name: Decision Log
+      columns:
+      - Quyết định
+      - Giả định
+      - Người chịu trách nhiệm
+      - Ngày hậu kiểm
+  rpt_culture_ocai:
+    title: Báo cáo đánh giá văn hóa OCAI
+    tables:
+    - name: Hồ sơ OCAI
+      columns:
+      - Loại văn hóa
+      - Now
+      - Preferred
+      - Chênh lệch
+    - name: Gap tổng và diễn giải
+      columns:
+      - Chỉ số
+      - Giá trị
+      - Ý nghĩa
+    - name: Ba tầng Schein
+      columns:
+      - Tầng
+      - Quan sát
+      - Khoảng cách tuyên bố - thực tế
+    - name: Chỉ số quy ra tiền
+      columns:
+      - Chỉ số
+      - Giá trị
+      - Giả định
+      - Nhãn dữ liệu
+    - name: Hành vi ưu tiên 90 ngày
+      columns:
+      - Hành vi
+      - Cơ chế hỗ trợ
+      - Người phụ trách
+      - Chỉ số
+    notes:
+    - Mỗi hồ sơ OCAI cộng 100 điểm.
+  rpt_culture_change_plan:
+    title: Kế hoạch xây/đổi văn hóa
+    tables:
+    - name: Giá trị và hành vi
+      columns:
+      - Giá trị cốt lõi
+      - Hành vi quan sát được
+      - Hành vi bị cấm
+      - Cơ chế thưởng/phạt
+    - name: Lộ trình Kotter/giai đoạn
+      columns:
+      - Giai đoạn
+      - Hành động
+      - Thời gian
+      - Người bảo trợ
+      - Mốc
+    - name: ROI và chỉ số
+      columns:
+      - Chỉ số
+      - Trước
+      - Mục tiêu
+      - Cách đo
+  rpt_ma_culture:
+    title: Báo cáo rủi ro văn hóa M&A
+    tables:
+    - name: So sánh hai bên
+      columns:
+      - Chiều văn hóa
+      - Bên A
+      - Bên B
+      - Khoảng cách
+    - name: Rủi ro nhân sự
+      columns:
+      - Nhóm nhân sự
+      - Rủi ro rời đi
+      - Chi phí thay thế
+      - Biện pháp giữ
+    - name: Kế hoạch hợp nhất
+      columns:
+      - Giai đoạn
+      - Hành động
+      - Người phụ trách
+      - Chỉ số
+  rpt_power_map:
+    title: Bản đồ quyền lực và kế hoạch ảnh hưởng
+    tables:
+    - name: Power map
+      columns:
+      - Stakeholder
+      - Nguồn quyền lực
+      - Quyền/Phủ quyết
+      - Phụ thuộc
+      - Power
+      - Interest
+      - Nhóm Mendelow
+    - name: Đếm liên minh
+      columns:
+      - Thành viên
+      - Lập trường
+      - Ngưỡng
+      - Biên an toàn
+    - name: Kế hoạch ảnh hưởng
+      columns:
+      - Stakeholder
+      - Mục tiêu
+      - Chiến thuật
+      - Thông điệp
+      - Hạn
+    - name: Kiểm tra đạo đức
+      columns:
+      - Lăng kính
+      - Điểm 0-2
+      - Ghi chú
+  rpt_conflict_record:
+    title: Biên bản chẩn đoán xung đột
+    tables:
+    - name: Các bên và sự kiện
+      columns:
+      - Bên
+      - Vai trò
+      - Hành vi quan sát
+      - Lợi ích/lo ngại
+    - name: Phân loại
+      columns:
+      - Loại Jehn
+      - Bậc Glasl
+      - Phong cách TKI từng bên
+      - Nguồn gốc
+    - name: Chi phí xung đột
+      columns:
+      - Thành phần
+      - Giá trị
+      - Giả định
+    - name: Can thiệp
+      columns:
+      - Phương án
+      - Điều kiện
+      - Người phụ trách
+      - Hạn đánh giá lại
+  rpt_negotiation_prep:
+    title: Bản chuẩn bị đàm phán
+    tables:
+    - name: BATNA và giá giữ chỗ
+      columns:
+      - Bên
+      - BATNA
+      - Giá giữ chỗ
+      - Nhãn dữ liệu
+    - name: ZOPA
+      columns:
+      - Chỉ số
+      - Giá trị
+      - Kết luận
+    - name: Vấn đề trao đổi
+      columns:
+      - Vấn đề
+      - Ưu tiên của ta
+      - Ưu tiên của họ
+      - Phương án trao đổi
+    - name: Kế hoạch nhượng bộ
+      columns:
+      - Mốc mở
+      - Mốc mục tiêu
+      - Mốc tối thiểu
+      - Điều kiện
+  rpt_change_plan:
+    title: Kế hoạch thay đổi
+    tables:
+    - name: Điều kiện sẵn sàng
+      columns:
+      - Thành phần
+      - Điểm
+      - Bằng chứng
+      - Hành động nâng điểm
+    - name: Bảng Kotter
+      columns:
+      - Bước
+      - Điểm
+      - Hành động
+    - name: ADKAR theo nhóm
+      columns:
+      - Nhóm
+      - A
+      - D
+      - K
+      - A
+      - R
+      - Điểm nghẽn
+    - name: Hoàn vốn
+      columns:
+      - Chỉ số
+      - Giá trị
+      - Giả định
+    - name: Giao tiếp và chỉ số
+      columns:
+      - Thông điệp
+      - Kênh
+      - Tần suất
+      - Chỉ số
+  rpt_eq_plan:
+    title: Kế hoạch phát triển trí tuệ cảm xúc 90 ngày
+    tables:
+    - name: Điểm EQ
+      columns:
+      - Domain/Năng lực
+      - Tự đánh giá
+      - Người khác
+      - Gap
+    - name: Kế hoạch hành vi
+      columns:
+      - Tháng
+      - Hành vi
+      - Tình huống thực hành
+      - Chỉ số
+    - name: ROI
+      columns:
+      - Hạng mục
+      - Giá trị
+      - Giả định
+  rpt_people_reading:
+    title: Phiếu đọc người dạng giả thuyết
+    tables:
+    - name: Hành vi quan sát
+      columns:
+      - Hành vi thô
+      - Bối cảnh
+      - Số lần
+      - Nguồn
+    - name: Giả thuyết
+      columns:
+      - Giả thuyết
+      - Tầng
+      - Mức tin cậy
+      - Cách kiểm chứng
+    - name: Cách giao tiếp điều chỉnh
+      columns:
+      - Tình huống
+      - Cách tiếp cận
+      - Điều không nên làm
+    notes:
+    - Giả thuyết, không phải kết luận; không dùng một mình để tuyển, loại hay phân biệt đối xử.
+  rpt_org_health:
+    title: Báo cáo sức khỏe tổ chức
+    tables:
+    - name: Chỉ số nền
+      columns:
+      - Chỉ số
+      - Giá trị
+      - Kỳ
+      - Nhận xét
+    - name: Nguyên nhân gốc
+      columns:
+      - Nhóm
+      - Phát hiện
+      - Bằng chứng
+      - Mức tác động
+    - name: Đòn bẩy ưu tiên
+      columns:
+      - Can thiệp
+      - Chi phí
+      - Tác động kỳ vọng
+      - Hạn
+      - Chỉ số
+  rpt_meeting_minutes:
+    title: Biên bản họp và nhắc việc
+    tables:
+    - name: Quyết định
+      columns:
+      - Quyết định
+      - Lý do
+      - Người chịu trách nhiệm
+    - name: Action items
+      columns:
+      - Việc
+      - Người phụ trách
+      - Hạn
+      - Trạng thái
+    - name: Rủi ro/Câu hỏi mở
+      columns:
+      - Mục
+      - Mô tả
+      - Người xử lý
+style_rules:
+- Ngắn gọn, ưu tiên bảng
+- Mỗi nhận định về người ghi là giả thuyết kèm bằng chứng
+- Ẩn danh và bảo mật dữ liệu nhân sự
+- Hỏi lại khi thiếu dữ liệu then chốt
